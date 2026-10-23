@@ -1,0 +1,113 @@
+{
+  "url": "http://localhost:8800/",
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_ASYNC_REPLY_ONLY"
+    ],
+    "included": [
+      "async-reply-ui"
+    ],
+    "omitted": [
+      "space-height-library",
+      "projection-lifecycle",
+      "projection-placement",
+      "font-layout",
+      "space-flow",
+      "projection-close",
+      "timber-material",
+      "timber-source-guards"
+    ],
+    "url": "http://localhost:8800/",
+    "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8800"
+  },
+  "completed": true,
+  "groups": {
+    "setup": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    },
+    "async-reply-ui": {
+      "expected": 8,
+      "passed": 8,
+      "failed": 0,
+      "completed": true
+    },
+    "browser-health": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    }
+  },
+  "completenessProblems": [],
+  "passed": 12,
+  "failed": 0,
+  "exceptions": [],
+  "consoleErrors": [],
+  "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+  "results": [
+    {
+      "name": "server serves the intended space-model release",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "current release explicitly supports timber preview and engineering sources",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "1400px confirming projection without editing a field still moves focus to the empty wall bottom",
+      "ok": true,
+      "group": "async-reply-ui"
+    },
+    {
+      "name": "1400px a wall-height edit during projection confirmation keeps focus and the typed height",
+      "ok": true,
+      "group": "async-reply-ui"
+    },
+    {
+      "name": "1400px a view click during an edit boundary read leaves no edit handles and keeps view",
+      "ok": true,
+      "group": "async-reply-ui"
+    },
+    {
+      "name": "1400px releasing an older edit projection does not clear the newer edit handles",
+      "ok": true,
+      "group": "async-reply-ui"
+    },
+    {
+      "name": "390px confirming projection without editing a field still moves focus to the empty wall bottom",
+      "ok": true,
+      "group": "async-reply-ui"
+    },
+    {
+      "name": "390px a wall-height edit during projection confirmation keeps focus and the typed height",
+      "ok": true,
+      "group": "async-reply-ui"
+    },
+    {
+      "name": "390px a view click during an edit boundary read leaves no edit handles and keeps view",
+      "ok": true,
+      "group": "async-reply-ui"
+    },
+    {
+      "name": "390px releasing an older edit projection does not clear the newer edit handles",
+      "ok": true,
+      "group": "async-reply-ui"
+    },
+    {
+      "name": "no uncaught browser exceptions",
+      "ok": true,
+      "group": "browser-health"
+    },
+    {
+      "name": "no browser console errors",
+      "ok": true,
+      "group": "browser-health"
+    }
+  ]
+}

@@ -1,0 +1,907 @@
+{
+  "schema": "geometry-user-flow-audit/1",
+  "head": "1c80751150d0767ba52509537caf8d5542769ccb",
+  "originMain": "1c80751150d0767ba52509537caf8d5542769ccb",
+  "aheadBehind": "0\t0",
+  "receipts": [
+    {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "full",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://localhost:8802/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8802",
+        "browserProfile": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-HWLJ4h",
+        "cdpPort": 9336,
+        "browserPid": 42880
+      },
+      "completed": true,
+      "passedAssertions": 2207,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sections": {
+        "1": 14,
+        "2": 3,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 12,
+        "10": 0,
+        "Setup": 0,
+        "P3": 14,
+        "P4": 11,
+        "P5": 2,
+        "P6": 4,
+        "P7": 54,
+        "P8": 116,
+        "P9": 9,
+        "P10": 9,
+        "P11": 12,
+        "P12": 8,
+        "P13": 4,
+        "P14": 16,
+        "P15": 6,
+        "P16": 10,
+        "P17": 11,
+        "P18": 20,
+        "P19": 17,
+        "BF2": 5,
+        "BF3": 1,
+        "BF4": 9,
+        "P20": 10,
+        "P21": 4,
+        "P22": 45,
+        "P32": 34,
+        "P33": 9,
+        "P34": 7,
+        "P35": 14,
+        "P36": 2,
+        "P37": 19,
+        "P38": 13,
+        "P39": 8,
+        "P40": 4,
+        "P41": 3,
+        "P42": 12,
+        "P43": 12,
+        "P44": 19,
+        "P45": 2,
+        "P46": 7,
+        "P47": 9,
+        "P48": 14,
+        "P49": 17,
+        "P50": 33,
+        "P51": 13,
+        "P52": 43,
+        "P53": 28,
+        "P57": 56,
+        "P62": 38,
+        "P63": 18,
+        "P64": 24,
+        "P65": 5,
+        "P66": 4,
+        "P68": 36,
+        "P69": 160,
+        "P67": 96,
+        "P70": 117,
+        "P71": 9,
+        "P78": 23,
+        "P87": 60,
+        "P88": 137,
+        "P72": 52,
+        "P73": 69,
+        "P74": 52,
+        "P75": 37,
+        "P76": 87,
+        "P77": 134,
+        "P82": 16,
+        "P80": 23,
+        "P81": 14,
+        "P85": 31,
+        "P79": 87,
+        "P84": 33,
+        "P83": 16,
+        "P86": 20
+      },
+      "goldenCompare": "matched",
+      "uncaughtBrowserExceptions": 1,
+      "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.",
+      "log": "cdp-native.log"
+    },
+    {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "full",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://localhost:8801/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8801",
+        "browserProfile": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-rOT4DG",
+        "cdpPort": 9335,
+        "browserPid": 13684
+      },
+      "completed": false,
+      "passedAssertions": 19,
+      "failedAssertions": 7,
+      "fatal": "Browser evaluation failed: TypeError: Cannot read properties of undefined (reading 'length')\n    at eval (eval at <anonymous> (:1:142), <anonymous>:1:32); expression=api(\"objects\").then(r=>r.faces.length)",
+      "skipped": [],
+      "sections": {
+        "1": 14,
+        "2": 3,
+        "3": 1,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 1,
+        "Setup": 0
+      },
+      "sectionsFailed": {
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "9": 4
+      },
+      "currentSection": "9",
+      "goldenCompare": "not compared (run did not complete)",
+      "log": "cdp-wsl.log"
+    },
+    {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "full",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://localhost:8799/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8799",
+        "browserProfile": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-IGOGAG",
+        "cdpPort": 9333,
+        "browserPid": 2904
+      },
+      "completed": false,
+      "passedAssertions": 49,
+      "failedAssertions": 1,
+      "fatal": "UI condition timed out at === P4-2. 空間工作區：成員/槽位/三視圖 ===: !!document.querySelector('.ocard[data-kind=\"space\"][data-id=\"undefined\"]')",
+      "skipped": [],
+      "sections": {
+        "1": 14,
+        "2": 3,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 12,
+        "Setup": 0,
+        "P3": 14,
+        "P4": 1
+      },
+      "sectionsFailed": {
+        "P4": 1
+      },
+      "currentSection": "P4",
+      "goldenCompare": "not compared (run did not complete)",
+      "log": "cdp.log"
+    },
+    {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_INFINITE_FACE_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://localhost:8806/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8806",
+        "browserProfile": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\infinite-face-profile",
+        "cdpPort": 9340,
+        "browserPid": 35212
+      },
+      "completed": true,
+      "passedAssertions": 9,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sections": {
+        "P71": 9
+      },
+      "goldenCompare": "not compared (partial mode)",
+      "uncaughtBrowserExceptions": 0,
+      "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.",
+      "log": "infinite-face.log"
+    },
+    {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_ASYNC_REPLY_ONLY"
+        ],
+        "included": [
+          "async-reply-ui"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow",
+          "projection-close",
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "url": "http://localhost:8800/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8800"
+      },
+      "completed": true,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "async-reply-ui": {
+          "expected": 8,
+          "passed": 8,
+          "failed": 0,
+          "completed": true
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        }
+      },
+      "completenessProblems": [],
+      "passed": 12,
+      "failed": 0,
+      "exceptions": [],
+      "consoleErrors": [],
+      "log": "space-async.log"
+    },
+    {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_TIMBER_GUARDS_ONLY",
+          "GEOMETRY_TIMBER_HISTORY_ONLY"
+        ],
+        "included": [
+          "timber-history-guard"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow",
+          "projection-close",
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "url": "http://localhost:8800/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8800"
+      },
+      "completed": true,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "timber-history-guard": {
+          "expected": 5,
+          "passed": 5,
+          "failed": 0,
+          "completed": true
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        }
+      },
+      "completenessProblems": [],
+      "passed": 9,
+      "failed": 0,
+      "exceptions": [],
+      "consoleErrors": [],
+      "log": "space-history.log"
+    },
+    {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_SAVE_REOPEN_ONLY"
+        ],
+        "included": [
+          "save-reopen-grid"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow",
+          "projection-close",
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "url": "http://localhost:8805/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8805"
+      },
+      "completed": false,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "save-reopen-grid": {
+          "expected": 20,
+          "passed": 5,
+          "failed": 0,
+          "completed": false
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        }
+      },
+      "completenessProblems": [
+        "Space run did not finish",
+        "Group save-reopen-grid did not complete",
+        "Group save-reopen-grid: expected 20 passed assertions, got 5 passed / 0 failed",
+        "Group browser-health did not complete",
+        "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+      ],
+      "passed": 7,
+      "failed": 2,
+      "exceptions": [],
+      "consoleErrors": [],
+      "log": "space-save-native.log"
+    },
+    {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_SAVE_REOPEN_ONLY"
+        ],
+        "included": [
+          "save-reopen-grid"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow",
+          "projection-close",
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "url": "http://localhost:8800/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8800"
+      },
+      "completed": false,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "save-reopen-grid": {
+          "expected": 20,
+          "passed": 5,
+          "failed": 0,
+          "completed": false
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 0,
+          "failed": 0,
+          "completed": false
+        }
+      },
+      "completenessProblems": [
+        "Space run did not finish",
+        "Group save-reopen-grid did not complete",
+        "Group save-reopen-grid: expected 20 passed assertions, got 5 passed / 0 failed",
+        "Group browser-health did not complete",
+        "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+      ],
+      "passed": 7,
+      "failed": 2,
+      "exceptions": [],
+      "consoleErrors": [],
+      "log": "space-save.log"
+    },
+    {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_TIMBER_ONLY"
+        ],
+        "included": [
+          "timber-material",
+          "timber-source-guards",
+          "font-layout"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "space-flow",
+          "projection-close"
+        ],
+        "url": "http://localhost:8800/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8800"
+      },
+      "completed": true,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "timber-material": {
+          "expected": 48,
+          "passed": 48,
+          "failed": 0,
+          "completed": true
+        },
+        "timber-source-guards": {
+          "expected": 8,
+          "passed": 8,
+          "failed": 0,
+          "completed": true
+        },
+        "font-layout": {
+          "expected": 19,
+          "passed": 19,
+          "failed": 0,
+          "completed": true
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        }
+      },
+      "completenessProblems": [],
+      "passed": 79,
+      "failed": 0,
+      "exceptions": [],
+      "consoleErrors": [],
+      "log": "space-timber.log"
+    },
+    {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "full-space-suite",
+        "filters": [],
+        "included": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow",
+          "projection-close"
+        ],
+        "omitted": [
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "url": "http://localhost:8800/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\audit-20261016\\fb-8800"
+      },
+      "completed": true,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "space-height-library": {
+          "expected": 112,
+          "passed": 112,
+          "failed": 0,
+          "completed": true
+        },
+        "projection-lifecycle": {
+          "expected": 18,
+          "passed": 18,
+          "failed": 0,
+          "completed": true
+        },
+        "projection-placement": {
+          "expected": 36,
+          "passed": 36,
+          "failed": 0,
+          "completed": true
+        },
+        "font-layout": {
+          "expected": 19,
+          "passed": 19,
+          "failed": 0,
+          "completed": true
+        },
+        "space-flow": {
+          "expected": 39,
+          "passed": 39,
+          "failed": 0,
+          "completed": true
+        },
+        "projection-close": {
+          "expected": 14,
+          "passed": 14,
+          "failed": 0,
+          "completed": true
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        }
+      },
+      "completenessProblems": [],
+      "passed": 242,
+      "failed": 0,
+      "exceptions": [],
+      "consoleErrors": [],
+      "log": "space.log"
+    },
+    {
+      "ok": false,
+      "completed": false,
+      "phase": "author-1440",
+      "error": "page.waitForFunction: Timeout 30000ms exceeded.\n    at D:\\geometry-axiom\\tests\\test_section_profile_browser.js:56:211",
+      "results": [
+        {
+          "name": "1440 page identity and nonblank UI",
+          "ok": true
+        },
+        {
+          "name": "1440 L outline preserves concavity",
+          "ok": true
+        },
+        {
+          "name": "1440 typed source keeps A identity",
+          "ok": true
+        },
+        {
+          "name": "1440 timber/panel touch exactly without overlap",
+          "ok": true
+        },
+        {
+          "name": "1440 ordinary source preview exposes nested section diagnostics",
+          "ok": true
+        },
+        {
+          "name": "1440 ordinary source cancel preserves exact World",
+          "ok": true
+        },
+        {
+          "name": "1440 overlap cannot confirm",
+          "ok": true
+        },
+        {
+          "name": "1440 invalid candidate leaves World exact",
+          "ok": true
+        },
+        {
+          "name": "1440 cancel restores direct coordinate",
+          "ok": true
+        },
+        {
+          "name": "1440 unplaced run is legal and local",
+          "ok": true
+        },
+        {
+          "name": "1440 native material volume excludes envelope",
+          "ok": true
+        },
+        {
+          "name": "1440 actual exported L envelope is not bbox",
+          "ok": true
+        },
+        {
+          "name": "1440 exported member identities remain distinct",
+          "ok": true
+        },
+        {
+          "name": "1440 independent material switches preserve reference-only view",
+          "ok": true
+        },
+        {
+          "name": "1440 advanced frame yields exact world member bounds",
+          "ok": true
+        },
+        {
+          "name": "1440 choosing conversion host does not create an unrelated edit",
+          "ok": true
+        },
+        {
+          "name": "1440 out-of-plane advanced conversion rejects without guessing",
+          "ok": true
+        },
+        {
+          "name": "1440 conversion uses exact native inverse",
+          "ok": true
+        },
+        {
+          "name": "1440 simple to advanced preserves native frame",
+          "ok": true
+        },
+        {
+          "name": "1440 shared Undo restores simple source",
+          "ok": true
+        },
+        {
+          "name": "1440 shared Redo restores advanced source",
+          "ok": true
+        },
+        {
+          "name": "1440 history keeps the active workspace open",
+          "ok": true
+        }
+      ],
+      "before": {
+        "schema": "geometry-runtime/1",
+        "version": "34fa66ba5d3e76efe92622d8c967b40683d36dba65b5ba815425b273ca94c0d3",
+        "fresh": true,
+        "root": "D:\\geometry-axiom",
+        "pid": 9328,
+        "session": "d6541aea81134143bac6fc15757eb46d"
+      },
+      "errors": [],
+      "schema": "section-audit-receipt/1",
+      "log": "section.log",
+      "passedAssertions": 22,
+      "failedAssertions": 1
+    },
+    {
+      "ok": false,
+      "completed": false,
+      "phase": "author-1440",
+      "error": "page.waitForFunction: Timeout 30000ms exceeded.\n    at D:\\geometry-axiom\\tests\\test_section_profile_browser.js:56:211",
+      "results": [
+        {
+          "name": "1440 page identity and nonblank UI",
+          "ok": true
+        },
+        {
+          "name": "1440 L outline preserves concavity",
+          "ok": true
+        },
+        {
+          "name": "1440 typed source keeps A identity",
+          "ok": true
+        },
+        {
+          "name": "1440 timber/panel touch exactly without overlap",
+          "ok": true
+        },
+        {
+          "name": "1440 ordinary source preview exposes nested section diagnostics",
+          "ok": true
+        },
+        {
+          "name": "1440 ordinary source cancel preserves exact World",
+          "ok": true
+        },
+        {
+          "name": "1440 overlap cannot confirm",
+          "ok": true
+        },
+        {
+          "name": "1440 invalid candidate leaves World exact",
+          "ok": true
+        },
+        {
+          "name": "1440 cancel restores direct coordinate",
+          "ok": true
+        },
+        {
+          "name": "1440 unplaced run is legal and local",
+          "ok": true
+        },
+        {
+          "name": "1440 native material volume excludes envelope",
+          "ok": true
+        },
+        {
+          "name": "1440 actual exported L envelope is not bbox",
+          "ok": true
+        },
+        {
+          "name": "1440 exported member identities remain distinct",
+          "ok": true
+        },
+        {
+          "name": "1440 independent material switches preserve reference-only view",
+          "ok": true
+        },
+        {
+          "name": "1440 advanced frame yields exact world member bounds",
+          "ok": true
+        },
+        {
+          "name": "1440 choosing conversion host does not create an unrelated edit",
+          "ok": true
+        },
+        {
+          "name": "1440 out-of-plane advanced conversion rejects without guessing",
+          "ok": true
+        },
+        {
+          "name": "1440 conversion uses exact native inverse",
+          "ok": true
+        },
+        {
+          "name": "1440 simple to advanced preserves native frame",
+          "ok": true
+        },
+        {
+          "name": "1440 shared Undo restores simple source",
+          "ok": true
+        },
+        {
+          "name": "1440 shared Redo restores advanced source",
+          "ok": true
+        },
+        {
+          "name": "1440 history keeps the active workspace open",
+          "ok": true
+        }
+      ],
+      "before": {
+        "schema": "geometry-runtime/1",
+        "version": "34fa66ba5d3e76efe92622d8c967b40683d36dba65b5ba815425b273ca94c0d3",
+        "fresh": true,
+        "root": "D:\\geometry-axiom",
+        "pid": 9328,
+        "session": "d6541aea81134143bac6fc15757eb46d"
+      },
+      "errors": [],
+      "schema": "section-audit-receipt/1",
+      "log": "section-retry.log",
+      "passedAssertions": 22,
+      "failedAssertions": 1
+    },
+    {
+      "ok": false,
+      "completed": false,
+      "phase": "author-1440",
+      "error": "page.waitForFunction: Timeout 30000ms exceeded.\n    at D:\\geometry-axiom\\tests\\test_section_profile_browser.js:56:211",
+      "results": [
+        {
+          "name": "1440 page identity and nonblank UI",
+          "ok": true
+        },
+        {
+          "name": "1440 L outline preserves concavity",
+          "ok": true
+        },
+        {
+          "name": "1440 typed source keeps A identity",
+          "ok": true
+        },
+        {
+          "name": "1440 timber/panel touch exactly without overlap",
+          "ok": true
+        },
+        {
+          "name": "1440 ordinary source preview exposes nested section diagnostics",
+          "ok": true
+        },
+        {
+          "name": "1440 ordinary source cancel preserves exact World",
+          "ok": true
+        },
+        {
+          "name": "1440 overlap cannot confirm",
+          "ok": true
+        },
+        {
+          "name": "1440 invalid candidate leaves World exact",
+          "ok": true
+        },
+        {
+          "name": "1440 cancel restores direct coordinate",
+          "ok": true
+        },
+        {
+          "name": "1440 unplaced run is legal and local",
+          "ok": true
+        },
+        {
+          "name": "1440 native material volume excludes envelope",
+          "ok": true
+        },
+        {
+          "name": "1440 actual exported L envelope is not bbox",
+          "ok": true
+        },
+        {
+          "name": "1440 exported member identities remain distinct",
+          "ok": true
+        },
+        {
+          "name": "1440 independent material switches preserve reference-only view",
+          "ok": true
+        },
+        {
+          "name": "1440 advanced frame yields exact world member bounds",
+          "ok": true
+        },
+        {
+          "name": "1440 choosing conversion host does not create an unrelated edit",
+          "ok": true
+        },
+        {
+          "name": "1440 out-of-plane advanced conversion rejects without guessing",
+          "ok": true
+        },
+        {
+          "name": "1440 conversion uses exact native inverse",
+          "ok": true
+        },
+        {
+          "name": "1440 simple to advanced preserves native frame",
+          "ok": true
+        },
+        {
+          "name": "1440 shared Undo restores simple source",
+          "ok": true
+        },
+        {
+          "name": "1440 shared Redo restores advanced source",
+          "ok": true
+        },
+        {
+          "name": "1440 history keeps the active workspace open",
+          "ok": true
+        }
+      ],
+      "before": {
+        "schema": "geometry-runtime/1",
+        "version": "34fa66ba5d3e76efe92622d8c967b40683d36dba65b5ba815425b273ca94c0d3",
+        "fresh": true,
+        "root": "D:\\geometry-axiom",
+        "pid": 9328,
+        "session": "d6541aea81134143bac6fc15757eb46d"
+      },
+      "errors": [],
+      "schema": "section-audit-receipt/1",
+      "log": "section-diagnostic.log",
+      "passedAssertions": 22,
+      "failedAssertions": 1
+    }
+  ],
+  "notes": [
+    "Assertion counts are not user workflow counts.",
+    "Failed and incomplete attempts are retained.",
+    "No product source, original harness, SSOT, or golden thresholds changed."
+  ]
+}
