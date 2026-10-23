@@ -13,3 +13,7 @@
 新來源 S 的合流窄審已完成254 metadata checks／0 findings；原 peer 保於 revision-3-peer-and-manifest，不把此結果外推正式16 gate或整包驗證。完整前一18條出版命令與原 streams 同封。
 
 自查發現原E792的root manifest把前一版同名manifest也列為self-entry，只有此metadata自索引過期；原manifest完整bytes另存，所有其它列冊檔已逐bytes/hash驗證未變。新root manifest明確排除自身，原snapshot以獨立revision member守門；原出版1／raw whitespace2與完整raw全保，沒有改原輸出、產品碼或測試。正式16列仍UNRUN。
+
+## 套件peer1的驗證時點澄清
+
+原package peer1019項有1 metadata finding，報告完整保留於revision-4-validation-timing。上節「其它列冊檔未變」與原JSON true，精確指publisher開始寫新metadata之前、對E792 snapshot逐檔驗證的時點；不指E495或此後生成的PROGRESS也維持原hash。E495合法追加6行，前後與append的精確hash/bytes及原E495 manifest另封。原source／命令raw未改，原peer1不回寫，342檔新manifest的原hash核對結果保留；本次只追加時點限定並重新列冊current所有檔。16正式仍UNRUN，新的限定等待獨立窄複核。
