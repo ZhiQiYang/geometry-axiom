@@ -111,6 +111,15 @@
       "archives": [
         "raw/postmerge-p52-runtime-proof-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T09:42:06.764073+00:00",
+      "label": "postmerge-runtime-complete-raw",
+      "result": "runtime 原0/1/0不變。補正c3fec08f：首次staging遇Chrome socket退出1但下一行publisher仍推了不完整raw；本次全新staging成功0、1633原檔逐hash封存，原streams完整補齊；舊失敗與第一包保留。",
+      "next": "P88三次固定F獨占重跑與精確原因；P73/Chromium154/oracle仍待正式執行。",
+      "archives": [
+        "raw/postmerge-runtime-complete-raw-01.tar.gz"
+      ]
     }
   ]
 }

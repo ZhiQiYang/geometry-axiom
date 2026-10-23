@@ -37,3 +37,6 @@
 
 - 2026-10-23T09:40:43.293471+00:00 — **postmerge-p52-runtime-proof**：runtime 原P52 baseline/撤回/恢復 gate=0/1/0；fix/main=0.750420/1.202992/0.815971，driver0、無timeout/crash。原streams/命令/環境/hash已封存，僅排除明列Chrome可重建cache，canvas P88仍紅。
   下一步：P88固定F原canvas獨占連跑3次；之後依因修復並於新F補P73、Chromium154、oracle反證。。原始資料：`raw/postmerge-p52-runtime-proof-01.tar.gz`。
+
+- 2026-10-23T09:42:06.764073+00:00 — **postmerge-runtime-complete-raw**：runtime 原0/1/0不變。補正c3fec08f：首次staging遇Chrome socket退出1但下一行publisher仍推了不完整raw；本次全新staging成功0、1633原檔逐hash封存，原streams完整補齊；舊失敗與第一包保留。
+  下一步：P88三次固定F獨占重跑與精確原因；P73/Chromium154/oracle仍待正式執行。。原始資料：`raw/postmerge-runtime-complete-raw-01.tar.gz`。
