@@ -23,7 +23,9 @@
 
 `公理層.md` 與 `決策佇列.md` 正規化 bytes 逐一等前棒8033，沒有改字；`current_geometry.c` 保完整 CRLF／零 NUL。canonical 仍只有原正典一份，沒有手改嵌入 JSON、另造閱讀器或放寬斷言。八個靜態方法數為 contact15、host-facts22、load13、stagger47、contacts10、contact-world9、world-validation14、wood-grid23。
 
-#314 新 leaf 的對抗靜審見 `REVIEW_314_f614_STATIC.md`。上一版 Eprep／Dprep 的 metadata 對抗審已由 #323 owner 完成，報告留在 `peer-review/`；本次 S 的合流 resolution 對抗審已交同 reviewer，尚未回覆，不能沿用舊 metadata 接受當新產品審過。
+#314 新 leaf 的對抗靜審見 `REVIEW_314_f614_STATIC.md`。上一版 Eprep／Dprep 的 metadata 對抗審已由 #323 owner 完成；本次 S 的合流 resolution 亦已由同 reviewer 獨立靜審，未發現可確立的 shared resolution 遺失或假綠。兩份新報告保存在 `peer-review/COMBINED_SOURCE_UNION_15a73595_REVIEW.{md,json}`；只接受 source 聯集與 pending 標示，不代表新 stack 動態驗收。
+
+reviewer 額外獨立確認 wood-contact-world 的10→9屬早先 #316 退休 dead `wood_contact_footprint_collides` API／collision-only單元測項，該Python與C harness逐Git blob等早先combined c940；本次merge沒有另外刪測。其餘活I11 M13／M97／M98與同UV跨host正例仍須在新stack原裁判執行，不能把靜態方法數當通過。
 
 歷史獨立產品 F `5bfadf187e615ba0fb8466753b63ce3044ef7d1c`／證據 E `139ab64ca5f88e89bb4e95921675b998457026aa` 的原七項全0、原三架構0／0／0仍只是歷史結果。#288 F13 grid／timber 的原 partial 收據對抗審亦只屬原 F13。Windows GDI 原具名允許 skip、ENOSPC 原失敗與未捕獲舊 core inner streams 等限制保留，不轉成 S 的全綠聲明。
 
