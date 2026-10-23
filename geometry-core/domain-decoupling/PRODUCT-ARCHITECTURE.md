@@ -1,3 +1,24 @@
+# Product architecture — Linux 固定來源重產
+
+本輪真受驗來源 `5c2c5dbd0bde8fe17097ae5243bfb27bbc2574f0`；上一份receipt產物提交 `8f76f2b7d6f669670e5834310bfc26495b4a4aa6`。本輪只使用指定來源的原scanner、generic與product裁判。
+
+完整五roots加三standalone：602 executable inputs，owned 334、excluded 268、edges 797、diagnostics 0。LF closure `0be08b05c61811fe1b9649fd0d80db97365b1a80fa74a6cca767a743e11a2df8`。
+
+manifest輸出逐bytes等指定P已登記版本；driver未自動修改任何來源／manifest。guard增量由全部真W-native原lexer集合與舊集合的union實證，其餘政策、roots、routes、vendor trust及既有責任保留。
+
+完整W native詞彙盤點：60檔；新增8 identifiers／0 strings，全部path/line見policy-guard-inventory.json。舊guard零刪除；不是手選清單或新數值門檻。
+
+相對上份sealed manifest：新增owned 1、新增逐檔exclusion 0、既有exclusion digest更新 1。逐項原/新內容見本輪manifest-delta.json；未登錄檔不會被自動排除。
+
+變更既有input：`current_geometry.c`、`geometry-app/native/world_candidate.inc`、`geometry-core/subgrid_world.inc`、`geometry-core/transactions.inc`、`geometry-guide/公理層-閱讀器.html`、`geometry-templates/woodworking/native/grid_application.c`、`geometry-templates/woodworking/native/grid_application.h`、`geometry-web/engineering_bridge.inc`、`geometry-web/grid_inspector_rename_test.js`。
+
+- `python -B tests/test_architecture_contract.py`：真退出0，205 tests／205 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
+- `python -B tests/test_product_architecture.py`：真退出0，18 tests／18 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
+
+四檔衍生產物不進executable closure，receipt不hash自己。SSOT另按指定P綁定並核前後不變；不冒稱closure自然涵蓋SSOT。未跑native、ledger、browser、專項或歷史額外policy probes；不把先前Windows或#288結果重標成本輪結果。
+
+## 上一份歷史報告（原文保留，非本輪判決）
+
 # GEO-261 actual-product dependency contract
 
 `product-architecture.json` is the executable inventory for the current product.
