@@ -19,3 +19,6 @@
 
 - 2026-10-23T12:38:58.972552+00:00 — **p88-final-canvas-three-summary**：新F三輪canvas全收齊；原workflow exits=0/0/0；all_three_accepted=True；driver_exit=0。逐輪原收據已封存；其他受影響項與反證仍須各自結案。
   下一步：依固定新F收齊三次canvas，再跑grid、四native partial與列定反證；所有紅燈保留，未完成項不算通過。。原始資料：`raw/p88-final-canvas-three-summary-01.tar.gz`。
+
+- 2026-10-23T12:39:59.230009+00:00 — **p88-final-supporting-reviews**：新F前兩輪canvas原件與公開封包經獨立逐檔核對，四層exit0、2267/0、85段golden與預期exception1均保真；另封存已完成的PR正文、工具準備及維護審查。這些靜審不是新動態測試結果。
+  下一步：持續完成P88撤回／恢復及其餘受影響gates；每項另記原命令、退出碼與完整raw。。原始資料：`raw/p88-final-supporting-reviews-01.tar.gz`。
