@@ -6,11 +6,12 @@
 
 | 項目 | 唯一 current state |
 |---|---|
-| 目前產品來源（含 canonical） | `e8aaf84c7311d05cc1b2fe5ece8fb56be8e227d0` |
-| evidence head（後續僅收據／獨立驗證工具） | `0b9beef7bcebef2352657b4ae00a6a25dbc88f2e` |
+| 目前產品來源（含 canonical） | `ae74e51bba1efef48949c077635966273a9e8990` |
+| evidence head（後續僅收據／獨立驗證工具） | `573fbfe0365055935a0e792ed30bdbc222cd38f3` |
 | 閱讀 A 第一批產品 | `41cf5594011d9d13f401319ccf676c741263dbcc` |
 | native 第一批／collector 補漏 | `0df78e9f12fad311279c2a458a1cfecf1583b1c2`／`59f42f7d64f09b555aaf6bb47872cdb961b827a8` |
-| 普通合入前棒 | `15a735951a36b6fe52e0291152f335139e6921ad`，內含 #314／#323 |
+| 普通合入前棒 | 原15a73595與最新combined `6cad1a3cb76d7bd910125a1d70ecfffdc9183813`，內含 #314／#323 與最新單行anchor維護；incoming先經獨立靜審 |
+| 最新source merge產品聯集 | merge前後20559個非evidence blob＋mode逐筆相同；普通push/lsremote0、source clean；已正式交noWood接剩餘source |
 | SSOT 授權範圍 | D11 一句、I19 例外三、R6(d)(e)；其他公理與決策佇列不改 |
 | AST／JSON／hash／錨點／diff 靜態核 | exit 0；不是幾何／編譯／測試結果 |
 | 原生 W／span／between／R6(e) | 已落來源；7 方法、10 W/caller 控制＋1 真 H collector 控制待執行 |
@@ -32,7 +33,7 @@
 
 最不確定處是最簡 13 mm 兩支同向 boundary 的實際初放／重建順序。靜讀看到重建先清 placed、依原 order 評估、接觸來源略過未放者；目前未找到合法批次豁免。這不是已實測死結，也不以人工 placed=true 型別測例冒稱 CLI 成功。若真無合法路徑，需釐清核可閱讀 A 如何在保留「已放」與鎖定依賴語意下表示；不擅改公理，完整疑點見 `QUESTIONS.md`。
 
-不 force push、不合併 PR。此 head 仍非給末棒的 complete source baton；#288 未進 main，改 base 由主代理處理。
+不 force push、不合併 PR。共享來源已正式交末棒 noWood；其接 source 與登記 expected13，不代表本分支正式驗收已完成。#288 未進 main，改 base 由主代理處理。
 
 來源靜讀另修正既有 I19 錯碼歸因，裸 RC 拒絕維持 V_CUT_PRIORITY（M150），保原 mapper 歸 I19；也維護前棒 #314 2args→6args 的唯一過期控制錨點，23 方法與所有斷言不改，11 錨點與同儕不可變審查原件已封存。這些沒有動態通過聲明。
 
