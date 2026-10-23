@@ -2,7 +2,7 @@
 
 ## 唯一 current-state 矩陣
 
-本表取代先前正文狀態；舊結果僅留於 Git/evidence 歷史。產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；架構採用/上游合流=`4f4a24d76e816274bfae06868b4dbf31f0860299`；新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；evidence head=`b6e1e45425f055cd825b259f46ef2c454f3ff13a`，均已一般推送。最終全清單 SHA 尚待全帳本重產後固定。
+本表取代先前正文狀態；舊結果僅留於 Git/evidence 歷史。產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；架構採用/上游合流=`4f4a24d76e816274bfae06868b4dbf31f0860299`；新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；evidence head=`2d1570691e4a29aafebdc0a4e739787d3fcdddaa`，均已一般推送。最終全清單 SHA 尚待全帳本重產後固定。
 
 | Gate | 實測來源 | 原 exit／結果 | 狀態、允許 skip 與限制 |
 |---|---|---|---|
@@ -19,9 +19,10 @@
 | RC-run精準builder／checker撤回 | F | 各0/1/0；原單一方法（6個assert） | actual377checks／0、包382checks／0；原件已推，非逐毫米quick |
 | M151 owner-map 修正 | Claude 8f9301fc固定Git bytes | 0/1/0；每輪原15項 | 唯一撤回紅為完整registry相等斷言；獨立241checks，已普通merge到S |
 | free-end唯一錨點修正 | 4f4原test／只修一葉variant | 1/0/1/0；每輪原9項 | 原紅AssertionError 1 != 3；fixed/restored各18 controls 0/1/0，獨立1328checks；已採用到S，不冒S fullnative |
-| S原帳本檢查 | S | 1，過期 | 原check輸出完整封存；新兩tests葉改變bridge oracle hash，完整重產待下列4f4收齊 |
+| S原帳本檢查 | S | 1，過期 | 原check輸出完整封存；新兩tests葉改變bridge oracle hash，完整重產改在下列b6公開來源執行 |
 | 架構三原裁判 | S | 0/0/0；generic205、product18 | 綠；S四檔Linux重產已於E9a05採用，604-input closure不變，獨立781checks／0及完整原件已推；舊P反證仍保原P角色，無skip |
-| 全突變帳本 | 4f4a24d7 | 執行中，尚無最終exit | 19:33 UTC原123筆CLI開始；70core已收齊（62killed/4equivalent/1crashed/3retired），53bridge續跑，20:38已101／123（92killed／5equivalent／1crashed／3retired）。M20依原政策記crashed，非斷言殺死。這是4f4歷史來源；S需整份重產，不把舊SHA轉標新SHA |
+| 全突變帳本：舊來源環境失敗 | 4f4a24d7 | 原CLI2／root1／原check2；108／123 | M118還原build的smoke目錄Errno28，接著M119 mkdir亦Errno28，20:44:44由原CLI提前結束；98killed／5equivalent／1crashed／3retired／1blocked，15未跑。M20按原policy為crashed，非assertion killed。原1272members完整原流與2031／2556checks獨審已推，紅燈不改標 |
+| 全突變帳本：修正後來源 | b6e1e454（C/tests同S ec8） | 執行中；21:00:13 UTC已啟動，尚無最終exit | root原123完整重產；原core編譯cache只由原指紋判可沿用，仍重新跑全CLI，不搬舊判決JSON，不改原child時限或M118判定 |
 | 完整native | 待最終來源 | 未跑 | 不用partial代替；原ulimit16MiB |
 | canvas／assembly／documents／grid／space／timber | 待最終來源 | 六項均未跑 | Chrome156/Node24可用；不允許以環境skip冒綠 |
 | P52／Q38／§7／P-189 | 待最終來源 | 未完成 | 原門檻／assertions／goldens保持 |
@@ -48,3 +49,5 @@
 `QUESTIONS.md`另保Q-314-SSOT與Q-335-CLI：Claude最後交接轉述使用者暫緩把I24/D29/D10b稿寫入SSOT，本輪維持已指定比較行為，不擅改公理、決策或相容版本；此轉述不冒逐字核可。13mm薄牆階正例B的CLI兩種初放路徑缺口仍另列#335，不以oracle通過宣稱CLI已支援。先準備反例與可逆方案，其餘驗收持續。
 
 已封存10個root自有退休checkout的9510個immutable原碼副本（966個不同payload），完整可還原原件／映射／工具／指令與原exit0已推E b6e1e454；回收216,199,168配置bytes。Git objects、fixtures、收據與所有mutable/mutant/trace來源保留。這是儲存維護，不是產品gate。完整最終清單繼續執行，不因draft或待審而停工。
+
+舊全帳本終態更正：前一版正文的「仍執行中」來自當時中間JSON；outer原收據確認20:44:44已因兩次磁碟不足退出2。原interim與錯誤輸出保留，當前矩陣已更正；67個core原stream映射未失配，但mapping工具因全CLI失敗原exit1，不能因此冒全123已驗。新來源的原全123已於21:00:13 UTC啟動；正式開始原件與30checks工具獨審已封存，尚未宣稱通過。
