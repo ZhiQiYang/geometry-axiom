@@ -1,0 +1,582 @@
+{
+  "scope": "read-only 14 original captures/7 annotation messages; not API/test rerun or CI repair; B3 remains open and reason is payments OR spending limit",
+  "checks": [
+    {
+      "check": "classificationpin",
+      "passed": true
+    },
+    {
+      "check": "inventorypin",
+      "passed": true
+    },
+    {
+      "check": "inventory81",
+      "passed": true
+    },
+    {
+      "check": "raw:ANNOTATIONS.json",
+      "passed": true
+    },
+    {
+      "check": "raw:CLASSIFICATION.json",
+      "passed": true
+    },
+    {
+      "check": "raw:HANDOFF_SOURCE.json",
+      "passed": true
+    },
+    {
+      "check": "raw:LATEST_REVIEW_338.md",
+      "passed": true
+    },
+    {
+      "check": "raw:READ_REQUEST.json",
+      "passed": true
+    },
+    {
+      "check": "raw:RUN.json",
+      "passed": true
+    },
+    {
+      "check": "raw:SUMMARY.md",
+      "passed": true
+    },
+    {
+      "check": "raw:classify.py",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "raw:original-metadata/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "raw:read_annotations.py",
+      "passed": true
+    },
+    {
+      "check": "raw:read_original_metadata.py",
+      "passed": true
+    },
+    {
+      "check": "1:stdin",
+      "passed": true
+    },
+    {
+      "check": "1:stdout",
+      "passed": true
+    },
+    {
+      "check": "1:stderr",
+      "passed": true
+    },
+    {
+      "check": "2:stdin",
+      "passed": true
+    },
+    {
+      "check": "2:stdout",
+      "passed": true
+    },
+    {
+      "check": "2:stderr",
+      "passed": true
+    },
+    {
+      "check": "3:stdin",
+      "passed": true
+    },
+    {
+      "check": "3:stdout",
+      "passed": true
+    },
+    {
+      "check": "3:stderr",
+      "passed": true
+    },
+    {
+      "check": "4:stdin",
+      "passed": true
+    },
+    {
+      "check": "4:stdout",
+      "passed": true
+    },
+    {
+      "check": "4:stderr",
+      "passed": true
+    },
+    {
+      "check": "5:stdin",
+      "passed": true
+    },
+    {
+      "check": "5:stdout",
+      "passed": true
+    },
+    {
+      "check": "5:stderr",
+      "passed": true
+    },
+    {
+      "check": "6:stdin",
+      "passed": true
+    },
+    {
+      "check": "6:stdout",
+      "passed": true
+    },
+    {
+      "check": "6:stderr",
+      "passed": true
+    },
+    {
+      "check": "7:stdin",
+      "passed": true
+    },
+    {
+      "check": "7:stdout",
+      "passed": true
+    },
+    {
+      "check": "7:stderr",
+      "passed": true
+    },
+    {
+      "check": "8:stdin",
+      "passed": true
+    },
+    {
+      "check": "8:stdout",
+      "passed": true
+    },
+    {
+      "check": "8:stderr",
+      "passed": true
+    },
+    {
+      "check": "9:stdin",
+      "passed": true
+    },
+    {
+      "check": "9:stdout",
+      "passed": true
+    },
+    {
+      "check": "9:stderr",
+      "passed": true
+    },
+    {
+      "check": "10:stdin",
+      "passed": true
+    },
+    {
+      "check": "10:stdout",
+      "passed": true
+    },
+    {
+      "check": "10:stderr",
+      "passed": true
+    },
+    {
+      "check": "11:stdin",
+      "passed": true
+    },
+    {
+      "check": "11:stdout",
+      "passed": true
+    },
+    {
+      "check": "11:stderr",
+      "passed": true
+    },
+    {
+      "check": "12:stdin",
+      "passed": true
+    },
+    {
+      "check": "12:stdout",
+      "passed": true
+    },
+    {
+      "check": "12:stderr",
+      "passed": true
+    },
+    {
+      "check": "13:stdin",
+      "passed": true
+    },
+    {
+      "check": "13:stdout",
+      "passed": true
+    },
+    {
+      "check": "13:stderr",
+      "passed": true
+    },
+    {
+      "check": "14:stdin",
+      "passed": true
+    },
+    {
+      "check": "14:stdout",
+      "passed": true
+    },
+    {
+      "check": "14:stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exits",
+      "passed": true
+    },
+    {
+      "check": "unsupported-field-not403",
+      "passed": true
+    },
+    {
+      "check": "seven-jobs",
+      "passed": true
+    },
+    {
+      "check": "no-runner:native",
+      "passed": true
+    },
+    {
+      "check": "explicit-annotation:native",
+      "passed": true
+    },
+    {
+      "check": "no-runner:browser (grid)",
+      "passed": true
+    },
+    {
+      "check": "explicit-annotation:browser (grid)",
+      "passed": true
+    },
+    {
+      "check": "no-runner:browser (space)",
+      "passed": true
+    },
+    {
+      "check": "explicit-annotation:browser (space)",
+      "passed": true
+    },
+    {
+      "check": "no-runner:browser (canvas)",
+      "passed": true
+    },
+    {
+      "check": "explicit-annotation:browser (canvas)",
+      "passed": true
+    },
+    {
+      "check": "no-runner:browser (documents)",
+      "passed": true
+    },
+    {
+      "check": "explicit-annotation:browser (documents)",
+      "passed": true
+    },
+    {
+      "check": "no-runner:browser (assembly)",
+      "passed": true
+    },
+    {
+      "check": "explicit-annotation:browser (assembly)",
+      "passed": true
+    },
+    {
+      "check": "no-runner:browser (timber)",
+      "passed": true
+    },
+    {
+      "check": "explicit-annotation:browser (timber)",
+      "passed": true
+    },
+    {
+      "check": "run-head-c6c0",
+      "passed": true
+    }
+  ],
+  "findings": []
+}

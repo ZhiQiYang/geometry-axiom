@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 23:07 UTC）
+## 唯一 current-state（2026-10-23 23:19 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -9,26 +9,26 @@
 | tracked `mutate.py --check` | L | 0 | 22:25:16–22 UTC 原命令，完整流在 final-L-start |
 | 原完整123帳本 | L | tracked／fullCLI／core-map／external-check 全0；outer0 | 23:00:25 UTC真終態；123筆／120自然execution heads皆L，114killed／5equivalent／1原允許crashed／3retired；完整原流封final-L-ledger-complete |
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
-| 完整 native | L | UNRUN | 原 --build，16MiB stack；包含#314六module103／Node13、ReadingA7／14、#323三module50 |
-| canvas／assembly／documents／grid／space／timber | L | 全部UNRUN | 原workflow，獨立checkout／埠／暫存；canvas獨占 |
+| 完整 native | L | RUNNING，尚無終態exit | session80260，原 --build全部230列、16MiB stack／35min CI；含#314六module103／Node13、ReadingA7／14、#323三module50 |
+| canvas／assembly／documents／grid／space／timber | L | documents RUNNING；其餘UNRUN | documents session70767與native並行，獨立checkout／埠／暫存；canvas獨占、原各job時限保留 |
 | P52／Q38／§7兩項／P-189 | L | 全部UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
-| reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader/RC仍UNRUN；mutants-only 0／完整quick 0／outer 0 | r2原22:45:53 UTC終態，22inputs/HEAD/index同；原quick列39850 builds、failures0，保既有C11六案限制；r1環境1原件不覆寫 |
+| reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
 | #323跨版本175／350 exact | F對原b74 | 1，仍阻擋B2 | 三個I22所需診斷差異，L尚未重跑；未改裁判或刪診斷 |
-| 本次B3：Actions 40034196788 required jobs | head c6c0b0d | 七項failure，環境分類調查中 | 最新審查指native＋六browser無runner/steps；尚無足夠證據判根因，雲端補跑仍須完成 |
+| 本次B3：Actions 40034196788 required jobs | head c6c0b0d | 七項failure；已確認帳戶環境阻擋 | 七個GitHub原annotation明列付款失敗或支出上限，jobs未派runner/steps；分類原件已入庫，雲端同L補跑尚未完成，B3未解除 |
 
 允許skip沒有新增；Chrome156.0.8078.47／Node24.19.0／NotoCJK在雲端可用。RUNNING不等於通過，peer計數不計產品測試。最終L原trackedJSON保自然b6 heads；L新external帳本完成後只封E，不反覆修改trackedJSON。
 
 b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0／externalcheck0，114killed／5equivalent／M20原允許crashed／3retired；1239原件與原JSON已封L的ledger-b6-complete。原4f4 ENOSPC、108筆／15未跑與CLI2原失敗保歷史。前次B3五原包47,120,357B及13865member公開於bea6f309，已獨立逐byte核對；M1現有D10b/I24/D29已採納，僅後續精確順序補文尚未literal寫入，QUESTIONS已改正。B2保守待裁決方案仍在QUESTIONS，不能自行放寬exact。
 
-L帳本已真終態並核對ROOT/SEED初末HEAD、tree、stage、refs、clean與1362歷史raw、175保全sidecars；ROOT `/tmp/train337-323-f64d638f-source` 已交原reader三條／RC兩刀獨占，結束後交完整native。SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 留給root準備browser pool。175對ELF及sidecar搬移歷史完整保留，builder自行判fingerprint，沒有搬判決。終態actual35760、身份/raw8220與package6776獨立核對只驗來源與原件，不是額外產品gate。
+L帳本已真終態並核對ROOT/SEED初末HEAD、tree、stage、refs、clean與1362歷史raw、175保全sidecars；ROOT `/tmp/train337-323-f64d638f-source` 的reader／RC已真終態釋放，現完整native獨占，不與§7或required-eight共用。SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 已由root建立六browser獨立checkout的只讀pool；SEED禁止回借mutator，原ROOT inode與它獨立。175對ELF及sidecar搬移歷史完整保留，builder自行判fingerprint，沒有搬判決。終態actual35760、身份/raw8220與package6776獨立核對只驗來源與原件，不是額外產品gate。
 
 ## 並行工作
 
 - #339 F38da31bc／E47fd6a79／De2f4bc20 已一般推送：真M1f0架構3綠、mutate check1（107stale／13unrun）；11正式項3PASS／1RED／7UNRUN，舊S57的142與3反證不移標新F。
 - #340 noWood：13項／7phase原實跑0/1/0/1/0/1/0；source4d3a、Ed45d、D77a已推，列車完整正式項仍待。
 - #341前置與#342 GEO260：各原定向驗收已封自己的SHA；#342全44為43killed／SPM24equivalent、539inputs相同，不能替代aggregate/native/browser。
-- #343 contact index＋穩定排序：Scc2ea1b3原三套已收齊0／1／0（318build全0）；唯一紅是placement-order負控制仍改舊後備路徑，新快路未受損而正常PASS ordering。新Sccfaf057只修原tuple錨點，正常push；34methods／64controls重跑及測試修正撤回／恢復尚未開始。舊S1ee4e830的33／56／302build全0只作歷史，容量512／性能仍未跑。
+- #343 contact index＋穩定排序：Scc2ea1b3原三套已收齊0／1／0（318build全0）；唯一紅是placement-order負控制仍改舊後備路徑，新快路未受損而正常PASS ordering。新Sccfaf057只修原tuple錨點；三套34methods／64controls／318build全0，tuple原單方法8controls撤回／恢復0／1／0。Ea934a554與D56ed8d00正常推，完整1499members包及獨立actual1222／693、public6181均0；whole-opt、性能／512仍未跑。舊S1ee4e830的33／56／302build全0只作歷史，容量512／性能仍未跑。
 - #344連線復原：Sc1113f6f／Ed2c58317／D8233916d，9VM→撤回3具名ASSERT紅→恢復9綠已封；真CDP與完整canvas仍未跑，正在準備。
 
 最新fetch handoff9bb3ada4，#338最新審查2026-10-23 22:39:41 UTC/headc6c0b0d：B1完整同L驗收、B2原exact、這次B3 Actions紅均未解除；前次B3原件入庫與M1改善獲確認。正文C1須與同L真終態一致。沒有可合併結論，不等待審查或使用者；重測最多2，canvas／性能獨占。L帳本完成後續跑其他原正式項與獨立工作。
@@ -154,3 +154,13 @@ r2兩stage已於22:45:53.451047 UTC真正結束，原`--mutants-only` 0、完整
 原完整指令、環境、全部原streams、636bridge rows、67core映射、ROOT/SEED身份與歷史raw守門、工具及175 sidecar搬移沿革共1354members／48,375,681原bytes封於 `final-L-ledger-complete/`；archive8,111,145B、SHA256 `351d84a2a3eb9724ffc1216c5cc5cc2a664006238f63109bd2446ac3fef18af5`。原core文字仍照原裁判UTF-8表示保存，不冒不存在的predecode OS pipes；ELF/源Git/fixtures不在原流包中。actual35760／identity8220／package6776均獨立核對0，沒有拿核對數充產品測試。
 
 ROOT與SEED已在完整原件核對後正式釋放到下個用途，原source仍固定L。reader三條與RC兩刀正在按原工具準備／執行；尚無其終態者維持UNRUN。完整native、六browser與其他專項仍未通過，B1未解除。Actions40034196788的七個原annotation已查得GitHub帳戶付款或支出上限造成派runner前阻擋；CI仍failure，完整環境分類原件另封，不能把這件事當雲端補跑已綠。B2原exact紅仍保留。
+
+## 2026-10-23 23:19 UTC：reader／RC終態、CI分類與下一正式項
+
+23:06:44～23:09:25 UTC，原reader生成／check／51方法unit三CLI全0，RC builder與checker兩精準撤回各0／1／0，撤回皆原AssertionError而非環境錯。原45個c387完整指令／環境／streams、初末L/clean/index與兩實際variant封於 `final-L-readers-RC/`（253members／484,814B壓縮），actual與package755獨立核對0。六assert是原一個方法的六個斷言位置，撤回失敗在第一個命中即停止，不冒該紅phase執行完六個。最外session84069的exit0為工具API觀測，沒有捏造額外OS pipes。
+
+Actions40034196788原14個Git／gh唯讀命令、七個job annotation與完整原流封於 `actions-40034196788-environment/`。GitHub明列付款失敗或支出上限導致job未開始，故判排程前帳戶環境阻擋，無法再細分兩者；13命令0，第一次本地gh不支援attempt欄位的1也保留。required jobs仍7/7 failure，144項獨立核對只確認分類與原件；不能將這個B3標通過。
+
+已用原完整native工具啟session80260；六browser pool真建立且來源／Git／inode守門0，documents啟session70767占第二槽。修正先前NEXT的環境描述：原browser storage driver亦只允許/tmp；新外部driver只容browser輸出在/workspace且repository外，native仍限/tmp。所有workflow執行函式、golden、斷言、CI時限與watchdog不變；原pathguard差分35項與launcher43項獨審0。這是儲存位置的環境修正，不改L產品／測試。未終態job不標綠。
+
+#335獨立根因與原命令／失敗／authority原件已封 `issue335-readonly-cause/`，兩種順序都無法建立互頂pair，但e2先放本身成功且先延伸成1000；不能誤稱兩順序的第一支都立即失敗。依現有核可只準備未決設計，不實作未placed支撐／硬裁auto跨距；QUESTIONS已改成精確現況。
