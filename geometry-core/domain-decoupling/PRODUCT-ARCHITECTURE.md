@@ -1,5 +1,15 @@
 # Product architecture — Linux 固定來源重產
 
+本輪真原三裁判在乾淨 Git HEAD `ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 執行，退出0/0/0；generic205與product18方法，無skip。manifest分類與全部政策逐bytes不變，928/55原政策保留。完整604inputs、334owned／270excluded；原scanner記798edges、0diagnostics，完整stdout與P17相同。LF closure `6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338` 與P17完全相同。
+
+本次兩個test葉 tests/test_geo261_mutation_migration.py 與 tests/test_geo261_wood_contact_world.py 均在架構inventory之外；架構三條綠不代表這兩個語意測試已驗。604範圍是五sourceRoots加current_geometry.c、tests/__init__.py、tests/binaries.py，不是全部tests。帳本--check在ec8原exit1另留，不以本架構收據沖銷。
+
+具名manifest digest反證沿用P17原執行身份：0/1/0，唯一紅是run_axiom_mutations.py的EXCLUSION_DIGEST。現ec8完整604 LF closure、三judge bytes、manifest及scanstdout與P17逐項相同；本輪沒有重跑該反證，也不把它重標為ec8執行。原反證raw已重新核hash。
+
+四檔是非執行性衍生產物，receipt不hash自己。本輪只讀來源／四產物寫repo外，不冒native、帳本、browser、readingA或Windows supplemental已驗。封存checkout真HEAD為`a6072dde8eac809e93ccd9373946dea98fa5c362`，相對ec8僅evidence；604物理raw/LF逐項比對ec8 Git blobs，初末HEAD/index/sourceclean不變。以下P17及更早報告保留歷史角色。
+
+# Product architecture — Linux 固定來源重產
+
 真原三裁判均在乾淨 Git HEAD `17b3576434ffd0833056668898e1fd1a8cc2d560` 執行，退出0/0/0；generic205與product18方法，無skip。原manifest逐bytes不變，928/55政策保留。完整604inputs、334owned／270excluded，原scanner記798edges、0diagnostics。LF closure `6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。
 
 具名digest反證：同一P產品及原scanner，正常manifest0、repo外F64舊manifest1、現P manifest恢復0；唯一紅是run_axiom_mutations.py的EXCLUSION_DIGEST。未暫改原source或judge，不冒為產品語意突變。
