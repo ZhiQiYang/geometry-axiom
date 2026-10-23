@@ -7,12 +7,13 @@
 | 項目 | 來源／原退出碼 | 結果及範圍 |
 |---|---|---|
 | 產品／本次受測 SHA | S=`7b45013da647b791acda8f5977475e4123d5f8c4` | parent Ed2c；本輪只增加三個既有 CDP checks 的 seed／診斷，未換協定或 golden |
-| Evidence head | E=`dfdf88e33e21d9ac06c58af80929a8b7a9b9301f` | `evidence/issue320-final-7b45013d/`；純證據，不冒 E 重新實跑 |
+| Evidence head | E=`42790be40eee56efada08de84ab2acb1681df981` | `evidence/issue320-final-7b45013d/`；純證據，不冒 E 重新實跑 |
 | 原九案 baseline | S；Node exit 0 | 9 tests／9 pass／0 fail／0 skip |
 | 撤回唯一 ready error clear | 同 S 明示 working-tree app variant；Node exit 1 | 9 tests／6 pass／3 正常具名 ERR_ASSERTION／0 skip；不改測試 |
 | 原 app 還原 | S；Node exit 0 | 9 tests／9 pass／0 fail／0 skip；app bytes／HEAD／選定 stage listing／clean 全還原 |
 | 新 S 獨立 source／actual peer | 365 checks／process 0／findings=[] | 17 inner＋14 source publication＋1 outer 原 streams、五 Git inputs、正常 0/1/0；只到 VM 定向範圍 |
 | 真 CDP 提案靜審 | 49 checks／0 | 三 checks 以外 bytes 同、原四 predicates／兩真 fetch 順序／1600／dump／source 全保；靜審不算 browser pass 或 kill |
+| 受控撤回來源／三phase準備 | V=`082feb0662fea32131f3f7fb8ca451679ab6421d`；靜審226／0 | V單親S且僅clearline差異，三phase clean S／V／S；不是CDP實跑或正式驗收通過 |
 | 真 P53／P61 與完整 canvas | **UNRUN** | 原 default 整 canvas／35min／完整 golden／獨占；不得以 VM 取代 |
 | 其餘五 browser job | **UNRUN** | 不沿用 root L 或舊 source 結果冒本件同源綠 |
 | 完整 native | **UNRUN** | 新 Node suite 的九案不代完整 registry／native |
@@ -27,6 +28,8 @@
 
 完整包 `raw/cdp-proposal-and-original-nine-vm-7b45013d.tar.gz` 為331成員、2,319,362 bytes，SHA-256 `9985cb1dbaba3220c5f83af506ec41f89acdba0913384678930ad0b41a9d59f6`；逐成員 bytes/hash 對原檔 roundtrip。包含新 CDP 準備、source push／ls-remote、VM／outer完整原流、初始環境錯誤、兩份獨立 peer 與工具。MANIFEST 排自身；舊 Sc111 歷史原包仍在舊 prefix。
 
-下一步先機械綁定三次原 full canvas 的獨立 port／TMP／profile、完整35min與 golden，交獨立 peer 後等 root 獨占時槽。P53 真403／reload／Retry，P61 未送達及已送達回應遺失的兩原注入、dump／source／PDF／1600／scene assertions 全保。fixed／restored 須原完整 matched；mutant 須命中三個具名 stale-error 正常斷言並保其餘協定診斷，預期 golden mismatch不能冒新產品缺陷，也不能以 crash／driver clean-check失敗代 kill。原正式 driver 要求 clean SHA；dirty variant 在前置即被擋的結果不能當真 CDP 證明，精確受控變體 binding 尚待準備／審查。
+三次原 full canvas 的獨立 port／TMP／profile、完整35min與 golden 已機械綁定，並獨立靜審226／0；真正完整source／fixtures／runtime與磁碟尚未物化，全部CDP仍UNRUN，下一步等root獨占時槽與原preparer完成來源準備。P53 真403／reload／Retry，P61 未送達及已送達回應遺失的兩原注入、dump／source／PDF／1600／scene assertions 全保。fixed／restored 須原完整 matched；mutant 須命中三個具名 stale-error 正常斷言並保其餘協定診斷，預期 golden mismatch不能冒新產品缺陷，也不能以 crash／driver clean-check失敗代 kill。原正式 driver 要求 clean SHA，沒有修改該validator；撤回專用公開V以S為唯一parent，只有app clearline差異，全部其餘Git blobs／modes相同。三phase真execution SHA分別S／V／S，V不能冒S或產品驗收SHA；dirty前置被擋也不能冒真CDP反證。HTTP19681/2/3、CDP9731/2/3與獨立scratch/profile全列原binding。
 
 真 CDP、完整 native／browser、帳本／架構仍未完成；本 draft 不標 READY，不 force push，不合併 PR，不改其他 owner 分支。
+
+本輪準備／公開V原18命令／原patch／三driver完整diff／226靜審／前次1585公開核對與計數釐清note，見 `evidence/issue344-real-cdp-preparation-7b45013d/`；小包逐成員bytes/hash roundtrip。這批沒有新增Node、Chrome、C、HTTP或產品測試執行。
