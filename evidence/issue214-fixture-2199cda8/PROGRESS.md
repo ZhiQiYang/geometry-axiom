@@ -11,3 +11,7 @@ Source S: `2199cda8896b47c7ad2b6c10479e5e0cbdb67c83`; base E: `3c6633575ec0f9dcc
 包內保留 25 個 source publication 原命令與全部 streams。原 preparation recorder 將後 7 個 commit 後命令的 task/source 標籤仍記為 base E；實際 HEAD/commit/push/remote 輸出均為 S。原件不改，`SOURCE_AUDIT_BINDING_ADDENDUM.json` 另列每命令真實 base→S 身份；當時沒有任何測試執行。
 
 下一步：root 配置 runtime/cache 租約後，以已獨審 helper 逐原完整 19 方法保留正式與 component 收據；不在靜審準備階段宣稱執行通過。
+
+## Runtime materialization
+
+已完成授權的834固定Git檔物化，14,713,787B／allocated16,486,400B；S與完整index tree不變，raw index的stat/skip-worktree位元變化另存原件。735→834僅補99個tests-root C/H/inc，使原inspect_all連未選中registry來源也完整；沒有改judge。仍未import subject／編譯／HTTP／native／量測，未碰共用 `/tmp/geometry-tests`，動態須等root租約。原單檔薄來源描述屬先前完成階段，現runtime已物化。
