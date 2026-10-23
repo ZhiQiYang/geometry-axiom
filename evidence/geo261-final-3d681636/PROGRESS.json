@@ -39,6 +39,15 @@
       "archives": [
         "raw/p88-final-canvas-run-2-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T12:38:55.278750+00:00",
+      "label": "p88-final-canvas-run-3",
+      "result": "新F完整canvas第3/3：process_completed=True，receipt_verified=True，accepted=True；launcher/outer/workflow/node原exit=0/0/0/0，seconds=1765.1202577359945，over_ci_timeout=False。原35min與golden未改，全部結果保留。",
+      "next": "依固定新F收齊三次canvas，再跑grid、四native partial與列定反證；所有紅燈保留，未完成項不算通過。",
+      "archives": [
+        "raw/p88-final-canvas-run-3-01.tar.gz"
+      ]
     }
   ]
 }
