@@ -93,29 +93,56 @@
     {
       "gate": "predicate-list",
       "originalCommand": "run_face_predicate_proofs_v2.py: original list method baseline/withdraw/restored",
-      "executionSHA": null,
-      "originalExitCode": null,
-      "status": "UNRUN",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalExitCode": [
+        0,
+        1,
+        0
+      ],
+      "status": "PASS",
       "allowedSkip": null,
-      "receipt": null
+      "receipt": {
+        "path": "evidence/geo324-final-57b68014/receipts/predicate-three-original.json",
+        "sha256": "58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb",
+        "jsonPointer": "/rows/0"
+      },
+      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser"
     },
     {
       "gate": "predicate-dict",
       "originalCommand": "run_face_predicate_proofs_v2.py: original dict method baseline/withdraw/restored",
-      "executionSHA": null,
-      "originalExitCode": null,
-      "status": "UNRUN",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalExitCode": [
+        0,
+        1,
+        0
+      ],
+      "status": "PASS",
       "allowedSkip": null,
-      "receipt": null
+      "receipt": {
+        "path": "evidence/geo324-final-57b68014/receipts/predicate-three-original.json",
+        "sha256": "58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb",
+        "jsonPointer": "/rows/1"
+      },
+      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser"
     },
     {
       "gate": "predicate-feature",
       "originalCommand": "run_face_predicate_proofs_v2.py: original feature method baseline/withdraw/restored",
-      "executionSHA": null,
-      "originalExitCode": null,
-      "status": "UNRUN",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalExitCode": [
+        0,
+        1,
+        0
+      ],
+      "status": "PASS",
       "allowedSkip": null,
-      "receipt": null
+      "receipt": {
+        "path": "evidence/geo324-final-57b68014/receipts/predicate-three-original.json",
+        "sha256": "58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb",
+        "jsonPointer": "/rows/2"
+      },
+      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser"
     },
     {
       "gate": "mutation-check",

@@ -17,3 +17,9 @@
 ## 套件peer1的驗證時點澄清
 
 原package peer1019項有1 metadata finding，報告完整保留於revision-4-validation-timing。上節「其它列冊檔未變」與原JSON true，精確指publisher開始寫新metadata之前、對E792 snapshot逐檔驗證的時點；不指E495或此後生成的PROGRESS也維持原hash。E495合法追加6行，前後與append的精確hash/bytes及原E495 manifest另封。原source／命令raw未改，原peer1不回寫，342檔新manifest的原hash核對結果保留；本次只追加時點限定並重新列冊current所有檔。16正式仍UNRUN，新的限定等待獨立窄複核。
+
+## 三predicate實際補證
+
+固定公開產品 S57b680140da2c6b77ab0d362a72029d8d7c9334b 的獨立薄checkout，原v2工具未改，list／dict／feature三原method各真0／1／0、正常具名unclassified診斷、還原bytes與來源前後clean。setup＋actual約2.714秒；無R3、編譯、Chrome或效能量測。完整52內命令＋10外命令streams／37inputs／三還原樹／凍結工具已逐byte封包，producer roundtrip全同。獨立actual peer551 checks／0 findings；這三列PASS，另13列仍UNRUN，沒有把mock native運輸方法當完整45／native／browser。
+
+原package peer1019報告exit_code1與其helper實際process0分欄澄清，原JSON／舊E不覆寫，澄清原件同封；該metadatafinding沒有改動原test或source。
