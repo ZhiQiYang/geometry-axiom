@@ -1,0 +1,43 @@
+{
+  "command": [
+    "git",
+    "cherry-pick",
+    "--no-commit",
+    "-x",
+    "1cd2fc216299041a557654a874509a33884af819"
+  ],
+  "cwd": "/tmp/g261-next314",
+  "acceptance_sha": "25c15f7b81de07d3c9c66a5553bf9bb43aa8f3fb",
+  "source_sha": "25c15f7b81de07d3c9c66a5553bf9bb43aa8f3fb",
+  "source_variant": null,
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": null,
+    "PYTHONDONTWRITEBYTECODE": null,
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1792753344.7640824,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": 1,
+  "timeout_expired": false,
+  "directory": "/workspace/geo314-owner-20261023/leaf-backport-20261023T110224684157Z/subcommands/000006",
+  "ended_epoch": 1792753344.834192,
+  "stdout_sha256": "423a9e78c8a99c63e9598a88b889c85e15d5b635abe2b50f146b344008480a48",
+  "stderr_sha256": "7d2b967f5af64af3b20ba5590ac95684bd06c3d4acdd7430fd006e748ff10a79",
+  "stdout_bytes": 345,
+  "stderr_bytes": 292
+}

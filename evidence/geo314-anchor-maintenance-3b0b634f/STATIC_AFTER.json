@@ -1,0 +1,52 @@
+{
+  "scope": "static metadata only; no test execution",
+  "sourceSHA": "3b0b634feb54266700cc61f26c34d7aeac4c0314",
+  "testFileSha256": "c387f9cbc6cdbc7bc8c09296c8057f84eb4ef92c26360ad043bb0613d21ec58f",
+  "staggerControlAnchors": [
+    {
+      "control": "new-two-axis",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "legacy-value",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "same-reference",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "single-is-dual",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "ignores-v",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "ignores-source-value",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "missing-store",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "blanket-source-exemption",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "missing-chain",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "missing-order",
+      "anchorOccurrences": 1
+    },
+    {
+      "control": "missing-endpoint",
+      "anchorOccurrences": 1
+    }
+  ],
+  "methodCount": 23
+}
