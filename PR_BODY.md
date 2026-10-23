@@ -2,7 +2,7 @@
 
 ## 唯一 current-state 矩陣
 
-本表取代先前正文狀態；舊結果僅留於 Git/evidence 歷史。產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；架構採用/上游合流=`4f4a24d76e816274bfae06868b4dbf31f0860299`；新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；evidence head=`50a4533be0e80b8042a18f54d7b0c9f872db01f2`，均已一般推送。最終全清單 SHA 尚待全帳本重產後固定。
+本表取代先前正文狀態；舊結果僅留於 Git/evidence 歷史。產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；架構採用/上游合流=`4f4a24d76e816274bfae06868b4dbf31f0860299`；新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；evidence head=`791e53d72fc0ed34331c193132ca0db4f3734a8a`，均已一般推送。本輪b6原帳本收齊後採用成可解析L；在L以全新外部RESULTS真跑原完整123CLI，完整native／六browser／專項也固定L。L實跑新JSON只封到evidence E，不再改L tracked ledger，避免自我引用；不把check@L冒成fullCLI@L。L目前尚未固定。
 
 | Gate | 實測來源 | 原 exit／結果 | 狀態、允許 skip 與限制 |
 |---|---|---|---|
@@ -11,7 +11,7 @@
 | #323 原4次profile | F | 0；calls64/32=364369/82668=4.4076184255 | 原≤4.5綠；perf/profile獨立358checks；原wrapper1仍含ABC紅 |
 | #323 歷史175場景／350組exact ABC | F對歷史base | 1；3診斷差異 | 紅燈保留：#299有意新增V_EXTENSION定位邊/區間，stdout與stderr皆有後綴差異；不得稱整組綠。詳下節 |
 | I11新增場景＋原scene runner | F | 0；單場景exact、166/0/0 | 綠；不是fullnative；獨立87輕核及formal binary hashes核對 |
-| #323 完整memo撤回／恢復 | F | 0/1/0；4.407618→6.053833→4.407618 | master/reaper/outer皆0；同列車175/350完整tuple全等；獨立6655checks。原47MB包尚僅雲端，下一批推送 |
+| #323 完整memo撤回／恢復 | F | 0/1/0；4.407618→6.053833→4.407618 | master/reaper/outer皆0；同列車175/350完整tuple全等；獨立6655checks。原五包已推Ebea6並逐member獨審27834checks／0，歷史來源及ABC紅不變 |
 | #314 six suites／Node inspector | F | 0／0；103／13項 | 綠；Node是VM/nativebridge，非browser；獨立541checks |
 | M121 原mutation CLI | F | 0；build0/0/0、test0/1/0 | killed真反證；全帳本未重產 |
 | reader三條 | F | 0/0/0；51項 | 原件與獨立629checks peer已推；無skip |
@@ -23,6 +23,7 @@
 | 架構三原裁判 | S | 0/0/0；generic205、product18 | 綠；S四檔Linux重產已於E9a05採用，604-input closure不變，獨立781checks／0及完整原件已推；舊P反證仍保原P角色，無skip |
 | 全突變帳本：舊來源環境失敗 | 4f4a24d7 | 原CLI2／root1／原check2；108／123 | M118還原build的smoke目錄Errno28，接著M119 mkdir亦Errno28，20:44:44由原CLI提前結束；98killed／5equivalent／1crashed／3retired／1blocked，15未跑。M20按原policy為crashed，非assertion killed。原1272members完整原流與2031／2556checks獨審已推，紅燈不改標 |
 | 全突變帳本：修正後來源 | b6e1e454（C/tests同S ec8） | 執行中；21:00:13 UTC已啟動，尚無最終exit | root原123完整重產；原core編譯cache只由原指紋判可沿用，仍重新跑全CLI，不搬舊判決JSON，不改原child時限或M118判定 |
+| 最終L原完整123 CLI | L尚未固定 | 未跑 | 待b6真終態、採用原JSON後執行；cache僅按原指紋合法沿用，仍真跑全123，不搬判決JSON |
 | 完整native | 待最終來源 | 未跑 | 不用partial代替；原ulimit16MiB |
 | canvas／assembly／documents／grid／space／timber | 待最終來源 | 六項均未跑 | Chrome156/Node24可用；不允許以環境skip冒綠 |
 | P52／Q38／§7／P-189 | 待最終來源 | 未完成 | 原門檻／assertions／goldens保持 |
@@ -40,7 +41,7 @@
 
 ## 證據及並行工作
 
-`evidence/geo337-train-20261024/PROGRESS.md`、各逐檔index與壓縮包保存原命令、exit、完整輸出、環境與實際SHA。已封source/fixed-three、#314、架構、ReadingA完整原件與RC精準反證。#323正式perf/ABC/memo五包47,120,357B尚僅雲端，已推小交接與actual peer，完整原件接續推送；不把摘要當作完整輸出。子代理peer數量是證據審查，不冒充產品測試數。
+`evidence/geo337-train-20261024/PROGRESS.md`、各逐檔index與壓縮包保存原命令、exit、完整輸出、環境與實際SHA。已封source/fixed-three、#314、架構、ReadingA完整原件與RC精準反證。#323正式perf/ABC/memo五包47,120,357B及MANIFEST已普通推到E `bea6f30995da1425ebe375a37d871e4f19c54a2d` 的 `geo323-full-originals/`。獨立審查直接讀Git blobs，13865members／172515281原bytes／5272原stdout-stderr逐hash全符，27834checks／0；33出版Git原命令皆0且remote精確E。完整歷史F64原件已可由repository取得，不改原退出碼。子代理peer數量是證據審查，不冒充產品測試數。
 
 最新上游Claude8f9301fc與main425已普通merge；相對F產品C/JS未變，tests兩葉分別補M151登記與free-end唯一錨點。每個修正均保原完整斷言，撤回／恢復原件已推。18:25Git認證失效原件保留，18:55重試恢復並補推；無forcepush。Chrome156.0.8078.47、Nodev24.19.0、NotoCJK均在雲端。
 
@@ -52,4 +53,6 @@
 
 舊全帳本終態更正：前一版正文的「仍執行中」來自當時中間JSON；outer原收據確認20:44:44已因兩次磁碟不足退出2。原interim與錯誤輸出保留，當前矩陣已更正；67個core原stream映射未失配，但mapping工具因全CLI失敗原exit1，不能因此冒全123已驗。新來源的原全123已於21:00:13 UTC啟動；正式開始原件與30checks工具獨審已封存，尚未宣稱通過。
 
-最新已讀審查：handoff `a47d625cb3d5aabbf7586debe9ff74e28a4e628b` 的 #338 2026-10-23 20:44 UTC、head b6。M1已作上述精確現況更正；B1同源完整驗收、B2原跨版本exact、B3五包原件入庫尚未全部解除，維持 draft，不標可合併。
+最新已讀審查：handoff `a47d625cb3d5aabbf7586debe9ff74e28a4e628b` 的 #338 2026-10-23 20:44 UTC、head b6。M1已作上述精確現況更正；B3五包原件入庫及獨審已完成；B1同源完整驗收、B2原跨版本exact仍未解除，維持 draft，不標可合併。
+
+空間維護：19個已終態job的426個Chrome可重建cache葉已精確清理（5678檔、106860544配置bytes），原exit0／獨審39checks0；71個profile父、原收據、fixtures、Git objects、源及ELF保留。只報可觀測proc無consumer，38不可讀欄位限制仍保；原紅不改標。
