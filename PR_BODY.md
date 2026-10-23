@@ -1,22 +1,21 @@
-K＋矩形格網模板的隔離建置補上 `geometry_woodworking`／`geometry_app` 真匯入拒絕，以及 K 引用可取得 W 標頭的 quoted／angle 守門。原11項功能／反證與斷言保留，新增兩項後共13項。已一般 merge #318 正式來源交棒，精準更新共用 expected 11→13；**編譯與動態驗收尚未執行**。
+這份補丁為核心 K 與矩形格網模板加入隔離編譯及功能見證。新增控制要求 `geometry_woodworking` 與 `geometry_app` 即使確實可匯入也被拒絕，並檢查 K 引入已安裝模板的 quoted／angle header 時都會被原層界守門攔下。
 
-獨立安裝只取 K exact／geometry／grid、矩形格網模板與測試共11檔。sentinel 套件實際可取得，不能以缺套件冒匯入拒絕；K→W 控制各加一行真標頭 include，要求先成功編譯／連結／exact-cells，再由原 source gate 取得0／1／0。尚未有原始動態結果。
+本輪 current-state 唯一矩陣：
 
-| 唯一 current state | SHA／原 exit | 範圍與限制 |
-|---|---|---|
-| 產品／測試來源 | `9b201164ed31069843a2b9f3787ea8ae8e22e231` | 已普通push，遠端exact SHA同；含前棒來源聯集 |
-| 證據 head | `6f2e5e27d2f949ef63d198ceac0630a352f6b397` | revision-3封原Git完整streams與source交棒／count更新收據，動態仍未跑 |
-| #318正式 source棒 | `ae74e51bba1efef48949c077635966273a9e8990` | 相對fdac首父的非evidence blobs/modes零差；這是source交棒，沒有宣告動態綠 |
-| 一般 merge／來源發布 | 原collector 0 | merge `9129cb954412dcd23575185fa7e5e7b2c96e8959`，無rebase／force；乾淨worktree與remote同 |
-| 測試方法／expected | 靜態13／登記13 | 只改此suite 11→13，其餘expected資料不變；不是實跑Ran13 |
-| 原11檔閉包／葉檔 | hash維持 | 葉檔SHA256 `e948fb78e81a075875a45041009fb379e58d783c8d6b579cd9fa2f81cd40910e`；沒有帶入木工W或H編譯來源 |
-| 完整隔離13項 | 未跑 | 等root安排重工作槽，沒有新增允許skip |
-| import blocker反證 | 未跑 | fixed／withdrawn／restored預期0／1／0，斷言不動 |
-| K→W guard／angle parser反證 | 未跑 | frozen collector七phase預期0／1／0／1／0／1／0，兩種真include各有內層0／1／0 |
-| 對抗審查 | R2靜審無確立新阻擋 | #314已核葉檔與collector；本source合流／count及真same-SHA動態結果待再審 |
-| 全域突變帳本 | 本子項未重產 | 只由root在共同最終SHA整份重產一次 |
-| 完整native／browser／架構 | 未以此source重跑 | 不把前棒或歷史F13結果外推成新source全綠 |
+| 項目 | 目前身份或結果 |
+| --- | --- |
+| Product SHA | `bfbab207a92a809fca50fefcefb3fa4b2af05ea9`，已一般 push 並 ls-remote 核同 |
+| 普通合流 | parents `3e7502e470bfdde3b40ca4cc82f7a68af158b144`、公開整合 `504933473d7b9bdfc5964f73402a710f1222fc96` |
+| 產品差異 | 對整合 SHA 僅 `tests/test_rectangular_template.py` 與 expected 方法數 11→13；無公理、決策或產品實作更改 |
+| 來源檢查 | clean，原 leaf SHA256 `e948fb78e81a075875a45041009fb379e58d783c8d6b579cd9fa2f81cd40910e` 未變；兩產品檔 diff-check exit 0 |
+| 歷史原件空白檢查 | 全 diff-check exit 2，僅舊 evidence/CANDIDATE.patch 六行 patch-context 空白；原輸出與原檔保留，不作產品或正式測試結果 |
+| 新合流對抗審查 | 待獨立 peer；舊 9b201164 純靜審只涵蓋原 leaf，不冒稱新身份已審 |
+| 正式 13 方法 | **UNRUN**，尚未獲 heavy 時槽 |
+| 原 7 階段反證 | **UNRUN**；預期原退出為 `0/1/0/1/0/1/0`，尚無真實結果 |
+| 本輪收據 evidence head | source publication 收據目前仍 local，由 root 統一推交接證據；既有舊 evidence／正文不充作本輪正式驗收 |
+| 全突變帳本 | 由 root 在最終列車 SHA 唯一重產；此分支未自行重產 |
+| 允許 skip | 無 |
 
-本子項直接只改隔離測試葉檔與其expected count；一般merge保留#323→#314→combined→#318的來源聯集。K架構原裁判仍負責完整來源契約，此小型source守門只宣稱literal include檢查，不冒完整C前處理器分析。待root資源槽後，以此已公開source跑原collector，封完整原streams，再交#314做對抗審。
+正式入口已在 `NO_WOOD_REQUEST_bfbab207.json` 固定完整 SHA、原 driver/capture/test hash 與輸出位置。原 driver 自行取得 `/tmp/g261r3/heavy.lock` 的 EX|NB；忙鎖沿原錯誤分支為 exit 2，不能套用維護工具的 75，也不能移除鎖或故意忙時啟動。當前只準備，不冒稱正式通過。
 
-最不確定的是尚未實跑的編譯與三類撤回反證，以及整個前棒聯集尚未收齊的正式驗收。編譯失敗、crash、watchdog、unittest error或未允許skip都不能算成功突變反證。不force push、不合併PR。
+合入主分支仍由使用者控制；未 merge PR、未 rebase、未 force push。
