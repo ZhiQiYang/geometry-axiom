@@ -28,6 +28,7 @@ CONTROLS = (
     ("between-required-source", "member_reference", "s,e,face->fixed==s?0:1,face,&admission)", "s,e,face->fixed==s?0:1,NULL,&admission)", "spans", "between-required-face-must-itself-contact"),
     ("revalidate-partial", "world_validation", "if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;", "if(false)continue;", "revalidation", "r6e-accepts-partial-without-fullwidth-recheck"),
     ("revalidate-still-collides", "world_validation", "if(admission==WOOD_BOUNDARY_END_PARTIAL)continue;", "if(admission==WOOD_BOUNDARY_END_PARTIAL)return true;", "revalidation", "partial-does-not-skip-world-collision"),
+    ("rc-lining", "contact_world", "if(near!=at)continue;", "continue;", "features", "lined-rc-short-run-permitted"),
     ("i19-refusal-code", "member_reference", '"V_CUT_PRIORITY：固定段終點有裸露', '"V_BOUNDARY_END_RC：固定段終點有裸露', "spans", "single-full-rc-span-refused"),
 )
 
@@ -144,7 +145,7 @@ class ReadingANative(unittest.TestCase):
                          {path for path in before if before[path]["relocated_directory_normalized_sha256"]!=after[path]["relocated_directory_normalized_sha256"]})
         self.assertEqual(0,self.case("host-collector",self.host_executable(),phase="restored",control="host-collector").returncode)
 
-    def test_ten_actual_source_controls_fail_named_assertions_then_restore(self):
+    def test_eleven_actual_source_controls_fail_named_assertions_then_restore(self):
         b=native()
         for name,module,before,after,case,assertion in CONTROLS:
             with self.subTest(control=name):

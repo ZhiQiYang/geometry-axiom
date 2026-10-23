@@ -88,6 +88,30 @@ class ReadingAOracle(unittest.TestCase):
         self.assertTrue(fo.reading_a_has_bare_rc(reg, 0, 500, (0, 27), [(13, 27)]))
         self.assertFalse(fo.reading_a_has_bare_rc(reg, 0, 500, (0, 27), [(0, 27)]))
 
+    def test_rc_face_is_measured_along_its_unlined_run(self):
+        # RC face x=500, y 0..90; above it the room continues (y 90..100 holds the
+        # contact). Only the unlined run holding the exposed part decides.
+        reg = fo.Region([(0, 0), (500, 0), (500, 90), (1000, 90), (1000, 1000), (0, 1000)], [])
+        self.assertTrue(fo.reading_a_has_bare_rc(reg, 0, 500, (73, 100), [(90, 100)]))
+        self.assertFalse(fo.reading_a_has_bare_rc(reg, 0, 500, (73, 100), [(90, 100)], [(0, 73)]))
+        self.assertTrue(fo.reading_a_has_bare_rc(reg, 0, 500, (73, 100), [(90, 100)], [(0, 63)]))
+        # COLSTEP(3000), left-top start, panels along Y: the y=3661 boundary ends at
+        # x=3000 with 17 mm on the column-top timber and 10 mm on the column face,
+        # whose other 190 mm is already lined. Removing that lining must refuse.
+        room = {"outer": [[0, 0], [4100, 0], [4100, 3661], [3000, 3661], [3000, 3700], [0, 3700]],
+                "holes": [[[2600, 3444], [3000, 3444], [3000, 3644], [2600, 3644]]]}
+        layout = next(l for l in fo.LAYOUTS if fo.layout_name(l) == "左上起鋪,板長沿Y")
+        params = json.loads((ORACLE / "rooms.json").read_text(encoding="utf-8"))["params"]
+        res = fo.build(room, layout, params)
+        self.assertEqual(("buildable", []), fo.verdict(res, params))
+        own = next(t for t in res["timbers"] if tuple(t["rect"]) == (3000, 3634, 4100, 3661))
+        liner = next(t for t in res["timbers"] if tuple(t["rect"]) == (3000, 27, 3027, 3634))
+        rest = [t for t in res["timbers"] if t is not liner]
+        for judge in (fo._reading_a_build_end, fo.reading_a_end_admission):
+            with self.subTest(judge=judge.__name__):
+                self.assertEqual(fo.READING_A_PARTIAL, judge(res["region"], own, res["timbers"], res["a"], 3000))
+                self.assertEqual(fo.READING_A_BARE_RC, judge(res["region"], own, rest, res["a"], 3000))
+
     def test_constructor_and_checker_have_independent_policy_derivations(self):
         reg, own, other = step()
         with patch.object(fo, "reading_a_end_admission", side_effect=AssertionError("checker called by builder")):

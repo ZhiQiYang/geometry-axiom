@@ -145,20 +145,42 @@ static const WoodContactMemberFact *contact_partial_owner(
     return NULL;
 }
 
-/* No temporary interval capacity and no raw-H fallback. Each advancement
- * consumes a positive interval from an admitted, returned FEATURE face. */
-static bool contact_partial_covers(const WoodContactWorld *world,const WoodMember *self,
-    const WoodStopFace *faces,size_t count,GeoCoord at,GeoCoord lo,GeoCoord hi,int end)
+/* Whether some still-exposed part of [visible_lo,visible_hi] lies on an
+ * unlined RC run that fits the member width. No temporary interval capacity
+ * and no raw-H fallback: each covered advancement consumes a positive
+ * interval from an admitted, returned FEATURE face. A run stops at the
+ * nearest placed member already lining this RC plane from the member's own
+ * side (its face at `at`, outside the member's own width); what remains
+ * behind the end and cannot take a member is a short RC face (#318 RC run
+ * rule). */
+static bool contact_bare_rc_run_fits(const WoodContactWorld *world,const WoodMember *self,bool along_v,
+    const WoodStopFace *faces,size_t count,GeoCoord at,int end,GeoCoord lo,GeoCoord hi,
+    GeoCoord visible_lo,GeoCoord visible_hi,GeoCoord cross_lo,GeoCoord cross_hi)
 {
-    GeoCoord cursor=lo;
-    while(cursor<hi){GeoCoord next=cursor;
+    GeoCoord width=cross_hi-cross_lo,cursor=visible_lo;
+    while(cursor<visible_hi){GeoCoord next=cursor;
         for(size_t i=0;i<count;++i){const WoodStopFace *face=&faces[i];
             if(face->fixed==at&&face->lo<=cursor&&face->hi>next&&contact_partial_owner(world,self,face,end))next=face->hi;
         }
-        if(next==cursor)return false;
-        cursor=next;
+        if(next>cursor){cursor=next;continue;}
+        GeoCoord stop=visible_hi,run_lo=lo,run_hi=hi;
+        for(size_t i=0;i<count;++i){const WoodStopFace *face=&faces[i];
+            if(face->fixed==at&&face->lo>cursor&&face->lo<stop&&contact_partial_owner(world,self,face,end))stop=face->lo;
+        }
+        for(size_t i=0;i<world->member_count;++i){const WoodContactMemberFact *fact=&world->members[i];
+            if(!fact->member||fact->member==self||!fact->member->placed||
+               fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;
+            const GeoRect2 *f=&fact->footprint;
+            GeoCoord near=along_v?(end==0?f->min_v:f->max_v):(end==0?f->min_u:f->max_u);
+            if(near!=at)continue;
+            GeoCoord a=along_v?f->min_u:f->min_v,b=along_v?f->max_u:f->max_v;
+            if(a<cross_lo){GeoCoord e=contact_min(b,cross_lo);if(e<=cursor&&e>run_lo)run_lo=e;}
+            if(b>cross_hi){GeoCoord s=contact_max(a,cross_hi);if(s>=stop&&s<run_hi)run_hi=s;}
+        }
+        if(run_hi-run_lo>=width)return true;
+        cursor=stop;
     }
-    return true;
+    return false;
 }
 
 static bool contact_same_rc_plane(const WoodStopFace *a,const WoodStopFace *b)
@@ -208,8 +230,9 @@ WoodBoundaryEndAdmission wood_contact_boundary_end_admission(
     }
     if(!contact)return WOOD_BOUNDARY_END_ORDINARY;
     /* A normal full-face path can still admit its original complete RC
-     * corner. Once partial timber contact claims this exception, a long
-     * uncovered RC face is an explicit refusal, never ordinary fallback. */
+     * corner. Once partial timber contact claims this exception, an exposed
+     * RC run that still fits a member is an explicit refusal, never ordinary
+     * fallback. The run excludes RC already lined by placed members. */
     GeoCoord width=cross_hi-cross_lo;
     for(size_t i=0;i<count;++i){const WoodStopFace *face=&faces[i];
         if(face->kind==WOOD_STOP_MEMBER_SIDE||face->fixity==WOOD_STOP_FREE||face->fixed!=at||face->hi<=face->lo)continue;
@@ -223,7 +246,7 @@ WoodBoundaryEndAdmission wood_contact_boundary_end_admission(
         }
         GeoCoord visible_lo=contact_max(lo,cross_lo),visible_hi=contact_min(hi,cross_hi);
         if(hi-lo>=width&&visible_lo<visible_hi&&
-           !contact_partial_covers(world,self,faces,count,at,visible_lo,visible_hi,end))return WOOD_BOUNDARY_END_BARE_RC;
+           contact_bare_rc_run_fits(world,self,along_v,faces,count,at,end,lo,hi,visible_lo,visible_hi,cross_lo,cross_hi))return WOOD_BOUNDARY_END_BARE_RC;
     }
     return WOOD_BOUNDARY_END_PARTIAL;
 }
