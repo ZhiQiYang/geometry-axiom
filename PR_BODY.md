@@ -1,52 +1,61 @@
-柱／樑 native snapshot 缺少或損壞 `faces` 時，公開 evaluate 路徑回原 `UNSUPPORTED / BASE_SOURCE_BINDING / I32 / Native box source faces disagree with legacy provenance.`，避免未分類例外。這是 #324 的 Codex 替代線；已普通合入完整列車及#340，三predicate補證與指定九個importer module142tests已實跑，完整整合仍待驗收。
+柱／樑 native snapshot 缺少或損壞 `faces` 時，公開 evaluate 路徑回原 `UNSUPPORTED / BASE_SOURCE_BINDING / I32 / Native box source faces disagree with legacy provenance.`，避免未分類例外。這是 #324 的 Codex 替代線；本輪新增真 M 的架構三條與帳本 check 收據，並在 Linux 依原 schema 刷新四檔。
 
-| 來源角色 | 完整SHA／分支 |
+**11 個正式整合列目前為 3 PASS／1 RED／7 UNRUN。** 帳本仍紅，完整 native／expected 與六 browser 尚未跑，不宣稱可合併。
+
+| 來源角色 | 完整 SHA／分支 |
 |---|---|
-| 原PR-local base | `7dae5f21c7ca401e660450d437e60ba566218da8` |
-| Grok原head | `4e176e830b691269cc72d021ce7e1bc0b167d621` |
-| 已普通merge train | `504933473d7b9bdfc5964f73402a710f1222fc96` |
-| 目前公開產品source M | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
-| 原142／predicate實測execution S | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
-| 已普通merge #340 source | `4d3a17c306cad42057589c5cfd964f1c32b755c4` |
-| 目前evidence E | `dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694` |
-| 替代head／正文分支 | `codex/geo324-faces-20261024`／`codex/geo324-faces-20261024-prbody` |
-| PR建議base | `codex/kernel-without-woodworking-20261023`（draft #340；root統一送變更請求） |
+| 目前公開來源 F | `38da31bcac91db631e6325e40b228f8604810e82` |
+| 本輪四個原檢查 execution M | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
+| 原142 importer／三 predicate execution S | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
+| 本輪 evidence E | `47fd6a79090be021e853ba5016cbf6f14016b9aa` |
+| 前一公開 evidence E | `dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694` |
+| Grok 原 head／PR-local base | `4e176e830b691269cc72d021ce7e1bc0b167d621`／`7dae5f21c7ca401e660450d437e60ba566218da8` |
+| 已普通 merge 的 #340 source | `4d3a17c306cad42057589c5cfd964f1c32b755c4` |
+| head／正文分支 | `codex/geo324-faces-20261024`／`codex/geo324-faces-20261024-prbody` |
+| PR base | `codex/kernel-without-woodworking-20261023`（#340） |
 
-對指定train，非evidence差恰原三檔121+/2-；兩leaf等Grok原blobs，expected只host_sources39→45，其餘metadata精確等train；SSOT／決策blob原字等train。合流純靜審254 checks／0 findings，不代正式執行。沒有rebase、force push或合併PR。
+本輪 source F 只在前一 evidence E 之上更新兩個非執行性架構衍生檔：report／receipt；四檔都完整封存，但 manifest／scan 原 bytes 不變。功能改動仍是原兩個 Python leaf 與 expected host_sources39→45，保 noWood13 及上游其它 registry。M→F 的604架構 executable inputs／三個原 judge bytes相同；F 沒有重新執行本輪測試，不能把 execution M 改寫成 F 或 evidence E。
 
-唯一current-state矩陣：三predicate原命令序列是baseline／withdraw／restored；`null`是未跑，不是skip。原host_sources完整45已實跑45/45；fullnative／expected aggregate仍未跑。
+唯一 current-state 矩陣如下。前八列加最後三列是所述11個正式整合列；其餘為既有指定 importer／predicate／registry 結果，分列原 execution，不混進正式列的通過數。`null` 是未跑，沒有新增 skip。
 
 | Gate | 目前結果 | 原 exit | execution SHA |
 |---|---|---|---|
-| registry-list | 原清點通過（非expected） | `0` | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
-| native-and-full-expected | 未執行 | `null` | `null` |
-| canvas | 未執行 | `null` | `null` |
-| assembly | 未執行 | `null` | `null` |
-| documents | 未執行 | `null` | `null` |
-| grid | 未執行 | `null` | `null` |
-| space | 未執行 | `null` | `null` |
-| timber | 未執行 | `null` | `null` |
-| affected-importers | 指定9/9 module，142/142 | 九個原runner各`0` | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
-| predicate-list | 通過（原0/1/0） | `0/1/0` | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
-| predicate-dict | 通過（原0/1/0） | `0/1/0` | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
-| predicate-feature | 通過（原0/1/0） | `0/1/0` | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
-| mutation-check | 未執行 | `null` | `null` |
-| architecture-contract | 未執行 | `null` | `null` |
-| architecture-tests | 未執行 | `null` | `null` |
-| product-architecture-tests | 未執行 | `null` | `null` |
+| native-and-full-expected | UNRUN；不以142局部方法代 aggregate | `null` | `null` |
+| canvas | UNRUN | `null` | `null` |
+| assembly | UNRUN | `null` | `null` |
+| documents | UNRUN | `null` | `null` |
+| grid | UNRUN | `null` | `null` |
+| space | UNRUN | `null` | `null` |
+| timber | UNRUN | `null` | `null` |
+| mutation-check | **RED**：123定義／110紀錄；107 stale、3 retired、13 unrun | `1` | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
+| registry-list | 原 discovery 清點，非 expected gate | `0` | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
+| affected-importers | 指定9/9 module、142/142，非完整 native | 九個原 runner 各 `0` | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
+| predicate-list | 原正常斷言撤回／恢復 | `0/1/0` | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
+| predicate-dict | 原正常斷言撤回／恢復 | `0/1/0` | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
+| predicate-feature | 原正常斷言撤回／恢復 | `0/1/0` | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
+| architecture-contract | PASS；604inputs／334owned／270excluded、798edges／0diagnostics | `0` | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
+| architecture-tests | PASS；205原方法、0 skip | `0` | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
+| product-architecture-tests | PASS；18原方法、0 skip | `0` | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
 
-原v2 driver SHA `4b5c05f1a2d7a5cf24c1e2b4d21641c560a7fe7a25db1109a6127d315ddd406d` 未改。獨立薄checkout先逐Git原blob／工作bytes核37inputs，只複製精確tracked四packages／三fixtures；原三公開Python method各真0/1/0，撤回每組有column／beam兩個正常AssertionError及精確null／nested-list／feature-list TypeError／AttributeError診斷，無ERROR、import、crash、skip或timeout。每phase原60秒保留，來源前後clean、三份產品bytes還原。原helper mock native transport，這批不是native或browser驗收。
+本輪四個原 CLI 沒有 selector、expected 更新、skip 或斷言變更：
 
-52內命令＋10外setup命令的argv／exit／環境／SHA／完整stdout/stderr、37inputs、三份還原樹與凍結工具全封於 `evidence/geo324-final-57b68014/raw/three-predicate-originals-57b68014.tar.gz`，逐member inventory無排除且producer roundtrip逐bytes同。原receipt SHA `58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb`；獨立actual peer551 checks／報告0且原helper process0，SHA `075f987fdc99fbedb52f9e9719946839886fe80ab6a5c9c8facb332c580e8e01`，同封revision-5。
+```text
+python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json
+python3 -B tests/test_architecture_contract.py
+python3 -B tests/test_product_architecture.py
+python3 -B tests/mutate.py --check
+```
 
-先前metadata修正／原件完整保留：原出版collector1是對原patch whitespace跑check所得2，raw未改；manifest自索引排除自身；E495 generated PROGRESS合法追加6行，舊true只指寫新metadata前對E792 snapshot的驗證時點。原package peer1019有1finding（report exit_code1，helper實際process0），精確澄清另封，不把原報告回寫成綠。這些不是產品裁判結果。
+原 `--check` 紅是 freshness／未跑紀錄，含 C/include closure、oracle 與舊 bridge execution tool/head 不符；blocked／crashed均0，不是缺件、import失敗或編譯假紅。本輪沒有重產／編輯帳本，也不把 root 的 b6／未定 final L 帳本拿來填綠。root L 尚未含本線 faces 修正，其 host_sources仍39；即使原 workflow／六 judge bytes同，也不能沿用其結果為 #339 同源通過。
 
-架構原四檔屬incoming train的sourceBaseHead，#324 owned W leaf／excluded test需原三裁判與四檔刷新，尚未跑；mutation bridge oracle hash讀tests/*.py，不能把列車帳本直接當本S有效，完整帳本由root統排。尚有11列UNRUN：fullnative＋expected、六browser、mutation check及架構三條。指定九module已完整，但沒有執行準備版run_all --build --only診斷，也不以各module成功冒aggregate全專案收斂。沒有新增skip或放寬斷言，不宣稱可合併。
+Linux 四檔沿既有 `geometry-product-architecture-receipt/1`。相對原ec8收據，604 path set 相同，只有 owned W `geometry-templates/woodworking/geometry_woodworking/model_sources.py` 的 LF hash改變；其餘603及三judge原 bytes同。新 receipt 的 sourceBaseHead 是真M，closure重新計算；manifest根範圍／layer／exclusion／reason／route／W guard／928與55政策原字不變。scan stdout逐 bytes相同並不等於完整LF closure未變。另在同M真跑既有 manifest digest 控制0/1/0，唯一正常紅為 `run_axiom_mutations.py` 的 EXCLUSION_DIGEST；只用外部原manifest，不改source或tests。P17舊反證保歷史身份。
 
-七個完整原Python module：host_sources45、source_runtime10、kernel_runtime10、rectangular_python9、host_world8、kernel_compatibility1、domain_source_pins16，共99/99、0fail／0skip，原runner各exit0、execution同S57，source每批前後clean；這七個module批本身不是單一fullsuite或native；指定九module的目前完整狀態以唯一矩陣與native43原件為準。65／18／16原件獨審322／356／604 checks各0；原request與保留wrapper支持1200秒，c387沒有timeout_seconds欄，wrapper hash是事後獨審所計而非事前pin，這些限制不抹除。完整raw、原環境失敗與7個module原JSON/log、固定Git inputs、凍結tools封於raw/seven-pure-modules-57b68014.tar.gz；沒有改測試或斷言。
+受驗工作樹先由純evidence E回到真detached M；215份E公開副本、6,632,969 bytes以同filesystem逐檔rename保原inode/hash，不刪原件。原完整604 executable Git inventory與實體inventory均核，避免sparse隱藏輸入；另補原帳本真正oracle所需的tests/*.py／*.c、fixtures scene與root scene，合1119個必要原Git inputs，初末raw／LF／HEAD/tree／clean全同。沒有新clone，不碰root live ROOT／SEED／cache，不編譯或開Chrome。Chrome／Node／Python版本輸出也隨原環境保存。
 
-兩個原C importer module另已實跑host_native30／default_native13，共43/43、0fail／0skip；先原fresh fallback編譯，再原binaries.main建bridge與model-base，皆原exit0，原私有ELF／sidecar／Git493inputs前後同。原各module1200s、compile900s、fallback60s、native捕捉30s未改。加前七99，指定九個module142/142；真命令是逐module原_unittest_runner.py，無合成aggregate exit。全數原公開stdout/stderr／環境／SHA與兩ELFbytes封raw/two-native-importer-modules-57b68014.tar.gz；內部既有capture_output未公開的pipes不另冒逐筆原流，stage守門是ls-files --stage輸出相同，非.index檔bytes。此批原件獨審見revision-7-native43；固定Ecfdfa公開Git/archive獨審359 checks／0，原report及首版metadata錯誤另封revision-9。
+本輪新原件見 `evidence/geo339-final-1f0ebd3e/`，包含四原command、完整stdout/stderr／環境／SHA／原exit、完整四產物、Linux adapter、已實跑manifest反證、1119-input身份清單及原缺件／準備失敗歷史。`raw/original-light-checks-and-architecture-M1f0ebd3e.tar.gz` 逐member對原件核，不把outer0當裁判0。215份已公開E副本不重包，保全manifest／rename events完整列冊；其原Git E仍可解析。
 
-本線已普通merge #340精確source4d3a17c3至M1f0ebd3e，保faces45、noWood13與上游其餘registry。142／predicate實測仍只綁原S57；沒有在M重跑。完整產品四根／currentC與原S相同，九selected contracts同；原493廣集合變更僅expected與mutation_migration／wood_contact_world／rectangular_template三個非target測試葉，閉包原件見receipts/forward-340-closure.json，獨立forward-merge peer待核。原三個metadata回合失敗與原raw均保；該合流快照曾有12UNRUN；本次只補registry-list0，其餘11UNRUN。
+既有證據仍保 `evidence/geo324-final-57b68014/`：host_sources45、source_runtime10、kernel_runtime10、rectangular_python9、host_world8、kernel_compatibility1、domain_source_pins16、host_native30、default_native13，共指定九module142。三predicate各真0/1/0；它們的mock native transport不當成真browser。原公開pipes／wrapper事前pin限制、環境缺fixture重試、publisher／peer自身schema誤讀與manifest時點澄清等歷史皆保，不回寫舊報告。M的registry-list0不代expected。
 
-M1f0原python3 -B tests/run_all.py --list已真exit0，只驗registry/discovery與已登錄入口存在性，不執行方法、expected比較、Cbuild或browser；347原Git inputs／12capture原命令與初末clean完整封raw/original-registry-list-1f0ebd3e.tar.gz。獨立actual子報告802 checks／0；包裹該報告的peer整體在後續另一項schema檢查退出1、無獨立stderrcapture，精確限制與原provenance同封。C43公開peer359／0、forwardmerge/package358／0也已封；後者不包含九module transitive讀取路徑審查，該項仍另待323。11UNRUN維持，沒有可合併宣稱。
+審查依據為fresh handoff `e9a1b4abfe8df2bf99b7166db451fc3b7629f41f` 的 `handoff/pr-reviews/324.md` 最後【ChatGPT 審查】與轉交；同ref的339.md僅同步標頭，沒有新留言。未修改公理／決策、未force push、未合併PR。
+
+接續順序是本線固定來源的帳本全量更新與檢查、完整native／expected、六原browser；沿原35分鐘native及各browser CI時限／golden，canvas與性能獨占。架構三綠不涵蓋全部tests語意，不解決仍紅的帳本或七個UNRUN正式項。
