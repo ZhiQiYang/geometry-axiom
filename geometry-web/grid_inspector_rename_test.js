@@ -3,6 +3,7 @@
  * to reopen the downloaded complete project in a second native process too.
  * Loaded by cdp_test.js, never run this plugin as a standalone node script. */
 const cdp=require('./cdp_helpers.js');
+const {waitForExpectedNavigation}=require('./cdp_navigation.js');
 module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount})=>{
   console.log('=== P72B. 更名保留相位差及來源 ===');
   if(typeof expectNativeDialog!=='function')throw Error('P72B requires expectNativeDialog: #btnNewProject always asks a native confirm');
@@ -16,6 +17,16 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   const query=command=>read(`apiRequest(${JSON.stringify(command)}).then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;})`);
   const dump=async()=>(await query('dump')).text,objects=()=>query('objects');
   const settle=()=>wait(`!oc.busy&&!ReferenceWorkspace.busy&&!document.querySelector('.reference-impact[open]')`);
+  // 導航回覆可能早於舊文件離開；必須等本次新文件，不能讓舊頁的 ready 提前放行。
+  const replaceDocument=async(method,params,label)=>{
+    const marker=crypto.randomUUID();
+    const injected=await send('Page.addScriptToEvaluateOnNewDocument',{source:`window.__cdpExpectedNavigationMarker=${JSON.stringify(marker)};`});
+    try{
+      await send(method,params);
+      await waitForExpectedNavigation({evaluate:eval_,marker,label,timeout:20000,pollInterval:50,
+        condition:`typeof oc==='object'&&typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`});
+    }finally{await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:injected.result.identifier});}
+  };
   const impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`);
   const confirm=async()=>{await ctl('#impact-confirm');await settle();};
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await settle();};
@@ -106,9 +117,9 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   check('正式保存完整專案並逐字保留原生來源',!!saved&&Buffer.from(saved['world.scene']).toString('utf8')===beforeSave.scene);
   await newProject();
   const originalURL=await read('location.href'),freshURL=process.env.GEOMETRY_GRID_RENAME_FRESH_URL;
-  if(freshURL){const target=new URL(freshURL);if(target.href===new URL(originalURL).href)throw Error('Fresh service must have a distinct URL');await send('Page.navigate',{url:target.href});}
-  else await send('Page.reload');
-  await wait(`typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`);await settle();
+  if(freshURL){const target=new URL(freshURL);if(target.href===new URL(originalURL).href)throw Error('Fresh service must have a distinct URL');await replaceDocument('Page.navigate',{url:target.href},'P72B 第二隔離服務');}
+  else await replaceDocument('Page.reload',{},'P72B 本服務重載');
+  await settle();
   const openedRuntime=await runtime();
   check('重開 context 使用相同 fresh 來源；指定第二服務時 PID 與 session 均不同',openedRuntime.fresh===true&&openedRuntime.version===originalRuntime.version&&openedRuntime.root===originalRuntime.root&&(!freshURL||(openedRuntime.pid!==originalRuntime.pid&&openedRuntime.session!==originalRuntime.session)),{originalRuntime,openedRuntime});
   check('新應用 context 在開檔前為空白',(await objects()).gridSystems.length===0);
@@ -119,5 +130,5 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   await select('grid-system',705);await shot('compact-rename-reopened');
   check('更名與重開沒有未處理瀏覽器例外',exceptionCount()===errors);
   console.log('P72B saved artifact',file,'fresh native service',freshURL||'not requested; new JS context only');
-  if(freshURL){await send('Page.navigate',{url:originalURL});await wait(`typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy`);}
+  if(freshURL)await replaceDocument('Page.navigate',{url:originalURL},'P72B 返回原服務');
 };

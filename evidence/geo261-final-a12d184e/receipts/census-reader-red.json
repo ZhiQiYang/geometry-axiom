@@ -1,0 +1,523 @@
+{
+  "schema": "geo261-preseal-artifact-stage-draft/1",
+  "purpose": "產物準備，不能冒充正式最終 SHA 整合驗收",
+  "stage": "census",
+  "source_sha": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+  "cwd": "/tmp/g261seal/a-source",
+  "started_utc": "2026-10-22T15:35:37.344994+00:00",
+  "environment": {
+    "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONUNBUFFERED": "1",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "TMPDIR": "/tmp/g261seal/census/tmp",
+    "MUTATE_CACHE": "/tmp/g261seal/new-mutation-cache",
+    "MUTATE_RESULTS": "/tmp/g261seal/a-source/tests/mutants_results.json",
+    "CC": null,
+    "CFLAGS": null,
+    "CXX": null,
+    "CXXFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "PYTHONOPTIMIZE": null,
+    "PYTHONPATH": null,
+    "PYTHONSTARTUP": null,
+    "NODE_OPTIONS": null,
+    "GITHUB_SHA": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+    "GITHUB_WORKSPACE": "/tmp/g261seal/a-source"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "stack_before": [
+    8388608,
+    -1
+  ],
+  "stack_during": [
+    16777216,
+    -1
+  ],
+  "wrapper_sha256": "6df11d7877c95a8898c169170bf914dce70ddadd3cc40bb221022ed806b745ac",
+  "commands": [
+    {
+      "label": "before-head",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:37.346596+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/000-before-head/stdout",
+      "stderr": "/tmp/g261seal/census/commands/000-before-head/stderr",
+      "ended_utc": "2026-10-22T15:35:37.350259+00:00",
+      "seconds": 0.0036472450010478497,
+      "stdout_bytes": 41,
+      "stdout_sha256": "a0558c22ebd2a0d27b4d9adbf764fc3edd01a6efd6bf72754514d6c11784e973",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "before-status",
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:37.350525+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/001-before-status/stdout",
+      "stderr": "/tmp/g261seal/census/commands/001-before-status/stderr",
+      "ended_utc": "2026-10-22T15:35:37.868517+00:00",
+      "seconds": 0.51799884799766,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "before-dirty-paths",
+      "command": [
+        "git",
+        "diff",
+        "--name-only",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:37.869058+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/002-before-dirty-paths/stdout",
+      "stderr": "/tmp/g261seal/census/commands/002-before-dirty-paths/stderr",
+      "ended_utc": "2026-10-22T15:35:38.235005+00:00",
+      "seconds": 0.3659515979998105,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "before-staged",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:38.235873+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/003-before-staged/stdout",
+      "stderr": "/tmp/g261seal/census/commands/003-before-staged/stderr",
+      "ended_utc": "2026-10-22T15:35:38.243635+00:00",
+      "seconds": 0.007751514996925835,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "before-diff",
+      "command": [
+        "git",
+        "diff",
+        "--binary",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:38.244001+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/004-before-diff/stdout",
+      "stderr": "/tmp/g261seal/census/commands/004-before-diff/stderr",
+      "ended_utc": "2026-10-22T15:35:38.612530+00:00",
+      "seconds": 0.3685343899996951,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "fetch-published-source",
+      "command": [
+        "git",
+        "fetch",
+        "--no-tags",
+        "https://github.com/ZhiQiYang/geometry-axiom.git",
+        "refs/heads/architecture/geo261-integration-20261016"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:38.616221+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/005-fetch-published-source/stdout",
+      "stderr": "/tmp/g261seal/census/commands/005-fetch-published-source/stderr",
+      "ended_utc": "2026-10-22T15:35:39.081567+00:00",
+      "seconds": 0.4653451550002501,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 127,
+      "stderr_sha256": "70f653215cfe897b3b2fcaeb0a2e744a10c2ca28025dde2f265a0bef520ab7f0"
+    },
+    {
+      "label": "published-ref-head",
+      "command": [
+        "git",
+        "rev-parse",
+        "FETCH_HEAD"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:39.082072+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/006-published-ref-head/stdout",
+      "stderr": "/tmp/g261seal/census/commands/006-published-ref-head/stderr",
+      "ended_utc": "2026-10-22T15:35:39.085704+00:00",
+      "seconds": 0.0036226279989932664,
+      "stdout_bytes": 41,
+      "stdout_sha256": "a0558c22ebd2a0d27b4d9adbf764fc3edd01a6efd6bf72754514d6c11784e973",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "source-is-published-ancestor",
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "a12d184ec1865ad078700cea2387ac69e82ab62a",
+        "a12d184ec1865ad078700cea2387ac69e82ab62a"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:39.086032+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/007-source-is-published-ancestor/stdout",
+      "stderr": "/tmp/g261seal/census/commands/007-source-is-published-ancestor/stderr",
+      "ended_utc": "2026-10-22T15:35:39.089487+00:00",
+      "seconds": 0.003445342001214158,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-python",
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:39.089774+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/008-version-python/stdout",
+      "stderr": "/tmp/g261seal/census/commands/008-version-python/stderr",
+      "ended_utc": "2026-10-22T15:35:39.093275+00:00",
+      "seconds": 0.003494594999210676,
+      "stdout_bytes": 15,
+      "stdout_sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-node",
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:39.093595+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/009-version-node/stdout",
+      "stderr": "/tmp/g261seal/census/commands/009-version-node/stderr",
+      "ended_utc": "2026-10-22T15:35:39.101195+00:00",
+      "seconds": 0.007591839999804506,
+      "stdout_bytes": 9,
+      "stdout_sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-chrome",
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:39.101526+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/010-version-chrome/stdout",
+      "stderr": "/tmp/g261seal/census/commands/010-version-chrome/stderr",
+      "ended_utc": "2026-10-22T15:35:39.133328+00:00",
+      "seconds": 0.03180654599782429,
+      "stdout_bytes": 29,
+      "stdout_sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-cc",
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:39.133809+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/011-version-cc/stdout",
+      "stderr": "/tmp/g261seal/census/commands/011-version-cc/stderr",
+      "ended_utc": "2026-10-22T15:35:39.135330+00:00",
+      "seconds": 0.0015105359998415224,
+      "stdout_bytes": 231,
+      "stdout_sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "version-system-python",
+      "command": [
+        "/usr/bin/python3",
+        "--version"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:39.135660+00:00",
+      "timeout_seconds": 30,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/012-version-system-python/stdout",
+      "stderr": "/tmp/g261seal/census/commands/012-version-system-python/stderr",
+      "ended_utc": "2026-10-22T15:35:39.137041+00:00",
+      "seconds": 0.0013722780022362713,
+      "stdout_bytes": 14,
+      "stdout_sha256": "01870de7caca112afeefd77b3c3b4c5e263cf5539a33af3f3411100727fad7d3",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "mutation-check-before-census",
+      "command": [
+        "python3",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:39.137480+00:00",
+      "timeout_seconds": 14400,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/013-mutation-check-before-census/stdout",
+      "stderr": "/tmp/g261seal/census/commands/013-mutation-check-before-census/stderr",
+      "ended_utc": "2026-10-22T15:35:43.362445+00:00",
+      "seconds": 4.224975102999451,
+      "stdout_bytes": 529,
+      "stdout_sha256": "1dca13086c1a358395cb0dc6c29e596f7627da91791d3571c5ae8b102e69fe56",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "full-census-update-expected",
+      "command": [
+        "python3",
+        "tests/run_all.py",
+        "--build",
+        "--update-expected"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T15:35:43.386779+00:00",
+      "timeout_seconds": 14400,
+      "actual_process_returncode": 1,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/014-full-census-update-expected/stdout",
+      "stderr": "/tmp/g261seal/census/commands/014-full-census-update-expected/stderr",
+      "ended_utc": "2026-10-22T16:05:02.893872+00:00",
+      "seconds": 1759.5071179869992,
+      "stdout_bytes": 40619,
+      "stdout_sha256": "26c7655ff03f816b85ad720ee89d0a78e2cee62644f476781e98f65ad4e4329e",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "mutation-check-after-census",
+      "command": [
+        "python3",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T16:05:02.895400+00:00",
+      "timeout_seconds": 14400,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/015-mutation-check-after-census/stdout",
+      "stderr": "/tmp/g261seal/census/commands/015-mutation-check-after-census/stderr",
+      "ended_utc": "2026-10-22T16:05:07.672654+00:00",
+      "seconds": 4.777259800997854,
+      "stdout_bytes": 529,
+      "stdout_sha256": "1dca13086c1a358395cb0dc6c29e596f7627da91791d3571c5ae8b102e69fe56",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-head",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T16:05:07.716592+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/016-after-head/stdout",
+      "stderr": "/tmp/g261seal/census/commands/016-after-head/stderr",
+      "ended_utc": "2026-10-22T16:05:07.720605+00:00",
+      "seconds": 0.0039893949979159515,
+      "stdout_bytes": 41,
+      "stdout_sha256": "a0558c22ebd2a0d27b4d9adbf764fc3edd01a6efd6bf72754514d6c11784e973",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-status",
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T16:05:07.721165+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/017-after-status/stdout",
+      "stderr": "/tmp/g261seal/census/commands/017-after-status/stderr",
+      "ended_utc": "2026-10-22T16:05:08.188916+00:00",
+      "seconds": 0.4677587889964343,
+      "stdout_bytes": 31,
+      "stdout_sha256": "b2bb3bd958f186f121c19e4920032a43cd51b000fb4a000ed03fcfcdbd77f627",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-dirty-paths",
+      "command": [
+        "git",
+        "diff",
+        "--name-only",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T16:05:08.189926+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/018-after-dirty-paths/stdout",
+      "stderr": "/tmp/g261seal/census/commands/018-after-dirty-paths/stderr",
+      "ended_utc": "2026-10-22T16:05:08.210040+00:00",
+      "seconds": 0.020178721999400295,
+      "stdout_bytes": 28,
+      "stdout_sha256": "682d6dcc4f8e3d875b2df3cc19ae463d0b935b6baa8241ff7f25e0588b6140cf",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-staged",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T16:05:08.210890+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/019-after-staged/stdout",
+      "stderr": "/tmp/g261seal/census/commands/019-after-staged/stderr",
+      "ended_utc": "2026-10-22T16:05:08.218695+00:00",
+      "seconds": 0.007802149997587549,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "after-diff",
+      "command": [
+        "git",
+        "diff",
+        "--binary",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261seal/a-source",
+      "started_utc": "2026-10-22T16:05:08.219444+00:00",
+      "timeout_seconds": 300,
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "stdout": "/tmp/g261seal/census/commands/020-after-diff/stdout",
+      "stderr": "/tmp/g261seal/census/commands/020-after-diff/stderr",
+      "ended_utc": "2026-10-22T16:05:08.239743+00:00",
+      "seconds": 0.0202990329999011,
+      "stdout_bytes": 48775,
+      "stdout_sha256": "76ef260e60c56e0863439272e1496b9d8db8999495784647fad69f244fb6271b",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "errors": [],
+  "no_commit_or_push": true,
+  "stage_execution_passed": false,
+  "published_source_proof": {
+    "url": "https://github.com/ZhiQiYang/geometry-axiom.git",
+    "ref": "refs/heads/architecture/geo261-integration-20261016",
+    "fetched_head": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+    "source_is_ancestor": true
+  },
+  "census_note": "完整 --update-expected 僅為計數 census，尚未提交的 expected 使 clone dirty；不當作同 SHA 正式 native。counted suite 即使 fail 原工具仍可能寫數量，故另要求真退出0。",
+  "checkout_before": {
+    "head": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+    "status": "",
+    "dirty_paths": [],
+    "staged_paths": []
+  },
+  "checkout_after": {
+    "head": "a12d184ec1865ad078700cea2387ac69e82ab62a",
+    "status": " M tests/run_all.expected.json\n",
+    "dirty_paths": [
+      "tests/run_all.expected.json"
+    ],
+    "staged_paths": []
+  },
+  "allowed_output_dirty_paths": [
+    "tests/run_all.expected.json"
+  ],
+  "source_sha_is_unchanged_but_checkout_has_output_changes": true,
+  "finished_utc": "2026-10-22T16:05:08.240649+00:00"
+}

@@ -204,7 +204,8 @@ static bool cache_consumer_scenario(const char *name)
     ReferenceEval *previous=g_reference_active;AppWorldCandidate *owner=g_active_app_candidate;
     g_reference_active=ctx;g_active_app_candidate=NULL;
     REQUIRE("cache-consumer-register-real-providers",reference_sources_ensure(ctx));
-    unsigned mode=!strcmp(name,"cache-definition")?1:!strcmp(name,"cache-anchor")?2:!strcmp(name,"cache-footprint")?3:4;
+    unsigned mode=!strcmp(name,"cache-definition")?1:!strcmp(name,"cache-anchor")?2:
+        (!strcmp(name,"cache-footprint")||!strcmp(name,"cache-footprint-source"))?3:4;
     CacheConsumer probe={ctx,mode};GeoSourceProvider provider={90,"test.cache-consumer","1",&probe,probe_describe,cache_consumer_evaluate};
     REQUIRE("cache-consumer-register",geo_eval_register(ctx->sources,&provider));
     /* Prime the registered real pose provider's documented snapshot path.
@@ -219,12 +220,17 @@ static bool cache_consumer_scenario(const char *name)
         facts.members[0].footprint_valid&&same_rect(facts.members[0].footprint,(GeoRect2){10,20,110,30}));
     REQUIRE("cache-consumer-natural-memos",ctx->member_reads[0].definition_valid&&ctx->member_reads[0].anchor_valid&&
         ctx->member_reads[0].pose_valid&&ctx->member_reads[0].footprint_valid);
+    /* The graph already owns the canonical definition and BOX. A stale H UV
+     * must not overwrite a successful source footprint when raw snapshots are
+     * completed after a memo hit; do not inject or edit the memo itself. */
+    if(!strcmp(name,"cache-footprint-source"))world->wood.anchors[0].uv=(GeoPoint2){700,800};
     size_t prefix_count=geo_eval_edge_count(ctx->sources),prefix_nodes=geo_eval_node_count(ctx->sources);
     GeoSourceEdge *prefix=calloc(prefix_count?prefix_count:1,sizeof *prefix);REQUIRE("cache-consumer-prefix",prefix);
     for(size_t i=0;i<prefix_count;++i)REQUIRE("cache-consumer-prefix-read",geo_eval_edge_at(ctx->sources,i,&prefix[i]));
     memcpy(before,world,sizeof *before);
     uint32_t first=1,second=2,id=41;GeoSourceRef consumers[2]={{90,&first,sizeof first},{90,&second,sizeof second}};GeoSourceValue value;
-    REQUIRE("cache-consumer-first",geo_eval_source(ctx->sources,consumers[0],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+    REQUIRE(!strcmp(name,"cache-footprint-source")?"footprint-cache-hit-preserves-source-out":"cache-consumer-first",
+        geo_eval_source(ctx->sources,consumers[0],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
     REQUIRE("cache-consumer-second",geo_eval_source(ctx->sources,consumers[1],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
     GeoSourceRef sources[5];GeoDependencyKind kinds[10];size_t count=1;WoodDefinitionKey wood;GeoPlacementSourceKey frame,region,placement;
     if(mode==1)sources[0]=wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&wood);

@@ -148,6 +148,20 @@ class LoadResidual(unittest.TestCase):
             with self.subTest(case=case):
                 self.passes(case)
 
+    def test_cached_source_footprint_is_not_overwritten_by_deferred_raw_snapshot(self):
+        case, control = "cache-footprint-source", "footprint-hit-raw-snapshot"
+        marker = "footprint-cache-hit-preserves-source-out"
+        self.passes(case, phase="baseline", control=control)
+        change = ("if(deferred)raw[i].pending=fact->footprint_valid?0:2;",
+                  "/* isolated control leaves the stale raw footprint pending */")
+        exe = self.compile(control, source_change=change)
+        result = self.case(case, exe, phase="mutant", control=control, expected_assertion=marker)
+        self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+        self.assertIn("ASSERT:" + marker + " ", result.stderr)
+        self.assertEqual(1, result.stderr.count("ASSERT:"), result.stderr)
+        print("H cache control " + control + ": exit=1; " + result.stderr.strip(), flush=True)
+        self.passes(case, phase="restored", control=control)
+
     def test_each_cached_read_second_consumer_edge_kind_and_order_mutant_is_detected(self):
         for name, case, marker, before, after in H_CACHE_CONTROLS:
             with self.subTest(control=name):

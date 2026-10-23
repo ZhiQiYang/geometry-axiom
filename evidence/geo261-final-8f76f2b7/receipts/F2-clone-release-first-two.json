@@ -1,0 +1,597 @@
+{
+  "schema": "geo261-F2-one-completed-clone-release/1",
+  "status": "完成：僅固定單clone已移除",
+  "sha": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+  "proof": "p52",
+  "clone": "/tmp/g261F2p52runtime/fix",
+  "label": "F2-P52-runtime",
+  "published_commit": "f2ea34577fca848907c3b952085b4c559d2cbd06",
+  "output": "/workspace/geo261-environment/F2-clone-release-records/p52-2201",
+  "started_utc": "2026-10-22T21:57:11.039585+00:00",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.039853+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.043764+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/000-before-F2-ancestor/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/000-before-F2-ancestor/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "f2ea34577fca848907c3b952085b4c559d2cbd06",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.044164+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.047875+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/001-before-publish-in-root/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/001-before-publish-in-root/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "f2ea34577fca848907c3b952085b4c559d2cbd06",
+        "refs/remotes/origin/architecture/geo261-integration-20261016"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.048251+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.051928+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/002-before-publish-in-origin/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/002-before-publish-in-origin/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "HEAD:evidence/geo261-final-8f76f2b7/PROGRESS.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.052280+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.055921+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/003-before-progress/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/003-before-progress/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "HEAD:evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.056371+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.060139+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/004-before-raw-readable/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/004-before-raw-readable/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.060492+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.068370+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/005-before-raw-head-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/005-before-raw-head-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "f2ea34577fca848907c3b952085b4c559d2cbd06:evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.068842+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.072662+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/006-before-raw-published-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/006-before-raw-published-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "hash-object",
+        "--no-filters",
+        "/workspace/geometry-axiom/evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.073012+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.105188+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/007-before-raw-local-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/007-before-raw-local-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "HEAD:evidence/geo261-final-8f76f2b7/receipts/F2-P52-runtime.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.105787+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.109885+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/008-before-published-receipt/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/008-before-published-receipt/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "f2ea34577fca848907c3b952085b4c559d2cbd06:evidence/geo261-final-8f76f2b7/receipts/F2-P52-runtime.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.111281+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.119300+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/009-before-published-receipt-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/009-before-published-receipt-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:evidence/geo261-final-8f76f2b7/receipts/F2-P52-runtime.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:11.120152+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.124224+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/010-before-head-receipt-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/010-before-head-receipt-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261F2p52runtime/fix",
+      "started_utc": "2026-10-22T21:57:11.137683+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.141677+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/011-before-inventory-head/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/011-before-inventory-head/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        "core.untrackedCache=false",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/tmp/g261F2p52runtime/fix",
+      "started_utc": "2026-10-22T21:57:11.142120+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.260555+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/012-before-inventory-status/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/012-before-inventory-status/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--others",
+        "--ignored",
+        "--exclude-standard",
+        "-z"
+      ],
+      "cwd": "/tmp/g261F2p52runtime/fix",
+      "started_utc": "2026-10-22T21:57:11.261384+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.325875+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/013-before-inventory-ignored/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/013-before-inventory-ignored/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "-z"
+      ],
+      "cwd": "/tmp/g261F2p52runtime/fix",
+      "started_utc": "2026-10-22T21:57:11.326622+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:11.343612+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/014-tracked/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/014-tracked/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/tmp/g261F2p52runtime/fix",
+      "started_utc": "2026-10-22T21:57:14.105351+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.109391+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/015-after-inventory-head/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/015-after-inventory-head/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        "core.untrackedCache=false",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "/tmp/g261F2p52runtime/fix",
+      "started_utc": "2026-10-22T21:57:14.109931+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.224700+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/016-after-inventory-status/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/016-after-inventory-status/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--others",
+        "--ignored",
+        "--exclude-standard",
+        "-z"
+      ],
+      "cwd": "/tmp/g261F2p52runtime/fix",
+      "started_utc": "2026-10-22T21:57:14.225662+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.290681+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/017-after-inventory-ignored/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/017-after-inventory-ignored/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.291944+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.296479+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/018-after-F2-ancestor/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/018-after-F2-ancestor/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "f2ea34577fca848907c3b952085b4c559d2cbd06",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.297041+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.301272+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/019-after-publish-in-root/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/019-after-publish-in-root/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "f2ea34577fca848907c3b952085b4c559d2cbd06",
+        "refs/remotes/origin/architecture/geo261-integration-20261016"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.301785+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.308191+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/020-after-publish-in-origin/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/020-after-publish-in-origin/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "HEAD:evidence/geo261-final-8f76f2b7/PROGRESS.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.309096+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.313507+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/021-after-progress/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/021-after-progress/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "HEAD:evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.314595+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.319457+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/022-after-raw-readable/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/022-after-raw-readable/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.319989+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.323943+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/023-after-raw-head-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/023-after-raw-head-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "f2ea34577fca848907c3b952085b4c559d2cbd06:evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.324572+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.328483+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/024-after-raw-published-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/024-after-raw-published-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "hash-object",
+        "--no-filters",
+        "/workspace/geometry-axiom/evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.329151+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.393631+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/025-after-raw-local-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/025-after-raw-local-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "HEAD:evidence/geo261-final-8f76f2b7/receipts/F2-P52-runtime.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.394703+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.398852+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/026-after-published-receipt/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/026-after-published-receipt/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "f2ea34577fca848907c3b952085b4c559d2cbd06:evidence/geo261-final-8f76f2b7/receipts/F2-P52-runtime.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.399800+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.403811+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/027-after-published-receipt-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/027-after-published-receipt-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:evidence/geo261-final-8f76f2b7/receipts/F2-P52-runtime.json"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started_utc": "2026-10-22T21:57:14.404612+00:00",
+      "timeout_expired": false,
+      "actual_exit": 0,
+      "finished_utc": "2026-10-22T21:57:14.408797+00:00",
+      "stdout": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/028-after-head-receipt-blob/stdout.bin",
+      "stderr": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/commands/028-after-head-receipt-blob/stderr.bin",
+      "stdin": "empty",
+      "cleared_inherited_git_environment_names": [
+        "GIT_PAGER"
+      ]
+    }
+  ],
+  "removed": true,
+  "deletion_attempted": true,
+  "errors": [],
+  "scope": "Only the single fixed disposable clone; original proof raw/tools/outputs and source-final remain. No product result is changed.",
+  "published_before": {
+    "path": "/workspace/geometry-axiom/evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz",
+    "relative_path": "evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz",
+    "git_blob": "0ea130d42ad1f3b02819f9ddaef8e321467bf35c",
+    "bytes": 11655841,
+    "sha256": "a39d1c5c63c9a9ebd7259dec1fb114abd6ca24d209b258b00ad5ad7c2fbf812b",
+    "receipt_sha256": "99914d6dca950bd5ee0a8951b031b820144b40244005add6dc9ba5244997a04f",
+    "normal_push_evidence": "caller-specified actual publish commit reachable from recorded origin branch and root HEAD; no fresh network query"
+  },
+  "tracked_files": 24012,
+  "tracked_bytes": 1478874125,
+  "tracked_inventory": "/workspace/geo261-environment/F2-clone-release-records/p52-2201/tracked-sha256.json",
+  "tracked_inventory_sha256": "e25ecb6c60080f5f9858f05e0232336bb779360fff573554546631c3cf3b8ef5",
+  "published_after": {
+    "path": "/workspace/geometry-axiom/evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz",
+    "relative_path": "evidence/geo261-final-8f76f2b7/raw/F2-P52-runtime.raw.tar.gz",
+    "git_blob": "0ea130d42ad1f3b02819f9ddaef8e321467bf35c",
+    "bytes": 11655841,
+    "sha256": "a39d1c5c63c9a9ebd7259dec1fb114abd6ca24d209b258b00ad5ad7c2fbf812b",
+    "receipt_sha256": "99914d6dca950bd5ee0a8951b031b820144b40244005add6dc9ba5244997a04f",
+    "normal_push_evidence": "caller-specified actual publish commit reachable from recorded origin branch and root HEAD; no fresh network query"
+  },
+  "finished_utc": "2026-10-22T21:57:14.614150+00:00",
+  "source_final_retained": true,
+  "original_raw_retained": true,
+  "original_proof_receipt_retained": true
+}

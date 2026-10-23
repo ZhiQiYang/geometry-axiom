@@ -20,6 +20,8 @@ typedef struct {
     uint32_t id; bool auto_length; WoodMemberRole role; GeoCoord priority;
     bool literal[2]; GeoCoord dimension[2];
 } WoodMemberDefinition;
+/* 接觸查詢只需要這三個定義欄位；讀取時仍驗證完整 placement 編碼。 */
+typedef struct {uint32_t placement_id;int length_direction;uint64_t order;} WoodMemberPlacementContact;
 typedef struct {
     const WoodDocument *document;
     const GeoRegionStore *regions;
@@ -36,6 +38,7 @@ void wood_definition_sources_destroy(WoodDefinitionSources *);
 /* Read helpers decode the actual returned source value. Failure preserves out. */
 bool wood_definition_sources_member(WoodDefinitionSources *,uint32_t,WoodMemberDefinition *);
 bool wood_definition_sources_placement(WoodDefinitionSources *,uint32_t,WoodMemberPlacement *);
+bool wood_definition_sources_placement_contact(WoodDefinitionSources *,uint32_t,WoodMemberPlacementContact *);
 bool wood_definition_sources_dimension(WoodDefinitionSources *,uint32_t,bool,GeoCoord *);
 bool wood_definition_sources_column(WoodDefinitionSources *,uint32_t,WoodColumn *);
 bool wood_definition_sources_beam(WoodDefinitionSources *,uint32_t,WoodBeam *);

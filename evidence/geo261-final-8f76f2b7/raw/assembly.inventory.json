@@ -1,0 +1,357 @@
+{
+  "archive": "assembly.raw.tar.gz",
+  "bytes": 1044171,
+  "sha256": "2bc8713b4241f4e8a080652af1b6906b7d81bc715566c900f278622a010efe28",
+  "members": [
+    {
+      "path": "infrastructure",
+      "bytes": 1033,
+      "sha256": "3deac9eef561897ff5a1d0e488cec826afd0fa4ffdef4363eec016598d7d0ff8"
+    },
+    {
+      "path": "orchestrator",
+      "bytes": 9438,
+      "sha256": "03e4c182cad40b6abd7dae52a8c8af43c5ffe90f2d38ae62e21be2f518b54d83"
+    },
+    {
+      "path": "round-config",
+      "bytes": 735,
+      "sha256": "d26d3aa772f1526a135460c5ca60248295f2ef0022ed483a49adeb6735ff8327"
+    },
+    {
+      "path": "launch-stdout",
+      "bytes": 411,
+      "sha256": "d5290f5dddafc2ba7a52499b372311fae823162a1623b4faeb8365d079294734"
+    },
+    {
+      "path": "launch-stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reaper",
+      "bytes": 2166,
+      "sha256": "526086f58f5b1414c3bd342fe5edb7fe411f2f1f6669b6b845f475b454e4ef7a"
+    },
+    {
+      "path": "job/artifacts/05/assembly-blank-390.png",
+      "bytes": 51010,
+      "sha256": "609fc256b73d9dddc3c9bc2d9d0ba2eb705f14407d480a1a733c082efebf1105"
+    },
+    {
+      "path": "job/artifacts/05/assembly-desktop.png",
+      "bytes": 92258,
+      "sha256": "dd5829fc013802e59730eb00eab64eb4e1ee31b616a12ff25001e3ac64076054"
+    },
+    {
+      "path": "job/artifacts/05/assembly-generation-mobile.png",
+      "bytes": 40930,
+      "sha256": "241bc87475559580a0ffc69f1f42dc75215f7e4a007fafe2b6b8c9d2717385b5"
+    },
+    {
+      "path": "job/artifacts/05/assembly-mobile.png",
+      "bytes": 39145,
+      "sha256": "166cb31c105baba3af7616df771ff4c75e31a1a1abbc7635cb8d6264149b78b3"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-glyphs-390.png",
+      "bytes": 32520,
+      "sha256": "9bccf0bce8ba7deb52cffd09d181fe6d66f03631fbd4d6ff176532ccbfc98eaa"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-glyphs-desktop.png",
+      "bytes": 88222,
+      "sha256": "ba26c19826d14da0630c13ad2aeed4d534c7417145aedd5ba441fb3a46ec266d"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-glyphs-max-zoom-390.png",
+      "bytes": 47941,
+      "sha256": "099f5ce5d68455642f730e2b888c945ed68dbda148ca05a7c1d86ca95d0342c6"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-sources-390.png",
+      "bytes": 51611,
+      "sha256": "2152deed9a7750f029a2eb4dd99617f570b77deb750e499b622fa1c2f9d1f61c"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-sources-desktop.png",
+      "bytes": 90029,
+      "sha256": "ec931bd69c46caba5de917c3ba8057bcf00e30025464851373abd0b131c5771a"
+    },
+    {
+      "path": "job/driver.py.txt",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "job/receipt.json",
+      "bytes": 30772,
+      "sha256": "b917483085000d7a6d8be1a3225cd797fba67912d0f17b17318b3ac0a063a586"
+    },
+    {
+      "path": "job/receipt.sha256",
+      "bytes": 79,
+      "sha256": "3df8f3337d4754c5b3f947b358a72fe7b1e056d7e89a804e4fc0d770c231b104"
+    },
+    {
+      "path": "job/steps/01.combined.log",
+      "bytes": 1262,
+      "sha256": "95c038e9f61205fc21facd471952b986a6f62ddf6b22e02ba3e00c2214b94cf3"
+    },
+    {
+      "path": "job/steps/01.command.json",
+      "bytes": 633,
+      "sha256": "319a6ce6f486d4fa2ba861d69b2b2530d800a887ee7450fbabd9731a4015b9e3"
+    },
+    {
+      "path": "job/steps/01.executed.sh",
+      "bytes": 14,
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef"
+    },
+    {
+      "path": "job/steps/01.original.sh.txt",
+      "bytes": 13,
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054"
+    },
+    {
+      "path": "job/steps/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/01.stdout",
+      "bytes": 1262,
+      "sha256": "95c038e9f61205fc21facd471952b986a6f62ddf6b22e02ba3e00c2214b94cf3"
+    },
+    {
+      "path": "job/steps/02-package-0.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02-package-0.command.json",
+      "bytes": 646,
+      "sha256": "d4c2711c832fa5afdd611a1f474bbd3c0905435ba7d2f6036ed4c2c84d5a62e9"
+    },
+    {
+      "path": "job/steps/02-package-0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/02-package-0.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02.executed.sh",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/02.original.sh.txt",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/03.combined.log",
+      "bytes": 24786,
+      "sha256": "e3508d1e70a640661f80b909f2bb7435c51444e2d3bf9827d70fb0720253edda"
+    },
+    {
+      "path": "job/steps/03.command.json",
+      "bytes": 681,
+      "sha256": "a0a8c370e42178dc48a9093f3c120c18e7e15e835e809ff0a0da5b161b86bd97"
+    },
+    {
+      "path": "job/steps/03.executed.sh",
+      "bytes": 2312,
+      "sha256": "6ed43a33a553c75cf6161f334e967352d928ba6b2c99c13a756ff3ed2e249af2"
+    },
+    {
+      "path": "job/steps/03.original.sh.txt",
+      "bytes": 2184,
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f"
+    },
+    {
+      "path": "job/steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/03.stdout",
+      "bytes": 24786,
+      "sha256": "e3508d1e70a640661f80b909f2bb7435c51444e2d3bf9827d70fb0720253edda"
+    },
+    {
+      "path": "job/versions/0.combined.log",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/0.command.json",
+      "bytes": 579,
+      "sha256": "de49c8b969e829f7ddddbab60e207f4203a0f8331eefeee903a74c6dafb357b0"
+    },
+    {
+      "path": "job/versions/0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/0.stdout",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/1.combined.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/1.command.json",
+      "bytes": 572,
+      "sha256": "904543c5160438cd7f6fb72d9da3aee9abeb4aeffda14a5e47afbb0ecdfe8085"
+    },
+    {
+      "path": "job/versions/1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/1.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/2.combined.log",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/2.command.json",
+      "bytes": 574,
+      "sha256": "2c4c40af7885a5d19f4e3a3c6b0a4565038af2d3b8ea58b9116d6bd7212922a3"
+    },
+    {
+      "path": "job/versions/2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/2.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/3.combined.log",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/3.command.json",
+      "bytes": 568,
+      "sha256": "2cb23d2ffd2209f8038dcb9cda497ef06cf9651cf99952d59504b28d05d3b869"
+    },
+    {
+      "path": "job/versions/3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/3.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/4.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/versions/4.command.json",
+      "bytes": 625,
+      "sha256": "55d4b055a89eea2fe39dde5f9abe3ec3f618d73307c3d26b8cb4679928d68eb3"
+    },
+    {
+      "path": "job/versions/4.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/4.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/workflow.yml.txt",
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+    },
+    {
+      "path": "job-tmp/geometry-integration-server.log",
+      "bytes": 3350,
+      "sha256": "29d0505108e83d9466245d46a49b3b6fc7586687e5ecf839a041c189c013de88"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-blank-390.png",
+      "bytes": 51010,
+      "sha256": "609fc256b73d9dddc3c9bc2d9d0ba2eb705f14407d480a1a733c082efebf1105"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-desktop.png",
+      "bytes": 92258,
+      "sha256": "dd5829fc013802e59730eb00eab64eb4e1ee31b616a12ff25001e3ac64076054"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "bytes": 5200,
+      "sha256": "50c48077b61e1e7cc7fcb6fa92c2e92ef10718db31e0e59747224c02b98a54c6"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-generation-g07-before.json",
+      "bytes": 1874,
+      "sha256": "a2fccc53823697653a1133f30df036d34d20915eefa6af4cafc7f1a48341327d"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-generation-mobile.png",
+      "bytes": 40930,
+      "sha256": "241bc87475559580a0ffc69f1f42dc75215f7e4a007fafe2b6b8c9d2717385b5"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-mobile.png",
+      "bytes": 39145,
+      "sha256": "166cb31c105baba3af7616df771ff4c75e31a1a1abbc7635cb8d6264149b78b3"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-review-glyphs-390.png",
+      "bytes": 32520,
+      "sha256": "9bccf0bce8ba7deb52cffd09d181fe6d66f03631fbd4d6ff176532ccbfc98eaa"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-review-glyphs-desktop.png",
+      "bytes": 88222,
+      "sha256": "ba26c19826d14da0630c13ad2aeed4d534c7417145aedd5ba441fb3a46ec266d"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-review-glyphs-max-zoom-390.png",
+      "bytes": 47941,
+      "sha256": "099f5ce5d68455642f730e2b888c945ed68dbda148ca05a7c1d86ca95d0342c6"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-review-sources-390.png",
+      "bytes": 51611,
+      "sha256": "2152deed9a7750f029a2eb4dd99617f570b77deb750e499b622fa1c2f9d1f61c"
+    },
+    {
+      "path": "job-tmp/geometry-tests/assembly-review-sources-desktop.png",
+      "bytes": 90029,
+      "sha256": "ec931bd69c46caba5de917c3ba8057bcf00e30025464851373abd0b131c5771a"
+    },
+    {
+      "path": "job-tmp/tmpbxmhl8qq.scene",
+      "bytes": 6147,
+      "sha256": "b7c84e6390b5fff0c57f5043f4aaacb47104f5f726a49e79b216aa0d176b3bd5"
+    }
+  ]
+}

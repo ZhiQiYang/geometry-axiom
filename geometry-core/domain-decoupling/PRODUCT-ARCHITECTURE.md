@@ -1,22 +1,3 @@
-# Product architecture — Linux 固定來源重產
-
-本輪真受驗來源 `b7ca7843532098c4d3433035cde8dc2c43654978`；上一份receipt產物提交 `ec1238cd62c7155a44ecf3fb071e605aeee8ac48`。本輪只使用指定來源的原scanner、generic與product裁判。
-
-完整五roots加三standalone：601 executable inputs，owned 333、excluded 268、edges 796、diagnostics 0。LF closure `4d093892d729bc7e38d6866777eb088d468d09833565a8c5dae90c0da038edad`。
-
-manifest輸出逐bytes等指定P已登記版本；政策、roots、routes、vendor trust及既有source分類未自動修改。
-
-相對上份sealed manifest：新增owned 0、新增逐檔exclusion 0、既有exclusion digest更新 0。逐項原/新內容見本輪manifest-delta.json；未登錄檔不會被自動排除。
-
-變更既有input：`current_geometry.c`、`geometry-app/native/reference_sources.inc`、`geometry-app/native/world_validation.inc`、`geometry-core/references.inc`、`geometry-templates/woodworking/native/contact_sources.c`。
-
-- `python -B tests/test_architecture_contract.py`：真退出0，205 tests／205 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
-- `python -B tests/test_product_architecture.py`：真退出0，18 tests／18 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
-
-四檔衍生產物不進executable closure，receipt不hash自己。SSOT另按指定P綁定並核前後不變；不冒稱closure自然涵蓋SSOT。未跑native、ledger、browser、專項或歷史額外policy probes；不把先前Windows或#288結果重標成本輪結果。
-
-## 上一份歷史報告（原文保留，非本輪判決）
-
 # GEO-261 actual-product dependency contract
 
 `product-architecture.json` is the executable inventory for the current product.
@@ -273,7 +254,7 @@ directory and the previous sealed outputs were re-read from Git commit
 `277bfdd3`. The new receipt links their raw/LF digests, the previous receipt
 creation time and source head.
 
-The post-merge GEO-261 integration (`96ade86b`) refresh freezes source HEAD
+The preceding post-merge GEO-261 integration (`96ade86b`) refresh froze source HEAD
 `96ade86bdb5fbcdad581b36afdd180a96fca7999`. The previous sealed audit (receipt
 commit `854660a7`) froze source head `8394ef60`; since then the integration
 branch gained 111 commits (first-parent merges: `96ade86b` (geo261: merge #321
@@ -349,6 +330,107 @@ directory and the previous sealed outputs were re-read from Git commit
 `854660a7`. The new receipt links their raw/LF digests, the previous receipt
 creation time and source head.
 
+The preceding post-merge GEO-261 integration (`76df2d81`) refresh froze source HEAD
+`76df2d816abfee02d3bb9eb545d7fb5c12150801`. The previous sealed audit (receipt
+commit `ec1238cd`) froze source head `96ade86b`; since then the integration
+branch gained 6 commits (first-parent merges: `546e2eb2` (Merge remote-tracking
+branch 'origin/architecture/geo261-integration-20261016' into
+architecture/geo261-integration-20261016)). Independent enumeration finds 601
+executable files, 0 of them unregistered in the manifest, all of them new since
+the previous sealed audit. Running the committed manifest through the actual CLI
+nevertheless exits 1 with `EXCLUSION_DIGEST` for `geometry-web/cdp_test.js`; the
+scanner stops at the first omission in sorted order, so the complete list comes
+from the independent enumeration:
+
+This audit re-pinned the stale exclusion digest(s) `geometry-web/cdp_test.js`,
+`geometry-web/grid_rule_lines_test.js` after review.
+
+A fresh lexical inventory of all 60 W-owned native C files finds no new W
+identifier or string guard. All 918 previous forbidden identifiers and 55
+strings are retained, for totals of 918 and 55.
+
+4 previously sealed executable inputs changed (2 H and 2 excluded test drivers),
+and 0 executable files are new. The scanner and both architecture test files are
+byte-identical to the previously sealed ones; no product source is changed by
+this audit.
+
+The previous four audit outputs are preserved byte-for-byte in the external run
+directory and the previous sealed outputs were re-read from Git commit
+`ec1238cd`. The new receipt links their raw/LF digests, the previous receipt
+creation time and source head.
+
+The preceding post-merge GEO-261 integration (`0369579e`) refresh froze source HEAD
+`0369579ef93b9046130d756e072f59c394654b09`. The previous sealed audit (receipt
+commit `3f00d03d`) froze source head `76df2d81`; since then the integration
+branch gained 3 commits (first-parent merges: no first-parent merge).
+Independent enumeration finds 601 executable files, 0 of them unregistered in
+the manifest, all of them new since the previous sealed audit. Running the
+committed manifest through the actual CLI nevertheless exits 1 with
+`EXCLUSION_DIGEST` for `geometry-web/grid_inspector_rename_test.js`; the scanner
+stops at the first omission in sorted order, so the complete list comes from the
+independent enumeration:
+
+This audit re-pinned the stale exclusion digest(s)
+`geometry-web/grid_inspector_rename_test.js` after review.
+
+A fresh lexical inventory of all 60 W-owned native C files finds no new W
+identifier or string guard. All 918 previous forbidden identifiers and 55
+strings are retained, for totals of 918 and 55.
+
+1 previously sealed executable inputs changed (1 excluded test drivers), and 0
+executable files are new. The scanner and both architecture test files are
+byte-identical to the previously sealed ones; no product source is changed by
+this audit.
+
+The previous four audit outputs are preserved byte-for-byte in the external run
+directory and the previous sealed outputs were re-read from Git commit
+`3f00d03d`. The new receipt links their raw/LF digests, the previous receipt
+creation time and source head.
+
+The preceding post-merge GEO-261 integration (`01e63145`) refresh froze source HEAD
+`01e631453bba840b3839d6cf13635c55eb0470b6`. The previous sealed audit (receipt
+commit `82e0db0b`) froze source head `0369579e`; since then the integration
+branch gained 3 commits (first-parent merges: no first-parent merge).
+Independent enumeration finds 601 executable files, 0 of them unregistered in
+the manifest, all of them new since the previous sealed audit. The committed
+manifest already passes the actual CLI.
+
+A fresh lexical inventory of all 60 W-owned native C files finds no new W
+identifier or string guard. All 918 previous forbidden identifiers and 55
+strings are retained, for totals of 918 and 55.
+
+1 previously sealed executable inputs changed (1 W and 0 excluded test drivers),
+and 0 executable files are new. The scanner and both architecture test files are
+byte-identical to the previously sealed ones; no product source is changed by
+this audit.
+
+The previous four audit outputs are preserved byte-for-byte in the external run
+directory and the previous sealed outputs were re-read from Git commit
+`82e0db0b`. The new receipt links their raw/LF digests, the previous receipt
+creation time and source head.
+
+The post-merge GEO-261 integration (`0548c05c`) refresh freezes source HEAD
+`0548c05cccbb7b35def6bbc3d6b285004be676e5`. The previous sealed audit (receipt
+commit `ac39346e`) froze source head `01e63145`; since then the integration
+branch gained 3 commits (first-parent merges: no first-parent merge).
+Independent enumeration finds 601 executable files, 0 of them unregistered in
+the manifest, all of them new since the previous sealed audit. The committed
+manifest already passes the actual CLI.
+
+A fresh lexical inventory of all 60 W-owned native C files finds no new W
+identifier or string guard. All 918 previous forbidden identifiers and 55
+strings are retained, for totals of 918 and 55.
+
+0 previously sealed executable inputs changed (0 excluded test drivers), and 0
+executable files are new. The scanner and both architecture test files are
+byte-identical to the previously sealed ones; no product source is changed by
+this audit.
+
+The previous four audit outputs are preserved byte-for-byte in the external run
+directory and the previous sealed outputs were re-read from Git commit
+`ac39346e`. The new receipt links their raw/LF digests, the previous receipt
+creation time and source head.
+
 The manifest, scan, report and receipt are excluded from the product
 input closure because they are derived audit artifacts. Manifest and scan are
 hashed separately; the receipt never hashes itself. Audit-only commits therefore
@@ -374,7 +456,7 @@ K tree. This is static missing-template evidence only. It neither compiles C nor
 executes Python product modules, and must not be reported as native/runtime
 no-template validation. Native execution remains in the serialized P1 queue.
 
-At the latest sealed source HEAD `96ade86bdb5fbcdad581b36afdd180a96fca7999`, the
+At the previously sealed source HEAD `0548c05cccbb7b35def6bbc3d6b285004be676e5`, the
 actual CLI scan exits 0 with 333 owned sources, 796 dependency edges and no
 diagnostics. All 18 actual product tests pass with no skips. Independent
 enumeration matches all 601 input hashes, both raw and LF-normalized. The
@@ -387,3 +469,70 @@ closed, then receive individually reviewed source entries. Re-run the product
 scan and product tests and regenerate the receipt; rerun the generic scanner
 suite if its scanner or test sources changed. Old fingerprints do not certify
 new files or changed sources.
+
+## 雲端 Linux 有限重產：P73 來源修正後
+
+本輪來源固定於 `08dede0bf7f9206b5df5fefb6a27180128518c35`，上一份收據產物提交為 `60425b629aee9f74f4e62ea88af9882bc8968881`。新 Linux 封裝器沿用原 scanner、generic tests 與 product tests，沒有使用或冒充舊 Windows driver。manifest 登記、所有政策與排除理由均未修改。
+
+獨立檔案系統與 Git tree inventory 共 601 個 executable inputs；owned 333、excluded 268、edges 796、diagnostics 0。LF input closure 是 `7a7d301e6e4cf6c7b7557a65bdd2e93d7e433be4d5773f835b567a7cbf6e0429`。
+
+相對上一份 sealed receipt 改變的既有輸入：`geometry-web/app.js`。四檔是衍生稽核產物，排除於來源 closure；receipt 不雜湊自身。
+
+- `python -B tests/test_architecture_contract.py`：退出 0；205 tests，205 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+- `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+
+以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
+
+## 雲端 Linux 有限重產：W placement-contact 政策更新
+
+本輪來源固定於 `aa02a65e9d3923cc14c13340f05ed16c8b7d4fce`，上一份收據產物提交為 `f2c8837aeba3c49eacbd77b5161f07c819204263`。新 Linux 封裝器沿用原 scanner、generic tests 與 product tests，沒有使用或冒充舊 Windows driver。來源登記、分類與排除理由保持原值；完整 W C 詞彙盤點保留全部舊 guard，僅新增本輪兩個 W identifier。新 manifest 在 repo 外完整驗證樹受測，原來源 checkout 不變。
+
+本輪新增政策：`WoodMemberPlacementContact`、`wood_definition_sources_placement_contact`；forbiddenIdentifiers 918 → 920。原三條 preflight 結果另存，不用新結果覆寫。逐新增識別字的舊政策接受／新政策拒絕及 neutral 接受是額外靜態 probe，不增加兩個正式 suite 方法數；未執行舊 Windows supplemental。
+
+獨立檔案系統與 Git tree inventory 共 601 個 executable inputs；owned 333、excluded 268、edges 796、diagnostics 0。LF input closure 是 `8ce86d3b98b664ca87ba1edd60d9f5506c61a6744357769f1d4c100aedb7d78f`。
+
+相對上一份 sealed receipt 改變的既有輸入：`current_geometry.c`、`geometry-app/native/reference_sources.inc`、`geometry-core/kernel/placement_sources.c`、`geometry-core/kernel/placement_sources.h`、`geometry-core/kernel/source.c`、`geometry-templates/woodworking/native/contact_sources.c`、`geometry-templates/woodworking/native/definition_sources.c`、`geometry-templates/woodworking/native/definition_sources.h`。四檔是衍生稽核產物，排除於來源 closure；receipt 不雜湊自身。
+
+- `python -B tests/test_architecture_contract.py`：退出 0；205 tests，205 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+- `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+
+以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
+
+## 雲端 Linux 有限重產：canonical HTML trace 同步後
+
+本輪來源固定於 `8a80abc1402b0c4c394969025c93a6019b4bb91d`，上一份收據產物提交為 `a12d184ec1865ad078700cea2387ac69e82ab62a`。新 Linux 封裝器沿用原 scanner、generic tests 與 product tests，沒有使用或冒充舊 Windows driver。本次恰一個既有 H canonical HTML input 同步；manifest 登記、920個既有 guard、所有政策、排除理由及 route/vendor digests 均保持原 bytes，不把上一輪新增兩個 W guard 重算為本輪新生成。
+
+獨立檔案系統與 Git tree inventory 共 601 個 executable inputs；owned 333、excluded 268、edges 796、diagnostics 0。LF input closure 是 `e9d9b00ba23d939206dc90ba0199defb4c7e543b4339f8a1beba6a9935266fd0`。
+
+相對上一份 sealed receipt 改變的既有輸入：`geometry-guide/公理層-閱讀器.html`。四檔是衍生稽核產物，排除於來源 closure；receipt 不雜湊自身。
+
+- `python -B tests/test_architecture_contract.py`：退出 0；205 tests，205 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+- `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+
+以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
+
+## 雲端 Linux 有限重產：P73 來源修正後
+
+本輪來源固定於 `55b9fb6479485361d9e2283a95e4355f5fca76db`，上一份收據產物提交為 `c9e6b45492e6016a1b5c91934fa3c9a674435431`。新 Linux 封裝器沿用原 scanner、generic tests 與 product tests，沒有使用或冒充舊 Windows driver。manifest 登記、所有政策與排除理由均未修改。
+
+獨立檔案系統與 Git tree inventory 共 601 個 executable inputs；owned 333、excluded 268、edges 796、diagnostics 0。LF input closure 是 `303ee650da50d92a0397a5556bdf5b94c3066c941f1e5f850a79ea83638493dd`。
+
+相對上一份 sealed receipt 改變的既有輸入：`geometry-web/runtime_version.py`。四檔是衍生稽核產物，排除於來源 closure；receipt 不雜湊自身。
+
+- `python -B tests/test_architecture_contract.py`：退出 0；205 tests，205 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+- `python -B tests/test_product_architecture.py`：退出 0；18 tests，18 passed、0 failed、0 skipped；原始 stdout／stderr 與完整命令在本輪收據。
+
+以上只證明本輪有限靜態契約與其控制，不宣稱 native、mutation ledger、瀏覽器、P52、Q38、§7 或 P-189 已執行。既有歷史段落與其原來源／結果保留。
+
+## 雲端 Linux 有限重產：合入 main 的六個 oracle／probe exclusion digest
+
+固定實際來源為 `f79aa057521929597a9af4b204b709110414ac03`，上份架構產物提交為 `8f76f2b7d6f669670e5834310bfc26495b4a4aa6`。原manifest的三裁判依原值記錄1／0／5；最後的5是setUpClass因digest拒絕且Ran 0 tests，不能算已跑產品18方法。只在repo外完整驗證樹更新下列六個既有exclusion的LF digest，原來源checkout與三裁判bytes保持不變。
+
+`geometry-core/framing-template/core-probe/gen_scenes.py`、`geometry-core/framing-template/core-probe/test_gen_scenes.py`、`geometry-core/framing-template/oracle/framing_oracle.py`、`geometry-core/framing-template/oracle/make_golden.py`、`geometry-core/framing-template/oracle/render.py`、`geometry-core/framing-template/oracle/selftest.py`。所有source登記、root、layer、排除理由、router/vendor digest、W guard與其他政策都保持原值；未新增exclusion或目錄豁免。
+
+獨立物理與Git tree inventory為601 executable、333 owned、268 excluded；原scanner記796 edges、0 diagnostics。LF input closure：`f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4`。
+
+- `python -B tests/test_architecture_contract.py`：原退出0，205 tests／205 passed／0 failed／0 skipped；完整原命令、cwd、stdout／stderr另存。
+- `python -B tests/test_product_architecture.py`：原退出0，18 tests／18 passed／0 failed／0 skipped；完整原命令、cwd、stdout／stderr另存。
+
+本輪只證靜態架構契約；不代表native、帳本、瀏覽器、P52、Q38、§7或P-189已重跑。舊Windows supplemental未執行；既有歷史來源與結果保持原角色。四檔為衍生產物，receipt不雜湊自身。

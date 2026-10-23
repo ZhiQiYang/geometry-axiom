@@ -306,6 +306,39 @@ static bool rejecting_end_resolver(void *user,bool along,const WoodMember *self,
     (void)along;(void)self;(void)out;(void)cap;(void)count;
     ++*(unsigned *)user;return false;
 }
+static int order_index(void)
+{
+    WoodMember members[65]={0};WoodContactMemberFact facts[65]={0};WoodStopFace out[130];
+    WoodContactWorld world={.placement_id=7,.members=facts,.member_count=3};
+    for(size_t i=0;i<65;++i){members[i].id=(uint32_t)(i*128);members[i].placed=true;
+        facts[i]=(WoodContactMemberFact){.member=&members[i],.placement_id=7,.order=64-i,
+            .footprint_valid=true,.footprint={(GeoCoord)(i*100),20,(GeoCoord)(i*100+10),30}};
+    }
+    members[0].id=0;members[1].id=UINT32_MAX;members[2].id=0;members[2].placed=false;
+    facts[0].order=1;facts[1].order=3;facts[2].order=UINT64_MAX;
+    size_t n=wood_contact_collect_stops(&world,false,NULL,out,130);
+    CHECK("contact-order-index-retains-last-duplicate-order",n==4&&out[0].timber_id==UINT32_MAX&&out[2].timber_id==0);
+    facts[1].footprint=facts[0].footprint;
+    n=wood_contact_collect_stops(&world,false,NULL,out,130);
+    CHECK("contact-order-index-retains-earliest-duplicate-order",n==2&&out[0].timber_id==0&&out[1].timber_id==0);
+    /* 同一個世界的下一次呼叫必須讀到新順序；相等順序保持宣告／兩側身份。 */
+    members[2].id=256;members[2].placed=true;facts[1].footprint=(GeoRect2){100,20,110,30};
+    facts[0].order=2;facts[1].order=2;facts[2].order=0;
+    n=wood_contact_collect_stops(&world,false,NULL,out,130);
+    CHECK("contact-order-index-is-call-local-and-stable",n==6&&out[0].timber_id==256&&out[0].edge_index==0&&out[1].edge_index==1&&
+        out[2].timber_id==0&&out[4].timber_id==UINT32_MAX);
+    /* 64 筆走索引，65 筆走原掃描；兩者皆保留完整 u32 ID 與排序。 */
+    for(size_t i=0;i<65;++i){members[i].id=(uint32_t)(i*128);members[i].placed=true;facts[i].order=64-i;}
+    for(size_t count=64;count<=65;++count){world.member_count=count;
+        n=wood_contact_collect_stops(&world,false,NULL,out,130);
+        CHECK("contact-order-index-capacity-and-fallback-count",n==count*2);
+        for(size_t i=0;i<count;++i){
+            CHECK("contact-order-index-capacity-and-fallback-order",out[i*2].timber_id==(uint32_t)((count-1-i)*128)&&
+                out[i*2].edge_index==0&&out[i*2+1].edge_index==1);
+        }
+    }
+    return 0;
+}
 static int resolver_failures(void)
 {
     WoodContactWorld world={.placement_id=7};WoodMember self={0};
@@ -355,5 +388,6 @@ int main(int argc,char **argv)
     else if(!strcmp(name,"upstream"))result=upstream_changes();else if(!strcmp(name,"ordering"))result=ordering();
     else if(!strcmp(name,"components"))result=components();else if(!strcmp(name,"evolving"))result=evolving();
     else if(!strcmp(name,"capacity"))result=capacities();else if(!strcmp(name,"failures"))result=failures();
+    else if(!strcmp(name,"order-index"))result=order_index();
     else return 2;if(!result)printf("PASS %s\n",name);return result;
 }

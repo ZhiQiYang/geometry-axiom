@@ -22,11 +22,44 @@ bool wood_contact_footprint_collides(const WoodContactWorld *world,const GeoRect
     }
     return false;
 }
-static uint64_t contact_order(const WoodContactWorld *world,uint32_t id)
+enum { CONTACT_ORDER_SLOTS=WOOD_CONTACT_MEMBER_CAPACITY*2 };
+typedef struct {
+    size_t last[CONTACT_ORDER_SLOTS];
+    uint64_t minimum[CONTACT_ORDER_SLOTS];
+    bool indexed;
+} ContactOrderIndex;
+static size_t contact_order_slot(const WoodContactWorld *world,const ContactOrderIndex *index,uint32_t id)
 {
+    size_t slot=((id^(id>>16))*UINT32_C(2654435761))%CONTACT_ORDER_SLOTS;
+    while(index->last[slot]&&world->members[index->last[slot]-1].member->id!=id)
+        slot=(slot+1)%CONTACT_ORDER_SLOTS;
+    return slot;
+}
+static void contact_order_index(const WoodContactWorld *world,ContactOrderIndex *index)
+{
+    memset(index->last,0,sizeof index->last);
+    index->indexed=world->member_count<=WOOD_CONTACT_MEMBER_CAPACITY;
+    if(!index->indexed)return;
+    /* 僅在本次查詢內索引全部事實；不跨候選快取，也不改變容量。
+     * 重複 ID 的舊語義分開保留：排序取最後一筆，遮蓋判斷取最早順序。 */
+    for(size_t i=0;i<world->member_count;++i){
+        size_t slot=contact_order_slot(world,index,world->members[i].member->id);
+        if(!index->last[slot]||world->members[i].order<index->minimum[slot])index->minimum[slot]=world->members[i].order;
+        index->last[slot]=i+1;
+    }
+}
+static uint64_t contact_order(const WoodContactWorld *world,const ContactOrderIndex *index,uint32_t id)
+{
+    if(index->indexed){size_t last=index->last[contact_order_slot(world,index,id)];return last?world->members[last-1].order:UINT64_MAX;}
     uint64_t order=UINT64_MAX;
     for(size_t i=0;i<world->member_count;++i)if(world->members[i].member->id==id)order=world->members[i].order;
     return order;
+}
+static bool contact_earlier(const WoodContactWorld *world,const ContactOrderIndex *index,uint32_t id,uint64_t order)
+{
+    if(index->indexed){size_t slot=contact_order_slot(world,index,id);return index->last[slot]&&index->minimum[slot]<order;}
+    for(size_t i=0;i<world->member_count;++i)if(world->members[i].member->id==id&&world->members[i].order<order)return true;
+    return false;
 }
 size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,const WoodMember *exclude,WoodStopFace *out,size_t cap)
 {
@@ -60,22 +93,22 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
     }
     /* D11 placement order is independent of declaration order. Stable ties
      * retain the two side identities in their original order. */
+    ContactOrderIndex orders;contact_order_index(world,&orders);
     for(size_t i=1;i<count;++i){
         if(out[i].kind!=WOOD_STOP_MEMBER_SIDE)continue;
-        uint64_t order=contact_order(world,out[i].timber_id);size_t j=i;WoodStopFace value=out[i];
+        uint64_t order=contact_order(world,&orders,out[i].timber_id);size_t j=i;WoodStopFace value=out[i];
         while(j&&out[j-1].kind==WOOD_STOP_MEMBER_SIDE){
-            uint64_t previous=contact_order(world,out[j-1].timber_id);if(previous<=order)break;
+            uint64_t previous=contact_order(world,&orders,out[j-1].timber_id);if(previous<=order)break;
             out[j]=out[j-1];--j;
         }
         out[j]=value;
     }
     for(size_t i=0;i<count;){bool duplicate=false;
-        if(out[i].kind==WOOD_STOP_MEMBER_SIDE){uint64_t order=contact_order(world,out[i].timber_id);
+        if(out[i].kind==WOOD_STOP_MEMBER_SIDE){uint64_t order=contact_order(world,&orders,out[i].timber_id);
             for(size_t j=0;j<count&&!duplicate;++j){
                 if(i==j||out[i].fixed!=out[j].fixed||out[i].lo>=out[j].hi||out[j].lo>=out[i].hi)continue;
                 bool earlier=out[j].kind!=WOOD_STOP_MEMBER_SIDE;
-                if(!earlier)for(size_t t=0;t<world->member_count;++t)
-                    if(world->members[t].member->id==out[j].timber_id&&world->members[t].order<order)earlier=true;
+                if(!earlier)earlier=contact_earlier(world,&orders,out[j].timber_id,order);
                 if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;
             }
         }

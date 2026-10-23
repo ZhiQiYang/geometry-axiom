@@ -1,0 +1,262 @@
+{
+  "archive": "red-round-continuation-tools.raw.tar.gz",
+  "bytes": 71610,
+  "sha256": "a977ee4afa7de626efbf21a00d3649585bd20c7c0c1844cfb3a00eea6617933f",
+  "members": [
+    {
+      "path": "continuation/PREPARATION.json",
+      "bytes": 1170,
+      "sha256": "fcd27851422584432e9741ebcc265d4b3a16dd03263342a2f341c1a443311253"
+    },
+    {
+      "path": "continuation/original-seven.py.txt",
+      "bytes": 9438,
+      "sha256": "03e4c182cad40b6abd7dae52a8c8af43c5ffe90f2d38ae62e21be2f518b54d83"
+    },
+    {
+      "path": "continuation/run_six_browser_continuation.py",
+      "bytes": 9443,
+      "sha256": "a79c63282a3a09867e5d1e2dede1ed499f0e1410340621506814cbd396e137b1"
+    },
+    {
+      "path": "continuation/six-browser.diff",
+      "bytes": 2068,
+      "sha256": "27fe3dca8fdd81e0a7e798129d2a8252f6769b0386a8c0088d94bf49690a2c39"
+    },
+    {
+      "path": "outer-runner",
+      "bytes": 1316,
+      "sha256": "794c12ed672e51ad3d832550ff6f3f8d2423248831482a4b0cd2676626af3cc0"
+    },
+    {
+      "path": "configured-tools/ROUND_ADAPTATION.json",
+      "bytes": 17188,
+      "sha256": "fd4b9091ccbc8f4beb320f95cd89e45805f978dc7ac4da568a923eb8dc5dcb64"
+    },
+    {
+      "path": "configured-tools/card_ref_mutations.sh",
+      "bytes": 1996,
+      "sha256": "930b55d9bb735478deb83af205c8f32eb921017339684229ad1555b7ea9e8b8c"
+    },
+    {
+      "path": "configured-tools/gen_scene.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    {
+      "path": "configured-tools/p189_verify.py",
+      "bytes": 10495,
+      "sha256": "0ac0cef648bb96ddff6f21bc801c1e4ff635a97563fe243dd1ceea740e44f4d8"
+    },
+    {
+      "path": "configured-tools/p52_cases.cjs",
+      "bytes": 6448,
+      "sha256": "6ca75996223e94be0a503e646d58ed928b046854eb0102af309482dc4ac60f66"
+    },
+    {
+      "path": "configured-tools/p52_measure.py",
+      "bytes": 5981,
+      "sha256": "8667600f96d8b728b10fdf376a2719e59c02f49f66ad17addc2e301f4ccc79fd"
+    },
+    {
+      "path": "configured-tools/p52_probe.cjs",
+      "bytes": 5565,
+      "sha256": "8c3b4b14ad35082679e4faf229bd66d65a500bd53669c13d8f41e0603e066970"
+    },
+    {
+      "path": "configured-tools/postfix_validate.py",
+      "bytes": 6216,
+      "sha256": "3399b7a929e29f3ad6cd661bb094c9020b919a5efe0d1d0f2f67ca0f132fb0e9"
+    },
+    {
+      "path": "configured-tools/prepare_p52_main.py",
+      "bytes": 1297,
+      "sha256": "6a7735118817952f953fbaa09e882d0eace8422d4dbcc8a8817277b9b3cf24b0"
+    },
+    {
+      "path": "configured-tools/q38_controls.py",
+      "bytes": 3446,
+      "sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2"
+    },
+    {
+      "path": "configured-tools/q38_gate.sh",
+      "bytes": 2668,
+      "sha256": "8f6ebe8cedac6a35c36d15a07e60741a94303ef7406eb58ae8f890a59d6d5d60"
+    },
+    {
+      "path": "configured-tools/round-original-source/card_ref_mutations.sh",
+      "bytes": 1996,
+      "sha256": "129bdb907b761115b948e2e87b0c9cd15a57471e6ff2906973e4ea08392d9be8"
+    },
+    {
+      "path": "configured-tools/round-original-source/card_ref_mutations.sh.diff",
+      "bytes": 854,
+      "sha256": "a6c678c633302514e8c44aa9208ab82e0d6e51d1a56702133f12007679688fae"
+    },
+    {
+      "path": "configured-tools/round-original-source/gen_scene.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    {
+      "path": "configured-tools/round-original-source/gen_scene.py.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "configured-tools/round-original-source/p189_capture_run_fragment.py.txt.txt",
+      "bytes": 2558,
+      "sha256": "e2c37aa9129bf460e0039cedfdb30a73e7ee006d01a52b5061a3645c0bf679a6"
+    },
+    {
+      "path": "configured-tools/round-original-source/p189_loadfile_capture_fragment.py.txt.txt",
+      "bytes": 3906,
+      "sha256": "93b01396d05a4bff1db2fd026590bfe31f251bc5b1b18e69f1a76f19c0ef9d7b"
+    },
+    {
+      "path": "configured-tools/round-original-source/p189_samples_verification_fragment.py.txt.txt",
+      "bytes": 1114,
+      "sha256": "6688f05e67f65087bcfdee8e1bcceac6bd399680af1d37ec98eb9133d663fc9f"
+    },
+    {
+      "path": "configured-tools/round-original-source/p189_verify.py",
+      "bytes": 7072,
+      "sha256": "fbe76887c77c60b6f9a91559e6bf642a24402f789e28a1c5df53cce160b8aca5"
+    },
+    {
+      "path": "configured-tools/round-original-source/p189_verify.py.diff",
+      "bytes": 4925,
+      "sha256": "65d1a6f2060b3421e03ad2231c8ed969614e8d990ba6564a56aea896aca7a36b"
+    },
+    {
+      "path": "configured-tools/round-original-source/p52_cases.cjs",
+      "bytes": 6448,
+      "sha256": "6ca75996223e94be0a503e646d58ed928b046854eb0102af309482dc4ac60f66"
+    },
+    {
+      "path": "configured-tools/round-original-source/p52_cases.cjs.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "configured-tools/round-original-source/p52_measure.py",
+      "bytes": 5981,
+      "sha256": "a74f00790896a12735e5d420b37dd0a41454162fc238e374c4ec49e3bc579231"
+    },
+    {
+      "path": "configured-tools/round-original-source/p52_measure.py.diff",
+      "bytes": 1488,
+      "sha256": "3bc812deb5a579385ec7ee29603f7ac7cc8875272481e1beb601fb6ca23f422e"
+    },
+    {
+      "path": "configured-tools/round-original-source/p52_probe.cjs",
+      "bytes": 5565,
+      "sha256": "8c3b4b14ad35082679e4faf229bd66d65a500bd53669c13d8f41e0603e066970"
+    },
+    {
+      "path": "configured-tools/round-original-source/p52_probe.cjs.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "configured-tools/round-original-source/postfix_validate.py",
+      "bytes": 6216,
+      "sha256": "12205f0a07cccca4cd27087f7cbf34b6ba88a8b634fbcd5118c9168b940bf1bc"
+    },
+    {
+      "path": "configured-tools/round-original-source/postfix_validate.py.diff",
+      "bytes": 1113,
+      "sha256": "673d495486931ff3eaa45306d552c18540c3ae2b894864c844317ca500c34c07"
+    },
+    {
+      "path": "configured-tools/round-original-source/prepare_acceptance_round.py.txt",
+      "bytes": 9848,
+      "sha256": "1705a68271becd9bee9f2b7b3bd7aa591fe3d5173bccf3bc53c1e48f3ad9f04d"
+    },
+    {
+      "path": "configured-tools/round-original-source/prepare_p52_main.py",
+      "bytes": 1295,
+      "sha256": "a63cefab66828af405088840afcc1250e65f4209290e030e556b52121e1bd350"
+    },
+    {
+      "path": "configured-tools/round-original-source/prepare_p52_main.py.diff",
+      "bytes": 743,
+      "sha256": "5fc62ed438523ff8039daa17451ae480db4f934f6de25cda821c8084c21563c1"
+    },
+    {
+      "path": "configured-tools/round-original-source/prior-cloud-ADAPTATION.json",
+      "bytes": 12304,
+      "sha256": "6509b5ee253c70bdd5cc944877f306e676c459ea6efd32b0594934f2a47870cd"
+    },
+    {
+      "path": "configured-tools/round-original-source/q38-softstack-ADAPTATION.json",
+      "bytes": 1120,
+      "sha256": "1ff99a302963bfd56c847fc43ea18604baf31f89e54947a732b55d082147bfc4"
+    },
+    {
+      "path": "configured-tools/round-original-source/q38_controls.py",
+      "bytes": 3446,
+      "sha256": "64a76303d825d931736f10bef43b23e56e751a79433bd4aeed895c352b740fe2"
+    },
+    {
+      "path": "configured-tools/round-original-source/q38_controls.py.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "configured-tools/round-original-source/q38_gate.sh",
+      "bytes": 2668,
+      "sha256": "6c5dd5118e90de7f955d71086e64da5d04141cb3990779246b8f8638ceeb46cd"
+    },
+    {
+      "path": "configured-tools/round-original-source/q38_gate.sh.diff",
+      "bytes": 1641,
+      "sha256": "b13104e33189941f78ed5969d4c2d5e108c628b8d0094ad4b40648abaaaa8d26"
+    },
+    {
+      "path": "configured-tools/round-original-source/run_acceptance_seven_configured.py.txt",
+      "bytes": 9438,
+      "sha256": "03e4c182cad40b6abd7dae52a8c8af43c5ffe90f2d38ae62e21be2f518b54d83"
+    },
+    {
+      "path": "configured-tools/round-original-source/run_acceptance_specials_configured.py.txt",
+      "bytes": 9063,
+      "sha256": "c8bcc91176d80a1568b0d5ad4ae532cfc63772ff43795eeee2e9bb1c3cfe08a0"
+    },
+    {
+      "path": "configured-tools/round-original-source/scale_compare2.py",
+      "bytes": 3505,
+      "sha256": "716cb6b4eab037158765b998cb1e756d3c77bbe465f8bafb822a6ab9d6b0a389"
+    },
+    {
+      "path": "configured-tools/round-original-source/scale_compare2.py.diff",
+      "bytes": 5666,
+      "sha256": "46f97044bfeb5d801a4e40e37d52edf196f8bc017da2d8ebaa0429d2659ddec9"
+    },
+    {
+      "path": "configured-tools/round-original-source/verify_postfix_receipt.py",
+      "bytes": 1627,
+      "sha256": "5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04"
+    },
+    {
+      "path": "configured-tools/round-original-source/verify_postfix_receipt.py.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "configured-tools/scale_compare2.py",
+      "bytes": 6534,
+      "sha256": "95448fe5c7706a63a1fd257a8b819eddf4d5623fec4c46a59ae6336dcc26b263"
+    },
+    {
+      "path": "configured-tools/verify_postfix_receipt.py",
+      "bytes": 1627,
+      "sha256": "5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04"
+    },
+    {
+      "path": "preparation",
+      "bytes": 1876,
+      "sha256": "8918dc73912d0e3f98f91de23632dc0776a8e83b3ee4af65e325bcb964adcb03"
+    }
+  ]
+}

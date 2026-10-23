@@ -1,0 +1,594 @@
+{
+  "schema": "geo261-cloud-workflow/1",
+  "sha": "0da1f08c75a411442a2e4a431e72459563b8b9a2",
+  "job": "canvas",
+  "workflow_job_key": "browser",
+  "matrix": {
+    "suite": "canvas",
+    "timeout": 35
+  },
+  "started": "2026-10-22T09:13:33.824414+00:00",
+  "checkout_before": {
+    "head": "0da1f08c75a411442a2e4a431e72459563b8b9a2",
+    "root": "/workspace/geometry-axiom",
+    "status": ""
+  },
+  "status": "失敗",
+  "exit_code": 1,
+  "workflow_sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+  "driver_sha256": "d8468e82703765b0ae2f5a1fc4c437dffb39d7ea8ccbb1e4da3ba61289dcb34a",
+  "workflow_environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18839/",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-integration-feedback",
+    "GEOMETRY_CHROME": "/usr/bin/google-chrome",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_BROWSER_SUITE": "canvas",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/geometry-grid-screens",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/geometry-document-screens"
+  },
+  "environment": {
+    "CI": "true",
+    "GEOMETRY_BROWSER_SUITE": "canvas",
+    "GEOMETRY_CHROME": "/workspace/geo261-environment/bin/google-chrome",
+    "GEOMETRY_CHROME_FLAGS": "--no-sandbox",
+    "GEOMETRY_DOCUMENT_SCREENSHOT_DIR": "/tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas/geometry-document-screens",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas/geometry-integration-feedback",
+    "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas/geometry-grid-screens",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:19081/",
+    "GITHUB_ACTIONS": "true",
+    "GITHUB_SHA": "0da1f08c75a411442a2e4a431e72459563b8b9a2",
+    "GITHUB_WORKSPACE": "/workspace/geometry-axiom",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "RUNNER_OS": "Linux",
+    "TERM": "dumb",
+    "TMPDIR": "/tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data"
+  },
+  "cleared_inherited_geometry_names": [],
+  "platform": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "python_driver": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "python_driver_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "logical_cpus": 5,
+    "pyyaml": "6.0.3"
+  },
+  "temporary_directory": "/tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas",
+  "server_port": 19081,
+  "ci_timeout_minutes": 35,
+  "watchdog_factor": 3,
+  "versions": [
+    {
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T09:13:33.918799+00:00",
+      "stdout": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/0.stdout",
+      "stderr": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/0.stderr",
+      "combined": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/0.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T09:13:33.981744+00:00",
+      "seconds": 0.06294901499995831,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T09:13:33.982009+00:00",
+      "stdout": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/1.stdout",
+      "stderr": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/1.stderr",
+      "combined": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/1.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T09:13:33.989087+00:00",
+      "seconds": 0.0070856810002624115,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T09:13:33.989335+00:00",
+      "stdout": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/2.stdout",
+      "stderr": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/2.stderr",
+      "combined": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/2.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T09:13:33.991099+00:00",
+      "seconds": 0.0017659310001363338,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T09:13:33.991223+00:00",
+      "stdout": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/3.stdout",
+      "stderr": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/3.stderr",
+      "combined": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/3.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T09:13:33.992594+00:00",
+      "seconds": 0.0013723530000788742,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "started": "2026-10-22T09:13:33.992796+00:00",
+      "stdout": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/4.stdout",
+      "stderr": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/4.stderr",
+      "combined": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/versions/4.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-22T09:13:34.006415+00:00",
+      "seconds": 0.013626234000184922,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    }
+  ],
+  "steps": [
+    {
+      "index": 0,
+      "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "original_step": {
+        "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "with": {
+          "persist-credentials": false
+        }
+      },
+      "outcome": "以現有乾淨固定 SHA checkout 取代，未執行 GitHub action"
+    },
+    {
+      "index": 1,
+      "name": "Build current native executables",
+      "original_step": {
+        "name": "Build current native executables",
+        "run": "npm run build"
+      },
+      "original_run": "npm run build",
+      "executed_run": "npm run build",
+      "script_sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef",
+      "result": {
+        "command": [
+          "bash",
+          "-e",
+          "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/01.executed.sh"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "started": "2026-10-22T09:13:34.007226+00:00",
+        "stdout": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/01.stdout",
+        "stderr": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/01.stderr",
+        "combined": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/01.combined.log",
+        "timeout_seconds": 6299.817220782001,
+        "ended": "2026-10-22T09:14:25.525040+00:00",
+        "seconds": 51.51785267000014,
+        "actual_process_returncode": 0,
+        "exit_code": 0,
+        "watchdog_expired": false,
+        "owned_process_group_cleanup": false
+      },
+      "outcome": "成功"
+    },
+    {
+      "index": 2,
+      "name": "Install Chinese fonts for visual verification",
+      "original_step": {
+        "name": "Install Chinese fonts for visual verification",
+        "run": "sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update\nsudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk\n"
+      },
+      "original_run": "sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update\nsudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk\n",
+      "executed_run": "sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update\nsudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk\n",
+      "script_sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+      "outcome": "必要套件已安裝；未重複執行原 apt 指令",
+      "packages": [
+        "fonts-noto-cjk"
+      ],
+      "checks": [
+        {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${Status} ${Version}\n",
+            "fonts-noto-cjk"
+          ],
+          "cwd": "/workspace/geometry-axiom",
+          "started": "2026-10-22T09:14:25.525895+00:00",
+          "stdout": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/02-package-0.stdout",
+          "stderr": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/02-package-0.stderr",
+          "combined": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/02-package-0.combined.log",
+          "timeout_seconds": 30,
+          "ended": "2026-10-22T09:14:25.537791+00:00",
+          "seconds": 0.01190731999986383,
+          "actual_process_returncode": 0,
+          "exit_code": 0,
+          "watchdog_expired": false,
+          "owned_process_group_cleanup": false
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "name": "Run actual browser regression group",
+      "original_step": {
+        "name": "Run actual browser regression group",
+        "shell": "bash",
+        "run": "ulimit -s 16384\ntest -x \"$GEOMETRY_CHROME\"\n# WSL canvas wait trace\n# Clear inherited flags for all other jobs.\nunset GEOMETRY_WAIT_TRACE\nunset GEOMETRY_WAIT_TRACE_RUN_ID\ncase \"$GEOMETRY_BROWSER_SUITE:$(uname -r)\" in\n  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;\nesac\nif [ \"${GEOMETRY_WAIT_TRACE-}\" = 1 ]; then\n  export GEOMETRY_WAIT_TRACE_RUN_ID=\"$(python3 geometry-web/prepare_wait_trace.py)\"\nfi\nif [ -n \"${GITHUB_ENV-}\" ]; then\n  printf 'GEOMETRY_WAIT_TRACE=%s\\n' \"${GEOMETRY_WAIT_TRACE-}\" >> \"$GITHUB_ENV\"\nfi\npython3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &\nserver=$!\ncleanup() {\n  original_status=$?\n  set +e\n  kill \"$server\" 2>/dev/null || true\n  wait \"$server\" 2>/dev/null || true\n  if [ \"$GEOMETRY_BROWSER_SUITE\" = canvas ]; then\n    python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact\n    archive_status=$?\n    if [ \"$original_status\" -eq 0 ] && [ \"$archive_status\" -ne 0 ]; then original_status=$archive_status; fi\n  fi\n  exit \"$original_status\"\n}\ntrap cleanup EXIT\nfor attempt in $(seq 1 30); do\n  if ! kill -0 \"$server\" 2>/dev/null; then\n    cat /tmp/geometry-integration-server.log\n    exit 1\n  fi\n  if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi\n  sleep 1\ndone\npython3 geometry-web/runtime_version.py --probe 18839\n# Independent matrix jobs expose each result promptly. They use\n# separate runners/servers and do not cancel siblings on failure.\n# The full canvas run retains its strict golden comparison.\nset +e\ncase \"$GEOMETRY_BROWSER_SUITE\" in\n  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;\n  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;\n  canvas) node geometry-web/cdp_test.js ;;\n  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;\n  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;\n  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;\n  *) echo \"Unknown browser suite\"; exit 2 ;;\nesac\nstatus=$?\ncat /tmp/geometry-integration-server.log\nexit \"$status\"\n"
+      },
+      "original_run": "ulimit -s 16384\ntest -x \"$GEOMETRY_CHROME\"\n# WSL canvas wait trace\n# Clear inherited flags for all other jobs.\nunset GEOMETRY_WAIT_TRACE\nunset GEOMETRY_WAIT_TRACE_RUN_ID\ncase \"$GEOMETRY_BROWSER_SUITE:$(uname -r)\" in\n  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;\nesac\nif [ \"${GEOMETRY_WAIT_TRACE-}\" = 1 ]; then\n  export GEOMETRY_WAIT_TRACE_RUN_ID=\"$(python3 geometry-web/prepare_wait_trace.py)\"\nfi\nif [ -n \"${GITHUB_ENV-}\" ]; then\n  printf 'GEOMETRY_WAIT_TRACE=%s\\n' \"${GEOMETRY_WAIT_TRACE-}\" >> \"$GITHUB_ENV\"\nfi\npython3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &\nserver=$!\ncleanup() {\n  original_status=$?\n  set +e\n  kill \"$server\" 2>/dev/null || true\n  wait \"$server\" 2>/dev/null || true\n  if [ \"$GEOMETRY_BROWSER_SUITE\" = canvas ]; then\n    python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact\n    archive_status=$?\n    if [ \"$original_status\" -eq 0 ] && [ \"$archive_status\" -ne 0 ]; then original_status=$archive_status; fi\n  fi\n  exit \"$original_status\"\n}\ntrap cleanup EXIT\nfor attempt in $(seq 1 30); do\n  if ! kill -0 \"$server\" 2>/dev/null; then\n    cat /tmp/geometry-integration-server.log\n    exit 1\n  fi\n  if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi\n  sleep 1\ndone\npython3 geometry-web/runtime_version.py --probe 18839\n# Independent matrix jobs expose each result promptly. They use\n# separate runners/servers and do not cancel siblings on failure.\n# The full canvas run retains its strict golden comparison.\nset +e\ncase \"$GEOMETRY_BROWSER_SUITE\" in\n  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;\n  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;\n  canvas) node geometry-web/cdp_test.js ;;\n  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;\n  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;\n  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;\n  *) echo \"Unknown browser suite\"; exit 2 ;;\nesac\nstatus=$?\ncat /tmp/geometry-integration-server.log\nexit \"$status\"\n",
+      "executed_run": "ulimit -s 16384\ntest -x \"$GEOMETRY_CHROME\"\n# WSL canvas wait trace\n# Clear inherited flags for all other jobs.\nunset GEOMETRY_WAIT_TRACE\nunset GEOMETRY_WAIT_TRACE_RUN_ID\ncase \"$GEOMETRY_BROWSER_SUITE:$(uname -r)\" in\n  canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;\nesac\nif [ \"${GEOMETRY_WAIT_TRACE-}\" = 1 ]; then\n  export GEOMETRY_WAIT_TRACE_RUN_ID=\"$(python3 geometry-web/prepare_wait_trace.py)\"\nfi\nif [ -n \"${GITHUB_ENV-}\" ]; then\n  printf 'GEOMETRY_WAIT_TRACE=%s\\n' \"${GEOMETRY_WAIT_TRACE-}\" >> \"$GITHUB_ENV\"\nfi\npython3 -u geometry-web/start_local.py --port 19081 > /tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas/geometry-integration-server.log 2>&1 &\nserver=$!\ncleanup() {\n  original_status=$?\n  set +e\n  kill \"$server\" 2>/dev/null || true\n  wait \"$server\" 2>/dev/null || true\n  if [ \"$GEOMETRY_BROWSER_SUITE\" = canvas ]; then\n    python3 geometry-web/archive_wait_trace.py /tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas/geometry-wait-trace-artifact\n    archive_status=$?\n    if [ \"$original_status\" -eq 0 ] && [ \"$archive_status\" -ne 0 ]; then original_status=$archive_status; fi\n  fi\n  exit \"$original_status\"\n}\ntrap cleanup EXIT\nfor attempt in $(seq 1 30); do\n  if ! kill -0 \"$server\" 2>/dev/null; then\n    cat /tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas/geometry-integration-server.log\n    exit 1\n  fi\n  if python3 geometry-web/runtime_version.py --probe 19081 > /dev/null 2>&1; then break; fi\n  sleep 1\ndone\npython3 geometry-web/runtime_version.py --probe 19081\n# Independent matrix jobs expose each result promptly. They use\n# separate runners/servers and do not cancel siblings on failure.\n# The full canvas run retains its strict golden comparison.\nset +e\ncase \"$GEOMETRY_BROWSER_SUITE\" in\n  assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;\n  grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;\n  canvas) node geometry-web/cdp_test.js ;;\n  space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;\n  timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;\n  documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;\n  *) echo \"Unknown browser suite\"; exit 2 ;;\nesac\nstatus=$?\ncat /tmp/geo261-cloud-0da1f08c-20261022T0827/tmp/seven-final/canvas/geometry-integration-server.log\nexit \"$status\"\n",
+      "script_sha256": "08ca58a86e06f2979bd9517ad28a85abddc406b23e1f9e994c0f08049132236c",
+      "result": {
+        "command": [
+          "bash",
+          "--noprofile",
+          "--norc",
+          "-eo",
+          "pipefail",
+          "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/03.executed.sh"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "started": "2026-10-22T09:14:25.538676+00:00",
+        "stdout": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/03.stdout",
+        "stderr": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/03.stderr",
+        "combined": "/tmp/geo261-cloud-0da1f08c-20261022T0827/seven-final/canvas/steps/03.combined.log",
+        "timeout_seconds": 6248.285766601,
+        "ended": "2026-10-22T09:34:37.866557+00:00",
+        "seconds": 1212.327893217,
+        "actual_process_returncode": 1,
+        "exit_code": 1,
+        "watchdog_expired": false,
+        "owned_process_group_cleanup": false
+      },
+      "outcome": "失敗"
+    },
+    {
+      "index": 4,
+      "name": "Preserve canvas wait trace",
+      "original_step": {
+        "name": "Preserve canvas wait trace",
+        "if": "always() && matrix.suite == 'canvas'",
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "with": {
+          "name": "canvas-wait-trace",
+          "path": "/tmp/geometry-wait-trace-artifact/",
+          "if-no-files-found": "error",
+          "retention-days": 7
+        }
+      },
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "condition_applies": true,
+      "saved_artifacts": [
+        "artifacts/04/geometry-wait-trace-artifact"
+      ]
+    },
+    {
+      "index": 5,
+      "name": "Preserve assembly authoring screenshots",
+      "original_step": {
+        "name": "Preserve assembly authoring screenshots",
+        "if": "always() && matrix.suite == 'assembly'",
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "with": {
+          "name": "assembly-review-screens",
+          "path": "/tmp/geometry-tests/assembly-*.png",
+          "if-no-files-found": "ignore",
+          "retention-days": 7
+        }
+      },
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "condition_applies": false,
+      "saved_artifacts": []
+    },
+    {
+      "index": 6,
+      "name": "Preserve grid trial screenshots",
+      "original_step": {
+        "name": "Preserve grid trial screenshots",
+        "if": "always() && (matrix.suite == 'grid' || matrix.suite == 'canvas')",
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "with": {
+          "name": "grid-trial-screens-${{ matrix.suite }}",
+          "path": "/tmp/geometry-grid-screens/grid-trial-*.png",
+          "if-no-files-found": "ignore",
+          "retention-days": 7
+        }
+      },
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "condition_applies": true,
+      "saved_artifacts": [
+        "artifacts/06/grid-trial-desktop.png",
+        "artifacts/06/grid-trial-mobile-alignment.png",
+        "artifacts/06/grid-trial-mobile-canvas.png",
+        "artifacts/06/grid-trial-mobile-controls.png"
+      ]
+    },
+    {
+      "index": 7,
+      "name": "Preserve document reader screenshots",
+      "original_step": {
+        "name": "Preserve document reader screenshots",
+        "if": "always() && matrix.suite == 'documents'",
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "with": {
+          "name": "document-reader-screens",
+          "path": "/tmp/geometry-document-screens/*.png",
+          "if-no-files-found": "ignore",
+          "retention-days": 7
+        }
+      },
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "condition_applies": false,
+      "saved_artifacts": []
+    }
+  ],
+  "notes": [
+    "逐項串行，任何失敗都不自動重跑；沒有 flaky 豁免。",
+    "原 run 僅替換矩陣、/tmp 路徑及服務埠；Chrome 路徑另明列環境覆寫。",
+    "stdout/stderr 分別保留原始 bytes；combined 檔只作閱讀。"
+  ],
+  "checkout_after": {
+    "head": "0da1f08c75a411442a2e4a431e72459563b8b9a2",
+    "root": "/workspace/geometry-axiom",
+    "status": ""
+  },
+  "ended": "2026-10-22T09:34:37.958208+00:00",
+  "seconds": 1264.1337951950004,
+  "over_ci_timeout": false,
+  "files": {
+    "artifacts/04/geometry-wait-trace-artifact/receipt.json": {
+      "bytes": 436,
+      "sha256": "7aaa7e2176e86164b9d24a3639e54f9a34f3d4474a645731e9367e5e2d75bc0e",
+      "mtime_ns": 1792661677861206137
+    },
+    "artifacts/06/grid-trial-desktop.png": {
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b",
+      "mtime_ns": 1792661316941654484
+    },
+    "artifacts/06/grid-trial-mobile-alignment.png": {
+      "bytes": 57264,
+      "sha256": "128ff3af1aeac0ffc6bcf6380447927c7e878130246706f6925dfe984510cb60",
+      "mtime_ns": 1792661315781627288
+    },
+    "artifacts/06/grid-trial-mobile-canvas.png": {
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8",
+      "mtime_ns": 1792661316017632821
+    },
+    "artifacts/06/grid-trial-mobile-controls.png": {
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543",
+      "mtime_ns": 1792661315513621008
+    },
+    "driver.py.txt": {
+      "bytes": 20249,
+      "sha256": "d8468e82703765b0ae2f5a1fc4c437dffb39d7ea8ccbb1e4da3ba61289dcb34a",
+      "mtime_ns": 1792660413910785459
+    },
+    "steps/01.combined.log": {
+      "bytes": 1533,
+      "sha256": "b824eec222fbdefe0fd2597cfd0ad79fec530220fdabdcc18bdd2dfe20c8a67b",
+      "mtime_ns": 1792660465505893906
+    },
+    "steps/01.command.json": {
+      "bytes": 740,
+      "sha256": "36426711e49154120afbe9ae306b56d23543957c9d2b0c90000125b3d4e4d26d",
+      "mtime_ns": 1792660465525276104
+    },
+    "steps/01.executed.sh": {
+      "bytes": 14,
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef",
+      "mtime_ns": 1792660414006997593
+    },
+    "steps/01.original.sh.txt": {
+      "bytes": 13,
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054",
+      "mtime_ns": 1792660414006981929
+    },
+    "steps/01.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792660414006997593
+    },
+    "steps/01.stdout": {
+      "bytes": 1533,
+      "sha256": "b824eec222fbdefe0fd2597cfd0ad79fec530220fdabdcc18bdd2dfe20c8a67b",
+      "mtime_ns": 1792660465505893906
+    },
+    "steps/02-package-0.combined.log": {
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+      "mtime_ns": 1792660465533894563
+    },
+    "steps/02-package-0.command.json": {
+      "bytes": 730,
+      "sha256": "9174f5ebb2a19d98f07f2319d761e533c975212d3b68150bcd16c8af8723d058",
+      "mtime_ns": 1792660465537957920
+    },
+    "steps/02-package-0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792660465525706833
+    },
+    "steps/02-package-0.stdout": {
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+      "mtime_ns": 1792660465533894563
+    },
+    "steps/02.executed.sh": {
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+      "mtime_ns": 1792660465525706833
+    },
+    "steps/02.original.sh.txt": {
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+      "mtime_ns": 1792660465525690368
+    },
+    "steps/03.combined.log": {
+      "bytes": 423746,
+      "sha256": "e9c2d7bedf3c1e8c98299b47015d652952d7f3fdd663ab8a023c0e4127858c16",
+      "mtime_ns": 1792661677861206137
+    },
+    "steps/03.command.json": {
+      "bytes": 784,
+      "sha256": "5053405d3e4bea1583557f00cc5520f2ce70d0cc4a1ca93bbf84c3b0b7216532",
+      "mtime_ns": 1792661677866936433
+    },
+    "steps/03.executed.sh": {
+      "bytes": 2420,
+      "sha256": "08ca58a86e06f2979bd9517ad28a85abddc406b23e1f9e994c0f08049132236c",
+      "mtime_ns": 1792660465538598686
+    },
+    "steps/03.original.sh.txt": {
+      "bytes": 2184,
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f",
+      "mtime_ns": 1792660465538579006
+    },
+    "steps/03.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792660465538598686
+    },
+    "steps/03.stdout": {
+      "bytes": 423746,
+      "sha256": "e9c2d7bedf3c1e8c98299b47015d652952d7f3fdd663ab8a023c0e4127858c16",
+      "mtime_ns": 1792661677861206137
+    },
+    "versions/0.combined.log": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792660413976685846
+    },
+    "versions/0.command.json": {
+      "bytes": 661,
+      "sha256": "0754b481281bfafd33aa61fef26bb56a12b7d3b0837d85f9fd1a8960523a580e",
+      "mtime_ns": 1792660413981928609
+    },
+    "versions/0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792660413918749578
+    },
+    "versions/0.stdout": {
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+      "mtime_ns": 1792660413976685846
+    },
+    "versions/1.combined.log": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792660413984686034
+    },
+    "versions/1.command.json": {
+      "bytes": 654,
+      "sha256": "309850f18c2242e31cbf0a178521c157bc4d314823303d001a4e134f78924e79",
+      "mtime_ns": 1792660413989267371
+    },
+    "versions/1.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792660413982021479
+    },
+    "versions/1.stdout": {
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "mtime_ns": 1792660413984686034
+    },
+    "versions/2.combined.log": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792660413991016065
+    },
+    "versions/2.command.json": {
+      "bytes": 657,
+      "sha256": "a8e463649eefe11e32fcfa39bc92451edb973cda1f205152387440d1a70c4d97",
+      "mtime_ns": 1792660413991171479
+    },
+    "versions/2.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792660413989352929
+    },
+    "versions/2.stdout": {
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "mtime_ns": 1792660413989352929
+    },
+    "versions/3.combined.log": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792660413992535820
+    },
+    "versions/3.command.json": {
+      "bytes": 652,
+      "sha256": "febc595ef527215d5360c866c5797d02c549233b844aac2f103338546c88b188",
+      "mtime_ns": 1792660413992663222
+    },
+    "versions/3.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792660413991238110
+    },
+    "versions/3.stdout": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "mtime_ns": 1792660413991238110
+    },
+    "versions/4.combined.log": {
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+      "mtime_ns": 1792660414000686409
+    },
+    "versions/4.command.json": {
+      "bytes": 707,
+      "sha256": "c99c4a789314a63fe6e93f9ddbee5fce37e62e1646e0aefc48a8d5f185d25063",
+      "mtime_ns": 1792660414006582658
+    },
+    "versions/4.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1792660413992813088
+    },
+    "versions/4.stdout": {
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+      "mtime_ns": 1792660414000686409
+    },
+    "workflow.yml.txt": {
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+      "mtime_ns": 1792660413910725148
+    }
+  }
+}

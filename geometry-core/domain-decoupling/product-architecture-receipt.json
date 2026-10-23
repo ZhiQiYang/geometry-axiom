@@ -1,6 +1,6 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "headBinding": "來源 closure 排除四份衍生稽核產物；後續僅稽核產物提交不會遞迴改變受驗產品來源。所有本輪命令的 sourceBaseHead 均為實際固定來源。",
+  "headBinding": "四份衍生產物排除於來源closure；原來源HEAD／完整inputs／原裁判前後不變。新三裁判在外部同bytes完整驗證樹執行，cwd如實記錄，不冒稱該樹獨立Git SHA。",
   "hashMode": "sha256 after CRLF-to-LF normalization",
   "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for the path-sorted inputs array, with ensure_ascii=false and separators=(comma,colon); each entry has path then sha256, and no trailing newline.",
   "inputClosureExcludes": [
@@ -9,26 +9,27 @@
     "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
     "geometry-core/domain-decoupling/product-architecture-receipt.json"
   ],
-  "inputClosureExclusionReason": "四份非執行性衍生稽核產物不屬產品來源；manifest、scan、report 分別雜湊，receipt 不雜湊自己。",
+  "inputClosureExclusionReason": "四份非執行性衍生稽核產物不屬產品來源；manifest、scan、report分別雜湊，receipt不雜湊自身。",
   "notClaimed": [
-    "native 編譯或執行",
+    "native編譯或執行",
     "runtime import blocker",
-    "完整 JavaScript dataflow 證明",
+    "完整JavaScript dataflow證明",
     "vendor internals",
-    "mutation ledger 執行或新鮮度",
+    "mutation帳本新鮮度或重產",
     "瀏覽器與所有專項驗收",
-    "未來變更的來源"
+    "Windows supplemental probes",
+    "未來來源"
   ],
-  "createdUtc": "2026-10-22T23:46:21.971243+00:00",
-  "basis": "乾淨固定 Git HEAD 與獨立完整 inventory，原三條架構裁判在同一來源實際執行。",
-  "sourceBaseHead": "b7ca7843532098c4d3433035cde8dc2c43654978",
-  "headObservedBefore": "b7ca7843532098c4d3433035cde8dc2c43654978",
-  "headObservedAfter": "b7ca7843532098c4d3433035cde8dc2c43654978",
-  "manifestSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
+  "createdUtc": "2026-10-23T05:18:52.600017+00:00",
+  "basis": "乾淨固定HEAD、獨立完整inventory、原三preflight與只更新六digest的外部完整驗證樹三原裁判。",
+  "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+  "headObservedBefore": "f79aa057521929597a9af4b204b709110414ac03",
+  "headObservedAfter": "f79aa057521929597a9af4b204b709110414ac03",
+  "manifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-  "scanSha256": "b3cadf7c08f6ffff39d9eae22905b8c9513b7429f3cefefac0490aedf9c97f81",
-  "reportSha256": "1f9544a7a982b3a58d9ce22aa5490032e7b6e2811598a1dcc5ef68c32cd63e51",
-  "inputClosureSha256": "4d093892d729bc7e38d6866777eb088d468d09833565a8c5dae90c0da038edad",
+  "scanSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+  "reportSha256": "a18fa286ec77d58a226c444629a5c47a9bdb42f8bdad51f8c57c301c220e0843",
+  "inputClosureSha256": "f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4",
   "counts": {
     "executableFiles": 601,
     "ownedSources": 333,
@@ -47,129 +48,666 @@
       "javascript": 64,
       "python": 75
     },
-    "forbiddenIdentifiers": 918,
+    "forbiddenIdentifiers": 920,
     "forbiddenStrings": 55
   },
   "manifestRefresh": {
-    "previousManifestSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
-    "previousReceiptSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
-    "previousScanSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-    "previousReportSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
-    "previousReceiptCreatedUtc": "2026-10-20T11:26:02.875198+00:00",
-    "previousSourceBaseHead": "96ade86bdb5fbcdad581b36afdd180a96fca7999",
-    "previousReceiptCommit": "ec1238cd62c7155a44ecf3fb071e605aeee8ac48",
-    "firstObservedHead": "b7ca7843532098c4d3433035cde8dc2c43654978",
+    "previousManifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
+    "previousReceiptSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb",
+    "previousScanSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+    "previousReportSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878",
+    "previousReceiptCreatedUtc": "2026-10-22T19:48:44.306176+00:00",
+    "previousSourceBaseHead": "55b9fb6479485361d9e2283a95e4355f5fca76db",
+    "previousReceiptCommit": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+    "firstObservedHead": "f79aa057521929597a9af4b204b709110414ac03",
     "previousOutputsPreserved": {
-      "directory": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous",
+      "directory": "/tmp/g288ax/refresh/previous",
       "hashes": {
         "product-architecture.json": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous/product-architecture.json",
-          "bytes": 219913,
-          "rawSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
-          "lfSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30"
+          "path": "/tmp/g288ax/refresh/previous/product-architecture.json",
+          "bytes": 220000,
+          "rawSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
+          "lfSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
         },
         "product-architecture-scan.json": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous/product-architecture-scan.json",
-          "bytes": 132208,
-          "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-          "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+          "path": "/tmp/g288ax/refresh/previous/product-architecture-scan.json",
+          "bytes": 132209,
+          "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+          "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous/PRODUCT-ARCHITECTURE.md",
-          "bytes": 23761,
-          "rawSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
-          "lfSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3"
+          "path": "/tmp/g288ax/refresh/previous/PRODUCT-ARCHITECTURE.md",
+          "bytes": 35607,
+          "rawSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878",
+          "lfSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878"
         },
         "product-architecture-receipt.json": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous/product-architecture-receipt.json",
-          "bytes": 160974,
-          "rawSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
-          "lfSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85"
+          "path": "/tmp/g288ax/refresh/previous/product-architecture-receipt.json",
+          "bytes": 120581,
+          "rawSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb",
+          "lfSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb"
         }
       }
     },
     "lastSealedOutputsReadFromGit": {
-      "commit": "ec1238cd62c7155a44ecf3fb071e605aeee8ac48",
-      "directory": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous-from-git",
+      "commit": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+      "directory": "/tmp/g288ax/refresh/previous-from-git",
       "hashes": {
         "product-architecture.json": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous-from-git/product-architecture.json",
-          "bytes": 219913,
-          "rawSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
-          "lfSha256": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30"
+          "path": "/tmp/g288ax/refresh/previous-from-git/product-architecture.json",
+          "bytes": 220000,
+          "rawSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
+          "lfSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6"
         },
         "product-architecture-scan.json": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous-from-git/product-architecture-scan.json",
-          "bytes": 132208,
-          "rawSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6",
-          "lfSha256": "a107ce7ceff08edede8b0c3c963837f19518d8d9d66ab6014212025fa212d3a6"
+          "path": "/tmp/g288ax/refresh/previous-from-git/product-architecture-scan.json",
+          "bytes": 132209,
+          "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+          "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
         },
         "PRODUCT-ARCHITECTURE.md": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous-from-git/PRODUCT-ARCHITECTURE.md",
-          "bytes": 23761,
-          "rawSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3",
-          "lfSha256": "caf4a62196a2612c4ac80bac5cf90b5622324ce6528b28a165df6de0060b54b3"
+          "path": "/tmp/g288ax/refresh/previous-from-git/PRODUCT-ARCHITECTURE.md",
+          "bytes": 35607,
+          "rawSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878",
+          "lfSha256": "97b0c3768d054a5569f8348b518b10a7010472ec9836d5d19488b2e180d29878"
         },
         "product-architecture-receipt.json": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/previous-from-git/product-architecture-receipt.json",
-          "bytes": 160974,
-          "rawSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85",
-          "lfSha256": "49e0ee01649d947aea1bfcefae60ce8f2292ca77dd73b1f14dbd4c3466381c85"
+          "path": "/tmp/g288ax/refresh/previous-from-git/product-architecture-receipt.json",
+          "bytes": 120581,
+          "rawSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb",
+          "lfSha256": "a56b91051dcea0744fc32577ba54b20d7bb12f813fc99de1bc22a7c6779125cb"
         }
       },
-      "note": "舊四檔逐一從上一份receipt產物commit讀回Git blobs；scan/report/receipt與P現檔比LF hash，P manifest如已合法登錄新項則另記exact delta而不假稱等舊manifest。兩份raw分開保全，不改寫舊驗收。"
+      "note": "先驗目前舊四檔等原sealed receipt，再逐一從上份產物Git commit取blob比LF hash；本次HEAD四檔blob也比同，不以新manifest偷換舊guard。"
     },
-    "headManifestSha256Before": "d01c951fc1cc5c86587260c0dd952b42544525c9a2d41fac5284c3cf4c4bff30",
+    "headManifestSha256Before": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
     "addedSources": [],
     "addedExclusions": [],
-    "updatedExclusions": [],
+    "updatedExclusions": [
+      {
+        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+        "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
+        "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+        "hashMode": "lf",
+        "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
+        "rawSha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+        "gitBlobOid": "551e138e9810c7e6c63adfcf10724c1d914fccf6"
+      },
+      {
+        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+        "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
+        "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
+        "hashMode": "lf",
+        "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
+        "rawSha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
+        "gitBlobOid": "bf62e7245c3987553d934a21e9f59857c0aadcfe"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+        "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
+        "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
+        "hashMode": "lf",
+        "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
+        "rawSha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
+        "gitBlobOid": "47b33182e9ed5a80ddd559dde94a7d8f976aebe9"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/make_golden.py",
+        "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
+        "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
+        "hashMode": "lf",
+        "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
+        "rawSha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
+        "gitBlobOid": "6a4364ce72f68abf779f6ef1d0a57ec4200e76f0"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/render.py",
+        "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
+        "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
+        "hashMode": "lf",
+        "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
+        "rawSha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
+        "gitBlobOid": "bb4a11573a21b7ae09f5e5de88fbd2696cc222fb"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/selftest.py",
+        "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
+        "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+        "hashMode": "lf",
+        "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
+        "rawSha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+        "gitBlobOid": "1a77e8837afc736372ad5e539d2a6e2134303325"
+      }
+    ],
     "newInputs": [],
     "changedPreviouslySealedInputs": [
       {
-        "path": "current_geometry.c",
-        "previousSha256": "c58bee9df0fce6b8e881850c0bf28680000bcb690dfca7a5e911aa9b3217df87",
-        "sha256": "831961eeab6fae609b790316670face7c703597d48b2b6e27009c850a0c28260"
+        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+        "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
+        "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930"
       },
       {
-        "path": "geometry-app/native/reference_sources.inc",
-        "previousSha256": "3695ab9844a80cf0041d2a6a67e2be96bf6ecbcd59709759d1add4822b70077c",
-        "sha256": "cfed3147885103d68b1f3c6e6caeaca02f3157d0da062507c270ad96af981eda"
+        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+        "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
+        "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1"
       },
       {
-        "path": "geometry-app/native/world_validation.inc",
-        "previousSha256": "673bbab71f1dc6c59960dd3764c7c367223fc57ad2ef2dae0e842637d993eddc",
-        "sha256": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6"
+        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+        "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
+        "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1"
       },
       {
-        "path": "geometry-core/references.inc",
-        "previousSha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac",
-        "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+        "path": "geometry-core/framing-template/oracle/make_golden.py",
+        "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
+        "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb"
       },
       {
-        "path": "geometry-templates/woodworking/native/contact_sources.c",
-        "previousSha256": "ea0fa63d05f9abac1a11ac4f780a2f3a1e10f8aea502df1fa7e7eb1aa681f659",
-        "sha256": "5792a3e8d9a467547f4ebfdcc88f7bab04f5c994382cdb51d5ad0b80a249b933"
+        "path": "geometry-core/framing-template/oracle/render.py",
+        "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
+        "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/selftest.py",
+        "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
+        "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f"
       }
     ],
     "allowedChangedInputs": [
-      "current_geometry.c",
-      "geometry-app/native/reference_sources.inc",
-      "geometry-app/native/world_validation.inc",
-      "geometry-core/references.inc",
-      "geometry-templates/woodworking/native/contact_sources.c"
+      "geometry-core/framing-template/core-probe/gen_scenes.py",
+      "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+      "geometry-core/framing-template/oracle/framing_oracle.py",
+      "geometry-core/framing-template/oracle/make_golden.py",
+      "geometry-core/framing-template/oracle/render.py",
+      "geometry-core/framing-template/oracle/selftest.py"
     ],
-    "staleExcludedVendorOrEmbedDigestsBefore": [],
+    "staleExcludedVendorOrEmbedDigestsBefore": [
+      {
+        "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+        "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
+        "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930"
+      },
+      {
+        "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+        "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
+        "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+        "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
+        "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/make_golden.py",
+        "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
+        "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/render.py",
+        "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
+        "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe"
+      },
+      {
+        "path": "geometry-core/framing-template/oracle/selftest.py",
+        "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
+        "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f"
+      }
+    ],
     "staleExcludedVendorOrEmbedDigestsAfter": [],
-    "digestEvidence": "沿原 manifest 執行 scanner exit0；不更新 vendor、excluded 或 iframe driver/router digest 來掩蓋失效。",
-    "classificationNote": "不自動改manifest；P已明確登記的新來源及既有exclusion digest更新完整記錄，禁止移除來源／改既有分類／政策／roots／routes／vendor trust。",
-    "manifestDelta": {
+    "digestEvidence": {
+      "updatedExclusions": [
+        {
+          "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+          "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
+          "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+          "hashMode": "lf",
+          "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
+          "rawSha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+          "gitBlobOid": "551e138e9810c7e6c63adfcf10724c1d914fccf6"
+        },
+        {
+          "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+          "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
+          "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
+          "hashMode": "lf",
+          "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
+          "rawSha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
+          "gitBlobOid": "bf62e7245c3987553d934a21e9f59857c0aadcfe"
+        },
+        {
+          "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+          "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
+          "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
+          "hashMode": "lf",
+          "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
+          "rawSha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
+          "gitBlobOid": "47b33182e9ed5a80ddd559dde94a7d8f976aebe9"
+        },
+        {
+          "path": "geometry-core/framing-template/oracle/make_golden.py",
+          "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
+          "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
+          "hashMode": "lf",
+          "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
+          "rawSha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
+          "gitBlobOid": "6a4364ce72f68abf779f6ef1d0a57ec4200e76f0"
+        },
+        {
+          "path": "geometry-core/framing-template/oracle/render.py",
+          "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
+          "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
+          "hashMode": "lf",
+          "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
+          "rawSha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
+          "gitBlobOid": "bb4a11573a21b7ae09f5e5de88fbd2696cc222fb"
+        },
+        {
+          "path": "geometry-core/framing-template/oracle/selftest.py",
+          "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
+          "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+          "hashMode": "lf",
+          "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
+          "rawSha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+          "gitBlobOid": "1a77e8837afc736372ad5e539d2a6e2134303325"
+        }
+      ],
       "addedSources": [],
       "addedExclusions": [],
-      "updatedExclusions": [],
-      "forbiddenChanges": [],
-      "automaticEdits": false
+      "allOtherManifestFieldsEqual": true,
+      "allPolicyFieldsEqual": true,
+      "byteChangeMethod": "replace exactly six unique existing digest strings; preserve all other manifest bytes",
+      "beforeManifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
+      "afterManifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b"
     },
-    "changedInputScope": "由固定P與上一份真sealed inputs計算完整差異，非舊P73單檔allowlist。",
+    "policyDelta": {
+      "addedIdentifiers": [],
+      "removedIdentifiers": [],
+      "addedStrings": [],
+      "removedStrings": [],
+      "identifiersBefore": 920,
+      "identifiersAfter": 920,
+      "stringsBefore": 55,
+      "stringsAfter": 55,
+      "allOtherManifestFieldsEqual": true,
+      "allPolicyFieldsEqual": true,
+      "manifestByteUnchanged": false,
+      "onlySixExistingExclusionSha256Changed": true
+    },
+    "originalManifestPreflight": [
+      {
+        "label": "original-scan",
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/architecture_contract.py",
+          "--root",
+          ".",
+          "--manifest",
+          "geometry-core/domain-decoupling/product-architecture.json"
+        ],
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/architecture_contract.py",
+          "--root",
+          ".",
+          "--manifest",
+          "geometry-core/domain-decoupling/product-architecture.json"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "exitCode": 1,
+        "complete": true,
+        "startedEpoch": 1792732713.482925,
+        "endedEpoch": 1792732713.7192173,
+        "seconds": 0.23629236221313477,
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "stdout": {
+          "path": "/tmp/g288ax/refresh/subcommands/000018/stdout.bin",
+          "bytes": 348,
+          "rawSha256": "58f39aaf326588d85d87bfeb4fa824a68505bc8771d49e607616f0129de9a955",
+          "lfSha256": "58f39aaf326588d85d87bfeb4fa824a68505bc8771d49e607616f0129de9a955"
+        },
+        "stderr": {
+          "path": "/tmp/g288ax/refresh/subcommands/000018/stderr.bin",
+          "bytes": 0,
+          "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000018/stdout.bin",
+        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000018/stderr.bin",
+        "originalCommandResult": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "tests/architecture_contract.py",
+            "--root",
+            ".",
+            "--manifest",
+            "geometry-core/domain-decoupling/product-architecture.json"
+          ],
+          "cwd": "/workspace/geometry-axiom",
+          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_variant": "fixed-source-original-architecture-command",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792732713.482925,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 1,
+          "timeout_expired": false,
+          "directory": "/tmp/g288ax/refresh/subcommands/000018",
+          "ended_epoch": 1792732713.7192173,
+          "stdout_sha256": "58f39aaf326588d85d87bfeb4fa824a68505bc8771d49e607616f0129de9a955",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 348,
+          "stderr_bytes": 0,
+          "label": "original-scan"
+        }
+      },
+      {
+        "label": "original-generic-tests",
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/test_architecture_contract.py"
+        ],
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/test_architecture_contract.py"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "exitCode": 0,
+        "complete": true,
+        "startedEpoch": 1792732713.9021468,
+        "endedEpoch": 1792732714.3963902,
+        "seconds": 0.4942433834075928,
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "stdout": {
+          "path": "/tmp/g288ax/refresh/subcommands/000021/stdout.bin",
+          "bytes": 0,
+          "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/tmp/g288ax/refresh/subcommands/000021/stderr.bin",
+          "bytes": 29577,
+          "rawSha256": "6721fcf9b1421c04f51dbc7e5b37d1c88badcee137ba44496d2b8d7f78d610cc",
+          "lfSha256": "6721fcf9b1421c04f51dbc7e5b37d1c88badcee137ba44496d2b8d7f78d610cc"
+        },
+        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000021/stdout.bin",
+        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000021/stderr.bin",
+        "originalCommandResult": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "tests/test_architecture_contract.py"
+          ],
+          "cwd": "/workspace/geometry-axiom",
+          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_variant": "fixed-source-original-architecture-command",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792732713.9021468,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 0,
+          "timeout_expired": false,
+          "directory": "/tmp/g288ax/refresh/subcommands/000021",
+          "ended_epoch": 1792732714.3963902,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "6721fcf9b1421c04f51dbc7e5b37d1c88badcee137ba44496d2b8d7f78d610cc",
+          "stdout_bytes": 0,
+          "stderr_bytes": 29577,
+          "label": "original-generic-tests"
+        }
+      },
+      {
+        "label": "original-product-tests",
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/test_product_architecture.py"
+        ],
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/test_product_architecture.py"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "exitCode": 5,
+        "complete": true,
+        "startedEpoch": 1792732714.5839262,
+        "endedEpoch": 1792732714.8238122,
+        "seconds": 0.23988604545593262,
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "stdout": {
+          "path": "/tmp/g288ax/refresh/subcommands/000024/stdout.bin",
+          "bytes": 0,
+          "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/tmp/g288ax/refresh/subcommands/000024/stderr.bin",
+          "bytes": 1344,
+          "rawSha256": "df68012c7aeed0f3b3c578744e48f7e3f4850de9aa961943748e6fdad2c4ae93",
+          "lfSha256": "df68012c7aeed0f3b3c578744e48f7e3f4850de9aa961943748e6fdad2c4ae93"
+        },
+        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000024/stdout.bin",
+        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000024/stderr.bin",
+        "originalCommandResult": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "-B",
+            "tests/test_product_architecture.py"
+          ],
+          "cwd": "/workspace/geometry-axiom",
+          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_variant": "fixed-source-original-architecture-command",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792732714.5839262,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 5,
+          "timeout_expired": false,
+          "directory": "/tmp/g288ax/refresh/subcommands/000024",
+          "ended_epoch": 1792732714.8238122,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "df68012c7aeed0f3b3c578744e48f7e3f4850de9aa961943748e6fdad2c4ae93",
+          "stdout_bytes": 0,
+          "stderr_bytes": 1344,
+          "label": "original-product-tests"
+        }
+      }
+    ],
+    "validationTree": {
+      "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+      "sourceRepository": "/workspace/geometry-axiom",
+      "validationCwd": "/tmp/g288ax/refresh/validation-tree",
+      "hasIndependentGitCheckout": false,
+      "productInputCount": 601,
+      "productInputsByteIdenticalToFrozenCheckout": true,
+      "architectureToolsByteIdentical": true,
+      "gitIdentityCheckedWithLfNormalization": true,
+      "derivedManifestOnlyDelta": {
+        "updatedExclusions": [
+          {
+            "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+            "previousSha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
+            "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+            "hashMode": "lf",
+            "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
+            "rawSha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
+            "gitBlobOid": "551e138e9810c7e6c63adfcf10724c1d914fccf6"
+          },
+          {
+            "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+            "previousSha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
+            "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
+            "hashMode": "lf",
+            "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
+            "rawSha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
+            "gitBlobOid": "bf62e7245c3987553d934a21e9f59857c0aadcfe"
+          },
+          {
+            "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+            "previousSha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6",
+            "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
+            "hashMode": "lf",
+            "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
+            "rawSha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1",
+            "gitBlobOid": "47b33182e9ed5a80ddd559dde94a7d8f976aebe9"
+          },
+          {
+            "path": "geometry-core/framing-template/oracle/make_golden.py",
+            "previousSha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
+            "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
+            "hashMode": "lf",
+            "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
+            "rawSha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb",
+            "gitBlobOid": "6a4364ce72f68abf779f6ef1d0a57ec4200e76f0"
+          },
+          {
+            "path": "geometry-core/framing-template/oracle/render.py",
+            "previousSha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
+            "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
+            "hashMode": "lf",
+            "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
+            "rawSha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
+            "gitBlobOid": "bb4a11573a21b7ae09f5e5de88fbd2696cc222fb"
+          },
+          {
+            "path": "geometry-core/framing-template/oracle/selftest.py",
+            "previousSha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766",
+            "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+            "hashMode": "lf",
+            "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
+            "rawSha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+            "gitBlobOid": "1a77e8837afc736372ad5e539d2a6e2134303325"
+          }
+        ],
+        "addedSources": [],
+        "addedExclusions": [],
+        "allOtherManifestFieldsEqual": true,
+        "allPolicyFieldsEqual": true,
+        "byteChangeMethod": "replace exactly six unique existing digest strings; preserve all other manifest bytes",
+        "beforeManifestSha256": "0731cea2b2e783d0e36c20597d6986eb62729912f2f12c9e8b1c63cf77ed35d6",
+        "afterManifestSha256": "3e24bb13b785f514e4f0e6ae6f09bcc13cab1932dffb995e5477bc0c1737fa5b"
+      },
+      "note": "新三裁判cwd是外部完整驗證樹；不冒稱該樹有獨立Git SHA。固定來源checkout前後不變，只有衍生manifest六hash不同。"
+    },
+    "classificationNote": "只更新六個既有LF exclusion digest；source/layer/reason/policy/root/route/vendor/W guard皆不改。",
     "toolChanges": []
   },
   "scanPassed": true,
@@ -184,164 +722,298 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "/tmp/g261-next323",
-    "startedUtc": "2026-10-22T23:46:02.664438+00:00",
-    "sourceBaseHead": "b7ca7843532098c4d3433035cde8dc2c43654978",
+    "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
+    "cwd": "/tmp/g288ax/refresh/validation-tree",
+    "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+    "exitCode": 0,
+    "complete": true,
+    "startedEpoch": 1792732715.3061802,
+    "endedEpoch": 1792732720.1365583,
+    "seconds": 4.83037805557251,
     "environment": {
       "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
       "LANG": "C.UTF-8",
       "LC_ALL": "C.UTF-8",
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
-      "TMPDIR": "/workspace/geo323-architecture-l-b7ca7843/refresh/tmp",
       "PYTHONOPTIMIZE": null,
-      "PYTHONPATH": null,
-      "PYTHONHOME": null,
-      "PYTHONSTARTUP": null,
-      "GITHUB_SHA": "b7ca7843532098c4d3433035cde8dc2c43654978",
-      "GITHUB_WORKSPACE": "/tmp/g261-next323",
-      "GEO261_REAPER_LOG": "/workspace/geo323-architecture-l-b7ca7843/outer/reaper.jsonl"
+      "TMPDIR": "/tmp/g288ax/refresh/tmp",
+      "CC": null,
+      "CFLAGS": null,
+      "CPPFLAGS": null,
+      "LDFLAGS": null,
+      "C_INCLUDE_PATH": null,
+      "CPATH": null,
+      "LIBRARY_PATH": null,
+      "LD_LIBRARY_PATH": null,
+      "GCC_EXEC_PREFIX": null,
+      "COMPILER_PATH": null
     },
     "stdout": {
-      "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/018-final-scan/stdout",
-      "bytes": 132208,
-      "rawSha256": "b3cadf7c08f6ffff39d9eae22905b8c9513b7429f3cefefac0490aedf9c97f81",
-      "lfSha256": "b3cadf7c08f6ffff39d9eae22905b8c9513b7429f3cefefac0490aedf9c97f81"
+      "path": "/tmp/g288ax/refresh/subcommands/000029/stdout.bin",
+      "bytes": 132209,
+      "rawSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+      "lfSha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1"
     },
     "stderr": {
-      "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/018-final-scan/stderr",
+      "path": "/tmp/g288ax/refresh/subcommands/000029/stderr.bin",
       "bytes": 0,
       "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
-    "stdinProvided": false,
-    "stdinSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "complete": true,
-    "exitCode": 0,
-    "interrupted": null,
-    "finishedUtc": "2026-10-22T23:46:08.212253+00:00",
-    "seconds": 5.547711,
-    "command": "python -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json",
-    "stdoutRawPath": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/018-final-scan/stdout",
-    "stderrRawPath": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/018-final-scan/stderr"
+    "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000029/stdout.bin",
+    "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000029/stderr.bin",
+    "originalCommandResult": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "/tmp/g288ax/refresh/validation-tree",
+      "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
+      "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+      "source_variant": "fixed-source-original-architecture-command",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": "/tmp/g288ax/refresh/tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792732715.3061802,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/tmp/g288ax/refresh/subcommands/000029",
+      "ended_epoch": 1792732720.1365583,
+      "stdout_sha256": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 132209,
+      "stderr_bytes": 0,
+      "label": "final-scan"
+    }
   },
   "validation": [
     {
-      "label": "generic-tests",
+      "label": "final-generic-tests",
       "argv": [
         "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "/tmp/g261-next323",
-      "startedUtc": "2026-10-22T23:46:08.378482+00:00",
-      "sourceBaseHead": "b7ca7843532098c4d3433035cde8dc2c43654978",
+      "command": "python -B tests/test_architecture_contract.py",
+      "cwd": "/tmp/g288ax/refresh/validation-tree",
+      "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+      "exitCode": 0,
+      "complete": true,
+      "startedEpoch": 1792732720.413098,
+      "endedEpoch": 1792732720.9171166,
+      "seconds": 0.5040185451507568,
       "environment": {
         "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
-        "TMPDIR": "/workspace/geo323-architecture-l-b7ca7843/refresh/tmp",
         "PYTHONOPTIMIZE": null,
-        "PYTHONPATH": null,
-        "PYTHONHOME": null,
-        "PYTHONSTARTUP": null,
-        "GITHUB_SHA": "b7ca7843532098c4d3433035cde8dc2c43654978",
-        "GITHUB_WORKSPACE": "/tmp/g261-next323",
-        "GEO261_REAPER_LOG": "/workspace/geo323-architecture-l-b7ca7843/outer/reaper.jsonl"
+        "TMPDIR": "/tmp/g288ax/refresh/tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
       },
       "stdout": {
-        "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/021-generic-tests/stdout",
+        "path": "/tmp/g288ax/refresh/subcommands/000032/stdout.bin",
         "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/021-generic-tests/stderr",
+        "path": "/tmp/g288ax/refresh/subcommands/000032/stderr.bin",
         "bytes": 29577,
-        "rawSha256": "2adf626e36de662d704d4dc1d0cf4da81aa39f8045cefef23ac80fa59c8e6a4a",
-        "lfSha256": "2adf626e36de662d704d4dc1d0cf4da81aa39f8045cefef23ac80fa59c8e6a4a"
+        "rawSha256": "a44a7df63599466a3b31e53e4747970253936aac31d141f973084c68736d97cf",
+        "lfSha256": "a44a7df63599466a3b31e53e4747970253936aac31d141f973084c68736d97cf"
       },
-      "stdinProvided": false,
-      "stdinSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "complete": true,
-      "exitCode": 0,
-      "interrupted": null,
-      "finishedUtc": "2026-10-22T23:46:08.972954+00:00",
-      "seconds": 0.594348,
-      "command": "python -B tests/test_architecture_contract.py",
+      "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000032/stdout.bin",
+      "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000032/stderr.bin",
+      "originalCommandResult": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/test_architecture_contract.py"
+        ],
+        "cwd": "/tmp/g288ax/refresh/validation-tree",
+        "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
+        "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+        "source_variant": "fixed-source-original-architecture-command",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792732720.413098,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/tmp/g288ax/refresh/subcommands/000032",
+        "ended_epoch": 1792732720.9171166,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "a44a7df63599466a3b31e53e4747970253936aac31d141f973084c68736d97cf",
+        "stdout_bytes": 0,
+        "stderr_bytes": 29577,
+        "label": "final-generic-tests"
+      },
       "tests": 205,
       "passed": 205,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 0.486,
-      "stdoutRawPath": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/021-generic-tests/stdout",
-      "stderrRawPath": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/021-generic-tests/stderr"
+      "unittestSeconds": 0.384
     },
     {
-      "label": "product-tests",
+      "label": "final-product-tests",
       "argv": [
         "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "/tmp/g261-next323",
-      "startedUtc": "2026-10-22T23:46:09.142719+00:00",
-      "sourceBaseHead": "b7ca7843532098c4d3433035cde8dc2c43654978",
+      "command": "python -B tests/test_product_architecture.py",
+      "cwd": "/tmp/g288ax/refresh/validation-tree",
+      "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+      "exitCode": 0,
+      "complete": true,
+      "startedEpoch": 1792732721.2129886,
+      "endedEpoch": 1792732732.0672088,
+      "seconds": 10.854220151901245,
       "environment": {
         "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
-        "TMPDIR": "/workspace/geo323-architecture-l-b7ca7843/refresh/tmp",
         "PYTHONOPTIMIZE": null,
-        "PYTHONPATH": null,
-        "PYTHONHOME": null,
-        "PYTHONSTARTUP": null,
-        "GITHUB_SHA": "b7ca7843532098c4d3433035cde8dc2c43654978",
-        "GITHUB_WORKSPACE": "/tmp/g261-next323",
-        "GEO261_REAPER_LOG": "/workspace/geo323-architecture-l-b7ca7843/outer/reaper.jsonl"
+        "TMPDIR": "/tmp/g288ax/refresh/tmp",
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
       },
       "stdout": {
-        "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/024-product-tests/stdout",
+        "path": "/tmp/g288ax/refresh/subcommands/000035/stdout.bin",
         "bytes": 0,
         "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/024-product-tests/stderr",
+        "path": "/tmp/g288ax/refresh/subcommands/000035/stderr.bin",
         "bytes": 118,
-        "rawSha256": "3a646f4f76408b82fba1db8f086f978377286351c5faca6d1e713608c64b8ed1",
-        "lfSha256": "3a646f4f76408b82fba1db8f086f978377286351c5faca6d1e713608c64b8ed1"
+        "rawSha256": "72b08366ed77da6f8b06300503b2b95c0423b0fe4b7aca29b5dd23332f6f7618",
+        "lfSha256": "72b08366ed77da6f8b06300503b2b95c0423b0fe4b7aca29b5dd23332f6f7618"
       },
-      "stdinProvided": false,
-      "stdinSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "complete": true,
-      "exitCode": 0,
-      "interrupted": null,
-      "finishedUtc": "2026-10-22T23:46:21.638268+00:00",
-      "seconds": 12.495457,
-      "command": "python -B tests/test_product_architecture.py",
+      "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000035/stdout.bin",
+      "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000035/stderr.bin",
+      "originalCommandResult": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/test_product_architecture.py"
+        ],
+        "cwd": "/tmp/g288ax/refresh/validation-tree",
+        "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
+        "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+        "source_variant": "fixed-source-original-architecture-command",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792732721.2129886,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/tmp/g288ax/refresh/subcommands/000035",
+        "ended_epoch": 1792732732.0672088,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "72b08366ed77da6f8b06300503b2b95c0423b0fe4b7aca29b5dd23332f6f7618",
+        "stdout_bytes": 0,
+        "stderr_bytes": 118,
+        "label": "final-product-tests"
+      },
       "tests": 18,
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 12.395,
-      "stdoutRawPath": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/024-product-tests/stdout",
-      "stderrRawPath": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/024-product-tests/stderr"
+      "unittestSeconds": 10.764
     }
   ],
   "supplementalStaticGuardProbes": {
     "executedAtCurrentHead": false,
-    "reason": "未執行舊 Windows driver 的額外 in-memory probes；原 generic／product suites 已實際執行並各自記錄，不套用舊來源的探針綠燈。"
+    "legacyWindowsSupplementalExecuted": false,
+    "reason": "政策與W guard全不變；本輪只執行原三架構裁判，未借用或冒稱Windows supplemental。"
   },
-  "nativeAcceptance": "此封裝器沒有執行 native、mutation ledger、瀏覽器或專項；它們必須有另一份實際同最終受驗來源的收據。",
+  "nativeAcceptance": "此driver不執行native、帳本、瀏覽器或其他專項；必須另有實際來源與結果。",
   "inputs": [
     {
       "path": "current_geometry.c",
-      "sha256": "831961eeab6fae609b790316670face7c703597d48b2b6e27009c850a0c28260"
+      "sha256": "9f98b6edf704e3a4985711983d35b0e15acdbb716dca55e1b0556d8a569633a6"
     },
     {
       "path": "geometry-app/application.js",
@@ -457,7 +1129,7 @@
     },
     {
       "path": "geometry-app/native/reference_sources.inc",
-      "sha256": "cfed3147885103d68b1f3c6e6caeaca02f3157d0da062507c270ad96af981eda"
+      "sha256": "54b4896573a1f6e6c77878a86a18b84843b3bef5c289c6c12d5c7ddbba406f41"
     },
     {
       "path": "geometry-app/native/versions_adapter.inc",
@@ -473,7 +1145,7 @@
     },
     {
       "path": "geometry-app/native/world_validation.inc",
-      "sha256": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6"
+      "sha256": "673bbab71f1dc6c59960dd3764c7c367223fc57ad2ef2dae0e842637d993eddc"
     },
     {
       "path": "geometry-core/assembly.inc",
@@ -941,7 +1613,7 @@
     },
     {
       "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-      "sha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600"
+      "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930"
     },
     {
       "path": "geometry-core/framing-template/core-probe/mutation_check.py",
@@ -957,15 +1629,15 @@
     },
     {
       "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-      "sha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62"
+      "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1"
     },
     {
       "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-      "sha256": "63187fee32993270e87203d571ca217822501060ab6de1bbfd238b66aa0b4ed6"
+      "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1"
     },
     {
       "path": "geometry-core/framing-template/oracle/make_golden.py",
-      "sha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60"
+      "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb"
     },
     {
       "path": "geometry-core/framing-template/oracle/quote_check.py",
@@ -973,11 +1645,11 @@
     },
     {
       "path": "geometry-core/framing-template/oracle/render.py",
-      "sha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a"
+      "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe"
     },
     {
       "path": "geometry-core/framing-template/oracle/selftest.py",
-      "sha256": "ba767c8101b301326055e35ee6049aa6106efa0599c41de45866fc78b91ca766"
+      "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f"
     },
     {
       "path": "geometry-core/geometry_kernel/__init__.py",
@@ -1217,11 +1889,11 @@
     },
     {
       "path": "geometry-core/kernel/placement_sources.c",
-      "sha256": "7b953719f5e75ed2e70f99c9e0a96588d398bd9220025a7b7a191c4dbaeb8e12"
+      "sha256": "45e754f4260e15679797b8f44c8c6a25132b199d47a7239da1e2045a8a814c31"
     },
     {
       "path": "geometry-core/kernel/placement_sources.h",
-      "sha256": "ff52eb8121cff380de275aa97d8562e56d58d8e21968369fde2db67c04135a7a"
+      "sha256": "9c11cb94b20231dabf746c6f23480b5c3d324fc9d268b0140a3e01fab4781aa8"
     },
     {
       "path": "geometry-core/kernel/placements.c",
@@ -1249,7 +1921,7 @@
     },
     {
       "path": "geometry-core/kernel/source.c",
-      "sha256": "ab8d09bbf4d211f8019d52c8b12eb8d0e4ffde6df45e788cd6ce883225ec0acb"
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
     },
     {
       "path": "geometry-core/kernel/source.h",
@@ -1341,7 +2013,7 @@
     },
     {
       "path": "geometry-core/references.inc",
-      "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+      "sha256": "3f8fe931e88f3a69df3a1720d9ddc5103c246c3312b560a059e87c7c218b12ac"
     },
     {
       "path": "geometry-core/rule_cases/__init__.py",
@@ -1437,7 +2109,7 @@
     },
     {
       "path": "geometry-guide/公理層-閱讀器.html",
-      "sha256": "3979f9858fa581df1d9c8f2ba0c21b471ebc0553464b1c1f7f2aa8c87952062a"
+      "sha256": "563da7a100e9053f3b23b87b04edec219ad223a0063d2509a380c2286a18482b"
     },
     {
       "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
@@ -1501,7 +2173,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/contact_sources.c",
-      "sha256": "5792a3e8d9a467547f4ebfdcc88f7bab04f5c994382cdb51d5ad0b80a249b933"
+      "sha256": "0405a88453278501482381d452b564f74e0f91833c711002007b0ffcdb2498bd"
     },
     {
       "path": "geometry-templates/woodworking/native/contact_sources.h",
@@ -1509,7 +2181,7 @@
     },
     {
       "path": "geometry-templates/woodworking/native/contact_world.c",
-      "sha256": "fb961338710375da2c4eeb4b8af56f67bd1cf581067f91a48b356722646c30f8"
+      "sha256": "908cb6f58914a979e67525dad14a1027f5bdd56eae0772392639d42c5588985e"
     },
     {
       "path": "geometry-templates/woodworking/native/contact_world.h",
@@ -1533,11 +2205,11 @@
     },
     {
       "path": "geometry-templates/woodworking/native/definition_sources.c",
-      "sha256": "f22fe0aac839b4269a9c06f2ea0b266207cc8ef5a6c4031b35be3e0796505645"
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
     },
     {
       "path": "geometry-templates/woodworking/native/definition_sources.h",
-      "sha256": "eb0874ea9c8bf463b9450695fe69d774ed14704758e89ea4c5533e657e03346d"
+      "sha256": "1ec14f17dea4fe98f80099d4699e3e154157e152b5ded9ab6ea0da147648495b"
     },
     {
       "path": "geometry-templates/woodworking/native/derived_placement.c",
@@ -1709,7 +2381,7 @@
     },
     {
       "path": "geometry-web/app.js",
-      "sha256": "362999f2ddd793c832f762f7fb882e7db647091dfde5b4ebb3ee5fd493a77b4b"
+      "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
     },
     {
       "path": "geometry-web/archive_wait_trace.py",
@@ -1781,7 +2453,7 @@
     },
     {
       "path": "geometry-web/cdp_test.js",
-      "sha256": "1a8d7b72587f79f104890e0f3f99092f7f6dcac0b1fd9a29710fe0049116e955"
+      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
@@ -2169,7 +2841,7 @@
     },
     {
       "path": "geometry-web/grid_inspector_rename_test.js",
-      "sha256": "74746482cb5d5072ce019bc66aa57a4574b4610885809f91da8da85091cc7e7e"
+      "sha256": "1f4fd5f4b85cfbc64da880bc1f4ca80155ef51ea3007c932093801068d48d4fd"
     },
     {
       "path": "geometry-web/grid_material_entry_test.js",
@@ -2189,7 +2861,7 @@
     },
     {
       "path": "geometry-web/grid_rule_lines_test.js",
-      "sha256": "4c380e38b0bb8300e556df4b7b1d511724d5670a930d6d5d7093b9c861240735"
+      "sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c"
     },
     {
       "path": "geometry-web/grid_subdivision_bridge.inc",
@@ -2493,7 +3165,7 @@
     },
     {
       "path": "geometry-web/runtime_version.py",
-      "sha256": "f9c88daa1517b160df6b736dfc5977cada4c0e38ed3e170a81372e4472944357"
+      "sha256": "1cafc0868554e9f4028de3c6851d12cb8d9716fec18a6fe379afbbd2e3b14274"
     },
     {
       "path": "geometry-web/save_reopen_synthetic_test.js",
@@ -2745,7 +3417,7 @@
     }
   ],
   "completeInventoryVerification": {
-    "method": "獨立 os.walk 五 roots 加三個 standalone，與 manifest 登記集合及固定 Git tree 比較；逐 Git blob 比 LF hash；每個原裁判後重算完整 raw/LF inputs、工具 bytes、HEAD 與乾淨狀態。",
+    "method": "獨立os.walk五roots與三standalone，對manifest集合與固定Git tree逐一驗同、逐blob LF核；每個原裁判後重盤原來源與外部樹raw/LF inputs、工具、四檔、HEAD與clean。",
     "sourceRoots": [
       "geometry-core",
       "geometry-app",
@@ -2783,11 +3455,11 @@
     "unregisteredAfter": [],
     "missingAfter": [],
     "changedInputs": [],
-    "inputClosureSha256Before": "4d093892d729bc7e38d6866777eb088d468d09833565a8c5dae90c0da038edad",
-    "inputClosureSha256After": "4d093892d729bc7e38d6866777eb088d468d09833565a8c5dae90c0da038edad",
-    "rawInputClosureSha256Before": "f326c6c3668dfcadfab6a349aee16b64a8cdb337fad42278963fee16af7ad4d1",
-    "rawInputClosureSha256After": "f326c6c3668dfcadfab6a349aee16b64a8cdb337fad42278963fee16af7ad4d1",
-    "rawHashBasis": "實際 Linux checkout bytes；可攜產品身分以 CRLF-to-LF 與固定 Git blobs 比較。",
+    "inputClosureSha256Before": "f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4",
+    "inputClosureSha256After": "f2a91b9b3962b2302600a5d21313f5655cc94ad081770d2a208c05d6cb4337e4",
+    "rawInputClosureSha256Before": "c56e1bcf27713920f52ddf49a14cf245be6fe9ad3c17bfdc2b96058f7a5a7729",
+    "rawInputClosureSha256After": "c56e1bcf27713920f52ddf49a14cf245be6fe9ad3c17bfdc2b96058f7a5a7729",
+    "rawHashBasis": "Linux checkout raw bytes；portable身份另以LF與固定Git blob比較。",
     "toolHashesBefore": {
       "tests/architecture_contract.py": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
       "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
@@ -2809,54 +3481,30 @@
       "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
     "allRawAndLfInputsUnchanged": true,
-    "headObservedAfterIndependentAudit": "b7ca7843532098c4d3433035cde8dc2c43654978",
-    "checkedUtc": "2026-10-22T23:46:21.972300+00:00",
-    "protectedSsotBefore": {
-      "公理層.md": {
-        "path": "/tmp/g261-next323/公理層.md",
-        "bytes": 321170,
-        "rawSha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d",
-        "lfSha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
-      },
-      "決策佇列.md": {
-        "path": "/tmp/g261-next323/決策佇列.md",
-        "bytes": 220461,
-        "rawSha256": "c3387507597afafbdf1962b5374d5cfd8187165e6638b7b33c92bb3f794d9f72",
-        "lfSha256": "c3387507597afafbdf1962b5374d5cfd8187165e6638b7b33c92bb3f794d9f72"
-      }
-    },
-    "protectedSsotAfter": {
-      "公理層.md": {
-        "path": "/tmp/g261-next323/公理層.md",
-        "bytes": 321170,
-        "rawSha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d",
-        "lfSha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
-      },
-      "決策佇列.md": {
-        "path": "/tmp/g261-next323/決策佇列.md",
-        "bytes": 220461,
-        "rawSha256": "c3387507597afafbdf1962b5374d5cfd8187165e6638b7b33c92bb3f794d9f72",
-        "lfSha256": "c3387507597afafbdf1962b5374d5cfd8187165e6638b7b33c92bb3f794d9f72"
-      }
-    }
+    "headObservedAfterIndependentAudit": "f79aa057521929597a9af4b204b709110414ac03",
+    "checkedUtc": "2026-10-23T05:18:52.601511+00:00"
   },
   "refreshDriver": {
-    "path": "/workspace/geo323-architecture-l-b7ca7843/tools/refresh_architecture_core.py",
-    "bytes": 32085,
-    "rawSha256": "55c61fb958383593059c1120b170c79329511ac614c973319ddff071ce4390b9",
-    "lfSha256": "55c61fb958383593059c1120b170c79329511ac614c973319ddff071ce4390b9",
-    "runDirectory": "/workspace/geo323-architecture-l-b7ca7843/refresh",
+    "path": "/tmp/g288ax/tools/refresh_exclusions.py",
+    "bytes": 33045,
+    "rawSha256": "9bb00dcc94eff757dc5ae283f4e90c238fe53b8a79dcf7f0c2f049d4205a308f",
+    "lfSha256": "9bb00dcc94eff757dc5ae283f4e90c238fe53b8a79dcf7f0c2f049d4205a308f",
+    "runDirectory": "/tmp/g288ax/refresh",
     "argv": [
       "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-      "/workspace/geo323-architecture-l-b7ca7843/tools/refresh_architecture_core.py",
+      "/tmp/g288ax/tools/refresh_exclusions.py",
       "--repo",
-      "/tmp/g261-next323",
+      "/workspace/geometry-axiom",
       "--sha",
-      "b7ca7843532098c4d3433035cde8dc2c43654978",
+      "f79aa057521929597a9af4b204b709110414ac03",
       "--out",
-      "/workspace/geo323-architecture-l-b7ca7843/refresh"
+      "/tmp/g288ax/refresh"
     ],
-    "note": "以既有Linux通用完整inventory/closure/schema核心適配動態SHA；先收齊原三裁判raw。公開run.py持指定heavy lock與原subreaper；不是舊Windows driver。"
+    "recorder": {
+      "path": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    "note": "沿既有Linux external-validation-tree／完整inventory／old-blob guards；將W政策生成窄化成六個exclusion digest-only；不移植其W guard新增或supplemental claims。"
   },
   "environment": {
     "system": "Linux",
@@ -2869,15 +3517,16 @@
       "LC_ALL": "C.UTF-8",
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
-      "TMPDIR": "/workspace/geo323-architecture-l-b7ca7843/refresh/tmp",
       "PYTHONOPTIMIZE": null,
       "PYTHONPATH": null,
       "PYTHONHOME": null,
       "PYTHONSTARTUP": null,
-      "GITHUB_SHA": "b7ca7843532098c4d3433035cde8dc2c43654978",
-      "GITHUB_WORKSPACE": "/tmp/g261-next323",
-      "GEO261_REAPER_LOG": "/workspace/geo323-architecture-l-b7ca7843/outer/reaper.jsonl"
+      "TMPDIR": "/tmp/g288ax/refresh/tmp",
+      "GITHUB_SHA": "f79aa057521929597a9af4b204b709110414ac03",
+      "GITHUB_WORKSPACE": "/workspace/geometry-axiom",
+      "GIT_OPTIONAL_LOCKS": "0"
     },
+    "clearedInheritedEnvironmentNames": [],
     "versions": [
       {
         "label": "version-python",
@@ -2885,44 +3534,90 @@
           "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
           "--version"
         ],
-        "cwd": "/tmp/g261-next323",
-        "startedUtc": "2026-10-22T23:46:02.659525+00:00",
-        "sourceBaseHead": "b7ca7843532098c4d3433035cde8dc2c43654978",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "--version"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "exitCode": 0,
+        "complete": true,
+        "startedEpoch": 1792732713.4785707,
+        "endedEpoch": 1792732713.4801176,
+        "seconds": 0.0015468597412109375,
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
           "LC_ALL": "C.UTF-8",
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
-          "TMPDIR": "/workspace/geo323-architecture-l-b7ca7843/refresh/tmp",
           "PYTHONOPTIMIZE": null,
-          "PYTHONPATH": null,
-          "PYTHONHOME": null,
-          "PYTHONSTARTUP": null,
-          "GITHUB_SHA": "b7ca7843532098c4d3433035cde8dc2c43654978",
-          "GITHUB_WORKSPACE": "/tmp/g261-next323",
-          "GEO261_REAPER_LOG": "/workspace/geo323-architecture-l-b7ca7843/outer/reaper.jsonl"
+          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
         },
-        "stdout": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/016-version-python/stdout",
-        "stderr": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/016-version-python/stderr",
-        "stdinProvided": false,
-        "stdinSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "complete": true,
-        "exitCode": 0,
-        "interrupted": null,
-        "finishedUtc": "2026-10-22T23:46:02.661389+00:00",
-        "seconds": 0.001737,
-        "stdoutInfo": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/016-version-python/stdout",
+        "stdout": {
+          "path": "/tmp/g288ax/refresh/subcommands/000016/stdout.bin",
           "bytes": 15,
           "rawSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
           "lfSha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
         },
-        "stderrInfo": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/016-version-python/stderr",
+        "stderr": {
+          "path": "/tmp/g288ax/refresh/subcommands/000016/stderr.bin",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000016/stdout.bin",
+        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000016/stderr.bin",
+        "originalCommandResult": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "--version"
+          ],
+          "cwd": "/workspace/geometry-axiom",
+          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_variant": "fixed-source-original-architecture-command",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792732713.4785707,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 0,
+          "timeout_expired": false,
+          "directory": "/tmp/g288ax/refresh/subcommands/000016",
+          "ended_epoch": 1792732713.4801176,
+          "stdout_sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 15,
+          "stderr_bytes": 0,
+          "label": "version-python"
         }
       },
       {
@@ -2931,51 +3626,97 @@
           "git",
           "--version"
         ],
-        "cwd": "/tmp/g261-next323",
-        "startedUtc": "2026-10-22T23:46:02.662160+00:00",
-        "sourceBaseHead": "b7ca7843532098c4d3433035cde8dc2c43654978",
+        "command": [
+          "git",
+          "--version"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "sourceBaseHead": "f79aa057521929597a9af4b204b709110414ac03",
+        "exitCode": 0,
+        "complete": true,
+        "startedEpoch": 1792732713.4808898,
+        "endedEpoch": 1792732713.4821215,
+        "seconds": 0.0012316703796386719,
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
           "LANG": "C.UTF-8",
           "LC_ALL": "C.UTF-8",
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
-          "TMPDIR": "/workspace/geo323-architecture-l-b7ca7843/refresh/tmp",
           "PYTHONOPTIMIZE": null,
-          "PYTHONPATH": null,
-          "PYTHONHOME": null,
-          "PYTHONSTARTUP": null,
-          "GITHUB_SHA": "b7ca7843532098c4d3433035cde8dc2c43654978",
-          "GITHUB_WORKSPACE": "/tmp/g261-next323",
-          "GEO261_REAPER_LOG": "/workspace/geo323-architecture-l-b7ca7843/outer/reaper.jsonl"
+          "TMPDIR": "/tmp/g288ax/refresh/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
         },
-        "stdout": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/017-version-git/stdout",
-        "stderr": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/017-version-git/stderr",
-        "stdinProvided": false,
-        "stdinSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "complete": true,
-        "exitCode": 0,
-        "interrupted": null,
-        "finishedUtc": "2026-10-22T23:46:02.663608+00:00",
-        "seconds": 0.001328,
-        "stdoutInfo": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/017-version-git/stdout",
+        "stdout": {
+          "path": "/tmp/g288ax/refresh/subcommands/000017/stdout.bin",
           "bytes": 19,
           "rawSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c",
           "lfSha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c"
         },
-        "stderrInfo": {
-          "path": "/workspace/geo323-architecture-l-b7ca7843/refresh/commands/017-version-git/stderr",
+        "stderr": {
+          "path": "/tmp/g288ax/refresh/subcommands/000017/stderr.bin",
           "bytes": 0,
           "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "lfSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdoutRawPath": "/tmp/g288ax/refresh/subcommands/000017/stdout.bin",
+        "stderrRawPath": "/tmp/g288ax/refresh/subcommands/000017/stderr.bin",
+        "originalCommandResult": {
+          "command": [
+            "git",
+            "--version"
+          ],
+          "cwd": "/workspace/geometry-axiom",
+          "acceptance_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_sha": "f79aa057521929597a9af4b204b709110414ac03",
+          "source_variant": "fixed-source-original-architecture-command",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/tmp/g288ax/refresh/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792732713.4808898,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 0,
+          "timeout_expired": false,
+          "directory": "/tmp/g288ax/refresh/subcommands/000017",
+          "ended_epoch": 1792732713.4821215,
+          "stdout_sha256": "1b5be440c77a69dc59d5bf55542e2e2f71cb2c6f721bd6b2ad216897fd59283c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 19,
+          "stderr_bytes": 0,
+          "label": "version-git"
         }
       }
     ]
   },
   "uncertainties": [
-    "未重現舊 Windows driver 的額外 probes；原三條裁判結果與本封裝器有限完整 inventory 是本輪主張範圍。",
-    "本工具只輸出 out/new 四檔，不修改 repo；尚未提交的產物不能稱作已發布。",
-    "後續最終候選 SHA 仍須執行使用者要求的完整動態清單。"
+    "未執行Windows supplemental probes；不外推native或動態產品行為。",
+    "只輸出out/new四檔，來源repo未寫；尚未提交的產物不是已發布。",
+    "後續final SHA須另跑受影響正式門檻。"
   ]
 }

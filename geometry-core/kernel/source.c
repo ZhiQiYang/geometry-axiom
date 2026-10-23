@@ -18,6 +18,7 @@ struct GeoEvalContext {
     GeoSourceNode **nodes;
     size_t node_count, node_capacity;
     size_t *node_index, node_index_capacity;
+    size_t node_hint[256];
     GeoSourceEdge *edges;
     size_t edge_count, edge_capacity;
     size_t *edge_index, edge_index_capacity;
@@ -35,8 +36,15 @@ static uint64_t geo_source_node_hash(GeoSourceRef source)
 {
     uint64_t hash=geo_source_hash_size(UINT64_C(14695981039346656037),source.provider);
     hash=geo_source_hash_size(hash,source.key_size);
-    const unsigned char *key=source.key;
-    for(size_t i=0;i<source.key_size;++i){hash^=key[i];hash*=UINT64_C(1099511628211);}
+    const unsigned char *key=source.key;size_t i=0;
+    /* 雜湊只選記憶體索引槽；身分仍完整比對每個位元組。
+     * memcpy 可讀未對齊的鍵；主機端序只影響碰撞排列。 */
+    while(source.key_size-i>=sizeof(uint64_t)){
+        uint64_t word;memcpy(&word,key+i,sizeof word);
+        hash^=word;hash*=UINT64_C(11400714785074694791);hash^=hash>>32;
+        i+=sizeof word;
+    }
+    for(;i<source.key_size;++i){hash^=key[i];hash*=UINT64_C(1099511628211);}
     return hash;
 }
 static uint64_t geo_source_edge_hash(GeoSourceEdge edge)
@@ -133,6 +141,7 @@ static void geo_eval_clear(GeoEvalContext *ctx)
     free(ctx->node_index);free(ctx->edge_index);
     ctx->providers=NULL;ctx->nodes=NULL;ctx->edges=NULL;
     ctx->node_index=NULL;ctx->edge_index=NULL;
+    memset(ctx->node_hint,0,sizeof ctx->node_hint);
     ctx->provider_count=ctx->node_count=ctx->edge_count=0;
     ctx->node_capacity=ctx->edge_capacity=ctx->node_index_capacity=ctx->edge_index_capacity=0;
     ctx->active=SIZE_MAX;ctx->started=false;ctx->sealed=false;
@@ -171,8 +180,16 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
 {
     if(!ctx||!index||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
     ctx->started=true;
+    /* 只快取既有身分的插入序號；碰撞仍完整比對 K 持有的鍵。 */
+    size_t slot=(size_t)source.provider^source.key_size;
+    if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}
+    slot&=255;
+    size_t hint=ctx->node_hint[slot];
+    if(hint&&hint<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){
+        *index=hint-1;return GEO_SOURCE_OK;
+    }
     size_t found=geo_source_find_node(ctx,source);
-    if(found!=SIZE_MAX){*index=found;return GEO_SOURCE_OK;}
+    if(found!=SIZE_MAX){ctx->node_hint[slot]=found+1;*index=found;return GEO_SOURCE_OK;}
     size_t provider=0;while(provider<ctx->provider_count&&ctx->providers[provider].token!=source.provider)++provider;
     if(provider==ctx->provider_count)return GEO_SOURCE_MISSING;
     if(ctx->node_count==SIZE_MAX/sizeof *ctx->nodes)return GEO_SOURCE_MEMORY;
@@ -184,7 +201,7 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
     if(!next){free((void *)source.key);free(node);return GEO_SOURCE_MEMORY;}
     ctx->nodes=next;node->source=source;node->provider=provider;node->status=GEO_SOURCE_OK;
     *index=ctx->node_count;next[ctx->node_count++]=node;
-    geo_source_index_append(ctx,true);return GEO_SOURCE_OK;
+    geo_source_index_append(ctx,true);ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
 }
 static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDependencyKind kind)
 {

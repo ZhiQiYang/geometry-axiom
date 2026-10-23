@@ -230,6 +230,24 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     const cellGrid=(await query('references')).grids[0].id;await face(1);await focusCell(cells[1]);const exact=await query(`grid-rule-query grid ${cellGrid} rule 1 cell ${cells[1].join(' ')}`);
     check(`${width} 指定 signed cell 規則原生裁切及完整 source/grid/cell 引用`,await read(`GridRuleLines.entries().length===3&&GridRuleLines.entries().every(l=>l.ref.systemId===${cellSid}&&l.ref.appliedGridId===${cellGrid}&&l.ref.cellI===${JSON.stringify(cells[1][0])}&&l.ref.cellJ===${JSON.stringify(cells[1][1])})`)&&JSON.stringify(await read(`GridRuleLines.entries().map(l=>l.segments)`))===JSON.stringify(exact.lines.map(l=>l.segments)));
     const cellWorld=await dump();await fill('#gridRuleCellI',String(BigInt(cells[1][0])+1n));await ctl('[data-rule-exact]');await wait(`document.querySelector('[data-rule-focus-status]').textContent.includes('SELECTOR_MISS')`);check(`${width} 指定規則 selector 外保留 native 拒絕且零寫入`,await read(`GridRuleLines.entries().length===0`)&&(await dump())===cellWorld);
+    // 同表單重繪須保留命中位置。16 條原生導線讓面板超高，能抓出
+    // 進階欄位尚未展開時恢復 scrollTop、被瀏覽器截短的產品缺陷。
+    await fresh();await fixture('surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000');
+    await fixture('spec middle 2000');
+    for(let id=2;id<18;id++)await fixture(`guide ${id} 1 v spec:middle`);
+    await ctl('#objectList .object-row[data-kind="boundary"][data-id="1"]');await ctl('#inspEnter');await wait('oc.edit?.bid===1');
+    await ctl('#faceInspectorTabs [data-fi-tab="components"]');await ctl('[data-component-tab="guide"]');
+    await choose('#refGuideMode','advanced');
+    await read(`$('refGuideExpr').scrollIntoView({block:'center',inline:'nearest'});new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))`);
+    const guidePosition=()=>read(`(()=>{const e=$('refGuideExpr'),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,scroll:$('faceInspectorContent').parentElement.scrollTop,hit:document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.id};})()`);
+    const guideBefore=await guidePosition(),scrollWorld=await dump();
+    check(`${width} 超高進階導線表單確已捲動且公式欄可命中`,guideBefore.scroll>0&&guideBefore.hit==='refGuideExpr');
+    await read('renderFaceInspector();new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))');
+    const guideAfter=await guidePosition();await click(guideBefore.x,guideBefore.y);
+    check(`${width} 同表單重繪保留原點擊位置、公式焦點及 World`,Math.abs(guideBefore.y-guideAfter.y)<.5&&guideBefore.scroll===guideAfter.scroll&&await read(`document.activeElement===$('refGuideExpr')`)&&(await dump())===scrollWorld);
+    const movedScroll=await read(`(()=>{renderFaceInspector();const p=$('faceInspectorContent').parentElement;p.scrollTop=Math.max(0,p.scrollTop-20);return p.scrollTop;})()`);
+    await read('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))');
+    check(`${width} 延後恢復不蓋過重繪後的新捲動`,await read(`$('faceInspectorContent').parentElement.scrollTop===${movedScroll}`)&&(await dump())===scrollWorld);
   }
   check('本切片無新增未捕捉瀏覽器例外',exceptionCount()===exceptions);await leave();
 };

@@ -91,7 +91,7 @@ static bool wood_contact_source_collection(WoodContactSources *s,WoodContactQuer
 {
     if(!q->collection){
         WoodContactSourceFacts *facts=calloc(1,sizeof *facts);
-        WoodStopFace *faces=q->cap?calloc(q->cap,sizeof *faces):NULL;
+        WoodStopFace *faces=q->cap?malloc(q->cap*sizeof *faces):NULL;
         if(!facts||(q->cap&&!faces)){free(facts);free(faces);return false;}
         if(!s->facts(s->user,s->graph,&q->request,facts)||!wood_contact_source_facts_valid(facts)){
             free(facts);free(faces);return false;
