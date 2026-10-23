@@ -1,3 +1,9 @@
+## 追加：M149 追溯已機械同步／Git 一般推送已恢復
+
+真 H collector 見證來源 `bba68351f89bd3448dcb1462c53c23288b46e3ca` 已一般 push。新增 M149 之後，因追溯資料確有改動，再按原同步器重建唯一 canonical，真 exit0、約3.47秒；原 argv/full streams/env/SHA/hash 於 `reader-generation-m149/`。M140–M149 均出現在追溯，但全部 mutation 仍 unrun。兩次同步都是來源生成，不把它當三條閱讀器裁判全綠。
+
+目前只有尚未動態驗收的來源／機械同步收據，golden 當前非空見證與 CLI 已放次序仍待受控實跑；其餘 native/oracle/quick/579/1584/架構完整裁判均未跑，遵守 root P88 資源排程。下一步仍是小型 oracle 觀察後完成逐欄 golden，再在正式槽跑各具名正反例，沒有因 auth 短暫失敗停下來源工作。
+
 ## 追加：真 H caller 反證來源已備（尚未編譯）
 
 同儕指出原九個 W 控制不直接證明 H 漏線不復發，因此另加 `geo318_host_boundary_ends_harness.c`：編譯實際 web_bridge/current_geometry/references include 鏈，交給真正 `reference_check_all()` 一個明示已放的兩角材 World，要求 partial 接觸可過且後續 I11 重疊仍拒。此為 H wiring 見證，**不是 CLI 初放／load/rebuild 可達性見證**。精準撤回 H 的 W delegate、改回舊 full-count，必須以 `ASSERT:actual-host-collector-accepts-partial` 正常失敗；未執行，不冒 0/1/0。新增 M149，原 M140–M148 不動；native suite 登記 7 方法（含 9 W 控制與 1 H 控制），全部動態仍待。
