@@ -1,0 +1,57 @@
+{
+  "productSHA": "7b45013da647b791acda8f5977475e4123d5f8c4",
+  "nodeExecutionSHA": "7b45013da647b791acda8f5977475e4123d5f8c4",
+  "originalNodeExits": [
+    0,
+    1,
+    0
+  ],
+  "originalMethodsEachPhase": 9,
+  "passedEachPhase": [
+    9,
+    6,
+    9
+  ],
+  "failedEachPhase": [
+    0,
+    3,
+    0
+  ],
+  "skipsEachPhase": [
+    0,
+    0,
+    0
+  ],
+  "expectedNormalAssertions": [
+    "successful recovery kept stale error",
+    "completed retry kept stale error",
+    "loading echoed stale error"
+  ],
+  "originalProofSHA256": "54e559858f33a4cae8e875eb2074be7cfcc135abcaafdd8573c04b0cf10c67c6",
+  "originalVMResult": "PASS: explicit DOM/transport/ReferenceWorkspace substitutes; not browser/HTTP/native",
+  "newSourceVMActualPeer": {
+    "path": "/tmp/issue320-vm-7b45013d-kernel-peer-r2/REVIEW.json",
+    "sha256": "a0584a6a93901cf58d66bbbe136e23686bccad96484b6d507cbdac49f71cb635",
+    "checkCount": 365,
+    "scope": "newS Node VM source/raw/publication only; not CDP/browser"
+  },
+  "cdpProposalStaticPeer": {
+    "path": "/tmp/issue320-cdp-kernel-static-peer/REVIEW.json",
+    "sha256": "fc4d666dc87cebd99a6401296743b37aadbac0a66e28e1c4ca4fc1e58cf0e6bf",
+    "checks": 49,
+    "scope": "static only"
+  },
+  "realP53P61CDP": "UNRUN",
+  "fullCanvas": "UNRUN",
+  "otherFiveBrowserJobs": "UNRUN",
+  "fullNative": "UNRUN",
+  "mutationCheckAndFullLedger": "UNRUN; root owns final ledger",
+  "architectureThreeAndDerivedFour": "UNRUN",
+  "priorExecutionSHA": "c1113f6fd6c52a55d7df1a30ecd1684fe87b661c",
+  "priorEvidenceSHA": "d2c583179219dafe2f575ef158c45f3cf17bd186",
+  "outerCapture": "This new-source run has prelaunched REQUEST and independent c387 driver pipes. Earlier c111 host-only outer limitation remains historical.",
+  "initialLauncherError": "FileNotFoundError before request/subject launch; preserved, corrected mkdir only, not a product test failure",
+  "goldenChanged": false,
+  "noNewSkip": true,
+  "noGlobalLedgerWritten": true
+}
