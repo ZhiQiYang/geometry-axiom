@@ -1,0 +1,25 @@
+{
+  "schema": "geo288-stop-network-draft-independent-addendum-peer/1",
+  "reviewed_utc": "2026-10-23T15:08:29.118888+00:00",
+  "checks": {
+    "json_exact": true,
+    "md_exact": true,
+    "original_draft_exact": true,
+    "raw_structured_and_text_response_equal": true,
+    "saved_requires_publish_not_completed": true,
+    "only_domain_declared": true,
+    "no_active_or_restart_claim": true,
+    "no_ready_or_live_recovery": true,
+    "fixed_F_E_D_unchanged": true,
+    "parent_stop_no_new_loop": true,
+    "old_handoff_bytes_unchanged": true
+  },
+  "accepted": true,
+  "findings": [],
+  "scope": "Read/small-hash only,no Git,network,API,settings publication,restart,test or new work line.",
+  "limits": [
+    "Tool response supports saved draft requiring publish;it does not prove active policy,network recovery or live PR modification.",
+    "Declared allowed domain parameters come from preserved producer metadata;no backend configuration query performed.",
+    "Prior continuous-monitoring text is historical;new explicit stop instruction supersedes it."
+  ]
+}

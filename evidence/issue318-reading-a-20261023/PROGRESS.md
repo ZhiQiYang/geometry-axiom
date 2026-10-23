@@ -1,4 +1,51 @@
-## 當前進度：小型觀察已封存，golden 見證來源已遷移
+# 本階段已停止並交接：#318 尚有三項真紅
+
+唯一產品 source S=`ae74e51bba1efef48949c077635966273a9e8990`。依使用者最新停止指示，只收已啟 quick-r2 至真終態；沒有啟動 CLI／architecture／golden，沒有修 source 或重測收尾。slot2 已交回 root，無 active 測試 PID。
+
+| current-state gate | 原 exit／結果 |
+|---|---|
+| 三 reader | 0／0／0；原 unit51無skip，獨立 actual/public peer875項0 |
+| native7 | 0；Ran7無skip；11控制各0/1/0；獨立 actual peer325項0，public peer另列 |
+| oracle13 | 0；Ran13無skip；builder/checker兩來源各0/1/0 |
+| selftest --mutants-only 初輪／r2 | 1／1；初輪含 sparse缺PROPOSAL，補同S文件後三項真紅仍在 |
+| selftest --quick 初輪／r2 | 1／1；r2於15:04:37Z完成，414.317秒；三項前置真紅，完整掃描本身全綠 |
+| quick掃描分項 | 39850次；矩形逐mm、579×8=4632全可施工；528／1056逐筆漏0／非buildable0；不是--full一維全8 |
+| CLI／golden獨立proof及generator／架構三條 | 未跑；未宣告skip或通過 |
+| 全域帳本／架構衍生收據 | 未重產；仍由root共同最終source統一辦理 |
+
+真紅精確是 rc_through_reflex 失去預期C8_I19_BOUNDARY_END（仍有C8_I22_NON_BOUNDARY_EXTENDS），以及COLSTEP(3000)、FZ9各12個Y向排法由應buildable變core_limited。原負控成功標[紅]不混作缺陷。沒有放寬斷言、改golden或隱藏三個紅。同S補24個tracked小檔321715B是環境修復，HEAD/fullindexstage bytes不變且clean。控制面exec transport中斷時quick原PID仍活，沒有重啟；已保存tool-transcript來源與最終真receipt。
+
+完整當前狀態見 CURRENT_STATE.json，接手見 NEXT.md，真紅與CLI未知／README custom待同步見 QUESTIONS_HANDOFF.md。本包 phase-stop-original-reds-ae74e51b.tar.gz 保存所有初輪與r2原exit/streams/env/SHA、物化guard與最新handoff b7e23a25四份原評論。先前native/oracle13原包在祖先Ec3c823bf，reader原包在Ec5445caf；不重跑或以摘要代替原件。
+
+---
+
+下列進度為歷史；唯一當前狀態以本節與 CURRENT_STATE.json 為準。
+
+# 最新正式進度：三reader、native7、oracle13已0
+
+唯一受驗 source S=`ae74e51bba1efef48949c077635966273a9e8990`。原三reader已0/0/0（unit51、無skip），獨立actual/public同儕875項核對0、findings[]，原報告f14236c0／CHECKS0ca21061已隨本包完整封存。
+
+2026-10-23T14:49:31Z，原native7真終態0、Ran7/OK無skip；10W＋actual-H共11控制各原0/1/0，38原harness紀錄、完整編譯輸出與實際compiled C、H四檔raw/derived manifest皆保存。14:52:53Z原oracle13真終態0、Ran13/OK無skip，builder/checker各獨立0/1/0。各stage初末source同S且clean。原收據見formal-ae74e51b-round1/native7-oracle13-original-ae74e51b.tar.gz及逐檔inventory；native/oracle本輪actual/public peer待完成，沒有宣稱其已審。
+
+root已授slot2依序續收oracle-mutants、oracle-quick、CLI build/order與架構三條；本次出版時那些尚未有正式終態，不冒通過。golden-source-proof原self-R3等待323釋鎖，generate/compare亦保待。CLI已放互依／真施工通路仍是QUESTIONS未驗；native明確World不能代替CLI可達性。完整528/1056與逐mm／579間以稍後原quick收據為準，不以oracle13身份測試冒充已掃。
+
+main queue指定日期＋PR333 FIELD-RULES全文已讀，固定source/hash與原文封存於本包wood-authority；不新增h_max／放寬assert、不額外改SSOT／queue、不反向merge noWood、不重產全帳本。此前進度保留為歷史，current以本段及之後正式收據為準。
+
+---
+
+# 最新正式進度：#318 原三reader已全0
+
+受驗公開source S=`ae74e51bba1efef48949c077635966273a9e8990`，14:29:08–14:32:17 UTC在雲端Linux/Python3.12.14/Node24.19.0真跑生成、--check、原readerunit，原exit均0。生成patches90；--check本來patches0；unit51方法全OK無skip。前後source同S且clean，沒有改產品或測試。原完整收據與streams在formal-ae74e51b-round1/reader-three-original-ae74e51b.tar.gz及逐檔inventory。
+
+root只授slot2做三reader，現已全終態並釋slot2交314。這不是#318全綠：native7、oracle13、golden反證、矩形逐mm/579凹角/528+1056、真CLI初放次序及architecture原裁判仍未跑，等root分配資源。未反向merge noWood、未重產帳本、未額外改SSOT/決策。工具最新root scheduler版完整獨立peer仍待，不冒已審。
+
+---
+
+以下為此前準備歷史，未跑狀態以本節及後續正式收據為準。
+
+## 當前進度：共享來源已合流並正式交末棒
+
+已在#323不可變審查combined6cad（無靜態blocker）後普通merge，固定source `ae74e51bba1efef48949c077635966273a9e8990`；與merge前20559個非evidence blob＋mode完全相同，SSOT／oracle／native／golden／tests／expected聯集保留。普通push/lsremote0、source clean，完整收據見 `source-baton-ae74e51b/`。已正式交noWood先靜審merge後normalmerge此source與完成expected13；此後本owner只寫own evidence／正文，不並改shared。這是source交棒，不是正式動態全綠。
 
 主代理授予的一次小型 oracle 窗口已實跑：固定乾淨 `2039b477a9669a9e3fcaad740283605b8de8a8f4`、R3 獨占、8 build、硬 timeout15s／CPU10s，真 exit0、0.668s。完整指令／原 stream／環境／SHA 見 `small-observation-2039b477/`；不把觀察當正式驗收。當前 source 已依人工逐欄覆核換成 FZ120 非空 I22 witness，保精確四元組、id 非排序 index、舊三元組拒絕；原 params/8房64排法 bytes 不動。STEP20 幾何與縫1831/3639不變，當前 buildable；FZ114左上X仍按 I22/碰撞守門選3544，不能盲改3656。
 

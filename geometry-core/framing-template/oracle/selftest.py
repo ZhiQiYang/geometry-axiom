@@ -230,7 +230,6 @@ MUTANTS = [
     ("drop_mark_row_at_column", {"outer": [[0, 0], [5000, 0], [5000, 4000], [0, 4000]], "holes": [[[2415, 3000], [2715, 3000], [2715, 3300], [2415, 3300]]]},
      "C4_SPACING", "柱子 x 座標附近整排記號被拿掉(兩側一起):空檔跨過柱的座標,舊 C4 會切段漏抓", "左上起鋪,板長沿X"),
     ("rc_through_reflex", R["F1客廳"], "C8_I22_NON_BOUNDARY_EXTENDS", "凹角處沿牆料穿過凹角(舊排法):核心 I22 不接受"),
-    ("rc_through_reflex", R["F1客廳"], "C8_I19_BOUNDARY_END", "同上:凹角另一面的邊界材端面頂到沿牆料,核心 I19 不接受"),
     ("no_boundary_extension", R["F1客廳"], "C6_END_NOT_ON_TIMBER", "凹角處邊界材不延伸:沿牆料端面懸空"),
     ("no_r_butt", RECT(3700, 2000), "C11_MAIN_NOT_BUTTED", "拿掉 R-butt:挪縫後主支離左牆沿牆料 1 mm,沒有貼住", "右上起鋪,板長沿Y"),
     ("no_r_butt", R["F5廚房"], "C11_MAIN_NOT_BUTTED", "拿掉 R-butt:主支離柱面沿柱料 2 mm,沒有貼住", "左下起鋪,板長沿X"),
@@ -275,6 +274,15 @@ for mut, room, want, why, *lay in MUTANTS:
     ok = want in got
     failed |= not ok
     print(f"[{'紅' if ok else '沒抓到!'}] {mut:18s} 預期 {want:24s} 實得 {sorted(got)}  {why}")
+# rc_through_reflex 的 I19 那一刀:閱讀 A 例外三准邊界材固定段端點頂已放角材的側面,凹角另一面的邊界材端面頂穿過凹角的沿牆料,
+# 當前政策放行;舊排法照樣由上面的 C8_I22_NON_BOUNDARY_EXTENDS 擋。原本那一刀(I19 通用 matcher)移到歷史政策負控,不刪。
+with withdrawn_boundary_policy("rc_through_reflex 舊排法的 I19 端面"):
+    res = fo.build(R["F1客廳"], LT_Y, p, frozenset({"rc_through_reflex", "skip_conflict_scan"}))
+    got = {f["check"] for f in fo.check(res, p)}
+    ok = "C8_I19_BOUNDARY_END" in got
+    failed |= not ok
+    print(f"[{'紅' if ok else '沒抓到!'}] {'rc_through_reflex':18s} 預期 {'C8_I19_BOUNDARY_END':24s} 實得 {sorted(got)}  "
+          f"凹角另一面的邊界材端面頂到沿牆料,舊政策 I19 不接受")
 # 凹角沿牆料/併料的排序(使用者 2026-10-18 拍板,決策佇列選項 C):不套 custom 4 時,端面頂 custom 3 的副支
 # 在 I19 數值比較(C8_I19_PRIORITY)轉紅。F1 全部 8 種、F2 的 6 種排法(右上/右下板長沿 X 沒有副支頂它)都要被抓到,
 # 不多不少;套用時這 14 種都要全綠(由標準答案與掃描驗)。

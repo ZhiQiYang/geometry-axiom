@@ -1,0 +1,32 @@
+{
+  "schema": "geo323-root-stage-handoff-body-peer/1",
+  "utc": "2026-10-23T15:27:19.676743+00:00",
+  "scope": "Read-only final body metadata and disclosed acceptance limits; not independent whole archive roundtrip or new formal tests",
+  "body_before_sha256": "1e955db4f8bdabcb1ffd79d107465bbeaab921eb7e6a4cd9d73f58480807dfb7",
+  "command": [
+    "git",
+    "show",
+    "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6:handoff/pr-reviews/323.md"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "exit_code": 0,
+  "stdout_sha256": "ed89c242cd9294d9be3eb79321423242c3a4e2df157dcf610651ba4705472688",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "findings": [
+    {
+      "kind": "review provenance stale",
+      "text": "Draft states latest review 08:37:05/head307a, but authoritative b7 snapshot contains 14:37:59/headb2445b5. Update last-read source and describe new review without changing gate results."
+    }
+  ],
+  "accepted_limits": [
+    "S/E distinct",
+    "full native 225 suites 5200pass/2fail/1 allowed skip",
+    "N64 now passes but N32 and calls remain red",
+    "ledger stale",
+    "candidate not applied",
+    "TOP RESULT unknown",
+    "whole public archive independent peer not done",
+    "six browsers unrun"
+  ],
+  "status": "metadata correction requested; all original results retained"
+}

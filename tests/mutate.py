@@ -694,6 +694,15 @@ MUTANTS += [
          tests=["tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"]),
 ]
 
+# RC run rule (decision 2026-10-23 #318): a face already lined by placed members
+# is measured only along the unlined run behind the end.
+MUTANTS += [
+    dict(id="M151", desc="I19/R6/#318 閱讀A：rc-lining；撤回須抓到 lined-rc-short-run-permitted", binary="bridge",
+         file='geometry-templates/woodworking/native/contact_world.c',
+         old='if(near!=at)continue;', new='continue;',
+         tests=['tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces']),
+]
+
 
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,

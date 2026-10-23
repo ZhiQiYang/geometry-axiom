@@ -256,13 +256,15 @@ def _reading_a_build_end(reg, timber, timbers, k, at):
         return READING_A_ORDINARY
     if not ((at == span[0] == edge[0]) or (at == span[1] == edge[1])):
         return READING_A_ORDINARY
-    covered = []
+    covered, lined = [], []
     for q in timbers:
         if q is timber:
             continue
         qs, qc = rng(q["rect"], k), rng(q["rect"], 1 - k)
         if (qs[1] if at == span[0] else qs[0]) == at:
             covered.append((max(cross[0], qc[0]), min(cross[1], qc[1])))
+        elif (qs[0] if at == span[0] else qs[1]) == at:
+            lined += iv_subtract([qc], [cross])  # 同一側貼在這個平面 RC 上的料；本料端面那段不算
     covered = iv_norm(covered)
     if not covered:
         return READING_A_ORDINARY
@@ -275,8 +277,14 @@ def _reading_a_build_end(reg, timber, timbers, k, at):
                 rc.append(tuple(sorted((p0[1 - k], p1[1 - k]))))
         for lo, hi in iv_norm(rc):
             exposed = (max(lo, cross[0]), min(hi, cross[1]))
-            if hi - lo >= width and exposed[0] < exposed[1] and iv_subtract([exposed], covered):
-                return READING_A_BARE_RC
+            if hi - lo < width or exposed[0] >= exposed[1]:
+                continue
+            # 放不放得下料寬，量的是這面 RC 上還沒貼料的那一段（決策佇列 2026-10-23 #318 RC 面量法）：
+            # 裸露的端面所在那段未貼料 RC 不短於料寬才拒絕；其餘已貼料、只剩端面後面塞不進料的，照短 RC 放行
+            unlined = iv_subtract([(lo, hi)], lined)
+            for bare in iv_subtract([exposed], covered):
+                if any(b - a >= width and a < bare[1] and bare[0] < b for a, b in unlined):
+                    return READING_A_BARE_RC
     return READING_A_PARTIAL
 
 
@@ -303,8 +311,13 @@ def reading_a_boundary_limits(reg, timbers, limits, k):
     return out
 
 
-def reading_a_has_bare_rc(reg, k, at, side, contacts):
-    """C8 的 RC 原面判準；contacts 是已驗過的正長度角材接觸區間。"""
+def reading_a_has_bare_rc(reg, k, at, side, contacts, lined=()):
+    """C8 的 RC 原面判準；contacts 是已驗過的正長度角材接觸區間。
+
+    lined 是同一側已貼在這個平面 RC 上的料（已扣掉本料端面那段）。裸露段往兩邊延伸到
+    最近的已貼料或 RC 面盡頭，這段未貼料的 RC 不短於料寬才算放得下料（決策佇列 2026-10-23 #318 RC 面量法）。
+    """
+    width = side[1] - side[0]
     for ring in reg.rings:
         plane = []
         for i, p0 in enumerate(ring):
@@ -313,9 +326,12 @@ def reading_a_has_bare_rc(reg, k, at, side, contacts):
                 plane.append(tuple(sorted((p0[1 - k], p1[1 - k]))))
         for lo, hi in iv_norm(plane):
             intersection = (max(lo, side[0]), min(hi, side[1]))
-            if hi - lo >= side[1] - side[0] and intersection[0] < intersection[1]:
-                if iv_subtract([intersection], contacts):
-                    return True
+            if hi - lo >= width and intersection[0] < intersection[1]:
+                for bare_lo, bare_hi in iv_subtract([intersection], contacts):
+                    run_lo = max([lo] + [b for a, b in lined if b <= bare_lo])
+                    run_hi = min([hi] + [a for a, b in lined if a >= bare_hi])
+                    if run_hi - run_lo >= width:
+                        return True
     return False
 
 
@@ -340,14 +356,19 @@ def reading_a_end_admission(reg, timber, timbers, k, at):
             best = (lo, hi, covers, amount)
     if best is None or not best[2] or not ((at == span[0] == best[0]) or (at == span[1] == best[1])):
         return READING_A_ORDINARY
-    contacts = []
+    contacts, lined = [], []
     for other in timbers:
         if other is timber:
             continue
         longitudinal = rng(other["rect"], k)
+        transverse = rng(other["rect"], 1 - k)
+        if (longitudinal[0] if at == span[0] else longitudinal[1]) == at:
+            # 同一側、貼在端面平面 RC 上的料；和本料寬向重疊的部分是碰撞，不拿來縮短裸露段
+            lined.extend(part for part in ((transverse[0], min(transverse[1], side[0])),
+                                           (max(transverse[0], side[1]), transverse[1])) if part[1] > part[0])
+            continue
         if (longitudinal[1] if at == span[0] else longitudinal[0]) != at:
             continue
-        transverse = rng(other["rect"], 1 - k)
         lo, hi = max(side[0], transverse[0]), min(side[1], transverse[1])
         if hi > lo:
             contacts.append((lo, hi))
@@ -356,7 +377,8 @@ def reading_a_end_admission(reg, timber, timbers, k, at):
         return READING_A_ORDINARY
     # 先量 RC 原連續面，才取端面交集、扣角材。不能拿 13 mm 餘隙
     # 冒充 100 mm 真面；相鄰共線頂點不能把 30 mm 拆成 15+15。
-    if reading_a_has_bare_rc(reg, k, at, side, contacts):
+    # 再扣同一側已貼的料：真面上沒貼料的那段才是放不放得下料寬的長度。
+    if reading_a_has_bare_rc(reg, k, at, side, contacts, lined):
         return READING_A_BARE_RC
     return READING_A_PARTIAL
 

@@ -8,8 +8,8 @@
 #define CHECK(tag,x) do{if(!(x)){fprintf(stderr,"ASSERT:%s\n",tag);return 1;}}while(0)
 typedef struct {
     WoodBoundaryRegion boundary;
-    WoodMember self,other;
-    WoodContactMemberFact members[2];
+    WoodMember self,other,liner;
+    WoodContactMemberFact members[3];
     WoodContactWorld world;
     WoodStopFace faces[32];size_t count;
     WoodGridState grids;
@@ -29,6 +29,10 @@ static void init(Fixture *f,GeoCoord step)
     f->world=(WoodContactWorld){.placement_id=7,.regions={&f->boundary},.region_count=1,.role_boundary=&f->boundary,.members=f->members,.member_count=2};
     f->count=wood_contact_collect_stops(&f->world,false,&f->self,f->faces,32);
 }
+/* Enables a third placed member whose footprint may line the RC plane at the
+ * end from the member's own side; collected stops are left unchanged. */
+static void line_rc(Fixture *f,GeoRect2 footprint)
+{f->liner=f->self;f->liner.id=3;f->members[2]=(WoodContactMemberFact){&f->liner,7,3,true,true,footprint};f->world.member_count=3;}
 static WoodStopFace *member_face(Fixture *f)
 {for(size_t i=0;i<f->count;++i)if(f->faces[i].kind==WOOD_STOP_MEMBER_SIDE&&f->faces[i].timber_id==2&&f->faces[i].edge_index==0)return &f->faces[i];return NULL;}
 static WoodStopFace *rc_face(Fixture *f)
@@ -71,6 +75,18 @@ static int features(void)
     rc->hi=15;f.faces[f.count++]=(WoodStopFace){WOOD_STOP_OUTLINE_EDGE,7,0,-1,2,WOOD_STOP_FIXED,500,15,30};
     CHECK("collinear-rc-subdivision-joined",policy(&f,NULL)==WOOD_BOUNDARY_END_BARE_RC);
     f.faces[f.count-1].boundary_id=99;CHECK("different-rc-host-not-joined",policy(&f,NULL)==WOOD_BOUNDARY_END_PARTIAL);
+    /* #318 RC run rule: the 113 mm RC face is measured along the unlined run
+     * holding the exposed 13 mm, bounded by placed members lining it. */
+    init(&f,13);rc=rc_face(&f);CHECK("run-fixture",rc!=NULL);rc->lo=-100;
+    CHECK("long-unlined-rc-run-refused",policy(&f,NULL)==WOOD_BOUNDARY_END_BARE_RC);
+    line_rc(&f,(GeoRect2){400,-100,500,0});
+    CHECK("lined-rc-short-run-permitted",policy(&f,NULL)==WOOD_BOUNDARY_END_PARTIAL);
+    f.members[2].footprint=(GeoRect2){400,-100,500,-14};
+    CHECK("lined-rc-run-that-fits-refused",policy(&f,NULL)==WOOD_BOUNDARY_END_BARE_RC);
+    f.members[2].footprint=(GeoRect2){500,-100,600,0};
+    CHECK("far-side-member-does-not-line",policy(&f,NULL)==WOOD_BOUNDARY_END_BARE_RC);
+    f.members[2].footprint=(GeoRect2){400,-100,500,0};f.liner.placed=false;
+    CHECK("unplaced-member-does-not-line",policy(&f,NULL)==WOOD_BOUNDARY_END_BARE_RC);
     return 0;
 }
 static WoodMemberSpanStatus resolve(Fixture *f,bool between,uint32_t named,char *error,size_t cap)

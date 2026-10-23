@@ -1,0 +1,908 @@
+{
+  "schema": "geo333-ignore-fix-independent-peer/1",
+  "reviewed_utc": "2026-10-23T14:55:51.514497+00:00",
+  "reviewer": "own_299_316_combined",
+  "source_sha": "02cb11b9762da429a3dbb0eed9151f45a65ed620",
+  "parent_sha": "3d9bd9476b5eda05e1cb92338ee741b90019dff2",
+  "scope": "Exact two-line .gitignore removal with unchanged tracked quoted FIELD page; original ignore-policy proof only.",
+  "original_receipt_sha256": "cdc6aa4346ca11629aaf1e43a3e0e82565fe6fc71fda2461f247793a8dcf1fb3",
+  "original_launcher_receipt_sha256": "ea3b5ac5084fde24344baa5785fa231182bdce9d69b74b53c9dea05d5f0ea4e8",
+  "original_driver_sha256": "4573c31926c84bce39b1ef223d86f698765955352e1300aae31c10614122a1f5",
+  "latest_handoff_sha": "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6",
+  "latest_review_sha256": "1513227eab0cf0f369c1ae0676621284e64567652c448a5bb431d2aea8c3df9f",
+  "latest_review_timestamp": "2026-10-23T14:41:33Z",
+  "latest_reviewed_head": "3d9bd94",
+  "checks": [
+    {
+      "name": "proof0-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof0-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof0-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof0-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof0-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof0-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof1-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof1-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof1-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof1-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof1-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof1-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof2-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof2-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof2-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof2-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof2-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof2-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof3-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof3-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof3-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof3-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof3-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof3-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof4-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof4-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof4-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof4-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof4-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof4-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof5-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof5-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof5-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof5-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof5-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof5-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof6-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof6-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof6-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof6-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof6-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof6-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof7-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof7-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof7-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof7-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof7-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof7-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof8-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof8-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof8-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof8-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof8-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof8-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof9-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof9-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof9-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof9-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof9-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof9-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof10-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof10-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof10-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof10-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof10-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof10-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof11-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof11-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof11-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof11-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof11-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof11-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof12-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof12-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof12-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof12-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof12-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof12-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof13-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof13-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof13-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof13-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof13-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof13-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof14-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof14-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof14-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof14-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof14-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof14-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof15-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof15-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof15-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof15-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof15-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof15-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof16-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof16-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof16-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof16-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof16-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof16-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof17-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof17-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof17-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof17-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof17-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof17-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof18-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof18-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof18-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof18-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof18-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof18-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof19-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof19-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof19-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof19-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof19-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof19-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof20-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof20-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof20-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof20-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof20-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof20-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof21-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof21-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof21-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof21-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof21-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof21-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof22-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof22-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof22-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof22-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof22-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proof22-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "launch0-result-equals-receipt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "launch0-argv-cwd-source-env-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "launch0-stdout-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "launch0-stderr-size-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "launch0-stdin-sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "launch0-true-terminal-not-timeout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact-only-two-line-removal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "only-ignore-path-changed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed-FIELD-hash-unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "FIELD-equals-independent-authority-original",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact-parent-and-head",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "independent-live-remote-source-head",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "local-clean-now",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "declared-source-identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "outer-and-acceptance-terminal-zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "three-real-ignore-exits",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "expected-policy-exits-also-zero-one-zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed-original-request-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed-real-parent-rule-output",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed-tracked-FIELD-continuously-preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed-actual-gitignore-variant-hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed-named-policy-message-realfile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "withdrawn-original-request-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "withdrawn-real-parent-rule-output",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "withdrawn-tracked-FIELD-continuously-preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "withdrawn-actual-gitignore-variant-hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "withdrawn-named-policy-message-realfile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "restored-original-request-exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "restored-real-parent-rule-output",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "restored-tracked-FIELD-continuously-preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "restored-actual-gitignore-variant-hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "restored-named-policy-message-realfile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact-named-negative-policy-assertion",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "source-restored-clean-and-field-equal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "push-is-normal-no-force",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all-original-nonnegative-commands-zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "launcher-does-not-disable-asserts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fresh-review-newer-approval-read",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "check_exit": 0,
+  "findings": [],
+  "accepted_for_ignore_fix": true,
+  "review_context": "Latest14:41 already approves original3d9 for docs/ignore scope; earlier12:35 finding requested the two-line removal. This02 fix independently keeps a narrower original root allowlist; do not claim latest still requires it.",
+  "proof_interpretation": "0/1/0 are actual git check-ignore ignored/not-ignored/ignored exits. ASSERT_FIELD_RULES_ALLOWLIST is an external policy assertion message, not an original product unittest failure. None is crash,timeout or environmental skip.",
+  "limitations": [
+    "No native/browser/SketchUp/physical-construction acceptance executed or implied.",
+    "No original private conversation/images independently read;38 quotes were independently compared with current main queue earlier,not private-source authenticity.",
+    "No PR merge or live PR body update performed by reviewer; remote-source observation is as of own recorded ls-remote.",
+    "No re-execution of withdrawal proof; existing original24 commands and full streams independently inspected."
+  ]
+}

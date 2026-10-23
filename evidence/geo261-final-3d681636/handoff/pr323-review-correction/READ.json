@@ -1,0 +1,47 @@
+{
+  "source_handoff_sha": "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "show",
+        "b7e23a2579c5bdcf057d3ad6d04b064ac098a5c6:handoff/pr-reviews/323.md"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "acceptance_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+      "source_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": null,
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792769263.568723,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/tmp/geo323-baseline-handoff-latest-review/subcommands/000001",
+      "ended_epoch": 1792769263.5713255,
+      "stdout_sha256": "ed89c242cd9294d9be3eb79321423242c3a4e2df157dcf610651ba4705472688",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 16298,
+      "stderr_bytes": 0
+    }
+  ],
+  "test_or_source_edited": false
+}

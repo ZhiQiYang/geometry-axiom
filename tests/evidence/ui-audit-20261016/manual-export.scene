@@ -1,0 +1,42 @@
+requires parameters/1
+parameters begin
+parameters card eyJpZCI6MSwibmFtZSI6IuWvqeafpeadv+WwuuWvuCIsIm5leHRGaWVsZElkIjo0fQ==
+parameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=
+parameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19
+parameters end
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+spec 主支中線 500
+boundary-vertex-keys 1 outer 1 2 3 4 next-key 5
+grid-system 1 name-hex e58e9fe7949fe5afa9e69fa5e7b6b2e6a0bc main-along none u repeat 0 600 v repeat 0 400
+grid-binding 1 on-boundary 1 from-system 1 vertex-key 1 cell 0 0 anchor 0 1 0 1
+grid 1 on 1 from-binding 1
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+guide 1 1 v spec:主支中線
+place 1 on 1 at-face e0 +u +n
+# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0
+place 2 on 1 at-face e2 +u +n
+# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2
+place 3 on 1 at-line guide 1 +v +n
+# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1
+requires assembly-rule-authoring/1
+assembly begin
+assembly record eyJraW5kIjoicnVsZSIsImJ5dGVzIjoyNjUsInNoYTI1NiI6IjkxNGE4YzEzYjhhNzUyNzkwOTkwNDgwNDY4YjQ3M2ZiNDZlMmVkYTUwY2Y2OWFhZDI3Yzk0YmRjNjdkODc3NWYifQ==
+assembly data eyJpZCI6MSwiam9pbnRzIjpbeyJkaXIiOiJ1IiwiZW5kIjoic3RhcnQiLCJpZCI6MSwia2luZCI6ImVuZC10by1zaWRlIiwic2NvcGUiOiJqdW5jdGlvbi0xIiwic2lkZSI6Iit1IiwidGFyZ2V0TWVtYmVyIjoxLCJ0ZXJtaW5hdGVkTWVtYmVyIjoyfV0sIm1lbWJlcnMiOlt7ImlkIjoxLCJzbG90SWQiOjF9LHsiaWQiOjIsInNsb3RJZCI6MX1dLCJuYW1lIjoi5a+p5p+l5o6l5ZCIIiwic2xvdHMiOlt7ImlkIjoxLCJuYW1lIjoi5Li75p2QIn1dLCJ2ZXJzaW9uIjoxfQ==
+assembly commit
+assembly record eyJraW5kIjoiYmluZGluZyIsImJ5dGVzIjoxOTEsInNoYTI1NiI6ImU4M2NkYWVhZjNmZGNlZjQyYjgxNzQ4NzIyZTliZjJkYjk1NDg0ZTg5OTczNDYzNWE5OTgyYzkxNmEzYmE0ZDIifQ==
+assembly data eyJpZCI6MSwibmFtZSI6IuWvqeafpeinkuadkOmFjee9riIsInJ1bGUiOnsiaWQiOjEsInZlcnNpb24iOjF9LCJzbG90cyI6W3siQSI6eyJraW5kIjoibGl0ZXJhbCIsInZhbHVlIjoyN30sIkIiOnsia2luZCI6ImxpdGVyYWwiLCJ2YWx1ZSI6MzN9LCJjb250YWN0RmFjZSI6IkEiLCJvcmllbnRhdGlvbiI6IkEiLCJzbG90SWQiOjF9XX0=
+assembly commit
+assembly end
+requires section-profile/1
+section-profile profile eyJpZCI6MCwibmFtZSI6IuWvqeafpUzmlrfpnaIiLCJvdXRsaW5lIjpbWzAsMF0sWzQwMCwwXSxbNDAwLDYwXSxbNjAsNjBdLFs2MCwyNTBdLFswLDI1MF1dfQ==
+section-profile member eyJBIjp7ImtpbmQiOiJsaXRlcmFsIiwidmFsdWUiOjI3fSwiQiI6eyJraW5kIjoibGl0ZXJhbCIsInZhbHVlIjozM30sImlkIjowLCJraW5kIjoidGltYmVyIiwib3JpZW50YXRpb24iOiJBLXUiLCJwcm9maWxlSWQiOjAsInUwIjowLCJ2MCI6MH0=
+section-profile run eyJpZCI6MCwibGVuZ3RoIjp7ImtpbmQiOiJsaXRlcmFsIiwidmFsdWUiOjI0MDB9LCJwbGFjZW1lbnQiOm51bGwsInByb2ZpbGVJZCI6MH0=
+canvas-pos boundary 1 60 40
+canvas-pos parameter 1 440 60
+canvas-pos assembly-rule 1 234 523
+canvas-pos assembly-binding 1 614 523
+canvas-pos grid-system 1 774 -77
+canvas-pos grid-binding 1 1214 -18
