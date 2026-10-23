@@ -1,0 +1,51 @@
+{
+  "source_sha": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
+  "product_commit": "9ee7f98144f81f11385f392e13cc067f1b9d063c",
+  "base_evidence": "df230da57619e437c30527dbede8c67fd0ec6b50",
+  "base_source": "eb846c345881cc6fc73a53c457a291175365b88c",
+  "base_branch": "codex/geo260-ac23-proof-20261024",
+  "branch": "codex/geo300-contact-index-20261024",
+  "payload": {
+    "STATIC_ORIGINALS.tar.gz": {
+      "bytes": 616096,
+      "sha256": "52e0c5329fc3a29483517995f3aad444dfb97b6553016ffb6e61eb257cdb6e26",
+      "original": "/workspace/geo300-contact-index-source-delivery/STATIC_ORIGINALS.tar.gz"
+    },
+    "RAW_INDEX.json": {
+      "bytes": 49073,
+      "sha256": "c26522210ed2dd279e749807eef250a5960c856b7a667ef8323746c207ccd57a",
+      "original": "/workspace/geo300-contact-index-source-delivery/RAW_INDEX.json"
+    },
+    "PACKAGE.json": {
+      "bytes": 529,
+      "sha256": "cf925628105db55426d2cc4d0a492fec61da5ce87954d952f44137f9734069a1",
+      "original": "/workspace/geo300-contact-index-source-delivery/PACKAGE.json"
+    },
+    "SOURCE_EXPECTED_PEER.json": {
+      "bytes": 12711,
+      "sha256": "19afd8494bb6bee478d3701f3367cd1d43e6711f38f31ea0bae5bd1ac1373786",
+      "original": "/tmp/geo300-contact-index-source-peer-1ee4e830/CHECKS.json"
+    },
+    "SOURCE_EXPECTED_INITIAL_CHECKER_ERROR.json": {
+      "bytes": 13330,
+      "sha256": "a52915ae34c35f9d136265c3ff4f95186e013a60d2bb350918b754936deb30c2",
+      "original": "/tmp/geo300-contact-index-source-peer-1ee4e830/INITIAL_GIT_QUOTEPATH_CHECKER_ERROR.json"
+    }
+  },
+  "frozen_draft": "v3 external-only metadata reflects preparation before the commits; its original bytes are preserved",
+  "formal_methods": 33,
+  "wood_methods": 11,
+  "wood_controls": 33,
+  "all_three_controls": 56,
+  "subject": "UNRUN",
+  "compile": "UNRUN",
+  "stack": "UNRUN",
+  "performance": "UNMEASURED",
+  "global_ledger_written": false,
+  "source_expected_peer": {
+    "checks": 167,
+    "findings": 0,
+    "scope": "immutable Git bytes, exact count, original source publication only"
+  },
+  "reviewer_initial_error": "quotePath decoding metadata failure preserved; the first overwritten stderr was not independently retained; no subject was executed"
+}
