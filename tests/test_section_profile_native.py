@@ -292,7 +292,7 @@ class SectionProfileNative(unittest.TestCase):
         self.apply([put("profile", profile()), put("member", member()),
                     put("member", member(2, 373))])
         self.apply([put("member", panel())])
-        members = {m["id"]: m for m in self.read()["state"]["members"]}
+        members = {m["value"]["id"]: m for m in self.read()["state"]["members"]}
         self.assertEqual([0, 0, 27, 33], members[1]["rect"])
         self.assertEqual([373, 0, 400, 33], members[2]["rect"])
         self.assertEqual([27, 0, 373, 6], members[4]["rect"])
@@ -305,7 +305,7 @@ class SectionProfileNative(unittest.TestCase):
                     put("member", member(orientation="A-v")),
                     put("member", member(2, 0, 373, orientation="A-v"))])
         self.apply([put("member", panel(u=0, v=27, orientation="thickness-u"))])
-        members = {m["id"]: m for m in self.read()["state"]["members"]}
+        members = {m["value"]["id"]: m for m in self.read()["state"]["members"]}
         self.assertEqual([0, 0, 33, 27], members[1]["rect"])
         self.assertEqual([0, 373, 33, 400], members[2]["rect"])
         self.assertEqual([0, 27, 6, 373], members[4]["rect"])
