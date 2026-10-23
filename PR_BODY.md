@@ -1,28 +1,31 @@
-# #318 閱讀 A：實作中
+# #318 閱讀 A：來源實作中，動態驗收待排程
 
 依 issue 留言 6357744513 第 3 版及 2026-10-23 核可閱讀 A，boundary 固定段在定位外輪廓邊端點可有正長度的部分角材接觸；仍拒絕零角材接觸、裸露可放下料寬的 RC 面與借用此款的其他角色／延伸段。
 
-已落核可 SSOT 四處差異及 oracle 建構／C8 各自重算的三態政策，新增 12 個專有測試與固定 528／1056 正向見證。已普通 merge #323→#314→combined 的正式 stack。原生 W/caller、canonical、既有 oracle 見證遷移與正式驗收持續進行；這份正文不宣稱全綠。
+已落核可 SSOT 四處差異、oracle 建構／C8 的獨立重算，以及原生 W／span／between／兩條重驗 caller；H 只交付來源事實與報錯。新測試保精確定位、真 RC 跨度、FEATURE 回傳幾何、具名來源與碰撞守門；目前沒有動態綠燈，不宣稱完成驗收。
 
 | 項目 | 唯一 current state |
 |---|---|
-| 目前來源／evidence head | `ce4a8ad89e8ae3ce69043e9bd91ce4dad519710d` |
-| 閱讀 A 第一批產品提交 | `41cf5594011d9d13f401319ccf676c741263dbcc` |
+| 目前來源／evidence head | `c264f4eea40493133e3d3409dd834d68c861e8d5` |
+| 閱讀 A 第一批產品 | `41cf5594011d9d13f401319ccf676c741263dbcc` |
+| native 第一批／collector 補漏 | `0df78e9f12fad311279c2a458a1cfecf1583b1c2`／`59f42f7d64f09b555aaf6bb47872cdb961b827a8` |
 | 普通合入前棒 | `15a735951a36b6fe52e0291152f335139e6921ad`，內含 #314／#323 |
-| 授權 SSOT 差異 | 已套 D11 一句、I19 例外三、R6(d)(e)；其餘公理與決策佇列不改 |
-| AST／JSON／hash 靜態檢查 | exit 0；僅來源解析，不是產品／測試執行 |
-| 原生 W／span／between／revalidate | 尚待實作與動態驗收 |
-| 正典閱讀器同步及三條檢查 | 尚未跑；剛取得 common/canonical source baton |
-| oracle 既有 selftest／golden 預期遷移 | 尚待；現有舊 core_limited 見證不能冒綠 |
-| 新 oracle 12 方法及正式 quick 掃描 | 尚未跑 |
-| 528／1056 改判、矩形逐毫米／凹角 579 掃描 | 尚未跑；固定正向 ID 已保留，防止清空拒絕清單後漏掃假綠 |
-| 突變 0/1/0 | 尚未跑；M140+ 預留，未寫全域 registry |
-| 架構裁判／收據 | 尚未跑／重產 |
-| 完整突變帳本 | 不由子代理產生；主代理在共同最終 SHA 整份重產一次 |
-| 本輪允許 skip | 無宣告；尚未驗收不計通過 |
+| SSOT 授權範圍 | D11 一句、I19 例外三、R6(d)(e)；其他公理與決策佇列不改 |
+| AST／JSON／hash／錨點／diff 靜態核 | exit 0；不是幾何／編譯／測試結果 |
+| 原生 W／span／between／R6(e) | 已落來源；5 方法、9 真來源撤回控制待執行 |
+| 原生真 CLI place/loadfile/rebuild | 未跑；已放次序風險見下及 QUESTIONS.md |
+| canonical 同步與三閱讀器裁判 | 未跑 |
+| oracle 新 13 方法、builder/checker 0/1/0 | 已備來源；未跑 |
+| 舊 selftest 與 expected 遷移 | 當前正例／歷史負控分開；528／1056 拒絕清單只移 I19-only，其他類別值不改；尚未跑 |
+| 當前 golden 非空核心限制見證 | 待小型觀察及逐欄遷移；不能放寬非空／矩形綁定／id 非 index 斷言 |
+| 矩形逐毫米／凹角 579／528+1056 全掃 | 未跑；固定身份正向 coverage 已落，quick/full 不准依已見房間過濾 |
+| 全域突變 | M140–M148 已登記，全部 unrun；不冒 killed |
+| 架構原裁判／衍生收據 | 未跑／待共同最終來源刷新 |
+| 完整帳本 | 子代理不產；主代理在共同最終 SHA 整份重產一次 |
+| 本輪允許 skip | 無宣告；未跑不算通過 |
 
-證據位於 `evidence/issue318-reading-a-20261023/`。source phase 記錄清楚區分先前準備文件與已落產品來源；原生／oracle 新綠燈尚無收據。root 的 #288 canvas 診斷目前獨占雲端 heavy，未並跑編譯、Chrome、bench 或 scan。
+證據位於 `evidence/issue318-reading-a-20261023/`。同儕靜審已獨立核對授權條文與凍結 528／1056 身份；又抓出 `reference_check_all()` 原全寬漏線，已補入 W 共同判官，動態反證仍待排程。主代理 #288 P88 獨占 heavy 時，本分支未並跑編譯、Chrome、bench、oracle 或 scan。
 
-最不確定處是實際 caller 整合：不能讓 R6(e) 的舊 full-width gate 蓋回新例外，不能讓 BARE_RC 回到舊 C8 的 indoor-only 分支被誤放，也不能以 PARTIAL 早回傳跳過 I5/I20/I22／碰撞。這些都會有專項負例與對抗審；正式結果到齊前不得視為完成。
+最不確定處是最簡 13 mm 兩支同向 boundary 的實際初放／重建順序。靜讀看到重建先清 placed、依原 order 評估、接觸來源略過未放者；目前未找到合法批次豁免。這不是已實測死結，也不以人工 placed=true 型別測例冒稱 CLI 成功。若真無合法路徑，需釐清核可閱讀 A 如何在保留「已放」與鎖定依賴語意下表示；不擅改公理，完整疑點見 `QUESTIONS.md`。
 
-不 force push、不合併 PR。#288 尚未進 main，後續改 base 由主代理依整體順序處理。
+不 force push、不合併 PR。此 head 仍非給末棒的 complete source baton；#288 未進 main，改 base 由主代理處理。
