@@ -6,16 +6,16 @@
   "priorImmutableManifest": "revision-3-peer-and-manifest/PREVIOUS_PACKAGE_MANIFEST.json",
   "files": {
     "CURRENT_STATE.json": {
-      "bytes": 11686,
-      "sha256": "466d14435c3ce18b36b2a2ed4528ffb3da0ea8e91658bcab52ac18c3b311a8f6"
+      "bytes": 14077,
+      "sha256": "8aa117835a34001fffa6a69741c376fa8ada70c080365d6b1593e36db1b7c5da"
     },
     "ORIGINAL_CHECK_SCOPE.md": {
       "bytes": 499,
       "sha256": "6cb13d199f210502cf2458e140a73bd7cc3023dcb8b9e3142d8584e6a4f890fc"
     },
     "PROGRESS.md": {
-      "bytes": 5226,
-      "sha256": "365fac3c7ac005193a1e3f21abfc68f3f686c37d2ea1da9a83ac96f5baf5ae07"
+      "bytes": 6211,
+      "sha256": "f684099142980d76f54e231146b1907a80625029db0204efcd72d7f0d46cee2e"
     },
     "merge-originals/receipt.json": {
       "bytes": 1205,
@@ -985,6 +985,14 @@
       "bytes": 11849,
       "sha256": "a09a1dad4904b89147f552b22feb44a1a2cfd4660bc94a2ef1c69743c822ac70"
     },
+    "raw/forward-merge-340-1f0ebd3e.inventory.json": {
+      "bytes": 51530,
+      "sha256": "e9cf581c8ca142752233b3092af88c1769c46906e5895cd5b7c620f46ce581a5"
+    },
+    "raw/forward-merge-340-1f0ebd3e.tar.gz": {
+      "bytes": 2222447,
+      "sha256": "4d681d72760691eb538e1190872141565f778b2708b73b68352f5e8030d39b98"
+    },
     "raw/seven-pure-modules-57b68014.inventory.json": {
       "bytes": 356848,
       "sha256": "a940c21e59d3f6f93ddba5f9fa3f6dd9a9b260b595f6a468fd2bb3d716d14dc3"
@@ -1008,6 +1016,10 @@
     "raw/two-native-importer-modules-57b68014.tar.gz": {
       "bytes": 4584766,
       "sha256": "94aba5eb4e1c439b8c3bbf6500661fcc677b936b5d5361fd42457a8849c43097"
+    },
+    "receipts/forward-340-closure.json": {
+      "bytes": 2704,
+      "sha256": "e2b154d601cedca88a19a07d00777d8c6143b4e2bc89603644c81fee7b908e1f"
     },
     "receipts/importers-nine-modules.json": {
       "bytes": 14878,
@@ -3016,6 +3028,390 @@
     "revision-7-native43/publish_native43_actual.py": {
       "bytes": 13446,
       "sha256": "1a5ebb3862a9ae1a1d1c6232b411b046202220cb3435018d231117422a8d1e34"
+    },
+    "revision-8-forward-340/PREVIOUS_CURRENT_STATE.json": {
+      "bytes": 11686,
+      "sha256": "466d14435c3ce18b36b2a2ed4528ffb3da0ea8e91658bcab52ac18c3b311a8f6"
+    },
+    "revision-8-forward-340/PREVIOUS_PACKAGE_MANIFEST.json": {
+      "bytes": 142895,
+      "sha256": "38a9c72afb4a00dc40ba88d548b6cec0602e1423f4533d5ea890f468548d3b71"
+    },
+    "revision-8-forward-340/PR_BODY_BEFORE_FORWARD_MERGE.md": {
+      "bytes": 6056,
+      "sha256": "fd9948064680a02dacb846cf942461fdf0d8723024a58dd5d61928668b8ebb67"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/receipt.json": {
+      "bytes": 924,
+      "sha256": "5306f4f522f7f0b4efb97d5379d7dba15cd66d6562f89e0c99b555cdf61027a7"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000001/request.json": {
+      "bytes": 1496,
+      "sha256": "5d0922e395d5bc7d9c4730646346980e299aff515c6af75a0010513e3a7d1814"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000001/result.json": {
+      "bytes": 1746,
+      "sha256": "af18ad0cc7a764cb702ed55320e1e77dcab926fc3020ea43eb42dc6e90840dd3"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000001/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000001/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000001/stdout.bin": {
+      "bytes": 41,
+      "sha256": "1ebe00ad59097931f9428ef9b54f6a6d63e6bfbc08fba8b0b3b3230169dd7130"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000002/request.json": {
+      "bytes": 1532,
+      "sha256": "a03e96bed84c65e0a7bf48122fdfec63e84ae93bca877421de738fc7a58cb0bc"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000002/result.json": {
+      "bytes": 1781,
+      "sha256": "17bf76ae5212c8ed6f4192c8cd5272054a637394fcd5ad18f2d93af47c80cb43"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000002/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000002/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000002/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000003/request.json": {
+      "bytes": 1503,
+      "sha256": "4a2171e7591894889f8996e5b7ac566d32c03013374607274b0f20bb3c883478"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000003/result.json": {
+      "bytes": 1754,
+      "sha256": "575e43de10c87cc82b54003318b1ee1ebc95dbf97a1f87f6b27ea30bfa71295a"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000003/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000003/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000003/stdout.bin": {
+      "bytes": 41,
+      "sha256": "15dce883278f227a4a7843abbbc9f7b22ce8460b951e90275cfc358ab7efbd6e"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000004/request.json": {
+      "bytes": 1539,
+      "sha256": "cf907de9101f12901ba1b0bc6307094bace02d602d0db185e195c25f531450d3"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000004/result.json": {
+      "bytes": 1789,
+      "sha256": "f6ad396382580704bfcffe0651bf62940bb980317cdd7bda2d042244ed977cd1"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000004/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000004/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000004/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000005/request.json": {
+      "bytes": 1557,
+      "sha256": "9c3e1971c02b8da5f9c83cd505ac42e0672e672d06c145a2bfcbbcc0e9b4cec0"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000005/result.json": {
+      "bytes": 1806,
+      "sha256": "b3e212f4cd5fa2ced01813f22e24dc6cb9d0476341ed16c33892c3b275434547"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000005/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000005/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000005/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000006/request.json": {
+      "bytes": 1524,
+      "sha256": "291f15711bdcac8f31bf5cce51c9b1255793d291cedeb6d878e4a3332b37f37c"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000006/result.json": {
+      "bytes": 1777,
+      "sha256": "1eed5694e2cf91253e577709dd806b01dd333917495e03a547971f1cdc2f2b9c"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000006/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000006/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000006/stdout.bin": {
+      "bytes": 10944,
+      "sha256": "20bd9df2e359ee6c381d7df43e7f24802a51f24b173978bf1a920dea4ebac81a"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000007/request.json": {
+      "bytes": 1845,
+      "sha256": "7f7099ffb8485b766560522e8f1f46f19efa00cbaa0459ac509293e770a61a09"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000007/result.json": {
+      "bytes": 2095,
+      "sha256": "815019985653284f28d8177ab2b378aec63b92362ac09e4263f59f477f9293b0"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000007/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000007/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000007/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000008/request.json": {
+      "bytes": 1565,
+      "sha256": "2a751e9823ef6dd2fc316c689b53129afd731b4fe8ceee0616acaaeed8cc1b78"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000008/result.json": {
+      "bytes": 1818,
+      "sha256": "5922b666dfa510816573345a2a69b698a66c841a285170daf136875e2d97518a"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000008/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000008/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000008/stdout.bin": {
+      "bytes": 13002,
+      "sha256": "8ede4e7d8846287f2b003c798ac573388b66b2b831488c438e0d61b256c6178c"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000009/request.json": {
+      "bytes": 1496,
+      "sha256": "257b5dcc39324189de85a302138844aebef95b7acac4a61190d1af730fe1733a"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000009/result.json": {
+      "bytes": 1747,
+      "sha256": "5d7fa46d5dcf15916c25199ca8b6ec376bd74bd57c1592301c63a539e9cb590b"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000009/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000009/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000009/stdout.bin": {
+      "bytes": 41,
+      "sha256": "22ac234ee289d860b6836ef0d4f674c7bc79074fa6cc04a85404a0e923162235"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000010/request.json": {
+      "bytes": 1577,
+      "sha256": "28cfd54a31f7cedb6e13ef4e1bab63bb4b38239596297e16b843afef43499ac0"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000010/result.json": {
+      "bytes": 1828,
+      "sha256": "3077f0e1ba9a67553bce1a28dc51c190cd1d7fea95fde5d111ab8160761ffb87"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000010/stderr.bin": {
+      "bytes": 133,
+      "sha256": "8a80478336b8b98bd605085cee83b45d6595af1d4e39f667da0043baf6d7ba5c"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000010/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000010/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000011/request.json": {
+      "bytes": 1563,
+      "sha256": "d5caeaeb51493f04af21008d8db2dcd38d90a3d6a149c4bd69f8943a226f84a9"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000011/result.json": {
+      "bytes": 1814,
+      "sha256": "49123f986ea73c2a3ea89825a39d730750a01edcb0286d64a55c474a4310d7a1"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000011/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000011/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000011/stdout.bin": {
+      "bytes": 80,
+      "sha256": "2cd880738a2f3400d565afd4e2f0f662c53ebc21bec296ddae4ff8931eeb3f40"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000012/request.json": {
+      "bytes": 1544,
+      "sha256": "9a36afc9ce2589a2d8b02860fb15f9ed0a1f996594b6bb212325133ba67713b3"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000012/result.json": {
+      "bytes": 1794,
+      "sha256": "a999126df608ea2f5366c41a1d9924007e2080e864e5e3fed66e3b244edf9935"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000012/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000012/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000012/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000013/request.json": {
+      "bytes": 1531,
+      "sha256": "259cc0d7b767686105653d231c6031cd30e3d743859fbd4c2e21d2a8a2dbe659"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000013/result.json": {
+      "bytes": 1782,
+      "sha256": "a0949f79a3b07acf6f13d31e99c1e257f207039dc05763bd57297f4cf846484f"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000013/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000013/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000013/stdout.bin": {
+      "bytes": 11,
+      "sha256": "fd0f6bcb0fbba840143abd8e05217af71b51bb02f9d5c16df9752c4adfb60ae5"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000014/request.json": {
+      "bytes": 1517,
+      "sha256": "5bbd68bf1bfbd8268f33ea101f18adbce2f79dd9dfabf8415cffe2d1a1a26024"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000014/result.json": {
+      "bytes": 1767,
+      "sha256": "3f4efde218edf10deb08840707ed2a36fe1c05235e9da52faf7c96119c942b7b"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000014/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000014/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000014/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000015/request.json": {
+      "bytes": 1565,
+      "sha256": "e0de8853a528fab03be980978635147e4d8cbb163024cdfdb383fbd4cc5ebd83"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000015/result.json": {
+      "bytes": 1817,
+      "sha256": "f8d6aa5ddbca383c2e957375fafca8662176c939214bf4c3c84c58cacd4c7daa"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000015/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000015/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000015/stdout.bin": {
+      "bytes": 155,
+      "sha256": "b042d58537358e3b9b55ccab2c2703e0b2d5653af344761add0889535ea58781"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000016/request.json": {
+      "bytes": 1503,
+      "sha256": "6e9cdf64921acdcfac96b10b322f192a4cf5ab1d1763072bc684b30d7f7a6a79"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000016/result.json": {
+      "bytes": 1754,
+      "sha256": "960adae72485f0b17b6e3be454ef7c956e667df1a3ca936f34d1338ec9ee3a87"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000016/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000016/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000016/stdout.bin": {
+      "bytes": 41,
+      "sha256": "32223f6cf782145a33482272cfd728ba8769d6d12783c7c65397965348e6461a"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000017/request.json": {
+      "bytes": 1599,
+      "sha256": "6c1459ce0914650c11fb2f19c324da55dc787e220084d4dbde229496ec6ffd04"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000017/result.json": {
+      "bytes": 1851,
+      "sha256": "6a7782a2dcee2204a56b292c39ad85fb45ca5e85168769f328e874e5987d2b7b"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000017/stderr.bin": {
+      "bytes": 147,
+      "sha256": "20e9ebcbfba58399dd7d00917d992e21707a2ac29fcdf2493367f8a5bb36369e"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000017/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000017/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000018/request.json": {
+      "bytes": 1577,
+      "sha256": "8ca60cc072cfbd42cb57b7a4d760d2009ee959428823c86ca05b8452ff268d80"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000018/result.json": {
+      "bytes": 1828,
+      "sha256": "328101cd027ba248526f19349e2541b37dfed3a2849f52e54d214d0a2c34ed23"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000018/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000018/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands/000018/stdout.bin": {
+      "bytes": 87,
+      "sha256": "a70746bda54e31cc5237afa1b7ecff6a45a4541ba65f7ce0adc6bfaf98225e2a"
+    },
+    "revision-8-forward-340/prior-completed-native43-publication/subcommands.json": {
+      "bytes": 34101,
+      "sha256": "f4af1837eae7d9e0937eb47cc95cf5769e2c31c3d1be6028ae7e2d6b8881f479"
+    },
+    "revision-8-forward-340/publish_forward_merge_340.py": {
+      "bytes": 9728,
+      "sha256": "4f5fe6b556333cfd98b5adab22ed85b6b09b5c6cb8826a6956539647b82e6097"
     }
   },
   "productTestsExecuted": true,
@@ -3023,5 +3419,7 @@
   "validationTimingAddendum": "revision-4-validation-timing/VALIDATION_TIMING_ADDENDUM.json",
   "completedOriginalPredicateRows": 3,
   "partialFormalRows": 0,
-  "remainingIncompleteGates": 12
+  "remainingIncompleteGates": 12,
+  "currentProductSourceSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "originalAcceptanceSourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b"
 }

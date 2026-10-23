@@ -35,3 +35,9 @@
 固定S57薄source，原host_native30完整30/30（含真fresh fallback編譯），原private binaries.main build bridge/model-base exit0，原default_native13完整13/13、0fail／0skip；原outer／collector0，493Git inputs原始/LF初末同、HEAD/status clean與ls-files --stage輸出同，不冒.index檔bytes。全程secondary.lock序列，20:23:54終態正常釋鎖。
 
 前七99加此43＝指定九module142/142；actualCommands是各原_unittest_runner.py，準備版run_all --build --only診斷未執行，沒有冒aggregate結果。原compile900s／host fallback60s／default捕捉30s與各module1200s保留。完整公開stdout/stderr、raw Gitbatch493inputs、兩ELF與sidecars全部封包；原程式內部未公開pipes不另冒逐條流。fullnative＋expected、registry-list、六browser、mutation check及架構等12列仍UNRUN。
+
+## 普通合入 #340：來源1f0ebd3e
+
+精確incoming4d3a17c3普通雙親merge至本線1f0ebd3e，對incoming非evidence仍只有faces兩leaf＋expected host_sources39→45，noWood13與其餘metadata、SSOT／queue原字保留。產品四根與currentC相對原142實測S57不變，原493廣物化集合只有expected與三個非target test葉不同，九target contracts相同。142與predicate0/1/0均保原executionS57，不冒新merge執行。架構四衍生檔與FIELD-RULES有限排除另明列；改變的三test驗收仍按各自原收據角色，不能由此closure冒新實跑。
+
+r1 incomingGitobject尚未fetch，show128／collector1未啟merge；r2 fetch0／merge0後誤從未物化evidence路徑讀JSON而FileNotFoundError／collector1，r3只改讀原Gitblob後完成核與普通push0。原raw全保，不改測試也不把metadata失敗當產品紅。現在base建議為codex/kernel-without-woodworking-20261023，root統一送請求；尚12列UNRUN，未合併PR。

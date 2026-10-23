@@ -1,0 +1,55 @@
+{
+  "sourceHead": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "originalExecutionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "errors": [],
+  "exitCode": 0,
+  "testsExecuted": false,
+  "closure": {
+    "fullProductFourRootsAndCurrentCBytesEqualOriginalS": true,
+    "original493InputSupersetChangedOnly": [
+      {
+        "path": "tests/run_all.expected.json",
+        "oldSha256": "f8949726da71c1b8e3a047bc9eb4acc9216ac606d99c5bd53de5083b233905ef",
+        "newSha256": "e6ea0c3020a88deec44b3abaca3b7a96a1608e7ae8c336d594e6f8bcec76fb80",
+        "oldGitBlob": "222d42da65faeff990cba113e3b6f6fc276a4df9",
+        "newGitBlob": "51481b3e9d209a96caeeaff64a4e64cd5af5b6d9"
+      },
+      {
+        "path": "tests/test_geo261_mutation_migration.py",
+        "oldSha256": "855203b0808e364faebf14d6f578494c9cf6aeb1dcc09cb85122e5ac9b6b4efe",
+        "newSha256": "b87dd1c460da53a9a50ea3c64013b02242b57784a443be65c95f4cd883fa0422",
+        "oldGitBlob": "85f511f7e02e107dae75424adfddacd1baa0075a",
+        "newGitBlob": "cec2f33e8b8f686a3bf3dce2cacb49ef84282d44"
+      },
+      {
+        "path": "tests/test_geo261_wood_contact_world.py",
+        "oldSha256": "c361ec62822c102367f6cb9e37f69a8a8c1d6d1eddcb444020ba69b8bfd5f2fd",
+        "newSha256": "8c34f87a4b6228efe5722abee9881fdf72a647dfa632802e62ebf16c41f815c1",
+        "oldGitBlob": "c039a28f8770886fae0384343835d5ebcff9ea18",
+        "newGitBlob": "a9ba5de281c48114fbf8870609915c5653d73d8e"
+      },
+      {
+        "path": "tests/test_rectangular_template.py",
+        "oldSha256": "d4c6e3707222c60d493c6a8a910f4d4613a7acb47d2108f9b7328f53e1c71504",
+        "newSha256": "e948fb78e81a075875a45041009fb379e58d783c8d6b579cd9fa2f81cd40910e",
+        "oldGitBlob": "5e6435baf4c3cf61c6f4f81ecfd29fb0127a4464",
+        "newGitBlob": "640f727de5646102b291b9cee78e72c59337a517"
+      }
+    ],
+    "specifiedNineModuleContractsEqualOriginalS": true,
+    "originalExecutionShaStill": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+    "original142NotRerun": true,
+    "notClaimed": [
+      "new source reran142",
+      "changed mutation-migration test acceptance",
+      "changed wood-contact test acceptance",
+      "changed noWood13 test acceptance at merge",
+      "full native/expected aggregate",
+      "browser",
+      "architecture receipts for faces W leaf",
+      "mutation ledger for merged source"
+    ],
+    "basis": "原493物化集合廣於執行依賴；變更三個非target test葉不在九target/helper的執行路徑，expected九selected contract JSON相同；產品四根與currentC同S。架構衍生四檔與非執行FIELD-RULES另排除，不冒實測覆蓋。"
+  },
+  "remoteSourceHead": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599"
+}

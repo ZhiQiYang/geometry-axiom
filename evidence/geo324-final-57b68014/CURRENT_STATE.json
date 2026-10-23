@@ -1,6 +1,6 @@
 {
   "schema": "geo324.current-state.v1",
-  "productSourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "productSourceSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
   "evidenceHead": null,
   "formalFinalSHA": null,
   "trainMerge": {
@@ -200,7 +200,14 @@
           "--log",
           "/tmp/geo324-native43-57b68014-r1/test_geo261_default_native/unittest.log"
         ]
-      ]
+      ],
+      "sourceApplicability": {
+        "currentProductSourceSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "originalExecutionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+        "basis": "unchanged product/importer/selected contract closure;full493 materialization superset has four explicit nonexecuted-test/other-contract differences",
+        "closureReceipt": "evidence/geo324-final-57b68014/receipts/forward-340-closure.json",
+        "independentForwardMergePeer": "pending"
+      }
     },
     {
       "gate": "predicate-list",
@@ -218,7 +225,14 @@
         "sha256": "58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb",
         "jsonPointer": "/rows/0"
       },
-      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser"
+      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser",
+      "sourceApplicability": {
+        "currentProductSourceSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "originalExecutionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+        "basis": "unchanged product/importer/selected contract closure;full493 materialization superset has four explicit nonexecuted-test/other-contract differences",
+        "closureReceipt": "evidence/geo324-final-57b68014/receipts/forward-340-closure.json",
+        "independentForwardMergePeer": "pending"
+      }
     },
     {
       "gate": "predicate-dict",
@@ -236,7 +250,14 @@
         "sha256": "58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb",
         "jsonPointer": "/rows/1"
       },
-      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser"
+      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser",
+      "sourceApplicability": {
+        "currentProductSourceSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "originalExecutionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+        "basis": "unchanged product/importer/selected contract closure;full493 materialization superset has four explicit nonexecuted-test/other-contract differences",
+        "closureReceipt": "evidence/geo324-final-57b68014/receipts/forward-340-closure.json",
+        "independentForwardMergePeer": "pending"
+      }
     },
     {
       "gate": "predicate-feature",
@@ -254,7 +275,14 @@
         "sha256": "58bf107cbe1207cf695c81b11001881e233075c4782dd6673ed08e4d878b85fb",
         "jsonPointer": "/rows/2"
       },
-      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser"
+      "proofScope": "one unchanged public Python behavioral method; original native transport is mocked; supplementary, not full45/native/browser",
+      "sourceApplicability": {
+        "currentProductSourceSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "originalExecutionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+        "basis": "unchanged product/importer/selected contract closure;full493 materialization superset has four explicit nonexecuted-test/other-contract differences",
+        "closureReceipt": "evidence/geo324-final-57b68014/receipts/forward-340-closure.json",
+        "independentForwardMergePeer": "pending"
+      }
     },
     {
       "gate": "mutation-check",
@@ -293,7 +321,14 @@
       "receipt": null
     }
   ],
-  "bindingRole": "Current original execution facts scoped per row:three predicatePASS;specified nine importer modulesPASS;remaining12UNRUN. No synthetic aggregate exit is assigned.",
+  "bindingRole": "Current product source is forward merge M. Four completed scoped rows retain original executionS57; no new142/predicate execution claimed. Other12rows remainUNRUN; null is unknown, never skip.",
   "predicateDriverSHA256": "4b5c05f1a2d7a5cf24c1e2b4d21641c560a7fe7a25db1109a6127d315ddd406d",
-  "publicationRole": "Containing Git commit is evidence head. Original executionSHA and exits remain explicit;null means unknown,never a skip."
+  "publicationRole": "Containing Git commit is evidence head. Original executionSHA and exits remain explicit;null means unknown,never a skip.",
+  "originalExecutionSourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "forwardMerge": {
+    "incomingSource": "4d3a17c306cad42057589c5cfd964f1c32b755c4",
+    "sourceMerge": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+    "ordinaryMerge": true,
+    "expectedUnion": "noWood13 + faces45;all other incoming metadata preserved"
+  }
 }
