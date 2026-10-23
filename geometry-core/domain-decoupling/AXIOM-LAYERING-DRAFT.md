@@ -1,8 +1,8 @@
-這是草稿，待使用者看稿；看稿前不改公理層。
+這是草稿。四種分析分類已依 PR #331 留言 6368586510 採用。看稿前不改公理層。新方案仍待看稿。
 
 基準是 `origin/main` `f6a1589153ce1f910cbec5d705b5b3bf9df6488d`。
 `公理層.md` 先把 CRLF 換成 LF 後的 SHA-256 是 `7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d`。
-分類 207 條。核心 66、木工 37、混合 104。
+分類 207 條。核心 35、宿主 31、木工 37、混合 104。
 
 ## 讀了什麼
 
@@ -17,14 +17,15 @@
 
 > 這些可以存在裡面 但是是能夠解耦 並且是第一個被套用的部份
 
-本表按這句來標。木工條文可以留在公理層，前提是拆得開，而且是第一個被套用的模板。核心指拿掉木工模板仍然成立的規則。它包含公理自標的 K，也包含沒有木工政策的宿主機制。所以本表的「核心」不等於 GEO-261 的 K。宿主條文若只是保存木工結果，標木工；若同一條裡又有機制又有木工白名單，標混合。
+本表按這句來標。木工條文可以留在公理層，前提是拆得開，而且是第一個被套用的模板。核心指拿掉木工模板仍然成立的幾何、來源圖與候選交易。宿主指沒有木工政策的宿主機制，例如完整專案、草稿、畫布、互動、模型交換、能力宣告與身分帳。定位用的宿主面不是這個宿主類。公理自標的 K、W、H、M 只作對照，不依標記改名。宿主條文若只是保存木工結果，標木工；同一條裡又有可共用機制又有木工白名單，標混合。
 
 ## 怎麼標
 
-- 核心：領域無關。任何模板都成立。
+- 核心：領域無關的幾何、來源圖與候選交易。任何模板都成立。持久化、畫布、交換與配號不放這裡。
+- 宿主：沒有木工政策的宿主機制。拿掉木工模板它仍然要在，但它不是幾何演算法。
 - 木工：只對木工模板有意義。例如角材角色、主支、副支、端面優先級、板縫配方、鋸切視圖。
-- 混合：同一條裡有核心骨架，也有木工內容，要拆成兩段才解得開。
-- 公理文首已經自標 K 31、W 30、M 95、H 51。本表把這四種收成上面三種，不一致寫在最後一欄。
+- 混合：同一條裡有可共用的骨架，也有木工內容，要拆成兩段才解得開。
+- 公理文首已經自標 K 31、W 30、M 95、H 51。本表另做上面四種，不取代那四個標記。對不上的寫在最後一欄。標成宿主且公理自標 H 的，不再寫公理自標 H。
 - 已有「核心契約」和「木工模板契約」兩段的條文，分類沿用這兩段，不另寫一套幾何。拆條號、策略旗標、身分帳涵蓋擴張，寫在文末「新方案」，不放進分類表。
 
 ## 分類表
@@ -33,7 +34,7 @@
 
 - 木工內容的條號在未拆單體：`current_geometry.c` 仍點到這條。紙上拆開，程式還沒有模板邊界。
 - 產品碼無條號：產品檔沒有這條條號。可能尚未實作，也可能做了但沒寫條號。
-- 公理自標 H 或公理自標 M：本表的三種分類和公理文首的四種標籤不同。
+- 公理自標 H：本表不是宿主，公理卻自標 H。公理自標 M：本表不是混合，公理卻自標 M。標成宿主且公理自標 H 的不寫。
 
 這一輪，木工或混合且條號在未拆單體的有 64 條。產品碼無條號的有 38 條。
 
@@ -46,7 +47,7 @@
 | D3 | 混合 | M | 空間邊界面（SpaceBoundarySurface)前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K modeling/geometry.py；偏W finish_surfaces.inc；偏H app.js | 木工內容的條號在未拆單體 |
 | D4 | 混合 | M | 承載面（PlacementSurface)前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K modeling/geometry.py、references.inc、section_profile_placement.inc；偏W derived_placements.inc、engineering.inc、finish_surface_types.h；偏H model_update.py、space_modeling.py、web_bridge.c | 木工內容的條號在未拆單體 |
 | D5 | 混合 | M | 空間（Space)前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c | 木工內容的條號在未拆單體 |
-| D12 | 核心 | H | 畫布座標只是顯示位置。類別裡的 boundary 是物件種類，不是角材角色。 | 未拆單體 current_geometry.c；偏K model_base.c、transactions.inc | 公理自標H |
+| D12 | 宿主 | H | 畫布座標只是顯示位置。類別裡的 boundary 是物件種類，不是角材角色。畫布座標只記錄顯示位置，不參與幾何推導，是沒有木工政策的宿主機制。 | 未拆單體 current_geometry.c；偏K model_base.c、transactions.inc | — |
 | D6 | 混合 | M | 參考線（GuideLine)前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K references.inc；偏H app.js | 木工內容的條號在未拆單體 |
 | D6a | 混合 | M | 局部參考線位置的引用式前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K reference_types.h、references.inc；偏H app.js、source-inspector-bridge.inc | — |
 | D6b | 混合 | M | 具名規格常數（SpecValue)前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K reference_types.h、references.inc、section_profiles.inc | — |
@@ -69,8 +70,8 @@
 | D21 | 核心 | K | 有向邊界殼是幾何。purpose 的 boundary 是邊界用途，不是角材角色 boundary。 | 偏K modeling/engine.py、modeling/geometry.py；偏H space-workspace.js、space_modeling.py | — |
 | D22 | 混合 | M | 複合空間（CompositeSpace；orthogonal-model/1）前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K modeling/engine.py；偏H space-workspace.js、space_modeling.py | — |
 | D23 | 核心 | K | 實體組合的 base 與 tools 是布林角色，不是角材的 primary／secondary。 | 偏K modeling/engine.py、modeling/geometry.py | — |
-| D24 | 核心 | H | 建模請求的完整性是交換契約。這裡的角色是請求結構，不是角材角色。 | 偏K modeling/engine.py；偏H space_modeling.py | 公理自標H |
-| D25 | 核心 | H | 建模交換包是宿主的封裝。正交模型尚未在 C 核心與畫布實作。 | 偏K model_base.c、modeling/__init__.py、modeling/base.py（共5個）；偏H modeling_cli.py、serve.py | 公理自標H |
+| D24 | 宿主 | H | 建模請求的完整性是交換契約。這裡的角色是請求結構，不是角材角色。建模請求只規定交換時的角色、目標與完整狀態，不是角材角色表，是沒有木工政策的宿主機制。 | 偏K modeling/engine.py；偏H space_modeling.py | — |
+| D25 | 宿主 | H | 建模交換包是宿主的封裝。正交模型尚未在 C 核心與畫布實作。建模交換包是定義、能力與快照的封裝，幾何求值在別條，是沒有木工政策的宿主機制。 | 偏K model_base.c、modeling/__init__.py、modeling/base.py（共5個）；偏H modeling_cli.py、serve.py | — |
 | D26 | 混合 | M | 材料版本（MaterialVersion；engineering-spec/1）前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K modeling/__init__.py；偏W engineering.inc、engineering_types.h | — |
 | D27 | 木工 | W | 工程做法版本（MethodVersion；engineering-spec/1）離開木工模板就沒有對象。 | 偏W engineering.inc | — |
 | D28 | 混合 | M | 面套用與尺寸來源（EngineeringApplication / DimensionSource；engineering-spec/1）前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K modeling/__init__.py、transactions.inc；偏W engineering.inc、engineering_commands.inc、engineering_types.h | — |
@@ -97,18 +98,18 @@
 | D48 | 木工 | W | 宣告餘料（DeclaredRemnant；cutting-plan/1）離開木工模板就沒有對象。 | 偏K modeling/__init__.py | 木工條號在偏核心檔 |
 | D49 | 木工 | W | 計量世界與需求件（CuttingDemand；cutting-plan/1）離開木工模板就沒有對象。 | 產品碼無條號 | 產品碼無條號 |
 | D50 | 木工 | W | 裁切方案（CuttingPlan；cutting-plan/1）離開木工模板就沒有對象。 | 偏K modeling/__init__.py | 木工條號在偏核心檔 |
-| D51 | 核心 | H | 完整專案把一份世界和專案層資料包在一起，任何模板都要有專案。 | 偏K modeling/__init__.py | 公理自標H |
+| D51 | 宿主 | H | 完整專案把一份世界和專案層資料包在一起，任何模板都要有專案。完整專案把一份世界和專案層資料包在一起保存，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py | — |
 | D52 | 混合 | H | 附件容量是宿主機制；房間集合是建築模板的第一個領域物件，要拆開。 | 產品碼無條號 | 產品碼無條號、公理自標H |
 | D53 | 混合 | H | 草稿這件事是宿主的；房間外環草稿是領域物件。 | 偏K modeling/__init__.py | 公理自標H |
 | D54 | 混合 | H | 跨專案身分要分類，這是宿主；類別白名單把角材、面材、柱樑寫死，是木工型別表。 | 偏K modeling/__init__.py | 公理自標H |
 | D55 | 混合 | H | 匯入的閉包與配號是宿主；閉包裡哪些木工定義可以走，是模板白名單。 | 偏K modeling/__init__.py | 公理自標H |
 | D56 | 混合 | H | 未提交草稿是宿主；草稿內容寫到擋面和組構，是木工編輯。 | 偏K modeling/__init__.py | 公理自標H |
-| D57 | 核心 | H | 網格編輯草稿保存的是格線來源，不是角材配方。 | 產品碼無條號 | 產品碼無條號、公理自標H |
+| D57 | 宿主 | H | 網格編輯草稿保存的是格線來源，不是角材配方。網格編輯草稿保存的是格線來源的編輯身分與過期狀態，不是角材配方，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
 | D58 | 木工 | W | 重複開間配置（BayRepeat；assembly-bay-repeat/1）離開木工模板就沒有對象。 | 偏K modeling/__init__.py | 木工條號在偏核心檔 |
 | D59 | 混合 | H | 配號機制與受涵蓋清單寫在同一條。清單是現行七類，排除組構實例所有的角材，涵蓋域歸 H。本列不改這份清單。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| D60 | 核心 | H | 存在期由一次提交的結果決定，與材料無關。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| D61 | 核心 | H | 配號區段由宿主產生，核心不自己發號。這是身分機制。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| D62 | 核心 | H | 身分引用與內容指紋用來對世界外的紀錄，不是木工政策。 | 產品碼無條號 | 產品碼無條號、公理自標H |
+| D60 | 宿主 | H | 存在期由一次提交的結果決定，與材料無關。存在期由一次提交的結果開始、延續或結束，不讀材料或角色，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
+| D61 | 宿主 | H | 配號區段由宿主產生，核心不自己發號。這是身分機制。配號區段由執行器的宿主產生，核心不自己發號，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
+| D62 | 宿主 | H | 身分引用與內容指紋用來對世界外的紀錄，不是木工政策。身分引用與內容指紋用來對世界外的紀錄，世界內引用仍只以 id，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
 | D63 | 混合 | H | 保存模型是專案層快照；納入哪些角材與拉伸件是木工選擇。 | 產品碼無條號 | 產品碼無條號、公理自標H |
 | D64 | 核心 | K | 整張參數卡對到兩軸是來源綁定。2026-10-16 的分層追加把它放在共用核心，正文沒有木工政策。 | 偏K modeling/__init__.py；偏H card_reference.inc | — |
 | I1 | 核心 | K | 承載面框架要合法，是框架幾何的守門，不是木工。 | 未拆單體 current_geometry.c；偏K modeling/geometry.py；偏W finish_surface_types.h、finish_surfaces.inc | — |
@@ -126,7 +127,7 @@
 | I11 | 混合 | M | 實體不重疊前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K references.inc | 木工內容的條號在未拆單體 |
 | I12 | 混合 | M | 錨法二選一前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K references.inc | 木工內容的條號在未拆單體 |
 | I13 | 混合 | M | 錨法幾何約束前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K reference_types.h、references.inc；偏W framing-template/core-probe/gen_scenes.py、framing-template/core-probe/parse_results.py、framing-template/core-probe/scene_reader.py；偏H app.js、reference_bridge.inc | 木工內容的條號在未拆單體 |
-| I14 | 核心 | H | canvas-pos 只要求物件存在，不重驗幾何。 | 未拆單體 current_geometry.c；偏K transactions.inc | 公理自標H |
+| I14 | 宿主 | H | canvas-pos 只要求物件存在，不重驗幾何。canvas-pos 只要求物件存在，不重驗幾何，是沒有木工政策的宿主機制。 | 未拆單體 current_geometry.c；偏K transactions.inc | — |
 | I15 | 混合 | M | 柱前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K model_base.c | 木工內容的條號在未拆單體 |
 | I16 | 混合 | M | 樑前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c | 木工內容的條號在未拆單體 |
 | I17 | 混合 | M | 空間重宣告使推導範圍縮小 → 柱樑一併重驗，不過整筆回滾（I8 同軌）;前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c | 木工內容的條號在未拆單體 |
@@ -144,15 +145,15 @@
 | I28 | 核心 | K | 封閉與體積守門是領域無關的幾何、來源或交易，任何模板都成立。 | 偏K modeling/engine.py、modeling/geometry.py | — |
 | I29 | 混合 | M | 組合守門前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K modeling/engine.py、modeling/geometry.py；偏H space_modeling.py | — |
 | I30 | 混合 | M | 擴充交易與依賴前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K modeling/__init__.py、modeling/engine.py | — |
-| I31 | 核心 | H | 輸出缺依賴就拒絕，是交換守門。 | 偏K modeling/__init__.py；偏H model_update.py、scenario_verify.py、space_modeling.py | 公理自標H |
-| I32 | 核心 | H | 執行器要宣告自己有的能力，未知就拒絕。 | 未拆單體 current_geometry.c；偏K model_base.c、modeling/__init__.py、modeling/base.py（共8個）；偏W engineering_commands.inc；偏H engineering_bridge.inc、model_update.py、scenario_verify.py（共4個） | 公理自標H |
+| I31 | 宿主 | H | 輸出缺依賴就拒絕，是交換守門。輸出缺依賴就拒絕整包，是交換守門，不決定角材怎麼裁，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py；偏H model_update.py、scenario_verify.py、space_modeling.py | — |
+| I32 | 宿主 | H | 執行器要宣告自己有的能力，未知就拒絕。執行器要宣告自己有的能力，未知就拒絕，是沒有木工政策的宿主機制。 | 未拆單體 current_geometry.c；偏K model_base.c、modeling/__init__.py、modeling/base.py（共8個）；偏W engineering_commands.inc；偏H engineering_bridge.inc、model_update.py、scenario_verify.py（共4個） | — |
 | I33 | 核心 | K | 精確運算與容量是領域無關的幾何、來源或交易，任何模板都成立。 | 未拆單體 current_geometry.c；偏K model_base.c、modeling/__init__.py、modeling/base.py（共5個）；偏W derived_placements.inc、finish_surfaces.inc、panel_fill_layout.inc（共4個）；偏H model_update.py、space_modeling.py | — |
 | I34 | 混合 | M | 版本用身分加內容指紋是核心；不得刪已引用的材料與做法版本，是木工目錄。 | 偏W engineering.inc、engineering_commands.inc | — |
 | I35 | 混合 | M | 套用合法性前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏W engineering.inc、engineering_commands.inc；偏H engineering_bridge.inc | — |
 | I36 | 木工 | H | 保存已發布的材料與做法版本，只有木工工程規格用得到。 | 偏K modeling/base.py；偏W engineering_commands.inc | 公理自標H |
 | I37 | 混合 | M | 網格系統與配置前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K boundary_vertex_keys.inc、grid_bindings.inc、grid_systems.inc（共5個）；偏H card_reference.inc、app.js | 木工內容的條號在未拆單體 |
 | I38 | 核心 | K | 參數的單位、循環與精確求值，任何模板都成立。 | 偏K parameter_types.h、parameters.inc、references.inc（共4個）；偏W engineering.inc、engineering_commands.inc；偏H parameters.js | — |
-| I39 | 核心 | H | 參數卡整張保存，包含未使用的卡。這是來源保存，不是放材。 | 未拆單體 current_geometry.c；偏K parameters.inc；偏W engineering_commands.inc；偏H engineering_bridge.inc | 公理自標H |
+| I39 | 宿主 | H | 參數卡整張保存，包含未使用的卡。這是來源保存，不是放材。參數卡整張保存，包含未使用的卡，是來源保存而不是放材，是沒有木工政策的宿主機制。 | 未拆單體 current_geometry.c；偏K parameters.inc；偏W engineering_commands.inc；偏H engineering_bridge.inc | — |
 | I40 | 混合 | M | 組構編輯守門前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏W assembly.inc；偏H assembly_bridge.inc | — |
 | I41 | 木工 | H | 組構規則的保存與能力只服務木工組構。 | 未拆單體 current_geometry.c；偏W assembly.inc；偏H assembly_bridge.inc | 木工內容的條號在未拆單體、公理自標H |
 | I42 | 混合 | M | 組構實例守門與保存前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K modeling/__init__.py、references.inc；偏W assembly_generation.inc、engineering.inc；偏H assembly_bridge.inc | 木工內容的條號在未拆單體 |
@@ -164,7 +165,7 @@
 | I48 | 核心 | K | 定位合法是領域無關的幾何、來源或交易，任何模板都成立。 | 偏K section_profile_conversion.inc、section_profile_placement.inc、section_profile_validation.inc；偏H modeling_cli.py、section_profile_bridge.inc、section_profile_diagnostics.inc（共4個） | — |
 | I49 | 混合 | M | 交易與依賴前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K section_profile_validation.inc、section_profiles.inc；偏H section_profile_bridge.inc、section_profile_diagnostics.inc | — |
 | I50 | 混合 | M | 隔離前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 產品碼無條號 | 產品碼無條號 |
-| I51 | 核心 | H | 斷面能力的保存是幾何物件的持久化。面材規格的內容在 D40，不在這條。 | 偏K modeling/base.py、section_profile_conversion.inc、section_profiles.inc | 公理自標H |
+| I51 | 宿主 | H | 斷面能力的保存是幾何物件的持久化。面材規格的內容在 D40，不在這條。斷面、構件、拉伸件與定位的保存是持久化，面材規格不在這條，是沒有木工政策的宿主機制。 | 偏K modeling/base.py、section_profile_conversion.inc、section_profiles.inc | — |
 | I52 | 混合 | M | 完成面與試排完整性前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K modeling/__init__.py；偏W finish_surface_types.h、finish_surfaces.inc、panel_fill_layout.inc | — |
 | I53 | 混合 | M | 分層與障礙前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏K references.inc；偏W finish_surfaces.inc；偏H panel_fill_bridge.inc | — |
 | I54 | 木工 | W | 比對與建立不得混用門檻離開木工模板就沒有對象。 | 產品碼無條號 | 產品碼無條號 |
@@ -176,23 +177,23 @@
 | I60 | 混合 | M | 方案守恆，對每一支被使用的料逐支成立前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 產品碼無條號 | 產品碼無條號 |
 | I61 | 木工 | W | 唯讀與不回寫離開木工模板就沒有對象。 | 產品碼無條號 | 產品碼無條號 |
 | I62 | 木工 | H | 裁切計畫的保存是鋸切視圖，不是幾何定義。 | 偏K modeling/__init__.py | 木工條號在偏核心檔、公理自標H |
-| I63 | 核心 | H | 一個來源頁至多一個來源平面，是附件守門。 | 偏K modeling/__init__.py | 公理自標H |
+| I63 | 宿主 | H | 一個來源頁至多一個來源平面，是附件守門。來源頁的平面數量、房間記錄的歸屬與複核是附件守門，不設定角材角色或裁切，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py | — |
 | I64 | 混合 | H | 第一筆交易的形狀是宿主的；第一個房間是領域起步。 | 偏H serve.py | 公理自標H |
 | I65 | 混合 | H | 草稿的數量與頂點上限是宿主；對象是房間外環。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| I66 | 核心 | H | 依身分類別決定保留或重配，規則本身不指定角材。白名單在 D54。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| I67 | 核心 | H | 匯入要一次做完，缺能力就拒絕。 | 偏K modeling/__init__.py；偏H serve.py | 公理自標H |
-| I68 | 核心 | H | 網格草稿的唯一與孤兒規則，對象是格線。 | 偏K modeling/__init__.py | 公理自標H |
+| I66 | 宿主 | H | 依身分類別決定保留或重配，規則本身不指定角材。白名單在 D54。匯入時依身分類別決定保留或重配，角材白名單在 D54 而不在這條，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
+| I67 | 宿主 | H | 匯入要一次做完，缺能力就拒絕。匯入要一次做完，缺能力就整筆拒絕，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py；偏H serve.py | — |
+| I68 | 宿主 | H | 網格草稿的唯一與孤兒規則，對象是格線。網格草稿的唯一、孤兒與曾缺失只針對格線編輯，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py | — |
 | I69 | 木工 | W | 重複開間守門離開木工模板就沒有對象。 | 偏K modeling/__init__.py | 木工條號在偏核心檔 |
-| I70 | 核心 | H | 身分帳啟用之後，提交後與載入後都要完整。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| I71 | 核心 | H | 沒有配號區段就整筆拒絕，世界不變。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| I72 | 核心 | H | 身分帳的保存與能力宣告，是宿主持久化。 | 產品碼無條號 | 產品碼無條號、公理自標H |
+| I70 | 宿主 | H | 身分帳啟用之後，提交後與載入後都要完整。身分帳啟用之後，提交後與載入後都要完整，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
+| I71 | 宿主 | H | 沒有配號區段就整筆拒絕，世界不變。沒有配號區段就整筆拒絕且世界不變，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
+| I72 | 宿主 | H | 身分帳的保存與能力宣告，是宿主持久化。身分帳的保存、載入與去身分 dump 是持久化，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
 | I73 | 混合 | H | 空間模型要不要納入拉伸件是快照選擇；條文把角材納入寫在同一條。 | 產品碼無條號 | 產品碼無條號、公理自標H |
 | I74 | 核心 | K | 一組來源要完整、唯一、合法，是來源圖的守門。2026-10-16 把它放在共用核心。 | 未拆單體 current_geometry.c；偏K grid_systems.inc、modeling/__init__.py、parameters.inc；偏H card_reference.inc | — |
-| R1 | 核心 | H | 同一點多個命中取最後畫的，是拾取順序。 | 未拆單體 current_geometry.c | 公理自標H |
+| R1 | 宿主 | H | 同一點多個命中取最後畫的，是拾取順序。同一點多個命中取最後畫的，是拾取順序，不是幾何判式，是沒有木工政策的宿主機制。 | 未拆單體 current_geometry.c | — |
 | R2 | 混合 | M | 移動參考線要重放引用它的角材（2026-09-18 拍板反轉，取代原先的凍結語意）前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 產品碼無條號 | 產品碼無條號 |
 | R3 | 核心 | K | 退化或不精確就拒絕、不猜，是幾何紀律。 | 未拆單體 current_geometry.c；偏K references.inc；偏W derived_placements.inc | — |
 | R4 | 混合 | H | 單一 parser 是宿主；指令文法把角材、組構、鋪排寫進同一條。 | 未拆單體 current_geometry.c；偏K references.inc；偏W finish_surfaces.inc；偏H app.js、panel_fill_bridge.inc | 木工內容的條號在未拆單體、公理自標H |
-| R5 | 核心 | H | 拖曳參考線吸附到引用式的求值結果，是幾何編輯。 | 未拆單體 current_geometry.c；偏K references.inc；偏H reference_bridge.inc、web_bridge.c | 公理自標H |
+| R5 | 宿主 | H | 拖曳參考線吸附到引用式的求值結果，是幾何編輯。拖曳參考線時把游標吸到合法引用式再移動，寫入的是引用式而不是角材角色，是沒有木工政策的宿主機制。 | 未拆單體 current_geometry.c；偏K references.inc；偏H reference_bridge.inc、web_bridge.c | — |
 | R6 | 混合 | M | 已有 K/W 兩段。K 把端部的完整寬度、來源資格、優先規則分開驗，並把每端是否唯一留給策略。W 的 (d) 目前要求恰好一個全寬擋面。 | 未拆單體 current_geometry.c；偏K references.inc；偏W assembly_generation.inc、framing-template/core-probe/gen_scenes.py、framing-template/core-probe/parse_results.py（共5個）；偏H timber-schedule.js、timber-supports.js、timber_support_projection.inc | 木工內容的條號在未拆單體 |
 | R7 | 混合 | M | 面上投影分類 = 單一「足跡 × 輪廓接觸關係」函式前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏H app.js、web_bridge.c | 木工內容的條號在未拆單體 |
 | R8 | 混合 | M | 套用（apply-proj）是快照式衍生前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K model_base.c | 木工內容的條號在未拆單體 |
@@ -202,7 +203,7 @@
 | R12 | 木工 | H | 柱與樑共用數字 id、用 c／b 前綴分開，只對這兩個木工障礙物有意義。 | 未拆單體 current_geometry.c | 木工內容的條號在未拆單體、公理自標H |
 | R13 | 混合 | M | 拆分時承載面輔助資料跟著含錨點的那片走（與 R10 同一條「資料跟材料走」）前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c；偏K subgrid_rebind.inc、subgrid_world.inc；偏W engineering.inc | 木工內容的條號在未拆單體 |
 | R14 | 混合 | M | apply-proj 逐項選片前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c | 木工內容的條號在未拆單體 |
-| R15 | 核心 | H | 點名的項目不存在就整筆拒絕，是交易守門。 | 未拆單體 current_geometry.c | 公理自標H |
+| R15 | 宿主 | H | 點名的項目不存在就整筆拒絕，是交易守門。apply-proj 點名的項目不存在就整筆拒絕、不部分套用，這是交易守門而不是裁切政策，是沒有木工政策的宿主機制。 | 未拆單體 current_geometry.c | — |
 | R16 | 混合 | M | top_drop（邊樑整段降低）= 半平面裁切前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c | 木工內容的條號在未拆單體 |
 | R17 | 混合 | M | 貼牆柱露出面在柱遠側緣平面前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 未拆單體 current_geometry.c | 木工內容的條號在未拆單體 |
 | R18 | 混合 | M | 共線、覆蓋與穩定鍵是幾何。onBoundary 怎麼對到邊界材角色是木工。核心段已寫明不由宣告角色倒填。 | 未拆單體 current_geometry.c；偏K model_base.c、modeling/__init__.py、references.inc；偏H web_bridge.c | 木工內容的條號在未拆單體 |
@@ -217,7 +218,7 @@
 | R27 | 核心 | K | 正交布林是領域無關的幾何、來源或交易，任何模板都成立。 | 偏K modeling/geometry.py | — |
 | R28 | 核心 | M | 衍生面的來源追溯兩段是同一件事，沒有木工政策。公理標 M 只因為現行句子留在宿主段。 | 偏K modeling/geometry.py | 公理自標M |
 | R29 | 核心 | K | 標準幾何輸出是領域無關的幾何、來源或交易，任何模板都成立。 | 偏K model_base.c、modeling/engine.py、modeling/geometry.py（共4個） | — |
-| R30 | 核心 | H | 先驗來源與能力，再構造、再輸出。這是建模順序。 | 偏H modeling_cli.py | 公理自標H |
+| R30 | 宿主 | H | 先驗來源與能力，再構造、再輸出。這是建模順序。建模先驗來源與能力，再構造，再輸出；幾何本體在別條，這條是沒有木工政策的宿主機制。 | 偏H modeling_cli.py | — |
 | R31 | 混合 | M | 工程來源求值前段是可共用的幾何或交易，後段把木工驗收寫在同一條，要拆開。 | 偏H engineering_bridge.inc、model_update.py | — |
 | R32 | 混合 | M | 格線按 signed k 求值是核心；求完再放角材、支撐交給擋面規則，是木工下游。 | 偏K grid_bindings.inc、grid_lattice.inc、grid_subdivision.inc（共5個）；偏H grid_binding_bridge.inc、grid_system_bridge.inc | — |
 | R33 | 核心 | M | 參數求值是來源圖。宿主段寫不自動放材，是在禁止把木工塞進核心。 | 偏K parameters.inc | 公理自標M |
@@ -238,16 +239,16 @@
 | R48 | 木工 | W | 排料（確定性先適配遞減）離開木工模板就沒有對象。 | 產品碼無條號 | 產品碼無條號 |
 | R49 | 木工 | W | 收尾與剩料離開木工模板就沒有對象。 | 產品碼無條號 | 產品碼無條號 |
 | R50 | 木工 | H | 裁切方案匯出前要重讀計量世界，是鋸切視圖。 | 偏K modeling/__init__.py | 木工條號在偏核心檔、公理自標H |
-| R51 | 核心 | H | 錨點指紋是標準 JSON 的雜湊。欄位內容由別條定義。 | 偏K modeling/__init__.py | 公理自標H |
+| R51 | 宿主 | H | 錨點指紋是標準 JSON 的雜湊。欄位內容由別條定義。錨點指紋只規定標準 JSON 雜湊，房間欄位的意義在別條，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py | — |
 | R52 | 混合 | H | 起步交易的步驟是宿主的；建立的對象是第一個房間。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| R53 | 核心 | H | 匯入時依類別重配身分，是宿主配號。 | 偏K modeling/__init__.py、parameters.inc | 公理自標H |
-| R54 | 核心 | H | 網格草稿的生命週期，對象是格線編輯。 | 偏K modeling/__init__.py | 公理自標H |
+| R53 | 宿主 | H | 匯入時依類別重配身分，是宿主配號。匯入時依類別重配身分與改寫引用，是配號順序，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py、parameters.inc | — |
+| R54 | 宿主 | H | 網格草稿的生命週期，對象是格線編輯。網格草稿的開啟、過期、孤兒與確認只處理格線編輯，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py | — |
 | R55 | 木工 | W | 重複開間求值離開木工模板就沒有對象。 | 偏K modeling/__init__.py | 木工條號在偏核心檔 |
-| R56 | 核心 | H | 一次成功提交結算一次身分，失敗不消耗。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| R57 | 核心 | H | 身分引用對目前世界做唯一判定，是比對順序。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| R58 | 核心 | H | 世界外的觀察值不是定義，勾選不改世界。 | 產品碼無條號 | 產品碼無條號、公理自標H |
+| R56 | 宿主 | H | 一次成功提交結算一次身分，失敗不消耗。一次成功提交結算一次身分，失敗的候選不消耗序號，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
+| R57 | 宿主 | H | 身分引用對目前世界做唯一判定，是比對順序。身分引用對目前世界依固定順序做唯一判定，不自動改指，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
+| R58 | 宿主 | H | 世界外的觀察值不是定義，勾選不改世界。世界外的觀察值不是定義，勾選不改世界，採用仍走一般交易，是沒有木工政策的宿主機制。 | 產品碼無條號 | 產品碼無條號 |
 | R59 | 混合 | H | 空間模型對拉伸件做一次快照求值；角色與角材選擇是木工。 | 產品碼無條號 | 產品碼無條號、公理自標H |
-| R60 | 核心 | H | 整卡的交易、求值與保存是宿主機制。2026-10-16 把它放在 H。正文沒有角材角色。 | 偏K modeling/__init__.py；偏W engineering_commands.inc；偏H card_reference.inc | 公理自標H |
+| R60 | 宿主 | H | 整卡的交易、求值與保存是宿主機制。2026-10-16 把它放在 H。正文沒有角材角色。整卡的建立、對調、解除與保存走同一筆候選，正文沒有角材角色，是沒有木工政策的宿主機制。 | 偏K modeling/__init__.py；偏W engineering_commands.inc；偏H card_reference.inc | — |
 
 <!-- CLASSIFICATION-TABLE-END -->
 
@@ -2812,7 +2813,7 @@ D15 與 I19 在公理文首標 W，本表標木工。它們不是核心條文。
 
 因此最主要的不一致不是某一條標錯，而是：本表標木工或混合的條文，有 64 條的條號仍出現在未拆的 C 單體裡。模板還不能單獨拿掉。
 
-其次，公理自標 H、本表標核心的那些條，程式多半落在 `geometry-web` 或身分、參數、卡片的 include。這和「它不是木工」一致，和「它應該住進幾何核心」不一致。本表的核心包含宿主機制，不表示這些檔要搬進 K。
+其次，本表標宿主的那些條，程式多半落在 `geometry-web` 或身分、參數、卡片的 include。這和它們不是木工一致，也和它們不該搬進 K 一致。把它們從核心分出來，不表示這些檔要改目錄。
 
 正交實體 D20–D25、I26–I33、R24–R30，文首寫明尚未實作於現行 C 核心或物件畫布。表上若有落點，是建模套件或測試點到條號，不是畫布已經會做。
 
@@ -2820,11 +2821,13 @@ D15 與 I19 在公理文首標 W，本表標木工。它們不是核心條文。
 
 ## 最不確定的地方
 
-- 把沒有木工政策的 H 收進「核心」，核心的數量會比 GEO-261 的 K 大。若核心只准指幾何演算法，這 31 條左右要改標，但使用者要的三種分類裡沒有第四種。
-- D11 與 R6 都標混合，因為兩條都有 K 段和 W 段。不再把「完整帶寬」和「候選是否唯一」讀成互相矛盾，也不建議刪掉現行的全寬句子。
-- D19a、R28、R33、R40 公理標 M，本表標核心。若認為宿主段只要還在同一條就算混合，這四條要改回去。
-- I36、I41、I56、I62、R12、R46、R50 公理標 H，本表標木工。它們是保存與前綴，不是放置算法。標木工是因為拿掉木工模板它們就沒有對象。
-- 房間（D52、D53、I64、I65、R52）算木工模板還是另一個建築模板，正文沒有分開。本表把它們放在混合的模板段。
+- 四類已採用。留下要說明的是哪些原先標核心的條沒有改成宿主，避免只靠 K、W、H、M 改名。
+- D11 與 R6 都標混合，因為兩條都有 K 段和 W 段。不再把完整帶寬和候選是否唯一讀成互相矛盾，也不建議刪掉現行的全寬句子。
+- D19a、R28、R33、R40 公理標 M，本表仍標核心。D19a 的來源子規則是精確等分與穩定引用。R28 的兩段是同一件衍生面追溯。R33 是參數求值，同條的宿主段是在禁止自動放材。R40 是拉伸件重算，空間牆只是定位宿主的例子。這四條不因為公理標 M，或句子裡有宿主兩個字，就改成宿主或混合。
+- D39 的還沒有宿主，是指拉伸件尚未定位，仍標核心。
+- D64 與 I74 是來源綁定和來源圖守門。2026-10-16 的分層把它們放在共用核心，本表仍標核心。整卡保存是 I39 與 R60，那兩條已改宿主。
+- I36、I41、I56、I62、R12、R46、R50 公理標 H，本表標木工。它們是保存與前綴，不是放置算法。標木工是因為拿掉木工模板它們就沒有對象。不因為公理標 H 就改成宿主。
+- 房間（D52、D53、I64、I65、R52）算木工模板還是另一個建築模板，正文沒有分開。本表把它們放在混合的模板段。I63 與 R51 改為宿主：I63 管來源頁與房間記錄的附件數量和複核，不新增角材角色或裁切；R51 只定錨點的標準 JSON 雜湊，欄位意義在別條。
 - 條號搜尋是弱代理。I1 這類每條路徑都在用、但註解沒寫條號的，會顯示產品碼無條號。不能把這一欄讀成沒有實作。
 - 2026-10-22 的壁柱、相位差兩題、端面規則，決定已經寫在決策佇列。本表承接，不再問哪一節有效。新條文還沒寫進公理，那是看稿，不是把舊決定重新打開。
 
@@ -2842,9 +2845,11 @@ D15 與 I19 在公理文首標 W，本表標木工。它們不是核心條文。
 5. 上面第 4 點的新條文本身仍待看稿。這不把已經記錄的選擇重新打開。
 6. #288 這一輪驗收改在雲端 Codex 試行。使用者原話是「如果可以的話我想要試試看  請codex他 在雲端環境跑  不然這台電腦 我想要做其他事情都被這個卡住 很煩」。這不是條文分類的決定，不列入待決。
 
+7. 四類。PR #331 留言 6368586510（2026-10-23T15:34:58Z）記錄分析分類改為核心、宿主、木工、混合。該則寫明下文是交接摘要，不是使用者逐字引文，所以這裡不引用原話。本稿依該則把沒有木工政策的宿主機制從核心分出。決策佇列的登錄不在本稿。
+
 ## 要使用者拍板的點
 
-1. 三種分類要不要改成四種，把沒有木工政策的宿主從「核心」裡分出去。現在的三種是分析視角，不取代公理文首的 K／W／H／M。
+分類要分成三種還是四種，這一題已經結案，見上面已記錄第 7 點。分析分類仍不取代公理文首的 K、W、H、M。新方案仍各待看稿，不在這裡重開。
 
 ## 新方案（需完整逐條差異，待使用者看稿）
 
@@ -2877,7 +2882,8 @@ D15 與 I19 在公理文首標 W，本表標木工。它們不是核心條文。
 ~~~~
 axiom 207
 table 207
-核心 66
+核心 35
+宿主 31
 木工 37
 混合 104
 OK each clause id appears once

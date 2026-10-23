@@ -35,8 +35,12 @@ def main():
         print("FAIL table markers missing")
         return 1
     table = draft[start:end]
-    row_re = re.compile(r"^\| ([DIR]\d+[a-z]?) \| (核心|木工|混合) \|", re.M)
-    rows = row_re.findall(table)
+    row_re = re.compile(
+        r"^\| ([DIR]\d+[a-z]?) \| (核心|宿主|木工|混合) \| [^|]* \| ([^|]*) \|",
+        re.M,
+    )
+    rows = [(m[0], m[1]) for m in row_re.findall(table)]
+    reasons = {m[0]: m[2] for m in row_re.findall(table)}
     seen = {}
     problems = []
     for cid, cls in rows:
@@ -56,16 +60,35 @@ def main():
     for cid in seen:
         if cid not in axiom_seen:
             problems.append("extra %s" % cid)
-    counts = {"核心": 0, "木工": 0, "混合": 0}
+    counts = {"核心": 0, "宿主": 0, "木工": 0, "混合": 0}
     for cls in seen.values():
         counts[cls] += 1
     # Every mixed row needs a split heading.
     for cid, cls in rows:
         if cls == "混合" and ("\n### %s\n" % cid) not in draft:
             problems.append("mixed without split %s" % cid)
+        if cls == "宿主" and "沒有木工政策的宿主機制" not in reasons.get(cid, ""):
+            problems.append("host reason missing %s" % cid)
+    summary = re.search(
+        r"分類 207 條。核心 (\d+)、宿主 (\d+)、木工 (\d+)、混合 (\d+)。",
+        draft,
+    )
+    if summary is None:
+        problems.append("summary line missing")
+    else:
+        got = tuple(int(x) for x in summary.groups())
+        expect = (
+            counts["核心"],
+            counts["宿主"],
+            counts["木工"],
+            counts["混合"],
+        )
+        if got != expect:
+            problems.append("summary %s != table %s" % (got, expect))
     print("axiom %d" % len(axiom_set))
     print("table %d" % len(rows))
     print("核心 %d" % counts["核心"])
+    print("宿主 %d" % counts["宿主"])
     print("木工 %d" % counts["木工"])
     print("混合 %d" % counts["混合"])
     expected_mixed = set(cid for cid, cls in rows if cls == "混合")
@@ -176,7 +199,10 @@ def selftest():
     start = draft.find("<!-- CLASSIFICATION-TABLE-START -->")
     end = draft.find("<!-- CLASSIFICATION-TABLE-END -->")
     table = draft[start:end]
-    row_re = re.compile(r"^\| ([DIR]\d+[a-z]?) \| (核心|木工|混合) \|", re.M)
+    row_re = re.compile(
+        r"^\| ([DIR]\d+[a-z]?) \| (核心|宿主|木工|混合) \|",
+        re.M,
+    )
     mixed = [cid for cid, cls in row_re.findall(table) if cls == "混合"]
     target = None
     mutated = None
