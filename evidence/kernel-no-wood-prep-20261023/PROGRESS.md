@@ -1,5 +1,11 @@
 # 不帶木工模板：準備進度
 
+## 最新覆寫：source棒已普通合流，動態未跑
+
+正式source為 `9b201164ed31069843a2b9f3787ea8ae8e22e231`。先核#318 source `ae74e51bba1efef48949c077635966273a9e8990` 相對fdac首父的所有非evidence blob/mode零差，再一般merge為 `9129cb954412dcd23575185fa7e5e7b2c96e8959`；只將本suite expected 11→13，原13 methods/葉檔e948 hash不變。原Git collector exit0、普通push/remote exact同、worktree乾淨，完整原指令/streams/env/hash在revision-3封包。
+
+這是來源交棒，不是動態綠：compiler、13項、七phase預期0/1/0/1/0/1/0全部未跑，root仍排重工作槽。未重產全帳本；只由root最後一次處理。前棒聯集已保留，沒有直接改產品C、公理或決策佇列；沒有force/rebase/合併PR。此提交僅公開新source狀態與原Git收據，後面各節保留為歷史。
+
 狀態：**只有準備證據，產品測試檔尚未修改，正式驗收尚未跑**。這是子代理專有分支；本提交只在 evidence 增加文件，沒有建立 checkout、編譯、開 Chrome、跑 benchmark 或重產帳本。
 
 - 固定產品底本：13d02c1db7022145a52ee063286a558e595eb212。準備分支建於當時整合 evidence head 22ad28f30c5b7c43cb004b95037583bc7b902f3c，不把 evidence SHA 冒稱測試來源 SHA。
