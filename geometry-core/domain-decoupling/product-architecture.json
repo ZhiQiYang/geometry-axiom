@@ -3091,7 +3091,7 @@
     {
       "path": "geometry-web/grid_rule_lines_test.js",
       "reason": "Dedicated acceptance/test driver grid_rule_lines_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+      "sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
       "hashMode": "lf"
     },
     {
@@ -3595,7 +3595,7 @@
     {
       "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
       "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
-      "sha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
+      "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930",
       "hashMode": "lf"
     },
     {
@@ -3619,13 +3619,13 @@
     {
       "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
       "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
-      "sha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
+      "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1",
       "hashMode": "lf"
     },
     {
       "path": "geometry-core/framing-template/oracle/framing_oracle.py",
       "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
-      "sha256": "4c271933e123b296d6c9240f2ee4f4ae045f1dc59173b8c6aa9acd12e0cd4e01",
+      "sha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359",
       "hashMode": "lf"
     },
     {
@@ -3643,13 +3643,13 @@
     {
       "path": "geometry-core/framing-template/oracle/render.py",
       "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
-      "sha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
+      "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe",
       "hashMode": "lf"
     },
     {
       "path": "geometry-core/framing-template/oracle/selftest.py",
       "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
-      "sha256": "21a8a3ccd3f3b53d9caeedfd1b1f9900fee825d28752388748013c774bce42cd",
+      "sha256": "013fa3d2ef01d4cead6998d65d472deee0137266df2bc8ab9b1bbf567aaa309a",
       "hashMode": "lf"
     },
     {

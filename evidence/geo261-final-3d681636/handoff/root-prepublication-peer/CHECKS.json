@@ -1,0 +1,2084 @@
+{
+  "schema": "static-root-stage-stop-publication-peer/1",
+  "utc": "2026-10-23T15:25:48.826730+00:00",
+  "exit_code": 0,
+  "checks": [
+    {
+      "name": "publisher never executes subject/import/build/Chrome",
+      "passed": true
+    },
+    {
+      "name": "fixed root branch/F/evidence-only path and expected current head",
+      "passed": true
+    },
+    {
+      "name": "original capture exact pinned and original default check=True fail-closed",
+      "passed": true
+    },
+    {
+      "name": "original branch/HEAD/clean/remote guards",
+      "passed": true
+    },
+    {
+      "name": "old NEXT/progress hashes and reviewed final NEXT bound",
+      "passed": true
+    },
+    {
+      "name": "pending final-placeholder fails closed",
+      "passed": true
+    },
+    {
+      "name": "input path/duplicate/bytes/hash/nooverwrite all checked",
+      "passed": true
+    },
+    {
+      "name": "exact staging allowlist and small authored metadata diffcheck",
+      "passed": true
+    },
+    {
+      "name": "normal commit/push/lsremote/source delta/clean guards after publish",
+      "passed": true
+    },
+    {
+      "name": "manifest exact F",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/FINAL_HANDOFF.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/FINAL_HANDOFF.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/NEXT.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/NEXT.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/SOURCE_REMOTE_CHECK.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/SOURCE_REMOTE_CHECK.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/combined-head.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/combined-head.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/combined-head.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/combined-head.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/combined-status.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/combined-status.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/combined-status.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/combined-status.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/combinedbody-head.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/combinedbody-head.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/combinedbody-head.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/combinedbody-head.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/combinedbody-status.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/combinedbody-status.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/combinedbody-status.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/combinedbody-status.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/p73-head.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/p73-head.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/p73-head.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/p73-head.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/p73-status.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/p73-status.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/p73-status.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/p73-status.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/p73body-head.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/p73body-head.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/p73body-head.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/p73body-head.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/p73body-status.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/p73body-status.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/p73body-status.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/p73body-status.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/remote-heads.stderr",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/remote-heads.stderr",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-final/remote-heads.stdout",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-final/remote-heads.stdout",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/01/FINAL_DELIVERY_INDEX.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/01/FINAL_DELIVERY_INDEX.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/02/ENVIRONMENT_MAINTENANCE_DELIVERY_INDEX.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/02/ENVIRONMENT_MAINTENANCE_DELIVERY_INDEX.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/03/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/03/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/04/READING_NOTES.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/04/READING_NOTES.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/05/FINAL_V2_REVIEW.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/05/FINAL_V2_REVIEW.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/06/FINAL_V2_CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/06/FINAL_V2_CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/07/REVIEW.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/07/REVIEW.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/08/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/08/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/09/REVIEW.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/09/REVIEW.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/10/REVIEW.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/10/REVIEW.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/11/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/11/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/12/REVIEW.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/12/REVIEW.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/13/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/13/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/14/STOP_NETWORK_DRAFT_ADDENDUM_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/14/STOP_NETWORK_DRAFT_ADDENDUM_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/15/FINAL_CHILD_PRBODY_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/15/FINAL_CHILD_PRBODY_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/combined-reports/16/FINAL_CHILD_PRBODY_PEER_ATTEMPT1.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/combined-reports/16/FINAL_CHILD_PRBODY_PEER_ATTEMPT1.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/kernel-stop/PHASE_STOP_HANDOFF.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/kernel-stop/PHASE_STOP_HANDOFF.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/latest-review.txt",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/latest-review.txt",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr331-readonly/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr331-readonly/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-attempt1/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-attempt1/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-peer-r2/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-peer-r2/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/1.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/1.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/1.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/1.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/2.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/2.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/2.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/2.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/3.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/3.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/3.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/3.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/4.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/4.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/4.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/4.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/5.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/5.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/5.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/5.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/6.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/6.stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/6.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/6.stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr318-final-delivery/DELIVERY.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr318-final-delivery/DELIVERY.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr314-final-publication/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr314-final-publication/receipt.json",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/pr314-stop/NEXT_HANDOFF.md",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/pr314-stop/NEXT_HANDOFF.md",
+      "passed": true
+    },
+    {
+      "name": "unique safe input handoff/publication-tool/publish_project_stop.py",
+      "passed": true
+    },
+    {
+      "name": "input true original bytes/hash handoff/publication-tool/publish_project_stop.py",
+      "passed": true
+    },
+    {
+      "name": "my exact final original selected PHASE_STOP_HANDOFF.md",
+      "passed": true
+    },
+    {
+      "name": "my exact final original selected REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "my exact final original selected CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "my exact final original selected REPORT.md",
+      "passed": true
+    },
+    {
+      "name": "my exact final original selected CHECKS.json",
+      "passed": true
+    },
+    {
+      "name": "stage stop/no project completeness and no background",
+      "passed": true
+    },
+    {
+      "name": "known F/E/D and 288 not READY",
+      "passed": true
+    },
+    {
+      "name": "318 final E/D exact and native/oracle vs quick reds separated",
+      "passed": true
+    },
+    {
+      "name": "noWood source/evidence/body, original R3 and all unrun",
+      "passed": true
+    },
+    {
+      "name": "331 technical approval scope no semantic adoption",
+      "passed": true
+    },
+    {
+      "name": "latest priority distinct from historical forward stack",
+      "passed": true
+    }
+  ],
+  "check_count": 517,
+  "findings": [],
+  "publisher_sha256": "f0addbfdf03a6cc2bebd808788ebb3e7fba3ccfed27e356993ae98c85ba9e4a8",
+  "input_count": 248,
+  "input_bytes": 5666439,
+  "input_manifest_sha256": "59055176a6f530f463d5845c2e58e10e38ba562bc3ae12630d69dd027b18a298",
+  "next_sha256": "f51868d083d8fa2c208c6aa14979a8179a33935a8c0dda9f75213a1768688029",
+  "executed_publisher_or_subject": false,
+  "pending": "Final323 E/D fields and reviewed_next_sha256 not filled yet; recheck final bytes only before actual publication."
+}
