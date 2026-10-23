@@ -10,3 +10,12 @@
 - root #288 持有重工作鎖，且磁碟待清理；本輪沒有 clone／worktree、compile、Chrome、bench 或全帳本重產。
 
 下一步：等 root 提供專有 sparse worktree 與測試槽，按 #323→#314→combined→#318 的普通 merge 順序交棒；再落公理、唯一 reader、oracle 與核心，跑正反例、原始 0/1/0、完整掃描與正式驗收。共用 canonical／C／registry 尚未動。M89–98 屬 combined，M99–121 屬 #314；#318 暫保留 M140+，尚未落 registry。全帳本只由 root 在共同最終 SHA 整份重產一次。
+
+
+## 第二批準備（仍未實作／未跑產品）
+
+已補 caller 整合備忘、repo 外 C/Python 草稿（以 .txt 封存，不是產品來源），包含 R6(e) 先行 full-width gate、between 的完整配對、returned FEATURE 真值負控與禁止 PARTIAL 早回傳跳過碰撞。對抗審要求已記入計畫，正式 caller 尚未實作，不能算整體審過。
+
+另直接從固定原 expected-data blob 913772d5875526be7c84f9911fd2fe6d175bbd1b 抽出 528/1056 ID/layout 作未來必須逐筆 buildable 的正向見證候選（資料抽取 exit0，沒有執行 oracle）。這避免只把不可施工清單清空，導致漏掃房間也假綠。quick/full 的矩形逐毫米方向差異已明記，不能把 quick 冒成 full。
+
+目前仍等 root 的專有 sparse worktree／資源槽，以及 #314→combined 的真 source baton。此提交只有 evidence，產品／SSOT／canonical／共同 registry 原 bytes 均未改。

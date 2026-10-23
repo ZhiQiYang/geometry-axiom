@@ -44,6 +44,12 @@ RC 判準量實際有限 RC 面原跨度，不能量扣掉角材後的餘隙。�
 
 矩形房逐毫米與凹角 579 間掃描分別保存命令、全輸出、環境、source SHA 與結果 hash，不把手寫預期數字當掃描結果。原有 oracle quick/full checker、核心重放與相關 mutation 自證都另記範圍。
 
+舊 `sweep-expected-unbuildable.json` 的非空集合只有 step_core 528 與 mirror 1056。新政策若把它清空，原本的「不可施工清單少一間也紅」會失去這兩組的牙齒。因此另保留原 528/1056 的不可變 ID/layout 清單作正向見證，要求原每一筆都被掃到且成為 buildable；加漏一間／保留 core_limited 的反證，不只比對空集合。正式三方摘要再核每一筆原 buildable 沒有退步。
+
+原 golden 的 `core_limit_witness` 與 selftest 手釘的 L_ch20 也會依法翻轉；保持料件幾何不變，明驗新 core_limits 為空，另保留獨立的 unbound 舊三元組／ID 非 index 反證，不直接刪掉原 core-limit 綁定檢查。新增 accepted witness 的內容必由已核可幾何推導並對照原 immutable fixture，不用 `--write-expected` 抄實際輸出放寬。
+
+現有 `selftest.py --quick` 的一維逐毫米為 `W=300..4000,H=2500` 與 `W=2000,H=300..6000`，僅 LT_Y；其二維邊界帶、凹角 579 與牆階／鏡像各跑八種排法。`--full` 的一維也跑八種且二維帶更密，歷史約三小時。正式收據需明列選項與各自實際覆蓋，不把 quick 稱為 full 或全方向逐毫米。
+
 ## 工作與帳本
 
 共用來源順序 #323→#314→combined→#318→無木工。現階段只讀固定 tree、寫本 repo 外的草稿；不編譯／開 Chrome／掃描／跑 full ledger。等 combined 交棒後，在自己的分支 ordinary merge 前棒，再修改共同 leaf 及唯一 canonical reader。三條 reader 各保原始 exit 與輸出。mutation ID 必先對齊實際 registry；不私用 M99–M121 或 combined M89–M98，暫候 M140+。各修正做固定／撤回／還原 0/1/0；由 root 在共同最終 SHA 整份重產一次帳本。
