@@ -1,0 +1,112 @@
+{
+  "schema": "geo314-equivalence-proof-excluded/1",
+  "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+  "private_source_and_control_clones": [
+    {
+      "path": "/tmp/geo314-equivalence-proof-c4aad5d7/controlled-repo",
+      "source_sha": "160e9dc9759aea2cd6b6f7c9eb717590924d1a24",
+      "present_at_collection": true,
+      "file_count": 3765,
+      "bytes": 138204779,
+      "payload_archived": false,
+      "raw_deleted_or_modified": false,
+      "reason": "private sparse Git source/control clone and Git metadata; excluded from publication, not absent from original proof"
+    },
+    {
+      "path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/_bridge-work/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/repo",
+      "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+      "present_at_collection": true,
+      "file_count": 3763,
+      "bytes": 138204854,
+      "payload_archived": false,
+      "raw_deleted_or_modified": false,
+      "reason": "private sparse Git source/control clone and Git metadata; excluded from publication, not absent from original proof"
+    },
+    {
+      "path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/cache/_bridge-work/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/repo",
+      "source_sha": "160e9dc9759aea2cd6b6f7c9eb717590924d1a24",
+      "present_at_collection": true,
+      "file_count": 3759,
+      "bytes": 138203087,
+      "payload_archived": false,
+      "raw_deleted_or_modified": false,
+      "reason": "private sparse Git source/control clone and Git metadata; excluded from publication, not absent from original proof"
+    },
+    {
+      "path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/_bridge-work/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/repo",
+      "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+      "present_at_collection": true,
+      "file_count": 3763,
+      "bytes": 138204854,
+      "payload_archived": false,
+      "raw_deleted_or_modified": false,
+      "reason": "private sparse Git source/control clone and Git metadata; excluded from publication, not absent from original proof"
+    }
+  ],
+  "elf_files": [
+    {
+      "path": "inner/fixed-baseline/cache/M110/bridge-mutant/bridge",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/bridge-mutant/bridge",
+      "bytes": 1109176,
+      "sha256": "63bc279515c83a018b34f0d7deb7f2891c3ec41eda2c1de5b512c7b147411bdc",
+      "reason": "rebuildable ELF binary; bytes/hash retained, payload excluded",
+      "present_at_collection": true,
+      "raw_deleted_or_modified": false
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/bridge-restored/bridge",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/bridge-restored/bridge",
+      "bytes": 1109176,
+      "sha256": "0c26e074625e694395de2a92fc0245c9ee1a34a56fb6ed8ff0b6da34c5b657a4",
+      "reason": "rebuildable ELF binary; bytes/hash retained, payload excluded",
+      "present_at_collection": true,
+      "raw_deleted_or_modified": false
+    },
+    {
+      "path": "inner/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/bridge",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/bridge",
+      "bytes": 1109176,
+      "sha256": "0c26e074625e694395de2a92fc0245c9ee1a34a56fb6ed8ff0b6da34c5b657a4",
+      "reason": "rebuildable ELF binary; bytes/hash retained, payload excluded",
+      "present_at_collection": true,
+      "raw_deleted_or_modified": false
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/bridge-mutant/bridge",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/bridge-mutant/bridge",
+      "bytes": 1109176,
+      "sha256": "20a9ee083fedb005da46c2bd87bfe4c388801a63138f991e37f8f331221b29cd",
+      "reason": "rebuildable ELF binary; bytes/hash retained, payload excluded",
+      "present_at_collection": true,
+      "raw_deleted_or_modified": false
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/bridge-restored/bridge",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/bridge-restored/bridge",
+      "bytes": 1109176,
+      "sha256": "7c89c22e8fe66d26718eefc96a98210f0a0bac26989f184f13dc140f8d17147e",
+      "reason": "rebuildable ELF binary; bytes/hash retained, payload excluded",
+      "present_at_collection": true,
+      "raw_deleted_or_modified": false
+    },
+    {
+      "path": "inner/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/bridge",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/bridge",
+      "bytes": 1109176,
+      "sha256": "7c89c22e8fe66d26718eefc96a98210f0a0bac26989f184f13dc140f8d17147e",
+      "reason": "rebuildable ELF binary; bytes/hash retained, payload excluded",
+      "present_at_collection": true,
+      "raw_deleted_or_modified": false
+    },
+    {
+      "path": "inner/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/bridge",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/bridge",
+      "bytes": 1109176,
+      "sha256": "1b225684cf15a3165ea955eaf85a6a9bc2d64ed68c51d96267d3b0afd1306b1f",
+      "reason": "rebuildable ELF binary; bytes/hash retained, payload excluded",
+      "present_at_collection": true,
+      "raw_deleted_or_modified": false
+    }
+  ],
+  "note": "Exclusion concerns this publication payload only. All original raw files and source/control clones remain present and unmodified."
+}

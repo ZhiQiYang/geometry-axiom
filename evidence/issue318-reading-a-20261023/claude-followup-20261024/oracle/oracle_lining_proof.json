@@ -1,0 +1,53 @@
+{
+ "source_sha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359",
+ "phases": [
+  {
+   "control": "builder",
+   "phase": "baseline",
+   "exit": 0,
+   "want": 0,
+   "detail": []
+  },
+  {
+   "control": "builder",
+   "phase": "withdrawn",
+   "exit": 1,
+   "want": 1,
+   "detail": [
+    "FAIL: test_rc_face_is_measured_along_its_unlined_run (__main__.ReadingAOracle.test_rc_face_is_measured_along_its_unlined_run)",
+    "AssertionError: Tuples differ: ('buildable', []) != ('inconsistent', [{'check': 'CORE_LIMIT_UNC[67 chars]00}])"
+   ]
+  },
+  {
+   "control": "builder",
+   "phase": "restored",
+   "exit": 0,
+   "want": 0,
+   "detail": []
+  },
+  {
+   "control": "checker",
+   "phase": "baseline",
+   "exit": 0,
+   "want": 0,
+   "detail": []
+  },
+  {
+   "control": "checker",
+   "phase": "withdrawn",
+   "exit": 1,
+   "want": 1,
+   "detail": [
+    "FAIL: test_rc_face_is_measured_along_its_unlined_run (__main__.ReadingAOracle.test_rc_face_is_measured_along_its_unlined_run)",
+    "AssertionError: Tuples differ: ('buildable', []) != ('inconsistent', [{'check': 'CORE_LIMIT_UND[57 chars]00}])"
+   ]
+  },
+  {
+   "control": "checker",
+   "phase": "restored",
+   "exit": 0,
+   "want": 0,
+   "detail": []
+  }
+ ]
+}

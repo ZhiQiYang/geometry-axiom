@@ -1,8 +1,12 @@
 #include "contacts.h"
 #include <stdio.h>
 
+/* I22 (W): a non-boundary member must stay inside its locating edge. The refusal keeps the
+ * original wording as an exact prefix and then names the locating edge ("e<edge_index>" and its
+ * interval on the length axis) and each exceeded interval: the low end [span_lo,edge_lo] and/or
+ * the high end [edge_hi,span_hi], all in mm. Capacity, truncation and err==NULL behave as before. */
 bool wood_member_span_extension_check(
-    const WoodMember *self, bool has_edge,
+    const WoodMember *self, bool has_edge, int edge_index,
     GeoCoord span_lo, GeoCoord span_hi, GeoCoord edge_lo, GeoCoord edge_hi,
     char *err, size_t err_cap
 )
@@ -10,9 +14,21 @@ bool wood_member_span_extension_check(
     if (has_edge && self->role != WOOD_MEMBER_ROLE_BOUNDARY &&
         (span_lo < edge_lo || span_hi > edge_hi)) {
         if (err != NULL) {
+            char low_note[64] = "", high_note[64] = "";
+            if (edge_lo > span_lo) {
+                snprintf(low_note, sizeof low_note, "，低端超出 [%lld,%lld] mm",
+                         (long long)span_lo, (long long)edge_lo);
+            }
+            if (edge_hi < span_hi) {
+                snprintf(high_note, sizeof high_note, "，高端超出 [%lld,%lld] mm",
+                         (long long)edge_hi, (long long)span_hi);
+            }
             snprintf(err, err_cap,
                      "V_EXTENSION：非 boundary 角材（%u）的 "
-                     "footprint 超出定位邊範圍", (unsigned)self->id);
+                     "footprint 超出定位邊範圍"
+                     "——定位邊 e%d [%lld,%lld] mm%s%s",
+                     (unsigned)self->id, edge_index,
+                     (long long)edge_lo, (long long)edge_hi, low_note, high_note);
         }
         return false;
     }

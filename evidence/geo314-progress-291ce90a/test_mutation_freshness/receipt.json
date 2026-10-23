@@ -1,0 +1,67 @@
+{
+  "suite": "test_mutation_freshness.py",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/geo314-work/affected-p2-001/capture_suite.py",
+    "/workspace/geo314-work/affected-p2-001/test_mutation_freshness",
+    "/tmp/g261-next314",
+    "test_mutation_freshness.py"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 4.19688050300465,
+  "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+  "cwd": "/tmp/g261-next314",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "TMPDIR": "/workspace/geo314-work/affected-p2-001/test_mutation_freshness/native-tmp",
+    "GEOMETRY_TEST_BRIDGE": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+    "CC": null,
+    "GEO314_DIAGNOSTIC_SCOPE": "five-affected-suites-only"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "output_files": {
+    "native-build-files.json": {
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "size": 3
+    },
+    "native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "773a55243692cc6ea56931ff1f55cce067b39c8971f6b7fd627b2f472dc579f1",
+      "size": 82
+    },
+    "result.json": {
+      "sha256": "a2a23a5e25ee26778de36e8faf12f70081d127e35d1958b56f9f4dfb8f0deeec",
+      "size": 352
+    },
+    "stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "stdout.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "unittest.log": {
+      "sha256": "c0b7322cbd2b70c659d473c6ff5af99b6642b3d91316e92950a45e043bd2e0ac",
+      "size": 173
+    }
+  },
+  "result": {
+    "file": "tests/test_mutation_freshness.py",
+    "total": 74,
+    "run": 74,
+    "passed": 74,
+    "failed": 0,
+    "skipped": 0,
+    "explicit_skipped": 0,
+    "unrun_skipped": 0,
+    "blocked_by_error": 0,
+    "expected_failed": 0,
+    "expected_failures": [],
+    "failures": [],
+    "skip_reasons": {},
+    "skip_items": [],
+    "import_error": null,
+    "extra_errors": 0,
+    "seconds": 4.1
+  }
+}

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/geo323-publication-tools/archive_ledger_e.py", line 262, in <module>
+    main()
+  File "/workspace/geo323-publication-tools/archive_ledger_e.py", line 152, in main
+    assert source.hashes[m['file']] == record['source_sha256']
+                         ~^^^^^^^^
+KeyError: 'file'

@@ -1,0 +1,74 @@
+{
+  "schema": "geo314-equivalence-proof-publication/1",
+  "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+  "control_sha": "160e9dc9759aea2cd6b6f7c9eb717590924d1a24",
+  "scope": "Completed real M110 CLI proof and original single-record validator; no global strict acceptance claim.",
+  "collector": {
+    "path": "/workspace/geo314-work/collect_equivalence_proof.py",
+    "sha256": "ed0f87cec116e9bec9ee7933b067114e0530ffbb9edd98a52606a7ce6f618b65"
+  },
+  "collected_utc": "2026-10-23T01:43:34.319623+00:00",
+  "inner_exit": 0,
+  "outer_process_exit": 0,
+  "original_honesty_methods": 74,
+  "original_honesty_exit": 0,
+  "original_M110_subset_exits": [
+    0,
+    1,
+    0
+  ],
+  "phase_validations": [
+    {
+      "schema": "geo314-M110-original-single-record-validation/1",
+      "scope": "Only M110 original execution validator; not global strict-check acceptance",
+      "verdict": "equivalent",
+      "definition_kind": "equivalent",
+      "execution_problems": [],
+      "execution_head": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+      "baseline_exit": 0,
+      "mutant_exit": 0,
+      "restored_exit": 0
+    },
+    {
+      "schema": "geo314-M110-original-single-record-validation/1",
+      "scope": "Only M110 original execution validator; not global strict-check acceptance",
+      "verdict": "invalid",
+      "definition_kind": "equivalent",
+      "execution_problems": [
+        "missing bridge execution receipt"
+      ],
+      "execution_head": null,
+      "baseline_exit": null,
+      "mutant_exit": null,
+      "restored_exit": null
+    },
+    {
+      "schema": "geo314-M110-original-single-record-validation/1",
+      "scope": "Only M110 original execution validator; not global strict-check acceptance",
+      "verdict": "equivalent",
+      "definition_kind": "equivalent",
+      "execution_problems": [],
+      "execution_head": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+      "baseline_exit": 0,
+      "mutant_exit": 0,
+      "restored_exit": 0
+    }
+  ],
+  "archives": [
+    {
+      "path": "archives/proof-raw-01.tar.gz",
+      "bytes": 2389449,
+      "sha256": "c96691665ac2fafa323f96d77734fa314a24d229916be5a21690259a0de2cbbb",
+      "member_count": 311,
+      "uncompressed_file_bytes": 17499777,
+      "every_member_verified": true
+    }
+  ],
+  "member_count": 311,
+  "verified_command_streams": 147,
+  "excluded_ELF_count": 7,
+  "source_checkout_written": false,
+  "original_raw_written_or_deleted": false,
+  "test_compiler_or_retry_started_by_collector": false,
+  "git_commit_or_push_performed": false
+}

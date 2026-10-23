@@ -359,6 +359,90 @@ class BridgeMutationHonestyTests(unittest.TestCase):
             m["tests"] = ["tests.example.Case.test_other"]
             self.assertNotEqual(after, mutation_bridge.oracle_hash(m, root))
 
+    def test_bridge_record_c_harness_and_nested_scene_changes_are_stale_and_restore(self):
+        """The saved assertion receipt, not merely a hash, must expire and recover."""
+        with tempfile.TemporaryDirectory(prefix="bridge-oracle-freshness-") as directory:
+            root = Path(directory)
+            harness = root / "tests/judge.c"
+            scene = root / "tests/fixtures/nested/legacy.scene"
+            scene.parent.mkdir(parents=True)
+            source = b"int anchor = 1;\n"
+            (root / "current_geometry.c").write_bytes(source)
+            harness.write_bytes(b"int judge(void) { return 1; }\n")
+            scene.write_bytes(b"# frozen legacy scene\n")
+            method = mutation_bridge.RESTORED[1]
+            m = dict(id="MB_ORACLE", desc="bridge oracle freshness fixture", binary="bridge",
+                     file="current_geometry.c", old="anchor = 1", new="anchor = 2", tests=[method])
+            src = mutate.Sources(root)
+            judge = mutation_bridge.oracle_hash(m, root)
+
+            def identity(text, executable):
+                return {"freshness": "fresh", "exe_sha256": executable * 64, "sidecar_sha256": "3" * 64,
+                        "sidecar": {"exe_sha256": executable * 64,
+                                    "files": {"current_geometry.c": mutation_bridge.sha(text)}}}
+
+            def receipt(methods, failures, code, label):
+                return {"exit_code": code, "stdout_file": label + ".stdout",
+                        "stdout_sha256": mutation_bridge.sha(label.encode()), "stderr_sha256": "2" * 64,
+                        "command": ["<python>", "-B", "tests/bridge_mutation_oracle.py", "<bridge>", *methods],
+                        "result": {"schema": "geometry-bridge-mutation-tests/1", "requested": list(methods),
+                                   "started": list(methods), "total": len(methods), "failures": failures,
+                                   "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}}
+
+            build = {"exit_code": 0, "stdout_sha256": "4" * 64, "stderr_sha256": "5" * 64}
+            evidence = {"schema": "geometry-bridge-mutation-execution/1", "head": "a" * 40,
+                        "platform": os.name, "tool_sha256": mutate.tool_hash(), "oracle_sha256": judge,
+                        "methods": m["tests"], "restored_methods": list(mutation_bridge.RESTORED),
+                        "baseline_build": build, "baseline_identity": identity(source, "b"),
+                        "baseline": receipt(mutation_bridge.RESTORED, [], 0, "baseline"),
+                        "mutant_build": build, "mutant_identity": identity(source.replace(b"anchor = 1", b"anchor = 2"), "c"),
+                        "mutant": receipt([method], [{"test": method, "kind": "assertion",
+                            "detail": "AssertionError: ASSERT oracle-freshness-normal-kill"}], 1, "mutant"),
+                        "restored_build": build, "restored_identity": identity(source, "b"),
+                        "restored": receipt(mutation_bridge.RESTORED, [], 0, "restored"), "byte_restored": True}
+            record = mutate.make_record(m, src, "killed", "normal named assertion fixture", "2026-10-22", judge,
+                                        killed_by=[method], execution=evidence)
+            results = root / "results.json"
+            mutate.save_records(results, {m["id"]: record})
+            saved_bytes = results.read_bytes()
+
+            def check_saved_record():
+                out = io.StringIO()
+                with contextlib.redirect_stdout(out):
+                    # Keep the original judge argument: bridge --check must
+                    # recompute today's real oracle closure from the files.
+                    code = mutate.check_pass([m], root=root, results_path=results, oracle=judge)
+                self.assertEqual(saved_bytes, results.read_bytes(), "--check must not regenerate the old receipt")
+                return code, out.getvalue()
+
+            no_launch = AssertionError("freshness --check must not compile or launch a fixture")
+            with mock.patch.object(subprocess, "run", side_effect=no_launch), \
+                    mock.patch.object(mutation_bridge, "_build", side_effect=no_launch), \
+                    mock.patch.object(mutation_bridge, "_test", side_effect=no_launch), \
+                    mock.patch.object(mutate, "MUT_ROOT", root / "nonexistent-cache"):
+                code, text = check_saved_record()
+                self.assertEqual(0, code, text)
+                self.assertIn("killed 1", text)
+                self.assertNotIn("STALE", text)
+                for path, changed in ((harness, b"int judge(void) { return 2; }\n"),
+                                      (scene, b"# changed frozen legacy scene\n")):
+                    with self.subTest(oracle_input=path.relative_to(root).as_posix()):
+                        original = path.read_bytes()
+                        try:
+                            path.write_bytes(changed)
+                            self.assertEqual(src.closure, mutate.Sources(root).closure,
+                                             "only the oracle input changes, not the product source closure")
+                            code, text = check_saved_record()
+                            self.assertEqual(1, code, text)
+                            self.assertIn("STALE " + m["id"], text)
+                            self.assertIn("裁判已變", text, "the saved bridge verdict must expire because its oracle changed")
+                        finally:
+                            path.write_bytes(original)
+                        code, text = check_saved_record()
+                        self.assertEqual(0, code, text)
+                        self.assertIn("killed 1", text)
+                        self.assertNotIn("STALE", text, "restoring the exact oracle bytes must recover the old receipt")
+
     def test_bridge_source_closure_includes_preview_serializer(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); (root / "current_geometry.c").write_text("int core;\n")

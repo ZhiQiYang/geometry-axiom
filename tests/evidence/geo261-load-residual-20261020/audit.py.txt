@@ -1,0 +1,38 @@
+"""唯讀核對保存的原始證據與受驗來源雜湊。"""
+import gzip
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+
+out=Path(__file__).resolve().parent
+root=out.parents[2]
+def sha(data):return hashlib.sha256(data).hexdigest()
+equiv=json.loads((out/'equivalence.json').read_text())
+assert equiv['scenes']==175 and not equiv['failures']
+pairs={}
+for row in equiv['runs']:
+    name=row['scene'];version=row['version'];assert row['exit']==row['trace_exit']==0
+    stdout=(out/'stdout'/version/(name+'.stdout')).read_bytes()
+    stderr=(out/'stdout'/version/(name+'.stderr')).read_bytes()
+    graph=gzip.decompress((out/'graphs'/version/(name+'.bin.gz')).read_bytes())
+    assert len(stdout)==row['stdout_bytes'] and sha(stdout)==row['stdout_sha256']
+    assert len(stderr)==row['stderr_bytes']
+    assert len(graph)==row['graph_bytes'] and sha(graph)==row['graph_sha256']
+    pairs.setdefault(name,{})[version]=(stdout,stderr,graph,row['guards'])
+assert len(pairs)==175
+for name,pair in pairs.items():assert pair['base']==pair['fix'],name
+perf=json.loads((out/'performance.json').read_text());assert len(perf['samples'])==36
+for row in perf['samples']:
+    prefix=f"{row['version']}-{row['n']}-{row['round']}"
+    stdout=(out/'performance-stdout'/(prefix+'.stdout')).read_bytes()
+    assert row['exit']==0 and sha(stdout)==row['stdout_sha256'] and json.loads(stdout)['ok']
+env=json.loads((out/'environment.json').read_text())
+for name,digest in env['changed_source_hashes'].items():assert sha((root/name).read_bytes())==digest,name
+changed=subprocess.check_output(['git','diff','--name-only',env['base'],'HEAD'],cwd=root,text=True).splitlines()
+for name in changed:
+    assert name not in ('tests/mutants_results.json','公理層.md','BACKLOG.md','決策佇列.md','PR_BODY.md'),name
+    assert not name.startswith(('geometry-core/domain-decoupling/','geometry-guide/')),name
+    assert not name.endswith('.h'),name
+print('PASS：175 份 stdout／stderr／完整圖／守門計數成對相同；36 筆效能輸出與來源雜湊均吻合。')
+print('PASS：未修改禁改檔案與公開 header；修正分支未包含 PR_BODY.md。')

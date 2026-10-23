@@ -1,0 +1,53 @@
+{
+  "schema": "geo299316-recorded-repair/1",
+  "sha": "ef32a482c99216adb6962e5110d6d40fd55d7c0b",
+  "cwd": "/tmp/g261-next299316",
+  "command": [
+    "python3",
+    "-B",
+    "geometry-guide/sync_axiom_reader.py"
+  ],
+  "source_variant": "exact HEAD with explicit before/after Git patch; dirty repair generation is not a final clean acceptance",
+  "status_before": " M tests/geo261_contact_world_harness.c\n",
+  "patch_before_sha256": "b515796a2f130343471f8f5c4848d0d420a574e1350878076208dcef117b9d53",
+  "reaper_command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-environment/reap_children.py",
+    "python3",
+    "-B",
+    "geometry-guide/sync_axiom_reader.py"
+  ],
+  "environment": {
+    "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "GITHUB_SHA": "ef32a482c99216adb6962e5110d6d40fd55d7c0b",
+    "GITHUB_WORKSPACE": "/tmp/g261-next299316",
+    "PYTHONOPTIMIZE": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GEO261_REAPER_LOG": "/workspace/geo299316-work/reader-sync-repair-01/reaper.jsonl"
+  },
+  "protected_before": {
+    "公理層.md": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d",
+    "決策佇列.md": "c3387507597afafbdf1962b5374d5cfd8187165e6638b7b33c92bb3f794d9f72",
+    "BACKLOG.md": "ecfa7d3e3fa9895792f26ad47c51cafb6e2a95425b041205bc69983f2d50de50"
+  },
+  "started_epoch": 1792712886.3789728,
+  "actual_process_returncode": 0,
+  "ended_epoch": 1792712889.6069527,
+  "head_after": "ef32a482c99216adb6962e5110d6d40fd55d7c0b",
+  "status_after": " M \"geometry-guide/\\345\\205\\254\\347\\220\\206\\345\\261\\244-\\351\\226\\261\\350\\256\\200\\345\\231\\250.html\"\n M tests/geo261_contact_world_harness.c\n",
+  "patch_after_sha256": "72898283b8286938edc3f5b5490a2ec568b18e8795bc580539d2ab675cf8fba8",
+  "stdout_sha256": "618c51f4f9fa1f0a0773b101a60aa75c99178717da81adf94ab45950bfc03559",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "protected_after": {
+    "公理層.md": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d",
+    "決策佇列.md": "c3387507597afafbdf1962b5374d5cfd8187165e6638b7b33c92bb3f794d9f72",
+    "BACKLOG.md": "ecfa7d3e3fa9895792f26ad47c51cafb6e2a95425b041205bc69983f2d50de50"
+  }
+}

@@ -48,6 +48,11 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_geo318_reading_a_oracle': [],
+    'test_geo318_reading_a_native': [],
+    'test_geo314_stagger_commit': ['bridge'],
+    'test_geo314_commit_paths': [],
+    'test_geo314_ordered_facts': [],
     'test_architecture_contract': [],
     'test_product_architecture': [],
     'test_assembly_capacity': ['bridge'],
@@ -183,6 +188,7 @@ PY_NEEDS = {
     'test_geo261_section_profile_authority': [],
     'test_geo261_source_describe': [],
     'test_geo261_source_index': [],
+    'test_geo261_load_residual': [],
     'test_geo261_version_activation': [],
     'test_geo261_wood_contact_world': [],
     'test_geo261_wood_derived_placement': [],

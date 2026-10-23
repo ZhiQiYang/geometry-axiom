@@ -1,0 +1,721 @@
+{
+  "sha": "e4557b3f5fab70d70ebb44cd5489cd8841bb3670",
+  "archive_sha256": "e10c1571da0697189f173e91b3de2eab2094f2da81b9e87ec26670fe9e5ea49d",
+  "members": [
+    {
+      "path": "contact-world-fixed-baseline-01/after-head.json",
+      "bytes": 84,
+      "sha256": "1ec834308f171417abc1ee8997022bbff4a4502496f05f70b202bc2f5aefc95d"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/after-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/after-head.stdout",
+      "bytes": 41,
+      "sha256": "8e7f660f190329c939d01e7281773b089d8649012625c0459e2522dab95e3ce0"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/after-patch.json",
+      "bytes": 91,
+      "sha256": "61893b6a331c849129ad8982e7b28596983d6eba111450021bf1990c482cf00b"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/after-patch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/after-patch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/after-status.json",
+      "bytes": 88,
+      "sha256": "bf64a3c5c7f6640f85993ebf44722139b6d9073e5790a3d829372e3701debac0"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/after-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/after-status.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-head.json",
+      "bytes": 84,
+      "sha256": "1ec834308f171417abc1ee8997022bbff4a4502496f05f70b202bc2f5aefc95d"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-head.stdout",
+      "bytes": 41,
+      "sha256": "8e7f660f190329c939d01e7281773b089d8649012625c0459e2522dab95e3ce0"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-patch.json",
+      "bytes": 91,
+      "sha256": "61893b6a331c849129ad8982e7b28596983d6eba111450021bf1990c482cf00b"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-patch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-patch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-status.json",
+      "bytes": 88,
+      "sha256": "bf64a3c5c7f6640f85993ebf44722139b6d9073e5790a3d829372e3701debac0"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/before-status.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/command.stderr",
+      "bytes": 1723,
+      "sha256": "8c1e5403a3387c85171387689a3cb75367463e44be12608d95fa0c4a57d484a2"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/compiler-version.json",
+      "bytes": 44,
+      "sha256": "86fc7f5dc60d60a223be915eae55a0449bd7e9ae5d1549e00f816097866eb929"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/compiler-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/compiler-version.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/native-build-all-bytes.inventory.json",
+      "bytes": 46837,
+      "sha256": "eec3d8660ddb39baed26640ca11547c154d78c23331c07451129c5f80c0c02d1"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/native-build-all-bytes.raw.tar.gz",
+      "bytes": 3554053,
+      "sha256": "5959ca6a58d572d59dd055bb4533417da960d5d2efc4ae7fa7389ae4b5b6de8d"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/native-executions.jsonl",
+      "bytes": 87494,
+      "sha256": "b1885dd37505c9fba2981720b48db3280ed55bfb565743aacc81fe576d224b2b"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/python-version.json",
+      "bytes": 49,
+      "sha256": "bcb23254ba56f967eef6bad2769fee7002ffe0e997b033355380473acac9b3f7"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/python-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/python-version.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/reaper.jsonl",
+      "bytes": 434,
+      "sha256": "63e91e35f2731ef05c9b333830060286d92d17563a6ab22d10336181ba27a154"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/receipt.json",
+      "bytes": 3050,
+      "sha256": "6ebe0762afd314f70d8452dc34ca77be74500f1b43c6a377d76ad905b1f2dfe5"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/tools/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/tools/run_repair_suite.py",
+      "bytes": 5506,
+      "sha256": "e2e117ce5dcef3b2e57b32d02f718495344a6d3b90c553b9a4089e015903cbb4"
+    },
+    {
+      "path": "contact-world-fixed-baseline-01/tools/test_entry_full.py",
+      "bytes": 1137,
+      "sha256": "7eb10aecde59d9755791d59241e1f81753b63a2cdae3db4dceac56ab8c34f2b5"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-head.json",
+      "bytes": 84,
+      "sha256": "1ec834308f171417abc1ee8997022bbff4a4502496f05f70b202bc2f5aefc95d"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-head.stdout",
+      "bytes": 41,
+      "sha256": "8e7f660f190329c939d01e7281773b089d8649012625c0459e2522dab95e3ce0"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-patch.json",
+      "bytes": 91,
+      "sha256": "61893b6a331c849129ad8982e7b28596983d6eba111450021bf1990c482cf00b"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-patch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-patch.stdout",
+      "bytes": 1527,
+      "sha256": "808b4adee764a438e84251eac3fcfc587e7bb63032a80f2c44ffd39b97cbea06"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-status.json",
+      "bytes": 88,
+      "sha256": "bf64a3c5c7f6640f85993ebf44722139b6d9073e5790a3d829372e3701debac0"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/after-status.stdout",
+      "bytes": 40,
+      "sha256": "699b1ebea51df9a7bd450b62c438a8565c3c77d253e827bd4eafbbc0eb5fa2bd"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-head.json",
+      "bytes": 84,
+      "sha256": "1ec834308f171417abc1ee8997022bbff4a4502496f05f70b202bc2f5aefc95d"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-head.stdout",
+      "bytes": 41,
+      "sha256": "8e7f660f190329c939d01e7281773b089d8649012625c0459e2522dab95e3ce0"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-patch.json",
+      "bytes": 91,
+      "sha256": "61893b6a331c849129ad8982e7b28596983d6eba111450021bf1990c482cf00b"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-patch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-patch.stdout",
+      "bytes": 1527,
+      "sha256": "808b4adee764a438e84251eac3fcfc587e7bb63032a80f2c44ffd39b97cbea06"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-status.json",
+      "bytes": 88,
+      "sha256": "bf64a3c5c7f6640f85993ebf44722139b6d9073e5790a3d829372e3701debac0"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/before-status.stdout",
+      "bytes": 40,
+      "sha256": "699b1ebea51df9a7bd450b62c438a8565c3c77d253e827bd4eafbbc0eb5fa2bd"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/command.stderr",
+      "bytes": 2613,
+      "sha256": "baa3a3a13a9c7d245cfb31f6ae79cf640c965adbdee9f1271be82e6a2f50e33a"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/compiler-version.json",
+      "bytes": 44,
+      "sha256": "86fc7f5dc60d60a223be915eae55a0449bd7e9ae5d1549e00f816097866eb929"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/compiler-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/compiler-version.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/native-build-all-bytes.inventory.json",
+      "bytes": 46837,
+      "sha256": "4a3472a2563ccca928ba11663b3785a756535764e4a173eb88feddcaa4059d62"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/native-build-all-bytes.raw.tar.gz",
+      "bytes": 3553851,
+      "sha256": "bb82c475cf25f5cc4dccbe85bd823a7ffbc3b3a07cb8b70338af4bdab7b4c00a"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/native-executions.jsonl",
+      "bytes": 86289,
+      "sha256": "c97c5bbc35fb9421831979a0a6efb3f5313c499cb66a6d802825713996144e18"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/python-version.json",
+      "bytes": 49,
+      "sha256": "bcb23254ba56f967eef6bad2769fee7002ffe0e997b033355380473acac9b3f7"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/python-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/python-version.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/reaper.jsonl",
+      "bytes": 434,
+      "sha256": "8d7bf95342446a7e570ee9cdb67af2f76f803f7d1b13734ff33f47c28cd051e0"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/receipt.json",
+      "bytes": 3137,
+      "sha256": "7d5892a74bc3fc02046379f33e0b9ee019e764ef1dd90856e149123e33b04b41"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/tools/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/tools/run_repair_suite.py",
+      "bytes": 5506,
+      "sha256": "e2e117ce5dcef3b2e57b32d02f718495344a6d3b90c553b9a4089e015903cbb4"
+    },
+    {
+      "path": "contact-world-reverted-fixture-01/tools/test_entry_full.py",
+      "bytes": 1137,
+      "sha256": "7eb10aecde59d9755791d59241e1f81753b63a2cdae3db4dceac56ab8c34f2b5"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-head.json",
+      "bytes": 84,
+      "sha256": "1ec834308f171417abc1ee8997022bbff4a4502496f05f70b202bc2f5aefc95d"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-head.stdout",
+      "bytes": 41,
+      "sha256": "8e7f660f190329c939d01e7281773b089d8649012625c0459e2522dab95e3ce0"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-patch.json",
+      "bytes": 91,
+      "sha256": "61893b6a331c849129ad8982e7b28596983d6eba111450021bf1990c482cf00b"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-patch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-patch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-status.json",
+      "bytes": 88,
+      "sha256": "bf64a3c5c7f6640f85993ebf44722139b6d9073e5790a3d829372e3701debac0"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/after-status.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-head.json",
+      "bytes": 84,
+      "sha256": "1ec834308f171417abc1ee8997022bbff4a4502496f05f70b202bc2f5aefc95d"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-head.stdout",
+      "bytes": 41,
+      "sha256": "8e7f660f190329c939d01e7281773b089d8649012625c0459e2522dab95e3ce0"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-patch.json",
+      "bytes": 91,
+      "sha256": "61893b6a331c849129ad8982e7b28596983d6eba111450021bf1990c482cf00b"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-patch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-patch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-status.json",
+      "bytes": 88,
+      "sha256": "bf64a3c5c7f6640f85993ebf44722139b6d9073e5790a3d829372e3701debac0"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/before-status.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/command.stderr",
+      "bytes": 1723,
+      "sha256": "2decb19593009a73fd56a41f3fcc73492e1127c500d721352a587d8e0e2b67c5"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/compiler-version.json",
+      "bytes": 44,
+      "sha256": "86fc7f5dc60d60a223be915eae55a0449bd7e9ae5d1549e00f816097866eb929"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/compiler-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/compiler-version.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/native-build-all-bytes.inventory.json",
+      "bytes": 46837,
+      "sha256": "4825883f9c7fd638f4fe8cde155329673a57c6507205b769e784bdc3bf31accf"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/native-build-all-bytes.raw.tar.gz",
+      "bytes": 3554072,
+      "sha256": "16d45f61bbbc04170f8c22f2663fed48a2344e94c21ad756baef3eaab691e9fb"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/native-executions.jsonl",
+      "bytes": 87494,
+      "sha256": "83cc60a4ce0183f8f885e579c039e00c58ba72ba6a230588d76f09bd13266e02"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/python-version.json",
+      "bytes": 49,
+      "sha256": "bcb23254ba56f967eef6bad2769fee7002ffe0e997b033355380473acac9b3f7"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/python-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/python-version.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/reaper.jsonl",
+      "bytes": 433,
+      "sha256": "7b273f3d0cfb8743a7d4fc2cc5219bea7a734b8c29f2dfd9315faf02927ffecf"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/receipt.json",
+      "bytes": 3050,
+      "sha256": "1960b5e197c13fba59cce39d010ea6e770ddf9505723e744aafd0bc994474866"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/tools/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/tools/run_repair_suite.py",
+      "bytes": 5506,
+      "sha256": "e2e117ce5dcef3b2e57b32d02f718495344a6d3b90c553b9a4089e015903cbb4"
+    },
+    {
+      "path": "contact-world-fixed-restored-01/tools/test_entry_full.py",
+      "bytes": 1137,
+      "sha256": "7eb10aecde59d9755791d59241e1f81753b63a2cdae3db4dceac56ab8c34f2b5"
+    },
+    {
+      "path": "fixture-reversion-proof-01/old-harness.json",
+      "bytes": 121,
+      "sha256": "7822ba04e9c5c1666811c367da55a273c3f2714acb63cb493a77290b97c8ea30"
+    },
+    {
+      "path": "fixture-reversion-proof-01/old-harness.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fixture-reversion-proof-01/old-harness.stdout",
+      "bytes": 14669,
+      "sha256": "7d275a9ed3b6dda6482e09c483be61279ff82854a3c4996bdbe4b848b8b29b75"
+    },
+    {
+      "path": "fixture-reversion-proof-01/proof.json",
+      "bytes": 1522,
+      "sha256": "4ee795a81efc590f6ad74dc70ed5155932bc45c08b08a482ad302578b9125502"
+    },
+    {
+      "path": "contacts-fixed-01/after-head.json",
+      "bytes": 84,
+      "sha256": "1ec834308f171417abc1ee8997022bbff4a4502496f05f70b202bc2f5aefc95d"
+    },
+    {
+      "path": "contacts-fixed-01/after-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/after-head.stdout",
+      "bytes": 41,
+      "sha256": "8e7f660f190329c939d01e7281773b089d8649012625c0459e2522dab95e3ce0"
+    },
+    {
+      "path": "contacts-fixed-01/after-patch.json",
+      "bytes": 91,
+      "sha256": "61893b6a331c849129ad8982e7b28596983d6eba111450021bf1990c482cf00b"
+    },
+    {
+      "path": "contacts-fixed-01/after-patch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/after-patch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/after-status.json",
+      "bytes": 88,
+      "sha256": "bf64a3c5c7f6640f85993ebf44722139b6d9073e5790a3d829372e3701debac0"
+    },
+    {
+      "path": "contacts-fixed-01/after-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/after-status.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/before-head.json",
+      "bytes": 84,
+      "sha256": "1ec834308f171417abc1ee8997022bbff4a4502496f05f70b202bc2f5aefc95d"
+    },
+    {
+      "path": "contacts-fixed-01/before-head.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/before-head.stdout",
+      "bytes": 41,
+      "sha256": "8e7f660f190329c939d01e7281773b089d8649012625c0459e2522dab95e3ce0"
+    },
+    {
+      "path": "contacts-fixed-01/before-patch.json",
+      "bytes": 91,
+      "sha256": "61893b6a331c849129ad8982e7b28596983d6eba111450021bf1990c482cf00b"
+    },
+    {
+      "path": "contacts-fixed-01/before-patch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/before-patch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/before-status.json",
+      "bytes": 88,
+      "sha256": "bf64a3c5c7f6640f85993ebf44722139b6d9073e5790a3d829372e3701debac0"
+    },
+    {
+      "path": "contacts-fixed-01/before-status.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/before-status.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/command.stderr",
+      "bytes": 1614,
+      "sha256": "ffcd307bb620092e4d08d83dda65081de8f4dd7549e410c54e02a182fc890957"
+    },
+    {
+      "path": "contacts-fixed-01/command.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/compiler-version.json",
+      "bytes": 44,
+      "sha256": "86fc7f5dc60d60a223be915eae55a0449bd7e9ae5d1549e00f816097866eb929"
+    },
+    {
+      "path": "contacts-fixed-01/compiler-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/compiler-version.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "contacts-fixed-01/native-build-all-bytes.inventory.json",
+      "bytes": 49073,
+      "sha256": "52fd4df9ca51dec99cc4f1bece0f4fd690f139bb655d5a2b27b306969bf3ba6d"
+    },
+    {
+      "path": "contacts-fixed-01/native-build-all-bytes.raw.tar.gz",
+      "bytes": 690702,
+      "sha256": "9da18c5f7a9fe10d82c7da37ff83bb488ba1e00202f1863477eee7fda4a28a45"
+    },
+    {
+      "path": "contacts-fixed-01/native-executions.jsonl",
+      "bytes": 104809,
+      "sha256": "9d73ae156499851f80f527524d8bc897a8d53f64314ef643015b0c4780f9319f"
+    },
+    {
+      "path": "contacts-fixed-01/python-version.json",
+      "bytes": 49,
+      "sha256": "bcb23254ba56f967eef6bad2769fee7002ffe0e997b033355380473acac9b3f7"
+    },
+    {
+      "path": "contacts-fixed-01/python-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "contacts-fixed-01/python-version.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "contacts-fixed-01/reaper.jsonl",
+      "bytes": 429,
+      "sha256": "ff8729908ff5dee0167871e81b8198c0ca72cb2530101dee88c5426e34eed001"
+    },
+    {
+      "path": "contacts-fixed-01/receipt.json",
+      "bytes": 2983,
+      "sha256": "c233e992211f5b8ab13e05089afc5c16bb26ed0117527a92749e63098d9d5fb5"
+    },
+    {
+      "path": "contacts-fixed-01/tools/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "contacts-fixed-01/tools/run_repair_suite.py",
+      "bytes": 5506,
+      "sha256": "e2e117ce5dcef3b2e57b32d02f718495344a6d3b90c553b9a4089e015903cbb4"
+    },
+    {
+      "path": "contacts-fixed-01/tools/test_entry_full.py",
+      "bytes": 1137,
+      "sha256": "7eb10aecde59d9755791d59241e1f81753b63a2cdae3db4dceac56ab8c34f2b5"
+    },
+    {
+      "path": "tools/run_fixture_reversion_proof.py",
+      "bytes": 3202,
+      "sha256": "7d265e155b1b2e9a1dc9ee6d2fd6da85d2f71c131d798b88d5ae1dcb78d923fd"
+    },
+    {
+      "path": "tools/run_repair_suite.py",
+      "bytes": 5506,
+      "sha256": "e2e117ce5dcef3b2e57b32d02f718495344a6d3b90c553b9a4089e015903cbb4"
+    },
+    {
+      "path": "tools/test_entry_full.py",
+      "bytes": 1137,
+      "sha256": "7eb10aecde59d9755791d59241e1f81753b63a2cdae3db4dceac56ab8c34f2b5"
+    }
+  ]
+}
