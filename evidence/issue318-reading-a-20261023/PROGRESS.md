@@ -1,3 +1,15 @@
+# 最新正式進度：三reader、native7、oracle13已0
+
+唯一受驗 source S=`ae74e51bba1efef48949c077635966273a9e8990`。原三reader已0/0/0（unit51、無skip），獨立actual/public同儕875項核對0、findings[]，原報告f14236c0／CHECKS0ca21061已隨本包完整封存。
+
+2026-10-23T14:49:31Z，原native7真終態0、Ran7/OK無skip；10W＋actual-H共11控制各原0/1/0，38原harness紀錄、完整編譯輸出與實際compiled C、H四檔raw/derived manifest皆保存。14:52:53Z原oracle13真終態0、Ran13/OK無skip，builder/checker各獨立0/1/0。各stage初末source同S且clean。原收據見formal-ae74e51b-round1/native7-oracle13-original-ae74e51b.tar.gz及逐檔inventory；native/oracle本輪actual/public peer待完成，沒有宣稱其已審。
+
+root已授slot2依序續收oracle-mutants、oracle-quick、CLI build/order與架構三條；本次出版時那些尚未有正式終態，不冒通過。golden-source-proof原self-R3等待323釋鎖，generate/compare亦保待。CLI已放互依／真施工通路仍是QUESTIONS未驗；native明確World不能代替CLI可達性。完整528/1056與逐mm／579間以稍後原quick收據為準，不以oracle13身份測試冒充已掃。
+
+main queue指定日期＋PR333 FIELD-RULES全文已讀，固定source/hash與原文封存於本包wood-authority；不新增h_max／放寬assert、不額外改SSOT／queue、不反向merge noWood、不重產全帳本。此前進度保留為歷史，current以本段及之後正式收據為準。
+
+---
+
 # 最新正式進度：#318 原三reader已全0
 
 受驗公開source S=`ae74e51bba1efef48949c077635966273a9e8990`，14:29:08–14:32:17 UTC在雲端Linux/Python3.12.14/Node24.19.0真跑生成、--check、原readerunit，原exit均0。生成patches90；--check本來patches0；unit51方法全OK無skip。前後source同S且clean，沒有改產品或測試。原完整收據與streams在formal-ae74e51b-round1/reader-three-original-ae74e51b.tar.gz及逐檔inventory。
