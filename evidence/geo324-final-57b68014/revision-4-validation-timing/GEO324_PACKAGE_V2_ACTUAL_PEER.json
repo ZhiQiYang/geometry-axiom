@@ -1,0 +1,4183 @@
+{
+  "schema": "geo324-publication-manifest-v2-independent-peer/1",
+  "reviewed_utc": "2026-10-23T19:36:04.147953+00:00",
+  "source_sha": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "evidence_head": "495e625a86e54c47a0445a22056ded55b4ebab3e",
+  "body_head": "7eab7b7396d66879ffc35318b6780317aba631af",
+  "previous_evidence_head": "792d086eb046263384888b3b0a064ae96f0cdc27",
+  "current_manifest_sha256": "96996c3f56493f5320349dc15a36770a78845d6146e83e2d7f7b300f49a36244",
+  "previous_manifest_sha256": "c707b52c898350673d6ebbe4dfd8be8026fe1c0b614b10c431ea8920bc1e0223",
+  "checks": [
+    {
+      "name": "Git 1 exit0",
+      "pass": true
+    },
+    {
+      "name": "Git 2 exit0",
+      "pass": true
+    },
+    {
+      "name": "Git 3 exit0",
+      "pass": true
+    },
+    {
+      "name": "exact342 plus excluded manifest",
+      "pass": true
+    },
+    {
+      "name": "no manifest self index",
+      "pass": true
+    },
+    {
+      "name": "original product same",
+      "pass": true
+    },
+    {
+      "name": "Git 4 exit0",
+      "pass": true
+    },
+    {
+      "name": "Git blob CURRENT_STATE.json",
+      "pass": true
+    },
+    {
+      "name": "manifest CURRENT_STATE.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob ORIGINAL_CHECK_SCOPE.md",
+      "pass": true
+    },
+    {
+      "name": "manifest ORIGINAL_CHECK_SCOPE.md",
+      "pass": true
+    },
+    {
+      "name": "Git blob PROGRESS.md",
+      "pass": true
+    },
+    {
+      "name": "manifest PROGRESS.md",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000014/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000014/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000014/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000014/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000014/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000014/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000014/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000014/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000014/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000014/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000015/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000015/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000015/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000015/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000015/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000015/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000015/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000015/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000015/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000015/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000016/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000016/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000016/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000016/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000016/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000016/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000016/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000016/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000016/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000016/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000017/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000017/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000017/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000017/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000017/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000017/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000017/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000017/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000017/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000017/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000018/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000018/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000018/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000018/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000018/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000018/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000018/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000018/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000018/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000018/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000019/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000019/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000019/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000019/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000019/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000019/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000019/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000019/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000019/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000019/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000020/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000020/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000020/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000020/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000020/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000020/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000020/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000020/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000020/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000020/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000021/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000021/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000021/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000021/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000021/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000021/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000021/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000021/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000021/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000021/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000022/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000022/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000022/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000022/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000022/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000022/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000022/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000022/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000022/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000022/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000023/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000023/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000023/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000023/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000023/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000023/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000023/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000023/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000023/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000023/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000024/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000024/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000024/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000024/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000024/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000024/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000024/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000024/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000024/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000024/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000025/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000025/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000025/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000025/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000025/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000025/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000025/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000025/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000025/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000025/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000026/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000026/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000026/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000026/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000026/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000026/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000026/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000026/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands/000026/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands/000026/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-originals/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-originals/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-preparation/BINDING.diff",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-preparation/BINDING.diff",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-preparation/PREPARATION.json",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-preparation/PREPARATION.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge-preparation/README.md",
+      "pass": true
+    },
+    {
+      "name": "manifest merge-preparation/README.md",
+      "pass": true
+    },
+    {
+      "name": "Git blob merge_train_50493347.py",
+      "pass": true
+    },
+    {
+      "name": "manifest merge_train_50493347.py",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob prior-evidence-publication/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "manifest prior-evidence-publication/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob publication-attempt-1/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "manifest publication-attempt-1/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob publish_merge_50493347.py",
+      "pass": true
+    },
+    {
+      "name": "manifest publish_merge_50493347.py",
+      "pass": true
+    },
+    {
+      "name": "Git blob publish_merge_50493347_resume.py",
+      "pass": true
+    },
+    {
+      "name": "manifest publish_merge_50493347_resume.py",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/GEO324_MERGE_57B_STATIC_PEER.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/GEO324_MERGE_57B_STATIC_PEER.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/MANIFEST_CORRECTION.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/MANIFEST_CORRECTION.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/PREVIOUS_PACKAGE_MANIFEST.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/PREVIOUS_PACKAGE_MANIFEST.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/PR_BODY_BEFORE_PEER.md",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/PR_BODY_BEFORE_PEER.md",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000014/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000015/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000016/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000017/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/request.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/request.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/result.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/result.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands/000018/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/prior-completed-publication/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/prior-completed-publication/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "Git blob revision-3-peer-and-manifest/publish_merge_peer_and_manifest_correction.py",
+      "pass": true
+    },
+    {
+      "name": "manifest revision-3-peer-and-manifest/publish_merge_peer_and_manifest_correction.py",
+      "pass": true
+    },
+    {
+      "name": "exact Git batch stream end",
+      "pass": true
+    },
+    {
+      "name": "original E792 manifest retained verbatim",
+      "pass": true
+    },
+    {
+      "name": "old self defect disclosed",
+      "pass": true
+    },
+    {
+      "name": "old original kept CURRENT_STATE.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept ORIGINAL_CHECK_SCOPE.md",
+      "pass": true
+    },
+    {
+      "name": "old original kept PROGRESS.md",
+      "pass": false
+    },
+    {
+      "name": "old original kept merge-originals/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000014/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000014/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000014/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000014/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000014/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000015/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000015/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000015/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000015/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000015/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000016/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000016/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000016/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000016/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000016/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000017/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000017/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000017/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000017/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000017/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000018/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000018/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000018/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000018/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000018/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000019/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000019/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000019/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000019/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000019/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000020/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000020/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000020/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000020/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000020/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000021/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000021/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000021/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000021/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000021/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000022/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000022/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000022/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000022/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000022/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000023/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000023/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000023/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000023/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000023/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000024/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000024/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000024/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000024/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000024/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000025/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000025/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000025/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000025/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000025/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000026/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000026/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000026/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000026/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands/000026/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-originals/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-preparation/BINDING.diff",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-preparation/PREPARATION.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge-preparation/README.md",
+      "pass": true
+    },
+    {
+      "name": "old original kept merge_train_50493347.py",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000012/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000012/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000012/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000012/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000012/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000013/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000013/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000013/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000013/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands/000013/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept prior-evidence-publication/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "old original kept publication-attempt-1/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "old original kept publish_merge_50493347.py",
+      "pass": true
+    },
+    {
+      "name": "old original kept publish_merge_50493347_resume.py",
+      "pass": true
+    },
+    {
+      "name": "prior peer intact",
+      "pass": true
+    },
+    {
+      "name": "Git 5 exit0",
+      "pass": true
+    },
+    {
+      "name": "append metadata only paths",
+      "pass": true
+    },
+    {
+      "name": "Git 6 exit0",
+      "pass": true
+    },
+    {
+      "name": "body16 actual unrun",
+      "pass": true
+    },
+    {
+      "name": "body source/evidence full identities",
+      "pass": true
+    },
+    {
+      "name": "publication18 terminal",
+      "pass": true
+    },
+    {
+      "name": "publish row 1",
+      "pass": true
+    },
+    {
+      "name": "publish stream 1/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 1/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 1/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 2",
+      "pass": true
+    },
+    {
+      "name": "publish stream 2/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 2/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 2/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 3",
+      "pass": true
+    },
+    {
+      "name": "publish stream 3/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 3/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 3/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 4",
+      "pass": true
+    },
+    {
+      "name": "publish stream 4/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 4/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 4/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 5",
+      "pass": true
+    },
+    {
+      "name": "publish stream 5/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 5/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 5/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 6",
+      "pass": true
+    },
+    {
+      "name": "publish stream 6/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 6/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 6/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 7",
+      "pass": true
+    },
+    {
+      "name": "publish stream 7/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 7/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 7/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 8",
+      "pass": true
+    },
+    {
+      "name": "publish stream 8/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 8/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 8/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 9",
+      "pass": true
+    },
+    {
+      "name": "publish stream 9/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 9/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 9/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 10",
+      "pass": true
+    },
+    {
+      "name": "publish stream 10/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 10/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 10/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 11",
+      "pass": true
+    },
+    {
+      "name": "publish stream 11/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 11/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 11/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 12",
+      "pass": true
+    },
+    {
+      "name": "publish stream 12/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 12/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 12/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 13",
+      "pass": true
+    },
+    {
+      "name": "publish stream 13/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 13/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 13/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 14",
+      "pass": true
+    },
+    {
+      "name": "publish stream 14/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 14/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 14/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 15",
+      "pass": true
+    },
+    {
+      "name": "publish stream 15/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 15/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 15/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 16",
+      "pass": true
+    },
+    {
+      "name": "publish stream 16/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 16/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 16/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 17",
+      "pass": true
+    },
+    {
+      "name": "publish stream 17/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 17/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 17/stderr",
+      "pass": true
+    },
+    {
+      "name": "publish row 18",
+      "pass": true
+    },
+    {
+      "name": "publish stream 18/stdin",
+      "pass": true
+    },
+    {
+      "name": "publish stream 18/stdout",
+      "pass": true
+    },
+    {
+      "name": "publish stream 18/stderr",
+      "pass": true
+    },
+    {
+      "name": "exact public refs in original lsremote",
+      "pass": true
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geo324-faces-work-20261024",
+        "show",
+        "495e625a86e54c47a0445a22056ded55b4ebab3e:evidence/geo324-final-57b68014/PACKAGE_MANIFEST.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "96996c3f56493f5320349dc15a36770a78845d6146e83e2d7f7b300f49a36244",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_prefix": "1"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geo324-faces-work-20261024",
+        "show",
+        "792d086eb046263384888b3b0a064ae96f0cdc27:evidence/geo324-final-57b68014/PACKAGE_MANIFEST.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c707b52c898350673d6ebbe4dfd8be8026fe1c0b614b10c431ea8920bc1e0223",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_prefix": "2"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geo324-faces-work-20261024",
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "495e625a86e54c47a0445a22056ded55b4ebab3e",
+        "--",
+        "evidence/geo324-final-57b68014/"
+      ],
+      "exit": 0,
+      "stdout_sha256": "d7b40125ee780907e192db5a261dee168241822ac2b6a049bc3276d94120dd27",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_prefix": "3"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geo324-faces-work-20261024",
+        "cat-file",
+        "--batch"
+      ],
+      "exit": 0,
+      "stdout_sha256": "de61605c0ce15d173550ef78f7b54b24fa0a4845ba38e79837a24b87f6f26294",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_prefix": "4"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geo324-faces-work-20261024",
+        "diff",
+        "--name-only",
+        "792d086eb046263384888b3b0a064ae96f0cdc27",
+        "495e625a86e54c47a0445a22056ded55b4ebab3e"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e1855fc0dd90336eaea60a4f70f1a589944eda2798e5266f3cdeee73fea9cced",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_prefix": "5"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geo324-faces-prbody-work-20261024",
+        "show",
+        "7eab7b7396d66879ffc35318b6780317aba631af:PR_BODY.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ed2c086ec305fa824c1e49c2ffe675befa32b756c91c33f1f7e4d6be70432f8e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_prefix": "6"
+    }
+  ],
+  "findings": [
+    "old original kept PROGRESS.md"
+  ],
+  "exit_code": 1,
+  "scope": "獨立核固定Git E342條目＋無self-entry／舊manifest原件與非self原bytes／18出版原命令／正文16UNRUN；沒有任何產品測試或browser。",
+  "limits": [
+    "原E792 manifest self-index缺陷仍保原件，不回寫或宣稱原manifest全面通過。",
+    "此補審不把先前254checks擴成動態或整列車已驗。"
+  ]
+}

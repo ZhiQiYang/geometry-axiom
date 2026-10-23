@@ -1,0 +1,1110 @@
+{
+  "source": "c493b7315d0cd3b16014add96af969c49ebf4660",
+  "scope": "PARTIAL: original three full suite entries (10+15+7 methods), not full native/browser/performance",
+  "suites": [
+    {
+      "suite": "wood-contact",
+      "events": 76,
+      "control_proofs": [
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "placement-order",
+          "case": "ordering",
+          "native_row_numbers": [
+            1,
+            2,
+            3
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "placement-order-before-declaration",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "stable-ties",
+          "case": "ordering",
+          "native_row_numbers": [
+            4,
+            5,
+            6
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "placement-stable-equal-order-sides",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "equal-order-dedup",
+          "case": "ordering",
+          "native_row_numbers": [
+            7,
+            8,
+            9
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "equal-order-not-deduplicated",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "partial-shadow",
+          "case": "ordering",
+          "native_row_numbers": [
+            10,
+            11,
+            12
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "partial-shadow-retains-exposed-face",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "outline-component-index",
+          "case": "regions",
+          "native_row_numbers": [
+            13,
+            14,
+            15
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "region-outline-index-encoded",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "hole-component-index",
+          "case": "regions",
+          "native_row_numbers": [
+            16,
+            17,
+            18
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "region-hole-index-encoded",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "paired-capacity",
+          "case": "regions",
+          "native_row_numbers": [
+            19,
+            20,
+            21
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "member-capacity-pair-atomic",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "complete-footprint",
+          "case": "intervals",
+          "native_row_numbers": [
+            22,
+            23,
+            24
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "i5-notched-footprint-deferred",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "owner-identity",
+          "case": "extensions",
+          "native_row_numbers": [
+            25,
+            26,
+            27
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "owner-pointer-not-id",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "owner-extension",
+          "case": "extensions",
+          "native_row_numbers": [
+            28,
+            29,
+            30
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "owner-extension-outside-fixed-part",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "fixed-inclusive",
+          "case": "extensions",
+          "native_row_numbers": [
+            31,
+            32,
+            33
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "owner-fixed-interval-inclusive",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "free-end",
+          "case": "ends",
+          "native_row_numbers": [
+            34,
+            35,
+            36
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "free-end-faces-ignored",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "full-contact-width",
+          "case": "ends",
+          "native_row_numbers": [
+            37,
+            38,
+            39
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "narrow-end-face-ignored",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "contact-shadow",
+          "case": "ends",
+          "native_row_numbers": [
+            40,
+            41,
+            42
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "partial-earlier-face-shadows-only-contact",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "end-order",
+          "case": "ends",
+          "native_row_numbers": [
+            43,
+            44,
+            45
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "start-end-before-global-placement-order",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "stop-identity",
+          "case": "ordering",
+          "native_row_numbers": [
+            46,
+            47,
+            48
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "stop-exclusion-keeps-candidate-identity",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "extension-end",
+          "case": "ends",
+          "native_row_numbers": [
+            49,
+            50,
+            51
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "self-boundary-extension-end-exempt",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "edge-index-output",
+          "case": "intervals",
+          "native_row_numbers": [
+            52,
+            53,
+            54
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "boundary-edge-index-horizontal",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "inactive-shadow",
+          "case": "active-dedup",
+          "native_row_numbers": [
+            55,
+            56,
+            57
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "dedup-mutual-duplicate-id-leaves-final-pair",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "compact-active-only",
+          "case": "ordering",
+          "native_row_numbers": [
+            58,
+            59,
+            60
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "earlier-full-cover-deduplicates",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "compact-survivor-count",
+          "case": "active-dedup",
+          "native_row_numbers": [
+            61,
+            62,
+            63
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "dedup-mutual-duplicate-id-leaves-final-pair",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "dedup-strict-overlap",
+          "case": "active-dedup",
+          "native_row_numbers": [
+            64,
+            65,
+            66
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "dedup-zero-span-strict-overlap-preserved",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.WoodContactWorld.test_actual_guard_controls_fail_the_named_numeric_assertions",
+          "control": "dedup-full-coordinate",
+          "case": "active-dedup",
+          "native_row_numbers": [
+            67,
+            68,
+            69
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "dedup-full-width-planes-preserved",
+          "normal_assertion": true,
+          "passed": true
+        }
+      ],
+      "extra_original_control_events": [
+        {
+          "test": "__main__.WoodContactWorld.test_same_owner_extension_guard_controls_the_actual_atomic_bridge_placement",
+          "control": "owner-extension",
+          "case": "extensions",
+          "native_row_numbers": [
+            76
+          ],
+          "phases": [
+            "product-mutant-client"
+          ],
+          "actual_exits": [
+            1
+          ]
+        }
+      ],
+      "all_ordinary_controls_normal_0_1_0": true
+    },
+    {
+      "suite": "contact-sources",
+      "events": 44,
+      "control_proofs": [
+        {
+          "test": null,
+          "control": "second-feature-edge",
+          "case": "collection-cache-edges",
+          "native_row_numbers": [
+            4,
+            5,
+            6
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "collection-cache-second-feature-edge-and-order",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "second-feature-kind",
+          "case": "collection-cache-edges",
+          "native_row_numbers": [
+            7,
+            8,
+            9
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "collection-cache-second-feature-edge-and-order",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "feature-evaluation-order",
+          "case": "collection-cache-edges",
+          "native_row_numbers": [
+            10,
+            11,
+            12
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "collection-cache-second-feature-edge-and-order",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "policy-bypass",
+          "case": "graph",
+          "native_row_numbers": [
+            14,
+            15,
+            16
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "contact-collection-runs-real-facts-and-policy",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "feature-edge",
+          "case": "graph",
+          "native_row_numbers": [
+            17,
+            18,
+            19
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "contact-feature-requires-collection-value",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "query-reuse",
+          "case": "evolving",
+          "native_row_numbers": [
+            20,
+            21,
+            22
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "contact-evolving-placed-subset-is-fresh",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "hidden-coordinates",
+          "case": "feature-values",
+          "native_row_numbers": [
+            23,
+            24,
+            25
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "contact-returned-feature-segment-consumed",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "placement-order",
+          "case": "ordering",
+          "native_row_numbers": [
+            26,
+            27,
+            28
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "contact-placement-order-and-stable-ties",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "duplicate-last-order",
+          "case": "order-index",
+          "native_row_numbers": [
+            29,
+            30,
+            31
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "contact-order-index-retains-last-duplicate-order",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "duplicate-earliest-order",
+          "case": "order-index",
+          "native_row_numbers": [
+            32,
+            33,
+            34
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "contact-order-index-retains-earliest-duplicate-order",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": null,
+          "control": "failure-count",
+          "case": "failures",
+          "native_row_numbers": [
+            35,
+            36,
+            37
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "contact-failure-keeps-output-and-count",
+          "normal_assertion": true,
+          "passed": true
+        }
+      ],
+      "extra_original_control_events": [],
+      "all_ordinary_controls_normal_0_1_0": true
+    },
+    {
+      "suite": "reading-a-native",
+      "events": 41,
+      "control_proofs": [
+        {
+          "test": "__main__.ReadingANative.test_actual_host_collector_withdrawal_fails_named_assertion_then_restores",
+          "control": "host-collector",
+          "case": "host-collector",
+          "native_row_numbers": [
+            2,
+            3,
+            4
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "actual-host-collector-accepts-partial",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "partial-admission",
+          "case": "eligibility",
+          "native_row_numbers": [
+            6,
+            7,
+            8
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "positive-contact-without-new-minimum",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "real-rc-width",
+          "case": "features",
+          "native_row_numbers": [
+            9,
+            10,
+            11
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "exact-width-rc-feature-refused",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "real-rc-plane",
+          "case": "features",
+          "native_row_numbers": [
+            12,
+            13,
+            14
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "collinear-rc-subdivision-joined",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "contact-side",
+          "case": "features",
+          "native_row_numbers": [
+            15,
+            16,
+            17
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "wrong-side-feature-not-contact",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "collector-partial",
+          "case": "spans",
+          "native_row_numbers": [
+            18,
+            19,
+            20
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "collector-partial-without-fullwidth",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "span-partial",
+          "case": "spans",
+          "native_row_numbers": [
+            21,
+            22,
+            23
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "span-accepts-partial-end",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "between-required-source",
+          "case": "spans",
+          "native_row_numbers": [
+            24,
+            25,
+            26
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "between-required-face-must-itself-contact",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "revalidate-partial",
+          "case": "revalidation",
+          "native_row_numbers": [
+            27,
+            28,
+            29
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "r6e-accepts-partial-without-fullwidth-recheck",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "revalidate-still-collides",
+          "case": "revalidation",
+          "native_row_numbers": [
+            30,
+            31,
+            32
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "partial-does-not-skip-world-collision",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "rc-lining",
+          "case": "features",
+          "native_row_numbers": [
+            33,
+            34,
+            35
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "lined-rc-short-run-permitted",
+          "normal_assertion": true,
+          "passed": true
+        },
+        {
+          "test": "__main__.ReadingANative.test_eleven_actual_source_controls_fail_named_assertions_then_restore",
+          "control": "i19-refusal-code",
+          "case": "spans",
+          "native_row_numbers": [
+            36,
+            37,
+            38
+          ],
+          "phases": [
+            "baseline",
+            "mutant",
+            "restored"
+          ],
+          "actual_exits": [
+            0,
+            1,
+            0
+          ],
+          "expected_assertion": "single-full-rc-span-refused",
+          "normal_assertion": true,
+          "passed": true
+        }
+      ],
+      "extra_original_control_events": [],
+      "all_ordinary_controls_normal_0_1_0": true
+    }
+  ],
+  "whole_optimization_withdrawal_executed": false,
+  "cost_measured": false,
+  "global_ledger_written": false,
+  "capture_limitations": [
+    "NativeBuild logs/native executions are original decoded text, not pre-decoding OS bytes",
+    "NativeBuild originally removes temporary executables; original compile logs, command outputs and compiled C source bytes retained; executable hashes in native events"
+  ]
+}

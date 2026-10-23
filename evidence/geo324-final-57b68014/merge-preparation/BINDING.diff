@@ -1,0 +1,41 @@
+--- /tmp/geo324-owner-20261024/merge_current_train.py
++++ /tmp/geo324-owner-20261024/merge_train_50493347.py
+@@ -2,27 +2,33 @@
+ """root 授權的 ordinary merge；只解 expected count 聯集，不啟測。"""
+ import datetime
+ import importlib.util
++import hashlib
+ import json
+ import os
+ from pathlib import Path
+ import re
+ 
+-BASE=Path('/tmp/geo324-owner-20261024');OUT=BASE/'merge-train-f64d638f'
++BASE=Path('/tmp/geo324-owner-20261024');OUT=BASE/'merge-train-50493347'
+ REPO=Path('/tmp/geo324-faces-work-20261024')
+ BRANCH='codex/geo324-faces-20261024'
+-BEFORE='07615668c110684826390990cd2d6134eb6025fd'
+-TRAIN='f64d638f15c48d2b9723b7ae9d230fb5dacb82d9'
++BEFORE='c8806b5f1aa6363d573b30a9df1748e61e1b9ccf'
++TRAIN='504933473d7b9bdfc5964f73402a710f1222fc96'
+ GROK='4e176e830b691269cc72d021ce7e1bc0b167d621'
+ PRBASE='7dae5f21c7ca401e660450d437e60ba566218da8'
+ OWNED=('geometry-templates/woodworking/geometry_woodworking/model_sources.py','tests/test_geometry_host_sources.py','tests/run_all.expected.json')
+ if OUT.exists():raise SystemExit('refuse overwrite')
+ OUT.mkdir()
+-spec=importlib.util.spec_from_file_location('capture','/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
++CAPTURE=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
++CAPTURE_SHA='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
++if hashlib.sha256(CAPTURE.read_bytes()).hexdigest()!=CAPTURE_SHA:raise SystemExit('capture byte pin mismatch')
++spec=importlib.util.spec_from_file_location('capture',str(CAPTURE))
+ capture=importlib.util.module_from_spec(spec);spec.loader.exec_module(capture)
+ env=os.environ.copy();env['PYTHONDONTWRITEBYTECODE']='1';env.pop('PYTHONOPTIMIZE',None)
+ rec=capture.Recorder(OUT,env,BEFORE)
+ report={'schema':'geo324.train-merge.v1','branch':BRANCH,'beforeEvidenceHead':BEFORE,'incomingTrainSHA':TRAIN,
+-        'productTestsExecuted':False,'exitCode':None,'errors':[]}
++        'productTestsExecuted':False,'exitCode':None,'errors':[],
++        'driverPath':str(Path(__file__).resolve()),'driverSHA256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
++        'capturePath':str(CAPTURE),'captureSHA256':CAPTURE_SHA}
+ def run(command,check=True):
+  return rec.run(command,cwd=REPO,timeout=180,check=check,
+                 source_sha=report.get('sourceHead',BEFORE),source_variant='source-merge-not-product-test')

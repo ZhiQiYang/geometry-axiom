@@ -48,10 +48,18 @@ class RectangularTemplateSourceIsolation(unittest.TestCase):
                 if path.suffix not in (".c", ".h"):
                     continue
                 self.assertEqual((ROOT / relative).read_bytes(), path.read_bytes())
-                for include in re.findall(r'^\s*#\s*include\s*"([^"]+)"', path.read_text(encoding="utf-8"), re.M):
-                    targets = [directory / include for directory in (path.parent, *include_dirs)]
-                    self.assertTrue(any(target.is_file() and target.resolve().is_relative_to(root) for target in targets),
-                                    f"non-isolated include: {relative}: {include}")
+                for quoted, angled in re.findall(r'^\s*#\s*include\s*(?:"([^"]+)"|<([^>]+)>)',
+                                                  path.read_text(encoding="utf-8"), re.M):
+                    include = quoted or angled
+                    directories = (path.parent, *include_dirs) if quoted else include_dirs
+                    targets = [directory / include for directory in directories]
+                    if quoted or any(target.is_file() for target in targets):
+                        self.assertTrue(any(target.is_file() and target.resolve().is_relative_to(root) for target in targets),
+                                        f"non-isolated include: {relative}: {include}")
+                    if relative.startswith("geometry-core/kernel/"):
+                        self.assertTrue(all(target.resolve().is_relative_to(root / "geometry-core/kernel")
+                                            for target in targets if target.is_file()),
+                                        f"K source includes template dependency: {relative}: {include}")
 
 
 class IsolatedNativeBuild:
@@ -140,7 +148,7 @@ class RectangularTemplateNative(unittest.TestCase):
         class RejectApplicationImports(importlib.abc.MetaPathFinder):
             def find_spec(self, fullname, path=None, target=None):
                 root = fullname.partition(".")[0]
-                if root in ("modeling", "geometry_app") or root.startswith("woodworking"):
+                if root in ("modeling", "geometry_app", "geometry_woodworking") or root.startswith("woodworking"):
                     raise AssertionError("application/template import in isolated recipe tests: " + fullname)
                 return None
         cls.import_blocker = RejectApplicationImports()
@@ -169,6 +177,70 @@ class RectangularTemplateNative(unittest.TestCase):
     def check(self, name):
         result = self.case(name)
         self.assertEqual(0, result.returncode, result.stderr)
+
+    def test_application_and_woodworking_imports_are_rejected_when_available(self):
+        names = ("modeling", "geometry_app", "geometry_woodworking", "woodworking_probe")
+        with tempfile.TemporaryDirectory(prefix="forbidden-packages-", dir=self.build.work) as directory:
+            root = Path(directory)
+            for name in names:
+                package = root / name
+                package.mkdir()
+                (package / "__init__.py").write_text("IS_FORBIDDEN_IMPORT_SENTINEL = True\n", encoding="utf-8")
+                self.assertNotIn(name, sys.modules, "isolation requires a fresh package import: " + name)
+            sys.path.insert(0, str(root))
+            try:
+                for name in names:
+                    with self.subTest(package=name):
+                        with self.assertRaisesRegex(AssertionError, "application/template import in isolated recipe tests: " + name):
+                            __import__(name)
+                        self.assertNotIn(name, sys.modules, "forbidden sentinel was imported: " + name)
+            finally:
+                sys.path.remove(str(root))
+                for name in names:
+                    sys.modules.pop(name, None)
+
+    def test_kernel_cannot_include_the_available_template_header(self):
+        source = self.build.kernel / "grid.c"
+        original = source.read_bytes()
+        includes = (
+            ("quoted", b'#include "../../geometry-templates/rectangular-grid/rectangular_grid.h"\n'),
+            ("angled", b'#include <rectangular_grid.h>\n'),
+        )
+        test = self.build.source_root / "tests/test_rectangular_template.py"
+
+        def isolation_gate(variant):
+            command = [sys.executable, "-I", "-B", str(test),
+                       "RectangularTemplateSourceIsolation.test_source_installation_is_closed_and_contains_only_core_recipe_and_tests"]
+            result = subprocess.run(command, cwd=self.build.source_root, env=self.build.env,
+                                    capture_output=True, text=True, timeout=120)
+            self.build.logs.append({"isolation_gate": variant, "command": command,
+                                    "exit": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
+            return result
+
+        for label, include in includes:
+            with self.subTest(include=label):
+                self.assertNotIn(include, original)
+                baseline = isolation_gate(label + "-baseline-k-to-template-include")
+                self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)
+                try:
+                    source.write_bytes(include + original)
+                    # The dependency really exists and is buildable. A missing include,
+                    # compile failure or crash must not impersonate the layer rejection.
+                    mutant = self.build.compile(source, "grid-template-include-control-" + label)
+                    objects = [mutant if key == "grid" else obj for key, obj in self.build.objects.items()]
+                    executable = self.build.link("rectangular-template-include-control-" + label, objects)
+                    self.assertEqual(0, self.case("exact-cells", executable).returncode)
+                    rejected = isolation_gate(label + "-one-k-to-template-include")
+                    self.assertEqual(1, rejected.returncode, rejected.stdout + rejected.stderr)
+                    self.assertIn("K source includes template dependency", rejected.stderr)
+                    self.assertIn("Ran 1 test", rejected.stderr)
+                    self.assertNotIn("ImportError", rejected.stderr)
+                    self.assertNotIn("SyntaxError", rejected.stderr)
+                finally:
+                    source.write_bytes(original)
+                restored = isolation_gate(label + "-restored-k-to-template-include")
+                self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)
+                self.check("exact-cells")
 
     def test_exact_1000_by_600_has_15_200_by_200_cells(self): self.check("exact-cells")
     def test_source_edit_recomputes_same_references_after_reordering(self): self.check("source-update")
