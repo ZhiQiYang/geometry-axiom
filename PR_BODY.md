@@ -17,10 +17,10 @@ UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩
 | source 語法／diff 檢查 | `node --check geometry-web/grid_rule_lines_test.js` exit 0；`git diff --check` exit 0 |
 | source push／remote SHA 核對 | exit 0／0 |
 | 真查詢時序診斷 | fixed／withdrawn／restored 原測試 exit 1／1／1；三者皆因工具的位移預條件未成立，總 driver exit 2、proof=false，不算突變自證通過 |
-| 原生 rAF 新交錯反證 | 依 head `1999cbc` 最新審查與已觀察的 scroll 恢復短窗準備；工具已獨立靜審，尚未執行。固定 F，僅撤回 P88 修正，預列一次 fixed／withdrawn／restored |
-| 最終 F 的正式驗收 | 三次連續完整 canvas 已在 F 啟動，結果待跑完；另需同一 F 一次 grid。主代理已確認 ledger check 與架構三條原裁判 exit 0／0／0／0 |
+| 原生 rAF 新交錯反證 | 依 head `1999cbc` 最新審查與已觀察的 scroll 恢復短窗準備；工具已獨立靜審，12:38:58 UTC 已自動啟動，結果待三階段完成。固定 F，僅撤回 P88 修正，預列一次 fixed／withdrawn／restored |
+| 最終 F 的正式驗收 | 三次完整 canvas exit 0／0／0；每輪 full 2267／0、P88=143、golden matched、skip=[]；1741.884／1748.520／1765.120 秒，均在原 35 分鐘內。仍待同一 F 一次 grid。主代理已確認 ledger check 與架構三條原裁判 exit 0／0／0／0 |
 | 允許的 skip | 本補丁不新增 skip；診斷外部 loader 明列只執行原 P88，不能冒充正式 grid／canvas |
 
 真查詢診斷已看到原 `paintQuery`／`renderFaceInspector` 重建節點與 scroll `25 → 0 → 25`，但未重現舊座標命中比例欄。此診斷不是原自然紅的因果證明，三階段失敗原件完整保留；工具在初次量測的預條件檢查即中止，目標位置的候選穩定檢查尚未執行，不能據此判定修正有效或無效。原三輪沒有 pointerdown 目標追蹤；目前不能斷言是哪一個查詢造成歷史失敗。兩個畫面更新的穩定觀察也不能保證未來不再重排，仍須以新 F 的完整驗收評估。
 
-獨立代理已對抗檢查候選差異、原工作流程綁定、最終三輪錄製器與新 rAF 工具，未發現斷言、golden 或時限放寬。新工具只把原唯讀量測安排在真 native callback 的入口前，再讓原 callback 依原 this／args／guards 執行；不改 scroll／rect／focus／值、不手動另觸發 callback。只有真的產生舊點由 mode 移到 ratio、withdrawn 以原焦點 predicate exit1、fixed／restored 完成原 P88 才算反證成立；仍不能回填歷史自然紅的唯一原因。正式三輪與這組反證尚未完成，不能據此宣稱 #288 全綠。
+獨立代理已對抗檢查候選差異、原工作流程綁定、最終三輪錄製器與新 rAF 工具，未發現斷言、golden 或時限放寬。新工具只把原唯讀量測安排在真 native callback 的入口前，再讓原 callback 依原 this／args／guards 執行；不改 scroll／rect／focus／值、不手動另觸發 callback。只有真的產生舊點由 mode 移到 ratio、withdrawn 以原焦點 predicate exit1、fixed／restored 完成原 P88 才算反證成立；仍不能回填歷史自然紅的唯一原因。正式三輪已完成且連續全綠；這組反證與同一 F 的 grid 尚未完成，不能據此宣稱 #288 全綠。
