@@ -40,3 +40,6 @@
 
 - 2026-10-23T13:29:27.058610+00:00 — **p88-final-p52-verifier**：新F獨立P52原驗證器0，adapter/outer/launcher皆0；原9assertions與原判官AST保留。四個timing區塊及五控制從真c387原streams投影，投影明記DERIVED，不冒原launch stdout；核對同F正式16+16與ratio0.889796209710257。完整verifier原stdout/stderr、每層命令與環境一併封存。
   下一步：同F原runtime撤回／恢復反證，然後P73/Chromium154/oracle。。原始資料：`raw/p88-final-p52-verifier-01.tar.gz`。
+
+- 2026-10-23T13:30:02.573691+00:00 — **p88-final-native-reviewed**：新F原run_all四組partial原primary/reaper/outer/launch皆0，17/3/51/737合計808pass、0fail、0skip；不冒完整native重跑。原runner確認三binary fresh/reused；完整Git index與14輸入前後同F，三個真gcanvas fixtures按原blob物化，其他稀疏限制保留。獨立原件及Git封包審查、原publication ignore失敗1及精確prefix正常續推0都保留。 子分支證據E=c7214307d5ffc6a867089c8d832fef4bc94ae27c。
+  下一步：繼續同F P52、P73、Chromium154與oracle反證，完成項依真退出更新唯一正文矩陣。。原始資料：`raw/p88-final-native-reviewed-01.tar.gz`。
