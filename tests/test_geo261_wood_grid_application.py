@@ -122,7 +122,7 @@ class WoodGridApplication(unittest.TestCase):
 
     def test_stagger_removed_legacy_value_guard_fails_changed_axis_assertion(self):
         self.stagger_control("legacy-value", "stagger-w06", "stagger-legacy-u-changed",
-            "if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis]))", "if(0)")
+            "if(wood_grid_stagger_value_changed(&old->axis[axis],&now->axis[axis],now->id,(unsigned)axis,facts,count))", "if(0)")
 
     def test_stagger_removed_same_reference_exception_fails_card_edit_assertion(self):
         self.stagger_control("same-reference", "stagger-w11", "stagger-ref-card-edit-is-not-an-edit",
