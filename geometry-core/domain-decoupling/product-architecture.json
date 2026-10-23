@@ -2045,60 +2045,6 @@
   ],
   "exclusions": [
     {
-      "path": "geometry-core/card-reference/archive_roundtrip.cjs",
-      "reason": "Dedicated GEO-262 acceptance driver archive_roundtrip.cjs; run by tests/test_grid_card_reference.py against the project store, not by product runtime or served application entry points.",
-      "sha256": "44238492f9698f05a0f89c4ccbcc3856471d15280aa1e4c0dd8d1367bacd5c69",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/card-reference/confirmation_probe.c",
-      "reason": "Dedicated GEO-262 acceptance probe confirmation_probe.c; compiled by tests/test_grid_card_reference.py around the bridge source, not part of any product build.",
-      "sha256": "79d3732f79936f31f872fb3188902b1c001b26ef269f1c3c19f69dc525a30c47",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/card-reference/measure_capture_memory.py",
-      "reason": "GEO-262 P-146 measurement tool measure_capture_memory.py for the main-branch ParameterState layout; retained evidence tool, not a product-loaded module or current product entry point.",
-      "sha256": "05a8a2bb3b8b52cd11c26f238d6c8b6aaad6c9f27f7eb8d7f8a69caee85b13b6",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/card-reference/mutations.py",
-      "reason": "Dedicated GEO-262 mutation definitions mutations.py for the card-reference acceptance tools; test tooling, not a product-loaded module.",
-      "sha256": "790d69c3a67ea1ad762f1ef943193433d08215c0a9f426138a9540d3d1a99b41",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/card-reference/probe_cr29_precondition.py",
-      "reason": "Dedicated GEO-262 CR29 precondition probe probe_cr29_precondition.py; reproduction/evidence tool, not a product-loaded module or current product entry point.",
-      "sha256": "85a568add9d699a5f49c0c4d3c9e2c996312c2e0e2bf0ceb1a5cf465fa9474fd",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/card-reference/probe_model_admission.cjs",
-      "reason": "Dedicated GEO-262 model-admission audit probe probe_model_admission.cjs; reproduction/evidence tool, not a product-loaded module or served entry point.",
-      "sha256": "007680b0231857dccb6d413873fb4e8447b2fb5e0194c2c90861acf2481e7f1c",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/card-reference/run_archive_mutations.py",
-      "reason": "Dedicated GEO-262 archive mutation runner run_archive_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "5bc6d308bec20fa3c484f8ed5e769f23bb9ebcbfe61075d170ed1b950de88251",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/card-reference/run_axiom_mutations.py",
-      "reason": "Dedicated GEO-262 axiom-version mutation runner run_axiom_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "dae27a144c241a30d55ffdc65264fb86b224759508e600d3c149ad9a7ebb87c3",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/card-reference/run_mutations.py",
-      "reason": "Dedicated GEO-262 native mutation runner run_mutations.py; test tooling, not a product-loaded module.",
-      "sha256": "d3282011a7648ef0eb8704517cd49c51a76ae75155f1870e0273f023e189165e",
-      "hashMode": "lf"
-    },
-    {
       "path": "geometry-core/domain-decoupling/evidence/native-p1-20261016/extract_evidence.py",
       "reason": "Historical validation/reproduction artifact extract_evidence.py; retained evidence, not a product-loaded module or current product entry point.",
       "sha256": "651b3dc10abe07951283a57d1fc4c9da7077749424f79ad40e2dced0c8813a19",
@@ -2513,60 +2459,6 @@
       "hashMode": "lf"
     },
     {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
-      "reason": "Exact-byte extractor retained in the sealed historical native-p1-authority-20261017 evidence pack; reconstructs catalogued evidence only and is not a product-loaded module or current product entry point.",
-      "sha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/finalize_publication.py",
-      "reason": "Checksum sealing helper retained in the sealed historical native-p1-authority-20261017 evidence pack; freezes evidence files only and is not a product-loaded module or current product entry point.",
-      "sha256": "ee4ae0bda9ee75791eedd88eacf6b8183a65cf88e9dfda22fc87b308e5199e29",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/prepare_publication.py",
-      "reason": "Historical evidence publication helper retained in the sealed native-p1-authority-20261017 pack; copies and hashes closed receipts without running product code and is not a product-loaded module or current product entry point.",
-      "sha256": "a48b55afe3ae0b4bd0a3bc44dba3161f97165ce1a745e4dafb5dbb3f02c8db8a",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
-      "reason": "Standalone byte/provenance validator retained in the sealed historical native-p1-authority-20261017 evidence pack; validates historical records without product execution and is not a product-loaded module or current product entry point.",
-      "sha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/extract_evidence.py",
-      "reason": "Historical validation/reproduction artifact extract_evidence.py; retained evidence, not a product-loaded module or current product entry point.",
-      "sha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/finalize_publication.py",
-      "reason": "Historical validation/reproduction artifact finalize_publication.py; retained evidence, not a product-loaded module or current product entry point.",
-      "sha256": "13fe9eb20dd2827859866cf61a83d2badd6236f53eb322b8b79a37dafa865e87",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/prepare_publication.py",
-      "reason": "Historical validation/reproduction artifact prepare_publication.py; retained evidence, not a product-loaded module or current product entry point.",
-      "sha256": "37cb07dbc7af6f453c056b7ccec2e777fe3dd991fda531def42112d16aa2a695",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/readable/watchdog-envelope-v1/recovered-selftest-source-868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac.py",
-      "reason": "Historical validation/reproduction artifact recovered-selftest-source-868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac.py; retained evidence, not a product-loaded module or current product entry point.",
-      "sha256": "868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/verify_publication.py",
-      "reason": "Historical validation/reproduction artifact verify_publication.py; retained evidence, not a product-loaded module or current product entry point.",
-      "sha256": "79ff75e1ab60dba1e9c0008fc806b517159f952f677864da461b1dc9eec3406c",
-      "hashMode": "lf"
-    },
-    {
       "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/extract_evidence.py",
       "reason": "Historical validation/reproduction artifact extract_evidence.py; retained evidence, not a product-loaded module or current product entry point.",
       "sha256": "651b3dc10abe07951283a57d1fc4c9da7077749424f79ad40e2dced0c8813a19",
@@ -2633,6 +2525,12 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d/run.py",
+      "reason": "Historical validation/reproduction artifact run.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "d52ed6235248a29f3d63369f368464ed2b7d2c54955bd2cd4c2d9c61f02a64d2",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/codec-client.c",
       "reason": "Historical validation/reproduction artifact codec-client.c; retained evidence, not a product-loaded module or current product entry point.",
       "sha256": "e4a093c03179d1fbc370375e2e45bf3a9d2d09f40cbb6b44fe53c2190abd7a13",
@@ -2642,12 +2540,6 @@
       "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/exact-client.c",
       "reason": "Historical validation/reproduction artifact exact-client.c; retained evidence, not a product-loaded module or current product entry point.",
       "sha256": "7581efd5b45b3c16fc2a6eb380cdfb2438b3822d95123cca1e337a5c301270cc",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d/run.py",
-      "reason": "Historical validation/reproduction artifact run.py; retained evidence, not a product-loaded module or current product entry point.",
-      "sha256": "d52ed6235248a29f3d63369f368464ed2b7d2c54955bd2cd4c2d9c61f02a64d2",
       "hashMode": "lf"
     },
     {
@@ -2666,78 +2558,6 @@
       "path": "geometry-core/domain-decoupling/evidence/native-stage-20261016/executed-portable-runner.py",
       "reason": "Historical validation/reproduction artifact executed-portable-runner.py; retained evidence, not a product-loaded module or current product entry point.",
       "sha256": "55f95132a4db41f2f35f93ba43b1f60c73a8286143979dc690bb027823701618",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
-      "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
-      "sha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/core-probe/mutation_check.py",
-      "reason": "Dedicated framing-template core-probe mutation harness mutation_check.py: copies core-probe and the golden to a temporary directory, applies one mutation at a time and requires test_gen_scenes.py to turn red; pure Python, no native core and no WSL; test tooling, not a product-loaded module or current product entry point.",
-      "sha256": "2c4d05e713b63677b2b8333ee388c0c61f9130d4dc8836c1a571b656f052f421",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/core-probe/parse_results.py",
-      "reason": "Dedicated framing-template core-probe result parser parse_results.py: turns the native core accept/reject output files into results.json and RESULTS.md and compares the core-reported L, origin and vertices with the oracle rectangles; reads output files only and imports only the standard library; probe tooling, not a product-loaded module or current product entry point.",
-      "sha256": "a6b8801a2c98fd32973ebc1acf327f49aae7d76cd28d34c905f2e41ce401de66",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/core-probe/scene_reader.py",
-      "reason": "Dedicated framing-template core-probe verifier scene_reader.py: independently recomputes every member footprint from the scene text (deliberately not importing gen_scenes) for the probe tests; standard library only; test tooling, not a product-loaded module or current product entry point.",
-      "sha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
-      "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
-      "sha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/oracle/framing_oracle.py",
-      "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
-      "sha256": "4c271933e123b296d6c9240f2ee4f4ae045f1dc59173b8c6aa9acd12e0cd4e01",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/oracle/make_golden.py",
-      "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
-      "sha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/oracle/quote_check.py",
-      "reason": "Framing-template oracle verbatim-quote checker quote_check.py: verifies that quotations of the user in documents and oracle sources appear byte-for-byte in the tree decision queue; reads text files only and imports only the standard library; documentation-integrity tooling, not a product-loaded module or current product entry point.",
-      "sha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/oracle/reading_a_cases.py",
-      "reason": "Reading A frozen approval-identity loader and missing/wrong-verdict coverage judge, imported only by the excluded framing oracle self-test and dedicated tests; not loaded by an owned product source or product entry point. Its 528/1056 identity fixture is independently pinned to the pre-policy approval list.",
-      "sha256": "b7d5ad2dcfbdedeed03998e4380d10437936e0e1f5c4e4845fd077ec9a9cd73f",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/oracle/reading_a_source_control.py",
-      "reason": "Reading A independent numeric source-withdrawal witness for constructor/checker 0/1/0; an explicitly invoked dedicated test driver that loads a supplied oracle source path, not a product-loaded module or product entry point.",
-      "sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/oracle/render.py",
-      "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
-      "sha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-core/framing-template/oracle/selftest.py",
-      "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
-      "sha256": "8f40ec86d8c865bf3221b29b85d842724cd60dc61433d8d59feacb31ad81eadf",
       "hashMode": "lf"
     },
     {
@@ -2912,24 +2732,6 @@
       "path": "geometry-web/docs/evidence/browser-acceptance-20261006/pr156/g_run.py",
       "reason": "Historical validation/reproduction artifact g_run.py; retained evidence, not a product-loaded module or current product entry point.",
       "sha256": "1de2af37a8a245f4cf5edc882e5985f2c94e9bd567fbd1b61c9af32d25f82572",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-web/docs/evidence/geo263-20261016/compile_probe.py",
-      "reason": "Historical GEO-263 native bridge compilation receipt producer retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
-      "sha256": "c0457dc597412c2195d828f57a85eb451e605a555ad5c25684d8a9033581461a",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-web/docs/evidence/geo263-20261016/verify.py",
-      "reason": "Historical GEO-263 fixed/mutant/restored stagger evidence driver retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
-      "sha256": "8745ba01a144afa83f5f94f9d670edc0278d96aa8f4dc13bd5c95852f24a49fd",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-web/docs/evidence/geo263-p153-20261016/verify.py",
-      "reason": "Historical GEO-263 P-153 registered-test and two-mutant evidence driver retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
-      "sha256": "e08e7033d808ebd2b486eef75a25e92738b4a23a2ffa9bf9091541c45be1fb85",
       "hashMode": "lf"
     },
     {
@@ -3131,12 +2933,6 @@
       "hashMode": "lf"
     },
     {
-      "path": "geometry-web/docs/uiux-review/UI-UX 審查報告.dc.html",
-      "reason": "Historical validation/reproduction artifact UI-UX 審查報告.dc.html; retained evidence, not a product-loaded module or current product entry point.",
-      "sha256": "50157e71e5d197e49b3724a8a1ad00503f4cbd23721b14c30ef655c09b9bbf37",
-      "hashMode": "lf"
-    },
-    {
       "path": "geometry-web/docs/uiux-review/review-data.js",
       "reason": "Historical validation/reproduction artifact review-data.js; retained evidence, not a product-loaded module or current product entry point.",
       "sha256": "0f6a9736397d0478d6d561881e3a9cd01eec3bc30eb34d332b74b7c2fa9e8acb",
@@ -3152,6 +2948,12 @@
       "path": "geometry-web/docs/uiux-review/support.js",
       "reason": "Historical validation/reproduction artifact support.js; retained evidence, not a product-loaded module or current product entry point.",
       "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/uiux-review/UI-UX 審查報告.dc.html",
+      "reason": "Historical validation/reproduction artifact UI-UX 審查報告.dc.html; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "50157e71e5d197e49b3724a8a1ad00503f4cbd23721b14c30ef655c09b9bbf37",
       "hashMode": "lf"
     },
     {
@@ -3419,24 +3221,6 @@
       "hashMode": "lf"
     },
     {
-      "path": "geometry-web/prototypes/engineering-spec/src/GeometryCanvas.jsx",
-      "reason": "Separate engineering-spec UI prototype GeometryCanvas.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
-      "sha256": "b56cbcb4b64bc1130af73f741cfbe76a81d6c80e9d1a5d1b7ff15f7a71fa8d1c",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-web/prototypes/engineering-spec/src/InlinePanelEditor.jsx",
-      "reason": "Separate engineering-spec UI prototype InlinePanelEditor.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
-      "sha256": "2ccb0430de1e8bc31c332bb0c9801cfb5e93bc133f62ee4b37f79587b5041a42",
-      "hashMode": "lf"
-    },
-    {
-      "path": "geometry-web/prototypes/engineering-spec/src/SpecificationLibrary.jsx",
-      "reason": "Separate engineering-spec UI prototype SpecificationLibrary.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
-      "sha256": "1c8f41dedc973e1f220449be3df6717d759852c0ca6be4ae5e1cdc7da4f3ad3f",
-      "hashMode": "lf"
-    },
-    {
       "path": "geometry-web/prototypes/engineering-spec/src/canvasGestures.js",
       "reason": "Separate engineering-spec UI prototype canvasGestures.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
       "sha256": "c234507b00bc5d07fbf3c8f14e3442b6b7538dbe110e8c9c422eb9fa2a7a8e0d",
@@ -3461,9 +3245,21 @@
       "hashMode": "lf"
     },
     {
+      "path": "geometry-web/prototypes/engineering-spec/src/GeometryCanvas.jsx",
+      "reason": "Separate engineering-spec UI prototype GeometryCanvas.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "b56cbcb4b64bc1130af73f741cfbe76a81d6c80e9d1a5d1b7ff15f7a71fa8d1c",
+      "hashMode": "lf"
+    },
+    {
       "path": "geometry-web/prototypes/engineering-spec/src/inlinePanelDraft.js",
       "reason": "Separate engineering-spec UI prototype inlinePanelDraft.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
       "sha256": "06b1c7815333feb66c1d030b3dbeb6c0e7b6763a8499032f6061f40479d4e4bd",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/InlinePanelEditor.jsx",
+      "reason": "Separate engineering-spec UI prototype InlinePanelEditor.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "2ccb0430de1e8bc31c332bb0c9801cfb5e93bc133f62ee4b37f79587b5041a42",
       "hashMode": "lf"
     },
     {
@@ -3488,6 +3284,12 @@
       "path": "geometry-web/prototypes/engineering-spec/src/previewChanges.js",
       "reason": "Separate engineering-spec UI prototype previewChanges.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
       "sha256": "b04ae4985cd140132c892c0d007b007e758efb5165415eb83cf935c468ec7c9a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/prototypes/engineering-spec/src/SpecificationLibrary.jsx",
+      "reason": "Separate engineering-spec UI prototype SpecificationLibrary.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+      "sha256": "1c8f41dedc973e1f220449be3df6717d759852c0ca6be4ae5e1cdc7da4f3ad3f",
       "hashMode": "lf"
     },
     {
@@ -3662,6 +3464,204 @@
       "path": "geometry-web/work-manager/test_store.py",
       "reason": "Dedicated acceptance/test driver test_store.py; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "ac04abdf23254d41bbe2ae42a087b39726dd4f13fb33087c3d2b6646addc2fde",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/extract_evidence.py",
+      "reason": "Exact-byte extractor retained in the sealed historical native-p1-authority-20261017 evidence pack; reconstructs catalogued evidence only and is not a product-loaded module or current product entry point.",
+      "sha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/finalize_publication.py",
+      "reason": "Checksum sealing helper retained in the sealed historical native-p1-authority-20261017 evidence pack; freezes evidence files only and is not a product-loaded module or current product entry point.",
+      "sha256": "ee4ae0bda9ee75791eedd88eacf6b8183a65cf88e9dfda22fc87b308e5199e29",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/prepare_publication.py",
+      "reason": "Historical evidence publication helper retained in the sealed native-p1-authority-20261017 pack; copies and hashes closed receipts without running product code and is not a product-loaded module or current product entry point.",
+      "sha256": "a48b55afe3ae0b4bd0a3bc44dba3161f97165ce1a745e4dafb5dbb3f02c8db8a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-authority-20261017/verify_publication.py",
+      "reason": "Standalone byte/provenance validator retained in the sealed historical native-p1-authority-20261017 evidence pack; validates historical records without product execution and is not a product-loaded module or current product entry point.",
+      "sha256": "e2e7bd1465803e01b299f242a7cf5afbca8b509bb824473a9a72d04b9cbc47c7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-20261016/compile_probe.py",
+      "reason": "Historical GEO-263 native bridge compilation receipt producer retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
+      "sha256": "c0457dc597412c2195d828f57a85eb451e605a555ad5c25684d8a9033581461a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-20261016/verify.py",
+      "reason": "Historical GEO-263 fixed/mutant/restored stagger evidence driver retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
+      "sha256": "8745ba01a144afa83f5f94f9d670edc0278d96aa8f4dc13bd5c95852f24a49fd",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/docs/evidence/geo263-p153-20261016/verify.py",
+      "reason": "Historical GEO-263 P-153 registered-test and two-mutant evidence driver retained with train19 evidence; not a product-loaded module or current product entry point. This audit only reads and hashes this exact script and does not execute it.",
+      "sha256": "e08e7033d808ebd2b486eef75a25e92738b4a23a2ffa9bf9091541c45be1fb85",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/archive_roundtrip.cjs",
+      "reason": "Dedicated GEO-262 acceptance driver archive_roundtrip.cjs; run by tests/test_grid_card_reference.py against the project store, not by product runtime or served application entry points.",
+      "sha256": "44238492f9698f05a0f89c4ccbcc3856471d15280aa1e4c0dd8d1367bacd5c69",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/confirmation_probe.c",
+      "reason": "Dedicated GEO-262 acceptance probe confirmation_probe.c; compiled by tests/test_grid_card_reference.py around the bridge source, not part of any product build.",
+      "sha256": "79d3732f79936f31f872fb3188902b1c001b26ef269f1c3c19f69dc525a30c47",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/measure_capture_memory.py",
+      "reason": "GEO-262 P-146 measurement tool measure_capture_memory.py for the main-branch ParameterState layout; retained evidence tool, not a product-loaded module or current product entry point.",
+      "sha256": "05a8a2bb3b8b52cd11c26f238d6c8b6aaad6c9f27f7eb8d7f8a69caee85b13b6",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/mutations.py",
+      "reason": "Dedicated GEO-262 mutation definitions mutations.py for the card-reference acceptance tools; test tooling, not a product-loaded module.",
+      "sha256": "790d69c3a67ea1ad762f1ef943193433d08215c0a9f426138a9540d3d1a99b41",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/probe_cr29_precondition.py",
+      "reason": "Dedicated GEO-262 CR29 precondition probe probe_cr29_precondition.py; reproduction/evidence tool, not a product-loaded module or current product entry point.",
+      "sha256": "85a568add9d699a5f49c0c4d3c9e2c996312c2e0e2bf0ceb1a5cf465fa9474fd",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/probe_model_admission.cjs",
+      "reason": "Dedicated GEO-262 model-admission audit probe probe_model_admission.cjs; reproduction/evidence tool, not a product-loaded module or served entry point.",
+      "sha256": "007680b0231857dccb6d413873fb4e8447b2fb5e0194c2c90861acf2481e7f1c",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/run_archive_mutations.py",
+      "reason": "Dedicated GEO-262 archive mutation runner run_archive_mutations.py; test tooling, not a product-loaded module.",
+      "sha256": "5bc6d308bec20fa3c484f8ed5e769f23bb9ebcbfe61075d170ed1b950de88251",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/run_axiom_mutations.py",
+      "reason": "Dedicated GEO-262 axiom-version mutation runner run_axiom_mutations.py; test tooling, not a product-loaded module.",
+      "sha256": "dae27a144c241a30d55ffdc65264fb86b224759508e600d3c149ad9a7ebb87c3",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/card-reference/run_mutations.py",
+      "reason": "Dedicated GEO-262 native mutation runner run_mutations.py; test tooling, not a product-loaded module.",
+      "sha256": "d3282011a7648ef0eb8704517cd49c51a76ae75155f1870e0273f023e189165e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/extract_evidence.py",
+      "reason": "Historical validation/reproduction artifact extract_evidence.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "ac626b84cc3cc6d029ecb95cceb2d3098b3a8cf084e8f8b69a3e98bd9d7e90f7",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/finalize_publication.py",
+      "reason": "Historical validation/reproduction artifact finalize_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "13fe9eb20dd2827859866cf61a83d2badd6236f53eb322b8b79a37dafa865e87",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/prepare_publication.py",
+      "reason": "Historical validation/reproduction artifact prepare_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "37cb07dbc7af6f453c056b7ccec2e777fe3dd991fda531def42112d16aa2a695",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/readable/watchdog-envelope-v1/recovered-selftest-source-868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac.py",
+      "reason": "Historical validation/reproduction artifact recovered-selftest-source-868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "868c0864cbf91da304ca37e7ebee140cfe68542fccc3d6f764f0d27a7f8dd9ac",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/domain-decoupling/evidence/native-p1-closeouts-20261017/verify_publication.py",
+      "reason": "Historical validation/reproduction artifact verify_publication.py; retained evidence, not a product-loaded module or current product entry point.",
+      "sha256": "79ff75e1ab60dba1e9c0008fc806b517159f952f677864da461b1dc9eec3406c",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+      "reason": "Dedicated framing-template core-probe scene generator gen_scenes.py: reads oracle/oracle-golden.json and writes the committed probe scenes/*.scene and index.json, auditing each scene against its probe-member rectangles; imports only the standard library and its sibling scene_reader, and the scenes reach the native core only through run_probe.sh in WSL; probe tooling, not a product-loaded module or current product entry point.",
+      "sha256": "c19acc1ef826eb420f7570a2279e1625a76b2963d6ab210edfae42ae05c71600",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/mutation_check.py",
+      "reason": "Dedicated framing-template core-probe mutation harness mutation_check.py: copies core-probe and the golden to a temporary directory, applies one mutation at a time and requires test_gen_scenes.py to turn red; pure Python, no native core and no WSL; test tooling, not a product-loaded module or current product entry point.",
+      "sha256": "2c4d05e713b63677b2b8333ee388c0c61f9130d4dc8836c1a571b656f052f421",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/parse_results.py",
+      "reason": "Dedicated framing-template core-probe result parser parse_results.py: turns the native core accept/reject output files into results.json and RESULTS.md and compares the core-reported L, origin and vertices with the oracle rectangles; reads output files only and imports only the standard library; probe tooling, not a product-loaded module or current product entry point.",
+      "sha256": "a6b8801a2c98fd32973ebc1acf327f49aae7d76cd28d34c905f2e41ce401de66",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scene_reader.py",
+      "reason": "Dedicated framing-template core-probe verifier scene_reader.py: independently recomputes every member footprint from the scene text (deliberately not importing gen_scenes) for the probe tests; standard library only; test tooling, not a product-loaded module or current product entry point.",
+      "sha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+      "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
+      "sha256": "101f14c28c905a47a873c97423d4dc539ad43a9787fba959f881f75452d95a62",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+      "reason": "Framing-template executable geometric reference framing_oracle.py (the oracle for below-timber framing of a flat-nailed ceiling): computes every timber rectangle for rooms.json and emits the JSON that implementations must match; a reference specification written in Python with only json, math and sys, imported by no owned source and by no product entry point, and not the W-layer implementation of the framing template (none exists yet); retained reference tooling, not a product-loaded module or current product entry point.",
+      "sha256": "4c271933e123b296d6c9240f2ee4f4ae045f1dc59173b8c6aa9acd12e0cd4e01",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/make_golden.py",
+      "reason": "Framing-template oracle golden generator make_golden.py: regenerates oracle-golden.json from framing_oracle (frozen reference output, regenerated by hand only after review); imports framing_oracle and the standard library; reference tooling, not a product-loaded module or current product entry point.",
+      "sha256": "17166d2b37aebf40f4632c94883b99a67df3ca1fa001538bbcde467e42efcd60",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/quote_check.py",
+      "reason": "Framing-template oracle verbatim-quote checker quote_check.py: verifies that quotations of the user in documents and oracle sources appear byte-for-byte in the tree decision queue; reads text files only and imports only the standard library; documentation-integrity tooling, not a product-loaded module or current product entry point.",
+      "sha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/render.py",
+      "reason": "Framing-template oracle HTML renderer render.py: draws framing_oracle results as one page with inline SVG for review; imports framing_oracle and the standard library; review tooling, not a product-loaded module or current product entry point.",
+      "sha256": "0afb237d0a6121572f7f538ee4c9c1264200678376a7ff34912c186fe6d24a9a",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/selftest.py",
+      "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
+      "sha256": "8f40ec86d8c865bf3221b29b85d842724cd60dc61433d8d59feacb31ad81eadf",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/reading_a_cases.py",
+      "reason": "Reading A frozen approval-identity loader and missing/wrong-verdict coverage judge, imported only by the excluded framing oracle self-test and dedicated tests; not loaded by an owned product source or product entry point. Its 528/1056 identity fixture is independently pinned to the pre-policy approval list.",
+      "sha256": "b7d5ad2dcfbdedeed03998e4380d10437936e0e1f5c4e4845fd077ec9a9cd73f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/reading_a_source_control.py",
+      "reason": "Reading A independent numeric source-withdrawal witness for constructor/checker 0/1/0; an explicitly invoked dedicated test driver that loads a supplied oracle source path, not a product-loaded module or product entry point.",
+      "sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95",
       "hashMode": "lf"
     }
   ],
