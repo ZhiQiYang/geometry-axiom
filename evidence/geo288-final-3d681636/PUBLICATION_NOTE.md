@@ -1,0 +1,1 @@
+原通用publisher已產生並驗證本收據封包，但git add --sparse因.gitignore忽略本證據前綴而exit1。原命令與完整stdout/stderr保存在publication-original-attempt/。僅對已授權的本evidence前綴使用git add --force --sparse，不改產品、測試或.gitignore；此force-add不涉及force push。產品grid原exit0/0/0不重跑。

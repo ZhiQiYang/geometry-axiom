@@ -1,0 +1,10 @@
+The following paths are ignored by one of your .gitignore files:
+evidence/geo288-final-3d681636
+hint: Use -f if you really want to add them.
+hint: Disable this message with "git config set advice.addIgnoredFile false"
+Traceback (most recent call last):
+  File "/workspace/geo261-environment/publish_followup_progress.py", line 107, in <module>
+    subprocess.run(argv, cwd=repo, check=True)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'add', '--sparse', '--', 'evidence/geo288-final-3d681636']' returned non-zero exit status 1.
