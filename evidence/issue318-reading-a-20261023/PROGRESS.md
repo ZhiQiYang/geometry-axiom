@@ -1,3 +1,15 @@
+## 當前來源／待驗矩陣（本段取代下方各歷史追加的 current-state）
+
+來源已落核可 SSOT 四處、白話與唯一正典、oracle 獨立建構／C8、W判官／span／between／兩條重驗。現有reader-generation-m150固定來源 `1cd2fc216299041a557654a874509a33884af819`，真同步exit0、3.70秒，完整原輸出與hash已封存；這是新M150與live adapter行號變動後的機械來源生成。`--check`與reader unittest仍未執行，不能稱三裁判全綠。
+
+M140–M150共11全域突變（10W/caller＋1actual-H）、native7方法與oracle13方法均只備來源，全部動態unrun，完整帳本只留root共同final產一次。實際H反證用already-placed World、不冒CLI可達；精確原/derived source四檔身份可透過repo外GEO318_ARTIFACT_DIR封存。
+
+尚未完成的來源是golden當前非空I22見證遷移：等待root指定小型8build觀察槽，不能盲填或鬆非空／矩形綁定／id≠index。真CLI順序、native所有正反例、oracle13／quick／逐毫米／579凹角／528+1056正例、reader餘兩裁判、架構三裁判均未跑，沒有宣告skip或綠燈。最不確定仍為已放／重建次序風險，詳QUESTIONS。
+
+前棒#314過期literal anchor已經owner確認後單一修，11個來源錨點各恰1；其peer review待回，不冒動態。Git所有完成提交已恢復一般push，原auth128與恢復0原件保留。根source sparse約20MB，沒有編譯/Chrome/bench/scan/native/oracle執行，維持root P88排程。
+
+---
+
 ## 追加：前棒 #314 來源錨點維護
 
 經 #314 owner 只讀確認後，由本 owner 單一寫入 `test_geo261_wood_grid_application.py` 的 legacy-value 控制錨點，將已遷移的 W helper 呼叫由舊2args對齊新6args；method、marker、replacement `if(0)` 與所有 assert 原字不動、不新增測試。單檔11個literal anchors 靜核各恰1，輸出見 `PREDECESSOR_314_ANCHOR_MAINTENANCE.json`；不是動態0/1/0，也沒有產帳本。
