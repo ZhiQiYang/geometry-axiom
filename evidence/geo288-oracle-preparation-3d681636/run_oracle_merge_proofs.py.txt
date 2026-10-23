@@ -1,0 +1,312 @@
+"""Record unchanged oracle judges and two withdrawal/restoration proofs at one clean SHA."""
+import argparse
+import ast
+import datetime
+import fcntl
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import platform
+import re
+import resource
+import shutil
+import sys
+import traceback
+
+CAPTURE_HASH = 'c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+ORACLE = Path('geometry-core/framing-template/oracle')
+PROBE = Path('geometry-core/framing-template/core-probe')
+ORACLE_FILES = ('framing_oracle.py', 'selftest.py', 'make_golden.py', 'rooms.json',
+                'oracle-golden.json', 'quote_check.py', 'README.md', 'sweep-expected-unbuildable.json')
+PROBE_FILES = ('gen_scenes.py', 'test_gen_scenes.py', 'scene_reader.py', 'parse_results.py',
+               'run_probe.sh', 'mapping.md', 'index.json')
+C4_OLD = (b'                elif v_ != "buildable":\n'
+          b'                    bad_.append((vroom_["outer"], fo.layout_name(l_), sorted({f["check"] for f in pb_})))')
+C4_NEW = (b'                elif False:\n'
+          b'                    bad_.append((vroom_["outer"], fo.layout_name(l_), sorted({f["check"] for f in pb_})))')
+PROBE_OLD = b'return bool(layout.get("buildable")) and not layout.get("conflict_codes") and not layout.get("core_limits")'
+PROBE_NEW = b'return bool(layout.get("buildable")) and not layout.get("conflict_codes")'
+
+
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def dump(path, value):
+    Path(path).write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+
+def now():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def unit_inventory(path):
+    tree = ast.parse(path.read_bytes(), filename=str(path))
+    classes = {}
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef) and any(isinstance(base, ast.Attribute)
+                and isinstance(base.value, ast.Name) and base.value.id == 'unittest'
+                and base.attr == 'TestCase' for base in node.bases):
+            classes[node.name] = [item.name for item in node.body if isinstance(item, ast.FunctionDef)
+                                  and item.name.startswith('test_')]
+    has_main = any(isinstance(node, ast.If) and isinstance(node.test, ast.Compare)
+                   and isinstance(node.test.left, ast.Name) and node.test.left.id == '__name__'
+                   and any(isinstance(value, ast.Constant) and value.value == '__main__'
+                           for value in node.test.comparators)
+                   and any(isinstance(item, ast.Expr) and isinstance(item.value, ast.Call)
+                           and isinstance(item.value.func, ast.Attribute)
+                           and isinstance(item.value.func.value, ast.Name)
+                           and item.value.func.value.id == 'unittest'
+                           and item.value.func.attr == 'main' for item in node.body)
+                   for node in tree.body)
+    assert has_main and sum(map(len, classes.values())) > 0, 'original unittest entry point or methods missing'
+    assert 'test_conflict_layout_is_skipped' in classes.get('GenScenesTest', [])
+    return {'has_original_unittest_main': has_main, 'declared_methods': classes,
+            'declared_count': sum(map(len, classes.values()))}
+
+
+def unit_result(stdout, stderr, count, negative=False):
+    text = (stdout + b'\n' + stderr).decode('utf-8', 'replace')
+    ran = re.findall(r'^Ran (\d+) tests? in ', text, re.M)
+    problems = []
+    if ran != [str(count)]:
+        problems.append('original unittest execution count differs from original declaration/selected method')
+    if negative:
+        if not re.search(r'^FAILED \(failures=1\)\s*$', text, re.M):
+            problems.append('withdrawal did not finish as exactly one normal unittest assertion failure')
+        if 'FAIL: test_conflict_layout_is_skipped' not in text or 'AssertionError: 2 != 1' not in text:
+            problems.append('withdrawal lacks original named assertion and exact expected cause')
+    elif not re.search(r'^OK\s*$', text, re.M):
+        problems.append('original unittest did not finish with unqualified OK')
+    return {'recorded_ran_counts': [int(n) for n in ran], 'expected_original_count': count,
+            'problems': problems}
+
+
+p = argparse.ArgumentParser(description=__doc__)
+p.add_argument('--repo', required=True, type=Path)
+p.add_argument('--sha', required=True)
+p.add_argument('--out', required=True, type=Path)
+p.add_argument('--heavy-lock', required=True, type=Path)
+a = p.parse_args()
+repo, out = a.repo.resolve(), a.out.resolve()
+assert re.fullmatch('[0-9a-f]{40}', a.sha) and repo.is_dir()
+assert not out.exists() and not out.is_relative_to(repo)
+assert not sys.flags.optimize and os.environ.get('PYTHONOPTIMIZE') in (None, '', '0')
+capture_path = Path(__file__).resolve().with_name('capture.py')
+assert digest(capture_path) == CAPTURE_HASH
+spec = importlib.util.spec_from_file_location('original_c387_capture', capture_path)
+capture = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(capture)
+out.mkdir(parents=True)
+(out / 'tools').mkdir()
+(out / 'phases').mkdir()
+(out / 'tmp').mkdir()
+for path in (Path(__file__).resolve(), capture_path):
+    shutil.copy2(path, out / 'tools' / path.name)
+env = dict(os.environ)
+cleared = {}
+for name in ('PYTHONPATH', 'PYTHONSTARTUP', 'PYTHONOPTIMIZE', 'FRAMING_QUOTE_QUEUE'):
+    if name in env:
+        cleared[name] = 'inherited value removed; value not disclosed'
+        del env[name]
+env.update(LANG='C.UTF-8', LC_ALL='C.UTF-8', PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1',
+           GIT_OPTIONAL_LOCKS='0', TMPDIR=str(out / 'tmp'), GITHUB_SHA=a.sha, GITHUB_WORKSPACE=str(repo))
+r = capture.Recorder(out, env, a.sha)
+report = {'schema': 'geo288-main-oracle-original-proofs/1', 'acceptance_sha': a.sha, 'repo': str(repo),
+          'started_utc': now(), 'platform': platform.platform(), 'python': sys.version,
+          'python_executable': sys.executable, 'python_executable_sha256': digest(Path(sys.executable).resolve()),
+          'tool_sha256': digest(Path(__file__).resolve()), 'capture_sha256': CAPTURE_HASH,
+          'cleared_inherited_environment_names': list(cleared), 'stack_before': resource.getrlimit(resource.RLIMIT_STACK),
+          'steps': [], 'errors': [], 'compiled_product_binary': None,
+          'policy': 'Original judges and assertions; no write-expected, golden regeneration, retries, threshold changes or source checkout edits.',
+          'limitations': ['The original unittest may capture internal child output without persisting it; no missing inner streams are reconstructed.',
+                          'The complete probe unittest includes fake-core shell controls, not a new native run_probe.sh acceptance run.',
+                          'This is not a rerun of all historical 159 source mutants or all seven workflow jobs.']}
+
+
+def save():
+    report['commands'] = r.rows
+    dump(out / 'receipt.json', report)
+
+
+def command(argv, cwd, variant, effective_env=None):
+    prior = r.env
+    r.env = effective_env or env
+    try:
+        return r.run(argv, cwd=cwd, timeout=None, check=False, source_sha=a.sha, source_variant=variant)
+    finally:
+        r.env = prior
+
+
+def checked_git(*args):
+    row, stdout, _ = command(['git', *args], repo, 'source-and-publication-precondition-read-only')
+    assert row['actual_process_returncode'] == 0
+    return stdout
+
+
+def source_guard(label):
+    head = checked_git('rev-parse', 'HEAD').decode().strip()
+    status = checked_git('status', '--porcelain=v1', '--untracked-files=all')
+    report['source_' + label] = {'head': head, 'status': status.decode(), 'sha_matches': head == a.sha}
+    assert head == a.sha and not status, 'source HEAD or clean-state changed'
+
+
+def inventory(root, paths):
+    return [{'path': str(rel), 'bytes': (root / rel).stat().st_size, 'sha256': digest(root / rel)}
+            for rel in paths]
+
+
+def phase(label, argv, cwd, variant, expected_rc, checker=None, effective_env=None, inputs=None):
+    phase_dir = out / 'phases' / label
+    phase_dir.mkdir()
+    penv = effective_env or env
+    dump(phase_dir / 'environment.json', {key: penv.get(key) for key in (
+        'PATH', 'LANG', 'LC_ALL', 'PYTHONIOENCODING', 'PYTHONDONTWRITEBYTECODE', 'PYTHONOPTIMIZE',
+        'PYTHONPATH', 'PYTHONSTARTUP', 'TMPDIR', 'FRAMING_QUOTE_QUEUE', 'GITHUB_SHA', 'GITHUB_WORKSPACE')})
+    if inputs is not None:
+        dump(phase_dir / 'input-manifest.json', inputs)
+    step = {'label': label, 'started_utc': now(), 'expected_original_returncode': expected_rc,
+            'command': list(map(str, argv)), 'cwd': str(cwd), 'source_variant': variant,
+            'phase_directory': str(phase_dir), 'problems': []}
+    report['steps'].append(step)
+    save()
+    print(json.dumps({'label': label, 'status': 'running'}, ensure_ascii=False), flush=True)
+    try:
+        row, stdout, stderr = command(argv, cwd, variant, penv)
+        step['original_command_result'] = row
+        if row['actual_process_returncode'] != expected_rc:
+            step['problems'].append('actual original returncode differs from required phase outcome')
+        if checker:
+            finding = checker(stdout, stderr)
+            step['finding'] = finding
+            step['problems'].extend(finding['problems'])
+    except Exception:
+        step['problems'].append(traceback.format_exc())
+    step['ended_utc'] = now()
+    step['ok'] = not step['problems']
+    save()
+    print(json.dumps({'label': label, 'ok': step['ok'], 'problems': step['problems']}, ensure_ascii=False), flush=True)
+
+
+def c4_result(stdout, stderr, negative=False):
+    text = stdout.decode('utf-8', 'replace')
+    lines = [line for line in text.splitlines() if 'C4NEG sweep_family inconsistent' in line]
+    prefix = '[沒抓到!]' if negative else '[紅]'
+    count = '實得 bad 0、不可施工 0、只有核心限制 0' if negative else '實得 bad 8、不可施工 0、只有核心限制 0'
+    ok = len(lines) == 1 and lines[0].startswith(prefix) and count in lines[0] and not stderr.strip()
+    return {'original_named_lines': lines, 'problems': [] if ok else ['original named C4NEG diagnostic or normal completion does not match required outcome']}
+
+
+def copy_inputs(name, relative_paths):
+    target = out / 'isolated' / name
+    target.mkdir(parents=True)
+    for rel in relative_paths:
+        source, dest = repo / rel, target / rel
+        assert source.is_file() and not source.is_symlink()
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, dest)
+        assert source.read_bytes() == dest.read_bytes()
+    dump(target.parent / (name + '-copy-manifest.json'), inventory(target, relative_paths))
+    return target
+
+
+def withdrawal(name, paths, target_rel, old, new, make_argv, cwd_rel, baseline_check, negative_check):
+    try:
+        work = copy_inputs(name, paths)
+        target = work / target_rel
+        fixed = target.read_bytes()
+        assert fixed.count(old) == 1, 'withdrawal anchor must match exactly once'
+        bad = fixed.replace(old, new)
+        variants = out / 'variants' / name
+        variants.mkdir(parents=True)
+        (variants / ('baseline-' + target.name)).write_bytes(fixed)
+        (variants / ('withdrawn-' + target.name)).write_bytes(bad)
+        (variants / ('restored-' + target.name)).write_bytes(fixed)
+        patch = {'source_sha': a.sha, 'target': str(target_rel), 'old_hex': old.hex(), 'new_hex': new.hex(),
+                 'match_count': 1, 'fixed_sha256': hashlib.sha256(fixed).hexdigest(),
+                 'withdrawn_sha256': hashlib.sha256(bad).hexdigest(),
+                 'patch_sha256': hashlib.sha256(old + b'\0' + new).hexdigest()}
+        dump(variants / 'PATCH.json', patch)
+        fixed_inventory = inventory(work, paths)
+        penv = dict(env, FRAMING_QUOTE_QUEUE=str(work / '決策佇列.md'))
+        argv = make_argv(work)
+        phase(name + '-baseline', argv, work / cwd_rel, name + '-fixed-copy-of-F', 0,
+              baseline_check, penv, inventory(work, paths))
+        try:
+            target.write_bytes(bad)
+            changed = inventory(work, paths)
+            differences = [b['path'] for a_, b in zip(fixed_inventory, changed) if a_ != b]
+            assert differences == [str(target_rel)], 'withdrawal altered more than the exact intended source'
+            phase(name + '-withdrawn', argv, work / cwd_rel, name + '-single-withdrawal-from-F', 1,
+                  negative_check, penv, changed)
+        finally:
+            target.write_bytes(fixed)
+        assert inventory(work, paths) == fixed_inventory, 'restored copy differs from original F inputs'
+        phase(name + '-restored', argv, work / cwd_rel, name + '-exact-byte-restoration-of-F', 0,
+              baseline_check, penv, inventory(work, paths))
+        dump(variants / 'RESTORATION.json', {'restored_matches_baseline': True, 'target_sha256': digest(target),
+                                           'complete_input_manifest': inventory(work, paths)})
+    except Exception:
+        report['errors'].append({'label': name, 'error': traceback.format_exc()})
+        save()
+
+
+lock = None
+try:
+    lock = a.heavy_lock.open('a+b')
+    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    report['heavy_lock'] = {'path': str(a.heavy_lock), 'acquired': True, 'held_until_all_steps_and_source_after_complete': True}
+    soft, hard = resource.getrlimit(resource.RLIMIT_STACK)
+    resource.setrlimit(resource.RLIMIT_STACK, (16384 * 1024, hard))
+    report['stack_during'] = resource.getrlimit(resource.RLIMIT_STACK)
+    assert checked_git('rev-parse', '--show-toplevel').decode().strip() == str(repo)
+    source_guard('before')
+    paths = [ORACLE / name for name in ORACLE_FILES] + [ORACLE.parent / 'PROPOSAL.md', Path('決策佇列.md')]
+    fixture_paths = checked_git('ls-files', '-z', '--', str(PROBE / 'fixtures'), str(PROBE / 'scenes')).split(b'\0')
+    probe_paths = sorted(set(paths + [PROBE / name for name in PROBE_FILES]
+                             + [Path(name.decode('utf-8')) for name in fixture_paths if name]))
+    assert len(probe_paths) > len(paths)
+    original_inputs = inventory(repo, probe_paths)
+    report['source_input_manifest_before'] = original_inputs
+    units = unit_inventory(repo / PROBE / 'test_gen_scenes.py')
+    report['original_probe_unit_inventory'] = units
+    save()
+    phase('oracle-quick', [sys.executable, '-B', str(repo / ORACLE / 'selftest.py'), '--quick'],
+          repo / ORACLE, 'original-clean-F-quick', 0, inputs=inventory(repo, paths))
+    phase('probe-complete-unittest', [sys.executable, '-B', str(repo / PROBE / 'test_gen_scenes.py'), '-v'],
+          repo, 'original-clean-F-complete-probe-unittest', 0,
+          lambda stdout, stderr: unit_result(stdout, stderr, units['declared_count']), inputs=original_inputs)
+    withdrawal('c4', paths, ORACLE / 'selftest.py', C4_OLD, C4_NEW,
+               lambda work: [sys.executable, '-B', str(work / ORACLE / 'selftest.py'), '--mutants-only'],
+               ORACLE, c4_result, lambda stdout, stderr: c4_result(stdout, stderr, True))
+    withdrawal('probe-core-limits', probe_paths, PROBE / 'gen_scenes.py', PROBE_OLD, PROBE_NEW,
+               lambda work: [sys.executable, '-B', str(work / PROBE / 'test_gen_scenes.py'), '-v',
+                             'GenScenesTest.test_conflict_layout_is_skipped'],
+               Path('.'), lambda stdout, stderr: unit_result(stdout, stderr, 1),
+               lambda stdout, stderr: unit_result(stdout, stderr, 1, True))
+    report['source_input_manifest_after'] = inventory(repo, probe_paths)
+    assert report['source_input_manifest_after'] == original_inputs, 'original source inputs changed'
+    source_guard('after')
+except Exception:
+    report['errors'].append({'label': 'driver-or-source-guard', 'error': traceback.format_exc()})
+finally:
+    if report.get('source_before') and 'source_after' not in report:
+        try:
+            source_guard('after')
+        except Exception:
+            report['errors'].append({'label': 'source-after-finally', 'error': traceback.format_exc()})
+    expected = ['oracle-quick', 'probe-complete-unittest', 'c4-baseline', 'c4-withdrawn', 'c4-restored',
+                'probe-core-limits-baseline', 'probe-core-limits-withdrawn', 'probe-core-limits-restored']
+    report['expected_step_labels'] = expected
+    report['all_steps_completed'] = [step['label'] for step in report['steps']] == expected
+    report['exit_code'] = int(bool(report['errors']) or not report['all_steps_completed']
+                              or not all(step['ok'] for step in report['steps']))
+    report['ended_utc'] = now()
+    save()
+    if lock is not None:
+        lock.close()
+print(json.dumps({'out': str(out), 'exit_code': report['exit_code'],
+                  'all_steps_completed': report['all_steps_completed'], 'errors': report['errors']}, ensure_ascii=False))
+raise SystemExit(report['exit_code'])

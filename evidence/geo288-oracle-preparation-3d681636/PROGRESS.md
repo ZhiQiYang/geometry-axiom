@@ -1,0 +1,1 @@
+F3d `3d681636902371ecc528b20f51eea33e272581c9` oracle八phase目前全部未執行。Git/AST/hash準備原0：85輸入、68fixtures、60方法只靜態盤點；原source modes/blobs與F13逐筆同。沒有clone/checkout/build/Chrome/測試或ledger。等root在grid/native＋P52窗口後給slot，再建REQUEST所列獨立checkout並跑原cfea driver。

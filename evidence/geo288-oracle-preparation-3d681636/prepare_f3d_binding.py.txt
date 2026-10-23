@@ -1,0 +1,119 @@
+"""Read-only Git/AST binding of the unchanged oracle protocol; no checkout/test."""
+from pathlib import Path
+import ast
+import datetime
+import hashlib
+import importlib.util
+import json
+import os
+import platform
+import sys
+
+BASE=Path('/workspace/kernel-no-wood-prep/oracle-new-f')
+OUT=BASE/'binding-3d681636'
+GIT=Path('/workspace/kernel-no-wood-prep/metadata.git')
+SHA='3d681636902371ecc528b20f51eea33e272581c9'
+OLD='13d02c1db7022145a52ee063286a558e595eb212'
+TOOLS=Path('/workspace/geo288-main-merge-20261023/oracle-proof-tools')
+OUTER=Path('/workspace/geo261-environment/execute_f_extra.py')
+CAPTURE=TOOLS/'capture.py'
+DRIVER=TOOLS/'run_oracle_merge_proofs.py'
+assert hashlib.sha256(DRIVER.read_bytes()).hexdigest()=='cfea72a0e8dbe94b0c2f08338654e4052aa88e9bf308523689f9c2860a7ba64c'
+assert hashlib.sha256(CAPTURE.read_bytes()).hexdigest()=='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+assert hashlib.sha256(OUTER.read_bytes()).hexdigest()=='68256d90e597fe52807637e3603b7392dd09e9a5342909adc54d21fa4cba2928'
+OUT.mkdir()
+spec=importlib.util.spec_from_file_location('oracle_f3d_binding_capture',CAPTURE)
+capture=importlib.util.module_from_spec(spec);spec.loader.exec_module(capture)
+recorder=capture.Recorder(OUT,dict(os.environ,LANG='C.UTF-8',LC_ALL='C.UTF-8',PYTHONDONTWRITEBYTECODE='1'),SHA)
+report={'schema':'geo288-oracle-f3d-exact-preparation/1','product_source_sha':SHA,
+        'commands':recorder.rows,'checkout_created':False,'clone_build_or_test_executed':False,
+        'phase_state':'ALL_UNRUN','errors':[]}
+
+
+def git(*args):
+    return recorder.run(['git','--git-dir',str(GIT),*args],cwd=BASE,timeout=120,
+                        source_variant='read-only-immutable-F3d-oracle-binding')[1]
+
+
+def literal(tree,name):
+    return next(ast.literal_eval(node.value) for node in tree.body if isinstance(node,ast.Assign)
+                and any(isinstance(target,ast.Name) and target.id==name for target in node.targets))
+
+
+def tree_rows(raw):
+    result={}
+    for row in raw.split(b'\0'):
+        if not row:continue
+        meta,path=row.split(b'\t',1);mode,kind,oid=meta.decode().split()
+        assert kind=='blob'
+        result[path.decode()]={'mode':mode,'git_blob_oid':oid}
+    return result
+
+
+code=1
+try:
+    assert git('rev-parse','--verify',SHA+'^{commit}').decode().strip()==SHA
+    driver_tree=ast.parse(DRIVER.read_bytes())
+    oracle='geometry-core/framing-template/oracle/'
+    probe='geometry-core/framing-template/core-probe/'
+    oracle_paths=[oracle+name for name in literal(driver_tree,'ORACLE_FILES')]+['geometry-core/framing-template/PROPOSAL.md','決策佇列.md']
+    probe_files=[probe+name for name in literal(driver_tree,'PROBE_FILES')]
+    fixtures=tree_rows(git('ls-tree','-r','-z','--full-tree',SHA,'--',probe+'fixtures',probe+'scenes'))
+    paths=sorted(set(oracle_paths+probe_files+list(fixtures)))
+    inventory=tree_rows(git('ls-tree','-r','-z','--full-tree',SHA,'--',*paths))
+    old_inventory=tree_rows(git('ls-tree','-r','-z','--full-tree',OLD,'--',*paths))
+    assert set(inventory)==set(paths) and inventory==old_inventory
+    raws={}
+    for path in paths:
+        raw=git('show',SHA+':'+path);raws[path]=raw
+        inventory[path].update(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+    units=ast.parse(raws[probe+'test_gen_scenes.py'])
+    counts={node.name:sum(isinstance(item,ast.FunctionDef) and item.name.startswith('test_') for item in node.body)
+            for node in units.body if isinstance(node,ast.ClassDef) and any(isinstance(base,ast.Attribute)
+                and isinstance(base.value,ast.Name) and base.value.id=='unittest' and base.attr=='TestCase' for base in node.bases)}
+    assert sum(counts.values())==60
+    assert raws[oracle+'selftest.py'].count(literal(driver_tree,'C4_OLD'))==1
+    assert raws[probe+'gen_scenes.py'].count(literal(driver_tree,'PROBE_OLD'))==1
+    checkout='/workspace/geo288-oracle-work-3d681636'
+    proof_out='/tmp/g288o-3d681636'
+    outer_root=str(BASE/'final-outers');label='p88-final-oracle-3d681636'
+    assert not Path(checkout).exists() and not Path(proof_out).exists() and not (Path(outer_root)/label).exists()
+    patterns=['/'+path for path in sorted(set(paths+['AGENTS.md','.gitattributes','.gitignore']))]
+    (OUT/'SPARSE_PATTERNS.txt').write_text('\n'.join(patterns)+'\n')
+    setup=[['git','--git-dir',str(GIT),'worktree','add','--detach','--no-checkout',checkout,SHA],
+           ['git','-C',checkout,'config','--worktree','core.bare','false'],
+           ['git','-C',checkout,'config','--worktree','core.autocrlf','false'],
+           ['git','-C',checkout,'sparse-checkout','init','--no-cone'],
+           ['git','-C',checkout,'sparse-checkout','set','--no-cone','--stdin'],
+           ['git','-C',checkout,'checkout','--detach',SHA],
+           ['git','-C',checkout,'status','--porcelain=v1','--untracked-files=all']]
+    command=['python3','-B',str(OUTER),'--label',label,'--sha',SHA,'--repo',checkout,'--outer-root',outer_root,'--',
+             'python3','-B',str(DRIVER),'--repo',checkout,'--sha',SHA,'--out',proof_out,'--heavy-lock','/tmp/g261r3/heavy.lock']
+    request={'schema':'geo288-oracle-f3d-future-exact-request/1','status':'NOT_EXECUTED','product_source_sha':SHA,
+             'planned_independent_checkout':checkout,'checkout_exists_at_preparation':False,
+             'checkout_setup_argv':setup,'sparse_stdin_file':'SPARSE_PATTERNS.txt',
+             'sparse_stdin_command_index':4,'proof_argv':command,'expected_phase_exits':[0,0,0,1,0,0,1,0],
+             'expected_driver_exit':0,'expected_outer_exit':0,'per_phase_role':'Original formal quick/unittest plus two source withdrawal controls; no new threshold',
+             'resource_slot':'WAIT_FOR_ROOT_AFTER_GRID_NATIVE_AND_P52; original driver alone holds R3',
+             'no_added_chrome_node_compiler_gate':True}
+    for path in (DRIVER,CAPTURE,OUTER):
+        (OUT/(path.name+'.txt')).write_bytes(path.read_bytes())
+    report.update(input_manifest=[dict(path=path,**inventory[path]) for path in paths],oracle_input_paths=oracle_paths,
+                  fixture_scope=[probe+'fixtures/',probe+'scenes/'],input_count=len(paths),fixture_count=len(fixtures),
+                  all_input_modes_and_git_blobs_identical_to_F13=True,probe_declared_methods=counts,
+                  probe_declared_count=60,probe_executed_count=None,c4_anchor_count=1,probe_anchor_count=1,
+                  tools={str(path):hashlib.sha256(path.read_bytes()).hexdigest() for path in (DRIVER,CAPTURE,OUTER)},
+                  environment={'platform':platform.platform(),'python':sys.version,'python_executable':sys.executable},
+                  next_action='Only after root slot: create the independent sparse checkout, verify raw input hashes and clean SHA, run exact original argv.')
+    capture.dump(OUT/'REQUEST.json',request)
+    capture.dump(OUT/'BINDING.json',{key:value for key,value in report.items() if key!='commands'})
+    code=0
+except BaseException as error:
+    report['errors'].append(type(error).__name__+': '+str(error))
+finally:
+    report['exit_code']=code;report['ended_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+    capture.dump(OUT/'receipt.json',report)
+print(json.dumps({'out':str(OUT),'exit_code':code,'source_sha':SHA,'inputs':report.get('input_count'),
+                  'fixtures':report.get('fixture_count'),'probe_AST_count':report.get('probe_declared_count'),
+                  'phase_state':'ALL_UNRUN','checkout_created':False,'errors':report['errors']},ensure_ascii=False))
+raise SystemExit(code)
