@@ -1,0 +1,130 @@
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4602,0 4602,4736 0,4736
+grid 1 on 1 u 916 1834 2752 3670 v 363 730 1097 1464 1831 2198 2565 2932 3299 3666 4033 4400
+timber 1 27 33 role boundary
+place 1 on 1 at-face e0 between e3 e1 +u +n
+timber 2 27 33 role boundary
+place 2 on 1 at-face e2 between e3 e1 -u +n
+timber 3 27 33 role primary
+place 3 on 1 at-line grid 1 u 0 between t1 t2 +v +n
+timber 4 27 33 role primary
+place 4 on 1 at-line grid 1 u 1 between t1 t2 +v +n
+timber 5 27 33 role primary
+place 5 on 1 at-line grid 1 u 2 between t1 t2 +v +n
+timber 6 27 33 role primary
+place 6 on 1 at-line grid 1 u 3 between t1 t2 +v +n
+timber 7 27 33 role primary
+place 7 on 1 at-face e3 between t1 t2 -v +n
+timber 8 27 33 role primary
+place 8 on 1 at-face e1 between t1 t2 +v +n
+timber 9 27 33 role secondary
+place 9 on 1 at-line grid 1 v 0 between t7 t3 +u +n
+timber 10 27 33 role secondary
+place 10 on 1 at-line grid 1 v 1 between t7 t3 +u +n
+timber 11 27 33 role secondary
+place 11 on 1 at-line grid 1 v 2 between t7 t3 +u +n
+timber 12 27 33 role secondary
+place 12 on 1 at-line grid 1 v 3 between t7 t3 +u +n
+timber 13 27 33 role secondary
+place 13 on 1 at-line grid 1 v 4 between t7 t3 +u +n
+timber 14 27 33 role secondary
+place 14 on 1 at-line grid 1 v 5 between t7 t3 +u +n
+timber 15 27 33 role secondary
+place 15 on 1 at-line grid 1 v 6 between t7 t3 +u +n
+timber 16 27 33 role secondary
+place 16 on 1 at-line grid 1 v 7 between t7 t3 +u +n
+timber 17 27 33 role secondary
+place 17 on 1 at-line grid 1 v 8 between t7 t3 +u +n
+timber 18 27 33 role secondary
+place 18 on 1 at-line grid 1 v 9 between t7 t3 +u +n
+timber 19 27 33 role secondary
+place 19 on 1 at-line grid 1 v 10 between t7 t3 +u +n
+timber 20 27 33 role secondary
+place 20 on 1 at-line grid 1 v 11 between t7 t3 +u +n
+timber 21 27 33 role secondary
+place 21 on 1 at-line grid 1 v 0 between t3 t4 +u +n
+timber 22 27 33 role secondary
+place 22 on 1 at-line grid 1 v 1 between t3 t4 +u +n
+timber 23 27 33 role secondary
+place 23 on 1 at-line grid 1 v 2 between t3 t4 +u +n
+timber 24 27 33 role secondary
+place 24 on 1 at-line grid 1 v 3 between t3 t4 +u +n
+timber 25 27 33 role secondary
+place 25 on 1 at-line grid 1 v 4 between t3 t4 +u +n
+timber 26 27 33 role secondary
+place 26 on 1 at-line grid 1 v 5 between t3 t4 +u +n
+timber 27 27 33 role secondary
+place 27 on 1 at-line grid 1 v 6 between t3 t4 +u +n
+timber 28 27 33 role secondary
+place 28 on 1 at-line grid 1 v 7 between t3 t4 +u +n
+timber 29 27 33 role secondary
+place 29 on 1 at-line grid 1 v 8 between t3 t4 +u +n
+timber 30 27 33 role secondary
+place 30 on 1 at-line grid 1 v 9 between t3 t4 +u +n
+timber 31 27 33 role secondary
+place 31 on 1 at-line grid 1 v 10 between t3 t4 +u +n
+timber 32 27 33 role secondary
+place 32 on 1 at-line grid 1 v 11 between t3 t4 +u +n
+timber 33 27 33 role secondary
+place 33 on 1 at-line grid 1 v 0 between t4 t5 +u +n
+timber 34 27 33 role secondary
+place 34 on 1 at-line grid 1 v 1 between t4 t5 +u +n
+timber 35 27 33 role secondary
+place 35 on 1 at-line grid 1 v 2 between t4 t5 +u +n
+timber 36 27 33 role secondary
+place 36 on 1 at-line grid 1 v 3 between t4 t5 +u +n
+timber 37 27 33 role secondary
+place 37 on 1 at-line grid 1 v 4 between t4 t5 +u +n
+timber 38 27 33 role secondary
+place 38 on 1 at-line grid 1 v 5 between t4 t5 +u +n
+timber 39 27 33 role secondary
+place 39 on 1 at-line grid 1 v 6 between t4 t5 +u +n
+timber 40 27 33 role secondary
+place 40 on 1 at-line grid 1 v 7 between t4 t5 +u +n
+timber 41 27 33 role secondary
+place 41 on 1 at-line grid 1 v 8 between t4 t5 +u +n
+timber 42 27 33 role secondary
+place 42 on 1 at-line grid 1 v 9 between t4 t5 +u +n
+timber 43 27 33 role secondary
+place 43 on 1 at-line grid 1 v 10 between t4 t5 +u +n
+timber 44 27 33 role secondary
+place 44 on 1 at-line grid 1 v 11 between t4 t5 +u +n
+timber 45 27 33 role secondary
+place 45 on 1 at-line grid 1 v 0 between t5 t6 +u +n
+timber 46 27 33 role secondary
+place 46 on 1 at-line grid 1 v 1 between t5 t6 +u +n
+timber 47 27 33 role secondary
+place 47 on 1 at-line grid 1 v 2 between t5 t6 +u +n
+timber 48 27 33 role secondary
+place 48 on 1 at-line grid 1 v 3 between t5 t6 +u +n
+timber 49 27 33 role secondary
+place 49 on 1 at-line grid 1 v 4 between t5 t6 +u +n
+timber 50 27 33 role secondary
+place 50 on 1 at-line grid 1 v 5 between t5 t6 +u +n
+timber 51 27 33 role secondary
+place 51 on 1 at-line grid 1 v 6 between t5 t6 +u +n
+timber 52 27 33 role secondary
+place 52 on 1 at-line grid 1 v 7 between t5 t6 +u +n
+timber 53 27 33 role secondary
+place 53 on 1 at-line grid 1 v 8 between t5 t6 +u +n
+timber 54 27 33 role secondary
+place 54 on 1 at-line grid 1 v 9 between t5 t6 +u +n
+timber 55 27 33 role secondary
+place 55 on 1 at-line grid 1 v 10 between t5 t6 +u +n
+timber 56 27 33 role secondary
+place 56 on 1 at-line grid 1 v 11 between t5 t6 +u +n
+timber 57 27 33 role secondary
+place 57 on 1 at-line grid 1 v 0 between t6 t8 +u +n
+timber 58 27 33 role secondary
+place 58 on 1 at-line grid 1 v 1 between t6 t8 +u +n
+timber 59 27 33 role secondary
+place 59 on 1 at-line grid 1 v 2 between t6 t8 +u +n
+timber 60 27 33 role secondary
+place 60 on 1 at-line grid 1 v 3 between t6 t8 +u +n
+timber 61 27 33 role secondary
+place 61 on 1 at-line grid 1 v 4 between t6 t8 +u +n
+timber 62 27 33 role secondary
+place 62 on 1 at-line grid 1 v 5 between t6 t8 +u +n
+timber 63 27 33 role secondary
+place 63 on 1 at-line grid 1 v 6 between t6 t8 +u +n
+timber 64 27 33 role secondary
+place 64 on 1 at-line grid 1 v 7 between t6 t8 +u +n
