@@ -1,57 +1,130 @@
 {
-  "source_sha": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
-  "product_commit": "9ee7f98144f81f11385f392e13cc067f1b9d063c",
+  "schema": "geo300-contact-index-and-member-sort-binding/1",
+  "source_sha": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
+  "product_commit": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
   "base_evidence": "df230da57619e437c30527dbede8c67fd0ec6b50",
   "base_source": "eb846c345881cc6fc73a53c457a291175365b88c",
   "base_branch": "codex/geo260-ac23-proof-20261024",
   "branch": "codex/geo300-contact-index-20261024",
-  "payload": {
-    "STATIC_ORIGINALS.tar.gz": {
-      "bytes": 616096,
-      "sha256": "52e0c5329fc3a29483517995f3aad444dfb97b6553016ffb6e61eb257cdb6e26",
-      "original": "/workspace/geo300-contact-index-source-delivery/STATIC_ORIGINALS.tar.gz"
-    },
-    "RAW_INDEX.json": {
-      "bytes": 49073,
-      "sha256": "c26522210ed2dd279e749807eef250a5960c856b7a667ef8323746c207ccd57a",
-      "original": "/workspace/geo300-contact-index-source-delivery/RAW_INDEX.json"
-    },
-    "PACKAGE.json": {
-      "bytes": 529,
-      "sha256": "cf925628105db55426d2cc4d0a492fec61da5ce87954d952f44137f9734069a1",
-      "original": "/workspace/geo300-contact-index-source-delivery/PACKAGE.json"
-    },
-    "SOURCE_EXPECTED_PEER.json": {
-      "bytes": 12711,
-      "sha256": "19afd8494bb6bee478d3701f3367cd1d43e6711f38f31ea0bae5bd1ac1373786",
-      "original": "/tmp/geo300-contact-index-source-peer-1ee4e830/CHECKS.json"
-    },
-    "SOURCE_EXPECTED_INITIAL_CHECKER_ERROR.json": {
-      "bytes": 13330,
-      "sha256": "a52915ae34c35f9d136265c3ff4f95186e013a60d2bb350918b754936deb30c2",
-      "original": "/tmp/geo300-contact-index-source-peer-1ee4e830/INITIAL_GIT_QUOTEPATH_CHECKER_ERROR.json"
-    }
-  },
-  "frozen_draft": "v3 external-only metadata reflects preparation before the commits; its original bytes are preserved",
-  "formal_methods": 33,
-  "wood_methods": 11,
-  "wood_controls": 33,
-  "all_three_controls": 56,
-  "subject": "PARTIAL: original three suites33methods56controls exit0",
-  "compile": "302 original compile/link commands exit0",
-  "stack": "Original16MiB limit passed for these33methods; actual compiler frame not separately measured",
-  "performance": "UNMEASURED",
+  "formal_methods": 34,
+  "wood_methods": 12,
+  "wood_controls": 41,
+  "all_three_controls": 64,
   "global_ledger_written": false,
-  "source_expected_peer": {
-    "checks": 167,
-    "findings": 0,
-    "scope": "immutable Git bytes, exact count, original source publication only"
+  "historical_S1ee_binding": {
+    "source_sha": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
+    "product_commit": "9ee7f98144f81f11385f392e13cc067f1b9d063c",
+    "base_evidence": "df230da57619e437c30527dbede8c67fd0ec6b50",
+    "base_source": "eb846c345881cc6fc73a53c457a291175365b88c",
+    "base_branch": "codex/geo260-ac23-proof-20261024",
+    "branch": "codex/geo300-contact-index-20261024",
+    "payload": {
+      "STATIC_ORIGINALS.tar.gz": {
+        "bytes": 616096,
+        "sha256": "52e0c5329fc3a29483517995f3aad444dfb97b6553016ffb6e61eb257cdb6e26",
+        "original": "/workspace/geo300-contact-index-source-delivery/STATIC_ORIGINALS.tar.gz"
+      },
+      "RAW_INDEX.json": {
+        "bytes": 49073,
+        "sha256": "c26522210ed2dd279e749807eef250a5960c856b7a667ef8323746c207ccd57a",
+        "original": "/workspace/geo300-contact-index-source-delivery/RAW_INDEX.json"
+      },
+      "PACKAGE.json": {
+        "bytes": 529,
+        "sha256": "cf925628105db55426d2cc4d0a492fec61da5ce87954d952f44137f9734069a1",
+        "original": "/workspace/geo300-contact-index-source-delivery/PACKAGE.json"
+      },
+      "SOURCE_EXPECTED_PEER.json": {
+        "bytes": 12711,
+        "sha256": "19afd8494bb6bee478d3701f3367cd1d43e6711f38f31ea0bae5bd1ac1373786",
+        "original": "/tmp/geo300-contact-index-source-peer-1ee4e830/CHECKS.json"
+      },
+      "SOURCE_EXPECTED_INITIAL_CHECKER_ERROR.json": {
+        "bytes": 13330,
+        "sha256": "a52915ae34c35f9d136265c3ff4f95186e013a60d2bb350918b754936deb30c2",
+        "original": "/tmp/geo300-contact-index-source-peer-1ee4e830/INITIAL_GIT_QUOTEPATH_CHECKER_ERROR.json"
+      }
+    },
+    "frozen_draft": "v3 external-only metadata reflects preparation before the commits; its original bytes are preserved",
+    "formal_methods": 33,
+    "wood_methods": 11,
+    "wood_controls": 33,
+    "all_three_controls": 56,
+    "subject": "PARTIAL: original three suites33methods56controls exit0",
+    "compile": "302 original compile/link commands exit0",
+    "stack": "Original16MiB limit passed for these33methods; actual compiler frame not separately measured",
+    "performance": "UNMEASURED",
+    "global_ledger_written": false,
+    "source_expected_peer": {
+      "checks": 167,
+      "findings": 0,
+      "scope": "immutable Git bytes, exact count, original source publication only"
+    },
+    "reviewer_initial_error": "quotePath decoding metadata failure preserved; the first overwritten stderr was not independently retained; no subject was executed",
+    "formal": {
+      "source": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
+      "started_utc": "2026-10-23T21:55:09.059797+00:00",
+      "ended_utc": "2026-10-23T21:55:31.974441+00:00",
+      "suite_methods": [
+        11,
+        15,
+        7
+      ],
+      "suite_controls": [
+        33,
+        11,
+        12
+      ],
+      "suite_builds": [
+        131,
+        85,
+        86
+      ],
+      "suite_exits": [
+        0,
+        0,
+        0
+      ],
+      "driver_exit": 0,
+      "reaper_exit": 0,
+      "launcher_exit": 0,
+      "host_tool_reported_exit": 0,
+      "source_after_clean": true,
+      "actual_peer_checks": 1140,
+      "actual_peer_findings": 0,
+      "package": {
+        "source": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
+        "archive": "/tmp/geo300-contact-index-1ee4-three-suites-delivery/ORIGINALS_AND_PEER.tar.gz",
+        "bytes": 3953457,
+        "sha256": "09b50ede5a8e932ef8bb6b69348a810ebbf1db7433908b02e83b751d8172f24d",
+        "index_sha256": "618a7c24a21f98ec39c33b473f8be85f40d4727fb50fc8b4af303a875f504e11",
+        "raw_files": 356,
+        "raw_bytes": 20889604,
+        "package_files": 365,
+        "tar_members": 366,
+        "roundtrip_all_members": true,
+        "actual_peer_checks": 1140,
+        "actual_peer_findings": 0,
+        "methods": 33,
+        "controls": 56,
+        "build_commands": 302,
+        "source_after_clean": true,
+        "wholefastwithdraw": "UNRUN",
+        "performance": "UNMEASURED",
+        "capacity512": "UNIMPLEMENTED/UNRUN"
+      }
+    },
+    "whole_fast_path_withdrawal": "UNRUN; planned seven-positive semantic0/0/0, not killed",
+    "capacity512": "UNIMPLEMENTED/UNRUN",
+    "full_native_browser_ledger_architecture": "UNRUN",
+    "READY": false
   },
-  "reviewer_initial_error": "quotePath decoding metadata failure preserved; the first overwritten stderr was not independently retained; no subject was executed",
-  "formal": {
+  "source": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
+  "subject": "UNRUN: new stable-sort source34methods64controls",
+  "compile": "UNRUN on new source",
+  "formal": null,
+  "previous_actual": {
     "source": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
-    "started_utc": "2026-10-23T21:55:09.059797+00:00",
-    "ended_utc": "2026-10-23T21:55:31.974441+00:00",
     "suite_methods": [
       11,
       15,
@@ -72,37 +145,37 @@
       0,
       0
     ],
-    "driver_exit": 0,
-    "reaper_exit": 0,
-    "launcher_exit": 0,
-    "host_tool_reported_exit": 0,
-    "source_after_clean": true,
-    "actual_peer_checks": 1140,
-    "actual_peer_findings": 0,
+    "scope": "historical source only; not relabeled"
+  },
+  "member_sort": {
+    "patch_sha256": "03466cd53c88b8eaa380d374c1073f689d871256585d8c257180fd41e45eb5a9",
+    "static_checks": 283,
+    "static_findings": 0,
+    "expected_methods": [
+      12,
+      15,
+      7
+    ],
+    "expected_controls": [
+      41,
+      11,
+      12
+    ],
+    "original_sparse_apply_check_exit": 1,
+    "r2_publication_exit": 0,
     "package": {
-      "source": "1ee4e830399b124ebd63c5ff51064d87e53f38d9",
-      "archive": "/tmp/geo300-contact-index-1ee4-three-suites-delivery/ORIGINALS_AND_PEER.tar.gz",
-      "bytes": 3953457,
-      "sha256": "09b50ede5a8e932ef8bb6b69348a810ebbf1db7433908b02e83b751d8172f24d",
-      "index_sha256": "618a7c24a21f98ec39c33b473f8be85f40d4727fb50fc8b4af303a875f504e11",
-      "raw_files": 356,
-      "raw_bytes": 20889604,
-      "package_files": 365,
-      "tar_members": 366,
-      "roundtrip_all_members": true,
-      "actual_peer_checks": 1140,
-      "actual_peer_findings": 0,
-      "methods": 33,
-      "controls": 56,
-      "build_commands": 302,
-      "source_after_clean": true,
-      "wholefastwithdraw": "UNRUN",
-      "performance": "UNMEASURED",
-      "capacity512": "UNIMPLEMENTED/UNRUN"
+      "archive": "/tmp/geo300-member-sort-static-delivery/ORIGINALS_AND_PEER.tar.gz",
+      "bytes": 171723,
+      "sha256": "f0d6d8b6776013e7e74fe669a13e0b854f47b591aabb1458a90c4ee90e8bc297",
+      "raw_files": 171,
+      "raw_bytes": 759405,
+      "regular_members": 172,
+      "all_members_roundtrip": true,
+      "subject_executed": false
     }
   },
-  "whole_fast_path_withdrawal": "UNRUN; planned seven-positive semantic0/0/0, not killed",
-  "capacity512": "UNIMPLEMENTED/UNRUN",
-  "full_native_browser_ledger_architecture": "UNRUN",
+  "stack": "UNRUN on new sort source; same four arrays reused plus one face temporary; compiler frame unmeasured",
+  "whole_fast_path_withdrawal": "UNRUN; planned eight-positive semantic0/0/0, not killed",
+  "performance": "UNMEASURED",
   "READY": false
 }
