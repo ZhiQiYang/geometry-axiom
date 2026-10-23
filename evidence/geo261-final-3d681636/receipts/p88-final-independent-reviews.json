@@ -1,0 +1,36 @@
+{
+  "schema": "geo288-p88-final-peer-metadata/1",
+  "tested_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "review_handoff_sha": "7bd61a43210bbad0abf95709e1a0205cd8760cac",
+  "review_head": "1999cbc",
+  "review_utc": "2026-10-23T10:40:30Z",
+  "architecture_original_exits": [
+    0,
+    0,
+    0
+  ],
+  "architecture_unittest_counts": [
+    205,
+    18
+  ],
+  "scan_bytes_unchanged": true,
+  "input_identity_metadata_corrected_exit": 0,
+  "query_diagnostic_exits": [
+    1,
+    1,
+    1
+  ],
+  "query_diagnostic_valid_counterproof": false,
+  "v2_correction": "parsed_json_unchanged is true; this does not claim wire bytes identity",
+  "canvas_sequence": "running; no completed results inferred",
+  "remaining": [
+    "three complete canvas runs",
+    "grid",
+    "four original native partial suites",
+    "P52 formal/verifier/runtime",
+    "P73",
+    "Chromium154",
+    "oracle",
+    "trace-supported original-rAF P88 withdrawal/restoration proof"
+  ]
+}
