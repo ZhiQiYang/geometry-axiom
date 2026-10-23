@@ -1434,6 +1434,8 @@ if "每個排法的 C8 失敗只有那一支邊界材那一個端面" in _readme
     _rprobs.append("README_ENDFACE_ONE_EACH")
 if "668 筆" not in _readme:
     _rprobs.append("README_ENDFACE_668")
+if "核可前歷史計數" not in _readme or "閱讀 A 凍結正例" not in _readme:
+    _rprobs.append("README_READING_A_CURRENT_VS_HISTORICAL")
 if "方向誤植" not in _readme:
     _rprobs.append("README_DIRECTION")
 ok = not _rprobs

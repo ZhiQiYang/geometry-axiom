@@ -1,3 +1,9 @@
+## 追加：來源登記與最新權威同步
+
+已再 fetch handoff `f6a174df42d5ff1ce670b6f8277da60c667b8965`，`handoff/pr-reviews/318.md` 最後仍為 2026-10-23 05:57:07Z 第 3 版閱讀 A 核可，沒有改用舊審查取代最新來源。當前來源 `c264f4eea40493133e3d3409dd834d68c861e8d5`；prbody `0990e4efd1841f4877559d75a2badd2b6c715f62`，正文一表列每項未跑。
+
+本次另逐檔登記新 `reading_a_cases.py`／`reading_a_source_control.py` 為獨立參考／測試工具（沒有產品入口 import），並更新修改過的 oracle／selftest LF digest；不增加目錄豁免，不重寫既有架構 scan/report/receipt，三裁判仍未跑。README 明分核可前歷史 668 筆與當前 528／1056 凍結正向 coverage，未重標舊收據。native/oracle/golden/reader 所有待驗仍如上；沒有重活。
+
 # 當前進度（來源實作中，尚未動態驗收）
 
 - 真來源第二階段已一般推送 `0df78e9f12fad311279c2a458a1cfecf1583b1c2`；前棒 combined `15a735951a36b6fe52e0291152f335139e6921ad` 已於 `ce4a8ad89e8ae3ce69043e9bd91ce4dad519710d` 普通 merge。
