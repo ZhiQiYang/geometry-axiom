@@ -1,13 +1,13 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 21:21 UTC）
+## 唯一 current-state（2026-10-23 21:30 UTC）
 
 - 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 已推；C/JS產品仍同F，最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
 - 已普通 merge Claude 最後交接 `8f9301fc1b78712d930ffc68074437e44d068aab`（merge `586e6e8f`）與 main `425c092eaf16f90256d76433243baebde45163ac`。main 新增 #333 FIELD-RULES 與證據。相對F產品C/JS不變；兩個tests葉改為M151登記與free-end唯一錨點，保留所有斷言。
 - #314 指定 `3b0b634f` 的17個產品／裁判 blobs及M99–M121定義已存在列車；沒有假移植。F 的六 suite **103項 exit0**、Node inspector **13項 exit0**、M121 原CLI0與build0/0/0、斷言0/1/0。獨立541checks／0。Node不是browser；六suite不是完整native。完整原件收於 `geo314-f64-originals-and-peer.tar.gz`。
 - #323 來源已全包含列車，只在此線修。F 的原13/22/15三suite **50/0/0**、19組control獨立346checks／0；四新增與兩漂移修復為具名ASSERT 0/1/0。placement-key-single原等價0/0/0仍照實記錄。
 - #323 正式一次36timings及4profiles已執行，原execution各0：N16/32/48-base=.70152535/.81183549/.70936489；N64/main=1.26480058≤1.3；source calls64/32=364369/82668=4.40761843≤4.5。分母與原門檻未改；獨立原件358checks／0已完成，原wrapper1因下列ABC紅燈，不能標整組全綠。
-- #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；同列車僅撤回memo的175／350嚴格全輸出ABC與完整memo性能反證已完成：0/1/0、4.407618→6.053833→4.407618；獨立6655checks／0。五原件壓縮包47,120,357B目前僅雲端，尚未推送，保存在原路徑。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
+- #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；同列車僅撤回memo的175／350嚴格全輸出ABC與完整memo性能反證已完成：0/1/0、4.407618→6.053833→4.407618；獨立6655checks／0。五原件壓縮包47,120,357B及完整MANIFEST已普通推送 E bea6f30995da1425ebe375a37d871e4f19c54a2d，13865members／172515281原bytes；雲端原件亦保留。公開逐byte獨立審查進行中，不把出版當原ABC轉綠。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
 - 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立629checks／0已完成，完整原件收於`reading-a-f64-originals/`（895members、5597339bytes壓縮包）。native41筆子SHA欄原為null，父c387、前後Git身份與70C/H實際輸入逐份比對另附間接綁定，原件不改；原ELF已由測試清除，只保原hash，不冒fresh rehash。原三組沒有額外outer/reaper，不虛構。RC-run builder/checker兩精準撤回已各0/1/0，actual377checks／0、封包382checks／0，原件已封`reading-a-rc-f64-originals/`；正式quick仍待跑，未冒稱最終全專項通過。
 - 架構 P 原三條 **0/0/0**（generic205、product18）、過期manifest反證 **0/1/0**；Linux manifest/scan/report/receipt四檔已重產採用，獨立686checks／0，604輸入closure=`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。原F架構1/0/5與Ran0失敗完整保留。封存 `architecture-p17-and-recovery.tar.gz`。
 - 4f4原完整CLI於20:44:44環境失敗終止：CLI2／root1／原new--check2，108/123（98killed／5equivalent／1crashed／3retired／1blocked），15未跑。M118還原build建立smoke時Errno28，M119建立目錄再Errno28而原程式早退；不是完整帳本綠。2031checks獨立審查原失敗保真，49.6MB原流封於`ledger-4f4-terminal/`；M118缺restore仍缺，不補假row。新來源b6e1e454（C/tests同ec8）由root原完整123於21:00:13 UTC啟動，尚無最終exit；session72136。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
@@ -16,12 +16,12 @@
 
 ## 並行工作與下一步
 
-1. #323 memo完整反證已完成。舊4f4環境失敗原件已封；root的新b6來源完整帳本已啟動；新ledger完成採用後固定final SHA跑完整native、6browser與專項。canvas與性能獨占，其餘最多兩重測。
+1. #323 memo完整反證已完成。舊4f4環境失敗原件已封；root的新b6來源完整帳本已啟動；本輪b6 ledger完成後原JSON採用成可解析L；為滿足最新B1字面要求，在L以全新外部RESULTS再真跑完整原123CLI（合法沿用原指紋cache，不搬舊判決），其它完整native、6browser及專項也固定L。L實跑的新JSON只封evidence E，不再改L tracked ledger，不偽改execution.head或用--check代fullCLI。canvas與性能獨占，其餘最多兩重測。
 2. #339接替324：原S57的指定9個importer模組142/142與3組predicate反證真綠；普通merge #340後source1f0，原registry-list0只表示清點，11正式列仍未跑。最新E dcdf2265／D2aac已推，base=#340；不把S57實跑轉標新source。
 3. noWood draft #340：原Sbfb的13項及7phase真0/1/0/1/0/1/0，actual530/publication949/新merge343 checks獨審0。新source4d3、body77a已推；11輸入同但不冒4d3重測。列車未入main也繼續疊線。
 4. #300原c493的三套32方法／46controls真0/1/0、282compile/link全0，actual1020checks／0；普通merge #339後只expected9→10，已推sourceaa0，效能與512尚未完成。GEO260接aa0後sourceeb846，保noWood13/faces45/woodcontact10並只native28→30，原全44已於eb846真完成：43killed＋SPM24equivalent，原gate0／outer0，native29/model20基線0；actual1682/public678 checks獨審0，E df230da5／D be1f69dc已推。af4 focused兩控制仍保原SHA。#325/#331/#333不寫其分支，#333已進main。
 
-每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新已讀審查是 handoff a47d625c 的 #338 2026-10-23 20:44 UTC（head b6）。B1完整同源驗收、B2原跨版本exact、B3五原包入庫仍是阻擋，沒有可合併結論。M1現況已更正：10/18提交相容例外已採納；10/23精確有序補句另有核可但尚未逐字寫入，不能把兩者統稱暫緩，也不重問題3／4。小引用審查9/0封於review-b6-response/。工作持續中。
+每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新已讀審查是 handoff a47d625c 的 #338 2026-10-23 20:44 UTC（head b6）。B1完整同源驗收與B2原跨版本exact仍是阻擋；B3五原包已於bea6f309入庫，公開獨審進行中，沒有可合併結論。M1現況已更正：10/18提交相容例外已採納；10/23精確有序補句另有核可但尚未逐字寫入，不能把兩者統稱暫緩，也不重問題3／4。小引用審查9/0封於review-b6-response/。工作持續中。
 
 S ec8的Linux架構四檔已於9a05採用，三原裁判0/0/0、205/18及781checks獨審0，604-input closure不變。冷checkout原碼副本全封後精確回收216,199,168B已推；free-end與舊323收據只搬儲存位置並保原path symlink、原bytes/mode/mtime，沒有刪收據。下一輪重測先守資源預算，保留所有原失敗。
 
@@ -90,3 +90,13 @@ JOB `/workspace/train337-ledger-b6e1e454-v5`、CACHE `/workspace/train337-ledger
 已讀 #338 B1–B3/M1，按現行 SSOT 改正 QUESTIONS 與當前狀態，沒有修改公理、決策、產品、測試或裁判。B2 的三個 V_EXTENSION 差異來自 I22 要求的新診斷，不能直接撤回欄位或放寬 exact；保留阻擋並繼續不受影響驗收。五原包出版工具已準備，磁碟餘裕不足時先清已終態可重建 Chrome cache，不刪原件。新完整 b6 帳本仍在原程序執行；不將部分列數當最終成功。
 
 GEO260 的完整44及獨立審查原件已推 E df230da5；request 已在 handoff b537a4e7 提交，base=#341。#341 request改base=#339。新 #320 連線成功後殘留 error 由獨立子代理從2d157069開始處理，不動live帳本來源，定向正反例先行。
+
+## 2026-10-23 21:30 UTC：B3五包原件已推、B2根因與快取維護已封
+
+B3原五包47,120,357B及MANIFEST已普通推送 E bea6f30995da1425ebe375a37d871e4f19c54a2d，路徑 `geo323-full-originals/`。13865members／172515281原bytes，所有5272原stdout/stderr均在包內；原F64 source不轉標，新舊失敗均保留。出版全部Git原argv/exit/streams／環境封 `review-b6-response/geo323-full-raw-publication.json`（完整commands locator仍可讀）；沒有在工作樹再複製47MB，原雲端檔不刪。
+
+B2根因84項獨立核對已封 `b2-diagnostic-originals-and-peer.tar.gz`：三案原stdout/stderr完整差異、graph/5guards與source傳遞鏈保真；I22連歷史b74本身就要求定位邊/超出區間，舊短訊息原本欠缺，不能撤#299欄位來冒exact。QUESTIONS保留最窄待裁決方案，未實作新版comparator、未忽略或正規化字串，原ABC exit1不變。
+
+為保帳本與出版空間，root只清19份已終態job的426個精確Chrome可重建cache葉：5678 regular/singlelink files、106860544配置bytes；71個profile父、storage/cookies、原收據/outputs/fixtures/Git/ELF/源均不在刪除範圍。原scope7449checks／0，實際39checks／0；root原exit0，21:25:03–09 UTC，workspace204382208→263221248B、tmp16064512→64204800B。觀察free差受並行寫入影響，不冒等於allocation；38個不可讀proc欄位限制保留，不冒完全掃遍所有OS程序。plan、fresh identity/hash/membership/proc、完整原命令/streams、結果與工具封 `terminal-chrome-cache-originals.tar.gz`，actual peer另列。
+
+最新B1原碼契約已獨審14/0：check@L可驗closure但不等於fullCLI@L，因此採上一段明列的嚴格同L實跑方案。現b6仍先收齊，不中斷、不重抽；沒有任何gates被靜態peer或metadata出版取代。
