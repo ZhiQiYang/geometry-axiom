@@ -1,3 +1,19 @@
+# 最新恢復點（2026-10-23 21:17 UTC）
+
+工作持續中，尚無 READY-TO-MERGE；下方段落只作歷史。本段取代較早「尚無新審查／舊4f仍跑」的狀態。
+
+- 已讀 handoff a47d625c 的 #338 20:44 UTC 最新【ChatGPT 審查】head b6：B1 最終同源完整清單、B2 #323 原跨版本 exact 紅、B3 五包原件未入庫、M1 Q314 SSOT過期。B1驗收持續；B2交 audit_oracle_main_merge 查不改公理／斷言的保守修法；M1交獨立peer核現行SSOT後修紀錄。不得把 memo-only 或 timing-only 冒成原硬門檻通過。
+- root #338 train E=`2d1570691e4a29aafebdc0a4e739787d3fcdddaa` 已推；D=`03765e59088f33eca181efc8fe4cb6f0e2ca6a70` 已推，body hash cdd7260448e078cfcf4484b57ed09ad4725b6e8e07ed5f932c373e2c2ee78b8b。C/JS產品 F=f64d638f，tests來源ec8。新原完整123帳本固定 S=`b6e1e45425f055cd825b259f46ef2c454f3ff13a`，21:00:13 UTC真啟動，session72136仍執行；21:15已53筆，但沒有最終exit，不冒全綠。
+- 新ledger ROOT `/tmp/train337-323-f64d638f-source`、JOB `/workspace/train337-ledger-b6e1e454-v5`、CACHE `/workspace/train337-ledger-cache-b6e1e454`、TMP `/workspace/train337-ledger-b6e1e454-v5-tmp`；SEED=CACHE/_bridge-work/b6e1e45425f055cd825b259f46ef2c454f3ff13a/repo。live ROOT/SEED/HEAD/cache不准改。driver `/tmp/train337-ledger-v5-prep/run_root_full_ledger_v5.py` SHA6925b810d24e2902cb6b10de40e8694407e7918e3097e6547d9ec44c3ce054e1，原123CLI與時限保持。67core cache＋baseline＋seed同檔系統移動，68舊metadata原件另保，全部新bridge要真重跑。
+- 舊4f全帳本於20:44:44已失敗終態：原CLI2/root1/check2，108/123（98killed/5equivalent/1crashed/3retired/1blocked）、15未跑。M118恢復build與M119 mkdir Errno28。1272member/49.6MB原流全封E fa76529f，archive5f7539710065ed86ebfa4a7795c890fbbce07383eb677a4173e5b29627a16f88，actual2031/public2556 checks0。M20原允許crashed不是assertion killed。
+- GEO260 原全44於 S=`eb846c345881cc6fc73a53c457a291175365b88c` 真完成（20:53:16–21:08:13 UTC，session18874 exit0）：原setup0/fullgate0/outer0，43killed＋SPM24 equivalent；native29/model20基線0；539inputs初末不變。SPM38/40原declared ModelError，非全assertion。E=`ef840a299b597958aea23bec51f0c0798c05c46f` 已推320member全原件，actual1682/public678 checks獨審0。後續E/D以owner最新通知為準；本次新增draft request，base=#341線。
+- #341（#300）actualS=c493原三套32methods/46controls/282compile-link全部如實封，actual1020/public471 checks0；normalmerge#339再expected9→10後 S=`aa0e3938f17dc996ef5e7410db4844b31856d2a6`，E=`823729be5f4f025aebbf02c2dc85e09907c28812`，D=`ea1a153b2da2203c3c0aac7a1f631d9caa1bf67b` 已推。此request改base=`codex/geo324-faces-20261024`。只消除反覆memmove；最壞配對O(F²)、容量512與效能仍未完。
+- #339 currentM=1f0ebd3e，E=dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694，D=2aacfaf1；原142實跑S57、3predicate反證與transitive closure均真封，registry-list不是完整native。#340 currentS4d3a17c3，原13/7phase在Sbfb，E d45dbbc3/D77a。shared expected順序 #340→#339→#341→GEO260 已normalmerge完成，原實測SHA各自保留。
+- 槽位：root ledger佔slot1；GEO260真結束已釋slot2。新#320交 prepare_288_merge_architecture，獨立branch codex/issue320-connection-recovery-20261024 從root2d起做stale connection.error最小修正，先Node精確控制；不改339或liveledger，不自行產全帳本。完整canvas/perf/P52/P189必須獨占。
+- final native/browser工具已備：索引 `/tmp/BROWSER_NATIVE_READY_PREPARATION_INDEX.json` SHAff864ca2bc75cf54e79a4f1aa18113e52f07b5e4a492152950bddad2ae15ffd2；native v2 peer25/0，browser seed v3 peer22/0，實際pool與正式job尚未建立。final L需原ledger採用並check後固定，來源欄不能轉標。P52/P189 `/tmp/train337-final-p52-p189-prep/PREPARATION.json` 正獨審，原full gate紅不因獨立timing-only而轉綠。
+- 空間仍緊（21:11 workspace240MiB/tmp24MiB）。只清自身可重建暫存；receipts/fixtures/Gitobjects/gmon/mutant/trace/withdrawn全保留。free-end原proof與已終態323 invocations完整搬至 `/workspace/geo337-preserved-originals/`，舊path是可讀symlink、bytes/mode/mtime不變。#323五包47,120,357B仍cloud-only `/workspace/geo323-f64-publication-20261024/`，待安全容量入Git，不冒已推。
+- Read-only GitHub API已可用供issue盤點，但PR開立/更新仍用本目錄request；338/339/340/341都是draft，未合併。#325/#331/#333不推他人branch。準備未owner #320與#300下一熱點，同時持續檢查審查與真測試結果，不停等。
+
 # 最新恢復點（2026-10-23 20:41 UTC）
 
 這是持續工作中的恢復點，不是階段停工或完成報告。下方20:15段落保留作執行路徑歷史；狀態以本段為準。
