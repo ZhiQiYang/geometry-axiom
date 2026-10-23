@@ -1,24 +1,22 @@
-本 PR 補 Q38 AC23「面材貼齊角材」的具名反證。原接觸判式雖已由角材案例打紅，寬 346 mm 的面材案例位於 focused gate 不納入的 source-index 方法，缺少自身的反證。新增 u/v 兩個字面幾何案例及各自專用 SPM43／44，保留原產品、公理與判官。
+本 PR 補 Q38 AC23「面材貼齊角材」的具名反證。新增 u/v 兩個字面幾何案例及各自專用 SPM43／44，保留原42cases、28methods、產品、公理與判官；目前仍是 draft，完整整合清單未完成，不可合併。
 
-目前仍是 draft；完整閘門與合流 expected 契約未完成，不可合併。
-
-唯一 current-state 矩陣如下。固定基底 `5b0ce47d25393fad675bf506a9d296cbab43c35d`；實測測試來源 S=`af4fd36c17d05b5da2411b70266ed040e22a6561`；證據 E=`5c5b63f967a33e75f299250f97629325fff2a775`，兩者皆已一般推送。來源分支 `codex/geo260-ac23-proof-20261024`，預期 base 為 `codex/train-337-continue-20261024`。
+唯一 current-state 矩陣如下。Current source C=`eb846c345881cc6fc73a53c457a291175365b88c`：普通合流 #300 `aa0e3938f17dc996ef5e7410db4844b31856d2a6`，再唯一登記 native28→30，已一般推送。Base branch=`codex/geo300-prerequisites-20261024`。歷史實跑 S=`af4fd36c17d05b5da2411b70266ed040e22a6561`、歷史證據 E=`5c5b63f967a33e75f299250f97629325fff2a775` 分開保留；新全44仍在雲端執行，尚無最終exit，不把歷史結果改標C。
 
 | Gate | 實測來源 | 原 exit／結果 | 範圍與限制 |
 |---|---|---|---|
-| 原 selection／exception-evidence Python 單元 | S | 0；Ran 30、OK | 初末 HEAD／clean；不是 native aggregate 30 |
-| 第一輪原 native focused gate | `c9269e136f3b40fbb5f9b5e13daa79a32d88efc4` | 2；baseline 29，原27過、新2 errors | 新測試錯讀 id 的包裝層而 KeyError；只編譯 baseline 一次、mutants 未啟動，原紅完整保留 |
-| schema 修正 | S | 兩處 `m["id"]` → `m["value"]["id"]` | 原6個 literal rect asserts 不動；窄靜審16／0 |
-| 修正後原 focused gate | S | 0；baseline 29／0，SPM43／44各1、killed | 各 mutant 唯一指定 AC23 方法的正常 AssertionError；3 builds，585份實際 C 輸入及3 ELF原hash保留 |
-| 原 baseline 恢復 | S | 0；Ran 2、OK | 每個控制真0／1／0；恢復以相同 baseline ELF bytes 的私有可執行副本，不改原保留件 |
-| 獨立 actual 對抗審查 | S | 1252 checks／0 findings | SHA256 `19aa5a34d342745f19e135c8235568fe22b064d6348a1aff2b0e7279c625f1be`，全文入證據包；審查數不是產品測試數 |
-| 完整44-case Q38閘門／native30 aggregate | 待合流來源 | 未跑 | 本輪focused排除原source-index方法，所以baseline29，不能冒充完整30 |
-| shared expected／全整合／帳本／架構 | 待合流來源 | 未跑 | 方法數28→30待主代理依合流次序更新；本分支沒改expected，也未自行重產帳本 |
+| 新原完整44-case Q38閘門 | C | RUNNING；2026-10-23 20:53:16Z開始，未終態 | 原native＋model兩組，無--only／--explore；jobs1、原600／900秒不變。私有fresh model-base／TMP，secondary第2槽；非完整native aggregate |
+| 合流／expected登記 | C | 靜審14 checks／0，未執行aggregate | 唯一native28→30，保noWood13／faces45／woodcontact10；原兩個test leaf等S，AST30；不冒新C動態綠 |
+| 原 selection／exception-evidence Python 單元 | S | 0；Ran30、OK | 初末HEAD／clean；不是native aggregate30 |
+| 第一輪原 native focused gate | c9269e136f3b40fbb5f9b5e13daa79a32d88efc4 | 2；baseline29，原27過、新2 errors | 新測試錯讀id包裝層而KeyError；只1 build、mutants未啟動，原紅完整保留 |
+| schema修正／修正後原focused gate | S | 兩處id→value.id；gate0、baseline29／0 | 六個literal rect asserts全保；SPM43／44各1、killed，都是唯一指定AC23的正常AssertionError；3 builds、585份實際C及3 ELF原hash保留 |
+| 原baseline恢復 | S | 0；Ran2、OK | 每個控制真0／1／0；相同baseline ELF bytes的私有可執行副本，原保留件不動 |
+| 歷史實跑獨立對抗審查 | S／原包E023339 | actual1252／0；public2354／0 | 全文及原出版raw已在E；審查數不是產品測試數，不冒新C已跑 |
+| 完整native30 aggregate／6browser／帳本／架構 | 待最終整合來源 | 本分支未跑 | native30只是登記已完成；原全帳本123個M定義未改，本分支未重產 |
 
-允許 skip：無。本輪原編譯600秒、child900秒與全部 assertions、goldens、exception／cause／verdict 判官不變。原42cases、28methods、SPM03／04 killers 與 PAIR_CORNERS 閉包皆保留。新增 SPM43／44沿用各原故障及跨層閉包，各自只認新 AC23 的具名失敗，避免其他 TOUCH 已紅遮住面材回歸；全帳本123個M定義未改。
+允許skip：無。每個baseline仍須原零skip，原exception／cause／verdict判官不變。新SPM43／44沿用各原SPM03／04故障及相同PAIR_CORNERS跨層閉包，各自只認新AC23的具名失敗，避免其他TOUCH先紅遮住面材回歸。兩個幾何例沿用27／346／373／400 mm與板厚6 mm，第二個只交換u/v，六個矩形期望值均是獨立字面量；I45／R36既有「正面積才重疊、等號接觸合法」未新增數值門檻。
 
-兩個幾何例沿用27／346／373／400 mm與板厚6 mm，第二個只交換u/v，矩形期望值均為獨立字面量。I45／R36既有「正面積才重疊、等號接觸合法」未新增數值門檻。
+合流帶入W `model_sources.py` 與 `native/contact_world.c`。雖section-profile本體不變，同bridge／model消費閉包已變，因此在C真跑原全44，不能只繼承af4 focused結果。新執行只保原工具實際公開的compiler文字logs、binary／source-tree hashes及完整c387 pipes；未另旁錄每build清理前的C／ELF，不宣稱那些未公開原件已保全。
 
-完整原件在 `evidence/geo261-final-af4fd36c/geo260-ac23/`：封包1148 members、4,014,694 bytes，SHA256 `228b54b277678d8dda80a1f67a025ac7602ca6d21914243c13f1042df510155d`。逐檔hash／來源／排除清單在 `RAW_INVENTORY.json`；ELF只排除Git封包，原件仍留雲端。包含首輪紅、修正、全部原命令／退出碼／完整輸出／環境／SHA、實際C、單元與靜／動態peer；producer本機封包逐bytes roundtrip已過；獨立public Git／body peer已核原包E023339的2354 checks／0，報告SHA256 `a81e4c9f165f7a8436bb33b380cc33cbf57a544ac11858a98f0c2ef55507a28b`。最後E只補peer原件與原出版raw，沒有重測或改寫原包。
+歷史完整原件在 `evidence/geo261-final-af4fd36c/geo260-ac23/`：封包1148 members、4,014,694 bytes，SHA256 `228b54b277678d8dda80a1f67a025ac7602ca6d21914243c13f1042df510155d`。逐檔hash／來源／排除清單在RAW_INVENTORY.json；ELF只排除Git封包，原件仍留雲端。actual report SHA `19aa5a34d342745f19e135c8235568fe22b064d6348a1aff2b0e7279c625f1be`，public原包／body report SHA `a81e4c9f165f7a8436bb33b380cc33cbf57a544ac11858a98f0c2ef55507a28b`。新全44 raw目前在 `/workspace/geo260-ac23-full44-eb846c34/`，終態後再封存推送。
 
-限制：首輪未在後續schema編輯前另錄final-clean，照實保留；修正輪初末HEAD／clean已封。原子exception row沒有SHA欄，未事後填造，以父命令與原輸入間接綁定。旁錄只保原cleanup前資料，不改受測函數或原退出碼；這份證據不外推列車新SHA全綠。
+首輪c926未在後續schema編輯前另錄final-clean，照實保留；修正輪af4初末HEAD／clean已封。原子exception row沒有SHA欄，未事後填造，以父命令與原輸入間接綁定。合流時sparse未物化expected檔的預檢FileNotFound1亦保原件，補同Git路徑後才登記；未改寫歷史或以環境錯誤算killed。本份證據不外推列車新SHA全綠。
