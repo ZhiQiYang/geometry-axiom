@@ -1,10 +1,20 @@
+## 當前進度：小型觀察已封存，golden 見證來源已遷移
+
+主代理授予的一次小型 oracle 窗口已實跑：固定乾淨 `2039b477a9669a9e3fcaad740283605b8de8a8f4`、R3 獨占、8 build、硬 timeout15s／CPU10s，真 exit0、0.668s。完整指令／原 stream／環境／SHA 見 `small-observation-2039b477/`；不把觀察當正式驗收。當前 source 已依人工逐欄覆核換成 FZ120 非空 I22 witness，保精確四元組、id 非排序 index、舊三元組拒絕；原 params/8房64排法 bytes 不動。STEP20 幾何與縫1831/3639不變，當前 buildable；FZ114左上X仍按 I22/碰撞守門選3544，不能盲改3656。
+
+原機械 canonical 同步各次0（最新來源1cd2fc21）仍只是 source generation。正式 native7／W10+H1控制、oracle13與0/1/0、generator/selftest、矩形逐毫米／凹角579／528+1056全掃、reader餘兩裁判、架構三裁判皆未跑，沒有 skip 或綠燈聲明；完整帳本只root共同final一次。CLI次序風險仍保 QUESTIONS.md。主代理新F canvas獨占heavy期間，只續來源與同儕審，不啟其他重活。
+
+以下為保留的歷史進度原文；與本段有差異時以本段 current state 為準。
+
+---
+
 ## 同儕／最新來源補記
 
 #314 owner 對不可變 `1cd2fc216299041a557654a874509a33884af819` 純Git/blob/AST複審：unit檔精確只換指定一字串，23個方法原樣，11個錨點唯一，expected JSON blob不改，未見新靜態阻擋；全文 `PEER_REVIEW_314_ANCHOR_1cd2fc21.json`。這不替代動態 legacy-value 0/1/0。
 
 再先fetch handoff `7bd61a43210bbad0abf95709e1a0205cd8760cac` 才讀318最新留言，最後仍05:57核可v3，來源hash於LATEST_REVIEW_SOURCE.json。golden／CLI／全部native與oracle正式動態仍待排程；不修改已鎖定已placed條件、不盲填golden。source/progress持續普通push。
 
-## 當前來源／待驗矩陣（本段取代下方各歷史追加的 current-state）
+## 歷史：2039b477 的來源／待驗矩陣
 
 來源已落核可 SSOT 四處、白話與唯一正典、oracle 獨立建構／C8、W判官／span／between／兩條重驗。現有reader-generation-m150固定來源 `1cd2fc216299041a557654a874509a33884af819`，真同步exit0、3.70秒，完整原輸出與hash已封存；這是新M150與live adapter行號變動後的機械來源生成。`--check`與reader unittest仍未執行，不能稱三裁判全綠。
 

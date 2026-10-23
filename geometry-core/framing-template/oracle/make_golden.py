@@ -3,8 +3,9 @@
 (碼、建構端的料編號、端面座標、那支料的矩形;#251 審查 3d858c3 阻擋 1:核心限制和物理衝突分開,不再算不可施工。
 審查 6332818768:timbers 會依種類與矩形重排,建構端 id 不是排序後的索引,所以矩形才是對回料件的資料)。
 物理上可施工的排法(含有核心限制的)都列出逐支角材。
-core_limit_witness 另收牆階 20 mm、左上起鋪板長沿 Y 這一個非空核心限制排法,不放進 rooms:
-STEP20 另有四種板長沿 X 完全可施工,放進 rooms 會讓探針的可施工排法超過 64。
+core_limit_witness 另收 FZ120、左上起鋪板長沿 Y 的 I22 延伸段非空核心限制,不放進 rooms:
+閱讀 A 已解除 STEP20 的 I19 固定段限制；FZ120 的 I22 不在本次授權範圍,仍須保留非空與料件綁定反證。
+rooms 維持原 8 房、64 排法,不把見證房送進探針。
 只在人工覆核過圖與數字之後才可重產;重產時要在 PR 說明改了什麼、為什麼。
 用法: python make_golden.py rooms.json oracle-golden.json
 """
@@ -34,8 +35,8 @@ def kind_label(t):
     return base
 
 
-# 不放進 rooms。四種板長沿 X 完全可施工,放進去會讓探針多送場景。
-STEP20_WITNESS = {"outer": [[0, 0], [4100, 0], [4100, 3680], [2600, 3680], [2600, 3700], [0, 3700]]}
+# 不放進 rooms。使用既有 FZ120 手算幾何,只見證仍受 I22 約束的延伸段。
+FZ120_WITNESS = {"outer": [[0, 0], [4100, 0], [4100, 3672], [1450, 3672], [1450, 3720], [1000, 3720], [1000, 3675], [0, 3675]]}
 
 
 def core_limit_rows(res):
@@ -71,16 +72,17 @@ def snapshot(spec):
             rows.append(layout_record(l, res))
         out["rooms"][name] = {"room": room, "layouts": rows}
     witness_rows = []
-    for l, res, fails in fo.solve(STEP20_WITNESS, p):
+    for l, res, fails in fo.solve(FZ120_WITNESS, p):
         v, probs = fo.verdict(res, None, fails)
         assert v in ("buildable", "core_limited", "unbuildable"), (fo.layout_name(l), probs)
         if fo.layout_name(l) != "左上起鋪,板長沿Y":
             continue
         witness_rows.append(layout_record(l, res))
     assert len(witness_rows) == 1 and witness_rows[0]["core_limits"], witness_rows
+    assert witness_rows[0]["core_limits"] == [["CORE_LIMIT_EXTENSION_END_FREE", 1, 1000, [1000, 3645, 4100, 3672]]], witness_rows
     out["core_limit_witness"] = {
-        "room_name": "例:牆階 20 mm(STEP20)",
-        "room": STEP20_WITNESS,
+        "room_name": "例:FZ120(I22 延伸段非空見證)",
+        "room": FZ120_WITNESS,
         "layouts": witness_rows,
     }
     return out

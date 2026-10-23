@@ -805,13 +805,14 @@ for nm_, room_ in (("FZ120", FZ120), ("FZ148M", FZ148M)):
     print(f"[{'綠' if ok else '錯!'}] 第 22 輪副作用 {nm_}(原房與上下、左右鏡像 × 8 種排法):判定與核心限制和手算相同;不一致 {len(bad_)}")
     for x_ in bad_[:6]:
         print("     ", x_)
-# 閱讀 A 當前政策：原候選中的固定段端點已可表示，仍依原 P-182
-# 偏好順序選第一個可行者；不改候選、數值或裁決優先規則。
+# 閱讀 A 當前政策：原候選中的 I19 固定段端點已可表示，仍依原 P-182
+# 偏好順序選第一個可行者；不改候選、數值或裁決優先規則。FZ114 左上 X
+# 的 3656 仍有 MAIN_ON_EXTENSION(I22),3604 仍碰撞,所以原第一可行 3544 不變。
 for nm_, room_, lay_, seam_, trace_ in (
         ("FZ107", FZ107, "左上起鋪,板長沿Y", 3667, [(3667, True, False)]),
         ("FZ107左右鏡像", MIRROR(FZ107, 0), "右上起鋪,板長沿Y", 433, [(433, True, False)]),
         ("FZ114", FZ114, "右上起鋪,板長沿Y", 491, [(433, False, False), (491, True, False)]),
-        ("FZ114", FZ114, "左上起鋪,板長沿X", 3656, [(3656, True, False)])):
+        ("FZ114", FZ114, "左上起鋪,板長沿X", 3544, [(3656, False, True), (3604, False, False), (3544, True, False)])):
     res = fo.build(room_, LAY[lay_], p)
     verdict_, problems_ = fo.verdict(res, p)
     actual_trace_ = [(e["seam"], e["ok"], e["phys"]) for e in (res.get("p182") or {}).get("cands", [])]
@@ -1412,13 +1413,14 @@ if _wbound:
     _wprobs.append(_wbound)
 _wrecs = _wlay.get("core_limits") or []
 _wrects = [row[1] for row in _wlay.get("timbers") or []]
-_wwant = ["CORE_LIMIT_BOUNDARY_END_FREE", 1, 2600, [2600, 3653, 4100, 3680]]
-if _wrecs != [_wwant] or _wlay.get("name") != "左上起鋪,板長沿Y":
+_wwant = ["CORE_LIMIT_EXTENSION_END_FREE", 1, 1000, [1000, 3645, 4100, 3672]]
+if (_wrecs != [_wwant] or _wlay.get("name") != "左上起鋪,板長沿Y"
+        or (_w_now or {}).get("room") != FZ120):
     _wprobs.append("GOLDEN_CORE_LIMIT_WITNESS")
 elif _wrects[_wwant[1]] == _wwant[3]:
     _wprobs.append("GOLDEN_CORE_LIMIT_ID_IS_INDEX")
-_old_shape = {"timbers": [["boundary", [2600, 3653, 4100, 3680]]],
-              "core_limits": [["CORE_LIMIT_BOUNDARY_END_FREE", 1, 2600]]}
+_old_shape = {"timbers": [["boundary", [1000, 3645, 4100, 3672]]],
+              "core_limits": [["CORE_LIMIT_EXTENSION_END_FREE", 1, 1000]]}
 if _golden_core_bound(_old_shape) != "GOLDEN_CORE_LIMIT_UNBOUND":
     _wprobs.append("GOLDEN_CORE_LIMIT_OLD_SHAPE_NOT_RED")
 ok = not _wprobs
