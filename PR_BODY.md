@@ -5,9 +5,9 @@
 | 原 PR-local base | `7dae5f21c7ca401e660450d437e60ba566218da8` |
 | Grok 原 head | `4e176e830b691269cc72d021ce7e1bc0b167d621` |
 | 已普通merge main | `eda91c8593f0795278f7f16ff8b93d147a4fdaa7` |
-| 已普通merge train | `f64d638f15c48d2b9723b7ae9d230fb5dacb82d9` |
-| 目前公開產品 S | `f1217b0fa5e933e14906833bf4981dad97061b04` |
-| 目前 evidence E | `c8806b5f1aa6363d573b30a9df1748e61e1b9ccf` |
+| 已普通merge train | `504933473d7b9bdfc5964f73402a710f1222fc96` |
+| 目前公開產品 S | `57b680140da2c6b77ab0d362a72029d8d7c9334b` |
+| 目前 evidence E | `792d086eb046263384888b3b0a064ae96f0cdc27` |
 | 前批公開 evidence | `07615668c110684826390990cd2d6134eb6025fd` |
 | Fresh審查handoff | `4aeabc8ec05b358e22fe2375f97dce64324fbc22` |
 | 替代head／正文分支 | `codex/geo324-faces-20261024`／`codex/geo324-faces-20261024-prbody` |
@@ -40,8 +40,10 @@
 
 三predicate補充driver v2 SHA `4b5c05f1a2d7a5cf24c1e2b4d21641c560a7fe7a25db1109a6127d315ddd406d` 只AST0。它先pin原c387 helper，從精確Git tracked blobs構建獨立四packages／三fixtures，逐案原method baseline／withdraw／restored各封完整streams及正常0/1/0。mutant另核原helper具名unclassified診斷，不能用setup/import/syntax/error或timeout冒正常紅。原test/assertions/60秒不改。原內建helper最後只跑第一個restored，不捏造其餘兩案輸出；feature=int會被後段集合擋住，同method的list feature才有牙齒。
 
-p88_priority已對新S／普通merge原件／v2完成純靜審118 checks、0 findings，完整原checker錯判1與窄更正報告同存；這不是動態驗收。原frozen準備不覆寫，只追加current計畫的v2精確檔名。產品／正式裁判／Chrome都尚未執行。
+p88_priority只對先前S f1217b0f／當時普通merge原件／v2完成純靜審118 checks、0 findings，完整原checker錯判1與窄更正報告保留；不把它外推本次S。新merge的獨立靜審待補，正式動態仍未執行。原frozen準備不覆寫，只追加current計畫的v2精確檔名。產品／正式裁判／Chrome都尚未執行。
 
-原件位於 `evidence/geo324-final-f1217b0f/`（本輪一般push及ls-remote已核同）：26條merge命令、完整stdout/stderr/env/SHA、fresh review、v1/v2／manifest／peer與前批publication原流。Git認證18:25Z曾lookup失敗，原本地commit／故障狀態皆保留。18:55Z root探針恢復後，原Ede5142a0／D2fc63aef兩ref均一般push0、ls-remote核同；本輪新E也已一般push0核同。10條恢復原命令與完整streams封於revision-2-network；正式16gate仍未跑。正文由同名-prbody分支一般推送，實際D與原exit另記於出版收據。
+原件位於 `evidence/geo324-final-57b68014/`（本輪一般push及ls-remote已核同）：本次merge原命令、完整stdout/stderr/env/SHA與前批publication原流；先前fresh review／v1/v2／manifest／peer保於原evidence/geo324-final-f1217b0f/。Git認證18:25Z曾lookup失敗，原本地commit／故障狀態皆保留。18:55Z root探針恢復後，原Ede5142a0／D2fc63aef兩ref均一般push0、ls-remote核同；本輪新E也已一般push0核同。10條恢復原命令與完整streams封於原evidence/geo324-final-f1217b0f/revision-2-network；正式16gate仍未跑。正文由同名-prbody分支一般推送，實際D與原exit另記於出版收據。
 
-下一步：root統一推handoff替代draft PR request；排正式同SHA native＋expected／六browser／importers／三predicate0/1/0／mutation check與架構三原裁判／四檔刷新。帳本過期如實交root統排，不在準備階段重產全ledger。原兩重槽給323/314，本owner不搶槽。不宣稱可合併。
+下一步：root統一推handoff替代draft PR request；排正式同SHA native＋expected／六browser／importers／三predicate0/1/0／mutation check與架構三原裁判／四檔刷新。帳本過期如實交root統排，不在準備階段重產全ledger。後續動態依root時槽執行，本owner不搶槽。不宣稱可合併。
+
+本次另普通merge root已公開50493347完整列車，原架構四檔保 incoming train 的 sourceBaseHead；#324 owned W leaf／excluded test 的原裁判與四檔刷新仍未跑。mutation bridge oracle hash 包含 tests/*.py，因此不能把列車既有帳本或架構收據直接當作本S有效。
