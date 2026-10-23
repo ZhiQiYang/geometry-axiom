@@ -1,0 +1,41 @@
+[
+  {
+    "argv": [
+      "git",
+      "add",
+      "--force",
+      "--sparse",
+      "--",
+      "evidence/geo288-p88-20261023/PROGRESS.md",
+      "evidence/geo288-p88-20261023/review-refresh-20261023T144322Z"
+    ],
+    "cwd": "/tmp/g288p88fix",
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--cached",
+      "--name-only"
+    ],
+    "cwd": "/tmp/g288p88fix",
+    "exit_code": 0,
+    "stdout_sha256": "affda9e24e4b5db06a7f4dc0cc32a697e3fc546c57a08671970bc2f6f7609ec4",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "cwd": "/tmp/g288p88fix",
+    "exit_code": 2,
+    "stdout_sha256": "815b02e74f6609df2e0add3f365a516c18854ea956501678561171dca9878fe3",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "original_all_artifact_diff_check_exit": 2,
+  "classification": "Authoritative review raw preserves original CRLF/trailing whitespace and final blank; latest extracted review preserves final blank. Only the exact three review-artifact paths are flagged. No product or test changes.",
+  "flagged_paths": [
+    "evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout",
+    "evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.latest-chatgpt.md",
+    "evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md"
+  ],
+  "review_raw_bytes_preserved": true,
+  "packaging_guard_v1": {
+    "exit": 1,
+    "reason": "Initial exact allowlist covered full raw and its copy but omitted latest-review extraction EOF blank; no commit/push executed."
+  },
+  "packaging_guard_v2": "Exact three original review artifact paths verified; original output and failed guard classification retained."
+}

@@ -1,0 +1,1463 @@
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1018: trailing whitespace.
++【Claude 整合】兩條 Codex 修正與 main `4b975a3d`（列車 #312，GEO-262 整卡參照）已併入整合分支；整卡參照已移植到 GEO-261 的 K/W/H 結構。新 head `901d77e66161590c396d64c4ecd4fc624783e1d4`（遠端已回讀相同）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1019: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1020: trailing whitespace.
++## 合入的提交（全部 merge commit，未改寫歷史）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1021: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1022: trailing whitespace.
++| 提交 | 內容 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1023: trailing whitespace.
++|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1024: trailing whitespace.
++| `5e7da408` | merge `codex/geo261-fix-assembly-guide-regression-20261018` 的 tip `ee24a306`（測試 `97bc7c0c`＋證據）。`.gitignore` 檔尾衝突，兩邊都保留。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1025: trailing whitespace.
++| `8e163983` | merge `codex/geo261-fix-policy-exception-protocol-20261018` 的 tip `b0e5dfef`（`82dd8dcc` 測試、`a55b87d1` 修正、證據）。`.gitignore` 檔尾衝突，兩邊都保留。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1026: trailing whitespace.
++| `07cc20f8` | 後續修正：`PolicyIssue` 與 `RejectedView` 都改成 `@dataclass(eq=False)`。另加兩個「拿掉修正就紅」的測試，並更新計數。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1027: trailing whitespace.
++| `901d77e6` | merge `origin/main` `4b975a3d`，並完成整卡參照移植。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1028: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1029: trailing whitespace.
++### `07cc20f8` 細節
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1030: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1031: trailing whitespace.
++- `RejectedView`（`geometry_rectangular/protocol.py`）原本也是 frozen dataclass 例外。它被當成 cause 交給 unittest 回報時，或穿過 `contextlib.contextmanager` 時，會丟出 `FrozenInstanceError`。已在 Windows 重現。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1032: trailing whitespace.
++- 新測試：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1033: trailing whitespace.
++  - `KernelRuntimeTests.test_policy_issue_keeps_the_standard_exception_identity_protocol`（走真 W `PROFILE_VOLUME` 拒絕路徑）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1034: trailing whitespace.
++  - `RectangularRejectionProtocolTests`（新類別，所以 `RectangularPythonTests` 隔離安裝的「Ran 5 tests」釘死值不變）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1035: trailing whitespace.
++- 撤回控制（Windows，Python 3.14.4）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1036: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1037: trailing whitespace.
++| 測試 | 改回 frozen | 改成 plain `@dataclass` |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1038: trailing whitespace.
++|---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1039: trailing whitespace.
++| PolicyIssue | `POLICY_EXCEPTION_IDENTITY_HASH` 紅；Codex 的測試另報 `FrozenInstanceError` | `unhashable type` 紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1040: trailing whitespace.
++| RejectedView | `REJECTED_VIEW_STANDARD_PROTOCOL`（FrozenInstanceError）紅 | `REJECTED_VIEW_IDENTITY_HASH` 紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1041: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1042: trailing whitespace.
++- 計數用 unittest loader 數出：`py:test_geometry_kernel_runtime` 8→10（Codex +1、本次 +1），`py:test_rectangular_python` 8→9。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1043: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1044: trailing whitespace.
++## 衝突解法（16 檔）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1045: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1046: trailing whitespace.
++| 檔案 | 解法 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1047: trailing whitespace.
++|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1048: trailing whitespace.
++| `current_geometry.c` | 取 GEO-261 的 K typedef 區塊。`GridCardReference` 改成 K 型別名；`GRID_CARD_CAPABILITY` 與其他格網能力放一起。main 的 dump、解析、I74 CAPABILITY 三段保留。另把兩行 C11 `_Static_assert` 改成可攜的檔案層檢查（見待驗段的說明）。檔案維持 CRLF。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1049: trailing whitespace.
++| `parameter_types.h`、`modeling/base.py`、`modeling/common.py`、`modeling/engine.py` | 取 GEO-261 側，逐位元組等同 `07cc20f8`。能力移植到 `geometry_app/model_common.py` 和 W `model_policy.py`。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1050: trailing whitespace.
++| `grid_systems.inc`、`engineering_commands.inc`、`model_base.c`、`transactions.inc` | 以 GEO-261 版為底，補入 main 的行為（見移植表）。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1051: trailing whitespace.
++| `parameters.inc` | guide/datum 迴圈取 GEO-261 的 store。main 的 B2 名單、整卡引用者、S1 可改綁的 grid-system 引用者與宣告擁有者判斷都改走 K grid store。main 的 `parameters_clear_candidate_scratch` 不採用：GEO-261 的 ledger 隨 scope 釋放。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1052: trailing whitespace.
++| `engineering_bridge.inc` | 能力表取 W 的 `assembly` 欄位，並加 `grid-card-reference/1`。`batch_preview` 取 GEO-261 的候選流程，capture 從 `scope.ledger` 複製。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1053: trailing whitespace.
++| `grid_system_bridge.inc`、`source-inspector-bridge.inc` | 取 main 的整卡輸出，欄位名改成 `body`，store 改成 K store。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1054: trailing whitespace.
++| `tests/run_all.py` | suite 定義聯集（`test_grid_card_reference` 與 `test_grid_inspector_contract` 都保留）。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1055: trailing whitespace.
++| `tests/run_all.expected.json` | 條目聯集。只改一邊的取該邊；兩邊都改的只有 `node:tests-js`：724＋6（GEO-261）＋7（`test_card_reference_project_store.js`）＝737，Windows 實跑數出 737。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1056: trailing whitespace.
++| `公理層-閱讀器.html` | 取 main 的檔案當模板，用 `sync_axiom_reader.py` 原位重產。再重產一次是 no-op，`--check` 通過。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1057: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1058: trailing whitespace.
++其他：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1059: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1060: trailing whitespace.
++- `公理層.md`、`公理層-白話.md` 與 main 逐位元組相同（LF）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1061: trailing whitespace.
++- `modeling/__init__.py` 的版本集合自動合併後等同 main（含 P-181 與 `CARD_REFERENCE_AXIOM_VERSIONS`）。GEO-261 側沒有自己的 `PRE_*` 集合。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1062: trailing whitespace.
++- `tests/mutants_results.json` 沒有衝突，結果為 main 的帳本，我沒有改。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1063: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1064: trailing whitespace.
++## 移植對照表
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1065: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1066: trailing whitespace.
++| main 上的函式或區塊 | 整合分支上的位置 | 層 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1067: trailing whitespace.
++|---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1068: trailing whitespace.
++| `GridAxisDef.card_length`、`GridSystem.card_reference`、`GridCardReference` | `kernel/grid_store.h`：`GeoGridAxisDef.card_length`、`GeoGridSystem.card_reference`、`GeoGridCardReference`；store 的複製逐欄進行 | K |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1069: trailing whitespace.
++| `grid_systems.inc` 的 `grid_card_resolve`（在 rebuild 內） | `kernel/grid_store.c` 的 `geo_grid_card_resolve`：在 `geo_grid_system_evaluate` 的第一步、逐欄 ParameterRef 之前，用同一個 resolver 求值，所以直接路徑與 source-graph 路徑一致。新增 `geo_grid_system_resolve_card` 給 R60。 | K |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1070: trailing whitespace.
++| I74 的六種錯誤字串 | W `wood_grid_card_error`（`grid_application.c`），rebuild 與 R60 共用 | W |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1071: trailing whitespace.
++| （main 無對應） | W `grid_definition_codec.c`、`grid_sources.c`：每軸線格式結尾加 `card_length`，系統結尾加整卡映射。受控槽在 authored 線上與 ParameterRef 槽一樣遮蔽。兩個卡片欄位是定義輸入；publish cache 也包含受控槽。codec harness 的 oracle 同步擴充。 | W |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1072: trailing whitespace.
++| `grid_card_used`、`card` token、`card-reference` 解析、`CONTROLLED_TOKEN_REJECT`、dump | `grid_systems.inc`（同名函式，改走 K store）。H 的 `grid_card_resolve` 包裝 K 並交給 W 格式化。 | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1073: trailing whitespace.
++| `card_reference.inc` 全檔 | 同名檔改寫：編輯 K 定義的複本，經 `app_grid_system_redeclare/put` 寫回，main-along 留在 W 角色，R60 capture 進 H 的 `ParameterCandidateLedger` | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1074: trailing whitespace.
++| `GridCardCapture`、`ParameterState.card_captures`、`PARAM_OWNER_GRID_CARD` | `parameters.inc`：ledger 欄位、`PARAM_CARD_CAPTURE_MAX`、enum。不進 World，所以每份快照不再固定多 10,248 bytes。 | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1075: trailing whitespace.
++| 分派、parameter-package、requires | `engineering_commands.inc` | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1076: trailing whitespace.
++| `required_capabilities` | `model_base.c` 的 `model_legacy_snapshot` | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1077: trailing whitespace.
++| bridges 的整卡 JSON、parameterUses、source-inspect | 同檔，改走 K store | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1078: trailing whitespace.
++| `modeling/common.py`、`base.py`、`engine.py` 的能力 | `geometry_app/model_common.py`（常數、場景語法偵測）；W `model_policy.py` 的 `source_capabilities` 與 `capabilities` | H／W |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1079: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1080: trailing whitespace.
++其他移植：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1081: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1082: trailing whitespace.
++- `confirmation_probe.c`（CR17）改用 GEO-261 的 entry-point 巨集、K binding store、`g_preview.transaction->after` 和 `g_history` 計數。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1083: trailing whitespace.
++- `NATIVE-CONTRACT.md` 補一段 GEO-261 分層說明。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1084: trailing whitespace.
++- `tests/mutate.py`：M85～M88 改指 GEO-261 的檔案。M85 改到 K resolver，M86 改到 K `geometry.c`，M87/M88 改到 W `contacts.c`。`test_geo261_mutation_migration` 的清單釘死值擴充為 M78～M88，bridge 變異集合為 M61–M70 加 M78–M85。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1085: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1086: trailing whitespace.
++### 依賴方向
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1087: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1088: trailing whitespace.
++- `product-architecture.json` 新登記：`card_reference.inc` 為 H；九支 `card-reference/` 工具列為排除（LF 摘要）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1089: trailing whitespace.
++- 順手補上先前沒登記的項目：五份 `native-p1-closeouts-20261017` 證據 helper；`serve.py` router 摘要（main 的 receipt 封存修改，路由不變）；四支 test driver 摘要（`assembly_generation_test.js`、`cdp_test.js`、`feedback_resize_observer_test.js`、`marquee_test.js`，都是整合分支上先前的修改）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1090: trailing whitespace.
++- scanner 實跑 exit 0：333 個 owned 來源、796 條邊、0 診斷。新增的 `engineering_commands.inc → card_reference.inc` 是 H→H 邊；K 檔沒有 W 識別字。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1091: trailing whitespace.
++- scan、report、receipt 沒有重產。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1092: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1093: trailing whitespace.
++## Windows 測試結果（MSVC，`binaries.py` 建置，未用 WSL）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1094: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1095: trailing whitespace.
++| 範圍 | 結果 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1096: trailing whitespace.
++|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1097: trailing whitespace.
++| `test_grid_card_reference` | 43 個中 42 個通過。CR17 需要 `cc`；把探針改用 MSVC 編譯另跑，結果通過。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1098: trailing whitespace.
++| `test_parameters_core` 40、`test_parameters_deleted_unbind` 14 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1099: trailing whitespace.
++| `test_engineering_core` 18、`test_grid_system_contract` 15、`grid_inspector` 3、`grid_subdivision_oracle` 41、`grid_trial` 5 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1100: trailing whitespace.
++| `test_recorded_api_receipts` 17、`test_bridge_integrity` 24、`test_engineering_model_sources` 4、`test_assembly_parameter_refs` 3 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1101: trailing whitespace.
++| `core:run_tests` 165（含 main 新增的 8 個 `_s1`／`_s7` 場景）、`c:integrity` 432 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1102: trailing whitespace.
++| `test_engineering_model_compatibility` 44、`domain_decoupling` adoption 15＋proposal 29＋compatibility 14、`test_modeling_transport` 3 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1103: trailing whitespace.
++| `test_axiom_reader` 51；`sync --check` | 全過；`--check` 通過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1104: trailing whitespace.
++| `test_mutation_freshness` 73、`test_geo261_mutation_migration` 15、`test_domain_source_pins` 16 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1105: trailing whitespace.
++| `test_architecture_contract` | 204 過，1 個 Windows symlink 權限 skip |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1106: trailing whitespace.
++| `test_product_architecture` | 18 個全過（TEMP 需設短路徑，見待驗） |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1107: trailing whitespace.
++| `test_geometry_kernel_runtime` 10、rectangular python 9／bridge 2／template 11 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1108: trailing whitespace.
++| GEO-261 原生（MSVC）全過的 | `grid_definition_codec` 13、`grid_definition_authority` 13、`grid_definitions_product` 4、`native_grid_store` 18、`native_grid_product` 5、`native_grid_rules` 9、`wood_grid_application` 11、`wood_grid_cells` 13、`wood_grid_engineering` 14、`host_facts_authority` 17、`default_native` 8、`application_closure` 14、`candidate_product` 26、`deferred_candidate` 53、`engineering_parameter_authority` 17、`geometry_host_world` 8、`geometry_source_runtime` 10、`modeling_degenerate` 24 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1109: trailing whitespace.
++| GEO-261 原生中有失敗的 | `grid_sources` 10/11、`native_grid` 7/8、`host_candidate` 14/17、`model_semantics_authority` 10/12、`model_vertex_ledger` 5/7、`native_document` 9/10、`native_kernel` 12/13、`native_parameters` 6/9、`wood_engineering_operations` 14/15、`geometry_host_native` 29/30 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1110: trailing whitespace.
++| `node:tests-js` | 737 個中 697 個通過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1111: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1112: trailing whitespace.
++失敗的分類：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1113: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1114: trailing whitespace.
++- **GEO-261 原生**：缺口全是環境問題。15 個是新編的控制 exe 被 SAC 擋下（WinError 4551），1 個是無編譯器時的 fallback（即先前建議 e）。`grid_sources`、`native_grid` 兩項重跑後仍被擋。沒有任何邏輯失敗。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1115: trailing whitespace.
++- **`node:tests-js` 的 40 個失敗**：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1116: trailing whitespace.
++  - 37 個需要 gcc 或 C 編譯器；
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1117: trailing whitespace.
++  - 1 個是 CRLF 簽出造成的原始碼切片斷言（`test_grid_inspector_stagger`）；
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1118: trailing whitespace.
++  - 1 個是 private real service 逾時（`test_engineering_project_store`）；
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1119: trailing whitespace.
++  - 1 個是上一個的母項。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1120: trailing whitespace.
++- **`mutation:check` 失敗**：帳本已過期，預期中，待主迴圈重產。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1121: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1122: trailing whitespace.
++## 撤回移植控制（Windows，另建 bridge，跑完逐位元組還原）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1123: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1124: trailing whitespace.
++| 控制 | 結果 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1125: trailing whitespace.
++|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1126: trailing whitespace.
++| publish cache 不含受控槽 | CR01/02/03 轉紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1127: trailing whitespace.
++| capture 不複製到預覽 | CR13、P142-S2、P146 轉紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1128: trailing whitespace.
++| DSL 重宣告不擋整卡 | CR31 轉紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1129: trailing whitespace.
++| 拿掉整卡欄位的定義依賴（`wood_grid_card_definitions`） | 沒有測試轉紅（存活，見下方第 2 點） |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1130: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1131: trailing whitespace.
++## 待 WSL 驗（只有原生 gcc 環境能判）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1132: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1133: trailing whitespace.
++- 全量 `run_all.py --build`，以及嚴格 census（本機只跑了部分 suite）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1134: trailing whitespace.
++- 突變帳本 `mutate.py` 重產：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1135: trailing whitespace.
++  - 全部 78 筆：57 筆核心、18 筆 bridge（M61–M70、M78–M85），另有 3 筆 retired；
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1136: trailing whitespace.
++  - M85～M88 的新目標是否被指定測試殺掉，只有重產帳本才能判。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1137: trailing whitespace.
++- `test_grid_card_reference` 的 CR17 用 `cc`（Windows 只用 MSVC 代跑過）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1138: trailing whitespace.
++- 本機被 SAC 擋下的 GEO-261 原生控制，共 15 個（分布在 9 個 suite）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1139: trailing whitespace.
++- 需要 gcc 的 node 測試共 37 個；`test_engineering_project_store` 的 delivered project（Windows 逾時）；`test_grid_inspector_stagger`（Windows CRLF）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1140: trailing whitespace.
++- unity 建置（gcc）；舊包 replay、native job 與六個 browser gates；`cdp_test.js`、`space_model_test.js`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1141: trailing whitespace.
++- 產品架構 scan、report、receipt 對 final head 重產。本機 `test_product_architecture` 要把 TEMP 設成短路徑才跑得過，因為 `recovered-selftest-source-…py` 的快照路徑超過 Windows 的 260 字元上限。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1142: trailing whitespace.
++- `geometry-core/card-reference/mutations.py`（#253 §7 工具）有 29/63 個錨點在 GEO-261 下已失效。它不在 run_all 內；要不要改指，請主迴圈決定。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1143: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1144: trailing whitespace.
++## 請 opus 審查員重點查（我最不確定的三處）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1145: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1146: trailing whitespace.
++1. **K/W 線格式變更。** grid-system 的 authored 與 value 線格式變了：每軸多 `card_length`，系統結尾多四個數。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1147: trailing whitespace.
++   - 這代表所有 grid-system 的定義位元組都變了，連沒用整卡的也一樣。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1148: trailing whitespace.
++   - 本機相關測試都通過，但若有凍結的定義指紋或證據摘要依賴舊位元組，只有全量跑才看得出來。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1149: trailing whitespace.
++   - 另外，受控槽的 authored 遮蔽規則是「repeat 用 step，否則用 body」，非無限軸也套用；這一點請核對 codec 與 `grid_sources.c` 是否一致。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1150: trailing whitespace.
++2. **整卡欄位的定義依賴邊沒有測試守門。** `wood_grid_card_definitions`（SYSTEM_DEFINITION → 卡片欄位的 DEFINITION 依賴）撤回後仍全綠。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1151: trailing whitespace.
++   - 它比照逐欄 ParameterRef 的定義依賴而加。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1152: trailing whitespace.
++   - 現有 harness 只驗 VALUE 邊（`shared-parameter-edge`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1153: trailing whitespace.
++   - 請判斷它是否必要，是否需要補一個 harness 斷言。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1154: trailing whitespace.
++3. **M85 改指 K resolver 的語意變寬。** 新目標是 `geo_grid_system_evaluate` 忽略 resolver 失敗，涵蓋所有 resolver 失敗，不只「卡片已刪」。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1155: trailing whitespace.
++   - 原因：GEO-261 的 source-graph 路徑在 H 的 `parameter_coord` 之後還會再查一次 `geo_eval_source`。只改 H 的話，這個變異會被第二道檢查遮住，變成等價。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1156: trailing whitespace.
++   - 另外，manifest 的摘要更新請一併複核：`serve.py` router、四支 driver、五份證據 helper，我都是讀過差異才更新的。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1157: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1158: trailing whitespace.
++🤖 Generated with [Claude Code](https://claude.com/claude-code)
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1436: trailing whitespace.
++【Claude 修正】b9f4ef3f 全量 run_all 的 10 項失敗（5 類）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1437: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1438: trailing whitespace.
++新 head：`3a86755503722d969380621876b5daa00419b5b1`（在 `b9f4ef3fa03d5cae758cfa5d4933a4e1ffc9dade` 之上加 5 個 commit；第 5 個 `3a867555` 是 fresh-context 對抗審查後的兩處補正）。全程只用 Windows：純 Python、node，原生部分用 MSVC。沒有用 WSL。證據都放在 repo 外：`D:/geometry-axiom-work/geo261-fix5-20261019/`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1439: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1440: trailing whitespace.
++| 類 | suite（失敗數） | commit | 結論 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1441: trailing whitespace.
++|---|---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1442: trailing whitespace.
++| 1 | py:test_axiom_reader（6） | `15682eee` | 閱讀器沒有跟著重產，已用同步器重產 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1443: trailing whitespace.
++| 2 | py:test_guide_panels（1） | `4e182c77`、`3a867555` | 導讀頁的面板設定沒跟上 GEO-261 的搬移 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1444: trailing whitespace.
++| 3 | py:test_rule_case_executor（1） | `1f12b194` | 測試本身讀 /proc 的競態 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1445: trailing whitespace.
++| 4 | py:test_section_profile_mutation_check（1） | `b066a302`、`3a867555`（契約文件） | ModelError 的實際身分已改到 H，測試預期值與 gate 宣告都還是舊名 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1446: trailing whitespace.
++| 5 | node:tests-js（1） | 沒有改碼 | **變慢**，不是卡住。依指示沒有調 timeout，只附量測，由主迴圈決定 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1447: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1448: trailing whitespace.
++### 1. test_axiom_reader
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1449: trailing whitespace.
++- **根因**：`757769cc` 改寫了 M85 的 desc，新內容多了「D1 仍拒絕」。`axiom_matrix.mutant_hits` 的規則是「desc 提到哪個條號，就把變異掛到哪張卡」，所以 D1 卡多出一列「變異 M85」，但閱讀器沒有重產。M13 的新 desc 仍只提到 I11，不影響其他卡。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1450: trailing whitespace.
++- **修法**：用 `geometry-guide/sync_axiom_reader.py` 原位重產。差異只有 D1 卡的那一列 trace-row。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1451: trailing whitespace.
++- **證據**：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1452: trailing whitespace.
++  - 修前：`test_axiom_reader` 失敗 6 項（`c1-axiom-reader-before.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1453: trailing whitespace.
++  - 修後：`--check` 的五道 assert 等全部 pass，`patches: 90`；`test_axiom_reader` 51 項 OK（`c1-axiom-reader-after.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1454: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1455: trailing whitespace.
++### 2. test_guide_panels
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1456: trailing whitespace.
++- **根因**：`check_panels.py` 對 live 的 `current_geometry.c` 報出 29 個 unresolved。GEO-261 把面板原本展示的本體搬出了 `current_geometry.c`：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1457: trailing whitespace.
++  - `Point3`／`Vector3`／`Quad3`／`Plane3`／`SurfaceFrame`／`GuideLine` 現在是 K 型別的 typedef。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1458: trailing whitespace.
++  - `PolygonLoop2`／`SpaceBoundarySurface`／`Timber` 現在是 W 型別的 typedef。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1459: trailing whitespace.
++  - `vector_cross`、`surface_point_to_room`、`surface_frame_is_valid`、`timber_local_to_room`、`timber_get_face_room` 只剩一行，直接轉交 K 或 W。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1460: trailing whitespace.
++  - `World` 變成 `{geo, wood, app}` 三份文件。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1461: trailing whitespace.
++  - `parse_scene_file` 改讀 `wood.timbers`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1462: trailing whitespace.
++- **修法**：導讀頁只內嵌 `current_geometry.c`，沿用既有「place / move：交給引用層」面板的做法：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1463: trailing whitespace.
++  - 面板改指向 H 裡實際存在的那一行（typedef 或轉交）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1464: trailing whitespace.
++  - note 寫出 K／W 本體所在的檔案與它做的事，每句都對照過該檔案的程式碼。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1465: trailing whitespace.
++  - §1–§5 與 §10 的 prose 各補一句。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1466: trailing whitespace.
++  - 照 GEO-175 的流程重產：先跑 `core.exe --no-window --out current_geometry.svg`，再跑 `make_guide.py`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1467: trailing whitespace.
++  - 預設世界的 SVG 在 main 與本分支逐位元組相同。舊頁面是「尚未產生」的佔位圖，現在換成實際輸出。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1468: trailing whitespace.
++- **證據**：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1469: trailing whitespace.
++  - 修前：unresolved 29（`c2-check-panels-before.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1470: trailing whitespace.
++  - 修後：39 個面板，unresolved: none；`test_guide_panels` OK。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1471: trailing whitespace.
++  - headless Chrome 實際開頁：每個面板的高亮行數都等於 callout 數，沒有「找不到」（`c2-browser-panels.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1472: trailing whitespace.
++  - 補充：舊頁面嵌的是 GEO-261 前 13048 行的快照，所以它自己看起來一致。測試比對的是 live 的 C，才會失敗。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1473: trailing whitespace.
++  - 審查補正（`3a867555`）：`wood_member_place_a0` 的說明補上第一步「錨點須落在某個分量內」。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1474: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1475: trailing whitespace.
++### 3. test_rule_case_executor（FileNotFoundError: /proc/<pid>/stat）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1476: trailing whitespace.
++- **根因**：測試本身有競態。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1477: trailing whitespace.
++  - orphan 控制組 fork 出子孫後，leader 就退出，子孫被過繼給 init（或 subreaper）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1478: trailing whitespace.
++  - `_Child.stop()` 用 killpg 殺掉整組，新的父行程隨後非同步回收子孫。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1479: trailing whitespace.
++  - `/proc/<pid>` 可能在 `exists()` 與 `read_text()` 之間消失。「已消失」本來就是成功條件，舊迴圈卻把它變成 error。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1480: trailing whitespace.
++  - main 與本分支的 `rule_cases/executor.py`（`_Child`）和合成控制程式都沒有改；`runtime.py` 改了，但與這個測試無關。所以不是 GEO-261 讓 leader 提早退出，而是負載下更容易踩到這個時序窗。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1481: trailing whitespace.
++- **修法**：每圈只讀一次；`FileNotFoundError` 或 `ProcessLookupError` 都視為已消失；zombie 仍視為結束；超過 0.5 s 還在執行，仍以原訊息失敗。斷言沒有刪。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1482: trailing whitespace.
++- **證據**：Windows 跑不了這一類（需要 cc 與 /proc）。我從測試原始碼原樣切出新舊兩版迴圈，對模擬的 /proc 行為執行（`c3-race-harness.log`）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1483: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1484: trailing whitespace.
++  | 情境 | 舊迴圈 | 新迴圈 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1485: trailing whitespace.
++  |---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1486: trailing whitespace.
++  | 在 exists 與 read 之間被回收 | FileNotFoundError | pass |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1487: trailing whitespace.
++  | read 時遇到 ESRCH | ProcessLookupError | pass |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1488: trailing whitespace.
++  | zombie | pass | pass |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1489: trailing whitespace.
++  | 一開始就已消失 | pass | pass |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1490: trailing whitespace.
++  | 持續執行 | AssertionError | AssertionError |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1491: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1492: trailing whitespace.
++  其餘 31 項在 Windows 上 OK。**真實的 Linux 驗證要等下一輪 WSL 全量。**
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1493: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1494: trailing whitespace.
++### 4. test_section_profile_mutation_check
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1495: trailing whitespace.
++- **歸屬**：GEO-261 把 `ModelError` 定義在 H 的 `geometry_app.model_common`。`modeling.common` 是 facade，re-export 的是同一個類別物件：`is` 成立，`except` 與 `isinstance` 都有效，所以 re-export 沒有問題。收集器記錄的是 `__module__ + '.' + __qualname__`，也就是定義所在的模組，所以實際名稱是 `geometry_app.model_common.ModelError`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1496: trailing whitespace.
++- **修法**：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1497: trailing whitespace.
++  - 測試的預期值改成實際名稱。這不是放寬：預期仍是唯一一個精確字串。fixture 仍經由 facade import，所以測試還多證明了「記下的不是別名」。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1498: trailing whitespace.
++  - **同一個舊名也在 gate 本身**：SPM38 與 SPM40 的 `error_types=['modeling.common.ModelError']`，收集器已經不可能產生這個名稱，這兩個 kill 會被判成 `crashed`。已改成 `MODEL_ERROR`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1499: trailing whitespace.
++  - `test_case_declared_modelerror_is_detection` 加上一條：facade 別名不算數。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1500: trailing whitespace.
++  - 新增 `test_declared_model_error_type_is_the_collected_identity`，把兩個宣告綁到收集器實際回報的名稱。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1501: trailing whitespace.
++  - `run_all.expected.json` 的計數 29→30（用 unittest loader 數）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1502: trailing whitespace.
++  - `geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md:212` 原本也寫舊名，已同步更正（`3a867555`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1503: trailing whitespace.
++- **證據**：修前失敗 1 項；修後 30 項 OK。只撤回兩個 `error_types` 會再紅 3 項（`c4-unit-*.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1504: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1505: trailing whitespace.
++### 5. tests-js：delivered engineering project…（45 s TimeoutError）——變慢，不是卡住
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1506: trailing whitespace.
++同一台機器、MSVC 編的 bridge 與 model-base，以 fetch 計時 preload 量測，測試本身沒動（`c5-*-fetch.log`）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1507: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1508: trailing whitespace.
++| | main 4b975a3d | 本分支 b9f4ef3f |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1509: trailing whitespace.
++|---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1510: trailing whitespace.
++| 無負載：整個測試 | 26.5 s ✔ | 84.4 s ✔（全部斷言通過） |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1511: trailing whitespace.
++| `/model/verify` ×5（每次） | 0.47–0.67 s | 1.40–2.07 s |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1512: trailing whitespace.
++| `/model/space-replay`（每次） | 5.1 s | 20.9 s／21.8 s |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1513: trailing whitespace.
++| 8 個 busy-loop 佔 CPU：整個測試 | 33.2 s ✔（replay 6.3 s／6.1 s） | **85.5 s ✖ TimeoutError**（replay 27.4 s，下一次在 30.006 s 被 abort） |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1514: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1515: trailing whitespace.
++WSL 的 45.4 s ≈ 前段約 15 s 加上 replay 的 30 s abort，與 Windows 負載下重現的簽名相同。服務一直有回應，每個請求最後都回 200，沒有死鎖。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1516: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1517: trailing whitespace.
++replay 變慢的來源（in-process 分析，同一份輸入）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1518: trailing whitespace.
++1. **原生 model-base 慢 4.4 倍**：16 次呼叫，每次 0.13–0.30 s → 0.55–1.3 s。輸出逐位元組相同；空場景的啟動時間 21 ms → 41 ms，所以慢在計算，不在啟動。`sizeof(World)` 4,125,160 → 4,759,448 B（+15%）。抽樣：cdaa2010 是 0.13 s，901d77e6 與 b9f4ef3f 都是 0.57 s，所以是 GEO-261 原生分層引入的。中間的 first-parent commit 無法用 MSVC 編譯，沒能再縮小範圍。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1519: trailing whitespace.
++2. **`source_closure.current_identity()`**：每次原生呼叫前後各跑一次，每次都重掃並雜湊約 200 個 .py／.json／.c／.h／.inc。cProfile 下 32 次合計約 6.7 s。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1520: trailing whitespace.
++3. H/K 的 Python 路徑（decode_candidate、kernel evaluate、canonical check）增加約數秒。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1521: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1522: trailing whitespace.
++依指示**沒有調 timeout**，由主迴圈決定。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1523: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1524: trailing whitespace.
++### 其他發現（未修，回報給主迴圈）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1525: trailing whitespace.
++- **Q38 的 model 組在本分支整組失效**（不在 run_all 內）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1526: trailing whitespace.
++  - `copy_sources(python=True)`（`tests/section_profile_mutation_check.py:284`）沒有複製 `geometry_kernel`／`geometry_app`／`geometry_woodworking` 這三個 Python 套件，基準線一 import 就失敗：`ModuleNotFoundError: geometry_app`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1527: trailing whitespace.
++  - MS／ME（`:73-74`）指向的 facade 檔現在只有 3 行與 17 行，SPM36、SPM38、SPM40 的錨點已不存在，SPM37 的錨點也變了。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1528: trailing whitespace.
++  - 這需要像 `757769cc` 那樣重錨，再實跑驗證。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1529: trailing whitespace.
++- **M85 掛到 D1**：這是 desc 提到「D1 仍拒絕」造成的。依 axiom_matrix 的定義推導是正確的，但 M85 並沒有削弱 D1。要不要改 desc 由主迴圈決定；改 desc 會讓 M85 帳本過期。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1530: trailing whitespace.
++- 改了 `tests/*.py`，所以 `mutate.py --check` 現在有 18 筆 bridge 項目 stale，這是預期中的，交給主迴圈刷新。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1531: trailing whitespace.
++- 導讀頁內嵌的 SVG 來自被 `.gitignore` 忽略的 `current_geometry.svg`：乾淨 checkout 直接重產會退回佔位圖。這是 GEO-175 起既有的流程限制，沒有守門。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1532: trailing whitespace.
++- 對抗審查（sonnet，fresh context，唯讀）逐句核對了 K/W/H 的描述、30 這個計數、迴圈語意，以及閱讀器的位元冪等，沒有發現會造成誤綠或誤紅的缺陷。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1533: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1534: trailing whitespace.
++🤖 Generated with [Claude Code](https://claude.com/claude-code)
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1568: trailing whitespace.
++【Claude 效能】GEO-261 原生效能退化：熱點、三項修正、等價證據與交錯量測
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1569: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1570: trailing whitespace.
++新 head：`1908115ec97969e8540a7a25504783dc830e27b6`（基底 `3a867555`），已一般 push，遠端回讀一致。四個提交：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1571: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1572: trailing whitespace.
++- `c8de5a40` geo261: memoize the host source inventory and adapter digest by stat signature
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1573: trailing whitespace.
++- `48699c78` tests: walk each shared native tree once when fingerprinting a binary
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1574: trailing whitespace.
++- `8305bc8f` geo261: read model-base scenes through the owned file replay
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1575: trailing whitespace.
++- `1908115e` tests: model-base replay witness reads CRLF stderr and compares no raw World digest
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1576: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1577: trailing whitespace.
++沒有改公理、判決、診斷文字或任何竄改守門，`app_candidate.c` 和 `kernel/candidate.c` 一行沒動。失敗行仍然讓 World 保持不變。被接納的行改用 owner 內的 World 備份還原，這和 bridge 匯入場景的做法相同。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1578: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1579: trailing whitespace.
++## 熱點（WSL、gcc -O2、同一台機器）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1580: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1581: trailing whitespace.
++工具：自寫的 SIGPROF 堆疊取樣器（static libc，看得到 libc 符號），加上 `-Wl,--wrap=memcpy,memmove,memset,memcmp,calloc,malloc` 的呼叫點計數器。代表性場景是 space-replay 實際送進 model-base 的第 09 份輸入（51 行，其中 12 行 engineering）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1582: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1583: trailing whitespace.
++| 09 場景，plain | main `4b975a3d` | 整合 `3a867555` |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1584: trailing whitespace.
++|---|---:|---:|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1585: trailing whitespace.
++| wall | 0.178 s | 0.77 s |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1586: trailing whitespace.
++| H 候選數 | 每行 malloc 一份 World | 52 個 AppWorldCandidate |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1587: trailing whitespace.
++| memcpy 總量 | 1.14 GB | 2.06 GB |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1588: trailing whitespace.
++| memcmp 總量 | 0.3 MB | 2.33 GB |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1589: trailing whitespace.
++| calloc 總量 | 0 | 0.67 GB |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1590: trailing whitespace.
++| minor page faults | 7.6 K | 38.6 K |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1591: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1592: trailing whitespace.
++整合分支的取樣：memcpy 56%、memcmp 25%、memset 6%，合計 87% 在記憶體搬移與比較。前五個呼叫點：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1593: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1594: trailing whitespace.
++1. `app_candidate_capture_snapshot`（before/after bytes 複本）15.6%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1595: trailing whitespace.
++2. `app_candidate_hash_matches` 的整份 World memcmp 15.6%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1596: trailing whitespace.
++3. `app_candidate_create_with_deferred_sha` 的 before/after 複本 12.5%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1597: trailing whitespace.
++4. `geo_candidate_digest_matches`（九個 K binding）7.3%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1598: trailing whitespace.
++5. `app_scene_candidate_apply` 的 trial 複本 6.3%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1599: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1600: trailing whitespace.
++每個候選大約搬 155 MB：World 4.76 MB 要整份複製 6 次、整份比較 6 次，另外 K binding 約 2.2 MB 要複製 2 次、比較 7 次。所以退化來自「每行開一個完整候選」乘上「每個候選固定的守門流量」，不是某一個函式寫得慢。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1601: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1602: trailing whitespace.
++bridge 端的原生部分只慢約 15%（accept 迴圈 29.2 s 對 33.6 s）。bridge_integrity 多出來的時間主要在測試端：每次呼叫 bridge 前都會跑 `binaries.inspect_one()`，它的 `_scan_shared()` 對四棵樹各跑三次 rglob。整合分支每次 111 ms，main 是 48 ms，257 次呼叫累計約 28 s。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1603: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1604: trailing whitespace.
++Python 端：`current_identity()` 每次都重列約 300 個目錄、重新雜湊 210 個檔，Windows 上每次約 200 ms。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1605: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1606: trailing whitespace.
++## 修正與等價證據
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1607: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1608: trailing whitespace.
++**一、`c8de5a40` source_closure 程序內快取（主迴圈已同意，附負對照）**
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1609: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1610: trailing whitespace.
++- 鍵是每個被監看目錄與被列出檔案的 (dev, inode, size, mtime_ns, change time)。POSIX 的 change time 用 st_ctime；Windows 的 st_ctime 其實是建立時間，所以改用 NTFS ChangeTime。adapter exe 用同一套簽名。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1611: trailing whitespace.
++- 任何一項不同就整份重算。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1612: trailing whitespace.
++- 擷取當下時間戳在 3 秒以內的，一律不存，避免同一個時間 tick 內的改寫被漏掉。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1613: trailing whitespace.
++- 監看的樹裡只要出現連結（symlink 或 junction），就停用快取。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1614: trailing whitespace.
++- `tests/test_source_closure_memo.py` 共 12 項。其中 8 項是負對照，都在同一個程序內改真檔：內容改寫、同大小改寫並還原 mtime、只改 mtime（必須整份重雜湊）、新巢狀目錄加檔、刪檔、換 inode、`current_identity()` 轉成不 fresh、adapter 同大小改寫。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1615: trailing whitespace.
++- 另有 1 項會在「快取永遠命中」的條件下重跑那 8 項，並要求 8 項全紅。其餘 3 項是正向檢查：快取結果等於原始計算、近期時間戳不入快取、真實 repo 的清單一致。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1616: trailing whitespace.
++- 原始碼突變三種（Windows 與 WSL 都實跑）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1617: trailing whitespace.
++  - 永遠命中：8 項紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1618: trailing whitespace.
++  - 拿掉 change time：同大小改寫的 3 項紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1619: trailing whitespace.
++  - 拿掉 racy 視窗：1 項紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1620: trailing whitespace.
++- Windows 上每次呼叫從約 200 ms 降到約 20 ms。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1621: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1622: trailing whitespace.
++**二、`48699c78` `tests/binaries.py::_scan_shared` 每棵樹只走一次**
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1623: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1624: trailing whitespace.
++- 這個改動沒有加快取，檔案集合與每個 fingerprint 都不變：改用剪枝的 os.walk 加 fnmatch，大小寫規則與 pathlib 相同，目錄名也照樣比對。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1625: trailing whitespace.
++- 等價證據：舊的 rglob 實作逐字留在測試裡當 oracle，對合成樹逐項比對。合成樹涵蓋各層 skip 目錄、大寫副檔名、名為 `dir.c` 的目錄、隱藏檔、POSIX 的檔案連結與目錄連結。整個 repo 也一樣比對過。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1626: trailing whitespace.
++- 撤回突變：換回舊實作時，成本見證「每棵樹恰好一次 os.walk、不准呼叫 rglob」轉紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1627: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1628: trailing whitespace.
++**三、`8305bc8f` model-base 走 owned file replay（B）**
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1629: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1630: trailing whitespace.
++- model-base 只開一個 owner 候選，用 `app_scene_replay_file` 重放整個檔案。這正是 bridge 匯入場景時已經在用的那條路（B，P-177）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1631: trailing whitespace.
++- 被接納的行，只在 owner 裡用一份 World 備份重放。其餘的行仍然各自開內層候選，preview 與診斷不變。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1632: trailing whitespace.
++- owner 的收尾驗證、seal、publish 都不變。owner 配置失敗時退回原本的逐行 parse。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1633: trailing whitespace.
++- 另外兩項配置調整，都只在 model-base 生效：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1634: trailing whitespace.
++  - 兩次 `--neutral-sources` fingerprint 共用一個保留到程序結束的 buffer。原本每次 free 一塊 1 MiB，會把 glibc 的大塊門檻調掉，之後每個候選都要重新 fault 新頁。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1635: trailing whitespace.
++  - 最多重用 4 塊 AppWorldCandidate。重用前會把兩份 World 之後的區段清零，與 calloc 的結果相同，而建構子在任何讀取之前就會用 live 覆寫兩份 World。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1636: trailing whitespace.
++- 等價證據：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1637: trailing whitespace.
++  - WSL gcc -O2 外部篩檢：188 個場景 × 2 種輸出模式，共 376 次執行，修前與修後的 rc、stdout、stderr 逐位元組相同，0 不符（152 次接受、224 次拒絕）。接受時另比最終 World 整份 sha256，同一 build 重跑結果穩定。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1638: trailing whitespace.
++  - bridge accept 迴圈（每個場景 loadfile/dump/render 各兩次）修前修後的輸出雜湊相同（`2de5546e…`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1639: trailing whitespace.
++  - 套件內測試 `tests/test_geo261_model_base_replay.py`（5 項）把真實 adapter 原始碼連到 product objects，編兩份：一份照舊，一份只把三項改動以文字還原。14 個場景、兩種模式下，stdout 與 stderr（含 I8a preview 文字）逐位元組相同。成本見證（開了幾個候選、配置幾塊、配置幾個 fingerprint buffer）在還原版上必須轉紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1640: trailing whitespace.
++- 撤回突變（WSL 實跑，錯誤訊息都指得出病因）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1641: trailing whitespace.
++  - M1 讓 `model_parse_scene` 改回逐行：`1 != 11 : owned replay keeps every admitted line in the owner`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1642: trailing whitespace.
++  - M2 關掉重用：`2 != 4 : the owner and one block reused…`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1643: trailing whitespace.
++  - M3 每次 fingerprint 重新配置：`1 != 3`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1644: trailing whitespace.
++- 竄改守門的負控照樣紅。既有套件 `test_geo261_candidate_product`（26，含 wood/host/before 竄改案例）和 `test_geo261_deferred_product`（10，含 D 的撤回負控）都全綠，代表它們內部「預期要紅」的 ASSERT 仍紅在指定位置。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1645: trailing whitespace.
++- 有一個限制：這兩套走的是 bridge harness，而 bridge 不開重用池；model-base 自己的竄改路徑沒有專屬套件。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1646: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1647: trailing whitespace.
++**跑過的套件**：WSL `run_all --build --only`，17 個套件全綠，計數與 expected 相符。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1648: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1649: trailing whitespace.
++- 第 1 批（`8305bc8f`）：source_closure_memo 12、binaries 36、geo261_model_base_replay 5、bridge_integrity 24、domain_source_pins 16、geometry_host_native 30、geometry_host_world 8。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1650: trailing whitespace.
++- 第 2 批（product code 與 `1908115e` 相同）：engineering_model_compatibility 44、geo261_candidate_product 26、geo261_deferred_product 10、geo261_model_semantics_authority 12、geo261_model_vertex_ledger 7、model_update 26、modeling_runtime 46、modeling_transport 3、scenario_verify 37、space_modeling 40。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1651: trailing whitespace.
++- `1908115e` 的 model_base_replay 與 memo 另在 WSL 跑一次，17/17（這是突變輪的對照組）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1652: trailing whitespace.
++- Windows：memo 12/12、binaries 36/36、model_base_replay 5/5（MSVC）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1653: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1654: trailing whitespace.
++## 交錯量測（WSL，main 與整合分支輪流各 3 次，中位數）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1655: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1656: trailing whitespace.
++同一台機器的 WSL（Ryzen 5 7535HS，L3 16 MiB），用 `perf_ab2.sh` 跑兩組，每組都是 main 和受測分支輪流各 3 次。model-base 用 09 場景，每次取 5 次中位數。space-replay 用 engineering-spec-v1 範例的 `replay_stored`，跑 16 次 model-base。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1657: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1658: trailing whitespace.
++| 項目 | main `4b975a3d` | 修前 `3a867555` | 倍率 | 修後 `1908115e` | 倍率 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1659: trailing whitespace.
++|---|---:|---:|---:|---:|---:|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1660: trailing whitespace.
++| bridge_integrity（run_all 表格秒數） | 63.0 / 63.9 s | 94.1 s | 1.49× | 83.9 s | **1.31×** |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1661: trailing whitespace.
++| model-base 09 plain | 0.177 / 0.182 s | 0.778 s | 4.39× | 0.515 s | **2.82×** |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1662: trailing whitespace.
++| model-base 09 --neutral-sources | （main 沒有這個模式） | 0.770 s | — | 0.524 s | — |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1663: trailing whitespace.
++| space-replay | 2.40 / 2.52 s | 13.48 s | 5.61× | 5.97 s | **2.37×** |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1664: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1665: trailing whitespace.
++- main 欄的兩個數字，分別是「對修前」與「對修後」那兩組裡 main 的中位數。倍率都是除以同組的 main。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1666: trailing whitespace.
++- 每一輪的 rc 都是 0。replay 結果雜湊在三個版本都是 `3493f8ef…`。model-base 09 的 plain 輸出三個版本都是 `b33977ab…`，neutral 輸出修前修後都是 `063125b1…`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1667: trailing whitespace.
++- 16 份 space-replay 輸入逐一量（各 5 次中位數）：model-base 合計 main 1.97 s，修前 10.11 s（5.1×），修後 3.98 s（2.0×）。用 canonical 順序寫的輸入（定義在前、place 在後，例如 10、14）修後約 1.6×。在 timber 放好之後才寫定義的輸入（03、05、07、09）仍有 2.5–2.8×。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1668: trailing whitespace.
++- Windows（MSVC /O2，雜訊大，只當參考）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1669: trailing whitespace.
++  - model-base 09 neutral：修前 0.87–0.89 s，修後 0.54–0.56 s（用與最終程式碼相同的原型組建量）；main plain 0.18 s。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1670: trailing whitespace.
++  - space-replay 同一程序直接跑：main 3.6–4.6 s，修後 6.3–7.5 s，其中 native 3.4–4.7 s 對 main 的 2.9–4.0 s。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1671: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1672: trailing whitespace.
++## 剩下的熱點與下一步
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1673: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1674: trailing whitespace.
++1. **model-base 裡 frame 不接納的行仍然各開一個完整 H 候選。** 這指的是 timber 放好之後才出現的 boundary、placement、spec 等定義：09 有 25 行，每行在 WSL 約 10 ms、約 155 MB 守門流量，大約占剩下 0.52 s 裡的 0.3 s。下一步有兩條路，都需要主迴圈拍板：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1675: trailing whitespace.
++   - (a) 讓 frame 也接納這類行，碰到 impact 或失敗時，還原後改走原本的逐行路徑重跑。我稽核後停手了，因為 World 以外還有跨行的全域狀態，重跑會讓它們走兩次：`g_rule_scene_*` highwater、sp/fs/grid 的 scene required 旗標、`g_assembly_record`、parameter ledger，以及幾個錯誤 buffer。要做就得逐一快照與還原，再對拒絕夾具做全量位元組比對。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1676: trailing whitespace.
++   - (b) 降低每個候選的守門流量。P-177 禁止這條，而且 `app_candidate.c` 與 `kernel/candidate.c` 被大量測試錨定。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1677: trailing whitespace.
++2. **space-replay 的 Python 端是 GEO-261 新增的型別核心處理，不屬於原生部分。** Windows cProfile（第二次呼叫）：`decode_candidate` 2.6 s、`geometry_kernel.evaluate` 2.2 s、`canonical_bytes`/`check` 1.35 s（54 萬次遞迴）、`descriptors` 1.2 s、`validate_program` 1.1 s、`mesh_objects` 1.0 s。WSL 上修後比 main 多出約 1.5 s，大多在這裡。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1678: trailing whitespace.
++3. **Windows 特有的兩筆成本。** 一是每次 model-base 的 CreateProcess 在 cProfile 下約 117 ms，main 也一樣。二是快取驗證每次約 20 ms，主要花在逐檔開 handle 讀 ChangeTime；若改用每個目錄一次的 FileIdBothDirectoryInfo 列舉，可以再省。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1679: trailing whitespace.
++4. **既有問題，本次未改：** MSVC 下 WoodMember 的 padding（id 之後 4 bytes 等）帶著堆疊殘值，所以同一個 build 跑兩次，World 整份 bytes 就不同；修前修後都一樣。凡是用 memcmp 比較「不同路徑建出來的 World」的地方，理論上都可能被它干擾。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1680: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1681: trailing whitespace.
++## 我最不確定的三處
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1682: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1683: trailing whitespace.
++1. **B 的等價是實證，不是證明。** 證據是 376 次執行的 gcc -O2 篩檢（含 World 整份 sha）與套件內 14 個場景 × 2 模式的比對。B 本來就是 bridge 匯入場景的路徑，model-base 現在與它共用。有一個理論上的差異：若某個場景 parse 成功，但 owner 的 seal 或 publish 失敗，model-base 會回預設診斷，而不是逐行路徑會給的訊息。沒有任何夾具觸發過這種情況。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1684: trailing whitespace.
++2. **快取在 NTFS 與 ext4 以外的檔案系統上是否可靠。** Windows 靠 NTFS ChangeTime，我只在本機 NTFS 實測過。GEOMETRY_MODEL_BASE 若指向 `\\wsl.localhost` 或網路磁碟，ChangeTime 的語意未驗證：查詢失敗會停用快取（安全）；但若回傳了值卻不隨寫入變動，那種「同大小改寫並還原 mtime」就可能漏掉。3 秒的 racy 視窗也假設檔案時間戳與 `time.time_ns()` 用同一個時鐘。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1685: trailing whitespace.
++3. **兩項配置調整是靠 glibc 啟發式行為得來的效益。** 一是保留 fingerprint buffer，二是候選區塊重用。WSL neutral 09 從 0.97 s 降到 0.48 s，是因為避開了 glibc 動態 mmap/trim 門檻引起的反覆 fault；在 MSVC 上只省 5–7%。日後配置模式一變，這種反覆 fault 可能再出現。區塊重用的等價，前提是建構子在任何讀取之前就整份覆寫兩個 World；這在今天的 `app_candidate_create_with_deferred_sha` 成立，以後改那裡時要重新確認。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1686: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1687: trailing whitespace.
++**未驗：** 全量 run_all、六個瀏覽器 job、mutants 帳本重產（交給主迴圈）、遠端 CI（push 後 checks 還沒有結論）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1688: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1689: trailing whitespace.
++原始資料在 `D:/geometry-axiom-work/perf261-out/` 與 `D:/geometry-axiom-work/perf-ab2-*`，沒有入庫。量測腳本是 `scratchpad/wsl-ci/perf_ab2.sh`，新檔，舊的 perf_ab.sh 沒有原地覆寫。perf_ab.sh 的錯誤在於兩個 clone 共用 `/tmp/geometry-tests`，先建的那邊在計時時已經過期，於是報環境錯誤（rc=2）。perf_ab2.sh 改成每邊各自保存建好的 registry 二進位，每輪計時前還原，並且帶 `--build`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1690: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:1691: trailing whitespace.
++帳本：本次動到 `tests/*.py` 與 `tests/run_all.py`，所以 mutants 帳本會過期，交給主迴圈重產。`tests/run_all.expected.json` 只改了三個套件的計數：binaries 33→36，新增 source_closure_memo 12、geo261_model_base_replay 5，都是實跑得到的數字。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:2329: trailing whitespace.
++   
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/02.stdout:2578: new blank line at EOF.
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.latest-chatgpt.md:17: new blank line at EOF.
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1018: trailing whitespace.
++【Claude 整合】兩條 Codex 修正與 main `4b975a3d`（列車 #312，GEO-262 整卡參照）已併入整合分支；整卡參照已移植到 GEO-261 的 K/W/H 結構。新 head `901d77e66161590c396d64c4ecd4fc624783e1d4`（遠端已回讀相同）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1019: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1020: trailing whitespace.
++## 合入的提交（全部 merge commit，未改寫歷史）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1021: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1022: trailing whitespace.
++| 提交 | 內容 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1023: trailing whitespace.
++|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1024: trailing whitespace.
++| `5e7da408` | merge `codex/geo261-fix-assembly-guide-regression-20261018` 的 tip `ee24a306`（測試 `97bc7c0c`＋證據）。`.gitignore` 檔尾衝突，兩邊都保留。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1025: trailing whitespace.
++| `8e163983` | merge `codex/geo261-fix-policy-exception-protocol-20261018` 的 tip `b0e5dfef`（`82dd8dcc` 測試、`a55b87d1` 修正、證據）。`.gitignore` 檔尾衝突，兩邊都保留。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1026: trailing whitespace.
++| `07cc20f8` | 後續修正：`PolicyIssue` 與 `RejectedView` 都改成 `@dataclass(eq=False)`。另加兩個「拿掉修正就紅」的測試，並更新計數。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1027: trailing whitespace.
++| `901d77e6` | merge `origin/main` `4b975a3d`，並完成整卡參照移植。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1028: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1029: trailing whitespace.
++### `07cc20f8` 細節
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1030: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1031: trailing whitespace.
++- `RejectedView`（`geometry_rectangular/protocol.py`）原本也是 frozen dataclass 例外。它被當成 cause 交給 unittest 回報時，或穿過 `contextlib.contextmanager` 時，會丟出 `FrozenInstanceError`。已在 Windows 重現。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1032: trailing whitespace.
++- 新測試：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1033: trailing whitespace.
++  - `KernelRuntimeTests.test_policy_issue_keeps_the_standard_exception_identity_protocol`（走真 W `PROFILE_VOLUME` 拒絕路徑）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1034: trailing whitespace.
++  - `RectangularRejectionProtocolTests`（新類別，所以 `RectangularPythonTests` 隔離安裝的「Ran 5 tests」釘死值不變）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1035: trailing whitespace.
++- 撤回控制（Windows，Python 3.14.4）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1036: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1037: trailing whitespace.
++| 測試 | 改回 frozen | 改成 plain `@dataclass` |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1038: trailing whitespace.
++|---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1039: trailing whitespace.
++| PolicyIssue | `POLICY_EXCEPTION_IDENTITY_HASH` 紅；Codex 的測試另報 `FrozenInstanceError` | `unhashable type` 紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1040: trailing whitespace.
++| RejectedView | `REJECTED_VIEW_STANDARD_PROTOCOL`（FrozenInstanceError）紅 | `REJECTED_VIEW_IDENTITY_HASH` 紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1041: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1042: trailing whitespace.
++- 計數用 unittest loader 數出：`py:test_geometry_kernel_runtime` 8→10（Codex +1、本次 +1），`py:test_rectangular_python` 8→9。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1043: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1044: trailing whitespace.
++## 衝突解法（16 檔）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1045: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1046: trailing whitespace.
++| 檔案 | 解法 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1047: trailing whitespace.
++|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1048: trailing whitespace.
++| `current_geometry.c` | 取 GEO-261 的 K typedef 區塊。`GridCardReference` 改成 K 型別名；`GRID_CARD_CAPABILITY` 與其他格網能力放一起。main 的 dump、解析、I74 CAPABILITY 三段保留。另把兩行 C11 `_Static_assert` 改成可攜的檔案層檢查（見待驗段的說明）。檔案維持 CRLF。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1049: trailing whitespace.
++| `parameter_types.h`、`modeling/base.py`、`modeling/common.py`、`modeling/engine.py` | 取 GEO-261 側，逐位元組等同 `07cc20f8`。能力移植到 `geometry_app/model_common.py` 和 W `model_policy.py`。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1050: trailing whitespace.
++| `grid_systems.inc`、`engineering_commands.inc`、`model_base.c`、`transactions.inc` | 以 GEO-261 版為底，補入 main 的行為（見移植表）。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1051: trailing whitespace.
++| `parameters.inc` | guide/datum 迴圈取 GEO-261 的 store。main 的 B2 名單、整卡引用者、S1 可改綁的 grid-system 引用者與宣告擁有者判斷都改走 K grid store。main 的 `parameters_clear_candidate_scratch` 不採用：GEO-261 的 ledger 隨 scope 釋放。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1052: trailing whitespace.
++| `engineering_bridge.inc` | 能力表取 W 的 `assembly` 欄位，並加 `grid-card-reference/1`。`batch_preview` 取 GEO-261 的候選流程，capture 從 `scope.ledger` 複製。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1053: trailing whitespace.
++| `grid_system_bridge.inc`、`source-inspector-bridge.inc` | 取 main 的整卡輸出，欄位名改成 `body`，store 改成 K store。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1054: trailing whitespace.
++| `tests/run_all.py` | suite 定義聯集（`test_grid_card_reference` 與 `test_grid_inspector_contract` 都保留）。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1055: trailing whitespace.
++| `tests/run_all.expected.json` | 條目聯集。只改一邊的取該邊；兩邊都改的只有 `node:tests-js`：724＋6（GEO-261）＋7（`test_card_reference_project_store.js`）＝737，Windows 實跑數出 737。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1056: trailing whitespace.
++| `公理層-閱讀器.html` | 取 main 的檔案當模板，用 `sync_axiom_reader.py` 原位重產。再重產一次是 no-op，`--check` 通過。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1057: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1058: trailing whitespace.
++其他：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1059: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1060: trailing whitespace.
++- `公理層.md`、`公理層-白話.md` 與 main 逐位元組相同（LF）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1061: trailing whitespace.
++- `modeling/__init__.py` 的版本集合自動合併後等同 main（含 P-181 與 `CARD_REFERENCE_AXIOM_VERSIONS`）。GEO-261 側沒有自己的 `PRE_*` 集合。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1062: trailing whitespace.
++- `tests/mutants_results.json` 沒有衝突，結果為 main 的帳本，我沒有改。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1063: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1064: trailing whitespace.
++## 移植對照表
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1065: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1066: trailing whitespace.
++| main 上的函式或區塊 | 整合分支上的位置 | 層 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1067: trailing whitespace.
++|---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1068: trailing whitespace.
++| `GridAxisDef.card_length`、`GridSystem.card_reference`、`GridCardReference` | `kernel/grid_store.h`：`GeoGridAxisDef.card_length`、`GeoGridSystem.card_reference`、`GeoGridCardReference`；store 的複製逐欄進行 | K |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1069: trailing whitespace.
++| `grid_systems.inc` 的 `grid_card_resolve`（在 rebuild 內） | `kernel/grid_store.c` 的 `geo_grid_card_resolve`：在 `geo_grid_system_evaluate` 的第一步、逐欄 ParameterRef 之前，用同一個 resolver 求值，所以直接路徑與 source-graph 路徑一致。新增 `geo_grid_system_resolve_card` 給 R60。 | K |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1070: trailing whitespace.
++| I74 的六種錯誤字串 | W `wood_grid_card_error`（`grid_application.c`），rebuild 與 R60 共用 | W |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1071: trailing whitespace.
++| （main 無對應） | W `grid_definition_codec.c`、`grid_sources.c`：每軸線格式結尾加 `card_length`，系統結尾加整卡映射。受控槽在 authored 線上與 ParameterRef 槽一樣遮蔽。兩個卡片欄位是定義輸入；publish cache 也包含受控槽。codec harness 的 oracle 同步擴充。 | W |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1072: trailing whitespace.
++| `grid_card_used`、`card` token、`card-reference` 解析、`CONTROLLED_TOKEN_REJECT`、dump | `grid_systems.inc`（同名函式，改走 K store）。H 的 `grid_card_resolve` 包裝 K 並交給 W 格式化。 | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1073: trailing whitespace.
++| `card_reference.inc` 全檔 | 同名檔改寫：編輯 K 定義的複本，經 `app_grid_system_redeclare/put` 寫回，main-along 留在 W 角色，R60 capture 進 H 的 `ParameterCandidateLedger` | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1074: trailing whitespace.
++| `GridCardCapture`、`ParameterState.card_captures`、`PARAM_OWNER_GRID_CARD` | `parameters.inc`：ledger 欄位、`PARAM_CARD_CAPTURE_MAX`、enum。不進 World，所以每份快照不再固定多 10,248 bytes。 | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1075: trailing whitespace.
++| 分派、parameter-package、requires | `engineering_commands.inc` | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1076: trailing whitespace.
++| `required_capabilities` | `model_base.c` 的 `model_legacy_snapshot` | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1077: trailing whitespace.
++| bridges 的整卡 JSON、parameterUses、source-inspect | 同檔，改走 K store | H |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1078: trailing whitespace.
++| `modeling/common.py`、`base.py`、`engine.py` 的能力 | `geometry_app/model_common.py`（常數、場景語法偵測）；W `model_policy.py` 的 `source_capabilities` 與 `capabilities` | H／W |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1079: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1080: trailing whitespace.
++其他移植：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1081: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1082: trailing whitespace.
++- `confirmation_probe.c`（CR17）改用 GEO-261 的 entry-point 巨集、K binding store、`g_preview.transaction->after` 和 `g_history` 計數。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1083: trailing whitespace.
++- `NATIVE-CONTRACT.md` 補一段 GEO-261 分層說明。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1084: trailing whitespace.
++- `tests/mutate.py`：M85～M88 改指 GEO-261 的檔案。M85 改到 K resolver，M86 改到 K `geometry.c`，M87/M88 改到 W `contacts.c`。`test_geo261_mutation_migration` 的清單釘死值擴充為 M78～M88，bridge 變異集合為 M61–M70 加 M78–M85。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1085: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1086: trailing whitespace.
++### 依賴方向
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1087: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1088: trailing whitespace.
++- `product-architecture.json` 新登記：`card_reference.inc` 為 H；九支 `card-reference/` 工具列為排除（LF 摘要）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1089: trailing whitespace.
++- 順手補上先前沒登記的項目：五份 `native-p1-closeouts-20261017` 證據 helper；`serve.py` router 摘要（main 的 receipt 封存修改，路由不變）；四支 test driver 摘要（`assembly_generation_test.js`、`cdp_test.js`、`feedback_resize_observer_test.js`、`marquee_test.js`，都是整合分支上先前的修改）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1090: trailing whitespace.
++- scanner 實跑 exit 0：333 個 owned 來源、796 條邊、0 診斷。新增的 `engineering_commands.inc → card_reference.inc` 是 H→H 邊；K 檔沒有 W 識別字。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1091: trailing whitespace.
++- scan、report、receipt 沒有重產。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1092: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1093: trailing whitespace.
++## Windows 測試結果（MSVC，`binaries.py` 建置，未用 WSL）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1094: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1095: trailing whitespace.
++| 範圍 | 結果 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1096: trailing whitespace.
++|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1097: trailing whitespace.
++| `test_grid_card_reference` | 43 個中 42 個通過。CR17 需要 `cc`；把探針改用 MSVC 編譯另跑，結果通過。 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1098: trailing whitespace.
++| `test_parameters_core` 40、`test_parameters_deleted_unbind` 14 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1099: trailing whitespace.
++| `test_engineering_core` 18、`test_grid_system_contract` 15、`grid_inspector` 3、`grid_subdivision_oracle` 41、`grid_trial` 5 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1100: trailing whitespace.
++| `test_recorded_api_receipts` 17、`test_bridge_integrity` 24、`test_engineering_model_sources` 4、`test_assembly_parameter_refs` 3 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1101: trailing whitespace.
++| `core:run_tests` 165（含 main 新增的 8 個 `_s1`／`_s7` 場景）、`c:integrity` 432 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1102: trailing whitespace.
++| `test_engineering_model_compatibility` 44、`domain_decoupling` adoption 15＋proposal 29＋compatibility 14、`test_modeling_transport` 3 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1103: trailing whitespace.
++| `test_axiom_reader` 51；`sync --check` | 全過；`--check` 通過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1104: trailing whitespace.
++| `test_mutation_freshness` 73、`test_geo261_mutation_migration` 15、`test_domain_source_pins` 16 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1105: trailing whitespace.
++| `test_architecture_contract` | 204 過，1 個 Windows symlink 權限 skip |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1106: trailing whitespace.
++| `test_product_architecture` | 18 個全過（TEMP 需設短路徑，見待驗） |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1107: trailing whitespace.
++| `test_geometry_kernel_runtime` 10、rectangular python 9／bridge 2／template 11 | 全過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1108: trailing whitespace.
++| GEO-261 原生（MSVC）全過的 | `grid_definition_codec` 13、`grid_definition_authority` 13、`grid_definitions_product` 4、`native_grid_store` 18、`native_grid_product` 5、`native_grid_rules` 9、`wood_grid_application` 11、`wood_grid_cells` 13、`wood_grid_engineering` 14、`host_facts_authority` 17、`default_native` 8、`application_closure` 14、`candidate_product` 26、`deferred_candidate` 53、`engineering_parameter_authority` 17、`geometry_host_world` 8、`geometry_source_runtime` 10、`modeling_degenerate` 24 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1109: trailing whitespace.
++| GEO-261 原生中有失敗的 | `grid_sources` 10/11、`native_grid` 7/8、`host_candidate` 14/17、`model_semantics_authority` 10/12、`model_vertex_ledger` 5/7、`native_document` 9/10、`native_kernel` 12/13、`native_parameters` 6/9、`wood_engineering_operations` 14/15、`geometry_host_native` 29/30 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1110: trailing whitespace.
++| `node:tests-js` | 737 個中 697 個通過 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1111: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1112: trailing whitespace.
++失敗的分類：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1113: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1114: trailing whitespace.
++- **GEO-261 原生**：缺口全是環境問題。15 個是新編的控制 exe 被 SAC 擋下（WinError 4551），1 個是無編譯器時的 fallback（即先前建議 e）。`grid_sources`、`native_grid` 兩項重跑後仍被擋。沒有任何邏輯失敗。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1115: trailing whitespace.
++- **`node:tests-js` 的 40 個失敗**：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1116: trailing whitespace.
++  - 37 個需要 gcc 或 C 編譯器；
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1117: trailing whitespace.
++  - 1 個是 CRLF 簽出造成的原始碼切片斷言（`test_grid_inspector_stagger`）；
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1118: trailing whitespace.
++  - 1 個是 private real service 逾時（`test_engineering_project_store`）；
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1119: trailing whitespace.
++  - 1 個是上一個的母項。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1120: trailing whitespace.
++- **`mutation:check` 失敗**：帳本已過期，預期中，待主迴圈重產。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1121: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1122: trailing whitespace.
++## 撤回移植控制（Windows，另建 bridge，跑完逐位元組還原）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1123: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1124: trailing whitespace.
++| 控制 | 結果 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1125: trailing whitespace.
++|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1126: trailing whitespace.
++| publish cache 不含受控槽 | CR01/02/03 轉紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1127: trailing whitespace.
++| capture 不複製到預覽 | CR13、P142-S2、P146 轉紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1128: trailing whitespace.
++| DSL 重宣告不擋整卡 | CR31 轉紅 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1129: trailing whitespace.
++| 拿掉整卡欄位的定義依賴（`wood_grid_card_definitions`） | 沒有測試轉紅（存活，見下方第 2 點） |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1130: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1131: trailing whitespace.
++## 待 WSL 驗（只有原生 gcc 環境能判）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1132: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1133: trailing whitespace.
++- 全量 `run_all.py --build`，以及嚴格 census（本機只跑了部分 suite）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1134: trailing whitespace.
++- 突變帳本 `mutate.py` 重產：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1135: trailing whitespace.
++  - 全部 78 筆：57 筆核心、18 筆 bridge（M61–M70、M78–M85），另有 3 筆 retired；
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1136: trailing whitespace.
++  - M85～M88 的新目標是否被指定測試殺掉，只有重產帳本才能判。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1137: trailing whitespace.
++- `test_grid_card_reference` 的 CR17 用 `cc`（Windows 只用 MSVC 代跑過）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1138: trailing whitespace.
++- 本機被 SAC 擋下的 GEO-261 原生控制，共 15 個（分布在 9 個 suite）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1139: trailing whitespace.
++- 需要 gcc 的 node 測試共 37 個；`test_engineering_project_store` 的 delivered project（Windows 逾時）；`test_grid_inspector_stagger`（Windows CRLF）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1140: trailing whitespace.
++- unity 建置（gcc）；舊包 replay、native job 與六個 browser gates；`cdp_test.js`、`space_model_test.js`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1141: trailing whitespace.
++- 產品架構 scan、report、receipt 對 final head 重產。本機 `test_product_architecture` 要把 TEMP 設成短路徑才跑得過，因為 `recovered-selftest-source-…py` 的快照路徑超過 Windows 的 260 字元上限。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1142: trailing whitespace.
++- `geometry-core/card-reference/mutations.py`（#253 §7 工具）有 29/63 個錨點在 GEO-261 下已失效。它不在 run_all 內；要不要改指，請主迴圈決定。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1143: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1144: trailing whitespace.
++## 請 opus 審查員重點查（我最不確定的三處）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1145: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1146: trailing whitespace.
++1. **K/W 線格式變更。** grid-system 的 authored 與 value 線格式變了：每軸多 `card_length`，系統結尾多四個數。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1147: trailing whitespace.
++   - 這代表所有 grid-system 的定義位元組都變了，連沒用整卡的也一樣。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1148: trailing whitespace.
++   - 本機相關測試都通過，但若有凍結的定義指紋或證據摘要依賴舊位元組，只有全量跑才看得出來。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1149: trailing whitespace.
++   - 另外，受控槽的 authored 遮蔽規則是「repeat 用 step，否則用 body」，非無限軸也套用；這一點請核對 codec 與 `grid_sources.c` 是否一致。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1150: trailing whitespace.
++2. **整卡欄位的定義依賴邊沒有測試守門。** `wood_grid_card_definitions`（SYSTEM_DEFINITION → 卡片欄位的 DEFINITION 依賴）撤回後仍全綠。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1151: trailing whitespace.
++   - 它比照逐欄 ParameterRef 的定義依賴而加。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1152: trailing whitespace.
++   - 現有 harness 只驗 VALUE 邊（`shared-parameter-edge`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1153: trailing whitespace.
++   - 請判斷它是否必要，是否需要補一個 harness 斷言。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1154: trailing whitespace.
++3. **M85 改指 K resolver 的語意變寬。** 新目標是 `geo_grid_system_evaluate` 忽略 resolver 失敗，涵蓋所有 resolver 失敗，不只「卡片已刪」。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1155: trailing whitespace.
++   - 原因：GEO-261 的 source-graph 路徑在 H 的 `parameter_coord` 之後還會再查一次 `geo_eval_source`。只改 H 的話，這個變異會被第二道檢查遮住，變成等價。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1156: trailing whitespace.
++   - 另外，manifest 的摘要更新請一併複核：`serve.py` router、四支 driver、五份證據 helper，我都是讀過差異才更新的。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1157: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1158: trailing whitespace.
++🤖 Generated with [Claude Code](https://claude.com/claude-code)
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1436: trailing whitespace.
++【Claude 修正】b9f4ef3f 全量 run_all 的 10 項失敗（5 類）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1437: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1438: trailing whitespace.
++新 head：`3a86755503722d969380621876b5daa00419b5b1`（在 `b9f4ef3fa03d5cae758cfa5d4933a4e1ffc9dade` 之上加 5 個 commit；第 5 個 `3a867555` 是 fresh-context 對抗審查後的兩處補正）。全程只用 Windows：純 Python、node，原生部分用 MSVC。沒有用 WSL。證據都放在 repo 外：`D:/geometry-axiom-work/geo261-fix5-20261019/`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1439: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1440: trailing whitespace.
++| 類 | suite（失敗數） | commit | 結論 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1441: trailing whitespace.
++|---|---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1442: trailing whitespace.
++| 1 | py:test_axiom_reader（6） | `15682eee` | 閱讀器沒有跟著重產，已用同步器重產 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1443: trailing whitespace.
++| 2 | py:test_guide_panels（1） | `4e182c77`、`3a867555` | 導讀頁的面板設定沒跟上 GEO-261 的搬移 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1444: trailing whitespace.
++| 3 | py:test_rule_case_executor（1） | `1f12b194` | 測試本身讀 /proc 的競態 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1445: trailing whitespace.
++| 4 | py:test_section_profile_mutation_check（1） | `b066a302`、`3a867555`（契約文件） | ModelError 的實際身分已改到 H，測試預期值與 gate 宣告都還是舊名 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1446: trailing whitespace.
++| 5 | node:tests-js（1） | 沒有改碼 | **變慢**，不是卡住。依指示沒有調 timeout，只附量測，由主迴圈決定 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1447: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1448: trailing whitespace.
++### 1. test_axiom_reader
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1449: trailing whitespace.
++- **根因**：`757769cc` 改寫了 M85 的 desc，新內容多了「D1 仍拒絕」。`axiom_matrix.mutant_hits` 的規則是「desc 提到哪個條號，就把變異掛到哪張卡」，所以 D1 卡多出一列「變異 M85」，但閱讀器沒有重產。M13 的新 desc 仍只提到 I11，不影響其他卡。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1450: trailing whitespace.
++- **修法**：用 `geometry-guide/sync_axiom_reader.py` 原位重產。差異只有 D1 卡的那一列 trace-row。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1451: trailing whitespace.
++- **證據**：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1452: trailing whitespace.
++  - 修前：`test_axiom_reader` 失敗 6 項（`c1-axiom-reader-before.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1453: trailing whitespace.
++  - 修後：`--check` 的五道 assert 等全部 pass，`patches: 90`；`test_axiom_reader` 51 項 OK（`c1-axiom-reader-after.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1454: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1455: trailing whitespace.
++### 2. test_guide_panels
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1456: trailing whitespace.
++- **根因**：`check_panels.py` 對 live 的 `current_geometry.c` 報出 29 個 unresolved。GEO-261 把面板原本展示的本體搬出了 `current_geometry.c`：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1457: trailing whitespace.
++  - `Point3`／`Vector3`／`Quad3`／`Plane3`／`SurfaceFrame`／`GuideLine` 現在是 K 型別的 typedef。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1458: trailing whitespace.
++  - `PolygonLoop2`／`SpaceBoundarySurface`／`Timber` 現在是 W 型別的 typedef。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1459: trailing whitespace.
++  - `vector_cross`、`surface_point_to_room`、`surface_frame_is_valid`、`timber_local_to_room`、`timber_get_face_room` 只剩一行，直接轉交 K 或 W。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1460: trailing whitespace.
++  - `World` 變成 `{geo, wood, app}` 三份文件。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1461: trailing whitespace.
++  - `parse_scene_file` 改讀 `wood.timbers`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1462: trailing whitespace.
++- **修法**：導讀頁只內嵌 `current_geometry.c`，沿用既有「place / move：交給引用層」面板的做法：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1463: trailing whitespace.
++  - 面板改指向 H 裡實際存在的那一行（typedef 或轉交）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1464: trailing whitespace.
++  - note 寫出 K／W 本體所在的檔案與它做的事，每句都對照過該檔案的程式碼。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1465: trailing whitespace.
++  - §1–§5 與 §10 的 prose 各補一句。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1466: trailing whitespace.
++  - 照 GEO-175 的流程重產：先跑 `core.exe --no-window --out current_geometry.svg`，再跑 `make_guide.py`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1467: trailing whitespace.
++  - 預設世界的 SVG 在 main 與本分支逐位元組相同。舊頁面是「尚未產生」的佔位圖，現在換成實際輸出。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1468: trailing whitespace.
++- **證據**：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1469: trailing whitespace.
++  - 修前：unresolved 29（`c2-check-panels-before.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1470: trailing whitespace.
++  - 修後：39 個面板，unresolved: none；`test_guide_panels` OK。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1471: trailing whitespace.
++  - headless Chrome 實際開頁：每個面板的高亮行數都等於 callout 數，沒有「找不到」（`c2-browser-panels.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1472: trailing whitespace.
++  - 補充：舊頁面嵌的是 GEO-261 前 13048 行的快照，所以它自己看起來一致。測試比對的是 live 的 C，才會失敗。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1473: trailing whitespace.
++  - 審查補正（`3a867555`）：`wood_member_place_a0` 的說明補上第一步「錨點須落在某個分量內」。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1474: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1475: trailing whitespace.
++### 3. test_rule_case_executor（FileNotFoundError: /proc/<pid>/stat）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1476: trailing whitespace.
++- **根因**：測試本身有競態。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1477: trailing whitespace.
++  - orphan 控制組 fork 出子孫後，leader 就退出，子孫被過繼給 init（或 subreaper）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1478: trailing whitespace.
++  - `_Child.stop()` 用 killpg 殺掉整組，新的父行程隨後非同步回收子孫。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1479: trailing whitespace.
++  - `/proc/<pid>` 可能在 `exists()` 與 `read_text()` 之間消失。「已消失」本來就是成功條件，舊迴圈卻把它變成 error。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1480: trailing whitespace.
++  - main 與本分支的 `rule_cases/executor.py`（`_Child`）和合成控制程式都沒有改；`runtime.py` 改了，但與這個測試無關。所以不是 GEO-261 讓 leader 提早退出，而是負載下更容易踩到這個時序窗。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1481: trailing whitespace.
++- **修法**：每圈只讀一次；`FileNotFoundError` 或 `ProcessLookupError` 都視為已消失；zombie 仍視為結束；超過 0.5 s 還在執行，仍以原訊息失敗。斷言沒有刪。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1482: trailing whitespace.
++- **證據**：Windows 跑不了這一類（需要 cc 與 /proc）。我從測試原始碼原樣切出新舊兩版迴圈，對模擬的 /proc 行為執行（`c3-race-harness.log`）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1483: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1484: trailing whitespace.
++  | 情境 | 舊迴圈 | 新迴圈 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1485: trailing whitespace.
++  |---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1486: trailing whitespace.
++  | 在 exists 與 read 之間被回收 | FileNotFoundError | pass |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1487: trailing whitespace.
++  | read 時遇到 ESRCH | ProcessLookupError | pass |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1488: trailing whitespace.
++  | zombie | pass | pass |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1489: trailing whitespace.
++  | 一開始就已消失 | pass | pass |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1490: trailing whitespace.
++  | 持續執行 | AssertionError | AssertionError |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1491: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1492: trailing whitespace.
++  其餘 31 項在 Windows 上 OK。**真實的 Linux 驗證要等下一輪 WSL 全量。**
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1493: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1494: trailing whitespace.
++### 4. test_section_profile_mutation_check
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1495: trailing whitespace.
++- **歸屬**：GEO-261 把 `ModelError` 定義在 H 的 `geometry_app.model_common`。`modeling.common` 是 facade，re-export 的是同一個類別物件：`is` 成立，`except` 與 `isinstance` 都有效，所以 re-export 沒有問題。收集器記錄的是 `__module__ + '.' + __qualname__`，也就是定義所在的模組，所以實際名稱是 `geometry_app.model_common.ModelError`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1496: trailing whitespace.
++- **修法**：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1497: trailing whitespace.
++  - 測試的預期值改成實際名稱。這不是放寬：預期仍是唯一一個精確字串。fixture 仍經由 facade import，所以測試還多證明了「記下的不是別名」。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1498: trailing whitespace.
++  - **同一個舊名也在 gate 本身**：SPM38 與 SPM40 的 `error_types=['modeling.common.ModelError']`，收集器已經不可能產生這個名稱，這兩個 kill 會被判成 `crashed`。已改成 `MODEL_ERROR`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1499: trailing whitespace.
++  - `test_case_declared_modelerror_is_detection` 加上一條：facade 別名不算數。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1500: trailing whitespace.
++  - 新增 `test_declared_model_error_type_is_the_collected_identity`，把兩個宣告綁到收集器實際回報的名稱。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1501: trailing whitespace.
++  - `run_all.expected.json` 的計數 29→30（用 unittest loader 數）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1502: trailing whitespace.
++  - `geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md:212` 原本也寫舊名，已同步更正（`3a867555`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1503: trailing whitespace.
++- **證據**：修前失敗 1 項；修後 30 項 OK。只撤回兩個 `error_types` 會再紅 3 項（`c4-unit-*.log`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1504: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1505: trailing whitespace.
++### 5. tests-js：delivered engineering project…（45 s TimeoutError）——變慢，不是卡住
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1506: trailing whitespace.
++同一台機器、MSVC 編的 bridge 與 model-base，以 fetch 計時 preload 量測，測試本身沒動（`c5-*-fetch.log`）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1507: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1508: trailing whitespace.
++| | main 4b975a3d | 本分支 b9f4ef3f |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1509: trailing whitespace.
++|---|---|---|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1510: trailing whitespace.
++| 無負載：整個測試 | 26.5 s ✔ | 84.4 s ✔（全部斷言通過） |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1511: trailing whitespace.
++| `/model/verify` ×5（每次） | 0.47–0.67 s | 1.40–2.07 s |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1512: trailing whitespace.
++| `/model/space-replay`（每次） | 5.1 s | 20.9 s／21.8 s |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1513: trailing whitespace.
++| 8 個 busy-loop 佔 CPU：整個測試 | 33.2 s ✔（replay 6.3 s／6.1 s） | **85.5 s ✖ TimeoutError**（replay 27.4 s，下一次在 30.006 s 被 abort） |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1514: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1515: trailing whitespace.
++WSL 的 45.4 s ≈ 前段約 15 s 加上 replay 的 30 s abort，與 Windows 負載下重現的簽名相同。服務一直有回應，每個請求最後都回 200，沒有死鎖。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1516: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1517: trailing whitespace.
++replay 變慢的來源（in-process 分析，同一份輸入）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1518: trailing whitespace.
++1. **原生 model-base 慢 4.4 倍**：16 次呼叫，每次 0.13–0.30 s → 0.55–1.3 s。輸出逐位元組相同；空場景的啟動時間 21 ms → 41 ms，所以慢在計算，不在啟動。`sizeof(World)` 4,125,160 → 4,759,448 B（+15%）。抽樣：cdaa2010 是 0.13 s，901d77e6 與 b9f4ef3f 都是 0.57 s，所以是 GEO-261 原生分層引入的。中間的 first-parent commit 無法用 MSVC 編譯，沒能再縮小範圍。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1519: trailing whitespace.
++2. **`source_closure.current_identity()`**：每次原生呼叫前後各跑一次，每次都重掃並雜湊約 200 個 .py／.json／.c／.h／.inc。cProfile 下 32 次合計約 6.7 s。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1520: trailing whitespace.
++3. H/K 的 Python 路徑（decode_candidate、kernel evaluate、canonical check）增加約數秒。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1521: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1522: trailing whitespace.
++依指示**沒有調 timeout**，由主迴圈決定。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1523: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1524: trailing whitespace.
++### 其他發現（未修，回報給主迴圈）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1525: trailing whitespace.
++- **Q38 的 model 組在本分支整組失效**（不在 run_all 內）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1526: trailing whitespace.
++  - `copy_sources(python=True)`（`tests/section_profile_mutation_check.py:284`）沒有複製 `geometry_kernel`／`geometry_app`／`geometry_woodworking` 這三個 Python 套件，基準線一 import 就失敗：`ModuleNotFoundError: geometry_app`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1527: trailing whitespace.
++  - MS／ME（`:73-74`）指向的 facade 檔現在只有 3 行與 17 行，SPM36、SPM38、SPM40 的錨點已不存在，SPM37 的錨點也變了。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1528: trailing whitespace.
++  - 這需要像 `757769cc` 那樣重錨，再實跑驗證。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1529: trailing whitespace.
++- **M85 掛到 D1**：這是 desc 提到「D1 仍拒絕」造成的。依 axiom_matrix 的定義推導是正確的，但 M85 並沒有削弱 D1。要不要改 desc 由主迴圈決定；改 desc 會讓 M85 帳本過期。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1530: trailing whitespace.
++- 改了 `tests/*.py`，所以 `mutate.py --check` 現在有 18 筆 bridge 項目 stale，這是預期中的，交給主迴圈刷新。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1531: trailing whitespace.
++- 導讀頁內嵌的 SVG 來自被 `.gitignore` 忽略的 `current_geometry.svg`：乾淨 checkout 直接重產會退回佔位圖。這是 GEO-175 起既有的流程限制，沒有守門。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1532: trailing whitespace.
++- 對抗審查（sonnet，fresh context，唯讀）逐句核對了 K/W/H 的描述、30 這個計數、迴圈語意，以及閱讀器的位元冪等，沒有發現會造成誤綠或誤紅的缺陷。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1533: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1534: trailing whitespace.
++🤖 Generated with [Claude Code](https://claude.com/claude-code)
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1568: trailing whitespace.
++【Claude 效能】GEO-261 原生效能退化：熱點、三項修正、等價證據與交錯量測
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1569: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1570: trailing whitespace.
++新 head：`1908115ec97969e8540a7a25504783dc830e27b6`（基底 `3a867555`），已一般 push，遠端回讀一致。四個提交：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1571: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1572: trailing whitespace.
++- `c8de5a40` geo261: memoize the host source inventory and adapter digest by stat signature
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1573: trailing whitespace.
++- `48699c78` tests: walk each shared native tree once when fingerprinting a binary
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1574: trailing whitespace.
++- `8305bc8f` geo261: read model-base scenes through the owned file replay
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1575: trailing whitespace.
++- `1908115e` tests: model-base replay witness reads CRLF stderr and compares no raw World digest
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1576: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1577: trailing whitespace.
++沒有改公理、判決、診斷文字或任何竄改守門，`app_candidate.c` 和 `kernel/candidate.c` 一行沒動。失敗行仍然讓 World 保持不變。被接納的行改用 owner 內的 World 備份還原，這和 bridge 匯入場景的做法相同。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1578: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1579: trailing whitespace.
++## 熱點（WSL、gcc -O2、同一台機器）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1580: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1581: trailing whitespace.
++工具：自寫的 SIGPROF 堆疊取樣器（static libc，看得到 libc 符號），加上 `-Wl,--wrap=memcpy,memmove,memset,memcmp,calloc,malloc` 的呼叫點計數器。代表性場景是 space-replay 實際送進 model-base 的第 09 份輸入（51 行，其中 12 行 engineering）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1582: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1583: trailing whitespace.
++| 09 場景，plain | main `4b975a3d` | 整合 `3a867555` |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1584: trailing whitespace.
++|---|---:|---:|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1585: trailing whitespace.
++| wall | 0.178 s | 0.77 s |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1586: trailing whitespace.
++| H 候選數 | 每行 malloc 一份 World | 52 個 AppWorldCandidate |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1587: trailing whitespace.
++| memcpy 總量 | 1.14 GB | 2.06 GB |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1588: trailing whitespace.
++| memcmp 總量 | 0.3 MB | 2.33 GB |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1589: trailing whitespace.
++| calloc 總量 | 0 | 0.67 GB |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1590: trailing whitespace.
++| minor page faults | 7.6 K | 38.6 K |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1591: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1592: trailing whitespace.
++整合分支的取樣：memcpy 56%、memcmp 25%、memset 6%，合計 87% 在記憶體搬移與比較。前五個呼叫點：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1593: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1594: trailing whitespace.
++1. `app_candidate_capture_snapshot`（before/after bytes 複本）15.6%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1595: trailing whitespace.
++2. `app_candidate_hash_matches` 的整份 World memcmp 15.6%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1596: trailing whitespace.
++3. `app_candidate_create_with_deferred_sha` 的 before/after 複本 12.5%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1597: trailing whitespace.
++4. `geo_candidate_digest_matches`（九個 K binding）7.3%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1598: trailing whitespace.
++5. `app_scene_candidate_apply` 的 trial 複本 6.3%
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1599: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1600: trailing whitespace.
++每個候選大約搬 155 MB：World 4.76 MB 要整份複製 6 次、整份比較 6 次，另外 K binding 約 2.2 MB 要複製 2 次、比較 7 次。所以退化來自「每行開一個完整候選」乘上「每個候選固定的守門流量」，不是某一個函式寫得慢。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1601: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1602: trailing whitespace.
++bridge 端的原生部分只慢約 15%（accept 迴圈 29.2 s 對 33.6 s）。bridge_integrity 多出來的時間主要在測試端：每次呼叫 bridge 前都會跑 `binaries.inspect_one()`，它的 `_scan_shared()` 對四棵樹各跑三次 rglob。整合分支每次 111 ms，main 是 48 ms，257 次呼叫累計約 28 s。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1603: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1604: trailing whitespace.
++Python 端：`current_identity()` 每次都重列約 300 個目錄、重新雜湊 210 個檔，Windows 上每次約 200 ms。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1605: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1606: trailing whitespace.
++## 修正與等價證據
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1607: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1608: trailing whitespace.
++**一、`c8de5a40` source_closure 程序內快取（主迴圈已同意，附負對照）**
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1609: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1610: trailing whitespace.
++- 鍵是每個被監看目錄與被列出檔案的 (dev, inode, size, mtime_ns, change time)。POSIX 的 change time 用 st_ctime；Windows 的 st_ctime 其實是建立時間，所以改用 NTFS ChangeTime。adapter exe 用同一套簽名。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1611: trailing whitespace.
++- 任何一項不同就整份重算。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1612: trailing whitespace.
++- 擷取當下時間戳在 3 秒以內的，一律不存，避免同一個時間 tick 內的改寫被漏掉。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1613: trailing whitespace.
++- 監看的樹裡只要出現連結（symlink 或 junction），就停用快取。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1614: trailing whitespace.
++- `tests/test_source_closure_memo.py` 共 12 項。其中 8 項是負對照，都在同一個程序內改真檔：內容改寫、同大小改寫並還原 mtime、只改 mtime（必須整份重雜湊）、新巢狀目錄加檔、刪檔、換 inode、`current_identity()` 轉成不 fresh、adapter 同大小改寫。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1615: trailing whitespace.
++- 另有 1 項會在「快取永遠命中」的條件下重跑那 8 項，並要求 8 項全紅。其餘 3 項是正向檢查：快取結果等於原始計算、近期時間戳不入快取、真實 repo 的清單一致。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1616: trailing whitespace.
++- 原始碼突變三種（Windows 與 WSL 都實跑）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1617: trailing whitespace.
++  - 永遠命中：8 項紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1618: trailing whitespace.
++  - 拿掉 change time：同大小改寫的 3 項紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1619: trailing whitespace.
++  - 拿掉 racy 視窗：1 項紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1620: trailing whitespace.
++- Windows 上每次呼叫從約 200 ms 降到約 20 ms。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1621: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1622: trailing whitespace.
++**二、`48699c78` `tests/binaries.py::_scan_shared` 每棵樹只走一次**
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1623: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1624: trailing whitespace.
++- 這個改動沒有加快取，檔案集合與每個 fingerprint 都不變：改用剪枝的 os.walk 加 fnmatch，大小寫規則與 pathlib 相同，目錄名也照樣比對。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1625: trailing whitespace.
++- 等價證據：舊的 rglob 實作逐字留在測試裡當 oracle，對合成樹逐項比對。合成樹涵蓋各層 skip 目錄、大寫副檔名、名為 `dir.c` 的目錄、隱藏檔、POSIX 的檔案連結與目錄連結。整個 repo 也一樣比對過。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1626: trailing whitespace.
++- 撤回突變：換回舊實作時，成本見證「每棵樹恰好一次 os.walk、不准呼叫 rglob」轉紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1627: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1628: trailing whitespace.
++**三、`8305bc8f` model-base 走 owned file replay（B）**
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1629: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1630: trailing whitespace.
++- model-base 只開一個 owner 候選，用 `app_scene_replay_file` 重放整個檔案。這正是 bridge 匯入場景時已經在用的那條路（B，P-177）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1631: trailing whitespace.
++- 被接納的行，只在 owner 裡用一份 World 備份重放。其餘的行仍然各自開內層候選，preview 與診斷不變。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1632: trailing whitespace.
++- owner 的收尾驗證、seal、publish 都不變。owner 配置失敗時退回原本的逐行 parse。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1633: trailing whitespace.
++- 另外兩項配置調整，都只在 model-base 生效：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1634: trailing whitespace.
++  - 兩次 `--neutral-sources` fingerprint 共用一個保留到程序結束的 buffer。原本每次 free 一塊 1 MiB，會把 glibc 的大塊門檻調掉，之後每個候選都要重新 fault 新頁。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1635: trailing whitespace.
++  - 最多重用 4 塊 AppWorldCandidate。重用前會把兩份 World 之後的區段清零，與 calloc 的結果相同，而建構子在任何讀取之前就會用 live 覆寫兩份 World。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1636: trailing whitespace.
++- 等價證據：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1637: trailing whitespace.
++  - WSL gcc -O2 外部篩檢：188 個場景 × 2 種輸出模式，共 376 次執行，修前與修後的 rc、stdout、stderr 逐位元組相同，0 不符（152 次接受、224 次拒絕）。接受時另比最終 World 整份 sha256，同一 build 重跑結果穩定。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1638: trailing whitespace.
++  - bridge accept 迴圈（每個場景 loadfile/dump/render 各兩次）修前修後的輸出雜湊相同（`2de5546e…`）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1639: trailing whitespace.
++  - 套件內測試 `tests/test_geo261_model_base_replay.py`（5 項）把真實 adapter 原始碼連到 product objects，編兩份：一份照舊，一份只把三項改動以文字還原。14 個場景、兩種模式下，stdout 與 stderr（含 I8a preview 文字）逐位元組相同。成本見證（開了幾個候選、配置幾塊、配置幾個 fingerprint buffer）在還原版上必須轉紅。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1640: trailing whitespace.
++- 撤回突變（WSL 實跑，錯誤訊息都指得出病因）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1641: trailing whitespace.
++  - M1 讓 `model_parse_scene` 改回逐行：`1 != 11 : owned replay keeps every admitted line in the owner`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1642: trailing whitespace.
++  - M2 關掉重用：`2 != 4 : the owner and one block reused…`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1643: trailing whitespace.
++  - M3 每次 fingerprint 重新配置：`1 != 3`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1644: trailing whitespace.
++- 竄改守門的負控照樣紅。既有套件 `test_geo261_candidate_product`（26，含 wood/host/before 竄改案例）和 `test_geo261_deferred_product`（10，含 D 的撤回負控）都全綠，代表它們內部「預期要紅」的 ASSERT 仍紅在指定位置。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1645: trailing whitespace.
++- 有一個限制：這兩套走的是 bridge harness，而 bridge 不開重用池；model-base 自己的竄改路徑沒有專屬套件。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1646: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1647: trailing whitespace.
++**跑過的套件**：WSL `run_all --build --only`，17 個套件全綠，計數與 expected 相符。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1648: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1649: trailing whitespace.
++- 第 1 批（`8305bc8f`）：source_closure_memo 12、binaries 36、geo261_model_base_replay 5、bridge_integrity 24、domain_source_pins 16、geometry_host_native 30、geometry_host_world 8。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1650: trailing whitespace.
++- 第 2 批（product code 與 `1908115e` 相同）：engineering_model_compatibility 44、geo261_candidate_product 26、geo261_deferred_product 10、geo261_model_semantics_authority 12、geo261_model_vertex_ledger 7、model_update 26、modeling_runtime 46、modeling_transport 3、scenario_verify 37、space_modeling 40。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1651: trailing whitespace.
++- `1908115e` 的 model_base_replay 與 memo 另在 WSL 跑一次，17/17（這是突變輪的對照組）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1652: trailing whitespace.
++- Windows：memo 12/12、binaries 36/36、model_base_replay 5/5（MSVC）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1653: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1654: trailing whitespace.
++## 交錯量測（WSL，main 與整合分支輪流各 3 次，中位數）
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1655: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1656: trailing whitespace.
++同一台機器的 WSL（Ryzen 5 7535HS，L3 16 MiB），用 `perf_ab2.sh` 跑兩組，每組都是 main 和受測分支輪流各 3 次。model-base 用 09 場景，每次取 5 次中位數。space-replay 用 engineering-spec-v1 範例的 `replay_stored`，跑 16 次 model-base。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1657: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1658: trailing whitespace.
++| 項目 | main `4b975a3d` | 修前 `3a867555` | 倍率 | 修後 `1908115e` | 倍率 |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1659: trailing whitespace.
++|---|---:|---:|---:|---:|---:|
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1660: trailing whitespace.
++| bridge_integrity（run_all 表格秒數） | 63.0 / 63.9 s | 94.1 s | 1.49× | 83.9 s | **1.31×** |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1661: trailing whitespace.
++| model-base 09 plain | 0.177 / 0.182 s | 0.778 s | 4.39× | 0.515 s | **2.82×** |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1662: trailing whitespace.
++| model-base 09 --neutral-sources | （main 沒有這個模式） | 0.770 s | — | 0.524 s | — |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1663: trailing whitespace.
++| space-replay | 2.40 / 2.52 s | 13.48 s | 5.61× | 5.97 s | **2.37×** |
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1664: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1665: trailing whitespace.
++- main 欄的兩個數字，分別是「對修前」與「對修後」那兩組裡 main 的中位數。倍率都是除以同組的 main。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1666: trailing whitespace.
++- 每一輪的 rc 都是 0。replay 結果雜湊在三個版本都是 `3493f8ef…`。model-base 09 的 plain 輸出三個版本都是 `b33977ab…`，neutral 輸出修前修後都是 `063125b1…`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1667: trailing whitespace.
++- 16 份 space-replay 輸入逐一量（各 5 次中位數）：model-base 合計 main 1.97 s，修前 10.11 s（5.1×），修後 3.98 s（2.0×）。用 canonical 順序寫的輸入（定義在前、place 在後，例如 10、14）修後約 1.6×。在 timber 放好之後才寫定義的輸入（03、05、07、09）仍有 2.5–2.8×。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1668: trailing whitespace.
++- Windows（MSVC /O2，雜訊大，只當參考）：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1669: trailing whitespace.
++  - model-base 09 neutral：修前 0.87–0.89 s，修後 0.54–0.56 s（用與最終程式碼相同的原型組建量）；main plain 0.18 s。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1670: trailing whitespace.
++  - space-replay 同一程序直接跑：main 3.6–4.6 s，修後 6.3–7.5 s，其中 native 3.4–4.7 s 對 main 的 2.9–4.0 s。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1671: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1672: trailing whitespace.
++## 剩下的熱點與下一步
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1673: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1674: trailing whitespace.
++1. **model-base 裡 frame 不接納的行仍然各開一個完整 H 候選。** 這指的是 timber 放好之後才出現的 boundary、placement、spec 等定義：09 有 25 行，每行在 WSL 約 10 ms、約 155 MB 守門流量，大約占剩下 0.52 s 裡的 0.3 s。下一步有兩條路，都需要主迴圈拍板：
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1675: trailing whitespace.
++   - (a) 讓 frame 也接納這類行，碰到 impact 或失敗時，還原後改走原本的逐行路徑重跑。我稽核後停手了，因為 World 以外還有跨行的全域狀態，重跑會讓它們走兩次：`g_rule_scene_*` highwater、sp/fs/grid 的 scene required 旗標、`g_assembly_record`、parameter ledger，以及幾個錯誤 buffer。要做就得逐一快照與還原，再對拒絕夾具做全量位元組比對。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1676: trailing whitespace.
++   - (b) 降低每個候選的守門流量。P-177 禁止這條，而且 `app_candidate.c` 與 `kernel/candidate.c` 被大量測試錨定。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1677: trailing whitespace.
++2. **space-replay 的 Python 端是 GEO-261 新增的型別核心處理，不屬於原生部分。** Windows cProfile（第二次呼叫）：`decode_candidate` 2.6 s、`geometry_kernel.evaluate` 2.2 s、`canonical_bytes`/`check` 1.35 s（54 萬次遞迴）、`descriptors` 1.2 s、`validate_program` 1.1 s、`mesh_objects` 1.0 s。WSL 上修後比 main 多出約 1.5 s，大多在這裡。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1678: trailing whitespace.
++3. **Windows 特有的兩筆成本。** 一是每次 model-base 的 CreateProcess 在 cProfile 下約 117 ms，main 也一樣。二是快取驗證每次約 20 ms，主要花在逐檔開 handle 讀 ChangeTime；若改用每個目錄一次的 FileIdBothDirectoryInfo 列舉，可以再省。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1679: trailing whitespace.
++4. **既有問題，本次未改：** MSVC 下 WoodMember 的 padding（id 之後 4 bytes 等）帶著堆疊殘值，所以同一個 build 跑兩次，World 整份 bytes 就不同；修前修後都一樣。凡是用 memcmp 比較「不同路徑建出來的 World」的地方，理論上都可能被它干擾。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1680: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1681: trailing whitespace.
++## 我最不確定的三處
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1682: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1683: trailing whitespace.
++1. **B 的等價是實證，不是證明。** 證據是 376 次執行的 gcc -O2 篩檢（含 World 整份 sha）與套件內 14 個場景 × 2 模式的比對。B 本來就是 bridge 匯入場景的路徑，model-base 現在與它共用。有一個理論上的差異：若某個場景 parse 成功，但 owner 的 seal 或 publish 失敗，model-base 會回預設診斷，而不是逐行路徑會給的訊息。沒有任何夾具觸發過這種情況。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1684: trailing whitespace.
++2. **快取在 NTFS 與 ext4 以外的檔案系統上是否可靠。** Windows 靠 NTFS ChangeTime，我只在本機 NTFS 實測過。GEOMETRY_MODEL_BASE 若指向 `\\wsl.localhost` 或網路磁碟，ChangeTime 的語意未驗證：查詢失敗會停用快取（安全）；但若回傳了值卻不隨寫入變動，那種「同大小改寫並還原 mtime」就可能漏掉。3 秒的 racy 視窗也假設檔案時間戳與 `time.time_ns()` 用同一個時鐘。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1685: trailing whitespace.
++3. **兩項配置調整是靠 glibc 啟發式行為得來的效益。** 一是保留 fingerprint buffer，二是候選區塊重用。WSL neutral 09 從 0.97 s 降到 0.48 s，是因為避開了 glibc 動態 mmap/trim 門檻引起的反覆 fault；在 MSVC 上只省 5–7%。日後配置模式一變，這種反覆 fault 可能再出現。區塊重用的等價，前提是建構子在任何讀取之前就整份覆寫兩個 World；這在今天的 `app_candidate_create_with_deferred_sha` 成立，以後改那裡時要重新確認。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1686: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1687: trailing whitespace.
++**未驗：** 全量 run_all、六個瀏覽器 job、mutants 帳本重產（交給主迴圈）、遠端 CI（push 後 checks 還沒有結論）。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1688: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1689: trailing whitespace.
++原始資料在 `D:/geometry-axiom-work/perf261-out/` 與 `D:/geometry-axiom-work/perf-ab2-*`，沒有入庫。量測腳本是 `scratchpad/wsl-ci/perf_ab2.sh`，新檔，舊的 perf_ab.sh 沒有原地覆寫。perf_ab.sh 的錯誤在於兩個 clone 共用 `/tmp/geometry-tests`，先建的那邊在計時時已經過期，於是報環境錯誤（rc=2）。perf_ab2.sh 改成每邊各自保存建好的 registry 二進位，每輪計時前還原，並且帶 `--build`。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1690: trailing whitespace.
++
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:1691: trailing whitespace.
++帳本：本次動到 `tests/*.py` 與 `tests/run_all.py`，所以 mutants 帳本會過期，交給主迴圈重產。`tests/run_all.expected.json` 只改了三個套件的計數：binaries 33→36，新增 source_closure_memo 12、geo261_model_base_replay 5，都是實跑得到的數字。
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:2329: trailing whitespace.
++   
+evidence/geo288-p88-20261023/review-refresh-20261023T144322Z/288.md:2578: new blank line at EOF.

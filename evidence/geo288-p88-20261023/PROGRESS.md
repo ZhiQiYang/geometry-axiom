@@ -43,3 +43,6 @@ UI condition timed out at === P88. 原生來源子線顯示、完整引用、兩
 - 12:55 UTC：完整原件封存完成，`native-raf-result/NATIVE_RAF_RAW.tar.gz` 22,446,502 bytes，SHA256 `3f107c0424c62844eaeac3ab6086ea75b7ebc6cc3c9e829dd61c34eedcb52e4a`；349 檔逐一 roundtrip bytes/hash 全相同。封包含各 phase 指令／環境／stdout／stderr／退出碼／SHA／trace 與全部凍結工具。各 phase/tmp 整樹（編譯產物、profile、cache、feedback）明列排除，原磁碟未刪。封存器 exit 0。
 - 獨立對抗審已核 fixed／withdrawn／restored 的原 predicate、原座標、真 pointer、143 斷言、來源與時限；另附產品／測試歸因審查。新 F 正式 canvas 連續三輪 0／0／0 與兩位代理封包審查完整收錄。舊真 query 控制 1／1／1、總 driver 2 的無效反證仍原樣保留。
 - 限制：本控制直接驗 measure→原 restore→click，沒有 Paint/compositor 畫面證據，也未窮盡 pointerdown→query/restore→pointerup。既有資料未建立新的產品交互紅燈；不能宣稱真人不受影響，亦不能把本次 query 回填成歷史自然紅唯一原因。最新 head ee28481 審查的同 F 其餘項目由主代理接續，這份子代理證據不宣稱 #288 全綠。未另開瀏覽器，heavy 槽已交回主代理。
+
+
+2026-10-23T14:43:22Z：fresh fetch handoff acd1289／main feb502d；最後審查仍 head ee28481、明文不建議合併，因此不標 READY-TO-MERGE。主整合 a05a21a5 與正文 e008dc52 已公開，正文 hash77fad4a1 與已審原件相同；同 F 全部受影響 gate／反證原件已完成，不重跑綠燈。只讀 merge-tree 預覽 current main 可乾淨合入，並未執行 merge。監看原命令、完整 streams、環境、SHA 與獨立 peer42checks/0 收於 review-refresh-20261023T144322Z；不確定性與最新 review 阻擋原判均保留。

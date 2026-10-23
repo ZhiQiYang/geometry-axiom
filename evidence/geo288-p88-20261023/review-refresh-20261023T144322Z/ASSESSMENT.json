@@ -1,0 +1,208 @@
+{
+  "schema": "geo288-review-monitor-assessment/1",
+  "observed_utc": "2026-10-23T14:46:13.633516+00:00",
+  "source": {
+    "scope": "Fresh source read only; no branch/index/working-tree changes and no test run",
+    "fetched_at_utc": "2026-10-23T14:43:22.148259+00:00",
+    "remote_refs": {
+      "refs/heads/architecture/geo261-integration-20261016": "a05a21a5ed4b4403e8bfece0fd29d36d29d45336",
+      "refs/heads/codex/geo261-final-prbody-20261023": "e008dc52510d8cdb34fe07c796835f2667e0ebaa",
+      "refs/heads/handoff/codex-takeover-20261021": "acd1289228d490c68a139cf17e02fdc1f3cb247c",
+      "refs/heads/main": "feb502d7b3bade2334733a4349c87ff91b88621e"
+    },
+    "review_path": "/workspace/geo288-main-merge-20261023/p88-priority/review-refresh-20261023T144322Z/288.md",
+    "review_sha256": "767d7d0bafa9d5edd308e49d1b62f5467f4e3ebbbe84b6d1b379014b70af7581",
+    "commands": "/workspace/geo288-main-merge-20261023/p88-priority/review-refresh-20261023T144322Z/COMMANDS.json",
+    "fetch_exit": 0,
+    "assessment_pending": true
+  },
+  "product_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "evidence_head": "5a76d815c843d7ffb06bd1be769d4c5255c72b66",
+  "public_delivery_head": "a05a21a5ed4b4403e8bfece0fd29d36d29d45336",
+  "public_body_head": "e008dc52510d8cdb34fe07c796835f2667e0ebaa",
+  "latest_review_head": "ee28481",
+  "latest_review_verdict": "不建議合併",
+  "ready_to_merge": false,
+  "new_review_since_last_read": false,
+  "public_body_sha256": "77fad4a11a92827d4b5d2b95423215c98dc13ecccce5c33e8c70e156c688e1f8",
+  "checks": [
+    {
+      "name": "body_git_read",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "remote_body_matches_reviewed_bytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "F_ancestor_of_published_integration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "E_ancestor_of_published_integration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "F_to_delivery_evidence_only",
+      "passed": true,
+      "detail": {
+        "changed_paths": 84
+      }
+    },
+    {
+      "name": "main_since_merged_changes_only_decision_queue",
+      "passed": true,
+      "detail": [
+        "決策佇列.md"
+      ]
+    },
+    {
+      "name": "main_change_log_read",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "current_main_merge_preview_clean",
+      "passed": true,
+      "detail": {
+        "preview_tree": "a8c8c7877fd7f1eb1c3e9dfb96ae460e0c19f318"
+      }
+    },
+    {
+      "name": "latest_authoritative_head_ee28481",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "latest_review_still_blocks",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "check_exit": 0,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/g288p88fix",
+        "show",
+        "e008dc52510d8cdb34fe07c796835f2667e0ebaa:PR_BODY.md"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "77fad4a11a92827d4b5d2b95423215c98dc13ecccce5c33e8c70e156c688e1f8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 19723,
+      "stderr_bytes": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/g288p88fix",
+        "merge-base",
+        "--is-ancestor",
+        "3d681636902371ecc528b20f51eea33e272581c9",
+        "a05a21a5ed4b4403e8bfece0fd29d36d29d45336"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/g288p88fix",
+        "merge-base",
+        "--is-ancestor",
+        "5a76d815c843d7ffb06bd1be769d4c5255c72b66",
+        "a05a21a5ed4b4403e8bfece0fd29d36d29d45336"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/g288p88fix",
+        "diff",
+        "--name-only",
+        "3d681636902371ecc528b20f51eea33e272581c9",
+        "a05a21a5ed4b4403e8bfece0fd29d36d29d45336",
+        "--"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "31b529e11750073edc88e2db9389165b3beca49a485e22afe3c6c2049d1c399a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 6374,
+      "stderr_bytes": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/g288p88fix",
+        "-c",
+        "core.quotePath=false",
+        "diff",
+        "--name-only",
+        "4ccced59315d0bcf01084ad89c760bb43d8b363b",
+        "feb502d7b3bade2334733a4349c87ff91b88621e",
+        "--"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "62103e6d3a4f76909f3d7cb3f3d52ca4749a38ba1eb3d99b4df57371918affe4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 16,
+      "stderr_bytes": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/g288p88fix",
+        "log",
+        "--format=%H %s",
+        "4ccced59315d0bcf01084ad89c760bb43d8b363b..feb502d7b3bade2334733a4349c87ff91b88621e"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "29041052a47a1207932e655360832114525d3ace7b323c1cec58eb43c1950401",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 213,
+      "stderr_bytes": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/g288p88fix",
+        "merge-tree",
+        "--write-tree",
+        "a05a21a5ed4b4403e8bfece0fd29d36d29d45336",
+        "feb502d7b3bade2334733a4349c87ff91b88621e"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "56dbfd8a82884d2548e04ff33012d06e7fbaa15ba907c838fbc02d01e29d71e2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 41,
+      "stderr_bytes": 0
+    }
+  ],
+  "next_action": "Keep #288 dedicated monitoring; authoritative fresh fetch within 15 minutes and before new work. Do not re-run accepted gates without a changed input/failure/review requirement.",
+  "limitations": [
+    "Current explicit review predates completed evidence and retains blocking verdict; do not infer review approval from own green gates.",
+    "Merge preview is read-only with respect to branch/index/worktree; it is not a merged main or PR.",
+    "Live GitHub PR body not read/edited; public prbody file is verified and ready for application."
+  ]
+}
