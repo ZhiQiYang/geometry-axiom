@@ -8,7 +8,7 @@
 - #323 來源已全包含列車，只在此線修。F 的原13/22/15三suite **50/0/0**、19組control獨立346checks／0；四新增與兩漂移修復為具名ASSERT 0/1/0。placement-key-single原等價0/0/0仍照實記錄。
 - #323 正式一次36timings及4profiles已執行，原execution各0：N16/32/48-base=.70152535/.81183549/.70936489；N64/main=1.26480058≤1.3；source calls64/32=364369/82668=4.40761843≤4.5。分母與原門檻未改；獨立原件審查中，原wrapper1因下列ABC紅燈，不能標整組全綠。
 - #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；正補同列車僅撤回memo的嚴格ABC及完整memo性能反證。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
-- 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立實件審查及封存中。native41筆子SHA欄原為null，父c387、前後Git身份與binary/source hashes另附綁定，原件不改；未冒稱最終全專項通過。
+- 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立629checks／0已完成，完整原件收於`reading-a-f64-originals/`（895members、5597339bytes壓縮包）。native41筆子SHA欄原為null，父c387、前後Git身份與70C/H實際輸入逐份比對另附間接綁定，原件不改；原ELF已由測試清除，只保原hash，不冒fresh rehash。原三組沒有額外outer/reaper，不虛構。正式quick與RC-run兩精準撤回仍待跑，未冒稱最終全專項通過。
 - 架構 P 原三條 **0/0/0**（generic205、product18）、過期manifest反證 **0/1/0**；Linux manifest/scan/report/receipt四檔已重產採用，獨立686checks／0，604輸入closure=`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。原F架構1/0/5與Ran0失敗完整保留。封存 `architecture-p17-and-recovery.tar.gz`。
 - 全123筆突變帳本仍待root一次重產；原3417探測1（107 stale、3 retired、13 unrun）保留。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
 - 雲端Chrome156.0.8078.47／Nodev24.19.0／NotoCJK可用。只清已核可重建cache，保留收據、fixtures與Gitobjects；5批實際allocation回收998256640bytes，觀察free差996368384bytes，差值受共享磁碟並行活動影響。
@@ -22,3 +22,11 @@
 4. #300前置剖析照常準備；#325/#331/#333不寫其分支。#333已由他人合入main。
 
 每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新審查來源是已fetch handoff的337/338及各工作線留言；338目前沒有新增審查。工作持續中。
+
+## 2026-10-23 19:17 UTC 已完成
+
+Reading A 的3條reader、7 native、14 oracle完整指令/環境/streams及629checks peer已封存推進；preparation hash失敗及peer自身兩次讀取錯誤亦保原件。這是F64既有實跑的封存，不另宣稱在evidence SHA實跑。
+
+#323完整memo反證已回報fixed0→withdrawn1→restored0，sourcecalls比率4.407618→6.053833→4.407618；同列車175場景/350組完整stdout、stderr、orderedgraph與5guards全等。正交獨立actualpeer並封原件，歷史base三診斷紅仍原樣保留。
+
+全帳本即將由root在可解析4f4 source啟動；先以原--check保留stale結果，再原123筆CLI全部重產。外部旁錄器只保存原完整stream，子程序600/900/300時限保持；原child與外層exit分列。323已明確釋放原checkout，不再有兩個owner移動同一HEAD。
