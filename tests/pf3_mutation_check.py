@@ -3,6 +3,10 @@
 python tests/pf3_mutation_check.py --out /tmp/pf3-mutations
 Each negative must fail an assertion with the named cause, never an import,
 compile error, skip, crash or timeout. No repository source is edited in place.
+A case lists one patch per enforcement layer. GEO-261 checks some rules in more than one place, so
+removing a single layer leaves the other standing and the fault survives; where that is so (host-identity)
+the case removes every layer and reproduces the fault main had. Per-case table, with main's line, the line
+used now and the single-layer controls: geometry-core/panel-fill/PF3-NATIVE.md.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
@@ -16,10 +20,12 @@ import sys
 import time
 
 ROOT=Path(__file__).resolve().parents[1]
-SOURCE="geometry-core/panel_fill_support.inc"
+HOST="geometry-core/panel_fill_support.inc"
+REFERENCE="geometry-app/native/reference_sources.inc"
+SOURCE="geometry-templates/woodworking/native/panel_support.c"
 CASES=[
     ("effective-merge",[(SOURCE,"if(*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo)","if(false&&*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo)")],"test_D43_stagger_band_identity_signed_and_T_point","D43_T_POINT"),
-    ("unplaced",[(SOURCE,"!w->timbers[i].placed||w->anchors[i].placement_id!=host->id","w->anchors[i].placement_id!=host->id")],"test_R43_unplaced_timbers_on_zero_id_host_do_not_count","PF3_UNPLACED"),
+    ("unplaced",[(HOST,"if(!w->wood.timbers[i].placed)continue;uint32_t placement=w->wood.anchors[i].placement_id;","uint32_t placement=w->wood.anchors[i].placement_id;")],"test_R43_unplaced_timbers_on_zero_id_host_do_not_count","PF3_UNPLACED"),
     ("two-sides",[(SOURCE,"if(!present[0]||!present[1])","if(!present[0]&&!present[1])")],"test_D43_holes_notches_and_obstacles_remove_only_one_sided_seams","D43_TWO_SIDES"),
     ("board-vertices",[(SOURCE,"cuts[nc++]=pf_component(frag->loops[l].points[v],other);","if(l==0)cuts[nc++]=pf_component(frag->loops[l].points[v],other);")],"test_PF23_original_algorithm_three_segments_and_same_input_equivalence","PF23_ORIGINAL"),
     ("footprint-vertices",[(SOURCE,"cuts[nc++]=rects[r].lo[other];cuts[nc++]=rects[r].hi[other];","/* removed footprint cuts */")],"test_PF23_E1_legal_five_actual_widths_and_threshold_only","PF23_LEGAL"),
@@ -28,16 +34,16 @@ CASES=[
     ("open-sample",[(SOURCE,"y2=lo+hi;","y2=2*lo;")],"test_PF23_E1_legal_five_actual_widths_and_threshold_only","PF23_LEGAL"),
     ("footprint-union",[(SOURCE,"out[i].lo<=out[used-1].hi","out[i].lo<out[used-1].hi")],"test_R43_union_continuity_and_ignore_isolated_cut_values","R43_UNION"),
     ("continuous-width",[(SOURCE,"left&&un[i].lo<edge&&edge<=un[i].hi","left&&un[i].lo<edge")],"test_R43_union_continuity_and_ignore_isolated_cut_values","R43_GAP"),
-    ("host-identity",[(SOURCE,"!w->timbers[i].placed||w->anchors[i].placement_id!=host->id","!w->timbers[i].placed")],"test_R43_no_host_and_other_coplanar_host_do_not_support","PF3_HOST_FILTER"),
-    ("finish-reflection",[(SOURCE,"r->lo[1]=coord_min(finish->side*f.min_v,finish->side*f.max_v);","r->lo[1]=f.min_v;"),(SOURCE,"r->hi[1]=coord_max(finish->side*f.min_v,finish->side*f.max_v);","r->hi[1]=f.max_v;")],"test_R43_negative_structure_side_and_vertical_frame_real_footprints","R43_FRAME"),
+    ("host-identity",[(HOST,"if(placement!=host->id)continue;",""),(REFERENCE,"!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||anchor.placement_id!=placement_id||","!wood_definition_sources_placement(ctx->definition_sources,id,&anchor)||")],"test_R43_no_host_and_other_coplanar_host_do_not_support","PF3_HOST_FILTER"),
+    ("finish-reflection",[(HOST,"r->lo[1]=coord_min(finish->side*f.min_v,finish->side*f.max_v);","r->lo[1]=f.min_v;"),(HOST,"r->hi[1]=coord_max(finish->side*f.min_v,finish->side*f.max_v);","r->hi[1]=f.max_v;")],"test_R43_negative_structure_side_and_vertical_frame_real_footprints","R43_FRAME"),
     ("hidden-threshold",[(SOURCE,"return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);","return d>=8;")],"test_PF06_positive_rational_comparison_and_rename_reorder","PF06_RATIONAL"),
     ("rounded-threshold",[(SOURCE,"return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);","return d>=x.num/x.den;")],"test_PF06_positive_rational_comparison_and_rename_reorder","PF06_RATIONAL"),
     ("overflow-comparison",[(SOURCE,"return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);","return (uint64_t)d*(uint64_t)x.den>=(uint64_t)x.num;")],"test_PF06_extreme_rational_does_not_overflow_comparison","PF06_OVERFLOW"),
     ("odd-gap-edges",[(SOURCE,"sl->coordinate-d->gap/2,sl->coordinate+(d->gap-d->gap/2)","sl->coordinate,sl->coordinate")],"test_D43_positive_odd_gap_uses_board_edges_and_both_axes","D43_ODD_GAP"),
     ("band-range",[(SOURCE,"if(sl->staggered&&(lo<sl->range[0]||hi>sl->range[1]))continue;","/* removed band clipping */")],"test_D43_stagger_band_identity_signed_and_T_point","D43_NEGATIVE_BAND"),
-    ("capacity-early",[(SOURCE,"if(*count==PF_SUPPORT_MAX)return fs_capacity_error","if(*count==PF_SUPPORT_MAX-1)return fs_capacity_error")],"test_PF13_capacity_N_N1_is_complete_or_explicit_rejection","PF3_CAPACITY_N"),
-    ("capacity-truncate",[(SOURCE,"if(*count==PF_SUPPORT_MAX)return fs_capacity_error(\"I33 CAPACITY: PF-3 effective/non-seam limit is %d\",PF_SUPPORT_MAX);","if(*count==PF_SUPPORT_MAX)return true;"),
-                          (SOURCE,"if(s->part_count==PF_SUPPORT_MAX){fs_capacity_error(\"I33 CAPACITY: PF-3 support subsegment limit is %d\",PF_SUPPORT_MAX);goto done;}","if(s->part_count==PF_SUPPORT_MAX)continue;")],"test_PF13_capacity_N_N1_is_complete_or_explicit_rejection","PF3_CAPACITY_N1"),
+    ("capacity-early",[(SOURCE,"if(*count==WOOD_PANEL_SUPPORT_MAX)return (*status=WOOD_PANEL_SUPPORT_SEAM_LIMIT,false)","if(*count==WOOD_PANEL_SUPPORT_MAX-1)return (*status=WOOD_PANEL_SUPPORT_SEAM_LIMIT,false)")],"test_PF13_capacity_N_N1_is_complete_or_explicit_rejection","PF3_CAPACITY_N"),
+    ("capacity-truncate",[(SOURCE,"if(*count==WOOD_PANEL_SUPPORT_MAX)return (*status=WOOD_PANEL_SUPPORT_SEAM_LIMIT,false);","if(*count==WOOD_PANEL_SUPPORT_MAX)return true;"),
+                          (SOURCE,"if(s->part_count==WOOD_PANEL_SUPPORT_MAX){status=WOOD_PANEL_SUPPORT_PART_LIMIT;goto done;}","if(s->part_count==WOOD_PANEL_SUPPORT_MAX)continue;")],"test_PF13_capacity_N_N1_is_complete_or_explicit_rejection","PF3_CAPACITY_N1"),
 ]
 
 
@@ -72,7 +78,7 @@ def main():
         import resource
         resource.setrlimit(resource.RLIMIT_STACK,(16777216,resource.getrlimit(resource.RLIMIT_STACK)[1]))
     paths=[ROOT/"current_geometry.c"]
-    for directory in ("geometry-core","geometry-web"):
+    for directory in ("geometry-core","geometry-web","geometry-app","geometry-templates"):
         paths.extend(p for p in (ROOT/directory).rglob("*") if p.suffix in (".c",".h",".inc") and not any(x in p.parts for x in ("vendor","node_modules")))
     paths.extend(p for p in (ROOT/"tests").glob("*") if p.name in ("__init__.py","binaries.py","_bridge.py","pfh_oracle.py","pf3_algorithm.c","pf3_mutation_check.py") or p.name.startswith("test_panel_fill_"))
     original={str(p.relative_to(ROOT)):p.read_bytes() for p in paths}

@@ -881,7 +881,11 @@ function replay(ops, root) {
         "stroke-dasharray": st.dash || "none",
         "vector-effect": "non-scaling-stroke" }, g);
     } else if (o.op === "text") {
-      const fullLabel = String(o.t), timberLabel = fullLabel.match(/^(角材\s*(\d+))\s+(A[01]|B[01]|START|END)$/);
+      const fullLabel = String(o.t), annotation = o.annotation;
+      const memberFace = annotation?.kind === "member-face" &&
+        Number.isInteger(annotation.entityId) && annotation.entityId > 0 && annotation.entityId <= 0xffffffff &&
+        ["A0", "A1", "B0", "B1", "START", "END"].includes(annotation.faceId) &&
+        typeof annotation.shortLabel === "string";
       const t = el("text", { x:o.x, y:o.y, fill: st.line,
         "font-size": st.text, "font-weight": st.bold ? "bold" : "normal",
         "text-anchor": st.anchor || "start", "data-label-full":fullLabel,
@@ -891,9 +895,9 @@ function replay(ops, root) {
       t.setAttribute("data-fs0", o.s === 1 ? 15 : 11);
       if (st.mid) t.setAttribute("dominant-baseline", "middle");
       if (o.rot) t.setAttribute("transform", `rotate(${o.rot} ${o.x} ${o.y})`);
-      t.textContent = timberLabel ? timberLabel[1] : fullLabel;
-      if (timberLabel) {
-        t.dataset.timberId = timberLabel[2]; t.dataset.timberFace = timberLabel[3];
+      t.textContent = memberFace ? annotation.shortLabel : fullLabel;
+      if (memberFace) {
+        t.dataset.timberId = String(annotation.entityId); t.dataset.timberFace = annotation.faceId;
         t.setAttribute("aria-label", fullLabel);
         el("title", {}, t).textContent = fullLabel;
       }
@@ -3631,7 +3635,10 @@ function renderSpacePlan(sp) {
   svg.onpointercancel = () => { drag = null; preview.setAttribute("visibility", "hidden"); };
 }
 function syncSpacePlanAnnotations(){
-  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;
+  const svg=$('spacePlanSvg');
+  // SVG 沒有 HTML 元素的 hidden 反射屬性；與 renderSpacePlan 共用 attribute 狀態。
+  if(!svg||svg.hasAttribute('hidden'))return;
+  const matrix=svg.getScreenCTM();if(!matrix)return;
   const scale=Math.hypot(matrix.a,matrix.b);if(!Number.isFinite(scale)||scale<=0)return;
   for(const label of svg.querySelectorAll('.space-plan-label'))label.style.fontSize=(12/scale)+'px';
   const step=10**Math.floor(Math.log10(80/scale)),box=svg.viewBox.baseVal;
@@ -4639,30 +4646,7 @@ function feTimberAnchorLabel(bid, surf, anchorValue) {
    注意:bid 參數目前只用於未來擴充;角材清單一律取 fe.timbers(目前工作區那面),
    不從其他面推導。 */
 function fePrimaryAxisInfo(bid) {
-  const timbers = fe.timbers || [];
-  const primaries = timbers.filter(t => t.role === "primary");
-  const boundaries = timbers.filter(t => t.role === "boundary");
-  const axisOf = t => t.dir && t.dir.slice(-1);
-  let axis = null, conflict = false, src = "none";
-  if (primaries.length) {
-    const axes = new Set(primaries.map(axisOf));
-    if (axes.size > 1) { conflict = true; }
-    else axis = [...axes][0];
-    src = "primary";
-  }
-  if (boundaries.length) {
-    /* boundary 的長度軸 ⊥ 主支軸 → 主支軸 = boundary 軸的垂直向。
-       所有 boundary 同方向(D17 保證);不一致 = 矛盾。 */
-    const bAxes = new Set(boundaries.map(axisOf));
-    const bAxis = bAxes.size === 1 ? [...bAxes][0] : null;
-    if (bAxis == null) { conflict = true; }
-    else {
-      const derived = bAxis === "u" ? "v" : "u";
-      if (axis == null) { axis = derived; src = "boundary"; }
-      else if (axis !== derived) conflict = true;
-    }
-  }
-  return { axis, conflict, src };
+  return GeometryApplication.woodworking.primaryAxisInfo(fe.timbers || []);
 }
 function feTimberPrimaryAxis(bid) {
   return fePrimaryAxisInfo(bid).axis;
@@ -4740,12 +4724,7 @@ function feAnchorCrossRange(bid, anchorValue, A) {
    未定義(無 primary 也無 boundary)→ 外輪廓邊給 boundary、參考線給 primary;
    矛盾(conflict)→ 回 null,呼叫端不自動改角色,只留診斷提示。 */
 function feTimberRoleForClick(bid, kind, dirAxis) {
-  const info = fePrimaryAxisInfo(bid);
-  if (info.conflict) return null;
-  const axis = info.axis;
-  if (!axis) return kind === "edge" ? "boundary" : "primary";
-  if (dirAxis === axis) return "primary";
-  return kind === "edge" ? "boundary" : "secondary";
+  return GeometryApplication.woodworking.roleForClick(fePrimaryAxisInfo(bid), kind, dirAxis);
 }
 /* 表單與直接點線使用同一個建議；孔邊不冒充外輪廓邊。 */
 function feTimberSuggestion(bid, anchor) {
@@ -4793,15 +4772,9 @@ function feTimberShowSuggestion() {
   if ($("tbUseSuggestion")) $("tbUseSuggestion").disabled = !suggestion?.role || !feSid(oc.edit?.bid);
 }
 function feSubgridRoleWarning(bid, direction, role) {
-  if (role !== "secondary") return "";
-  const info=fePrimaryAxisInfo(bid);
-  if (info.conflict) return "面上主支方向有衝突，請先檢查既有角材。";
-  if (!info.axis) return "尚未建立實際主支方向；請先放主支或邊界材，或明確改選其他合法角色。";
-  if (direction?.slice(-1) === info.axis) return `此線平行於實際主支 ${info.axis} 方向，不能用副支 3；請明確改選合法角色。`;
-  return "";
+  return GeometryApplication.woodworking.subgridRoleWarning(fePrimaryAxisInfo(bid), direction, role);
 }
-const TB_ROLE_OPTS = [["primary", "主支"], ["boundary", "邊框材"],
-  ["secondary", "副支"], ["custom", "自訂角色"]];
+const TB_ROLE_OPTS = GeometryApplication.woodworking.placementRoles;
 const timberRoleName = role => TB_ROLE_OPTS.find(([value]) => value === role)?.[1] || "角色未指定";
 const timberDirectionName = dir => ({ "+u": "沿輪廓圖向右", "-u": "沿輪廓圖向左", "+v": "沿輪廓圖向下", "-v": "沿輪廓圖向上" }[dir] || dir);
 /* #tbRole 選項依主支軸排除(G196-R04):
@@ -4812,17 +4785,8 @@ const timberDirectionName = dir => ({ "+u": "沿輪廓圖向右", "-u": "沿輪�
    外輪廓邊／參考線的自動角色(feTimberRoleForClick)與這裡共用 fePrimaryAxisInfo；
    網格線的預設則取橋接器逐線資料，非法組合仍由核心守門。 */
 function feTimberRoleOptionsHTML(bid, dirValue, currentRole) {
-  const info = fePrimaryAxisInfo(bid);
-  const axis = info.conflict ? null : info.axis;
-  const dirAxis = (dirValue || "+u").slice(-1);
-  const parallel = axis && dirAxis === axis;
-  const perpendicular = axis && dirAxis !== axis;
-  return TB_ROLE_OPTS.map(([v, t]) => {
-    let disabled = false, suffix = "";
-    if (parallel && (v === "boundary" || v === "secondary")) { disabled = true; suffix = "（需垂直於主支軸）"; }
-    else if (perpendicular && v === "primary") { disabled = true; suffix = "（沿主支軸才能是主支）"; }
-    return `<option value="${v}"${disabled ? " disabled" : ""}${v === currentRole ? " selected" : ""}>${t}${suffix}</option>`;
-  }).join("");
+  return GeometryApplication.woodworking.roleOptions(fePrimaryAxisInfo(bid), dirValue).map(option =>
+    `<option value="${option.value}"${option.disabled ? " disabled" : ""}${option.value === currentRole ? " selected" : ""}>${option.label}</option>`).join("");
 }
 /* 方向改變時重算 #tbRole 的可選項;原本選的角色若變成 disabled,跳到第一個可選項並提示。 */
 function feTimberSyncRoleOptions(pane) {
@@ -4858,7 +4822,7 @@ function feTimberHintRefresh() {
   const surf = feSurf(bid);
   if (!surf) return;
   const label = feTimberAnchorLabel(bid, surf, $("tbAnchor")?.value);
-  const A = $("tbA")?.value || 27, B = $("tbB")?.value || 33;
+  const A = $("tbA")?.value || GeometryApplication.woodworking.section.A, B = $("tbB")?.value || GeometryApplication.woodworking.section.B;
   /* GEO-196:提示改講新路徑——點一條邊或參考線＝直接以那條線為定位引用放置;
      G196-R02:點擊的左右位置不再決定厚度方向(+n/-n 由右欄「深度」欄位決定),
      不再承諾「點在哪一側就放哪一側」;點面內空白才是舊路徑(依右欄目前設定)。 */
@@ -8574,8 +8538,8 @@ function renderFaceInspector() {
     `<label>沿著<select id="tbAnchor"${surf ? "" : " disabled"}>${referenceAnchorOptions(bid, surf)}</select><small class="field-note">也可直接點畫布上的邊、參考線或網格線</small></label>` +
     `</div><details id="tbNewSegmentDetails" class="inspector-technical"><summary>進階：限定其中一段</summary><label>選段引用式（可留空）<input id="tbSelector" placeholder="例如 through 600"${surf ? "" : " disabled"}></label><small>完整定位代碼可在選取角材後的「詳細資料」查看。</small></details></div>` +
     `<div class="timber-form-group"><strong>2 截面</strong><div class="place-form">` +
-    `<label>寬 A（沿面）<input id="tbA" type="number" value="27"${surf ? "" : " disabled"}></label>` +
-    `<label>厚 B（出面）<input id="tbB" type="number" value="33"${surf ? "" : " disabled"}></label></div></div>` +
+    `<label>寬 A（沿面）<input id="tbA" type="number" value="${GeometryApplication.woodworking.section.A}"${surf ? "" : " disabled"}></label>` +
+    `<label>厚 B（出面）<input id="tbB" type="number" value="${GeometryApplication.woodworking.section.B}"${surf ? "" : " disabled"}></label></div></div>` +
     `<div class="timber-form-group"><strong>3 朝向與角色</strong><div class="place-form">` +
     `<label>厚度朝<select id="tbSide"${surf ? "" : " disabled"}>${timberSideOptions(surf).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}</select></label>` +
     `<label>延伸方向 <span class="auto-badge" id="tbDirAuto">自動</span><select id="tbDir"${surf ? "" : " disabled"}>` +
@@ -8786,6 +8750,17 @@ function renderFaceInspector() {
   const pri = pane.querySelector("#tbPriLabel"); if (pri) pri.hidden = pane.querySelector("#tbRole").value !== "custom";
   reapplyInspectorFocus(pane, saved);
   restoreDirtyInputs(pane, dirtyInputs);
+  /* details 的 toggle 處理到下一影格前才完成；同步恢復會被中途較短的
+     表單截短。僅恢復同次重繪，而且不蓋過使用者後續的捲動。 */
+  if (saved) {
+    const parent = pane.parentElement, seq = fe.gridPreviewSeq;
+    const scroll = parent.scrollTop, ownScroll = pane.scrollTop;
+    requestAnimationFrame(() => {
+      if (fe.gridPreviewSeq !== seq || pane.dataset.bid !== String(bid) ||
+          parent.scrollTop !== scroll || pane.scrollTop !== ownScroll) return;
+      parent.scrollTop = saved.scroll; pane.scrollTop = saved.ownScroll;
+    });
+  }
 }
 
 /* 放置表單（主畫布右欄與面內檢視器共用，§5.5.3a） */

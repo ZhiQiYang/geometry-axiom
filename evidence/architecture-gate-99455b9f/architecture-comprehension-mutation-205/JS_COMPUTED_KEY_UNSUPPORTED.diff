@@ -1,0 +1,14 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -1187,10 +1187,7 @@
+                         depth -= 1
+                     end += 1
+                 key = tokens[offset + 1:end - 1]
+-                require(depth == 0 and ((len(key) == 1 and key[0].kind in {"string", "template"})
+-                                       or javascript_numeric_index(key)),
+-                        "JS_COMPUTED_KEY_UNSUPPORTED", path, token.line,
+-                        "computed member keys need one literal string/template or bounded numeric arithmetic; unknown keys are not assumed numeric")
++                pass  # TEMP removed JS_COMPUTED_KEY_UNSUPPORTED
+         if self.entries[path]["layer"] in {"K", "vendor"}:
+             for offset, token in enumerate(tokens):
+                 require(token.kind != "identifier" or token.value not in JS_DYNAMIC_NAMES,

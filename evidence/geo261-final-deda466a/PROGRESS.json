@@ -1,0 +1,13 @@
+{
+  "schema": "geo261-live-progress/1",
+  "tested_sha": "deda466a818a5375a693c433cf4e030a36b4dc5a",
+  "entries": [
+    {
+      "utc": "2026-10-22T13:19:21.180193+00:00",
+      "label": "p189-diagnostics-r2",
+      "result": "deda466a 加各具名 dirty patch 的診斷，並非 deda 固定最終驗收：六份效能候選皆未四點全綠；K 公開 API O2／ASan+UBSan 差分全 0、80 個目標測試全 0、原 8 個 K 與 W 12 個具名負控及恢復全符合；mutate --check=1 為來源閉包已變、帳本 stale，將整份重產",
+      "next": "完成完全等價的投影省工與原 P189 整體撤回／恢復證據，再整份重產帳本與架構並固定新 SHA 重跑完整清單",
+      "archive": "raw/p189-diagnostics-r2.raw.tar.gz"
+    }
+  ]
+}

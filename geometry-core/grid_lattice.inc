@@ -1,74 +1,42 @@
 /* D29/R32: integer lattice arithmetic. No viewport is a source definition. */
 static bool grid_i64_add(int64_t a,int64_t b,int64_t *out)
-{
-    if ((b>0 && a>INT64_MAX-b)||(b<0 && a<INT64_MIN-b)) return false;
-    *out=a+b; return true;
-}
+{ return geo_i64_add(a,b,out); }
 static int64_t grid_floor_div(int64_t a,int64_t b)
-{ int64_t q=a/b,r=a%b; return q-(r<0); }
+{ return geo_floor_div(a,b); }
 static int64_t grid_ceil_div(int64_t a,int64_t b)
-{ int64_t q=a/b,r=a%b; return q+(r>0); }
+{ return geo_ceil_div(a,b); }
 static bool grid_axis_is_infinite(const GridAxisDef *a)
-{ return a->source==GRID_SRC_REPEAT || a->source==GRID_SRC_REPEAT_PANEL; }
+{ return geo_grid_axis_is_infinite(a); }
 static bool grid_system_is_infinite(const GridSystem *s)
-{ return grid_axis_is_infinite(&s->axis[0]) || grid_axis_is_infinite(&s->axis[1]); }
+{ return geo_grid_system_is_infinite(s); }
 static Coord grid_axis_pitch(const GridAxisDef *a)
-{ return a->source==GRID_SRC_REPEAT?a->step:panel_layout_pitch(a->panel,a->gap); }
+{ return geo_grid_axis_pitch(a); }
 static Coord grid_axis_phase(const GridAxisDef *a)
-{ return a->source==GRID_SRC_REPEAT?a->start:panel_layout_center(a->anchor,a->panel,a->gap,0); }
+{ return geo_grid_axis_phase(a); }
 
 static bool grid_lattice_coord(const ReferenceGrid *g,int axis,int64_t k,Coord *out)
 {
-    if (!g || !g->from_binding || axis<0 || axis>1 || g->lattice_step[axis]<=0) return false;
-    int64_t base=g->lattice_base[axis],origin=g->lattice_index[axis],step=g->lattice_step[axis],value;
-    if (k>=origin) {
-        uint64_t delta=(uint64_t)k-(uint64_t)origin;
-        int64_t room=COORD_LIMIT-base;
-        if (room<0 || delta>(uint64_t)(room/step)) return false;
-        value=base+(int64_t)delta*step;
-    } else {
-        uint64_t delta=(uint64_t)origin-(uint64_t)k;
-        int64_t room=base+COORD_LIMIT;
-        if (room<0 || delta>(uint64_t)(room/step)) return false;
-        value=base-(int64_t)delta*step;
-    }
-    if (!coord_in_range(value)) return false;
-    if(out) *out=value; return true;
+    if(!g||!g->from_binding||axis<0||axis>1)return false;
+    GeoLattice lattice={g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
+    return geo_lattice_coord(&lattice,k,out);
 }
 
 static bool grid_lattice_window(const ReferenceGrid *g,int axis,Coord lo,Coord hi,
     size_t limit,bool sample,GridQueryAxis *out,char *err,size_t cap)
 {
-    memset(out,0,sizeof *out); out->stride=1;
-    if (!g || axis<0 || axis>1 || !limit || limit>GRID_MAX_LINES || lo>hi ||
-        !coord_in_range(lo) || !coord_in_range(hi)) goto invalid;
-    if (!g->lattice_step[axis]) return true;
-    out->defined=true;
-    int64_t step=g->lattice_step[axis],base=g->lattice_base[axis],origin=g->lattice_index[axis];
-    int64_t first_delta=grid_ceil_div(lo-base,step),last_delta=grid_floor_div(hi-base,step);
-    if(first_delta>last_delta) return true;
-    if(!grid_i64_add(origin,first_delta,&out->first)||!grid_i64_add(origin,last_delta,&out->last)) {
-        if(err) snprintf(err,cap,"R32: INDEX_RANGE exceeds signed int64"); return false;
-    }
-    out->total=(uint64_t)(last_delta-first_delta)+1;
-    if(out->total>limit && !sample) {
-        if(err) snprintf(err,cap,"R32: QUERY_CAPACITY requires %llu lines; limit %u",(unsigned long long)out->total,(unsigned)limit);
-        return false;
-    }
-    out->stride=sample?(out->total+limit-1)/limit:1;
-    if(!out->stride) out->stride=1;
-    int64_t stride=(int64_t)out->stride,k=out->first,r=k%stride;
-    if(r<0)r+=stride;
-    if(r && !grid_i64_add(k,stride-r,&k)) return true;
-    for(;k<=out->last;) {
-        GridQueryLine *line=&out->lines[out->count]; line->index=k;
-        if(!grid_lattice_coord(g,axis,k,&line->coordinate)) goto invalid;
-        if(++out->count>=limit || out->last-k<stride) break;
-        k+=stride;
-    }
-    return true;
+    memset(out,0,sizeof *out);out->stride=1;
+    if(!g||axis<0||axis>1||limit>GRID_MAX_LINES)goto invalid;
+    GeoLattice lattice={g->lattice_base[axis],g->lattice_step[axis],g->lattice_index[axis]};
+    GeoLatticeLine lines[GRID_MAX_LINES];GeoLatticeWindow result={.lines=lines,.capacity=GRID_MAX_LINES};
+    GeoGridStatus status=geo_lattice_window(&lattice,lo,hi,limit,sample,&result);
+    out->defined=result.defined;out->first=result.first;out->last=result.last;
+    out->total=result.total;out->stride=result.stride;out->count=result.count;
+    for(size_t i=0;i<result.count;++i){out->lines[i].index=lines[i].index;out->lines[i].coordinate=lines[i].coordinate;}
+    if(status==GEO_GRID_OK)return true;
+    if(status==GEO_GRID_INDEX_RANGE){if(err)snprintf(err,cap,"R32: INDEX_RANGE exceeds signed int64");return false;}
+    if(status==GEO_GRID_CAPACITY){if(err)snprintf(err,cap,"R32: QUERY_CAPACITY requires %llu lines; limit %u",(unsigned long long)out->total,(unsigned)limit);return false;}
 invalid:
-    if(err) snprintf(err,cap,"R32: invalid lattice query or D1 coordinate"); return false;
+    if(err)snprintf(err,cap,"R32: invalid lattice query or D1 coordinate");return false;
 }
 
 /* D10b: the lowest bit selects the odd band, including negative odds. Shift 0 keeps the unstaggered coordinate. */

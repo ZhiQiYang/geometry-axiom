@@ -1,0 +1,96 @@
+test_python_list_comprehension_unpack_cannot_read_host_loaded_template (__main__.ArchitectureContract.test_python_list_comprehension_unpack_cannot_read_host_loaded_template) ... FAIL
+test_python_list_comprehension_index_cannot_read_host_loaded_template (__main__.ArchitectureContract.test_python_list_comprehension_index_cannot_read_host_loaded_template) ... FAIL
+test_python_set_comprehension_result_preserves_sys_provenance (__main__.ArchitectureContract.test_python_set_comprehension_result_preserves_sys_provenance) ... FAIL
+test_python_generator_result_preserves_sys_provenance (__main__.ArchitectureContract.test_python_generator_result_preserves_sys_provenance) ... FAIL
+test_python_dict_comprehension_value_preserves_sys_provenance (__main__.ArchitectureContract.test_python_dict_comprehension_value_preserves_sys_provenance) ... FAIL
+test_python_dict_comprehension_key_preserves_sys_provenance (__main__.ArchitectureContract.test_python_dict_comprehension_key_preserves_sys_provenance) ... FAIL
+test_python_nested_comprehension_result_preserves_sys_provenance (__main__.ArchitectureContract.test_python_nested_comprehension_result_preserves_sys_provenance) ... FAIL
+
+======================================================================
+FAIL: test_python_list_comprehension_unpack_cannot_read_host_loaded_template (__main__.ArchitectureContract.test_python_list_comprehension_unpack_cannot_read_host_loaded_template)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1037, in test_python_list_comprehension_unpack_cannot_read_host_loaded_template
+    self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_list_comprehension_index_cannot_read_host_loaded_template (__main__.ArchitectureContract.test_python_list_comprehension_index_cannot_read_host_loaded_template)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1044, in test_python_list_comprehension_index_cannot_read_host_loaded_template
+    self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_set_comprehension_result_preserves_sys_provenance (__main__.ArchitectureContract.test_python_set_comprehension_result_preserves_sys_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1048, in test_python_set_comprehension_result_preserves_sys_provenance
+    self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_generator_result_preserves_sys_provenance (__main__.ArchitectureContract.test_python_generator_result_preserves_sys_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1052, in test_python_generator_result_preserves_sys_provenance
+    self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_dict_comprehension_value_preserves_sys_provenance (__main__.ArchitectureContract.test_python_dict_comprehension_value_preserves_sys_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1056, in test_python_dict_comprehension_value_preserves_sys_provenance
+    self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_dict_comprehension_key_preserves_sys_provenance (__main__.ArchitectureContract.test_python_dict_comprehension_key_preserves_sys_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1060, in test_python_dict_comprehension_key_preserves_sys_provenance
+    self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_python_nested_comprehension_result_preserves_sys_provenance (__main__.ArchitectureContract.test_python_nested_comprehension_result_preserves_sys_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 1064, in test_python_nested_comprehension_result_preserves_sys_provenance
+    self.rejects("CORE_PATH_INJECTION", path="src/core.py", line=3)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.294s
+
+FAILED (failures=7)

@@ -61,6 +61,11 @@
     "node:document_format": {
       "mode": "exit-code-only"
     },
+    "node:draw_annotation": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
     "node:evidence_links": {
       "mode": "count",
       "count": 29,
@@ -93,7 +98,12 @@
     },
     "node:grid_definition_diagram": {
       "mode": "count",
-      "count": 12,
+      "count": 13,
+      "unit": "node test"
+    },
+    "node:grid_inspector_command": {
+      "mode": "count",
+      "count": 9,
       "unit": "node test"
     },
     "node:grid_lesson_control_ownership": {
@@ -142,7 +152,12 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 731
+      "count": 737
+    },
+    "node:woodworking_frontend": {
+      "mode": "count",
+      "count": 17,
+      "unit": "node test"
     },
     "node:workspace_shell_history": {
       "mode": "count",
@@ -151,6 +166,11 @@
     },
     "oracle:framing-selftest": {
       "mode": "exit-code-only"
+    },
+    "py:test_architecture_contract": {
+      "mode": "count",
+      "count": 205,
+      "unit": "test"
     },
     "py:test_assembly_candidate_impact": {
       "mode": "count",
@@ -165,6 +185,11 @@
     "py:test_assembly_generation": {
       "mode": "count",
       "count": 22,
+      "unit": "test"
+    },
+    "py:test_assembly_mutation_check": {
+      "mode": "count",
+      "count": 12,
       "unit": "test"
     },
     "py:test_assembly_native_diagnostics": {
@@ -189,7 +214,7 @@
     },
     "py:test_binaries": {
       "mode": "count",
-      "count": 32,
+      "count": 36,
       "unit": "test"
     },
     "py:test_bridge_integrity": {
@@ -220,6 +245,11 @@
     "py:test_domain_decoupling_proposal": {
       "mode": "count",
       "count": 29,
+      "unit": "test"
+    },
+    "py:test_domain_source_pins": {
+      "mode": "count",
+      "count": 16,
       "unit": "test"
     },
     "py:test_engineering_core": {
@@ -262,9 +292,549 @@
       "count": 1,
       "unit": "test"
     },
+    "py:test_geo261_application_closure": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_assembly_definition_authority": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_assembly_graph_product": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_geo261_assembly_sources": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_candidate_cache": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_candidate_deferred_sha": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_candidate_product": {
+      "mode": "count",
+      "count": 26,
+      "unit": "test"
+    },
+    "py:test_geo261_contact_sources": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_default_native": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_deferred_candidate": {
+      "mode": "count",
+      "count": 53,
+      "unit": "test"
+    },
+    "py:test_geo261_deferred_product": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_definition_graph_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_definition_sources": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_derived_policy_graph_product": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_geo261_derived_policy_sources": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_domain_product": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_draw_annotation": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_geo261_enclosure_definition_authority": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_enclosure_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_enclosure_sources": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_engineering_parameter_authority": {
+      "mode": "count",
+      "count": 17,
+      "unit": "test"
+    },
+    "py:test_geo261_engineering_sources": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_finish_definition_authority": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_finish_sources": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_graph_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_grid_definition_authority": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_grid_definition_codec": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_grid_definitions_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_grid_sources": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_guides_product": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
+    "py:test_geo261_host_authority": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_host_candidate": {
+      "mode": "count",
+      "count": 17,
+      "unit": "test"
+    },
+    "py:test_geo261_host_facts_authority": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "py:test_geo261_host_history": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_host_placement_definition": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_linear_definition_graph_product": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_linear_definition_sources": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_member_reference": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_model_base_replay": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
+    },
+    "py:test_geo261_model_semantics_authority": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_model_sources": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_model_vertex_ledger": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_mutation_migration": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_native_candidate": {
+      "mode": "count",
+      "count": 17,
+      "unit": "test"
+    },
+    "py:test_geo261_native_datums": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_native_document": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_native_enclosures": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "py:test_geo261_native_entrypoints": {
+      "mode": "count",
+      "count": 3,
+      "unit": "test"
+    },
+    "py:test_geo261_native_geometry": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_native_grid": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_native_grid_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_native_grid_rules": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_native_grid_store": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_native_guides": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_native_kernel": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_native_linear": {
+      "mode": "count",
+      "count": 6,
+      "unit": "test"
+    },
+    "py:test_geo261_native_parameters": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_native_placements": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_native_regions": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_native_sources": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_native_versions": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_panel_native": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_parameter_definition_sources": {
+      "mode": "count",
+      "count": 20,
+      "unit": "test"
+    },
+    "py:test_geo261_parameter_sources": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_placement_definition": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "py:test_geo261_placement_sources": {
+      "mode": "count",
+      "count": 21,
+      "unit": "test"
+    },
+    "py:test_geo261_region_edges": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_region_key_sources": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_regions_product": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
+    "py:test_geo261_section_profile_authority": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_section_profile_sources": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_source_context": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_source_describe": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_source_index": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_staged_candidate_graph": {
+      "mode": "count",
+      "count": 7,
+      "unit": "test"
+    },
+    "py:test_geo261_version_activation": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_version_field_sources": {
+      "mode": "count",
+      "count": 19,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_assembly": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_contact_world": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_contacts": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_contacts_product": {
+      "mode": "count",
+      "count": 1,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_derived_placement": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_engineering": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_engineering_operations": {
+      "mode": "count",
+      "count": 15,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_finish": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_grid_application": {
+      "mode": "count",
+      "count": 11,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_grid_cells": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_grid_engineering": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_member_declaration": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_members": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_product": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_report_policy": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_section_profile": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_supports": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_supports_product": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
+    "py:test_geo261_wood_world_validation": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    },
+    "py:test_geometry_host_native": {
+      "mode": "count",
+      "count": 30,
+      "unit": "test"
+    },
+    "py:test_geometry_host_sources": {
+      "mode": "count",
+      "count": 39,
+      "unit": "test"
+    },
+    "py:test_geometry_host_world": {
+      "mode": "count",
+      "count": 8,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_compatibility": {
+      "mode": "count",
+      "count": 1,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_geometry": {
+      "mode": "count",
+      "count": 20,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_graph": {
+      "mode": "count",
+      "count": 30,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_isolation": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_runtime": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_session": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geometry_kernel_transactions": {
+      "mode": "count",
+      "count": 31,
+      "unit": "test"
+    },
+    "py:test_geometry_source_runtime": {
+      "mode": "count",
+      "count": 10,
+      "unit": "test"
+    },
     "py:test_grid_card_reference": {
       "mode": "count",
       "count": 43,
+      "unit": "test"
+    },
+    "py:test_grid_inspector_contract": {
+      "mode": "count",
+      "count": 3,
       "unit": "test"
     },
     "py:test_grid_subdivision_oracle": {
@@ -313,6 +883,11 @@
       "unit": "test"
     },
     "py:test_modeling_transport": {
+      "mode": "count",
+      "count": 3,
+      "unit": "test"
+    },
+    "py:test_mutation_anchors": {
       "mode": "count",
       "count": 3,
       "unit": "test"
@@ -382,10 +957,30 @@
       "count": 12,
       "unit": "test"
     },
+    "py:test_product_architecture": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
     "py:test_recorded_api_receipts": {
       "mode": "count",
       "count": 17,
       "unit": "test"
+    },
+    "py:test_rectangular_bridge": {
+      "mode": "count",
+      "count": 2,
+      "unit": "test"
+    },
+    "py:test_rectangular_python": {
+      "mode": "count",
+      "count": 9,
+      "unit": "test"
+    },
+    "py:test_rectangular_template": {
+      "mode": "count",
+      "count": 11,
+      "unit": "unittest"
     },
     "py:test_reference_contract": {
       "mode": "count",
@@ -429,7 +1024,7 @@
     },
     "py:test_runtime_version": {
       "mode": "count",
-      "count": 24,
+      "count": 31,
       "unit": "test"
     },
     "py:test_scenario_verify": {
@@ -450,7 +1045,7 @@
     "py:test_section_profile_mutation_check": {
       "mode": "count",
       "unit": "test",
-      "count": 29
+      "count": 30
     },
     "py:test_section_profile_native": {
       "mode": "count",
@@ -461,6 +1056,11 @@
       "mode": "count",
       "unit": "test",
       "count": 51
+    },
+    "py:test_source_closure_memo": {
+      "mode": "count",
+      "count": 16,
+      "unit": "test"
     },
     "py:test_source_inspector": {
       "mode": "count",

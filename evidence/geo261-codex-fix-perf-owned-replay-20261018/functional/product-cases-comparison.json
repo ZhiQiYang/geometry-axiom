@@ -1,0 +1,120 @@
+{
+  "verified_utc": "2026-10-18T14:04:45.319601+00:00",
+  "sources": {
+    "baseline": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+    "enabled": "8ab0bdb467ba6e6d22f7c5652f221cffab4934b6"
+  },
+  "comparison": "原始位元組；不正規化、不去路徑、不刪診斷",
+  "comparisons": [
+    {
+      "case": "lifecycle",
+      "stream": "stdout",
+      "equal": true,
+      "baseline_bytes": 0,
+      "enabled_bytes": 0,
+      "baseline_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "enabled_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "lifecycle",
+      "stream": "stderr",
+      "equal": true,
+      "baseline_bytes": 372,
+      "enabled_bytes": 372,
+      "baseline_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+      "enabled_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8"
+    },
+    {
+      "case": "wood-tamper",
+      "stream": "stdout",
+      "equal": true,
+      "baseline_bytes": 0,
+      "enabled_bytes": 0,
+      "baseline_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "enabled_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "wood-tamper",
+      "stream": "stderr",
+      "equal": true,
+      "baseline_bytes": 456,
+      "enabled_bytes": 456,
+      "baseline_sha256": "1b634bfba69933c5bfece82d35fdf6f6ff8bc7fba49975152313d593c5cd7cf8",
+      "enabled_sha256": "1b634bfba69933c5bfece82d35fdf6f6ff8bc7fba49975152313d593c5cd7cf8"
+    },
+    {
+      "case": "host-tamper",
+      "stream": "stdout",
+      "equal": true,
+      "baseline_bytes": 0,
+      "enabled_bytes": 0,
+      "baseline_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "enabled_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "host-tamper",
+      "stream": "stderr",
+      "equal": true,
+      "baseline_bytes": 456,
+      "enabled_bytes": 456,
+      "baseline_sha256": "1b634bfba69933c5bfece82d35fdf6f6ff8bc7fba49975152313d593c5cd7cf8",
+      "enabled_sha256": "1b634bfba69933c5bfece82d35fdf6f6ff8bc7fba49975152313d593c5cd7cf8"
+    },
+    {
+      "case": "before-tamper",
+      "stream": "stdout",
+      "equal": true,
+      "baseline_bytes": 0,
+      "enabled_bytes": 0,
+      "baseline_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "enabled_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "before-tamper",
+      "stream": "stderr",
+      "equal": true,
+      "baseline_bytes": 456,
+      "enabled_bytes": 456,
+      "baseline_sha256": "1b634bfba69933c5bfece82d35fdf6f6ff8bc7fba49975152313d593c5cd7cf8",
+      "enabled_sha256": "1b634bfba69933c5bfece82d35fdf6f6ff8bc7fba49975152313d593c5cd7cf8"
+    },
+    {
+      "case": "revision",
+      "stream": "stdout",
+      "equal": true,
+      "baseline_bytes": 0,
+      "enabled_bytes": 0,
+      "baseline_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "enabled_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "revision",
+      "stream": "stderr",
+      "equal": true,
+      "baseline_bytes": 456,
+      "enabled_bytes": 456,
+      "baseline_sha256": "1b634bfba69933c5bfece82d35fdf6f6ff8bc7fba49975152313d593c5cd7cf8",
+      "enabled_sha256": "1b634bfba69933c5bfece82d35fdf6f6ff8bc7fba49975152313d593c5cd7cf8"
+    },
+    {
+      "case": "cancel",
+      "stream": "stdout",
+      "equal": true,
+      "baseline_bytes": 0,
+      "enabled_bytes": 0,
+      "baseline_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "enabled_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "cancel",
+      "stream": "stderr",
+      "equal": true,
+      "baseline_bytes": 442,
+      "enabled_bytes": 442,
+      "baseline_sha256": "667705c601b59ee5adcf4fd6b842f0f141e5b084ec4bf29249aef0702158c6af",
+      "enabled_sha256": "667705c601b59ee5adcf4fd6b842f0f141e5b084ec4bf29249aef0702158c6af"
+    }
+  ],
+  "all_equal": true,
+  "limitations": "原生真confirm與不發布斷言；不單獨證明JSON dispatcher、K enum或B快路徑。這些由153測試、四態raw與單點控制分別驗證。"
+}

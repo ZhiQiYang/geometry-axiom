@@ -1,0 +1,17 @@
+{
+  "modules": {
+    "tests.test_geo261_native_grid_product": 5
+  },
+  "tests": [
+    "tests.test_geo261_native_grid_product.GridStoreProduct.test_actual_host_keeps_role_sidecar_order_binding_bytes_and_undo_roundtrip",
+    "tests.test_geo261_native_grid_product.GridStoreProduct.test_host_first_error_order_and_rejected_partial_cache_use_real_kernel",
+    "tests.test_geo261_native_grid_product.GridStoreProduct.test_parity_negative_control_changes_standalone_witness_and_actual_binding",
+    "tests.test_geo261_native_grid_product.GridStoreProduct.test_redeclaration_and_rule_edits_keep_source_identity_and_undo_highwater",
+    "tests.test_geo261_native_grid_product.GridStoreProduct.test_zero_stagger_negative_control_reaches_real_parameter_rebuild"
+  ],
+  "groups": {
+    "corrected-grid-product": [
+      "tests.test_geo261_native_grid_product"
+    ]
+  }
+}

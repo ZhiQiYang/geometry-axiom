@@ -1,0 +1,9 @@
+# Frozen 14ab timeout routes, read without product execution
+
+Source: `14ab395d56ce1dcabe43e65b5311776a8d3e6221`. The actual original receipt records `TimeoutExpired` for the whole process. Its traces do not locate a C statement.
+
+The original domain test calls `domain-host-product rollback`, with a 20-second subprocess limit. The harness routes that name to `rejected_candidate()`: allocate two complete Worlds; build `reference_default_world(world)`; clear history and copy all World bytes; attempt the specified invalid boundary command through `apply_interactive_tokens`; require rejection, byte-identical world and no valid preview; compare domain counts and free both Worlds. There is no timing marker inside this original harness.
+
+The original candidate test calls `candidate-product-client imports <candidate-product.scene>`, with a 30-second subprocess limit. The harness first parses the scene and creates `preview spec x 600`. It retains the preview owner, core and source resolver; prepares an import; requires the existing preview ownership to remain unchanged; performs `cmd_engineering_validate`; checks that ownership again; confirms the original preview; prepares another import; confirms that import and checks its original candidate/resolver identity and published state; finally checks that named value `x` equals 500. There is no timing marker inside this original harness.
+
+Both compile through the original `tests.test_geo261_native_kernel.NativeBuild`, whose Linux compile flags include `-std=c11 -O0 -Werror=implicit-function-declaration`. The separate longer diagnostic uses the original source, flags and two original `setUpClass()` methods. It changes no integrity checks or original time limits. Full-world hashing/copying is a plausible cost raised by source inspection, not a proven location or cause until measurement or later separately authorized instrumentation establishes it.

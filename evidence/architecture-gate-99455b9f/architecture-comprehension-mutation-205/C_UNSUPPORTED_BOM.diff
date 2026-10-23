@@ -1,0 +1,13 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -909,9 +909,7 @@
+ 
+     def scan_c(self, path, text):
+         embedded_bom = text.find("\ufeff", 1)
+-        require(embedded_bom == -1, "C_UNSUPPORTED_BOM", path,
+-                text.count("\n", 0, embedded_bom) + 1 if embedded_bom != -1 else 1,
+-                "only one initial UTF-8 BOM is supported; embedded BOM characters need explicit preprocessing support")
++        pass  # TEMP removed C_UNSUPPORTED_BOM
+         text = text.removeprefix("\ufeff")
+         trigraph = re.search(r"\?\?[=/'()!<>-]", text)
+         require(trigraph is None, "C_UNSUPPORTED_TRIGRAPH", path,

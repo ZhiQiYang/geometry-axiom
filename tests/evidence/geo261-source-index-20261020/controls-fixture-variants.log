@@ -1,0 +1,10 @@
+start 2026-10-20T11:05:18Z
+9f21280d0481c751f246b0c2105d50eea75b7ba9
+group+pairs (as committed)   | baseline rc=0 | edge-kind-ignored rc=1 ASSERT:missing-edge | edge-probe-miss rc=1 ASSERT:duplicate-edge | edge-probe-hit rc=1 ASSERT:missing-edge
+group only                   | baseline rc=0 | edge-kind-ignored rc=0 | edge-probe-miss rc=1 ASSERT:duplicate-edge | edge-probe-hit rc=1 ASSERT:missing-edge
+pairs only                   | baseline rc=0 | edge-kind-ignored rc=1 ASSERT:missing-edge | edge-probe-miss rc=1 ASSERT:duplicate-edge | edge-probe-hit rc=1 ASSERT:missing-edge
+neither                      | baseline rc=1 ASSERT:edge-index-in-use | edge-kind-ignored rc=1 ASSERT:edge-index-in-use | edge-probe-miss rc=1 ASSERT:edge-index-in-use | edge-probe-hit rc=1 ASSERT:edge-index-in-use
+variants rc=0
+end 2026-10-20T11:05:29Z
+st_parameters_core py:test_grid_subdivision_oracle py:test_domain_source_pins py:test_rectangular_python py:test_geometry_kernel_compatibility
+wrapper rc=0

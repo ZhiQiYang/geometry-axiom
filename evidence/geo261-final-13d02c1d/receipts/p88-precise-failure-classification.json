@@ -1,0 +1,34 @@
+{
+  "schema": "geo288-p88-original-failure-classification/1",
+  "product_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "review_snapshot_sha": "9e44ea94e891270d49d7432f25ebb55cf5709ec6",
+  "review_head": "22ad28f",
+  "job_exit": 1,
+  "fatal_assertion": "document.activeElement===document.querySelector(\"#refGuideMode\")",
+  "actual_active_element": "refGuideRatio",
+  "last_click": {
+    "k": "click",
+    "el": "label < div#refGuideSourceFields",
+    "text": "來源比例原值一半兩倍",
+    "x": 293.75,
+    "y": 627.5,
+    "t": 1792735826556
+  },
+  "completed": false,
+  "golden_compare": "not compared (run did not complete)",
+  "passed_assertions_before_fatal": 1502,
+  "original_stdout_sha256": "6c6429347783fe91415d77c7c4c5e578b876e4af9bc710a155d606a95e20806c",
+  "classification": "UI focus/click-target failure; causal attribution to product layout timing or test coordinate timing is pending isolated repetitions.",
+  "repetitions": {
+    "requested": 3,
+    "source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+    "execution_results": [],
+    "status": "delegated; no pass claimed"
+  },
+  "limitations": [
+    "Original event is click, not pointer-down telemetry.",
+    "Original capture has no layout rect/scroll identity trace.",
+    "Not a golden failure; golden comparison did not complete.",
+    "Previous same-source grid pass does not make this canvas pass."
+  ]
+}

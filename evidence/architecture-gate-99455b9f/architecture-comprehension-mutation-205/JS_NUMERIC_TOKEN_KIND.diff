@@ -1,0 +1,11 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -458,7 +458,7 @@
+             return None
+         token = tokens[position]
+         position += 1
+-        if token.kind == "punct" and token.value in {"+", "-", "~", "++", "--"}:
++        if token.value in {"+", "-", "~", "++", "--"}:
+             return True if primary() is not None else None
+         if token.kind == "punct" and token.value == "(":
+             numeric = expression(0)

@@ -9,27 +9,29 @@ static int reference_fragment_candidate(const World *base,SurfaceId source,Surfa
     if (!candidate) return -1;
     *candidate=*base;
     ReferenceEval ctx={0}; ctx.world=candidate;
-    for (size_t i=0;i<candidate->guide_count;++i) {
-        if (candidate->guides[i].placement_id==source) candidate->guides[i].placement_id=target;
-        candidate->guides[i].resolved=false;
+    for (size_t i=0;i<geo_guides_count(&candidate->geo.guide_lines);++i) {
+        GeoGuide guide=*geo_guides_at(&candidate->geo.guide_lines,i);
+        if(guide.placement_id==source)guide.placement_id=target;guide.resolved=false;
+        if(!geo_guides_put(&candidate->geo.guide_lines,&guide)){free(candidate);return false;}
     }
-    for (size_t i=0;i<candidate->timber_count;++i) {
-        if (candidate->anchors[i].placement_id==source) candidate->anchors[i].placement_id=target;
-        ctx.wanted[i]=candidate->timbers[i].placed;
-        candidate->timbers[i].placed=false;
+    for (size_t i=0;i<candidate->wood.timber_count;++i) {
+        if (candidate->wood.anchors[i].placement_id==source) candidate->wood.anchors[i].placement_id=target;
+        ctx.wanted[i]=candidate->wood.timbers[i].placed;
+        candidate->wood.timbers[i].placed=false;
     }
     bool capture=g_reference_capturing;
     size_t issues=g_reference_issue_count;
     char previous_error[sizeof g_revalidate_error]; memcpy(previous_error,g_revalidate_error,sizeof previous_error);
     g_reference_capturing=false;
     bool valid=timber?reference_eval_timber(&ctx,index):reference_eval_guide(&ctx,index);
+    reference_sources_dispose(&ctx);
     g_reference_capturing=capture; g_reference_issue_count=issues;
     memcpy(g_revalidate_error,previous_error,sizeof previous_error);
     if (!valid) { free(candidate); return false; }
     if (timber) {
-        *out_timber=candidate->timbers[index]; *out_anchor=candidate->anchors[index];
+        *out_timber=candidate->wood.timbers[index]; *out_anchor=candidate->wood.anchors[index];
     } else {
-        const GuideLine *g=&candidate->guides[index];
+        const GuideLine *g=&geo_guides_values(&candidate->geo.guide_lines)[index];
         const PlacementSurface *p=world_find_placement(candidate,target);
         SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
         if (!p || !guide_line_get_local_segments(p,world_placement_boundary(candidate,p),g,segs,GUIDE_MAX_SEGMENTS)) { free(candidate); return false; }

@@ -1,0 +1,229 @@
+{
+  "claims": [
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "field": "/runner_sha256_before//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-6f1fd92f/run-native-receipt.py",
+      "expectedSha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/run-native-receipt.py",
+        "native-next-14ab395d/run-native-receipt.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "field": "/runner_sha256_before//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-6f1fd92f/exercise-native-receipt.py",
+      "expectedSha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/exercise-native-receipt.py",
+        "native-next-14ab395d/exercise-native-receipt.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "field": "/runner_sha256_before//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-6f1fd92f/native-receipt-namespace.sh",
+      "expectedSha256": "a1522bdff46af53799fc7ceeb70a20d1e2d5eb3439d1813ca0c9858d19917c47",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/native-receipt-namespace.sh"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "field": "/runner_sha256_before//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-6f1fd92f/recipe.json",
+      "expectedSha256": "23542655b7a443615c36bed9f74325c765574d04b7068e57d630a920046cb374",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/recipe.json"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "field": "/runner_sha256_after//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-6f1fd92f/run-native-receipt.py",
+      "expectedSha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/run-native-receipt.py",
+        "native-next-14ab395d/run-native-receipt.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "field": "/runner_sha256_after//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-6f1fd92f/exercise-native-receipt.py",
+      "expectedSha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/exercise-native-receipt.py",
+        "native-next-14ab395d/exercise-native-receipt.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "field": "/runner_sha256_after//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-6f1fd92f/native-receipt-namespace.sh",
+      "expectedSha256": "a1522bdff46af53799fc7ceeb70a20d1e2d5eb3439d1813ca0c9858d19917c47",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/native-receipt-namespace.sh"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-6f1fd92f-v1",
+      "field": "/runner_sha256_after//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-6f1fd92f/recipe.json",
+      "expectedSha256": "23542655b7a443615c36bed9f74325c765574d04b7068e57d630a920046cb374",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/recipe.json"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "section-runs-diagnostic-6f1fd92f-v1",
+      "field": "/runner_sha256_before/run.py",
+      "expectedSha256": "c4d715120d1a3d3ba3e3e3944301f469d1dfc04e83d1f3312b31f7ca3dbc1264",
+      "retainedMatchingFiles": [
+        "section-runs-diagnostic-6f1fd92f/run.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "section-runs-diagnostic-6f1fd92f-v1",
+      "field": "/runner_sha256_before/namespace.sh",
+      "expectedSha256": "dc978b2ca8ec950a60f6ca1eca62d5e96d3f85feab045f3b6e29cc7e5a8ffad1",
+      "retainedMatchingFiles": [
+        "section-runs-diagnostic-6f1fd92f/namespace.sh"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "section-runs-diagnostic-6f1fd92f-v1",
+      "field": "/runner_sha256_after/run.py",
+      "expectedSha256": "c4d715120d1a3d3ba3e3e3944301f469d1dfc04e83d1f3312b31f7ca3dbc1264",
+      "retainedMatchingFiles": [
+        "section-runs-diagnostic-6f1fd92f/run.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "section-runs-diagnostic-6f1fd92f-v1",
+      "field": "/runner_sha256_after/namespace.sh",
+      "expectedSha256": "dc978b2ca8ec950a60f6ca1eca62d5e96d3f85feab045f3b6e29cc7e5a8ffad1",
+      "retainedMatchingFiles": [
+        "section-runs-diagnostic-6f1fd92f/namespace.sh"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "field": "/runner_sha256_before//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-14ab395d/run-native-receipt.py",
+      "expectedSha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/run-native-receipt.py",
+        "native-next-14ab395d/run-native-receipt.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "field": "/runner_sha256_before//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-14ab395d/exercise-native-receipt.py",
+      "expectedSha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/exercise-native-receipt.py",
+        "native-next-14ab395d/exercise-native-receipt.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "field": "/runner_sha256_before//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-14ab395d/native-receipt-namespace.sh",
+      "expectedSha256": "418d734158f6b54ca3a9583a13211a95a670b064e3018c66a256908a1181a2d8",
+      "retainedMatchingFiles": [
+        "native-next-14ab395d/native-receipt-namespace.sh"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "field": "/runner_sha256_before//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-14ab395d/recipe.json",
+      "expectedSha256": "aabcdb1aa92947c33861990ed98c5c795f4f5acd36dfba75a42a055f196f30b7",
+      "retainedMatchingFiles": [
+        "native-next-14ab395d/recipe.json"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "field": "/runner_sha256_after//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-14ab395d/run-native-receipt.py",
+      "expectedSha256": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/run-native-receipt.py",
+        "native-next-14ab395d/run-native-receipt.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "field": "/runner_sha256_after//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-14ab395d/exercise-native-receipt.py",
+      "expectedSha256": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+      "retainedMatchingFiles": [
+        "native-next-6f1fd92f/exercise-native-receipt.py",
+        "native-next-14ab395d/exercise-native-receipt.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "field": "/runner_sha256_after//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-14ab395d/native-receipt-namespace.sh",
+      "expectedSha256": "418d734158f6b54ca3a9583a13211a95a670b064e3018c66a256908a1181a2d8",
+      "retainedMatchingFiles": [
+        "native-next-14ab395d/native-receipt-namespace.sh"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "native-candidate-14ab395d-v1",
+      "field": "/runner_sha256_after//mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-14ab395d/recipe.json",
+      "expectedSha256": "aabcdb1aa92947c33861990ed98c5c795f4f5acd36dfba75a42a055f196f30b7",
+      "retainedMatchingFiles": [
+        "native-next-14ab395d/recipe.json"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "timeout-diagnostic-14ab395d-v1",
+      "field": "/runner_sha256_before/run.py",
+      "expectedSha256": "d52ed6235248a29f3d63369f368464ed2b7d2c54955bd2cd4c2d9c61f02a64d2",
+      "retainedMatchingFiles": [
+        "timeout-diagnostic-14ab395d/run.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "timeout-diagnostic-14ab395d-v1",
+      "field": "/runner_sha256_before/namespace.sh",
+      "expectedSha256": "d8d2e57bb9c5dba358318ec22c470070a70417a9db9ee8d3c7fe4e11fbf68a1a",
+      "retainedMatchingFiles": [
+        "timeout-diagnostic-14ab395d/namespace.sh"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "timeout-diagnostic-14ab395d-v1",
+      "field": "/runner_sha256_after/run.py",
+      "expectedSha256": "d52ed6235248a29f3d63369f368464ed2b7d2c54955bd2cd4c2d9c61f02a64d2",
+      "retainedMatchingFiles": [
+        "timeout-diagnostic-14ab395d/run.py"
+      ],
+      "bytesRecovered": true
+    },
+    {
+      "receipt": "timeout-diagnostic-14ab395d-v1",
+      "field": "/runner_sha256_after/namespace.sh",
+      "expectedSha256": "d8d2e57bb9c5dba358318ec22c470070a70417a9db9ee8d3c7fe4e11fbf68a1a",
+      "retainedMatchingFiles": [
+        "timeout-diagnostic-14ab395d/namespace.sh"
+      ],
+      "bytesRecovered": true
+    }
+  ],
+  "missing": []
+}

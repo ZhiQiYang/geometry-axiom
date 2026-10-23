@@ -1,0 +1,7 @@
+# I5: a one-mm A0 equal to the hole occupies the hole interior and must be rejected.
+# Use custom priority 1: boundary would independently fail I20 because no side
+# touches the outer outline, hiding the missing I5 guard in the product mutant.
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 10,0 10,10 0,10 hole 2,2 3,2 3,3 2,3
+grid 1 on 1 v 2
+timber 1 1 1 role custom priority 1
+place 1 on 1 at-line grid 1 v 0 between h0e3 h0e1 +u +n

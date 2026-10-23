@@ -1,0 +1,27 @@
+test_allocation_failure_falls_back_without_changing_existing_state (__main__.SourceIndex.test_allocation_failure_falls_back_without_changing_existing_state) ... ok
+test_array_growth_retries_exact_size_and_preserves_state_on_memory (__main__.SourceIndex.test_array_growth_retries_exact_size_and_preserves_state_on_memory) ... ok
+test_each_edge_field_deduplicates_in_linear_order_and_reset_rebuilds (__main__.SourceIndex.test_each_edge_field_deduplicates_in_linear_order_and_reset_rebuilds) ... ok
+test_edge_compare_ignoring_kind_mutant_reports_missing_edge (__main__.SourceIndex.test_edge_compare_ignoring_kind_mutant_reports_missing_edge) ... 突變 edge-kind-ignored：結束碼 1；ASSERT:missing-edge line=224 expr=geo_eval_edge_count(ctx)>=oracle_edge_count
+ok
+test_edge_probe_accepting_first_occupied_slot_mutant_reports_missing_edge (__main__.SourceIndex.test_edge_probe_accepting_first_occupied_slot_mutant_reports_missing_edge) ... 突變 edge-probe-hit：結束碼 1；ASSERT:missing-edge line=224 expr=geo_eval_edge_count(ctx)>=oracle_edge_count
+ok
+test_edge_probe_stopping_at_first_occupied_slot_mutant_reports_duplicate (__main__.SourceIndex.test_edge_probe_stopping_at_first_occupied_slot_mutant_reports_duplicate) ... 突變 edge-probe-miss：結束碼 1；ASSERT:duplicate-edge line=225 expr=geo_eval_edge_count(ctx)<=oracle_edge_count
+ok
+test_forced_edge_collisions_deduplicate_each_field_in_linear_order (__main__.SourceIndex.test_forced_edge_collisions_deduplicate_each_field_in_linear_order) ... ok
+test_many_binary_keys_collisions_identity_order_and_sealed_lookup (__main__.SourceIndex.test_many_binary_keys_collisions_identity_order_and_sealed_lookup) ... ok
+test_missing_invalid_failed_cycle_and_output_statuses (__main__.SourceIndex.test_missing_invalid_failed_cycle_and_output_statuses) ... ok
+test_never_find_edge_mutant_reports_duplicate (__main__.SourceIndex.test_never_find_edge_mutant_reports_duplicate) ... 突變 never-edge：結束碼 1；ASSERT:duplicate-edge line=174 expr=geo_eval_edge_count(ctx)==oracle_edge_count
+ok
+test_never_find_node_mutant_reports_duplicate (__main__.SourceIndex.test_never_find_node_mutant_reports_duplicate) ... 突變 never-node：結束碼 1；ASSERT:duplicate-node line=143 expr=geo_eval_node_count(ctx)<=oracle_node_count
+ok
+test_node_compare_ignoring_key_bytes_mutant_reports_merged_node (__main__.SourceIndex.test_node_compare_ignoring_key_bytes_mutant_reports_merged_node) ... 突變 node-key-bytes-ignored：結束碼 1；ASSERT:merged-node line=142 expr=geo_eval_node_count(ctx)>=oracle_node_count
+ok
+test_node_probe_accepting_first_occupied_slot_mutant_reports_merged_node (__main__.SourceIndex.test_node_probe_accepting_first_occupied_slot_mutant_reports_merged_node) ... 突變 node-probe-hit：結束碼 1；ASSERT:merged-node line=142 expr=geo_eval_node_count(ctx)>=oracle_node_count
+ok
+test_node_probe_stopping_at_first_occupied_slot_mutant_reports_duplicate (__main__.SourceIndex.test_node_probe_stopping_at_first_occupied_slot_mutant_reports_duplicate) ... 突變 node-probe-miss：結束碼 1；ASSERT:duplicate-node line=146 expr=geo_eval_node_count(ctx)==oracle_node_count
+ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 61.576s
+
+OK

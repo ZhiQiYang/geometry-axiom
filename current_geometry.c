@@ -8,6 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include "geometry-core/kernel/kernel_unity.inc"
+#include "geometry-app/native/legacy_json.inc"
+#include "geometry-app/native/woodworking_unity.inc"
+#include "geometry-app/native/document.h"
 #ifdef _MSC_VER
 #include <intrin.h>
 #endif
@@ -37,14 +41,14 @@
  * 由 公理層.md 與 公理層-白話.md 同步;make_axiom_reader.py 已退役)。
  */
 
-typedef int64_t Coord;
+typedef GeoCoord Coord;
 
 /* 支援的定義座標／尺寸：±100 km，保留整數乘積與最多 32 頂點累加的餘量。
  * ID 仍使用完整 uint32 範圍。衍生世界座標可以較大，不能拿 ID 的解析器讀尺寸。 */
-#define COORD_LIMIT INT64_C(100000000)
+#define COORD_LIMIT GEO_COORD_LIMIT
 static bool coord_in_range(Coord value)
 {
-    return value >= -COORD_LIMIT && value <= COORD_LIMIT;
+    return geo_coord_in_range(value);
 }
 
 typedef uint32_t SurfaceId;
@@ -56,41 +60,19 @@ typedef uint32_t TimberId;
  * 基礎幾何型別
  * ============================================================ */
 
-typedef struct {
-    Coord x;
-    Coord y;
-    Coord z;
-} Point3;
+typedef GeoPoint3 Point3;
 
-typedef struct {
-    Coord x;
-    Coord y;
-    Coord z;
-} Vector3;
+typedef GeoVector3 Vector3;
 
-typedef struct {
-    Coord u;
-    Coord v;
-} SurfacePoint2;
+typedef GeoPoint2 SurfacePoint2;
 
-typedef struct {
-    SurfacePoint2 start;
-    SurfacePoint2 end;
-} SurfaceSegment2;
+typedef GeoSegment2 SurfaceSegment2;
 
-typedef struct {
-    Point3 start;
-    Point3 end;
-} Segment3;
+typedef GeoSegment3 Segment3;
 
-typedef struct {
-    Point3 vertices[4];
-} Quad3;
+typedef GeoQuad3 Quad3;
 
-typedef struct {
-    Point3 point;
-    Vector3 normal;
-} Plane3;
+typedef GeoPlane3 Plane3;
 
 /* ============================================================
  * 向量運算
@@ -98,30 +80,22 @@ typedef struct {
 
 static Coord vector_dot(Vector3 a, Vector3 b)
 {
-    return a.x * b.x + a.y * b.y + a.z * b.z;
+    return geo_vector_dot(a,b);
 }
 
 static Vector3 vector_cross(Vector3 a, Vector3 b)
 {
-    return (Vector3){
-        .x = a.y * b.z - a.z * b.y,
-        .y = a.z * b.x - a.x * b.z,
-        .z = a.x * b.y - a.y * b.x
-    };
+    return geo_vector_cross(a,b);
 }
 
 static Vector3 vector_negate(Vector3 v)
 {
-    return (Vector3){
-        .x = -v.x,
-        .y = -v.y,
-        .z = -v.z
-    };
+    return geo_vector_negate(v);
 }
 
 static bool vector_equal(Vector3 a, Vector3 b)
 {
-    return a.x == b.x && a.y == b.y && a.z == b.z;
+    return geo_vector_equal(a,b);
 }
 
 /* ============================================================
@@ -144,21 +118,11 @@ static bool vector_equal(Vector3 a, Vector3 b)
  *
  *   room = origin + u*axis_u + v*axis_v + w*normal
  */
-typedef struct {
-    Point3 origin;
-    Vector3 axis_u;
-    Vector3 axis_v;
-    Vector3 normal;
-} SurfaceFrame;
+typedef GeoFrame SurfaceFrame;
 /* 公理 D2：承載面框架——原點 + 三個單位整數軸，room = origin + u·U + v·V + w·N。 */
 
 /* 自帶矩形範圍（承載面未掛邊界面時的退路）。 */
-typedef struct {
-    Coord min_u;
-    Coord min_v;
-    Coord max_u;
-    Coord max_v;
-} SurfaceRegion2;
+typedef GeoRect2 SurfaceRegion2;
 
 /*
  * 第一版要求 U、V、N 都是長度 1 的正交整數軸，
@@ -172,18 +136,7 @@ typedef struct {
 /* 公理 I1：承載面 frame 合法——U、V 單位正交且 U×V=N。 */
 static bool surface_frame_is_valid(const SurfaceFrame *frame)
 {
-    if (frame == NULL || !coord_in_range(frame->origin.x) ||
-        !coord_in_range(frame->origin.y) || !coord_in_range(frame->origin.z)) {
-        return false;
-    }
-
-    return vector_dot(frame->axis_u, frame->axis_u) == 1 &&
-           vector_dot(frame->axis_v, frame->axis_v) == 1 &&
-           vector_dot(frame->axis_u, frame->axis_v) == 0 &&
-           vector_equal(
-               vector_cross(frame->axis_u, frame->axis_v),
-               frame->normal
-           );
+    return geo_frame_is_valid(frame);
 }
 
 /* ============================================================
@@ -196,29 +149,27 @@ static bool surface_frame_is_valid(const SurfaceFrame *frame)
  *   - fixity[i] 是邊 i 的固定/自由語意，不寫預設全 FIXED。
  * ============================================================ */
 
-#define POLY_MAX_VERTICES 32
-#define POLY_MAX_HOLES     8
+#define POLY_MAX_VERTICES GEO_LOOP_MAX_VERTICES
+#define POLY_MAX_HOLES GEO_REGION_MAX_HOLES
 /* A line may gain one interval per hole interval; this conservative
  * bound covers the outline and every allowed hole without truncation. */
 #define DP_COMPONENT_MAX 8
 #define GUIDE_MAX_SEGMENTS (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1))
 
-typedef enum {
-    EDGE_FREE = 0,      /* 外側無垂直實體面可釘（挑空/陽角/門洞…） */
-    EDGE_FIXED = 1      /* 有：牆、樓板、樑底、柱面、陰角 */
-} EdgeFixity;
+#include "geometry-templates/woodworking/native/domain_values.h"
+typedef WoodEdgeFixity EdgeFixity;
+typedef WoodBoundaryKind BoundaryKind;
+#define EDGE_FREE WOOD_EDGE_FREE
+#define EDGE_FIXED WOOD_EDGE_FIXED
+#define BOUNDARY_UNSPECIFIED WOOD_BOUNDARY_UNSPECIFIED
+#define BOUNDARY_ROOM_PLAN WOOD_BOUNDARY_ROOM_PLAN
+#define BOUNDARY_WALL_ELEVATION WOOD_BOUNDARY_WALL_ELEVATION
 
-typedef enum {
-    BOUNDARY_UNSPECIFIED,
-    BOUNDARY_ROOM_PLAN,        /* 平面圖視角 */
-    BOUNDARY_WALL_ELEVATION    /* 立面 */
-} BoundaryKind;
+typedef WoodBoundaryLoop PolygonLoop2;
 
-typedef struct {
-    SurfacePoint2 v[POLY_MAX_VERTICES];
-    size_t count;
-    EdgeFixity fixity[POLY_MAX_VERTICES];
-} PolygonLoop2;
+/* Geometry views deliberately omit edge fixity and application kind. */
+static GeoLoop2View poly_geometry_view(const PolygonLoop2 *loop)
+{return loop?(GeoLoop2View){loop->v,loop->count}:(GeoLoop2View){NULL,0};}
 
 static Coord coord_min(Coord a, Coord b) { return a < b ? a : b; }
 static Coord coord_max(Coord a, Coord b) { return a > b ? a : b; }
@@ -231,110 +182,15 @@ static Coord coord_max(Coord a, Coord b) { return a > b ? a : b; }
  */
 static bool poly_loop_is_valid(const PolygonLoop2 *loop)
 {
-    if (loop == NULL || loop->count < 4 ||
-        loop->count > POLY_MAX_VERTICES) {
-        return false;
-    }
-
-    /* 邊的軸平行與非零長檢查。 */
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (!coord_in_range(a.u) || !coord_in_range(a.v)) return false;
-
-        bool axis_u = a.v == b.v;   /* 沿 U 方向的邊：v 座標不變 */
-        bool axis_v = a.u == b.u;
-
-        if ((!axis_u && !axis_v) || (a.u == b.u && a.v == b.v)) {
-            return false;
-        }
-    }
-
-    /* 非相鄰邊不得相交或共線重疊。 */
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a1 = loop->v[i];
-        SurfacePoint2 a2 = loop->v[(i + 1) % loop->count];
-
-        for (size_t j = i + 2; j < loop->count; ++j) {
-            if (i == 0 && j + 1 == loop->count) {
-                continue;   /* 首邊與末邊相鄰，共享頂點合法 */
-            }
-
-            SurfacePoint2 b1 = loop->v[j];
-            SurfacePoint2 b2 = loop->v[(j + 1) % loop->count];
-
-            /* 軸平行線段的相交/共線重疊判定。 */
-            if (a1.u == a2.u && b1.u == b2.u) {
-                /* 兩條直立邊。 */
-                if (a1.u != b1.u) {
-                    continue;
-                }
-                if (coord_max(coord_min(a1.v, a2.v), coord_min(b1.v, b2.v)) <=
-                    coord_min(coord_max(a1.v, a2.v), coord_max(b1.v, b2.v))) {
-                    return false;   /* 共線且區間重疊 */
-                }
-            } else if (a1.v == a2.v && b1.v == b2.v) {
-                /* 兩條水平邊。 */
-                if (a1.v != b1.v) {
-                    continue;
-                }
-                if (coord_max(coord_min(a1.u, a2.u), coord_min(b1.u, b2.u)) <=
-                    coord_min(coord_max(a1.u, a2.u), coord_max(b1.u, b2.u))) {
-                    return false;
-                }
-            } else {
-                /* 一橫一直：交點須嚴格同時落在兩邊內部才算相交；
-                 * 端點相碰在非相鄰邊上也不允許（會形成接觸自交）。 */
-                SurfacePoint2 h1, h2, s1, s2;
-                if (a1.v == a2.v) { h1 = a1; h2 = a2; s1 = b1; s2 = b2; }
-                else              { h1 = b1; h2 = b2; s1 = a1; s2 = a2; }
-
-                Coord hu_min = coord_min(h1.u, h2.u);
-                Coord hu_max = coord_max(h1.u, h2.u);
-                Coord sv_min = coord_min(s1.v, s2.v);
-                Coord sv_max = coord_max(s1.v, s2.v);
-
-                if (s1.u >= hu_min && s1.u <= hu_max &&
-                    h1.v >= sv_min && h1.v <= sv_max) {
-                    return false;
-                }
-            }
-        }
-    }
-
-    /* 有向面積非零（shoelace）；順/逆時針不限，但必須有面積。 */
-    Coord area2 = 0;
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-        area2 += a.u * b.v - b.u * a.v;
-    }
-
-    return area2 != 0;
+    GeoLoop2View view=poly_geometry_view(loop);
+    return loop&&geo_loop_is_valid(&view);
 }
 
 /* 點是否落在環的邊上。 */
 static bool poly_point_on_edge(const PolygonLoop2 *loop, SurfacePoint2 p)
 {
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (a.u == b.u) {
-            if (p.u == a.u &&
-                p.v >= coord_min(a.v, b.v) && p.v <= coord_max(a.v, b.v)) {
-                return true;
-            }
-        } else {
-            if (p.v == a.v &&
-                p.u >= coord_min(a.u, b.u) && p.u <= coord_max(a.u, b.u)) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    GeoLoop2View view=poly_geometry_view(loop);
+    return loop&&geo_loop_point_on_edge(&view,p);
 }
 
 /*
@@ -344,33 +200,8 @@ static bool poly_point_on_edge(const PolygonLoop2 *loop, SurfacePoint2 p)
  */
 static bool poly_contains_point(const PolygonLoop2 *loop, SurfacePoint2 p)
 {
-    if (loop == NULL) {
-        return false;
-    }
-
-    if (poly_point_on_edge(loop, p)) {
-        return true;
-    }
-
-    int crossings = 0;
-
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (a.u != b.u) {
-            continue;   /* 水平邊不與水平射線交叉 */
-        }
-
-        Coord v_min = coord_min(a.v, b.v);
-        Coord v_max = coord_max(a.v, b.v);
-
-        if (p.v >= v_min && p.v < v_max && p.u < a.u) {
-            ++crossings;
-        }
-    }
-
-    return crossings % 2 == 1;
+    GeoLoop2View view=poly_geometry_view(loop);
+    return loop&&geo_loop_contains_point(&view,p);
 }
 
 /*
@@ -382,22 +213,7 @@ static bool segment2_crosses_rect_interior(
     Coord min_u, Coord min_v, Coord max_u, Coord max_v
 )
 {
-    if (a.u == b.u) {
-        /* 直立邊：u 須嚴格在 (min_u,max_u) 內，且 v 區間與 (min_v,max_v) 有正長度交集。 */
-        if (a.u <= min_u || a.u >= max_u) {
-            return false;
-        }
-        Coord lo = coord_max(coord_min(a.v, b.v), min_v);
-        Coord hi = coord_min(coord_max(a.v, b.v), max_v);
-        return lo < hi;
-    }
-
-    if (a.v <= min_v || a.v >= max_v) {
-        return false;
-    }
-    Coord lo = coord_max(coord_min(a.u, b.u), min_u);
-    Coord hi = coord_min(coord_max(a.u, b.u), max_u);
-    return lo < hi;
+    return geo_segment_crosses_rect_interior(a,b,min_u,min_v,max_u,max_v);
 }
 
 /*
@@ -408,31 +224,7 @@ static bool segment2_crosses_rect_interior(
  * 中心在環邊上時，那條邊必穿入矩形內部（中心嚴格在矩形內部），
  * 另一道檢查（segment2_crosses_rect_interior）本來就會拒絕。
  */
-static bool poly_rect_center_inside(
-    const PolygonLoop2 *loop,
-    Coord min_u, Coord min_v, Coord max_u, Coord max_v
-)
-{
-    Coord cu2 = min_u + max_u;   /* 2 × 中心 u */
-    Coord cv2 = min_v + max_v;   /* 2 × 中心 v */
-    int crossings = 0;
 
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (a.u == b.u) {   /* 只有直立邊會與水平射線交叉 */
-            Coord v_lo2 = 2 * coord_min(a.v, b.v);
-            Coord v_hi2 = 2 * coord_max(a.v, b.v);
-
-            if (cv2 >= v_lo2 && cv2 < v_hi2 && cu2 < 2 * a.u) {
-                ++crossings;
-            }
-        }
-    }
-
-    return (crossings & 1) != 0;
-}
 
 /*
  * 軸平行矩形 ⊆ 環（含邊界）。GEO-257：
@@ -454,36 +246,8 @@ static bool poly_contains_rect(
     Coord min_u, Coord min_v, Coord max_u, Coord max_v
 )
 {
-    if (loop == NULL || min_u >= max_u || min_v >= max_v) {
-        return false;
-    }
-
-    SurfacePoint2 corners[4] = {
-        { min_u, min_v }, { max_u, min_v },
-        { max_u, max_v }, { min_u, max_v }
-    };
-
-    for (size_t i = 0; i < 4; ++i) {
-        if (!poly_contains_point(loop, corners[i])) {
-            return false;
-        }
-    }
-
-    /* 開內部要嘛全在環內、要嘛全在環外；中心在外 → 整個矩形在環外。
-     * 與下面的「環邊穿入」檢查互相獨立，順序不影響結果。 */
-    if (!poly_rect_center_inside(loop, min_u, min_v, max_u, max_v)) {
-        return false;
-    }
-
-    for (size_t i = 0; i < loop->count; ++i) {
-        if (segment2_crosses_rect_interior(
-                loop->v[i], loop->v[(i + 1) % loop->count],
-                min_u, min_v, max_u, max_v)) {
-            return false;
-        }
-    }
-
-    return true;
+    GeoLoop2View view=poly_geometry_view(loop);
+    return loop&&geo_loop_contains_rect(&view,min_u,min_v,max_u,max_v);
 }
 
 /* 環的軸向外接矩形。 */
@@ -493,20 +257,8 @@ static void poly_bbox(
     Coord *out_max_u, Coord *out_max_v
 )
 {
-    Coord min_u = loop->v[0].u, max_u = loop->v[0].u;
-    Coord min_v = loop->v[0].v, max_v = loop->v[0].v;
-
-    for (size_t i = 1; i < loop->count; ++i) {
-        min_u = coord_min(min_u, loop->v[i].u);
-        max_u = coord_max(max_u, loop->v[i].u);
-        min_v = coord_min(min_v, loop->v[i].v);
-        max_v = coord_max(max_v, loop->v[i].v);
-    }
-
-    *out_min_u = min_u;
-    *out_min_v = min_v;
-    *out_max_u = max_u;
-    *out_max_v = max_v;
+    GeoLoop2View view=poly_geometry_view(loop);
+    geo_loop_bbox(&view,out_min_u,out_min_v,out_max_u,out_max_v);
 }
 
 /*
@@ -524,75 +276,8 @@ static size_t poly_clip_line(
     size_t out_cap
 )
 {
-    Coord crossings[POLY_MAX_VERTICES];
-    size_t crossing_count = 0;
-
-    for (size_t i = 0; i < loop->count; ++i) {
-        SurfacePoint2 a = loop->v[i];
-        SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-        if (along_u) {
-            /* 直線 v=offset 只與直立邊（a.u == b.u）相交；
-             * 水平邊（a.v == b.v）與它平行，跳過。 */
-            if (a.v == b.v) {
-                continue;
-            }
-            Coord v_min = coord_min(a.v, b.v);
-            Coord v_max = coord_max(a.v, b.v);
-            if (offset >= v_min && offset < v_max) {
-                crossings[crossing_count++] = a.u;
-            }
-        } else {
-            /* 直線 u=offset 只與水平邊（a.v == b.v）相交；
-             * 直立邊與它平行，跳過。 */
-            if (a.u == b.u) {
-                continue;
-            }
-            Coord u_min = coord_min(a.u, b.u);
-            Coord u_max = coord_max(a.u, b.u);
-            if (offset >= u_min && offset < u_max) {
-                crossings[crossing_count++] = a.v;
-            }
-        }
-    }
-
-    /* 插入排序交點；頂點處的相鄰兩邊只會貢獻一個交點（半開區間），
-     * 但水平邊端點與直立邊可能給出重複交點——去重。 */
-    for (size_t i = 1; i < crossing_count; ++i) {
-        Coord key = crossings[i];
-        size_t j = i;
-        while (j > 0 && crossings[j - 1] > key) {
-            crossings[j] = crossings[j - 1];
-            --j;
-        }
-        crossings[j] = key;
-    }
-
-    size_t unique = 0;
-    for (size_t i = 0; i < crossing_count; ++i) {
-        if (unique == 0 || crossings[i] != crossings[unique - 1]) {
-            crossings[unique++] = crossings[i];
-        }
-    }
-    crossing_count = unique;
-
-    /* 奇偶配對：[0,1]、[2,3]… 各成一條內部線段。 */
-    size_t seg_count = 0;
-    for (size_t i = 0; i + 1 < crossing_count && seg_count < out_cap; i += 2) {
-        Coord lo = crossings[i];
-        Coord hi = crossings[i + 1];
-
-        if (along_u) {
-            out[seg_count].start = (SurfacePoint2){ lo, offset };
-            out[seg_count].end   = (SurfacePoint2){ hi, offset };
-        } else {
-            out[seg_count].start = (SurfacePoint2){ offset, lo };
-            out[seg_count].end   = (SurfacePoint2){ offset, hi };
-        }
-        ++seg_count;
-    }
-
-    return seg_count;
+    GeoLoop2View view=poly_geometry_view(loop);size_t count=0;
+    return geo_loop_clip_line(&view,along_u,offset,out,out_cap,&count)==GEO_GEOMETRY_OK?count:0;
 }
 
 /* ============================================================
@@ -602,94 +287,21 @@ static size_t poly_clip_line(
  * 不知道自己坐在世界哪裡——3D 位置由承載面（PlacementSurface）給。
  * ============================================================ */
 
-typedef struct {
-    SurfaceId id;
-    BoundaryKind kind;
-    PolygonLoop2 outline;
-    PolygonLoop2 holes[POLY_MAX_HOLES];
-    size_t hole_count;
-} SpaceBoundarySurface;
+typedef WoodBoundaryRegion SpaceBoundarySurface;
 /* 公理 D3：空間邊界面——純局部 2D，不含世界位置。 */
+
+static GeoRegionView boundary_geometry_view(const SpaceBoundarySurface *boundary,GeoLoop2View holes[POLY_MAX_HOLES])
+{
+    for(size_t h=0;h<boundary->hole_count&&h<POLY_MAX_HOLES;++h)holes[h]=poly_geometry_view(&boundary->holes[h]);
+    return (GeoRegionView){poly_geometry_view(&boundary->outline),holes,boundary->hole_count};
+}
 
 /* 外輪廓合法 + 每個孔合法、嚴格在外輪廓內、孔之間互不重疊。 */
 static bool boundary_is_valid(const SpaceBoundarySurface *b)
 {
-    if (b == NULL || !poly_loop_is_valid(&b->outline)) {
-        return false;
-    }
-
-    for (size_t h = 0; h < b->hole_count; ++h) {
-        const PolygonLoop2 *hole = &b->holes[h];
-
-        if (!poly_loop_is_valid(hole)) {
-            return false;
-        }
-
-        /* 孔的每個頂點必須在外輪廓內（不含外輪廓邊上），
-         * 且孔的每條邊不得穿外輪廓。 */
-        for (size_t i = 0; i < hole->count; ++i) {
-            SurfacePoint2 p = hole->v[i];
-
-            if (poly_point_on_edge(&b->outline, p) ||
-                !poly_contains_point(&b->outline, p)) {
-                return false;
-            }
-        }
-
-        for (size_t i = 0; i < hole->count; ++i) {
-            SurfacePoint2 a = hole->v[i];
-            SurfacePoint2 c = hole->v[(i + 1) % hole->count];
-
-            for (size_t j = 0; j < b->outline.count; ++j) {
-                SurfacePoint2 d = b->outline.v[j];
-                SurfacePoint2 e = b->outline.v[(j + 1) % b->outline.count];
-
-                /* 孔邊與外輪廓邊不得相交（含共線）。 */
-                if (a.u == c.u && d.u == e.u) {
-                    if (a.u == d.u &&
-                        coord_max(coord_min(a.v, c.v), coord_min(d.v, e.v)) <
-                        coord_min(coord_max(a.v, c.v), coord_max(d.v, e.v))) {
-                        return false;
-                    }
-                } else if (a.v == c.v && d.v == e.v) {
-                    if (a.v == d.v &&
-                        coord_max(coord_min(a.u, c.u), coord_min(d.u, e.u)) <
-                        coord_min(coord_max(a.u, c.u), coord_max(d.u, e.u))) {
-                        return false;
-                    }
-                } else {
-                    SurfacePoint2 h1, h2, s1, s2;
-                    if (a.v == c.v) { h1 = a; h2 = c; s1 = d; s2 = e; }
-                    else            { h1 = d; h2 = e; s1 = a; s2 = c; }
-
-                    if (s1.u > coord_min(h1.u, h2.u) &&
-                        s1.u < coord_max(h1.u, h2.u) &&
-                        h1.v > coord_min(s1.v, s2.v) &&
-                        h1.v < coord_max(s1.v, s2.v)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        /* 孔互不重疊：任一孔頂點落在別孔內，或邊互相穿越，即拒絕。 */
-        for (size_t k = h + 1; k < b->hole_count; ++k) {
-            const PolygonLoop2 *other = &b->holes[k];
-
-            for (size_t i = 0; i < hole->count; ++i) {
-                if (poly_contains_point(other, hole->v[i])) {
-                    return false;
-                }
-            }
-            for (size_t i = 0; i < other->count; ++i) {
-                if (poly_contains_point(hole, other->v[i])) {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return true;
+    if(!b||b->hole_count>POLY_MAX_HOLES)return false;
+    GeoLoop2View holes[POLY_MAX_HOLES];GeoRegionView view=boundary_geometry_view(b,holes);
+    return geo_region_is_valid(&view);
 }
 
 /* 點是否在邊界面的有效區域：外輪廓內（含邊上）且不在任何孔內（孔邊上算在外）。 */
@@ -698,20 +310,9 @@ static bool boundary_contains_point(
     SurfacePoint2 p
 )
 {
-    if (b == NULL || !poly_contains_point(&b->outline, p)) {
-        return false;
-    }
-
-    for (size_t h = 0; h < b->hole_count; ++h) {
-        const PolygonLoop2 *hole = &b->holes[h];
-
-        if (poly_contains_point(hole, p) &&
-            !poly_point_on_edge(hole, p)) {
-            return false;
-        }
-    }
-
-    return true;
+    if(!b||b->hole_count>POLY_MAX_HOLES)return false;
+    GeoLoop2View holes[POLY_MAX_HOLES];GeoRegionView view=boundary_geometry_view(b,holes);
+    return geo_region_contains_point(&view,p);
 }
 
 /*
@@ -723,62 +324,9 @@ static bool boundary_contains_rect(
     Coord min_u, Coord min_v, Coord max_u, Coord max_v
 )
 {
-    if (b == NULL ||
-        !poly_contains_rect(&b->outline, min_u, min_v, max_u, max_v)) {
-        return false;
-    }
-
-    for (size_t h = 0; h < b->hole_count; ++h) {
-        const PolygonLoop2 *hole = &b->holes[h];
-        Coord h_min_u, h_min_v, h_max_u, h_max_v;
-        poly_bbox(hole, &h_min_u, &h_min_v, &h_max_u, &h_max_v);
-
-        /* 矩形與孔 bbox 無交集 → 快退。 */
-        if (h_max_u <= min_u || h_min_u >= max_u ||
-            h_max_v <= min_v || h_min_v >= max_v) {
-            continue;
-        }
-
-        /* 任一孔頂點嚴格在矩形內 → 相交。 */
-        for (size_t i = 0; i < hole->count; ++i) {
-            SurfacePoint2 p = hole->v[i];
-            if (p.u > min_u && p.u < max_u &&
-                p.v > min_v && p.v < max_v) {
-                return false;
-            }
-        }
-
-        /* 任一孔邊穿過矩形內部 → 相交。 */
-        for (size_t i = 0; i < hole->count; ++i) {
-            if (segment2_crosses_rect_interior(
-                    hole->v[i], hole->v[(i + 1) % hole->count],
-                    min_u, min_v, max_u, max_v)) {
-                return false;
-            }
-        }
-
-        /* 孔整個罩住矩形（矩形四角都在孔內）。 */
-        if (poly_contains_point(hole, (SurfacePoint2){ min_u + 1, min_v + 1 }) &&
-            !poly_point_on_edge(hole, (SurfacePoint2){ min_u + 1, min_v + 1 })) {
-            /* min+1 只是代表點：四角嚴格在孔內才算罩住。
-             * 用四角逐一判定較穩。 */
-            SurfacePoint2 corners[4] = {
-                { min_u, min_v }, { max_u, min_v },
-                { max_u, max_v }, { min_u, max_v }
-            };
-            size_t inside = 0;
-            for (size_t i = 0; i < 4; ++i) {
-                if (poly_contains_point(hole, corners[i])) {
-                    ++inside;
-                }
-            }
-            if (inside == 4) {
-                return false;
-            }
-        }
-    }
-
-    return true;
+    if(!b||b->hole_count>POLY_MAX_HOLES)return false;
+    GeoLoop2View holes[POLY_MAX_HOLES];GeoRegionView view=boundary_geometry_view(b,holes);
+    return geo_region_contains_rect(&view,min_u,min_v,max_u,max_v);
 }
 
 /* ============================================================
@@ -834,22 +382,7 @@ static Point3 surface_point_to_room(
     Coord w
 )
 {
-    return (Point3){
-        .x = surface->frame.origin.x +
-             u * surface->frame.axis_u.x +
-             v * surface->frame.axis_v.x +
-             w * surface->frame.normal.x,
-
-        .y = surface->frame.origin.y +
-             u * surface->frame.axis_u.y +
-             v * surface->frame.axis_v.y +
-             w * surface->frame.normal.y,
-
-        .z = surface->frame.origin.z +
-             u * surface->frame.axis_u.z +
-             v * surface->frame.axis_v.z +
-             w * surface->frame.normal.z
-    };
+    return geo_frame_point(&surface->frame,u,v,w);
 }
 
 /*
@@ -878,9 +411,7 @@ static void placement_outline(
     out->v[1] = (SurfacePoint2){ p->rect.max_u, p->rect.min_v };
     out->v[2] = (SurfacePoint2){ p->rect.max_u, p->rect.max_v };
     out->v[3] = (SurfacePoint2){ p->rect.min_u, p->rect.max_v };
-    for (size_t i = 0; i < 4; ++i) {
-        out->fixity[i] = EDGE_FIXED;
-    }
+    wood_boundary_default_fixity(out->fixity,4);
 }
 
 /* D4: self-contained rectangles have the same effective outline as a boundary. */
@@ -949,21 +480,9 @@ static bool polygon_loop_bounds(
     SurfaceRegion2 *out
 )
 {
-    if (loop == NULL || out == NULL || loop->count == 0) {
-        return false;
-    }
-
-    Coord min_u = loop->v[0].u, max_u = loop->v[0].u;
-    Coord min_v = loop->v[0].v, max_v = loop->v[0].v;
-
-    for (size_t i = 1; i < loop->count; ++i) {
-        min_u = coord_min(min_u, loop->v[i].u);
-        max_u = coord_max(max_u, loop->v[i].u);
-        min_v = coord_min(min_v, loop->v[i].v);
-        max_v = coord_max(max_v, loop->v[i].v);
-    }
-
-    *out = (SurfaceRegion2){ min_u, min_v, max_u, max_v };
+    if(!loop||!out||!loop->count)return false;
+    GeoLoop2View view=poly_geometry_view(loop);
+    geo_loop_bbox(&view,&out->min_u,&out->min_v,&out->max_u,&out->max_v);
     return true;
 }
 
@@ -1121,10 +640,9 @@ static bool surface_get_edge_side_plane(
  * 表面參考線：只有定位作用，不是實體
  * ============================================================ */
 
-typedef enum {
-    GUIDE_ALONG_U,
-    GUIDE_ALONG_V
-} GuideDirection;
+typedef GeoGuideDirection GuideDirection;
+#define GUIDE_ALONG_U GEO_GUIDE_ALONG_U
+#define GUIDE_ALONG_V GEO_GUIDE_ALONG_V
 
 #include "geometry-core/reference_types.h"
 #include "geometry-core/parameter_types.h"
@@ -1133,21 +651,7 @@ typedef enum {
 #include "geometry-core/section_profile_types.h"
 #include "geometry-core/finish_surface_types.h"
 
-typedef struct {
-    GuideLineId id;
-    SurfaceId placement_id;     /* 屬於哪片承載面 */
-    GuideDirection direction; /* derived for DATUM */
-    GuideSource source;
-    uint32_t datum_id;
-    bool resolved; /* evaluated cache, never serialized */
-
-    /*
-     * GUIDE_ALONG_U：固定 v = offset。
-     * GUIDE_ALONG_V：固定 u = offset。
-     */
-    Coord offset; /* evaluated cache, rebuilt from expression */
-    char expression[REF_EXPR_MAX];
-} GuideLine;
+typedef GeoGuide GuideLine;
 /* 公理 D6：參考線——承載面 + 方向 + offset；線段不存，用時截出（D9）。 */
 
 /*
@@ -1350,77 +854,27 @@ static size_t guide_line_get_local_segments(
 #define GRID_MAX_LINES 64
 #define GRID_MAX_PHASES 8
 
-typedef enum {
-    GRID_SRC_NONE = 0,      /* 該軸未宣告 */
-    GRID_SRC_EXPLICIT,      /* 明寫座標 */
-    GRID_SRC_SERIES,        /* 等差：start / step / count（GEO-098） */
-    GRID_SRC_REPEAT,
-    GRID_SRC_REPEAT_PANEL,
-    GRID_SRC_PANEL          /* 面材：panel / gap / anchor（GEO-100、D10a） */
-} GridSource;
-
-typedef struct {
-    int source;             /* GridSource */
-
-    /* GRID_SRC_EXPLICIT */
-    Coord coords[GRID_MAX_LINES];
-    size_t count;
-
-    /* GRID_SRC_SERIES（GEO-098 起用） */
-    Coord start;
-    Coord step;
-    size_t series_count;
-
-    /* GRID_SRC_PANEL（GEO-100 起用；anchor 在宣告當下具體化，D10a） */
-    Coord panel;
-    Coord gap;
-    Coord anchor;
-    bool anchor_explicit;   /* 只影響 dump 是否輸出 from，不影響推導 */
-    ParameterRef parameters[6]; /* phase, step, panel, gap, anchor, stagger (D10b) */
-    bool card_length;
-    Coord stagger;          /* D10b: odd-band offset; meaningful only when stagger_set */
-    bool stagger_set;
-} GridAxisDef;
-
-#define WORLD_MAX_GRID_SYSTEMS 16
-#define GRID_SYSTEM_NAME_MAX 96
-#define GRID_MAX_SUBDIVISION_RULES 32
+typedef GeoGridSource GridSource;
+#define GRID_SRC_NONE GEO_GRID_SOURCE_NONE
+#define GRID_SRC_EXPLICIT GEO_GRID_SOURCE_EXPLICIT
+#define GRID_SRC_SERIES GEO_GRID_SOURCE_SERIES
+#define GRID_SRC_REPEAT GEO_GRID_SOURCE_REPEAT
+#define GRID_SRC_REPEAT_PANEL GEO_GRID_SOURCE_REPEAT_BODY_GAP
+#define GRID_SRC_PANEL GEO_GRID_SOURCE_BODY_GAP
+typedef GeoGridAxisDef GridAxisDef;
+#define WORLD_MAX_GRID_SYSTEMS GEO_GRID_SYSTEM_CAPACITY
+#define GRID_SYSTEM_NAME_MAX (GEO_GRID_NAME_CAPACITY-1)
+#define GRID_MAX_SUBDIVISION_RULES GEO_GRID_RULE_CAPACITY
 #define GRID_SUBDIVISION_CAPABILITY "grid-subdivision-rules/1"
-typedef struct {
-    uint32_t key;
-    char name[GRID_SYSTEM_NAME_MAX+1];
-    bool all_cells;
-    int64_t cell[2];
-    unsigned divisions[2];
-} GridSubdivisionRule;
-typedef struct {
-    uint32_t grid_id,system_id,rule_key;
-    int64_t cell[2];
-    int axis;
-    uint32_t inner_index;
-} GridRuleLineRef;
-typedef struct {
-    uint32_t id;
-    char name[GRID_SYSTEM_NAME_MAX+1];
-    GridAxisDef axis[2];
-    GridCardReference card_reference;
-    int main_along;
-    GridSubdivisionRule rules[GRID_MAX_SUBDIVISION_RULES];
-    size_t rule_count;
-    uint32_t next_rule_key; /* 0=exhausted; whole World undo restores allocator. */
-} GridSystem;
-#define WORLD_MAX_GRID_BINDINGS 32
-typedef struct {
-    uint32_t id,boundary_id,system_id,vertex_key;
-    int64_t cell[2];
-    uint32_t anchor_num[2],anchor_den[2];
-} GridBinding;
-typedef struct {
-    uint32_t boundary_id;
-    size_t loop_count,counts[POLY_MAX_HOLES+1];
-    uint32_t keys[POLY_MAX_HOLES+1][POLY_MAX_VERTICES];
-    uint32_t next_key;
-} BoundaryVertexKeys;
+/* D64/I74 (GEO-262): the card reference is part of the K grid-system definition. */
+#define GRID_CARD_CAPABILITY "grid-card-reference/1"
+typedef GeoGridCardReference GridCardReference;
+typedef GeoGridRule GridSubdivisionRule;
+typedef GeoGridRuleLineRef GridRuleLineRef;
+typedef GeoGridSystem GridSystem;
+#define WORLD_MAX_GRID_BINDINGS GEO_GRID_BINDING_CAPACITY
+typedef GeoGridBinding GridBinding;
+typedef GeoRegionKeys BoundaryVertexKeys;
 typedef struct {
     int64_t index; Coord coordinate;
     size_t segment_count; SurfaceSegment2 segments[GUIDE_MAX_SEGMENTS];
@@ -1432,42 +886,14 @@ typedef struct {
     size_t count; GridQueryLine lines[GRID_MAX_LINES];
 } GridQueryAxis;
 
-typedef struct {
-    uint32_t id;
-    SurfaceId placement_id;
-    bool from_system;
-    bool from_binding;
-    uint32_t binding_id;
-    Coord lattice_base[2],lattice_step[2];
-    int64_t lattice_index[2];
-    bool lattice_cell;
-    int64_t lattice_cell_index[2];
-    uint32_t system_id;
-    Coord system_origin[2];
-
-    GridAxisDef axis[2];
-    /* D10: 0 = 未設定, 1 = 沿 u, 2 = 沿 v。 */
-    int main_along;
-    /* D19: only a parent and cell references are stored; geometry is derived. */
-    bool is_subgrid;
-    uint32_t parent_id;
-    int cell_ref[2][2]; /* -1=min, -2=max, >=0 main-grid line index */
-    unsigned divisions[2];
-} ReferenceGrid;
+#include "geometry-templates/woodworking/native/grid_application.h"
+typedef WoodGridApplication ReferenceGrid;
 
 #include "geometry-core/panel_layout_math.h"
 #include "geometry-core/grid_lattice.inc"
 
-static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
-{
-    for (size_t i = 0; i < count; ++i) {
-        if (i > 0 && coords[i] <= coords[i - 1]) {
-            return false;   /* 必須嚴格遞增 */
-        }
-    }
-
-    return true;
-}
+static bool grid_coord_list_is_valid(const Coord coords[],size_t count)
+{ return geo_coordinates_increasing(coords,count); }
 
 /*
  * 唯一的展開入口（D9：只存定義，線在用時推出）。
@@ -1480,6 +906,19 @@ static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
  *
  * 回傳 true 且 *out_count == 0 是合法結果（面小於一片面材）。
  */
+static bool app_grid_host_value(const PlacementSurface *p,const SpaceBoundarySurface *b,WoodGridHost *out)
+{
+    memset(out,0,sizeof *out);if(!p)return false;
+    out->id=p->id;out->boundary_id=p->boundary_id;
+    out->bounds_valid=placement_local_bounds(p,b,&out->bounds);
+    out->component_count=p->derived_fill_id?p->component_count:1;
+    for(size_t i=0;i<out->component_count;++i){
+        const SpaceBoundarySurface *part=p->derived_fill_id?&p->components[i]:b;
+        if(part)out->components[i]=*part;
+        placement_outline(p,part,&out->components[i].outline);
+    }
+    return true;
+}
 static bool grid_axis_lines(
     const ReferenceGrid *grid,
     const PlacementSurface *placement,
@@ -1490,169 +929,16 @@ static bool grid_axis_lines(
     char *err,
     size_t err_cap
 )
-{
-    if (grid == NULL || grid->is_subgrid || placement == NULL || out == NULL ||
-        out_count == NULL || axis < 0 || axis > 1 ||
-        grid->placement_id != placement->id) {
-        return false;
-    }
+{WoodGridHost host;app_grid_host_value(placement,boundary,&host);return wood_grid_axis_lines(grid,placement?&host:NULL,axis,out,out_count,err,err_cap);}
 
-    if (grid->from_binding) {
-        SurfaceRegion2 bounds; GridQueryAxis result;
-        if (!placement_local_bounds(placement,boundary,&bounds) ||
-            !grid_lattice_window(grid,axis,axis?bounds.min_v:bounds.min_u,
-                axis?bounds.max_v:bounds.max_u,GRID_MAX_LINES,false,&result,err,err_cap)) return false;
-        *out_count=result.count;
-        for (size_t i=0;i<result.count;++i) out[i]=result.lines[i].coordinate;
-        return true;
-    }
-    const GridAxisDef *def = &grid->axis[axis];
-
-    *out_count = 0;
-
-    if (def->source == GRID_SRC_NONE) {
-        if (err != NULL) {
-            snprintf(err, err_cap, "這一軸沒有宣告格線");
-        }
-        return false;
-    }
-
-    SurfaceRegion2 bounds;
-
-    if (!placement_local_bounds(placement, boundary, &bounds)) {
-        return false;
-    }
-
-    const Coord lo = axis == 0 ? bounds.min_u : bounds.min_v;
-    const Coord hi = axis == 0 ? bounds.max_u : bounds.max_v;
-    size_t n = 0;
-
-    if (def->source == GRID_SRC_EXPLICIT) {
-        if (def->count > GRID_MAX_LINES) {
-            return false;
-        }
-
-        for (size_t k = 0; k < def->count; ++k) {
-            out[n++] = def->coords[k];
-        }
-    } else if (def->source == GRID_SRC_SERIES) {
-        /* D10：第 k 條 = start + k·step；step > 0 本身就保證嚴格遞增。 */
-        if (def->series_count == 0 ||
-            def->series_count > GRID_MAX_LINES ||
-            def->step <= 0) {
-            return false;
-        }
-
-        for (size_t k = 0; k < def->series_count; ++k) {
-            out[n++] = def->start + (Coord)k * def->step;
-        }
-    } else if (def->source == GRID_SRC_PANEL) {
-        /*
-         * D10a：週期 T = panel + gap，第 k 條縫中心線
-         *   c_k = a + k·T + panel + gap/2，
-         * 產生條件 a+(k+1)·T < hi——整條縫落在範圍內，且其後仍有非空的面材本體。
-         * 不滿足就停：末端是裁切片，合法，不因「除不盡」而拒絕。
-         */
-        const Coord T = panel_layout_pitch(def->panel,def->gap);
-
-        if (def->panel <= 0 || def->gap < 0 ||
-            def->anchor < lo || def->anchor >= hi) {
-            if (err != NULL) {
-                snprintf(err, err_cap,
-                         "面材參數不合法（面材寬 > 0、縫寬非負、"
-                         "起算點須落在承載面範圍內）");
-            }
-            return false;
-        }
-
-        for (size_t k = 0; ; ++k) {
-            const Coord gap_hi = def->anchor + (Coord)(k + 1) * T;
-
-            if (gap_hi >= hi) {
-                break;
-            }
-
-            if (n == GRID_MAX_LINES) {
-                if (err != NULL) {
-                    snprintf(err, err_cap,
-                             "面材排法推導出的格線超過單軸上限");
-                }
-                return false;
-            }
-
-            out[n++] = panel_layout_center(def->anchor,def->panel,def->gap,(int64_t)k);
-        }
-    } else {
-        if (err != NULL) {
-            snprintf(err, err_cap, "這一軸的格線來源尚未支援");
-        }
-        return false;
-    }
-
-    /* I10：嚴格遞增。 */
-    if (!grid_coord_list_is_valid(out, n)) {
-        if (err != NULL) {
-            snprintf(err, err_cap, "座標必須嚴格遞增");
-        }
-        return false;
-    }
-
-    /* I10：每條都落在該軸外接區間內——與 guide offset 同一條規則。 */
-    for (size_t k = 0; k < n; ++k) {
-        if (out[k] < lo || out[k] > hi) {
-            if (err != NULL) {
-                snprintf(err, err_cap, "座標要落在承載面外接範圍內");
-            }
-            return false;
-        }
-    }
-
-    *out_count = n;
-    return true;
-}
 
 static bool grid_is_valid(
     const ReferenceGrid *grid,
     const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary
 )
-{
-    if (grid == NULL || placement == NULL ||
-        grid->placement_id != placement->id) {
-        return false;
-    }
+{WoodGridHost host;app_grid_host_value(placement,boundary,&host);return wood_grid_valid(grid,placement?&host:NULL);}
 
-    if (grid->from_binding) return !grid->from_system && !grid->is_subgrid &&
-        grid->lattice_step[0]>0 && grid->lattice_step[1]>0;
-    /* I10: 主支方向須有對應格線來源；u 座標線沿 v，反之亦然。 */
-    if (grid->main_along < 0 || grid->main_along > 2 ||
-        (grid->main_along == 1 && grid->axis[1].source == GRID_SRC_NONE) ||
-        (grid->main_along == 2 && grid->axis[0].source == GRID_SRC_NONE)) {
-        return false;
-    }
-
-    /* I10：兩軸皆未宣告 → 拒絕（單軸網格合法）。 */
-    if (grid->axis[0].source == GRID_SRC_NONE &&
-        grid->axis[1].source == GRID_SRC_NONE) {
-        return false;
-    }
-
-    Coord lines[GRID_MAX_LINES];
-    size_t n;
-
-    for (int a = 0; a < 2; ++a) {
-        if (grid->axis[a].source == GRID_SRC_NONE) {
-            continue;
-        }
-
-        if (!grid_axis_lines(grid, placement, boundary, a,
-                             lines, &n, NULL, 0)) {
-            return false;
-        }
-    }
-
-    return true;
-}
 
 /* D19 / I25 / R23: canonical single-cell subgrid derivation and finite clips. */
 #include "geometry-core/subgrids.inc"
@@ -1677,75 +963,21 @@ static bool grid_is_valid(
  *   START：local X = 0，尺寸 A × B
  *   END：local X = L，尺寸 A × B
  */
-typedef enum {
-    TIMBER_FACE_A0,
-    TIMBER_FACE_A1,
-    TIMBER_FACE_B0,
-    TIMBER_FACE_B1,
-    TIMBER_FACE_START,
-    TIMBER_FACE_END,
-    TIMBER_FACE_COUNT
-} TimberFaceId;
-
-/*
- * 六個面出自同一條規則：面 = 法向軸 k + 哪一側 s。
- *
- *   k：0 = 長度軸，1 = A 軸，2 = B 軸。
- *   s：0 = 座標 0 側，1 = 滿尺寸側。
- *
- * 面內兩軸是第 (k+1)%3 與 (k+2)%3 軸；(u, w, k) 恆為右手系
- * （u × w = k），所以同一個繞行順序在 s=1 給出 +k 法向、
- * 反向走在 s=0 給出 −k 法向：六個面的法向一律朝外。
- */
-static const struct {
-    unsigned char axis;
-    unsigned char side;
-} TIMBER_FACE_SPEC[TIMBER_FACE_COUNT] = {
-    [TIMBER_FACE_A0]    = { 2, 0 },
-    [TIMBER_FACE_A1]    = { 2, 1 },
-    [TIMBER_FACE_B0]    = { 1, 0 },
-    [TIMBER_FACE_B1]    = { 1, 1 },
-    [TIMBER_FACE_START] = { 0, 0 },
-    [TIMBER_FACE_END]   = { 0, 1 }
-};
-
-/* 面內四角的繞行順序：沿 u、w 兩軸的 0/1 係數。 */
-static const unsigned char TIMBER_FACE_WALK[2][4][2] = {
-    { {0,0}, {0,1}, {1,1}, {1,0} },   /* s = 0：反向 */
-    { {0,0}, {1,0}, {1,1}, {0,1} }    /* s = 1：正向 */
-};
-
-/* 每個面的全名（文字輸出）與短名（圖上標籤）。 */
-static const struct {
-    const char *full;
-    const char *brief;
-} TIMBER_FACE_NAMES[TIMBER_FACE_COUNT] = {
-    [TIMBER_FACE_A0]    = { "A0（接觸面）",     "A0"    },
-    [TIMBER_FACE_A1]    = { "A1（另一個 A 面）", "A1"    },
-    [TIMBER_FACE_B0]    = { "B0",              "B0"    },
-    [TIMBER_FACE_B1]    = { "B1",              "B1"    },
-    [TIMBER_FACE_START] = { "START 端面",       "START" },
-    [TIMBER_FACE_END]   = { "END 端面",         "END"   }
-};
-
+/* H compatibility names refer to the actual W model. */
+typedef WoodMemberFace TimberFaceId;
+#define TIMBER_FACE_A0 WOOD_MEMBER_FACE_A0
+#define TIMBER_FACE_A1 WOOD_MEMBER_FACE_A1
+#define TIMBER_FACE_B0 WOOD_MEMBER_FACE_B0
+#define TIMBER_FACE_B1 WOOD_MEMBER_FACE_B1
+#define TIMBER_FACE_START WOOD_MEMBER_FACE_START
+#define TIMBER_FACE_END WOOD_MEMBER_FACE_END
+#define TIMBER_FACE_COUNT WOOD_MEMBER_FACE_COUNT
 static bool timber_face_id_is_valid(TimberFaceId face)
-{
-    return face >= TIMBER_FACE_A0 && face < TIMBER_FACE_COUNT;
-}
-
+{return wood_member_face_valid(face);}
 static const char *timber_face_name(TimberFaceId face)
-{
-    return timber_face_id_is_valid(face)
-        ? TIMBER_FACE_NAMES[face].full
-        : "UNKNOWN_FACE";
-}
-
+{return wood_member_face_name(face);}
 static const char *timber_face_short_name(TimberFaceId face)
-{
-    return timber_face_id_is_valid(face)
-        ? TIMBER_FACE_NAMES[face].brief
-        : "?";
-}
+{return wood_member_face_short_name(face);}
 
 typedef enum {
     SURFACE_DIRECTION_POS_U,
@@ -1765,123 +997,25 @@ typedef enum {
  * primary 主支 = 2、secondary 副支 = 3、custom 由 priority N（N≥1）明寫。
  * custom 的 priority 只參與 I19 的數值比較，不取得任何角色專屬義務。
  */
-typedef enum {
-    TIMBER_ROLE_BOUNDARY = 0,
-    TIMBER_ROLE_PRIMARY,
-    TIMBER_ROLE_SECONDARY,
-    TIMBER_ROLE_CUSTOM
-} TimberRole;
-
-typedef struct {
-    TimberId id;
-
-    Coord length;
-    Coord size_a;
-    Coord size_b;
-
-    /*
-     * D15：角色是宣告；「是否真的在邊界上」是推導（R18），
-     * 兩者不一致 = 拒絕，不改宣告去遷就幾何。
-     * cut_priority 是生效值：非 custom 由角色決定（1/2/3），
-     * custom 用宣告的 N。
-     */
-    TimberRole role;
-    Coord cut_priority;
-
-    /*
-     * true = auto 角材（timber id A B）：length 不是輸入，
-     * 而是每次從位置引用與可延伸區間重建的結果。
-     * false 已廢除，建構子拒絕。
-     */
-    bool auto_length;
-
-    bool placed;
-
-    /*
-     * 完整角材放入房間後的局部座標框架。
-     */
-    Point3 origin;
-    Vector3 axis_length;
-    Vector3 axis_a;
-    Vector3 axis_b;
-} Timber;
+typedef WoodMemberRole TimberRole;
+typedef WoodMember Timber;
+#define TIMBER_ROLE_BOUNDARY WOOD_MEMBER_ROLE_BOUNDARY
+#define TIMBER_ROLE_PRIMARY WOOD_MEMBER_ROLE_PRIMARY
+#define TIMBER_ROLE_SECONDARY WOOD_MEMBER_ROLE_SECONDARY
+#define TIMBER_ROLE_CUSTOM WOOD_MEMBER_ROLE_CUSTOM
 /* 公理 D7：角材——截面 + 長度模式 + 局部三軸 + 原點；八角不存（D9）。 */
-
 static const char *timber_role_name(TimberRole role)
-{
-    switch (role) {
-        case TIMBER_ROLE_BOUNDARY:  return "boundary";
-        case TIMBER_ROLE_PRIMARY:   return "primary";
-        case TIMBER_ROLE_SECONDARY: return "secondary";
-        case TIMBER_ROLE_CUSTOM:    return "custom";
-        default:                    return "?";
-    }
-}
-
-/* Construct 一支完整角材，但此時尚未放進空間邊界面。 */
-static bool timber_construct(
-    TimberId id,
-    Coord length,
-    Coord size_a,
-    Coord size_b,
-    bool auto_length,
-    TimberRole role,
-    Coord custom_priority,
-    Timber *out_timber
-)
-{
-    if (out_timber == NULL ||
-        size_a <= 0 ||
-        size_b <= 0 ||
-        !auto_length ||
-        (auto_length && length != 0) ||
-        (role == TIMBER_ROLE_CUSTOM && custom_priority < 1)) {
-        return false;
-    }
-
-    *out_timber = (Timber){
-        .id = id,
-        .length = length,
-        .size_a = size_a,
-        .size_b = size_b,
-        .auto_length = auto_length,
-        .placed = false,
-        .role = role,
-        .cut_priority = role == TIMBER_ROLE_CUSTOM
-            ? custom_priority
-            : (Coord)role + 1,
-
-        /* 尚未放置前，先使用標準局部框架。 */
-        .origin = { 0, 0, 0 },
-        .axis_length = { 1, 0, 0 },
-        .axis_a = { 0, 1, 0 },
-        .axis_b = { 0, 0, 1 }
-    };
-
-    return true;
-}
+{return wood_member_role_name(role);}
+static bool timber_construct(TimberId id,Coord length,Coord size_a,Coord size_b,
+    bool auto_length,TimberRole role,Coord custom_priority,Timber *out_timber)
+{return wood_member_construct(id,length,size_a,size_b,auto_length,role,custom_priority,out_timber);}
 
 static Vector3 surface_direction_vector(
     const PlacementSurface *surface,
     SurfaceDirection direction
 )
 {
-    switch (direction) {
-        case SURFACE_DIRECTION_POS_U:
-            return surface->frame.axis_u;
-
-        case SURFACE_DIRECTION_NEG_U:
-            return vector_negate(surface->frame.axis_u);
-
-        case SURFACE_DIRECTION_POS_V:
-            return surface->frame.axis_v;
-
-        case SURFACE_DIRECTION_NEG_V:
-            return vector_negate(surface->frame.axis_v);
-
-        default:
-            return (Vector3){ 0, 0, 0 };
-    }
+    return geo_frame_direction(&surface->frame,(GeoDirection2)direction);
 }
 
 /*
@@ -1914,132 +1048,23 @@ static bool timber_place_a0_on_surface(
     SurfaceDepthSide depth_side
 )
 {
-    if (timber == NULL ||
-        surface == NULL ||
-        !surface_contains_point(surface, boundary, anchor)) {
-        return false;
-    }
-
-    Vector3 axis_length = surface_direction_vector(
-        surface,
-        length_direction
-    );
-
-    if (vector_dot(axis_length, axis_length) != 1) {
-        return false;
-    }
-
-    Vector3 axis_b =
-        depth_side == SURFACE_DEPTH_POSITIVE_NORMAL
-            ? surface->frame.normal
-            : vector_negate(surface->frame.normal);
-
-    /*
-     * 保持右手座標：
-     *
-     *   axis_length × axis_a = axis_b
-     *
-     * 因此：
-     *
-     *   axis_a = axis_b × axis_length
-     *
-     * 兩個因子都是單位長且互相垂直，axis_a 必為單位長，不必再檢查。
-     */
-    Vector3 axis_a = vector_cross(axis_b, axis_length);
-
-    SurfacePoint2 far_corner = {
-        .u = anchor.u +
-             timber->length * vector_dot(axis_length, surface->frame.axis_u) +
-             timber->size_a * vector_dot(axis_a, surface->frame.axis_u),
-
-        .v = anchor.v +
-             timber->length * vector_dot(axis_length, surface->frame.axis_v) +
-             timber->size_a * vector_dot(axis_a, surface->frame.axis_v)
-    };
-
-    Coord rect_min_u = coord_min(anchor.u, far_corner.u);
-    Coord rect_max_u = coord_max(anchor.u, far_corner.u);
-    Coord rect_min_v = coord_min(anchor.v, far_corner.v);
-    Coord rect_max_v = coord_max(anchor.v, far_corner.v);
-
-    /* 整個 A0 矩形必須在有效區域內——凹角與孔洞下
-     * 「兩角點在內」不再是充分條件。 */
-    if (!surface_contains_rect(
-            surface, boundary,
-            rect_min_u, rect_min_v, rect_max_u, rect_max_v)) {
-        return false;
-    }
-
-    SurfaceRegion2 footprint={rect_min_u,rect_min_v,rect_max_u,rect_max_v};
-    boundary=placement_boundary_for_rect(surface,boundary,&footprint);
-
-    /*
-     * 端面（START/END，長度軸的兩端）若正好貼在外輪廓邊上，
-     * 該邊必須是 FIXED：自由邊外側沒有垂直實體面，釘不住。
-     * 端面懸在面內部（沒貼任何邊）不檢查——那是懸臂。
-     */
-    if (boundary != NULL) {
-        const PolygonLoop2 *outline = &boundary->outline;
-        Coord end_uv[2];
-        bool ends_along_v;   /* 端面線段在 UV 中沿 V 走（長度沿 U） */
-
-        if (vector_dot(axis_length, surface->frame.axis_u) != 0) {
-            /* 長度沿 U：端面在 u = min/max，線段沿 V。 */
-            end_uv[0] = rect_min_u;
-            end_uv[1] = rect_max_u;
-            ends_along_v = true;
-        } else {
-            /* 長度沿 V：端面在 v = min/max，線段沿 U。 */
-            end_uv[0] = rect_min_v;
-            end_uv[1] = rect_max_v;
-            ends_along_v = false;
-        }
-
-        for (int e = 0; e < 2; ++e) {
-            Coord end_at = end_uv[e];
-
-            for (size_t i = 0; i < outline->count; ++i) {
-                SurfacePoint2 a = outline->v[i];
-                SurfacePoint2 b = outline->v[(i + 1) % outline->count];
-
-                if (ends_along_v) {
-                    /* 端面線段在 u=end_at、v ∈ [rect_min_v, rect_max_v]；
-                     * 找共線且重疊的直立輪廓邊。 */
-                    if (a.u != b.u || a.u != end_at) {
-                        continue;
-                    }
-                    if (coord_max(rect_min_v, coord_min(a.v, b.v)) <
-                        coord_min(rect_max_v, coord_max(a.v, b.v)) &&
-                        outline->fixity[i] == EDGE_FREE) {
-                        return false;
-                    }
-                } else {
-                    if (a.v != b.v || a.v != end_at) {
-                        continue;
-                    }
-                    if (coord_max(rect_min_u, coord_min(a.u, b.u)) <
-                        coord_min(rect_max_u, coord_max(a.u, b.u)) &&
-                        outline->fixity[i] == EDGE_FREE) {
-                        return false;
-                    }
-                }
-            }
+    if(!surface)return false;
+    GeoLoop2View holes[DP_COMPONENT_MAX][POLY_MAX_HOLES];GeoRegionView regions[DP_COMPONENT_MAX];GeoPoint2 rectangle[4];
+    int fixity_storage[DP_COMPONENT_MAX][POLY_MAX_VERTICES];const int *fixities[DP_COMPONENT_MAX]={0};
+    size_t count=surface->derived_fill_id?surface->component_count:1;
+    for(size_t c=0;c<count;++c){
+        const SpaceBoundarySurface *part=surface->derived_fill_id?&surface->components[c]:boundary;
+        if(part){
+            regions[c]=boundary_geometry_view(part,holes[c]);fixities[c]=fixity_storage[c];
+            for(size_t i=0;i<part->outline.count;++i)fixity_storage[c][i]=part->outline.fixity[i];
+        }else{
+            rectangle[0]=(GeoPoint2){surface->rect.min_u,surface->rect.min_v};rectangle[1]=(GeoPoint2){surface->rect.max_u,surface->rect.min_v};
+            rectangle[2]=(GeoPoint2){surface->rect.max_u,surface->rect.max_v};rectangle[3]=(GeoPoint2){surface->rect.min_u,surface->rect.max_v};
+            regions[c]=(GeoRegionView){{rectangle,4},NULL,0};
         }
     }
-
-    timber->origin = surface_point_to_room(
-        surface,
-        anchor.u,
-        anchor.v,
-        0
-    );
-
-    timber->axis_length = axis_length;
-    timber->axis_a = axis_a;
-    timber->axis_b = axis_b;
-    timber->placed = true;
-
-    return true;
+    GeoRegionSetView domain={regions,count};
+    return wood_member_place_a0(timber,&surface->frame,&domain,fixities,anchor,length_direction,depth_side);
 }
 
 /* 將角材局部座標轉成房間三維座標。 */
@@ -2050,22 +1075,8 @@ static Point3 timber_local_to_room(
     Coord b_coordinate
 )
 {
-    return (Point3){
-        .x = timber->origin.x +
-             length_coordinate * timber->axis_length.x +
-             a_coordinate * timber->axis_a.x +
-             b_coordinate * timber->axis_b.x,
-
-        .y = timber->origin.y +
-             length_coordinate * timber->axis_length.y +
-             a_coordinate * timber->axis_a.y +
-             b_coordinate * timber->axis_b.y,
-
-        .z = timber->origin.z +
-             length_coordinate * timber->axis_length.z +
-             a_coordinate * timber->axis_a.z +
-             b_coordinate * timber->axis_b.z
-    };
+    GeoFrame frame={timber->origin,timber->axis_length,timber->axis_a,timber->axis_b};
+    return geo_frame_point(&frame,length_coordinate,a_coordinate,b_coordinate);
 }
 
 /* 從完整角材推導指定面的四個房間座標頂點。 */
@@ -2075,31 +1086,7 @@ static bool timber_get_face_room(
     Quad3 *out_face
 )
 {
-    if (timber == NULL || out_face == NULL ||
-        !timber->placed || !timber_face_id_is_valid(face)) {
-        return false;
-    }
-
-    const Coord dims[3] = { timber->length, timber->size_a, timber->size_b };
-    const int k = TIMBER_FACE_SPEC[face].axis;
-    const int s = TIMBER_FACE_SPEC[face].side;
-    const int u = (k + 1) % 3;
-    const int w = (k + 2) % 3;
-
-    for (size_t i = 0; i < 4; ++i) {
-        Coord local[3] = { 0, 0, 0 };
-        local[k] = s ? dims[k] : 0;
-        local[u] = TIMBER_FACE_WALK[s][i][0] ? dims[u] : 0;
-        local[w] = TIMBER_FACE_WALK[s][i][1] ? dims[w] : 0;
-        out_face->vertices[i] = timber_local_to_room(
-            timber,
-            local[0],
-            local[1],
-            local[2]
-        );
-    }
-
-    return true;
+    return wood_member_face_room(timber,face,out_face);
 }
 
 /* ============================================================
@@ -2347,14 +1334,7 @@ typedef struct {
  * 範圍與封閉與否由成員的承載面推導——只讀衍生，不是輸入。
  * ============================================================ */
 
-typedef struct {
-    uint32_t id;
-    SurfaceId boundaries[8];    /* 成員邊界面 id（建構時傳入） */
-    size_t boundary_count;
-    Coord room_min[3];          /* 推導：各軸下界（slot 有面才有效） */
-    Coord room_max[3];
-    bool closed;                /* 六個方向槽位全滿 */
-} Space;
+typedef GeoEnclosure Space;
 /* 公理 D5：空間——建構子參數 = 一組邊界面 id，成員不可變。 */
 
 /* ---- RC 柱/樑（公理 D13/D14）----
@@ -2366,21 +1346,13 @@ typedef struct {
  *   RcBeam.axis：0 = 沿 x，1 = 沿 y（語法保證軸平行，I16）。
  *   z_hi 一律是實值：省略 top/z 時由所屬空間 ±Z 槽推導後凍結存入。
  */
-typedef struct {
-    uint32_t id;
-    uint32_t space_id;          /* 0 = 游離 */
-    Coord x_lo, x_hi, y_lo, y_hi, z_lo, z_hi;
-} RcColumn;
+typedef WoodColumn RcColumn;
+typedef WoodBeam RcBeam;
 
+/* Drawing borrows the host or standalone demo arrays; DTOs are read locally. */
+struct World;
 typedef struct {
-    uint32_t id;
-    uint32_t space_id;          /* 0 = 游離 */
-    int axis;                   /* 0 = 沿 x，1 = 沿 y */
-    Coord x_lo, x_hi, y_lo, y_hi, z_lo, z_hi;
-} RcBeam;
-
-/* 一張圖要畫的所有東西；全部只是引用，不複製。 */
-typedef struct {
+    const struct World *domain_world;
     const PlacementSurface *placements;
     size_t placement_count;
     const SpaceBoundarySurface *boundaries;
@@ -2398,39 +1370,47 @@ typedef struct {
     const RcBeam *beams;
     size_t beam_count;
 } Scene;
+static const PlacementSurface *app_scene_placement_at(const Scene *,size_t,PlacementSurface *);
+static const SpaceBoundarySurface *app_scene_boundary_at(const Scene *,size_t,SpaceBoundarySurface *);
+#define scene_placement_at(s,i) app_scene_placement_at((s),(i),&(PlacementSurface){0})
+#define scene_boundary_at(s,i) app_scene_boundary_at((s),(i),&(SpaceBoundarySurface){0})
 
-static const PlacementSurface *scene_find_placement(
+static const PlacementSurface *app_scene_find_placement(
     const Scene *scene,
-    SurfaceId id
+    SurfaceId id, PlacementSurface *out
 )
 {
     for (size_t i = 0; i < scene->placement_count; ++i) {
-        if (scene->placements[i].id == id) {
-            return &scene->placements[i];
+        if (scene_placement_at(scene,i)->id == id) {
+            return app_scene_placement_at(scene,i,out);
         }
     }
 
     return NULL;
 }
+#define scene_find_placement(s,id) app_scene_find_placement((s),(id),&(PlacementSurface){0})
 
-static const SpaceBoundarySurface *scene_find_boundary(
+
+static const SpaceBoundarySurface *app_scene_find_boundary(
     const Scene *scene,
-    SurfaceId id
+    SurfaceId id, SpaceBoundarySurface *out
 )
 {
     for (size_t i = 0; i < scene->boundary_count; ++i) {
-        if (scene->boundaries[i].id == id) {
-            return &scene->boundaries[i];
+        if (scene_boundary_at(scene,i)->id == id) {
+            return app_scene_boundary_at(scene,i,out);
         }
     }
 
     return NULL;
 }
+#define scene_find_boundary(s,id) app_scene_find_boundary((s),(id),&(SpaceBoundarySurface){0})
+
 
 /* 承載面掛的邊界面（0 = 沒掛）。 */
-static const SpaceBoundarySurface *scene_placement_boundary(
+static const SpaceBoundarySurface *app_scene_placement_boundary(
     const Scene *scene,
-    const PlacementSurface *placement
+    const PlacementSurface *placement, SpaceBoundarySurface *out
 )
 {
     if(placement->derived_fill_id) return placement->component_count?&placement->components[0]:NULL;
@@ -2438,8 +1418,10 @@ static const SpaceBoundarySurface *scene_placement_boundary(
         return NULL;
     }
 
-    return scene_find_boundary(scene, placement->boundary_id);
+    return app_scene_find_boundary(scene, placement->boundary_id,out);
 }
+#define scene_placement_boundary(s,p) app_scene_placement_boundary((s),(p),&(SpaceBoundarySurface){0})
+
 
 /* 畫什麼「角色」由幾何層決定；長什麼樣子由各後端決定。 */
 typedef enum {
@@ -2503,6 +1485,13 @@ static const StyleSpec STYLE_SPEC[STYLE_COUNT] = {
  * 座標一律是「視圖內的 mm」；begin_view 告訴後端這個視圖要平移多少。
  */
 typedef struct {
+    const char *kind;
+    uint32_t entity_id;
+    const char *face_id;
+    const char *short_label;
+} DrawTextAnnotation;
+
+typedef struct {
     void *ctx;
     void (*begin_view)(void *ctx, Coord tx, Coord ty);
     void (*end_view)(void *ctx);
@@ -2511,6 +1500,10 @@ typedef struct {
     void (*line)(void *ctx, ViewPoint2 a, ViewPoint2 b, DrawStyle style);
     /* rotate_degrees 非 0 時，文字以自己的錨點為中心旋轉（沿直立的邊標字用）。 */
     void (*text)(void *ctx, ViewPoint2 at, DrawStyle style, const char *utf8, int rotate_degrees);
+    /* Optional structured presentation metadata; absent backends retain text. */
+    void (*annotated_text)(void *ctx, ViewPoint2 at, DrawStyle style,
+                           const char *utf8, int rotate_degrees,
+                           const DrawTextAnnotation *annotation);
 } DrawTarget;
 
 /* 點（視為從房間原點出發的位置向量）在某個軸上的分量。 */
@@ -2692,6 +1685,18 @@ static void scene_emit_text(
     }
 }
 
+static void scene_emit_annotated_text(
+    const DrawTarget *target, ViewPoint2 at, DrawStyle style,
+    const char *text, int rotate_degrees, const DrawTextAnnotation *annotation
+)
+{
+    if (target != NULL && target->annotated_text != NULL) {
+        target->annotated_text(target->ctx, at, style, text, rotate_degrees, annotation);
+    } else {
+        scene_emit_text(target, at, style, text, rotate_degrees);
+    }
+}
+
 /* 角材面在單一視圖中的投影結果：面 id、四個畫面座標頂點、視線距離總和。 */
 typedef struct {
     TimberFaceId id;
@@ -2796,7 +1801,7 @@ static void scene_draw_view(
     char label[128];
 
     for (size_t s = 0; s < scene->placement_count; ++s) {
-        const PlacementSurface *surface = &scene->placements[s];
+        const PlacementSurface *surface = scene_placement_at(scene,s);
         const SpaceBoundarySurface *boundary =
             scene_placement_boundary(scene, surface);
 
@@ -2990,9 +1995,15 @@ static void scene_draw_view(
                 at.x /= 4;
                 at.y /= 4;
 
-                snprintf(label, sizeof label, "角材%" PRIu32 " %s",
-                         timber->id, timber_face_short_name(faces[i].id));
-                scene_emit_text(target, at, STYLE_TIMBER_LABEL, label, 0);
+                char short_label[48];
+                const char *face_id = timber_face_short_name(faces[i].id);
+                snprintf(short_label, sizeof short_label, "角材%" PRIu32, timber->id);
+                snprintf(label, sizeof label, "%s %s", short_label, face_id);
+                const DrawTextAnnotation annotation = {
+                    "member-face", timber->id, face_id, short_label
+                };
+                scene_emit_annotated_text(target, at, STYLE_TIMBER_LABEL, label, 0,
+                                          &annotation);
             }
         }
     }
@@ -3408,7 +2419,7 @@ static ScenePick scene_pick_at(
     Coord best2 = pick_radius * pick_radius;
     for (size_t pi=0;pi<scene->placement_count;++pi) {
     for (size_t i = 0; i < scene->guide_count; ++i) {
-        if (scene->guides[i].placement_id!=scene->placements[pi].id) continue;
+        if (scene->guides[i].placement_id!=scene_placement_at(scene,pi)->id) continue;
         const GuideLine *guide = &scene->guides[i];
         const PlacementSurface *surface =
             scene_find_placement(scene, guide->placement_id);
@@ -3728,12 +2739,12 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_GUIDES      16
 #define WORLD_MAX_GRIDS       16
 #define WORLD_MAX_TIMBERS     64
-#define WORLD_MAX_SPACES      4
+#define WORLD_MAX_SPACES      GEO_ENCLOSURE_CAPACITY
 #define WORLD_MAX_RC          32
 #define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2 + WORLD_MAX_GRID_SYSTEMS + WORLD_MAX_GRID_BINDINGS + PARAM_CARD_MAX)
 
 /* 一個空間最多八片邊界成員；零成員 = 空容器（公理 D5）。 */
-#define SPACE_MAX_MEMBERS 8
+#define SPACE_MAX_MEMBERS GEO_ENCLOSURE_MEMBER_CAPACITY
 
 /*
  * 角材的放置錨點：哪片承載面、表面上的哪一點、怎麼來的。
@@ -3743,123 +2754,95 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
  * 每次交易由引用重新推導；持久化只輸出引用。
  */
 
-typedef enum {
-    ANCHOR_AT,          /* at u v：明寫錨點 */
-    ANCHOR_AT_GUIDES,   /* at-guides 線1 線2：交點凍結 */
-    ANCHOR_AT_GRID,     /* at-line grid 網id 軸 索引：中心線對齊格線 */
-    ANCHOR_AT_EDGE,     /* at-face e3 / h1e2 / t7 */
-    ANCHOR_AT_LINE,     /* at-line guide id; preserve legacy enum value */
-    ANCHOR_AT_RULE      /* source-owned rule line, whole-cell scope */
-} AnchorKind;
-
-typedef enum {
-    SPAN_EXPLICIT,      /* timber id L A B：長度是輸入 */
-    SPAN_AUTO           /* timber id A B：長度是推導結果 */
-} SpanMode;
-
-typedef struct {
-    SurfaceId placement_id;
-    SurfacePoint2 uv;
-    int anchor_kind;        /* AnchorKind */
-    int span_mode;          /* SpanMode */
-    int length_direction;   /* SurfaceDirection */
-    int depth_side;         /* SurfaceDepthSide */
-
-    /* 參照來源：每次重建時用來求位置與跨距。 */
-    uint32_t ref_grid;      /* ANCHOR_AT_GRID：網格 id */
-    int ref_grid_axis;      /* 0 = u 座標集合，1 = v 座標集合 */
-    int64_t ref_grid_index;
-    bool ref_grid_has_band; /* D10b: set only for a staggered axis */
-    int64_t ref_grid_band;
-    GridRuleLineRef ref_rule;
-    int ref_hole;           /* ANCHOR_AT_EDGE：-1 外輪廓，否則孔 index */
-    int ref_edge;           /* 邊 index */
-    bool has_through;
-    Coord through;          /* R6(c) span selector */
-    uint32_t ref_guide, ref_timber;
-    bool ref_is_timber;
-    char ref_derived_key[512]; /* R41 source/segment/total identity, never a cached edge index. */
-    uint64_t order;         /* placement dependency order (I9) */
-    bool has_between;
-    ReferenceFace between[2];
-} TimberAnchor;
+typedef WoodMemberAnchorKind AnchorKind;
+#define ANCHOR_AT WOOD_ANCHOR_AT
+#define ANCHOR_AT_GUIDES WOOD_ANCHOR_AT_GUIDES
+#define ANCHOR_AT_GRID WOOD_ANCHOR_AT_GRID
+#define ANCHOR_AT_EDGE WOOD_ANCHOR_AT_EDGE
+#define ANCHOR_AT_LINE WOOD_ANCHOR_AT_LINE
+#define ANCHOR_AT_RULE WOOD_ANCHOR_AT_RULE
+typedef WoodMemberSpanMode SpanMode;
+#define SPAN_EXPLICIT WOOD_SPAN_EXPLICIT
+#define SPAN_AUTO WOOD_SPAN_AUTO
+typedef WoodMemberPlacement TimberAnchor;
 
 /*
  * 畫布座標：物件在無限畫布上的擺放位置。
  * 純展示中繼資料——不參與任何幾何推導，只跟著 dump/讀檔走。
  */
-typedef enum {
-    CANVAS_POS_BOUNDARY = 0,   /* 面卡：以邊界面 id 為鍵 */
-    CANVAS_POS_PLACEMENT,      /* 自帶矩形面卡：以承載面 id 為鍵 */
-    CANVAS_POS_SPACE,          /* 空間卡：以空間 id 為鍵 */
-    CANVAS_POS_COLUMN,         /* 柱卡：以柱 id 為鍵 */
-    CANVAS_POS_BEAM,           /* 樑卡：以樑 id 為鍵 */
-    CANVAS_POS_GRID_BINDING,
-    CANVAS_POS_PARAMETER,
-    CANVAS_POS_GRID_SYSTEM,     /* D29: independent reusable grid definition */
-    CANVAS_POS_ASSEMBLY_RULE, CANVAS_POS_ASSEMBLY_BINDING
-} CanvasPosKind;
-
-typedef struct {
-    int kind;                  /* CanvasPosKind */
-    uint32_t id;
-    Coord x, y;                /* 畫布座標（展示用，非幾何） */
-} CanvasPos;
+typedef AppCanvasPositionKind CanvasPosKind;
+#define CANVAS_POS_BOUNDARY APP_CANVAS_POS_BOUNDARY
+#define CANVAS_POS_PLACEMENT APP_CANVAS_POS_PLACEMENT
+#define CANVAS_POS_SPACE APP_CANVAS_POS_SPACE
+#define CANVAS_POS_COLUMN APP_CANVAS_POS_COLUMN
+#define CANVAS_POS_BEAM APP_CANVAS_POS_BEAM
+#define CANVAS_POS_GRID_BINDING APP_CANVAS_POS_GRID_BINDING
+#define CANVAS_POS_PARAMETER APP_CANVAS_POS_PARAMETER
+#define CANVAS_POS_GRID_SYSTEM APP_CANVAS_POS_GRID_SYSTEM
+#define CANVAS_POS_ASSEMBLY_RULE APP_CANVAS_POS_ASSEMBLY_RULE
+#define CANVAS_POS_ASSEMBLY_BINDING APP_CANVAS_POS_ASSEMBLY_BINDING
+typedef AppCanvasPosition CanvasPos;
 /* 公理 D12：畫布座標——純展示中繼資料，不參與任何幾何推導。 */
 
+#include "geometry-core/kernel/internal/document.h"
+
 typedef struct World {
-    SpecValue specs[WORLD_MAX_SPECS];
-    size_t spec_count;
-    DatumPlane datums[WORLD_MAX_DATUMS];
-    size_t datum_count;
-    uint64_t next_order;
-    SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
-    size_t boundary_count;
-    BoundaryVertexKeys vertex_keys[WORLD_MAX_BOUNDARIES];
-    size_t vertex_key_count;
-    GridBinding grid_bindings[WORLD_MAX_GRID_BINDINGS];
-    size_t grid_binding_count;
-
-    PlacementSurface placements[WORLD_MAX_PLACEMENTS];
-    size_t placement_count;
-
-    GuideLine guides[WORLD_MAX_GUIDES];
-    size_t guide_count;
-
-    GridSystem grid_systems[WORLD_MAX_GRID_SYSTEMS];
-    size_t grid_system_count;
-    ReferenceGrid grids[WORLD_MAX_GRIDS];
-    size_t grid_count;
-
-    Timber timbers[WORLD_MAX_TIMBERS];
-
-    /* 與 timbers 同索引：放置用的錨點。 */
-    TimberAnchor anchors[WORLD_MAX_TIMBERS];
-    size_t timber_count;
-
-    Space spaces[WORLD_MAX_SPACES];
-    size_t space_count;
-
-    RcColumn columns[WORLD_MAX_RC];
-    size_t column_count;
-
-    RcBeam beams[WORLD_MAX_RC];
-    size_t beam_count;
-
-    CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
-    size_t canvas_pos_count;
-    SectionProfileState section_profiles;
-    AssemblyState assembly;
-    EngineeringState engineering;
-    ParameterState parameters;
-    FinishSurfaceState finish_surfaces;   /* D41 finish surfaces (panel-fill/1, PF-1) */
+    GeoDocument geo;
+    WoodDocument wood;
+    AppDocument app;
 } World;
 
-static const GridSystem *world_find_grid_system(const World *w,uint32_t id)
+#include "geometry-app/native/domains.inc"
+
+#include "geometry-app/native/grid_adapter.inc"
+
+/* H owns the legacy source spelling; K owns the sole typed definition/cache. */
+static bool reference_compile_text(const char *,GeoLinearExpression *);
+static const char *app_guide_expression(const World *world,uint32_t id)
 {
-    for (size_t i=0;i<w->grid_system_count;++i) if (w->grid_systems[i].id==id) return &w->grid_systems[i];
-    return NULL;
+    for(size_t i=0;i<geo_guides_count(&world->geo.guide_lines);++i)
+        if(world->app.guide_texts[i].id==id)return world->app.guide_texts[i].expression;
+    return "";
 }
+static bool app_guide_put(World *world,const GeoGuide *guide,const char *text)
+{
+    size_t at=0;while(at<geo_guides_count(&world->geo.guide_lines)&&geo_guides_at(&world->geo.guide_lines,at)->id!=guide->id)++at;
+    if(at==WORLD_MAX_GUIDES)return false;
+    GeoGuide definition=*guide;
+    if(text&&definition.source==GEO_GUIDE_LOCAL)(void)reference_compile_text(text,&definition.expression);
+    if(!geo_guides_put(&world->geo.guide_lines,&definition))return false;
+    if(text){
+        memset(&world->app.guide_texts[at],0,sizeof world->app.guide_texts[at]);world->app.guide_texts[at].id=definition.id;
+        snprintf(world->app.guide_texts[at].expression,sizeof world->app.guide_texts[at].expression,"%s",text);
+    }
+    return true;
+}
+static bool app_guide_remove(World *world,uint32_t id)
+{
+    size_t at=0,count=geo_guides_count(&world->geo.guide_lines);
+    while(at<count&&geo_guides_at(&world->geo.guide_lines,at)->id!=id)++at;
+    if(at==count||!geo_guides_remove(&world->geo.guide_lines,id))return false;
+    memmove(world->app.guide_texts+at,world->app.guide_texts+at+1,(count-at-1)*sizeof *world->app.guide_texts);
+    memset(world->app.guide_texts+count-1,0,sizeof *world->app.guide_texts);return true;
+}
+
+static const char *app_datum_expression(const World *world,uint32_t id)
+{
+    for(size_t i=0;i<geo_datums_count(&world->geo.datum_planes);++i)
+        if(world->app.datum_texts[i].id==id)return world->app.datum_texts[i].expression;
+    return "";
+}
+static bool app_datum_remove(World *world,uint32_t id)
+{
+    size_t count=geo_datums_count(&world->geo.datum_planes),at=0;
+    while(at<count&&geo_datums_at(&world->geo.datum_planes,at)->id!=id)++at;
+    if(at==count||!geo_datums_remove(&world->geo.datum_planes,id))return false;
+    memmove(world->app.datum_texts+at,world->app.datum_texts+at+1,(count-at-1)*sizeof *world->app.datum_texts);
+    memset(&world->app.datum_texts[count-1],0,sizeof *world->app.datum_texts);return true;
+}
+
+static const GridSystem *world_find_grid_system(const World *w,uint32_t id)
+{ return geo_grid_systems_find(&w->geo.grid_store,id); }
 
 /* 命中物 → 一行描述。網頁橋接與 GDI 狀態列共用；無命中時寫入空字串。 */
 static void scene_describe_pick(const Scene *scene, const World *world,
@@ -3883,18 +2866,15 @@ static void scene_describe_pick(const Scene *scene, const World *world,
                  scene->timbers[p->timber].id, timber_face_name(p->face));
         return;
     }
-    if (p->guide >= 0 && p->guide < (int)world->guide_count) {
-        const GuideLine *gd = &world->guides[p->guide];
+    if (p->guide >= 0 && p->guide < (int)geo_guides_count(&world->geo.guide_lines)) {
+        const GuideLine *gd = &geo_guides_values(&world->geo.guide_lines)[p->guide];
         snprintf(buf, cap, "參考線%" PRIu32 " 沿%s offset=%" PRId64,
                  gd->id, gd->direction == GUIDE_ALONG_U ? "U" : "V",
                  (int64_t)gd->offset);
     }
 }
 static const GridBinding *world_find_grid_binding(const World *w,uint32_t id)
-{
-    for (size_t i=0;i<w->grid_binding_count;++i) if(w->grid_bindings[i].id==id) return &w->grid_bindings[i];
-    return NULL;
-}
+{ return geo_grid_bindings_find(&w->geo.grid_store,id); }
 static const BoundaryVertexKeys *world_find_vertex_keys(const World *,uint32_t);
 static bool boundary_vertex_by_key(const World *,uint32_t,uint32_t,SurfacePoint2 *);
 static bool boundary_keys_reconcile(World *,const World *,char *,size_t);
@@ -3924,6 +2904,7 @@ static const AsmRuleVersion *assembly_rule(const World *,uint32_t,uint32_t);
 static AsmBinding *assembly_binding(World *,uint32_t);
 static bool engineering_rebuild(World *,char *,size_t);
 static bool parameters_rebuild(World *,char *,size_t);
+static bool reference_parameters_rebuild(World *,char *,size_t);
 static const ParameterSet *parameter_find(const World *,uint32_t);
 static bool parameter_ref_parse(const char *,ParameterRef *);
 static bool parameter_coord(const World *,ParameterRef,Coord *);
@@ -3933,8 +2914,8 @@ static bool world_definitions_equal(const World *a,const World *b)
 {
     /* Compare around display-only metadata without two multi-megabyte stack copies. */
     const unsigned char *x=(const unsigned char*)a,*y=(const unsigned char*)b;
-    size_t first=(const unsigned char*)&a->canvas_pos-x;
-    size_t last=(const unsigned char*)(&a->canvas_pos_count+1)-x;
+    size_t first=(const unsigned char*)&a->app.canvas_pos-x;
+    size_t last=(const unsigned char*)(&a->app.canvas_pos_count+1)-x;
     return !memcmp(x,y,first) && !memcmp(x+last,y+last,sizeof *a-last);
 }
 
@@ -3952,10 +2933,8 @@ static bool apply_reference_move(const char *, int, char **, int, World *);
 static bool apply_reference_place(const char *, int, char **, int, World *);
 static bool apply_spec_line(const char *, int, char **, int, World *);
 static Scene scene_from_world(const World *world);
-static const PlacementSurface *world_find_placement(
-    const World *world, uint32_t id);
-static const SpaceBoundarySurface *world_find_boundary(
-    const World *world, uint32_t id);
+
+
 static const Space *world_find_space(const World *world, uint32_t id);
 static const RcColumn *world_find_column(const World *world, uint32_t id);
 static const RcBeam *world_find_beam(const World *world, uint32_t id);
@@ -3970,60 +2949,27 @@ static bool apply_scene_line(
  */
 static void scene_error(const char *path, int line_no, const char *message);
 
+#include "geometry-app/native/history_unity.inc"
 #define HISTORY_MAX 32
-static World g_hist_undo[HISTORY_MAX];
-static int   g_hist_undo_n;
-static World g_hist_redo[HISTORY_MAX];
-static int   g_hist_redo_n;
-static int   g_hist_record_redo_n;
-static bool  g_hist_record_evicted;
-static World g_hist_evicted;
-
-/* L2 歷史群組:history-begin 時的世界快照;群組內各行不各自記歷史,
- * end 時整組算一步;任一行失敗 → 整組回到 begin 前,不留半套用。 */
-static bool  g_hist_grouping;
-static bool  g_hist_group_dirty;
-static World g_hist_group_base;
+static World g_hist_undo[HISTORY_MAX],g_hist_redo[HISTORY_MAX];
+static World g_hist_evicted,g_hist_group_base;
+static AppHistory g_history={
+    .snapshot_size=sizeof(World),.capacity=HISTORY_MAX,
+    .undo=(unsigned char*)g_hist_undo,.redo=(unsigned char*)g_hist_redo,
+    .evicted=(unsigned char*)&g_hist_evicted,.group_base=(unsigned char*)&g_hist_group_base
+};
 
 /* 變更成功前呼叫：把現況壓入 undo 疊並清掉 redo。 */
 static void history_record(const World *w)
-{
-    g_hist_record_redo_n = g_hist_redo_n;
-    g_hist_record_evicted = g_hist_undo_n >= HISTORY_MAX;
-    if (g_hist_record_evicted) {
-        g_hist_evicted = g_hist_undo[0];
-        memmove(&g_hist_undo[0], &g_hist_undo[1],
-                sizeof(World) * (HISTORY_MAX - 1));
-        --g_hist_undo_n;
-    }
-    g_hist_undo[g_hist_undo_n++] = *w;
-    g_hist_redo_n = 0;
-}
+{app_history_record(&g_history,w);}
 
 /* 檔案載入/啟動載入後呼叫：那些不是使用者操作，不該被 undo。 */
 static void history_clear(void)
-{
-    g_hist_undo_n = 0;
-    g_hist_redo_n = 0;
-    g_hist_grouping = false;
-    g_hist_group_dirty = false;
-}
+{app_history_clear(&g_history);}
 
 /* apply 失敗時呼叫：剛記的快照作廢（世界沒變）。 */
 static void history_unrecord(void)
-{
-    if (g_hist_undo_n > 0) {
-        --g_hist_undo_n;
-    }
-    if (g_hist_record_evicted) {
-        memmove(&g_hist_undo[1], &g_hist_undo[0],
-                sizeof(World) * g_hist_undo_n);
-        g_hist_undo[0] = g_hist_evicted;
-        ++g_hist_undo_n;
-    }
-    g_hist_redo_n = g_hist_record_redo_n;
-    g_hist_record_evicted = false;
-}
+{app_history_unrecord(&g_history);}
 
 /* canvas-pos 目標物件是否存在——L1 還原時過濾還原後已消失的殘留位。 */
 static bool world_canvas_target_exists(const World *w, int kind, uint32_t id)
@@ -4048,10 +2994,10 @@ static bool world_canvas_target_exists(const World *w, int kind, uint32_t id)
 static void history_restore_world(World *w, const World *snap)
 {
     CanvasPos cur[WORLD_MAX_CANVAS_POS];
-    size_t cur_n = w->canvas_pos_count;
+    size_t cur_n = w->app.canvas_pos_count;
 
     if (cur_n > 0) {
-        memcpy(cur, w->canvas_pos, cur_n * sizeof *cur);
+        memcpy(cur, w->app.canvas_pos, cur_n * sizeof *cur);
     }
     *w = *snap;
 
@@ -4060,60 +3006,41 @@ static void history_restore_world(World *w, const World *snap)
         size_t j;
 
         if (!world_canvas_target_exists(w, cp->kind, cp->id)) continue;
-        for (j = 0; j < w->canvas_pos_count; ++j) {
-            if (w->canvas_pos[j].kind == cp->kind &&
-                w->canvas_pos[j].id == cp->id) {
-                w->canvas_pos[j].x = cp->x;
-                w->canvas_pos[j].y = cp->y;
+        for (j = 0; j < w->app.canvas_pos_count; ++j) {
+            if (w->app.canvas_pos[j].kind == cp->kind &&
+                w->app.canvas_pos[j].id == cp->id) {
+                w->app.canvas_pos[j].x = cp->x;
+                w->app.canvas_pos[j].y = cp->y;
                 break;
             }
         }
-        if (j == w->canvas_pos_count &&
-            w->canvas_pos_count < WORLD_MAX_CANVAS_POS) {
-            w->canvas_pos[w->canvas_pos_count++] = *cp;
+        if (j == w->app.canvas_pos_count &&
+            w->app.canvas_pos_count < WORLD_MAX_CANVAS_POS) {
+            w->app.canvas_pos[w->app.canvas_pos_count++] = *cp;
         }
     }
 }
 
+#include "geometry-app/native/world_candidate.inc"
+
+static void app_history_restore_world(void *document,const void *snapshot,void *opaque)
+{(void)opaque;history_restore_world((World*)document,(const World*)snapshot);}
+
 static bool history_undo(World *w)
 {
-    if (g_hist_undo_n <= 0) {
-        return false;
-    }
-    if (g_hist_redo_n >= HISTORY_MAX) {
-        memmove(&g_hist_redo[0], &g_hist_redo[1],
-                sizeof(World) * (HISTORY_MAX - 1));
-        --g_hist_redo_n;
-    }
-    g_hist_redo[g_hist_redo_n++] = *w;
-    history_restore_world(w, &g_hist_undo[--g_hist_undo_n]);
-    ++g_definition_revision;
-    return true;
+    if(!app_history_undo(&g_history,w,app_history_restore_world,NULL))return false;
+    ++g_definition_revision;return true;
 }
 
 static bool history_redo(World *w)
 {
-    if (g_hist_redo_n <= 0) {
-        return false;
-    }
-    if (g_hist_undo_n >= HISTORY_MAX) {
-        memmove(&g_hist_undo[0], &g_hist_undo[1],
-                sizeof(World) * (HISTORY_MAX - 1));
-        --g_hist_undo_n;
-    }
-    g_hist_undo[g_hist_undo_n++] = *w;
-    history_restore_world(w, &g_hist_redo[--g_hist_redo_n]);
-    ++g_definition_revision;
-    return true;
+    if(!app_history_redo(&g_history,w,app_history_restore_world,NULL))return false;
+    ++g_definition_revision;return true;
 }
 
 /* 群組內任一行失敗:回到 begin 前快照並關閉群組,不留半套用。 */
 static void history_group_rollback(World *world)
-{
-    *world = g_hist_group_base;
-    g_hist_grouping = false;
-    g_hist_group_dirty = false;
-}
+{app_history_group_abort(&g_history,world);}
 
 /* 互動入口共用：undo/redo・歷史群組攔截 + 變更前記快照（失敗自動取消）。
  * 回傳值同 apply_scene_line。 */
@@ -4124,43 +3051,36 @@ static bool apply_interactive_tokens(
         return apply_scene_line(path, line_no, tokens, count, world);
     /* L2 群組控制是 session 層指令,不進 .scene 檔格式。 */
     if (count == 1 && strcmp(tokens[0], "history-begin") == 0) {
-        if (g_hist_grouping) {
+        if (g_history.grouping) {
             scene_error(path, line_no, "已有進行中的歷史群組");
             return false;
         }
-        g_hist_group_base = *world;
-        g_hist_grouping = true;
-        g_hist_group_dirty = false;
+        (void)app_history_group_begin(&g_history,world);
         return true;
     }
     if (count == 1 && strcmp(tokens[0], "history-end") == 0) {
-        if (!g_hist_grouping) {
+        if (!g_history.grouping) {
             scene_error(path, line_no, "沒有進行中的歷史群組");
             return false;
         }
-        for (size_t i=0;i<world->timber_count;++i) {
-            if (!world->timbers[i].placed) {
+        for (size_t i=0;i<world->wood.timber_count;++i) {
+            if (!world->wood.timbers[i].placed) {
                 scene_error(path,line_no,"I9: 群組收尾仍有未放置角材（整筆回滾）");
                 history_group_rollback(world); return false;
             }
         }
-        g_hist_grouping = false;
-        /* 整組算一步:把 begin 時的世界推入 undo 疊;沒變更就不記。 */
-        if (g_hist_group_dirty) {
-            history_record(&g_hist_group_base);
-        }
-        g_hist_group_dirty = false;
+        (void)app_history_group_end(&g_history);
         return true;
     }
     if (count == 1 && strcmp(tokens[0], "history-abort") == 0) {
         /* 冪等:群組可能已因壞行自動回滾,abort 仍回 ok。 */
-        if (g_hist_grouping) {
+        if (g_history.grouping) {
             history_group_rollback(world);
         }
         return true;
     }
     if (count == 1 && strcmp(tokens[0], "undo") == 0) {
-        if (g_hist_grouping) {
+        if (g_history.grouping) {
             scene_error(path, line_no, "歷史群組進行中,不能 undo");
             history_group_rollback(world);
             return false;
@@ -4172,7 +3092,7 @@ static bool apply_interactive_tokens(
         return false;
     }
     if (count == 1 && strcmp(tokens[0], "redo") == 0) {
-        if (g_hist_grouping) {
+        if (g_history.grouping) {
             scene_error(path, line_no, "歷史群組進行中,不能 redo");
             history_group_rollback(world);
             return false;
@@ -4187,24 +3107,24 @@ static bool apply_interactive_tokens(
      * 否則 renderObjects 的自動排位會把 undo 掉的擺放寫回來。 */
     if (strcmp(tokens[0], "canvas-pos") == 0) {
         bool ok = apply_scene_line(path, line_no, tokens, count, world);
-        if (!ok && g_hist_grouping) history_group_rollback(world);
+        if (!ok && g_history.grouping) history_group_rollback(world);
         return ok;
     }
 
-    if (!g_hist_grouping) {
+    if (!g_history.grouping) {
         history_record(world);
     }
     uint32_t preview_before = reference_preview_token();
     if (apply_scene_line(path, line_no, tokens, count, world)) {
-        if (g_hist_grouping) g_hist_group_dirty = true;
+        app_history_group_mark_dirty(&g_history);
         return true;
     }
-    if (g_hist_grouping) {
+    if (g_history.grouping) {
         if (!reference_preview_valid() || reference_preview_token() == preview_before) history_group_rollback(world);
         return false;
     }
     /* 失敗也可能已寫入 auto 推導長度；先完整還原，再撤銷歷史。 */
-    *world = g_hist_undo[g_hist_undo_n - 1];
+    *world = *(const World*)app_history_peek_undo(&g_history);
     history_unrecord();
     return false;
 }
@@ -4240,23 +3160,23 @@ static bool parse_scene_file(const char *path, World *out_world);
 static uint32_t world_next_surface_id(const World *world)
 {
     uint32_t id = 0;
-    size_t used = world->boundary_count + world->placement_count;
+    size_t used = world_boundary_count(world) + world_placement_count(world);
 
-    for (size_t i = 0; i < world->boundary_count; ++i)
-        if (world->boundaries[i].id > id) id = world->boundaries[i].id;
-    for (size_t i = 0; i < world->placement_count; ++i)
-        if (world->placements[i].id > id) id = world->placements[i].id;
+    for (size_t i = 0; i < world_boundary_count(world); ++i)
+        if (geo_regions_at(&world->geo.region_data,i)->id > id) id = geo_regions_at(&world->geo.region_data,i)->id;
+    for (size_t i = 0; i < world_placement_count(world); ++i)
+        if (geo_placements_at(&world->geo.placement_data,i)->id > id) id = geo_placements_at(&world->geo.placement_data,i)->id;
     ++id;
 
     for (size_t attempt = 0; attempt <= used; ++attempt) {
         bool taken = false;
 
         if (id == 0) id = 1;        /* 任何一輪回繞到保留值都要跳過 */
-        for (size_t i = 0; i < world->boundary_count; ++i)
-            if (world->boundaries[i].id == id) { taken = true; break; }
+        for (size_t i = 0; i < world_boundary_count(world); ++i)
+            if (geo_regions_at(&world->geo.region_data,i)->id == id) { taken = true; break; }
         if (!taken) {
-            for (size_t i = 0; i < world->placement_count; ++i)
-                if (world->placements[i].id == id) { taken = true; break; }
+            for (size_t i = 0; i < world_placement_count(world); ++i)
+                if (geo_placements_at(&world->geo.placement_data,i)->id == id) { taken = true; break; }
         }
         if (!taken) return id;
         ++id;
@@ -4862,8 +3782,8 @@ static void app_refresh(GdiApp *app, HWND window)
     /* 工作面被刪掉時回退到第一片；編輯工具的目標也跟著重取。 */
     if (app->work_placement != 0 &&
         world_find_placement(app->world, app->work_placement) == NULL) {
-        app->work_placement = app->world->placement_count > 0
-            ? app->world->placements[0].id : 0;
+        app->work_placement = world_placement_count(app->world) > 0
+            ? geo_placements_at(&app->world->geo.placement_data,0)->id : 0;
     }
     if (app->canvas_tool == TOOL_EDIT) {
         gdi_enter_edit(app);
@@ -5107,7 +4027,7 @@ static const PlacementSurface *canvas_work_surface(
         tmp->frame.normal = (Vector3){ 0, 0, 1 };
         return tmp;
     }
-    return world_find_placement(app->world, app->work_placement);
+    return app_placement_read(app->world, app->work_placement,tmp);
 }
 
 /* 畫布產生新物件用的 id;0 = 配不到(GEO-158)。 */
@@ -5474,8 +4394,8 @@ static void gdi_rebuild_surf_menu(GdiApp *app)
     while (GetMenuItemCount(app->surf_menu) > 0) {
         DeleteMenu(app->surf_menu, 0, MF_BYPOSITION);
     }
-    for (size_t i = 0; i < app->world->placement_count; ++i) {
-        const PlacementSurface *p = &app->world->placements[i];
+    for (size_t i = 0; i < world_placement_count(app->world); ++i) {
+        const PlacementSurface *p = world_placement_at(app->world,i);
         WCHAR label[96];
         swprintf(label, 96, L"面 %u（z=%lld%hs）",
                  (unsigned)p->id, (long long)p->frame.origin.z,
@@ -5483,7 +4403,7 @@ static void gdi_rebuild_surf_menu(GdiApp *app)
         AppendMenuW(app->surf_menu, MF_STRING,
                     (UINT_PTR)(IDM_WORK_BASE + i), label);
     }
-    if (app->world->placement_count > 0) {
+    if (world_placement_count(app->world) > 0) {
         AppendMenuW(app->surf_menu, MF_SEPARATOR, 0, NULL);
     }
     AppendMenuW(app->surf_menu, MF_STRING, IDM_WORK_NEW_Z0, L"＋新水平面 z=0");
@@ -5723,9 +4643,9 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
             if (LOWORD(wparam) >= IDM_WORK_BASE &&
                 LOWORD(wparam) < IDM_WORK_NEW_Z0 &&
                 (size_t)(LOWORD(wparam) - IDM_WORK_BASE) <
-                    app->world->placement_count) {
+                    world_placement_count(app->world)) {
                 app->work_placement =
-                    app->world->placements[LOWORD(wparam) - IDM_WORK_BASE].id;
+                    geo_placements_at(&app->world->geo.placement_data,LOWORD(wparam) - IDM_WORK_BASE)->id;
                 canvas_reset_drawing(app);
                 if (app->canvas_tool == TOOL_EDIT) gdi_enter_edit(app);
                 InvalidateRect(window, NULL, FALSE);
@@ -5809,7 +4729,7 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 }
 
                 SurfacePoint2 uv;
-                GuideLine *gd = &app->world->guides[app->drag_guide];
+                const GuideLine *gd = &geo_guides_values(&app->world->geo.guide_lines)[app->drag_guide];
                 const PlacementSurface *surface =
                     world_find_placement(app->world, gd->placement_id);
 
@@ -5855,7 +4775,7 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 interactive_apply_line(app,window,command);
 
                 /* refresh 會清掉互動態；拖曳還在進行，補回來讓線保持高亮。 */
-                app->drag_guide = (int)(gd - app->world->guides);
+                app->drag_guide = (int)(gd - geo_guides_values(&app->world->geo.guide_lines));
                 app->drag_view = v;
                 app->hover.view = v;
                 app->hover.guide = app->drag_guide;
@@ -6305,22 +5225,21 @@ bench_cleanup:
 static Scene scene_from_world(const World *world)
 {
     return (Scene){
-        .placements = world->placements,
-        .placement_count = world->placement_count,
-        .boundaries = world->boundaries,
-        .boundary_count = world->boundary_count,
-        .spaces = world->spaces,
-        .space_count = world->space_count,
-        .guides = world->guides,
-        .guide_count = world->guide_count,
-        .grids = world->grids,
-        .grid_count = world->grid_count,
-        .timbers = world->timbers,
-        .timber_count = world->timber_count,
-        .columns = world->columns,
-        .column_count = world->column_count,
-        .beams = world->beams,
-        .beam_count = world->beam_count
+        .domain_world = world,
+        .placement_count = world_placement_count(world),
+        .boundary_count = world_boundary_count(world),
+        .spaces = geo_enclosures_values(&world->geo.enclosures),
+        .space_count = geo_enclosures_count(&world->geo.enclosures),
+        .guides = geo_guides_values(&world->geo.guide_lines),
+        .guide_count = geo_guides_count(&world->geo.guide_lines),
+        .grids = world->wood.grid_applications.items,
+        .grid_count = world->wood.grid_applications.count,
+        .timbers = world->wood.timbers,
+        .timber_count = world->wood.timber_count,
+        .columns = world->wood.columns,
+        .column_count = world->wood.column_count,
+        .beams = world->wood.beams,
+        .beam_count = world->wood.beam_count
     };
 }
 
@@ -6581,50 +5500,18 @@ static const char *scene_last_error(void)
     return g_scene_last_error;
 }
 
-static const SpaceBoundarySurface *world_find_boundary(
-    const World *world,
-    uint32_t id
-)
-{
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (world->boundaries[i].id == id) {
-            return &world->boundaries[i];
-        }
-    }
 
-    return NULL;
-}
 
-static const PlacementSurface *world_find_placement(
-    const World *world,
-    uint32_t id
-)
-{
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (world->placements[i].id == id) {
-            return &world->placements[i];
-        }
-    }
 
-    return NULL;
-}
 
-static const Space *world_find_space(const World *world, uint32_t id)
-{
-    for (size_t i = 0; i < world->space_count; ++i) {
-        if (world->spaces[i].id == id) {
-            return &world->spaces[i];
-        }
-    }
-
-    return NULL;
-}
+static const Space *world_find_space(const World *world,uint32_t id)
+{return geo_enclosures_find(&world->geo.enclosures,id);}
 
 static const RcColumn *world_find_column(const World *world, uint32_t id)
 {
-    for (size_t i = 0; i < world->column_count; ++i) {
-        if (world->columns[i].id == id) {
-            return &world->columns[i];
+    for (size_t i = 0; i < world->wood.column_count; ++i) {
+        if (world->wood.columns[i].id == id) {
+            return &world->wood.columns[i];
         }
     }
 
@@ -6633,9 +5520,9 @@ static const RcColumn *world_find_column(const World *world, uint32_t id)
 
 static const RcBeam *world_find_beam(const World *world, uint32_t id)
 {
-    for (size_t i = 0; i < world->beam_count; ++i) {
-        if (world->beams[i].id == id) {
-            return &world->beams[i];
+    for (size_t i = 0; i < world->wood.beam_count; ++i) {
+        if (world->wood.beams[i].id == id) {
+            return &world->wood.beams[i];
         }
     }
 
@@ -6643,35 +5530,16 @@ static const RcBeam *world_find_beam(const World *world, uint32_t id)
 }
 
 /* 承載面掛的邊界面；0 或未找到都回 NULL（= 自帶 rect 模式）。 */
-static const SpaceBoundarySurface *world_placement_boundary(
-    const World *world,
-    const PlacementSurface *placement
-)
-{
-    if(placement && placement->derived_fill_id) return placement->component_count?&placement->components[0]:NULL;
-    if (placement == NULL || placement->boundary_id == 0) {
-        return NULL;
-    }
 
-    return world_find_boundary(world, placement->boundary_id);
-}
 
 static const GuideLine *world_find_guide(const World *world, uint32_t id)
-{
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        if (world->guides[i].id == id) {
-            return &world->guides[i];
-        }
-    }
-
-    return NULL;
-}
+{return geo_guides_find(&world->geo.guide_lines,id);}
 
 static Timber *world_find_timber(World *world, uint32_t id)
 {
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        if (world->timbers[i].id == id) {
-            return &world->timbers[i];
+    for (size_t i = 0; i < world->wood.timber_count; ++i) {
+        if (world->wood.timbers[i].id == id) {
+            return &world->wood.timbers[i];
         }
     }
 
@@ -6705,41 +5573,7 @@ static Coord point3_component(Point3 p, int axis)
 }
 
 /* 承載面的有效輪廓投影到房間座標軸 axis 上的 [min,max] 區間。 */
-static void surface_extent_on_axis(
-    const PlacementSurface *surface,
-    const SpaceBoundarySurface *boundary,
-    int axis,
-    Coord *out_lo,
-    Coord *out_hi
-)
-{
-    const SurfaceFrame *f = &surface->frame;
-    Coord o = point3_component(f->origin, axis);
-    Coord su = axis == 0 ? f->axis_u.x : axis == 1 ? f->axis_u.y : f->axis_u.z;
-    Coord sv = axis == 0 ? f->axis_v.x : axis == 1 ? f->axis_v.y : f->axis_v.z;
-    Coord lo, hi;
 
-    Coord min_u, min_v, max_u, max_v;
-    if (boundary != NULL) {
-        poly_bbox(&boundary->outline, &min_u, &min_v, &max_u, &max_v);
-    } else {
-        min_u = surface->rect.min_u;
-        min_v = surface->rect.min_v;
-        max_u = surface->rect.max_u;
-        max_v = surface->rect.max_v;
-    }
-
-    if (su != 0) {
-        lo = su > 0 ? min_u : -max_u;
-        hi = su > 0 ? max_u : -min_u;
-    } else {
-        lo = sv > 0 ? min_v : -max_v;
-        hi = sv > 0 ? max_v : -min_v;
-    }
-
-    *out_lo = o + lo;
-    *out_hi = o + hi;
-}
 
 /*
  * Space 建構子：成員 = 一組邊界面 id。
@@ -6755,40 +5589,20 @@ static void surface_extent_on_axis(
  * 使用者得自己猜是哪一種、是哪一面出問題。分類不是為了好看——
  * 「面不存在」和「兩片面佔同一方向槽位」的下一步完全不同。
  */
-typedef enum {
-    SPACE_FAULT_NONE = 0,
-    SPACE_FAULT_MEMBER_COUNT,        /* 成員數不在 1..SPACE_MAX_MEMBERS */
-    SPACE_FAULT_MISSING_BOUNDARY,    /* 指名的邊界面不存在 */
-    SPACE_FAULT_DUPLICATE_BOUNDARY,  /* 同一片邊界面宣告兩次 */
-    SPACE_FAULT_NO_CARRIER,          /* 邊界面沒有承載面 → 沒有世界位置（游離面） */
-    SPACE_FAULT_AMBIGUOUS_CARRIER,   /* 邊界面被多片承載面引用 → 位置歧義 */
-    SPACE_FAULT_SLOT_TAKEN,          /* 兩片面佔同一軸的同一方向槽位 */
-    SPACE_FAULT_EXTENT_MISMATCH,     /* 同一軸上的面內區間彼此不一致 */
-    SPACE_FAULT_PLANE_MISMATCH,      /* 界面位置與區間端點對不上 */
-    SPACE_FAULT_INVERTED             /* 下界 >= 上界（法向朝內會落在這裡） */
-} SpaceFault;
+typedef GeoEnclosureFaultKind SpaceFault;
+#define SPACE_FAULT_NONE GEO_ENCLOSURE_FAULT_NONE
+#define SPACE_FAULT_MEMBER_COUNT GEO_ENCLOSURE_FAULT_MEMBER_COUNT
+#define SPACE_FAULT_MISSING_BOUNDARY GEO_ENCLOSURE_FAULT_MISSING_REGION
+#define SPACE_FAULT_DUPLICATE_BOUNDARY GEO_ENCLOSURE_FAULT_DUPLICATE_REGION
+#define SPACE_FAULT_NO_CARRIER GEO_ENCLOSURE_FAULT_NO_CARRIER
+#define SPACE_FAULT_AMBIGUOUS_CARRIER GEO_ENCLOSURE_FAULT_AMBIGUOUS_CARRIER
+#define SPACE_FAULT_SLOT_TAKEN GEO_ENCLOSURE_FAULT_SLOT_TAKEN
+#define SPACE_FAULT_EXTENT_MISMATCH GEO_ENCLOSURE_FAULT_EXTENT_MISMATCH
+#define SPACE_FAULT_PLANE_MISMATCH GEO_ENCLOSURE_FAULT_PLANE_MISMATCH
+#define SPACE_FAULT_INVERTED GEO_ENCLOSURE_FAULT_INVERTED
+typedef GeoEnclosureFault SpaceFaultInfo;
 
-typedef struct {
-    SpaceFault kind;
-    SurfaceId boundary;   /* 相關的邊界面 id；0 = 不適用 */
-    int axis;             /* 相關的軸 0/1/2；-1 = 不適用 */
-} SpaceFaultInfo;
 
-static bool space_fail(
-    SpaceFaultInfo *out,
-    SpaceFault kind,
-    SurfaceId boundary,
-    int axis
-)
-{
-    if (out != NULL) {
-        out->kind = kind;
-        out->boundary = boundary;
-        out->axis = axis;
-    }
-
-    return false;
-}
 
 /* 把失敗原因寫成一句可以直接給使用者看的話（含出問題的那一面／那一軸）。 */
 static void space_fault_describe(
@@ -6806,30 +5620,30 @@ static void space_fault_describe(
         snprintf(buf, size, "成員數不合法：要 1～%d 片邊界面", SPACE_MAX_MEMBERS);
         break;
     case SPACE_FAULT_MISSING_BOUNDARY:
-        snprintf(buf, size, "邊界面 %" PRIu32 " 不存在", fault->boundary);
+        snprintf(buf, size, "邊界面 %" PRIu32 " 不存在", fault->member_id);
         break;
     case SPACE_FAULT_DUPLICATE_BOUNDARY:
-        snprintf(buf, size, "邊界面 %" PRIu32 " 被宣告兩次", fault->boundary);
+        snprintf(buf, size, "邊界面 %" PRIu32 " 被宣告兩次", fault->member_id);
         break;
     case SPACE_FAULT_NO_CARRIER:
         snprintf(buf, size,
                  "邊界面 %" PRIu32 " 沒有承載面（游離面沒有世界位置，不能當空間成員）",
-                 fault->boundary);
+                 fault->member_id);
         break;
     case SPACE_FAULT_AMBIGUOUS_CARRIER:
         snprintf(buf, size,
                  "邊界面 %" PRIu32 " 被多片承載面引用，世界位置有歧義",
-                 fault->boundary);
+                 fault->member_id);
         break;
     case SPACE_FAULT_SLOT_TAKEN:
         snprintf(buf, size,
                  "邊界面 %" PRIu32 " 與先前某一片佔住 %c 軸的同一個方向槽位",
-                 fault->boundary, axis_name);
+                 fault->member_id, axis_name);
         break;
     case SPACE_FAULT_EXTENT_MISMATCH:
         snprintf(buf, size,
                  "邊界面 %" PRIu32 " 在 %c 軸上的面內區間與先前的面不一致",
-                 fault->boundary, axis_name);
+                 fault->member_id, axis_name);
         break;
     case SPACE_FAULT_PLANE_MISMATCH:
         snprintf(buf, size,
@@ -6845,127 +5659,13 @@ static void space_fault_describe(
     }
 }
 
-static bool space_construct(
-    const World *world,
-    uint32_t space_id,
-    const SurfaceId boundary_ids[],
-    size_t count,
-    Space *out_space,
-    SpaceFaultInfo *out_fault      /* GEO-041：失敗原因；不需要就傳 NULL */
-)
+static bool app_enclosure_sources_value(const World *,uint32_t,const SurfaceId *,size_t,Space *,SpaceFaultInfo *,bool *);
+static bool space_construct(const World *world,uint32_t id,
+    const SurfaceId *members,size_t count,Space *out,SpaceFaultInfo *fault)
 {
-    typedef struct { Coord v; bool set; } MaybeBound;
-
-    MaybeBound bound[3][2] = { 0 };   /* [軸][0=下界, 1=上界]，由法向面釘住 */
-    MaybeBound ext_lo[3] = { 0 };     /* 面內區間在各軸上的下/上界 */
-    MaybeBound ext_hi[3] = { 0 };
-    bool slot_taken[3][2] = { 0 };    /* [軸][0=負法向, 1=正法向] */
-
-    if (count < 1 || count > SPACE_MAX_MEMBERS || out_space == NULL) {
-        return space_fail(out_fault, SPACE_FAULT_MEMBER_COUNT, 0, -1);
-    }
-
-    for (size_t i = 0; i < count; ++i) {
-        const SpaceBoundarySurface *bd =
-            world_find_boundary(world, boundary_ids[i]);
-
-        if (bd == NULL) {
-            return space_fail(out_fault, SPACE_FAULT_MISSING_BOUNDARY,
-                              boundary_ids[i], -1);
-        }
-
-        for (size_t j = 0; j < i; ++j) {
-            if (boundary_ids[j] == boundary_ids[i]) {
-                return space_fail(out_fault, SPACE_FAULT_DUPLICATE_BOUNDARY,
-                                  boundary_ids[i], -1);
-            }
-        }
-
-        /* 這片邊界面必須恰有一片承載面掛著。 */
-        const PlacementSurface *face = NULL;
-        size_t carriers = 0;
-
-        for (size_t p = 0; p < world->placement_count; ++p) {
-            if (world->placements[p].boundary_id == bd->id) {
-                face = &world->placements[p];
-                ++carriers;
-            }
-        }
-
-        if (carriers != 1) {
-            return space_fail(
-                out_fault,
-                carriers == 0 ? SPACE_FAULT_NO_CARRIER
-                              : SPACE_FAULT_AMBIGUOUS_CARRIER,
-                bd->id, -1);
-        }
-
-        int a = axis_index(face->frame.normal);
-        Coord n = a == 0 ? face->frame.normal.x
-                : a == 1 ? face->frame.normal.y
-                         : face->frame.normal.z;
-        int slot = n > 0 ? 1 : 0;
-        Coord plane = point3_component(face->frame.origin, a);
-
-        if (slot_taken[a][slot]) {
-            return space_fail(out_fault, SPACE_FAULT_SLOT_TAKEN, bd->id, a);
-        }
-
-        slot_taken[a][slot] = true;
-        bound[a][slot].v = plane;
-        bound[a][slot].set = true;
-
-        for (int j = 0; j < 3; ++j) {
-            if (j == a) {
-                continue;
-            }
-
-            Coord lo, hi;
-            surface_extent_on_axis(face, bd, j, &lo, &hi);
-
-            if (ext_lo[j].set &&
-                (ext_lo[j].v != lo || ext_hi[j].v != hi)) {
-                return space_fail(out_fault, SPACE_FAULT_EXTENT_MISMATCH,
-                                  bd->id, j);
-            }
-
-            ext_lo[j].v = lo;  ext_lo[j].set = true;
-            ext_hi[j].v = hi;  ext_hi[j].set = true;
-        }
-    }
-
-    /* 界值與區間端點要吻合；下界必須小於上界（法向朝內在這裡被擋）。 */
-    for (int j = 0; j < 3; ++j) {
-        if (bound[j][0].set && ext_lo[j].set && bound[j][0].v != ext_lo[j].v) {
-            return space_fail(out_fault, SPACE_FAULT_PLANE_MISMATCH, 0, j);
-        }
-        if (bound[j][1].set && ext_hi[j].set && bound[j][1].v != ext_hi[j].v) {
-            return space_fail(out_fault, SPACE_FAULT_PLANE_MISMATCH, 0, j);
-        }
-        if (bound[j][0].set && bound[j][1].set &&
-            bound[j][0].v >= bound[j][1].v) {
-            return space_fail(out_fault, SPACE_FAULT_INVERTED, 0, j);
-        }
-    }
-
-    *out_space = (Space){ 0 };
-    out_space->id = space_id;
-    out_space->boundary_count = count;
-    for (size_t i = 0; i < count; ++i) {
-        out_space->boundaries[i] = boundary_ids[i];
-    }
-
-    for (int j = 0; j < 3; ++j) {
-        out_space->room_min[j] = bound[j][0].set ? bound[j][0].v : ext_lo[j].v;
-        out_space->room_max[j] = bound[j][1].set ? bound[j][1].v : ext_hi[j].v;
-    }
-
-    out_space->closed =
-        slot_taken[0][0] && slot_taken[0][1] &&
-        slot_taken[1][0] && slot_taken[1][1] &&
-        slot_taken[2][0] && slot_taken[2][1];
-
-    return true;
+    bool handled=false;
+    bool ok=app_enclosure_sources_value(world,id,members,count,out,fault,&handled);
+    return handled?ok:geo_enclosure_evaluate(&world->geo.region_data,&world->geo.placement_data,id,members,count,out,fault);
 }
 
 /*
@@ -7022,21 +5722,7 @@ static bool a0_rect_uv(
 
     Vector3 axis_a = vector_cross(axis_b, axis_length);
 
-    SurfacePoint2 far_pt = {
-        .u = anchor.u +
-             length * vector_dot(axis_length, surface->frame.axis_u) +
-             size_a * vector_dot(axis_a, surface->frame.axis_u),
-        .v = anchor.v +
-             length * vector_dot(axis_length, surface->frame.axis_v) +
-             size_a * vector_dot(axis_a, surface->frame.axis_v)
-    };
-
-    *out = (SurfaceRegion2){
-        coord_min(anchor.u, far_pt.u),
-        coord_min(anchor.v, far_pt.v),
-        coord_max(anchor.u, far_pt.u),
-        coord_max(anchor.v, far_pt.v)
-    };
+    *out=geo_rectangle_footprint(&surface->frame,anchor,axis_length,axis_a,length,size_a);
     return true;
 }
 
@@ -7065,46 +5751,83 @@ static bool uv_rects_overlap(
     Coord b_min_u, Coord b_min_v, Coord b_max_u, Coord b_max_v
 )
 {
-    return coord_min(a_max_u, b_max_u) > coord_max(a_min_u, b_min_u) &&
-           coord_min(a_max_v, b_max_v) > coord_max(a_min_v, b_min_v);
+    GeoRect2 a={a_min_u,a_min_v,a_max_u,a_max_v},b={b_min_u,b_min_v,b_max_u,b_max_v};
+    return geo_rect_overlap_positive(&a,&b);
 }
 
 /* 候選矩形是否與同承載面上任何已放角材正面積重疊。 */
 /* 公理 I11：同面任兩支已放角材的 footprint 正面積不得相交
  *（端點/邊相接 = 零面積 = 合法接觸）。 */
-static bool world_footprint_collides(
-    const World *world,
-    const PlacementSurface *placement,
-    const SurfaceRegion2 *rect,
-    const Timber *exclude
-)
+#include "geometry-templates/woodworking/native/contact_world.h"
+static bool app_contact_sources_collect(const World *,uint32_t,bool,const WoodMember *,WoodStopFace *,size_t,bool *,size_t *);
+static bool app_reference_sources_valid(const World *);
+/* Same-candidate borrowed facts. W chooses participants, order and policy. */
+typedef struct {
+    WoodContactWorld world;
+    SpaceBoundarySurface effective;
+    WoodContactMemberFact members[WORLD_MAX_TIMBERS];
+} AppContactFacts;
+/* 只在本次 callback 內保存原時點的純計算輸入；不借用可被來源更新的欄位。 */
+typedef struct {
+    SurfacePoint2 anchor;
+    Coord length,size_a;
+    int length_direction,depth_side;
+    bool placed;
+    /* 0：不待補；1：補矩形及有效性；2：只補矩形，保留後續的 false。 */
+    unsigned char pending;
+} AppContactRawSnapshot;
+static void app_contact_facts_prepare(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,AppContactFacts *facts,AppContactRawSnapshot *raw)
 {
-    if (world == NULL || placement == NULL || rect == NULL) {
-        return true;
+    memset(facts,0,sizeof *facts);facts->world.placement_id=placement->id;
+    const SpaceBoundarySurface *effective=placement_effective_boundary(placement,boundary,&facts->effective);
+    facts->world.role_boundary=effective;
+    facts->world.region_count=placement->derived_fill_id?placement->component_count:1;
+    for(size_t c=0;c<facts->world.region_count;++c)facts->world.regions[c]=placement->derived_fill_id?&placement->components[c]:effective;
+    facts->world.members=facts->members;facts->world.member_count=world->wood.timber_count;
+    for(size_t i=0;i<world->wood.timber_count;++i){WoodContactMemberFact *f=&facts->members[i];const TimberAnchor *a=&world->wood.anchors[i];
+        f->member=&world->wood.timbers[i];f->placement_id=a->placement_id;f->order=a->order;
+        f->along_v=a->length_direction==SURFACE_DIRECTION_POS_V||a->length_direction==SURFACE_DIRECTION_NEG_V;
+        if(raw){
+            AppContactRawSnapshot *s=&raw[i];s->placed=f->member->placed;s->pending=0;
+            if(s->placed){s->anchor=a->uv;s->length_direction=a->length_direction;s->depth_side=a->depth_side;
+                s->length=f->member->length;s->size_a=f->member->size_a;}
+        }else f->footprint_valid=timber_a0_footprint_uv(placement,f->member,a,&f->footprint);
     }
-
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const Timber *t = &world->timbers[i];
-        const TimberAnchor *a = &world->anchors[i];
-        SurfaceRegion2 other;
-
-        if (!t->placed || t == exclude ||
-            a->placement_id != placement->id) {
-            continue;
-        }
-
-        if (!timber_a0_footprint_uv(placement, t, a, &other)) {
-            continue;
-        }
-
-        if (uv_rects_overlap(
-                rect->min_u, rect->min_v, rect->max_u, rect->max_v,
-                other.min_u, other.min_v, other.max_u, other.max_v)) {
-            return true;
-        }
-    }
-
-    return false;
+}
+static void app_contact_facts(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,AppContactFacts *facts)
+{app_contact_facts_prepare(world,placement,boundary,facts,NULL);}
+static void app_contact_raw_restore(const PlacementSurface *placement,AppContactRawSnapshot *raw,
+    WoodContactMemberFact *fact)
+{
+    if(!raw->pending)return;
+    bool valid=raw->placed&&a0_rect_uv(placement,raw->anchor,raw->length_direction,raw->depth_side,
+        raw->length,raw->size_a,&fact->footprint);
+    if(raw->pending==1)fact->footprint_valid=valid;
+    raw->pending=0;
+}
+static void app_contact_raw_complete(const PlacementSurface *placement,AppContactRawSnapshot *raw,
+    WoodContactMemberFact *members,size_t visited)
+{
+    /* 失敗時原函式只曾複製已訪問的 prefix，未訪問的 caller bytes 必須保留。 */
+    for(size_t i=0;i<visited;++i)app_contact_raw_restore(placement,&raw[i],&members[i]);
+}
+typedef struct { const World *world; const WoodContactWorld *facts; } AppContactResolve;
+static bool app_contact_resolve_stops(void *opaque,bool along_v,const WoodMember *exclude,
+    WoodStopFace *out,size_t capacity,size_t *count)
+{
+    const AppContactResolve *context=opaque;bool handled=false;
+    bool ok=app_contact_sources_collect(context->world,context->facts->placement_id,along_v,exclude,out,capacity,&handled,count);
+    if(handled)return ok;
+    *count=wood_contact_collect_stops(context->facts,along_v,exclude,out,capacity);return true;
+}
+static bool world_footprint_collides(const World *world,const PlacementSurface *placement,
+    const SurfaceRegion2 *rect,const Timber *exclude)
+{
+    if(!world||!placement||!rect)return true;
+    AppContactFacts facts;app_contact_facts(world,placement,world_placement_boundary(world,placement),&facts);
+    return wood_contact_footprint_collides(&facts.world,rect,exclude);
 }
 
 /* ============================================================
@@ -7115,23 +5838,11 @@ static bool world_footprint_collides(
  *   lo..hi = 擋面在角材「寬度軸」上的涵蓋範圍。
  * ============================================================ */
 
-typedef enum {
-    STOP_OUTLINE_EDGE,
-    STOP_HOLE_EDGE,
-    STOP_TIMBER_SIDE
-} StopFaceKind;
-
-typedef struct {
-    int kind;               /* StopFaceKind */
-    SurfaceId boundary_id;  /* 邊類擋面：所屬邊界面 */
-    TimberId timber_id;     /* 角材側面：所屬角材 */
-    int hole_index;         /* STOP_HOLE_EDGE：孔 index，否則 -1 */
-    int edge_index;         /* 環上邊 index / 角材面序號 */
-    int fixity;             /* EdgeFixity；角材側面記 EDGE_FIXED */
-    Coord fixed;
-    Coord lo;
-    Coord hi;
-} StopFace;
+typedef WoodStopFaceKind StopFaceKind;
+#define STOP_OUTLINE_EDGE WOOD_STOP_OUTLINE_EDGE
+#define STOP_HOLE_EDGE WOOD_STOP_HOLE_EDGE
+#define STOP_TIMBER_SIDE WOOD_STOP_MEMBER_SIDE
+typedef WoodStopFace StopFace;
 
 #define STOP_FACE_MAX \
     (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
@@ -7142,29 +5853,11 @@ typedef struct {
  *   kind 1 = 已放角材的側面 t<id>（垂直於本支長度軸的那兩個面，二選一由 R21(d) 決定）
  * 參照只是「指名」，不改變擋面的任何性質，也不新增擋面來源。
  */
-typedef struct {
-    int kind;
-    int hole;
-    int edge;
-    TimberId timber;
-} StopFaceRef;
+typedef WoodStopRef StopFaceRef;
 
 static bool stop_face_matches_ref(const StopFace *f, const StopFaceRef *r)
 {
-    if (f == NULL || r == NULL) {
-        return false;
-    }
-
-    if (r->kind == 1) {
-        return f->kind == STOP_TIMBER_SIDE && f->timber_id == r->timber;
-    }
-
-    if (r->hole < 0) {
-        return f->kind == STOP_OUTLINE_EDGE && f->edge_index == r->edge;
-    }
-
-    return f->kind == STOP_HOLE_EDGE &&
-           f->hole_index == r->hole && f->edge_index == r->edge;
+    return wood_stop_matches_ref(f,r);
 }
 
 /*
@@ -7184,31 +5877,7 @@ static size_t stop_ref_candidates(
     bool *saw_narrow
 )
 {
-    size_t n = 0;
-
-    for (size_t i = 0; i < face_count; ++i) {
-        const StopFace *f = &faces[i];
-
-        if (!stop_face_matches_ref(f, r)) {
-            continue;
-        }
-
-        if (f->lo > cross_lo || f->hi < cross_hi) {
-            *saw_narrow = true;
-            continue;
-        }
-
-        if (f->fixity == EDGE_FREE) {
-            *saw_free = true;
-            continue;
-        }
-
-        if (n < out_cap) {
-            out[n++] = f;
-        }
-    }
-
-    return n;
+    return wood_stop_ref_candidates(faces,face_count,r,cross_lo,cross_hi,out,out_cap,saw_free,saw_narrow);
 }
 
 /*
@@ -7216,136 +5885,12 @@ static size_t stop_ref_candidates(
  *   along_v = true：角材沿 V → 端面是水平線段 → 擋面是水平邊
  *                   （a.v == b.v）與已放角材的 min_v / max_v 側面。
  */
-static size_t collect_stop_faces(
-    const World *world,
-    const PlacementSurface *placement,
-    const SpaceBoundarySurface *boundary,
-    bool along_v,
-    const Timber *exclude,
-    StopFace out[],
-    size_t out_cap
-)
+static size_t collect_stop_faces(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,bool along_v,const Timber *exclude,StopFace out[],size_t out_cap)
 {
-    SpaceBoundarySurface effective;
-    boundary=placement_effective_boundary(placement,boundary,&effective);
-
-    size_t count = 0;
-
-    for(size_t component=0;component<(placement->derived_fill_id?placement->component_count:1);++component) {
-        if(placement->derived_fill_id) boundary=&placement->components[component];
-        if(!boundary) continue;
-        const PolygonLoop2 *loops[1 + POLY_MAX_HOLES];
-        int hole_of[1 + POLY_MAX_HOLES];
-        size_t loop_count = 0;
-
-        loops[loop_count] = &boundary->outline;
-        hole_of[loop_count] = -1;
-        ++loop_count;
-
-        for (size_t h = 0; h < boundary->hole_count; ++h) {
-            loops[loop_count] = &boundary->holes[h];
-            hole_of[loop_count] = (int)h;
-            ++loop_count;
-        }
-
-        for (size_t li = 0; li < loop_count; ++li) {
-            const PolygonLoop2 *loop = loops[li];
-
-            for (size_t i = 0; i < loop->count && count < out_cap; ++i) {
-                SurfacePoint2 a = loop->v[i];
-                SurfacePoint2 b = loop->v[(i + 1) % loop->count];
-
-                /* 只收與長度軸垂直的邊：
-                 * along_v 取水平邊（v 恆定），否則取直立邊。 */
-                if (along_v && a.v != b.v) {
-                    continue;
-                }
-                if (!along_v && a.u != b.u) {
-                    continue;
-                }
-
-                out[count++] = (StopFace){
-                    hole_of[li] < 0 ? STOP_OUTLINE_EDGE : STOP_HOLE_EDGE,
-                    boundary->id,
-                    0,
-                    hole_of[li]<0?-1:(int)(component*POLY_MAX_HOLES)+hole_of[li],
-                    hole_of[li]<0?(int)(component*POLY_MAX_VERTICES+i):(int)i,
-                    loop->fixity[i],
-                    along_v ? a.v : a.u,
-                    along_v ? coord_min(a.u, b.u) : coord_min(a.v, b.v),
-                    along_v ? coord_max(a.u, b.u) : coord_max(a.v, b.v)
-                };
-            }
-        }
-    }
-
-    /* 已放角材：footprint 上垂直於長度軸的兩個側面。 */
-    for (size_t i = 0; i < world->timber_count && count + 2 <= out_cap; ++i) {
-        const Timber *t = &world->timbers[i];
-        const TimberAnchor *a = &world->anchors[i];
-        SurfaceRegion2 f;
-
-        if (!t->placed || t == exclude ||
-            a->placement_id != placement->id) {
-            continue;
-        }
-
-        if (!timber_a0_footprint_uv(placement, t, a, &f)) {
-            continue;
-        }
-
-        if (along_v) {
-            out[count++] = (StopFace){
-                STOP_TIMBER_SIDE, 0, t->id, -1, 0, EDGE_FIXED,
-                f.min_v, f.min_u, f.max_u
-            };
-            out[count++] = (StopFace){
-                STOP_TIMBER_SIDE, 0, t->id, -1, 1, EDGE_FIXED,
-                f.max_v, f.min_u, f.max_u
-            };
-        } else {
-            out[count++] = (StopFace){
-                STOP_TIMBER_SIDE, 0, t->id, -1, 0, EDGE_FIXED,
-                f.min_u, f.min_v, f.max_v
-            };
-            out[count++] = (StopFace){
-                STOP_TIMBER_SIDE, 0, t->id, -1, 1, EDGE_FIXED,
-                f.max_u, f.min_v, f.max_v
-            };
-        }
-    }
-
-    /* D11 order follows placement, independent of timber declaration order. */
-    for (size_t i=1;i<count;++i) {
-        if (out[i].kind!=STOP_TIMBER_SIDE) continue;
-        uint64_t order=UINT64_MAX;
-        for (size_t t=0;t<world->timber_count;++t) if (world->timbers[t].id==out[i].timber_id) order=world->anchors[t].order;
-        size_t j=i; StopFace value=out[i];
-        while (j && out[j-1].kind==STOP_TIMBER_SIDE) {
-            uint64_t previous=UINT64_MAX;
-            for (size_t t=0;t<world->timber_count;++t) if (world->timbers[t].id==out[j-1].timber_id) previous=world->anchors[t].order;
-            if (previous<=order) break;
-            out[j]=out[j-1]; --j;
-        }
-        out[j]=value;
-    }
-    for (size_t i=0;i<count;) {
-        bool duplicate=false;
-        if (out[i].kind==STOP_TIMBER_SIDE) {
-            uint64_t order=UINT64_MAX;
-            for (size_t t=0;t<world->timber_count;++t) if (world->timbers[t].id==out[i].timber_id) order=world->anchors[t].order;
-            for (size_t j=0;j<count && !duplicate;++j) {
-                if (i==j || out[i].fixed!=out[j].fixed || out[i].lo>=out[j].hi || out[j].lo>=out[i].hi) continue;
-                bool earlier=out[j].kind!=STOP_TIMBER_SIDE;
-                if (!earlier) for (size_t t=0;t<world->timber_count;++t)
-                    if (world->timbers[t].id==out[j].timber_id && world->anchors[t].order<order) earlier=true;
-                if (earlier && out[j].lo<=out[i].lo && out[j].hi>=out[i].hi) duplicate=true;
-            }
-        }
-        if (duplicate) { memmove(out+i,out+i+1,(count-i-1)*sizeof *out); --count; }
-        else ++i;
-    }
-    return count;
+    AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
+    AppContactResolve context={world,&facts.world};size_t count=0;
+    return app_contact_resolve_stops(&context,along_v,exclude,out,out_cap,&count)?count:0;
 }
 
 /*
@@ -7358,10 +5903,7 @@ static size_t collect_stop_faces(
  * is the earlier edge, not a second support (D11). */
 static bool stop_face_shadowed(const StopFace faces[],size_t i,Coord lo,Coord hi)
 {
-    if (faces[i].kind!=STOP_TIMBER_SIDE) return false;
-    for (size_t j=0;j<i;++j)
-        if (faces[j].fixed==faces[i].fixed && faces[j].lo<=lo && faces[j].hi>=hi) return true;
-    return false;
+    return wood_stop_shadowed(faces,i,lo,hi);
 }
 
 static size_t pick_stop(
@@ -7373,25 +5915,7 @@ static size_t pick_stop(
     const StopFace **out_face
 )
 {
-    const StopFace *found = NULL;
-    size_t hits = 0;
-
-    for (size_t i = 0; i < face_count; ++i) {
-        const StopFace *f = &faces[i];
-
-        if (f->fixed != at || f->lo > lo || f->hi < hi || stop_face_shadowed(faces,i,lo,hi)) {
-            continue;
-        }
-
-        found = f;
-        ++hits;
-    }
-
-    if (hits == 1 && out_face != NULL) {
-        *out_face = found;
-    }
-
-    return hits;
+    return wood_stop_pick(faces,face_count,at,lo,hi,out_face);
 }
 
 /* 數「合法」擋面（FREE 邊不算）：重驗只要求存在，不要求唯一。 */
@@ -7403,18 +5927,7 @@ static size_t count_legal_stops(
     Coord hi
 )
 {
-    size_t hits = 0;
-
-    for (size_t i = 0; i < face_count; ++i) {
-        const StopFace *f = &faces[i];
-
-        if (f->fixed == at && f->lo <= lo && f->hi >= hi &&
-            f->fixity != EDGE_FREE && !stop_face_shadowed(faces,i,lo,hi)) {
-            ++hits;
-        }
-    }
-
-    return hits;
+    return wood_stop_count_legal(faces,face_count,at,lo,hi);
 }
 
 /*
@@ -7446,64 +5959,9 @@ static bool timber_role_props(
     int *out_boundary_edge
 )
 {
-    int best = -1;
-    bool best_covers = false;
-    Coord best_overlap = 0;
-    size_t i;
-
-    *out_on_boundary = false;
-    *out_covers_edge = false;
-    *out_boundary_edge = -1;
-
-    if (boundary == NULL) {
-        return false;
-    }
-
-    for (i = 0; i < boundary->outline.count; ++i) {
-        SurfaceSegment2 seg;
-        bool edge_along_v, covers;
-        Coord edge_fixed, edge_lo, edge_hi, ov;
-
-        if (!loop_get_edge_segment(&boundary->outline, i, &seg)) {
-            continue;
-        }
-
-        /* 側面沿長度軸走 → 只有與長度軸平行的邊才可能共線。 */
-        edge_along_v = seg.start.u == seg.end.u;
-        if (edge_along_v != along_v) {
-            continue;
-        }
-
-        edge_fixed = edge_along_v ? seg.start.u : seg.start.v;
-        if (edge_fixed != cross_lo && edge_fixed != cross_hi) {
-            continue;
-        }
-
-        edge_lo = edge_along_v ? coord_min(seg.start.v, seg.end.v)
-                               : coord_min(seg.start.u, seg.end.u);
-        edge_hi = edge_along_v ? coord_max(seg.start.v, seg.end.v)
-                               : coord_max(seg.start.u, seg.end.u);
-
-        ov = coord_min(span_hi, edge_hi) - coord_max(span_lo, edge_lo);
-        if (ov <= 0) {
-            continue;   /* 共線但不重疊（或只點接觸）→ 不算 onBoundary */
-        }
-
-        covers = span_lo <= edge_lo && span_hi >= edge_hi;
-        if (best < 0 || (covers && !best_covers) ||
-            (covers == best_covers && ov > best_overlap)) {
-            best = (int)i;
-            best_covers = covers;
-            best_overlap = ov;
-        }
-    }
-
-    if (best >= 0) {
-        *out_on_boundary = true;
-        *out_covers_edge = best_covers;
-        *out_boundary_edge = best;
-    }
-    return true;
+    GeoLoop2View outline={0};
+    if(boundary)outline=(GeoLoop2View){boundary->outline.v,boundary->outline.count};
+    return wood_member_boundary_props(boundary?&outline:NULL,along_v,span_lo,span_hi,cross_lo,cross_hi,out_on_boundary,out_covers_edge,out_boundary_edge);
 }
 
 /*
@@ -7520,54 +5978,9 @@ static bool timber_role_props(
  *
  * 只看外輪廓、不看孔邊——孔邊是柱擋面，沒有延伸段語意（I20、I21 同一分界）。
  */
-static bool boundary_edge_interval(
-    const SpaceBoundarySurface *boundary,
-    bool along_v,
-    Coord span_lo,
-    Coord span_hi,
-    Coord cross_lo,
-    Coord cross_hi,
-    Coord *out_lo,
-    Coord *out_hi
-)
-{
-    bool on_boundary = false;
-    bool covers_edge = false;
-    int edge = -1;
-    SurfaceSegment2 seg;
-
-    /*
-     * D16 的固定段/延伸段切分預設這支料放得上去(I5)。連 footprint 都不在
-     * 有效範圍內的東西,問它的定位邊沒有意義——那種場景該由 I5 用
-     * 「放不上去」擋下,不該讓 I22 先攔截並給出誤導的理由
-     * (`_mut_notch_straddle.scene`:橫跨凹口的料恰好與凹口底邊共線)。
-     */
-    if (boundary == NULL ||
-        !boundary_contains_rect(
-            boundary,
-            along_v ? cross_lo : span_lo,
-            along_v ? span_lo : cross_lo,
-            along_v ? cross_hi : span_hi,
-            along_v ? span_hi : cross_hi)) {
-        return false;
-    }
-
-    if (!timber_role_props(boundary, along_v, span_lo, span_hi,
-                           cross_lo, cross_hi,
-                           &on_boundary, &covers_edge, &edge) ||
-        !on_boundary || edge < 0 ||
-        !loop_get_edge_segment(&boundary->outline, (size_t)edge, &seg)) {
-        return false;
-    }
-
-    *out_lo = along_v
-        ? coord_min(seg.start.v, seg.end.v)
-        : coord_min(seg.start.u, seg.end.u);
-    *out_hi = along_v
-        ? coord_max(seg.start.v, seg.end.v)
-        : coord_max(seg.start.u, seg.end.u);
-    return true;
-}
+static bool boundary_edge_interval(const SpaceBoundarySurface *boundary,bool along_v,
+    Coord span_lo,Coord span_hi,Coord cross_lo,Coord cross_hi,Coord *out_lo,Coord *out_hi)
+{return wood_contact_boundary_interval(boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,out_lo,out_hi);}
 
 /*
  * I20 邊界材整條覆蓋：`boundary` 的固定段在長度軸上必須 ⊇ 它所覆蓋那條邊的
@@ -7593,79 +6006,12 @@ static bool timber_boundary_role_check(
     size_t err_cap
 )
 {
-    SpaceBoundarySurface effective;
-    boundary=placement_effective_boundary(placement,boundary,&effective);
-
-    bool on_boundary = false, covers_edge = false;
-    int edge_index = -1;
-    SurfaceSegment2 seg;
-    Coord edge_lo, edge_hi, cover;
-
-    if (timber == NULL || timber->role != TIMBER_ROLE_BOUNDARY) {
-        return true;
-    }
-
-    /*
-     * footprint 已經跨出有效範圍時讓位給 I5——公理層 I22 明訂
-     * 「凸角處延伸即出界，不需另立規則」，該情形的裁決者是 I5 而非本條。
-     */
-    if (!surface_contains_rect(
-            placement, boundary,
-            along_v ? cross_lo : span_lo,
-            along_v ? span_lo : cross_lo,
-            along_v ? cross_hi : span_hi,
-            along_v ? span_hi : cross_hi)) {
-        return true;
-    }
-    if (!timber_role_props(boundary, along_v, span_lo, span_hi,
-                           cross_lo, cross_hi,
-                           &on_boundary, &covers_edge, &edge_index)) {
-        return true;
-    }
-
-    if (!on_boundary) {
-        if (err != NULL) {
-            snprintf(err, err_cap,
-                     "V_BOUNDARY_ROLE：角材 %u 宣告 boundary，"
-                     "但沒有任何側面貼在外輪廓邊上",
-                     (unsigned)timber->id);
-        }
-        return false;
-    }
-
-    if (!loop_get_edge_segment(&boundary->outline,
-                               (size_t)edge_index, &seg)) {
-        return true;
-    }
-
-    if (boundary->outline.fixity[edge_index] != EDGE_FIXED) {
-        if (err != NULL) {
-            snprintf(err, err_cap,
-                     "V_BOUNDARY_ROLE：角材 %u 貼的外輪廓邊 e%d 是自由邊，"
-                     "boundary 必須貼 FIXED 邊",
-                     (unsigned)timber->id, edge_index);
-        }
-        return false;
-    }
-
-    if (!covers_edge) {
-        edge_lo = along_v ? coord_min(seg.start.v, seg.end.v)
-                          : coord_min(seg.start.u, seg.end.u);
-        edge_hi = along_v ? coord_max(seg.start.v, seg.end.v)
-                          : coord_max(seg.start.u, seg.end.u);
-        cover = coord_min(span_hi, edge_hi) - coord_max(span_lo, edge_lo);
-        if (err != NULL) {
-            snprintf(err, err_cap,
-                     "V_BOUNDARY_ROLE：角材 %u 宣告 boundary，"
-                     "但只覆蓋外輪廓邊 e%d 的 %lld / %lld mm——"
-                     "固定段必須涵蓋整條邊",
-                     (unsigned)timber->id, edge_index,
-                     (long long)cover, (long long)(edge_hi - edge_lo));
-        }
-        return false;
-    }
-
-    return true;
+    SpaceBoundarySurface effective;boundary=placement_effective_boundary(placement,boundary,&effective);
+    GeoLoop2View outline={boundary->outline.v,boundary->outline.count};int fixities[POLY_MAX_VERTICES];
+    for(size_t i=0;i<outline.count;++i)fixities[i]=boundary->outline.fixity[i];
+    bool inside=surface_contains_rect(placement,boundary,along_v?cross_lo:span_lo,along_v?span_lo:cross_lo,
+        along_v?cross_hi:span_hi,along_v?span_hi:cross_hi);
+    return wood_member_boundary_role_check(timber,&outline,fixities,inside,along_v,span_lo,span_hi,cross_lo,cross_hi,err,err_cap);
 }
 
 /*
@@ -7674,57 +6020,9 @@ static bool timber_boundary_role_check(
  * 只有「at-face 外輪廓邊錨的 boundary」才有固定段/延伸段之分;
  * 其餘 owner 一律回傳 false（擋面優先級 = owner.cut_priority）。
  */
-static bool stop_in_owner_extension(
-    const World *world,
-    const PlacementSurface *placement,
-    const SpaceBoundarySurface *boundary,
-    const Timber *owner,
-    Coord lo,
-    Coord hi
-)
-{
-    if (owner->role != TIMBER_ROLE_BOUNDARY) {
-        return false;
-    }
-
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const TimberAnchor *a;
-        SurfaceRegion2 f;
-        bool owner_along_v;
-        Coord edge_lo, edge_hi, fix_lo, fix_hi;
-        Coord span_lo, span_hi;
-
-        if (&world->timbers[i] != owner) {
-            continue;
-        }
-
-        a = &world->anchors[i];
-        owner_along_v =
-            a->length_direction == SURFACE_DIRECTION_POS_V ||
-            a->length_direction == SURFACE_DIRECTION_NEG_V;
-
-        if (!timber_a0_footprint_uv(placement, owner, a, &f)) {
-            return false;
-        }
-
-        span_lo = owner_along_v ? f.min_v : f.min_u;
-        span_hi = owner_along_v ? f.max_v : f.max_u;
-
-        if (!boundary_edge_interval(
-                boundary, owner_along_v, span_lo, span_hi,
-                owner_along_v ? f.min_u : f.min_v,
-                owner_along_v ? f.max_u : f.max_v,
-                &edge_lo, &edge_hi)) {
-            return false;
-        }
-        fix_lo = coord_max(span_lo, edge_lo);
-        fix_hi = coord_min(span_hi, edge_hi);
-
-        return !(lo >= fix_lo && hi <= fix_hi);
-    }
-
-    return false;
-}
+static bool stop_in_owner_extension(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,const Timber *owner,Coord lo,Coord hi)
+{AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);return wood_contact_owner_extension(&facts.world,owner,lo,hi);}
 
 /*
  * I19/I22 端面檢查：角材兩端面所頂擋面的裁切優先序。
@@ -7741,147 +6039,13 @@ static bool stop_in_owner_extension(
  * R6 放置與重驗：呼叫端已保證端面有擋面。
  * err 可為 NULL（重驗只取 true/false）。
  */
-static bool timber_end_face_check(
-    const World *world,
-    const PlacementSurface *placement,
-    const SpaceBoundarySurface *boundary,
-    const Timber *self,
-    bool along_v,
-    Coord span_lo,
-    Coord span_hi,
-    Coord cross_lo,
-    Coord cross_hi,
-    char *err,
-    size_t err_cap
-)
+static bool timber_end_face_check(const World *world,const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,const Timber *self,bool along_v,
+    Coord span_lo,Coord span_hi,Coord cross_lo,Coord cross_hi,char *err,size_t err_cap)
 {
-    SpaceBoundarySurface effective;
-    boundary=placement_effective_boundary(placement,boundary,&effective);
-
-    Coord edge_lo = 0, edge_hi = 0;
-    bool has_edge = boundary_edge_interval(
-        boundary, along_v, span_lo, span_hi, cross_lo, cross_hi,
-        &edge_lo, &edge_hi);
-    bool ext_end[2];
-
-    /* I22：非 boundary 的 footprint 不得超出定位邊。 */
-    if (has_edge && self->role != TIMBER_ROLE_BOUNDARY &&
-        (span_lo < edge_lo || span_hi > edge_hi)) {
-        if (err != NULL) {
-            snprintf(err, err_cap,
-                     "V_EXTENSION：非 boundary 角材（%u）的 "
-                     "footprint 超出定位邊範圍", (unsigned)self->id);
-        }
-        return false;
-    }
-
-    ext_end[0] = has_edge && self->role == TIMBER_ROLE_BOUNDARY &&
-                 span_lo < edge_lo;
-    ext_end[1] = has_edge && self->role == TIMBER_ROLE_BOUNDARY &&
-                 span_hi > edge_hi;
-
-    StopFace faces[STOP_FACE_MAX];
-    size_t face_count = collect_stop_faces(
-        world, placement, boundary, along_v, self,
-        faces, STOP_FACE_MAX);
-
-    for (int e = 0; e < 2; ++e) {
-        Coord at = e == 0 ? span_lo : span_hi;
-
-        for (size_t i = 0; i < face_count; ++i) {
-            const StopFace *f = &faces[i];
-
-            if (f->fixed != at || f->lo > cross_lo || f->hi < cross_hi ||
-                f->fixity == EDGE_FREE || ext_end[e] || stop_face_shadowed(faces,i,cross_lo,cross_hi)) {
-                continue;
-            }
-
-            if (f->kind == STOP_OUTLINE_EDGE) {
-                /* I19 的外輪廓邊那一款：端面不提供固定，擋的不是「碰到牆」，
-                 * 是「那條邊還沒鋪邊界材」——板靠牆的邊要有骨可釘（I20）。
-                 * 孔邊與柱面不在此限（貼邊料角色由宣告決定，I21），
-                 * 所以這裡只攔 STOP_OUTLINE_EDGE（見 _test_hole_auto）。 */
-                if (self->role != TIMBER_ROLE_BOUNDARY) {
-                    if (err != NULL) {
-                        snprintf(err, err_cap,
-                                 "V_CUT_PRIORITY：角材 %u 端面頂到"
-                                 "外輪廓邊（RC）——那條邊還沒鋪邊界材；"
-                                 "只有 boundary 可頂 RC",
-                                 (unsigned)self->id);
-                    }
-                    return false;
-                }
-                continue;
-            }
-
-            if (f->kind == STOP_TIMBER_SIDE) {
-                const Timber *owner = NULL;
-                Coord owner_prio;
-
-                for (size_t k = 0; k < world->timber_count; ++k) {
-                    if (world->timbers[k].id == f->timber_id &&
-                        world->timbers[k].placed) {
-                        owner = &world->timbers[k];
-                        break;
-                    }
-                }
-                if (owner == NULL || owner == self) {
-                    continue;
-                }
-
-                /* 例外一：兩支 boundary 可在轉角互頂。 */
-                if (self->role == TIMBER_ROLE_BOUNDARY &&
-                    owner->role == TIMBER_ROLE_BOUNDARY) {
-                    continue;
-                }
-
-                owner_prio = owner->cut_priority;
-                if (stop_in_owner_extension(
-                        world, placement, boundary,
-                        owner, cross_lo, cross_hi)) {
-                    /*
-                     * I22：延伸段側面作擋面時以優先級 2 計。
-                     *
-                     * 誰頂得到延伸段的側面(由公理層推導)：
-                     *   延伸段沿其所屬 boundary 的長度軸(D16、見
-                     *   stop_in_owner_extension)，而 D17 要求 boundary ⊥ 主支軸，
-                     *   故延伸段 ⊥ 主支軸。端面頂側面需兩者垂直，
-                     *   所以頂得到的料必須「平行於主支軸」。
-                     *   - secondary：D17 要求 ⊥ 主支軸 → 與延伸段平行 → 頂不到。
-                     *   - primary  ：平行主支軸、頂得到，但 cut_priority 同為 2，
-                     *                2 >= 2 落進下面的 V_CUT_PRIORITY(I19)。
-                     *   - custom   ：D17 未約束其長度軸、I21 的拒絕條件也只列
-                     *                boundary/secondary(D15：custom 不取得任何
-                     *                角色專屬的義務或權利)，故可平行主支軸；
-                     *                明寫 priority >= 3 時 2 < 3 → 接受。
-                     * 即接受路徑存在且唯一：custom priority >= 3。
-                     * 正向覆蓋見 _role_priority_ext_custom.scene。
-                     *
-                     * 公理層 I22 括號原本寫「主支端面不得頂它；副支可以」，
-                     * 那句由 D16+D17 推不出來(副支必與延伸段平行、頂不到)。
-                     * 2026-09-16 已改成上面推導出的接受路徑：平行主支軸且
-                     * 優先級大於 2 的 custom 料。條文與這段註解現在一致。
-                     */
-                    owner_prio = 2;
-                }
-
-                if (owner_prio >= self->cut_priority) {
-                    if (err != NULL) {
-                        snprintf(err, err_cap,
-                                 "V_CUT_PRIORITY：角材 %u（優先級 %d）"
-                                 "端面頂到角材 %u（優先級 %d）側面——"
-                                 "擋面擁有者優先級必須嚴格小於自己",
-                                 (unsigned)self->id, (int)self->cut_priority,
-                                 (unsigned)owner->id, (int)owner_prio);
-                    }
-                    return false;
-                }
-            }
-            /* STOP_HOLE_EDGE：優先級 0,各角色可頂。 */
-        }
-    }
-
-    return true;
+    AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);AppContactResolve context={world,&facts.world};
+    return wood_contact_end_faces_with_sources(&facts.world,self,along_v,span_lo,span_hi,cross_lo,cross_hi,
+        app_contact_resolve_stops,&context,err,err_cap);
 }
 
 /* ============================================================
@@ -7907,10 +6071,11 @@ typedef enum {
 #define SPAN_CUT_MAX \
     (DP_COMPONENT_MAX * POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1) + WORLD_MAX_TIMBERS * 2)
 
-typedef struct {
-    Coord start;
-    Coord end;
-} SpanInterval;
+typedef GeoInterval SpanInterval;
+/* Compile-time checks (span status ABI, span scratch bound) written without
+ * C11 _Static_assert: the Windows MSVC builds compile in its default C mode. */
+typedef char app_span_status_abi_check[(int)SPAN_BETWEEN_AMBIGUOUS==(int)WOOD_SPAN_BETWEEN_AMBIGUOUS?1:-1];
+typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAPACITY?1:-1];
 
 /*
  * 解析 auto 跨距。
@@ -7942,349 +6107,33 @@ static SpanStatus resolve_auto_span(
     size_t err_cap
 )
 {
-    Coord cuts[SPAN_CUT_MAX];
-    size_t cut_count = 0;
-    Coord scope_lo=scope?(along_v?scope->min_v:scope->min_u):0;
-    Coord scope_hi=scope?(along_v?scope->max_v:scope->max_u):0;
-    if (scope && (cross_lo<(along_v?scope->min_u:scope->min_v) || cross_hi>(along_v?scope->max_u:scope->max_v))) {
-        snprintf(err,err_cap,"I13：角材的完整寬度超出子格範圍");
-        return SPAN_NO_INTERVAL;
-    }
-
-    /* --- 切點：輪廓與孔的所有頂點在長度軸上的座標 --- */
-    for(size_t component=0;component<(placement->derived_fill_id?placement->component_count:1);++component) {
-        if(placement->derived_fill_id) boundary=&placement->components[component];
-    if (boundary != NULL) {
-        const PolygonLoop2 *loops[1 + POLY_MAX_HOLES];
-        size_t loop_count = 0;
-
-        loops[loop_count++] = &boundary->outline;
-
-        for (size_t h = 0; h < boundary->hole_count; ++h) {
-            loops[loop_count++] = &boundary->holes[h];
-        }
-
-        for (size_t li = 0; li < loop_count; ++li) {
-            for (size_t i = 0; i < loops[li]->count &&
-                            cut_count < SPAN_CUT_MAX; ++i) {
-                cuts[cut_count++] = along_v
-                    ? loops[li]->v[i].v
-                    : loops[li]->v[i].u;
-            }
-        }
-    } else {
-        cuts[cut_count++] = along_v
-            ? placement->rect.min_v : placement->rect.min_u;
-        cuts[cut_count++] = along_v
-            ? placement->rect.max_v : placement->rect.max_u;
-    }
-    }
-
-    /* --- 切點：同面已放角材 footprint 在長度軸上的兩端 --- */
-    for (size_t i = 0; i < world->timber_count &&
-                    cut_count + 2 <= SPAN_CUT_MAX; ++i) {
-        const Timber *t = &world->timbers[i];
-        const TimberAnchor *a = &world->anchors[i];
-        SurfaceRegion2 f;
-
-        if (!t->placed || a->placement_id != placement->id) {
-            continue;
-        }
-
-        if (!timber_a0_footprint_uv(placement, t, a, &f)) {
-            continue;
-        }
-
-        cuts[cut_count++] = along_v ? f.min_v : f.min_u;
-        cuts[cut_count++] = along_v ? f.max_v : f.max_u;
-    }
-
-    /* 排序 + 去重。 */
-    for (size_t i = 1; i < cut_count; ++i) {
-        Coord key = cuts[i];
-        size_t j = i;
-
-        while (j > 0 && cuts[j - 1] > key) {
-            cuts[j] = cuts[j - 1];
-            --j;
-        }
-        cuts[j] = key;
-    }
-
-    size_t unique = 0;
-    for (size_t i = 0; i < cut_count; ++i) {
-        if (unique == 0 || cuts[i] != cuts[unique - 1]) {
-            cuts[unique++] = cuts[i];
+    GeoLoop2View region_holes[DP_COMPONENT_MAX][POLY_MAX_HOLES];
+    GeoRegionView regions[DP_COMPONENT_MAX];GeoPoint2 rectangle[4];
+    size_t region_count=placement->derived_fill_id?placement->component_count:1;
+    for(size_t c=0;c<region_count;++c){
+        if(placement->derived_fill_id)boundary=&placement->components[c];
+        if(boundary)regions[c]=boundary_geometry_view(boundary,region_holes[c]);
+        else{
+            rectangle[0]=(GeoPoint2){placement->rect.min_u,placement->rect.min_v};
+            rectangle[1]=(GeoPoint2){placement->rect.max_u,placement->rect.min_v};
+            rectangle[2]=(GeoPoint2){placement->rect.max_u,placement->rect.max_v};
+            rectangle[3]=(GeoPoint2){placement->rect.min_u,placement->rect.max_v};
+            regions[c]=(GeoRegionView){{rectangle,4},NULL,0};
         }
     }
-    cut_count = unique;
-
-    /* --- 逐 cell 檢查：整個 footprint ⊆ 有效區域且不撞已放角材 --- */
-    SpanInterval intervals[SPAN_CUT_MAX / 2 + 1];
-    size_t interval_count = 0;
-    bool open = false;
-
-    for (size_t i = 0; i + 1 < cut_count; ++i) {
-        Coord lo = cuts[i];
-        Coord hi = cuts[i + 1];
-
-        if (lo >= hi) {
-            continue;
-        }
-
-        SurfaceRegion2 cell;
-
-        if (along_v) {
-            cell = (SurfaceRegion2){ cross_lo, lo, cross_hi, hi };
-        } else {
-            cell = (SurfaceRegion2){ lo, cross_lo, hi, cross_hi };
-        }
-
-        bool ok =
-            surface_contains_rect(
-                placement, boundary,
-                cell.min_u, cell.min_v, cell.max_u, cell.max_v) &&
-            !world_footprint_collides(world, placement, &cell, NULL);
-
-        if (ok && !open) {
-            intervals[interval_count].start = lo;
-            intervals[interval_count].end = hi;
-            open = true;
-        } else if (ok) {
-            intervals[interval_count].end = hi;
-        } else if (open) {
-            ++interval_count;
-            open = false;
-        }
+    GeoRect2 obstacles[WORLD_MAX_TIMBERS];size_t obstacle_count=0;
+    for(size_t i=0;i<world->wood.timber_count;++i){
+        const Timber *t=&world->wood.timbers[i];const TimberAnchor *a=&world->wood.anchors[i];
+        if(!t->placed||a->placement_id!=placement->id)continue;
+        if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;
     }
-    if (open) {
-        ++interval_count;
-    }
-
-    if (interval_count == 0) {
-        snprintf(err, err_cap, "中線上沒有任何合法跨距");
-        return SPAN_NO_INTERVAL;
-    }
-
-    /* --- at-face 接觸範圍過濾：區間必須與引用邊的範圍重疊 --- */
-    if (has_contact) {
-        SpanInterval touching[SPAN_CUT_MAX / 2 + 1];
-        size_t touching_count = 0;
-
-        for (size_t i = 0; i < interval_count; ++i) {
-            if (intervals[i].start < contact_hi &&
-                intervals[i].end > contact_lo) {
-                touching[touching_count++] = intervals[i];
-            }
-        }
-
-        if (touching_count == 0) {
-            snprintf(err, err_cap,
-                     "有合法跨距但都不接觸引用的邊");
-            return SPAN_OUTSIDE_CONTACT;
-        }
-
-        memcpy(intervals, touching, touching_count * sizeof(SpanInterval));
-        interval_count = touching_count;
-    }
-
-    /* R6/D19: scope selects complete intervals; it never supplies stops. */
-    if (scope && !between) {
-        size_t kept=0;
-        for (size_t i=0;i<interval_count;++i)
-            if (intervals[i].start>=scope_lo && intervals[i].end<=scope_hi) intervals[kept++]=intervals[i];
-        interval_count=kept;
-        if (!kept) {
-            snprintf(err,err_cap,"I13/R6：子格 [%lld,%lld] 內沒有兩端獲得支撐的完整跨距",(long long)scope_lo,(long long)scope_hi);
-            return SPAN_NO_INTERVAL;
-        }
-    }
-
-    /*
-     * --- R21：between 明寫兩端 ---
-     * 它是消解歧義的選擇器，不是放寬條件：兩個被指名的擋面各自仍須
-     * 通過 R6(d) 的物理條件，跨距也仍須整段落在某個合法區間內（R6(b)）。
-     */
-    if (between != NULL) {
-        StopFace bfaces[STOP_FACE_MAX];
-        size_t bface_count = collect_stop_faces(
-            world, placement, boundary, along_v, NULL,
-            bfaces, STOP_FACE_MAX);
-
-        const StopFace *ca[WORLD_MAX_TIMBERS * 2];
-        const StopFace *cb[WORLD_MAX_TIMBERS * 2];
-        bool free_a = false;
-        bool free_b = false;
-        bool narrow_a = false;
-        bool narrow_b = false;
-        size_t na = stop_ref_candidates(bfaces, bface_count, &between[0],
-                                        cross_lo, cross_hi,
-                                        ca, WORLD_MAX_TIMBERS * 2,
-                                        &free_a, &narrow_a);
-        size_t nb = stop_ref_candidates(bfaces, bface_count, &between[1],
-                                        cross_lo, cross_hi,
-                                        cb, WORLD_MAX_TIMBERS * 2,
-                                        &free_b, &narrow_b);
-
-        if (na == 0 || nb == 0) {
-            const bool is_free = (na == 0 && free_a) || (nb == 0 && free_b);
-            const bool is_narrow =
-                (na == 0 && narrow_a) || (nb == 0 && narrow_b);
-
-            if (is_free) {
-                snprintf(err, err_cap,
-                         "between 指名的擋面是自由邊（頂到空氣）");
-                return SPAN_FREE_EDGE_END;
-            }
-
-            snprintf(err, err_cap,
-                     is_narrow
-                         ? "between 指名的擋面沒有涵蓋角材端面的全寬"
-                         : "between 指名的擋面不存在，"
-                           "或它不垂直於角材長度軸");
-            return SPAN_BETWEEN_BLOCKED;
-        }
-
-        SpanInterval hit[WORLD_MAX_TIMBERS * 4];
-        size_t hit_count = 0;
-
-        for (size_t x = 0; x < na; ++x) {
-            for (size_t y = 0; y < nb; ++y) {
-                Coord s = ca[x]->fixed;
-                Coord e = cb[y]->fixed;
-
-                if (s == e) {
-                    continue;   /* R21(c)：區間必須非空 */
-                }
-
-                if (s > e) {
-                    const Coord swap = s;
-
-                    s = e;
-                    e = swap;
-                }
-
-                bool inside = false;
-
-                for (size_t k = 0; k < interval_count; ++k) {
-                    if (intervals[k].start <= s && e <= intervals[k].end) {
-                        inside = true;
-                        break;
-                    }
-                }
-
-                if (!inside || (scope && (s<scope_lo || e>scope_hi))) {
-                    continue;   /* R6: between pairs must be fully inside the child scope. */
-                }
-
-                if (hit_count < WORLD_MAX_TIMBERS * 4) {
-                    hit[hit_count].start = s;
-                    hit[hit_count].end = e;
-                    ++hit_count;
-                }
-            }
-        }
-
-        if (hit_count == 0) {
-            snprintf(err, err_cap,
-                     "between 指名的兩端之間沒有合法跨距"
-                     "（被實體擋住，或兩端座標相同）");
-            return SPAN_BETWEEN_BLOCKED;
-        }
-
-        if (hit_count > 1) {
-            size_t n = (size_t)snprintf(err, err_cap,
-                                        "between 有多組合法配對：");
-
-            for (size_t k = 0; k < hit_count && n < err_cap; ++k) {
-                n += (size_t)snprintf(err + n, err_cap - n, " [%lld,%lld]",
-                                      (long long)hit[k].start,
-                                      (long long)hit[k].end);
-            }
-
-            return SPAN_BETWEEN_AMBIGUOUS;
-        }
-
-        *out_start = hit[0].start;
-        *out_end = hit[0].end;
-        return SPAN_OK;
-    }
-
-    /* --- 選區間 --- */
-    size_t chosen = (size_t)-1;
-
-    if (has_through) {
-        for (size_t i = 0; i < interval_count; ++i) {
-            if (through >= intervals[i].start &&
-                through <= intervals[i].end) {
-                chosen = i;
-                break;
-            }
-        }
-
-        if (chosen == (size_t)-1) {
-            snprintf(err, err_cap,
-                     "through 座標不在任何合法跨距內");
-            return SPAN_THROUGH_OUTSIDE;
-        }
-    } else if (interval_count > 1) {
-        size_t n = (size_t)snprintf(err, err_cap, "跨距歧義：");
-
-        for (size_t i = 0; i < interval_count && n < err_cap; ++i) {
-            n += (size_t)snprintf(err + n, err_cap - n, " [%lld,%lld]",
-                          (long long)intervals[i].start,
-                          (long long)intervals[i].end);
-        }
-        return SPAN_AMBIGUOUS;
-    } else {
-        chosen = 0;
-    }
-
-    Coord span_start = intervals[chosen].start;
-    Coord span_end = intervals[chosen].end;
-
-    /* --- 兩端必須各有唯一合法擋面（place 當下不猜） --- */
-    StopFace faces[STOP_FACE_MAX];
-    size_t face_count = collect_stop_faces(
-        world, placement, boundary, along_v, NULL,
-        faces, STOP_FACE_MAX);
-
-    const StopFace *stop = NULL;
-    size_t hits;
-
-    hits = pick_stop(faces, face_count, span_start,
-                     cross_lo, cross_hi, &stop);
-    if (hits == 0) {
-        snprintf(err, err_cap, "跨距起點沒有擋面（端面懸空）");
-        return SPAN_START_UNSUPPORTED;
-    }
-    if (hits > 1) {
-        snprintf(err, err_cap, "跨距起點擋面歧義");
-        return SPAN_START_AMBIGUOUS;
-    }
-    if (stop->fixity == EDGE_FREE) {
-        snprintf(err, err_cap, "跨距起點頂到自由邊");
-        return SPAN_FREE_EDGE_END;
-    }
-
-    hits = pick_stop(faces, face_count, span_end,
-                     cross_lo, cross_hi, &stop);
-    if (hits == 0) {
-        snprintf(err, err_cap, "跨距終點沒有擋面（端面懸空）");
-        return SPAN_END_UNSUPPORTED;
-    }
-    if (hits > 1) {
-        snprintf(err, err_cap, "跨距終點擋面歧義");
-        return SPAN_END_AMBIGUOUS;
-    }
-    if (stop->fixity == EDGE_FREE) {
-        snprintf(err, err_cap, "跨距終點頂到自由邊");
-        return SPAN_FREE_EDGE_END;
-    }
-
-    *out_start = span_start;
-    *out_end = span_end;
-    return SPAN_OK;
+    StopFace faces[STOP_FACE_MAX];size_t face_count=collect_stop_faces(world,placement,boundary,along_v,NULL,faces,STOP_FACE_MAX);
+    WoodMemberSpanFacts facts={{regions,region_count},obstacles,obstacle_count,faces,face_count};
+    WoodMemberSpanRequest request={along_v,cross_lo,cross_hi,has_contact,contact_lo,contact_hi,has_through,through,
+        between!=NULL,{{0},{0}},scope!=NULL,{0}};
+    if(between){request.stops[0]=between[0];request.stops[1]=between[1];}
+    if(scope)request.scope=*scope;
+    return (SpanStatus)wood_member_resolve_span(&facts,&request,out_start,out_end,err,err_cap);
 }
 
 /*
@@ -8301,7 +6150,7 @@ static SpanStatus resolve_auto_span(
  * 它的 priority 只用於 I19 的數值比較,沒有方向義務。
  *
  * extra/extra_along_v:place 路徑在落料前先驗,那支料尚未進
- * world->anchors,由參數補上;world_revalidate 傳 NULL。
+ * world->wood.anchors,由參數補上;world_revalidate 傳 NULL。
  */
 static bool surface_primary_axis_check(
     const World *world,
@@ -8312,108 +6161,13 @@ static bool surface_primary_axis_check(
     size_t err_size
 )
 {
-    bool has_primary = false, has_boundary = false;
-    int primary_axis = -1, boundary_axis = -1;   /* 0 = 沿 u,1 = 沿 v */
-    TimberId primary_id = 0;
-
-    /* 第一遍:定軸。primary 優先推導,其次 boundary 的垂直向。 */
-    for (size_t i = 0; i <= world->timber_count; ++i) {
-        const Timber *t;
-        int axis;
-
-        if (i < world->timber_count) {
-            const TimberAnchor *a;
-
-            t = &world->timbers[i];
-            if (!t->placed) continue;
-            a = &world->anchors[i];
-            if (a->placement_id != placement_id) continue;
-            axis =
-                a->length_direction == SURFACE_DIRECTION_POS_V ||
-                a->length_direction == SURFACE_DIRECTION_NEG_V ? 1 : 0;
-        } else {
-            if (extra == NULL) break;
-            t = extra;
-            axis = extra_along_v ? 1 : 0;
-        }
-
-        if (t->role == TIMBER_ROLE_PRIMARY) {
-            if (!has_primary) {
-                has_primary = true;
-                primary_axis = axis;
-                primary_id = t->id;
-            } else if (axis != primary_axis) {
-                if (err != NULL) {
-                    snprintf(err, err_size,
-                        "V_PRIMARY_AXIS:同面 primary 長度軸不唯一"
-                        "（角材 %u 沿 %c,角材 %u 沿 %c）",
-                        primary_id, primary_axis ? 'v' : 'u',
-                        t->id, axis ? 'v' : 'u');
-                }
-                return false;
-            }
-        } else if (t->role == TIMBER_ROLE_BOUNDARY && !has_boundary) {
-            has_boundary = true;
-            boundary_axis = axis;
-        }
+    WoodMemberAxisFact facts[WORLD_MAX_TIMBERS];
+    for(size_t i=0;i<world->wood.timber_count;++i){
+        const Timber *t=&world->wood.timbers[i];const TimberAnchor *a=&world->wood.anchors[i];
+        facts[i]=(WoodMemberAxisFact){t->id,a->placement_id,t->role,t->placed,
+            a->length_direction==SURFACE_DIRECTION_POS_V||a->length_direction==SURFACE_DIRECTION_NEG_V};
     }
-
-    int axis = has_primary ? primary_axis
-             : has_boundary ? 1 - boundary_axis
-             : -1;
-
-    /* 第二遍:boundary/secondary 不得與主支軸平行;
-       主支軸未定義時不得有 secondary。 */
-    for (size_t i = 0; i <= world->timber_count; ++i) {
-        const Timber *t;
-        int t_axis;
-
-        if (i < world->timber_count) {
-            const TimberAnchor *a;
-
-            t = &world->timbers[i];
-            if (!t->placed) continue;
-            a = &world->anchors[i];
-            if (a->placement_id != placement_id) continue;
-            t_axis =
-                a->length_direction == SURFACE_DIRECTION_POS_V ||
-                a->length_direction == SURFACE_DIRECTION_NEG_V ? 1 : 0;
-        } else {
-            if (extra == NULL) break;
-            t = extra;
-            t_axis = extra_along_v ? 1 : 0;
-        }
-
-        if (t->role != TIMBER_ROLE_BOUNDARY &&
-            t->role != TIMBER_ROLE_SECONDARY) {
-            continue;
-        }
-
-        if (axis == -1) {
-            if (t->role == TIMBER_ROLE_SECONDARY) {
-                if (err != NULL) {
-                    snprintf(err, err_size,
-                        "V_PRIMARY_AXIS:主支軸未定義,"
-                        "secondary（角材 %u）必須在主支之後", t->id);
-                }
-                return false;
-            }
-            continue;   /* boundary 落地即定義主支軸 */
-        }
-
-        if (t_axis == axis) {
-            if (err != NULL) {
-                snprintf(err, err_size,
-                    "V_PRIMARY_AXIS:角材 %u（%s）長度軸沿 %c,"
-                    "與主支軸平行——boundary/secondary 必須垂直於主支軸",
-                    t->id, timber_role_name(t->role),
-                    axis ? 'v' : 'u');
-            }
-            return false;
-        }
-    }
-
-    return true;
+    return wood_member_primary_axis_check(facts,world->wood.timber_count,placement_id,extra,extra_along_v,err,err_size);
 }
 
 static bool world_revalidate(World *world);
@@ -8439,6 +6193,11 @@ static bool world_replace_object(
     return true;
 }
 
+static bool app_boundary_replace(World *world,const SpaceBoundarySurface *value)
+{World backup=*world;if(!app_boundary_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+static bool app_placement_replace(World *world,const PlacementSurface *value)
+{World backup=*world;if(!app_placement_stage(world,value)||!world_revalidate(world)){*world=backup;return false;}return true;}
+
 /*
  * World 全量重驗：
  *   承載面自身合法、掛的邊界面存在；
@@ -8454,18 +6213,20 @@ static bool grid_rules_world_valid(const World *,char *,size_t);
 static bool grid_rule_line(const World *,const GridRuleLineRef *,SurfaceId,Coord *,SurfaceRegion2 *,char *,size_t);
 static bool grid_rule_ref_text(const char *,GridRuleLineRef *);
 static bool grid_subdivision_used(const World *);
+#include "geometry-app/native/grid_context.inc"
 #include "geometry-core/subgrid_world.inc"
 
+#include "geometry-app/native/world_validation.inc"
 static bool world_validate_derived(const World *world)
 {
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (!boundary_is_valid(&world->boundaries[i])) {
+    for (size_t i = 0; i < world_boundary_count(world); ++i) {
+        if (!boundary_is_valid(world_boundary_at(world,i))) {
             return false;
         }
     }
 
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        const PlacementSurface *p = &world->placements[i];
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        const PlacementSurface *p = world_placement_at(world,i);
 
         if (!placement_is_valid(p)) {
             return false;
@@ -8477,8 +6238,8 @@ static bool world_validate_derived(const World *world)
         }
     }
 
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        const GuideLine *g = &world->guides[i];
+    for (size_t i = 0; i < geo_guides_count(&world->geo.guide_lines); ++i) {
+        const GuideLine *g = &geo_guides_values(&world->geo.guide_lines)[i];
         const PlacementSurface *p =
             world_find_placement(world, g->placement_id);
 
@@ -8488,255 +6249,27 @@ static bool world_validate_derived(const World *world)
         }
     }
 
-    for (size_t i = 0; i < world->grid_count; ++i) {
-        const ReferenceGrid *g = &world->grids[i];
-        const PlacementSurface *p =
-            world_find_placement(world, g->placement_id);
-
-        if (p == NULL ||
-            !grid_is_valid_in(world->grids, world->grid_count, g, p, world_placement_boundary(world, p), NULL, 0)) {
-            return false;
-        }
+    WoodWorldValidationContext context=app_world_validation_context(world);
+    char error[256]="";
+    if(!wood_world_validate_members(&context,error,sizeof error)){
+        if(error[0])set_revalidate_error(error);return false;
     }
 
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const Timber *t = &world->timbers[i];
-
-        if (!t->placed) {
-            continue;
-        }
-
-        const TimberAnchor *a = &world->anchors[i];
-        const PlacementSurface *p =
-            world_find_placement(world, a->placement_id);
-
-        if (p == NULL) {
-            return false;
-        }
-
-        /* I23(b)：被 at-line grid 錨定的索引必須仍推導得出——
-         * 承載面縮小會讓尾端的線不再產生，那時整筆回滾（I8 同軌）。 */
-        if (a->anchor_kind == ANCHOR_AT_GRID) {
-            const ReferenceGrid *ag = world_find_grid(world, a->ref_grid);
-            const PlacementSurface *ap =
-                ag != NULL ? world_find_placement(world, ag->placement_id)
-                           : NULL;
-            char anchor_error[256] = "";
-
-            if (ag == NULL || ap == NULL ||
-                !grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,
-                                 world_placement_boundary(world, ap),
-                                 a->ref_grid_axis,
-                                 a->ref_grid_index,
-                                 a->ref_grid_has_band,
-                                 a->ref_grid_band,
-                                 NULL, anchor_error, sizeof anchor_error)) {
-                set_revalidate_error(anchor_error[0] ? anchor_error : "被網格錨定的格線已不存在");
-                return false;
-            }
-        }
-
-        if (a->anchor_kind==ANCHOR_AT_RULE) {
-            SurfaceRegion2 cell,f; char error[256]="";
-            if(!grid_rule_line(world,&a->ref_rule,p->id,NULL,&cell,error,sizeof error) ||
-                !timber_a0_footprint_uv(p,t,a,&f) || f.min_u<cell.min_u || f.max_u>cell.max_u ||
-                f.min_v<cell.min_v || f.max_v>cell.max_v) {
-                set_revalidate_error(error[0]?error:"I13: rule anchor footprint exceeds parent cell");return false;
-            }
-        }
-        Timber probe = *t;
-        probe.placed = false;
-
-        if (!timber_place_a0_on_surface(
-                &probe, p, world_placement_boundary(world, p),
-                a->uv,
-                (SurfaceDirection)a->length_direction,
-                (SurfaceDepthSide)a->depth_side)) {
-            return false;
-        }
-
-        {
-            SurfaceRegion2 f;
-            const SpaceBoundarySurface *b =
-                world_placement_boundary(world, p);
-            bool along_v =
-                a->length_direction == SURFACE_DIRECTION_POS_V ||
-                a->length_direction == SURFACE_DIRECTION_NEG_V;
-
-            if (!timber_a0_footprint_uv(p, t, a, &f)) {
-                return false;
-            }
-
-            b=placement_boundary_for_rect(p,b,&f);
-            /* I13/D19: final-world containment is independent of rebuild order. */
-            if (a->anchor_kind==ANCHOR_AT_GRID) {
-                const ReferenceGrid *g=world_find_grid(world,a->ref_grid);
-                SurfaceRegion2 cell;
-                if (g && g->is_subgrid &&
-                    (!grid_cell_bounds(world->grids,world->grid_count,g,p,b,&cell,NULL,0) ||
-                    f.min_u<cell.min_u || f.max_u>cell.max_u || f.min_v<cell.min_v || f.max_v>cell.max_v)) {
-                    set_revalidate_error("I13：角材的完整足跡超出子格範圍"); return false;
-                }
-                if (g && g->from_binding && a->ref_grid_has_band && g->axis[a->ref_grid_axis].stagger_set) {
-                    int axis=a->ref_grid_axis, other=1-axis; int64_t next; Coord lo,hi;
-                    Coord flo=axis==0?f.min_v:f.min_u, fhi=axis==0?f.max_v:f.max_u;
-                    if (!grid_i64_add(a->ref_grid_band,1,&next) ||
-                        !grid_lattice_coord(g,other,a->ref_grid_band,&lo) ||
-                        !grid_lattice_coord(g,other,next,&hi) || flo<lo || fhi>hi) {
-                        set_revalidate_error("I24：角材沿線範圍超出該格子"); return false;
-                    }
-                }
-            }
-
-            /* R6(d)/R21: the full world must still have unique support,
-             * unless between explicitly selects valid stop faces. */
-            {
-                StopFace faces[STOP_FACE_MAX];
-                size_t nf=collect_stop_faces(world,p,b,along_v,t,faces,STOP_FACE_MAX);
-                Coord ends[2]={along_v?f.min_v:f.min_u,along_v?f.max_v:f.max_u};
-                Coord lo=along_v?f.min_u:f.min_v,hi=along_v?f.max_u:f.max_v;
-                for (int k=0;k<2;++k) {
-                    size_t hits=count_legal_stops(faces,nf,ends[k],lo,hi);
-                    if (hits==0 || (!a->has_between && hits!=1)) {
-                        set_revalidate_error("R6(d): 端面需要恰好一個涵蓋全寬的合法擋面"); return false;
-                    }
-                }
-            }
-
-            /* I19/I22：每支料的端面裁切優先序與延伸段規則。 */
-            {
-                char end_err[256] = "";
-
-                if (!timber_end_face_check(
-                        world, p, b, t, along_v,
-                        along_v ? f.min_v : f.min_u,
-                        along_v ? f.max_v : f.max_u,
-                        along_v ? f.min_u : f.min_v,
-                        along_v ? f.max_u : f.max_v,
-                        end_err, sizeof end_err)) {
-                    set_revalidate_error(
-                        end_err[0] != '\0' ? end_err : "端面裁切優先序不成立");
-                    return false;
-                }
-
-                /* I20：邊界材固定段須整條覆蓋所貼的外輪廓邊。 */
-                if (!timber_boundary_role_check(
-                        p, b, t, along_v,
-                        along_v ? f.min_v : f.min_u,
-                        along_v ? f.max_v : f.max_u,
-                        along_v ? f.min_u : f.min_v,
-                        along_v ? f.max_u : f.max_v,
-                        end_err, sizeof end_err)) {
-                    set_revalidate_error(
-                        end_err[0] != '\0' ? end_err : "邊界材固定段未覆蓋定位邊");
-                    return false;
-                }
-            }
-        }
-    }
-
-    /* 實體不得正面積重疊：同承載面的已放角材兩兩檢查。 */
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const Timber *ti = &world->timbers[i];
-        const TimberAnchor *ai = &world->anchors[i];
-
-        if (!ti->placed) {
-            continue;
-        }
-
-        for (size_t j = i + 1; j < world->timber_count; ++j) {
-            const Timber *tj = &world->timbers[j];
-            const TimberAnchor *aj = &world->anchors[j];
-            const PlacementSurface *p;
-            SurfaceRegion2 fi, fj;
-
-            if (!tj->placed || ai->placement_id != aj->placement_id) {
-                continue;
-            }
-
-            p = world_find_placement(world, ai->placement_id);
-
-            if (p == NULL ||
-                !timber_a0_footprint_uv(p, ti, ai, &fi) ||
-                !timber_a0_footprint_uv(p, tj, aj, &fj)) {
-                return false;
-            }
-
-            if (uv_rects_overlap(
-                    fi.min_u, fi.min_v, fi.max_u, fi.max_v,
-                    fj.min_u, fj.min_v, fj.max_u, fj.max_v)) {
-                return false;
-            }
-        }
-    }
-
-    /* D17/I21：每片承載面推導主支軸,驗證角色-方向一致。 */
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (!surface_primary_axis_check(
-                world, world->placements[i].id, NULL, false,
-                NULL, 0)) {
-            return false;
-        }
-    }
-
-    for (size_t i = 0; i < world->space_count; ++i) {
-        const Space *s = &world->spaces[i];
+    for (size_t i = 0; i < geo_enclosures_count(&world->geo.enclosures); ++i) {
+        const Space *s = geo_enclosures_at(&world->geo.enclosures,i);
         Space probe;
 
-        if (s->boundary_count == 0) {
+        if (s->member_count == 0) {
             continue;   /* 空容器：零成員的部分空間，恆合法 */
         }
 
         if (!space_construct(
-                world, s->id, s->boundaries, s->boundary_count, &probe, NULL)) {
+                world, s->id, s->member_ids, s->member_count, &probe, NULL)) {
             return false;
         }
     }
 
-    /* RC 柱/樑（I15–I17）：AABB 非空、所屬空間存在、足跡 ⊆ 平面範圍。 */
-    for (size_t i = 0; i < world->column_count; ++i) {
-        const RcColumn *c = &world->columns[i];
-
-        if (!(c->x_hi > c->x_lo && c->y_hi > c->y_lo && c->z_hi > c->z_lo)) {
-            return false;
-        }
-        if (c->space_id != 0) {
-            const Space *s = world_find_space(world, c->space_id);
-            if (s == NULL) {
-                return false;
-            }
-            if (c->x_lo < s->room_min[0] || c->x_hi > s->room_max[0] ||
-                c->y_lo < s->room_min[1] || c->y_hi > s->room_max[1]) {
-                return false;   /* I15 足跡越出空間平面範圍 */
-            }
-        }
-        for (size_t j = i + 1; j < world->column_count; ++j) {
-            const RcColumn *o = &world->columns[j];
-            if (c->x_lo < o->x_hi && o->x_lo < c->x_hi &&
-                c->y_lo < o->y_hi && o->y_lo < c->y_hi) {
-                return false;   /* I15 柱-柱正面積相交（邊相接合法） */
-            }
-        }
-    }
-    for (size_t i = 0; i < world->beam_count; ++i) {
-        const RcBeam *b = &world->beams[i];
-
-        if (!(b->x_hi > b->x_lo && b->y_hi > b->y_lo && b->z_hi > b->z_lo)) {
-            return false;
-        }
-        if (b->space_id != 0) {
-            const Space *s = world_find_space(world, b->space_id);
-            if (s == NULL) {
-                return false;
-            }
-            if (b->x_lo < s->room_min[0] || b->x_hi > s->room_max[0] ||
-                b->y_lo < s->room_min[1] || b->y_hi > s->room_max[1]) {
-                return false;   /* I16 足跡越出空間平面範圍 */
-            }
-        }
-    }
-
-    return true;
+    return app_world_obstacles_valid(world);
 }
 
 /* D2/D7/D9：承載面 frame 改變後，角材的世界姿態與 Space 範圍必須
@@ -8744,12 +6277,13 @@ static bool world_validate_derived(const World *world)
  * 失敗不會留下部分更新。位置與長度重算，引用與格線索引保持原意。 */
 static bool world_revalidate_candidate(World *world,World *candidate)
 {
+    (void)world;
     g_revalidate_error[0] = '\0';
     char grid_error[256]="";
     if (!boundary_keys_reconcile(candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
-    if (!parameters_rebuild(candidate,grid_error,sizeof grid_error)) {
+    if (!reference_parameters_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
     if (!engineering_rebuild(candidate,grid_error,sizeof grid_error)) {
@@ -8794,16 +6328,11 @@ static bool world_revalidate_candidate(World *world,World *candidate)
         set_revalidate_error(g_engineering_error); return false;
     }
 
-    for (size_t i = 0; i < candidate->space_count; ++i) {
-        const Space *s = &world->spaces[i];
-        if (s->boundary_count == 0) {
-            candidate->spaces[i] = (Space){0};
-            candidate->spaces[i].id = s->id;
-        } else if (!space_construct(candidate, s->id, s->boundaries,
-                                    s->boundary_count, &candidate->spaces[i],
-                                    NULL)) {
-            return false;
-        }
+    for(size_t i=0;i<geo_enclosures_count(&candidate->geo.enclosures);++i){
+        Space definition=*geo_enclosures_at(&candidate->geo.enclosures,i),rebuilt;
+        if(!space_construct(candidate,definition.id,definition.member_ids,
+                definition.member_count,&rebuilt,NULL)||
+           !geo_enclosures_stage(&candidate->geo.enclosures,&rebuilt))return false;
     }
 
     if (!world_validate_derived(candidate)) {
@@ -8813,17 +6342,66 @@ static bool world_revalidate_candidate(World *world,World *candidate)
         return false;
     }
     if (!assembly_generation_check(candidate)) { set_revalidate_error(g_engineering_error); return false; }
-    *world = *candidate;
-    return true;
+    return app_reference_sources_valid(candidate);
 }
 
+static bool app_world_revalidate_evaluate(void *after,GeoEvalContext *sources,void *before)
+{
+    (void)sources;
+    return world_revalidate_candidate((World*)before,(World*)after);
+}
 static bool world_revalidate(World *world)
 {
-    World *candidate=malloc(sizeof *candidate);
+    /* An existing H transaction owns this exact after snapshot. Failure stays
+     * isolated there; the caller retains its old primary diagnostic policy. */
+    if(g_active_app_candidate&&world==&g_active_app_candidate->after)
+        return world_revalidate_candidate(world,world);
+    AppWorldCandidate *candidate=app_world_candidate_create(world);
     if(!candidate){set_revalidate_error("I32: candidate World allocation failed");return false;}
-    *candidate=*world;
-    bool ok=world_revalidate_candidate(world,candidate);
-    free(candidate);return ok;
+    bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
+    if(ok)ok=app_world_candidate_seal(candidate)&&app_world_candidate_publish(candidate,world,false);
+    app_world_candidate_destroy(candidate);return ok;
+}
+
+/* Legacy parsers stage definitions locally before asking for validation.
+ * Move those bytes into the exact H candidate before evaluating providers;
+ * retain the old bytes in the parser's scratch value for its baseline/rollback.
+ * No provider may outlive a stack World that was used only for staging. */
+static void app_world_swap(World *a,World *b)
+{
+    unsigned char scratch[4096],*x=(unsigned char*)a,*y=(unsigned char*)b;
+    for(size_t offset=0;offset<sizeof *a;){
+        size_t count=sizeof *a-offset;if(count>sizeof scratch)count=sizeof scratch;
+        memcpy(scratch,x+offset,count);memcpy(x+offset,y+offset,count);memcpy(y+offset,scratch,count);offset+=count;
+    }
+}
+static bool app_world_revalidate_staged(World *world,World *staged)
+{
+    if(g_active_app_candidate&&world==&g_active_app_candidate->after){
+        if(g_boundary_keyed_update){g_active_app_candidate->operation.boundary_keyed=true;g_active_app_candidate->operation.boundary_id=g_boundary_keyed_id;}
+        app_world_swap(world,staged);
+        const World *previous=g_subgrid_before;
+        if(previous==world)g_subgrid_before=staged;
+        bool ok=world_revalidate(world);g_subgrid_before=previous;
+        if(!ok)app_world_swap(world,staged);
+        return ok;
+    }
+    if(!world_revalidate(staged))return false;
+    memcpy(world,staged,sizeof *world);return true;
+}
+
+/* I8a confirmation revalidates the same retained candidate. The existing
+ * sealed bytes and provider set must pass before its resolver can be reopened. */
+static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+{
+    if(!app_world_candidate_current(candidate,live)||app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
+        app_world_candidate_equal,NULL)!=GEO_CANDIDATE_OK)return false;
+    const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;
+    bool previous_keyed=g_boundary_keyed_update;uint32_t previous_keyed_id=g_boundary_keyed_id;
+    g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;
+    bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
+    g_boundary_keyed_update=previous_keyed;g_boundary_keyed_id=previous_keyed_id;g_subgrid_before=previous;
+    return ok&&app_world_candidate_seal(candidate);
 }
 
 /* ---- 共用小解析工具 ---- */
@@ -8921,9 +6499,7 @@ static int parse_loop_fixity(
 
 static void loop_fixity_default_fixed(PolygonLoop2 *loop)
 {
-    for (size_t k = 0; k < POLY_MAX_VERTICES; ++k) {
-        loop->fixity[k] = EDGE_FIXED;
-    }
+    wood_boundary_default_fixity(loop->fixity,POLY_MAX_VERTICES);
 }
 
 /* ---- boundary ----
@@ -9072,11 +6648,12 @@ static bool apply_boundary_line(
 
     candidate.id = id;
 
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (world->boundaries[i].id == id) {
-            if (!world_replace_object(
-                    world, &world->boundaries[i],
-                    &candidate, sizeof candidate)) {
+    for (size_t i = 0; i < world_boundary_count(world); ++i) {
+        if (geo_regions_at(&world->geo.region_data,i)->id == id) {
+            /* A staging rejection never reaches world_revalidate; do not
+             * report a stale diagnostic from an earlier command. */
+            g_revalidate_error[0] = '\0';
+            if (!app_boundary_replace(world,&candidate)) {
                 char detail[512];
                 snprintf(detail,sizeof detail,"重宣告後有物件失效（承載面/參考線/角材/空間沒全過）: boundary %u: %s",
                     id,g_revalidate_error[0]?g_revalidate_error:"I8: dependent objects invalid");
@@ -9087,12 +6664,12 @@ static bool apply_boundary_line(
         }
     }
 
-    if (world->boundary_count == WORLD_MAX_BOUNDARIES) {
+    if (world_boundary_count(world) == WORLD_MAX_BOUNDARIES) {
         scene_error(path, line_no, "邊界面的數量超過上限");
         return false;
     }
 
-    world->boundaries[world->boundary_count++] = candidate;
+    if(!app_boundary_stage(world,&candidate))return false;
     return true;
 }
 
@@ -9263,11 +6840,9 @@ static bool apply_placement_line(
         return false;
     }
 
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (world->placements[i].id == id) {
-            if (!world_replace_object(
-                    world, &world->placements[i],
-                    &candidate, sizeof candidate)) {
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        if (geo_placements_at(&world->geo.placement_data,i)->id == id) {
+            if (!app_placement_replace(world,&candidate)) {
                 scene_error(path, line_no,
                     "重宣告後有物件失效（參考線/角材/空間沒全過）");
                 return false;
@@ -9276,13 +6851,13 @@ static bool apply_placement_line(
         }
     }
 
-    if (world->placement_count == WORLD_MAX_PLACEMENTS) {
+    if (world_placement_count(world) == WORLD_MAX_PLACEMENTS) {
         scene_error(path, line_no, "承載面的數量超過上限");
         return false;
     }
 
     World backup = *world;
-    world->placements[world->placement_count++] = candidate;
+    if(!app_placement_stage(world,&candidate)){*world=backup;return false;}
     if (!world_revalidate(world)) {
         *world = backup;
         scene_error(path, line_no, "新增承載面後有物件失效（已回滾）");
@@ -9362,11 +6937,9 @@ static bool apply_surface_combined_line(
             return false;
         }
 
-        for (size_t i = 0; i < world->placement_count; ++i) {
-            if (world->placements[i].id == id) {
-                if (!world_replace_object(
-                        world, &world->placements[i],
-                        &candidate, sizeof candidate)) {
+        for (size_t i = 0; i < world_placement_count(world); ++i) {
+            if (geo_placements_at(&world->geo.placement_data,i)->id == id) {
+                if (!app_placement_replace(world,&candidate)) {
                     scene_error(path, line_no,
                         "重宣告後有物件失效");
                     return false;
@@ -9375,13 +6948,13 @@ static bool apply_surface_combined_line(
             }
         }
 
-        if (world->placement_count == WORLD_MAX_PLACEMENTS) {
+        if (world_placement_count(world) == WORLD_MAX_PLACEMENTS) {
             scene_error(path, line_no, "承載面的數量超過上限");
             return false;
         }
 
         World backup = *world;
-        world->placements[world->placement_count++] = candidate;
+        if(!app_placement_stage(world,&candidate)){*world=backup;return false;}
         if (!world_revalidate(world)) {
             *world = backup;
             scene_error(path, line_no, "新增承載面後有物件失效（已回滾）");
@@ -9478,18 +7051,18 @@ static bool apply_surface_combined_line(
     bool replace_b = false;
     bool replace_p = false;
 
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (world->boundaries[i].id == id) { replace_b = true; break; }
+    for (size_t i = 0; i < world_boundary_count(world); ++i) {
+        if (geo_regions_at(&world->geo.region_data,i)->id == id) { replace_b = true; break; }
     }
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (world->placements[i].id == id) { replace_p = true; break; }
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        if (geo_placements_at(&world->geo.placement_data,i)->id == id) { replace_p = true; break; }
     }
 
-    if (!replace_b && world->boundary_count == WORLD_MAX_BOUNDARIES) {
+    if (!replace_b && world_boundary_count(world) == WORLD_MAX_BOUNDARIES) {
         scene_error(path, line_no, "邊界面的數量超過上限");
         return false;
     }
-    if (!replace_p && world->placement_count == WORLD_MAX_PLACEMENTS) {
+    if (!replace_p && world_placement_count(world) == WORLD_MAX_PLACEMENTS) {
         scene_error(path, line_no, "承載面的數量超過上限");
         return false;
     }
@@ -9497,26 +7070,8 @@ static bool apply_surface_combined_line(
     /* 借用 world_replace_object 的交易語意：分兩步，第二步失敗要還原第一步。 */
     World backup = *world;
 
-    if (replace_b) {
-        for (size_t i = 0; i < world->boundary_count; ++i) {
-            if (world->boundaries[i].id == id) {
-                world->boundaries[i] = boundary;
-                break;
-            }
-        }
-    } else {
-        world->boundaries[world->boundary_count++] = boundary;
-    }
-
-    if (replace_p) {
-        for (size_t i = 0; i < world->placement_count; ++i) {
-            if (world->placements[i].id == id) {
-                world->placements[i] = placement;
-                break;
-            }
-        }
-    } else {
-        world->placements[world->placement_count++] = placement;
+    if(!app_boundary_stage(world,&boundary)||!app_placement_stage(world,&placement)){
+        *world=backup;return false;
     }
 
     if (!world_revalidate(world)) {
@@ -9534,130 +7089,51 @@ static bool apply_guide_line(const char *p, int n, char **t, int c, World *w)
 { return apply_reference_guide(p, n, t, c, w); }
 
 /* D7/D15: timber id A B role ...；長度永遠由引用與跨距推導。 */
-static bool apply_timber_line(
-    const char *path,
-    int line_no,
-    char *tokens[],
-    int count,
-    World *world
-)
+#include "geometry-templates/woodworking/native/member_declaration.h"
+static bool app_member_declaration_owned(void *user,uint32_t id)
+{return assembly_owned(user,id);}
+static bool app_member_declaration_replace(void *user,WoodMember *current,const WoodMember *updated)
+{return world_replace_object(user,current,updated,sizeof *updated);}
+static bool apply_timber_line(const char *path,int line_no,char *tokens[],int count,World *world)
 {
-    if (world->timber_count == WORLD_MAX_TIMBERS &&
-        (count < 2 || !world_find_timber(world, (uint32_t)strtoul(tokens[1], NULL, 10)))) {
-        scene_error(path, line_no, "角材的數量超過上限");
-        return false;
+    WoodMemberDeclarationContext context={world->wood.timbers,&world->wood.timber_count,WORLD_MAX_TIMBERS,
+        world,app_member_declaration_owned,app_member_declaration_replace};
+    const char *error=NULL;
+    if(!wood_member_declaration_capacity(&context,count>=2,
+            count>=2?(uint32_t)strtoul(tokens[1],NULL,10):0,&error)){
+        scene_error(path,line_no,error);return false;
     }
-
-    /* D7: only A/B dimensions; old explicit lengths are rejected. */
-    bool auto_length;
-    int role_idx;
-
-    if (count >= 5 && strcmp(tokens[4], "role") == 0) {
-        auto_length = true;
-        role_idx = 4;
-    } else {
-        scene_error(path, line_no,
+    /* H decodes the legacy grammar; W decides role and admission policy. */
+    if(count<5||strcmp(tokens[4],"role")){
+        scene_error(path,line_no,
             "D7/I18: timber id A尺寸 B尺寸 role 必填；明寫長度已廢除 "
-            "role boundary|primary|secondary|custom [priority N]");
-        return false;
+            "role boundary|primary|secondary|custom [priority N]");return false;
     }
-
-    if (count < role_idx + 2) {
-        scene_error(path, line_no, "role 後面要接角色名");
-        return false;
+    if(count<6){scene_error(path,line_no,"role 後面要接角色名");return false;}
+    WoodMemberRole role;
+    if(!wood_member_declaration_role(tokens[5],&role,&error)){scene_error(path,line_no,error);return false;}
+    Coord priority=0;
+    bool supplied=count>6&&!strcmp(tokens[6],"priority");
+    bool valid=role==WOOD_MEMBER_ROLE_CUSTOM&&supplied&&count>=8&&parse_i64(tokens[7],&priority);
+    if(!wood_member_declaration_priority(role,supplied,valid,priority,&error)){scene_error(path,line_no,error);return false;}
+    int tail=role==WOOD_MEMBER_ROLE_CUSTOM?8:6;
+    if(count!=tail){scene_error(path,line_no,"timber 行有多餘欄位");return false;}
+    uint32_t id;Coord size_a,size_b;
+    if(!parse_u32(tokens[1],&id)||!parse_coord(tokens[2],&size_a)||!parse_coord(tokens[3],&size_b)){
+        scene_error(path,line_no,"timber auto 需要：id A尺寸 B尺寸（都是整數）");return false;
     }
-
-    TimberRole role;
-    Coord custom_priority = 0;
-    int tail;
-
-    if (strcmp(tokens[role_idx + 1], "boundary") == 0) {
-        role = TIMBER_ROLE_BOUNDARY;
-    } else if (strcmp(tokens[role_idx + 1], "primary") == 0) {
-        role = TIMBER_ROLE_PRIMARY;
-    } else if (strcmp(tokens[role_idx + 1], "secondary") == 0) {
-        role = TIMBER_ROLE_SECONDARY;
-    } else if (strcmp(tokens[role_idx + 1], "custom") == 0) {
-        role = TIMBER_ROLE_CUSTOM;
-    } else {
-        scene_error(path, line_no,
-            "role 只能是 boundary、primary、secondary 或 custom");
-        return false;
+    if(!wood_member_declare(&context,id,size_a,size_b,role,priority,&error)){
+        if(error)scene_error(path,line_no,error);return false;
     }
-
-    if (role == TIMBER_ROLE_CUSTOM) {
-        if (count < role_idx + 4 ||
-            strcmp(tokens[role_idx + 2], "priority") != 0 ||
-            !parse_i64(tokens[role_idx + 3], &custom_priority) ||
-            custom_priority < 1) {
-            scene_error(path, line_no,
-                "custom 角色需要 priority N（N 是 ≥1 的整數）");
-            return false;
-        }
-        tail = role_idx + 4;
-    } else {
-        if (count > role_idx + 2 &&
-            strcmp(tokens[role_idx + 2], "priority") == 0) {
-            scene_error(path, line_no, "priority 只能配 custom 角色");
-            return false;
-        }
-        tail = role_idx + 2;
-    }
-
-    if (count != tail) {
-        scene_error(path, line_no, "timber 行有多餘欄位");
-        return false;
-    }
-
-    uint32_t id;
-    Coord length = 0, size_a, size_b;
-
-    if (auto_length) {
-        if (!parse_u32(tokens[1], &id) ||
-            !parse_coord(tokens[2], &size_a) ||
-            !parse_coord(tokens[3], &size_b)) {
-            scene_error(path, line_no,
-                "timber auto 需要：id A尺寸 B尺寸（都是整數）");
-            return false;
-        }
-    } else {
-        if (!parse_u32(tokens[1], &id) ||
-            !parse_coord(tokens[2], &length) ||
-            !parse_coord(tokens[3], &size_a) ||
-            !parse_coord(tokens[4], &size_b)) {
-            scene_error(path, line_no,
-                "timber 需要：id 長度 A尺寸 B尺寸（都是整數）");
-            return false;
-        }
-    }
-
-    if (assembly_owned(world,id)) { scene_error(path,line_no,"I42: edit the owning assembly instance"); return false; }
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        if (world->timbers[i].id == id) {
-            Timber updated;
-            if (!timber_construct(id, 0, size_a, size_b, true, role, custom_priority, &updated)) return false;
-            updated.placed = world->timbers[i].placed;
-            return world_replace_object(world, &world->timbers[i], &updated, sizeof updated);
-        }
-    }
-
-    if (!timber_construct(id, length, size_a, size_b, auto_length,
-            role, custom_priority,
-            &world->timbers[world->timber_count])) {
-        scene_error(path, line_no, "角材的長度與 A/B 尺寸都要大於 0");
-        return false;
-    }
-
-    ++world->timber_count;
     return true;
 }
 
 /* 承載面上的參考網格查找。 */
 static const ReferenceGrid *world_find_grid(const World *world, uint32_t id)
 {
-    for (size_t i = 0; i < world->grid_count; ++i) {
-        if (world->grids[i].id == id) {
-            return &world->grids[i];
+    for (size_t i = 0; i < world->wood.grid_applications.count; ++i) {
+        if (world->wood.grid_applications.items[i].id == id) {
+            return &world->wood.grid_applications.items[i];
         }
     }
 
@@ -9666,9 +7142,9 @@ static const ReferenceGrid *world_find_grid(const World *world, uint32_t id)
 
 static ReferenceGrid *world_find_grid_mut(World *world, uint32_t id)
 {
-    for (size_t i = 0; i < world->grid_count; ++i) {
-        if (world->grids[i].id == id) {
-            return &world->grids[i];
+    for (size_t i = 0; i < world->wood.grid_applications.count; ++i) {
+        if (world->wood.grid_applications.items[i].id == id) {
+            return &world->wood.grid_applications.items[i];
         }
     }
 
@@ -9737,26 +7213,7 @@ static SurfacePoint2 anchor_corner_from_rect(
     const SurfaceRegion2 *rect
 )
 {
-    Vector3 axis_length = surface_direction_vector(
-        surface, (SurfaceDirection)length_direction);
-    Vector3 axis_b =
-        depth_side == SURFACE_DEPTH_POSITIVE_NORMAL
-            ? surface->frame.normal
-            : vector_negate(surface->frame.normal);
-    Vector3 axis_a = vector_cross(axis_b, axis_length);
-
-    Coord lu = vector_dot(axis_length, surface->frame.axis_u);
-    Coord lv = vector_dot(axis_length, surface->frame.axis_v);
-    Coord au = vector_dot(axis_a, surface->frame.axis_u);
-    Coord av = vector_dot(axis_a, surface->frame.axis_v);
-
-    Coord du = lu != 0 ? lu : au;
-    Coord dv = lv != 0 ? lv : av;
-
-    return (SurfacePoint2){
-        du > 0 ? rect->min_u : rect->max_u,
-        dv > 0 ? rect->min_v : rect->max_v
-    };
+    return wood_member_anchor_corner(&surface->frame,length_direction,depth_side,rect);
 }
 
 /*
@@ -9812,38 +7269,9 @@ static bool apply_grid_line(
     ReferenceGrid candidate = { 0 };
     ReferenceGrid *existing = world_find_grid_mut(world, grid_id);
 
-    if (existing != NULL && (existing->from_system || existing->from_binding)) {
-        scene_error(path,line_no,"D29: edit the grid-system source or its application origin; direct axis edits are not allowed");
-        return false;
-    }
-    if (existing != NULL && existing->is_subgrid) {
-        scene_error(path,line_no,"D19：不能將既有子網格改成主網格");
-        return false;
-    }
-    if (existing != NULL && existing->placement_id != placement_id) {
-        scene_error(path, line_no, "這個 grid id 已經用在別的承載面");
-        return false;
-    }
-
-    if (existing == NULL) {
-        /* 一面一格：不同 id 落在同一承載面 → 拒絕。 */
-        for (size_t i = 0; i < world->grid_count; ++i) {
-            if (!world->grids[i].is_subgrid && world->grids[i].placement_id == placement_id) {
-                scene_error(path, line_no,
-                    "這片承載面已經有一座網格（一面一格）");
-                return false;
-            }
-        }
-
-        if (world->grid_count == WORLD_MAX_GRIDS) {
-            scene_error(path, line_no, "網格的數量超過上限");
-            return false;
-        }
-
-        candidate.id = grid_id;
-        candidate.placement_id = placement_id;
-    } else {
-        candidate = *existing;
+    WoodGridContext grid_context=app_grid_context(world);char grid_error[256]="";
+    if(!wood_grid_begin_direct(&grid_context,grid_id,placement_id,&candidate,grid_error,sizeof grid_error)){
+        scene_error(path,line_no,grid_error);return false;
     }
 
     ReferenceGrid *grid = &candidate;
@@ -9976,7 +7404,7 @@ static bool apply_grid_line(
             GridAxisDef *pdef = &grid->axis[axis];
 
             pdef->source = GRID_SRC_PANEL;
-            pdef->panel = p_panel;
+            pdef->body = p_panel;
             pdef->gap = p_gap;
             pdef->anchor = p_from;
             pdef->anchor_explicit = has_from;
@@ -10063,62 +7491,21 @@ static bool apply_grid_line(
         }
     }
 
-    if (filled == 0 && !(existing != NULL && has_main_along)) {
-        scene_error(path, line_no, "新網格至少要一個格線來源");
-        return false;
-    }
-    if ((candidate.main_along == 1 && candidate.axis[1].source == GRID_SRC_NONE) ||
-        (candidate.main_along == 2 && candidate.axis[0].source == GRID_SRC_NONE)) {
-        scene_error(path, line_no, "grid 主支方向沒有對應的格線來源");
-        return false;
+    if(!wood_grid_direct_declared(&grid_context,&candidate,filled,has_main_along,grid_error,sizeof grid_error)){
+        scene_error(path,line_no,grid_error);return false;
     }
 
     /* I8a: preserve the parsed candidate even when parent count locking rejects it. */
     {
         World trial=*world;
-        if (existing) trial.grids[existing-world->grids]=candidate;
-        else if (trial.grid_count<WORLD_MAX_GRIDS) trial.grids[trial.grid_count++]=candidate;
+        if (existing) trial.wood.grid_applications.items[existing-world->wood.grid_applications.items]=candidate;
+        else if (trial.wood.grid_applications.count<WORLD_MAX_GRIDS) trial.wood.grid_applications.items[trial.wood.grid_applications.count++]=candidate;
         reference_capture_trial(&trial);
     }
 
-    {
-        const SpaceBoundarySurface *vb =
-            world_find_boundary(world, placement->boundary_id);
-        Coord probe[GRID_MAX_LINES];
-        size_t probe_n;
-
-        for (int a = 0; a < 2; ++a) {
-            char gerr[200] = "";
-
-            if (grid->axis[a].source == GRID_SRC_NONE) {
-                continue;
-            }
-
-            if (!grid_axis_lines(grid, placement, vb, a,
-                                 probe, &probe_n, gerr, sizeof gerr)) {
-                char msg[320];
-
-                snprintf(msg, sizeof msg,
-                    "grid 座標不合法（%c 軸）：%s",
-                    a == 0 ? 'u' : 'v',
-                    gerr[0] != '\0'
-                        ? gerr
-                        : "要嚴格遞增、且落在承載面外接範圍內");
-                scene_error(path, line_no, msg);
-                return false;
-            }
-        }
-    }
-
-    /* I23: also validate read-only grid-preview calls that bypass transactions. */
-    for (size_t child=0;child<world->grid_count;++child) {
-        if (world->grids[child].is_subgrid && world->grids[child].parent_id==candidate.id) {
-            char err[256]="";
-            if (!subgrid_parent_count_valid(world,&candidate,placement,world_placement_boundary(world,placement),err,sizeof err)) {
-                scene_error(path,line_no,err); return false;
-            }
-            break;
-        }
+    char direct_error[320]="";
+    if(!wood_grid_direct_check(&grid_context,&candidate,direct_error,sizeof direct_error)){
+        scene_error(path,line_no,direct_error);return false;
     }
 
     /*
@@ -10134,7 +7521,7 @@ static bool apply_grid_line(
     } else {
         World backup = *world;
 
-        world->grids[world->grid_count++] = candidate;
+        world->wood.grid_applications.items[world->wood.grid_applications.count++] = candidate;
 
         if (!world_revalidate(world)) {
             *world = backup;
@@ -10163,6 +7550,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 
 #include "geometry-core/parameters.inc"
 #include "geometry-core/references.inc"
+#include "geometry-app/native/enclosure_sources.inc"
 #include "geometry-core/engineering.inc"
 #include "geometry-core/boundary_vertex_keys.inc"
 #include "geometry-core/grid_bindings.inc"
@@ -10196,12 +7584,12 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
  * ============================================================ */
 static void world_drop_canvas_pos(World *world, int kind, uint32_t id)
 {
-    for (size_t i = 0; i < world->canvas_pos_count; ++i) {
-        CanvasPos *p = &world->canvas_pos[i];
+    for (size_t i = 0; i < world->app.canvas_pos_count; ++i) {
+        CanvasPos *p = &world->app.canvas_pos[i];
         if (p->kind == kind && p->id == id) {
             memmove(p, p + 1,
-                    (world->canvas_pos_count - i - 1) * sizeof *p);
-            --world->canvas_pos_count;
+                    (world->app.canvas_pos_count - i - 1) * sizeof *p);
+            --world->app.canvas_pos_count;
             return;
         }
     }
@@ -10233,35 +7621,11 @@ static Coord coord_midpoint_floor(Coord a, Coord b)
     return -(((-sum) + 1) / 2);
 }
 
-static bool space_axis_bound(
-    const World *world,
-    const Space *space,
-    int axis,
-    int slot,
-    Coord *out
-)
+static bool space_axis_bound(const World *world,const Space *space,int axis,int slot,Coord *out)
 {
-    for (size_t i = 0; i < space->boundary_count; ++i) {
-        for (size_t p = 0; p < world->placement_count; ++p) {
-            const PlacementSurface *pl = &world->placements[p];
-
-            if (pl->boundary_id != space->boundaries[i]) {
-                continue;
-            }
-            int a = axis_index(pl->frame.normal);
-            if (a != axis) {
-                continue;
-            }
-            Coord n = a == 0 ? pl->frame.normal.x
-                    : a == 1 ? pl->frame.normal.y
-                             : pl->frame.normal.z;
-            if ((n > 0 ? 1 : 0) == slot) {
-                *out = point3_component(pl->frame.origin, axis);
-                return true;
-            }
-        }
-    }
-    return false;
+    bool handled=false;
+    bool ok=app_enclosure_sources_axis_bound(world,space,axis,slot,out,&handled);
+    return handled?ok:geo_enclosure_axis_bound(&world->geo.placement_data,space,axis,slot,out);
 }
 
 static bool apply_column_line(
@@ -10354,17 +7718,17 @@ static bool apply_column_line(
         .z_lo = z0, .z_hi = z1
     };
 
-    for (size_t k = 0; k < world->column_count; ++k) {
-        if (world->columns[k].id == id) {
-            world->columns[k] = col;
+    for (size_t k = 0; k < world->wood.column_count; ++k) {
+        if (world->wood.columns[k].id == id) {
+            world->wood.columns[k] = col;
             goto revalidate;
         }
     }
-    if (world->column_count == WORLD_MAX_RC) {
+    if (world->wood.column_count == WORLD_MAX_RC) {
         scene_error(path, line_no, "柱的數量超過上限");
         return false;
     }
-    world->columns[world->column_count++] = col;
+    world->wood.columns[world->wood.column_count++] = col;
 
 revalidate:
     if (!world_revalidate(world)) {
@@ -10479,17 +7843,17 @@ static bool apply_beam_line(
     bm.z_hi = top;
     bm.z_lo = top - d;
 
-    for (size_t k = 0; k < world->beam_count; ++k) {
-        if (world->beams[k].id == id) {
-            world->beams[k] = bm;
+    for (size_t k = 0; k < world->wood.beam_count; ++k) {
+        if (world->wood.beams[k].id == id) {
+            world->wood.beams[k] = bm;
             goto revalidate;
         }
     }
-    if (world->beam_count == WORLD_MAX_RC) {
+    if (world->wood.beam_count == WORLD_MAX_RC) {
         scene_error(path, line_no, "樑的數量超過上限");
         return false;
     }
-    world->beams[world->beam_count++] = bm;
+    world->wood.beams[world->wood.beam_count++] = bm;
 
 revalidate:
     if (!world_revalidate(world)) {
@@ -10537,16 +7901,7 @@ typedef struct {
 /* 房間座標點在面框上的 uv。axis_u/axis_v 是單位軸向量。 */
 static SurfacePoint2 frame_project_uv(const SurfaceFrame *f, Point3 p)
 {
-    Point3 d = { p.x - f->origin.x, p.y - f->origin.y, p.z - f->origin.z };
-    int au = axis_index(f->axis_u);
-    int av = axis_index(f->axis_v);
-    Coord su = f->axis_u.x + f->axis_u.y + f->axis_u.z;
-    Coord sv = f->axis_v.x + f->axis_v.y + f->axis_v.z;
-    SurfacePoint2 r = {
-        point3_component(d, au) * su,
-        point3_component(d, av) * sv
-    };
-    return r;
+    return geo_frame_project_uv(f,p);
 }
 
 /* AABB 八角投影到面框 uv 的包圍矩形。 */
@@ -10557,20 +7912,8 @@ static void box_project_uv(
     Coord *u_lo, Coord *v_lo, Coord *u_hi, Coord *v_hi
 )
 {
-    Coord ul = INT64_MAX, uh = INT64_MIN, vl = INT64_MAX, vh = INT64_MIN;
-    for (int i = 0; i < 8; ++i) {
-        Point3 c = {
-            (i & 1) ? x_hi : x_lo,
-            (i & 2) ? y_hi : y_lo,
-            (i & 4) ? z_hi : z_lo
-        };
-        SurfacePoint2 q = frame_project_uv(f, c);
-        ul = coord_min(ul, q.u);
-        uh = coord_max(uh, q.u);
-        vl = coord_min(vl, q.v);
-        vh = coord_max(vh, q.v);
-    }
-    *u_lo = ul; *u_hi = uh; *v_lo = vl; *v_hi = vh;
+    GeoRect2 rect=geo_aabb_project_uv(f,(GeoPoint3){x_lo,y_lo,z_lo},(GeoPoint3){x_hi,y_hi,z_hi});
+    *u_lo=rect.min_u;*u_hi=rect.max_u;*v_lo=rect.min_v;*v_hi=rect.max_v;
 }
 
 /* R 的某側是否與輪廓某邊共線正重疊（貼邊）。 */
@@ -10745,14 +8088,12 @@ static int classify_rect_outline(
 }
 
 /* 面的所屬空間 id（非成員回 0，對應游離柱樑）。 */
-static uint32_t world_space_of_boundary(const World *world, uint32_t bid)
+static uint32_t world_space_of_boundary(const World *world,uint32_t id)
 {
-    for (size_t i = 0; i < world->space_count; ++i) {
-        for (size_t m = 0; m < world->spaces[i].boundary_count; ++m) {
-            if (world->spaces[i].boundaries[m] == bid) {
-                return world->spaces[i].id;
-            }
-        }
+    for(size_t i=0;i<geo_enclosures_count(&world->geo.enclosures);++i){
+        const Space *space=geo_enclosures_at(&world->geo.enclosures,i);
+        for(size_t member=0;member<space->member_count;++member)
+            if(space->member_ids[member]==id)return space->id;
     }
     return 0;
 }
@@ -10765,10 +8106,11 @@ static size_t world_face_obstacles(
     size_t cap
 )
 {
+    PlacementSurface placement_value;
     const PlacementSurface *pl = NULL;
-    for (size_t p = 0; p < world->placement_count; ++p) {
-        if (world->placements[p].boundary_id == b->id) {
-            pl = &world->placements[p];
+    for (size_t p = 0; p < world_placement_count(world); ++p) {
+        if (world_placement_at(world,p)->boundary_id == b->id) {
+            pl = app_placement_at(world,p,&placement_value);
             break;
         }
     }
@@ -10783,8 +8125,8 @@ static size_t world_face_obstacles(
 
     poly_bbox(&b->outline, &o_u0, &o_v0, &o_u1, &o_v1);
 
-    for (size_t i = 0; i < world->column_count && n < cap; ++i) {
-        const RcColumn *c = &world->columns[i];
+    for (size_t i = 0; i < world->wood.column_count && n < cap; ++i) {
+        const RcColumn *c = &world->wood.columns[i];
         Coord u0, v0, u1, v1;
         if (c->space_id != sid) continue;
 
@@ -10823,8 +8165,8 @@ static size_t world_face_obstacles(
         }
     }
 
-    for (size_t i = 0; i < world->beam_count && n < cap; ++i) {
-        const RcBeam *bm = &world->beams[i];
+    for (size_t i = 0; i < world->wood.beam_count && n < cap; ++i) {
+        const RcBeam *bm = &world->wood.beams[i];
         Coord u0, v0, u1, v1;
         if (bm->space_id != sid) continue;
 
@@ -11169,24 +8511,24 @@ static bool proj_add_surface(
     Coord ru0, Coord rv0, Coord ru1, Coord rv1
 )
 {
-    if (world->boundary_count >= WORLD_MAX_BOUNDARIES ||
-        world->placement_count >= WORLD_MAX_PLACEMENTS) {
+    if (world_boundary_count(world) >= WORLD_MAX_BOUNDARIES ||
+        world_placement_count(world) >= WORLD_MAX_PLACEMENTS) {
         return false;
     }
-    SpaceBoundarySurface *b = &world->boundaries[world->boundary_count];
+    SpaceBoundarySurface boundary_value; SpaceBoundarySurface *b=&boundary_value;
     memset(b, 0, sizeof(*b));
     b->id = id;
     b->kind = BOUNDARY_UNSPECIFIED;
     b->outline = *outline;
-    ++world->boundary_count;
+    if(!app_boundary_stage(world,b))return false;
 
-    PlacementSurface *p = &world->placements[world->placement_count];
+    PlacementSurface placement_value; PlacementSurface *p=&placement_value;
     memset(p, 0, sizeof(*p));
     p->id = id;
     p->boundary_id = id;
     p->frame = *frame;
     p->rect = (SurfaceRegion2){ ru0, rv0, ru1, rv1 };
-    ++world->placement_count;
+    if(!app_placement_stage(world,p))return false;
     return true;
 }
 
@@ -11197,17 +8539,18 @@ static uint32_t proj_next_surface_id(const World *world)
 }
 
 /* 把 bid 從所屬空間成員清單移除(拆片面/生成面進不了槽位)。 */
-static void proj_space_drop_member(World *world, uint32_t bid)
+static void proj_space_drop_member(World *world,uint32_t id)
 {
-    for (size_t i = 0; i < world->space_count; ++i) {
-        Space *s = &world->spaces[i];
-        for (size_t m = 0; m < s->boundary_count; ++m) {
-            if (s->boundaries[m] == bid) {
-                memmove(&s->boundaries[m], &s->boundaries[m + 1],
-                    (s->boundary_count - m - 1) * sizeof(s->boundaries[0]));
-                --s->boundary_count;
-                return;
-            }
+    for(size_t i=0;i<geo_enclosures_count(&world->geo.enclosures);++i){
+        Space space=*geo_enclosures_at(&world->geo.enclosures,i);
+        for(size_t member=0;member<space.member_count;++member){
+            if(space.member_ids[member]!=id)continue;
+            memmove(space.member_ids+member,space.member_ids+member+1,
+                (space.member_count-member-1)*sizeof space.member_ids[0]);
+            --space.member_count;
+            /* Rebuild remains at the original outer transaction phase. */
+            (void)geo_enclosures_stage(&world->geo.enclosures,&space);
+            return;
         }
     }
 }
@@ -11236,38 +8579,38 @@ static bool proj_rebind_aux(
 )
 {
     const PlacementSurface *new_pl =
-        &world->placements[world->placement_count - 1];
+        world_placement_at(world,world_placement_count(world) - 1);
 
-    for (size_t i = 0; i < world->grid_count; ++i) {
-        ReferenceGrid *g = &world->grids[i];
+    for (size_t i = 0; i < world->wood.grid_applications.count; ++i) {
+        ReferenceGrid *g = &world->wood.grid_applications.items[i];
         if (g->is_subgrid || g->placement_id != old_pl->id) continue;
         bool k = subgrid_family_fits(world,g,old_pl,keep_b);
         bool n = subgrid_family_fits(world,g,new_pl,new_b);
         if (n && !k) {
             uint32_t parent_id=g->id;
-            for (size_t j=0;j<world->grid_count;++j) {
-                ReferenceGrid *member=&world->grids[j];
+            for (size_t j=0;j<world->wood.grid_applications.count;++j) {
+                ReferenceGrid *member=&world->wood.grid_applications.items[j];
                 if (member->id==parent_id || (member->is_subgrid && member->parent_id==parent_id)) member->placement_id=new_pl_id;
             }
         } else if (!k && !n) return false;
     }
     World source=*world;
-    for (size_t i=0;i<source.guide_count;++i) {
-        if (source.guides[i].placement_id!=old_pl->id) continue;
+    for (size_t i=0;i<geo_guides_count(&source.geo.guide_lines);++i) {
+        if (geo_guides_values(&source.geo.guide_lines)[i].placement_id!=old_pl->id) continue;
         GuideLine keep,other;
         int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
         int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
         if (k<0 || n<0 || (!k && !n)) return false;
-        world->guides[i]=k?keep:other;
+        if(!geo_guides_put(&world->geo.guide_lines,k?&keep:&other))return false;
     }
-    for (size_t i=0;i<source.timber_count;++i) {
-        if (!source.timbers[i].placed || source.anchors[i].placement_id!=old_pl->id) continue;
+    for (size_t i=0;i<source.wood.timber_count;++i) {
+        if (!source.wood.timbers[i].placed || source.wood.anchors[i].placement_id!=old_pl->id) continue;
         Timber keep,other; TimberAnchor ka,na;
         int k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,true,i,NULL,&keep,&ka);
         int n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,true,i,NULL,&other,&na);
         if (k<0 || n<0 || (!k && !n)) return false;
-        world->timbers[i]=k?keep:other;
-        world->anchors[i]=k?ka:na;
+        world->wood.timbers[i]=k?keep:other;
+        world->wood.anchors[i]=k?ka:na;
     }
     return engineering_follow_fragment(world,old_pl->id);
 }
@@ -11510,11 +8853,11 @@ static bool proj_apply_one(
             }
             if (out_new_bid) *out_new_bid = nid;
             b->outline = *keep;
-            proj_redistribute_holes(b,
-                &world->boundaries[world->boundary_count - 1]);
-            if (!proj_rebind_aux(world, pl, b,
-                    &world->boundaries[world->boundary_count - 1],
-                    nid)) {
+            SpaceBoundarySurface new_boundary;
+            if(!app_boundary_read(world,nid,&new_boundary))return false;
+            proj_redistribute_holes(b,&new_boundary);
+            if(!app_boundary_stage(world,b)||!app_boundary_stage(world,&new_boundary))return false;
+            if (!proj_rebind_aux(world, pl, b,&new_boundary,nid)) {
                 scene_error(path, line_no,
                     g_engineering_error[0]?g_engineering_error:"拆分後參考線/網格/角材失去承載面");
                 return false;
@@ -11528,8 +8871,8 @@ static bool proj_apply_one(
         }
         /* 樑底新平面(z_lo)+ 樑兩側新立面 */
         const RcBeam *bm = NULL;
-        for (size_t i = 0; i < world->beam_count; ++i)
-            if (world->beams[i].id == it->id) bm = &world->beams[i];
+        for (size_t i = 0; i < world->wood.beam_count; ++i)
+            if (world->wood.beams[i].id == it->id) bm = &world->wood.beams[i];
         if (bm == NULL) return false;
         if (!proj_spawn_face(world, 1, bm->y_lo, bm->y_hi,
                 0, bm->x_lo, bm->x_hi, 2, bm->z_lo, -1)) {
@@ -11583,11 +8926,11 @@ static bool proj_apply_one(
         }
         if (out_new_bid) *out_new_bid = nid;
         b->outline = *keep;
-        proj_redistribute_holes(b,
-            &world->boundaries[world->boundary_count - 1]);
-        if (!proj_rebind_aux(world, pl, b,
-                &world->boundaries[world->boundary_count - 1],
-                nid)) {
+        SpaceBoundarySurface new_boundary;
+        if(!app_boundary_read(world,nid,&new_boundary))return false;
+        proj_redistribute_holes(b,&new_boundary);
+        if(!app_boundary_stage(world,b)||!app_boundary_stage(world,&new_boundary))return false;
+        if (!proj_rebind_aux(world, pl, b,&new_boundary,nid)) {
             scene_error(path, line_no,
                 g_engineering_error[0]?g_engineering_error:"拆分後參考線/網格/角材失去承載面");
             return false;
@@ -11597,8 +8940,8 @@ static bool proj_apply_one(
         /* 立面貼牆柱:柱露出側面生成新立面(同牆平面/法向) */
         if (!it->is_beam) {
             const RcColumn *c = NULL;
-            for (size_t i = 0; i < world->column_count; ++i)
-                if (world->columns[i].id == it->id) c = &world->columns[i];
+            for (size_t i = 0; i < world->wood.column_count; ++i)
+                if (world->wood.columns[i].id == it->id) c = &world->wood.columns[i];
             if (c == NULL) return false;
             int na = axis_index(pl->frame.normal);
             Coord np = point3_component(pl->frame.origin, na);
@@ -11663,21 +9006,17 @@ static bool apply_applyproj_line(
         scene_error(path, line_no, "apply-proj 的面 id 不是有效整數");
         return false;
     }
-    SpaceBoundarySurface *b = NULL;
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        if (world->boundaries[i].id == bid) {
-            b = &world->boundaries[i];
-            break;
-        }
-    }
+    SpaceBoundarySurface boundary_value;
+    SpaceBoundarySurface *b = app_boundary_read(world,bid,&boundary_value)?&boundary_value:NULL;
     if (b == NULL) {
         scene_error(path, line_no, "apply-proj 的邊界面不存在");
         return false;
     }
+    PlacementSurface placement_value;
     const PlacementSurface *pl = NULL;
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        if (world->placements[i].boundary_id == bid) {
-            pl = &world->placements[i];
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        if (geo_placements_at(&world->geo.placement_data,i)->region_id == bid) {
+            pl = app_placement_at(world,i,&placement_value);
             break;
         }
     }
@@ -11719,6 +9058,8 @@ static bool apply_applyproj_line(
 
     /* 面片清單:拆分產生的新片與原片同平面同框,後續項要套到
        含它的那片(一筆交易內多條帶的情境)。 */
+    SpaceBoundarySurface boundary_parts[32];
+    PlacementSurface placement_parts[32];
     SpaceBoundarySurface *pb[32];
     const PlacementSurface *pp[32];
     size_t np = 1;
@@ -11775,18 +9116,19 @@ static bool apply_applyproj_line(
                 *world = backup;
                 return false;
             }
+            if(!app_boundary_stage(world,tb)){*world=backup;return false;}
             ++applied;
             if (new_bid != 0 && np < 32) {
                 pb[np] = NULL; pp[np] = NULL;
-                for (size_t j = 0; j < world->boundary_count; ++j) {
-                    if (world->boundaries[j].id == new_bid) {
-                        pb[np] = &world->boundaries[j];
+                for (size_t j = 0; j < world_boundary_count(world); ++j) {
+                    if (geo_regions_at(&world->geo.region_data,j)->id == new_bid) {
+                        pb[np] = app_boundary_at(world,j,&boundary_parts[np])?&boundary_parts[np]:NULL;
                         break;
                     }
                 }
-                for (size_t j = 0; j < world->placement_count; ++j) {
-                    if (world->placements[j].boundary_id == new_bid) {
-                        pp[np] = &world->placements[j];
+                for (size_t j = 0; j < world_placement_count(world); ++j) {
+                    if (world_placement_at(world,j)->boundary_id == new_bid) {
+                        pp[np] = app_placement_at(world,j,&placement_parts[np]);
                         break;
                     }
                 }
@@ -11806,8 +9148,7 @@ static bool apply_applyproj_line(
         return false;
     }
 
-    /* b 可能已不在原位(不會——boundary 陣列是定長 POD);
-       但 items 指標已用過,此處只需重驗。 */
+    /* Every edited fragment is staged in this candidate before revalidation. */
     if (!world_revalidate(world)) {
         *world = backup;
         scene_error(path, line_no,
@@ -11852,47 +9193,42 @@ static bool apply_delete_line(
     if (strcmp(kind, "boundary") == 0) {
         size_t bi = SIZE_MAX;
 
-        for (size_t i = 0; i < world->boundary_count; ++i) {
-            if (world->boundaries[i].id == id) bi = i;
+        for (size_t i = 0; i < world_boundary_count(world); ++i) {
+            if (geo_regions_at(&world->geo.region_data,i)->id == id) bi = i;
         }
         if (bi == SIZE_MAX) {
             scene_error(path, line_no, "這個邊界面不存在");
             return false;
         }
-        for (size_t i = 0; i < world->placement_count; ++i) {
-            if (world->placements[i].boundary_id == id) {
+        for (size_t i = 0; i < world_placement_count(world); ++i) {
+            if (world_placement_at(world,i)->boundary_id == id) {
                 scene_error(path, line_no,
                     "這個邊界面還有承載面掛著，先刪它的承載面（placement）");
                 return false;
             }
         }
-        for(size_t i=0;i<world->grid_binding_count;++i)if(world->grid_bindings[i].boundary_id==id){
+        for(size_t i=0;i<geo_grid_bindings_count(&world->geo.grid_store);++i)if((*geo_grid_bindings_at(&world->geo.grid_store,i)).boundary_id==id){
             scene_error(path,line_no,"I37: boundary is still referenced by a grid-binding");return false;
         }
-        for(size_t i=0;i<world->vertex_key_count;++i)if(world->vertex_keys[i].boundary_id==id){
-            memmove(&world->vertex_keys[i],&world->vertex_keys[i+1],(world->vertex_key_count-i-1)*sizeof(BoundaryVertexKeys));
-            memset(&world->vertex_keys[--world->vertex_key_count],0,sizeof(BoundaryVertexKeys));break;
-        }
-        memmove(&world->boundaries[bi], &world->boundaries[bi + 1],
-                (world->boundary_count - bi - 1) *
-                sizeof world->boundaries[0]);
-        --world->boundary_count;
+        (void)geo_region_keys_remove(&world->geo.region_data,id);
+        if(!app_boundary_remove(world,id)){*world=backup;return false;}
         /* 空間成員是參照：剔除後用剩下的成員重建空間。 */
-        for (size_t s = 0; s < world->space_count; ++s) {
-            Space *sp = &world->spaces[s];
+        for(size_t index=0;index<geo_enclosures_count(&world->geo.enclosures);++index){
+            Space definition=*geo_enclosures_at(&world->geo.enclosures,index);
+            Space *sp=&definition;
             size_t w = 0;
-            for (size_t m = 0; m < sp->boundary_count; ++m) {
-                if (sp->boundaries[m] != id) {
-                    sp->boundaries[w++] = sp->boundaries[m];
+            for (size_t m = 0; m < sp->member_count; ++m) {
+                if (sp->member_ids[m] != id) {
+                    sp->member_ids[w++] = sp->member_ids[m];
                 }
             }
-            if (w == sp->boundary_count) continue;
+            if (w == sp->member_count) continue;
             Space rebuild = { 0 };
             SpaceFaultInfo fault = { SPACE_FAULT_NONE, 0, -1 };
             if (w == 0) {
                 rebuild.id = sp->id;
             } else if (!space_construct(world, sp->id,
-                                        sp->boundaries, w, &rebuild, &fault)) {
+                                        sp->member_ids, w, &rebuild, &fault)) {
                 char why[192];
                 char message[256];
 
@@ -11904,198 +9240,139 @@ static bool apply_delete_line(
                 scene_error(path, line_no, message);
                 return false;
             }
-            *sp = rebuild;
+            if(!geo_enclosures_stage(&world->geo.enclosures,&rebuild)){*world=backup;return false;}
         }
         world_drop_canvas_pos(world, CANVAS_POS_BOUNDARY, id);
     } else if (strcmp(kind, "placement") == 0) {
         size_t pi = SIZE_MAX;
 
-        for (size_t i = 0; i < world->placement_count; ++i) {
-            if (world->placements[i].id == id) pi = i;
+        for (size_t i = 0; i < world_placement_count(world); ++i) {
+            if (geo_placements_at(&world->geo.placement_data,i)->id == id) pi = i;
         }
         if (pi == SIZE_MAX) {
             scene_error(path, line_no, "這個承載面不存在");
             return false;
         }
-        for (size_t i = 0; i < world->guide_count; ++i) {
-            if (world->guides[i].placement_id == id) {
+        for (size_t i = 0; i < geo_guides_count(&world->geo.guide_lines); ++i) {
+            if (geo_guides_values(&world->geo.guide_lines)[i].placement_id == id) {
                 scene_error(path, line_no,
                     "這個承載面還有參考線，先刪參考線（guide）");
                 return false;
             }
         }
-        for (size_t i = 0; i < world->grid_count; ++i) {
-            if (world->grids[i].placement_id == id) {
+        for (size_t i = 0; i < world->wood.grid_applications.count; ++i) {
+            if (world->wood.grid_applications.items[i].placement_id == id) {
                 scene_error(path, line_no,
                     "這個承載面還有網格，先刪網格（grid）");
                 return false;
             }
         }
-        for (size_t i = 0; i < world->timber_count; ++i) {
-            if (world->timbers[i].placed &&
-                world->anchors[i].placement_id == id) {
+        for (size_t i = 0; i < world->wood.timber_count; ++i) {
+            if (world->wood.timbers[i].placed &&
+                world->wood.anchors[i].placement_id == id) {
                 scene_error(path, line_no,
                     "這個承載面還有已放置的角材，先刪角材（timber）");
                 return false;
             }
         }
-        memmove(&world->placements[pi], &world->placements[pi + 1],
-                (world->placement_count - pi - 1) *
-                sizeof world->placements[0]);
-        --world->placement_count;
+        if(!app_placement_remove(world,id)){*world=backup;return false;}
         world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
     } else if (strcmp(kind, "datum") == 0) {
         size_t di = SIZE_MAX;
-        for (size_t i=0;i<world->datum_count;++i) if (world->datums[i].id==id) di=i;
+        for (size_t i=0;i<geo_datums_count(&world->geo.datum_planes);++i) if (geo_datums_at(&world->geo.datum_planes,i)->id==id) di=i;
         if (di==SIZE_MAX) { scene_error(path,line_no,"I7a: datum does not exist"); return false; }
-        for (size_t i=0;i<world->guide_count;++i)
-            if (world->guides[i].source==GUIDE_DATUM && world->guides[i].datum_id==id) {
+        for (size_t i=0;i<geo_guides_count(&world->geo.guide_lines);++i)
+            if (geo_guides_values(&world->geo.guide_lines)[i].source==GUIDE_DATUM && geo_guides_values(&world->geo.guide_lines)[i].datum_id==id) {
                 scene_error(path,line_no,"I7a: datum is still referenced by a guide"); return false;
             }
-        memmove(&world->datums[di],&world->datums[di+1],(world->datum_count-di-1)*sizeof(DatumPlane));
-        --world->datum_count;
-        memset(&world->datums[world->datum_count],0,sizeof(DatumPlane));
+        (void)app_datum_remove(world,id);
     } else if (strcmp(kind, "guide") == 0) {
         size_t gi = SIZE_MAX;
 
-        for (size_t i = 0; i < world->guide_count; ++i) {
-            if (world->guides[i].id == id) gi = i;
+        for (size_t i = 0; i < geo_guides_count(&world->geo.guide_lines); ++i) {
+            if (geo_guides_values(&world->geo.guide_lines)[i].id == id) gi = i;
         }
         if (gi == SIZE_MAX) {
             scene_error(path, line_no, "這條參考線不存在");
             return false;
         }
-        memmove(&world->guides[gi], &world->guides[gi + 1],
-                (world->guide_count - gi - 1) * sizeof world->guides[0]);
-        --world->guide_count;
+        (void)app_guide_remove(world,id);
     } else if (strcmp(kind, "grid-binding") == 0) {
-        size_t bi=0;while(bi<world->grid_binding_count && world->grid_bindings[bi].id!=id)++bi;
-        if(bi==world->grid_binding_count){scene_error(path,line_no,"I37: grid-binding does not exist");return false;}
-        for(size_t i=0;i<world->grid_count;++i)if(world->grids[i].from_binding && world->grids[i].binding_id==id){
-            scene_error(path,line_no,"I37: grid-binding is still referenced by a grid");return false;
-        }
-        memmove(&world->grid_bindings[bi],&world->grid_bindings[bi+1],(world->grid_binding_count-bi-1)*sizeof(GridBinding));
-        memset(&world->grid_bindings[--world->grid_binding_count],0,sizeof(GridBinding));
+        WoodGridContext c=app_grid_context(world);char error[256]="";
+        if(!wood_grid_delete(&c,kind,id,error,sizeof error)){scene_error(path,line_no,error);return false;}
         world_drop_canvas_pos(world,CANVAS_POS_GRID_BINDING,id);
     } else if (strcmp(kind, "grid-system") == 0) {
-        for(size_t i=0;i<world->grid_binding_count;++i)if(world->grid_bindings[i].system_id==id){
-            scene_error(path,line_no,"I37: grid-system is still referenced by a grid-binding");return false;
-        }
-        size_t si=0;
-        while (si<world->grid_system_count && world->grid_systems[si].id!=id) ++si;
-        if (si==world->grid_system_count) { scene_error(path,line_no,"I37: grid-system does not exist"); return false; }
-        for (size_t i=0;i<world->grid_count;++i) if (world->grids[i].from_system && world->grids[i].system_id==id) {
-            char error[160]; snprintf(error,sizeof error,"I37: grid-system %u is still referenced by grid %u",id,world->grids[i].id);
-            scene_error(path,line_no,error); return false;
-        }
+        size_t source_count=geo_grid_systems_count(&world->geo.grid_store),si=app_grid_system_index(world,id);
+        WoodGridContext c=app_grid_context(world);char error[256]="";
+        if(!wood_grid_delete(&c,kind,id,error,sizeof error)){scene_error(path,line_no,error);return false;}
         if(g_parsing_scene_file){
-            memmove(g_rule_scene_highwater+si,g_rule_scene_highwater+si+1,(world->grid_system_count-si-1)*sizeof *g_rule_scene_highwater);
-            g_rule_scene_highwater[world->grid_system_count-1]=false;
+            memmove(g_rule_scene_highwater+si,g_rule_scene_highwater+si+1,(source_count-si-1)*sizeof *g_rule_scene_highwater);
+            g_rule_scene_highwater[source_count-1]=false;
         }
-        memmove(&world->grid_systems[si],&world->grid_systems[si+1],(world->grid_system_count-si-1)*sizeof(GridSystem));
-        memset(&world->grid_systems[--world->grid_system_count],0,sizeof(GridSystem));
         world_drop_canvas_pos(world,CANVAS_POS_GRID_SYSTEM,id);
     } else if (strcmp(kind, "grid") == 0) {
-        size_t gi = SIZE_MAX;
-
-        for (size_t i = 0; i < world->grid_count; ++i) {
-            if (world->grids[i].id == id) gi = i;
-        }
-        if (gi == SIZE_MAX) {
-            scene_error(path, line_no, "這個網格不存在");
-            return false;
-        }
-        for (size_t i=0;i<world->grid_count;++i) {
-            if (world->grids[i].is_subgrid && world->grids[i].parent_id==id) {
-                char err[160]; snprintf(err,sizeof err,"I23：網格 %u 仍有子格 %u，不能刪除",id,world->grids[i].id);
-                scene_error(path,line_no,err); return false;
-            }
-        }
-        for (size_t i=0;i<world->guide_count;++i) {
-            if (grid_guide_references(&world->guides[i],id)) {
-                char err[160]; snprintf(err,sizeof err,"I23：網格 %u 仍被參考線 %u 引用，不能刪除",id,world->guides[i].id);
-                scene_error(path,line_no,err); return false;
-            }
-        }
-        for (size_t i = 0; i < world->timber_count; ++i) {
-            if (world->timbers[i].placed &&
-                ((world->anchors[i].anchor_kind == ANCHOR_AT_GRID && world->anchors[i].ref_grid == id) ||
-                 (world->anchors[i].anchor_kind == ANCHOR_AT_RULE && world->anchors[i].ref_rule.grid_id == id))) {
-                scene_error(path, line_no,
-                    "V_GRID_LOCKED：有角材錨在這個網格上，先刪角材（timber）");
-                return false;
-            }
-        }
-        memmove(&world->grids[gi], &world->grids[gi + 1],
-                (world->grid_count - gi - 1) * sizeof world->grids[0]);
-        --world->grid_count;
+        WoodGridContext c=app_grid_context(world);char error[256]="";
+        if(!wood_grid_delete(&c,kind,id,error,sizeof error)){scene_error(path,line_no,error);return false;}
     } else if (strcmp(kind, "timber") == 0) {
         size_t ti = SIZE_MAX;
 
-        for (size_t i = 0; i < world->timber_count; ++i) {
-            if (world->timbers[i].id == id) ti = i;
+        for (size_t i = 0; i < world->wood.timber_count; ++i) {
+            if (world->wood.timbers[i].id == id) ti = i;
         }
         if (ti == SIZE_MAX) {
             scene_error(path, line_no, "這支角材不存在");
             return false;
         }
-        memmove(&world->timbers[ti], &world->timbers[ti + 1],
-                (world->timber_count - ti - 1) * sizeof world->timbers[0]);
-        memmove(&world->anchors[ti], &world->anchors[ti + 1],
-                (world->timber_count - ti - 1) * sizeof world->anchors[0]);
-        --world->timber_count;
+        memmove(&world->wood.timbers[ti], &world->wood.timbers[ti + 1],
+                (world->wood.timber_count - ti - 1) * sizeof world->wood.timbers[0]);
+        memmove(&world->wood.anchors[ti], &world->wood.anchors[ti + 1],
+                (world->wood.timber_count - ti - 1) * sizeof world->wood.anchors[0]);
+        --world->wood.timber_count;
     } else if (strcmp(kind, "space") == 0) {
-        size_t si = SIZE_MAX;
-
-        for (size_t i = 0; i < world->space_count; ++i) {
-            if (world->spaces[i].id == id) si = i;
-        }
-        if (si == SIZE_MAX) {
+        if(!geo_enclosures_find(&world->geo.enclosures,id)){
             scene_error(path, line_no, "這個空間不存在");
             return false;
         }
-        memmove(&world->spaces[si], &world->spaces[si + 1],
-                (world->space_count - si - 1) * sizeof world->spaces[0]);
-        --world->space_count;
+        if(!geo_enclosures_remove(&world->geo.enclosures,id)){*world=backup;return false;}
         world_drop_canvas_pos(world, CANVAS_POS_SPACE, id);
         /* I17：刪空間 → 柱樑變游離，不跟著刪。 */
-        for (size_t i = 0; i < world->column_count; ++i) {
-            if (world->columns[i].space_id == id) {
-                world->columns[i].space_id = 0;
+        for (size_t i = 0; i < world->wood.column_count; ++i) {
+            if (world->wood.columns[i].space_id == id) {
+                world->wood.columns[i].space_id = 0;
             }
         }
-        for (size_t i = 0; i < world->beam_count; ++i) {
-            if (world->beams[i].space_id == id) {
-                world->beams[i].space_id = 0;
+        for (size_t i = 0; i < world->wood.beam_count; ++i) {
+            if (world->wood.beams[i].space_id == id) {
+                world->wood.beams[i].space_id = 0;
             }
         }
     } else if (strcmp(kind, "column") == 0) {
         size_t ci = SIZE_MAX;
 
-        for (size_t i = 0; i < world->column_count; ++i) {
-            if (world->columns[i].id == id) ci = i;
+        for (size_t i = 0; i < world->wood.column_count; ++i) {
+            if (world->wood.columns[i].id == id) ci = i;
         }
         if (ci == SIZE_MAX) {
             scene_error(path, line_no, "這根柱不存在");
             return false;
         }
-        memmove(&world->columns[ci], &world->columns[ci + 1],
-                (world->column_count - ci - 1) * sizeof world->columns[0]);
-        --world->column_count;
+        memmove(&world->wood.columns[ci], &world->wood.columns[ci + 1],
+                (world->wood.column_count - ci - 1) * sizeof world->wood.columns[0]);
+        --world->wood.column_count;
         world_drop_canvas_pos(world, CANVAS_POS_COLUMN, id);
     } else if (strcmp(kind, "beam") == 0) {
         size_t bi = SIZE_MAX;
 
-        for (size_t i = 0; i < world->beam_count; ++i) {
-            if (world->beams[i].id == id) bi = i;
+        for (size_t i = 0; i < world->wood.beam_count; ++i) {
+            if (world->wood.beams[i].id == id) bi = i;
         }
         if (bi == SIZE_MAX) {
             scene_error(path, line_no, "這根樑不存在");
             return false;
         }
-        memmove(&world->beams[bi], &world->beams[bi + 1],
-                (world->beam_count - bi - 1) * sizeof world->beams[0]);
-        --world->beam_count;
+        memmove(&world->wood.beams[bi], &world->wood.beams[bi + 1],
+                (world->wood.beam_count - bi - 1) * sizeof world->wood.beams[0]);
+        --world->wood.beam_count;
         world_drop_canvas_pos(world, CANVAS_POS_BEAM, id);
     } else {
         scene_error(path, line_no,
@@ -12176,25 +9453,20 @@ static bool apply_space_line(
         return false;
     }
 
-    for (size_t s = 0; s < world->space_count; ++s) {
-        if (world->spaces[s].id == space_id) {
-            if (!world_replace_object(
-                    world, &world->spaces[s],
-                    &candidate, sizeof candidate)) {
-                scene_error(path, line_no, "重宣告空間後 World 失效");
-                return false;
-            }
-            return true;
+    if(geo_enclosures_find(&world->geo.enclosures,space_id)){
+        World backup=*world;
+        if(!geo_enclosures_stage(&world->geo.enclosures,&candidate)||!world_revalidate(world)){
+            *world=backup;
+            scene_error(path,line_no,"重宣告空間後 World 失效");
+            return false;
         }
+        return true;
     }
-
-    if (world->space_count == WORLD_MAX_SPACES) {
-        scene_error(path, line_no, "空間的數量超過上限");
+    if(geo_enclosures_count(&world->geo.enclosures)==WORLD_MAX_SPACES){
+        scene_error(path,line_no,"空間的數量超過上限");
         return false;
     }
-
-    world->spaces[world->space_count++] = candidate;
-    return true;
+    return geo_enclosures_stage(&world->geo.enclosures,&candidate);
 }
 
 
@@ -12283,8 +9555,8 @@ static void dump_loop(FILE *out, const PolygonLoop2 *loop)
 
 static void world_dump_grids(const World *world,FILE *out)
 {
-    for (size_t i = 0; i < world->grid_count; ++i) {
-        const ReferenceGrid *g = &world->grids[i];
+    for (size_t i = 0; i < world->wood.grid_applications.count; ++i) {
+        const ReferenceGrid *g = &world->wood.grid_applications.items[i];
 
         if (g->is_subgrid) continue;
         if (g->from_binding) {
@@ -12324,7 +9596,7 @@ static void world_dump_grids(const World *world,FILE *out)
                 /* 起算點已具體化進定義（D10a），一律輸出——
                  * 省略它的話，承載面事後縮小時重放會取到不同的 a。 */
                 fprintf(out, " panel %lld gap %lld from %lld",
-                        (long long)def->panel, (long long)def->gap,
+                        (long long)def->body, (long long)def->gap,
                         (long long)def->anchor);
             } else {
                 for (size_t k = 0; k < def->count; ++k) {
@@ -12336,8 +9608,8 @@ static void world_dump_grids(const World *world,FILE *out)
         }
     }
 
-    for (size_t i=0;i<world->grid_count;++i) {
-        const ReferenceGrid *g=&world->grids[i];
+    for (size_t i=0;i<world->wood.grid_applications.count;++i) {
+        const ReferenceGrid *g=&world->wood.grid_applications.items[i];
         if (!g->is_subgrid) continue;
         if(g->lattice_cell){
             fprintf(out,"subgrid %u parent %u lattice-cell %lld %lld divisions u %u v %u\n",g->id,g->parent_id,
@@ -12354,8 +9626,8 @@ static void world_dump_dsl(const World *world, FILE *out)
 {
     parameters_dump(world,out);
     engineering_dump_versions(world,out);
-    for (size_t i = 0; i < world->boundary_count; ++i) {
-        const SpaceBoundarySurface *b = &world->boundaries[i];
+    for (size_t i = 0; i < world_boundary_count(world); ++i) {
+        const SpaceBoundarySurface *b = world_boundary_at(world,i);
 
         fprintf(out, "boundary %u outline ", (unsigned)b->id);
         dump_loop(out, &b->outline);
@@ -12372,8 +9644,8 @@ static void world_dump_dsl(const World *world, FILE *out)
         fputc('\n', out);
     }
 
-    for (size_t i = 0; i < world->placement_count; ++i) {
-        const PlacementSurface *p = &world->placements[i];
+    for (size_t i = 0; i < world_placement_count(world); ++i) {
+        const PlacementSurface *p = world_placement_at(world,i);
 
         if(p->derived_fill_id) continue;
         fprintf(out, "placement %u ", (unsigned)p->id);
@@ -12394,8 +9666,8 @@ static void world_dump_dsl(const World *world, FILE *out)
         fputc('\n', out);
     }
 
-    for (size_t i = 0; i < world->spec_count; ++i)
-        fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
+    for (size_t i = 0; i < geo_named_values_count(&world->geo.named_values); ++i)
+        fprintf(out, "spec %s %lld\n", geo_named_values_at(&world->geo.named_values,i)->name, (long long)geo_named_values_at(&world->geo.named_values,i)->value);
 
     boundary_keys_dump(world,out);
     if(grid_card_used(world)) fputs("requires " GRID_CARD_CAPABILITY "\n",out);
@@ -12403,28 +9675,28 @@ static void world_dump_dsl(const World *world, FILE *out)
     grid_systems_dump(world,out);
     grid_bindings_dump(world,out);
     engineering_dump_applications(world,out);
-    if(!world->finish_surfaces.host_count) world_dump_grids(world,out);
-    if(world->assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
-    if(!world->finish_surfaces.host_count) reference_dump(world, out);
+    if(!world->wood.finish_surfaces.host_count) world_dump_grids(world,out);
+    if(world->wood.assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
+    if(!world->wood.finish_surfaces.host_count) reference_dump(world, out);
 
-    for (size_t i = 0; i < world->space_count; ++i) {
-        const Space *s = &world->spaces[i];
+    for (size_t i = 0; i < geo_enclosures_count(&world->geo.enclosures); ++i) {
+        const Space *s = geo_enclosures_at(&world->geo.enclosures,i);
 
-        if (s->boundary_count == 0) {
+        if (s->member_count == 0) {
             fprintf(out, "space %u\n", (unsigned)s->id);
             continue;
         }
 
         fprintf(out, "space %u boundary", (unsigned)s->id);
-        for (size_t k = 0; k < s->boundary_count; ++k) {
-            fprintf(out, " %u", (unsigned)s->boundaries[k]);
+        for (size_t k = 0; k < s->member_count; ++k) {
+            fprintf(out, " %u", (unsigned)s->member_ids[k]);
         }
         fputc('\n', out);
     }
 
     /* RC 柱/樑:z/top 一律明寫（建構時已推導凍結，重放不再推導）。 */
-    for (size_t i = 0; i < world->column_count; ++i) {
-        const RcColumn *c = &world->columns[i];
+    for (size_t i = 0; i < world->wood.column_count; ++i) {
+        const RcColumn *c = &world->wood.columns[i];
 
         fprintf(out, "column %u ", (unsigned)c->id);
         if (c->space_id != 0) {
@@ -12436,8 +9708,8 @@ static void world_dump_dsl(const World *world, FILE *out)
                 (long long)(c->y_hi - c->y_lo),
                 (long long)c->z_lo, (long long)c->z_hi);
     }
-    for (size_t i = 0; i < world->beam_count; ++i) {
-        const RcBeam *b = &world->beams[i];
+    for (size_t i = 0; i < world->wood.beam_count; ++i) {
+        const RcBeam *b = &world->wood.beams[i];
 
         fprintf(out, "beam %u ", (unsigned)b->id);
         if (b->space_id != 0) {
@@ -12462,10 +9734,10 @@ static void world_dump_dsl(const World *world, FILE *out)
     assembly_dump(world,out);
     sp_dump(world,out);
     fs_dump(world,out);
-    if(world->finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);}
+    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);}
     /* 畫布座標最後寫：它引用的物件要先存在。 */
-    for (size_t i = 0; i < world->canvas_pos_count; ++i) {
-        const CanvasPos *p = &world->canvas_pos[i];
+    for (size_t i = 0; i < world->app.canvas_pos_count; ++i) {
+        const CanvasPos *p = &world->app.canvas_pos[i];
 
         fprintf(out, "canvas-pos %s %u %lld %lld\n",
                 p->kind == CANVAS_POS_BOUNDARY  ? "boundary"  :
@@ -12548,8 +9820,8 @@ static bool apply_canvaspos_line(
         return false;
     }
 
-    for (size_t i = 0; i < world->canvas_pos_count; ++i) {
-        CanvasPos *p = &world->canvas_pos[i];
+    for (size_t i = 0; i < world->app.canvas_pos_count; ++i) {
+        CanvasPos *p = &world->app.canvas_pos[i];
 
         if (p->kind == kind && p->id == id) {
             p->x = x;
@@ -12558,12 +9830,12 @@ static bool apply_canvaspos_line(
         }
     }
 
-    if (world->canvas_pos_count == WORLD_MAX_CANVAS_POS) {
+    if (world->app.canvas_pos_count == WORLD_MAX_CANVAS_POS) {
         scene_error(path, line_no, "畫布座標的數量超過上限");
         return false;
     }
 
-    world->canvas_pos[world->canvas_pos_count++] =
+    world->app.canvas_pos[world->app.canvas_pos_count++] =
         (CanvasPos){ .kind = kind, .id = id, .x = x, .y = y };
     return true;
 }
@@ -12713,7 +9985,7 @@ static bool apply_scene_line_unchecked(const char *path, int line_no, char *toke
             return false;
         }
 
-        if (SCENE_COMMANDS[i].needs_placement && world->placement_count == 0) {
+        if (SCENE_COMMANDS[i].needs_placement && world_placement_count(world) == 0) {
             scene_error(path, line_no, "這個指令前面要先有 placement 或 surface");
             return false;
         }
@@ -12827,10 +10099,10 @@ static bool parse_scene_file(const char *path, World *out_world)
             continue;
         }
 
-        if (out_world->assembly.loading && strcmp(tokens[0],"assembly")) {
+        if (out_world->wood.assembly.loading && strcmp(tokens[0],"assembly")) {
             scene_error(path,line_no,"I41: assembly blocks may only contain assembly records"); ok=false; break;
         }
-        if (out_world->parameters.loading && strcmp(tokens[0],"parameters")) {
+        if (out_world->app.parameter_loading && strcmp(tokens[0],"parameters")) {
             scene_error(path,line_no,"I39: parameter block may only contain parameter records"); ok=false; break;
         }
         ok = apply_scene_line(path, line_no, tokens, count, out_world);
@@ -12842,15 +10114,15 @@ static bool parse_scene_file(const char *path, World *out_world)
      * 沒放置的角材沒有位置，既印不出也畫不出，一定是場景檔漏了 place。
      * 擋在這裡，後面就能確定 World 裡的角材都已放置。
      */
-    for (size_t i = 0; ok && i < out_world->timber_count; ++i) {
-        if (!out_world->timbers[i].placed) {
+    for (size_t i = 0; ok && i < out_world->wood.timber_count; ++i) {
+        if (!out_world->wood.timbers[i].placed) {
             fprintf(stderr, "%s: 角材 %" PRIu32 " 沒有 place。\n",
-                    path, out_world->timbers[i].id);
+                    path, out_world->wood.timbers[i].id);
             /* 也要記進緩衝:bridge 的 loadfile 只拿得到緩衝,
              * 不然它回 error:""——拒絕沒有理由(GEO-174,fuzz 找到)。 */
             snprintf(g_scene_last_error, sizeof g_scene_last_error,
                      "角材 %" PRIu32 " 沒有 place（收尾時仍未放置，I9）",
-                     out_world->timbers[i].id);
+                     out_world->wood.timbers[i].id);
             ok = false;
         }
     }
@@ -12885,81 +10157,16 @@ static bool parse_scene_file(const char *path, World *out_world)
  * 刻意不用「L=」這個字樣：tests/run_tests.py 的 LEN_RE 是 r"L=(\d+)"，
  * 會把輸出裡每一個 L= 都當成一支角材的長度；清單若用它，既有 128 個測試的長度比對會被污染。
  */
-typedef struct {
-    Coord length;
-    Coord size_a;
-    Coord size_b;
-    TimberRole role;
-    size_t count;
-    TimberId ids[WORLD_MAX_TIMBERS];
-} CutGroup;
+#include "geometry-templates/woodworking/native/cut_list.h"
 
 static void print_cut_list(const World *world)
 {
-    CutGroup groups[WORLD_MAX_TIMBERS];
-    size_t group_count = 0;
-    size_t placed = 0;
-    Coord total_length = 0;
-
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const Timber *t = &world->timbers[i];
-
-        /* 未放置的角材沒有推導出來的長度，不入清單（I9 收尾本來就會擋住整份場景）。 */
-        if (!t->placed) {
-            continue;
-        }
-
-        placed++;
-        total_length += t->length;
-
-        size_t g = 0;
-        for (; g < group_count; ++g) {
-            if (groups[g].length == t->length
-                && groups[g].size_a == t->size_a
-                && groups[g].size_b == t->size_b
-                && groups[g].role == t->role) {
-                break;
-            }
-        }
-
-        if (g == group_count) {
-            groups[g].length = t->length;
-            groups[g].size_a = t->size_a;
-            groups[g].size_b = t->size_b;
-            groups[g].role = t->role;
-            groups[g].count = 0;
-            group_count++;
-        }
-
-        groups[g].ids[groups[g].count++] = t->id;
-    }
-
-    if (group_count == 0) {
-        return;
-    }
-
-    /*
-     * 長料先切：長度遞減，同長度再依斷面 A、斷面 B、角色排。
-     * 排序是為了讓同一份場景永遠得到逐字相同的清單——清單要能拿去比對，不能每次順序不一樣。
-     */
-    for (size_t a = 0; a + 1 < group_count; ++a) {
-        for (size_t b = a + 1; b < group_count; ++b) {
-            bool swap =
-                groups[b].length > groups[a].length
-                || (groups[b].length == groups[a].length
-                    && (groups[b].size_a < groups[a].size_a
-                        || (groups[b].size_a == groups[a].size_a
-                            && (groups[b].size_b < groups[a].size_b
-                                || (groups[b].size_b == groups[a].size_b
-                                    && groups[b].role < groups[a].role)))));
-
-            if (swap) {
-                CutGroup tmp = groups[a];
-                groups[a] = groups[b];
-                groups[b] = tmp;
-            }
-        }
-    }
+    WoodCutList report;
+    if(!wood_cut_list_collect(world->wood.timbers,world->wood.timber_count,&report))return;
+    const WoodCutGroup *groups=report.groups;
+    size_t group_count=report.group_count,placed=report.placed;
+    Coord total_length=report.total_length;
+    if(!group_count)return;
 
     printf("\n=== 下料清單 ===\n");
 
@@ -13063,15 +10270,15 @@ int main(int argc, char **argv)
         if (!reference_default_world(&world)) return 1;
     }
 
-    if (world.placement_count == 0 && world.boundary_count == 0 &&
-        world.space_count == 0) {
+    if (world_placement_count(&world) == 0 && world_boundary_count(&world) == 0 &&
+        geo_enclosures_count(&world.geo.enclosures) == 0) {
         fprintf(stderr, "場景裡沒有任何物件。\n");
         return 1;
     }
 
     /* 以下不分來源：兩條路徑都只讀 world。逐片承載面分組印，參考線歸屬各自的面。 */
-    for (size_t s = 0; s < world.placement_count; ++s) {
-        const PlacementSurface *placement = &world.placements[s];
+    for (size_t s = 0; s < world_placement_count(&world); ++s) {
+        const PlacementSurface *placement = world_placement_at(&world,s);
         const SpaceBoundarySurface *boundary =
             world_find_boundary(&world, placement->boundary_id);
 
@@ -13104,22 +10311,22 @@ int main(int argc, char **argv)
 
         printf("\n=== 參考線 ===\n");
 
-        for (size_t i = 0; i < world.guide_count; ++i) {
-            if (world.guides[i].placement_id == placement->id) {
-                print_guide_line(placement, boundary, &world.guides[i]);
+        for (size_t i = 0; i < geo_guides_count(&world.geo.guide_lines); ++i) {
+            if (geo_guides_values(&world.geo.guide_lines)[i].placement_id == placement->id) {
+                print_guide_line(placement, boundary, &geo_guides_values(&world.geo.guide_lines)[i]);
             }
         }
     }
 
-    for (size_t i = 0; i < world.space_count; ++i) {
-        const Space *space = &world.spaces[i];
+    for (size_t i = 0; i < geo_enclosures_count(&world.geo.enclosures); ++i) {
+        const Space *space = geo_enclosures_at(&world.geo.enclosures,i);
 
         printf("\n=== 空間 ===\n");
         printf("空間 ID：%" PRIu32 "\n", space->id);
         printf("成員邊界面：");
 
-        for (size_t f = 0; f < space->boundary_count; ++f) {
-            printf("%s%" PRIu32, f == 0 ? "" : " ", space->boundaries[f]);
+        for (size_t f = 0; f < space->member_count; ++f) {
+            printf("%s%" PRIu32, f == 0 ? "" : " ", space->member_ids[f]);
         }
 
         printf("\n");
@@ -13179,9 +10386,9 @@ int main(int argc, char **argv)
         }
     }
 
-    for (size_t i = 0; i < world.timber_count; ++i) {
+    for (size_t i = 0; i < world.wood.timber_count; ++i) {
         /* 錨點由兩條參考線交出來時叫「參考線交點」，直接給座標時叫「放置錨點」。 */
-        const TimberAnchor *anchor = &world.anchors[i];
+        const TimberAnchor *anchor = &world.wood.anchors[i];
         const char *anchor_name =
             anchor->anchor_kind == ANCHOR_AT_GUIDES ? "參考線交點" :
             anchor->anchor_kind == ANCHOR_AT_GRID   ? "格線中心線" :
@@ -13189,11 +10396,12 @@ int main(int argc, char **argv)
                                                       "放置錨點";
 
         /* 未放置的角材錨點是零值，沒有所屬面——借第一片面推導房間座標。 */
+        PlacementSurface surface_value;
         const PlacementSurface *surface =
-            world_find_placement(&world, anchor->placement_id);
+            app_placement_read(&world,anchor->placement_id,&surface_value);
 
         if (surface == NULL) {
-            surface = &world.placements[0];
+            surface = app_placement_at(&world,0,&surface_value);
         }
 
         Point3 anchor_room = surface_point_to_room(
@@ -13216,8 +10424,8 @@ int main(int argc, char **argv)
         printf("\n");
     }
 
-    for (size_t i = 0; i < world.timber_count; ++i) {
-        const Timber *timber = &world.timbers[i];
+    for (size_t i = 0; i < world.wood.timber_count; ++i) {
+        const Timber *timber = &world.wood.timbers[i];
 
         printf("\n=== 已放置的完整角材 ===\n");
         printf("角材 ID：%" PRIu32 "\n", timber->id);

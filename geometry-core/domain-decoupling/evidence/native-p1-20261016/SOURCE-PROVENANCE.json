@@ -1,0 +1,424 @@
+{
+  "plans": [
+    {
+      "receipt": "baseline-adapters-a898ad6e",
+      "source": "a898ad6e12707104568679591fe1b21804bfc3df",
+      "manifest": "baseline-adapters-a898ad6e/source-before.json",
+      "fileCount": 15784,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "baseline-adapters-a898ad6e/summary.json"
+    },
+    {
+      "receipt": "producer-retry-v2",
+      "source": "a898ad6e12707104568679591fe1b21804bfc3df",
+      "manifest": "producer-retry-v2/source-before.json",
+      "fileCount": 15784,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "producer-retry-v2/summary.json"
+    },
+    {
+      "receipt": "grid-rename-native-v1",
+      "source": "2f015dfd62779baba066f503f21422f8472a0ae8",
+      "manifest": "grid-rename-native-v1/source-before.json",
+      "fileCount": 91,
+      "coverage": "partial-recorded-subset",
+      "allowCrlfCheckoutVariant": true,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": "a898ad6e12707104568679591fe1b21804bfc3df",
+      "rawSummary": "grid-rename-native-v1/summary.json"
+    },
+    {
+      "receipt": "native-kernel-ab90a56d-v1",
+      "source": "ab90a56df488b0cd38d5e6f9df1ed5597a8e126e",
+      "manifest": "native-kernel-ab90a56d-v1/source-before.json",
+      "fileCount": 15852,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-kernel-ab90a56d-v1/summary.json"
+    },
+    {
+      "receipt": "native-geometry-51e9045b-v1",
+      "source": "51e9045b43078a77383afdaf5db379117ffc8871",
+      "manifest": "native-geometry-51e9045b-v1/source-before.json",
+      "fileCount": 15857,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-geometry-51e9045b-v1/summary.json"
+    },
+    {
+      "receipt": "grid-rename-native-v2",
+      "source": "0e7c38bb8bf719f0084d24ce73ef65f016d6ddde",
+      "manifest": "grid-rename-native-v2/source-before.json",
+      "fileCount": 15789,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "grid-rename-native-v2/summary.json"
+    },
+    {
+      "receipt": "region-edges-old-51e9045b-v1",
+      "source": "51e9045b43078a77383afdaf5db379117ffc8871",
+      "manifest": "region-edges-old-51e9045b-v1/source-before.json",
+      "fileCount": 15861,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": "be9ed3e7886f951918a8e02e678e0284f0d34079",
+      "judgeOnlyAddedFiles": {
+        "tests/test_geo261_region_edges.py": "46f0cc9cd174510d65ad3a969402d711f503e7f354b38c9ef09c77086c7e0912",
+        "tests/geo261_region_edges_harness.c": "4ba5485e603ae2ce83b02d3d1c5a81681abd88be2811971fd72421c1ecc321fa",
+        "tests/fixtures/geo261_region_crossing.scene": "532e413d533306e2957328fe3ea03cb6d33a64585afe41d335c868abfcbd310a",
+        "tests/fixtures/geo261_region_unit_hole.scene": "f69cf23dd7e070e73100602fc1d841572151126f51f547e11540ccc3092e050f"
+      },
+      "baselineAdapterSource": null,
+      "rawSummary": "region-edges-old-51e9045b-v1/summary.json"
+    },
+    {
+      "receipt": "region-edges-new-be9ed3e7-v1",
+      "source": "be9ed3e7886f951918a8e02e678e0284f0d34079",
+      "manifest": "region-edges-new-be9ed3e7-v1/source-before.json",
+      "fileCount": 15862,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": "be9ed3e7886f951918a8e02e678e0284f0d34079",
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "region-edges-new-be9ed3e7-v1/summary.json"
+    },
+    {
+      "receipt": "native-grid-49f03842-v1",
+      "source": "49f03842cca4f70e0e38a82d120c06edd1b16189",
+      "manifest": "native-grid-49f03842-v1/source-before.json",
+      "fileCount": 15861,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-grid-49f03842-v1/summary.json"
+    },
+    {
+      "receipt": "native-parameters-4aabd21c-v1",
+      "source": "4aabd21cf82d495f5ab4902bedc9330ca5ed4e3b",
+      "manifest": "native-parameters-4aabd21c-v1/source-before.json",
+      "fileCount": 15867,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-parameters-4aabd21c-v1/summary.json"
+    },
+    {
+      "receipt": "parameters-legacy-4aabd21c-v1",
+      "source": "4aabd21cf82d495f5ab4902bedc9330ca5ed4e3b",
+      "manifest": "parameters-legacy-4aabd21c-v1/source-before.json",
+      "fileCount": 15867,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "parameters-legacy-4aabd21c-v1/summary.json"
+    },
+    {
+      "receipt": "native-annotation-b370f753-v1",
+      "source": "b370f753f22d0d119835c59d23b0a78344f8ee55",
+      "manifest": "native-annotation-b370f753-v1/source-before.json",
+      "fileCount": 15869,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-annotation-b370f753-v1/summary.json"
+    },
+    {
+      "receipt": "native-datums-c28ea963-v1",
+      "source": "c28ea9639b79881f30995cd79ce843346373c31e",
+      "manifest": "native-datums-c28ea963-v1/source-before.json",
+      "fileCount": 15881,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-datums-c28ea963-v1/summary.json"
+    },
+    {
+      "receipt": "rectangular-template-c6599522-v1",
+      "source": "c65995221cf016cb02533a6cb0952f19c22bfeb9",
+      "manifest": "rectangular-template-c6599522-v1/source-before.json",
+      "fileCount": 15910,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "rectangular-template-c6599522-v1/summary.json"
+    },
+    {
+      "receipt": "native-corrected-db65132a-v1",
+      "source": "db65132a41c4b4c815b6814784651e3980bf4f63",
+      "manifest": "native-corrected-db65132a-v1/source-before.json",
+      "fileCount": 15894,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-corrected-db65132a-v1/summary.json"
+    },
+    {
+      "receipt": "parameters-legacy-db65132a-v1",
+      "source": "db65132a41c4b4c815b6814784651e3980bf4f63",
+      "manifest": "parameters-legacy-db65132a-v1/source-before.json",
+      "fileCount": 15894,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "parameters-legacy-db65132a-v1/summary.json"
+    },
+    {
+      "receipt": "grid-rename-native-v3",
+      "source": "73aca666e779527bd096e7f09a9bc12cdc38d051",
+      "manifest": "grid-rename-native-v3/source-before.json",
+      "fileCount": 15789,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "grid-rename-native-v3/summary.json"
+    },
+    {
+      "receipt": "region-edges-old-51e9045b-v2",
+      "source": "51e9045b43078a77383afdaf5db379117ffc8871",
+      "manifest": "region-edges-old-51e9045b-v2/source-before.json",
+      "fileCount": 15861,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": "a88d3c57917d22aa28e3357b2c22e08c586a9f71",
+      "judgeOnlyAddedFiles": {
+        "tests/test_geo261_region_edges.py": "46f0cc9cd174510d65ad3a969402d711f503e7f354b38c9ef09c77086c7e0912",
+        "tests/geo261_region_edges_harness.c": "4ba5485e603ae2ce83b02d3d1c5a81681abd88be2811971fd72421c1ecc321fa",
+        "tests/fixtures/geo261_region_crossing.scene": "532e413d533306e2957328fe3ea03cb6d33a64585afe41d335c868abfcbd310a",
+        "tests/fixtures/geo261_region_unit_hole.scene": "a5a72d90c49806335a409de23d359032e6cf623468ed4bb007bb7f4854805989"
+      },
+      "baselineAdapterSource": null,
+      "rawSummary": "region-edges-old-51e9045b-v2/summary.json"
+    },
+    {
+      "receipt": "region-edges-new-a88d3c57-v2",
+      "source": "a88d3c57917d22aa28e3357b2c22e08c586a9f71",
+      "manifest": "region-edges-new-a88d3c57-v2/source-before.json",
+      "fileCount": 15862,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": "a88d3c57917d22aa28e3357b2c22e08c586a9f71",
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "region-edges-new-a88d3c57-v2/summary.json"
+    },
+    {
+      "receipt": "datum-baseline-a898-v1",
+      "source": "a898ad6e12707104568679591fe1b21804bfc3df",
+      "manifest": "datum-baseline-a898-v1/source-before.json",
+      "fileCount": 15784,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "datum-baseline-a898-v1/summary.json"
+    },
+    {
+      "receipt": "native-groups-99eeabe1-v1",
+      "source": "99eeabe11875f4d18b1bc35607cd3601a0ac3b4b",
+      "manifest": "native-groups-99eeabe1-v1/source-before.json",
+      "fileCount": 15929,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-groups-99eeabe1-v1/summary.json"
+    },
+    {
+      "receipt": "native-closure-a3aeef41-v1",
+      "source": "a3aeef41adb1bc3bb5d0da0b941342387373a238",
+      "manifest": "native-closure-a3aeef41-v1/source-before.json",
+      "fileCount": 15947,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-closure-a3aeef41-v1/summary.json"
+    },
+    {
+      "receipt": "pf3-regressions-a3aeef41-v1",
+      "source": "a3aeef41adb1bc3bb5d0da0b941342387373a238",
+      "manifest": "pf3-regressions-a3aeef41-v1/source-before.json",
+      "fileCount": 15947,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "pf3-regressions-a3aeef41-v1/summary.json"
+    },
+    {
+      "receipt": "native-grid-product-b21334a2-v1",
+      "source": "b21334a2f5b912a876e0cf98b3cca8ae11065037",
+      "manifest": "native-grid-product-b21334a2-v1/source-before.json",
+      "fileCount": 15956,
+      "coverage": "complete-archived-or-clean-checkout-source",
+      "allowCrlfCheckoutVariant": false,
+      "judgeSource": null,
+      "judgeOnlyAddedFiles": {},
+      "baselineAdapterSource": null,
+      "rawSummary": "native-grid-product-b21334a2-v1/summary.json"
+    }
+  ],
+  "commits": {
+    "0e7c38bb8bf719f0084d24ce73ef65f016d6ddde": {
+      "file": "source-commits/0e7c38bb8bf719f0084d24ce73ef65f016d6ddde.commit",
+      "sha256": "81b6cb4faefe9da8d0d87e67bc2d74d0914a8420685a97a9983d858a78f871e3",
+      "bytes": 254,
+      "gitCommitObjectId": "0e7c38bb8bf719f0084d24ce73ef65f016d6ddde",
+      "tree": "4c9de4bd0aabdb7ecc12a4cc202fe22db4a28d93"
+    },
+    "2f015dfd62779baba066f503f21422f8472a0ae8": {
+      "file": "source-commits/2f015dfd62779baba066f503f21422f8472a0ae8.commit",
+      "sha256": "4621c05aef4ec390a477c82fd59ca473215e131f1fc3b47934f19e4cc48eaffb",
+      "bytes": 254,
+      "gitCommitObjectId": "2f015dfd62779baba066f503f21422f8472a0ae8",
+      "tree": "4564aaec08769815b645473827e0b6056aefd2cd"
+    },
+    "49f03842cca4f70e0e38a82d120c06edd1b16189": {
+      "file": "source-commits/49f03842cca4f70e0e38a82d120c06edd1b16189.commit",
+      "sha256": "3c786f156329ff366e56b8fe78a24b793739bd0355e11aeab26b70e5097b2eec",
+      "bytes": 270,
+      "gitCommitObjectId": "49f03842cca4f70e0e38a82d120c06edd1b16189",
+      "tree": "b7be66c56a615078f585b3a322ffc729acd7407f"
+    },
+    "4aabd21cf82d495f5ab4902bedc9330ca5ed4e3b": {
+      "file": "source-commits/4aabd21cf82d495f5ab4902bedc9330ca5ed4e3b.commit",
+      "sha256": "91f96faab871f57a208ca4653777daf374035f8b2d7660a1dc479c28770b53dd",
+      "bytes": 274,
+      "gitCommitObjectId": "4aabd21cf82d495f5ab4902bedc9330ca5ed4e3b",
+      "tree": "2771ff57de6794bc9ccc2b7c33fed8db36cf614d"
+    },
+    "51e9045b43078a77383afdaf5db379117ffc8871": {
+      "file": "source-commits/51e9045b43078a77383afdaf5db379117ffc8871.commit",
+      "sha256": "a9cfd38285c7bbcf60ed95975ddf58b5da25e51345f1070621137e1e2042021b",
+      "bytes": 764,
+      "gitCommitObjectId": "51e9045b43078a77383afdaf5db379117ffc8871",
+      "tree": "f41cba7abe68fe627202be89666df30f61f53809"
+    },
+    "73aca666e779527bd096e7f09a9bc12cdc38d051": {
+      "file": "source-commits/73aca666e779527bd096e7f09a9bc12cdc38d051.commit",
+      "sha256": "512302ac9ae75b929096b7590d4599a20434f649b6b31d00df7064ce9747ad98",
+      "bytes": 278,
+      "gitCommitObjectId": "73aca666e779527bd096e7f09a9bc12cdc38d051",
+      "tree": "1511e49baa331e789e21a1498107ec7e0ad31a5d"
+    },
+    "99eeabe11875f4d18b1bc35607cd3601a0ac3b4b": {
+      "file": "source-commits/99eeabe11875f4d18b1bc35607cd3601a0ac3b4b.commit",
+      "sha256": "5f1ee4d43ff33347239c30f2b1ddf3756df80909e57d15408969f922d83f3cc9",
+      "bytes": 273,
+      "gitCommitObjectId": "99eeabe11875f4d18b1bc35607cd3601a0ac3b4b",
+      "tree": "5aa64658c15ebc55b16d239500025488e04a0f73"
+    },
+    "a3aeef41adb1bc3bb5d0da0b941342387373a238": {
+      "file": "source-commits/a3aeef41adb1bc3bb5d0da0b941342387373a238.commit",
+      "sha256": "6d11fd0b0565bdd44c6557b7ac0f9b4044669a94507eb7ec0b52322c9ac80886",
+      "bytes": 263,
+      "gitCommitObjectId": "a3aeef41adb1bc3bb5d0da0b941342387373a238",
+      "tree": "5aebdaa5c0f651bdcb25cb8f08ca674cbe5b1789"
+    },
+    "a88d3c57917d22aa28e3357b2c22e08c586a9f71": {
+      "file": "source-commits/a88d3c57917d22aa28e3357b2c22e08c586a9f71.commit",
+      "sha256": "f6a2ca187e6db26de6c06ee12433e75abb2876c9eec277984a8502dd964c780d",
+      "bytes": 283,
+      "gitCommitObjectId": "a88d3c57917d22aa28e3357b2c22e08c586a9f71",
+      "tree": "954e603f5a430e2573383373b85d154e89193955"
+    },
+    "a898ad6e12707104568679591fe1b21804bfc3df": {
+      "file": "source-commits/a898ad6e12707104568679591fe1b21804bfc3df.commit",
+      "sha256": "2f78d0c190de6ffbcc356854757197be76f563f6ab5a4565fa6c190d154f33f9",
+      "bytes": 1242,
+      "gitCommitObjectId": "a898ad6e12707104568679591fe1b21804bfc3df",
+      "tree": "9e6b05430181f0c32032a8c975a82ddf1fd4db80"
+    },
+    "ab90a56df488b0cd38d5e6f9df1ed5597a8e126e": {
+      "file": "source-commits/ab90a56df488b0cd38d5e6f9df1ed5597a8e126e.commit",
+      "sha256": "4a2d2d143d4d47856fe3e74f530f0fbc713c548cd9c7bd3f0e9cf1cb63480f59",
+      "bytes": 267,
+      "gitCommitObjectId": "ab90a56df488b0cd38d5e6f9df1ed5597a8e126e",
+      "tree": "b054003412eae88058e237885e9b875bf8c04cc5"
+    },
+    "b21334a2f5b912a876e0cf98b3cca8ae11065037": {
+      "file": "source-commits/b21334a2f5b912a876e0cf98b3cca8ae11065037.commit",
+      "sha256": "b284cf843980969f6bfa3d8eb58d7d02f803de7547cf5404308a29784b4529da",
+      "bytes": 268,
+      "gitCommitObjectId": "b21334a2f5b912a876e0cf98b3cca8ae11065037",
+      "tree": "900fceab99706d3ab7f2c48b79085ab6a1c5f092"
+    },
+    "b370f753f22d0d119835c59d23b0a78344f8ee55": {
+      "file": "source-commits/b370f753f22d0d119835c59d23b0a78344f8ee55.commit",
+      "sha256": "5eba785a59959b035ad8f9c2b2dc90fd193137ff67607033a92efc312b937700",
+      "bytes": 258,
+      "gitCommitObjectId": "b370f753f22d0d119835c59d23b0a78344f8ee55",
+      "tree": "9202065847e73f029363ef77b8b2f7b4460b65af"
+    },
+    "be9ed3e7886f951918a8e02e678e0284f0d34079": {
+      "file": "source-commits/be9ed3e7886f951918a8e02e678e0284f0d34079.commit",
+      "sha256": "783e68c6aac4ab6b842f862204ed5fff4ebbd9aff4bf7cc3d1fa7c2d3b1e73c9",
+      "bytes": 258,
+      "gitCommitObjectId": "be9ed3e7886f951918a8e02e678e0284f0d34079",
+      "tree": "10acd7e79167a084d65decb3a8c2507b239f67cc"
+    },
+    "c28ea9639b79881f30995cd79ce843346373c31e": {
+      "file": "source-commits/c28ea9639b79881f30995cd79ce843346373c31e.commit",
+      "sha256": "9ad993c68a37a06b9d56ecf5964a552a8b5ea094fefc1c2cfb9b8f896470ab99",
+      "bytes": 256,
+      "gitCommitObjectId": "c28ea9639b79881f30995cd79ce843346373c31e",
+      "tree": "52ad1d8a45192daa77ce2bea08e19696136a13af"
+    },
+    "c65995221cf016cb02533a6cb0952f19c22bfeb9": {
+      "file": "source-commits/c65995221cf016cb02533a6cb0952f19c22bfeb9.commit",
+      "sha256": "c8bc2d271b7388484bd62ed479f0475cddbfd325d718076982b98a4c0ba5e583",
+      "bytes": 460,
+      "gitCommitObjectId": "c65995221cf016cb02533a6cb0952f19c22bfeb9",
+      "tree": "3d8c98be80d24cf12903995701ef0a75df2bf504"
+    },
+    "db65132a41c4b4c815b6814784651e3980bf4f63": {
+      "file": "source-commits/db65132a41c4b4c815b6814784651e3980bf4f63.commit",
+      "sha256": "1043391e6658c1c8ee30196a579dce39a81abac840aa42a45c69db4aa732eaf5",
+      "bytes": 278,
+      "gitCommitObjectId": "db65132a41c4b4c815b6814784651e3980bf4f63",
+      "tree": "0d3667187f6901d1ba4602e79d3e6520ab822d0f"
+    }
+  },
+  "note": "Commit objects prove the named commit identity. Optional Git archive verification checks every recorded source file against those commits without creating a checkout."
+}

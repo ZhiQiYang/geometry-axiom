@@ -1,0 +1,88 @@
+[
+  {
+    "path": "/tmp/geometry-tests/run_all-logs/py_test_bridge_integrity.log",
+    "suite": "py:test_bridge_integrity",
+    "before": {
+      "device": 34,
+      "inode": 8928,
+      "bytes": 0,
+      "mtime_ns": 1792332734145425378,
+      "ctime_ns": 1792332734145425378,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "copied": true,
+    "after": {
+      "device": 34,
+      "inode": 8928,
+      "bytes": 0,
+      "mtime_ns": 1792332870271261388,
+      "ctime_ns": 1792332870271261388,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "own_stdout_announced_suite": true,
+    "copy": "suite-logs/py_test_bridge_integrity.log"
+  },
+  {
+    "path": "/tmp/geometry-tests/run_all-logs/py_test_bridge_integrity.unittest.log",
+    "suite": "py:test_bridge_integrity",
+    "before": {
+      "device": 34,
+      "inode": 6044,
+      "bytes": 124,
+      "mtime_ns": 1792332734129426101,
+      "ctime_ns": 1792332734129426101,
+      "sha256": "70ad1ada2ce9962e1668000414cdfba97fe049b2a2e83004d10c39dc34f04660",
+      "exists": true
+    },
+    "copied": true,
+    "after": {
+      "device": 34,
+      "inode": 6044,
+      "bytes": 124,
+      "mtime_ns": 1792332870255262115,
+      "ctime_ns": 1792332870255262115,
+      "sha256": "dada471385c28fe00bfe60625c63284376b179de7c2246f45d7b7c12e6ac088d",
+      "exists": true
+    },
+    "own_stdout_announced_suite": true,
+    "copy": "suite-logs/py_test_bridge_integrity.unittest.log"
+  },
+  {
+    "path": "/tmp/geometry-tests/run_all-logs/py_test_bridge_integrity.json",
+    "suite": "py:test_bridge_integrity",
+    "before": {
+      "device": 34,
+      "inode": 149754,
+      "bytes": 352,
+      "mtime_ns": 1792332734135724674,
+      "ctime_ns": 1792332734135724674,
+      "sha256": "eb31b8db45c944fbfb0b9a6e59525f9459acd2f0a3de3fe777d0c1e9a4f666a8",
+      "exists": true
+    },
+    "copied": true,
+    "after": {
+      "device": 34,
+      "inode": 150993,
+      "bytes": 352,
+      "mtime_ns": 1792332870258336062,
+      "ctime_ns": 1792332870258336062,
+      "sha256": "5ca8d0d2bf6cd93ed89a9b05408454979f597b12a0b07806d1a975d0c81bee07",
+      "exists": true
+    },
+    "own_stdout_announced_suite": true,
+    "copy": "suite-logs/py_test_bridge_integrity.json",
+    "reported_fields_only": {
+      "total": 24,
+      "run": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "blocked_by_error": 0,
+      "import_error": null,
+      "extra_errors": 0,
+      "expected_failed": 0
+    }
+  }
+]

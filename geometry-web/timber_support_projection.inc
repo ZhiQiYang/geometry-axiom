@@ -3,14 +3,14 @@
 static const AsmInstance *schedule_support_owner(const World *w,uint32_t timber,uint32_t *member)
 {
     const AsmInstance *found=NULL; size_t hits=0;
-    for(size_t i=0;i<w->assembly.instance_count;++i)
-        for(int m=0;m<3;++m) if(w->assembly.instances[i].timber[m]==timber) {
-            found=&w->assembly.instances[i]; *member=found->member[m]; ++hits;
+    for(size_t i=0;i<w->wood.assembly.instance_count;++i)
+        for(int m=0;m<3;++m) if(w->wood.assembly.instances[i].timber[m]==timber) {
+            found=&w->wood.assembly.instances[i]; *member=found->member[m]; ++hits;
         }
     if(hits!=1) return NULL;
     size_t owned=0;
-    for(size_t i=0;i<w->assembly.owner_count;++i) {
-        const AsmOwner *o=&w->assembly.owners[i];
+    for(size_t i=0;i<w->wood.assembly.owner_count;++i) {
+        const AsmOwner *o=&w->wood.assembly.owners[i];
         if(o->timber==timber) {
             if(o->instance!=found->id || o->member!=*member) return NULL;
             ++owned;
@@ -24,16 +24,16 @@ static void json_schedule_support_owner(const World *w,uint32_t timber)
     uint32_t member=0; const AsmInstance *a=schedule_support_owner(w,timber,&member);
     if(!a) { fputs("null",stdout); return; }
     const AsmBinding *b=NULL;
-    for(size_t i=0;i<w->assembly.binding_count;++i)
-        if(w->assembly.bindings[i].id==a->binding_id) b=&w->assembly.bindings[i];
+    for(size_t i=0;i<w->wood.assembly.binding_count;++i)
+        if(w->wood.assembly.bindings[i].id==a->binding_id) b=&w->wood.assembly.bindings[i];
     const AsmRuleVersion *r=NULL;
-    for(size_t i=0;i<w->assembly.rule_count;++i)
-        if(w->assembly.rules[i].id==a->rule_id && w->assembly.rules[i].version==a->rule_version &&
-           !strcmp(w->assembly.rules[i].fingerprint,a->rule_hash)) r=&w->assembly.rules[i];
+    for(size_t i=0;i<w->wood.assembly.rule_count;++i)
+        if(w->wood.assembly.rules[i].id==a->rule_id && w->wood.assembly.rules[i].version==a->rule_version &&
+           !strcmp(w->wood.assembly.rules[i].fingerprint,a->rule_hash)) r=&w->wood.assembly.rules[i];
     if(!b || !b->complete || b->rule_id!=a->rule_id || b->rule_version!=a->rule_version || !r) { fputs("null",stdout); return; }
     char instance_hash[65],binding_hash[65];
-    eng_sha256(a->content,strlen(a->content),instance_hash);
-    eng_sha256(b->content,strlen(b->content),binding_hash);
+    geo_sha256(a->content,strlen(a->content),instance_hash);
+    geo_sha256(b->content,strlen(b->content),binding_hash);
     printf("{\"instanceId\":%u,\"memberId\":%u,\"bindingId\":%u,\"ruleId\":%u,\"ruleVersion\":%u,"
            "\"ruleFingerprint\":\"%s\",\"instanceFingerprint\":\"%s\",\"bindingFingerprint\":\"%s\"}",
            a->id,member,a->binding_id,a->rule_id,a->rule_version,a->rule_hash,instance_hash,binding_hash);
@@ -62,12 +62,14 @@ static void json_schedule_support_face(const World *w,const PlacementSurface *p,
 {
     if(f->kind==STOP_TIMBER_SIDE) {
         int ti=reference_timber_index(w,f->timber_id);
-        int face=ti<0?-1:schedule_support_local_face(&w->timbers[ti],p,along_v,f->fixed);
+        int face=ti<0?-1:schedule_support_local_face(&w->wood.timbers[ti],p,along_v,f->fixed);
         if(face<0) { fputs("null",stdout); return; }
-        const Timber *t=&w->timbers[ti];
+        const Timber *t=&w->wood.timbers[ti];
         Vector3 axes[3]={t->axis_length,t->axis_a,t->axis_b};
-        Vector3 normal=axes[TIMBER_FACE_SPEC[face].axis];
-        if(!TIMBER_FACE_SPEC[face].side) normal=vector_negate(normal);
+        unsigned face_axis,face_side;
+        if(!wood_member_face_spec((WoodMemberFace)face,&face_axis,&face_side)){fputs("null",stdout);return;}
+        Vector3 normal=axes[face_axis];
+        if(!face_side) normal=vector_negate(normal);
         printf("{\"kind\":\"timber-face\",\"source\":{\"kind\":\"timber\",\"id\":%u},\"localFace\":",t->id);
         js_string(timber_face_short_name((TimberFaceId)face));
         printf(",\"normalWorld\":[%lld,%lld,%lld],\"owner\":",(long long)normal.x,(long long)normal.y,(long long)normal.z);
@@ -116,7 +118,7 @@ static void json_schedule_support_endpoint(const World *w,const PlacementSurface
     }
     if(hits==1 && found->kind==STOP_TIMBER_SIDE) {
         int ti=reference_timber_index(w,found->timber_id);
-        if(ti<0 || schedule_support_local_face(&w->timbers[ti],p,along_v,at)<0) hits=0;
+        if(ti<0 || schedule_support_local_face(&w->wood.timbers[ti],p,along_v,at)<0) hits=0;
     }
     printf("{\"status\":\"%s\",\"at\":%lld,\"crossRange\":[%lld,%lld],\"relation\":",
            hits==1?"exact":"unknown",(long long)at,(long long)lo,(long long)hi);
@@ -131,9 +133,9 @@ static void json_timber_supports(const World *w,const char fingerprint[65])
 {
     printf("{\"schema\":\"native-timber-supports/1\",\"sourceFingerprint\":\"%s\",\"entries\":[",fingerprint);
     bool first=true;
-    for(size_t i=0;i<w->timber_count;++i) {
-        const Timber *t=&w->timbers[i]; if(!t->placed) continue;
-        const TimberAnchor *a=&w->anchors[i]; const PlacementSurface *p=world_find_placement(w,a->placement_id);
+    for(size_t i=0;i<w->wood.timber_count;++i) {
+        const Timber *t=&w->wood.timbers[i]; if(!t->placed) continue;
+        const TimberAnchor *a=&w->wood.anchors[i]; const PlacementSurface *p=world_find_placement(w,a->placement_id);
         SurfaceRegion2 f;
         printf("%s{\"id\":%u,\"surface\":%u,\"owner\":",first?"":",",t->id,a->placement_id); first=false;
         json_schedule_support_owner(w,t->id);

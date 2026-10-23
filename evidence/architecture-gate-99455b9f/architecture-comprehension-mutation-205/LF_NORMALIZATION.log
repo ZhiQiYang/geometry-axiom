@@ -1,0 +1,18 @@
+test_lf_exclusion_same_content_accepts_crlf_and_lf (__main__.ArchitectureContract.test_lf_exclusion_same_content_accepts_crlf_and_lf) ... FAIL
+
+======================================================================
+FAIL: test_lf_exclusion_same_content_accepts_crlf_and_lf (__main__.ArchitectureContract.test_lf_exclusion_same_content_accepts_crlf_and_lf)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 305, in test_lf_exclusion_same_content_accepts_crlf_and_lf
+    self.green()
+    ~~~~~~~~~~^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 59, in green
+    self.assertTrue(result.ok, result.to_dict())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : {'ok': False, 'sources': [], 'trustedSourcesNotParsed': [], 'edges': [], 'diagnostics': [{'path': 'src/omitted.py', 'line': 1, 'code': 'EXCLUSION_DIGEST', 'message': 'immutable lf digest is absent or mismatched', 'direction': '', 'chain': ()}]}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.012s
+
+FAILED (failures=1)

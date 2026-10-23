@@ -1,0 +1,430 @@
+{
+  "stage": "baseline-raw",
+  "checkout": "/workspace/geometry-axiom",
+  "recorder_started_utc": "2026-10-18T13:49:15.768157+00:00",
+  "expected_head": "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+  "invocation": [
+    "/workspace/geo261-validation-20261018/proposed-fixes/record_evidence_command.py",
+    "--checkout",
+    "/workspace/geometry-axiom",
+    "--expected-head",
+    "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+    "--stage",
+    "baseline-raw",
+    "--out",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/baseline-raw-receipt",
+    "--timeout",
+    "900",
+    "--",
+    "python3",
+    "-B",
+    "/workspace/geo261-validation-20261018/performance/proposals/B-draft/raw_compare.py",
+    "capture",
+    "--state",
+    "pristine",
+    "--source-sha",
+    "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+    "--bridge",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/binaries-baseline/bridge",
+    "--fixtures",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-fixtures",
+    "--output",
+    "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-baseline"
+  ],
+  "helper_sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+  "status": "擷取完成；不代表測試通過或突變有效",
+  "test_verdict": "未判定；必須依原始 suite／具名 assertion 人工核對",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8"
+  },
+  "environment_scope": "只存固定非機密白名單；child 繼承原環境，未注入 hook 或改寫 PYTHONPATH",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "limitations": [
+    "未擷取已清除 transient native mutant binary；持久 binary hash 不冒充其身分",
+    "外部流程必須串行；mtime+本命令 stdout 宣告排除舊檔，但不是完整跨行程 provenance 系統",
+    "timeout／compile error／import error／crash／setup error 都不能當有效 mutation kill"
+  ],
+  "command_executable": {
+    "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+    "identity": {
+      "device": 27,
+      "inode": 9223372036854861905,
+      "bytes": 30894944,
+      "mtime_ns": 1791399883000000000,
+      "ctime_ns": 1791399883000000000,
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "exists": true
+    }
+  },
+  "tools": {
+    "gcc": {
+      "command": [
+        "gcc",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/usr/bin/x86_64-linux-gnu-gcc-14"
+    },
+    "python": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12"
+    },
+    "node": {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node"
+    },
+    "chrome": {
+      "command": [
+        "/workspace/geo261-tools/google-chrome-155.0.8059.84/opt/google/chrome/google-chrome",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/workspace/geo261-tools/google-chrome-155.0.8059.84/opt/google/chrome/google-chrome"
+    },
+    "chromium": {
+      "command": [
+        "chromium",
+        "--version"
+      ],
+      "returncode": 0,
+      "executable": "/usr/bin/chromium"
+    }
+  },
+  "stack_before_bytes": {
+    "soft": 8388608,
+    "hard": -1
+  },
+  "stack_child_bytes": 16777216,
+  "process": {
+    "argv": [
+      "python3",
+      "-B",
+      "/workspace/geo261-validation-20261018/performance/proposals/B-draft/raw_compare.py",
+      "capture",
+      "--state",
+      "pristine",
+      "--source-sha",
+      "e9c1509cf89e6f35d298743ec5e3368370316cf7",
+      "--bridge",
+      "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/binaries-baseline/bridge",
+      "--fixtures",
+      "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-fixtures",
+      "--output",
+      "/workspace/geo261-validation-20261018/fixes/perf-owned-replay-ad/raw-baseline"
+    ],
+    "shell": false,
+    "cwd": "/workspace/geometry-axiom",
+    "started_utc": "2026-10-18T13:49:16.769110+00:00",
+    "started_ns": 1792331356769124296,
+    "timeout_seconds": 900.0,
+    "timed_out": false,
+    "interrupted": false,
+    "returncode": 0,
+    "launch_error": null,
+    "pid": 146818,
+    "ended_utc": "2026-10-18T13:49:19.289578+00:00",
+    "ended_ns": 1792331359289623306,
+    "seconds": 2.5204972089995863,
+    "streams": {
+      "stdout": {
+        "device": 27,
+        "inode": 1457734,
+        "bytes": 746,
+        "mtime_ns": 1792331359264640005,
+        "ctime_ns": 1792331359264640005,
+        "sha256": "15242c7e753a2928dff38828d2d44b6948e9d7189a4c0fc43f9ec5daf65efc83",
+        "exists": true
+      },
+      "stderr": {
+        "device": 27,
+        "inode": 1457820,
+        "bytes": 0,
+        "mtime_ns": 1792331356769074427,
+        "ctime_ns": 1792331356769074427,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exists": true
+      }
+    }
+  },
+  "run_all_logs_complete": null,
+  "artifacts": [],
+  "source_stable": true,
+  "head_stable": true,
+  "status_and_diff_stable": true,
+  "recorder_ended_utc": "2026-10-18T13:49:20.124969+00:00",
+  "recorder_exit_code": 0,
+  "evidence_files": {
+    "after.binaries.json": {
+      "device": 27,
+      "inode": 1457873,
+      "bytes": 3996,
+      "mtime_ns": 1792331359441240771,
+      "ctime_ns": 1792331359441240771,
+      "sha256": "6b162f92f111576a9893c44307dc68798b13334195e862ce91e8dc362c5f60ee",
+      "exists": true
+    },
+    "after.binary-00.sidecar.json": {
+      "device": 27,
+      "inode": 1457870,
+      "bytes": 22632,
+      "mtime_ns": 1792331359436946023,
+      "ctime_ns": 1792331359436946023,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64",
+      "exists": true
+    },
+    "after.binary-01.sidecar.json": {
+      "device": 27,
+      "inode": 1457871,
+      "bytes": 22646,
+      "mtime_ns": 1792331359438679899,
+      "ctime_ns": 1792331359438679899,
+      "sha256": "6f9f9f01697041e9653549f629222a9f12f3bbf0b5656429786130ffd62aa457",
+      "exists": true
+    },
+    "after.binary-02.sidecar.json": {
+      "device": 27,
+      "inode": 1457872,
+      "bytes": 22658,
+      "mtime_ns": 1792331359440858053,
+      "ctime_ns": 1792331359440858053,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6",
+      "exists": true
+    },
+    "after.diff.patch": {
+      "device": 27,
+      "inode": 1457875,
+      "bytes": 0,
+      "mtime_ns": 1792331359559966477,
+      "ctime_ns": 1792331359559966477,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "after.source.json": {
+      "device": 27,
+      "inode": 1457876,
+      "bytes": 1534889,
+      "mtime_ns": 1792331360115941199,
+      "ctime_ns": 1792331360115941199,
+      "sha256": "b7623d6506a46ab387b8d2e38c16abe9bf84ad2e840750524645f3e3fc08f538",
+      "exists": true
+    },
+    "after.status.raw": {
+      "device": 27,
+      "inode": 1457874,
+      "bytes": 0,
+      "mtime_ns": 1792331359559966477,
+      "ctime_ns": 1792331359559966477,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "before.binaries.json": {
+      "device": 27,
+      "inode": 1457697,
+      "bytes": 3999,
+      "mtime_ns": 1792331356769074427,
+      "ctime_ns": 1792331356769074427,
+      "sha256": "c74801c56a828475795fcf178dc81002abdde2587da46d42e1d05d8b46815270",
+      "exists": true
+    },
+    "before.binary-00.sidecar.json": {
+      "device": 27,
+      "inode": 1456595,
+      "bytes": 22632,
+      "mtime_ns": 1792331356766042130,
+      "ctime_ns": 1792331356766042130,
+      "sha256": "d7b039d7ac8ac11c5f4aeb1bb8c2001deafb090813913fc6d961a1adcc029d64",
+      "exists": true
+    },
+    "before.binary-01.sidecar.json": {
+      "device": 27,
+      "inode": 1457633,
+      "bytes": 22646,
+      "mtime_ns": 1792331356767460397,
+      "ctime_ns": 1792331356767460397,
+      "sha256": "6f9f9f01697041e9653549f629222a9f12f3bbf0b5656429786130ffd62aa457",
+      "exists": true
+    },
+    "before.binary-02.sidecar.json": {
+      "device": 27,
+      "inode": 1457691,
+      "bytes": 22658,
+      "mtime_ns": 1792331356768764737,
+      "ctime_ns": 1792331356768764737,
+      "sha256": "d33a98b672be039f95d7966357b6fd00f59e835f7a431b4d49f783f9a2ce33d6",
+      "exists": true
+    },
+    "before.diff.patch": {
+      "device": 27,
+      "inode": 1455270,
+      "bytes": 0,
+      "mtime_ns": 1792331355880133786,
+      "ctime_ns": 1792331355880133786,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "before.source.json": {
+      "device": 27,
+      "inode": 1455273,
+      "bytes": 1534889,
+      "mtime_ns": 1792331356444108144,
+      "ctime_ns": 1792331356444108144,
+      "sha256": "4e96b95804923801f6546c2ce3972f928f0024e95bc64da4f15b46a902054410",
+      "exists": true
+    },
+    "before.status.raw": {
+      "device": 27,
+      "inode": 1455269,
+      "bytes": 0,
+      "mtime_ns": 1792331355880133786,
+      "ctime_ns": 1792331355880133786,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "command.process.json": {
+      "device": 27,
+      "inode": 1457822,
+      "bytes": 1521,
+      "mtime_ns": 1792331359290143212,
+      "ctime_ns": 1792331359290143212,
+      "sha256": "28149f4ca97046fb62d747ecb8eb14afbff1101e5a5f0856a069c8ee97e9740d",
+      "exists": true
+    },
+    "command.stderr": {
+      "device": 27,
+      "inode": 1457820,
+      "bytes": 0,
+      "mtime_ns": 1792331356769074427,
+      "ctime_ns": 1792331356769074427,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "command.stdout": {
+      "device": 27,
+      "inode": 1457734,
+      "bytes": 746,
+      "mtime_ns": 1792331359264640005,
+      "ctime_ns": 1792331359264640005,
+      "sha256": "15242c7e753a2928dff38828d2d44b6948e9d7189a4c0fc43f9ec5daf65efc83",
+      "exists": true
+    },
+    "recorder.py": {
+      "device": 27,
+      "inode": 1455135,
+      "bytes": 19730,
+      "mtime_ns": 1792331355770398256,
+      "ctime_ns": 1792331355770398256,
+      "sha256": "0bb3a563fe0fa9cfa0fb438cf71c2a8141b9cff633eaac625feeffb843065898",
+      "exists": true
+    },
+    "suite-logs.manifest.json": {
+      "device": 27,
+      "inode": 1457869,
+      "bytes": 3,
+      "mtime_ns": 1792331359290342404,
+      "ctime_ns": 1792331359290342404,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "exists": true
+    },
+    "tool-chrome.stderr": {
+      "device": 27,
+      "inode": 1456280,
+      "bytes": 199,
+      "mtime_ns": 1792331356553049118,
+      "ctime_ns": 1792331356553049118,
+      "sha256": "9cce10ed9e00d2731066cdec2befa7aadcbac0e4cd55dc744510fbca49744d51",
+      "exists": true
+    },
+    "tool-chrome.stdout": {
+      "device": 27,
+      "inode": 1455960,
+      "bytes": 29,
+      "mtime_ns": 1792331356553007387,
+      "ctime_ns": 1792331356553007387,
+      "sha256": "ccefec79b204799e9583870bfa1ef28e4675076c6cd56a2b4a82a8325ac74769",
+      "exists": true
+    },
+    "tool-chromium.stderr": {
+      "device": 27,
+      "inode": 1456354,
+      "bytes": 0,
+      "mtime_ns": 1792331356622289368,
+      "ctime_ns": 1792331356622289368,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "tool-chromium.stdout": {
+      "device": 27,
+      "inode": 1456351,
+      "bytes": 61,
+      "mtime_ns": 1792331356622289368,
+      "ctime_ns": 1792331356622289368,
+      "sha256": "091d31fb294d599567cfbeeb6731b9aee8838317f6f54e4d5bfeea6b4b3477b9",
+      "exists": true
+    },
+    "tool-gcc.stderr": {
+      "device": 27,
+      "inode": 1455275,
+      "bytes": 0,
+      "mtime_ns": 1792331356503535982,
+      "ctime_ns": 1792331356503535982,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "tool-gcc.stdout": {
+      "device": 27,
+      "inode": 1455274,
+      "bytes": 232,
+      "mtime_ns": 1792331356503535982,
+      "ctime_ns": 1792331356503535982,
+      "sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81",
+      "exists": true
+    },
+    "tool-node.stderr": {
+      "device": 27,
+      "inode": 1455892,
+      "bytes": 0,
+      "mtime_ns": 1792331356513471348,
+      "ctime_ns": 1792331356513471348,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "tool-node.stdout": {
+      "device": 27,
+      "inode": 1455278,
+      "bytes": 9,
+      "mtime_ns": 1792331356513471348,
+      "ctime_ns": 1792331356513471348,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "exists": true
+    },
+    "tool-python.stderr": {
+      "device": 27,
+      "inode": 1455277,
+      "bytes": 0,
+      "mtime_ns": 1792331356506418396,
+      "ctime_ns": 1792331356506418396,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exists": true
+    },
+    "tool-python.stdout": {
+      "device": 27,
+      "inode": 1455276,
+      "bytes": 15,
+      "mtime_ns": 1792331356506418396,
+      "ctime_ns": 1792331356506418396,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "exists": true
+    }
+  }
+}

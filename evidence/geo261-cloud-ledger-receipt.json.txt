@@ -1,0 +1,65 @@
+{
+  "sha": "52b951940f570011b257cd207741ba0a7f6d7ce9",
+  "started": "2026-10-22T06:18:51.426056+00:00",
+  "steps": [
+    {
+      "command": [
+        "git",
+        "-c",
+        "safe.directory=*",
+        "clone",
+        "-q",
+        "--no-checkout",
+        "/mnt/d/geometry-axiom",
+        "/var/tmp/codex-ledger-52b95194/repo"
+      ],
+      "exit": 0,
+      "seconds": 40.887328219000004,
+      "log": "clone.log"
+    },
+    {
+      "command": [
+        "git",
+        "-c",
+        "advice.detachedHead=false",
+        "checkout",
+        "-q",
+        "52b951940f570011b257cd207741ba0a7f6d7ce9"
+      ],
+      "exit": 0,
+      "seconds": 11.794196574999987,
+      "log": "checkout.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "-u",
+        "tests/mutate.py"
+      ],
+      "exit": 0,
+      "seconds": 6325.178997395999,
+      "log": "mutate.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 21.102285980000488,
+      "log": "check.log"
+    }
+  ],
+  "finished": "2026-10-22T08:09:12.694831+00:00",
+  "counts": {
+    "killed": 70,
+    "equivalent": 4,
+    "crashed": 1,
+    "retired": 3
+  },
+  "ledger_sha256": "bd9c88f598b8bd1a82cd2f561b1953ba034837cc44e66d49556dd246c8bc4c73",
+  "pass_check": true
+}

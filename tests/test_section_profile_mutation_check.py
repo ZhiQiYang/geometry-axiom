@@ -169,7 +169,9 @@ class ExceptionEvidence(unittest.TestCase):
     def test_case_declared_modelerror_is_detection(self):
         self.case = deepcopy(next(c for c in gate.CASES if c['id']=='SPM38'))
         self.name = gate.MODEL_MODULE+'.'+gate.MODEL_CLASS+'.'+gate.MLONG
-        self.assertEqual(self.judge([self.event(self.case['cause'][0], 'error', 'modeling.common.ModelError')])['verdict'], 'killed')
+        self.assertEqual(self.judge([self.event(self.case['cause'][0], 'error', 'geometry_app.model_common.ModelError')])['verdict'], 'killed')
+        # The facade alias is not the class identity the collector reports; it must not count as declared.
+        self.assertNotEqual(self.judge([self.event(self.case['cause'][0], 'error', 'modeling.common.ModelError')])['verdict'], 'killed')
 
     def test_wrong_method_with_cause_is_not_the_killer(self):
         self.assertNotEqual(self.judge([self.event(self.cause, name=self.name.replace(gate.PANEL, gate.GEOM))])['verdict'], 'killed')
@@ -215,10 +217,20 @@ class Fixture(unittest.TestCase):
         self.assertEqual(e['message'],'begin\n'+'x'*350+'\nterminal cause')
 
     def test_collector_preserves_actual_module_qualified_modelerror(self):
+        # The fixture imports ModelError through the modeling.common facade; the collector must report the
+        # defining module (GEO-261: H geometry_app.model_common), not the alias it was imported through.
         e=self.run_fixture('test_model_error')['events'][0]
         self.assertEqual(e['kind'],'error')
-        self.assertEqual(e['exception_type'],'modeling.common.ModelError')
+        self.assertEqual(e['exception_type'],'geometry_app.model_common.ModelError')
         self.assertIn('terminal cause',e['message'])
+
+    def test_declared_model_error_type_is_the_collected_identity(self):
+        # SPM38/SPM40 are detected only through their declared error type; a declaration that drifts from the
+        # name the collector actually reports turns those kills into 'crashed' without any other test noticing.
+        collected=self.run_fixture('test_model_error')['events'][0]['exception_type']
+        for case_id in ('SPM38','SPM40'):
+            with self.subTest(case=case_id):
+                self.assertEqual(next(c for c in gate.CASES if c['id']==case_id)['error_types'],[collected])
 
     def test_subtests_keep_separate_terminal_exception_identities(self):
         evidence=self.run_fixture('test_subtests')

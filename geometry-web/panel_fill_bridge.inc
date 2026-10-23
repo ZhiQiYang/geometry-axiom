@@ -64,28 +64,28 @@ static void dp_json_host(const World *w,const DerivedPlacement *d)
 static void json_panel_fill_state(const World *w)
 {
     fputs("{\"finishSurfaces\":[",stdout);
-    for(uint64_t i=0;i<w->finish_surfaces.count;++i){if(i)putchar(',');json_finish_surface(w,&w->finish_surfaces.items[i]);}
+    for(uint64_t i=0;i<w->wood.finish_surfaces.count;++i){if(i)putchar(',');json_finish_surface(w,&w->wood.finish_surfaces.items[i]);}
     putchar(']');pf_json_state(w);fputs(",\"derivedPlacements\":[",stdout);
-    for(uint64_t i=0;i<w->finish_surfaces.host_count;++i){if(i)putchar(',');dp_json_host(w,&w->finish_surfaces.hosts[i]);}fputs("]}",stdout);
+    for(uint64_t i=0;i<w->wood.finish_surfaces.host_count;++i){if(i)putchar(',');dp_json_host(w,&w->wood.finish_surfaces.hosts[i]);}fputs("]}",stdout);
 }
 static void json_panel_fill_changes(const World *before,const World *after)
 {
     bool first=true;putchar('[');
-    for(uint64_t i=0;i<after->finish_surfaces.count;++i){const FinishSurface *z=&after->finish_surfaces.items[i],*a=fs_find(before,z->id);
+    for(uint64_t i=0;i<after->wood.finish_surfaces.count;++i){const FinishSurface *z=&after->wood.finish_surfaces.items[i],*a=fs_find(before,z->id);
         if(a&&!memcmp(a,z,sizeof *a))continue;
         printf("%s{\"id\":%u,\"change\":\"%s\"}",first?"":",",(unsigned)z->id,a?"modified":"created");first=false;}
-    for(uint64_t i=0;i<before->finish_surfaces.count;++i){const FinishSurface *a=&before->finish_surfaces.items[i];
+    for(uint64_t i=0;i<before->wood.finish_surfaces.count;++i){const FinishSurface *a=&before->wood.finish_surfaces.items[i];
         if(fs_find(after,a->id))continue;
         printf("%s{\"id\":%u,\"change\":\"deleted\"}",first?"":",",(unsigned)a->id);first=false;}
-    for(uint64_t i=0;i<after->finish_surfaces.fill_count;++i){const PanelFill *z=&after->finish_surfaces.fills[i],*a=pf_find(before,z->id);
+    for(uint64_t i=0;i<after->wood.finish_surfaces.fill_count;++i){const PanelFill *z=&after->wood.finish_surfaces.fills[i],*a=pf_find(before,z->id);
         if(a&&!memcmp(a,z,sizeof *a)&&world_definitions_equal(before,after))continue;
         printf("%s{\"record\":\"panel-fill\",\"id\":%u,\"change\":\"%s\"}",first?"":",",z->id,!a?"created":memcmp(a,z,sizeof *a)?"modified":"derived");first=false;}
-    for(uint64_t i=0;i<before->finish_surfaces.fill_count;++i){const PanelFill *a=&before->finish_surfaces.fills[i];if(pf_find(after,a->id))continue;
+    for(uint64_t i=0;i<before->wood.finish_surfaces.fill_count;++i){const PanelFill *a=&before->wood.finish_surfaces.fills[i];if(pf_find(after,a->id))continue;
         printf("%s{\"record\":\"panel-fill\",\"id\":%u,\"change\":\"deleted\"}",first?"":",",a->id);first=false;}
-    for(uint64_t i=0;i<after->finish_surfaces.host_count;++i){const DerivedPlacement *z=&after->finish_surfaces.hosts[i],*a=dp_find(before,z->id);
+    for(uint64_t i=0;i<after->wood.finish_surfaces.host_count;++i){const DerivedPlacement *z=&after->wood.finish_surfaces.hosts[i],*a=dp_find(before,z->id);
         if(a&&!memcmp(a,z,sizeof *a)&&world_definitions_equal(before,after))continue;
         printf("%s{\"record\":\"derived-placement\",\"id\":%u,\"change\":\"%s\"}",first?"":",",z->id,!a?"created":memcmp(a,z,sizeof *a)?"modified":"derived");first=false;}
-    for(uint64_t i=0;i<before->finish_surfaces.host_count;++i){const DerivedPlacement *a=&before->finish_surfaces.hosts[i];if(dp_find(after,a->id))continue;
+    for(uint64_t i=0;i<before->wood.finish_surfaces.host_count;++i){const DerivedPlacement *a=&before->wood.finish_surfaces.hosts[i];if(dp_find(after,a->id))continue;
         printf("%s{\"record\":\"derived-placement\",\"id\":%u,\"change\":\"deleted\"}",first?"":",",a->id);first=false;}
     putchar(']');
 }
@@ -97,13 +97,13 @@ static void json_panel_fill_preview(void)
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":true,\"layerJudgement\":",
         g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
     fs_json_layer_pending();
-    fputs(",\"before\":",stdout);json_panel_fill_state(&g_preview.before);
-    fputs(",\"after\":",stdout);json_panel_fill_state(&g_preview.after);
+    fputs(",\"before\":",stdout);json_panel_fill_state(&g_preview.transaction->before);
+    fputs(",\"after\":",stdout);json_panel_fill_state(&g_preview.transaction->after);
     json_parameter_rebindings();
-    fputs(",\"changes\":",stdout);json_panel_fill_changes(&g_preview.before,&g_preview.after);
-    if(g_preview.before.finish_surfaces.host_count||g_preview.after.finish_surfaces.host_count){
-        fputs(",\"dependencies\":{\"before\":",stdout);json_engineering_state(&g_preview.before,true);
-        fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);putchar('}');
+    fputs(",\"changes\":",stdout);json_panel_fill_changes(&g_preview.transaction->before,&g_preview.transaction->after);
+    if(g_preview.transaction->before.wood.finish_surfaces.host_count||g_preview.transaction->after.wood.finish_surfaces.host_count){
+        fputs(",\"dependencies\":{\"before\":",stdout);json_engineering_state(&g_preview.transaction->before,true);
+        fputs(",\"after\":",stdout);json_engineering_state(&g_preview.transaction->after,true);putchar('}');
     }
     fputs(",\"violations\":[",stdout);
     if(!g_preview.valid){

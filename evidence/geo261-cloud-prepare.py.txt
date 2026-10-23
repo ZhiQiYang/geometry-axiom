@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+"""雲端只還原驗證工具並替換路徑；不執行測試、不修改產品、拒絕覆蓋。"""
+import argparse
+import ast
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+
+MAIN = 'adbaebf9c73ea6801d7b4d5214e4b846b132923b'
+BASE = '3e600772076465fc65a26ac09055028301c0fb0b'
+
+
+def digest(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--repo', required=True)
+    ap.add_argument('--scratch', required=True)
+    args = ap.parse_args()
+    repo, scratch = Path(args.repo).resolve(), Path(args.scratch).resolve()
+    bundle = Path(__file__).resolve().parent
+    manifest = json.loads((bundle / 'geo261-cloud-attachments.json.txt').read_text(encoding='utf-8'))
+    assert repo.is_dir() and not scratch.exists(), '來源不存在或暫存目錄已存在'
+    assert not scratch.is_relative_to(repo), '暫存必須在產品工作樹外'
+    head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=repo, text=True).strip()
+    for sha in (head, MAIN, BASE):
+        subprocess.run(['git', 'cat-file', '-e', sha + '^{commit}'], cwd=repo, check=True)
+    for name, row in manifest['files'].items():
+        raw = (bundle / name).read_bytes()
+        assert digest(raw) == row['sha256'] and len(raw) == row['bytes'], name
+    tools = scratch / 'tools'
+    tools.mkdir(parents=True)
+    changes = []
+    for name, row in manifest['files'].items():
+        if row['kind'] != 'script':
+            continue
+        target = tools / row['restore_name']
+        target.write_bytes((bundle / name).read_bytes())
+    # 僅替換本機絕對路徑；判準、取樣數、原裁判與逾時不變。
+    replacements = {
+        'p52_measure.py': [
+            ("'/mnt/d/geometry-axiom'", repr(str(repo))),
+            ("'/var/tmp/codex-geo261-p52-20261021'", repr(str(scratch / 'work/p52-main')))],
+        'postfix_validate.py': [
+            ("'/mnt/d/geometry-axiom'", repr(str(repo))),
+            ("Path('/var/tmp')", 'Path(' + repr(str(scratch / 'work')) + ')')],
+        'p189_verify.py': [
+            ("'/mnt/d/geometry-axiom'", repr(str(repo))),
+            ("'/mnt/d/geometry-axiom-work/wsl-ci-tools'", repr(str(tools))),
+            ("'/mnt/d/geometry-axiom-work/drafts/issue300/bench/gen_scene.py'", repr(str(tools / 'gen_scene.py'))),
+            ("'/var/tmp/codex-geo261-p189-'", repr(str(scratch / 'work/p189-')))],
+        'q38_gate.sh': [
+            ('base=/var/tmp/q38-geo261', 'base=' + str(scratch / 'work/q38')),
+            ('/mnt/d/geometry-axiom-work/q38-$label-${sha:0:8}', str(scratch / 'q38-$label-${sha:0:8}')),
+            ('/mnt/d/geometry-axiom', str(repo))],
+        'card_ref_mutations.sh': [
+            ('/mnt/d/geometry-axiom-work/cardref-$label-${sha:0:8}', str(scratch / 'cardref-$label-${sha:0:8}')),
+            ('/var/tmp/cardref.XXXXXX', str(scratch / 'work/cardref.XXXXXX')),
+            ('/mnt/d/geometry-axiom', str(repo))],
+    }
+    # shell 路徑使用未加引號的原形式，因此只接受無空白的雲端暫存/來源路徑。
+    assert all(re.fullmatch(r'[A-Za-z0-9_./:\\-]+', str(p)) for p in (repo, scratch)), '請使用無空白及shell特殊字元的路徑'
+    for name, pairs in replacements.items():
+        target = tools / name
+        before = target.read_bytes()
+        text = before.decode('utf-8').replace('\r\n', '\n')
+        for old, new in pairs:
+            count = text.count(old)
+            assert count > 0, (name, old)
+            text = text.replace(old, new)
+            changes.append(dict(file=name, old=old, new=new, replacements=count))
+        target.write_text(text, encoding='utf-8', newline='\n')
+    (scratch / 'work').mkdir()
+    # bash 檔統一LF；其餘原檔hash仍保存在附件清單，執行版另外留hash。
+    for path in tools.iterdir():
+        if path.suffix == '.sh':
+            path.write_bytes(path.read_bytes().replace(b'\r\n', b'\n'))
+        if path.suffix == '.py':
+            ast.parse(path.read_text(encoding='utf-8'))
+    record = dict(head=head, main=MAIN, base=BASE, repo=str(repo), scratch=str(scratch),
+                  bundle_manifest_sha256=digest((bundle / 'geo261-cloud-attachments.json.txt').read_bytes()),
+                  replacements=changes,
+                  runtime_sha256={p.name: digest(p.read_bytes()) for p in tools.iterdir()},
+                  executed_tests=False)
+    (scratch / 'preparation.json').write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps(record, ensure_ascii=False))
+
+
+if __name__ == '__main__':
+    main()

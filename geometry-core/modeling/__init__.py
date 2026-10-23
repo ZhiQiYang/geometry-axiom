@@ -370,64 +370,23 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
     return rebuilt
 
 
-class ModelWorld:
-    """Atomic source replacement with an explicit preview/confirmation boundary.
+from geometry_app.model_world import ModelWorld as _HostModelWorld
 
-    The entire candidate is revalidated, including old C rules. No mutation,
-    partial root or stale preview can leave half a model committed.
-    """
+
+class ModelWorld(_HostModelWorld):
+    """Compatibility wrapper; this module remains the protocol authority."""
     def __init__(self, definitions, request, **options):
-        self._options = copy.deepcopy(options)
-        self._package = build_package(definitions, request, **self._options)
-        self._revision = 0
-        self._preview_revision = 0
-        self._nonce = secrets.token_hex(16)
-        self._pending = None
-
-    @property
-    def package(self):
-        return copy.deepcopy(self._package)
-
-    @property
-    def definitions(self):
-        return copy.deepcopy(self._package["definitions"])
-
-    def export(self, request=None):
-        return build_package(self._package["definitions"],
-                             self._package["request"] if request is None else request,
-                             **self._options)
-
-    def preview(self, definitions, request=None):
-        self._pending = None
-        self._preview_revision += 1
-        candidate = build_package(definitions,
-                                  self._package["request"] if request is None else request,
-                                  **self._options)
-        token = digest({"session": self._nonce, "revision": self._revision,
-                        "preview_revision": self._preview_revision,
-                        "candidate": candidate})
-        self._pending = (token, self._revision, candidate)
-        return {"token": token, "status": candidate["derived"]["status"],
-                "diagnostics": copy.deepcopy(candidate["diagnostics"]),
-                "package": copy.deepcopy(candidate)}
-
-    def confirm(self, token):
-        pending = self._pending
-        if pending is None or pending[0] != token or pending[1] != self._revision:
-            raise ModelError("INVALID", "STALE_PREVIEW", "I30", "Preview is absent, cancelled, replaced or stale")
-        self._pending = None
-        candidate = verify_package(pending[2], max_cells=self._options.get("max_cells", 200000),
-                                   base_executable=self._options.get("base_executable"))
-        self._package = candidate
-        self._revision += 1
-        return self.package
-
-    commit = confirm
-
-    def cancel(self, token=None):
-        if token is not None and (self._pending is None or token != self._pending[0]):
-            raise ModelError("INVALID", "STALE_PREVIEW", "I30", "Preview token does not match")
-        self._pending = None
+        from .base import _build_adapter
+        from geometry_app.bootstrap import default_provider
+        from geometry_app.model_world import runtime_stamp
+        provider = default_provider()
+        super().__init__(definitions, request,
+            build=lambda *args, **kwargs: build_package(*args, **kwargs),
+            verify=lambda *args, **kwargs: verify_package(*args, **kwargs),
+            stamp_reader=lambda: runtime_stamp(base_executable=options.get("base_executable"),
+                                               resolve_adapter=_build_adapter,
+                                               provider_identity=provider.identity),
+            options=options)
 
 
 __all__ = ["build_package", "verify_package", "ModelWorld", "ModelError",

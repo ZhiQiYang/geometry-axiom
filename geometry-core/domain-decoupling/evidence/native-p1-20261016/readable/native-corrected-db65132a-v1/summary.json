@@ -1,0 +1,131 @@
+{
+  "kind": "fixed-commit-original-native-modules",
+  "source": "db65132a41c4b4c815b6814784651e3980bf4f63",
+  "source_root": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-corrected-db65132a-v1",
+  "recipe": {
+    "source": "db65132a41c4b4c815b6814784651e3980bf4f63",
+    "label": "native-corrected-db65132a-v1",
+    "modules": [
+      "tests.test_geo261_native_entrypoints",
+      "tests.test_geo261_native_kernel",
+      "tests.test_geo261_native_geometry",
+      "tests.test_geo261_native_grid",
+      "tests.test_geo261_native_parameters",
+      "tests.test_geo261_draw_annotation",
+      "tests.test_geo261_native_linear",
+      "tests.test_geo261_native_datums",
+      "tests.test_geo261_native_sources",
+      "tests.test_geo261_wood_members",
+      "tests.test_geo261_wood_product"
+    ],
+    "module_counts": {
+      "tests.test_geo261_native_entrypoints": 3,
+      "tests.test_geo261_native_kernel": 13,
+      "tests.test_geo261_native_geometry": 7,
+      "tests.test_geo261_native_grid": 8,
+      "tests.test_geo261_native_parameters": 7,
+      "tests.test_geo261_draw_annotation": 4,
+      "tests.test_geo261_native_linear": 6,
+      "tests.test_geo261_native_datums": 7,
+      "tests.test_geo261_native_sources": 9,
+      "tests.test_geo261_wood_members": 10,
+      "tests.test_geo261_wood_product": 2
+    },
+    "expected_tests": 76,
+    "scope": "Original three-TU entrypoint preflight first, then 35 N2a native tests, annotation4, linear/datum13, and sources/wood21. No support/guide slices and no full-suite claim."
+  },
+  "archive_sha256": "b79fb65c708c748ff9295530883cf6a5d9920fe534eebc2660c87b0b010d83f9",
+  "command": [
+    "python3",
+    "-u",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/exercise-native-receipt.py",
+    "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-corrected-db65132a-v1",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-corrected-db65132a-v1",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/native-corrected-db65132a.json"
+  ],
+  "started_utc": "2026-10-16T02:39:57.479240+00:00",
+  "finished_utc": "2026-10-16T02:44:34.090549+00:00",
+  "private_tmp": "/var/tmp/geo261-baseline-a898ad6e/.git/native-corrected-db65132a-v1-tmp",
+  "shared_lock_holder": "pid=58249 start=2026-10-16T02:39:56Z label= args=run WSL_CI_JOB_TAG=geo261-corrected-db65132a bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/next-targeted-namespace.sh\n",
+  "test_exit": 1,
+  "test_result": {
+    "tests_run": 76,
+    "failures": 1,
+    "errors": 0,
+    "failed_tests": [
+      "tests.test_geo261_native_datums.NativeDatums.test_malformed_suffix_keeps_earlier_missing_parameter_diagnostic"
+    ],
+    "error_tests": [],
+    "skipped": [],
+    "expected_failures": 0,
+    "unexpected_successes": 0,
+    "successful": false,
+    "discovered_modules": {
+      "tests.test_geo261_native_entrypoints": 3,
+      "tests.test_geo261_native_kernel": 13,
+      "tests.test_geo261_native_geometry": 7,
+      "tests.test_geo261_native_grid": 8,
+      "tests.test_geo261_native_parameters": 7,
+      "tests.test_geo261_draw_annotation": 4,
+      "tests.test_geo261_native_linear": 6,
+      "tests.test_geo261_native_datums": 7,
+      "tests.test_geo261_native_sources": 9,
+      "tests.test_geo261_wood_members": 10,
+      "tests.test_geo261_wood_product": 2
+    },
+    "subtests_by_test": {
+      "tests.test_geo261_native_kernel.KernelCodec.test_base64_rfc_vectors_binary_and_strict_padding": {
+        "passed": 11,
+        "failed": 0
+      },
+      "tests.test_geo261_native_kernel.KernelCodec.test_canonical_key_order_nested_unicode_and_controls": {
+        "passed": 30,
+        "failed": 0
+      },
+      "tests.test_geo261_native_kernel.KernelCodec.test_sha256_standard_vectors_and_padding_boundaries": {
+        "passed": 16,
+        "failed": 0
+      },
+      "tests.test_geo261_native_kernel.KernelCodec.test_strict_json_rejects_malformed_types_unicode_and_duplicates": {
+        "passed": 42,
+        "failed": 0
+      },
+      "tests.test_geo261_native_kernel.KernelExact.test_overflow_unit_failures_preserve_output": {
+        "passed": 8,
+        "failed": 0
+      },
+      "tests.test_geo261_native_kernel.KernelExact.test_public_normalization_rejects_invalid_values": {
+        "passed": 6,
+        "failed": 0
+      }
+    },
+    "compiler_commands": 77,
+    "build_artifact_count": 137
+  },
+  "source_unchanged": true,
+  "source_files": 15894,
+  "source_before_sha256": "c984440a20782336ebc9f15b6ae026d301eacbd64670d5786e1a46be16fe136f",
+  "source_after_sha256": "c984440a20782336ebc9f15b6ae026d301eacbd64670d5786e1a46be16fe136f",
+  "runner_sha256_before": {
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/run-native-receipt.py": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/exercise-native-receipt.py": "f5e12d43e85a2f7b19089f016f86f33164ae0d53d9cc53c1a844a5cd7eff25b3",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/native-receipt-namespace.sh": "7d21e71c2b6cecb27cae178e944cdd03734a20ec3ad11b3b57f321c33a421f20",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/native-corrected-db65132a.json": "d6e30bcf62050cf377b0390154057e8fee55495637337c0408b3569eaa677f5f"
+  },
+  "runner_sha256_after": {
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/run-native-receipt.py": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/exercise-native-receipt.py": "f5e12d43e85a2f7b19089f016f86f33164ae0d53d9cc53c1a844a5cd7eff25b3",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/native-receipt-namespace.sh": "7d21e71c2b6cecb27cae178e944cdd03734a20ec3ad11b3b57f321c33a421f20",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/next-batch/native-corrected-db65132a.json": "d6e30bcf62050cf377b0390154057e8fee55495637337c0408b3569eaa677f5f"
+  },
+  "runners_unchanged": true,
+  "cleared_override_names": [
+    "GEOMETRY_ENGINEERING_BRIDGE",
+    "GEOMETRY_MODEL_BASE",
+    "GEOMETRY_TEST_BRIDGE"
+  ],
+  "log_sha256": "9103c23f5aa513c876b45d989073c6dbc5681193abb4e104c213831dabe96b99",
+  "full_suite_executed": false,
+  "browser_executed": false,
+  "exit": 1
+}

@@ -1,0 +1,39 @@
+{
+  "label": "imports",
+  "kind": "newly-recompiled-original-harness-diagnostic-only",
+  "command": [
+    "/tmp/geometry-tests/geo261-n1a-62m5lw63/candidate-product-client",
+    "imports",
+    "/tmp/geometry-tests/geo261-n1a-62m5lw63/candidate-product.scene"
+  ],
+  "cwd": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-candidate-14ab395d-v1",
+  "started_utc": "2026-10-16T05:11:34.979428+00:00",
+  "finished_utc": "2026-10-16T05:12:18.713495+00:00",
+  "watchdog_seconds": 120,
+  "watchdog_expired": false,
+  "original_unittest_limit_seconds": 30,
+  "observed_exit": 0,
+  "elapsed_seconds": 43.04044604899997,
+  "user_seconds": 43.760246,
+  "system_seconds": 0.11066,
+  "max_rss_kib": 106048,
+  "voluntary_context_switches": 15,
+  "involuntary_context_switches": 36,
+  "measurement": "Linux wait4 for the direct harness process; monotonic wall clock includes launch and final wait.",
+  "binary_sha256_before": "08a0aefd677c50f7e3666bd3cfb4f8640e9448c7d660b8439c35858ce395a51a",
+  "binary_sha256_after": "08a0aefd677c50f7e3666bd3cfb4f8640e9448c7d660b8439c35858ce395a51a",
+  "original_binary_sha256": "08a0aefd677c50f7e3666bd3cfb4f8640e9448c7d660b8439c35858ce395a51a",
+  "binary_matches_original": true,
+  "stdout_sha256": "76ca112ce408a91345f8227475554f8a505fbfecb847565fb6577ff53c11618b",
+  "stderr_sha256": "31c530141a2cd6a00055d5cf21a7004e6b2501a6687879b71c17b25bb17c41d8",
+  "stdout_bytes": 729,
+  "stderr_bytes": 372,
+  "nm_exit": 0,
+  "g_world_symbols": [
+    "0000000010eac760 0000000000405248 b g_world"
+  ],
+  "nm_stdout_sha256": "542e2d2b777b61b06fa752e38da561e2c0a318aaecc46e6ac74acfe24db5f3cf",
+  "nm_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "acceptance_result": null,
+  "meaning": "This observation cannot revise the original 20/30-second unittest timeout or make the original receipt green."
+}

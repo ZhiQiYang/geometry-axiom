@@ -1,0 +1,31 @@
+test_unknown_c_header_cannot_be_declared_standard (__main__.ArchitectureContract.test_unknown_c_header_cannot_be_declared_standard) ... FAIL
+test_platform_c_header_cannot_be_declared_standard (__main__.ArchitectureContract.test_platform_c_header_cannot_be_declared_standard) ... FAIL
+
+======================================================================
+FAIL: test_unknown_c_header_cannot_be_declared_standard (__main__.ArchitectureContract.test_unknown_c_header_cannot_be_declared_standard)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 202, in test_unknown_c_header_cannot_be_declared_standard
+    self.rejects("EXTERNAL_POLICY")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+======================================================================
+FAIL: test_platform_c_header_cannot_be_declared_standard (__main__.ArchitectureContract.test_platform_c_header_cannot_be_declared_standard)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 207, in test_platform_c_header_cannot_be_declared_standard
+    self.rejects("EXTERNAL_POLICY")
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 64, in rejects
+    self.assertFalse(result.ok, "scanner unexpectedly accepted the real source tree")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : scanner unexpectedly accepted the real source tree
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.023s
+
+FAILED (failures=2)

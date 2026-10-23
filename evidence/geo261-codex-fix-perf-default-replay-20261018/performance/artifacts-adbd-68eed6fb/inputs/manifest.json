@@ -1,0 +1,51 @@
+{
+  "scene_sha256": "c3c0ba589285ef5ecd835b89a38174ebe050c85c4b8814510e139f72550f1f7c",
+  "pins": {
+    "main": "e980cb0dbf39beb40f6f3002a9ffbc43ee38c425",
+    "integration": "68eed6fb0e488003ca0a4d8614a9460a637d979e"
+  },
+  "bridge_round": [
+    [
+      "reset",
+      "reset"
+    ],
+    [
+      "load_scene",
+      "loadfile /workspace/geo261-validation-20261018/performance/artifacts-adbd-68eed6fb/inputs/room_a.scene"
+    ],
+    [
+      "read_dump",
+      "dump"
+    ],
+    [
+      "canvas_position",
+      "line canvas-pos boundary 1 60 60"
+    ],
+    [
+      "unused_spec_create",
+      "line spec PERF_VALUE 100"
+    ],
+    [
+      "unused_spec_replace",
+      "line spec PERF_VALUE 200"
+    ],
+    [
+      "preview_spec",
+      "line preview spec 主支1中線 900"
+    ],
+    [
+      "cancel_preview",
+      "line cancel-preview"
+    ],
+    [
+      "read_final_dump",
+      "dump"
+    ]
+  ],
+  "cold_commands": [
+    [
+      "cold_start_dump",
+      "dump"
+    ]
+  ]
+}

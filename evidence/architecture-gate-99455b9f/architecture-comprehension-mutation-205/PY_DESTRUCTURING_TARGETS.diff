@@ -1,0 +1,12 @@
+--- tests/architecture_contract.py
++++ TEMP/architecture_contract.py
+@@ -1063,8 +1063,7 @@
+         def assignment_names(target):
+             if isinstance(target, ast.Name):
+                 return [target.id]
+-            if isinstance(target, (ast.Tuple, ast.List)):
+-                return [name for item in target.elts for name in assignment_names(item)]
++            pass  # TEMP removed PY_DESTRUCTURING_TARGETS
+             if isinstance(target, ast.Starred):
+                 return assignment_names(target.value)
+             return []

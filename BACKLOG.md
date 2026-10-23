@@ -391,12 +391,20 @@
 
 ### GEO-261 — 幾何核心與木工模板解耦（2026-10-15）
 
+- **2026-10-22 P-189 收尾補丁**：82e 完整七項與 P52／Q38／§7 通過，但 N64 載入比值 2.0031748 超過既定 2 倍門檻，保留紅收據。剖析後在 W 擋面查詢內建立構件順序索引，保留最後一筆排序值、最小順序遮蓋值、穩定同序與容量截斷語義；不跨候選快取，不改容量64或 P-177 守門流量。固定 main／撤回／新補丁各五輪交錯診斷，N64 撤回 2.099 倍轉紅、新補丁 1.758 倍，四點新補丁均≤2倍，四份完整載入回覆與dump逐byte相同。原接觸來源13項及8個精確斷言控制、突變錨點3項通過；此為補丁診斷，最終完整帳本、架構、七項及全部專項仍須在新來源重做，不宣稱已收尾；未新增可見介面。
+
+- **2026-10-21 本機整合收尾補丁**：P52 真實放置在固定 main／7dae5f21 交錯量測為 637／828ms；保留完整來源清單與逐檔內容核對，減少 runtime freshness 列舉路徑的成本。P52-5 改為共用 5000ms 截止時間內等原生幾何及交易收尾，原 `1987..2014` 足跡斷言保持。另重現 P88 超高表單重繪時捲動被中間高度截短，改於下一影格恢復，且不覆蓋後續重繪／捲動。新增桌機及390px共6個斷言，golden 僅 P88 137→143、total 2261→2267，P72B仍50；未新增可見入口、按鈕或常駐說明。此處記錄補丁範圍，不代表 #288 已合併或最後七項已完成；最終 SHA、完整帳本、架構收據、Q38／§7／P-189及突變自證以最終驗收報告為準。
+
 > **2026-10-19 狀態更新**：採納 PR [#266](https://github.com/ZhiQiYang/geometry-axiom/pull/266) 已合併（2026-10-17，`c76737ec`）。整合分支仍在 [#288](https://github.com/ZhiQiYang/geometry-axiom/pull/288)。2026-10-19 `gh pr view 288` 回 state=OPEN、isDraft=true、mergedAt=null，還沒進 main。[#289](https://github.com/ZhiQiYang/geometry-axiom/pull/289)（2026-10-18，`00428c5b`）已合併進 GEO-261 整合分支(#288 的 head 分支，也就是 #289 的 base),尚未進 main；它的正文寫明仍依賴 [#279](https://github.com/ZhiQiYang/geometry-axiom/pull/279) 的完整原生覆蓋與 #288 的最終整合，實際 C→Python 與舊包重放通過前不要發布。
 
 - **狀態**：2026-10-16 使用者於原對話回答「批准此版本的逐條提案」與「批准此更名缺陷修正」（原話見決策佇列），綁定 `17a25e92`；同日 23:23:52 再回答「批准此追加分層提案」，綁定 `c8ce964` 的 204→207 與 K＝D64／I74、H＝R60。正式公理已依批准採納，同步白話／唯一閱讀器及版本相容；保留第 17 班列車 main `a898ad6e` 的完整上游契約。實際指紋、A/B 版本及驗收界線見 [採納收據](geometry-core/domain-decoupling/ADOPTION-RECEIPT.md)。獨立更名修正及 C／Python 接線各按其切片驗收；**核心解耦尚未完成，原生舊包重建與最終整合裁判仍待執行**。追蹤 [issue #248](https://github.com/ZhiQiYang/geometry-axiom/issues/248)；[提案入口](geometry-core/domain-decoupling/PROPOSAL.md)。
 - **本次委任**：使用者在本地對話要求從最新 main 完成 GEO-261，工程切片與架構由 Astra 負責，Claude 做最終品質審查及列車合併；[Claude 已於 #248 記錄接手](https://github.com/ZhiQiYang/geometry-axiom/issues/248#issuecomment-6199027870)。這項委任不取代逐條公理差異批准。下列原排程的提案責任改由 Astra，其他規範不變。
 - **本次切片**：P0 提案／完整條文差異／提案契約測試；批准後 P1 採納與 C 核心，P2 木工／Python／相容轉接，P3 前端與第二模板，P4 主線整合／全量突變／交付。必要時細分，每片 draft PR。只有 Claude 審查無品質阻擋、只差排列車，才能稱完成。
 - **拿掉／合併（GEO-219）**：閱讀器原 `#reader-source-status` 與 `.page-footer` 兩份靜態說明合併成前言末端一條來源列，既有兩個位置改由完整 SSOT 前言／§四佔用，不新增按鈕、導覽或常駐操作教學；後續將重複木工預設與配方收斂至固定模板。更名修正沿用既有入口。
+- **2026-10-16 獨立更名修正片（§6.1）**：使用者已對 PR #261、commit `17a25e92c75e8c89063e36ca329729980d8ea6a9` 明示「批准此更名缺陷修正」。本片只修精簡來源面板重送完整宣告時漏掉 `stagger`／`parameterRefs.stagger`：只改名稱仍經正式預覽及確認，兩軸原值與來源保留；取消保持整份 World。SSOT、DSL、原生「省略即清除」、完整工作區明確清空及 0／pitch 整倍數拒絕均維持。沒有新增可見 UI、按鈕或常駐說明。
+  - 驗收入口：`tests/test_grid_inspector_command.js` 執行產品序列化函式，`tests/test_grid_inspector_contract.py` 串真原生 bridge、正負 band 手算、參數後續改值及新原生程序載回；`geometry-web/grid_inspector_rename_test.js` 由 `cdp_test.js` 的 full／`GEOMETRY_COMPOSITION_ONLY=1` 載入，真實點選底部更名、取消／確認／Undo／Redo及 `.gcanvas` Save／新 context／Open。額外設定 `GEOMETRY_GRID_RENAME_FRESH_URL` 時，完整包重開使用第二個隔離服務的新原生程序。
+  - 負控制：`tests/diagnostics/grid_inspector_mutation_probe.py` 只修改 TEMP 副本，分別移除 stagger 輸出、把引用固化為值，要求紅燈後恢復綠燈；不改產品原檔。Windows VM 9／9 已通過，兩個負控均轉紅、恢復再 9／9；原生與瀏覽器待正式收據，不以 VM 取代。
+  - 本片基底 main `a898ad6e` 已有 D64 整卡公理、尚未含整卡產品實作；後續 #253 合流須按已採納契約重驗完整來源身分，不把本片逐欄相位差修復冒稱整卡整合已驗。整體 GEO-261 的公理採納與 K／W／H 實作另片處理。
 - **依據**：使用者 2026-10-12 的產品方向（#246 決策佇列補登第 1 項），以及 2026-10-15 05:15 要求「確定讓這項在工作排程內」（#246 第 14 項）；依 [P-118 追加 M2](https://github.com/ZhiQiYang/geometry-axiom/pull/247#issuecomment-6178711060) 入帳。以下只摘要 #248 的「目標」「排程」「規則(拍板前)」。
 - **目標**：核心改成與領域無關的幾何概念；木工知識（角材、面材、主支／副支、板材尺寸、承接門檻等）作為第一個被套用、可以解耦的模板。依賴只能單向：模板依賴核心，核心不依賴模板。
 - **排程**：

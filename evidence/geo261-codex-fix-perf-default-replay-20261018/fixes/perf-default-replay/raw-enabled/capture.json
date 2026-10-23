@@ -1,0 +1,38 @@
+{
+  "state": "enabled",
+  "source_sha_operator_supplied": "68eed6fb0e488003ca0a4d8614a9460a637d979e",
+  "driver_sha256": "7cfbcbd4d0bd0440be5c03075e08b4ac087b208815ce81d682f3b703b3cccc07",
+  "bridge": "/workspace/geo261-validation-20261018/fixes/perf-default-replay/binaries-enabled/bridge",
+  "bridge_sha256": "d49314892aa4086581b845eec290c1cde2f35c75eaa3ffe76fa9fbfa5741ebb6",
+  "fixture_path": "/workspace/geo261-validation-20261018/proposed-fixes/default-owned-replay/raw-fixtures/candidate-default.scene",
+  "fixture_sha256": "e1012d2b5fb10ed8cc37e22a1e193011792c023fd43f427a17982ba9e8425601",
+  "cases": [
+    {
+      "name": "cold-replacements",
+      "ok": true
+    },
+    {
+      "name": "history-default",
+      "ok": true
+    },
+    {
+      "name": "pending-default",
+      "ok": true
+    },
+    {
+      "name": "pending-reset",
+      "ok": true
+    },
+    {
+      "name": "group-default",
+      "ok": true
+    },
+    {
+      "name": "group-reset",
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "bridge_unchanged": true,
+  "fixture_unchanged": true
+}

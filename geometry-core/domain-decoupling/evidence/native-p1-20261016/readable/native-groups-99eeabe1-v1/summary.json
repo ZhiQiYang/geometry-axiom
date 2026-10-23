@@ -1,0 +1,297 @@
+{
+  "kind": "fixed-commit-original-native-modules",
+  "source": "99eeabe11875f4d18b1bc35607cd3601a0ac3b4b",
+  "source_root": "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-groups-99eeabe1-v1",
+  "recipe": {
+    "source": "99eeabe11875f4d18b1bc35607cd3601a0ac3b4b",
+    "label": "native-groups-99eeabe1-v1",
+    "modules": [
+      "tests.test_geo261_native_entrypoints",
+      "tests.test_geo261_model_sources",
+      "tests.test_geo261_wood_supports",
+      "tests.test_geo261_wood_supports_product",
+      "tests.test_geo261_native_regions",
+      "tests.test_geo261_regions_product",
+      "tests.test_geo261_wood_contacts",
+      "tests.test_geo261_wood_contacts_product"
+    ],
+    "module_counts": {
+      "tests.test_geo261_native_entrypoints": 3,
+      "tests.test_geo261_model_sources": 10,
+      "tests.test_geo261_wood_supports": 13,
+      "tests.test_geo261_wood_supports_product": 2,
+      "tests.test_geo261_native_regions": 13,
+      "tests.test_geo261_regions_product": 2,
+      "tests.test_geo261_wood_contacts": 10,
+      "tests.test_geo261_wood_contacts_product": 1
+    },
+    "groups": {
+      "actual-entrypoints": [
+        "tests.test_geo261_native_entrypoints"
+      ],
+      "source-support": [
+        "tests.test_geo261_model_sources",
+        "tests.test_geo261_wood_supports",
+        "tests.test_geo261_wood_supports_product"
+      ],
+      "regions-contact": [
+        "tests.test_geo261_native_regions",
+        "tests.test_geo261_regions_product",
+        "tests.test_geo261_wood_contacts",
+        "tests.test_geo261_wood_contacts_product"
+      ]
+    },
+    "group_counts": {
+      "actual-entrypoints": 3,
+      "source-support": 25,
+      "regions-contact": 26
+    },
+    "expected_tests": 54,
+    "scope": "Parent-approved original source/support25 + regions/contact26 + actual CLI/model-base/bridge3; no G1/history or full-suite claim."
+  },
+  "archive_sha256": "141eff57a3f09c9f75f72f10cf88bcc7150c2031463950b233f89cdc7812bd17",
+  "command": [
+    "python3",
+    "-u",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/exercise-native-receipt.py",
+    "/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-groups-99eeabe1-v1",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-groups-99eeabe1-v1",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/recipe.json"
+  ],
+  "started_utc": "2026-10-16T03:06:13.958677+00:00",
+  "finished_utc": "2026-10-16T03:08:29.250122+00:00",
+  "private_tmp": "/var/tmp/geo261-baseline-a898ad6e/.git/native-groups-99eeabe1-v1-tmp",
+  "shared_lock_holder": "pid=255 start=2026-10-16T03:06:11Z label= args=run WSL_CI_JOB_TAG=geo261-native-groups-99eeabe1 bash /mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/native-receipt-namespace.sh\n",
+  "test_exit": 1,
+  "test_result": {
+    "tests_run": 54,
+    "failures": 1,
+    "errors": 0,
+    "failed_tests": [
+      "tests.test_geo261_wood_supports_product.WoodSupportsProduct.test_stop_identity_guard_changes_kernel_client_and_real_between_placement"
+    ],
+    "error_tests": [],
+    "skipped": [],
+    "expected_failures": 0,
+    "unexpected_successes": 0,
+    "successful": false,
+    "discovered_modules": {
+      "tests.test_geo261_native_entrypoints": 3,
+      "tests.test_geo261_model_sources": 10,
+      "tests.test_geo261_wood_supports": 13,
+      "tests.test_geo261_wood_supports_product": 2,
+      "tests.test_geo261_native_regions": 13,
+      "tests.test_geo261_regions_product": 2,
+      "tests.test_geo261_wood_contacts": 10,
+      "tests.test_geo261_wood_contacts_product": 1
+    },
+    "groups": {
+      "actual-entrypoints": {
+        "expected": 3,
+        "discovered": 3,
+        "outcomes": {
+          "tests.test_geo261_native_entrypoints.NativeEntrypoints.test_model_base_preserves_exact_rc_face_walk_and_legacy_shape": "passed",
+          "tests.test_geo261_native_entrypoints.NativeEntrypoints.test_real_bridge_and_model_base_share_identical_canonical_definitions": "passed",
+          "tests.test_geo261_native_entrypoints.NativeEntrypoints.test_real_cli_compiles_and_renders_the_shared_member_scene": "passed"
+        },
+        "counts": {
+          "passed": 3
+        },
+        "failureDetails": []
+      },
+      "source-support": {
+        "expected": 25,
+        "discovered": 25,
+        "outcomes": {
+          "tests.test_geo261_model_sources.ModelSources.test_box_roots_keep_native_face_provenance_and_exact_extent": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_candidate_identity_changes_with_definitions_but_ignores_canvas_positions": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_derived_multicomponent_root_preserves_the_excluded_strip": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_legacy_payload_and_full_definition_identity_share_one_candidate": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_parameter_quantities_retain_exact_fractions_and_field_types": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_placed_profile_frame_matches_native_snapshot_and_hardcoded_axes": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_profile_envelope_and_members_keep_distinct_local_domains": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_region_roots_keep_holes_and_authored_vertex_identities": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_shared_kernel_cache_negative_control_changes_actual_model_transport": "passed",
+          "tests.test_geo261_model_sources.ModelSources.test_source_graph_owns_exact_keys_and_exports_actual_guide_edges": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_boundary_role_exact_geometry_and_tiebreaks": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_candidate_filter_order_capacity_and_accumulated_flags": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_guard_mutations_fail_named_independent_assertions": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_layout_and_fixity_compatibility": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_legal_count_excludes_free_without_requiring_uniqueness": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_pick_includes_free_and_only_writes_unique_hit": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_reference_identity_zero_full_uint32_and_negative_indices": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_runtime_matches_separately_compiled_frozen_bodies": "passed",
+          "tests.test_geo261_wood_supports.WoodSupports.test_shadowing_respects_face_order_and_exposed_partial_overlap": "passed",
+          "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_extracted_bodies_preserve_frozen_product": "passed",
+          "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_frozen_comparison_contains_actual_bodies_and_no_product_include": "passed",
+          "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_imports_only_own_header_and_public_geometry": "passed",
+          "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_storage_layout_and_signed_index_definitions_preserve_frozen_product": "passed",
+          "tests.test_geo261_wood_supports_product.WoodSupportsProduct.test_boundary_derivation_guard_changes_kernel_client_and_object_fields": "passed",
+          "tests.test_geo261_wood_supports_product.WoodSupportsProduct.test_stop_identity_guard_changes_kernel_client_and_real_between_placement": "failed"
+        },
+        "counts": {
+          "failed": 1,
+          "passed": 24
+        },
+        "failureDetails": [
+          {
+            "test": "tests.test_geo261_wood_supports_product.WoodSupportsProduct.test_stop_identity_guard_changes_kernel_client_and_real_between_placement",
+            "subtest": null,
+            "classification": "test-assertion-failure",
+            "exceptionType": "AssertionError",
+            "message": "True is not false : {'ok': True, 'revision': 11, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': [], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'definition_sha256': '34abcbe56fc37585f8e0037981a46b877888c577b51f39d8bd9b7d1f8725dba2'}",
+            "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-groups-99eeabe1-v1/tests/test_geo261_wood_supports_product.py\", line 59, in test_stop_identity_guard_changes_kernel_client_and_real_between_placement\n    self.assertEqual(1,self.case('references',client));loaded,_=self.load(bridge,scene);self.assertFalse(loaded['ok'],loaded)\n                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/case.py\", line 721, in assertFalse\n    raise self.failureException(msg)\nAssertionError: True is not false : {'ok': True, 'revision': 11, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': [], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'definition_sha256': '34abcbe56fc37585f8e0037981a46b877888c577b51f39d8bd9b7d1f8725dba2'}\n"
+          }
+        ]
+      },
+      "regions-contact": {
+        "expected": 26,
+        "discovered": 26,
+        "outcomes": {
+          "tests.test_geo261_native_regions.NativeRegions.test_actual_kernel_validation_keeps_collinear_vertices_and_holes": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_capacity_stable_replacement_deletion_order_and_uint32_identity": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_coordinate_matching_negative_control_is_an_assertion_failure": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_explicit_initialization_keeps_existing_highwater_and_table_invariants": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_keyed_movement_retirement_and_highwater_follow_existing_rules": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_last_uint32_key_and_exhaustion_never_wrap_or_partially_assign": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_lookup_resolves_real_loop_vertex_without_touching_failed_output": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_moved_missing_ambiguous_and_invalid_baselines_are_distinct_failures": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_ordinary_reordering_insertion_and_repeated_reconciliation_preserve_identity": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_owned_geometry_keys_clone_aliasing_and_zero_inactive_storage": "passed",
+          "tests.test_geo261_native_regions.NativeRegions.test_retired_key_negative_control_is_an_assertion_failure": "passed",
+          "tests.test_geo261_native_regions.RegionExtraction.test_public_module_has_no_host_kind_fixity_world_or_binding_policy": "passed",
+          "tests.test_geo261_native_regions.RegionExtraction.test_reconciliation_conditions_and_order_preserve_frozen_product": "passed",
+          "tests.test_geo261_regions_product.RegionProduct.test_coordinate_match_guard_controls_independent_client_and_actual_preview": "passed",
+          "tests.test_geo261_regions_product.RegionProduct.test_identity_allocator_preview_cancel_confirm_and_undo_share_whole_snapshot": "passed",
+          "tests.test_geo261_wood_contacts.WoodContactSourcePreservation.test_archive_judge_uses_verified_original_fixture_without_git": "passed",
+          "tests.test_geo261_wood_contacts.WoodContactSourcePreservation.test_module_imports_only_public_woodworking_and_standard_headers": "passed",
+          "tests.test_geo261_wood_contacts.WoodContactSourcePreservation.test_policy_blocks_preserve_frozen_product_decisions_and_error_text": "passed",
+          "tests.test_geo261_wood_contacts.WoodContacts.test_exact_utf8_errors_capacity_null_termination_and_unchanged_tail": "passed",
+          "tests.test_geo261_wood_contacts.WoodContacts.test_frozen_verdict_and_error_bytes_equivalence": "passed",
+          "tests.test_geo261_wood_contacts.WoodContacts.test_guard_controls_fail_named_independent_assertions": "passed",
+          "tests.test_geo261_wood_contacts.WoodContacts.test_outline_hole_and_unknown_contact_kinds": "passed",
+          "tests.test_geo261_wood_contacts.WoodContacts.test_owner_pointer_identity_and_two_boundary_exemption": "passed",
+          "tests.test_geo261_wood_contacts.WoodContacts.test_span_extension_role_and_closed_boundary_limits": "passed",
+          "tests.test_geo261_wood_contacts.WoodContacts.test_strict_priority_extension_override_and_full_coord_width": "passed",
+          "tests.test_geo261_wood_contacts_product.WoodContactsProduct.test_extension_priority_controls_independent_client_and_actual_placement": "passed"
+        },
+        "counts": {
+          "passed": 26
+        },
+        "failureDetails": []
+      }
+    },
+    "outcomes": {
+      "tests.test_geo261_native_entrypoints.NativeEntrypoints.test_model_base_preserves_exact_rc_face_walk_and_legacy_shape": "passed",
+      "tests.test_geo261_native_entrypoints.NativeEntrypoints.test_real_bridge_and_model_base_share_identical_canonical_definitions": "passed",
+      "tests.test_geo261_native_entrypoints.NativeEntrypoints.test_real_cli_compiles_and_renders_the_shared_member_scene": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_box_roots_keep_native_face_provenance_and_exact_extent": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_candidate_identity_changes_with_definitions_but_ignores_canvas_positions": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_derived_multicomponent_root_preserves_the_excluded_strip": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_legacy_payload_and_full_definition_identity_share_one_candidate": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_parameter_quantities_retain_exact_fractions_and_field_types": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_placed_profile_frame_matches_native_snapshot_and_hardcoded_axes": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_profile_envelope_and_members_keep_distinct_local_domains": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_region_roots_keep_holes_and_authored_vertex_identities": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_shared_kernel_cache_negative_control_changes_actual_model_transport": "passed",
+      "tests.test_geo261_model_sources.ModelSources.test_source_graph_owns_exact_keys_and_exports_actual_guide_edges": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_boundary_role_exact_geometry_and_tiebreaks": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_candidate_filter_order_capacity_and_accumulated_flags": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_guard_mutations_fail_named_independent_assertions": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_layout_and_fixity_compatibility": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_legal_count_excludes_free_without_requiring_uniqueness": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_pick_includes_free_and_only_writes_unique_hit": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_reference_identity_zero_full_uint32_and_negative_indices": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_runtime_matches_separately_compiled_frozen_bodies": "passed",
+      "tests.test_geo261_wood_supports.WoodSupports.test_shadowing_respects_face_order_and_exposed_partial_overlap": "passed",
+      "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_extracted_bodies_preserve_frozen_product": "passed",
+      "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_frozen_comparison_contains_actual_bodies_and_no_product_include": "passed",
+      "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_imports_only_own_header_and_public_geometry": "passed",
+      "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_storage_layout_and_signed_index_definitions_preserve_frozen_product": "passed",
+      "tests.test_geo261_wood_supports_product.WoodSupportsProduct.test_boundary_derivation_guard_changes_kernel_client_and_object_fields": "passed",
+      "tests.test_geo261_wood_supports_product.WoodSupportsProduct.test_stop_identity_guard_changes_kernel_client_and_real_between_placement": "failed",
+      "tests.test_geo261_native_regions.NativeRegions.test_actual_kernel_validation_keeps_collinear_vertices_and_holes": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_capacity_stable_replacement_deletion_order_and_uint32_identity": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_coordinate_matching_negative_control_is_an_assertion_failure": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_explicit_initialization_keeps_existing_highwater_and_table_invariants": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_keyed_movement_retirement_and_highwater_follow_existing_rules": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_last_uint32_key_and_exhaustion_never_wrap_or_partially_assign": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_lookup_resolves_real_loop_vertex_without_touching_failed_output": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_moved_missing_ambiguous_and_invalid_baselines_are_distinct_failures": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_ordinary_reordering_insertion_and_repeated_reconciliation_preserve_identity": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_owned_geometry_keys_clone_aliasing_and_zero_inactive_storage": "passed",
+      "tests.test_geo261_native_regions.NativeRegions.test_retired_key_negative_control_is_an_assertion_failure": "passed",
+      "tests.test_geo261_native_regions.RegionExtraction.test_public_module_has_no_host_kind_fixity_world_or_binding_policy": "passed",
+      "tests.test_geo261_native_regions.RegionExtraction.test_reconciliation_conditions_and_order_preserve_frozen_product": "passed",
+      "tests.test_geo261_regions_product.RegionProduct.test_coordinate_match_guard_controls_independent_client_and_actual_preview": "passed",
+      "tests.test_geo261_regions_product.RegionProduct.test_identity_allocator_preview_cancel_confirm_and_undo_share_whole_snapshot": "passed",
+      "tests.test_geo261_wood_contacts.WoodContactSourcePreservation.test_archive_judge_uses_verified_original_fixture_without_git": "passed",
+      "tests.test_geo261_wood_contacts.WoodContactSourcePreservation.test_module_imports_only_public_woodworking_and_standard_headers": "passed",
+      "tests.test_geo261_wood_contacts.WoodContactSourcePreservation.test_policy_blocks_preserve_frozen_product_decisions_and_error_text": "passed",
+      "tests.test_geo261_wood_contacts.WoodContacts.test_exact_utf8_errors_capacity_null_termination_and_unchanged_tail": "passed",
+      "tests.test_geo261_wood_contacts.WoodContacts.test_frozen_verdict_and_error_bytes_equivalence": "passed",
+      "tests.test_geo261_wood_contacts.WoodContacts.test_guard_controls_fail_named_independent_assertions": "passed",
+      "tests.test_geo261_wood_contacts.WoodContacts.test_outline_hole_and_unknown_contact_kinds": "passed",
+      "tests.test_geo261_wood_contacts.WoodContacts.test_owner_pointer_identity_and_two_boundary_exemption": "passed",
+      "tests.test_geo261_wood_contacts.WoodContacts.test_span_extension_role_and_closed_boundary_limits": "passed",
+      "tests.test_geo261_wood_contacts.WoodContacts.test_strict_priority_extension_override_and_full_coord_width": "passed",
+      "tests.test_geo261_wood_contacts_product.WoodContactsProduct.test_extension_priority_controls_independent_client_and_actual_placement": "passed"
+    },
+    "failure_details": [
+      {
+        "test": "tests.test_geo261_wood_supports_product.WoodSupportsProduct.test_stop_identity_guard_changes_kernel_client_and_real_between_placement",
+        "subtest": null,
+        "classification": "test-assertion-failure",
+        "exceptionType": "AssertionError",
+        "message": "True is not false : {'ok': True, 'revision': 11, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': [], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'definition_sha256': '34abcbe56fc37585f8e0037981a46b877888c577b51f39d8bd9b7d1f8725dba2'}",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/var/tmp/geo261-baseline-a898ad6e/.git/geo261-candidates/native-groups-99eeabe1-v1/tests/test_geo261_wood_supports_product.py\", line 59, in test_stop_identity_guard_changes_kernel_client_and_real_between_placement\n    self.assertEqual(1,self.case('references',client));loaded,_=self.load(bridge,scene);self.assertFalse(loaded['ok'],loaded)\n                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/case.py\", line 721, in assertFalse\n    raise self.failureException(msg)\nAssertionError: True is not false : {'ok': True, 'revision': 11, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': [], 'native_capabilities': ['section-profile-native/1', 'panel-fill-native/1'], 'definition_sha256': '34abcbe56fc37585f8e0037981a46b877888c577b51f39d8bd9b7d1f8725dba2'}\n"
+      }
+    ],
+    "subtests_by_test": {
+      "tests.test_geo261_wood_supports.WoodSupports.test_guard_mutations_fail_named_independent_assertions": {
+        "passed": 41,
+        "failed": 0
+      },
+      "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_extracted_bodies_preserve_frozen_product": {
+        "passed": 6,
+        "failed": 0
+      },
+      "tests.test_geo261_wood_supports.WoodSupportsSourcePreservation.test_storage_layout_and_signed_index_definitions_preserve_frozen_product": {
+        "passed": 3,
+        "failed": 0
+      },
+      "tests.test_geo261_wood_contacts.WoodContactSourcePreservation.test_policy_blocks_preserve_frozen_product_decisions_and_error_text": {
+        "passed": 2,
+        "failed": 0
+      },
+      "tests.test_geo261_wood_contacts.WoodContacts.test_guard_controls_fail_named_independent_assertions": {
+        "passed": 17,
+        "failed": 0
+      }
+    },
+    "compiler_commands": 173,
+    "build_artifact_count": 292
+  },
+  "source_unchanged": true,
+  "source_files": 15929,
+  "source_before_sha256": "1071150302cd3ea607f9b6032d8b319f94b62bfd7739df38c28a68a9ee63070b",
+  "source_after_sha256": "1071150302cd3ea607f9b6032d8b319f94b62bfd7739df38c28a68a9ee63070b",
+  "runner_sha256_before": {
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/run-native-receipt.py": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/exercise-native-receipt.py": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/native-receipt-namespace.sh": "94bc89f3f4b78cacc6e56289a0d7ab73c0a7b37e9240ff1cea3133f19f773e86",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/recipe.json": "f086ba3504372b99b22a0269d0cdd5b25ba0fec18f95ef63add532524d84341e"
+  },
+  "runner_sha256_after": {
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/run-native-receipt.py": "952dd06ddad0dc42946e60c3c7037b0f18db7f50b853dccddc6e9de1d5e6121b",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/exercise-native-receipt.py": "c383344073359656287cc76c84905a330dedad0f855f173ab7ff6fa3da9ca78a",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/native-receipt-namespace.sh": "94bc89f3f4b78cacc6e56289a0d7ab73c0a7b37e9240ff1cea3133f19f773e86",
+    "/mnt/d/geometry-axiom-work/geo261-evidence/p1/native-next-99eeabe1/recipe.json": "f086ba3504372b99b22a0269d0cdd5b25ba0fec18f95ef63add532524d84341e"
+  },
+  "runners_unchanged": true,
+  "cleared_override_names": [],
+  "log_sha256": "3dad6c6a0b23f84dd01d8868d272dfe28f8461f5896c4c090bc991b3c6c431f7",
+  "full_suite_executed": false,
+  "browser_executed": false,
+  "exit": 1
+}

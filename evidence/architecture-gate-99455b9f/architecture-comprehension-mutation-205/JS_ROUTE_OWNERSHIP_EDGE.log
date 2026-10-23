@@ -1,0 +1,22 @@
+test_host_literal_import_route_is_an_owned_edge_inside_template (__main__.ArchitectureContract.test_host_literal_import_route_is_an_owned_edge_inside_template) ... FAIL
+
+======================================================================
+FAIL: test_host_literal_import_route_is_an_owned_edge_inside_template (__main__.ArchitectureContract.test_host_literal_import_route_is_an_owned_edge_inside_template)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Yang\AppData\Local\Temp\geo261-template-mutants-3o5c8ixf\test_architecture_contract.py", line 698, in test_host_literal_import_route_is_an_owned_edge_inside_template
+    self.assertEqual([edge.target for edge in result.edges], ["src/vendor/lib.js"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['src/vendor/lib.js']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'src/vendor/lib.js'
+
+- []
++ ['src/vendor/lib.js']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.025s
+
+FAILED (failures=1)

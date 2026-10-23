@@ -1,0 +1,97 @@
+[
+  [
+    "cold",
+    "dump",
+    true
+  ],
+  [
+    "load",
+    "loadfile /workspace/geo261-validation-20261018/proposed-fixes/default-owned-replay/raw-fixtures/candidate-default.scene",
+    true
+  ],
+  [
+    "loaded",
+    "dump",
+    true
+  ],
+  [
+    "begin",
+    "line history-begin",
+    true
+  ],
+  [
+    "first-edit",
+    "line spec default_unused 7",
+    true
+  ],
+  [
+    "second-edit",
+    "line spec default_other 8",
+    true
+  ],
+  [
+    "end",
+    "line history-end",
+    true
+  ],
+  [
+    "edited",
+    "dump",
+    true
+  ],
+  [
+    "undo",
+    "line undo",
+    true
+  ],
+  [
+    "undone",
+    "dump",
+    true
+  ],
+  [
+    "redo",
+    "line redo",
+    true
+  ],
+  [
+    "redone",
+    "dump",
+    true
+  ],
+  [
+    "undo-again",
+    "line undo",
+    true
+  ],
+  [
+    "before",
+    "dump",
+    true
+  ],
+  [
+    "replace",
+    "default",
+    true
+  ],
+  [
+    "after",
+    "dump",
+    true
+  ],
+  [
+    "empty-undo",
+    "line undo",
+    false
+  ],
+  [
+    "empty-redo",
+    "line redo",
+    false
+  ],
+  [
+    "final",
+    "dump",
+    true
+  ]
+]

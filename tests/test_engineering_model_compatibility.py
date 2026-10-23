@@ -95,7 +95,10 @@ class EngineeringAdapterProtocol(unittest.TestCase):
 
     def adapter(self, source, snapshot):
         output = SimpleNamespace(stdout=canonical_bytes(snapshot), returncode=0)
-        with mock.patch("modeling.base.subprocess.run", return_value=output):
+        # This is a protocol fixture; the native process and its binary identity
+        # are both supplied at the same mocked boundary.
+        with mock.patch("modeling.base.subprocess.run", return_value=output), \
+                mock.patch("geometry_app.source_closure.binary_identity", return_value=("test-only-adapter",)):
             return load_base(source, executable="test-only-adapter")
 
     def test_old_snapshot_protocol_is_accepted_for_legacy_sources_only(self):
@@ -675,6 +678,7 @@ class EngineeringModelCompatibility(unittest.TestCase):
                 self.assertEqual(caught.exception.code, "AXIOM_VERSION")
 
     def test_base_required_capability_reaches_manifest_and_cannot_be_removed(self):
+        from tests.test_geometry_source_runtime import decode, envelope
         base = load_base(CASE["definitions"]["base_scene"])
         base["base_scene"] = "requires engineering-spec/1\n" + base["base_scene"]
         base["required_capabilities"] = ["engineering-spec/1"]
@@ -682,7 +686,7 @@ class EngineeringModelCompatibility(unittest.TestCase):
         definitions["base_scene"] = base["base_scene"]
         # Only adapter transport is substituted here; actual engineering source
         # evaluation is covered by native core fixtures, not this boundary test.
-        with mock.patch("modeling.base.load_base", return_value=base):
+        with mock.patch("modeling.base.load_candidate", return_value=decode(envelope(base))):
             package = build_package(definitions, CASE["request"])
             self.assertIn("engineering-spec/1", package["manifest"]["capabilities"])
             self.assertEqual(package["definitions"]["base_scene"], base["base_scene"])

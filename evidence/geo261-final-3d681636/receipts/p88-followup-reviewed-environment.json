@@ -1,0 +1,43 @@
+{
+  "schema": "geo288-p88-followup-environment/1",
+  "tested_product_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "product_tests_run_by_this_publication": false,
+  "maintenance": {
+    "v2_a12d184e": {
+      "driver_exit": 0,
+      "outer_exit": 0,
+      "passed": true,
+      "available_bytes_delta": -8142848,
+      "parent_raw_verified_unchanged": true,
+      "scope": "Environment maintenance only; v2 zero exits did not establish space recovery; v3 separately verifies materialization"
+    },
+    "v2_fe863b03": {
+      "driver_exit": 0,
+      "outer_exit": 0,
+      "passed": true,
+      "available_bytes_delta": -8159232,
+      "parent_raw_verified_unchanged": true,
+      "scope": "Environment maintenance only; v2 zero exits did not establish space recovery; v3 separately verifies materialization"
+    },
+    "v3_a12d184e": {
+      "driver_exit": 0,
+      "outer_exit": 0,
+      "passed": true,
+      "available_bytes_delta": 1244446720,
+      "parent_raw_verified_unchanged": true,
+      "scope": "Environment maintenance only; v2 zero exits did not establish space recovery; v3 separately verifies materialization"
+    },
+    "v3_fe863b03": {
+      "driver_exit": 0,
+      "outer_exit": 0,
+      "passed": true,
+      "available_bytes_delta": 1350230016,
+      "parent_raw_verified_unchanged": true,
+      "scope": "Environment maintenance only; v2 zero exits did not establish space recovery; v3 separately verifies materialization"
+    }
+  },
+  "p52_checkout_exit": 0,
+  "p52_measurement_executed": false,
+  "prbody_head": "474011863fe5215f523a81d2d7c85fd4a92e40dd",
+  "live_pr_updated": false
+}

@@ -5,24 +5,23 @@ typedef struct {
     AsmDiagnostic assembly_diagnostic;
     uint64_t revision;
     uint32_t token;
-    World before, after;
+    AppWorldCandidate *transaction;
     char command[SCENE_MAX_LINE];
     ReferenceIssue issues[REFERENCE_MAX_ISSUES];
     size_t issue_count;
 } ReferencePreview;
 static ReferencePreview g_preview;
 static uint32_t g_preview_serial;
-static bool g_preview_confirming;
 static bool reference_preview_pending(void) { return g_preview.ready; }
 static bool reference_preview_valid(void) { return g_preview.ready && g_preview.valid; }
 static uint32_t reference_preview_token(void) { return g_preview.token; }
 
 static void reference_pose_text(const World *w,int index,char *out,size_t cap)
 {
-    if (index<0 || !w->timbers[index].placed) { snprintf(out,cap,"unavailable"); return; }
-    const Timber *t=&w->timbers[index];
+    if (index<0 || !w->wood.timbers[index].placed) { snprintf(out,cap,"unavailable"); return; }
+    const Timber *t=&w->wood.timbers[index];
     snprintf(out,cap,"surface %u origin [%lld,%lld,%lld] axes [%lld,%lld,%lld]/[%lld,%lld,%lld]/[%lld,%lld,%lld]",
-        w->anchors[index].placement_id,(long long)t->origin.x,(long long)t->origin.y,(long long)t->origin.z,
+        w->wood.anchors[index].placement_id,(long long)t->origin.x,(long long)t->origin.y,(long long)t->origin.z,
         (long long)t->axis_length.x,(long long)t->axis_length.y,(long long)t->axis_length.z,
         (long long)t->axis_a.x,(long long)t->axis_a.y,(long long)t->axis_a.z,
         (long long)t->axis_b.x,(long long)t->axis_b.y,(long long)t->axis_b.z);
@@ -57,7 +56,7 @@ static bool reference_axis_definition_equal(const GridAxisDef *a,const GridAxisD
     if (a->source==GRID_SRC_SERIES || a->source==GRID_SRC_REPEAT)
         return a->start==z->start && a->step==z->step &&
             (a->source==GRID_SRC_REPEAT || a->series_count==z->series_count);
-    return a->panel==z->panel && a->gap==z->gap && a->anchor==z->anchor &&
+    return a->body==z->body && a->gap==z->gap && a->anchor==z->anchor &&
         a->anchor_explicit==z->anchor_explicit;
 }
 
@@ -73,8 +72,10 @@ static bool reference_system_changed(const World *before,const World *after,uint
 {
     const GridSystem *a=world_find_grid_system(before,id),*z=world_find_grid_system(after,id);
     if (!a || !z) return a!=z;
-    return memcmp(&a->card_reference,&z->card_reference,sizeof a->card_reference) || a->rule_count!=z->rule_count || a->next_rule_key!=z->next_rule_key ||
-        memcmp(a->rules,z->rules,sizeof a->rules) || strcmp(a->name,z->name) || a->main_along!=z->main_along ||
+    const GridCardReference *ac=&a->card_reference,*zc=&z->card_reference;
+    return ac->set!=zc->set || ac->parameter_id!=zc->parameter_id || ac->fields[0]!=zc->fields[0] || ac->fields[1]!=zc->fields[1] ||
+        a->rule_count!=z->rule_count || a->next_rule_key!=z->next_rule_key ||
+        memcmp(a->rules,z->rules,sizeof a->rules) || strcmp(a->name,z->name) || app_grid_system_main_along(before,id)!=app_grid_system_main_along(after,id) ||
         !reference_axis_definition_equal(&a->axis[0],&z->axis[0]) ||
         !reference_axis_definition_equal(&a->axis[1],&z->axis[1]);
 }
@@ -137,12 +138,12 @@ static bool reference_gdi_confirm(HWND window, World *world)
         g_preview.ready=false; return false;
     }
     reference_object_preview(details);
-    for (size_t i=0;i<g_preview.before.guide_count;++i) {
-        uint32_t id=g_preview.before.guides[i].id;
-        if (!reference_guide_changed(&g_preview.before,&g_preview.after,id)) continue;
+    for (size_t i=0;i<geo_guides_count(&g_preview.transaction->before.geo.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.transaction->before.geo.guide_lines)[i].id;
+        if (!reference_guide_changed(&g_preview.transaction->before,&g_preview.transaction->after,id)) continue;
         fprintf(details,"guide %u visible: ",id);
-        reference_guide_clip_text(&g_preview.before,id,details); fputs(" -> ",details);
-        reference_guide_clip_text(&g_preview.after,id,details); fputc('\n',details);
+        reference_guide_clip_text(&g_preview.transaction->before,id,details); fputs(" -> ",details);
+        reference_guide_clip_text(&g_preview.transaction->after,id,details); fputc('\n',details);
     }
     long details_size=ftell(details);
     if (details_size<0 || (size_t)details_size>=sizeof text-used) truncated=true;
@@ -153,31 +154,31 @@ static bool reference_gdi_confirm(HWND window, World *world)
         used+=got; text[used]='\0';
     }
     fclose(details);
-    for (size_t i=0;i<g_preview.before.timber_count;++i) {
-        const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
+    for (size_t i=0;i<g_preview.transaction->before.wood.timber_count;++i) {
+        const Timber *t=&g_preview.transaction->before.wood.timbers[i]; if (!t->placed) continue;
         if (used+900>=sizeof text) { truncated=true; break; }
-        int j=reference_timber_index(&g_preview.after,t->id); bool valid=j>=0 && g_preview.after.timbers[j].placed;
-        const TimberAnchor *a=&g_preview.before.anchors[i];
-        const PlacementSurface *p=world_find_placement(&g_preview.before,a->placement_id); SurfaceRegion2 f;
+        int j=reference_timber_index(&g_preview.transaction->after,t->id); bool valid=j>=0 && g_preview.transaction->after.wood.timbers[j].placed;
+        const TimberAnchor *a=&g_preview.transaction->before.wood.anchors[i];
+        const PlacementSurface *p=world_find_placement(&g_preview.transaction->before,a->placement_id); SurfaceRegion2 f;
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
         Coord old=0,newc=0;
         if (p && timber_a0_footprint_uv(p,t,a,&f)) old=(along?f.min_u:f.min_v)+t->size_a/2;
         if (valid) {
-            const Timber *nt=&g_preview.after.timbers[j]; const TimberAnchor *na=&g_preview.after.anchors[j];
-            p=world_find_placement(&g_preview.after,na->placement_id);
+            const Timber *nt=&g_preview.transaction->after.wood.timbers[j]; const TimberAnchor *na=&g_preview.transaction->after.wood.anchors[j];
+            p=world_find_placement(&g_preview.transaction->after,na->placement_id);
             if (p && timber_a0_footprint_uv(p,nt,na,&f)) newc=(along?f.min_u:f.min_v)+nt->size_a/2;
         }
         n=snprintf(text+used,sizeof text-used,"角材 %u：中線 %lld → %lld；長度 %lld → %lld mm%s\n",t->id,(long long)old,(long long)newc,(long long)t->length,
-            valid?(long long)g_preview.after.timbers[j].length:0,valid?"":"（已刪除或無法推導）"); used+=(size_t)n;
+            valid?(long long)g_preview.transaction->after.wood.timbers[j].length:0,valid?"":"（已刪除或無法推導）"); used+=(size_t)n;
         char before[240],after[240];
-        reference_pose_text(&g_preview.before,(int)i,before,sizeof before);
-        reference_pose_text(&g_preview.after,j,after,sizeof after);
+        reference_pose_text(&g_preview.transaction->before,(int)i,before,sizeof before);
+        reference_pose_text(&g_preview.transaction->after,j,after,sizeof after);
         n=snprintf(text+used,sizeof text-used,"  %s → %s\n",before,after); used+=(size_t)n;
     }
-    for (size_t i=0;i<g_preview.before.guide_count;++i) {
-        uint32_t id=g_preview.before.guides[i].id; char before[240],after[240];
-        reference_guide_text(&g_preview.before,id,before,sizeof before);
-        reference_guide_text(&g_preview.after,id,after,sizeof after);
+    for (size_t i=0;i<geo_guides_count(&g_preview.transaction->before.geo.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.transaction->before.geo.guide_lines)[i].id; char before[240],after[240];
+        reference_guide_text(&g_preview.transaction->before,id,before,sizeof before);
+        reference_guide_text(&g_preview.transaction->after,id,after,sizeof after);
         if (!strcmp(before,after)) continue;
         if (used+600>=sizeof text) { truncated=true; break; }
         n=snprintf(text+used,sizeof text-used,"參考線 %u: %s → %s\n",id,before,after); used+=(size_t)n;
@@ -229,17 +230,17 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
             reference_boundary_geometry_changed(ab,zb);
     }
     SurfaceRegion2 ac,zc;
-    if (a->is_subgrid && (!grid_cell_bounds(before->grids,before->grid_count,a,ap,ab,&ac,NULL,0) ||
-        !grid_cell_bounds(after->grids,after->grid_count,z,zp,zb,&zc,NULL,0) || memcmp(&ac,&zc,sizeof ac))) return true;
+    if (a->is_subgrid && (!grid_cell_bounds(before->wood.grid_applications.items,before->wood.grid_applications.count,a,ap,ab,&ac,NULL,0) ||
+        !grid_cell_bounds(after->wood.grid_applications.items,after->wood.grid_applications.count,z,zp,zb,&zc,NULL,0) || memcmp(&ac,&zc,sizeof ac))) return true;
     for (int axis=0;axis<2;++axis) {
         Coord ax[GRID_MAX_LINES],zx[GRID_MAX_LINES]; size_t an=0,zn=0;
-        bool av=grid_axis_lines_in(before->grids,before->grid_count,a,ap,ab,axis,ax,&an,NULL,0);
-        bool zv=grid_axis_lines_in(after->grids,after->grid_count,z,zp,zb,axis,zx,&zn,NULL,0);
+        bool av=grid_axis_lines_in(before->wood.grid_applications.items,before->wood.grid_applications.count,a,ap,ab,axis,ax,&an,NULL,0);
+        bool zv=grid_axis_lines_in(after->wood.grid_applications.items,after->wood.grid_applications.count,z,zp,zb,axis,zx,&zn,NULL,0);
         if (!av || !zv || an!=zn || (an && memcmp(ax,zx,an*sizeof *ax))) return true;
         for (size_t k=0;k<an;++k) {
             SurfaceSegment2 as[GUIDE_MAX_SEGMENTS],zs[GUIDE_MAX_SEGMENTS];
-            size_t na=grid_line_segments(before->grids,before->grid_count,a,ap,ab,axis,k,as,GUIDE_MAX_SEGMENTS);
-            size_t nz=grid_line_segments(after->grids,after->grid_count,z,zp,zb,axis,k,zs,GUIDE_MAX_SEGMENTS);
+            size_t na=grid_line_segments(before->wood.grid_applications.items,before->wood.grid_applications.count,a,ap,ab,axis,k,as,GUIDE_MAX_SEGMENTS);
+            size_t nz=grid_line_segments(after->wood.grid_applications.items,after->wood.grid_applications.count,z,zp,zb,axis,k,zs,GUIDE_MAX_SEGMENTS);
             if (na!=nz || (na && memcmp(as,zs,na*sizeof *as))) return true;
         }
     }
@@ -294,7 +295,7 @@ static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
     SurfaceRegion2 c;
     if (!g || !p) { fprintf(out,"grid %u unavailable",id); return; }
     if (g->is_subgrid) {
-        if (!grid_cell_bounds(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),&c,NULL,0)) {
+        if (!grid_cell_bounds(w->wood.grid_applications.items,w->wood.grid_applications.count,g,p,world_placement_boundary(w,p),&c,NULL,0)) {
             fprintf(out,"subgrid %u unavailable",id); return;
         }
         fprintf(out,"subgrid %u parent %u cell [%lld,%lld]-[%lld,%lld]",id,g->parent_id,
@@ -319,7 +320,7 @@ static void reference_system_text(const World *w,uint32_t id,FILE *out)
     const GridSystem *s=world_find_grid_system(w,id);
     if (!s) { fprintf(out,"grid-system %u unavailable",id); return; }
     fprintf(out,"grid-system %u name %s mode %s main-along %s",id,s->name,
-        grid_system_is_infinite(s)?"infinite":"legacy-finite",s->main_along==1?"u":s->main_along==2?"v":"none");
+        grid_system_is_infinite(s)?"infinite":"legacy-finite",app_grid_system_main_along(w,s->id)==1?"u":app_grid_system_main_along(w,s->id)==2?"v":"none");
     if(s->card_reference.set)fprintf(out," card-reference %u u-field %u v-field %u",s->card_reference.parameter_id,s->card_reference.fields[0],s->card_reference.fields[1]);
     for (int axis=0;axis<2;++axis) {
         const GridAxisDef *a=&s->axis[axis]; fprintf(out," %c",axis?'v':'u');
@@ -332,7 +333,7 @@ static void reference_system_text(const World *w,uint32_t id,FILE *out)
         else if (a->source==GRID_SRC_REPEAT)
             fprintf(out," repeat %lld %lld",(long long)a->start,(long long)a->step);
         else fprintf(out," %s %lld gap %lld from %lld",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel",
-            (long long)a->panel,(long long)a->gap,(long long)a->anchor);
+            (long long)a->body,(long long)a->gap,(long long)a->anchor);
     }
     fprintf(out," rule-next %u",s->next_rule_key);
     for(size_t k=0;k<s->rule_count;++k){
@@ -391,26 +392,26 @@ static void reference_binding_text(const World *w,uint32_t id,FILE *out)
 
 static void reference_object_preview(FILE *out)
 {
-    const World *before=&g_preview.before,*after=&g_preview.after;
+    const World *before=&g_preview.transaction->before,*after=&g_preview.transaction->after;
     for (int pass=0;pass<2;++pass) {
         const World *w=pass?after:before;
-        for (size_t i=0;i<w->grid_system_count;++i) {
-            uint32_t id=w->grid_systems[i].id;
+        for (size_t i=0;i<geo_grid_systems_count(&w->geo.grid_store);++i) {
+            uint32_t id=(*geo_grid_systems_at(&w->geo.grid_store,i)).id;
             if (pass?world_find_grid_system(before,id)!=NULL:!reference_system_changed(before,after,id)) continue;
             reference_system_text(before,id,out); fputs(" -> ",out); reference_system_text(after,id,out); fputc('\n',out);
         }
-        for (size_t i=0;i<w->boundary_count;++i) {
-            uint32_t id=w->boundaries[i].id;
+        for (size_t i=0;i<world_boundary_count(w);++i) {
+            uint32_t id=geo_regions_at(&w->geo.region_data,i)->id;
             if (pass?world_find_boundary(before,id)!=NULL:!reference_boundary_changed(before,after,id)) continue;
             reference_boundary_text(before,id,out); fputs(" -> ",out); reference_boundary_text(after,id,out); fputc('\n',out);
         }
-        for (size_t i=0;i<w->grid_binding_count;++i) {
-            uint32_t id=w->grid_bindings[i].id;
+        for (size_t i=0;i<geo_grid_bindings_count(&w->geo.grid_store);++i) {
+            uint32_t id=(*geo_grid_bindings_at(&w->geo.grid_store,i)).id;
             if (pass?world_find_grid_binding(before,id)!=NULL:!reference_binding_changed(before,after,id)) continue;
             reference_binding_text(before,id,out); fputs(" -> ",out); reference_binding_text(after,id,out); fputc('\n',out);
         }
-        for (size_t i=0;i<w->grid_count;++i) {
-            uint32_t id=w->grids[i].id;
+        for (size_t i=0;i<w->wood.grid_applications.count;++i) {
+            uint32_t id=w->wood.grid_applications.items[i].id;
             if (pass?world_find_grid(before,id)!=NULL:!reference_grid_changed(before,after,id)) continue;
             reference_subgrid_text(before,id,out); fputs(" -> ",out); reference_subgrid_text(after,id,out); fputc('\n',out);
         }
@@ -422,46 +423,44 @@ static bool reference_geometry_changed(const World *before,const World *after)
     /* Replay may append independent definitions without editing any earlier
      * geometry. Existing bindings still protect both changes and deletion;
      * interactive creation is separately guarded by binding_edit below. */
-    for (size_t i=0;i<before->grid_binding_count;++i)
-        if (reference_binding_changed(before,after,before->grid_bindings[i].id)) return true;
-    for (size_t i=0;i<before->grid_count;++i)
-        if ((before->grids[i].is_subgrid || before->grids[i].from_system || before->grids[i].from_binding || eng_object_bound(before,0,before->grids[i].id)) && reference_grid_changed(before,after,before->grids[i].id)) return true;
+    for (size_t i=0;i<geo_grid_bindings_count(&before->geo.grid_store);++i)
+        if (reference_binding_changed(before,after,(*geo_grid_bindings_at(&before->geo.grid_store,i)).id)) return true;
+    for (size_t i=0;i<before->wood.grid_applications.count;++i)
+        if ((before->wood.grid_applications.items[i].is_subgrid || before->wood.grid_applications.items[i].from_system || before->wood.grid_applications.items[i].from_binding || eng_object_bound(before,0,before->wood.grid_applications.items[i].id)) && reference_grid_changed(before,after,before->wood.grid_applications.items[i].id)) return true;
     bool has_child=false;
-    for (size_t i=0;i<before->grid_count;++i) if (before->grids[i].is_subgrid) has_child=true;
-    if (has_child) for (size_t i=0;i<before->guide_count;++i)
-        if (reference_guide_changed(before,after,before->guides[i].id)) return true;
-    for (size_t i=0;i<before->timber_count;++i) {
-        const Timber *t=&before->timbers[i]; if (!t->placed) continue;
+    for (size_t i=0;i<before->wood.grid_applications.count;++i) if (before->wood.grid_applications.items[i].is_subgrid) has_child=true;
+    if (has_child) for (size_t i=0;i<geo_guides_count(&before->geo.guide_lines);++i)
+        if (reference_guide_changed(before,after,geo_guides_values(&before->geo.guide_lines)[i].id)) return true;
+    for (size_t i=0;i<before->wood.timber_count;++i) {
+        const Timber *t=&before->wood.timbers[i]; if (!t->placed) continue;
         int j=reference_timber_index(after,t->id);
-        if (j<0 || !after->timbers[j].placed ||
-            memcmp(t,&after->timbers[j],sizeof *t) ||
-            memcmp(&before->anchors[i],&after->anchors[j],sizeof(TimberAnchor))) return true;
+        if (j<0 || !after->wood.timbers[j].placed ||
+            memcmp(t,&after->wood.timbers[j],sizeof *t) ||
+            memcmp(&before->wood.anchors[i],&after->wood.anchors[j],sizeof(TimberAnchor))) return true;
     }
     return false;
 }
 static bool reference_may_affect(const World *w,char **tokens,int count)
 {
     bool placed=false;
-    for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed) placed=true;
-    bool referenced=w->grid_binding_count>0;
-    for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid || w->grids[i].from_system || w->grids[i].from_binding) referenced=true;
-    if ((!placed && !referenced && !w->engineering.binding_count) || !count) return false;
+    for (size_t i=0;i<w->wood.timber_count;++i) if (w->wood.timbers[i].placed) placed=true;
+    bool referenced=geo_grid_bindings_count(&w->geo.grid_store)>0;
+    for (size_t i=0;i<w->wood.grid_applications.count;++i) if (w->wood.grid_applications.items[i].is_subgrid || w->wood.grid_applications.items[i].from_system || w->wood.grid_applications.items[i].from_binding) referenced=true;
+    if ((!placed && !referenced && !w->wood.engineering.binding_count) || !count) return false;
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
         !strcmp(c,"boundary-keyed") || !strcmp(c,"grid-binding") ||
         !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"grid-system") || !strcmp(c,"grid-source-rule") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
     if ((!strcmp(c,"place") || !strcmp(c,"timber")) && count>1) {
         uint32_t id;
-        if (parse_u32(tokens[1],&id)) { int i=reference_timber_index(w,id); return i>=0 && w->timbers[i].placed; }
+        if (parse_u32(tokens[1],&id)) { int i=reference_timber_index(w,id); return i>=0 && w->wood.timbers[i].placed; }
     }
     return false;
 }
 /* I8a: parameter bindings need approval even without downstream geometry.
  * Inspect the previous expression as well, so removing a binding is guarded. */
-static const DatumPlane *world_find_datum(const World *w,uint32_t id)
-{
-    for(size_t i=0;i<w->datum_count;++i)if(w->datums[i].id==id)return &w->datums[i];return NULL;
-}
+static const GeoDatum *world_find_datum(const World *w,uint32_t id)
+{return geo_datums_find(&w->geo.datum_planes,id);}
 static bool parameter_reference_edit(const World *w,char **tokens,int count)
 {
     if(g_parsing_scene_file || count<2)return false;
@@ -470,10 +469,10 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
         for(int i=1;i<count;++i)if(strstr(tokens[i],"param:") || !strcmp(tokens[i],"card-reference"))return true;
         uint32_t id;if(!parse_u32(tokens[1],&id))return false;
         if(!strcmp(command,"guide") || !strcmp(command,"move")){
-            const GuideLine *g=world_find_guide(w,id);return g && strstr(g->expression,"param:")!=NULL;
+            const GuideLine *g=world_find_guide(w,id);return g && strstr(app_guide_expression(w,g->id),"param:")!=NULL;
         }
         if(!strcmp(command,"datum")){
-            const DatumPlane *d=world_find_datum(w,id);return d && strstr(d->expression,"param:")!=NULL;
+            const GeoDatum *d=world_find_datum(w,id);return d && strstr(app_datum_expression(w,d->id),"param:")!=NULL;
         }
     }
     if(!strcmp(command,"delete") && count==3){
@@ -481,12 +480,14 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
     }
     return false;
 }
-static void reference_stage(const World *before,const World *after,char **tokens,int count,bool valid)
+static void reference_stage(AppWorldCandidate *transaction,char **tokens,int count,bool valid)
 {
+    if(g_preview.transaction!=transaction)app_world_candidate_destroy(g_preview.transaction);
+    g_preview.transaction=transaction;
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
     g_preview.assembly_diagnostic=(AsmDiagnostic){0};
     g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.revision=g_definition_revision;
-    g_preview.before=*before; g_preview.after=*after; g_preview.issue_count=g_reference_issue_count;
+    g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
         ReferenceIssue *e=&g_preview.issues[g_preview.issue_count++]; e->timber=0;
@@ -505,35 +506,35 @@ static void reference_preview_text(void)
 {
     fprintf(stderr,"I8a preview %u: %s\n",g_preview.token,g_preview.valid?"valid; confirm token to apply":"invalid; cannot apply");
     reference_object_preview(stderr);
-    for (size_t i=0;i<g_preview.before.timber_count;++i) {
-        const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
-        int j=reference_timber_index(&g_preview.after,t->id);
-        const TimberAnchor *a=&g_preview.before.anchors[i];
-        const PlacementSurface *p=world_find_placement(&g_preview.before,a->placement_id);
+    for (size_t i=0;i<g_preview.transaction->before.wood.timber_count;++i) {
+        const Timber *t=&g_preview.transaction->before.wood.timbers[i]; if (!t->placed) continue;
+        int j=reference_timber_index(&g_preview.transaction->after,t->id);
+        const TimberAnchor *a=&g_preview.transaction->before.wood.anchors[i];
+        const PlacementSurface *p=world_find_placement(&g_preview.transaction->before,a->placement_id);
         SurfaceRegion2 f; Coord old=0,newc=0;
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
         if (p && timber_a0_footprint_uv(p,t,a,&f)) old=(along?f.min_u:f.min_v)+t->size_a/2;
-        bool valid=j>=0 && g_preview.after.timbers[j].placed;
+        bool valid=j>=0 && g_preview.transaction->after.wood.timbers[j].placed;
         if (valid) {
-            const TimberAnchor *na=&g_preview.after.anchors[j]; const Timber *nt=&g_preview.after.timbers[j];
-            p=world_find_placement(&g_preview.after,na->placement_id);
+            const TimberAnchor *na=&g_preview.transaction->after.wood.anchors[j]; const Timber *nt=&g_preview.transaction->after.wood.timbers[j];
+            p=world_find_placement(&g_preview.transaction->after,na->placement_id);
             if (p && timber_a0_footprint_uv(p,nt,na,&f)) newc=(along?f.min_u:f.min_v)+nt->size_a/2;
         }
         fprintf(stderr," timber %u center %lld -> %lld length %lld -> %lld%s\n",t->id,(long long)old,(long long)newc,(long long)t->length,
-            valid?(long long)g_preview.after.timbers[j].length:0,valid?"":" (unavailable/deleted)");
+            valid?(long long)g_preview.transaction->after.wood.timbers[j].length:0,valid?"":" (unavailable/deleted)");
         char before[240],after[240];
-        reference_pose_text(&g_preview.before,(int)i,before,sizeof before);
-        reference_pose_text(&g_preview.after,j,after,sizeof after);
+        reference_pose_text(&g_preview.transaction->before,(int)i,before,sizeof before);
+        reference_pose_text(&g_preview.transaction->after,j,after,sizeof after);
         fprintf(stderr,"  %s -> %s\n",before,after);
     }
-    for (size_t i=0;i<g_preview.before.guide_count;++i) {
-        uint32_t id=g_preview.before.guides[i].id; char before[240],after[240];
-        reference_guide_text(&g_preview.before,id,before,sizeof before);
-        reference_guide_text(&g_preview.after,id,after,sizeof after);
-        if (reference_guide_changed(&g_preview.before,&g_preview.after,id)) {
+    for (size_t i=0;i<geo_guides_count(&g_preview.transaction->before.geo.guide_lines);++i) {
+        uint32_t id=geo_guides_values(&g_preview.transaction->before.geo.guide_lines)[i].id; char before[240],after[240];
+        reference_guide_text(&g_preview.transaction->before,id,before,sizeof before);
+        reference_guide_text(&g_preview.transaction->after,id,after,sizeof after);
+        if (reference_guide_changed(&g_preview.transaction->before,&g_preview.transaction->after,id)) {
             fprintf(stderr," guide %u: %s -> %s\n visible: ",id,before,after);
-            reference_guide_clip_text(&g_preview.before,id,stderr); fputs(" -> ",stderr);
-            reference_guide_clip_text(&g_preview.after,id,stderr); fputc('\n',stderr);
+            reference_guide_clip_text(&g_preview.transaction->before,id,stderr); fputs(" -> ",stderr);
+            reference_guide_clip_text(&g_preview.transaction->after,id,stderr); fputc('\n',stderr);
         }
     }
     for (size_t i=0;i<g_preview.issue_count;++i) {
@@ -542,12 +543,36 @@ static void reference_preview_text(void)
     }
 }
 
-static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,World *candidate)
+static bool app_scene_direct_dimensions_allowed(const char *path,int line_no,char **tokens,int count,const World *world)
 {
+    if (count>1 && (!strcmp(tokens[0],"grid") || !strcmp(tokens[0],"timber"))) {
+        uint32_t id;
+        if (parse_u32(tokens[1],&id) && eng_object_bound(world,!strcmp(tokens[0],"timber"),id)) {
+            scene_error(path,line_no,"D28: this object has engineering sources; edit its engineering source or explicit override instead of replacing it with direct dimensions"); return false;
+        }
+    }
+    return true;
+}
+typedef struct {
+    const char *path;int line_no;char **tokens;int count;World *before;
+} AppSceneCandidateCall;
+static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
+{
+    (void)sources;AppSceneCandidateCall *call=opaque;World *candidate=after;
+    g_reference_trial=*candidate;g_reference_capturing=true;
+    const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;
+    bool ok=apply_scene_line_unchecked(call->path,call->line_no,call->tokens,call->count,candidate);
+    g_subgrid_before=previous_baseline;g_reference_capturing=false;return ok;
+}
+static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,AppWorldCandidate *transaction,bool *retained)
+{
+    World *candidate=&transaction->after;
     if (!count) return true;
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
-        g_preview.ready=false; return true;
+        g_preview.ready=false;
+        if(g_preview.transaction)app_candidate_discard(g_preview.transaction->control);
+        return true;
     }
     if (!strcmp(tokens[0],"confirm")) {
         uint32_t token;
@@ -555,39 +580,32 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
             scene_error(path,line_no,"I8a: missing/invalid preview token; cannot apply"); return false;
         }
         /* Canvas layout does not invalidate geometry approval (D12/I14). */
-        if (g_preview.revision!=g_definition_revision || !world_definitions_equal(world,&g_preview.before)) {
+        if (g_preview.revision!=g_definition_revision || !app_world_candidate_current(g_preview.transaction,world)) {
             g_preview.ready=false;
             scene_error(path,line_no,"I8a: preview is stale; preview again against the current world"); return false;
         }
-        char command[SCENE_MAX_LINE],*parts[SCENE_MAX_TOKENS];
-        snprintf(command,sizeof command,"%s",g_preview.command);
-        int n=split_tokens(command,parts,SCENE_MAX_TOKENS);
-        g_preview.ready=false; g_preview_confirming=true;
-        bool ok=apply_scene_line(path,line_no,parts,n,world);
-        g_preview_confirming=false; return ok;
+        if(!app_world_candidate_revalidate(g_preview.transaction,world)){
+            g_preview.ready=false;scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
+        }
+        bool changed=!world_definitions_equal(world,&g_preview.transaction->after);
+        if(!app_world_candidate_publish(g_preview.transaction,world,true)){
+            g_preview.ready=false;scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;
+        }
+        g_preview.ready=false;if(changed&&!g_parsing_scene_file)++g_definition_revision;
+        return true;
     }
     bool explicit_preview=!strcmp(tokens[0],"preview");
     if (explicit_preview) {
         if (count<2 || !strcmp(tokens[1],"preview") || !strcmp(tokens[1],"confirm")) return false;
         ++tokens; --count;
     }
-    *candidate=*world;
-    if (count>1 && (!strcmp(tokens[0],"grid") || !strcmp(tokens[0],"timber"))) {
-        uint32_t id;
-        if (parse_u32(tokens[1],&id) && eng_object_bound(world,!strcmp(tokens[0],"timber"),id)) {
-            scene_error(path,line_no,"D28: this object has engineering sources; edit its engineering source or explicit override instead of replacing it with direct dimensions"); return false;
-        }
-    }
+    if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
-    g_reference_trial=*candidate; g_reference_capturing=true;
-    const World *previous_baseline=g_subgrid_before;
-    g_subgrid_before=world;
-    bool ok=apply_scene_line_unchecked(path,line_no,tokens,count,candidate);
-    g_subgrid_before=previous_baseline;
-    g_reference_capturing=false;
+    AppSceneCandidateCall call={path,line_no,tokens,count,world};
+    bool ok=app_world_candidate_evaluate(transaction,app_scene_candidate_apply,&call)==GEO_CANDIDATE_OK;
     bool affects=reference_may_affect(world,tokens,count);
     const World *impact_candidate=ok?candidate:&g_reference_trial;
-    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate->engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate->assembly,sizeof world->assembly) || memcmp(&world->section_profiles,&impact_candidate->section_profiles,sizeof world->section_profiles));
+    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->wood.engineering,&candidate->wood.engineering,sizeof world->wood.engineering) || memcmp(&world->wood.assembly,&candidate->wood.assembly,sizeof world->wood.assembly) || memcmp(&world->wood.section_profiles,&impact_candidate->wood.section_profiles,sizeof world->wood.section_profiles));
     uint32_t system_edit_id;
     bool system_edit=!g_parsing_scene_file && count>1 && !strcmp(tokens[0],"grid-system") &&
         parse_u32(tokens[1],&system_edit_id) && world_find_grid_system(world,system_edit_id);
@@ -596,11 +614,13 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
     bool rule_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-source-rule");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
-    if (explicit_preview || (!g_preview_confirming &&
+    if (explicit_preview ||
         (engineering_edit || assembly_dimensions_changed(world,candidate) || system_edit || application_edit || binding_edit || rule_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
-        (affects && (!ok || reference_geometry_changed(world,candidate)))))) {
+        (affects && (!ok || reference_geometry_changed(world,candidate))))) {
         char replay_error[512];snprintf(replay_error,sizeof replay_error,"%s",g_scene_last_error);
-        reference_stage(world,ok?candidate:&g_reference_trial,tokens,count,ok);
+        if(ok&&!app_world_candidate_seal(transaction)){ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");}
+        if(!ok)transaction->after=g_reference_trial;
+        reference_stage(transaction,tokens,count,ok);*retained=true;
         reference_preview_text();
         if (explicit_preview) return true;
         if(g_parsing_scene_file&&!ok&&replay_error[0]){
@@ -614,18 +634,201 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         if (!g_scene_last_error[0]) scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
         return false;
     }
-    if (!g_parsing_scene_file && strcmp(tokens[0],"canvas-pos") && !world_definitions_equal(world,candidate)) ++g_definition_revision;
-    *world=*candidate;
+    bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&!world_definitions_equal(world,candidate);
+    if(!app_world_candidate_seal(transaction)||!app_world_candidate_publish(transaction,world,false)){
+        scene_error(path,line_no,"I8: candidate seal failed; World unchanged");return false;
+    }
+    if(changed)++g_definition_revision;return true;
+}
+
+/* Only app_scene_load_evaluate opts into this private file replay frame.
+ * The retained outer owns all definitions; each line still has its own before
+ * bytes and resolver lifetime. Interactive and standalone parser callers do not. */
+typedef struct {
+    AppWorldCandidate *owner;GeoEvalContext *sources;World *before;
+} AppSceneFileReplay;
+static AppSceneFileReplay *g_scene_file_replay;
+static bool app_scene_file_graph_empty(const AppSceneFileReplay *frame)
+{
+    return !app_candidate_evaluation_state(frame->owner->control)&&
+        !geo_eval_provider_count(frame->sources)&&!geo_eval_node_count(frame->sources)&&!geo_eval_edge_count(frame->sources);
+}
+static bool app_scene_file_line_eligible(World *world,char **tokens,int count)
+{
+    AppSceneFileReplay *frame=g_scene_file_replay;
+    if(!frame||!frame->before||frame->owner!=g_active_app_candidate||world!=&frame->owner->after||
+       frame->sources!=geo_candidate_sources(app_candidate_core(frame->owner->control))||
+       geo_candidate_state(app_candidate_core(frame->owner->control))!=GEO_CANDIDATE_EVALUATING||
+       !g_parsing_scene_file||!count||!app_scene_file_graph_empty(frame))return false;
+    return strcmp(tokens[0],"preview")&&strcmp(tokens[0],"confirm")&&strcmp(tokens[0],"cancel-preview")&&
+        !world->wood.assembly.binding_count&&!reference_may_affect(world,tokens,count);
+}
+static bool app_scene_file_sources_ready(AppWorldCandidate *owner)
+{
+    if(!app_world_candidate_describe_sources(owner))return false;
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(owner->control));
+    for(size_t i=0;i<geo_eval_node_count(sources);++i){GeoSourceNodeView node;
+        if(!geo_eval_node_at(sources,i,&node)||node.state==GEO_NODE_ACTIVE)return false;
+    }
     return true;
+}
+static bool app_scene_file_line(const char *path,int line_no,char **tokens,int count,World *world)
+{
+    AppSceneFileReplay *frame=g_scene_file_replay;
+    if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
+    memcpy(frame->before,world,sizeof *world);
+    unsigned char operation[sizeof frame->owner->operation];
+    memcpy(operation,&frame->owner->operation,sizeof operation);
+    g_scene_last_error[0]='\0';g_engineering_error[0]='\0';g_reference_issue_count=0;
+    AppSceneCandidateCall call={path,line_no,tokens,count,frame->before};
+    bool ok=app_scene_candidate_apply(world,frame->sources,&call);
+    if(ok&&!app_scene_file_sources_ready(frame->owner)){
+        ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
+    }
+    memcpy(&frame->owner->operation,operation,sizeof operation);
+    app_candidate_set_evaluation_state(frame->owner->control,NULL,NULL);
+    if(!geo_eval_reset(frame->sources)){
+        if(ok)scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
+        ok=false;
+    }
+    if(!ok){
+        memcpy(world,frame->before,sizeof *world);
+        if(!g_scene_last_error[0])scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
+    }
+    return ok;
 }
 
 static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
 {
-    World *candidate=malloc(sizeof *candidate);
+    if(app_scene_file_line_eligible(world,tokens,count))return app_scene_file_line(path,line_no,tokens,count,world);
+    AppWorldCandidate *candidate=app_world_candidate_create(world);
     if(!candidate){scene_error(path,line_no,"I32: candidate World allocation failed");return false;}
-    bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate);
-    free(candidate);return ok;
+    bool retained=false;bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate,&retained);
+    if(!retained)app_world_candidate_destroy(candidate);return ok;
 }
+
+/* Optional scratch allocation: failure preserves the original per-line path.
+ * parse_scene_file keeps its full closing validation outside the line frames,
+ * so the final outer resolver is retained for the normal seal/publication. */
+static bool app_scene_replay_file(const char *path,World *world)
+{
+    AppSceneFileReplay frame={0},*previous=g_scene_file_replay;
+    frame.owner=g_active_app_candidate;
+    if(frame.owner&&world==&frame.owner->after&&
+       geo_candidate_state(app_candidate_core(frame.owner->control))==GEO_CANDIDATE_EVALUATING){
+        frame.sources=geo_candidate_sources(app_candidate_core(frame.owner->control));
+        if(frame.sources&&app_scene_file_graph_empty(&frame))frame.before=malloc(sizeof *frame.before);
+    }
+    g_scene_file_replay=frame.before?&frame:NULL;
+    bool ok=parse_scene_file(path,world);
+    g_scene_file_replay=previous;free(frame.before);return ok;
+}
+
+/* Private closed-program replay for the bridge's built-in default only.
+ * Keep the file-replay policy separate: scene_loading remains false here. */
+typedef struct {
+    AppWorldCandidate *owner;GeoEvalContext *sources;World *before;
+    size_t next_line;bool fixed_lines;
+} AppDefaultReplay;
+static AppDefaultReplay *g_default_replay;
+static const char *const app_default_replay_lines[]={
+    "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+    "timber 1 27 33 role boundary", "place 1 on 1 at-face e0 +u +n",
+    "timber 2 27 33 role boundary", "place 2 on 1 at-face e2 +u +n",
+    "spec 主支中線 500", "guide 1 1 v spec:主支中線",
+    "timber 3 27 33 role primary", "place 3 on 1 at-line guide 1 +v +n"
+};
+static bool app_default_replay_lines_match(const char *const *lines,size_t count)
+{
+    if(count!=sizeof app_default_replay_lines/sizeof app_default_replay_lines[0])return false;
+    for(size_t i=0;i<count;++i)if(strcmp(lines[i],app_default_replay_lines[i]))return false;
+    return true;
+}
+static bool app_default_replay_line_eligible(World *world,size_t index,char **tokens,int count)
+{
+    AppDefaultReplay *frame=g_default_replay;
+    if(!frame||!frame->fixed_lines)return false;
+    if(!frame->before||!frame->owner||!frame->sources||frame->owner!=g_active_app_candidate||world!=&frame->owner->after||
+       frame->sources!=geo_candidate_sources(app_candidate_core(frame->owner->control))||
+       geo_candidate_state(app_candidate_core(frame->owner->control))!=GEO_CANDIDATE_EVALUATING||
+       g_parsing_scene_file||g_scene_file_replay||index!=frame->next_line||
+       index>=sizeof app_default_replay_lines/sizeof app_default_replay_lines[0]||
+       app_candidate_evaluation_state(frame->owner->control)||geo_eval_provider_count(frame->sources)||
+       geo_eval_node_count(frame->sources)||geo_eval_edge_count(frame->sources)||
+       memcmp(frame->before,world,sizeof *world)){
+        frame->fixed_lines=false;return false;
+    }
+    char text[SCENE_MAX_LINE],*expected[SCENE_MAX_TOKENS];
+    snprintf(text,sizeof text,"%s",app_default_replay_lines[index]);
+    int wanted=split_tokens(text,expected,SCENE_MAX_TOKENS);
+    if(count!=wanted||count<=0){frame->fixed_lines=false;return false;}
+    for(int i=0;i<count;++i)if(strcmp(tokens[i],expected[i])){frame->fixed_lines=false;return false;}
+    const EngineeringState *engineering=&world->wood.engineering;
+    const AssemblyState *assembly=&world->wood.assembly;
+    const SectionProfileState *profiles=&world->wood.section_profiles;
+    if(engineering->material_count||engineering->method_count||engineering->application_count||engineering->binding_count||
+       assembly->rule_count||assembly->binding_count||assembly->instance_count||assembly->owner_count||
+       assembly->generation_required||assembly->loading||profiles->profile_count||profiles->member_count||profiles->run_count){
+        frame->fixed_lines=false;return false;
+    }
+    /* The two reference-sensitive additions always use the original inner. */
+    if(index==5||index==6)return false;
+    if(reference_may_affect(world,tokens,count)||parameter_reference_edit(world,tokens,count)){
+        frame->fixed_lines=false;return false;
+    }
+    return true;
+}
+static bool app_default_replay_line(const char *path,int line_no,char **tokens,int count,World *world,size_t index)
+{
+    AppDefaultReplay *frame=g_default_replay;
+    if(!frame)return apply_scene_line(path,line_no,tokens,count,world);
+    if(strcmp(path,"default")||line_no!=(int)index+1)frame->fixed_lines=false;
+    if(!app_default_replay_line_eligible(world,index,tokens,count)){
+        bool ok=apply_scene_line(path,line_no,tokens,count,world);
+        if(ok){memcpy(frame->before,world,sizeof *world);++frame->next_line;}
+        return ok;
+    }
+    if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
+    unsigned char operation[sizeof frame->owner->operation];
+    memcpy(operation,&frame->owner->operation,sizeof operation);
+    g_scene_last_error[0]='\0';g_engineering_error[0]='\0';g_reference_issue_count=0;
+    AppSceneCandidateCall call={path,line_no,tokens,count,frame->before};
+    bool ok=app_scene_candidate_apply(world,frame->sources,&call);
+    const World *impact=ok?world:&g_reference_trial;
+    /* The closed seven-line program cannot edit these three empty domains.
+     * Keep the original post-evaluation checks explicit, including failure's
+     * trial snapshot. A broken premise rejects; it never retries evaluation or
+     * claims to reproduce a general retained-preview transaction. All other
+     * stage command classes are excluded by the exact literal/token guard. */
+    bool stage=memcmp(&frame->before->wood.engineering,&world->wood.engineering,sizeof world->wood.engineering)||
+        memcmp(&frame->before->wood.assembly,&world->wood.assembly,sizeof world->wood.assembly)||
+        memcmp(&frame->before->wood.section_profiles,&impact->wood.section_profiles,sizeof world->wood.section_profiles)||
+        assembly_dimensions_changed(frame->before,world)||parameter_reference_edit(frame->before,tokens,count)||
+        (reference_may_affect(frame->before,tokens,count)&&(!ok||reference_geometry_changed(frame->before,world)));
+    if(stage){
+        frame->fixed_lines=false;ok=false;
+        if(!g_scene_last_error[0])scene_error(path,line_no,"I8a: default replay invariant changed; World unchanged");
+    }
+    if(ok&&!app_scene_file_sources_ready(frame->owner)){
+        ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
+    }
+    bool changed=ok&&!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&!world_definitions_equal(frame->before,world);
+    memcpy(&frame->owner->operation,operation,sizeof operation);
+    app_candidate_set_evaluation_state(frame->owner->control,NULL,NULL);
+    if(!geo_eval_reset(frame->sources)){
+        if(ok)scene_error(path,line_no,"I8: candidate seal failed; World unchanged");
+        ok=false;
+    }
+    if(!ok){
+        memcpy(world,frame->before,sizeof *world);
+        if(!g_scene_last_error[0])scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
+        return false;
+    }
+    if(changed)++g_definition_revision;
+    memcpy(frame->before,world,sizeof *world);++frame->next_line;
+    return true;
+}
+
 
 static bool reference_default_world(World *world)
 {
@@ -636,11 +839,33 @@ static bool reference_default_world(World *world)
         "spec 主支中線 500", "guide 1 1 v spec:主支中線",
         "timber 3 27 33 role primary", "place 3 on 1 at-line guide 1 +v +n"
     };
+    AppDefaultReplay *frame=g_default_replay;
+    if(frame){frame->fixed_lines=app_default_replay_lines_match(lines,sizeof lines/sizeof lines[0]);frame->next_line=0;}
     memset(world,0,sizeof *world);
+    if(frame)memcpy(frame->before,world,sizeof *world);
     for (size_t i=0;i<sizeof lines/sizeof lines[0];++i) {
         char buf[SCENE_MAX_LINE],*tokens[SCENE_MAX_TOKENS];
         snprintf(buf,sizeof buf,"%s",lines[i]); int n=split_tokens(buf,tokens,SCENE_MAX_TOKENS);
-        if (!apply_scene_line("default",(int)i+1,tokens,n,world)) return false;
+        bool ok=frame?app_default_replay_line("default",(int)i+1,tokens,n,world,i):apply_scene_line("default",(int)i+1,tokens,n,world);
+        if(!ok)return false;
     }
     return true;
+}
+
+/* Optional scratch OOM preserves all nine original inner transactions. The
+ * caller restores its entry revision before the final world_revalidate; that
+ * final graph is intentionally outside this line frame and remains retained. */
+static bool reference_default_world_owned(World *world)
+{
+    AppDefaultReplay frame={0},*previous=g_default_replay;
+    frame.owner=g_active_app_candidate;
+    if(!g_parsing_scene_file&&!g_scene_file_replay&&frame.owner&&world==&frame.owner->after&&
+       geo_candidate_state(app_candidate_core(frame.owner->control))==GEO_CANDIDATE_EVALUATING){
+        frame.sources=geo_candidate_sources(app_candidate_core(frame.owner->control));
+        if(frame.sources&&!app_candidate_evaluation_state(frame.owner->control)&&!geo_eval_provider_count(frame.sources)&&
+           !geo_eval_node_count(frame.sources)&&!geo_eval_edge_count(frame.sources))frame.before=malloc(sizeof *frame.before);
+    }
+    g_default_replay=frame.before?&frame:NULL;
+    bool ok=reference_default_world(world);
+    g_default_replay=previous;free(frame.before);return ok;
 }
