@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 20:54 UTC）
+## 唯一 current-state（2026-10-23 21:21 UTC）
 
 - 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。新測試來源 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 已推；C/JS產品仍同F，最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
 - 已普通 merge Claude 最後交接 `8f9301fc1b78712d930ffc68074437e44d068aab`（merge `586e6e8f`）與 main `425c092eaf16f90256d76433243baebde45163ac`。main 新增 #333 FIELD-RULES 與證據。相對F產品C/JS不變；兩個tests葉改為M151登記與free-end唯一錨點，保留所有斷言。
@@ -19,9 +19,9 @@
 1. #323 memo完整反證已完成。舊4f4環境失敗原件已封；root的新b6來源完整帳本已啟動；新ledger完成採用後固定final SHA跑完整native、6browser與專項。canvas與性能獨占，其餘最多兩重測。
 2. #339接替324：原S57的指定9個importer模組142/142與3組predicate反證真綠；普通merge #340後source1f0，原registry-list0只表示清點，11正式列仍未跑。最新E dcdf2265／D2aac已推，base=#340；不把S57實跑轉標新source。
 3. noWood draft #340：原Sbfb的13項及7phase真0/1/0/1/0/1/0，actual530/publication949/新merge343 checks獨審0。新source4d3、body77a已推；11輸入同但不冒4d3重測。列車未入main也繼續疊線。
-4. #300原c493的三套32方法／46controls真0/1/0、282compile/link全0，actual1020checks／0；普通merge #339後只expected9→10，已推sourceaa0，效能與512尚未完成。GEO260接aa0後sourceeb846，保noWood13/faces45/woodcontact10並只native28→30，原全44準備執行；af4 focused兩控制仍保原SHA。#325/#331/#333不寫其分支，#333已進main。
+4. #300原c493的三套32方法／46controls真0/1/0、282compile/link全0，actual1020checks／0；普通merge #339後只expected9→10，已推sourceaa0，效能與512尚未完成。GEO260接aa0後sourceeb846，保noWood13/faces45/woodcontact10並只native28→30，原全44已於eb846真完成：43killed＋SPM24equivalent，原gate0／outer0，native29/model20基線0；actual1682/public678 checks獨審0，E df230da5／D be1f69dc已推。af4 focused兩控制仍保原SHA。#325/#331/#333不寫其分支，#333已進main。
 
-每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新審查來源是已fetch handoff的337/338及各工作線留言；338目前沒有新增審查。工作持續中。
+每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新已讀審查是 handoff a47d625c 的 #338 2026-10-23 20:44 UTC（head b6）。B1完整同源驗收、B2原跨版本exact、B3五原包入庫仍是阻擋，沒有可合併結論。M1現況已更正：10/18提交相容例外已採納；10/23精確有序補句另有核可但尚未逐字寫入，不能把兩者統稱暫緩，也不重問題3／4。小引用審查9/0封於review-b6-response/。工作持續中。
 
 S ec8的Linux架構四檔已於9a05採用，三原裁判0/0/0、205/18及781checks獨審0，604-input closure不變。冷checkout原碼副本全封後精確回收216,199,168B已推；free-end與舊323收據只搬儲存位置並保原path symlink、原bytes/mode/mtime，沒有刪收據。下一輪重測先守資源預算，保留所有原失敗。
 
@@ -84,3 +84,9 @@ root PR338正文已一般推D e51c7abc984a9a09c2ff27cad5e6d44c42254fbf（其20:3
 source=`b6e1e45425f055cd825b259f46ef2c454f3ff13a`，21:00:13 UTC，exec session72136；原完整CLI不傳ID，70core（含3retired）＋53bridge全部重新判。只同filesystem移68個core編譯cache與seed以免重複占147MB；原CLI自行判fingerprint，沒有跳測或強迫cached。68個舊sidecar另保原bytes，全部舊bridge raw與Gitobjects留原位，source/refs/index原守門已0。原16MiB／子時限／verdict與三個原裁判未改，v5獨立30checks0；準備與實際起始證據封於`ledger-b6e1e454-start/`，不把啟動當通過。
 
 JOB `/workspace/train337-ledger-b6e1e454-v5`、CACHE `/workspace/train337-ledger-cache-b6e1e454`、TMP同job加`-tmp`、SEED在CACHE的`_bridge-work/b6e1e45425f055cd825b259f46ef2c454f3ff13a/repo`；ROOT仍`/tmp/train337-323-f64d638f-source`。其他agent禁止動這兩個HEAD/cache。另一重槽由GEO260原全44使用，固定eb846、原起始20:53:16 UTC；不以其af4舊focused結果冒全44。沒有canvas或perf同跑。
+
+## 2026-10-23 21:21 UTC：回應最新 b6 審查與新工作線
+
+已讀 #338 B1–B3/M1，按現行 SSOT 改正 QUESTIONS 與當前狀態，沒有修改公理、決策、產品、測試或裁判。B2 的三個 V_EXTENSION 差異來自 I22 要求的新診斷，不能直接撤回欄位或放寬 exact；保留阻擋並繼續不受影響驗收。五原包出版工具已準備，磁碟餘裕不足時先清已終態可重建 Chrome cache，不刪原件。新完整 b6 帳本仍在原程序執行；不將部分列數當最終成功。
+
+GEO260 的完整44及獨立審查原件已推 E df230da5；request 已在 handoff b537a4e7 提交，base=#341。#341 request改base=#339。新 #320 連線成功後殘留 error 由獨立子代理從2d157069開始處理，不動live帳本來源，定向正反例先行。
