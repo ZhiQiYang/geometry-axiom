@@ -84,6 +84,15 @@
         "raw/postmerge-p52-formal-01.tar.gz",
         "raw/postmerge-p52-formal-02.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T06:36:07.372958+00:00",
+      "label": "postmerge-p52-verifier",
+      "result": "原獨立verifier真0、adapter0；原1627bytes與9assert不改，九Node原exit/streams/hash/timeout逐一守門，DERIVED launch投影明列非原stdout。",
+      "next": "依序跑runtime撤回恢復、P73、Chromium154及oracle；保留canvas P88紅",
+      "archives": [
+        "raw/postmerge-p52-verifier-01.tar.gz"
+      ]
     }
   ]
 }
