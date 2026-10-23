@@ -1,0 +1,61 @@
+"""Create only the reviewed tiny clean F3d checkout; no acceptance execution."""
+from pathlib import Path
+import hashlib, importlib.util, json, os, platform, shutil, sys, traceback
+
+BASE = Path('/workspace/kernel-no-wood-prep/oracle-new-f')
+BIND = BASE / 'binding-3d681636'
+OUT = BASE / 'checkout-setup-3d681636'
+CAP = Path('/workspace/geo288-main-merge-20261023/oracle-proof-tools/capture.py')
+SHA = '3d681636902371ecc528b20f51eea33e272581c9'
+digest = lambda raw: hashlib.sha256(raw).hexdigest()
+assert digest((BIND/'REQUEST.json').read_bytes()) == '731724a78c9160d8acdc5d3276d805c35f5d7a6a82a75a8429a2ddd857eafd01'
+assert digest((BIND/'BINDING.json').read_bytes()) == '528db19e82ba5db2b3c0e01b6871ad937f9c4a9650ffc3b55b5036cc92bd0751'
+assert digest(CAP.read_bytes()) == 'c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+request = json.loads((BIND/'REQUEST.json').read_text())
+binding = json.loads((BIND/'BINDING.json').read_text())
+repo = Path(request['planned_independent_checkout'])
+assert not repo.exists() and not OUT.exists()
+OUT.mkdir()
+spec = importlib.util.spec_from_file_location('f3d_setup_capture', CAP)
+capture = importlib.util.module_from_spec(spec); spec.loader.exec_module(capture)
+env = dict(os.environ, LANG='C.UTF-8', LC_ALL='C.UTF-8', PYTHONDONTWRITEBYTECODE='1', GIT_OPTIONAL_LOCKS='0')
+r = capture.Recorder(OUT, env, SHA)
+report = dict(schema='geo288-oracle-f3d-clean-checkout-setup/1', product_source_sha=SHA,
+              acceptance_executed=False, platform=platform.platform(), python=sys.version,
+              request_sha256=digest((BIND/'REQUEST.json').read_bytes()), commands=r.rows,
+              input_manifest=[], errors=[], disk_before={p:shutil.disk_usage(p)._asdict() for p in ('/tmp','/workspace')})
+def run(argv, data=None):
+    return r.run(argv, cwd=BASE, data=data, timeout=120,
+                 source_variant='reviewed-clean-F3d-checkout-preparation')[1]
+code = 1
+try:
+    for index, argv in enumerate(request['checkout_setup_argv']):
+        raw = run(argv, (BIND/request['sparse_stdin_file']).read_bytes() if index == request['sparse_stdin_command_index'] else None)
+        if index == len(request['checkout_setup_argv']) - 1: assert raw == b''
+    assert run(['git','-C',str(repo),'rev-parse','HEAD']).decode().strip() == SHA
+    assert run(['git','-C',str(repo),'status','--porcelain=v1','--untracked-files=all']) == b''
+    inventory = run(['git','-C',str(repo),'ls-tree','-r','-z','--full-tree',SHA,'--',*[i['path'] for i in binding['input_manifest']]])
+    rows = {}
+    for row in inventory.split(b'\0'):
+        if not row: continue
+        meta,path = row.split(b'\t',1); mode,kind,oid=meta.decode().split()
+        assert kind == 'blob'; rows[path.decode()] = dict(mode=mode,git_blob_oid=oid)
+    for original in binding['input_manifest']:
+        raw = (repo/original['path']).read_bytes()
+        actual = dict(path=original['path'], **rows[original['path']], bytes=len(raw),sha256=digest(raw))
+        assert actual == original, (actual, original)
+        report['input_manifest'].append(actual)
+    assert len(report['input_manifest']) == 85
+    report['source_before'] = dict(head=SHA,status='',input_count=85,all_raw_bytes_modes_blobs_match_binding=True)
+    report['total_input_bytes'] = sum(i['bytes'] for i in report['input_manifest'])
+    report['disk_after'] = {p:shutil.disk_usage(p)._asdict() for p in ('/tmp','/workspace')}
+    report['checkout_executed_only_no_tests'] = True
+    code = 0
+except Exception:
+    report['errors'].append(traceback.format_exc())
+finally:
+    report['exit_code'] = code
+    (OUT/'setup.py.txt').write_bytes(Path(__file__).read_bytes())
+    (OUT/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(dict(out=str(OUT),exit_code=code,input_count=len(report['input_manifest']),errors=report['errors']),ensure_ascii=False))
+raise SystemExit(code)

@@ -1,0 +1,646 @@
+{
+  "schema": "geo288-oracle-f3d-exact-preparation/1",
+  "product_source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "checkout_created": false,
+  "clone_build_or_test_executed": false,
+  "phase_state": "ALL_UNRUN",
+  "errors": [],
+  "input_manifest": [
+    {
+      "path": "geometry-core/framing-template/PROPOSAL.md",
+      "mode": "100644",
+      "git_blob_oid": "bfd773e7f21bba380035e953cbf5799a11827cc5",
+      "bytes": 38213,
+      "sha256": "8f6efd7a9f414d3410c4c46be854630cdd8330c776900c639d380ee4679a88f9"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/fixtures/p3_alcove_side_boundary_then_main.scene",
+      "mode": "100644",
+      "git_blob_oid": "f589fcde085e112a6886542972393b14d9fa03d8",
+      "bytes": 564,
+      "sha256": "90e190aa31719704cd72446e9e81bdcaa41f37fd2297c90c752713ec74dc2840"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/fixtures/p4_alcove_wall_main_lower_piece.scene",
+      "mode": "100644",
+      "git_blob_oid": "26c59ef9e53cff7032bfbdda508bed8e52505180",
+      "bytes": 595,
+      "sha256": "12d3436b1469725680d1226812eabb0779eddb3f2af580650f9649ca8805d91f"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/fixtures/p8_f1_main_first.scene",
+      "mode": "100644",
+      "git_blob_oid": "628079903bc2fd2ed88a78a2f0429b0bc2e96381",
+      "bytes": 519,
+      "sha256": "3e175618f9e5cb7d952359dcbcc57804e68f7c14d3a681da0e6c2dc4451f53d9"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/fixtures/p9_f1_custom_inner_wall.scene",
+      "mode": "100644",
+      "git_blob_oid": "aeb1bbeb14bdd0929325ac9cf63887fbe244a0e1",
+      "bytes": 741,
+      "sha256": "1be9a10374893ffced077ddf2250113ac8695dfb670e80688f37faf42d50a2c5"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/gen_scenes.py",
+      "mode": "100644",
+      "git_blob_oid": "551e138e9810c7e6c63adfcf10724c1d914fccf6",
+      "bytes": 37603,
+      "sha256": "6ebfda038419d8d7060e46b851f50d3bd62ac6baff9b10b7b04e4b52a9f9c930"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/index.json",
+      "mode": "100644",
+      "git_blob_oid": "3e6599398855db568ecd7810702d1895fde7e233",
+      "bytes": 15138,
+      "sha256": "163c1806ab7cc1fc3957057e9503e92d4e9613b5daf05feb0ca63158e57b2731"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/mapping.md",
+      "mode": "100644",
+      "git_blob_oid": "ea10d68c26df4797450fe7c52e410e4a0da68996",
+      "bytes": 13260,
+      "sha256": "ad924ffff631d844364f1c813f10553f788bdcfb3915123337deaadc8b44833a"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/parse_results.py",
+      "mode": "100644",
+      "git_blob_oid": "2ee91f5e6483668544489a8f84fa412379740fde",
+      "bytes": 21689,
+      "sha256": "a6b8801a2c98fd32973ebc1acf327f49aae7d76cd28d34c905f2e41ce401de66"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/run_probe.sh",
+      "mode": "100644",
+      "git_blob_oid": "dbb43c211ca808272954e2646b01ab44d3457096",
+      "bytes": 6026,
+      "sha256": "8d18c75eab83b516a2fba3bf5931fc245cfe8e7555ce48bbbbb3cc8cd391acb8"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scene_reader.py",
+      "mode": "100644",
+      "git_blob_oid": "bd6d89d7a02c543827c6e60706654cb52c96d917",
+      "bytes": 13887,
+      "sha256": "f43c8d7e9bb5c1b6afdb6e35a05e1536764f9e09a774c718454e6929e024b022"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-00.scene",
+      "mode": "100644",
+      "git_blob_oid": "4cc8970e6111d3a3808c4f7180c896479c619065",
+      "bytes": 10442,
+      "sha256": "15f24f4fac143e6a5aa39d74d5aecb6de1c57a8b843c8b7246d8e04d32349289"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-01.scene",
+      "mode": "100644",
+      "git_blob_oid": "9e63fefd70edd0f2d9331be6918dec2dd5d1f229",
+      "bytes": 10429,
+      "sha256": "6f0ca8a58333e603263a20bd6c74cd6c78c28dd4f437f14c10702344d07cd709"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-02.scene",
+      "mode": "100644",
+      "git_blob_oid": "3ac26e9bcbb6510f85f638aecf9223230ee6b16d",
+      "bytes": 10434,
+      "sha256": "ad4baa228f9d20de6d3fbfdfac785e5fde9fe3acc7532e6ead79ab1321a570db"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-03.scene",
+      "mode": "100644",
+      "git_blob_oid": "4e449e660973d2c17692dbefc57e8c36cbe7e3cd",
+      "bytes": 10421,
+      "sha256": "aadc53fd910ab627b9bba30506146f8fc51a598d75b892dcbe77c56baf74807c"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-04.scene",
+      "mode": "100644",
+      "git_blob_oid": "6b518884961e34e31565d0b2ebbfeaf1428b69ce",
+      "bytes": 12787,
+      "sha256": "b09a10e573b740f87b187bfdd2d000e185414fcbf8c7b59bdcd2f72221b09f78"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-05.scene",
+      "mode": "100644",
+      "git_blob_oid": "591ca62fe354698fa7e3360bd0067cdf109b46d2",
+      "bytes": 12767,
+      "sha256": "b29c236a0077a27b9f04256f9d8383e3f79b5b5540cb0a370d48e247cf20098f"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-06.scene",
+      "mode": "100644",
+      "git_blob_oid": "8d88c9b6ed9f3299c7f91f87f5f1fec16a493234",
+      "bytes": 12787,
+      "sha256": "35ebe6b7ed68762b5df1284c4c9b57895984727ffe8013a87e408bb019fa3a1b"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-07.scene",
+      "mode": "100644",
+      "git_blob_oid": "7b44e1ce56473f0e1c88ca86e7f1f335955a5de6",
+      "bytes": 12767,
+      "sha256": "c231e5b941a8495b283b5089eeac2cc78562af673727f128aef5f5926eea339f"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-gap3-00.scene",
+      "mode": "100644",
+      "git_blob_oid": "3807dff36027661c7b7689eb3c28a896217772d9",
+      "bytes": 16265,
+      "sha256": "356adabea738a362a8ee7c418223f9b3b989420653d71f6471ff566b57bf1746"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-gap3-01.scene",
+      "mode": "100644",
+      "git_blob_oid": "75cb8dfcff33a7d8235d536751cc352dd4d8b557",
+      "bytes": 16265,
+      "sha256": "8f072217c05043c7b1bf1ce8e8840916c246051c1642feb67a0dfd4d86c0fc5f"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-gap3-02.scene",
+      "mode": "100644",
+      "git_blob_oid": "1b88c6792da9a00730b859a4d0180c4b4d8a4a0f",
+      "bytes": 16257,
+      "sha256": "131f5b1a4a423958c5406e6a97f9ee9c2b93f1078ad5d07be954a694b982329c"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-gap3-03.scene",
+      "mode": "100644",
+      "git_blob_oid": "2b5c78fe8cd881e26a7ec7e15a49fdd9d452603b",
+      "bytes": 16257,
+      "sha256": "bfe8d74991006bb36586ac5d3d78a260ae622bcadc8fb84a9000bf3a0cf332d8"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-gap3-04.scene",
+      "mode": "100644",
+      "git_blob_oid": "d91eca868942214d0f02773044de57be09f48823",
+      "bytes": 19149,
+      "sha256": "9c80b946cccf6a090251f995dea78078751042d8867cc9bebacd888a07a27aac"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-gap3-05.scene",
+      "mode": "100644",
+      "git_blob_oid": "5789357d96d205c632380c1009c9e7fa1007938e",
+      "bytes": 19117,
+      "sha256": "739ece29546ac3bdc05b1d3c861a8314d468bf000dbbdfb969a7b159f02b879e"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-gap3-06.scene",
+      "mode": "100644",
+      "git_blob_oid": "df9569b8b8ed36da222eddee8939cd6684a42777",
+      "bytes": 19149,
+      "sha256": "f98050320047ca4f0408a6dc1aa1edc6ac21e8c8028f0def7bc660929bc5afaf"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex3700-gap3-07.scene",
+      "mode": "100644",
+      "git_blob_oid": "a6bb3eee2a45dfc6770ed9edea676858f95e0c6d",
+      "bytes": 19117,
+      "sha256": "98e7d0b946061f4d6a3dd9e9690aa900358d1f3b3c1c4993901a65d12df680a9"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex940-00.scene",
+      "mode": "100644",
+      "git_blob_oid": "87de0a2df086e73280a1b05d349cfe2a9c6706b3",
+      "bytes": 5288,
+      "sha256": "0067e93acb048f8a9ea9cbf50c26b19304d5214697221912383a916b6c3c2db7"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex940-01.scene",
+      "mode": "100644",
+      "git_blob_oid": "0a5f5ba070fadf2b0872b549d8b25adc14d49bfb",
+      "bytes": 5284,
+      "sha256": "104e7d6028e2d54e07d94d13135251857d8c5e4c793dce9e0fae35329779ba6c"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex940-02.scene",
+      "mode": "100644",
+      "git_blob_oid": "ed8489fdb1bc6beade57812d2294e077d508f7ed",
+      "bytes": 5284,
+      "sha256": "2124b293c653e5c260051f6fa7b58ca6645ec1e683e53bb32aeaf3d222dd52d1"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex940-03.scene",
+      "mode": "100644",
+      "git_blob_oid": "9f0ce85d9e42a6a32cfdd740250276f0da7e83d5",
+      "bytes": 5280,
+      "sha256": "8bf9b8318a882d42b045090e404d15d534930dfed7988f542ea0bfddfba9ce48"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex940-04.scene",
+      "mode": "100644",
+      "git_blob_oid": "4e0890022636b11d2fb7acb9061b979c4ecd157b",
+      "bytes": 5833,
+      "sha256": "1b8094b78b5bb356e9042e670d50772809d22eba1986028c95919697fdd57686"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex940-05.scene",
+      "mode": "100644",
+      "git_blob_oid": "b19045a37c43fb7379e37e80079bc9945719ce39",
+      "bytes": 5833,
+      "sha256": "ce380424c3c7e5ccf3cf7f3cc1b07d947a636e17cb3df273612f68d624d26361"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex940-06.scene",
+      "mode": "100644",
+      "git_blob_oid": "89baccc2c9312828e9b9bbb64218d68fef1c0008",
+      "bytes": 5833,
+      "sha256": "ede4854bd132614cd90d3be1497b14d1be618caee580a5a8f2b0a724fcbc8e80"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/ex940-07.scene",
+      "mode": "100644",
+      "git_blob_oid": "e1dea5c33f1028d06d9ce90dad870b2d132cfdea",
+      "bytes": 5833,
+      "sha256": "104b60d32ca3146eebaba586ab65e967bf71eee4bf7fb4b217668bad363fd3be"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f1-00.scene",
+      "mode": "100644",
+      "git_blob_oid": "fc65a5a4b5da726c20ffc9658234d43f37f16703",
+      "bytes": 30110,
+      "sha256": "54a1b4a2ec59aebabd10ccabc08ca475911e7a8796efbd0fa6851c1d4705b1b0"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f1-01.scene",
+      "mode": "100644",
+      "git_blob_oid": "4fa572d1c369ef95db9b90a4c7e50c5527511799",
+      "bytes": 30645,
+      "sha256": "ace5359850ad082541171742d2646870566bd3ca458858c90ce7074691077f90"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f1-02.scene",
+      "mode": "100644",
+      "git_blob_oid": "376f24abf240585c20d87d895a698fe4917f5207",
+      "bytes": 30504,
+      "sha256": "39e41d246745de6ddecec73af8fc21ebe5a59881ab4b1999dd280f5459dda747"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f1-03.scene",
+      "mode": "100644",
+      "git_blob_oid": "d01c8a27f09f4359bef800b2a3ebdbd5066f9085",
+      "bytes": 31109,
+      "sha256": "d5b4359548b183bb8bdf0b2e8c90c3c06d63f4b36ee9cc28c096516f750b0414"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f1-04.scene",
+      "mode": "100644",
+      "git_blob_oid": "3d1f5a831fe8370bf039b23b9d29a4f9c89916df",
+      "bytes": 33900,
+      "sha256": "24f15990f47acebbb47c026d466eefa521a6b70f8f90de6119d41963dc61221f"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f1-05.scene",
+      "mode": "100644",
+      "git_blob_oid": "4559577b776095a33dc5bebd985ca0eafcc53a78",
+      "bytes": 34441,
+      "sha256": "66859c899124bc87eefb6e4b3dd17cdf9040cc133f71c943a075ec0ec2be75a6"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f1-06.scene",
+      "mode": "100644",
+      "git_blob_oid": "031f11e57131282c82e68aefe688ec64bebb10db",
+      "bytes": 34298,
+      "sha256": "a4ce158734228e4046b072d2d8b23fac580a8fe22cd87cc12d5765c6174f5799"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f1-07.scene",
+      "mode": "100644",
+      "git_blob_oid": "0d84cffa2e6cacb537bc447ecc2cc0acc8f8d792",
+      "bytes": 34909,
+      "sha256": "833dc3c77496fda839e27ac3e472007a05f8b9ff9b03f7c8febff098469a7c26"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f2-00.scene",
+      "mode": "100644",
+      "git_blob_oid": "7b2f9f449feba69172e38f31b654997f86dfb2ba",
+      "bytes": 18800,
+      "sha256": "756bf6bf6e554389c9ddbd9423849363b13728dcabd66d1453e76d3a48879e42"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f2-01.scene",
+      "mode": "100644",
+      "git_blob_oid": "3f9cf8799ce3fb7d1e6f458bb5e7da8923757f35",
+      "bytes": 18795,
+      "sha256": "58bce922cd0beeb766b4270a9f755450dd2d69becf5f819524c09f826d7e666b"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f2-02.scene",
+      "mode": "100644",
+      "git_blob_oid": "3462736883ce0101d40ebc8f896976e3df97b7ee",
+      "bytes": 18805,
+      "sha256": "f8d3c0b5ec9cdfda30a3581c8f03f646ee16592f54f7203f48d8a17da60df340"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f2-03.scene",
+      "mode": "100644",
+      "git_blob_oid": "5cc5223ff0078e1b3dbb25115994135c0e2b77bb",
+      "bytes": 18800,
+      "sha256": "9774e104cb819fb8b53c6614a70bece2294cbf467c21d5b8a2470972bc8b3d29"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f2-04.scene",
+      "mode": "100644",
+      "git_blob_oid": "da43e078fd162238da7dcf381145a6950d1cb1bd",
+      "bytes": 17120,
+      "sha256": "b4844cbe46a69316731cae402166bf829153d1bb5a37c2b8d009406933132c9c"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f2-05.scene",
+      "mode": "100644",
+      "git_blob_oid": "35bd2d081750d0f5a6e58bcdd03f0313d8fd517d",
+      "bytes": 17048,
+      "sha256": "3bc24d7490caa08327a0dca2832a5fff2249f7938f97a17ef3b2c9b2346aa52b"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f2-06.scene",
+      "mode": "100644",
+      "git_blob_oid": "58513f7eee9a95031d6e6c8c0c09d87188874238",
+      "bytes": 17120,
+      "sha256": "d2ac9b179ff8adf0d357a1839bc916afa6ce1db02db7ae825974358e17daa73b"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f2-07.scene",
+      "mode": "100644",
+      "git_blob_oid": "24379d7a5b62efa98290131381020e33187c2e88",
+      "bytes": 17048,
+      "sha256": "550dd5c3d5973333cd443ecc5785f917e386dbdf1965e11d0e8cac1da4c2b492"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f3-00.scene",
+      "mode": "100644",
+      "git_blob_oid": "541434203427d34f64e560b34adac9d7ffaa2ffe",
+      "bytes": 16255,
+      "sha256": "35e24fb0a483ffd6fee8dd99f751edeb127418481aa717816af804cd218024b2"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f3-01.scene",
+      "mode": "100644",
+      "git_blob_oid": "7f7742df4f7db33a39ce94d9801e642caa957154",
+      "bytes": 16255,
+      "sha256": "c7a713af06b8fad44b332c19854bc491cc32aa1bd80a3f8ec415debf865591b2"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f3-02.scene",
+      "mode": "100644",
+      "git_blob_oid": "8fe2ed99727823f23be8aec026d0a5e59e3d2e15",
+      "bytes": 16255,
+      "sha256": "e772799c883b31dd6ca5e269741fc56240bcc8ebbfd86f2115d76f1b0eb566ce"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f3-03.scene",
+      "mode": "100644",
+      "git_blob_oid": "8758a87f4871f6cf27584d8b2e0ea88f8c076aa4",
+      "bytes": 16255,
+      "sha256": "e9ac273d341e3ffb87a8ec24dfa22f49099fddebe9116857668a0dba422fc2fe"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f3-04.scene",
+      "mode": "100644",
+      "git_blob_oid": "1ad6b8e3cfe6597d4e39bbd9d99188b8fd9c9da8",
+      "bytes": 15985,
+      "sha256": "2b84af7408e8fc488fff3afc4f81941db47b82e385577b7ab1eea7af4c1f8c16"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f3-05.scene",
+      "mode": "100644",
+      "git_blob_oid": "c6ca49ba71848c0d3e88df8a691ff67ed7b2e081",
+      "bytes": 15985,
+      "sha256": "22e6c8364423d2571fcc6f89b87bbca9eaedab2489f856f4d6afce4bee9c51d5"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f3-06.scene",
+      "mode": "100644",
+      "git_blob_oid": "c684c012a50e7aa32225b226460c5d8b4b9fcc7a",
+      "bytes": 15985,
+      "sha256": "54b3a35313f8ca0da6cfe84a4bc1aed8b163b2bdc1ccc0f80b8c682e0d20c25b"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f3-07.scene",
+      "mode": "100644",
+      "git_blob_oid": "aee739c80dc6019fb4c96ad2870d4ea119e7fc73",
+      "bytes": 15985,
+      "sha256": "884a0882a82801508d5fb4677c18541f47567aae6ea4937b8902d2272195614c"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f4-00.scene",
+      "mode": "100644",
+      "git_blob_oid": "fcc4741e48b605799c3a9d7d905b01e835d09cfd",
+      "bytes": 9645,
+      "sha256": "3d624654e95b5d5831e83e72d41b187916c3b3a51ba84124ff1933bdb0daf282"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f4-01.scene",
+      "mode": "100644",
+      "git_blob_oid": "e70ead75a8766902208d4b0440aebb4a7331b24e",
+      "bytes": 9645,
+      "sha256": "ea8690fbd569dc3871f543ea47c452856a152bce549c897124cb77985db8ccdb"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f4-02.scene",
+      "mode": "100644",
+      "git_blob_oid": "23007e1bdfbd3412a37a1aa039d827ca2f1a9d37",
+      "bytes": 9645,
+      "sha256": "7a0324007f0ff3437b2764fb5704b2dd661c08a3b437cfa01901b27e794366b3"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f4-03.scene",
+      "mode": "100644",
+      "git_blob_oid": "10aaeb0c0afa0ebf02f209691c87de0fe04ec9a3",
+      "bytes": 9645,
+      "sha256": "f6cf9008594fee7cab9a54f22e8c6164cfdc46353e1655d3ecd9b52d5b7b66d3"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f4-04.scene",
+      "mode": "100644",
+      "git_blob_oid": "b99a8e002e11e8183164280224fb8030672bd856",
+      "bytes": 10455,
+      "sha256": "89fee30d21b5c8cfe6cec2b6747c07da50174cea5814ea78eec0bb464082bfd8"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f4-05.scene",
+      "mode": "100644",
+      "git_blob_oid": "f8b133e6faabf03d007609b311c0dc60ebdfe6a4",
+      "bytes": 10455,
+      "sha256": "a8b2362f9e8ccf0f7584d1abd237199fc4ad6f5b253cfdb9cf63e1f2f3d73be9"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f4-06.scene",
+      "mode": "100644",
+      "git_blob_oid": "c239413a406800d71ce3f8fc1caa22a541eba2ab",
+      "bytes": 10455,
+      "sha256": "b981ec0260e2e3575332d11fc3effd73e7e2e0d941afca20f6b13092c505ba6e"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f4-07.scene",
+      "mode": "100644",
+      "git_blob_oid": "63ce96ad32990e9d1c35bd9db093455615a7c00e",
+      "bytes": 10455,
+      "sha256": "2beddbe7f6be85156252e41b64b85fdec7a4af5739c40d31c8531de706fffa5a"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f5-00.scene",
+      "mode": "100644",
+      "git_blob_oid": "dade3408a9539356fedd0af4fb355c1a4a31e4e5",
+      "bytes": 14039,
+      "sha256": "fb8ce63250cc559787e70fdee2f1ba533d19e6c712828d34fa532739f29aa00e"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f5-01.scene",
+      "mode": "100644",
+      "git_blob_oid": "c832f865bfec1034023c0b8d62fcba25d5f5cf92",
+      "bytes": 14039,
+      "sha256": "bb7f0a6cff4c8cbb3a97ed644323eca788bbd7300152b7764d648990f92c1958"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f5-02.scene",
+      "mode": "100644",
+      "git_blob_oid": "98a5cb11d811a1f99b173e8ac5392f75233b3a74",
+      "bytes": 12594,
+      "sha256": "02607249338f062a714403f383b864d5cb8caed0aad01186bccc67476cf86688"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f5-03.scene",
+      "mode": "100644",
+      "git_blob_oid": "440accf250260f1479b6bf370a4063cf3fd46b03",
+      "bytes": 12594,
+      "sha256": "b5003153b680cad470972ec2969dd8dfe2733c7a8581429601f7a64f516ed9bb"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f5-04.scene",
+      "mode": "100644",
+      "git_blob_oid": "efdc23e2988d7c27b6dda9be44d5ca1f39bc4bff",
+      "bytes": 14629,
+      "sha256": "fa24edfc38e7152510b0ecc31381bcc54fe827bb66d7300a2c3f282b18c77f07"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f5-05.scene",
+      "mode": "100644",
+      "git_blob_oid": "1d1fef9840a7cbd750fccd3d0d133e9fbe410584",
+      "bytes": 14924,
+      "sha256": "cb3c01fd7b09c0016f8c49f192bba8840d2a04e986434516bd03ca3a947a524f"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f5-06.scene",
+      "mode": "100644",
+      "git_blob_oid": "77c38fc577a3b55c847038f281f38a53a3e87b9e",
+      "bytes": 14629,
+      "sha256": "bef6fc52f5f9d6bfdd1300e973ffe2e3799df4a8d288d7470d669e8ecc724258"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/scenes/f5-07.scene",
+      "mode": "100644",
+      "git_blob_oid": "572ec68a0a5c99a9c39fbbd7c733b36b1adb9dcf",
+      "bytes": 14924,
+      "sha256": "48726a0508232cffb1c7eec39a5933e8f5df9ce3a0a3548b4618d21a3d5f0c67"
+    },
+    {
+      "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+      "mode": "100644",
+      "git_blob_oid": "bf62e7245c3987553d934a21e9f59857c0aadcfe",
+      "bytes": 64845,
+      "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/README.md",
+      "mode": "100644",
+      "git_blob_oid": "4e38e0a54f62e3c0fc814630fef7c35d8888709d",
+      "bytes": 95610,
+      "sha256": "8df1e01fd7ecccdc9ba73b2ad7a1516f99a05efea3a376911a9e85c2716ce1cd"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+      "mode": "100644",
+      "git_blob_oid": "47b33182e9ed5a80ddd559dde94a7d8f976aebe9",
+      "bytes": 132179,
+      "sha256": "59a4e3b7f67c35b73b35554fb606e58101503c9d5d44df66bf5fce424a8c6dc1"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/make_golden.py",
+      "mode": "100644",
+      "git_blob_oid": "6a4364ce72f68abf779f6ef1d0a57ec4200e76f0",
+      "bytes": 4752,
+      "sha256": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/oracle-golden.json",
+      "mode": "100644",
+      "git_blob_oid": "c7cf3857abbdf421823c30d9a93d253850d5fee1",
+      "bytes": 362666,
+      "sha256": "e1e45873c990afb72aa1eb26d58df23f69037c29aaec6f3067f6591ae448e03e"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/quote_check.py",
+      "mode": "100644",
+      "git_blob_oid": "a0fa93ea58ec9e397444c45e8b819573b2ff22c0",
+      "bytes": 25787,
+      "sha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/rooms.json",
+      "mode": "100644",
+      "git_blob_oid": "7ab8dfa2f35c0b78a1037ecf44c9db8dc3d6e4cf",
+      "bytes": 699,
+      "sha256": "42a86840217a103912f89d923e307daa820b30aae745ef250304de7e93e8b4b4"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/selftest.py",
+      "mode": "100644",
+      "git_blob_oid": "1a77e8837afc736372ad5e539d2a6e2134303325",
+      "bytes": 136380,
+      "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/sweep-expected-unbuildable.json",
+      "mode": "100644",
+      "git_blob_oid": "913772d5875526be7c84f9911fd2fe6d175bbd1b",
+      "bytes": 134591,
+      "sha256": "25f42a949ad178c5465e9254ca28c3d1eeb410da32b8bbf9b950c6a40b68280f"
+    },
+    {
+      "path": "決策佇列.md",
+      "mode": "100644",
+      "git_blob_oid": "12d718fd62d3337c65eed7e3b13361475b948e9e",
+      "bytes": 231324,
+      "sha256": "97d671dd87fcacc811d810c04e1ce8538c2487f9b29c4373d6c8713700bf99e7"
+    }
+  ],
+  "oracle_input_paths": [
+    "geometry-core/framing-template/oracle/framing_oracle.py",
+    "geometry-core/framing-template/oracle/selftest.py",
+    "geometry-core/framing-template/oracle/make_golden.py",
+    "geometry-core/framing-template/oracle/rooms.json",
+    "geometry-core/framing-template/oracle/oracle-golden.json",
+    "geometry-core/framing-template/oracle/quote_check.py",
+    "geometry-core/framing-template/oracle/README.md",
+    "geometry-core/framing-template/oracle/sweep-expected-unbuildable.json",
+    "geometry-core/framing-template/PROPOSAL.md",
+    "決策佇列.md"
+  ],
+  "fixture_scope": [
+    "geometry-core/framing-template/core-probe/fixtures/",
+    "geometry-core/framing-template/core-probe/scenes/"
+  ],
+  "input_count": 85,
+  "fixture_count": 68,
+  "all_input_modes_and_git_blobs_identical_to_F13": true,
+  "probe_declared_methods": {
+    "GenScenesTest": 13,
+    "SceneTextCheckerTeethTest": 6,
+    "CommittedScenesTest": 11,
+    "ParseResultsTest": 20,
+    "RunProbeFakeCoreTest": 10
+  },
+  "probe_declared_count": 60,
+  "probe_executed_count": null,
+  "c4_anchor_count": 1,
+  "probe_anchor_count": 1,
+  "tools": {
+    "/workspace/geo288-main-merge-20261023/oracle-proof-tools/run_oracle_merge_proofs.py": "cfea72a0e8dbe94b0c2f08338654e4052aa88e9bf308523689f9c2860a7ba64c",
+    "/workspace/geo288-main-merge-20261023/oracle-proof-tools/capture.py": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+    "/workspace/geo261-environment/execute_f_extra.py": "68256d90e597fe52807637e3603b7392dd09e9a5342909adc54d21fa4cba2928"
+  },
+  "environment": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "python_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+  },
+  "next_action": "Only after root slot: create the independent sparse checkout, verify raw input hashes and clean SHA, run exact original argv."
+}

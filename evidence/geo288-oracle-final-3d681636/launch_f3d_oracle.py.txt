@@ -1,0 +1,65 @@
+"""Record the unchanged reviewed oracle CLI; run only after the R3 owner baton."""
+from pathlib import Path
+import datetime, hashlib, importlib.util, json, os, platform, shutil, sys, traceback
+
+BASE = Path('/workspace/kernel-no-wood-prep/oracle-new-f')
+BIND = BASE/'binding-3d681636'
+OUT = BASE/'final-launch-3d681636'
+CAP = Path('/workspace/geo288-main-merge-20261023/oracle-proof-tools/capture.py')
+SHA = '3d681636902371ecc528b20f51eea33e272581c9'
+digest = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+assert not sys.flags.optimize
+assert digest(BIND/'REQUEST.json') == '731724a78c9160d8acdc5d3276d805c35f5d7a6a82a75a8429a2ddd857eafd01'
+assert digest(BIND/'BINDING.json') == '528db19e82ba5db2b3c0e01b6871ad937f9c4a9650ffc3b55b5036cc92bd0751'
+request = json.loads((BIND/'REQUEST.json').read_text())
+binding = json.loads((BIND/'BINDING.json').read_text())
+tools = dict(binding['tools'])
+tools['/workspace/geo261-environment/reap_children.py'] = '7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760'
+for path, expected in tools.items(): assert digest(path) == expected, path
+repo = Path(request['planned_independent_checkout'])
+assert not OUT.exists() and not Path('/tmp/g288o-3d681636').exists()
+assert not (Path('/workspace/kernel-no-wood-prep/oracle-new-f/final-outers')/'p88-final-oracle-3d681636').exists()
+OUT.mkdir()
+spec = importlib.util.spec_from_file_location('f3d_launch_capture', CAP)
+capture = importlib.util.module_from_spec(spec); spec.loader.exec_module(capture)
+env = dict(os.environ, LANG='C.UTF-8', LC_ALL='C.UTF-8', PYTHONDONTWRITEBYTECODE='1')
+r = capture.Recorder(OUT,env,SHA)
+argv = ['env','-u','PYTHONOPTIMIZE',*request['proof_argv']]
+report = dict(schema='geo288-oracle-f3d-original-cli-launch/1', product_source_sha=SHA,
+              started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              request_sha256=digest(BIND/'REQUEST.json'), binding_sha256=digest(BIND/'BINDING.json'),
+              argv=argv, cwd=str(repo), python=sys.version, platform=platform.platform(),
+              tool_sha256=tools, original_cli_otherwise_unchanged=True,
+              exclusive_resource_lock=dict(path='/tmp/g261r3/heavy.lock', owner='original-cfea-driver',
+                  scope='all original eight phases plus final source guards', changed_or_removed=False),
+              requested_phase_exits=request['expected_phase_exits'], commands=r.rows,
+              environment={k:env.get(k) for k in ('PATH','LANG','LC_ALL','PYTHONOPTIMIZE','PYTHONPATH','PYTHONDONTWRITEBYTECODE')},
+              disk_before={p:shutil.disk_usage(p)._asdict() for p in ('/tmp','/workspace')}, errors=[])
+code = 1
+def save(): (OUT/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+save()
+try:
+    head = r.run(['git','rev-parse','HEAD'],cwd=repo,timeout=120)[1].decode().strip()
+    status = r.run(['git','status','--porcelain=v1','--untracked-files=all'],cwd=repo,timeout=120)[1]
+    assert head == SHA and not status
+    manifest=[]
+    for original in binding['input_manifest']:
+        raw = (repo/original['path']).read_bytes()
+        assert len(raw) == original['bytes'] and hashlib.sha256(raw).hexdigest() == original['sha256']
+        manifest.append(original)
+    report['source_before'] = dict(head=head,status=status.decode(),input_manifest=manifest)
+    (OUT/'launcher.py.txt').write_bytes(Path(__file__).read_bytes())
+    save()
+    print(json.dumps(dict(status='launching-original-cli',out=str(OUT),argv=argv)),flush=True)
+    row,_,_ = r.run(argv,cwd=repo,timeout=None,check=False,source_variant='original-reviewed-eight-phase-oracle-F3d')
+    report['outer_cli_result'] = row
+    code = row['actual_process_returncode']
+except Exception:
+    report['errors'].append(traceback.format_exc())
+finally:
+    report['ended_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    report['exit_code'] = code
+    report['disk_after'] = {p:shutil.disk_usage(p)._asdict() for p in ('/tmp','/workspace')}
+    save()
+print(json.dumps(dict(out=str(OUT),exit_code=code,errors=report['errors'])),flush=True)
+raise SystemExit(code)

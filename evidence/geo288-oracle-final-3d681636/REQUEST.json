@@ -1,0 +1,113 @@
+{
+  "schema": "geo288-oracle-f3d-future-exact-request/1",
+  "status": "NOT_EXECUTED",
+  "product_source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "planned_independent_checkout": "/workspace/geo288-oracle-work-3d681636",
+  "checkout_exists_at_preparation": false,
+  "checkout_setup_argv": [
+    [
+      "git",
+      "--git-dir",
+      "/workspace/kernel-no-wood-prep/metadata.git",
+      "worktree",
+      "add",
+      "--detach",
+      "--no-checkout",
+      "/workspace/geo288-oracle-work-3d681636",
+      "3d681636902371ecc528b20f51eea33e272581c9"
+    ],
+    [
+      "git",
+      "-C",
+      "/workspace/geo288-oracle-work-3d681636",
+      "config",
+      "--worktree",
+      "core.bare",
+      "false"
+    ],
+    [
+      "git",
+      "-C",
+      "/workspace/geo288-oracle-work-3d681636",
+      "config",
+      "--worktree",
+      "core.autocrlf",
+      "false"
+    ],
+    [
+      "git",
+      "-C",
+      "/workspace/geo288-oracle-work-3d681636",
+      "sparse-checkout",
+      "init",
+      "--no-cone"
+    ],
+    [
+      "git",
+      "-C",
+      "/workspace/geo288-oracle-work-3d681636",
+      "sparse-checkout",
+      "set",
+      "--no-cone",
+      "--stdin"
+    ],
+    [
+      "git",
+      "-C",
+      "/workspace/geo288-oracle-work-3d681636",
+      "checkout",
+      "--detach",
+      "3d681636902371ecc528b20f51eea33e272581c9"
+    ],
+    [
+      "git",
+      "-C",
+      "/workspace/geo288-oracle-work-3d681636",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ]
+  ],
+  "sparse_stdin_file": "SPARSE_PATTERNS.txt",
+  "sparse_stdin_command_index": 4,
+  "proof_argv": [
+    "python3",
+    "-B",
+    "/workspace/geo261-environment/execute_f_extra.py",
+    "--label",
+    "p88-final-oracle-3d681636",
+    "--sha",
+    "3d681636902371ecc528b20f51eea33e272581c9",
+    "--repo",
+    "/workspace/geo288-oracle-work-3d681636",
+    "--outer-root",
+    "/workspace/kernel-no-wood-prep/oracle-new-f/final-outers",
+    "--",
+    "python3",
+    "-B",
+    "/workspace/geo288-main-merge-20261023/oracle-proof-tools/run_oracle_merge_proofs.py",
+    "--repo",
+    "/workspace/geo288-oracle-work-3d681636",
+    "--sha",
+    "3d681636902371ecc528b20f51eea33e272581c9",
+    "--out",
+    "/tmp/g288o-3d681636",
+    "--heavy-lock",
+    "/tmp/g261r3/heavy.lock"
+  ],
+  "expected_phase_exits": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+  ],
+  "expected_driver_exit": 0,
+  "expected_outer_exit": 0,
+  "per_phase_role": "Original formal quick/unittest plus two source withdrawal controls; no new threshold",
+  "resource_slot": "WAIT_FOR_ROOT_AFTER_GRID_NATIVE_AND_P52; original driver alone holds R3",
+  "no_added_chrome_node_compiler_gate": true
+}

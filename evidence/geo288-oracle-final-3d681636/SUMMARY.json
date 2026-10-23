@@ -1,0 +1,246 @@
+{
+  "schema": "geo288-oracle-final-original-result/1",
+  "product_source_sha": "3d681636902371ecc528b20f51eea33e272581c9",
+  "original_driver_exit": 0,
+  "outer_original_exit": 0,
+  "top_original_exit": 0,
+  "phases": [
+    {
+      "label": "oracle-quick",
+      "actual_original_exit": 0,
+      "expected_original_exit": 0,
+      "ok": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo288-oracle-work-3d681636/geometry-core/framing-template/oracle/selftest.py",
+        "--quick"
+      ],
+      "cwd": "/workspace/geo288-oracle-work-3d681636/geometry-core/framing-template/oracle",
+      "source_variant": "original-clean-F-quick",
+      "raw_directory": "/tmp/g288o-3d681636/subcommands/000005",
+      "stdout_sha256": "83fba818865d3788adc8e9502562fd06365948f01ed58aec1b68a2abb31b4161",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "finding": null,
+      "problems": []
+    },
+    {
+      "label": "probe-complete-unittest",
+      "actual_original_exit": 0,
+      "expected_original_exit": 0,
+      "ok": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo288-oracle-work-3d681636/geometry-core/framing-template/core-probe/test_gen_scenes.py",
+        "-v"
+      ],
+      "cwd": "/workspace/geo288-oracle-work-3d681636",
+      "source_variant": "original-clean-F-complete-probe-unittest",
+      "raw_directory": "/tmp/g288o-3d681636/subcommands/000006",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8f01ca50e05e6042de172c300d76b0fc5061a981f9eef648897f49f9e9897e01",
+      "finding": {
+        "recorded_ran_counts": [
+          60
+        ],
+        "expected_original_count": 60,
+        "problems": []
+      },
+      "problems": []
+    },
+    {
+      "label": "c4-baseline",
+      "actual_original_exit": 0,
+      "expected_original_exit": 0,
+      "ok": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/g288o-3d681636/isolated/c4/geometry-core/framing-template/oracle/selftest.py",
+        "--mutants-only"
+      ],
+      "cwd": "/tmp/g288o-3d681636/isolated/c4/geometry-core/framing-template/oracle",
+      "source_variant": "c4-fixed-copy-of-F",
+      "raw_directory": "/tmp/g288o-3d681636/subcommands/000007",
+      "stdout_sha256": "f7941e038333f8e7df091ba49670e959e9f6bfb9e9abad334c932ef406712a0b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "finding": {
+        "original_named_lines": [
+          "[紅] C4NEG sweep_family inconsistent  3600×3000 拿掉一支記號副支:要 8 筆 inconsistent,檢查含 C4_SPACING、C9_MARKS_NOT_ALIGNED、C12_JIG_MARK_MISSING;實得 bad 8、不可施工 0、只有核心限制 0"
+        ],
+        "problems": []
+      },
+      "problems": []
+    },
+    {
+      "label": "c4-withdrawn",
+      "actual_original_exit": 1,
+      "expected_original_exit": 1,
+      "ok": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/g288o-3d681636/isolated/c4/geometry-core/framing-template/oracle/selftest.py",
+        "--mutants-only"
+      ],
+      "cwd": "/tmp/g288o-3d681636/isolated/c4/geometry-core/framing-template/oracle",
+      "source_variant": "c4-single-withdrawal-from-F",
+      "raw_directory": "/tmp/g288o-3d681636/subcommands/000008",
+      "stdout_sha256": "a42eead075737ec65cf7c9f3a08c98c3e509d7095862e1ea7656de82e2f00e1c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "finding": {
+        "original_named_lines": [
+          "[沒抓到!] C4NEG sweep_family inconsistent  3600×3000 拿掉一支記號副支:要 8 筆 inconsistent,檢查含 C4_SPACING、C9_MARKS_NOT_ALIGNED、C12_JIG_MARK_MISSING;實得 bad 0、不可施工 0、只有核心限制 0"
+        ],
+        "problems": []
+      },
+      "problems": []
+    },
+    {
+      "label": "c4-restored",
+      "actual_original_exit": 0,
+      "expected_original_exit": 0,
+      "ok": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/g288o-3d681636/isolated/c4/geometry-core/framing-template/oracle/selftest.py",
+        "--mutants-only"
+      ],
+      "cwd": "/tmp/g288o-3d681636/isolated/c4/geometry-core/framing-template/oracle",
+      "source_variant": "c4-exact-byte-restoration-of-F",
+      "raw_directory": "/tmp/g288o-3d681636/subcommands/000009",
+      "stdout_sha256": "f7941e038333f8e7df091ba49670e959e9f6bfb9e9abad334c932ef406712a0b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "finding": {
+        "original_named_lines": [
+          "[紅] C4NEG sweep_family inconsistent  3600×3000 拿掉一支記號副支:要 8 筆 inconsistent,檢查含 C4_SPACING、C9_MARKS_NOT_ALIGNED、C12_JIG_MARK_MISSING;實得 bad 8、不可施工 0、只有核心限制 0"
+        ],
+        "problems": []
+      },
+      "problems": []
+    },
+    {
+      "label": "probe-core-limits-baseline",
+      "actual_original_exit": 0,
+      "expected_original_exit": 0,
+      "ok": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/g288o-3d681636/isolated/probe-core-limits/geometry-core/framing-template/core-probe/test_gen_scenes.py",
+        "-v",
+        "GenScenesTest.test_conflict_layout_is_skipped"
+      ],
+      "cwd": "/tmp/g288o-3d681636/isolated/probe-core-limits",
+      "source_variant": "probe-core-limits-fixed-copy-of-F",
+      "raw_directory": "/tmp/g288o-3d681636/subcommands/000010",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "88da9abb40fbcb42eac479491d131bcea2c4208cab4812238e3ae4b1c73ff815",
+      "finding": {
+        "recorded_ran_counts": [
+          1
+        ],
+        "expected_original_count": 1,
+        "problems": []
+      },
+      "problems": []
+    },
+    {
+      "label": "probe-core-limits-withdrawn",
+      "actual_original_exit": 1,
+      "expected_original_exit": 1,
+      "ok": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/g288o-3d681636/isolated/probe-core-limits/geometry-core/framing-template/core-probe/test_gen_scenes.py",
+        "-v",
+        "GenScenesTest.test_conflict_layout_is_skipped"
+      ],
+      "cwd": "/tmp/g288o-3d681636/isolated/probe-core-limits",
+      "source_variant": "probe-core-limits-single-withdrawal-from-F",
+      "raw_directory": "/tmp/g288o-3d681636/subcommands/000011",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d632ba63cfee568633caa60a30288eb36213c01e9e657344cd0ce03d8e79180a",
+      "finding": {
+        "recorded_ran_counts": [
+          1
+        ],
+        "expected_original_count": 1,
+        "problems": []
+      },
+      "problems": []
+    },
+    {
+      "label": "probe-core-limits-restored",
+      "actual_original_exit": 0,
+      "expected_original_exit": 0,
+      "ok": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/g288o-3d681636/isolated/probe-core-limits/geometry-core/framing-template/core-probe/test_gen_scenes.py",
+        "-v",
+        "GenScenesTest.test_conflict_layout_is_skipped"
+      ],
+      "cwd": "/tmp/g288o-3d681636/isolated/probe-core-limits",
+      "source_variant": "probe-core-limits-exact-byte-restoration-of-F",
+      "raw_directory": "/tmp/g288o-3d681636/subcommands/000012",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ab68c87c76ab75662a7a9715266fd37253df08d226b55fefe891c2ba7511aac0",
+      "finding": {
+        "recorded_ran_counts": [
+          1
+        ],
+        "expected_original_count": 1,
+        "problems": []
+      },
+      "problems": []
+    }
+  ],
+  "expected_phase_exits": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+  ],
+  "actual_phase_exits": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+  ],
+  "original_declared_probe_count": 60,
+  "input_count": 85,
+  "tracked_fixture_scope": [
+    "geometry-core/framing-template/core-probe/fixtures/",
+    "geometry-core/framing-template/core-probe/scenes/"
+  ],
+  "fixture_count": 68,
+  "source_clean_unchanged_before_after": true,
+  "all_85_input_raw_hashes_unchanged": true,
+  "all_input_git_modes_and_blobs_checked_by_setup": true,
+  "original_driver_tools_unchanged": true,
+  "ledger_regenerated": false,
+  "allowed_skips": [],
+  "original_errors": [],
+  "dynamic_peer": "PENDING_ACTUAL_AND_PUBLIC_REVIEW",
+  "limitations": [
+    "The original unittest may capture internal child output without persisting it; no missing inner streams are reconstructed.",
+    "The complete probe unittest includes fake-core shell controls, not a new native run_probe.sh acceptance run.",
+    "This is not a rerun of all historical 159 source mutants or all seven workflow jobs."
+  ],
+  "compiled_product_binary": null,
+  "original_internal_child_streams_reconstructed": false,
+  "all_original_eight_phase_requirements_met": true
+}
