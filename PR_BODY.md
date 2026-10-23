@@ -7,7 +7,7 @@
 | 項目 | 唯一 current state |
 |---|---|
 | 目前產品來源（含 canonical） | `e8aaf84c7311d05cc1b2fe5ece8fb56be8e227d0` |
-| evidence head（後續僅收據／獨立驗證工具） | `da8dd0f38a997387a7ea644ce26227cd8f9a8615` |
+| evidence head（後續僅收據／獨立驗證工具） | `0b9beef7bcebef2352657b4ae00a6a25dbc88f2e` |
 | 閱讀 A 第一批產品 | `41cf5594011d9d13f401319ccf676c741263dbcc` |
 | native 第一批／collector 補漏 | `0df78e9f12fad311279c2a458a1cfecf1583b1c2`／`59f42f7d64f09b555aaf6bb47872cdb961b827a8` |
 | 普通合入前棒 | `15a735951a36b6fe52e0291152f335139e6921ad`，內含 #314／#323 |
@@ -36,4 +36,4 @@
 
 來源靜讀另修正既有 I19 錯碼歸因，裸 RC 拒絕維持 V_CUT_PRIORITY（M150），保原 mapper 歸 I19；也維護前棒 #314 2args→6args 的唯一過期控制錨點，23 方法與所有斷言不改，11 錨點與同儕不可變審查原件已封存。這些沒有動態通過聲明。
 
-小型觀察的完整argv／exit／原stream／環境／SHA與新舊golden逐欄對照於 `small-observation-2039b477/`。FZ120當前／withdrawn全部60支料與縫完全相同，只解除id3固定段I19，保id1延伸段I22；STEP20當前buildable，逐支幾何與1831/3639縫保持原值。正式小型golden source撤回工具已備，未跑、不當 killed；noWood同儕正在續審此來源。
+小型觀察的完整argv／exit／原stream／環境／SHA與新舊golden逐欄對照於 `small-observation-2039b477/`。FZ120當前／withdrawn全部60支料與縫完全相同，只解除id3固定段I19，保id1延伸段I22；STEP20當前buildable，逐支幾何與1831/3639縫保持原值。正式小型golden source撤回工具已備，未跑、不當 killed；noWood同儕已獨立靜核此不可變來源，未見靜態blocker；全文與raw metadata收據已封。獨立golden撤回工具已補四輸入隔離/hash、末HEAD/clean、PASS marker、asserts enabled與R3非阻塞獨占鎖，仍未執行。
