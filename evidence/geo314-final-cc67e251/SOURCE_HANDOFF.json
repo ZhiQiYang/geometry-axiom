@@ -1,0 +1,640 @@
+{
+  "schema": "geo314-final-source-handoff/1",
+  "created_utc": "2026-10-23T02:40:54.330746+00:00",
+  "repository": "/tmp/g261-next314",
+  "source_branch": "codex/geo314-one-axis-stagger-20261022",
+  "roles": {
+    "integration_base": "4b665fae21ab63aaffb7d84f6a32d5a469ba1675",
+    "product_test_repair_P3": "4f669733282613a6f1e4a627c448374716496daa",
+    "old_ledger_source": "9b65f047d5fd470cdc89ce45e613d06af493b616",
+    "preserved_red_diagnostics_D": "01f1130fd0e93f61c698a963ee74ea349ac6820d",
+    "runner_repair_Pnew_equals_fresh_ledger_source_S": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+    "ledger_publication_L": "5c2c5dbd0bde8fe17097ae5243bfb27bbc2574f0",
+    "linux_architecture_actual_source": "5c2c5dbd0bde8fe17097ae5243bfb27bbc2574f0",
+    "architecture_publication_A_equals_formal_acceptance_F": "cc67e2518f6ab331b5ab9fdbcd5bd6334134377f"
+  },
+  "published_final_sha": "cc67e2518f6ab331b5ab9fdbcd5bd6334134377f",
+  "clean_final_and_public_resolution_original_snapshot": "/workspace/geo314-work/final-remote-head-command-001/receipt.json",
+  "public_final_original_stdout": "/workspace/geo314-work/final-remote-head-command-001/subcommands/000001/stdout.bin",
+  "working_tree_clean_at_original_handoff": true,
+  "source_and_original_judges_unchanged_S_to_F": true,
+  "S_to_F_derived_metadata_changes": [
+    ".gitignore",
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "geometry-core/domain-decoupling/product-architecture-scan.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd/MEMBER_INVENTORY.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd/PROGRESS.md",
+    "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd/RESULT.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd/SHA256SUMS",
+    "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd/install_architecture_l.py",
+    "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd/linux-architecture-raw.tar.gz",
+    "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd/outer-receipt.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/FIX_PROOF_INDEX.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/FIX_PROOF_INDEX.md",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/INSTALLATION.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/MEMBER_INVENTORY.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/NEW_MUTANTS.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/PROGRESS.md",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/SHA256SUMS",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/complete-ledger-raw.tar.gz",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/install_completed_ledger.py",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/ledger-receipt.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/outer-receipt.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000001/request.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000001/result.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000001/stderr.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000001/stdin.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000001/stdout.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000002/request.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000002/result.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000002/stderr.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000002/stdin.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000002/stdout.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000003/request.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000003/result.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000003/stderr.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000003/stdin.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000003/stdout.bin",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/EXCLUDED.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/MEMBER_INVENTORY.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/PUBLICATION.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/README.md",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/SHA256SUMS",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/archives/anchor-raw-01.tar.gz",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/attempt-001-receipt.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/collect_anchor_proof.py",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/completion-002-receipt.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/outer-001-receipt.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof/outer-002-receipt.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/EXCLUDED.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/MEMBER_INVENTORY.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/PUBLICATION.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/README.md",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/SHA256SUMS",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/TOOL_SNAPSHOTS.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/archives/proof-raw-01.tar.gz",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/collect_equivalence_proof.py",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/outer-receipt.json",
+    "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof/proof-receipt.json",
+    "tests/mutants_results.json"
+  ],
+  "current_source_owner": "root has taken over publication and may advance evidence-only E; this collector uses recorded clean-F snapshot, not a new current-HEAD assertion.",
+  "fresh_complete_original_ledger": {
+    "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+    "started_utc": "2026-10-23T01:39:09.727492+00:00",
+    "ended_utc": "2026-10-23T02:31:29.420673+00:00",
+    "original_three_command_results": [
+      {
+        "label": "precheck",
+        "original_command_result": {
+          "command": [
+            "python3",
+            "tests/mutate.py",
+            "--check"
+          ],
+          "cwd": "/tmp/g261-next314",
+          "acceptance_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_variant": "clean-fixed-source-complete-original-ledger",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/workspace/geo314-core-fixed-c4aad5d7/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792719555.7596285,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 1,
+          "timeout_expired": false,
+          "directory": "/workspace/geo314-core-fixed-c4aad5d7/subcommands/000011",
+          "ended_epoch": 1792719556.4206517,
+          "stdout_sha256": "b8baae0ef86c39379becf0daae403dcd06a8482fe7e01e05a777552a1ddc4364",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 10011,
+          "stderr_bytes": 0
+        }
+      },
+      {
+        "label": "full-ledger",
+        "original_command_result": {
+          "command": [
+            "python3",
+            "tests/mutate.py"
+          ],
+          "cwd": "/tmp/g261-next314",
+          "acceptance_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_variant": "clean-fixed-source-complete-original-ledger",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/workspace/geo314-core-fixed-c4aad5d7/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792719556.422243,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 0,
+          "timeout_expired": false,
+          "directory": "/workspace/geo314-core-fixed-c4aad5d7/subcommands/000012",
+          "ended_epoch": 1792722682.7930176,
+          "stdout_sha256": "c7d8e5c943e03eeddb0f113451aa61c37767407b1f171cb88d76c30bfb983d7b",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 21358,
+          "stderr_bytes": 0
+        }
+      },
+      {
+        "label": "checkafter",
+        "original_command_result": {
+          "command": [
+            "python3",
+            "tests/mutate.py",
+            "--check"
+          ],
+          "cwd": "/tmp/g261-next314",
+          "acceptance_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_variant": "clean-fixed-source-complete-original-ledger",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/workspace/geo314-core-fixed-c4aad5d7/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792722682.7955785,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 0,
+          "timeout_expired": false,
+          "directory": "/workspace/geo314-core-fixed-c4aad5d7/subcommands/000013",
+          "ended_epoch": 1792722689.2905502,
+          "stdout_sha256": "ea91f3b5d1b07ebac868522d93fc914854d087df04614025bf0cfec42d54909e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 531,
+          "stderr_bytes": 0
+        }
+      }
+    ],
+    "inner_exit_code": 0,
+    "outer_exit_code": 0,
+    "source_before": {
+      "head": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+      "status": ""
+    },
+    "source_after": {
+      "head": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+      "status": ""
+    },
+    "inner_raw": "/workspace/geo314-core-fixed-c4aad5d7",
+    "outer_raw": "/workspace/geo314-core-fixed-outer/geo314-ledger-fixed-c4aad5d7",
+    "ledger_sha256": "fab0c051b458a394f27da08ae485efe232efaaff4e1204cda32d512bafb35ae6",
+    "record_count": 100,
+    "verdict_counts": {
+      "killed": 91,
+      "equivalent": 5,
+      "crashed": 1,
+      "retired": 3
+    },
+    "nonretired_execution_count": 97,
+    "all_nonretired_execution_head": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+    "new22_verdicts": {
+      "M99": "killed",
+      "M100": "killed",
+      "M101": "killed",
+      "M102": "killed",
+      "M103": "killed",
+      "M104": "killed",
+      "M105": "killed",
+      "M106": "killed",
+      "M107": "killed",
+      "M108": "killed",
+      "M109": "killed",
+      "M110": "equivalent",
+      "M111": "killed",
+      "M112": "killed",
+      "M113": "killed",
+      "M114": "killed",
+      "M115": "killed",
+      "M116": "killed",
+      "M117": "killed",
+      "M118": "killed",
+      "M119": "killed",
+      "M120": "killed"
+    },
+    "M20": "crashed; original three _test_lshape.scene access violations preserved, not assertion killed",
+    "M110_baseline_mutant_restored_exits": [
+      0,
+      0,
+      0
+    ],
+    "compile_cache_original_identity": "/workspace/geo314-core-fixed-c4aad5d7/COMPILE_CACHE_COPY.json",
+    "compile_cache_scope": "58 original fingerprint/cache_state hits, old compile provenance retained; all 97 oracle executions genuinely rerun on new S.",
+    "archive": {
+      "repository_directory": "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7",
+      "archive_repository_path": "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/complete-ledger-raw.tar.gz",
+      "archive_bytes": 2503438,
+      "archive_sha256": "b81d7694328d3012a4440b684c0b691ae95812e53bccbb19c4a450e39a2c0822",
+      "members": 659,
+      "each_member_bytes_sha256_verified": true
+    },
+    "original_core_stream_limit": "Original core tool records structured oracle results and output hashes without separate raw inner compiler/oracle stdout files; complete top-level original command streams are archived.",
+    "installed_original_checks": [
+      {
+        "label": "reader-sync",
+        "original_command_result": {
+          "command": [
+            "python3",
+            "-B",
+            "geometry-guide/sync_axiom_reader.py"
+          ],
+          "cwd": "/tmp/g261-next314",
+          "acceptance_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_variant": "completed-ledger-and-publication-metadata-installed-uncommitted",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/workspace/geo314-core-fixed-c4aad5d7/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792722719.8275857,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 0,
+          "timeout_expired": false,
+          "directory": "/tmp/g261-next314/tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000001",
+          "ended_epoch": 1792722723.2046108,
+          "stdout_sha256": "618c51f4f9fa1f0a0773b101a60aa75c99178717da81adf94ab45950bfc03559",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 369,
+          "stderr_bytes": 0
+        }
+      },
+      {
+        "label": "reader-check",
+        "original_command_result": {
+          "command": [
+            "python3",
+            "-B",
+            "geometry-guide/sync_axiom_reader.py",
+            "--check"
+          ],
+          "cwd": "/tmp/g261-next314",
+          "acceptance_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_variant": "completed-ledger-and-publication-metadata-installed-uncommitted",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/workspace/geo314-core-fixed-c4aad5d7/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792722723.2048824,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 0,
+          "timeout_expired": false,
+          "directory": "/tmp/g261-next314/tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000002",
+          "ended_epoch": 1792722724.465103,
+          "stdout_sha256": "130afb91156c9a14547e5315ee39dc665255abf306429b4ba82e8721a66cc07b",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 368,
+          "stderr_bytes": 0
+        }
+      },
+      {
+        "label": "ledger-check",
+        "original_command_result": {
+          "command": [
+            "python3",
+            "-B",
+            "tests/mutate.py",
+            "--check"
+          ],
+          "cwd": "/tmp/g261-next314",
+          "acceptance_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+          "source_variant": "completed-ledger-and-publication-metadata-installed-uncommitted",
+          "environment": {
+            "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONOPTIMIZE": null,
+            "TMPDIR": "/workspace/geo314-core-fixed-c4aad5d7/tmp",
+            "CC": null,
+            "CFLAGS": null,
+            "CPPFLAGS": null,
+            "LDFLAGS": null,
+            "C_INCLUDE_PATH": null,
+            "CPATH": null,
+            "LIBRARY_PATH": null,
+            "LD_LIBRARY_PATH": null,
+            "GCC_EXEC_PREFIX": null,
+            "COMPILER_PATH": null
+          },
+          "started_epoch": 1792722724.465415,
+          "stdin_provided": false,
+          "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_process_returncode": 0,
+          "timeout_expired": false,
+          "directory": "/tmp/g261-next314/tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/postinstall/subcommands/000003",
+          "ended_epoch": 1792722730.8647585,
+          "stdout_sha256": "b99dc8b88e2114aab1f5c88b19e526a56ccea7f79fe7fde559c7bbf36e90e52a",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 526,
+          "stderr_bytes": 0
+        }
+      }
+    ]
+  },
+  "preserved_previous_red_rounds": {
+    "public_commit_D": "01f1130fd0e93f61c698a963ee74ea349ac6820d",
+    "repository_directory": "tests/evidence/geo314-one-axis-stagger-20261022/diagnostics-9b65f047",
+    "original_full_exit": 2,
+    "original_bridge_retry_exit": 1,
+    "original_retry_strict_exit": 1,
+    "inner_raw": [
+      "/workspace/geo314-core-regenerate-s",
+      "/workspace/geo314-core-recover-s-env1"
+    ],
+    "outer_raw": [
+      "/workspace/geo314-core-outer/geo314-ledger-regenerate-s",
+      "/workspace/geo314-core-recovery-outer/geo314-ledger-env-retry1"
+    ],
+    "capacity_repair_original_receipt": "/tmp/geo261-cold-main-clone-release/receipt.json",
+    "policy": "Original ENOSPC/blocked and M110 invalid preserved; new S full did not splice old 57 core executions."
+  },
+  "fix_proof_index": {
+    "repository_json": "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/FIX_PROOF_INDEX.json",
+    "repository_markdown": "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/FIX_PROOF_INDEX.md",
+    "original_local_json": "/workspace/geo314-work/FIX_PROOF_INDEX.json",
+    "json_sha256": "ea219ec10308517f06af11b3843c423a9b8e6dac3309c79f7d1a4128c8b84292",
+    "scope": "Archived index preserves original prepublication null role values. Actual final L/A/F roles are supplied here without rewriting original evidence."
+  },
+  "real_runner_repair_proof": {
+    "repository_directory": "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-equivalence-proof",
+    "original_inner": "/tmp/geo314-equivalence-proof-c4aad5d7",
+    "original_outer": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7",
+    "control_commit": "160e9dc9759aea2cd6b6f7c9eb717590924d1a24",
+    "true_CLI_exit_sequence": [
+      0,
+      1,
+      0
+    ],
+    "archives": [
+      {
+        "path": "archives/proof-raw-01.tar.gz",
+        "bytes": 2389449,
+        "sha256": "c96691665ac2fafa323f96d77734fa314a24d229916be5a21690259a0de2cbbb",
+        "member_count": 311,
+        "uncompressed_file_bytes": 17499777,
+        "every_member_verified": true
+      }
+    ],
+    "members": 311,
+    "verified_command_streams": 147,
+    "negative_scope": "invalid with no execution, not product assertion killed; single M110 strict row proof, not global table strict0."
+  },
+  "real_anchor_repair_proof": {
+    "repository_directory": "tests/evidence/geo314-one-axis-stagger-20261022/ledger-c4aad5d7/real-assembly-anchor-proof",
+    "original_inner_attempt": "/workspace/geo314-work/anchor-repair-proof-c4aad5d7-001",
+    "original_inner_completion": "/workspace/geo314-work/anchor-repair-proof-c4aad5d7-002",
+    "original_outer_attempt": "/workspace/geo314-anchor-proof-outer/geo314-anchor-repair-c4aad5d7",
+    "original_outer_completion": "/workspace/geo314-anchor-proof-outer/geo314-anchor-completion-c4aad5d7",
+    "control_commit": "238a5125c95e77d74603fdd943baaa81e140f7da",
+    "true_original_three_method_exit_sequence": [
+      0,
+      1,
+      0
+    ],
+    "original_attempt_inner_outer_exit": [
+      1,
+      1
+    ],
+    "completion_inner_outer_exit": [
+      0,
+      0
+    ],
+    "negative_normal_assertions": 2,
+    "archives": [
+      {
+        "path": "archives/anchor-raw-01.tar.gz",
+        "bytes": 1051204,
+        "sha256": "a8f69101401ce743891bdc295b23eae0d495b0faacf8d95d140338c5c76c071e",
+        "member_count": 450,
+        "uncompressed_file_bytes": 4236346,
+        "every_member_verified": true
+      }
+    ],
+    "members": 450,
+    "scope": "Exact one-line anchor withdrawal. Original baseline0/withdrawn1 retained; completion runs only missing restored0. No compiler; not full ASM behavior gate."
+  },
+  "linux_architecture": {
+    "actual_source_L": "5c2c5dbd0bde8fe17097ae5243bfb27bbc2574f0",
+    "raw_directory": "/workspace/geo314-architecture-l-5c2c5dbd",
+    "original_outer_receipt": "/workspace/geo314-architecture-l-5c2c5dbd/receipt.json",
+    "original_result": "/workspace/geo314-architecture-l-5c2c5dbd/refresh/RESULT.json",
+    "started_utc": "2026-10-23T02:33:33.218289+00:00",
+    "finished_utc": "2026-10-23T02:33:52.902096+00:00",
+    "original_three_judge_exits": [
+      0,
+      0,
+      0
+    ],
+    "outer_exit": 0,
+    "manifest_byte_unchanged": true,
+    "receipt_sourceBaseHead": "5c2c5dbd0bde8fe17097ae5243bfb27bbc2574f0",
+    "counts": {
+      "executableFiles": 602,
+      "ownedSources": 334,
+      "exclusions": 268,
+      "edges": 797,
+      "diagnostics": 0,
+      "layers": {
+        "H": 192,
+        "K": 69,
+        "W": 67,
+        "vendor": 6
+      },
+      "languages": {
+        "c": 191,
+        "html": 4,
+        "javascript": 64,
+        "python": 75
+      },
+      "forbiddenIdentifiers": 928,
+      "forbiddenStrings": 55
+    },
+    "archive": {
+      "repository_directory": "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd",
+      "archive_repository_path": "tests/evidence/geo314-one-axis-stagger-20261022/architecture-5c2c5dbd/linux-architecture-raw.tar.gz",
+      "archive_bytes": 5872249,
+      "archive_sha256": "1a2fd8a0351c011cdc838636f9507e4d3c258d3076412a8cfef14e0042a67b43",
+      "members": 146,
+      "each_member_bytes_sha256_verified": true
+    }
+  },
+  "prior_ASM_diagnostic_for_final_F_rerun": {
+    "wrapper_root": "/workspace/geo314-work/assembly-repair-001",
+    "original_summary": "/workspace/geo314-work/assembly-repair-001/summary.json",
+    "original_reaper": "/workspace/geo314-work/assembly-repair-001/reaper.jsonl",
+    "launcher_stdout": "/workspace/geo314-work/assembly-repair-001.stdout.raw",
+    "launcher_stderr": "/workspace/geo314-work/assembly-repair-001.stderr.raw",
+    "tool_output_directory": "/workspace/geo314-work/assembly-repair-001/assembly-original-tool/tool-output",
+    "actual_run_HEAD": "c0a2007898f544e658efa72b9b51528a03f7ce51",
+    "declared_P3": "4f669733282613a6f1e4a627c448374716496daa",
+    "stages": [
+      {
+        "label": "assembly-original-tool",
+        "original_argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "tests/assembly_mutation_check.py",
+          "--out",
+          "/workspace/geo314-work/assembly-repair-001/assembly-original-tool/tool-output"
+        ],
+        "exit_code": 0,
+        "seconds": 239.96130830799666
+      },
+      {
+        "label": "assembly-unit12",
+        "original_argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "tests/_unittest_runner.py",
+          "/tmp/g261-next314/tests/test_assembly_mutation_check.py",
+          "--json-out",
+          "/workspace/geo314-work/assembly-repair-001/assembly-unit12/result.json",
+          "--log",
+          "/workspace/geo314-work/assembly-repair-001/assembly-unit12/unittest.log"
+        ],
+        "exit_code": 0,
+        "seconds": 3.806080321999616
+      },
+      {
+        "label": "mutation-anchors3",
+        "original_argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "tests/_unittest_runner.py",
+          "/tmp/g261-next314/tests/test_mutation_anchors.py",
+          "--json-out",
+          "/workspace/geo314-work/assembly-repair-001/mutation-anchors3/result.json",
+          "--log",
+          "/workspace/geo314-work/assembly-repair-001/mutation-anchors3/unittest.log"
+        ],
+        "exit_code": 0,
+        "seconds": 0.7472248259946355
+      }
+    ],
+    "original_wrapper_exit": 1,
+    "original_source_unchanged_guard": false,
+    "read_only_classification": "/workspace/geo314-work/assembly-repair-001/recording-guard-classification/classification.json",
+    "classification_verified": true,
+    "classification_input_count": 2187,
+    "scope": "Original wrapper1 due concurrent evidence PROGRESS update remains1. Original full tool0 took239.961s; original timeout120 is per subprocess. Final-F full ASM must be separate."
+  },
+  "publication_command_receipts": [
+    "/workspace/geo314-work/ledger-install-command-001/receipt.json",
+    "/workspace/geo314-work/ledger-add-command-001/receipt.json",
+    "/workspace/geo314-work/ledger-commit-command-001/receipt.json",
+    "/workspace/geo314-work/ledger-push-command-001/receipt.json",
+    "/workspace/geo314-work/architecture-install-command-001/receipt.json",
+    "/workspace/geo314-work/architecture-add-command-001/receipt.json",
+    "/workspace/geo314-work/architecture-commit-command-001/receipt.json",
+    "/workspace/geo314-work/architecture-push-command-001/receipt.json",
+    "/workspace/geo314-work/final-remote-head-command-001/receipt.json"
+  ],
+  "body_draft": "/workspace/geo314-work/PR_BODY.PRE_ACCEPTANCE_F.md",
+  "formal_acceptance_status": "Not run by this agent. root has taken source publication and started final-F full ASM session74944; native, six browser jobs and applicable specialties remain root scheduled. L architecture is not relabelled as final-F acceptance.",
+  "own_heavy_work_status": {
+    "all_compilers_and_full_ledger_naturally_complete": true,
+    "all_proof_ledger_architecture_archives_complete": true,
+    "all_architecture_driver_work_naturally_complete": true,
+    "all_git_publication_commands_complete": true,
+    "future_scope": "Repository-external small text/body metadata only. No compiler, tests, clone, archive or large IO."
+  },
+  "remaining_uncertainty": "Final-F native/browser/full ASM and applicable specialty/performance outcomes await root receipts. Prior static lifecycle review did not dynamically exercise mixed parameter-package Q3, facts realloc/OOM, all late confirmation fault branches or full P177 global dynamic counts.",
+  "handoff_snapshot_finished_utc": "2026-10-23T02:35:35.298668+00:00",
+  "publication_after_source_handoff": {
+    "owner": "root",
+    "evidence_publication_E": "f59096549fd549bc6d0b99510f065d0c5b32b3e8",
+    "scope": "root reports normal publication changes only final-F evidence prefix; detached formal source remains F. This delivery does not assert current source branch HEAD is still F."
+  },
+  "metadata_collector_limits": [
+    {
+      "original_exit_code": 1,
+      "reason": "First repository-external collector stopped before writing output at an old current-HEAD==F assertion, after root had already taken over and advanced evidence publication. This is a metadata precondition, not product/test failure.",
+      "preservation": "Original tool stdout/stderr remain in the tool response; no standalone raw file was generated. Corrected collector uses original recorded clean-F/public-remote snapshot; no product/test rerun."
+    }
+  ],
+  "metadata_updated_utc": "2026-10-23T02:41:29.360477+00:00"
+}
