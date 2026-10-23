@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 19:38 UTC）
+## 唯一 current-state（2026-10-23 20:07 UTC）
 
 - 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
 - 已普通 merge Claude `f7026c110b4800ee87f9ecc1eff0cc14d535841a` 與 main `425c092eaf16f90256d76433243baebde45163ac`。Claude 是同一 exclusion hash 更新；main 新增 #333 FIELD-RULES 與證據。相對 F，產品 C／JS 與測試內容不變。
@@ -17,7 +17,7 @@
 ## 並行工作與下一步
 
 1. #323 memo完整反證已完成。root全帳本執行中、獨占R3；完成後固定final SHA跑完整native、6browser與專項。canvas與性能獨占，其餘最多兩重測。
-2. #324已接替為draft #339：S=`57b680140da2c6b77ab0d362a72029d8d7c9334b`已普通merge列車；獨立靜審254checks／0；16正式項未跑。owner接續封存新證據，不把靜審當動態綠。
+2. #324已接替為draft #339：原7個Python suite共99項已實跑全綠，原3種predicate反證各0/1/0；C importers、完整native與browser仍待跑。S=`57b680140da2c6b77ab0d362a72029d8d7c9334b`已普通merge列車；獨立靜審254checks／0；16正式項未跑。owner接續封存新證據，不把靜審當動態綠。
 3. noWood已開draft #340：S=`bfbab207a92a809fca50fefcefb3fa4b2af05ea9`、body=`63613255e8052004ee5c447cd729d4dde9d156c1`已推，獨立靜審116checks／0；13正式項／7phase未跑。列車未入main也繼續疊線。
 4. #300前置剖析照常準備；#325/#331/#333不寫其分支。#333已由他人合入main。
 
@@ -38,3 +38,9 @@ Reading A 的3條reader、7 native、14 oracle完整指令/環境/streams及629c
 19:33原123筆全CLI已真正啟動於4f4；原source與seed獨立Git、HEAD/索引/refs/所有原件hash守門通過。輸出`/tmp/train337-ledger-4f4a24d7-r2`、cache `/workspace/train337-ledger-cache-4f4a24d7`。此提交只保存開始事實，尚無全帳本結果。後續正式清單仍待ledger採用後固定final SHA。
 
 已fetch handoff4ee272be；338尚無新審查，服務已開draft340。持續#300根因與browser低磁碟配置靜審，不空等帳本。#323完整47MB原包仍僅雲端，這次只推小交接與原件peer；不得把小摘要冒充全部原始輸出。
+
+## 2026-10-23 20:07 UTC：終態快取回收與新交接
+
+只回收已終止任務的2000個可重建副本（1931份原Git source、49份完整新封ELF、20份既有封ELF）。執行前逐份bytes/hash/inode/hardlink與7包full-bytes核實；原命令exit0，獨立scope78checks／0、實際結果15checks／0。原961份舊Git checkout、所有receipts、fixtures、Gitobjects、gmon、mutant/trace/withdrawn source與正在執行的ledger全部保留。磁碟可用/tmp由132059136升202870784B，workspace由138784768升169799680B；全命令、原完整streams、前置相對路徑失敗、manifest與peer封存於`terminal-cache-retirement/`。7份原bytes封包仍僅雲端，沒有宣稱已推送。
+
+已fetch handoff d65d464f，讀到337的19:44 UTC Claude最後交接：新head8f9301fc含M151 owner-map修正及原收據，將普通merge；不改寫歷史。#314指定程式已符合題3，條文暫緩寫入決定保留；#335 CLI已知缺口另列，不自行改公理。free-end錨點的原9方法四輪已實跑1/0/1/0，18原控制及斷言保持，獨立actual peer中；只會採用這一葉測試定位修正，不摻#300優化。完整123筆ledger仍固定4f4執行，未出最終exit，不冒稱完成。
