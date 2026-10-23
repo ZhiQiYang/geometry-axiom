@@ -16,3 +16,5 @@
 另修正先前尚未驗過的 P182 新預期：FZ114 左上 X 的 3656 候選實際仍有 CORE_LIMIT_MAIN_ON_EXTENSION／C8_MAIN_ON_EXTENSION，3604 仍有 MAIN_HITS_RC_TIMBER；所以原第一可行 3544 與 trace [(3656,false,true),(3604,false,false),(3544,true,false)] 必保。FZ107 左上 Y 和 FZ114 右上 Y 才分別按既有第一可行規則選 3667／491。未改候選、數值門檻或偏好規則。
 
 本次是從封存觀察人工覆核後的來源遷移；正式 generator/selftest、其 source 撤回 0/1/0，以及所有原生／掃描／reader 裁判均仍待資源槽，沒有標成通過。CLI 已放次序仍見 QUESTIONS.md。
+
+已備 `tools/prove_golden_witness.py`（只 AST 核過，未執行）：獨立 copies 真 generator/oracle，把 FZ120 常數精準撤回舊 STEP20；baseline/restored 要精確新見證，withdraw 必在未改的原 nonempty assert 正常 exit1。其餘例外／crash 不算 kill，保 0/1/0 完整來源與輸出；不取代正式 selftest/64 排法。正式需主代理槽執行，output 必放 repo 外。
