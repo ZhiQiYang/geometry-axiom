@@ -1,60 +1,86 @@
-# 雲端持續工作交接（進行中，非完成報告）
+# 雲端持續工作交接：原123筆帳本正在執行
 
-最新使用者指令撤銷階段停止及等待。持續自主推進，不提問、不等審查或PR才做下一件；合併PR由本機處理。繁體中文、英文commit；禁止forcepush、禁止寫Claude/Grok分支。root唯一寫train，其他各branch一owner。每項須獨立對抗審查。
+這是持續中的恢復紀錄，不是完成報告。使用者撤銷階段停止，要求不提問、不等待、持續工作。繁體中文；英文commit；不force push、不合併PR、不寫claude/grok分支。root唯一寫train；其他branch各一owner。舊314/318/combined/323不再各自推進。
 
-## 恢復操作
+## 第一件事：接續正在執行的帳本，絕不可另開一輪
 
-1. `git fetch origin refs/heads/main:refs/remotes/origin/main refs/heads/handoff/codex-takeover-20261021:refs/remotes/origin/handoff/codex-takeover-20261021 refs/heads/claude/sharp-bohr-9flfm7:refs/remotes/origin/claude/sharp-bohr-9flfm7`；本repo預設fetchspec僅main，單寫branch不會更新其他remote-tracking refs。
-2. 讀handoff/pr-reviews/338.md、337.md、323.md、324.md及pr-status。新draft #338已建立；#324請求已推。正文推 `<branch>-prbody` 後同步服務會更新，不等它。
-3. root列車 `codex/train-337-continue-20261024` evidence head **504933473d7b9bdfc5964f73402a710f1222fc96** 已推。以下PROGRESS是這份head內容，後續以分支最新PROGRESS優先。
-4. #323 owner `/root/audit_oracle_main_merge` 正備全memo withdraw/restore profile與isolated175ABC；`/tmp/train337-323-f64d638f-source` 仍是它獨占的F64 checkout。等它明確release才交root切4f4/最新穩定來源作全ledger；不准再次由另一代理中途checkout不同HEAD。
-5. ledger準備工具 `/tmp/train337-ledger-retainer-prep/` v2已有52checks peer：保留原mutate CLI／判準，只旁錄core fullstreams。root獨自執行全123筆，其他代理不各自重產。`own_299_316_combined`備精確指令與thin bridge seed；避免原bridge clone簽出GiB evidence。不得省略實際source/oracle closure或fixtures。
-6. 原捕捉器 `/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py` SHA c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762；wrapper `/workspace/geo288-main-merge-20261023/record_command.py`；R3/heavy lock沿原工具。Chrome PATH加 `/workspace/geo261-environment/bin`。
-7. 最多2重測；完整canvas、性能/P52/P189獨占。先df：目前workspace約348MiB/tmp320MiB；僅清自有可重建cache，不刪收據/fixtures/gitobjects。原件位於tmp/workspace、已封包的完整streams仍保留。
-8. root工具 `/tmp/geo337-continue-20261024/`；handoff薄worktree `/tmp/geo337-handoff-publish-20261024`。`publish_metadata.py`不能移動已checkout分支；train/handoff使用正常commit/push。認證18:55已恢復；若再失敗先localcommit，30分重試。自動同步引起非快轉時普通fetch/merge，不force。
-9. 活躍分工：root列車/帳本/發布；audit_oracle_main_merge=323；own_299_316_combined=314與ledger工具；own_318_reading_a=閱讀A/架構/掃描；own_kernel_no_wood=noWood與ReadingA原件peer；prepare_288_merge_architecture=324與保守cache盤點；train_adversarial_review=專職peer。若代理interrupted/completed，followup_task才喚醒，send_message不會喚醒。
+- train `codex/train-337-continue-20261024`，draft **#338**；已推E=`5b0ce47d25393fad675bf506a9d296cbab43c35d`。
+- 產品F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；帳本固定來源=`4f4a24d76e816274bfae06868b4dbf31f0860299`。4f4普通合流Claude f702/main425並採用架構四檔，C/JS/Py/tests與F相同。
+- **2026-10-23 19:33 UTC原完整mutate CLI已開始**，root exec session **27106**。先檢查原process/receipt，不要另跑第二份。root wrapper `/workspace/geo288-main-merge-20261023/record_command.py`；driver `/tmp/train337-ledger-retainer-prep/run_root_full_ledger_v4.py` SHA023a9df5f6fbef7d627cd999b981140a8b1a8514b56c859bc78be926d6c9705d。v4 peer16/0，observer v3原CLI語意/時限保持。
+- JOB `/tmp/train337-ledger-4f4a24d7-r2`；outer `/tmp/train337-ledger-4f4a24d7-launch-r2`；TMPDIR `/tmp/train337-ledger-4f4a24d7-r2-tmp`；CACHE `/workspace/train337-ledger-cache-4f4a24d7`。
+- ROOT `/tmp/train337-323-f64d638f-source` 已由323正式交還、driver切4f4；SEED `${CACHE}/_bridge-work/4f4a24d76e816274bfae06868b4dbf31f0860299/repo`是原獨立checkout同FS搬移。**保留alternate parent `/workspace/geo314-train-f64d638f-m121/source/.git/objects`**，禁止其他agent改ROOT/SEED/HEAD。
+- 全ledger獨占R3 `/tmp/g261r3/heavy.lock`；其他代理只做靜態/小metadata。原子程序600/900/300秒不變；無outer新增時限。旁錄器保原core CompletedProcess完整文字；bridge六phase原fullstreams另核。
+- 19:27 v3只有前置exit1：ROOT原default `current_geometry.svg` 是ignored，fullCLI從未開始/seed未動。原失敗完整保留並已封E。v4只將這個經untracked/ignored/XML/原main路徑核實的SVG完整移入證據，其餘ignored仍fail。
+- 完成後讀原cli exit、CORE_RAW_MAPPING、BRIDGE_RAW_INVENTORY與原新ledger `--check`；交專職peer核123 exactID/70core53bridge/3retired/5equivalent（M09/M23/M56/M36/M110），不要偽報5等價為killed。只有root採用帳本，再固定可解析final SHA跑完整正式清單。
 
-## 精確原件位置
+## 已完成與尚未完成
 
-- #323 formal原36/4：`/workspace/train337-323-f64d638f-v4-r1`；358checks peer `/tmp/train337-adversarial/FORMAL_F64_PERF_PROFILE_PEER.json`。ABC3 diagnostics必讀 `FORMAL_ABC_THREE_DIAGNOSTIC_CLASSIFICATION_CORRECTED.json`，stdout/stderr均不同；原紅不改。
-- 314封存已進E；actual原索引 `/tmp/geo314-train-f64d638f-launch/ACTUAL_RAW_INDEX.json`，541checks peer `/tmp/geo324-owner-20261024/review-314-f64-originals/`。
-- ReadingA三reader `/tmp/train337-reader-original-f64d638f`；native `/workspace/train337-reading-a-native-f64d638f-r2`；oracle `/workspace/train337-reading-a-oracle-f64d638f`。kernel owner正peer＋封包。41子SHA null限制明列，不能回填改原件。
-- P17架構原判官與四檔 `/workspace/train337-architecture-original-17b35764`、`/workspace/train337-architecture-four-17b35764`；已採用且完整封入E，686checkspeer。
-- #324與noWood已授權再普通merge E5049，各owner自行回報新SHA。尚未跑正式16/13；不要沿舊結果冒綠。舊314/318/combined/323分支停寫，缺失只上列車。
-- #300目前只讀剖析：contact_order、geo_eval_depend呼叫仍超線性，尚未產品更動。先讀所有鎖定決策及FIELD-RULES，任何未核可公理只準備、不提交。
+- F64 #323 fixed-three50/0/0、19controls；正式36timings/4profiles：N32/base .8118354877≤1、N64/main1.2648005782≤1.3、calls64/32 4.4076184255≤4.5。原分母b74f9a2/adbaebf9不變。6655checks peer接受完整memo0/1/0（4.407618→6.053833→4.407618）及同列車175/350全stdout/stderr/graph/guards exact。
+- **歷史base ABC原exit1三診斷差異仍紅**（#299新增V_EXTENSION定位邊/區間，stdout與stderr皆差）。QUESTIONS保留；不以同列車新proof改寫舊紅。兩撤回ABC ELF只有事後補hash，原guards無350份獨立raw，不虛構。
+- #323全原件五包47,120,357B在 `/workspace/geo323-f64-publication-20261024/`，目前**僅雲端，尚未push**。DELIVERY/remaining commands及actualpeer小報告已進E。有空間後封全部raw，不能稱小摘要等於原件。
+- F64 #314指定17 blobs/M99–M121已在起點：六suite103、Node13、M121真0/1/0，541checks peer，原件已推。不是完整native/browser。
+- F64 ReadingA reader51/native7+12反證/oracle14，629checks peer，895member原包已推。41子SHA原null，父c387+前後Git+70C/H間接核；已由測試刪除的ELF不冒fresh rehash。
+- RC-run builder/checker精準撤回各0/1/0；actual377/包382checks，100members原包已推E5b0。正式quick逐mm/579仍未跑，方案 `/tmp/train337-reading-a-sweep-plan/DELIVERY_SWEEP_AND_RC.json`。
+- P17 architecture三原裁判0/0/0、manifest撤回0/1/0、Linux四檔604inputs/798edges/0diagnostics；686checks peer，已採用4f4/封E。原F失敗1/0/5完整保留。
+- 全native、六browser、P52、Q38、§7、P-189、ReadingA quick、323required-eight/PF3尚待final SHA；原partial不能替代。完整native35m與各workflow browser時限/golden不改。
 
-## 已推PROGRESS快照
+## 其他工作線
+
+- draft **#339**：`codex/geo324-faces-20261024`，owner prepare_288_merge_architecture；S=`57b680140da2c6b77ab0d362a72029d8d7c9334b`普通merge列車。兩原Grokleaf不變/expected39→45；254checks靜審。E/D持續由owner補小證據，讀其PROGRESS最新；16正式gate未跑。薄predicate37inputs355KB方案可先核原工具再排slot。
+- draft **#340**：`codex/kernel-without-woodworking-20261023`，owner own_kernel_no_wood；S=`bfbab207a92a809fca50fefcefb3fa4b2af05ea9`，D=`63613255e8052004ee5c447cd729d4dde9d156c1`；116checks靜審，13正式測試/7phase未跑。勿把它tests修改當train ledger涵蓋。
+- #300 owner own_299_316_combined，自有前置分支；先精確剖析call-growth與每call成本。contact_order已具索引，geo_source node/edge也已有索引，不能重做後冒性能修正。新門檻或未核可公理僅QUESTIONS；先做可逆語意不變前置。
+- #325/#331/#333由Grok，不碰其分支；#333已進main425。木工推理先讀已鎖決策10-12～15/22/23/24及FIELD-RULES。
+
+## 環境／磁碟／發布
+
+- Chrome156.0.8078.47、Node24.19.0、NotoCJK可用；PATH加 `/workspace/geo261-environment/bin`。沒有用使用者電腦測試。
+- workspace/tmp都接近滿；先df，只清自己的可重建暫存，不刪receipts/fixtures/Gitobjects。已回收5批cache但保全部原件；323 terminal ELF清單只可回收12.54MB，不是250MB，尚未刪。
+- 微probe真證實workspace與tmp `cp --reflink=always`都Operation not supported；沒有fallback。61checks peer。browser不可用CoW；immutable hardlink寫入closure尚未核，不要直接共享可寫source。owner查方案，323 owner盤點舊ownedcheckout可安全退休部分。
+- 最多2重測；完整canvas與性能/P52/P189獨占。現在fullledger保留獨占，勿擅開重測。
+- fetchspec只有main；用完整refspec fetch main/handoff/Claude（本輪Claude f702/main425無新碼、handoff4ee272be）。`handoff/pr-reviews/338.md`尚無審查留言；337只有分工更新。PR服務已開338/339/340。
+- 正文分支 `<branch>-prbody` 只放PR_BODY.md；handoff五欄JSON已有。普通push，不合併PR。app attach曾呼叫338/339/340但工具超時未確認，不因這個停止實作。
+- root工具 `/tmp/geo337-continue-20261024/`；train正常commit/push，prbody可用隔離index `publish_metadata.py`，不能移動已checkout分支。handoff薄worktree `/tmp/geo337-handoff-publish-20261024`。自動同步衝突普通fetch/merge，不force。
+- `send_message`不會喚醒finished/interrupted agent，續工用`followup_task`。持續工作，不以本交接檔當作完成條件。
+
+## train PROGRESS快照（以分支最新檔優先）
 
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 19:10 UTC）
+## 唯一 current-state（2026-10-23 19:38 UTC）
 
 - 分支：`codex/train-337-continue-20261024`；產品 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`；架構裁判來源 P=`17b3576434ffd0833056668898e1fd1a8cc2d560`；四檔採用與上游合流 head=`4f4a24d76e816274bfae06868b4dbf31f0860299` 已推。最新 evidence head 以本檔所在提交為準，正式全清單的最終 SHA 尚未固定。
 - 已普通 merge Claude `f7026c110b4800ee87f9ecc1eff0cc14d535841a` 與 main `425c092eaf16f90256d76433243baebde45163ac`。Claude 是同一 exclusion hash 更新；main 新增 #333 FIELD-RULES 與證據。相對 F，產品 C／JS 與測試內容不變。
 - #314 指定 `3b0b634f` 的17個產品／裁判 blobs及M99–M121定義已存在列車；沒有假移植。F 的六 suite **103項 exit0**、Node inspector **13項 exit0**、M121 原CLI0與build0/0/0、斷言0/1/0。獨立541checks／0。Node不是browser；六suite不是完整native。完整原件收於 `geo314-f64-originals-and-peer.tar.gz`。
 - #323 來源已全包含列車，只在此線修。F 的原13/22/15三suite **50/0/0**、19組control獨立346checks／0；四新增與兩漂移修復為具名ASSERT 0/1/0。placement-key-single原等價0/0/0仍照實記錄。
-- #323 正式一次36timings及4profiles已執行，原execution各0：N16/32/48-base=.70152535/.81183549/.70936489；N64/main=1.26480058≤1.3；source calls64/32=364369/82668=4.40761843≤4.5。分母與原門檻未改；獨立原件審查中，原wrapper1因下列ABC紅燈，不能標整組全綠。
-- #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；正補同列車僅撤回memo的嚴格ABC及完整memo性能反證。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
-- 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立實件審查及封存中。native41筆子SHA欄原為null，父c387、前後Git身份與binary/source hashes另附綁定，原件不改；未冒稱最終全專項通過。
+- #323 正式一次36timings及4profiles已執行，原execution各0：N16/32/48-base=.70152535/.81183549/.70936489；N64/main=1.26480058≤1.3；source calls64/32=364369/82668=4.40761843≤4.5。分母與原門檻未改；獨立原件358checks／0已完成，原wrapper1因下列ABC紅燈，不能標整組全綠。
+- #323 原175場景／350組 exact比較 **exit1**：僅3場景因既有#299 V_EXTENSION新增邊與區間診斷不同；dump、有序來源圖、5guards及允許／拒絕相同。原紅不改，詳 `QUESTIONS.md`；同列車僅撤回memo的175／350嚴格全輸出ABC與完整memo性能反證已完成：0/1/0、4.407618→6.053833→4.407618；獨立6655checks／0。五原件壓縮包47,120,357B目前僅雲端，尚未推送，保存在原路徑。I11補充單場景exact綠、原scene runner **166/0/0**，不冒充完整native。
+- 閱讀A F：reader三條 **0/0/0（51項）**，native **7項／12組0/1/0**、oracle **14項 exit0**；獨立629checks／0已完成，完整原件收於`reading-a-f64-originals/`（895members、5597339bytes壓縮包）。native41筆子SHA欄原為null，父c387、前後Git身份與70C/H實際輸入逐份比對另附間接綁定，原件不改；原ELF已由測試清除，只保原hash，不冒fresh rehash。原三組沒有額外outer/reaper，不虛構。RC-run builder/checker兩精準撤回已各0/1/0，actual377checks／0、封包382checks／0，原件已封`reading-a-rc-f64-originals/`；正式quick仍待跑，未冒稱最終全專項通過。
 - 架構 P 原三條 **0/0/0**（generic205、product18）、過期manifest反證 **0/1/0**；Linux manifest/scan/report/receipt四檔已重產採用，獨立686checks／0，604輸入closure=`6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338`。原F架構1/0/5與Ran0失敗完整保留。封存 `architecture-p17-and-recovery.tar.gz`。
-- 全123筆突變帳本仍待root一次重產；原3417探測1（107 stale、3 retired、13 unrun）保留。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
+- 全123筆突變帳本已於19:33 UTC由root在4f4來源啟動，仍執行中、尚無最終exit；原3417探測1（107 stale、3 retired、13 unrun）保留。完整native、六browser、P52、Q38、§7、P-189與閱讀A矩形／579專項仍未完成。**沒有允許的新skip，不標READY-TO-MERGE。**
 - 雲端Chrome156.0.8078.47／Nodev24.19.0／NotoCJK可用。只清已核可重建cache，保留收據、fixtures與Gitobjects；5批實際allocation回收998256640bytes，觀察free差996368384bytes，差值受共享磁碟並行活動影響。
 - 18:25認證故障原件保留；18:55普通Git重試恢復，原未推提交ae25／17b已補推。交接分支在自動同步造成一次非快轉拒絕後，用普通merge補入，`8c60c977e772126f120fd6f2d3ca95208ba8fd44` 已推，含NEXT與#324 PR請求。沒有force push。
 
 ## 並行工作與下一步
 
-1. #323 memo撤回／恢復proof仍需短性能獨占；完成後root全帳本，再固定final SHA跑完整native、6browser與專項。canvas與性能獨占，其餘最多兩重測。
-2. #324：S=`f1217b0fa5e933e14906833bf4981dad97061b04`、E=`c8806b5f1aa6363d573b30a9df1748e61e1b9ccf`、body=`ebdeaca3b4e396c64d084e9acf7017888d809f73` 已推；16正式項未跑。將合流架構head後排驗。
-3. noWood：S=`3e7502e470bfdde3b40ca4cc82f7a68af158b144` 已推；13正式項／7phase未跑。列車未入main也繼續疊線。
+1. #323 memo完整反證已完成。root全帳本執行中、獨占R3；完成後固定final SHA跑完整native、6browser與專項。canvas與性能獨占，其餘最多兩重測。
+2. #324已接替為draft #339：S=`57b680140da2c6b77ab0d362a72029d8d7c9334b`已普通merge列車；獨立靜審254checks／0；16正式項未跑。owner接續封存新證據，不把靜審當動態綠。
+3. noWood已開draft #340：S=`bfbab207a92a809fca50fefcefb3fa4b2af05ea9`、body=`63613255e8052004ee5c447cd729d4dde9d156c1`已推，獨立靜審116checks／0；13正式項／7phase未跑。列車未入main也繼續疊線。
 4. #300前置剖析照常準備；#325/#331/#333不寫其分支。#333已由他人合入main。
 
 每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新審查來源是已fetch handoff的337/338及各工作線留言；338目前沒有新增審查。工作持續中。
 
-## 2026-10-23 19:24 UTC 追加
+## 歷史紀錄：2026-10-23 19:17 UTC
 
-- train E `a048530c18f5df43a921e6b06bb3e4aa2192684e` 已推，完整ReadingA原件與629checks peer已封；native41子SHA仍null、父與輸入間接綁定已核，未更改原件。
-- #323全memo原profile0→1→0及175/350四元組全等已真終態0；19:15:17 source已release給root。47MB完整raw包目前在雲端 `/workspace/geo323-f64-publication-20261024/`，待root封存push，不能稱該包已在GitHub。
-- root全ledger固定4f4準備執行；為磁碟分攤，JOB/raw/results/observer改 `/tmp/train337-ledger-4f4a24d7`，CACHE改 `/workspace/train337-ledger-cache-4f4a24d7`。以即將凍結的最後driver為準，不啟舊e103/v2路徑版本。此時尚未執行123，未冒綠。
-- #324替代PR已由服務開draft **#339**；新S `57b680140da2c6b77ab0d362a72029d8d7c9334b`，E `792d086eb046263384888b3b0a064ae96f0cdc27`，D `df3c0dbdfc6092c264204f575000590f970f933b` 已推。16項仍未跑。
-- noWood新S `bfbab207a92a809fca50fefcefb3fa4b2af05ea9`、D `8909253e9da356f146498f616b3cadc5a7936e03` 已推，13/7phase未跑。本提交放好服務PR請求，base為列車，不等PR號才繼續。
-- 閱讀A RC-run兩個精準oracle撤回已真0/1/0，caller1.358秒exit0、R3已釋；實件peer/封存中，原quick仍待final。
+Reading A 的3條reader、7 native、14 oracle完整指令/環境/streams及629checks peer已封存推進；preparation hash失敗及peer自身兩次讀取錯誤亦保原件。這是F64既有實跑的封存，不另宣稱在evidence SHA實跑。
+
+#323完整memo反證已回報fixed0→withdrawn1→restored0，sourcecalls比率4.407618→6.053833→4.407618；同列車175場景/350組完整stdout、stderr、orderedgraph與5guards全等。正交獨立actualpeer並封原件，歷史base三診斷紅仍原樣保留。
+
+全帳本即將由root在可解析4f4 source啟動；先以原--check保留stale結果，再原123筆CLI全部重產。外部旁錄器只保存原完整stream，子程序600/900/300時限保持；原child與外層exit分列。323已明確釋放原checkout，不再有兩個owner移動同一HEAD。
+
+## 2026-10-23 19:38 UTC 帳本啟動與反證封存
+
+19:27 v3環境前置exit1，發現原scene CLI預設產生的ignored `current_geometry.svg`；原fullCLI從未開始、seed未移動。保留v3指令／原完整stdout與stderr／環境／exit及driver，收於`ledger-start-and-memo-summary/ledger-preflight-v3-original-failure.tar.gz`。v4只核Git untracked/ignored、regular XML與原main預設路徑後，將該SVG完整移入證據；其它ignored仍拒。獨立16checks／0，無產品／測試／斷言／時限修改。
+
+19:33原123筆全CLI已真正啟動於4f4；原source與seed獨立Git、HEAD/索引/refs/所有原件hash守門通過。輸出`/tmp/train337-ledger-4f4a24d7-r2`、cache `/workspace/train337-ledger-cache-4f4a24d7`。此提交只保存開始事實，尚無全帳本結果。後續正式清單仍待ledger採用後固定final SHA。
+
+已fetch handoff4ee272be；338尚無新審查，服務已開draft340。持續#300根因與browser低磁碟配置靜審，不空等帳本。#323完整47MB原包仍僅雲端，這次只推小交接與原件peer；不得把小摘要冒充全部原始輸出。
