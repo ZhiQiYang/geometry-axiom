@@ -590,7 +590,7 @@ async function recoverConnection() {
     }
     if (!oc.on) await render();
     if (connection.phase === "error") return;
-    connection.phase = "ready"; connection.known = true; connection.error = "";
+    connection.phase = "ready"; connection.known = true;
     ReferenceWorkspace.sync();
     showConnectionState(); drawObjects();
   } catch (e) {
