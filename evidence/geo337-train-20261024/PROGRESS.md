@@ -108,3 +108,9 @@ B3公開核對完成：Git五blob直接stream核、13865個member逐bytes/hash�
 精確移除四個已終態checkout的1229份普通code副本，保留Git原blob/index/HEAD、fixtures與全部收據；原exit0、actual1500checks/0。另精確移除13個原瀏覽器profile中全零BrowserMetrics-spare.pma，原exit0、actual45checks/0，profile與19份原終態receipt保留。兩批原指令/完整streams/環境/工具/scope/peer共259原件（archive另加inventory共260members）已封 `terminal-maintenance-2151/`，package777checks/0。配置回收58,408,960B與54,525,952B不等於workspace實增；第一批workspace實際少7,606,272B（新raw與並行寫入），第二批/tmp實增54,525,952B，數據照原收據。這不是產品驗收。
 
 主帳本仍固定b6原完整123執行，未出最終exit。#300新prefix-index S1ee4e830/E2a0772da/Dc89d516b已一般推送，原33methods/56controls開始排入/tmp獨立環境，不改100MiB資源預算或產品門檻；以真正outer終態判定結果。#320 Sc1113f6f/Ed2c58317/D8233916d已推，Node原9→撤回3assert紅→恢復9綠，實際browser/native/ledger/architecture仍未跑。兩新draft請求已推handoff54d76d41，服務已開GEO260 #342；沒有合併PR。
+
+## 2026-10-23 22:05 UTC：編譯快取回收與正式項持續
+
+已精確退休舊4f終態的76個可重建bridge ELF cache（85,291,008配置bytes、actual318checks/0），及18個歷史browser job的54個baseline runtime ELF（53,035,008配置bytes、actual143checks/0）。兩原命令exit0；所有sidecar、source、compile原流、fixture、Gitobjects、目錄及原測試收據保留。舊4f的原CLI2/root1/108筆/15未跑仍是歷史紅，不改判；這76個binary的舊「雲端保留」描述僅代表當時狀態，此次是有重建依據的快取退休，沒有宣稱ELF bytes已封包。新47原件656,653B與完整工具／範圍／原streams封於 `terminal-elf-maintenance-2200/`（archive含inventory共48members，獨立200checks/0）。與live b6原件守門1395精確路徑無交集，活source/cache未動。
+
+#300 新S1ee4e830三原套件已真完成33methods/56controls（皆原具名ASSERT 0/1/0、零skip）與302build exit0，獨立actual1140checks/0；完整快路撤回七正例、性能及512仍未跑。#339真M1f0ebd3e原三架構裁判0/0/0（205/18）、mutate --check1（過期），完整native與六browser仍未跑；原帳本紅交root最後整份重產，不局部填帳本。主b6全123仍執行，最終退出碼尚待真終態。
