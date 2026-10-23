@@ -4,6 +4,7 @@
 
 | 請求檔 | head | PR | 狀態 |
 |---|---|---|---|
-| geo324-faces-20261024.json | `codex/geo324-faces-20261024` | #339 | body -> bbd96304 |
-| kernel-without-woodworking-20261024.json | `codex/kernel-without-woodworking-20261023` | #340 | body -> 77a00771 |
-| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | up to date (body c6a66707) |
+| geo300-prerequisites-20261024.json | `codex/geo300-prerequisites-20261024` | #341 | opened draft (body 34fccbd6) |
+| geo324-faces-20261024.json | `codex/geo324-faces-20261024` | #339 | base -> codex/kernel-without-woodworking-20261023, body -> 2aacfaf1 |
+| kernel-without-woodworking-20261024.json | `codex/kernel-without-woodworking-20261023` | #340 | up to date (body 77a00771) |
+| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | body -> e51c7abc |
