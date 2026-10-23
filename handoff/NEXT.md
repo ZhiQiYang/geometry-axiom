@@ -49,3 +49,12 @@
 4. #300前置剖析照常準備；#325/#331/#333不寫其分支。#333已由他人合入main。
 
 每個歷史結果保留原SHA，不把證據提交冒充受測SHA；失敗原件不覆寫。最新審查來源是已fetch handoff的337/338及各工作線留言；338目前沒有新增審查。工作持續中。
+
+## 2026-10-23 19:24 UTC 追加
+
+- train E `a048530c18f5df43a921e6b06bb3e4aa2192684e` 已推，完整ReadingA原件與629checks peer已封；native41子SHA仍null、父與輸入間接綁定已核，未更改原件。
+- #323全memo原profile0→1→0及175/350四元組全等已真終態0；19:15:17 source已release給root。47MB完整raw包目前在雲端 `/workspace/geo323-f64-publication-20261024/`，待root封存push，不能稱該包已在GitHub。
+- root全ledger固定4f4準備執行；為磁碟分攤，JOB/raw/results/observer改 `/tmp/train337-ledger-4f4a24d7`，CACHE改 `/workspace/train337-ledger-cache-4f4a24d7`。以即將凍結的最後driver為準，不啟舊e103/v2路徑版本。此時尚未執行123，未冒綠。
+- #324替代PR已由服務開draft **#339**；新S `57b680140da2c6b77ab0d362a72029d8d7c9334b`，E `792d086eb046263384888b3b0a064ae96f0cdc27`，D `df3c0dbdfc6092c264204f575000590f970f933b` 已推。16項仍未跑。
+- noWood新S `bfbab207a92a809fca50fefcefb3fa4b2af05ea9`、D `8909253e9da356f146498f616b3cadc5a7936e03` 已推，13/7phase未跑。本提交放好服務PR請求，base為列車，不等PR號才繼續。
+- 閱讀A RC-run兩個精準oracle撤回已真0/1/0，caller1.358秒exit0、R3已釋；實件peer/封存中，原quick仍待final。
