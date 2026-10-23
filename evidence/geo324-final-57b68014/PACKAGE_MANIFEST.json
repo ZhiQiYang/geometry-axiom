@@ -6,16 +6,16 @@
   "priorImmutableManifest": "revision-3-peer-and-manifest/PREVIOUS_PACKAGE_MANIFEST.json",
   "files": {
     "CURRENT_STATE.json": {
-      "bytes": 14077,
-      "sha256": "8aa117835a34001fffa6a69741c376fa8ada70c080365d6b1593e36db1b7c5da"
+      "bytes": 14462,
+      "sha256": "b9b54b6378abd68dfd34da681c92b14fded8681f400b710bababeb7b90eb32d7"
     },
     "ORIGINAL_CHECK_SCOPE.md": {
       "bytes": 499,
       "sha256": "6cb13d199f210502cf2458e140a73bd7cc3023dcb8b9e3142d8584e6a4f890fc"
     },
     "PROGRESS.md": {
-      "bytes": 6211,
-      "sha256": "f684099142980d76f54e231146b1907a80625029db0204efcd72d7f0d46cee2e"
+      "bytes": 7131,
+      "sha256": "505c3ff5062bfc59c3139fda14aee2ff4200649f1579a1f8b35cb9ce16c86f4b"
     },
     "merge-originals/receipt.json": {
       "bytes": 1205,
@@ -993,6 +993,14 @@
       "bytes": 2222447,
       "sha256": "4d681d72760691eb538e1190872141565f778b2708b73b68352f5e8030d39b98"
     },
+    "raw/original-registry-list-1f0ebd3e.inventory.json": {
+      "bytes": 19070,
+      "sha256": "cc595085fc3064d87224817cffab0b2ae1780cbab4862e653b4f19905de70397"
+    },
+    "raw/original-registry-list-1f0ebd3e.tar.gz": {
+      "bytes": 3237811,
+      "sha256": "dcd3f9c8a43e741d48af5b033607ac0eaed57cf9989c4d0a82acedc63edea3e4"
+    },
     "raw/seven-pure-modules-57b68014.inventory.json": {
       "bytes": 356848,
       "sha256": "a940c21e59d3f6f93ddba5f9fa3f6dd9a9b260b595f6a468fd2bb3d716d14dc3"
@@ -1036,6 +1044,10 @@
     "receipts/pure-python99.json": {
       "bytes": 12051,
       "sha256": "7b41b62ed700ae10225e72436ffe50370f2ee670b2fabbea6cd9b0b3dc5629c8"
+    },
+    "receipts/registry-list-original.json": {
+      "bytes": 467,
+      "sha256": "3747b5b456db8d6704aa13128cae9c8a954c1fc2f4965e4b392187fda110bb6f"
     },
     "revision-3-peer-and-manifest/GEO324_MERGE_57B_STATIC_PEER.json": {
       "bytes": 29891,
@@ -3412,14 +3424,454 @@
     "revision-8-forward-340/publish_forward_merge_340.py": {
       "bytes": 9728,
       "sha256": "4f5fe6b556333cfd98b5adab22ed85b6b09b5c6cb8826a6956539647b82e6097"
+    },
+    "revision-9-registry-list/GEO324_NATIVE43_PUBLICATION_PEER.json": {
+      "bytes": 37748,
+      "sha256": "90b06f062d55cd42a30e0d38d3bb9dee5ea4ab48fcb898d8e8a6e8015b958674"
+    },
+    "revision-9-registry-list/GEO339_FORWARD_340_PACKAGE_PEER.json": {
+      "bytes": 53024,
+      "sha256": "44fbfe18dbe07c13387511b9004141ef47c68730c06c45fd9e20c68c3e4261ae"
+    },
+    "revision-9-registry-list/PREVIOUS_CURRENT_STATE.json": {
+      "bytes": 14077,
+      "sha256": "8aa117835a34001fffa6a69741c376fa8ada70c080365d6b1593e36db1b7c5da"
+    },
+    "revision-9-registry-list/PREVIOUS_PACKAGE_MANIFEST.json": {
+      "bytes": 163407,
+      "sha256": "d5eb59c6274424d9251de575135fa19e4e8d9e44bad2b3537adb1e7f3338d097"
+    },
+    "revision-9-registry-list/PR_BODY_BEFORE_REGISTRY_LIST.md": {
+      "bytes": 6761,
+      "sha256": "07a45b483ac99fe4b258fabda914adb5f3057caf8e1204be0b55264bb0d508fc"
+    },
+    "revision-9-registry-list/REVIEW.json": {
+      "bytes": 81090,
+      "sha256": "ab05c5fc73f8634e22bb9d53cbf31791a56881d23a5b40277dfc7dccb01d3287"
+    },
+    "revision-9-registry-list/prior-completed-publication/receipt.json": {
+      "bytes": 724,
+      "sha256": "476059fc4ac6310c5d673592465b76e0db68e20fa3590e5a4480021dc678f406"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000001/request.json": {
+      "bytes": 1492,
+      "sha256": "f2cee34498cdefbb68b212aeeac723d92a559f7761223d51a2125bbe913461dd"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000001/result.json": {
+      "bytes": 1742,
+      "sha256": "ee09cd4d08cbe1b1f0e25fa8e4a76eec23cbfad14dbd4181609dcf0b193a9bcc"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000001/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000001/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000001/stdout.bin": {
+      "bytes": 41,
+      "sha256": "c0f7c8277e50769bc541551fc1de4957d63a9bab54c2a20264ee96d9f6e360d3"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000002/request.json": {
+      "bytes": 1528,
+      "sha256": "a885a4a55be183b25df96a820c50d5653136f544c141ba0df2f050bff5a288e0"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000002/result.json": {
+      "bytes": 1777,
+      "sha256": "286eabe934e0cac36ca8a3ae703cded729b627ed3943c73e0a09443857933215"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000002/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000002/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000002/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000003/request.json": {
+      "bytes": 1499,
+      "sha256": "ba8b437ebc1dfaad59dadfbef21d6f4b0575e0d109fd7fa5ea092540a703d1a7"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000003/result.json": {
+      "bytes": 1750,
+      "sha256": "c8ab491a7af2eff81efa9912f0607c27696d6389822bf8ef9282edd9c5f1a5a3"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000003/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000003/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000003/stdout.bin": {
+      "bytes": 41,
+      "sha256": "32223f6cf782145a33482272cfd728ba8769d6d12783c7c65397965348e6461a"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000004/request.json": {
+      "bytes": 1535,
+      "sha256": "ab544ae9c22057bbd3c7f10ae8e171f90d5c3b122b8012cad114258979880569"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000004/result.json": {
+      "bytes": 1785,
+      "sha256": "2693584abe5627eca9bbc283a54088aff6ebd0124801fedf710ba4016d18c68d"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000004/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000004/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000004/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000005/request.json": {
+      "bytes": 1537,
+      "sha256": "003c7f5e0b3a164d26b1428bcfc437867e31831ff158525cdd392562c14e4aa9"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000005/result.json": {
+      "bytes": 1786,
+      "sha256": "fa2a4ee487aee1ecdfacbb4e2c76bcc83c35468d16a008344042ba7e32f6523c"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000005/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000005/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000005/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000006/request.json": {
+      "bytes": 1552,
+      "sha256": "d3940dc00ae45d3e742c4a0d3f7987464856c5a6763b87962ad79fd43d9c1672"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000006/result.json": {
+      "bytes": 1802,
+      "sha256": "d15ff82047368ffd45c64cbdc113d963b3ff170a657e5b269a7ef27f665bbf93"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000006/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000006/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000006/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000007/request.json": {
+      "bytes": 1518,
+      "sha256": "e0357e33be57ff5f10b44e62c06c1fbede69bd03b1fbc36bbb00dcfc43b47892"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000007/result.json": {
+      "bytes": 1772,
+      "sha256": "e3650cebef297e00dace7fc6cbbffa66e84610d37ad0047fd7603507d7e604c0"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000007/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000007/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000007/stdout.bin": {
+      "bytes": 11831,
+      "sha256": "e3248adec4d638be53de3ccb2377009230dc1bfde5c32d0f61808de7189fca1e"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000008/request.json": {
+      "bytes": 1773,
+      "sha256": "7ebc374cb49cb914f22fd52183dc5fb342feeab90ae675891e0ece3a39e689dc"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000008/result.json": {
+      "bytes": 2023,
+      "sha256": "45988f82b7ad47dcb08c63048b0d7b37be0ba53ea73f75df4b930ff7f44714be"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000008/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000008/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000008/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000009/request.json": {
+      "bytes": 1554,
+      "sha256": "2fa93447472450c1ada4df50321e7d89ddcfd57b74492f7955295fb4ada459cd"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000009/result.json": {
+      "bytes": 1807,
+      "sha256": "cfb5fcf7568461894c396a1ca02f0d991b07ae32e50256b2e8b27e781a3c87a4"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000009/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000009/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000009/stdout.bin": {
+      "bytes": 13822,
+      "sha256": "ac0cf92254852fb30299d051ac03923d2b3d91680d0935fba0998ba72e93d69e"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000010/request.json": {
+      "bytes": 1492,
+      "sha256": "06adaee789ed7766ddc609b7ea1417d1ea35c6502407b3bade2e966ef4b9c79a"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000010/result.json": {
+      "bytes": 1743,
+      "sha256": "c3d1a4a3c6b5cef53ba1b58625424579934d8e1f79d743d1511415595ca5e4f1"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000010/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000010/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000010/stdout.bin": {
+      "bytes": 41,
+      "sha256": "5315aa435a2988257171be3ddb2040ab124dc78c01b60a259bf9aab6df3c7519"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000011/request.json": {
+      "bytes": 1572,
+      "sha256": "d95ec75d92a26f518230eb59464fdeba1aac3605c3651542b178bfa76ab5ff8a"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000011/result.json": {
+      "bytes": 1824,
+      "sha256": "2639e0ee4c945b49dcc7c4c59873cd7e6671afbdadcf94ad4fe06b67ce1f0213"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000011/stderr.bin": {
+      "bytes": 133,
+      "sha256": "05a7dd9e37d84ee0f1552ae8366bc9e1d9c64bf28f90d17ed4b960efbdf2695a"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000011/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000011/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000012/request.json": {
+      "bytes": 1558,
+      "sha256": "f0683906200b02e812204215aabd873ab6e035add2f4b6d871da83c95350c2eb"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000012/result.json": {
+      "bytes": 1809,
+      "sha256": "e9041fe005c714d9efb291c66e1cea04d333bfee543b7ca2ac882e1b6f2778f0"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000012/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000012/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000012/stdout.bin": {
+      "bytes": 80,
+      "sha256": "1cd483c447d60026751d6e8c2a511c51baace3ba9bfd0433ffcb40af036434e8"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000013/request.json": {
+      "bytes": 1540,
+      "sha256": "5760c4895a7aa55cb7f6e4e331e868c59128417fd0e1431aff8c32a2139ec6ce"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000013/result.json": {
+      "bytes": 1790,
+      "sha256": "c5ff81ff24432e928a36a4705b03092d92390dbe01fa5f115c17ac51a74e10d4"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000013/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000013/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000013/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000014/request.json": {
+      "bytes": 1525,
+      "sha256": "4f1f67e39ea99a8a5da87d2e26d96fd10b22ff6b5ec02ebe1f371ab754157268"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000014/result.json": {
+      "bytes": 1775,
+      "sha256": "c56233eff11bd7e0ad962ebd702049f89eb30d8fd46842e20b66dad86f0fb789"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000014/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000014/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000014/stdout.bin": {
+      "bytes": 11,
+      "sha256": "fd0f6bcb0fbba840143abd8e05217af71b51bb02f9d5c16df9752c4adfb60ae5"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000015/request.json": {
+      "bytes": 1512,
+      "sha256": "b6cef5e7f3a3bc11de73aff9f1b0740d669d2c1fe41a6968dd84389cff7b37ed"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000015/result.json": {
+      "bytes": 1762,
+      "sha256": "0022a4f75a45573733f4157071de84f4db9f4a20e3261df0989547402d89e9c5"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000015/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000015/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000015/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000016/request.json": {
+      "bytes": 1569,
+      "sha256": "bc4b163c7975da899d6525efa03310ecba3fec756549267945ec5304591aa382"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000016/result.json": {
+      "bytes": 1821,
+      "sha256": "12b6a7130c4f0bf2ae059c0271b16c746e992bf60b343550993ac10de74da376"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000016/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000016/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000016/stdout.bin": {
+      "bytes": 163,
+      "sha256": "4fe04d9eb5d230db34672728beef25a2806f54a20cef41524f0d77ae90779932"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000017/request.json": {
+      "bytes": 1498,
+      "sha256": "edd7cdd0c98af8b6bddba18b0857370cf17df35aa551e6bae5dfacd32aa14513"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000017/result.json": {
+      "bytes": 1749,
+      "sha256": "2603f50d8e37e64b97c6cdfabd5add0a6f310fbd6a69dc9c1ec3cefbd8442637"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000017/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000017/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000017/stdout.bin": {
+      "bytes": 41,
+      "sha256": "a198badc2f44e1087fedb1227041841a74bef4eadb867fbe6eca3acc6e439613"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000018/request.json": {
+      "bytes": 1595,
+      "sha256": "ece570d12131f3012ea8674c50416610618a7c24b419418c154ca645d4d1345b"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000018/result.json": {
+      "bytes": 1847,
+      "sha256": "4afe3b979172f09d9762d7f3702d31fdc803bdc1a447e1f2a3480c9489f83348"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000018/stderr.bin": {
+      "bytes": 147,
+      "sha256": "c616e556a5d1a9d49aadbe9fa3a9f764b1c24bfa2b9ef3ee8c6242f9f9460d67"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000018/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000018/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000019/request.json": {
+      "bytes": 1573,
+      "sha256": "359dee1ab47eadda01d8b08f4ead29d9d7fd665cbd5421a32d816a6a455fe201"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000019/result.json": {
+      "bytes": 1824,
+      "sha256": "e7423f05ac9fabf0a36ae046194faa47963c64df5f88557cad7118332aff7aeb"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000019/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000019/stdin.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands/000019/stdout.bin": {
+      "bytes": 87,
+      "sha256": "c1c44efb08e87d926fabcb6d55319cf940630a1da5daa0dcf1542a8773eef1f1"
+    },
+    "revision-9-registry-list/prior-completed-publication/subcommands.json": {
+      "bytes": 35824,
+      "sha256": "9a0016f6947185a6e6a0dda9545302575573090874dc27f967cf01974cf21a41"
+    },
+    "revision-9-registry-list/publish_registry_list_actual.py": {
+      "bytes": 10612,
+      "sha256": "4ad703f2abd2179b9bb1406e4947857c51acf37b1547d57f2f0fda35c5f6986d"
+    },
+    "revision-9-registry-list/reviewer-metadata-attempts/FIRST_ATTEMPT_METADATA_FAILURE.json": {
+      "bytes": 556,
+      "sha256": "4019072996b2bca093fded5477e3b1b117782e8f02202218fbaa16a7e2e1687d"
+    },
+    "revision-9-registry-list/reviewer-metadata-attempts/GEO324_NATIVE43_INITIAL_PUBLISHER_COLLECTION_SCHEMA_ERROR.json": {
+      "bytes": 33156,
+      "sha256": "08521174ada5fb3f6ff8f1210d660ea6210580c213eab43fd4e55cb2b83994ac"
+    },
+    "revision-9-registry-list/reviewer-metadata-attempts/GEO339_FORWARD_INITIAL_ARCHITECTURE_NAME_ERROR.json": {
+      "bytes": 53128,
+      "sha256": "975948c1f370d2a52e23e84714ce880a42f01481505b4172b15f5d0662200f7c"
+    },
+    "revision-9-registry-list/reviewer-metadata-attempts/review.py": {
+      "bytes": 7907,
+      "sha256": "bb93391457c2a84c252dea52fb24ff51247896f3f0c7d7f0aa517cf53bf0839a"
+    },
+    "revision-9-registry-list/reviewer-metadata-attempts/review_324_native43_initial_publisher_collection_error.py.txt": {
+      "bytes": 6608,
+      "sha256": "bff28b84ff2c1c28a7298c596b45ddcb67af4395b2957a2b83ab4e5d3f9aca68"
+    },
+    "revision-9-registry-list/reviewer-metadata-attempts/review_339_forward_initial_architecture_name_error.py.txt": {
+      "bytes": 5987,
+      "sha256": "03e280f425508f1b80e6b973c434fbcd755e907ae8628028f5c2a539818a0bb2"
     }
   },
   "productTestsExecuted": true,
-  "formalRowsRemainUNRUN": 12,
+  "formalRowsRemainUNRUN": 11,
   "validationTimingAddendum": "revision-4-validation-timing/VALIDATION_TIMING_ADDENDUM.json",
   "completedOriginalPredicateRows": 3,
   "partialFormalRows": 0,
-  "remainingIncompleteGates": 12,
+  "remainingIncompleteGates": 11,
   "currentProductSourceSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
   "originalAcceptanceSourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b"
 }
