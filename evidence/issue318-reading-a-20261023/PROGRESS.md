@@ -1,3 +1,26 @@
+# 本階段已停止並交接：#318 尚有三項真紅
+
+唯一產品 source S=`ae74e51bba1efef48949c077635966273a9e8990`。依使用者最新停止指示，只收已啟 quick-r2 至真終態；沒有啟動 CLI／architecture／golden，沒有修 source 或重測收尾。slot2 已交回 root，無 active 測試 PID。
+
+| current-state gate | 原 exit／結果 |
+|---|---|
+| 三 reader | 0／0／0；原 unit51無skip，獨立 actual/public peer875項0 |
+| native7 | 0；Ran7無skip；11控制各0/1/0；獨立 actual peer325項0，public peer另列 |
+| oracle13 | 0；Ran13無skip；builder/checker兩來源各0/1/0 |
+| selftest --mutants-only 初輪／r2 | 1／1；初輪含 sparse缺PROPOSAL，補同S文件後三項真紅仍在 |
+| selftest --quick 初輪／r2 | 1／1；r2於15:04:37Z完成，414.317秒；三項前置真紅，完整掃描本身全綠 |
+| quick掃描分項 | 39850次；矩形逐mm、579×8=4632全可施工；528／1056逐筆漏0／非buildable0；不是--full一維全8 |
+| CLI／golden獨立proof及generator／架構三條 | 未跑；未宣告skip或通過 |
+| 全域帳本／架構衍生收據 | 未重產；仍由root共同最終source統一辦理 |
+
+真紅精確是 rc_through_reflex 失去預期C8_I19_BOUNDARY_END（仍有C8_I22_NON_BOUNDARY_EXTENDS），以及COLSTEP(3000)、FZ9各12個Y向排法由應buildable變core_limited。原負控成功標[紅]不混作缺陷。沒有放寬斷言、改golden或隱藏三個紅。同S補24個tracked小檔321715B是環境修復，HEAD/fullindexstage bytes不變且clean。控制面exec transport中斷時quick原PID仍活，沒有重啟；已保存tool-transcript來源與最終真receipt。
+
+完整當前狀態見 CURRENT_STATE.json，接手見 NEXT.md，真紅與CLI未知／README custom待同步見 QUESTIONS_HANDOFF.md。本包 phase-stop-original-reds-ae74e51b.tar.gz 保存所有初輪與r2原exit/streams/env/SHA、物化guard與最新handoff b7e23a25四份原評論。先前native/oracle13原包在祖先Ec3c823bf，reader原包在Ec5445caf；不重跑或以摘要代替原件。
+
+---
+
+下列進度為歷史；唯一當前狀態以本節與 CURRENT_STATE.json 為準。
+
 # 最新正式進度：三reader、native7、oracle13已0
 
 唯一受驗 source S=`ae74e51bba1efef48949c077635966273a9e8990`。原三reader已0/0/0（unit51、無skip），獨立actual/public同儕875項核對0、findings[]，原報告f14236c0／CHECKS0ca21061已隨本包完整封存。
