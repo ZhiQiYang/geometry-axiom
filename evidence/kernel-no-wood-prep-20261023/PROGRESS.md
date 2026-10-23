@@ -30,3 +30,9 @@
 `revision-2/` 凍結新候選、全 patch、driver、AST-only 0 與指出繞路的原靜審。driver 嚴核七 phase 原始 `0/1/0/1/0/1/0`：新增只撤 angle parser 回原 quoted parser的單獨反證；撤 K guard 要求兩個正常 subTest failures，撤 parser 要求一個正常 failure。不是接受 compile error／crash／watchdog。
 
 原 prefix 的 MANIFEST 是準備 commit `07b7df9b` 的歷史 snapshot，PROGRESS 持續追加；新 revision 的 MANIFEST 只綁其凍結檔案。共用 expected count 仍等 #318 正式交棒，不因本修正先動；全帳本未重產。尚未有任何動態通過宣告。
+
+## R2 獨立靜態對抗審已完成
+
+測試來源已推 `21957a45142dadc0787e8970da976ab249b4b6d1`，遠端 exact SHA 相同，worktree 乾淨。#314 owner 再讀葉檔 SHA-256 `e948fb78e81a075875a45041009fb379e58d783c8d6b579cd9fa2f81cd40910e` 與 collector `48e0badb3e09cb16603af11ad04fe8d79a75055009868beabd02acf64b2ce6bc`，未見確立新靜態阻擋；原補審完整 bytes 保存為 `revision-2/REVIEW_LITERAL_R2.md`，SHA-256 `889ae644d8a581dcf768f829c0e7e7dab5aeb127d7faae6604ff9ea0addf7fbc`。
+
+此段只補靜審證據，不改測試來源。沒有 compiler／13 項測試／七 phase 三態收據，沒有原始 gate exit 可報為綠。共用 count 仍 11、全帳本未重產。root #288 的三次 canvas 正獨占 heavy，因此繼續只做 #318 來源對抗審；等 root 排程與正式前棒後再跑。
