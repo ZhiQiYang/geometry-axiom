@@ -1,0 +1,42 @@
+{
+  "schema": "geo288-p88-original-three-sequence/1",
+  "sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "source": "/tmp/g288f-13d02c1d",
+  "started": "2026-10-23T09:44:49.161964+00:00",
+  "policy": "Three requested full original canvas jobs, independently isolated, all results retained; no automatic replacement or product edit.",
+  "runs": [
+    {
+      "index": 1,
+      "sha": "13d02c1db7022145a52ee063286a558e595eb212",
+      "original_workflow_exit": 1,
+      "outer_exit": 1,
+      "over_ci_timeout": false,
+      "seconds": 1071.9063409989903,
+      "receipt": "/tmp/g288p88o1/workflow/canvas/receipt.json",
+      "receipt_sha256": "a1d805ed31a19ce271be93a4da079f0bd86ed71276c50aa14d7cb5ccf2034aa8"
+    },
+    {
+      "index": 2,
+      "sha": "13d02c1db7022145a52ee063286a558e595eb212",
+      "original_workflow_exit": 0,
+      "outer_exit": 0,
+      "over_ci_timeout": false,
+      "seconds": 1754.8263968679967,
+      "receipt": "/tmp/g288p88o2/workflow/canvas/receipt.json",
+      "receipt_sha256": "15ad1ddf89990655cbfab8bb760231b97784d7db198afe082d118c88e0c19ba0"
+    },
+    {
+      "index": 3,
+      "sha": "13d02c1db7022145a52ee063286a558e595eb212",
+      "original_workflow_exit": 0,
+      "outer_exit": 0,
+      "over_ci_timeout": false,
+      "seconds": 1739.476650444005,
+      "receipt": "/tmp/g288p88o3/workflow/canvas/receipt.json",
+      "receipt_sha256": "be1c95a101e358ebe1b8c6df07fd451ae3acf6be160edf37e71e7bd905fd3850"
+    }
+  ],
+  "first_run_environment_limit": "Run 1 original launcher did not include NODE_OPTIONS in its environment whitelist. No preload was configured; subsequent current-shell absence is not asserted as a launch-time process observation.",
+  "ended": "2026-10-23T10:54:54.264941+00:00",
+  "all_three_completed": true
+}

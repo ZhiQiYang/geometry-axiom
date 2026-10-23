@@ -1,0 +1,41 @@
+{
+  "schema": "p88-real-query-render-trace-static-review/1",
+  "preparation_sha256": "1163f930a4aa90b4346372a8f576704cef281eda1f07ff02bd7986d4922c29b6",
+  "file_checks": {
+    "driver.binding.diff": true,
+    "capture.py": true,
+    "renderer-node-check.stderr": true,
+    "PREPARATION.previous-reviewed.json": true,
+    "run_proof.py": true,
+    "renderer-node-check.stdout": true,
+    "PREPARATION.v3.json": true,
+    "PREPARATION.v1.json": true,
+    "PREPARATION.v2.json": true,
+    "only-p88.cjs": true,
+    "trace-tools/renderer-observer.diff": true,
+    "trace-tools/preload.binding.diff": true,
+    "trace-tools/preload.cjs": true,
+    "trace-tools/patch-loader.cjs": true
+  },
+  "driver_AST_parse": true,
+  "driver_byte_identical_703": true,
+  "renderer_diff_matches": true,
+  "executed_by_reviewer": false,
+  "established_blockers": [],
+  "reviewed_behavior": [
+    "Synchronous wrapper calls original via Reflect.apply(originalRender,this,args)",
+    "Returns original result without await/chaining/cloning; original thrown value rethrown",
+    "Stack/rect/scroll snapshots emitted immediately around original renderer invocation",
+    "Observer errors go to nested browser errors checked by unchanged driver",
+    "Cleanup restores original renderer only when wrapper remains current; competing owner is not overwritten and integrity is marked red",
+    "No added wait/timeout/attempt/assertion/golden change; only repo-external diagnostic observer",
+    "Existing samearm/querycallsite guards and same original parsed JSON are retained"
+  ],
+  "limits": [
+    "Nonzero synchronous stack/DOM reads/rect snapshots may force layout and affect timing/interleaving; this is not uninstrumented natural execution",
+    "scheduling_changed:false field is interpreted only as no added waits/async edges, not a guarantee of identical scheduling; prefer added_waits:false wording in public report",
+    "True query-return -> matching paintQuery/query stack -> actual node/rect displacement -> trustedmouse still needs original terminal trace; no prior single-cause determination",
+    "Original fixedF13 three runs stay separate and no existing original session is terminated",
+    "New launcher must pin1163f930 preparation, not old703 constant"
+  ]
+}

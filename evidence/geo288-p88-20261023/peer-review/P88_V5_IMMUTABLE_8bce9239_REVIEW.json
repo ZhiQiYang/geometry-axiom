@@ -1,0 +1,21 @@
+{
+  "schema": "p88-v5-immutable-source-review/1",
+  "source_sha": "8bce9239c014f070740455556c8ee1176c500af3",
+  "parents": [
+    "13d02c1db7022145a52ee063286a558e595eb212"
+  ],
+  "changed_paths": [
+    "geometry-web/grid_rule_lines_test.js"
+  ],
+  "only_P88_file": true,
+  "P88_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+  "equal_previously_reviewed_v5": true,
+  "all_original_check_lines_unchanged": true,
+  "entire_assertion_tail_unchanged": true,
+  "original_exact_focus_predicate_count": 6,
+  "new_exact_focus_predicate_count": 6,
+  "helper_or_golden_changed": false,
+  "deadline_scope": "Known reviewedv5 shares original25000ms acrossinputpreparation/click/exactfocus; no addedattempt/golden/tolerance or DOMfocus retry. This is stricter totalbudget than originalctl plus separate25000msfocus.",
+  "dynamic_scope": "This immutable review does not claim controlled0/1/0 or naturalrootcause; firsttruequeryfixedphase preconditionred retained. NewF3fullcanvas/grid remains pending.",
+  "execution": "Read-only Gitobjects and byte/hash/literalcomparison only; no CLI/test/browser/compiler/version execution"
+}

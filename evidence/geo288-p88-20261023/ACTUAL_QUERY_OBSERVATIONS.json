@@ -1,0 +1,3800 @@
+{
+  "schema": "geo288-p88-actual-query-observations/1",
+  "source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "scope": "Diagnostic memory-loader variants on F13; not a formal gate or execution of a future source commit.",
+  "original_driver_exit": 2,
+  "original_proof_passed": false,
+  "natural_cause_proven": false,
+  "phases": [
+    {
+      "variant": "fixed",
+      "original_test_exit": 1,
+      "original_phase_passed": false,
+      "trace_path": "/tmp/g288p88q/fixed/trace.json",
+      "trace_sha256": "5715c4f6f702b88e8f633838c5eb9c3ee543b1840cf493b5738371d6e9d7c32e",
+      "stdout_path": "/tmp/g288p88q/fixed/workflow/grid/steps/03.stdout",
+      "stdout_sha256": "41b9857d8e7e015fbd47c1c8f9bb98168747b6c5c664bcc4f43a7d5430c3e578",
+      "cdp_result": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_GRID_SYSTEM_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:19700/",
+          "feedbackDirectory": "/tmp/g288p88q/fixed/tmp/workflow/grid/geometry-integration-feedback",
+          "browserProfile": "/tmp/g288p88q/fixed/tmp/workflow/grid/geometry-cdp-jxTJea",
+          "cdpPort": 9710,
+          "browserPid": 1139857
+        },
+        "firstTransportFailure": null,
+        "firstNetworkFailure": null,
+        "completed": false,
+        "passedAssertions": 99,
+        "failedAssertions": 0,
+        "fatal": "Browser evaluation failed: Error: P88 original query schedule did not reproduce the original wrong-target displacement; this is not valid counterevidence\n    at injectQueryRelease (eval at <anonymous> (:1:144), <anonymous>:147:32)\n    at async eval (eval at <anonymous> (:1:144), <anonymous>:1:414); expression=(async()=>{const p=((()=>{const e=document.querySelector(\"#refGuideMode\");if(!e)throw Error('Missing '+\"#refGuideMode\");const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.he",
+        "skipped": [],
+        "sections": {
+          "P88": 99
+        },
+        "currentSection": "P88",
+        "goldenCompare": "not compared (run did not complete)"
+      },
+      "injection": {
+        "name": "P88-original-query-release-after-mode-measure",
+        "attempted": true,
+        "applied": false,
+        "valid": false,
+        "count": 1,
+        "before": {
+          "selector": "#refGuideMode",
+          "nodeToken": 5696,
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          },
+          "paneScroll": 0,
+          "parentScroll": 25,
+          "gridPreviewSeq": 125,
+          "active": {
+            "token": 5695,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "hit": {
+            "token": 5696,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          }
+        },
+        "after": {
+          "selector": "#refGuideMode",
+          "nodeToken": 5737,
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          },
+          "paneScroll": 0,
+          "parentScroll": 25,
+          "gridPreviewSeq": 126,
+          "active": {
+            "token": 5736,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "hit": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "hitAtOldPoint": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          }
+        },
+        "original_measure": {
+          "x": 293.75,
+          "y": 602.5,
+          "w": 134.5,
+          "h": 44,
+          "hit": true,
+          "hitElement": "SELECT#refGuideMode",
+          "disabled": false
+        },
+        "old_center": {
+          "x": 293.75,
+          "y": 602.5
+        },
+        "response_json_unchanged": null,
+        "error": "The actual original query repaint did not move the old point onto the real ratio label/select"
+      },
+      "events": [
+        {
+          "serial": 7522,
+          "kind": "query-response-held",
+          "epoch_ms": 1792753126891,
+          "monotonic_ms": 165589.20000000298,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7523,
+          "kind": "measure",
+          "epoch_ms": 1792753126899,
+          "monotonic_ms": 165597.89999999106,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7524,
+          "kind": "query-response-release",
+          "epoch_ms": 1792753126900,
+          "monotonic_ms": 165598,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7525,
+          "kind": "query-response-returned",
+          "epoch_ms": 1792753126900,
+          "monotonic_ms": 165598.20000000298,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7526,
+          "kind": "renderFaceInspector-enter",
+          "epoch_ms": 1792753126912,
+          "monotonic_ms": 165610.79999999702,
+          "stack": "Error: P88 renderer callsite observation\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:84:22)\n    at paintQuery (http://127.0.0.1:19700/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19700/grid-rule-lines.js:106:7)",
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7527,
+          "kind": "dom-focusout",
+          "epoch_ms": 1792753126917,
+          "monotonic_ms": 165615.09999999404,
+          "stack": null,
+          "target": {
+            "token": 5695,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 3,
+              "tag": "BODY",
+              "id": "",
+              "classes": "drawer-right-open",
+              "parent_id": "",
+              "text": "正在讀取場景連線完成後即可編輯。\n  重新連線\n\n\n  \n    \n      \n        \n      \n      構形 Canvas\n    \n\n    建立\n\n    \n      \n "
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7528,
+          "kind": "dom-focusin",
+          "epoch_ms": 1792753126921,
+          "monotonic_ms": 165619.70000000298,
+          "stack": null,
+          "target": {
+            "token": 5736,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7529,
+          "kind": "renderFaceInspector-return",
+          "epoch_ms": 1792753126926,
+          "monotonic_ms": 165624.20000000298,
+          "stack": "Error: P88 renderer callsite observation\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:84:22)\n    at paintQuery (http://127.0.0.1:19700/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19700/grid-rule-lines.js:106:7)",
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 234,
+                "y": 605.5,
+                "width": 142,
+                "height": 44,
+                "top": 605.5,
+                "right": 376,
+                "bottom": 649.5,
+                "left": 234
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 234,
+                "y": 668.4375,
+                "width": 142,
+                "height": 44,
+                "top": 668.4375,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 234,
+                "y": 649.5,
+                "width": 142,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              }
+            }
+          }
+        },
+        {
+          "serial": 7530,
+          "kind": "renderObserver",
+          "epoch_ms": 1792753126926,
+          "monotonic_ms": 165624.70000000298,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 234,
+                "y": 605.5,
+                "width": 142,
+                "height": 44,
+                "top": 605.5,
+                "right": 376,
+                "bottom": 649.5,
+                "left": 234
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 234,
+                "y": 668.4375,
+                "width": 142,
+                "height": 44,
+                "top": 668.4375,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 234,
+                "y": 649.5,
+                "width": 142,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              }
+            }
+          }
+        },
+        {
+          "serial": 7531,
+          "kind": "renderObserver",
+          "epoch_ms": 1792753126928,
+          "monotonic_ms": 165626.20000000298,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 605.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 605.5,
+                "right": 361,
+                "bottom": 649.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 668.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 668.4375,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 649.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7532,
+          "kind": "dom-scroll",
+          "epoch_ms": 1792753126929,
+          "monotonic_ms": 165627.29999999702,
+          "stack": null,
+          "target": {
+            "token": 2,
+            "tag": "ASIDE",
+            "id": "",
+            "classes": "inner-panel face-inspector-panel",
+            "parent_id": "faceWorkspaceLayout",
+            "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 605.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 605.5,
+                "right": 361,
+                "bottom": 649.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 668.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 668.4375,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 649.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7533,
+          "kind": "dom-scroll",
+          "epoch_ms": 1792753126934,
+          "monotonic_ms": 165632.70000000298,
+          "stack": null,
+          "target": {
+            "token": 2,
+            "tag": "ASIDE",
+            "id": "",
+            "classes": "inner-panel face-inspector-panel",
+            "parent_id": "faceWorkspaceLayout",
+            "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7534,
+          "kind": "controlled-query-release",
+          "epoch_ms": 1792753126935,
+          "monotonic_ms": 165633.20000000298,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        }
+      ],
+      "observation_errors": [],
+      "browser_errors": [],
+      "browser_stopped": true
+    },
+    {
+      "variant": "withdrawn",
+      "original_test_exit": 1,
+      "original_phase_passed": false,
+      "trace_path": "/tmp/g288p88q/withdrawn/trace.json",
+      "trace_sha256": "07d4113654700345ce5b2eacfb4216b4626511d032d9099327e1b137c9c058ed",
+      "stdout_path": "/tmp/g288p88q/withdrawn/workflow/grid/steps/03.stdout",
+      "stdout_sha256": "396d1061742ab987efb1404fc83662e41f9b1128de4273f63dbbda599296b429",
+      "cdp_result": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_GRID_SYSTEM_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:19701/",
+          "feedbackDirectory": "/tmp/g288p88q/withdrawn/tmp/workflow/grid/geometry-integration-feedback",
+          "browserProfile": "/tmp/g288p88q/withdrawn/tmp/workflow/grid/geometry-cdp-aPCet6",
+          "cdpPort": 9711,
+          "browserPid": 1142798
+        },
+        "firstTransportFailure": null,
+        "firstNetworkFailure": null,
+        "completed": false,
+        "passedAssertions": 99,
+        "failedAssertions": 0,
+        "fatal": "Browser evaluation failed: Error: P88 original query schedule did not reproduce the original wrong-target displacement; this is not valid counterevidence\n    at injectQueryRelease (eval at <anonymous> (:1:144), <anonymous>:147:32)\n    at async eval (eval at <anonymous> (:1:144), <anonymous>:1:414); expression=(async()=>{const p=((()=>{const e=document.querySelector(\"#refGuideMode\");if(!e)throw Error(\"Missing \"+\"#refGuideMode\");const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.he",
+        "skipped": [],
+        "sections": {
+          "P88": 99
+        },
+        "currentSection": "P88",
+        "goldenCompare": "not compared (run did not complete)"
+      },
+      "injection": {
+        "name": "P88-original-query-release-after-mode-measure",
+        "attempted": true,
+        "applied": false,
+        "valid": false,
+        "count": 1,
+        "before": {
+          "selector": "#refGuideMode",
+          "nodeToken": 5696,
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          },
+          "paneScroll": 0,
+          "parentScroll": 25,
+          "gridPreviewSeq": 125,
+          "active": {
+            "token": 5695,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "hit": {
+            "token": 5696,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          }
+        },
+        "after": {
+          "selector": "#refGuideMode",
+          "nodeToken": 5737,
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          },
+          "paneScroll": 0,
+          "parentScroll": 25,
+          "gridPreviewSeq": 126,
+          "active": {
+            "token": 5736,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "hit": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "hitAtOldPoint": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          }
+        },
+        "original_measure": {
+          "x": 293.75,
+          "y": 602.5,
+          "w": 134.5,
+          "h": 44,
+          "hit": true,
+          "hitElement": "SELECT#refGuideMode",
+          "disabled": false
+        },
+        "old_center": {
+          "x": 293.75,
+          "y": 602.5
+        },
+        "response_json_unchanged": null,
+        "error": "The actual original query repaint did not move the old point onto the real ratio label/select"
+      },
+      "events": [
+        {
+          "serial": 7522,
+          "kind": "query-response-held",
+          "epoch_ms": 1792753345158,
+          "monotonic_ms": 154165.89999999106,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7523,
+          "kind": "measure",
+          "epoch_ms": 1792753345173,
+          "monotonic_ms": 154181.70000000298,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7524,
+          "kind": "query-response-release",
+          "epoch_ms": 1792753345173,
+          "monotonic_ms": 154181.89999999106,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7525,
+          "kind": "query-response-returned",
+          "epoch_ms": 1792753345174,
+          "monotonic_ms": 154182.09999999404,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7526,
+          "kind": "renderFaceInspector-enter",
+          "epoch_ms": 1792753345185,
+          "monotonic_ms": 154193.5,
+          "stack": "Error: P88 renderer callsite observation\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:84:22)\n    at paintQuery (http://127.0.0.1:19701/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19701/grid-rule-lines.js:106:7)",
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7527,
+          "kind": "dom-focusout",
+          "epoch_ms": 1792753345189,
+          "monotonic_ms": 154197.5,
+          "stack": null,
+          "target": {
+            "token": 5695,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 3,
+              "tag": "BODY",
+              "id": "",
+              "classes": "drawer-right-open",
+              "parent_id": "",
+              "text": "正在讀取場景連線完成後即可編輯。\n  重新連線\n\n\n  \n    \n      \n        \n      \n      構形 Canvas\n    \n\n    建立\n\n    \n      \n "
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7528,
+          "kind": "dom-focusin",
+          "epoch_ms": 1792753345194,
+          "monotonic_ms": 154202.79999999702,
+          "stack": null,
+          "target": {
+            "token": 5736,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7529,
+          "kind": "renderFaceInspector-return",
+          "epoch_ms": 1792753345199,
+          "monotonic_ms": 154207.09999999404,
+          "stack": "Error: P88 renderer callsite observation\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:84:22)\n    at paintQuery (http://127.0.0.1:19701/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19701/grid-rule-lines.js:106:7)",
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 234,
+                "y": 605.5,
+                "width": 142,
+                "height": 44,
+                "top": 605.5,
+                "right": 376,
+                "bottom": 649.5,
+                "left": 234
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 234,
+                "y": 668.4375,
+                "width": 142,
+                "height": 44,
+                "top": 668.4375,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 234,
+                "y": 649.5,
+                "width": 142,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              }
+            }
+          }
+        },
+        {
+          "serial": 7530,
+          "kind": "renderObserver",
+          "epoch_ms": 1792753345199,
+          "monotonic_ms": 154207.5,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 234,
+                "y": 605.5,
+                "width": 142,
+                "height": 44,
+                "top": 605.5,
+                "right": 376,
+                "bottom": 649.5,
+                "left": 234
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 234,
+                "y": 668.4375,
+                "width": 142,
+                "height": 44,
+                "top": 668.4375,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 234,
+                "y": 649.5,
+                "width": 142,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              }
+            }
+          }
+        },
+        {
+          "serial": 7531,
+          "kind": "renderObserver",
+          "epoch_ms": 1792753345201,
+          "monotonic_ms": 154209.20000000298,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 605.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 605.5,
+                "right": 361,
+                "bottom": 649.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 668.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 668.4375,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 649.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7532,
+          "kind": "dom-scroll",
+          "epoch_ms": 1792753345202,
+          "monotonic_ms": 154210.29999999702,
+          "stack": null,
+          "target": {
+            "token": 2,
+            "tag": "ASIDE",
+            "id": "",
+            "classes": "inner-panel face-inspector-panel",
+            "parent_id": "faceWorkspaceLayout",
+            "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 605.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 605.5,
+                "right": 361,
+                "bottom": 649.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 668.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 668.4375,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 649.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7533,
+          "kind": "dom-scroll",
+          "epoch_ms": 1792753345206,
+          "monotonic_ms": 154214.5,
+          "stack": null,
+          "target": {
+            "token": 2,
+            "tag": "ASIDE",
+            "id": "",
+            "classes": "inner-panel face-inspector-panel",
+            "parent_id": "faceWorkspaceLayout",
+            "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7534,
+          "kind": "controlled-query-release",
+          "epoch_ms": 1792753345206,
+          "monotonic_ms": 154214.89999999106,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        }
+      ],
+      "observation_errors": [],
+      "browser_errors": [],
+      "browser_stopped": true
+    },
+    {
+      "variant": "restored",
+      "original_test_exit": 1,
+      "original_phase_passed": false,
+      "trace_path": "/tmp/g288p88q/restored/trace.json",
+      "trace_sha256": "fe9ced46b8297a9cb6ff508eb29a06c15eee1811794cb2a0986b60be91a26195",
+      "stdout_path": "/tmp/g288p88q/restored/workflow/grid/steps/03.stdout",
+      "stdout_sha256": "3840d6cfccb34817e472d958f48ccf9f64a924dbb89916bd01a5234d75efe184",
+      "cdp_result": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_GRID_SYSTEM_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:19702/",
+          "feedbackDirectory": "/tmp/g288p88q/restored/tmp/workflow/grid/geometry-integration-feedback",
+          "browserProfile": "/tmp/g288p88q/restored/tmp/workflow/grid/geometry-cdp-6ZAM4b",
+          "cdpPort": 9712,
+          "browserPid": 1145572
+        },
+        "firstTransportFailure": null,
+        "firstNetworkFailure": null,
+        "completed": false,
+        "passedAssertions": 99,
+        "failedAssertions": 0,
+        "fatal": "Browser evaluation failed: Error: P88 original query schedule did not reproduce the original wrong-target displacement; this is not valid counterevidence\n    at injectQueryRelease (eval at <anonymous> (:1:144), <anonymous>:147:32)\n    at async eval (eval at <anonymous> (:1:144), <anonymous>:1:414); expression=(async()=>{const p=((()=>{const e=document.querySelector(\"#refGuideMode\");if(!e)throw Error('Missing '+\"#refGuideMode\");const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.he",
+        "skipped": [],
+        "sections": {
+          "P88": 99
+        },
+        "currentSection": "P88",
+        "goldenCompare": "not compared (run did not complete)"
+      },
+      "injection": {
+        "name": "P88-original-query-release-after-mode-measure",
+        "attempted": true,
+        "applied": false,
+        "valid": false,
+        "count": 1,
+        "before": {
+          "selector": "#refGuideMode",
+          "nodeToken": 5696,
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          },
+          "paneScroll": 0,
+          "parentScroll": 25,
+          "gridPreviewSeq": 125,
+          "active": {
+            "token": 5695,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "hit": {
+            "token": 5696,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          }
+        },
+        "after": {
+          "selector": "#refGuideMode",
+          "nodeToken": 5737,
+          "rect": {
+            "x": 226.5,
+            "y": 580.5,
+            "width": 134.5,
+            "height": 44,
+            "top": 580.5,
+            "right": 361,
+            "bottom": 624.5,
+            "left": 226.5
+          },
+          "paneScroll": 0,
+          "parentScroll": 25,
+          "gridPreviewSeq": 126,
+          "active": {
+            "token": 5736,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "hit": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          },
+          "hitAtOldPoint": {
+            "token": 5737,
+            "tag": "SELECT",
+            "id": "refGuideMode",
+            "classes": "",
+            "parent_id": "",
+            "text": "選擇位置來源進階：完整引用式"
+          }
+        },
+        "original_measure": {
+          "x": 293.75,
+          "y": 602.5,
+          "w": 134.5,
+          "h": 44,
+          "hit": true,
+          "hitElement": "SELECT#refGuideMode",
+          "disabled": false
+        },
+        "old_center": {
+          "x": 293.75,
+          "y": 602.5
+        },
+        "response_json_unchanged": null,
+        "error": "The actual original query repaint did not move the old point onto the real ratio label/select"
+      },
+      "events": [
+        {
+          "serial": 7523,
+          "kind": "query-response-held",
+          "epoch_ms": 1792753570073,
+          "monotonic_ms": 165044.69999998808,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 605.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 605.5,
+                "right": 361,
+                "bottom": 649.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 668.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 668.4375,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 649.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7524,
+          "kind": "dom-scroll",
+          "epoch_ms": 1792753570087,
+          "monotonic_ms": 165058.39999999106,
+          "stack": null,
+          "target": {
+            "token": 2,
+            "tag": "ASIDE",
+            "id": "",
+            "classes": "inner-panel face-inspector-panel",
+            "parent_id": "faceWorkspaceLayout",
+            "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7525,
+          "kind": "measure",
+          "epoch_ms": 1792753570150,
+          "monotonic_ms": 165120.79999999702,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7526,
+          "kind": "query-response-release",
+          "epoch_ms": 1792753570150,
+          "monotonic_ms": 165121,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7527,
+          "kind": "query-response-returned",
+          "epoch_ms": 1792753570150,
+          "monotonic_ms": 165121.19999998808,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7528,
+          "kind": "renderFaceInspector-enter",
+          "epoch_ms": 1792753570168,
+          "monotonic_ms": 165139.69999998808,
+          "stack": "Error: P88 renderer callsite observation\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:84:22)\n    at paintQuery (http://127.0.0.1:19702/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19702/grid-rule-lines.js:106:7)",
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 125,
+            "active": {
+              "token": 5695,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7529,
+          "kind": "dom-focusout",
+          "epoch_ms": 1792753570176,
+          "monotonic_ms": 165147,
+          "stack": null,
+          "target": {
+            "token": 5695,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 3,
+              "tag": "BODY",
+              "id": "",
+              "classes": "drawer-right-open",
+              "parent_id": "",
+              "text": "正在讀取場景連線完成後即可編輯。\n  重新連線\n\n\n  \n    \n      \n        \n      \n      構形 Canvas\n    \n\n    建立\n\n    \n      \n "
+            },
+            "mode_node": {
+              "node": {
+                "token": 5696,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5697,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5698,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7530,
+          "kind": "dom-focusin",
+          "epoch_ms": 1792753570192,
+          "monotonic_ms": 165162.79999999702,
+          "stack": null,
+          "target": {
+            "token": 5736,
+            "tag": "BUTTON",
+            "id": "refGuideCreate",
+            "classes": "btn",
+            "parent_id": "",
+            "text": "建立引用線"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7531,
+          "kind": "renderFaceInspector-return",
+          "epoch_ms": 1792753570198,
+          "monotonic_ms": 165169.39999999106,
+          "stack": "Error: P88 renderer callsite observation\n    at renderWrapper (eval at <anonymous> (:1:144), <anonymous>:84:22)\n    at paintQuery (http://127.0.0.1:19702/grid-rule-lines.js:84:97)\n    at query (http://127.0.0.1:19702/grid-rule-lines.js:106:7)",
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 234,
+                "y": 605.5,
+                "width": 142,
+                "height": 44,
+                "top": 605.5,
+                "right": 376,
+                "bottom": 649.5,
+                "left": 234
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 234,
+                "y": 668.4375,
+                "width": 142,
+                "height": 44,
+                "top": 668.4375,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 234,
+                "y": 649.5,
+                "width": 142,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              }
+            }
+          }
+        },
+        {
+          "serial": 7532,
+          "kind": "renderObserver",
+          "epoch_ms": 1792753570199,
+          "monotonic_ms": 165170,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 234,
+                "y": 605.5,
+                "width": 142,
+                "height": 44,
+                "top": 605.5,
+                "right": 376,
+                "bottom": 649.5,
+                "left": 234
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 234,
+                "y": 668.4375,
+                "width": 142,
+                "height": 44,
+                "top": 668.4375,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 234,
+                "y": 649.5,
+                "width": 142,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 376,
+                "bottom": 712.4375,
+                "left": 234
+              }
+            }
+          }
+        },
+        {
+          "serial": 7533,
+          "kind": "renderObserver",
+          "epoch_ms": 1792753570201,
+          "monotonic_ms": 165172.69999998808,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 605.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 605.5,
+                "right": 361,
+                "bottom": 649.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 668.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 668.4375,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 649.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7534,
+          "kind": "dom-scroll",
+          "epoch_ms": 1792753570202,
+          "monotonic_ms": 165173.59999999404,
+          "stack": null,
+          "target": {
+            "token": 2,
+            "tag": "ASIDE",
+            "id": "",
+            "classes": "inner-panel face-inspector-panel",
+            "parent_id": "faceWorkspaceLayout",
+            "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 0,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 605.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 605.5,
+                "right": 361,
+                "bottom": 649.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 668.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 668.4375,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 649.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 649.5,
+                "right": 361,
+                "bottom": 712.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7535,
+          "kind": "dom-scroll",
+          "epoch_ms": 1792753570208,
+          "monotonic_ms": 165179.69999998808,
+          "stack": null,
+          "target": {
+            "token": 2,
+            "tag": "ASIDE",
+            "id": "",
+            "classes": "inner-panel face-inspector-panel",
+            "parent_id": "faceWorkspaceLayout",
+            "text": "關閉 ×\n          \n            屬性\n            形狀\n            構件\n            底圖\n          \n          ✓建面"
+          },
+          "trusted": true,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        },
+        {
+          "serial": 7536,
+          "kind": "controlled-query-release",
+          "epoch_ms": 1792753570209,
+          "monotonic_ms": 165180.19999998808,
+          "stack": null,
+          "target": null,
+          "trusted": null,
+          "x": null,
+          "y": null,
+          "state": {
+            "parent_scroll_top": 25,
+            "pane_scroll_top": 0,
+            "grid_preview_seq": 126,
+            "active": {
+              "token": 5736,
+              "tag": "BUTTON",
+              "id": "refGuideCreate",
+              "classes": "btn",
+              "parent_id": "",
+              "text": "建立引用線"
+            },
+            "mode_node": {
+              "node": {
+                "token": 5737,
+                "tag": "SELECT",
+                "id": "refGuideMode",
+                "classes": "",
+                "parent_id": "",
+                "text": "選擇位置來源進階：完整引用式"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 580.5,
+                "width": 134.5,
+                "height": 44,
+                "top": 580.5,
+                "right": 361,
+                "bottom": 624.5,
+                "left": 226.5
+              }
+            },
+            "ratio_node": {
+              "node": {
+                "token": 5738,
+                "tag": "SELECT",
+                "id": "refGuideRatio",
+                "classes": "",
+                "parent_id": "",
+                "text": "原值一半兩倍"
+              },
+              "rect": {
+                "x": 226.5,
+                "y": 643.4375,
+                "width": 134.5,
+                "height": 44,
+                "top": 643.4375,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              },
+              "label": {
+                "token": 5739,
+                "tag": "LABEL",
+                "id": "",
+                "classes": "",
+                "parent_id": "refGuideSourceFields",
+                "text": "來源比例原值一半兩倍"
+              },
+              "label_rect": {
+                "x": 226.5,
+                "y": 624.5,
+                "width": 134.5,
+                "height": 62.9375,
+                "top": 624.5,
+                "right": 361,
+                "bottom": 687.4375,
+                "left": 226.5
+              }
+            }
+          }
+        }
+      ],
+      "observation_errors": [],
+      "browser_errors": [],
+      "browser_stopped": true
+    }
+  ],
+  "limitations": [
+    "Original full canvas three runs had no pointer target trace; this diagnostic cannot identify their exact query or cause.",
+    "Synchronous observation and layout reads have nonzero timing cost; the controlled query adds an explicit response barrier.",
+    "A failed displacement precondition is a failed diagnostic, not a successful original assertion counterexample.",
+    "Stable node/rectangle samples do not guarantee that no future repaint can occur before a CDP input arrives."
+  ],
+  "receipt_path": "/tmp/g288p88q/receipt.json",
+  "receipt_sha256": "d1b76635dd476412dda4a860778031c43de0d1571d7c001c7f5b9bd4dc9ec0b3"
+}

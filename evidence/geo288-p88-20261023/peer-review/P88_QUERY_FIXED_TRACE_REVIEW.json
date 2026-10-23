@@ -1,0 +1,142 @@
+{
+  "schema": "p88-real-query-fixed-phase-adversarial-review/1",
+  "review_scope": "Only immutable completed fixed diagnosticphase; withdrawn/restored stillseparate and no finalsequence verdict inferred",
+  "source_git_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "memory_candidate_p88_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+  "memory_helper_unchanged": true,
+  "original_receipt": {
+    "path": "/tmp/g288p88q/fixed/workflow/grid/receipt.json",
+    "sha256": "bffbdd5997830104bbe4b49c80d007747ad76bff66073cfd44bb561d5155e546",
+    "exit": 1,
+    "seconds": 227.78663650499948,
+    "over_ci_timeout": false,
+    "clean_source_before_after": true
+  },
+  "original_stdout": {
+    "path": "/tmp/g288p88q/fixed/workflow/grid/steps/03.stdout",
+    "bytes": 202874,
+    "sha256": "41b9857d8e7e015fbd47c1c8f9bb98168747b6c5c664bcc4f43a7d5430c3e578",
+    "matches_sealed_original_receipt": true
+  },
+  "original_exits": {
+    "outer": 1,
+    "workflow": 1,
+    "node": 1
+  },
+  "original_footer": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_GRID_SYSTEM_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19700/",
+      "feedbackDirectory": "/tmp/g288p88q/fixed/tmp/workflow/grid/geometry-integration-feedback",
+      "browserProfile": "/tmp/g288p88q/fixed/tmp/workflow/grid/geometry-cdp-jxTJea",
+      "cdpPort": 9710,
+      "browserPid": 1139857
+    },
+    "firstTransportFailure": null,
+    "firstNetworkFailure": null,
+    "completed": false,
+    "passedAssertions": 99,
+    "failedAssertions": 0,
+    "fatal": "Browser evaluation failed: Error: P88 original query schedule did not reproduce the original wrong-target displacement; this is not valid counterevidence\n    at injectQueryRelease (eval at <anonymous> (:1:144), <anonymous>:147:32)\n    at async eval (eval at <anonymous> (:1:144), <anonymous>:1:414); expression=(async()=>{const p=((()=>{const e=document.querySelector(\"#refGuideMode\");if(!e)throw Error('Missing '+\"#refGuideMode\");const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.he",
+    "skipped": [],
+    "sections": {
+      "P88": 99
+    },
+    "currentSection": "P88",
+    "goldenCompare": "not compared (run did not complete)"
+  },
+  "trace": {
+    "path": "/tmp/g288p88q/fixed/trace.json",
+    "bytes": 55497515,
+    "original_phase_recorded_sha256": "5715c4f6f702b88e8f633838c5eb9c3ee543b1840cf493b5738371d6e9d7c32e",
+    "whole_trace_sha_not_independently_rehashed_by_reviewer": true,
+    "preload_sha256": "2d8919aaa6fa9c4800c57ae398b4a831a02def4a7e3a6e2ab2ebacb1025a54cc",
+    "query_source_sha256": "0f554fc0f764e5092cb2681048bd74cb50d1c6870d706c4d68867a9b06d6bfda",
+    "errors": [],
+    "browser_errors": [],
+    "browser_stopped": true,
+    "raw_source_bytes_unchanged": true
+  },
+  "observations": [
+    {
+      "serial": 7523,
+      "event": "Original successful refGuideMode measurement",
+      "center": [
+        293.75,
+        602.5
+      ],
+      "mode_node": 5696,
+      "mode_y": 580.5,
+      "parent_scroll": 25
+    },
+    {
+      "serials": [
+        7524,
+        7525
+      ],
+      "event": "Release and return original parsedJSON from exactquery102callsite; JSONsame"
+    },
+    {
+      "serials": [
+        7526,
+        7529
+      ],
+      "event": "True paintQuery84/query106 renderer invocation95; node5696->5737",
+      "mode_y_transition": [
+        580.5,
+        605.5
+      ],
+      "parent_scroll_transition": [
+        25,
+        0
+      ]
+    },
+    {
+      "serials": [
+        7530,
+        7531,
+        7532,
+        7533
+      ],
+      "event": "Real layout/scroll then restoresparent25",
+      "mode_y_transition": [
+        605.5,
+        580.5
+      ],
+      "parent_scroll_transition": [
+        0,
+        25
+      ]
+    },
+    {
+      "serial": 7534,
+      "event": "Old center still hitsrefGuideMode, notratio",
+      "injection_attempted": true,
+      "injection_count": 1,
+      "injection_applied": false,
+      "no_later_browser_mousedown": true
+    }
+  ],
+  "verdict": {
+    "valid_original_assertion_counterproof": false,
+    "proof_fixed_phase_passed": false,
+    "classification": "Diagnostic displacement precondition failed; not original namedfocus assertion, not proofcandidatefailsproduct",
+    "targeted_v5_stable_probe_exercised_after_injection": false,
+    "natural_single_root_cause_established": false,
+    "actual_0_1_0_established": false
+  },
+  "static_connection": "Original app.js renderFaceInspector tail has deferred requestAnimationFrame restoring saved.scroll after detailstoggle. This matches the observed25->0->25 transience; it does not prove naturalwrongtargetclick. Measuring duringparent0 thenrestoring25 is a moreprecise untested hypothesis fororiginal627.5point. No such measure->wrongmouse chain recordedhere.",
+  "candidate_adoption_assessment": "Immutablev5 staticreview remainsaccepted and fitsobservednode/rect instability, butthisphaseaborted ininitialmode measurement beforetargeted stable barrier. NewF original3fullcanvas+grid mustsupplydynamicacceptance; do notpresent thistoolredaspassednegativecontrol or naturalcauseproof. Roothaschosen no resampling/artificialmovement.",
+  "limits": [
+    "External P88-only loader omits originalgrid_system/grid_rule_editor; notformalgrid/canvas",
+    "Instrumentationstack/DOMrectsnapshot overhead is nonzero",
+    "Trace55MB was parsed for specificquery/render/measure/mouseevents; large originalresponse strings not exported into thissummary",
+    "All originalraw remainsunaltered; finalsequence/exits needlateraddendum",
+    "Original threeunmodifiedfullcanvas1/0/0 establishesintermittentobservation, notenvironment-onlyclassification"
+  ]
+}

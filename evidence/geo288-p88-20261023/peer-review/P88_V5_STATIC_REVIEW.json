@@ -1,0 +1,43 @@
+{
+  "schema": "p88-runner-and-v5-static-review/1",
+  "F": "13d02c1db7022145a52ee063286a558e595eb212",
+  "review_handoff": "9e44ea94e891270d49d7432f25ebb55cf5709ec6",
+  "latest_review_head": "22ad28f",
+  "original_module_sha256": "c47259607a3299d49e1044f3d4d6e5561c0601e0f2295fb7ec5f2255261f4e8c",
+  "v4_sha256": "31058245b58086816ebd54335d26d8f76b5b1ec203c94fa9470b1a3687931c1a",
+  "v5_sha256": "8106476b6eb2271111caa835a863b72eced4bab3b2ef77244f28534d83ca0a52",
+  "source_original_sha_equal_manifest": true,
+  "all_original_check_lines_equal": true,
+  "entire_original_tail_after_input_adapter_equal": true,
+  "original_focus_predicate_count": 1,
+  "v5_focus_predicate_count": 1,
+  "executed_tests": false,
+  "compiled": false,
+  "opened_browser": false,
+  "source_modified": false,
+  "proof_manifest": {
+    "path": "/workspace/geo288-main-merge-20261023/p88-priority/candidate-local-v5/PROOF_MANIFEST.json",
+    "sha256": "5993efeaee71047c9d6f4e1ba0ded3f39a5ba47329d5dc70142dbf37c34676e6",
+    "rows": [
+      {
+        "source_relative": "geometry-web/cdp_helpers.js",
+        "source_hash_match": true,
+        "candidate_hash_match": true,
+        "patch_hash_match": true,
+        "actually_changed": false,
+        "patch_bytes": 0,
+        "candidate_path": "/workspace/geo288-main-merge-20261023/p88-priority/candidate-local-v5/cdp_helpers.js.unchanged"
+      },
+      {
+        "source_relative": "geometry-web/grid_rule_lines_test.js",
+        "source_hash_match": true,
+        "candidate_hash_match": true,
+        "patch_hash_match": true,
+        "actually_changed": true,
+        "patch_bytes": 5664,
+        "candidate_path": "/workspace/geo288-main-merge-20261023/p88-priority/candidate-local-v5/grid_rule_lines_test.js"
+      }
+    ],
+    "not_executed": true
+  }
+}
