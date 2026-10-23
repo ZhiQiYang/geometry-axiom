@@ -1,4 +1,6 @@
-## 當前進度：小型觀察已封存，golden 見證來源已遷移
+## 當前進度：共享來源已合流並正式交末棒
+
+已在#323不可變審查combined6cad（無靜態blocker）後普通merge，固定source `ae74e51bba1efef48949c077635966273a9e8990`；與merge前20559個非evidence blob＋mode完全相同，SSOT／oracle／native／golden／tests／expected聯集保留。普通push/lsremote0、source clean，完整收據見 `source-baton-ae74e51b/`。已正式交noWood先靜審merge後normalmerge此source與完成expected13；此後本owner只寫own evidence／正文，不並改shared。這是source交棒，不是正式動態全綠。
 
 主代理授予的一次小型 oracle 窗口已實跑：固定乾淨 `2039b477a9669a9e3fcaad740283605b8de8a8f4`、R3 獨占、8 build、硬 timeout15s／CPU10s，真 exit0、0.668s。完整指令／原 stream／環境／SHA 見 `small-observation-2039b477/`；不把觀察當正式驗收。當前 source 已依人工逐欄覆核換成 FZ120 非空 I22 witness，保精確四元組、id 非排序 index、舊三元組拒絕；原 params/8房64排法 bytes 不動。STEP20 幾何與縫1831/3639不變，當前 buildable；FZ114左上X仍按 I22/碰撞守門選3544，不能盲改3656。
 
