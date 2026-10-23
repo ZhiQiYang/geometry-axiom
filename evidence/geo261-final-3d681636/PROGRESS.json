@@ -158,6 +158,15 @@
       "archives": [
         "raw/p88-final-chromium154-reviewed-01.tar.gz"
       ]
+    },
+    {
+      "utc": "2026-10-23T14:08:52.538509+00:00",
+      "label": "p88-final-oracle-reviewed",
+      "result": "新F oracle八階段原退出0/0/0/1/0/0/1/0、driver/outer/top皆0；原quick0、probe完整Ran60/OK、C4具名bad8/0/8及core_limits正常AssertionError2!=1反證0/1/0。85source/68fixture前後同，原判官/時限/expected未改；獨立actual+公開包peer2214項無finding。另完成P52原件845/1267及formal/verifier公開5840、runtime公開7923項審查，原streams/cache排除與歷史metadata錯誤都保留。本輪所有列定受影響正式項/反證已通過，沒有把歷史沿用項冒稱F重跑。F3d仍按原政策處理step_core528/step_mirror_core1056，閱讀A變更只在#318另分支；oracle原P182-t4已知C11_MAIN_NOT_BUTTED6次文字保留，非新assert紅。",
+      "next": "完成唯一current-state正文與SHA連結核對後推prbody分支；#323已接續原基線驗收，維持不merge PR、不force push。",
+      "archives": [
+        "raw/p88-final-oracle-reviewed-01.tar.gz"
+      ]
     }
   ]
 }
