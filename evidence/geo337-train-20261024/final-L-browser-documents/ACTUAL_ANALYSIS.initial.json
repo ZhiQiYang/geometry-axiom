@@ -1,0 +1,2826 @@
+{
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "scope": "original documents receipt/commands/workflow/source binding and artifacts; no case/compiler/API rerun",
+  "originalExit": 0,
+  "wrapperExit": 0,
+  "actualAssertionResult": {
+    "passedAssertions": 47,
+    "failedAssertions": 0,
+    "screenshots": "/workspace/train337-browser-L-documents/tmp/original/documents/geometry-document-screens",
+    "viewport": [
+      1400,
+      900,
+      390,
+      844
+    ],
+    "coverage": "Trusted pointer/keyboard navigation plus synthetic file fixtures; PDF page rendering and safe Markdown checks."
+  },
+  "elapsedSeconds": 64.3160554660135,
+  "CISeconds": 600,
+  "checks": [
+    {
+      "check": "original-source-L",
+      "passed": true
+    },
+    {
+      "check": "terminal-original-wrapper-zero",
+      "passed": true
+    },
+    {
+      "check": "original-ci-bound",
+      "passed": true
+    },
+    {
+      "check": "original-file:artifacts/07/documents-desktop-cases.png",
+      "passed": true
+    },
+    {
+      "check": "original-file:artifacts/07/documents-desktop-library.png",
+      "passed": true
+    },
+    {
+      "check": "original-file:artifacts/07/documents-desktop-pdf.png",
+      "passed": true
+    },
+    {
+      "check": "original-file:artifacts/07/documents-desktop-reader-dark.png",
+      "passed": true
+    },
+    {
+      "check": "original-file:artifacts/07/documents-mobile-cases.png",
+      "passed": true
+    },
+    {
+      "check": "original-file:artifacts/07/documents-mobile-library.png",
+      "passed": true
+    },
+    {
+      "check": "original-file:artifacts/07/documents-mobile-pdf.png",
+      "passed": true
+    },
+    {
+      "check": "original-file:artifacts/07/documents-mobile-reader.png",
+      "passed": true
+    },
+    {
+      "check": "original-file:driver.py.txt",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/01.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/01.command.json",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/01.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/01.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/01.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/01.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/02-package-0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/02-package-0.command.json",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/02-package-0.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/02-package-0.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/02.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/02.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/03.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/03.command.json",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/03.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/03.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/03.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-file:steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/0.command.json",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/0.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/0.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/1.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/1.command.json",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/1.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/1.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/2.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/2.command.json",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/2.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/2.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/3.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/3.command.json",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/3.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/3.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/4.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/4.command.json",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/4.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-file:versions/4.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-file:workflow.yml.txt",
+      "passed": true
+    },
+    {
+      "check": "outer-command-exit:private-pool-before-original-browser",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000001stdin",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000001stdout",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000001stderr",
+      "passed": true
+    },
+    {
+      "check": "outer-command-exit:original-final-L-full-browser-job",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000002stdin",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000002stdout",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000002stderr",
+      "passed": true
+    },
+    {
+      "check": "outer-command-exit:private-pool-after-original-browser",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000003stdin",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000003stdout",
+      "passed": true
+    },
+    {
+      "check": "outer-stream:/workspace/train337-browser-L-documents-launch/subcommands/000003stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-command:['google-chrome', '--version']",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/0.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/0.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-command:['node', '--version']",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/1.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/1.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/1.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-command:['python3', '--version']",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/2.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/2.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/2.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-command:['cc', '--version']",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/3.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/3.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/3.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-command:['dpkg-query', '-W', '-f=${Status} ${Version}\\n', 'fonts-noto-cjk']",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/4.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/4.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/versions/4.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-command:['bash', '-e', '/workspace/train337-browser-L-documents/original/documents/steps/01.executed.sh']",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/01.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/01.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/01.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-command:['dpkg-query', '-W', '-f=${Status} ${Version}\\n', 'fonts-noto-cjk']",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/02-package-0.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/02-package-0.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/02-package-0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-command:['bash', '--noprofile', '--norc', '-eo', 'pipefail', '/workspace/train337-browser-L-documents/original/documents/steps/03.executed.sh']",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/03.stderr",
+      "passed": true
+    },
+    {
+      "check": "original-exposed-stream:/workspace/train337-browser-L-documents/original/documents/steps/03.combined.log",
+      "passed": true
+    },
+    {
+      "check": "workflow-exact-L-Git",
+      "passed": true
+    },
+    {
+      "check": "original-matrix-exact",
+      "passed": true
+    },
+    {
+      "check": "original-workflow-step:1",
+      "passed": true
+    },
+    {
+      "check": "original-workflow-step:2",
+      "passed": true
+    },
+    {
+      "check": "original-workflow-step:3",
+      "passed": true
+    },
+    {
+      "check": "actual-chrome156",
+      "passed": true
+    },
+    {
+      "check": "actual-node24",
+      "passed": true
+    },
+    {
+      "check": "noto-installed",
+      "passed": true
+    },
+    {
+      "check": "documents-real47",
+      "passed": true
+    },
+    {
+      "check": "eight-artifacts",
+      "passed": true
+    },
+    {
+      "check": "private-port",
+      "passed": true
+    },
+    {
+      "check": "actual-ELFhash:core",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:corecurrent_geometry.c",
+      "passed": false
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/model_base.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/card-reference/confirmation_probe.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/guides.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/source.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/document.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/versions.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/grid_store.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/enclosure_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/grid.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/placements.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/enclosure.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/candidate.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/geometry.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/datums.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/region_key_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/clip.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/linear.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/exact.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/version_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/regions.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/named_values.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/placement_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/parameter_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/linear_definition_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/codec.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/parameters.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/codec-client.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/exact-client.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/parameter_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/engineering_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/panel_layout_math.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/section_profile_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/finish_surface_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/assembly_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/reference_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/placement_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/guides.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/named_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/regions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/region_key_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/clip.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/versions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/candidate.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/enclosure_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/linear.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/linear_definition_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/source.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/geometry.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/placements.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/grid_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/parameter_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/enclosure.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/version_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/codec.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/exact.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/grid.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/datums.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/parameters.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/guides.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/named_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/regions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/versions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/enclosures.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/placements.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/grid_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/parameter_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/internal/datums.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/assembly.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/subgrid_rebind.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/card_reference.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/panel_fill_layout.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/section_profiles.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/derived_placements.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/grid_bindings.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/subgrid_commands.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/grid_systems.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/boundary_vertex_keys.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/engineering_json.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/panel_fill_support.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/engineering_commands.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/finish_surfaces.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/assembly_generation.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/section_profile_conversion.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/subgrid_world.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/grid_subdivision.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/engineering.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/parameters.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/grid_subdivision_query.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/subgrids.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/grid_lattice.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-core/kernel/kernel_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/parameter_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/grid_system_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/section_profile_source_index.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/grid_subdivision_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/section_profile_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/timber_support_projection.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/reference_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/panel_layout_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/scene-import-bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/section_profile_diagnostics.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/panel_fill_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/grid_binding_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/engineering_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-web/source-inspector-bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/app_candidate.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/history.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/definition_texts.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/app_candidate.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/history.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/kernel_storage.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/stagger_facts.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/candidate_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/grid_context.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/enclosure_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/world_candidate.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/history_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/domains.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/world_validation.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/legacy_json.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/versions_adapter.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/grid_adapter.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/model_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-app/native/woodworking_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/grid_cells.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/contacts.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/contact_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/finish_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/member_declaration.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/engineering_operations.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/panel_support.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/world_validation.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/finish.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/boundary_policy.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/engineering.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/grid_application.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/grid_rules.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/engineering_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/cut_list.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/supports.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/contact_world.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/grid_definition_codec.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/member_reference.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/section_profile.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/section_profile_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/derived_placement.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/grid_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/definition_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/assembly.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/members.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/rectangular-grid/rectangular_grid.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/boundary_policy.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/assembly_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/grid_application.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/contacts.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/obstacles.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/contact_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/contact_world.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/section_profile.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/member_placement.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/finish.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/derived_placement.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/world_validation.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/panel_layout.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/definition_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/domain_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/engineering_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/member_reference.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/engineering_operations.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/grid_definition_codec.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/members.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/member_declaration.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/engineering.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/cut_list.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/finish_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/panel_support.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/assembly.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/supports.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/grid_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/woodworking/native/section_profile_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:coregeometry-templates/rectangular-grid/rectangular_grid.h",
+      "passed": true
+    },
+    {
+      "check": "actual-ELFhash:bridge",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgecurrent_geometry.c",
+      "passed": false
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/model_base.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/card-reference/confirmation_probe.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/guides.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/source.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/document.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/versions.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/grid_store.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/enclosure_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/grid.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/placements.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/enclosure.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/candidate.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/geometry.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/datums.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/region_key_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/clip.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/linear.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/exact.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/version_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/regions.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/named_values.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/placement_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/parameter_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/linear_definition_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/codec.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/parameters.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/codec-client.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/exact-client.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/parameter_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/engineering_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/panel_layout_math.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/section_profile_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/finish_surface_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/assembly_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/reference_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/placement_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/guides.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/named_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/regions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/region_key_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/clip.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/versions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/candidate.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/enclosure_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/linear.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/linear_definition_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/source.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/geometry.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/placements.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/grid_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/parameter_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/enclosure.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/version_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/codec.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/exact.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/grid.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/datums.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/parameters.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/guides.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/named_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/regions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/versions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/enclosures.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/placements.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/grid_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/parameter_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/internal/datums.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/assembly.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/subgrid_rebind.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/card_reference.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/panel_fill_layout.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/section_profiles.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/derived_placements.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/grid_bindings.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/subgrid_commands.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/grid_systems.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/boundary_vertex_keys.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/engineering_json.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/panel_fill_support.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/engineering_commands.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/finish_surfaces.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/assembly_generation.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/section_profile_conversion.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/subgrid_world.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/grid_subdivision.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/engineering.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/parameters.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/grid_subdivision_query.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/subgrids.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/grid_lattice.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-core/kernel/kernel_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/parameter_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/grid_system_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/section_profile_source_index.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/grid_subdivision_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/section_profile_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/timber_support_projection.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/reference_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/panel_layout_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/scene-import-bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/section_profile_diagnostics.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/panel_fill_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/grid_binding_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/engineering_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-web/source-inspector-bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/app_candidate.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/history.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/definition_texts.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/app_candidate.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/history.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/kernel_storage.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/stagger_facts.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/candidate_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/grid_context.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/enclosure_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/world_candidate.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/history_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/domains.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/world_validation.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/legacy_json.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/versions_adapter.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/grid_adapter.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/model_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-app/native/woodworking_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/grid_cells.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/contacts.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/contact_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/finish_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/member_declaration.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/engineering_operations.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/panel_support.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/world_validation.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/finish.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/boundary_policy.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/engineering.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/grid_application.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/grid_rules.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/engineering_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/cut_list.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/supports.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/contact_world.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/grid_definition_codec.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/member_reference.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/section_profile.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/section_profile_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/derived_placement.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/grid_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/definition_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/assembly.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/members.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/rectangular-grid/rectangular_grid.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/boundary_policy.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/assembly_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/grid_application.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/contacts.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/obstacles.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/contact_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/contact_world.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/section_profile.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/member_placement.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/finish.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/derived_placement.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/world_validation.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/panel_layout.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/definition_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/domain_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/engineering_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/member_reference.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/engineering_operations.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/grid_definition_codec.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/members.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/member_declaration.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/engineering.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/cut_list.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/finish_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/panel_support.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/assembly.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/supports.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/grid_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/woodworking/native/section_profile_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:bridgegeometry-templates/rectangular-grid/rectangular_grid.h",
+      "passed": true
+    },
+    {
+      "check": "actual-ELFhash:model-base",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basecurrent_geometry.c",
+      "passed": false
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/model_base.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/card-reference/confirmation_probe.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/guides.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/source.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/document.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/versions.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/grid_store.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/enclosure_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/grid.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/placements.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/enclosure.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/candidate.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/geometry.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/datums.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/region_key_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/clip.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/linear.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/exact.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/version_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/regions.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/named_values.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/placement_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/parameter_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/linear_definition_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/codec.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/parameters.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/codec-client.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/domain-decoupling/evidence/native-p1-followup-20261016/readable/timeout-diagnostic-14ab395d-v1/build-inputs/exact-client.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/parameter_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/engineering_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/panel_layout_math.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/section_profile_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/finish_surface_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/assembly_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/reference_types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/placement_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/guides.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/named_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/regions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/region_key_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/clip.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/versions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/types.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/candidate.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/enclosure_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/linear.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/linear_definition_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/source.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/geometry.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/placements.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/grid_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/parameter_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/enclosure.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/version_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/codec.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/exact.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/grid.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/datums.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/parameters.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/guides.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/named_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/regions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/versions.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/enclosures.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/placements.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/grid_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/parameter_store.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/internal/datums.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/assembly.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/subgrid_rebind.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/card_reference.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/panel_fill_layout.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/section_profiles.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/derived_placements.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/grid_bindings.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/subgrid_commands.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/grid_systems.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/boundary_vertex_keys.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/engineering_json.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/panel_fill_support.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/engineering_commands.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/finish_surfaces.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/assembly_generation.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/section_profile_conversion.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/subgrid_world.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/grid_subdivision.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/engineering.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/parameters.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/grid_subdivision_query.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/subgrids.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/grid_lattice.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-core/kernel/kernel_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/web_bridge.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/docs/evidence/wp60-a-20261004/completed-seams/wp60-receipt-io.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/parameter_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/grid_system_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/section_profile_source_index.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/grid_subdivision_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/section_profile_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/timber_support_projection.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/reference_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/panel_layout_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/scene-import-bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/section_profile_diagnostics.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/panel_fill_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/grid_binding_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/engineering_bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-web/source-inspector-bridge.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/app_candidate.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/history.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/definition_texts.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/app_candidate.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/history.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/kernel_storage.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/stagger_facts.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/candidate_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/grid_context.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/enclosure_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/world_candidate.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/history_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/domains.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/world_validation.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/legacy_json.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/versions_adapter.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/grid_adapter.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/model_sources.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-app/native/woodworking_unity.inc",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/grid_cells.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/contacts.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/contact_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/finish_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/member_declaration.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/engineering_operations.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/panel_support.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/world_validation.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/finish.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/boundary_policy.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/engineering.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/grid_application.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/grid_rules.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/engineering_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/cut_list.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/supports.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/contact_world.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/grid_definition_codec.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/member_reference.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/section_profile.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/section_profile_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/derived_placement.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/grid_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/definition_sources.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/assembly.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/members.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/rectangular-grid/rectangular_grid.c",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/boundary_policy.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/assembly_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/grid_application.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/contacts.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/obstacles.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/contact_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/contact_world.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/section_profile.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/member_placement.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/finish.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/document.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/derived_placement.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/world_validation.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/panel_layout.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/definition_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/domain_values.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/engineering_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/member_reference.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/engineering_operations.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/grid_definition_codec.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/members.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/member_declaration.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/engineering.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/cut_list.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/finish_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/panel_support.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/assembly.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/supports.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/grid_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/woodworking/native/section_profile_sources.h",
+      "passed": true
+    },
+    {
+      "check": "ELF-sidecar-to-original-pool-input:model-basegeometry-templates/rectangular-grid/rectangular_grid.h",
+      "passed": true
+    }
+  ],
+  "findings": [
+    "ELF-sidecar-to-original-pool-input:corecurrent_geometry.c",
+    "ELF-sidecar-to-original-pool-input:bridgecurrent_geometry.c",
+    "ELF-sidecar-to-original-pool-input:model-basecurrent_geometry.c"
+  ],
+  "workflowOriginalGitRead": {
+    "argv": [
+      "git",
+      "--git-dir=/workspace/geometry-axiom/.git",
+      "show",
+      "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db:.github/workflows/integration-tests.yml"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "versions": [
+    "Google Chrome 156.0.8078.47",
+    "v24.19.0",
+    "Python 3.12.14",
+    "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "install ok installed 1:20240730+repack1-1"
+  ],
+  "limits": [
+    "Native fingerprint source-file hashes compared to original immutable pool input manifest; no fresh native execution or per-compiler hidden pipes claimed.",
+    "Original checkout action represented by exact clean checkout; existing-font step confirmed dpkg-query rather than rerunning apt; upload actions are local saves, not GitHub uploads.",
+    "Original driver watchdog factor3 retained; actual completion64.316s is independently below original CI600s."
+  ]
+}

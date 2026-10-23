@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-23 23:19 UTC）
+## 唯一 current-state（2026-10-23 23:31 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -10,7 +10,7 @@
 | 原完整123帳本 | L | tracked／fullCLI／core-map／external-check 全0；outer0 | 23:00:25 UTC真終態；123筆／120自然execution heads皆L，114killed／5equivalent／1原允許crashed／3retired；完整原流封final-L-ledger-complete |
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | RUNNING，尚無終態exit | session80260，原 --build全部230列、16MiB stack／35min CI；含#314六module103／Node13、ReadingA7／14、#323三module50 |
-| canvas／assembly／documents／grid／space／timber | L | documents RUNNING；其餘UNRUN | documents session70767與native並行，獨立checkout／埠／暫存；canvas獨占、原各job時限保留 |
+| canvas／assembly／documents／grid／space／timber | L | documents0；assembly0待封；grid RUNNING；其餘UNRUN | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
 | P52／Q38／§7兩項／P-189 | L | 全部UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
@@ -29,7 +29,8 @@ L帳本已真終態並核對ROOT/SEED初末HEAD、tree、stage、refs、clean與
 - #340 noWood：13項／7phase原實跑0/1/0/1/0/1/0；source4d3a、Ed45d、D77a已推，列車完整正式項仍待。
 - #341前置與#342 GEO260：各原定向驗收已封自己的SHA；#342全44為43killed／SPM24equivalent、539inputs相同，不能替代aggregate/native/browser。
 - #343 contact index＋穩定排序：Scc2ea1b3原三套已收齊0／1／0（318build全0）；唯一紅是placement-order負控制仍改舊後備路徑，新快路未受損而正常PASS ordering。新Sccfaf057只修原tuple錨點；三套34methods／64controls／318build全0，tuple原單方法8controls撤回／恢復0／1／0。Ea934a554與D56ed8d00正常推，完整1499members包及獨立actual1222／693、public6181均0；whole-opt、性能／512仍未跑。舊S1ee4e830的33／56／302build全0只作歷史，容量512／性能仍未跑。
-- #344連線復原：Sc1113f6f／Ed2c58317／D8233916d，9VM→撤回3具名ASSERT紅→恢復9綠已封；真CDP與完整canvas仍未跑，正在準備。
+- #344連線復原：S7b45013d／Edfdf88e3／Ddd5cbca6已推；原CDP三既有檢查增加非空error seed與命中確認，golden/斷言/時限不變。原VM9／6／9、0／1／0，actual365與public1585獨審0；真完整canvas三態、native/ledger/architecture仍未跑。
+- #214 HTTP fixture：S2199cda8／E3bbbcf00／D76965280已推；只將fixture serve_forever既有poll interval明設0.05，原19項及1200時限不改。source/helper靜審14／20皆0；所有正式實測與效能仍UNRUN，不占live native共用cache。
 
 最新fetch handoff9bb3ada4，#338最新審查2026-10-23 22:39:41 UTC/headc6c0b0d：B1完整同L驗收、B2原exact、這次B3 Actions紅均未解除；前次B3原件入庫與M1改善獲確認。正文C1須與同L真終態一致。沒有可合併結論，不等待審查或使用者；重測最多2，canvas／性能獨占。L帳本完成後續跑其他原正式項與獨立工作。
 
@@ -164,3 +165,11 @@ Actions40034196788原14個Git／gh唯讀命令、七個job annotation與完整�
 已用原完整native工具啟session80260；六browser pool真建立且來源／Git／inode守門0，documents啟session70767占第二槽。修正先前NEXT的環境描述：原browser storage driver亦只允許/tmp；新外部driver只容browser輸出在/workspace且repository外，native仍限/tmp。所有workflow執行函式、golden、斷言、CI時限與watchdog不變；原pathguard差分35項與launcher43項獨審0。這是儲存位置的環境修正，不改L產品／測試。未終態job不標綠。
 
 #335獨立根因與原命令／失敗／authority原件已封 `issue335-readonly-cause/`，兩種順序都無法建立互頂pair，但e2先放本身成功且先延伸成1000；不能誤稱兩順序的第一支都立即失敗。依現有核可只準備未決設計，不實作未placed支撐／硬裁auto跨距；QUESTIONS已改成精確現況。
+
+## 2026-10-23 23:31 UTC：documents 正式通過與七批環境維護原件入庫
+
+documents 在同L原workflow真exit0、wrapper0、47個原斷言全通過，64.316秒低於原CI10分鐘，沒有新增skip。完整原步驟／Chrome與Node版本／前後Git守門／8截圖、runtime fingerprint與輸入綁定封 `final-L-browser-documents/`，670members、5,357,450B壓縮；三ELF與82個Chrome可重建cache有排除清單，沒有刪除或冒稱封入。producer694與獨立3420個原件核對均0，checker初次CRLF及newline比法錯誤的原失敗亦保留；產品未重跑或修改。assembly亦真完成0（150assert，原P77=134/P82=16，191.692秒），完整原件正獨審；其原workflow既定partial與golden不比較不能冒完整canvas。grid已在第二槽執行，native仍原完整230列執行，無最終判決。
+
+七批維護的原工具／範圍／指令／完整stdout與stderr／環境／退出碼／peer，1,677members與獨立8446核對0，封 `terminal-maintenance-seven-originals/`，collector最外原流另外逐檔入庫。包括三組相同原封包的hardlink去重、四及八個已終態獨立index快取、L完整帳本終態後175個可重建ELF快取退休，以及一組82,776,064配置bytes的歷史原流跨filesystem保全搬移。前六類合計439,607,296配置bytes，不能冒實際free差；搬移只是將/tmp原流完整移到/workspace，原路徑改symlink，並非整體空間釋放。所有原收據、fixtures、Gitobjects、原source/controlled variants、sidecars都保留；ELF僅保重建依據，沒有捏造binary完整封存。
+
+三個cold checkout `p-source/a-source/l-source` 的三組既有原tar現共用inode；在三組都解除hardlink之前禁止寫入、checkout或跑測試。原bytes與路徑不變，原inode/mtime差異及限制列於原PLAN；不是crash-durability承諾。第二組raw `/tmp/g288-final-native-3d681636/subcommands` 未動。另23:30完成95個歷史seal ELF快取退休、exit0，原件正交獨審，尚未冒已封入本七批包。
