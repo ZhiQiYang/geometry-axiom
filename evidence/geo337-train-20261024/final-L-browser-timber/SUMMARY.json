@@ -1,0 +1,589 @@
+{
+  "schema": "geo337-final-L-original-browser-terminal-collection/1",
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "job": "timber",
+  "createdUTC": "2026-10-23T23:49:03.780238+00:00",
+  "originalExit": 0,
+  "wrapperExit": 0,
+  "passed": true,
+  "overOriginalCITimeout": false,
+  "originalCITimeoutMinutes": 20,
+  "elapsedSeconds": 124.23609746200964,
+  "sourceBefore": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "root": "/workspace/train337-browser-pool-L-7af8c5d8/layout/jobs/timber/source",
+    "status": ""
+  },
+  "sourceAfter": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "root": "/workspace/train337-browser-pool-L-7af8c5d8/layout/jobs/timber/source",
+    "status": ""
+  },
+  "versions": [
+    {
+      "argv": [
+        "google-chrome",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Google Chrome 156.0.8078.47 \n"
+    },
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.19.0\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Python 3.12.14\n"
+    },
+    {
+      "argv": [
+        "cc",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+    },
+    {
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "exit": 0,
+      "stdout": "install ok installed 1:20240730+repack1-1\n"
+    }
+  ],
+  "originalPoolGuardLogs": [
+    {
+      "phase": "before_guard",
+      "directory": "/workspace/train337-browser-pool-L-7af8c5d8/layout/guard-logs/guard-d2eu9boo",
+      "selection": "unique completed directory mtime within original guard command interval; no later guard/later GUARD_LATEST relabeled"
+    },
+    {
+      "phase": "after_guard",
+      "directory": "/workspace/train337-browser-pool-L-7af8c5d8/layout/guard-logs/guard-5nzezx2k",
+      "selection": "unique completed directory mtime within original guard command interval; no later guard/later GUARD_LATEST relabeled"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-runtime/4e8049de3870a9b27375/bridge",
+      "bytes": 1122224,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "d1741c8a6d3f0720bb4e14d2a3f0e7639173bd9d30ec2468d4e3a99e87d457dd"
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-runtime/4e8049de3870a9b27375/core",
+      "bytes": 904000,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "7b25c25675ee35196b369b202b938e5b66910388ae8c640dffd32c831998a661"
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-runtime/4e8049de3870a9b27375/model-base",
+      "bytes": 968896,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "29ea15978275bd2ab44f01fb8484ba5e5e53f8dd7a8dd12b32f95c431e22d6c6"
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Cache/Cache_Data/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Cache/Cache_Data/index-dir/the-real-index",
+      "bytes": 48,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Cache/No_Vary_Search/journal.baj",
+      "bytes": 4,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Cache/No_Vary_Search/snapshot.baf",
+      "bytes": 20,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/05737bb4c47d6c8e_0",
+      "bytes": 203,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/088c173690114b01_0",
+      "bytes": 249,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/0ecf45eed2d493ce_0",
+      "bytes": 262,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/11d2c23616be2c64_0",
+      "bytes": 212,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/1666bcf728725707_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/1fc9544cc75f2dd8_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/24d71b74b3dd3e01_0",
+      "bytes": 207,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/2a40814c32b3e4e9_0",
+      "bytes": 320,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/2e8a945b4bfcf6bb_0",
+      "bytes": 311,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/33f1f2ddbf2d4dd2_0",
+      "bytes": 202,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/344e832fcd16ca29_0",
+      "bytes": 242,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/368b5b4d43aa7634_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/3ca6aae97b69b80c_0",
+      "bytes": 244,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/407f235e6a8ab767_0",
+      "bytes": 272,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/421099bdb5507f1b_0",
+      "bytes": 214,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/4609e4560ba31856_0",
+      "bytes": 608,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/473aca86528a2773_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/475bab9862172cc4_0",
+      "bytes": 246,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/48912e18f00fd485_0",
+      "bytes": 215,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/4895f94411a7c49d_0",
+      "bytes": 265,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/4e4bbc1949626555_0",
+      "bytes": 231,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/52020c00bc4403b5_0",
+      "bytes": 210,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/57129200ddb6101e_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/5989dfb4bbdffbec_0",
+      "bytes": 227,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/5ce6c80adcfc8ce4_0",
+      "bytes": 206,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/5e885cf1ef46109d_0",
+      "bytes": 207,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/684afbacf39efc19_0",
+      "bytes": 255,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/692f8b7f86cd0426_0",
+      "bytes": 199,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/7de4c5395d49f8f2_0",
+      "bytes": 402,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/8bfaf705768db833_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/8d91a2153cf7f485_0",
+      "bytes": 232,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/8f4fd9690850c756_0",
+      "bytes": 256,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/923565f37d163718_0",
+      "bytes": 576,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/981db61edd3f6576_0",
+      "bytes": 239,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/a62d15e5b7090425_0",
+      "bytes": 212,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/a9be16161b015ec8_0",
+      "bytes": 509,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/aa81c912f68a88d5_0",
+      "bytes": 1468,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/b624ed39a9eedf9a_0",
+      "bytes": 225,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/b83e918507357c5f_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/ba2fba7ce2669b9e_0",
+      "bytes": 233,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/ba3f0c213f28cf97_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/ba678a2fbd8c358c_0",
+      "bytes": 298,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/bcfb053c9f7049ed_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/c1b7e44317e132d3_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/c5c877484bd336b7_0",
+      "bytes": 203,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/c5eb13e9d6c64454_0",
+      "bytes": 210,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/cb1c3510873bc052_0",
+      "bytes": 214,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/cb92fb7bd9182f28_0",
+      "bytes": 209,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/cf0d45a7cc0dcd34_0",
+      "bytes": 278,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/d590152283e08a11_0",
+      "bytes": 236,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/d7e5f48e6889c1ab_0",
+      "bytes": 396,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/e2d437aceed94e17_0",
+      "bytes": 202,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/f0b33c4a1f7784b1_0",
+      "bytes": 208,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/f5e7b2c029b9072f_0",
+      "bytes": 218,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/js/index-dir/the-real-index",
+      "bytes": 1344,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/wasm/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/Code Cache/wasm/index-dir/the-real-index",
+      "bytes": 48,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnGraphiteCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnGraphiteCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnGraphiteCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnGraphiteCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnGraphiteCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnWebGPUCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnWebGPUCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnWebGPUCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnWebGPUCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/DawnWebGPUCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/GPUCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/GPUCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/GPUCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/GPUCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/Default/GPUCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.db",
+      "bytes": 4096,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.db-wal",
+      "bytes": 12392,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-timber/tmp/original/timber/geometry-tests/space-model-1596351/chrome-profile/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.journal",
+      "bytes": 0,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    }
+  ],
+  "nonRegularNodes": [],
+  "noExistingFileDeleted": true,
+  "noSubjectRerun": true,
+  "limits": [
+    "Original exposed command stdout/stderr only; no hidden compiler/test pipe interception or files already removed by original cleanup are reconstructed.",
+    "No ROOT/SEED/pool/Git/source payload copied; pool immutable plan/tree/raw preparation and original completed guard command streams are included.",
+    "GUARD_LATEST.json is shared mutable state and may already have been replaced by later jobs; it is not relabeled as the documents original. Original per-guard closed Git logs and actual guard argv/exit/fullstreams are retained.",
+    "Terminal profile non-cache files/symlinks retained; Chrome cache payloads excluded with inventory, no removal. ELF payloads excluded with actual hashes; original fingerprint sidecars retained.",
+    "GitHub artifact upload actions are preserved as original local artifact saves, not claimed uploaded to GitHub.",
+    "No independently predecoded host API launcher pipe is invented."
+  ]
+}
