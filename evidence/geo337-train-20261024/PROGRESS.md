@@ -255,3 +255,11 @@ PF3原baseline20全部通過，19刀各命中指定方法與marker的正常Asser
 原v4 Recorder.role掃整串argv，遇--base設定而將兩項orchestration外層source_role/source_sha誤標base b74f9a2；原欄位與streams不回寫。acceptance_sha、顯式--sha L、真正subject inner與執行前後Git guards獨立綁定L，不能概稱所有source_sha欄皆L，也不能把base標籤當成實跑base。V4_OUTER_SOURCE_ROLE_DIAGNOSTIC與純role重現工具保此病因；未改原裁判或重跑subject。
 
 兩份collector外層完整命令／stdout／stderr／環境／exit及原工具均公開；R8初peer schema誤判與v1保歷史。獨立2768／19603核對0只驗原件，不算產品測試。舊status-only小RESULT保原樣；本批不移標其他性能、exact、CI或整體驗收，不新增skip、放寬斷言或時限。P52／P-189／#323 timing、profile、memo及L跨版本exact仍待原正式結果，B1/B2/B3尚未全解除，沒有READY-TO-MERGE。
+
+## 2026-10-24 01:57 UTC：59組cold receipts與cardref受控突變ELF保全原件公開
+
+本批僅維護證據，不執行或移標產品gate。59組新增cold aliases的177原路徑與bytes全保，連同既有236組共295組cold aliases；三個cold checkouts在全部aliases脫鉤前禁寫、禁復用。原plan配置節省量286,375,936B，不能當成有背景寫入時的df淨回收。
+
+cardref另有兩組受控突變ELF aliases，原116路徑與bytes全留，63個重複payload以保全link共享；原plan配置節省量79,196,160B，不是df淨回收。這兩組與295組cold aliases分開，任一alias寫入或復用前須全部delink。原inode與per-path mtime不保原樣，原metadata在PLAN；沒有刪受控ELF、收據、fixture或git object。
+
+固定原件包7487members、4,160,382B、SHA256 0c9cb4ef4f425d7cb7ab7542c0b183ac55f09d6ada7350ea7e4e36bf7c95fcdb已公開於terminal-maintenance-cold59-cardref-originals。它保存原小metadata與完整命令流，不另複製cold receipt本體或ELF payload；cardref原931份非ELF原件由既有§7完整包／inventory覆蓋，沒有聲稱新包二次包含。collector完整外層與包外root sequential原件另外公開，未回寫固定tar；原收包0、獨審30026/0及collector靜審19/0均保。這些核對數不計產品gate，不更新其他效能終態，也不宣稱整體READY。
