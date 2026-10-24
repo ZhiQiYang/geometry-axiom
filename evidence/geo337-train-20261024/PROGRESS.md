@@ -1,8 +1,13 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 03:07 UTC）
+## 唯一 current-state（2026-10-24；開始合流下一個來源）
 
-唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。同L正式清單的原終態已收齊；P189／#323 exact、N64性能與required CI仍紅，沒有READY-TO-MERGE。
+目前產品已一般 merge 核心 edge probe 修正來源 `a543eef67b81f8d8800f32d5dc4a5641840d2943`；此提交的 HEAD 是新整合來源，但最後 union 尚未固定。子分支原 17 方法零 skip、56 次 compile/link 全 0、43 次 native 已實跑；十組語意控制及完整撤回／恢復（hash calls 21／31／21、exit 0／1／0）已通過，獨立原流審查 1427／0。第一輪 Linux 測試目錄／執行檔撞名的失敗完整保留，修測試路徑後重跑，未更動斷言或時限。詳見 `edge-probe-integration/`；完整子分支原包由 owner 接續發布後合入。
+
+**新來源尚未通過最終帳本、架構或整套驗收，也沒有新的效能結論。** 下表是上一輪固定 L 的真終態，不能移標為目前 HEAD；四個既有阻擋仍保留。其餘工作線先完成定向驗收再合流，之後由 root 一次重產帳本／架構並執行受影響正式項。
+
+
+上一輪完整驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。同L正式清單的原終態已收齊；P189／#323 exact、N64性能與required CI仍紅，沒有READY-TO-MERGE。
 
 | 正式項 | 真來源 | 原 exit／狀態 | 範圍 |
 |---|---|---|---|
