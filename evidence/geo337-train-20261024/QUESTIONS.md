@@ -24,7 +24,7 @@
 - `_s1_p8_l_room_primary_through_reflex_extension.scene`：新增 `——定位邊 e3 [3000,4800] mm，低端超出 [27,3000] mm`。
 - `_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`：新增 `——定位邊 e1 [0,1800] mm，高端超出 [1800,4773] mm`。
 
-本輪L正式重跑更新：同L #323原prepare0／build0／compare1已真完成；equivalence.json記175 scenes／350 runs，差異僅列`_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`三個stdout。原`verify_linux.py:156`的`assert not failures,failures`拋出；ABC_result尚未設定、quantitative_targets為空，不能冒完整後續audit四元組或性能已通過。前後來源同L且clean；perf／profile／memo仍UNRUN，原比較器未改，B2未解除。
+歷史E537僅比較完成時的快照（後續性能／memo終態見Q-323-N64）：同L #323原prepare0／build0／compare1已真完成；equivalence.json記175 scenes／350 runs，差異僅列`_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`三個stdout。原`verify_linux.py:156`的`assert not failures,failures`拋出；ABC_result尚未設定、quantitative_targets為空，不能冒完整後續audit四元組或性能已通過。前後來源同L且clean；perf／profile／memo仍UNRUN，原比較器未改，B2未解除。
 
 ## Q-P189-EXACT：同族I22診斷差異，保原正式紅燈
 
@@ -48,3 +48,9 @@ L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`的原P-189 full已在2026-10-24 02:
 依決策佇列 2026-10-24 Q318-1「政策先合，另開工單」與 issue335，放置路徑及逐條條文差異定案前不實作。較窄待審方向為明示 Reading A boundary 固定段原子放置契約，須釐清組內已放/完成狀態、初始跨度、無環來源與 dump/重建；未採用，不把未 placed 料當已放、不硬裁 auto 跨距，不放寬 I22、I20/R18、I5/I11，不新增數值門檻。根因與限制經獨立 peer84/0；這是準備證據，不是產品修正或 #335 驗收通過。
 
 完整唯讀原件與設計比較收於 `issue335-readonly-cause/`；本項維持待決策，不在對話提問或阻斷其他驗收。
+
+## Q-323-N64：既定性能門檻紅，無新增門檻決策
+
+同L原36樣本timing的stage execution0，但N64 fix/main=1.4282954375137715>1.3，target_met=false；outer CLI1另包含累積compare1。N16/32/48 fix/base原三門檻皆true，原四profile的source calls64/32=4.407618425509266≤4.5亦true。memo撤回6.053833206336931>4.5真1、恢復4.407618425509266真0，隔離175/350 ABC0，不代表N64載入時間或跨版本診斷exact已綠。
+
+本項不要求使用者定新數值。原1.3門檻與分母保留，性能病因待依原profile剖析，不逕歸環境、不挑樣本、不改比較器。可自主進行不改公理／鎖定決策的效能修正，須做撤回／恢復並按影響更新驗收。原B2與P189診斷版本界線另保待裁決，不以這次memo因果證據解除。

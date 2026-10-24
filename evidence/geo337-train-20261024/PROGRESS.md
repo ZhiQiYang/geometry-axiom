@@ -1,8 +1,8 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 02:30 UTC）
+## 唯一 current-state（2026-10-24 02:44 UTC）
 
-唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
+唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。同L正式清單的原終態已收齊；P189／#323 exact、N64性能與required CI仍紅，沒有READY-TO-MERGE。
 
 | 正式項 | 真來源 | 原 exit／狀態 | 範圍 |
 |---|---|---|---|
@@ -14,7 +14,10 @@
 | P52／Q38／§7兩項 | L | §7 compiled0／axiom0；Q38原0／outer0，完整原件已公開；P52 formal／verifier／driver／outer0（終態原收據已封，完整原件包已在雲端核對、待推送） | P52 main中位218.2650215ms、fix176.218242ms，原fix≤main成立，無+5寬限；首次收件工具exit1不改產品0 |
 | P-189原完整比較 | L／base3e600772；main adbaebf9 | 原CLI／driver／outer1；已跑，仍紅 | 原p189_verify.py:195的assert raw[base]==raw[fix]；126組完整stdout逐bytes相同後，第127個repo-_role_priority_mutant.scene首次不同而中止，未完成175。兩版皆reject、完整dump相同，差在I22載入診斷與stderr；原full內timing未啟動，小原收據已公開，完整原件包雲端已核、待推送 |
 | P-189獨立timing tail | L／main adbaebf9／base3e600772 | 原CLI／driver／outer0，小原收據已公開；完整原件包雲端已核、待推送 | 原36samples，N16/32/48/64四receipt ratio約1.101333／0.958790／1.277641／1.371567皆≤2；此tail的dump_count=0、overall_P189_passed=false，不能將原full exit1改成綠 |
-| #323 required-eight／PF3／timing／profile／memo反證 | L | required-eight原exit0／PF3原exit0，完整原件包已封；timing／profile／memo UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
+| #323 required-eight／PF3 | L | 原exit0／0，完整原件包已封 | 原676混合單位／20-19-20，未移標舊F |
+| #323原timing | L；baseb74／mainadba | stage execution0／outer CLI1；N64目標false | 原36samples；N16/32/48 fix/base 0.998983／0.811880／0.806587皆≤1，N64 fix/main=1.4282954375>1.3。原CLI1含累積compare紅與數值紅 |
+| #323原profile | L | stage execution0／outer CLI1；calls比門檻綠 | 原四profiles；N32 82668／N64 364369，ratio4.4076184255≤4.5。累積compare／性能紅未解除 |
+| #323 whole-memo反證 | L及明示withdrawn/restored變體 | driver／outer0；withdrawn1／restored0／隔離ABC0 | 兩phase execution_complete true；calls比撤回6.0538332063>4.5、恢復4.4076184255≤4.5；隔離175/350與原audit tuple相同，不代跨版本compare1或N64性能紅 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
 | #323跨版本175／350 exact | L對原b74 | prepare0／build0／compare1；同L已跑仍紅 | 原175 scenes／350 runs，三個具名stdout差；verify_linux.py:156原assert not failures,failures；來源前後L clean。原ABC_result尚未設定，未冒後續audit或性能已通過 |
 | 最新B3：Actions 40043471807 required jobs | head f05e7cf | 七項failure；新run原annotation已分類帳戶／支出環境阻擋 | 同批封新run原件及source binding；未取得CI真啟動終態或正式替代接受，B3仍未解除；舊c6／40034196788只作歷史 |
@@ -278,8 +281,16 @@ cardref另有兩組受控突變ELF aliases，原116路徑與bytes全留，63個�
 
 已依預先審過的獨立p189-timing tail完成三方量測，原CLI／driver／outer全0，36samples四receipt ratio皆≤2；該tail明列dump_count=0及overall_P189_passed=false，不把full紅燈改綠。P52已正式0、status-only於E58a75f4公開；collector先因Chrome IPC、再因原ledger附加欄位各退出1，兩次工具失敗均保留；v3已封完整包並核對13496/0，原產品沒有重跑。45個IPC只存metadata，65項原annotation保留，六個ELF只省包內payload；完整包待推送。
 
-## #323同L比較終態與小原收據出版
+## 歷史快照：E537僅完成#323 compare時的小收據出版
 
 同L #323原prepare0／build0／compare1已真完成；equivalence.json記175 scenes／350 runs，差異僅列`_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`三個stdout。原`verify_linux.py:156`的`assert not failures,failures`拋出；ABC_result尚未設定、quantitative_targets為空，不能冒完整後續audit四元組或性能已通過。前後來源同L且clean；perf／profile／memo仍UNRUN，原比較器未改，B2未解除。
 
 本批final-L-performance-terminal-status-only只公開P189兩原終態／assertion與首次差異streams、timing原36表／receipt／scope，以及#323比較後receipt／equivalence與outer；三份已完成完整包仍在雲端，沒有壓縮或入Git。P52／P189full／timing的actual核對為13496／14330／1457各0，不當產品測試；產品結果仍為0／1／0。
+
+## 全部L專項終態已收齊：仍有原比較、性能與CI紅燈
+
+同L完整清單是各原OUT逐項合成；單一#323 receipt只執行五stage，all_required_stages_completed=false及full_acceptance_passed=null原值保留，不改成整體driver通過。原#323 prepare/build/compare/perf/profile stage execution為0/0/1/0/0；perf與profile的outer CLI皆1，不能與stage execution0或個別數值目標綠混用。N64fix/main=1.4282954375137715>1.3是真性能門檻紅；N16/32/48對原base皆不變慢，source calls64/32=4.407618425509266≤4.5通過。原36timing與四profile未重取樣，分母與門檻未改。
+
+memo於02:35:07.864974 UTC真完成，原driver/outer0；撤回1的calls比6.053833206336931>4.5，恢復0的比4.407618425509266，兩phase execution_complete true。memo隔離175/350 ABC原0、原audit tuple一致，仍不解除formal跨版本compare1、P189full1或N64載入性能紅。
+
+本批final-L-all-terminal-status-only保原13KB formal receipt、performance/profile原JSON、三outer完整小流與原2,877,262B memo driver receipt；沒有摘欄冒原件。完整#323/memo原流與P52/P189三完整封包尚未推送，本小收據不代完整封包。下一步先查N64熱點與做受影響修正／撤回恢復，保原比較紅與QUESTIONS的版本裁決界線，繼續其他已授權工作，不放寬門檻。
