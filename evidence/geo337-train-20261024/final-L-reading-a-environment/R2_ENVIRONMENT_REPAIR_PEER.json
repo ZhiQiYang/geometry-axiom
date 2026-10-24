@@ -1,0 +1,223 @@
+{
+  "schema": "reading-a-L-sparse-repair-r2-static-peer/1",
+  "createdUTC": "2026-10-23T22:40:29.126480+00:00",
+  "scope": "Same-L terminal r1 environment repair metadata,22 original captured Git reads and frozen unmodified launcher; no stage reexecution.",
+  "checkCount": 52,
+  "checks": [
+    {
+      "label": "r2 binding pinned",
+      "passed": true
+    },
+    {
+      "label": "same source L",
+      "passed": true
+    },
+    {
+      "label": "22sameLfiles1530356bytes",
+      "passed": true
+    },
+    {
+      "label": "all old11 binding rows unchanged",
+      "passed": true
+    },
+    {
+      "label": "20oracleplus2external",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/PROPOSAL.md",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/PROPOSAL.md",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/README.md",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/README.md",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/evidence/round22/FINAL-HEAD.md",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/evidence/round22/FINAL-HEAD.md",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/evidence/round22/README.md",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/evidence/round22/README.md",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/evidence/round22/expected-spotcheck.txt",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/evidence/round22/expected-spotcheck.txt",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/evidence/round22/make_run10.py.txt",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/evidence/round22/make_run10.py.txt",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/evidence/round22/run10.py.txt",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/evidence/round22/run10.py.txt",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/evidence/round22/source-mutants.0of1.txt",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/evidence/round22/source-mutants.0of1.txt",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/evidence/round22/srcmut-cmd.txt",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/evidence/round22/srcmut-cmd.txt",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/evidence/round22/tally.txt",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/evidence/round22/tally.txt",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/framing_oracle.py",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/framing_oracle.py",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/make_golden.py",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/make_golden.py",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/oracle-golden.json",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/oracle-golden.json",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/quote_check.py",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/quote_check.py",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/reading-a-expected-buildable.json",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/reading-a-expected-buildable.json",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/reading_a_cases.py",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/reading_a_cases.py",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/reading_a_source_control.py",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/reading_a_source_control.py",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/render.py",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/render.py",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/rooms.json",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/rooms.json",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/selftest.py",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/selftest.py",
+      "passed": true
+    },
+    {
+      "label": "originalGitread geometry-core/framing-template/oracle/sweep-expected-unbuildable.json",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes geometry-core/framing-template/oracle/sweep-expected-unbuildable.json",
+      "passed": true
+    },
+    {
+      "label": "originalGitread 決策佇列.md",
+      "passed": true
+    },
+    {
+      "label": "Gitraw bytes 決策佇列.md",
+      "passed": true
+    },
+    {
+      "label": "original launcher unchanged",
+      "passed": true
+    },
+    {
+      "label": "new output only and r1 preserved",
+      "passed": true
+    },
+    {
+      "label": "allrepaircommands0",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "Original15-check launcher review did not establish completeness of original11-input closure.",
+    "r1 missing make_golden is preserved as environment failure; no product assertion failure inferred.",
+    "r2 stage results are not inferred by this preparation peer."
+  ],
+  "exitCode": 0
+}

@@ -1,0 +1,31 @@
+{
+  "scope": "Original full card-reference section7 at L plus complete selected output archive; no subject rerun",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "checks": 6360,
+  "findings": [],
+  "exit_code": 0,
+  "original_exit": 0,
+  "baseline": {
+    "testsRun": 43,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "failure_names": [],
+    "compile_failures": 0,
+    "infrastructure_failures": 0
+  },
+  "mutants": 53,
+  "compile_commands": 116,
+  "inner_commands": 223,
+  "capture_commands": 27,
+  "archive_sha256": "5c7c8f70e3493818600a0c3c13457c30934ec1312d98e34f01203fc50c22724a",
+  "archive_members": 932,
+  "excluded_ELF_count": 116,
+  "excluded_ELF_bytes": 150289288,
+  "limits": [
+    "No hidden pipes or already-cleaned source snapshot are invented.",
+    "ELF payloads were not rehashed in this peer; preserved original report hashes are matched to exclusion metadata and current file sizes.",
+    "Current shared ROOT is not consulted; closed original HEAD/index/refs and immutable Git L bytes bind the execution.",
+    "Initial pure metadata lookup assumed outer receipt.json, then used original RESULT.json; initial reviewer used expected entry tests instead of count and raised KeyError. Both reviewer errors are retained separately, not subject failures."
+  ]
+}

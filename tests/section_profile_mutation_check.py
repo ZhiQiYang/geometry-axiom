@@ -2,9 +2,10 @@
 
 Relation to proposal AC16: this gate shows that each guard has at least one named killer test that fails with a
 message naming the broken clause.  It is NOT a one-to-one mapping to proposal AC16, which expects specific ACs
-(AC04-AC06, AC12, ... ) to turn red.  The per-case list that --explore measured, and where it differs from AC16
-(AC23 is turned red by no case; AC04-AC06 and AC24 turn red through analogous scenarios), is in
-tests/release-evidence/20261010-q38-i44/ac16-per-case-red-tests.md.
+(AC04-AC06, AC12, ... ) to turn red.  The historical --explore mapping is in
+tests/release-evidence/20261010-q38-i44/ac16-per-case-red-tests.md: AC23 had no named killer; AC04-AC06 and AC24
+turned red through analogous scenarios.  GEO-260 adds SPM43/SPM44, which require the exact AC23 panel-touch
+method (and its u/v-exchanged counterpart) to kill the respective strict-overlap fault independently of AC07.
 
 Run on Linux/WSL (GCC), never edits the checkout:
 
@@ -100,6 +101,8 @@ MODEL_ERROR = 'geometry_app.model_common.ModelError'
 CONCAVE = 'test_concave_not_four_corners_and_winding'
 GEOM = 'test_profile_geometry_and_coordinate_rejections'
 TOUCH = 'test_touch_edges_points_and_cross_kind_overlap'
+AC23_U = 'test_ac23_panel_width_346_touches_timbers_u'
+AC23_V = 'test_ac23_panel_width_346_touches_timbers_v'
 PANEL = 'test_panel_strict_width_fixed_spec_and_long_run'
 AC09 = 'test_ac09_advanced_axes_and_vertex_range'
 AC01 = 'test_ac01_03_08_independent_rectangles_volumes_and_scope'
@@ -282,6 +285,16 @@ CASES = [
          'GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);',
          'GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,0);',
          [AC09], ["expected rejection 'I47/I48/D1'"]),
+    # Preserve SPM03/SPM04 and their AC07 killers.  These independent controls
+    # require AC23 itself, so an existing timber-only failure cannot hide its loss.
+    case('SPM43', 'I45/R36', 'AC23 panel edge contact along u is incorrectly treated as overlap', WS,
+         'if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;',
+         'if(am->profile_id!=bm->profile_id||r.min_u>r.max_u||r.min_v>=r.max_v)return true;',
+         [AC23_U], [ACCEPT, 'V_PROFILE_OVERLAP'], more=[PAIR_CORNERS]),
+    case('SPM44', 'I45/R36', 'AC23 panel edge contact along v is incorrectly treated as overlap', WS,
+         'if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;',
+         'if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>r.max_v)return true;',
+         [AC23_V], [ACCEPT, 'V_PROFILE_OVERLAP'], more=[PAIR_CORNERS]),
     # ---- model group: the producer of the R37 / R39 / D39 solids (see the module docstring) ----
     # SPM36/SPM39: in the source-graph path the W native region sources produce the envelope and member regions
     # (W section_profile.py only binds the typed roots); its legacy RegionDef branch is not on that path.

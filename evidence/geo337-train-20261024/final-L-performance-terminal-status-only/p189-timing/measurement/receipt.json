@@ -1,0 +1,204 @@
+{
+  "schema": "geo261-p189-final/1",
+  "shas": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "fix": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+  },
+  "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "verification_script_sha256": "efafef38357088710ab69ab198931fc845350bfe72201b5eaec52da5681c63f4",
+  "timing_script_sha256": "086805189dc5596853c0c52ca05dd2cbf5c3a605792023366004426ab61a4dd1",
+  "binaries_sha256": {
+    "main": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045",
+    "base": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f",
+    "fix": "345339f2762ee8733183ca9534024ab4ac95f3c4fbcce39407458be628c0232c"
+  },
+  "method": "gcc -std=c11 -O2 geometry-web/web_bridge.c -o bridge -lm; stack=16384; N=16,32,48,64; 3 rounds; order main/base/fix then reverse",
+  "reference_raw_files": [
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000002/stdout.bin",
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "raw_bytes": 41,
+      "raw_sha256": "8ab99c6ce1577c529823decc048198bb79478acca7e1086db9aeb01ceb4bb9c0",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000002-stdout.bin.gz",
+      "stored_bytes": 59,
+      "stored_sha256": "d8b5c9058ad358bc6fa8729738502c6fa7be010925ba68ea0f98155f1318a35d"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000002/stderr.bin",
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000002-stderr.bin.gz",
+      "stored_bytes": 20,
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000004/stdout.bin",
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "raw_bytes": 14745600,
+      "raw_sha256": "e23b5eb07856ec5729b62e881dba7e009d84ab923c76556bd7b5c83e2584f020",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000004-stdout.bin.gz",
+      "stored_bytes": 5765192,
+      "stored_sha256": "d01454c29f99788e541360d5cc658a68f2529a6da229a828b9b2199e38c22145"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000004/stderr.bin",
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000004-stderr.bin.gz",
+      "stored_bytes": 20,
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000005/stdout.bin",
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000005-stdout.bin.gz",
+      "stored_bytes": 20,
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000005/stderr.bin",
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000005-stderr.bin.gz",
+      "stored_bytes": 20,
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000006/stdout.bin",
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "raw_bytes": 41,
+      "raw_sha256": "588ceca84da066a867437dd960645c959bea459f757579060a6850ffa95de7ef",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000006-stdout.bin.gz",
+      "stored_bytes": 59,
+      "stored_sha256": "b4718dc51420c5fe4f2682ae16cdff930a741974bf20da5cd3da584c00b9fd40"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000006/stderr.bin",
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000006-stderr.bin.gz",
+      "stored_bytes": 20,
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000008/stdout.bin",
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "raw_bytes": 16056320,
+      "raw_sha256": "eb1a3a14c3cba61c651cbf824e705475f1e7f4ce7d32ad2606bb965d3b540d04",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000008-stdout.bin.gz",
+      "stored_bytes": 6037534,
+      "stored_sha256": "7d58d21a5b7214311accd8293c24f629e74fcdb716953ffb04def354cfc26655"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000008/stderr.bin",
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000008-stderr.bin.gz",
+      "stored_bytes": 20,
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000009/stdout.bin",
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000009-stdout.bin.gz",
+      "stored_bytes": 20,
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    },
+    {
+      "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000009/stderr.bin",
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "lossless gzip, decompression equals original bytes",
+      "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000009-stderr.bin.gz",
+      "stored_bytes": 20,
+      "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+    }
+  ],
+  "reference_build_roles": {
+    "main": {
+      "role": "reused exact original baseline ELF; no new compile claimed",
+      "provider_sha256": "68181e2b017ca04a9fc854100fdb849b2a722b127338b320082b9ed0c5e63ad0",
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "original_compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "binary_sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045"
+    },
+    "base": {
+      "role": "reused exact original baseline ELF; no new compile claimed",
+      "provider_sha256": "68181e2b017ca04a9fc854100fdb849b2a722b127338b320082b9ed0c5e63ad0",
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "original_compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+      "binary_sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f"
+    }
+  },
+  "scope": "timing-only; original full P189 remains red",
+  "overall_P189_passed": false,
+  "dump_count": 0,
+  "samples": 36,
+  "ratios": [
+    {
+      "n": 16,
+      "medians": {
+        "main": 0.1125,
+        "base": 0.1761,
+        "fix": 0.1239
+      },
+      "fix_main": 1.1013333333333333,
+      "pass": true
+    },
+    {
+      "n": 32,
+      "medians": {
+        "main": 0.1917,
+        "base": 1.0246,
+        "fix": 0.1838
+      },
+      "fix_main": 0.9587897756911841,
+      "pass": true
+    },
+    {
+      "n": 48,
+      "medians": {
+        "main": 0.2849,
+        "base": 4.5104,
+        "fix": 0.364
+      },
+      "fix_main": 1.2776412776412778,
+      "pass": true
+    },
+    {
+      "n": 64,
+      "medians": {
+        "main": 0.4734,
+        "base": 16.2305,
+        "fix": 0.6493
+      },
+      "fix_main": 1.3715673848753698,
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "seconds": 73.53246188163757
+}

@@ -1,0 +1,16 @@
+Initial outer preparation exit 1 before launching pack_originals.py. No subject or packer execution occurred.
+Original tools.exec_command output transcript (not claimed as an independent OS pipe capture):
+Traceback (most recent call last):
+  File "<stdin>", line 10, in <module>
+  File "/workspace/geo288-main-merge-20261023/native-final-tools/capture.py", line 6, in dump
+    def dump(path,data):Path(path).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/open-issue-triage-originals-publication-20261024/producer/REQUEST.json'
+
+Correction: create the fresh external producer directory before writing REQUEST.json; original capture/packer/classifications unchanged by this outer preparation correction.

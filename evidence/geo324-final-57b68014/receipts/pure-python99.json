@@ -1,0 +1,320 @@
+{
+  "schema": "geo324.original-seven-module-result-index.v1",
+  "sourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "rows": [
+    {
+      "archiveReceipt": "pure65-r2/receipt.json",
+      "originalReceiptSHA256": "df0a551b8b5deb2938df464b4baef05c532ee9aa7b0ec8a816bdb715316d58f3",
+      "suite": "test_geometry_host_sources",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_sources.py",
+        "--json-out",
+        "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_host_sources/result.json",
+        "--log",
+        "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_host_sources/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_host_sources.py",
+        "total": 45,
+        "run": 45,
+        "passed": 45,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 4.39
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 45,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "archiveReceipt": "pure65-r2/receipt.json",
+      "originalReceiptSHA256": "df0a551b8b5deb2938df464b4baef05c532ee9aa7b0ec8a816bdb715316d58f3",
+      "suite": "test_geometry_source_runtime",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_source_runtime.py",
+        "--json-out",
+        "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_source_runtime/result.json",
+        "--log",
+        "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_source_runtime/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_source_runtime.py",
+        "total": 10,
+        "run": 10,
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 3.11
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 10,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "archiveReceipt": "pure65-r2/receipt.json",
+      "originalReceiptSHA256": "df0a551b8b5deb2938df464b4baef05c532ee9aa7b0ec8a816bdb715316d58f3",
+      "suite": "test_geometry_kernel_runtime",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_kernel_runtime.py",
+        "--json-out",
+        "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_kernel_runtime/result.json",
+        "--log",
+        "/tmp/geo324-pure-suite-57b68014-r2/test_geometry_kernel_runtime/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_kernel_runtime.py",
+        "total": 10,
+        "run": 10,
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 2.02
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 10,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "archiveReceipt": "pure18/receipt.json",
+      "originalReceiptSHA256": "bbd1a07f79f9584c89af87a1d2f20ad5d302420676e3a571cef494204eb296b6",
+      "suite": "test_rectangular_python",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_rectangular_python.py",
+        "--json-out",
+        "/tmp/geo324-more-pure-57b68014-r1/test_rectangular_python/result.json",
+        "--log",
+        "/tmp/geo324-more-pure-57b68014-r1/test_rectangular_python/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_rectangular_python.py",
+        "total": 9,
+        "run": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 2.12
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 9,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "archiveReceipt": "pure18/receipt.json",
+      "originalReceiptSHA256": "bbd1a07f79f9584c89af87a1d2f20ad5d302420676e3a571cef494204eb296b6",
+      "suite": "test_geometry_host_world",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_host_world.py",
+        "--json-out",
+        "/tmp/geo324-more-pure-57b68014-r1/test_geometry_host_world/result.json",
+        "--log",
+        "/tmp/geo324-more-pure-57b68014-r1/test_geometry_host_world/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_host_world.py",
+        "total": 8,
+        "run": 8,
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.09
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 8,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "archiveReceipt": "pure18/receipt.json",
+      "originalReceiptSHA256": "bbd1a07f79f9584c89af87a1d2f20ad5d302420676e3a571cef494204eb296b6",
+      "suite": "test_geometry_kernel_compatibility",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_geometry_kernel_compatibility.py",
+        "--json-out",
+        "/tmp/geo324-more-pure-57b68014-r1/test_geometry_kernel_compatibility/result.json",
+        "--log",
+        "/tmp/geo324-more-pure-57b68014-r1/test_geometry_kernel_compatibility/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_geometry_kernel_compatibility.py",
+        "total": 1,
+        "run": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.13
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 1,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    },
+    {
+      "archiveReceipt": "domain-pins-r2/receipt.json",
+      "originalReceiptSHA256": "1fdc3dbbab9cf6bea5ceab61befed55e021f57013466299f96fa939d8a868507",
+      "suite": "test_domain_source_pins",
+      "executionSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+      "originalCommand": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/tmp/geo324-predicate-source-57b68014/tests/_unittest_runner.py",
+        "/tmp/geo324-predicate-source-57b68014/tests/test_domain_source_pins.py",
+        "--json-out",
+        "/tmp/geo324-domain-pins-57b68014-r2/test_domain_source_pins/result.json",
+        "--log",
+        "/tmp/geo324-domain-pins-57b68014-r2/test_domain_source_pins/unittest.log"
+      ],
+      "originalProcessExit": 0,
+      "timeout": false,
+      "originalResult": {
+        "file": "tests/test_domain_source_pins.py",
+        "total": 16,
+        "run": 16,
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0,
+        "explicit_skipped": 0,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {},
+        "skip_items": [],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.46
+      },
+      "expectedContract": {
+        "mode": "count",
+        "count": 16,
+        "unit": "test"
+      },
+      "scope": "complete one original unittest module, PARTIAL project; native transport remains original synthetic fixture where used"
+    }
+  ],
+  "scope": "seven complete original unittest modules only;99passed,0failed,0skipped;partial project and incomplete importer set",
+  "environmentAttemptsPreserved": {
+    "thinGitUnknownOption": {
+      "archiveReceipt": "pure65-r1/receipt.json",
+      "collectorExit": 2,
+      "gitExit": 129,
+      "testsExecuted": 0
+    },
+    "missingMaterializedFixture": {
+      "archiveReceipt": "domain-pins-r1/receipt.json",
+      "originalExit": 1,
+      "originalPassed": 15,
+      "originalFailed": 1,
+      "class": "environment FileNotFoundError only;exact tracked5431B fixture added before rerunning only this suite"
+    }
+  },
+  "wrapperEvidenceLimits": [
+    "Original suite launch request did not pre-pin wrapper hash; independent peer calculated preserved wrapper hashes after execution.",
+    "Original1200s is supported by saved request and wrapper; capture rows lack a timeout_seconds field. No such capture field is claimed."
+  ]
+}

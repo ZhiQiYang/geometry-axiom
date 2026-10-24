@@ -1,0 +1,1131 @@
+{
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate": "axiom",
+  "members": [
+    {
+      "name": "original/axiom/after-source.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/after-source.json",
+      "bytes": 298,
+      "sha256": "37643d3d62a9908c693597aaca4bf81aa0b8268385b62f85819bdfa0249bfc05"
+    },
+    {
+      "name": "original/axiom/axiom-reaper.jsonl",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/axiom-reaper.jsonl",
+      "bytes": 521,
+      "sha256": "b3489872c8ee36198107f43962534ba6aabe82ab700d2d35088d717f7b66c4de"
+    },
+    {
+      "name": "original/axiom/before-source.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/before-source.json",
+      "bytes": 298,
+      "sha256": "37643d3d62a9908c693597aaca4bf81aa0b8268385b62f85819bdfa0249bfc05"
+    },
+    {
+      "name": "original/axiom/subject/V01-remove-gate/red/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V01-remove-gate/red/receipt.json",
+      "bytes": 548,
+      "sha256": "ab9eb2fc59bc231caf1bd8e72a0bb54fa15e710303b92b2ee1e44e7ca74e2d0e"
+    },
+    {
+      "name": "original/axiom/subject/V01-remove-gate/red/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V01-remove-gate/red/stderr.log",
+      "bytes": 15924,
+      "sha256": "5b41da4ef51228046b1eef2a8e6924b2dad775f7c06360b644022f4caa4fab8d"
+    },
+    {
+      "name": "original/axiom/subject/V01-remove-gate/red/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V01-remove-gate/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V01-remove-gate/restored/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V01-remove-gate/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "a9c2642d4090c11950019a6f0cc3b7c6d8d0aa4538c1a969a6bc3d7775d6b50c"
+    },
+    {
+      "name": "original/axiom/subject/V01-remove-gate/restored/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V01-remove-gate/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "4da599594ec9bc25fa37d068c7ff857a74b0e36adf6da371fd00a79940116bdd"
+    },
+    {
+      "name": "original/axiom/subject/V01-remove-gate/restored/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V01-remove-gate/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V02-ignore-manifest/red/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V02-ignore-manifest/red/receipt.json",
+      "bytes": 547,
+      "sha256": "e445a6d965518f413a950aa0dcf618d4779bed120e66c18f370e7e6fbe3cac9c"
+    },
+    {
+      "name": "original/axiom/subject/V02-ignore-manifest/red/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V02-ignore-manifest/red/stderr.log",
+      "bytes": 15924,
+      "sha256": "30636db56061465641b4997e85b29477b89498e82a473ed4f75bf0a11b9dd776"
+    },
+    {
+      "name": "original/axiom/subject/V02-ignore-manifest/red/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V02-ignore-manifest/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V02-ignore-manifest/restored/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V02-ignore-manifest/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "9e351572356daa3c9bcd2603dfc7b215fcf073bd54ce6bcbeb8916a0c37bac17"
+    },
+    {
+      "name": "original/axiom/subject/V02-ignore-manifest/restored/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V02-ignore-manifest/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "e467530d6ba54aad81a87a6480002c41f7eb9044059665944cfda76440429dbc"
+    },
+    {
+      "name": "original/axiom/subject/V02-ignore-manifest/restored/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V02-ignore-manifest/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V03-ignore-source/red/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V03-ignore-source/red/receipt.json",
+      "bytes": 560,
+      "sha256": "5b8a853970df2b26d1e9ece8b384606da3abd879dc0097f1952c1341881cc689"
+    },
+    {
+      "name": "original/axiom/subject/V03-ignore-source/red/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V03-ignore-source/red/stderr.log",
+      "bytes": 16304,
+      "sha256": "63170ce7307b15e2c4246eeb677c02b9d0560e70edf1614a1b107dc0c489a120"
+    },
+    {
+      "name": "original/axiom/subject/V03-ignore-source/red/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V03-ignore-source/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V03-ignore-source/restored/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V03-ignore-source/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "fac509a8dd060f4dbc37794acb822ce5f188fa1aafb3e22cd6a6a3a315ed0ea5"
+    },
+    {
+      "name": "original/axiom/subject/V03-ignore-source/restored/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V03-ignore-source/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "9306d960ffadf2cd64340644cb81d204756aa2b56237072ff0140e5d6456e8ff"
+    },
+    {
+      "name": "original/axiom/subject/V03-ignore-source/restored/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V03-ignore-source/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V04-exempt-latest-pre-adoption/red/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V04-exempt-latest-pre-adoption/red/receipt.json",
+      "bytes": 560,
+      "sha256": "fe7e2f2433d83d79c93a037b5d7abd594a4a012f58066a8c62ab312aec27425a"
+    },
+    {
+      "name": "original/axiom/subject/V04-exempt-latest-pre-adoption/red/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V04-exempt-latest-pre-adoption/red/stderr.log",
+      "bytes": 967,
+      "sha256": "f3a8d43879697210c6eacfb02747126f3fd06de613ecf12f54941fd982892f25"
+    },
+    {
+      "name": "original/axiom/subject/V04-exempt-latest-pre-adoption/red/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V04-exempt-latest-pre-adoption/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V04-exempt-latest-pre-adoption/restored/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V04-exempt-latest-pre-adoption/restored/receipt.json",
+      "bytes": 464,
+      "sha256": "0d0bd7ca6fd9df42cdd231f496e81fa72d34f7e6d67abfa6f6100cb1ebd19fb9"
+    },
+    {
+      "name": "original/axiom/subject/V04-exempt-latest-pre-adoption/restored/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V04-exempt-latest-pre-adoption/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "94824766c1b33ea4060f6873fa48cf9564eb39c0e72b430dff24653bed66cc8b"
+    },
+    {
+      "name": "original/axiom/subject/V04-exempt-latest-pre-adoption/restored/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V04-exempt-latest-pre-adoption/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V05-card-adoption-treated-as-pre/red/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V05-card-adoption-treated-as-pre/red/receipt.json",
+      "bytes": 561,
+      "sha256": "031bd448e529cfb27c274ee8efa17e104677c24c2564bea041e739a78b3d2d06"
+    },
+    {
+      "name": "original/axiom/subject/V05-card-adoption-treated-as-pre/red/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V05-card-adoption-treated-as-pre/red/stderr.log",
+      "bytes": 1694,
+      "sha256": "bb3527d95367d51facbe5339eca139979cad79b1500704ff641334dc8e51deee"
+    },
+    {
+      "name": "original/axiom/subject/V05-card-adoption-treated-as-pre/red/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V05-card-adoption-treated-as-pre/red/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/V05-card-adoption-treated-as-pre/restored/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V05-card-adoption-treated-as-pre/restored/receipt.json",
+      "bytes": 465,
+      "sha256": "1c06144bb9e83eba3a22927ea5f824494700ce012b578c07caec8b9f7ee8acef"
+    },
+    {
+      "name": "original/axiom/subject/V05-card-adoption-treated-as-pre/restored/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V05-card-adoption-treated-as-pre/restored/stderr.log",
+      "bytes": 144,
+      "sha256": "9d02dcbecbcd17fae61a48f3b0cae1d832dca76f197f1ee0501e9e6459690e90"
+    },
+    {
+      "name": "original/axiom/subject/V05-card-adoption-treated-as-pre/restored/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/V05-card-adoption-treated-as-pre/restored/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/baseline/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/baseline/receipt.json",
+      "bytes": 464,
+      "sha256": "87290389080b15a2502ef8180e710c26812b672348e5f55c0a96d932c561d1c1"
+    },
+    {
+      "name": "original/axiom/subject/baseline/stderr.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/baseline/stderr.log",
+      "bytes": 144,
+      "sha256": "0cb0d81e8e510b67f4d39a19122894edce2fce6dbe0f44945d0e43a26824f693"
+    },
+    {
+      "name": "original/axiom/subject/baseline/stdout.log",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/baseline/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/axiom/subject/report.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/axiom/subject/report.json",
+      "bytes": 9846,
+      "sha256": "37117ab6d47fa5ac8ce4411654024d216c999a4340e99734e1124ef363f64ad3"
+    },
+    {
+      "name": "original/receipt.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/receipt.json",
+      "bytes": 60991,
+      "sha256": "8941d7f0ad1d348a1c6b23b903f82a6d2e3d80a6eba0c0d7c0f09a142e60d276"
+    },
+    {
+      "name": "original/subcommands/000001/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000001/request.json",
+      "bytes": 1603,
+      "sha256": "b46375ba6f241ddb16fd88ab26e6bc97ea69148715f20e2286b42e7aa453424b"
+    },
+    {
+      "name": "original/subcommands/000001/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000001/result.json",
+      "bytes": 1853,
+      "sha256": "b26f48abc7e2a19d01ed74fcb8143eb1f9f740230e0868c93a7d3e641f60d680"
+    },
+    {
+      "name": "original/subcommands/000001/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000001/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000001/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    {
+      "name": "original/subcommands/000002/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000002/request.json",
+      "bytes": 1609,
+      "sha256": "71ae531b26ce259807ca93c20f7229a2314c932d657db30c210176dc59475ab5"
+    },
+    {
+      "name": "original/subcommands/000002/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000002/result.json",
+      "bytes": 1860,
+      "sha256": "8eedf6e5ceda76e1c0d8ee948393bce59ed03fac60533f67a79703c2bf17c60c"
+    },
+    {
+      "name": "original/subcommands/000002/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000002/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000002/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000002/stdout.bin",
+      "bytes": 41,
+      "sha256": "a42f667f212cbae6677728ff3d6a6bfc8e2b0dbd2f49fb211b8c80e2f02a3b9f"
+    },
+    {
+      "name": "original/subcommands/000003/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000003/request.json",
+      "bytes": 1639,
+      "sha256": "85110cf9c748fd2081728cd7fc273c6d102509f7495a08719f5e46e434384fb0"
+    },
+    {
+      "name": "original/subcommands/000003/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000003/result.json",
+      "bytes": 1889,
+      "sha256": "f387de743ff6e389016bea303d5b22445678ad10d56e018ca691d42277265255"
+    },
+    {
+      "name": "original/subcommands/000003/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000003/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000003/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000004/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000004/request.json",
+      "bytes": 1605,
+      "sha256": "029275808d5235a77c4e75e2cc80a03d2f91a6608a955286fdc39ccf666a638e"
+    },
+    {
+      "name": "original/subcommands/000004/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000004/result.json",
+      "bytes": 1855,
+      "sha256": "a525ee0c641a49dc07a2c4ecef95a1c8bef36d1314c755cd304f25f7b6b3b45c"
+    },
+    {
+      "name": "original/subcommands/000004/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000004/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000004/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000005/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000005/request.json",
+      "bytes": 1614,
+      "sha256": "e70f0cfd6ded670d6df30311920eeca538f76d31e37044101dd4476862ca253b"
+    },
+    {
+      "name": "original/subcommands/000005/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000005/result.json",
+      "bytes": 1870,
+      "sha256": "a58462eeffe1bcf74a8d859c838a6baaa81c2aa4f11c1c1f813e28b3186e723a"
+    },
+    {
+      "name": "original/subcommands/000005/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000005/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000005/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000005/stdout.bin",
+      "bytes": 4270783,
+      "sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+    },
+    {
+      "name": "original/subcommands/000006/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000006/request.json",
+      "bytes": 1634,
+      "sha256": "1955930fe505eef17237090c28ba28a03231a045447c3ff4e6c7a44c5a4cc54d"
+    },
+    {
+      "name": "original/subcommands/000006/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000006/result.json",
+      "bytes": 1885,
+      "sha256": "fe921b98a04224b32473f03b9c5caac9c71d5b0bffb50ce03655e6762a619731"
+    },
+    {
+      "name": "original/subcommands/000006/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000006/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000006/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000006/stdout.bin",
+      "bytes": 181,
+      "sha256": "7ad654d3dabfe19ddcf726f26cd004dffbbc2493cf1d225611d39a0cfc711848"
+    },
+    {
+      "name": "original/subcommands/000007/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000007/request.json",
+      "bytes": 1688,
+      "sha256": "7b6bd5be1e4f6f0164e963e795d9be9b67d21680550fddb6546e0a1b84acff74"
+    },
+    {
+      "name": "original/subcommands/000007/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000007/result.json",
+      "bytes": 1942,
+      "sha256": "ce5394bf55196ab39edd5d29cdffd690cfbb25924406edb306a9bc680eade526"
+    },
+    {
+      "name": "original/subcommands/000007/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000007/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000007/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000007/stdout.bin",
+      "bytes": 47633,
+      "sha256": "3004734c4e1052e95d3234091bc8fb03c20cf7546282432704fca0a07071ee6c"
+    },
+    {
+      "name": "original/subcommands/000008/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000008/request.json",
+      "bytes": 1689,
+      "sha256": "1475fd2c6424ada9611a6eb6a63a34c3a5e4ae1b0ce0a174b379d32b44c30b19"
+    },
+    {
+      "name": "original/subcommands/000008/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000008/result.json",
+      "bytes": 1941,
+      "sha256": "0d6141dfebb6ea393106ae63d2f64c39e22f24bceb50531a0dc640b34cf10ecb"
+    },
+    {
+      "name": "original/subcommands/000008/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000008/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000008/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000008/stdout.bin",
+      "bytes": 2998,
+      "sha256": "5e831ac5aec6b92b5491e190bb8d954069fbacd30bdee2631bd0e3635e5f3e9d"
+    },
+    {
+      "name": "original/subcommands/000009/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000009/request.json",
+      "bytes": 1693,
+      "sha256": "edddc3bcd8ac0f7dc68b28a012072b142d60e4907484e6485a06af79271ea8cd"
+    },
+    {
+      "name": "original/subcommands/000009/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000009/result.json",
+      "bytes": 1946,
+      "sha256": "1d2da623eef8fbba01f2e4b7e5b1240a0461a306a2b744827e17058cfba656df"
+    },
+    {
+      "name": "original/subcommands/000009/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000009/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000009/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000009/stdout.bin",
+      "bytes": 8819,
+      "sha256": "d3282011a7648ef0eb8704517cd49c51a76ae75155f1870e0273f023e189165e"
+    },
+    {
+      "name": "original/subcommands/000010/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000010/request.json",
+      "bytes": 1699,
+      "sha256": "89e45144c6cba462049131f6b25cbaaf50d892f16f7a8bcabfb2899999a3b8d6"
+    },
+    {
+      "name": "original/subcommands/000010/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000010/result.json",
+      "bytes": 1952,
+      "sha256": "7d2b14c3188ea23f9641345980cf3ed2b0f8a8bb11e9d1a4c55a7dccd4d13fef"
+    },
+    {
+      "name": "original/subcommands/000010/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000010/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000010/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000010/stdout.bin",
+      "bytes": 6124,
+      "sha256": "73475426a1060389972bc41e25da97026f717c5c9f7d3cdb40d538a8fcada10e"
+    },
+    {
+      "name": "original/subcommands/000011/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000011/request.json",
+      "bytes": 1690,
+      "sha256": "6a85abc9f87c4493a55e77d784c67797839e337ec85b520968789de7d017d778"
+    },
+    {
+      "name": "original/subcommands/000011/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000011/result.json",
+      "bytes": 1944,
+      "sha256": "e91ab410d283e2ed286359c0243cf4708db33358abc7b8a6b56446cf5c269b5b"
+    },
+    {
+      "name": "original/subcommands/000011/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000011/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000011/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000011/stdout.bin",
+      "bytes": 18122,
+      "sha256": "790d69c3a67ea1ad762f1ef943193433d08215c0a9f426138a9540d3d1a99b41"
+    },
+    {
+      "name": "original/subcommands/000012/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000012/request.json",
+      "bytes": 1698,
+      "sha256": "0fd3079d5d7aaa3a87aad0b49b7c23765b6af59ab0bddf832a41c4fbb9c2e0e3"
+    },
+    {
+      "name": "original/subcommands/000012/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000012/result.json",
+      "bytes": 1950,
+      "sha256": "4e352ea153e80ce3ceab63f1afdbcfdcef379ef1a0de8dfaf5af30b10fb2700f"
+    },
+    {
+      "name": "original/subcommands/000012/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000012/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000012/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000012/stdout.bin",
+      "bytes": 2328,
+      "sha256": "79d3732f79936f31f872fb3188902b1c001b26ef269f1c3c19f69dc525a30c47"
+    },
+    {
+      "name": "original/subcommands/000013/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000013/request.json",
+      "bytes": 1682,
+      "sha256": "108db34043f7043a81e52508f1d501c443d6f3a2653f9be5ccc2f12ddf0c169f"
+    },
+    {
+      "name": "original/subcommands/000013/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000013/result.json",
+      "bytes": 1936,
+      "sha256": "cf66c5df05c340fad0834a0777c9aff1fdb9e616f668738525e4451f7dfd00df"
+    },
+    {
+      "name": "original/subcommands/000013/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000013/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000013/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000013/stdout.bin",
+      "bytes": 48047,
+      "sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+    },
+    {
+      "name": "original/subcommands/000014/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000014/request.json",
+      "bytes": 1694,
+      "sha256": "920d5bfabfed9ebaeeefd043b216516a5029e4403e7dbaeacaea3363cc003a0d"
+    },
+    {
+      "name": "original/subcommands/000014/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000014/result.json",
+      "bytes": 1948,
+      "sha256": "016f857671d0617e3486ca791dadded1de2c8a2147444740bff6a9c4db657096"
+    },
+    {
+      "name": "original/subcommands/000014/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000014/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000014/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000014/stdout.bin",
+      "bytes": 53215,
+      "sha256": "975322b3cf96747fd5318625f571642a20e9ee5130e022ddcbca3ffb824b39f4"
+    },
+    {
+      "name": "original/subcommands/000015/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000015/request.json",
+      "bytes": 1676,
+      "sha256": "e2a00cccd1690ef082b4ec3ab0fd30c7cf5cd4dec971736d4c1bde923e5a8c0b"
+    },
+    {
+      "name": "original/subcommands/000015/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000015/result.json",
+      "bytes": 1930,
+      "sha256": "00fa73770ce72f72f838c71601e321a04075970c3acfa0ba82391825f089dd6a"
+    },
+    {
+      "name": "original/subcommands/000015/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000015/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000015/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000015/stdout.bin",
+      "bytes": 10662,
+      "sha256": "73b622fb59033b0ebe8672fe024c3c46645c9a3e863a60545c486223e44b5692"
+    },
+    {
+      "name": "original/subcommands/000016/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000016/request.json",
+      "bytes": 1681,
+      "sha256": "bf12c6e70941de533353bd3e5c2b55030fb6a9dc8e59ff4178983aa061c300b7"
+    },
+    {
+      "name": "original/subcommands/000016/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000016/result.json",
+      "bytes": 1935,
+      "sha256": "3383c14550ea001adf103b8d0a0b63fba78cb52a42b41cf7930a4497aa81eeb6"
+    },
+    {
+      "name": "original/subcommands/000016/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000016/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000016/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000016/stdout.bin",
+      "bytes": 18466,
+      "sha256": "fc4183f20270cb19c3207cec17b41f42825525c0a629be0d094ea467b5d90136"
+    },
+    {
+      "name": "original/subcommands/000017/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000017/request.json",
+      "bytes": 1665,
+      "sha256": "c2f6f4836857990db1efa5cc1633d2c51d74029c0507ee5e0fc6428755fe4e90"
+    },
+    {
+      "name": "original/subcommands/000017/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000017/result.json",
+      "bytes": 1919,
+      "sha256": "4b55dcb6349a11267b2d3c5cfdd699b72b52b13c008f1fbcab4f4b4f6dd3ae46"
+    },
+    {
+      "name": "original/subcommands/000017/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000017/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000017/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000017/stdout.bin",
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
+    },
+    {
+      "name": "original/subcommands/000018/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000018/request.json",
+      "bytes": 1665,
+      "sha256": "ac09245a9c039bd7af56201dbfbd0634027e847a2b0b7f6c06ce80e07797ce74"
+    },
+    {
+      "name": "original/subcommands/000018/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000018/result.json",
+      "bytes": 1919,
+      "sha256": "85607224902f30f45a21204d8933aaffca88bbbed76f86fdb72527212ff4ce7a"
+    },
+    {
+      "name": "original/subcommands/000018/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000018/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000018/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000018/stdout.bin",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "name": "original/subcommands/000019/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000019/request.json",
+      "bytes": 1676,
+      "sha256": "00e1b4555716a0730c188bcf5983a4ed955ceb8ce7124bfcb09cb5a2c0c0088e"
+    },
+    {
+      "name": "original/subcommands/000019/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000019/result.json",
+      "bytes": 1930,
+      "sha256": "19e0753a723c00091953fcd2ae8939d3b15e5da374cf7130a714ddcbd5c1a8d5"
+    },
+    {
+      "name": "original/subcommands/000019/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000019/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000019/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000019/stdout.bin",
+      "bytes": 25284,
+      "sha256": "5c9b6f70f11c7f985a8e1e37e7b11f057a83d31db5a452709b8a87729874daab"
+    },
+    {
+      "name": "original/subcommands/000020/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000020/request.json",
+      "bytes": 1955,
+      "sha256": "d38958ed78a8e9aca4cf0483549b4dc3d0c4a929e971afb493d570caf88a0f0a"
+    },
+    {
+      "name": "original/subcommands/000020/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000020/result.json",
+      "bytes": 2206,
+      "sha256": "d9db4e9f47807f60d488528c3e08cdc466dea79a7d6227b99439a9221d8ea3c0"
+    },
+    {
+      "name": "original/subcommands/000020/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000020/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000020/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000020/stdout.bin",
+      "bytes": 153,
+      "sha256": "66d2e012c334d8f6fafd48f4dba2936a58177a0821df8f51f5001c826bce0687"
+    },
+    {
+      "name": "original/subcommands/000021/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000021/request.json",
+      "bytes": 1603,
+      "sha256": "a5c750d1e7ddf33bd37fd28369a8882ce0605c4d912e6fbed0547297bd870384"
+    },
+    {
+      "name": "original/subcommands/000021/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000021/result.json",
+      "bytes": 1854,
+      "sha256": "76db780a4453c754447fa25e0aab646a5210b45418a75bf87868df9106c121ed"
+    },
+    {
+      "name": "original/subcommands/000021/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000021/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000021/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000021/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    {
+      "name": "original/subcommands/000022/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000022/request.json",
+      "bytes": 1609,
+      "sha256": "a947a2451cac42db67a0352043e560ffcd6f5cfe5848a099370e161fe06fdd26"
+    },
+    {
+      "name": "original/subcommands/000022/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000022/result.json",
+      "bytes": 1860,
+      "sha256": "323eaab01eda269902cfa593f2c6cd85c0437449f00144e274ed6bc5b0adc049"
+    },
+    {
+      "name": "original/subcommands/000022/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000022/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000022/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000022/stdout.bin",
+      "bytes": 41,
+      "sha256": "a42f667f212cbae6677728ff3d6a6bfc8e2b0dbd2f49fb211b8c80e2f02a3b9f"
+    },
+    {
+      "name": "original/subcommands/000023/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000023/request.json",
+      "bytes": 1637,
+      "sha256": "cf1bec3c2bbfcd87ae0fb5bb24ef22b698bb121fea2375e6a3094ed0cef19ec0"
+    },
+    {
+      "name": "original/subcommands/000023/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000023/result.json",
+      "bytes": 1887,
+      "sha256": "018605eaf21bd211c4953b09d3f71a5a06ca0b94e895f96e7bbe4be06f7bd5df"
+    },
+    {
+      "name": "original/subcommands/000023/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000023/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000023/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000023/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000023/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000024/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000024/request.json",
+      "bytes": 1605,
+      "sha256": "d4dae42164551d85c38558a1ef7bce197450258aaa1392f99f061e4e447887c5"
+    },
+    {
+      "name": "original/subcommands/000024/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000024/result.json",
+      "bytes": 1854,
+      "sha256": "d1cf28fbe300bb0ec6a0ed5e9a0d1f004f33580807cb33864821e27cd4ec5c3f"
+    },
+    {
+      "name": "original/subcommands/000024/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000024/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000024/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000024/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000024/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000025/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000025/request.json",
+      "bytes": 1615,
+      "sha256": "63b782c7ecc642b37a3d44a1ef0d82b0bf6425f34dc948f70fd097ef6ad12403"
+    },
+    {
+      "name": "original/subcommands/000025/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000025/result.json",
+      "bytes": 1871,
+      "sha256": "fb36e02dcebe166c4709436bcea5b59df847f20def3e56a5aff3fb043260a9bc"
+    },
+    {
+      "name": "original/subcommands/000025/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000025/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000025/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000025/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000025/stdout.bin",
+      "bytes": 4270783,
+      "sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+    },
+    {
+      "name": "original/subcommands/000026/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000026/request.json",
+      "bytes": 1635,
+      "sha256": "eb4c5e3528dec8776a896ea661434d36db6f536c59b2bd26bee595619ee2b114"
+    },
+    {
+      "name": "original/subcommands/000026/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000026/result.json",
+      "bytes": 1886,
+      "sha256": "3100e510ad7f55a171286b211136f8642dd0a374ae27ad2a9ca4e45d4dde5d03"
+    },
+    {
+      "name": "original/subcommands/000026/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000026/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000026/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000026/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original/subcommands/000026/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands/000026/stdout.bin",
+      "bytes": 181,
+      "sha256": "7ad654d3dabfe19ddcf726f26cd004dffbbc2493cf1d225611d39a0cfc711848"
+    },
+    {
+      "name": "original/subcommands.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8/subcommands.json",
+      "bytes": 52003,
+      "sha256": "73038ae6c5e9351749f0111d91e20735e98e6809c80fbeb8c0b224dd33f318d5"
+    },
+    {
+      "name": "outer/REQUEST.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8-launch/REQUEST.json",
+      "bytes": 980,
+      "sha256": "8c0d784d332c379fed5e2a3f60757ef2d2dba5286f4372379b9742514126972c"
+    },
+    {
+      "name": "outer/RESULT.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8-launch/RESULT.json",
+      "bytes": 2395,
+      "sha256": "48a6c0ae17e59532a0774051d049e9af1d91123cb1af0c2baefa48333f51274d"
+    },
+    {
+      "name": "outer/subcommands/000001/request.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8-launch/subcommands/000001/request.json",
+      "bytes": 1924,
+      "sha256": "cafed663594b32348721ef8d3b516125a0f795536f55d3167649d109b4a1417e"
+    },
+    {
+      "name": "outer/subcommands/000001/result.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8-launch/subcommands/000001/result.json",
+      "bytes": 2175,
+      "sha256": "0aeb16a6eebc3e8faa6ce21c07115e66e7226c90205baa5e4ae6a6c7304e04ac"
+    },
+    {
+      "name": "outer/subcommands/000001/stderr.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8-launch/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "outer/subcommands/000001/stdin.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8-launch/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "outer/subcommands/000001/stdout.bin",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8-launch/subcommands/000001/stdout.bin",
+      "bytes": 200,
+      "sha256": "8f61c773ee493ecd75fb93b5e6789bac5959c290768d6a4e58a6ea15da83a905"
+    },
+    {
+      "name": "outer/subcommands.json",
+      "source_path": "/workspace/train337-final-L-axiom-7af8c5d8-launch/subcommands.json",
+      "bytes": 2285,
+      "sha256": "0454e7705c0f9333e110346c6fa218b3d92252d7ccb6363e3ccefb5b4fc456a7"
+    },
+    {
+      "name": "tools/PREPARATION.json",
+      "source_path": "/tmp/train337-final-nonperf-specials-prep/PREPARATION.json",
+      "bytes": 11853,
+      "sha256": "afc2ecfa9832ff736cea077630bf780234bb0b9a0dcb49def4fef643189fe02e"
+    },
+    {
+      "name": "tools/README.md",
+      "source_path": "/tmp/train337-final-nonperf-specials-prep/README.md",
+      "bytes": 5477,
+      "sha256": "2ed38b3f642c297a082f285c52b00eb571bac24c3393bd0d388bc2fdf6515cc4"
+    },
+    {
+      "name": "tools/REQUESTS.json",
+      "source_path": "/tmp/train337-final-nonperf-specials-prep/REQUESTS.json",
+      "bytes": 7494,
+      "sha256": "bb0f4d1b04e63e26afdae1438401b3705b1159f79d16c4d55ae4d5cdc5bb530d"
+    },
+    {
+      "name": "tools/STATIC_CHECKS.json",
+      "source_path": "/tmp/train337-final-nonperf-specials-prep/STATIC_CHECKS.json",
+      "bytes": 1497,
+      "sha256": "6b7ec9ed3ca608c0a322e643d7bd6bba959c02979f314aa3e929b6a8b081e8bf"
+    },
+    {
+      "name": "tools/run_original_specials.py",
+      "source_path": "/tmp/train337-final-nonperf-specials-prep/run_original_specials.py",
+      "bytes": 12715,
+      "sha256": "6789d3e346b94f3f38a13049a87d410de2fe444bc69992215253cfe663d8ea23"
+    },
+    {
+      "name": "capture-tools/collect_original_section7.py",
+      "source_path": "/tmp/train337-section7-terminal-collection/collect_original_section7.py",
+      "bytes": 7397,
+      "sha256": "b2a148d1851ce50f96b48c0b5110e464be2bed395a8bc4030aeaff78061e44b2"
+    },
+    {
+      "name": "capture-tools/capture.py",
+      "source_path": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "name": "capture-tools/reap_children.py",
+      "source_path": "/workspace/geo261-environment/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "name": "collection/EXCLUDED_ELF_PAYLOADS.json",
+      "source_path": "/tmp/train337-section7-terminal-collection/axiom/EXCLUDED_ELF_PAYLOADS.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "name": "collection/SUMMARY.json",
+      "source_path": "/tmp/train337-section7-terminal-collection/axiom/SUMMARY.json",
+      "bytes": 6974,
+      "sha256": "d5bb830085e19ee924cc2d80e58a501fd2e10067541525761f5e1ac14ec6ce32"
+    }
+  ],
+  "regular_file_count": 187,
+  "logical_original_bytes": 9225487,
+  "excluded_elf_manifest": "collection/EXCLUDED_ELF_PAYLOADS.json"
+}

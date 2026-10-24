@@ -1,0 +1,14 @@
+{
+  "schema": "geo339-frozen-formal-wrapper-and-terminal-collector-static-peer/1",
+  "checks": 20,
+  "exit_code": 1,
+  "findings": [
+    "collector does not invoke a subject"
+  ],
+  "wrapper_sha256": "d70866f31b4cc9fcc27a0db0f656c09a0fa9900400faceb54dcd1aba6c680901",
+  "collector_sha256": "739101e5321c0c2e0032b4060355b36bfef3769da987a3386b7b52277ba08e56",
+  "limitations": [
+    "Static wrapper/collector review only; no subject run and no current claim about 142/142 or predicates. Actual terminal package requires separate raw verification.",
+    "The original inner driver and root scheduler own exclusive/heavy-slot policy; outer wrapper does not add a lock or threshold."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "independent-original-performance-package-peer-v1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate": "p189",
+  "checks": 14330,
+  "exit_code": 0,
+  "findings": [],
+  "archive_sha256": "a2c4775e54a118c429060575f4b1ddd981d3d827726e69837f4222afa0a59615",
+  "archive_members": 3455,
+  "original_bytes": 55009671,
+  "original_driver_exit": 1,
+  "original_outer_exit": 1,
+  "capture_records": 13,
+  "excluded_retained_elf_count": 3,
+  "metadata_only_chrome_ipc_count": 0,
+  "no_subject_executed": true,
+  "limitations": [
+    "This peer verifies original evidence; exit 0 here does not override any original product red.",
+    "Only historical source guards were read; no current shared ROOT/cache inspection or modification.",
+    "Excluded executable payloads remain at original paths with complete hashes; no deletion."
+  ],
+  "product_passed": false,
+  "exact_original_assertion": "assert raw['base'] == raw['fix'], f'dump 不同：{name}'",
+  "first_failed_scene": "repo-_role_priority_mutant.scene",
+  "completed_equal_scene_count": 126,
+  "generated_scenes_equal": [
+    16,
+    32,
+    48,
+    64
+  ],
+  "full_timing_executed": false,
+  "raw_mismatch_hashes": {
+    "base": "f2a7fb6c0e175bdb5f4e4cc3e1e04925ef70026a53f130331b4cf11a158ba0e7",
+    "fix": "61823d285e3335511d34714e2d08dd8869e995c336fc75144942107ee01ca0f9"
+  },
+  "classification": "Original full byte-equality gate red; timing-only cannot waive it. Semantic authorization/classification needs separate review; this receipt does not change baseline or assertion."
+}

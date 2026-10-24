@@ -1,0 +1,895 @@
+{
+  "schema": "L-native-r1-specific-original-module-and-Node-subtest-coverage/1",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+  "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+  "groups": {
+    "314-six": {
+      "modules": [
+        {
+          "module": "test_geo314_stagger_commit",
+          "suite": "py:test_geo314_stagger_commit",
+          "total": 47,
+          "passed": 47,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo314_stagger_commit.py",
+          "originalRow": "py:test_geo314_stagger_commit                       47    47     0     0     8.0",
+          "originalRowLine": 388,
+          "originalStartLine": 155,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_stagger_commit.json",
+            "memberSHA256": "2bb3d741b4ee9a2516c86168ba3a0a1e8cb467665807167e5c51fbfa62230d7a",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_stagger_commit.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_stagger_commit.unittest.log",
+            "memberSHA256": "e3fce13b7faa11e1a8cfb65529305ebc3701eee10ac3fadf3566f98d9d3d052c",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_stagger_commit.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_stagger_commit.log",
+            "memberSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_stagger_commit.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              388
+            ]
+          }
+        },
+        {
+          "module": "test_geo314_commit_paths",
+          "suite": "py:test_geo314_commit_paths",
+          "total": 11,
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo314_commit_paths.py",
+          "originalRow": "py:test_geo314_commit_paths                         11    11     0     0     0.4",
+          "originalRowLine": 386,
+          "originalStartLine": 153,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_commit_paths.json",
+            "memberSHA256": "ede1bb93085305c0340a978a8830b7d94bf9eeaead1ff09a9eddb261a976e346",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_commit_paths.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_commit_paths.unittest.log",
+            "memberSHA256": "d73fd8570ea6c135f94f4d70721ecc5a147abfac6affa568cd83d37a1707e4c6",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_commit_paths.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_commit_paths.log",
+            "memberSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_commit_paths.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              386
+            ]
+          }
+        },
+        {
+          "module": "test_geo314_ordered_facts",
+          "suite": "py:test_geo314_ordered_facts",
+          "total": 14,
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo314_ordered_facts.py",
+          "originalRow": "py:test_geo314_ordered_facts                        14    14     0     0    17.6",
+          "originalRowLine": 387,
+          "originalStartLine": 154,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_ordered_facts.json",
+            "memberSHA256": "e80901e96cba16a8d7e5802ba4d43a6a6e0e7e2051f7684f664fde9abaed3969",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_ordered_facts.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_ordered_facts.unittest.log",
+            "memberSHA256": "6505d9905cb36c90fd3033b4b20ace26e3564e4682a60d75000aff9a56d8c7ca",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_ordered_facts.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo314_ordered_facts.log",
+            "memberSHA256": "cb44aad81ae901f67e34784524f2505c070626c468e88a68a8237cb3ea962103",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo314_ordered_facts.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              387
+            ]
+          }
+        },
+        {
+          "module": "test_geo261_wood_grid_application",
+          "suite": "py:test_geo261_wood_grid_application",
+          "total": 23,
+          "passed": 23,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo261_wood_grid_application.py",
+          "originalRow": "py:test_geo261_wood_grid_application                23    23     0     0     6.7",
+          "originalRowLine": 375,
+          "originalStartLine": 142,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_wood_grid_application.json",
+            "memberSHA256": "c5f0605ee28df40080fd5a30455f36757e6556e19998797fb17f85f4d3178b4a",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_wood_grid_application.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_wood_grid_application.unittest.log",
+            "memberSHA256": "484d090fbf07ad266ad6cf67f0665fc598a5c2de8705855b70f04ce9ee16b5d4",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_wood_grid_application.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_wood_grid_application.log",
+            "memberSHA256": "8f991a28de1f2c1b58bf3085e9b9b2076738bb8cfe75529a07e0c0d5f6e87fed",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_wood_grid_application.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              375
+            ]
+          }
+        },
+        {
+          "module": "test_geo261_native_grid_product",
+          "suite": "py:test_geo261_native_grid_product",
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo261_native_grid_product.py",
+          "originalRow": "py:test_geo261_native_grid_product                   5     5     0     0     6.7",
+          "originalRowLine": 340,
+          "originalStartLine": 107,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_native_grid_product.json",
+            "memberSHA256": "5d86cfc02d02a7b37b27f3a32677ed5ccd46f4b3168c08333a26cdc32e69ef72",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_native_grid_product.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_native_grid_product.unittest.log",
+            "memberSHA256": "31dcc0a1193e69191742c55c954f9741dbe5bbe7ab537d0865bf943057defc7b",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_native_grid_product.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_native_grid_product.log",
+            "memberSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_native_grid_product.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              340
+            ]
+          }
+        },
+        {
+          "module": "test_grid_inspector_contract",
+          "suite": "py:test_grid_inspector_contract",
+          "total": 3,
+          "passed": 3,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_grid_inspector_contract.py",
+          "originalRow": "py:test_grid_inspector_contract                      3     3     0     0     2.4",
+          "originalRowLine": 403,
+          "originalStartLine": 170,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_grid_inspector_contract.json",
+            "memberSHA256": "f301d162c0556a7f799fb35f861e0bb9a761795e53c11bcd2210a5d228bba6a9",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_grid_inspector_contract.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_grid_inspector_contract.unittest.log",
+            "memberSHA256": "0d6a1797a9fc0a9ed3f993bc253b196e8552796c88fdbc4024f055b29f441fc7",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_grid_inspector_contract.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_grid_inspector_contract.log",
+            "memberSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_grid_inspector_contract.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              403
+            ]
+          }
+        }
+      ],
+      "totalOriginalMethods": 103,
+      "standaloneRerun": false
+    },
+    "reading-a-native-oracle": {
+      "modules": [
+        {
+          "module": "test_geo318_reading_a_native",
+          "suite": "py:test_geo318_reading_a_native",
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo318_reading_a_native.py",
+          "originalRow": "py:test_geo318_reading_a_native                      7     7     0     0     6.8",
+          "originalRowLine": 389,
+          "originalStartLine": 156,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo318_reading_a_native.json",
+            "memberSHA256": "72ea86a120d38df3d09710299afa5e65a537570460c1b29a3b8d2e9f249ba41e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo318_reading_a_native.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo318_reading_a_native.unittest.log",
+            "memberSHA256": "9521572ab577b9e32a212372a92d9bd309eefee85f50de517e17ab2080261dbc",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo318_reading_a_native.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo318_reading_a_native.log",
+            "memberSHA256": "f28f97d72dc9056c748c29936a9b7a146dcf2c39d821876c5296c378dc51da14",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo318_reading_a_native.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              389
+            ]
+          }
+        },
+        {
+          "module": "test_geo318_reading_a_oracle",
+          "suite": "py:test_geo318_reading_a_oracle",
+          "total": 14,
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo318_reading_a_oracle.py",
+          "originalRow": "py:test_geo318_reading_a_oracle                     14    14     0     0     0.6",
+          "originalRowLine": 390,
+          "originalStartLine": 157,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo318_reading_a_oracle.json",
+            "memberSHA256": "a129cfea7967115118f803d3c13e063b2be7adc9ee876723a5808220cb696840",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo318_reading_a_oracle.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo318_reading_a_oracle.unittest.log",
+            "memberSHA256": "a3327ac90ad344b29c7b580144777e524cf6fc93bfcde171180ba9114fab54f3",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo318_reading_a_oracle.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo318_reading_a_oracle.log",
+            "memberSHA256": "6c48322c5acee2ec23938ef55e199c544e52e777c6c5337465824b83d8e39298",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo318_reading_a_oracle.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              390
+            ]
+          }
+        }
+      ],
+      "totalOriginalMethods": 21,
+      "standaloneRerun": false
+    },
+    "323-fixed-three": {
+      "modules": [
+        {
+          "module": "test_geo261_load_residual",
+          "suite": "py:test_geo261_load_residual",
+          "total": 13,
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo261_load_residual.py",
+          "originalRow": "py:test_geo261_load_residual                        13    13     0     0    65.0",
+          "originalRowLine": 326,
+          "originalStartLine": 93,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_load_residual.json",
+            "memberSHA256": "d06ea0c049e659edd663bd6f7f13ec5e6d5193ff275b03d1dab3ca848530202c",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_load_residual.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_load_residual.unittest.log",
+            "memberSHA256": "b38133bba540dfe8a82d583067646cf8f04a2786d6e5ccbaf14bf466a3187cdf",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_load_residual.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_load_residual.log",
+            "memberSHA256": "72cbb26a12575bc6c5a0d1cc3c23e269c282c12449e0a4bd7fd78b20d7536ff2",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_load_residual.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              326
+            ]
+          }
+        },
+        {
+          "module": "test_geo261_host_facts_authority",
+          "suite": "py:test_geo261_host_facts_authority",
+          "total": 22,
+          "passed": 22,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo261_host_facts_authority.py",
+          "originalRow": "py:test_geo261_host_facts_authority                 22    22     0     0    32.4",
+          "originalRowLine": 321,
+          "originalStartLine": 88,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_host_facts_authority.json",
+            "memberSHA256": "f35485c93a9ece8379d9b303573ac3dcfb2880743239cdb4b0bcf50a0c24955f",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_host_facts_authority.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_host_facts_authority.unittest.log",
+            "memberSHA256": "e0c1ae4faa8104cac81ee090f20199e2865ab3a47c6e36bd10280152b938024e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_host_facts_authority.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_host_facts_authority.log",
+            "memberSHA256": "37ec2fa9fc9fc3176e3eb71c47d6ddd5dce6a8c795c04f9eda24c7b2b5c65c0e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_host_facts_authority.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              321
+            ]
+          }
+        },
+        {
+          "module": "test_geo261_contact_sources",
+          "suite": "py:test_geo261_contact_sources",
+          "total": 15,
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "registeredFullModule": "tests/test_geo261_contact_sources.py",
+          "originalRow": "py:test_geo261_contact_sources                      15    15     0     0     4.6",
+          "originalRowLine": 296,
+          "originalStartLine": 63,
+          "unittestSuccessful": true,
+          "directRecordedChildOSExit": null,
+          "childOSExitSupportedByOriginalJudgeContract": 0,
+          "exitEvidenceBasis": "Original complete passing run_all row and full unittest OK; original run_suite marks a nonzero child return as failure. Per-suite OS returncode was not separately persisted.",
+          "json": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_contact_sources.json",
+            "memberSHA256": "da468279a42e8a1ad6a7179249a40e8ad9ae86d109f115d568a500e0f6072ae6",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_contact_sources.json"
+          },
+          "unittestLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_contact_sources.unittest.log",
+            "memberSHA256": "54ead2f2f4b33fab792e8112997ade19292c5f3a740bafae70d0746325d9e273",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_contact_sources.unittest.log"
+          },
+          "exposedLog": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/run_all-logs/py_test_geo261_contact_sources.log",
+            "memberSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/py_test_geo261_contact_sources.log"
+          },
+          "finalRow": {
+            "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+            "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+            "member": "native/workflow/native/steps/01.stdout",
+            "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+            "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+            "lines": [
+              296
+            ]
+          }
+        }
+      ],
+      "totalOriginalMethods": 50,
+      "standaloneRerun": false
+    }
+  },
+  "314Node13": {
+    "file": "tests/test_grid_inspector_stagger.cjs",
+    "checksObservedPassing": 13,
+    "parentChecks": 1,
+    "nestedChecks": 12,
+    "actualPassEvents": [
+      {
+        "line": 156,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat/literal (42.832887ms)"
+      },
+      {
+        "line": 158,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat/parameter (61.623333ms)"
+      },
+      {
+        "line": 160,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/literal (35.252131ms)"
+      },
+      {
+        "line": 162,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/parameter (47.048866ms)"
+      },
+      {
+        "line": 164,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat/literal (32.905224ms)"
+      },
+      {
+        "line": 166,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat/parameter (33.480201ms)"
+      },
+      {
+        "line": 168,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/literal (37.096881ms)"
+      },
+      {
+        "line": 170,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/parameter (28.582228ms)"
+      },
+      {
+        "line": 172,
+        "text": "  ✔ GEO263_PARAMETER_CHANGE_REEVALUATES_STAGGER (14.828469ms)"
+      },
+      {
+        "line": 174,
+        "text": "  ✔ GEO263_SPACING_EDIT_PRESERVES_STAGGER (19.668754ms)"
+      },
+      {
+        "line": 176,
+        "text": "  ✔ GEO263_EXPLICIT_REMOVAL_REMAINS_OMISSION (19.013286ms)"
+      },
+      {
+        "line": 179,
+        "text": "  ✔ GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE (64.382816ms)"
+      },
+      {
+        "line": 180,
+        "text": "✔ GEO263 native inspector contract (752.440697ms)"
+      }
+    ],
+    "events": {
+      "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+      "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+      "member": "native/workflow/native/run_all-logs/node_tests-js.log",
+      "memberSHA256": "2b37e179edf9cc05ad06e2f06c03fa486d79cc69a3e32aa61c5be9c670dc7875",
+      "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/run_all-logs/node_tests-js.log",
+      "lines": [
+        156,
+        158,
+        160,
+        162,
+        164,
+        166,
+        168,
+        170,
+        172,
+        174,
+        176,
+        179,
+        180
+      ]
+    },
+    "containingNodeSuite": {
+      "name": "node:tests-js",
+      "total": 737,
+      "passed": 733,
+      "failed": 4,
+      "skipped": 0,
+      "originalRow": "node:tests-js                                      737   733     4     0   122.6  日誌 /tmp/geometry-tests/run_all-logs/node_tests-js.log",
+      "finalRow": {
+        "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+        "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+        "member": "native/workflow/native/steps/01.stdout",
+        "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+        "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+        "lines": [
+          458
+        ]
+      },
+      "directRecordedProcessOSExit": null,
+      "status": "FAILED; four fixture ENOENT elsewhere. No standalone Node13 process exit0 is invented."
+    },
+    "separateNode13ProcessExit": null,
+    "notAdditionalTests": true,
+    "source": "The registered Node aggregate argv includes this exact file, no methods/test selectors used."
+  },
+  "aggregateNative": {
+    "originalNativeExit": 1,
+    "workflowExit": 1,
+    "outerExit": 1,
+    "CI35GateExit": 0,
+    "originalCountedTotal": 5309,
+    "passed": 5304,
+    "failed": 4,
+    "skipped": 1,
+    "originalTotalRow": "合計(已執行、有計數者)                            5309  5304     4     1  1786.2",
+    "row": {
+      "archive": "/workspace/train337-native-terminal-collection/completed/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+      "archiveSHA256": "a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885",
+      "member": "native/workflow/native/steps/01.stdout",
+      "memberSHA256": "11a194fe201761b7efaf757e6dbe628097307f04edcf0ea3f0e771a1cce15b1e",
+      "originalRecordedPath": "/tmp/train337-full-native-L-7af8c5d8/workflow/native/steps/01.stdout",
+      "lines": [
+        491
+      ]
+    }
+  },
+  "checks": 52,
+  "exitCode": 0,
+  "findings": [],
+  "details": [
+    {
+      "name": "test_geo314_stagger_commit_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_stagger_commit_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_stagger_commit_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_stagger_commit_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_commit_paths_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_commit_paths_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_commit_paths_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_commit_paths_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_ordered_facts_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_ordered_facts_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_ordered_facts_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo314_ordered_facts_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_wood_grid_application_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_wood_grid_application_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_wood_grid_application_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_wood_grid_application_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_native_grid_product_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_native_grid_product_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_native_grid_product_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_native_grid_product_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_grid_inspector_contract_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_grid_inspector_contract_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_grid_inspector_contract_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_grid_inspector_contract_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo318_reading_a_native_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo318_reading_a_native_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo318_reading_a_native_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo318_reading_a_native_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo318_reading_a_oracle_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo318_reading_a_oracle_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo318_reading_a_oracle_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo318_reading_a_oracle_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_load_residual_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_load_residual_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_load_residual_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_load_residual_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_host_facts_authority_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_host_facts_authority_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_host_facts_authority_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_host_facts_authority_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_contact_sources_complete_final_row",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_contact_sources_row_exact_pass_no_skip",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_contact_sources_original_json_exact",
+      "passed": true
+    },
+    {
+      "name": "test_geo261_contact_sources_original_full_unittest_log",
+      "passed": true
+    },
+    {
+      "name": "314_Node_exact13_pass_events",
+      "passed": true
+    },
+    {
+      "name": "314_Node_parent_and12_children",
+      "passed": true
+    },
+    {
+      "name": "Node_container_original_737_733_4_0",
+      "passed": true
+    },
+    {
+      "name": "original_Node_errors_all_ENOENT",
+      "passed": true
+    },
+    {
+      "name": "native_original_aggregate_retained",
+      "passed": true
+    },
+    {
+      "name": "run_all_nonzero_exit_not_green_contract",
+      "passed": true
+    },
+    {
+      "name": "original_full_module_no_method_filter",
+      "passed": true
+    },
+    {
+      "name": "exact_Node_module_registered",
+      "passed": true
+    }
+  ],
+  "sourcePins": {
+    "tests/run_all.py": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9",
+    "tests/_unittest_runner.py": "f4e72e7a771f903094d6973874da8ccb2c98ddb4ff51571cb9179eabe284290e",
+    "tests/test_grid_inspector_stagger.cjs": "5cc8ff135b96d8eaeb0c9f13665eab8a3e6f726a06f480f39f31d8dac5b246cb"
+  },
+  "coverageRequestSource": "/tmp/train337-final-L-coverage/COVERAGE.txt",
+  "limits": [
+    "Subset successes are original r1 coverage, not a complete native pass; native/workflow/outer remain1.",
+    "Node13 are original passing events inside failed737 Node aggregate; no separate process exit0.",
+    "Original Python final rows and unittest reports/logs show complete success; separate raw per-suite OS returncode fields were not retained, so direct exit=null and source-contract-supported exit0 is labeled explicitly.",
+    "These slices do not replace required-eight676/PF3/complete quick/precision RC proof or any separate performance/ABC gate.",
+    "No subject, compiler, Node, browser, live source/index/cache or current run_all-log read."
+  ]
+}

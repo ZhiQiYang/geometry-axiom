@@ -1,0 +1,172 @@
+{
+  "schema": "additional-four-maintenance-publication-allowlist/1",
+  "source_sha": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+  "historical_maintenance_source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "expected_head": "76ba3b2dad42f5d68fdd3bbdd7e54f5b0c337c65",
+  "destination_prefix": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups",
+  "files": [
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-20261024/four-additional-archive-groups-originals.tar.gz",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/four-additional-archive-groups-originals.tar.gz",
+      "bytes": 359949,
+      "sha256": "e85764f616d5801a9fa13e23ea56cbfdaf32d8ccc203b1b0f48012c423bd31b6",
+      "gate": "historical-storage-maintenance",
+      "role": "archive"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-20261024/PACKAGE.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/PACKAGE.json",
+      "bytes": 2161,
+      "sha256": "44a7a97ab82ee503eccd2c51f6f913f3259175920ee3b69357f26f33359aac54",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-collection-launch-20261024/REQUEST.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/collector-outer/REQUEST.json",
+      "bytes": 514,
+      "sha256": "5bab3a6aad50186083206e68651024e9bc718f8db9a0cafb0635c52de4077563",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-collection-launch-20261024/RESULT.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/collector-outer/RESULT.json",
+      "bytes": 1868,
+      "sha256": "78c3e739627eb0700b03036b8b52e92aa7fa92158f79cb43154119d4ffae3d9d",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-collection-launch-20261024/subcommands/000001/request.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/collector-outer/subcommands/000001/request.json",
+      "bytes": 1615,
+      "sha256": "7ca986700b830b51d4439aff091e9f55372626c0d65fbe61f7bde30c85298e8c",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-collection-launch-20261024/subcommands/000001/result.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/collector-outer/subcommands/000001/result.json",
+      "bytes": 1868,
+      "sha256": "78c3e739627eb0700b03036b8b52e92aa7fa92158f79cb43154119d4ffae3d9d",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-collection-launch-20261024/subcommands/000001/stderr.bin",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/collector-outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-collection-launch-20261024/subcommands/000001/stdin.bin",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/collector-outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-collection-launch-20261024/subcommands/000001/stdout.bin",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/collector-outer/subcommands/000001/stdout.bin",
+      "bytes": 2077,
+      "sha256": "fad385c55626e7d884dd577871cac00ef4236166113fd1966d170d7f01194a30",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-archive-groups-originals-collection-launch-20261024/subcommands.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/collector-outer/subcommands.json",
+      "bytes": 1954,
+      "sha256": "74b10a75703575ca566294065762b6cee1a585df2be305ae531aba475d5bf31c",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/FOUR_ADDITIONAL_COLLECTOR_STATIC_PEER.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/post-collection-peers/FOUR_ADDITIONAL_COLLECTOR_STATIC_PEER.json",
+      "bytes": 3404,
+      "sha256": "ae905ca8686559a4749229f66690eee760ed5d364ed10cdb5172ef5061f0a319",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_four_additional_collector.py",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/post-collection-peers/review_four_additional_collector.py",
+      "bytes": 5045,
+      "sha256": "9ed5ba27e443c7ee41299e0f3987e475b3cf11df57e7bbe7c4ff80e2812e6c01",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/FOUR_ADDITIONAL_ARCHIVE_GROUPS_ACTUAL_PACKAGE_PEER.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/post-collection-peers/FOUR_ADDITIONAL_ARCHIVE_GROUPS_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 837,
+      "sha256": "9b3740a593cbd989331d6c9739c299bca45ccc55261e50a95a5741c58238ab56",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_four_additional_archive_groups_package.py",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/post-collection-peers/review_four_additional_archive_groups_package.py",
+      "bytes": 6007,
+      "sha256": "a8b8385bc1ccd63c41cfe581c760402d2a77067c5b461135cddb285f792a9c64",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/FOUR_ADDITIONAL_IMMUTABLE_ALIAS_REGISTRY_20261024.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/FOUR_ADDITIONAL_IMMUTABLE_ALIAS_REGISTRY_20261024.json",
+      "bytes": 19938,
+      "sha256": "c942313062fb0888367030e1f730f89281e56a12399fc4a7d209ed3113474b4a",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/four-additional-maintenance-publication-preparation-20261024/NEXT_EXCERPT.md",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/NEXT.md",
+      "bytes": 1878,
+      "sha256": "a244e2297dc55a4ff6a19e07bb34b0cb189a89fde2a77f4299fa90c615925329",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/prepare_four_additional_maintenance_publication_manifest_20261024.py",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/publication-preparation.py",
+      "bytes": 3909,
+      "sha256": "8b461c429e227920467e64fc6ab255e79d0d121b492398763714ea4e0e6ae477",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/FOUR_ADDITIONAL_ALIAS_REGISTRY_STATIC_PEER.json",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/post-collection-peers/FOUR_ADDITIONAL_ALIAS_REGISTRY_STATIC_PEER.json",
+      "bytes": 13275,
+      "sha256": "730a2b18a93aff8452ab99e4429c6d129bf058efe2f5bdf12bb581d29cde9d75",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_four_additional_alias_registry.py",
+      "destination": "evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/post-collection-peers/review_four_additional_alias_registry.py",
+      "bytes": 3149,
+      "sha256": "6e507ee683396697723fa79defd4a58f83165512c4b4e2933428d3ac278b0991",
+      "gate": "historical-storage-maintenance",
+      "role": "metadata"
+    }
+  ],
+  "total_files": 19,
+  "archive_bytes": 359949,
+  "metadata_bytes": 69499,
+  "notes": [
+    "No repository, branch, source or PROGRESS mutation performed by this preparer. Root owns the eventual batch publication.",
+    "Unique359949B archive is referenced in place; no duplicate tar or28 source archive bodies created. Large MEMBER_INVENTORY already inside tar, not duplicated loose.",
+    "Archive SHA is bound to original PACKAGE and independent6417/0 actual peer, not a second payload hash in this metadata preparer.",
+    "Keep original PACKAGE fields and initial failed-preparation history unchanged.",
+    "Registry/NEXT are adjacent post-package artifacts; no archive repack/self-reference.",
+    "source_sha identifies root current U context only; historical maintenance does not execute or relabel a U product gate."
+  ]
+}

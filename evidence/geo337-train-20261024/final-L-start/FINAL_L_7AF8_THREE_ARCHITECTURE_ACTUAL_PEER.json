@@ -1,0 +1,30 @@
+{
+  "schema": "final-L-original-three-architecture-actual-peer/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "checks": 646,
+  "exit_code": 0,
+  "findings": [],
+  "original_gate_exits": [
+    0,
+    0,
+    0
+  ],
+  "generic_tests": 205,
+  "product_tests": 18,
+  "skipped": 0,
+  "fixed_inputs": 604,
+  "owned_sources": 334,
+  "exclusions": 270,
+  "edges": 798,
+  "diagnostics": 0,
+  "result_sha256": "3c31d744042015923354450b916688ac76e217225cdc1ae3aa066ba2a4cd17c4",
+  "before_sha256": "f832be6eb4b32e2521b2815e71f855d77d7602c687501711d02d42df72b2ce10",
+  "scan_stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+  "limits": [
+    "原三CLI在獨立 /workspace/geometry-axiom 真L執行；本review只讀原件及fixedGit，不重跑judge、未碰live帳本ROOT/SEED/cache。",
+    "604input beforehash逐Git及現在physical相符，初末HEAD/clean/index原guard核；三judge bytes另對fixedL核。",
+    "此為原三gate真通過，不冒原全ledger/native/6browser/專項或B2跨版本exact已通過。",
+    "原wrapper未另記外層OS capture；本報告核其7組完整c387原流、source guards與RESULT，不把未存在外層捕獲捏造補上。",
+    "未在本review重產架構四衍生檔；該收據若後續刷新須沿真L三原件，不改標舊execution。"
+  ]
+}

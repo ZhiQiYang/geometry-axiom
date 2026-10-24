@@ -1,0 +1,5724 @@
+{
+  "scope": "C17 independent actual raw review only; no test, compiler or subject execution",
+  "source": "a543eef67b81f8d8800f32d5dc4a5641840d2943",
+  "subjectResultSha256": "be0a86f539f41ca7efe924a2721d3b7c0026c0cf88949a6a19c74514a3ed40b7",
+  "checks": [
+    {
+      "check": "exact new published execution SHA",
+      "passed": true
+    },
+    {
+      "check": "original suite true0 and no observation errors",
+      "passed": true
+    },
+    {
+      "check": "original observer fixed65dac",
+      "passed": true
+    },
+    {
+      "check": "no optimize and original verbose argv",
+      "passed": true
+    },
+    {
+      "check": "primary lock and original80MiB guard",
+      "passed": true
+    },
+    {
+      "check": "outer original child true0",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer original child true0",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer original child true0",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer original child true0",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer original child true0",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "outer raw complete",
+      "passed": true
+    },
+    {
+      "check": "original17 zero skips true terminal",
+      "passed": true
+    },
+    {
+      "check": "original source preflight true0",
+      "passed": true
+    },
+    {
+      "check": "original source preflight true0",
+      "passed": true
+    },
+    {
+      "check": "original source preflight true0",
+      "passed": true
+    },
+    {
+      "check": "original watched Git bytes match initial hash",
+      "passed": true
+    },
+    {
+      "check": "original source preflight true0",
+      "passed": true
+    },
+    {
+      "check": "original watched Git bytes match initial hash",
+      "passed": true
+    },
+    {
+      "check": "original source preflight true0",
+      "passed": true
+    },
+    {
+      "check": "original watched Git bytes match initial hash",
+      "passed": true
+    },
+    {
+      "check": "original source preflight true0",
+      "passed": true
+    },
+    {
+      "check": "original watched Git bytes match initial hash",
+      "passed": true
+    },
+    {
+      "check": "original source preflight true0",
+      "passed": true
+    },
+    {
+      "check": "original watched Git bytes match initial hash",
+      "passed": true
+    },
+    {
+      "check": "original source preflight true0",
+      "passed": true
+    },
+    {
+      "check": "original watched Git bytes match initial hash",
+      "passed": true
+    },
+    {
+      "check": "original after HEAD clean actual",
+      "passed": true
+    },
+    {
+      "check": "original after HEAD clean actual",
+      "passed": true
+    },
+    {
+      "check": "all six original watched source bytes unchanged",
+      "passed": true
+    },
+    {
+      "check": "99 original subprocess commands contiguous",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual compile/link is cc exit0 timeout300",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "original CompletedProcess not exception",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "stream is captured",
+      "passed": true
+    },
+    {
+      "check": "stream remains in original R2",
+      "passed": true
+    },
+    {
+      "check": "stream complete byte count/hash",
+      "passed": true
+    },
+    {
+      "check": "stream representation truthful",
+      "passed": true
+    },
+    {
+      "check": "original command normal returncode",
+      "passed": true
+    },
+    {
+      "check": "actual executable complete retained ELF",
+      "passed": true
+    },
+    {
+      "check": "original native case timeout30",
+      "passed": true
+    },
+    {
+      "check": "actual43 native plus56 compiler/link",
+      "passed": true
+    },
+    {
+      "check": "native normal negatives exactly11",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control never-node",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case never-node",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 never-node",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker never-node",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary never-node",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control never-edge",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case never-edge",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 never-edge",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker never-edge",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary never-edge",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control node-key-bytes-ignored",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case node-key-bytes-ignored",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 node-key-bytes-ignored",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker node-key-bytes-ignored",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary node-key-bytes-ignored",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control node-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case node-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 node-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker node-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary node-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control node-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case node-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 node-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker node-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary node-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control edge-kind-ignored",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case edge-kind-ignored",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 edge-kind-ignored",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker edge-kind-ignored",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary edge-kind-ignored",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control edge-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case edge-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 edge-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker edge-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary edge-probe-miss",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control edge-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case edge-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 edge-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker edge-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary edge-probe-hit",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control edge-reuse-old-slot-after-resize",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case edge-reuse-old-slot-after-resize",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 edge-reuse-old-slot-after-resize",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker edge-reuse-old-slot-after-resize",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary edge-reuse-old-slot-after-resize",
+      "passed": true
+    },
+    {
+      "check": "one original named semantic control edge-reuse-wrong-empty-slot",
+      "passed": true
+    },
+    {
+      "check": "own adjacent baseline/restore name and case edge-reuse-wrong-empty-slot",
+      "passed": true
+    },
+    {
+      "check": "normal semantic0/1/0 edge-reuse-wrong-empty-slot",
+      "passed": true
+    },
+    {
+      "check": "precise AssertionError marker edge-reuse-wrong-empty-slot",
+      "passed": true
+    },
+    {
+      "check": "baseline/restore original streams and same real binary edge-reuse-wrong-empty-slot",
+      "passed": true
+    },
+    {
+      "check": "one whole semantic/cost pair fixed",
+      "passed": true
+    },
+    {
+      "check": "whole exact same executed binary each phase fixed",
+      "passed": true
+    },
+    {
+      "check": "whole exact graph first fixed",
+      "passed": true
+    },
+    {
+      "check": "whole precise count stdout/exit fixed",
+      "passed": true
+    },
+    {
+      "check": "whole exact normal assertion/no extra stderr fixed",
+      "passed": true
+    },
+    {
+      "check": "one whole semantic/cost pair withdrawn",
+      "passed": true
+    },
+    {
+      "check": "whole exact same executed binary each phase withdrawn",
+      "passed": true
+    },
+    {
+      "check": "whole exact graph first withdrawn",
+      "passed": true
+    },
+    {
+      "check": "whole precise count stdout/exit withdrawn",
+      "passed": true
+    },
+    {
+      "check": "whole exact normal assertion/no extra stderr withdrawn",
+      "passed": true
+    },
+    {
+      "check": "one whole semantic/cost pair restored",
+      "passed": true
+    },
+    {
+      "check": "whole exact same executed binary each phase restored",
+      "passed": true
+    },
+    {
+      "check": "whole exact graph first restored",
+      "passed": true
+    },
+    {
+      "check": "whole precise count stdout/exit restored",
+      "passed": true
+    },
+    {
+      "check": "whole exact normal assertion/no extra stderr restored",
+      "passed": true
+    },
+    {
+      "check": "all six actual whole phase executions ordered",
+      "passed": true
+    },
+    {
+      "check": "restored actual ELF byte identity fixed",
+      "passed": true
+    },
+    {
+      "check": "one original cleanup audit",
+      "passed": true
+    },
+    {
+      "check": "complete original buildlog hash",
+      "passed": true
+    },
+    {
+      "check": "56 original buildlog commands all0",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "actual compiled C retained complete",
+      "passed": true
+    },
+    {
+      "check": "one full source/header snapshot",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "every original C/header complete hash",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "each actual compiler C input present in snapshot",
+      "passed": true
+    },
+    {
+      "check": "exact one source counter instrumentation fixed",
+      "passed": true
+    },
+    {
+      "check": "actual compiled whole source pin fixed",
+      "passed": true
+    },
+    {
+      "check": "quoted phase source header retained via original include path fixed",
+      "passed": true
+    },
+    {
+      "check": "exact one source counter instrumentation withdrawn",
+      "passed": true
+    },
+    {
+      "check": "actual compiled whole source pin withdrawn",
+      "passed": true
+    },
+    {
+      "check": "quoted phase source header retained via original include path withdrawn",
+      "passed": true
+    },
+    {
+      "check": "exact one source counter instrumentation restored",
+      "passed": true
+    },
+    {
+      "check": "actual compiled whole source pin restored",
+      "passed": true
+    },
+    {
+      "check": "quoted phase source header retained via original include path restored",
+      "passed": true
+    },
+    {
+      "check": "R1 original true1 preserved",
+      "passed": true
+    },
+    {
+      "check": "R1 all17 exposed and Linux collision exact",
+      "passed": true
+    },
+    {
+      "check": "R1 exactly3 failed links not mutation kills",
+      "passed": true
+    },
+    {
+      "check": "R1 exact complete collision stderr",
+      "passed": true
+    },
+    {
+      "check": "R1 exact complete collision stderr",
+      "passed": true
+    },
+    {
+      "check": "R1 exact complete collision stderr",
+      "passed": true
+    }
+  ],
+  "checkCount": 1427,
+  "failures": [],
+  "peerPreparationHistory": "Initial peer guessed per-phase source.h, then guessed combined -I argument. Original argv uses separate -I and private isolated-kernel directory. Both initial reports/helpers retained; only peer lookups corrected, original subject unchanged.",
+  "limitations": [
+    "Only the17-method source-index suite, not full aggregate/ledger/architecture/performance or seven jobs.",
+    "Original compiler/native text streams are preserved decoded text, not newly reconstructed raw OS bytes.",
+    "R1 linker path collision is retained as a test defect, never a semantic mutation kill.",
+    "Package/publication completeness is a separate later check; this review reads the terminal original trees."
+  ]
+}

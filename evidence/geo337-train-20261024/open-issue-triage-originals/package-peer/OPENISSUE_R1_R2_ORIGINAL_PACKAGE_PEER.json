@@ -1,0 +1,16 @@
+{
+  "schema": "independent-openissue-small-original-package-peer/1",
+  "checks": 286,
+  "findings": [],
+  "exit_code": 0,
+  "archive_sha256": "fb43e78c03e176f4a700e6aa3481804d07b4c1081537522f3a3d12db70f3bbb9",
+  "member_count": 90,
+  "original_bytes": 1482357,
+  "classification_scope": "No repeat of129/19 classifications. Old340 finding1, checker wording false-positive and corrected draft retained without rewriting original status.",
+  "limits": [
+    "No API/subject/source mutation; streamed tar reads only, no extraction or new archive.",
+    "Collector terminal RESULT/subcommands/stdout/stderr live outside the immutable90-member archive; publication should retain those small external producer receipts too.",
+    "Initial reviewer assumed tar inventory member INDEX.json and raised KeyError before report completion; original v1 helper remains. Correct actual member is MEMBER_INVENTORY.json; only checker locator corrected, no subject/package change. Tool output chunk 7d1453 preserves the exception; no independent OS capture is invented.",
+    "All38 issue JSON are historical capture, not fresh complete current GitHub enumeration."
+  ]
+}

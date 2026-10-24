@@ -1,0 +1,23 @@
+from pathlib import Path,PurePosixPath
+import json,hashlib,tarfile,io,subprocess
+D=Path('/tmp/train337-adversarial');G='/workspace/geo318-reading-a-prep/meta.git';E='023339af1d4f2388570d39b39ea5136db6852a6b';S='af4fd36c17d05b5da2411b70266ed040e22a6561';P='evidence/geo261-final-af4fd36c/geo260-ac23/';checks=[];reads=[]
+def sha(b):return hashlib.sha256(b).hexdigest()
+def ck(n,v):checks.append({'name':n,'pass':bool(v)})
+def git(*a):
+ r=subprocess.run(['git','--git-dir',G,*a],capture_output=True);assert r.returncode==0;reads.append({'argv':list(a),'exit':r.returncode,'stdout_sha256':sha(r.stdout),'stderr_sha256':sha(r.stderr)});return r.stdout
+def blob(p):return git('show',E+':'+P+p)
+ck('E only new evidence prefix',all(x.startswith(P) for x in git('diff','--name-only',S,E).decode().splitlines()));inv=json.loads(blob('RAW_INVENTORY.json'));archive=blob(inv['archive']);ck('exact archive1148pin',sha(archive)==inv['archiveSHA256']=='228b54b277678d8dda80a1f67a025ac7602ca6d21914243c13f1042df510155d' and len(archive)==inv['archiveBytes']==4014694 and inv['members']==1148 and inv['source']==S);expected={x['member']:x for x in inv['included']};contents={}
+with tarfile.open(fileobj=io.BytesIO(archive),mode='r|gz') as tf:
+ for m in tf:
+  ck('safe regular '+m.name,m.isfile() and m.name not in contents and not PurePosixPath(m.name).is_absolute() and '..' not in PurePosixPath(m.name).parts);b=tf.extractfile(m).read();contents[m.name]=b;x=expected[m.name];ck('bytes and original '+m.name,len(b)==x['bytes'] and sha(b)==x['sha256'] and Path(x['original']).read_bytes()==b)
+ck('exact1148set and18MBraw',set(contents)==set(expected) and len(contents)==1148 and sum(len(x) for x in contents.values())==inv['rawBytes']==18522072)
+for x in inv['excludedELFOriginalsRetained']:
+ b=Path(x['original']).read_bytes();ck('explicit cloud ELF preserved '+x['member'],b[:4]==b'\x7fELF' and len(b)==x['bytes'] and sha(b)==x['sha256'] and x['member'] not in contents and 'excluded from Git archive only' in x['reason'])
+ck('original actualpeer1252 included',any(sha(v)=='19aa5a34d342745f19e135c8235568fe22b064d6348a1aff2b0e7279c625f1be' for v in contents.values()));ck('old failed attempt archived',any(n.startswith('first-attempt-c9269e13/') for n in contents));ck('pure30 separate archived',any(n.startswith('pure-unit-af4fd36c/') for n in contents))
+pub=Path('/tmp/geo260-ac23-publication/evidence-publication');commands=json.loads((pub/'subcommands.json').read_text());ck('10 publisher commands',len(commands)==10)
+for i,c in enumerate(commands):
+ ck('publisherexit '+str(i),c['actual_process_returncode']==0 and not c['timeout_expired'])
+ for name in ['stdin','stdout','stderr']:b=(Path(c['directory'])/(name+'.bin')).read_bytes();ck('publisher stream '+str(i)+' '+name,sha(b)==c[name+'_sha256'])
+ck('actual push and remote E',any('push' in c['command'] for c in commands) and any('ls-remote' in c['command'] and E.encode() in (Path(c['directory'])/'stdout.bin').read_bytes() for c in commands))
+body=Path('/tmp/geo260-ac23-publication/PR_BODY.md').read_bytes();ck('draftbody exactpin',sha(body)=='e47fae6f50ae424767113b6fce9f96c870c246b8e23a45a7fb57f07a87433b0c');s=body.decode();ck('unique currentmatrix and real sources',s.count('| Gate |')==1 and s.count('唯一 current-state 矩陣')==1 and S in s and E in s);ck('body focused nofullclaim','baseline29，不能冒充完整30' in s and '方法數28→30待主代理' in s and '不是 native aggregate 30' in s and '目前仍是 draft' in s);ck('body ELF and oldfailure limits','ELF只排除Git封包' in s and '首輪未在後續schema編輯前另錄final-clean' in s and '原子exception row沒有SHA欄' in s);ck('body no threshold/testrelaxation','全帳本123個M定義未改' in s and '允許 skip：無' in s and '原42cases、28methods、SPM03／04' in s)
+r={'schema':'geo260-af4-publication-and-body-static-peer/1','source_sha':S,'evidence_head':E,'body_sha256':sha(body),'check_count':len(checks),'checks':checks,'findings':[x for x in checks if not x['pass']],'exit_code':int(any(not x['pass'] for x in checks)),'git_reads':reads,'scope':'固定Git E archive1148逐原bytes及明列excluded ELF雲端保留、原publisher10cmd、未推正文候選；無重測。','limits':['body候選未claim已push body branch；允許後續只填publicpeer欄及E欄，仍須普通push證據。','完整44 gate/native aggregate30/expected/全ledger與架構仍待root整合；非可合併。','原oldschema失敗及缺末clean不可消除；原nested receipts不補造SHA。']};o=D/'GEO260_AF4_PUBLICATION_BODY_PEER.json';o.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'path':str(o),'sha256':sha(o.read_bytes()),'checks':len(checks),'exit':r['exit_code'],'findings':r['findings']},ensure_ascii=False));raise SystemExit(r['exit_code'])

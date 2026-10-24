@@ -1,0 +1,297 @@
+{
+  "schema": "pending-maintenance-evidence-publication/2",
+  "historical_maintenance_source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "maintenance_only": true,
+  "branch": "codex/train-337-continue-20261024",
+  "files": [
+    {
+      "source_path": "/workspace/cold128-originals-20261024/cold128-originals.tar.gz",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/cold128-originals.tar.gz",
+      "kind": "cold128",
+      "role": "archive",
+      "bytes": 2774412,
+      "sha256": "4949b46b18d9b8b8bbaaec0fd65dc212ded056757b13589422f56fe702aeb2cd"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-20261024/PACKAGE.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/PACKAGE.json",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 2372,
+      "sha256": "1f5a790224ad82147f00b75a11b7840a92774bb78c82eac2c0718b5ea0f7091c"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-collection-launch-20261024/REQUEST.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/collector-outer/REQUEST.json",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 483,
+      "sha256": "fcb70168f2cd08bc7b9e627fbd9b9391fc72338f9d99f8ca2557bee1d8541ffe"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-collection-launch-20261024/RESULT.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/collector-outer/RESULT.json",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 1821,
+      "sha256": "fd0adee135040fec1ed668bc211337bb1671710b733e0c45cfeadcaf3304969d"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-collection-launch-20261024/subcommands/000001/request.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/collector-outer/subcommands/000001/request.json",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 1569,
+      "sha256": "b642a943bf6223f09f525c2de01ffef3ebdedfa1e07c4f4bcbbb0af93fb65cce"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-collection-launch-20261024/subcommands/000001/result.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/collector-outer/subcommands/000001/result.json",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 1821,
+      "sha256": "fd0adee135040fec1ed668bc211337bb1671710b733e0c45cfeadcaf3304969d"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-collection-launch-20261024/subcommands/000001/stderr.bin",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/collector-outer/subcommands/000001/stderr.bin",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-collection-launch-20261024/subcommands/000001/stdin.bin",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/collector-outer/subcommands/000001/stdin.bin",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-collection-launch-20261024/subcommands/000001/stdout.bin",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/collector-outer/subcommands/000001/stdout.bin",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 2298,
+      "sha256": "b7ac7dd7ed4e4e4c89bd7a46b39d51a3d9d50cfb50d61dd7d352f54acce3cde9"
+    },
+    {
+      "source_path": "/workspace/cold128-originals-collection-launch-20261024/subcommands.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/collector-outer/subcommands.json",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 1907,
+      "sha256": "8a58dd5d86d7841918d877b75128a0bd7063e89786dabdba83dad3740700def1"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/COLD128_COLLECTOR_STATIC_PEER.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/independent-peer/COLD128_COLLECTOR_STATIC_PEER.json",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 1067,
+      "sha256": "f582ec8f6c08033cefc15adb8d04f1133997c12c4996aae8b0abf20ab7a84330"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/COLD128_ACTUAL_PACKAGE_PEER.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/independent-peer/COLD128_ACTUAL_PACKAGE_PEER.json",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 1394,
+      "sha256": "1d7940717d1c2ed29b5c37640233f4fe1f31cb28785ea755b499474a030948a1"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_cold128_collector.py",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/independent-peer/review_cold128_collector.py",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 3899,
+      "sha256": "0793ae78da28b52a1e88b0dc0a90e459caf6d646c1db927319d604350bc3e2bd"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_cold128_package.py",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/cold128/independent-peer/review_cold128_package.py",
+      "kind": "cold128",
+      "role": "metadata",
+      "bytes": 6092,
+      "sha256": "71b31c0a4368e516d811fb7b710d002cfceace7e1c094dc28b19a023ee219aed"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-20261024/four-archive-groups-originals.tar.gz",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/four-archive-groups-originals.tar.gz",
+      "kind": "four-groups",
+      "role": "archive",
+      "bytes": 248731,
+      "sha256": "fc852b7d53c9c0c41feb2ce6256e61723cf2903fcdff4142e1076bb237ce73e7"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-20261024/PACKAGE.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/PACKAGE.json",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 1968,
+      "sha256": "191a7bb5b10af96226893922b29fb7b08019ec5f9cf060ce2483e9d2c8dc2b70"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-collection-launch-20261024/REQUEST.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/collector-outer/REQUEST.json",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 516,
+      "sha256": "474c3ce27db3eacb358efe8f3934b3703a4f5bd73647c239c2782c0f52a60bb5"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-collection-launch-20261024/RESULT.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/collector-outer/RESULT.json",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 1854,
+      "sha256": "a902f5cfa44034ca8d6a9fdc68798d1f2e80e6b78d68bd4e8b7466b6c413b5c6"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-collection-launch-20261024/subcommands/000001/request.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/collector-outer/subcommands/000001/request.json",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 1601,
+      "sha256": "066f339ec5d8a407c490cdd1d280b1d0d2631b777ac11220db3706c99970067a"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-collection-launch-20261024/subcommands/000001/result.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/collector-outer/subcommands/000001/result.json",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 1854,
+      "sha256": "a902f5cfa44034ca8d6a9fdc68798d1f2e80e6b78d68bd4e8b7466b6c413b5c6"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-collection-launch-20261024/subcommands/000001/stderr.bin",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/collector-outer/subcommands/000001/stderr.bin",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-collection-launch-20261024/subcommands/000001/stdin.bin",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/collector-outer/subcommands/000001/stdin.bin",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-collection-launch-20261024/subcommands/000001/stdout.bin",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/collector-outer/subcommands/000001/stdout.bin",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 1884,
+      "sha256": "ce921c715749decd727e25f443cba07c414107ac96510dcc9cfddc406456c53a"
+    },
+    {
+      "source_path": "/workspace/four-archive-groups-originals-collection-launch-20261024/subcommands.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/collector-outer/subcommands.json",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 1940,
+      "sha256": "62117678b36311806bc820d53974f63dfe6f3b93bb5f912c570f211c9d142d46"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/FOUR_ARCHIVE_GROUPS_COLLECTOR_STATIC_PEER.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/independent-peer/FOUR_ARCHIVE_GROUPS_COLLECTOR_STATIC_PEER.json",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 677,
+      "sha256": "67fb09d1f903d5683c4fda41ed5e2b70374b07b5334393b08f6ffc3c951c78d9"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/FOUR_ARCHIVE_GROUPS_ACTUAL_PACKAGE_PEER.json",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/independent-peer/FOUR_ARCHIVE_GROUPS_ACTUAL_PACKAGE_PEER.json",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 813,
+      "sha256": "5d303530816214fbb6145ea760e574023821e02c1f05bb6caacf5699bba2b0c7"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_four_archive_collector.py",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/independent-peer/review_four_archive_collector.py",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 3271,
+      "sha256": "59431a2beee86e27442a8129cf8cc118ca6e5d592d8dbe0c8a6970f928c577a7"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_four_archive_groups_package.py",
+      "destination": "evidence/geo337-train-20261024/terminal-maintenance-cold128-four-groups-originals/four-groups/independent-peer/review_four_archive_groups_package.py",
+      "kind": "four-groups",
+      "role": "metadata",
+      "bytes": 5970,
+      "sha256": "ec9db7925a26235a2b87aa624cad6bde553103a464a980c965a284f760ba386f"
+    }
+  ],
+  "packages": {
+    "cold128": {
+      "archive_sha256": "4949b46b18d9b8b8bbaaec0fd65dc212ded056757b13589422f56fe702aeb2cd",
+      "archive_bytes": 2774412,
+      "members": 15922,
+      "outer_result": "/workspace/cold128-originals-collection-launch-20261024/RESULT.json",
+      "static_peer": {
+        "path": "/workspace/train337-canvas-peer-resume/COLD128_COLLECTOR_STATIC_PEER.json",
+        "sha256": "f582ec8f6c08033cefc15adb8d04f1133997c12c4996aae8b0abf20ab7a84330"
+      },
+      "actual_peer": {
+        "path": "/workspace/train337-canvas-peer-resume/COLD128_ACTUAL_PACKAGE_PEER.json",
+        "sha256": "1d7940717d1c2ed29b5c37640233f4fe1f31cb28785ea755b499474a030948a1"
+      }
+    },
+    "four-groups": {
+      "archive_sha256": "fc852b7d53c9c0c41feb2ce6256e61723cf2903fcdff4142e1076bb237ce73e7",
+      "archive_bytes": 248731,
+      "members": 840,
+      "outer_result": "/workspace/four-archive-groups-originals-collection-launch-20261024/RESULT.json",
+      "static_peer": {
+        "path": "/workspace/train337-canvas-peer-resume/FOUR_ARCHIVE_GROUPS_COLLECTOR_STATIC_PEER.json",
+        "sha256": "67fb09d1f903d5683c4fda41ed5e2b70374b07b5334393b08f6ffc3c951c78d9"
+      },
+      "actual_peer": {
+        "path": "/workspace/train337-canvas-peer-resume/FOUR_ARCHIVE_GROUPS_ACTUAL_PACKAGE_PEER.json",
+        "sha256": "5d303530816214fbb6145ea760e574023821e02c1f05bb6caacf5699bba2b0c7"
+      }
+    }
+  },
+  "inventory_references": [
+    {
+      "kind": "cold128",
+      "source_path": "/workspace/cold128-originals-20261024/MEMBER_INVENTORY.json",
+      "bytes": 6214649,
+      "sha256": "b45f5cb4700453147f8abf914395373b7e33b32c2eafce611e3bf382366feb2f",
+      "archive_member": "MEMBER_INVENTORY.json",
+      "note": "Complete inventory is already inside the immutable archive; no duplicate loose copy."
+    },
+    {
+      "kind": "four-groups",
+      "source_path": "/workspace/four-archive-groups-originals-20261024/MEMBER_INVENTORY.json",
+      "bytes": 355131,
+      "sha256": "df0c9c152626cf889768f97c02247a719a83523bce3e2acb5825fa995b3c9d87",
+      "archive_member": "MEMBER_INVENTORY.json",
+      "note": "Complete inventory is already inside the immutable archive; no duplicate loose copy."
+    }
+  ],
+  "publisher": "/workspace/publish_geo337_pending_maintenance_v2.py",
+  "publisher_sha256": "a7c65096794f388ca38eedeb33e33afff5fafed9bd2cb996ab8df6a0b8a7a2f4",
+  "archive_bytes": 3023143,
+  "metadata_bytes": 47071,
+  "limits": [
+    "Preparation does not copy or rehash archive payloads, mutate a Git repository, commit or push.",
+    "Expected parent is an explicit runtime argument; clean local and remote identity plus repeated HEAD checks reject a competing merge without force push.",
+    "Current PROGRESS original bytes and before/after hashes are retained at execution; only the fixed append template is applied.",
+    "The v1 caf6 preparation is preserved as history and is not the executable PROGRESS source.",
+    "Original collector tools and all pre-collection streams are inside fixed archives; complete current collector outers and later independent peers are separate attachments."
+  ],
+  "progress_append_template": "\n\n## {timestamp_utc}：cold128 與四組保存式去重原件封存\n\n本提交只補歷史維護證據，不執行產品測試、不改任何正式 exit、PR 正文或目前產品驗收狀態。兩份固定 tar 直接寫入 Git blob 並設 skip-worktree，工作樹不另物化副本；原 PACKAGE 欄位不回寫。\n\ncold128 原包 15,922 members、2,774,412B、SHA256 4949b46b18d9b8b8bbaaec0fd65dc212ded056757b13589422f56fe702aeb2cd；128 組的 384 個來源路徑與 bytes 全保，原配置節省量 150,953,984B，不是 df 淨回收。完整原準備、執行、root 序列、命令與 stdout/stderr 已在包內；當次 collector 外層、靜審 24/0、完整包獨審 63,835/0 另附。先前 12.3MB Git-tree 原件沿包內固定 prior PACKAGE 連到既已公開的 cold59/cardref 包，未聲稱再次收錄；selector 的直接 exec／無獨立 c387 outer 限制照原披露。\n\n四組原包 840 members、248,731B、SHA256 fc852b7d53c9c0c41feb2ce6256e61723cf2903fcdff4142e1076bb237ce73e7，保全部 19 個原 archive/stream 路徑及 bytes。來源配置節省量 476,540,928B，不替代含其他寫入的 df 差額；原 6alias publication 的 1/1/1/0 與 54 列歷史終態含紅結果原樣保留。原方案、精確原工具、完整 Git/consumer/journal/outer、獨審皆入包；當次 collector 外層、靜審 22/0 與完整包獨審 3,421/0 另附。F2 counterfactual 因原收據截斷無可信終態而排除，兩個候選原檔未動。\n\n寫入禁令分開記錄：既有三個 seal cold checkout 的 423 組、cardref 的 2 組 ELF、GEO339 的 1 組六 alias、另 3 組大型歷史 archive。任一受保護 alias 寫入或復用前必須完整 delink。原 inode／nlink 與非 canonical 時間戳會按原方案改變，未宣稱保留 inode 身份；沒有刪收據、fixture、Git object 或受控 ELF。兩包完整 inventory 已在各 tar 內，未額外複製大 JSON。這些維護核對不計入產品 gate，也不把舊 L 收據移標成其他來源 SHA。\n",
+  "parent_policy": "Root supplies exact --expected-parent at execution. Local and remote head/clean checks precede reading current PROGRESS; original current bytes are retained and only the fixed maintenance paragraph is appended. No prepared historical draft replaces current progress.",
+  "prepared_from_manifest": {
+    "path": "/workspace/geo337-pending-maintenance-preparation-caf6c9ca/MANIFEST.json",
+    "sha256": "cbae487d8d4f44c17542d6b6b789a7b365cf89f5ef1003d9fc45087dfcb5fabd"
+  }
+}

@@ -133,10 +133,10 @@ class ContactWorldBoundary(unittest.TestCase):
 
 STOP_FILTER = "if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;\n        const GeoRect2 *f=&fact->footprint;"
 CONTROLS = (
-    ("placement-order", "if(previous<=order)break;", "if(true)break;", "ordering", "placement-order-before-declaration"),
-    ("stable-ties", "if(previous<=order)break;", "if(previous<order)break;", "ordering", "placement-stable-equal-order-sides"),
+    ("placement-order", "return left<=right;", "return true;", "ordering", "placement-order-before-declaration"),
+    ("stable-ties", "return left<=right;", "return left<right;", "ordering", "placement-stable-equal-order-sides"),
     ("equal-order-dedup", "index->minimum[slot]<order", "index->minimum[slot]<=order", "ordering", "equal-order-not-deduplicated"),
-    ("partial-shadow", "if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;", "if(earlier)duplicate=true;", "ordering", "partial-shadow-retains-exposed-face"),
+    ('partial-shadow', 'static bool contact_prefix_lo(GeoCoord a,const WoodStopFace *face)\n{return a<=face->lo&&a<face->hi;}\nstatic bool contact_prefix_hi(GeoCoord a,const WoodStopFace *face)\n{return a>=face->hi&&a>face->lo;}', 'static bool contact_prefix_lo(GeoCoord a,const WoodStopFace *face)\n{return a<face->hi;}\nstatic bool contact_prefix_hi(GeoCoord a,const WoodStopFace *face)\n{return a>face->lo;}', 'ordering', 'partial-shadow-retains-exposed-face'),
     ("outline-component-index", "(int)(component*GEO_LOOP_MAX_VERTICES+i)", "(int)i", "regions", "region-outline-index-encoded"),
     ("hole-component-index", "(int)(component*GEO_REGION_MAX_HOLES)+hole_of[li]", "hole_of[li]", "regions", "region-hole-index-encoded"),
     ("paired-capacity", "count+2<=cap", "count<cap", "regions", "member-capacity-pair-atomic"),
@@ -151,8 +151,36 @@ CONTROLS = (
     ("stop-identity", STOP_FILTER, STOP_FILTER.replace("member==exclude", "(exclude&&member->id==exclude->id)"), "ordering", "stop-exclusion-keeps-candidate-identity"),
     ("extension-end", "||ext_end[end]", "", "ends", "self-boundary-extension-end-exempt"),
     ("edge-index-output", "if(out_edge)*out_edge=edge;", "(void)edge;", "intervals", "boundary-edge-index-horizontal"),
+    ("inactive-shadow", "if(compact&&!active[j])continue;", "if(false)continue;", "active-dedup", "dedup-mutual-duplicate-id-leaves-final-pair"),
+    ("compact-active-only", "if(active[i]){if(write!=i)out[write]=out[i];++write;}", "if(!active[i]){if(write!=i)out[write]=out[i];++write;}", "ordering", "earlier-full-cover-deduplicates"),
+    ("compact-survivor-count", "active[i]=false;--remaining;++i;", "active[i]=false;++i;", "active-dedup", "dedup-mutual-duplicate-id-leaves-final-pair"),
+    ("dedup-strict-overlap", "out[i].lo>=out[j].hi||out[j].lo>=out[i].hi", "false", "active-dedup", "dedup-zero-span-strict-overlap-preserved"),
+    ("dedup-full-coordinate", "out[i].fixed!=out[j].fixed", "(uint32_t)out[i].fixed!=(uint32_t)out[j].fixed", "active-dedup", "dedup-full-width-planes-preserved"),
+    ('indexed-unique-facts', 'if(index->last[slot])index->unique=false;', 'if(false)index->unique=false;', 'indexed-dedup', 'indexed-filtered-duplicate-order'),
+    ('indexed-rc-free-prefix', 'for(size_t i=0;i<first;++i)contact_face_index_insert(&index,out,count,i);', 'for(size_t i=0;i<first;++i)if(out[i].fixity!=WOOD_STOP_FREE)contact_face_index_insert(&index,out,count,i);', 'ordering', 'boundary-even-free-owns-coincident-face'),
+    ('indexed-strict-lo', 'return a<=face->lo&&a<face->hi;', 'return a<=face->lo;', 'indexed-dedup', 'indexed-zero-lower-strict'),
+    ('indexed-strict-hi', 'return a>=face->hi&&a>face->lo;', 'return a>=face->hi;', 'indexed-dedup', 'indexed-zero-upper-strict'),
+    ('indexed-plane-coordinate', 'return (a>b)-(a<b);', 'return ((int32_t)a>(int32_t)b)-((int32_t)a<(int32_t)b);', 'indexed-dedup', 'indexed-full-coordinate-plane'),
+    ('indexed-plane-offset', 'size_t value=index->maximum[begin+at-1];', 'size_t value=index->maximum[at-1];', 'indexed-dedup', 'indexed-full-coordinate-plane'),
+    ('indexed-single-witness', 'return witness&&contact_prefix_hi(out[witness-1].hi,face);', 'return witness!=0;', 'indexed-dedup', 'indexed-two-halves-not-one-cover'),
+    ('indexed-survivor-count', 'active[i]=false;--*remaining;', 'active[i]=false;', 'ordering', 'earlier-full-cover-deduplicates'),
+    ('indexed-reversed-skip', 'size_t begin,end;contact_face_index_bounds(index,ordinal,&begin,&end);', 'if(face->hi<face->lo)return false;size_t begin,end;contact_face_index_bounds(index,ordinal,&begin,&end);', 'indexed-dedup', 'indexed-enclosed-reversed-span'),
+    ('legacy-partial-shadow', 'if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;', 'if(earlier)duplicate=true;', 'indexed-dedup', 'indexed-duplicate-fallback-keeps-partial-shadow'),
+    ('legacy-placement-order', 'if(previous<=order)break;', 'if(true)break;', 'indexed-sort', 'sort-legacy-last-order'),
+    ('legacy-stable-ties', 'if(previous<=order)break;', 'if(previous<order)break;', 'indexed-sort', 'sort-legacy-stable-fields'),
+    ('sort-rc-prefix', 'size_t members=count-first;', 'first=0;size_t members=count-first;', 'indexed-sort', 'sort-rc-prefix-preserved'),
+    ('sort-cycle-close', 'out[at]=value;index->sorted[at]=at;', '(void)value;index->sorted[at]=at;', 'indexed-sort', 'sort-cycle-every-field'),
+    ('sort-cycle-step', 'out[at]=out[from];index->sorted[at]=at;at=from;', 'out[at]=out[at];index->sorted[at]=at;at=from;', 'indexed-sort', 'sort-cycle-every-field'),
+    ('sort-full-order', 'return left<=right;', 'return (uint32_t)left<=(uint32_t)right;', 'indexed-sort', 'sort-full-uint64-order'),
+    ('sort-duplicate-sort-guard', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed&&orders.unique)){', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed)){', 'indexed-sort', 'sort-legacy-last-order'),
+    ('sort-overflow-sort-guard', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed&&orders.unique)){', 'if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.unique)){', 'indexed-sort', 'sort-overflow-linear-last-order'),
 )
 
+
+MONOTONIC_SORT_BLOCK = '    /* Placement order commonly already matches the admitted sequence.\n     * Equal orders keep their original member and side order. */\n    if(members<2)return;\n    uint64_t previous=contact_order(world,orders,out[first].timber_id);\n    bool ordered=true;\n    for(size_t i=first+1;i<count;++i){\n        uint64_t current=contact_order(world,orders,out[i].timber_id);\n        if(previous>current){ordered=false;break;}\n        previous=current;\n    }\n    if(ordered)return;\n'
+MONOTONIC_SORT_ANCHOR = '    size_t members=count-first;\n    for(size_t i=first;i<count;++i)index->sorted[i]=i;\n'
+
+PLANE_RANGE_EDITS = (('    for(size_t i=0;i<count;++i)index->rank[index->sorted[i]]=i;\n}', "    for(size_t i=0;i<count;++i)index->rank[index->sorted[i]]=i;\n    /* Sorting no longer needs scratch. Retain every face in each plane range,\n     * including inactive or later-covered faces: only maximum tracks admission.\n     * A group's first rank stores its exclusive end; other ranks store first.\n     * This index and the out array stay fixed throughout indexed deduplication. */\n    for(size_t begin=0;begin<count;){\n        size_t end=begin+1;GeoCoord plane=out[index->sorted[begin]].fixed;\n        while(end<count&&out[index->sorted[end]].fixed==plane)++end;\n        index->scratch[begin]=end;\n        for(size_t rank=begin+1;rank<end;++rank)index->scratch[rank]=begin;\n        begin=end;\n    }\n}"), ('static void contact_face_plane_range(const ContactFaceIndex *index,const WoodStopFace *out,\n    size_t count,GeoCoord fixed,size_t *begin,size_t *end)\n{\n    size_t lo=0,hi=count;\n    while(lo<hi){size_t mid=lo+(hi-lo)/2;\n        if(contact_face_plane_compare(out[index->sorted[mid]].fixed,fixed)<0)lo=mid+1;else hi=mid;\n    }\n    *begin=lo;hi=count;\n    while(lo<hi){size_t mid=lo+(hi-lo)/2;\n        if(contact_face_plane_compare(out[index->sorted[mid]].fixed,fixed)<=0)lo=mid+1;else hi=mid;\n    }\n    *end=lo;\n}\n', 'static void contact_face_index_bounds(const ContactFaceIndex *index,size_t face,size_t *begin,size_t *end)\n{\n    size_t rank=index->rank[face],marker=index->scratch[rank];\n    *begin=marker>rank?rank:marker;\n    *end=index->scratch[*begin];\n}\n'), ('    size_t begin,end;contact_face_plane_range(index,out,count,out[face].fixed,&begin,&end);', '    (void)count;size_t begin,end;contact_face_index_bounds(index,face,&begin,&end);'), ('static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodStopFace *out,\n    size_t count,const WoodStopFace *face)\n{\n    size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodStopFace *out,\n    size_t count,size_t ordinal)\n{\n    (void)count;const WoodStopFace *face=&out[ordinal];\n    size_t begin,end;contact_face_index_bounds(index,ordinal,&begin,&end);'), ('contact_face_index_covered(&index,out,count,&out[i])', 'contact_face_index_covered(&index,out,count,i)'))
 
 class WoodContactWorld(unittest.TestCase):
     @classmethod
@@ -184,6 +212,10 @@ class WoodContactWorld(unittest.TestCase):
 
     def test_multiple_regions_outline_hole_ids_fixities_and_atomic_capacity_pairs(self):
         result = self.case("regions")
+        self.assertEqual(0, result.returncode, result.stderr)
+
+    def test_live_set_duplicate_ids_strict_overlap_and_large_buffer_fallback(self):
+        result = self.case("active-dedup")
         self.assertEqual(0, result.returncode, result.stderr)
 
     def test_positioning_interval_real_geometry_notch_hole_and_i5_precedence(self):
@@ -220,6 +252,139 @@ class WoodContactWorld(unittest.TestCase):
                 self.assertIn("ASSERT:" + control[4], result.stderr)
                 restored = self.case(control[3], phase="restored", control=control[0], assertion=control[4])
                 self.assertEqual(0, restored.returncode, restored.stderr)
+
+    def test_unique_id_prefix_query_keeps_public_degenerate_and_filtered_facts(self):
+        self.assertEqual(0, self.case("indexed-dedup").returncode)
+
+    def test_stable_index_merge_preserves_complete_sequence_and_fallback(self):
+        self.assertEqual(0, self.case("indexed-sort").returncode)
+
+
+    def monotonic_executable(self,source,label):
+        build=native()
+        anchor="static uint64_t contact_order(const WoodContactWorld *world,const ContactOrderIndex *index,uint32_t id)\n{"
+        counted="static size_t geo_test_sort_order_calls;\n"+anchor+"\n    ++geo_test_sort_order_calls;"
+        self.assertEqual(1,source.count(anchor),"One original contact_order definition")
+        instrumented=source.replace(anchor,counted)
+        self.assertEqual(source,instrumented.replace(counted,anchor),"Counter removal preserves actual product bytes")
+        subject=build.woodworking/("contact-monotonic-"+label+"-source.c")
+        subject.write_text(instrumented,encoding="utf-8")
+        harness=(ROOT/"tests/geo343_monotonic_sort_harness.c").read_text(encoding="utf-8")
+        include='#include "contact-monotonic-subject.c"'
+        self.assertEqual(1,harness.count(include))
+        client=build.woodworking/("contact-monotonic-"+label+"-client.c")
+        client.write_text(harness.replace(include,'#include "'+subject.name+'"'),encoding="utf-8")
+        obj=build.compile(client,"contact-monotonic-"+label+"-client")
+        return build.link("contact-monotonic-"+label+"-exe",
+            [obj,build.wood_contacts_object,build.wood_supports_object,*build.kernel_objects()])
+
+    def test_monotonic_sort_preserves_full_fields_and_linear_sorted_lookup_work(self):
+        source=(native().woodworking/"contact_world.c").read_text(encoding="utf-8")
+        self.assertEqual(1,source.count(MONOTONIC_SORT_BLOCK))
+        self.assertEqual(1,source.count(MONOTONIC_SORT_ANCHOR))
+        withdrawn=source.replace(MONOTONIC_SORT_BLOCK,"")
+        restored=withdrawn.replace(MONOTONIC_SORT_ANCHOR,MONOTONIC_SORT_ANCHOR+MONOTONIC_SORT_BLOCK)
+        self.assertEqual(source,restored,"Complete sort optimization restoration is exact")
+        cases=("sorted","reverse","ties","all-ties","prefix","no-member","one-member","last-inversion","middle-inversion","full-uint64")
+        fixed=None
+        for phase,variant,expected in (("fixed",source,0),("withdrawn",withdrawn,1),("restored",restored,0)):
+            with self.subTest(whole_phase=phase):
+                executable=self.monotonic_executable(variant,phase)
+                if phase=="fixed":fixed=executable
+                for case in cases:
+                    result=self.case(case,executable,phase=phase,control="monotonic-whole")
+                    self.assertEqual(0,result.returncode,result.stderr)
+                result=self.case("work",executable,phase=phase,control="monotonic-whole",
+                    assertion="monotonic-linear-order-lookups")
+                print("monotonic-whole phase="+phase+" "+result.stdout,end="")
+                self.assertEqual(expected,result.returncode,result.stderr)
+                if expected:self.assertIn("ASSERT:monotonic-linear-order-lookups",result.stderr)
+        self.assertIsNotNone(fixed)
+        controls=(
+            ("missed-inversion","if(previous>current){ordered=false;break;}","if(previous>current){ordered=true;break;}","last-inversion","monotonic-last-inversion-full-fields"),
+            ("missed-last-face","for(size_t i=first+1;i<count;++i){","for(size_t i=first+1;i+1<count;++i){","last-inversion","monotonic-last-inversion-full-fields"),
+            ("truncated-previous","uint64_t previous=contact_order(world,orders,out[first].timber_id);","uint32_t previous=contact_order(world,orders,out[first].timber_id);","full-uint64","monotonic-full-uint64-fields"),
+            ("missed-previous-update","previous=current;","(void)current;","middle-inversion","monotonic-middle-inversion-full-fields"),
+        )
+        for label,before,after,case,marker in controls:
+            with self.subTest(monotonic_control=label):
+                baseline=self.case(case,fixed,phase="baseline",control=label,assertion=marker)
+                self.assertEqual(0,baseline.returncode,baseline.stderr)
+                self.assertEqual(1,source.count(before),"One actual monotonic guard")
+                executable=self.monotonic_executable(source.replace(before,after),label)
+                result=self.case(case,executable,phase="mutant",control=label,assertion=marker)
+                self.assertEqual(1,result.returncode,result.stderr);self.assertIn("ASSERT:"+marker,result.stderr)
+                result=self.case(case,fixed,phase="restored",control=label,assertion=marker)
+                self.assertEqual(0,result.returncode,result.stderr)
+
+    def plane_executable(self,source,label):
+        build=native()
+        anchor="static int contact_face_plane_compare(GeoCoord a,GeoCoord b)\n{"
+        counted="static size_t geo_test_plane_comparisons;\n"+anchor+"++geo_test_plane_comparisons;"
+        self.assertEqual(1,source.count(anchor),"One actual full-coordinate comparator")
+        instrumented=source.replace(anchor,counted)
+        self.assertEqual(source,instrumented.replace(counted,anchor),"Counter reverses exactly")
+        subject=build.woodworking/("contact-plane-"+label+"-source.c")
+        subject.write_text(instrumented,encoding="utf-8")
+        harness=(ROOT/"tests/geo343_plane_range_harness.c").read_text(encoding="utf-8")
+        include='#include "contact-plane-subject.c"'
+        self.assertEqual(1,harness.count(include))
+        client=build.woodworking/("contact-plane-"+label+"-client.c")
+        cached=int("static void contact_face_index_bounds(" in source)
+        client.write_text("#define GEO_TEST_CACHED "+str(cached)+"\n"+harness.replace(include,'#include "'+subject.name+'"'),encoding="utf-8")
+        obj=build.compile(client,"contact-plane-"+label+"-client")
+        return build.link("contact-plane-"+label+"-exe",
+            [obj,build.wood_contacts_object,build.wood_supports_object,*build.kernel_objects()])
+
+    def test_cached_plane_ranges_match_linear_oracle_and_remove_repeat_search(self):
+        source=(native().woodworking/"contact_world.c").read_text(encoding="utf-8")
+        withdrawn=source
+        for before,after in reversed(PLANE_RANGE_EDITS):
+            self.assertEqual(1,withdrawn.count(after),"One whole plane optimization site")
+            withdrawn=withdrawn.replace(after,before)
+        restored=withdrawn
+        for before,after in PLANE_RANGE_EDITS:
+            self.assertEqual(1,restored.count(before),"One restoration site")
+            restored=restored.replace(before,after)
+        self.assertEqual(source,restored,"Whole cached-range restoration is exact")
+        fixed=None
+        public_cases=("ordering","regions","active-dedup","intervals","extensions","ends","indexed-dedup","indexed-sort")
+        for phase,variant,expected in (("fixed",source,0),("withdrawn",withdrawn,1),("restored",restored,0)):
+            with self.subTest(plane_phase=phase):
+                build=native();path=build.woodworking/("contact-plane-public-"+phase+".c")
+                path.write_text(variant,encoding="utf-8")
+                changed=build.compile(path,"contact-plane-public-"+phase)
+                public=build.link("contact-plane-public-"+phase+"-exe",self.objects(build,changed))
+                for case in public_cases:
+                    result=self.case(case,public,phase=phase,control="plane-whole-public")
+                    self.assertEqual(0,result.returncode,result.stderr)
+                executable=self.plane_executable(variant,phase)
+                if phase=="fixed":fixed=executable
+                for case in ("empty","singleton","bounds","coverage","full-capacity"):
+                    result=self.case(case,executable,phase=phase,control="plane-whole-oracle")
+                    self.assertEqual(0,result.returncode,result.stderr)
+                result=self.case("work",executable,phase=phase,control="plane-whole",assertion="plane-cached-query-no-plane-search")
+                print("plane-whole phase="+phase+" "+result.stdout,end="")
+                self.assertEqual(expected,result.returncode,result.stderr)
+                if expected:self.assertIn("ASSERT:plane-cached-query-no-plane-search",result.stderr)
+        controls=(
+            ("physical-ordinal","size_t rank=index->rank[face],marker=index->scratch[rank];","size_t rank=face,marker=index->scratch[rank];","bounds"),
+            ("nonfirst-begin","*begin=marker>rank?rank:marker;","*begin=rank;","bounds"),
+            ("nonfirst-end","*end=index->scratch[*begin];","*end=marker;","bounds"),
+            ("singleton-end","index->scratch[begin]=end;","index->scratch[begin]=end-1;","singleton"),
+            ("truncated-plane","out[index->sorted[end]].fixed==plane","(uint32_t)out[index->sorted[end]].fixed==(uint32_t)plane","bounds"),
+        )
+        for label,before,after,case in controls:
+            with self.subTest(plane_control=label):
+                baseline=self.case(case,fixed,phase="baseline",control=label,assertion="plane-linear-range-oracle")
+                self.assertEqual(0,baseline.returncode,baseline.stderr)
+                self.assertEqual(1,source.count(before),"One actual range-cache control")
+                executable=self.plane_executable(source.replace(before,after),label)
+                result=self.case(case,executable,phase="mutant",control=label,assertion="plane-linear-range-oracle")
+                self.assertEqual(1,result.returncode,result.stderr)
+                self.assertIn("ASSERT:plane-linear-range-oracle",result.stderr)
+                restored_result=self.case(case,fixed,phase="restored",control=label,assertion="plane-linear-range-oracle")
+                self.assertEqual(0,restored_result.returncode,restored_result.stderr)
 
     def extension_transaction(self, executable):
         with _bridge.BridgeSession(executable) as bridge:

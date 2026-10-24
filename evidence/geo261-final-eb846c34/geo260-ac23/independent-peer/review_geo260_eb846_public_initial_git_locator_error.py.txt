@@ -1,0 +1,24 @@
+from pathlib import Path
+import json,hashlib,subprocess,tarfile,io
+G='/workspace/geo318-reading-a-prep/meta.git';S='eb846c345881cc6fc73a53c457a291175365b88c';E='ef840a299b597958aea23bec51f0c0798c05c46f';P='evidence/geo261-final-eb846c34/geo260-ac23/';rows=[]
+def h(b):return hashlib.sha256(b).hexdigest()
+def ck(n,v):rows.append({'name':n,'passed':bool(v)})
+def git(*a):return subprocess.check_output(['git','--git-dir',G,*a])
+def blob(n):return git('show',E+':'+P+n)
+changes=git('diff','--name-only',S,E).decode().splitlines();ck('only exactownprefix',changes and all(x.startswith(P) for x in changes));idx=json.loads(blob('RAW_INVENTORY.json'));a=blob(idx['archive']);ck('public archive exact',len(a)==949070==idx['archiveBytes'] and h(a)==idx['archiveSHA256']=='09e6aab47aab1f744905b27bd7bdc7c5b3a7ea721ce5d728198245987b11b04d');ck('source formal0',idx['source']==S and idx['originalGateExit']==idx['driverExit']==0);ck('320 indexed distinct',len(idx['included'])==len({x['member'] for x in idx['included']})==320)
+with tarfile.open(fileobj=io.BytesIO(a),mode='r:gz') as t:
+ ms=t.getmembers();ck('320 regular unique',len(ms)==len({x.name for x in ms})==320 and all(x.isfile() for x in ms));ck('exactmembers',{x.name for x in ms}=={x['member'] for x in idx['included']})
+ for x in idx['included']:
+  b=t.extractfile(x['member']).read();ck('archive '+x['member'],len(b)==x['bytes'] and h(b)==x['sha256']);ck('original '+x['member'],b==Path(x['original']).read_bytes())
+ck('one ELF excluded openly',len(idx['excludedELFOriginalsRetained'])==1 and idx['excludedELFOriginalsRetained'][0]['member']=='original-full44/private-native/model-base' and not idx['originalsDeleted'])
+for x in idx['excludedELFOriginalsRetained']:
+ p=Path(x['original']);ck('excluded retained size',p.is_file() and p.stat().st_size==x['bytes'])
+pub=Path('/tmp/geo260-ac23-publication/full44-evidence-publication');cs=json.loads((pub/'subcommands.json').read_bytes());push=[];remote=[]
+for i,c in enumerate(cs,1):
+ q=Path(c['directory']);ck('publish '+str(i)+' exit',c['actual_process_returncode']==0 and not c['timeout_expired'])
+ for st in ['stdout','stderr']:
+  b=(q/(st+'.bin')).read_bytes();ck(f'publish{i} {st}',len(b)==c[st+'_bytes'] and h(b)==c[st+'_sha256'])
+ if 'push' in c['command']:push.append(c);ck('normalpush',not any(x.startswith('--force') for x in c['command']))
+ if 'ls-remote' in c['command']:remote.append(c);ck('remote E exact',(q/'stdout.bin').read_text().split()[0]==E)
+ck('one push/remote',len(push)==len(remote)==1)
+r={'scope':'Eef840固定Git公開包320members逐原bytes＋實際出版raw；不重跑44，不宣稱未保留的逐buildC/ELF','source_sha':S,'evidence_sha':E,'checks':rows,'findings':[x for x in rows if not x['passed']],'exit_code':int(any(not x['passed'] for x in rows))};o=Path('/tmp/train337-adversarial/GEO260_EF840_FULL44_PUBLIC_PEER.json');o.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'path':str(o),'sha256':h(o.read_bytes()),'checks':len(rows),'exit':r['exit_code'],'findings':r['findings']}));raise SystemExit(r['exit_code'])

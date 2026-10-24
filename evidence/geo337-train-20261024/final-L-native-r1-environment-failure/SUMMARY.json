@@ -1,0 +1,98 @@
+{
+  "schema": "geo337.final-L-original-native-terminal-collection/1",
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "createdUTC": "2026-10-23T23:44:53.808688+00:00",
+  "outerExit": 1,
+  "workflowExit": 1,
+  "CI35MinuteGateExit": 0,
+  "originalDriverExit": 1,
+  "passed": false,
+  "metadataErrors": [],
+  "sourceBefore": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "tree": "0a9f5ecf3f2b43478049ae5a5fcd463cca6fb2a7",
+    "status": "",
+    "index_sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+  },
+  "sourceAfter": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "tree": "0a9f5ecf3f2b43478049ae5a5fcd463cca6fb2a7",
+    "status": "",
+    "index_sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+  },
+  "expectedFullRows": 230,
+  "fullRowsNotInferredFromNames": "Independent actual peer must parse original final230 rows/count/allowed skips, including original errors or timeout; collector does not change judge.",
+  "ordinaryRegistryExeNames": [
+    "bridge",
+    "core",
+    "engineering-json-test",
+    "gdi-contract",
+    "integrity",
+    "model-base",
+    "pf3-algorithm"
+  ],
+  "excludedOrdinaryELFs": [
+    {
+      "originalPath": "/tmp/geometry-tests/bridge",
+      "bytes": 1122224,
+      "sha256": "69a4a357d7ca8a4d0566e10b89fa4a9e776644422912cdaf9002806c78050b7a",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/core",
+      "bytes": 904000,
+      "sha256": "e6ca3dcde05fde49c40a463f5d8e94efcea33b4e3c059e1f4f471856916535c3",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/engineering-json-test",
+      "bytes": 34864,
+      "sha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/integrity",
+      "bytes": 938256,
+      "sha256": "c8a16480defca8579bfc361c4292e35b389740e62c36ab244f98887f09a363d5",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/model-base",
+      "bytes": 968896,
+      "sha256": "2c0a37eba06376333dbcfbbecb28121c02e5de926cd31775d2217777a8364b88",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/pf3-algorithm",
+      "bytes": 908304,
+      "sha256": "63c81d75dcdeffc617e61aca411791c1618f4e16c17cab461e7f4b9d2ef31222",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    }
+  ],
+  "excludedOldCache": {
+    "exactPath": "/tmp/train337-full-native-L-7af8c5d8/preserved-global-geometry-tests",
+    "payloadNotTraversed": true,
+    "originalManifestsIncluded": [
+      "native/GLOBAL_CACHE_BEFORE.json",
+      "native/GLOBAL_CACHE_PRESERVED.json"
+    ],
+    "meaning": "historical cache preserved in place, not claimed as new native outputs"
+  },
+  "nonRegularNodes": [],
+  "rawLimits": "Only original exposed Python/native workflow streams and original run_all-logs are saved. Inner compiler/test capture_output pipes and cleaned NativeBuild scratch are not claimed as separate raw pipes.",
+  "nativeCacheModifiedByCollector": false,
+  "ROOTModifiedByCollector": false,
+  "noFilesDeleted": true,
+  "noSubjectRerun": true,
+  "originalRegistryGitRead": {
+    "argv": [
+      "git",
+      "--git-dir=/workspace/geometry-axiom/.git",
+      "show",
+      "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db:tests/binaries.py"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

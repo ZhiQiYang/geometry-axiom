@@ -1,0 +1,31 @@
+{
+  "schema": "independent-final-L-documents-actual-package-peer/1",
+  "checks": 3419,
+  "exit_code": 1,
+  "findings": [
+    "executed script exact 3",
+    "runtime build fixed source current_geometry.c",
+    "runtime build fixed source current_geometry.c",
+    "runtime build fixed source current_geometry.c"
+  ],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "original_exit": 0,
+  "wrapper_exit": 0,
+  "passed_assertions": 47,
+  "failed_assertions": 0,
+  "screenshots": 8,
+  "elapsed_seconds": 64.3160554660135,
+  "ci_timeout_minutes": 10,
+  "archive_sha256": "a6f641498d86dcdaafce9fe07e45a9e0873c9ee63940eaffcee09f0e743bae85",
+  "member_count": 670,
+  "raw_original_bytes": 31819902,
+  "limits": [
+    "Original exposed command stdout/stderr only; no hidden compiler/test pipe interception or files already removed by original cleanup are reconstructed.",
+    "No ROOT/SEED/pool/Git/source payload copied; pool immutable plan/tree/raw preparation and original completed guard command streams are included.",
+    "GUARD_LATEST.json is shared mutable state and may already have been replaced by later jobs; it is not relabeled as the documents original. Original per-guard closed Git logs and actual guard argv/exit/fullstreams are retained.",
+    "Terminal profile non-cache files/symlinks retained; Chrome cache payloads excluded with inventory, no removal. ELF payloads excluded with actual hashes; original fingerprint sidecars retained.",
+    "GitHub artifact upload actions are preserved as original local artifact saves, not claimed uploaded to GitHub.",
+    "No independently predecoded host API launcher pipe is invented."
+  ],
+  "scope": "All archived members compared with immutable original bytes/symlinks; exact L workflow, original job/launcher/reaper raw, prior pool guards, source fingerprint inputs and declared exclusions verified. No browser/test rerun. No claim other browser jobs or native passed."
+}

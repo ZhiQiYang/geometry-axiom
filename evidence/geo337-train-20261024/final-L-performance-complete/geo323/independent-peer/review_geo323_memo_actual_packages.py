@@ -1,0 +1,81 @@
+from pathlib import Path
+import gzip,hashlib,json,stat,sys,tarfile
+from review_performance_package_common import Review,L
+O=Path('/workspace/train337-canvas-peer-resume');BASE=Path('/workspace/train337-final-performance-collection-preparation')
+PINS={'geo323':'a02f97fe618e547c0347e1727e9edb96cb892d4e05e4b953fe2c255452ca131f','memo':'c10dbcee22a96890a0f4816fb58414a8f2f542f1c04d5ff50d427f69cbc0e3a4'}
+def review(gate):
+ v=Review.__new__(Review);v.gate=gate;v.B=BASE/(gate+'-v3');v.checks=0;v.findings=[];v.capture_records={};v.p=v.j(v.B/'PACKAGE.json');v.s=v.j(v.B/'SUMMARY.json');v.iv=v.j(v.B/'RAW_INVENTORY.json');v.im={x['name']:x for x in v.iv['members']};v.paths={x['source_path'] for x in v.im.values()};v.root=Path('/workspace/g337323L' if gate=='geo323' else '/workspace/g337323memoL')
+ v.ck(v.h(v.p['archive']['path'])==v.p['archive']['sha256']==PINS[gate],'fixed whole archive hash')
+ v.ck(v.h(v.B/'RAW_INVENTORY.json')==v.p['inventory']['sha256'],'fixed inventory hash')
+ v.ck(v.p['source_sha']==v.s['source_sha']==v.iv['source_sha']==L and v.p['gate']==v.s['gate']==v.iv['gate']==gate,'exact L and gate')
+ v.ck(len(v.im)==len(v.iv['members'])==v.iv['regular_file_count'] and sum(x['bytes'] for x in v.im.values())==v.iv['logical_original_bytes'],'unique inventory and full original count')
+ seen=set()
+ with tarfile.open(v.p['archive']['path'],'r|gz') as tar:
+  for m in tar:
+   v.ck(m.isfile() and m.name not in seen and not m.name.startswith('/') and '..' not in Path(m.name).parts,'safe unique regular member '+m.name);seen.add(m.name);body=tar.extractfile(m).read()
+   if m.name=='RAW_INVENTORY.json':v.ck(body==(v.B/'RAW_INVENTORY.json').read_bytes(),'exact embedded inventory');continue
+   row=v.im[m.name];v.ck(len(body)==m.size==row['bytes'] and v.sh(body)==row['sha256'],'complete packaged bytes '+m.name)
+   p=Path(row['source_path']);v.ck(p.is_file() and not p.is_symlink() and body==p.read_bytes(),'original byte equality '+m.name)
+   v.ck(not body.startswith(b'\x7fELF'),'no ELF payload '+m.name)
+ v.ck(seen==set(v.im)|{'RAW_INVENTORY.json'} and len(seen)==v.p['archive']['members'],'full exact archive coverage')
+ excluded=v.j(v.B/'EXCLUDED_ELF_PAYLOADS.json');ipc=v.j(v.B/'EXCLUDED_CHROME_IPC_METADATA.json')
+ v.ck(len(excluded)==v.s['elf_payload_excluded_count'] and not ipc and v.s['terminal_chrome_ipc_metadata_count']==0,'exact retained ELF exclusion count/no IPC exception')
+ for x in excluded:
+  p=Path(x['source_path']);v.ck(p.is_file() and not p.is_symlink() and p.stat().st_size==x['bytes'] and v.h(p)==x['sha256'],'full retained ELF hash '+x['name'])
+  with p.open('rb') as f:v.ck(f.read(4)==b'\x7fELF','ELF identity '+x['name'])
+ outer_gates=['geo323-'+x for x in ['prepare','build','compare','perf','profile']] if gate=='geo323' else ['memo']
+ outers=[Path('/workspace/train337-L-'+x+'-original-launch-20261024') for x in outer_gates]
+ roots=[v.root]+outers
+ for root in roots:
+  for pattern in ['commands.json','subcommands.json']:
+   for p in root.rglob(pattern):
+    for row in v.j(p):
+     v.capture(row,root)
+     v.ck(str(Path(row['directory'])/'request.json') in v.paths and str(Path(row['directory'])/'result.json') in v.paths and all(str(Path(row['directory'])/(s+'.bin')) in v.paths for s in ['stdout','stderr']),'all raw command originals in package '+row['directory'])
+  files={str(p) for p in root.rglob('*') if not stat.S_ISDIR(p.lstat().st_mode)}
+  v.ck(files<=v.paths|{x['source_path'] for x in excluded},'complete original root coverage '+str(root))
+ summarised=v.s['original_capture_rows'];v.ck(len(summarised)==len(v.capture_records),'capture summary exact unique count')
+ for x in summarised:
+  row=v.capture_records[x['directory']];v.ck(x['exit']==row['actual_process_returncode'] and x['timeout']==row['timeout_expired'] and x['source_sha']==row.get('source_sha') and x['acceptance_sha']==row.get('acceptance_sha'),'unmodified original capture summary '+x['directory'])
+ outer_exits={}
+ for label,root in zip(outer_gates,outers):
+  r=v.j(root/'RESULT.json');outer_exits[label]=r['actual_exit'];v.ck(r['gate']==label and r['source_sha']==L and r['actual_exit']==r['command']['actual_process_returncode'] and r['command']['ended_epoch'] and not r['command']['timeout_expired'],'actual outer original terminal '+label)
+ v.ck(outer_exits==v.s['original_outer_exits'],'exact original outer exits preserved')
+ # Collection producer is a separate success, never a product acceptance claim.
+ producer=BASE/(gate+'-v3-collection-launch');prod=v.j(producer/'RESULT.json');v.ck(prod['actual_process_returncode']==0 and not prod['timeout_expired'] and prod['ended_epoch'],'true collector terminal0 only')
+ for row in v.j(producer/'subcommands.json'):v.capture(row,producer)
+ r=v.j(v.root/'receipt.json')
+ if gate=='geo323':
+  codes={'prepare':0,'build':0,'compare':1,'perf':0,'profile':0}
+  for name,code in codes.items():
+   st=r['stages'][name];v.ck(st==v.s['stages'][name] and st['execution_exit']==code and st['source_before']==st['source_after']=={'head':L,'status':''} and st['ended_utc'],'true exact stage/guards '+name)
+  v.ck(r['wrapper_exit']==1 and r['full_acceptance_passed'] is None and r['all_required_stages_completed'] is False and r['all_measured_original_targets_met'] is False,'original partial-driver aggregate remains red/null/false')
+  v.ck(outer_exits=={'geo323-prepare':0,'geo323-build':0,'geo323-compare':1,'geo323-perf':1,'geo323-profile':1},'cumulative CLI1 distinct from perf/profile execution0')
+  eqroot=v.root/'evidence';expected_fail=[['_role_priority_mutant.scene','stdout'],['_s1_p8_l_room_primary_through_reflex_extension.scene','stdout'],['_s1_p8b_l_room_primary_through_reflex_extension_hi.scene','stdout']]
+ else:
+  v.ck(r['sha']==L and r['source_before']==r['source_after']=={'head':L,'status':''} and r['exit']==0 and r['passed'] is True and not r['errors'],'true memo terminal0 sameL')
+  v.ck(r['formal_receipt_sha256']==v.h('/workspace/g337323L/receipt.json') and str(Path('/workspace/g337323L/receipt.json')) in v.paths,'exact formal-binding included')
+  for phase,code in zip(r['phases'],[1,0,0]):
+   pr=v.j(phase['receipt']);v.ck(pr==phase['result'] and pr['criterion_exit']==pr['exit']==phase['actual_exit']==code and pr['execution_complete'] is True and pr['source_before']==pr['source_after']=={'head':L,'status':''} and not pr['errors'],'memo real completed criterion '+phase['phase'])
+  v.ck([p['phase'] for p in r['phases']]==['withdrawn','restored','abc'],'memo exact three phase order')
+  v.ck(r['phases'][2]['result']['ABC_result']=={'scenes':175,'runs':350,'failures':[],'original_exit':0,'original_audit_tuple_equal':True},'original ABC precise result')
+  eqroot=v.root/'abc/evidence';expected_fail=[]
+ eq=v.j(eqroot/'equivalence.json');v.ck(eq['scenes']==175 and len(eq['runs'])==350 and eq['failures']==expected_fail,'original175/350 equivalence outcomes')
+ v.ck(len({x['scene'] for x in eq['runs']})==175 and len({(x['scene'],x['version']) for x in eq['runs']})==350,'no omitted or duplicate scene/version')
+ failures=[]
+ for i in range(0,350,2):
+  pair=eq['runs'][i:i+2];v.ck(pair[0]['scene']==pair[1]['scene'] and [x['version'] for x in pair]==['base','fix'],'paired original order '+str(i//2));values=[]
+  for row in pair:
+   stdout=eqroot/'stdout'/row['version']/(row['scene']+'.stdout');stderr=stdout.with_suffix('.stderr');graph=eqroot/'graphs'/row['version']/(row['scene']+'.bin.gz');raw=stdout.read_bytes();data=gzip.decompress(graph.read_bytes())
+   v.ck(len(raw)==row['stdout_bytes'] and v.sh(raw)==row['stdout_sha256'] and stderr.stat().st_size==row['stderr_bytes'] and row['exit']==row['trace_exit']==0,'original uninstrumented output and exit '+row['scene']+'/'+row['version'])
+   v.ck(len(data)==row['graph_bytes'] and v.sh(data)==row['graph_sha256'],'full decompressed graph bytes '+row['scene']+'/'+row['version'])
+   v.ck(all(str(q) in v.paths for q in [stdout,stderr,graph]),'all paired originals packaged '+row['scene']+'/'+row['version'])
+   values.append((raw,data,row['guards']))
+  for k,label in enumerate(['stdout','graph','guards']):
+   if values[0][k]!=values[1][k]:failures.append([pair[0]['scene'],label])
+ v.ck(failures==expected_fail,'independently recomputed complete bytes/graphs/guard pair differences')
+ v.ck(v.p['subject_executions']==0 and v.p['original_elf_files_retained'] and not v.p['elf_payloads_included'],'collector no subject run or ELF removal')
+ prev=v.j(O/'GEO323_ALL_TERMINAL_METADATA_PEER.json');v.ck(v.h(O/'GEO323_ALL_TERMINAL_METADATA_PEER.json')=='872b9078acea8208c23faec1d97b85a1a98146d69de5d13dc31da444516500fa' and prev['exit_code']==0 and prev['formal_receipt_sha256']==v.h('/workspace/g337323L/receipt.json') and prev['memo_receipt_sha256']==v.h('/workspace/g337323memoL/receipt.json'),'prior independently computed36samples/gprof ratios/phase closure exact receipts unchanged')
+ result={'schema':'geo323-memo-original-complete-package-peer-v1','source_sha':L,'gate':gate,'checks':v.checks,'exit_code':int(bool(v.findings)),'findings':v.findings,'archive_sha256':v.p['archive']['sha256'],'archive_members':v.p['archive']['members'],'original_bytes':v.iv['logical_original_bytes'],'inventory_sha256':v.p['inventory']['sha256'],'original_outer_exits':outer_exits,'original_product_passed':False if gate=='geo323' else True,'capture_records_including_collector':len(v.capture_records),'excluded_retained_elf_count':len(excluded),'scenes':175,'paired_runs':350,'recomputed_pair_failures':failures,'prior_quantitative_peer_sha256':v.h(O/'GEO323_ALL_TERMINAL_METADATA_PEER.json'),'N64_fix_main':prev['N64_fix_main'],'N64_target_met':False,'source_calls_ratio':prev['source_calls_ratio'],'memo_phase_exits':prev['memo_phase_exits'],'no_subject_executed':True,'limitations':['Independent full tar/original byte equality, all original captures, retained ELF hashes and decompressed paired graphs examined; no subject rerun.','Static source guard/original capture labels retained; v4 orchestration source_role may heuristically say base while acceptance SHA is L.','Evidence collector/peer0 does not turn cross-version comparison1, N64>1.3 or cumulativeCLI1 green.','36sample ratios and gprof profile integer recomputation were already performed in pinned previous metadata peer; exact bound receipts unchanged.','Independent isolated memo ABC equality is distinct from full cross-version comparison.']}
+ q=O/(gate.upper()+'_ACTUAL_PACKAGE_PEER.json');q.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'path':str(q),'sha256':v.h(q),'checks':v.checks,'exit_code':result['exit_code'],'findings':v.findings}));return result['exit_code']
+if __name__=='__main__':raise SystemExit(review(sys.argv[1]))

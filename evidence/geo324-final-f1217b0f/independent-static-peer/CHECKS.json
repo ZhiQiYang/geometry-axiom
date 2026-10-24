@@ -1,0 +1,855 @@
+{
+  "scope": "Static review of frozen external proof recorder and actual source merge. No proof/test/compile/browser execution; no new network.",
+  "source_sha": "f1217b0fa5e933e14906833bf4981dad97061b04",
+  "train_sha": "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+  "driver_sha256": "4b5c05f1a2d7a5cf24c1e2b4d21641c560a7fe7a25db1109a6127d315ddd406d",
+  "checks": [
+    {
+      "name": "frozen driver v2",
+      "passed": true
+    },
+    {
+      "name": "capture hash pinned before import",
+      "passed": true
+    },
+    {
+      "name": "tracked closure exact four packages and three original fixtures",
+      "passed": true
+    },
+    {
+      "name": "no arbitrary tree-copy function invoked",
+      "passed": false
+    },
+    {
+      "name": "Git inventory bytes verified and only inventory copied",
+      "passed": true
+    },
+    {
+      "name": "unchanged published source before and after",
+      "passed": true
+    },
+    {
+      "name": "original isolated CLI and sixty second deadline",
+      "passed": true
+    },
+    {
+      "name": "original normal-failure and exact diagnostic gates",
+      "passed": true
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "f1217b0fa5e933e14906833bf4981dad97061b04:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ]
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "4e176e830b691269cc72d021ce7e1bc0b167d621:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ]
+    },
+    {
+      "name": "merged leaf retains reviewed original PR bytes",
+      "passed": true,
+      "path": "geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "f1217b0fa5e933e14906833bf4981dad97061b04:tests/test_geometry_host_sources.py"
+      ]
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "4e176e830b691269cc72d021ce7e1bc0b167d621:tests/test_geometry_host_sources.py"
+      ]
+    },
+    {
+      "name": "merged leaf retains reviewed original PR bytes",
+      "passed": true,
+      "path": "tests/test_geometry_host_sources.py"
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+        "f1217b0fa5e933e14906833bf4981dad97061b04"
+      ]
+    },
+    {
+      "name": "exact three source changes versus train",
+      "passed": true,
+      "sourcepaths": [
+        "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+        "tests/run_all.expected.json",
+        "tests/test_geometry_host_sources.py"
+      ]
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9:tests/run_all.expected.json"
+      ]
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "f1217b0fa5e933e14906833bf4981dad97061b04:tests/run_all.expected.json"
+      ]
+    },
+    {
+      "name": "expected metadata only host sources 39 to 45",
+      "passed": true,
+      "delta": [
+        [
+          "/suites/py:test_geometry_host_sources/count",
+          39,
+          45
+        ]
+      ]
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9:公理層.md"
+      ]
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "f1217b0fa5e933e14906833bf4981dad97061b04:公理層.md"
+      ]
+    },
+    {
+      "name": "protected SSOT unchanged versus train",
+      "passed": true,
+      "path": "公理層.md"
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9:決策佇列.md"
+      ]
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "f1217b0fa5e933e14906833bf4981dad97061b04:決策佇列.md"
+      ]
+    },
+    {
+      "name": "protected SSOT unchanged versus train",
+      "passed": true,
+      "path": "決策佇列.md"
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "-s",
+        "--format=%P",
+        "f1217b0fa5e933e14906833bf4981dad97061b04"
+      ]
+    },
+    {
+      "name": "ordinary merge parents exact",
+      "passed": true
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "f1217b0fa5e933e14906833bf4981dad97061b04:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ]
+    },
+    {
+      "name": "read-only Git command zero",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "f1217b0fa5e933e14906833bf4981dad97061b04:tests/test_geometry_host_sources.py"
+      ]
+    },
+    {
+      "name": "each real product predicate unique and removed only",
+      "passed": true,
+      "predicate": "list"
+    },
+    {
+      "name": "each original public method exists exactly once",
+      "passed": true,
+      "predicate": "list"
+    },
+    {
+      "name": "named original helper assertion retained",
+      "passed": true,
+      "predicate": "list"
+    },
+    {
+      "name": "each real product predicate unique and removed only",
+      "passed": true,
+      "predicate": "dict"
+    },
+    {
+      "name": "each original public method exists exactly once",
+      "passed": true,
+      "predicate": "dict"
+    },
+    {
+      "name": "named original helper assertion retained",
+      "passed": true,
+      "predicate": "dict"
+    },
+    {
+      "name": "each real product predicate unique and removed only",
+      "passed": true,
+      "predicate": "feature"
+    },
+    {
+      "name": "each original public method exists exactly once",
+      "passed": true,
+      "predicate": "feature"
+    },
+    {
+      "name": "named original helper assertion retained",
+      "passed": true,
+      "predicate": "feature"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000001",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000001",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000002",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000002",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000003",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000003",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "7dae5f21c7ca401e660450d437e60ba566218da8:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000004",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000004",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9:tests/test_geometry_host_sources.py"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000005",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000005",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "7dae5f21c7ca401e660450d437e60ba566218da8:tests/test_geometry_host_sources.py"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000006",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000006",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "merge",
+        "--no-ff",
+        "-m",
+        "Merge current train into GEO-324 faces validation",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000007",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000007",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000008",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000008",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-list",
+        "--parents",
+        "-n",
+        "1",
+        "HEAD"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000009",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000009",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "4e176e830b691269cc72d021ce7e1bc0b167d621:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000010",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000010",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:geometry-templates/woodworking/geometry_woodworking/model_sources.py"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000011",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000011",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "4e176e830b691269cc72d021ce7e1bc0b167d621:tests/test_geometry_host_sources.py"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000012",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000012",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:tests/test_geometry_host_sources.py"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000013",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000013",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9:公理層.md"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000014",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000014",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:公理層.md"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000015",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000015",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9:決策佇列.md"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000016",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000016",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD:決策佇列.md"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000017",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000017",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9:tests/run_all.expected.json"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000018",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000018",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "show",
+        "HEAD:tests/run_all.expected.json"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000019",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000019",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+        "HEAD"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000020",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000020",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "diff",
+        "--stat",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+        "HEAD",
+        "--",
+        "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+        "tests/test_geometry_host_sources.py",
+        "tests/run_all.expected.json"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000021",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000021",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "diff",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+        "HEAD",
+        "--",
+        "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+        "tests/test_geometry_host_sources.py",
+        "tests/run_all.expected.json"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000022",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000022",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+        "HEAD",
+        "--",
+        "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+        "tests/test_geometry_host_sources.py",
+        "tests/run_all.expected.json"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000023",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000023",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000024",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000024",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "push",
+        "origin",
+        "refs/heads/codex/geo324-faces-20261024:refs/heads/codex/geo324-faces-20261024"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000025",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000025",
+      "stream": "stderr"
+    },
+    {
+      "name": "original merge command completed",
+      "passed": true,
+      "argv": [
+        "git",
+        "ls-remote",
+        "--exit-code",
+        "origin",
+        "refs/heads/codex/geo324-faces-20261024"
+      ]
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000026",
+      "stream": "stdout"
+    },
+    {
+      "name": "original merge stream bytes and hash sealed",
+      "passed": true,
+      "directory": "000026",
+      "stream": "stderr"
+    },
+    {
+      "name": "one normal source push",
+      "passed": true
+    },
+    {
+      "name": "original source remote equality",
+      "passed": true
+    }
+  ],
+  "check_count": 118,
+  "findings": [
+    {
+      "name": "no arbitrary tree-copy function invoked",
+      "passed": false
+    }
+  ],
+  "limitations": [
+    "Supplementary recorder covers three existing individual methods, not the full45 host suite or any aggregate acceptance.",
+    "Three valid original 0/1/0 executions still required; merely preparing the recorder is not proof.",
+    "Working input verification is at snapshot time; isolation copies only exact committed blobs and mutates only the named product guard."
+  ]
+}

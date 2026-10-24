@@ -1,0 +1,14 @@
+{
+  "schema": "final-L-terminal-source-raw-guard-peer/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "check_count": 8220,
+  "findings": [],
+  "exit_code": 0,
+  "scope": "Original closed source/index/ref/clean streams, 1362 historical raw union and 175 preserved sidecar mappings, outer/reaper terminal, tracked b6 ledger separate from new external L ledger. No subject rerun or source mutation.",
+  "limitations": [
+    "Source identity check uses original closed streams, not a promise current worktree never changes after release.",
+    "No new ELF payload archival claim; original compiler text/sidecar limitations remain.",
+    "Only full123 gate accepted; other native/browser/performance/B2 gates remain separate."
+  ],
+  "release_recommendation": "ROOT/SEED may be released after root ensures terminal publication snapshot is collected; retain immutable raw and external ledger."
+}
