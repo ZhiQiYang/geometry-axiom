@@ -1,24 +1,32 @@
-下料清單原本有 N 個群組、每群又各存 N 個角材 ID；這份候選把 ID 改成報表自有的總 N 格儲存，群組只存 first/count。群組規格排序、群內宣告次序與報表按值複製自含行為保留。原分群／群組排序的時間仍是 O(N²)，這次只處理 O(N²) 儲存。
+下料清單原本在每一個 group 內保存完整容量的 member ID 陣列。本修正改為報表自有的單一 ID 池，各 group 保存 offset／count；保留原分組、排序、群內宣告順序與按值 copy 後的自含資料。ID 儲存由 O(N²) 改為 O(N)，分組與排序時間仍為 O(N²)，容量仍是 64。
 
-本 PR 疊在 #343 的 branch 上，產品基底是 ccfaf057088a80c7aad4049f1c67e5eedfc2fdec。容量仍64；沒有改公理、決策、K、原 timeout 或性能門檻。header 的報表布局已改，repo 內所有 C/H 渲染與原 harness 同步，外部 C ABI consumer 是否存在尚未知。
+本 PR 是 #300 前置，疊在 #343。後續順序是 #343 → #346 → #128 P2 → 512；此 PR 不關閉 #300。原 report-policy 的 11 方法、9 組反證已在實際 product SHA 執行通過。
 
-唯一 current-state 矩陣：
+## 唯一 current-state
 
-| 項目 | 實際來源／SHA | 原退出或狀態 |
+| 欄位／gate | 目前值或退出碼 | 精確界線 |
 |---|---|---|
-| product SHA | 39273bc0229fbbb16565134e1f8fad3a0d598c31 | 公開可解析；source clean |
-| evidence head | a5f1806fb3cad2dada1a56e79e01d54f9f86700f | 只新增本 PR 的 `evidence/geo300-cut-list-storage-20261024/`；正常 push／ls-remote 0 |
-| 五leaf候選靜審 | 外部 immutable candidate，逐bytes等 5fa4d7de498362885fb5c06c77a54a81fa42e73f | 66 checks／0 findings，靜態非C實證 |
-| source／expected 靜審 | 固定5fa source＋單一 expected8→11候選 | 22 checks／0 findings，其餘JSON逐值相同 |
-| report-policy 原正式入口 | `python3 -B tests/test_geo261_wood_report_policy.py`，本S預期11方法／9控制 | UNRUN |
-| 原報表逐bytes、五新控制真0/1/0、16MiB | 本S | UNRUN |
-| full native／6 browser／ledger／架構 | 本S | UNRUN |
-| performance／P189／512功能 | 本S | UNMEASURED／UNRUN；產品仍64 |
+| product SHA／實際 execution HEAD | `39273bc0229fbbb16565134e1f8fad3a0d598c31` | execution tree `01fbacdde254c2b12d7de74e7f9d78dd4243b052`，初末 clean |
+| evidence head | `eaf15e239324a6464a04740647afccce3a3c17c7` | 只增加正式原件與進度，產品 closure 不變 |
+| 準備前 checkout | `a5f1806fb3cad2dada1a56e79e01d54f9f86700f` | 原 driver 明確切回 S392 執行；不把準備 HEAD 冒稱 execution HEAD |
+| 原 report-policy suite | **0** | 11 方法、0 skip；原 CLI text／還原比較包含在內 |
+| 原四組＋新增五組反證 | **9 × 0/1/0** | 正常具名 assertion 紅；完整命令、stdout／stderr 與恢復均保留 |
+| 編譯／連結 | **83 × 0** | storage mutant 的 client 與 cut 使用同一份 mutated header |
+| outer／reaper／原 suite | **0／0／0** | 原 16 MiB stack、case timeout、斷言與 golden 不變 |
+| 獨立實績審查 | **2279/0** | 603 原件逐 bytes/hash；另有 locator 澄清窄審 12/0 |
+| 完整 native／browser／效能 | **UNRUN** | 不借 #343 或列車的歷史收據 |
+| 最終帳本／架構三裁判與收據 | **UNRUN** | 主代理依最終組合來源統一處理，沒有另行重產帳本 |
+| 允許的 skip | 無新增；本 suite 實際 **0 skip** | 未跑項不是 skip 或 pass |
+| 合併狀態 | **NOT READY** | 尚待列車整合驗收與最新審查 |
 
-保原8方法／4控制／全部具名 CHECK 與 CLI 精確文字，新增3方法／5控制：交錯群組的非單調 ID、滿容量全異群、按值 copy 後抹除原報表與輸入；offset／ID值／逆序填入／N誤拒及每群N陣列復發控制。最後一刀以同一變異 header 重編 client 與 cut_list.c，finally 還原，不能把不同結構布局混連造成的錯誤當反證。新結構 size 檢查由 scalar 欄位及 padding 推導，沒有新性能數值門檻。
+正式入口為 `env -u PYTHONOPTIMIZE PYTHONDONTWRITEBYTECODE=1 python3 -B /tmp/geo300-cut-list-storage-20261024/formal-tools/launch_report_suite.py`；launcher SHA-256 `7a15af7d663b307abc128695ffc1205afb42eed6ca31154d394bb4d551498e13`。原命令在 2026-10-24T01:04:27.713901+00:00～01:04:33.962775+00:00 執行，環境、來源 SHA、退出碼、完整 streams 都已保存。
 
-新增真方法登記使 `py:test_geo261_wood_report_policy` count8→11；其他 expected 欄位保原值（native30／faces45／noWood13）。本S尚未執行 `mutate.py --check` 或任何全帳本；最後統一由 root 在最終列車 SHA 產帳本。#343 原34/64／tuple收據只屬原SHA，不拿來覆蓋本leaf。
+九組控制分別驗 unplaced／role／fixity／length order／pool offsets／pool values／pool reverse／exact capacity／linear group storage；所有撤回均命中原具名 assertion，放回均恢復 0，沒有把編譯失敗當成功反證。
 
-完整靜態原件包 [STATIC_PREPARATION_ORIGINALS.tar.gz](https://github.com/ZhiQiYang/geometry-axiom/blob/a5f1806fb3cad2dada1a56e79e01d54f9f86700f/evidence/geo300-cut-list-storage-20261024/STATIC_PREPARATION_ORIGINALS.tar.gz)，625186 bytes，SHA256 `95ddcc7f453831004aea0c3c924d655571ceb701dae8f90572450b7c715f9e0f`；320原件＋INDEX共321 regular members，全檔回讀原bytes/hash。source／expected正常推送原 streams 全保；原 allowlist add1／sparse restore1也保留，後續精確tracked-file處理成功，沒有 force push。
+[PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/eaf15e239324a6464a04740647afccce3a3c17c7/evidence/geo300-cut-list-storage-20261024/PROGRESS.md) 與 [formal-S392/RAW_INDEX.json](https://github.com/ZhiQiYang/geometry-axiom/blob/eaf15e239324a6464a04740647afccce3a3c17c7/evidence/geo300-cut-list-storage-20261024/formal-S392/RAW_INDEX.json) 綁定 603 members、3,455,626 bytes 的完整原件包，SHA-256 `a6c35f31f6c1da542d04e2f2ffed849c20aabde1d1e7d829ccb79349c2df67a2`。原 fixture、準備歷史與 private TMP runtime payload 全保留。
 
-正式 runner 正在準備並等待 root 時槽：原 report case 沒有持久化 C 子程序 stdout/stderr，故先綁已受審的被動 CompletedProcess 觀測與原 NativeBuild cleanup audit，保原 return／exception／args／timeout；本包收錄封存時仍peer-pending的觀測準備快照；current `1ac22c23067503b0379fff3e39aa91a5862ac5ee6394eecc36c9731fb47e2532` 的後續19＋8項靜審原件，待正式驗收包一起推，沒有宣稱已執行。所有 C／perftest 均未啟動。沒有獲准 skip；尚無新產品紅燈可分類，因正式項尚未跑。NOT READY，不合併。
+原 receipt 的 `native_execution_log` 是已配置但未產生的 JSONL locator；實際完整流在 `wood-report/observed/receipt.json` 與 `observed/commands/`。另有 cleanup audit 真正留下原 NativeBuild `build-log.json` 與編譯來源；它與不存在的 JSONL 不同。`LOCATOR_CORRECTION.json` 附加更正路徑說明，原 receipt／封包不回寫。文字 streams 是原 decoded text 的 UTF-8 保存，不冒稱 pre-decode OS pipe bytes。
+
+環境準備 R1 因舊 Git 不支援 `sparse-checkout add --no-cone` 退出 129，當時沒有修改 fixture／產品；R2 依原 non-cone 設定補入 `room_a.scene` 成功，370 bytes 與 S392 Git fixture 完全一致，原 sparse patterns 保留。這兩份原輸出皆公開；它們不改變後續 suite 的真 exit 0。
+
+最不確定的是尚未執行的整合與容量 512 行為；本片不宣稱效能倍數改善或 512 可用，不修改公理、決策佇列或 K。舊 Ea5 矩陣與靜態準備只留在 Git 歷史，這裡只有一份 current-state。
