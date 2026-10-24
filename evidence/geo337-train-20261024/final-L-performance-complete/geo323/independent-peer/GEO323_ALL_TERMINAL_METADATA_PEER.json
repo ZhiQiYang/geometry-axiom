@@ -1,0 +1,51 @@
+{
+  "schema": "geo323-all-terminal-small-metadata-peer-v1",
+  "checks": 48,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "formal_receipt_sha256": "3775b1d54062891f2db222a87b31f77973fa1b2c8b305c4ef0019e7649ea0e2a",
+  "memo_receipt_sha256": "1b619641f5699a0ec753f27cf6d1747c8ea762f6ab6f45e9c659bd6fb8fb94dd",
+  "formal_stage_exits": {
+    "prepare": 0,
+    "build": 0,
+    "compare": 1,
+    "perf": 0,
+    "profile": 0
+  },
+  "outer_exits": {
+    "geo323-perf": 1,
+    "geo323-profile": 1,
+    "memo": 0
+  },
+  "N64_fix_main": 1.4282954375137715,
+  "N64_target_met": false,
+  "small_N_fix_base": {
+    "16": 0.9989831073948225,
+    "32": 0.8118801771453571,
+    "48": 0.8065868711885906
+  },
+  "source_calls_N32": 82668,
+  "source_calls_N64": 364369,
+  "source_calls_ratio": 4.407618425509266,
+  "memo_phase_exits": {
+    "withdrawn": 1,
+    "restored": 0,
+    "abc": 0
+  },
+  "memo_withdrawn_ratio": 6.053833206336931,
+  "memo_restored_ratio": 4.407618425509266,
+  "original_isolated_ABC": {
+    "scenes": 175,
+    "runs": 350,
+    "failures": [],
+    "original_exit": 0,
+    "original_audit_tuple_equal": true
+  },
+  "limits": [
+    "Small original receipts, scalar timing records, gprof text and three original outer captures only. No current checkout/cache, large graph/archive payload, compiler or subject run.",
+    "ABC175/350 plus audit tuple is the original successful judge result; full paired graph/stream package independent byte review remains separate.",
+    "Original formal OUT has full_acceptance_passed=null and all_required_stages_completed=false because only five of its stages ran there. Separately recorded L gates do not rewrite those original fields.",
+    "N64 numerical red and cross-version compare red remain; memo criterion red/green uses original denominator and no infrastructure2 counted."
+  ]
+}

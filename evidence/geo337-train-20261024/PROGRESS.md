@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 02:44 UTC）
+## 唯一 current-state（2026-10-24 03:07 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。同L正式清單的原終態已收齊；P189／#323 exact、N64性能與required CI仍紅，沒有READY-TO-MERGE。
 
@@ -11,13 +11,13 @@
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | r2原CLI／workflow／CI35／outer全0；r1環境1保歷史 | r2全230列，5309=5308pass+0fail+1原允許WindowsGDI skip；1819.561s<35min，Node737/737；完整原件封final-L-native-r2-complete；r1四ENOENT不改舊判 |
 | canvas／assembly／documents／grid／space／timber | L | canvas0；assembly0；documents0；grid0；space0；timber0 | canvas2267原assert全0／1718.885s<35min，85 golden一致、零skip；P88=143；其餘五job各原收據已封，獨立checkout／埠／暫存、canvas獨占、原CI時限保留 |
-| P52／Q38／§7兩項 | L | §7 compiled0／axiom0；Q38原0／outer0，完整原件已公開；P52 formal／verifier／driver／outer0（終態原收據已封，完整原件包已在雲端核對、待推送） | P52 main中位218.2650215ms、fix176.218242ms，原fix≤main成立，無+5寬限；首次收件工具exit1不改產品0 |
-| P-189原完整比較 | L／base3e600772；main adbaebf9 | 原CLI／driver／outer1；已跑，仍紅 | 原p189_verify.py:195的assert raw[base]==raw[fix]；126組完整stdout逐bytes相同後，第127個repo-_role_priority_mutant.scene首次不同而中止，未完成175。兩版皆reject、完整dump相同，差在I22載入診斷與stderr；原full內timing未啟動，小原收據已公開，完整原件包雲端已核、待推送 |
-| P-189獨立timing tail | L／main adbaebf9／base3e600772 | 原CLI／driver／outer0，小原收據已公開；完整原件包雲端已核、待推送 | 原36samples，N16/32/48/64四receipt ratio約1.101333／0.958790／1.277641／1.371567皆≤2；此tail的dump_count=0、overall_P189_passed=false，不能將原full exit1改成綠 |
+| P52／Q38／§7兩項 | L | §7 compiled0／axiom0；Q38原0／outer0，完整原件已公開；P52 formal／verifier／driver／outer0（完整原件封final-L-performance-complete/p52） | P52 main中位218.2650215ms、fix176.218242ms，原fix≤main成立，無+5寬限；首次收件工具exit1不改產品0 |
+| P-189原完整比較 | L／base3e600772；main adbaebf9 | 原CLI／driver／outer1；已跑，仍紅 | 原p189_verify.py:195的assert raw[base]==raw[fix]；126組完整stdout逐bytes相同後，第127個repo-_role_priority_mutant.scene首次不同而中止，未完成175。兩版皆reject、完整dump相同，差在I22載入診斷與stderr；原full內timing未啟動，完整原件封final-L-performance-complete/p189 |
+| P-189獨立timing tail | L／main adbaebf9／base3e600772 | 原CLI／driver／outer0，完整原件封final-L-performance-complete/p189-timing | 原36samples，N16/32/48/64四receipt ratio約1.101333／0.958790／1.277641／1.371567皆≤2；此tail的dump_count=0、overall_P189_passed=false，不能將原full exit1改成綠 |
 | #323 required-eight／PF3 | L | 原exit0／0，完整原件包已封 | 原676混合單位／20-19-20，未移標舊F |
 | #323原timing | L；baseb74／mainadba | stage execution0／outer CLI1；N64目標false | 原36samples；N16/32/48 fix/base 0.998983／0.811880／0.806587皆≤1，N64 fix/main=1.4282954375>1.3。原CLI1含累積compare紅與數值紅 |
 | #323原profile | L | stage execution0／outer CLI1；calls比門檻綠 | 原四profiles；N32 82668／N64 364369，ratio4.4076184255≤4.5。累積compare／性能紅未解除 |
-| #323 whole-memo反證 | L及明示withdrawn/restored變體 | driver／outer0；withdrawn1／restored0／隔離ABC0 | 兩phase execution_complete true；calls比撤回6.0538332063>4.5、恢復4.4076184255≤4.5；隔離175/350與原audit tuple相同，不代跨版本compare1或N64性能紅 |
+| #323 whole-memo反證 | L及明示withdrawn/restored變體 | driver／outer0；withdrawn1／restored0／隔離ABC0 | 三phase execution_complete true；calls比撤回6.0538332063>4.5、恢復4.4076184255≤4.5；隔離175/350與原audit tuple相同，不代跨版本compare1或N64性能紅 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
 | #323跨版本175／350 exact | L對原b74 | prepare0／build0／compare1；同L已跑仍紅 | 原175 scenes／350 runs，三個具名stdout差；verify_linux.py:156原assert not failures,failures；來源前後L clean。原ABC_result尚未設定，未冒後續audit或性能已通過 |
 | 最新B3：Actions 40043471807 required jobs | head f05e7cf | 七項failure；新run原annotation已分類帳戶／支出環境阻擋 | 同批封新run原件及source binding；未取得CI真啟動終態或正式替代接受，B3仍未解除；舊c6／40034196788只作歷史 |
@@ -28,7 +28,14 @@ b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0�
 
 L帳本已真終態並核對ROOT/SEED初末HEAD、tree、stage、refs、clean與1362歷史raw、175保全sidecars；ROOT `/tmp/train337-323-f64d638f-source` 的reader／RC已真終態釋放，native r1、§7及canvas均已終態；同L補齊三fixture後，r2於00:38～01:09 UTC完成原完整重跑且原件／sidecar已封，獨審確認後ROOT與共用cache交還root排程。SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 已由root建立六browser獨立checkout的只讀pool；SEED禁止回借mutator，原ROOT inode與它獨立。175對ELF及sidecar搬移歷史完整保留，builder自行判fingerprint，沒有搬判決。終態actual35760、身份/raw8220與package6776獨立核對只驗來源與原件，不是額外產品gate。
 
-## 並行工作
+
+本輪完整原件：`final-L-performance-complete/` 的 p52／p189／p189-timing／geo323／memo 五個子目錄，保存完整原公開輸出、指令、退出碼、環境、來源及封存清單。五份 tar 共74,496,801B，分別3150／3455／261／7485／5501 members；包內原判及PACKAGE的封存時published:false不回寫，發布事實另以同提交與publisher RESULT判定。當次collector outer及獨立actual報告亦封存；peer計數不計產品測試，原ELF只省包內payload並留原址/hash，P52 IPC只存原metadata。原收件失敗仍保留。
+
+#323的完整包含五stage；它的all_required_stages_completed=false及full_acceptance_passed=null保真，R8/PF3/native另有各原OUT。memo隔離175/350/audit全等不改跨版本compare1，P189 timing0亦不改full1。N64原1.3門檻及當次1.428295紅燈仍保留；後續源碼優化另固定可解析來源並按影響驗收，不能重抽樣改判。
+
+後續線已取得#340新S175cee44的原selected aggregate13/13、strict count、零skip結果；#339新F616ce753及probe子分支S9430bae5來源皆另列，不移標為本L測試。各線新審查、owner與完整SHA以handoff/NEXT.md及其後PROGRESS為準；此提交只公開L原件，不合產品。
+
+## 並行工作歷史摘要（最新來源見 handoff/NEXT.md）
 
 - #339 歷史快照Ee9ee6d08／De1b5b171：三架構0、mutate check1（107stale／13unrun）；舊S57結果不移標。後續同F38da的142及三組反證已公開於E1d94ab77ab29952d5b73ec5b262dfd239819fe25／D71113ce739f6fe7c327b162e47e6fd7dba349824；正式11項仍3PASS／1RED／7UNRUN。最新各線來源與owner見handoff 2e7963d3的handoff/NEXT.md，不把本歷史段落當current矩陣。
 - #340 noWood：13項／7phase原實跑0/1/0/1/0/1/0；source4d3a、Ed45d、D77a已推，列車完整正式項仍待。
