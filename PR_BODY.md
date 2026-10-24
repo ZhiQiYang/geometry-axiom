@@ -27,7 +27,7 @@ raw seam 列舉、4096 容量、錯誤類型、裁切與有板時的順序保留
 
 [PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/2e8a6ed20325aa4842dcd0f89eacd598662be598/evidence/issue128-empty-panel-rows-20261024/PROGRESS.md)、[FORMAL_SUMMARY.json](https://github.com/ZhiQiYang/geometry-axiom/blob/2e8a6ed20325aa4842dcd0f89eacd598662be598/evidence/issue128-empty-panel-rows-20261024/FORMAL_SUMMARY.json) 與 [FORMAL_RAW_INDEX.json](https://github.com/ZhiQiYang/geometry-axiom/blob/2e8a6ed20325aa4842dcd0f89eacd598662be598/evidence/issue128-empty-panel-rows-20261024/FORMAL_RAW_INDEX.json) 綁定 1,250 個新原件。正式 archive 共 3,308,093 bytes，SHA-256 `ca40b62ec0462b02ecc1dd8727f4317bf03cf0a8ece286cf302b968725b0adda`。每項保留指令、退出碼、完整 stdout/stderr、環境、SHA、實際 native 執行檔 hash、負例 C 與 93 條 compile/link 原件。原草稿 322 原件 archive 與歷史 UNRUN 進度仍在 Git 歷史中。
 
-`FORMAL_LOCATORS.json` 更正原 driver 的路徑欄位：`native_execution_log` 只是 configured JSONL，**沒有物化**；真 runtime 原件在 archive 的 `formal/panel-native/observed/commands/`，cleanup build logs 在 `formal/panel-native/compile-retention/`。保留原 receipts/archive，沒有回寫或重跑。獨審完整 reports/checks/helpers（含初 helper 誤用 `local` 索引鍵的原錯誤）在 `formal-independent-peer/`。
+`FORMAL_LOCATORS.json` 更正原 driver 的路徑欄位：`native_execution_log` 只是 configured JSONL，**沒有物化**；真 runtime 原件在 archive 的 `formal/panel-native/observed/commands/`，cleanup build logs 在 `formal/panel-native/compile-retention/`。保留原 receipts/archive，沒有回寫或重跑。獨審完整 reports/checks/helpers（含初 helper 誤讀 `source`，正確索引鍵為 `local`的原錯誤）在 `formal-independent-peer/`。
 
 之前 `git add` 的 ignored 提示 exit 1、companion peer 初 matcher 誤判與封裝 parser 的時序調整，都保留原件；不把它們算成 C 產品反證。正式 source checkout 僅補實際需要的 131 個 Git 檔；OUT/TMP 隔離在 workspace，未碰全專案 native 的 global cache。
 
