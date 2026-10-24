@@ -2,8 +2,8 @@
   "sourceSHA": "38da31bcac91db631e6325e40b228f8604810e82",
   "files": {
     "CURRENT_STATE.json": {
-      "bytes": 3190,
-      "sha256": "461ae60442d646730bf721739b9e1f33ad7fb9f54f3bf497ae401809f6dc1ecb"
+      "bytes": 3501,
+      "sha256": "14afeaab7fb5b0e9dec7b33e659df754cd7535858d689d8a3190e1ac774f94e7"
     },
     "EXCLUDED_ELF_PAYLOADS.json": {
       "bytes": 668,
@@ -18,8 +18,8 @@
       "sha256": "62813602dbd9c3874242baa54ab1ff6bb41b1680de2b115dc39c6b6fa8a30218"
     },
     "PROGRESS.md": {
-      "bytes": 2708,
-      "sha256": "8f3f3ebc25279e6e09711a85f52a1590c7c386cfecae7c8c0b8163ba64bb6f7e"
+      "bytes": 3431,
+      "sha256": "769d4d06671b389e114e1324a840366f89ee3da074bce391eb1ef3a1420e17f0"
     },
     "RAW_INVENTORY.json": {
       "bytes": 390456,
@@ -60,6 +60,54 @@
     "collector-original/subcommands.json": {
       "bytes": 1941,
       "sha256": "83200fe55890b31b197d2cb97e9e8ed004f5a3149c3643ef780761c7d02978c4"
+    },
+    "current-actions/CURRENT_ACTIONS_BODY_PEER.json": {
+      "bytes": 1327,
+      "sha256": "1e8d98ad07c4cc78f46e480fd756f338714e662576e58761519ebda6f6f42788"
+    },
+    "current-actions/CURRENT_ACTIONS_PUBLISHER_REVIEW.json": {
+      "bytes": 2060,
+      "sha256": "f521b7db103af4502aa63f8b91fd0b5f849c347b33dd610356ef4a29b51afcaf"
+    },
+    "current-actions/CURRENT_ACTIONS_PUBLISHER_SUPPLEMENT.json": {
+      "bytes": 3205,
+      "sha256": "9182ae961904a137a6b5fbc11de2d3b3722ab3fde906a7f626c5b1df921f4816"
+    },
+    "current-actions/CURRENT_ACTIONS_SAFE_PACKAGE_PEER.initial-schema-assumptions.json": {
+      "bytes": 2457,
+      "sha256": "bcb1bef99a7dcca1af3ed2a4bd27d12f413686e6bc7cd3e02d748df350d0e2c6"
+    },
+    "current-actions/CURRENT_ACTIONS_SAFE_PACKAGE_PEER.json": {
+      "bytes": 1387,
+      "sha256": "50a59abac96c3f36af5aea9520596715455e15137ec97c0b00afa7309b1e493a"
+    },
+    "current-actions/PACKAGE.json": {
+      "bytes": 930,
+      "sha256": "76376af9afea42f9274cebfada1607576e85df283552c60228a7252dd4114ace"
+    },
+    "current-actions/PR_BODY.current-actions.template.md": {
+      "bytes": 6991,
+      "sha256": "16ca4eddad598d1530a20a987179a2ade2df34125f30d5e04dfe6a508829b156"
+    },
+    "current-actions/PUBLIC_REDACTIONS.json": {
+      "bytes": 1602,
+      "sha256": "29452ec5766d7383fa90ef04abe30fd2833b1ca81175a6b9c8004e5452d8b6e5"
+    },
+    "current-actions/SCOPE.json": {
+      "bytes": 793,
+      "sha256": "87c9b35586d6297e84cbe32d5261e1527fa6f53dd098d4230a6a66d08c0a720b"
+    },
+    "current-actions/publish_current_actions.py": {
+      "bytes": 12074,
+      "sha256": "77a60b3ce1dc278ee54ac666bb904b7a6c442ed27abd35ad92b26c252595e9d2"
+    },
+    "current-actions/review_current_actions_safe_package.py": {
+      "bytes": 10027,
+      "sha256": "ed068e1568cbf3548ec67185a13be1fa09f5ca0fcff620d22a64ac4816a4f2c9"
+    },
+    "current-actions/review_current_actions_safe_package.v1.py.txt": {
+      "bytes": 9930,
+      "sha256": "e4802a18e22d8d84486e763b0fffe5116cd25046c433304fc48964fb7ff43082"
     },
     "peer/GEO339_AFFECTED_ACTUAL_PACKAGE_PEER.json": {
       "bytes": 1786,
@@ -168,6 +216,11 @@
     "raw/ORIGINAL_F38DA_IMPORTERS_142_AND_PREDICATE_PROOFS.tar.gz": {
       "bytes": 4716492,
       "sha256": "c2d2c75b39536d7e801cb31af2cc49d0de3aafd130a0a0cdd27b6701b8abc435",
+      "workingCopyOmitted": true
+    },
+    "current-actions/current-actions-and-complete-source-binding-with-explicit-redactions.tar.gz": {
+      "bytes": 4334205,
+      "sha256": "40567a58ce19e563245b109736ee1417a28e8d77308ce0027df19dfc6fd361c8",
       "workingCopyOmitted": true
     }
   },

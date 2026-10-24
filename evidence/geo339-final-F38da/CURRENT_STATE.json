@@ -122,12 +122,19 @@
     "head": "e9ee6d088b0cad4e3984aa2842a50acc311c2351"
   },
   "B1": "Formal integration incomplete",
-  "B2": "Run40040764499 remains failure; no CI repair/rerun claim",
+  "B2": "Current-run annotations prove payment failure OR spending-limit scheduler block; no repair/rerun and not resolved.",
   "B3": "142 and three predicates now rerun at F; aggregate native remains UNRUN",
   "C1": "Visible formal takeover still pending",
   "C2": "Base340 remains unaccepted draft",
   "readyToMerge": false,
   "productTestsLedgerArchitectureChangedThisPublication": false,
   "newAllowedSkips": [],
-  "archiveSHA256": "c2d2c75b39536d7e801cb31af2cc49d0de3aafd130a0a0cdd27b6701b8abc435"
+  "archiveSHA256": "c2d2c75b39536d7e801cb31af2cc49d0de3aafd130a0a0cdd27b6701b8abc435",
+  "currentActionsProof": {
+    "run": 40040764499,
+    "runSourceSHA": "e9ee6d088b0cad4e3984aa2842a50acc311c2351",
+    "archiveSHA256": "40567a58ce19e563245b109736ee1417a28e8d77308ce0027df19dfc6fd361c8",
+    "peerChecks": 114024,
+    "peerExit": 0
+  }
 }

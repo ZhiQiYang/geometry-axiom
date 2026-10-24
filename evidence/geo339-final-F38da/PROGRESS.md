@@ -11,3 +11,5 @@
 **正式 11 列仍為 3 PASS／1 RED／7 UNRUN。** 原架構三條 PASS 與 mutation check RED 仍保留 execution M，沒有冒稱本輪在 F 重跑。帳本原結果為 123 定義／110 紀錄、107 stale、3 retired、13 unrun；完整 native／expected 與六 browser 仍未驗收。本輪未修改產品、測試、帳本或架構產物，也不借用 #338 的 L 收據填綠。
 
 B2 的新 Actions run `40040764499` 依最新審查仍七 required jobs failure、runner 空、steps 空；沒有宣稱 CI 環境已修復或重新執行。C1 仍須完成 #324→#339 的可見正式接替；C2 的 base #340 仍為未驗收 draft。本線維持 draft，未標 READY-TO-MERGE。下一步依主代理排程完成最終來源的帳本、完整 native／expected、六 browser，並在 base 收斂後重核受影響 closure。
+
+補充（本次 Actions 原件）：run `40040764499` 的七個 job annotations 均指向 payment failed 或 spending limit；每個 job 都未獲 runner、steps 為空，未執行產品。這是本次 run 的環境分類，尚未修復帳戶或重跑 CI，B2 仍未解除。安全包位於 `current-actions/`，SHA-256 `40567a58ce19e563245b109736ee1417a28e8d77308ce0027df19dfc6fd361c8`，獨立審查 114024／0。65 次原讀取中 63 個退出 0、2 個 signed log 下載 Forbidden 退出 1；公開副本只遮蔽兩個簽章值、原完整內容留雲端，其餘 bytes 相同。完整 tree 比對證 F→舊 E 的 20 個變更皆為 evidence，不移標實際測試 SHA，也不改整合 3 PASS／1 RED／7 UNRUN。
