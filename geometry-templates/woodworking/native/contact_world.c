@@ -79,6 +79,17 @@ static void contact_member_index_sort(const WoodContactWorld *world,const Contac
 {
     size_t members=count-first;
     for(size_t i=first;i<count;++i)index->sorted[i]=i;
+    /* Placement order commonly already matches the admitted sequence.
+     * Equal orders keep their original member and side order. */
+    if(members<2)return;
+    uint64_t previous=contact_order(world,orders,out[first].timber_id);
+    bool ordered=true;
+    for(size_t i=first+1;i<count;++i){
+        uint64_t current=contact_order(world,orders,out[i].timber_id);
+        if(previous>current){ordered=false;break;}
+        previous=current;
+    }
+    if(ordered)return;
     for(size_t width=1;width<members;){
         for(size_t start=first;start<count;){
             size_t middle=start+contact_min_size(width,count-start);
