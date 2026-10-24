@@ -1,65 +1,54 @@
-# 持續工作 checkpoint：F2bbe的R6終態仍紅，不是完成報告
+# 持續工作 checkpoint：F7 的 R7 已過 N64，N16 與 exact 仍紅，繼續推進
 
-使用者不在，不提問、不空等。全程繁體中文、英文commit；不force push、不合併PR、不推claude/*或grok/*。root唯一寫主列車，每線一位owner，其他agent對抗審查。決策佇列不改；公理層只限已核可SSOT流程。原件不得刪，任何歷史紅保原SHA。
+本檔是接續點，不是停工或完成報告。使用者不在，不提問、不空等；繁體中文、英文 commit。不 force push、不合併 PR、不推 claude/*／grok/*。主代理唯一寫 #338 主列車；每條來源由一人維護、另一人對抗審查。不得放寬斷言／golden／時限，不改決策佇列；公理只依已核可 SSOT 流程。
 
-## 已固定身份
+## 唯一當前狀態
 
-- #338分支 `codex/train-337-continue-20261024`：當前產品／測試／架構產物 **F=`2bbe54f19b2d19e8a816530f0c4edca950629a34`**。當前證據E=`3df56ff38b450ad228da04b2c1dcb6511582af42`；正文分支同名加`-prbody`，真D=`3989f0b099d5e4bbad290bdad2d0bcc9229971d6`。
-- W定向來源 `df66452e7a514032453bea93b8b18ab74d7b1457`，五產品／測試葉正常merge成M=`8d2a69421560b83c0b69f3e82db8f5e97ccc037b`。M真執行架構三原gate0/0/0＋四檔，F只採新report／receipt，不把F冒作M執行。
-- 前輪R5=`a22df116c7e9f6b7d074451f1c8052d59e7e4f3e`；歷史L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`。當前已合#299+#316/#314/#318A/#323/Kprobe/#339/#340/#343（含#341/#342祖先），**未合#344/#345/#346/#347/#348；容量64**。
-- root最近fetch handoff=`5a02993f`：#340新審查解除13aggregate缺件、剩CI；#342仍native30／CI／base阻擋，backlog接native30。#338無新可合併裁決。下一步仍fetch handoff並讀pr-reviews/pr-status/pr-requests README，不等15分鐘空轉。
+| 項目 | 身份／結果 | 下一步與界線 |
+|---|---|---|
+| #338 主列車 | `codex/train-337-continue-20261024`；產品／測試／架構 F7=`6df0264f75e84f03adb70746b6ac3db07a9910fc`；證據 head=`5f27125c950162d9232c22bd966aad9a77e33dbd`；正文分支同名加 `-prbody`，D=`47ace3da0f416fc7b782c0ee1d240b3f1760b69c` | 本列 E／D 只由 root 的真普通 push 結果替換。產品 execution SHA 仍是 F7，不隨 evidence 前進而移標。 |
+| R7 原五 stage | 真 outer exit 1；prepare/build/compare/perf/profile execution=`0/0/1/0/0`，累積 CLI=`0/0/1/1/1` | 原 36 樣本完整保留，不重抽較好的樣本。不是完整八 stage 驗收，all_required=false、full_acceptance=null；ABC_result 原欄缺席。 |
+| R7 性能 | N64/main=`1.2292230778583162` ≤1.3 綠；N16/base=`1.05190582882169` >1 紅；N32/base=`0.8290229168845338`、N48/base=`0.7499983665267913` 綠 | combined 主責 N16 根因；下一個候選是 H reference_rebuild 的區域 ReferenceEval 零填移入真正 fallback。rank-bound 外稿尚未採，不混兩把產品刀。 |
+| R7 原 source calls／exact | N32=82668、N64=364369，比=`4.407618425509266` ≤4.5 綠；原 175 scenes／350 runs 的同三個 stdout exact 差仍在 | 不刪 I22 診斷、不正規化整段比較。Q-323-ABC／Q-P189-EXACT 維持原待決策／判讀記錄，其他工作繼續。 |
+| F7 tracked 帳本 | 原 check 仍 1；120 stale／3 retired | 完整 123 尚未重產。只有下一個穩定來源由 root 整份重產一次；保 120 個真 execution.head，採用 JSON 後 FINAL 再原 tracked --check，不篡改 head。 |
+| 完整正式驗收 | 新 F7 的 full native、6 browser、P52、Q38(44)、§7兩項、P189 full+timing、required-eight/PF3/native後段、memo及其他 reader/RC/#314/ReadingA 專項未完成 | 定向測試不能冒完整 gate；原歷史來源的綠只保原 SHA。性能／完整 canvas 獨占，其他重工作最多兩個。 |
+| required CI | 原 F7 run40070571951／E597 run40070806058 已讀：各7 failure、runner_id=0／steps=0 | 原 annotation 為付款失敗 OR 支出上限，已刊 current-R7-terminal；Ebd5 自身及後續新 E 的 CI 尚未讀，不移標。 |
 
-## 本輪立即工作
+## 本輪已公開與原件位置
 
-1. R6已在固定F真終態1（session60337）；stage=0/0/1/0/0、累積CLI=0/0/1/1/1、outer1。**N16/base1.0434575834374764>1、N64/main1.3731562025736295>1.3均紅**；N32/base.8823227658668896、N48/base.7581122695004152及calls82668→364369比4.407618綠。原175scenes／350runs皆exit0，但同三stdout exact差使原assert1。ABC_result缺席／false／null保真；36樣本全保，不改分母／timer／threshold／timeout，不混R5舊樣本。
-2. F本身tracked ledger check真1：123筆、120stale／3retired／0invalid。原六指令exit0/0/0/1/0/0、前後HEAD=Fclean；外wrapper完成0不等check0。完整123尚未重產，root在最終來源只整份重產一次，子代理不各自跑。
-3. F完整native、六browser、P52、Q38(44)、§7兩項、P189full+timing、required-eight/PF3/native後段、memo三階段、reader三條、RC兩刀、#314六suite/Node、ReadingA專項仍UNRUN。性能與完整canvas獨占，其他重工作最多兩個；每次fresh df，不放寬golden/時限/斷言。
-4. 當前F run40066383912／E12f36515 run40066703178已完成18次API原讀0：各七required job failure、runner_id0／steps0，原annotation付款失敗或支出上限。原件已在E3df56的current-R6-terminal/required-ci公開；B3未解除，不移標後續新E。
-5. R6原小件已671/0實績核並在E3df56公開185檔/664097B，唯一current matrix已更新；繼續針對兩個性能紅找根因，不挑綠重抽。新W工作量0/84/0不能替wall；R5歷史N64/main1.3369644933292553獨立保留。exact三診斷差依Q-323-ABC／Q-P189-EXACT維持，不刪I22診斷、不正規化完整比較。需決策寫QUESTIONS後繼續其他線。
+- 完整 R5／R6 原件已公開於 E=`597bce63e296c85e64d33ca4496f167a599f0848`。R5 9055-member 單包、50132/0 peer；R6 9062-member 單包（9057 是準備路徑數）、50171/0 peer。原失敗、session tool-object 缺件附註、原 outer stdout/stderr 都保真，不能因出版完成改判正式 gate。
+- R7 source `/tmp/geo323-final-r7-source-20261024`；tools `/tmp/geo323-final-r7-stage-tools-20261024`；原 OUT `/tmp/g337323R7`。完整原件已真封為 9128 members／31,359,550 bytes，tar SHA 前綴 `8f2420`、actual50504/0；已於 root E=`5f27125c950162d9232c22bd966aad9a77e33dbd` 普通提交／push公開 `evidence/geo337-train-20261024/full-R7-five-stage-raw/`（218葉／34,480,630B，含完整producer與原初敗）；永久Git blob=`09d8fbda73dd3995cb245be79ec7d339f3b23ade`。不得覆寫這輪 source/out 或重抽樣。
+- K provider-hint 切片：S=`1449d430d1c4734bb1bc3a9f91f3851c845cc0f3`，E=`4d3ac4bf42f431c23833c8841e4a7a597d275dbd`，D=`ae5e9431bfb8feb3b8b8aa9ecce523af3135a5ea`；來源 `codex/train337-provider-hint-20261024`、正文同名加 `-prbody`。已普通合入主列車。source-index 原18與相關9/7/8全0，整刀 work0→16→0／正常0/1/0；原 edge21→31→21及原控制保持。原件 `evidence/geo323-provider-hint-1449d430/`；1579/2563/9904與452出版 peer。純 shadow 命中統計不是 wall-time 證據；R7才是新正式效能。
+- #344：`codex/issue320-connection-recovery-20261024`，最新公開 S=`cbb318d76d7d242ae0db760ae15d57ef1cad4aa0`（一般 merge F7），新原 strict row9 真0。舊 S540 的 VM9／row9只屬歷史。新 fullcanvas fixed/withdrawn/restored 三 phase 仍 UNRUN，未合主列車；normalmerge403/0保原五 source 葉與 F7 source-index18。新的 E／D出版看 specials 真 RESULT，不填尚不存在的 head。
+- #348：`codex/geo300-capacity512-20261024`，來源 F73=`73b21e64dce72f0d16ca29e18559c51815b9724d`，E=`9a8584f57be7935604c3bad4c2481945a6ec3d9f`，D=`1f0e9d8633c333114f2dce74315a9903e36a0dd7` 已普通 push。H3、三 helper 與 sentinel 四組定向反證完成；兩個原方法的第一個 placed512 四指令批次仍原 600 秒 timeout 紅；尚未到後續 sequential-history／canonical replay，原收件工具未留partial stdout，所以還不能只指向loadfile，容量未合主列車。完整原失敗與環境補跑分列；889 Git／286 evidence 葉出版4127/0，兩原 archive blobs 已永久引用，不可刪。
 
-## 原件與工具，可直接續用
+## 其他工作線：保原來源，不冒新 F7 驗收
 
-- R6 tools `/workspace/geo323-final-r6-stage-tools-20261024`；固定pins=`7234344b39724aa2970723ff402b040678ac00ffa8fed24859a6262cdd46a18c`。原R5 prepare/launcher逐byte同；binder只要求W祖先，outer要求40字SHA與真REQUEST相同；35/0靜審 `R6_STAGE_PARAMETER_TOOLS_STATIC_PEER.json`。binding已原0綁F；新source `/workspace/geo323-final-r6-source-20261024`，OUT `/workspace/g337323R6`，所有fresh目錄不得重用。原binding0＋prepare0已3353/0獨審：447leaf4291233B、386原命令0、Fclean/nlink1readonly/獨立index；34include-dir相對名不冒compiler結論。隨後正式五stage結果見R6原OUT，不重用source/out改跑。
-- v5核心c997611f…／run881d618c…、其他四原judge/helper不變；48合成contracts與PIPE/defer兩組0/1/0、87/0peer。保inheritedstdin／原CP／timeout，defer raw若遺失必判不完整；不以SIGKILL缺件當豁免。原source_role歷史啟發式不改，用明確acceptanceSHA、inner receipt、Gitguard與exe綁來源。
-- Fledger `/workspace/geo337-2bbe54f1-ledger-freshness-20261024/RESULT.json` SHA4384a7f8589cbb53f0fb937c2306b863fc7d2574528390e4c05b3ea8a0a76c97；原check工具f5059caf…拒MUTATE_*，不產帳本。
-- M架構原 `/workspace/geo337-8d2a-architecture-four-20261024`；1755/0 actual在同名`architecture-peer-specials`。三gate0/0/0、205/18零skip、604inputs/334owned/270excluded/798edges/0diagnostics；937→937、scan同bytes、九既有guard重新0/1/0＋兩neutral0，withdrawn明用歷史928。F公開302原件4999779B於 `architecture-8d2a-complete/`；只report/receipt變。704/0 adoption/check peer SHA86204ee19cc11308d6671fcd4d36b1ec95488ecaeaf220353d51a6aab3bfb48f。
-- W原 `/workspace/geo343-plane-ranges-formal-r2-20261024/RESULT.json`：36方法14/15/7、零skip、354compile0；39語意case整刀仍綠，plane_compare work0/84/0對應exit0/1/0，五細控制全0/1/0。四行見證原 `/workspace/geo343-plane-fixture-proof-20261024/RESULT.json` 同W原0/1/0，撤回首紅`Guard survived: indexed-plane-coordinate`；3915/4183 peer原件保。完整8529member包已公開child E=f7a389deafed64f0f3137c0086a7033841c709e3／D37a2f117529c15c6525be79b17389d47b43a9acd；root E12f36515普通merge6 evidence葉，specials publication214/0。F的R6已真跑且兩個性能點紅，不能把W定向綠移標wall。
-- R5原 `/workspace/g337323R5`，原sourceR、stage0/0/1/0/0、CLI0/0/1/1/1、outer1；175/350僅三stdout差，ABC_result缺席、all_required=false/full_acceptance=null。N64/main1.3369644933292553紅；smallN/base16/32/48=.990333/.862725/.769273，calls82668→364369比4.407618綠。原36sample保。小摘要30305B SHA3b8ed2e4…，671/0實際核，**fullraw已一次封包真0，尚待完整actual／出版**：`/tmp/geo323-r5-full-package-20261024/PACKAGE.json`，tar31,186,327B／9055members／SHAcaaf311a748c2ce1dc4ebd754fbebc9c4d70f59a5d0938fb2e9e34e57f2dd794。原session58117完整toolobject缺件明列，原outer Recorder真exit1/fullstreams保全，不冒有完整tool回覆；不重跑產品。
-- R5小原件／v5工具及U完整9091member包已公開E=`586f01d3e18f09145cc008816c47e1f45340f077`：`current-R5-status/`、`full-U-five-stage-raw/`。U tar31361891B SHAa276bd4fe2468ab2f51e61b4bfe802a502f6907ff052c1fad8abf234083f8d3a，50331/0包peer、1760/0出版peer。U sourceca7838不能移標R5/F。後續稀疏merge不物化root該目錄，Gitblob與原雲端tar仍保；舊aliasregistry是當時記錄。
-- K node_hint原O1/-pg診斷純證據已正常merge E=`b4639b4d856719023b61c6cc9317661779558763`，16leaf exact child，78/0peer；無K策略變更。舊Saa16排序35方法／work128/896/128原0/1/0與舊L完整證據保歷史，不移標當前F。
+| 工作線 | 保留身份／owner | 狀態 |
+|---|---|---|
+| #339／#340 | specials；原 F38／S175 | 祖先已合；#340 最新審查已解除13 aggregate缺件，仍 required CI，不自行判已接受。 |
+| #341／#343 | combined；W source=`df66452e7a514032453bea93b8b18ab74d7b1457`；E=`f7a389deafed64f0f3137c0086a7033841c709e3`，D=`37a2f117529c15c6525be79b17389d47b43a9acd` | 原定向36、plane整刀0/84/0與見證反證保來源；已入列車。#341 四類 work/CPU/wall不得冒已完整。未採 rank 外稿另保，不改已公開收據。 |
+| #342 | backlog 準備，原 source=`eb846c34` | 祖先已合；新 strict native30尚未完整整合驗收，當前 Q38應44。最新審查的 native30／CI／base 阻擋保留。 |
+| #345 | specials；原 S=`2199cda8`，E=`99646d418bc5e886a92bfdabe33e68780e88fe3b`，D=`c5515c14ac9cb59d147563f3dd75dbde5b75ca4e` | 六次19方法／零skip真0；四控制屬等價0，不冒 functional kill。尚未有可合併裁決，未合列車。 |
+| #346／#347 | combined／backlog；原 S=`39273bc0` cut-list、S=`32403481` empty-row | 原公開定向／反證保原SHA；未合列車。各既有 E／D以歷史 NEXT／該 PR原收據為準，本輪未更新；raw-seam 外稿未C。 |
+| #325／#331／#333 | Grok | 不碰分支。木工端頭／固定／RC 推理先讀核可決策及 #333 FIELD-RULES。 |
 
-## 工作線所有權
+更早歷史、各原工具與 source/E/D 已存 Git 的上一版 `handoff/NEXT.md`（來源 commit `230113da9b919861862eccbeb2c339bda94044e7`）。本稿不再堆疊舊 current-state；先 fetch handoff 分支，讀 `pr-reviews/*.md`／`pr-status.md`／`pr-requests/README.md`，新阻擋優先修。需要新 PR／正文就提交既定5欄 request，不等 bot 空轉；合併仍由本機處理。
 
-| 工作線 | Owner／接續 |
-|---|---|
-| #338/#323 | root唯一寫列車；combined W產品，backlog K診斷／R5收件，evidence工具，train獨立審查。主線優先 |
-| #339/#340 | specials；已合祖先，舊實跑F38/S175保原SHA；#340最新審只剩CI，不能自判已接受 |
-| #341/#343 | combined；#341 actualc493為active bitmap＋穩定壓緊，四類work/CPU/wall尚未完整證。W已合M，F原R6終態N16/N64兩紅，繼續根因分析 |
-| #342 | backlog補native30；AC23原sourceeb846c34祖先已合，當前Q38應44；CI/base審查阻擋保留 |
-| #344 | codex/issue320-connection-recovery-20261024，S7b45013d；NodeVM反證已證，完整canvas三phase未跑，未合F |
-| #345 | specials，S2199cda8；六次19/零skip真0，E99646d418bc5e886a92bfdabe33e68780e88fe3b／Dc5515c14ac9cb59d147563f3dd75dbde5b75ca4e已公開。四控制等價0非functional kill；未可合併裁決／未合F |
-| #346/#347 | combined／backlog；S39273bc0 cut-list、S32403481 empty-row，定向及反證已公開；未合F。raw-seam外稿未C |
-| #348 | combined產品／specials私有驗收，F73b21e64；H3與三helper、sentinel四組反證已完成。R1末三ENV_UNRUN/exit1保真，只補三項0/1/0。兩512load原600秒timeout仍紅；容量未合F，不成主列車瓶頸 |
-| #325/#331/#333 | Grok所有，不碰其分支；木工推理先讀核可決策與#333 FIELD-RULES |
+## 全 native／完整帳本與空間守門
 
-#348新collector對六exact自驗symlink/FIFO只存descriptor不follow/readFIFO；初拒絕1保真，未知nonregular仍拒。正式收包／publication看owner原RESULT，不能把ENV補跑另out冒原R1整體0。
+原 native ROOT 仍是 `/tmp/train337-323-f64d638f-source` 的歷史 L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`；尚未真正轉移。只可依新 consumer／HEAD/ref/index/sparse／逐可寫 inode／五 fixture 原bytes與Git身份守門，一般 checkout下一個穩定R；禁止 reset/clean 或刪 fixtures/收據。五 fixture L/F7 Gitblob相同不等於實體守門已過。F7相對L registry精確更新：source-index14→18、wood-contact9→14、host-sources39→45、rectangular11→13、section-profile28→30。
 
-## 磁碟與保全，先fresh df
+完整123工具原 prepare/observer/mapper保持；外部新增 `/tmp/geo337-full123-F7-admission-draft-20261024`，driver `7b6c57008921d7622ee6e47a987d7225a9318a7e53b582d3c1b9a1a5dd177eb1`、helper `bc93c7e37c29ed0ef3c93819e6e67ae0674f4b054ac7ab7df48a25ee718ba121`，52/0 static peer。只補原兩鎖內、原 formal 前的實際 TMP／WS 每 filesystem 額外配置預算，沒有改原123／120／時限。root須填真正 pinned budget、完成ROOT轉移，且先修 N16；不得從靜審推定可執行或全量帳本已綠。
 
-不得刪收據、fixtures、Gitobjects。只清自己可重建cache／scratch；root原native ROOT轉移仍需專屬fresh consumer/index/inode稽核、保原refs/raw，沒有已完成轉移可借用。full123獨立seed工具已65/0靜審，原observer67af/verifier12aa/c387/reaper7d84不改；新cache不可冒舊ELF，原120stale/3retired先保再全123／map／新check。
+**永久 `/tmp/geo337-published-archive-git-objects-20261024` 是 Git object store，絕不可作為 cache 清理、搬移或刪除。** 原 lease／alternates須保。新 storage TMP6 已真回收約309MB；所有原 archive path／bytes保留。L/U原git archive stdout加入R5/R6兩群後，8原path全保、4個新增硬連結實際回收WS 62,504,960B（06:56 UTC從22,159,360到84,664,320B）；新registry在 `/tmp/storage-maintenance-followup-20261024/L_U_R5_R6_EXTENDED_RAW_ALIAS_REGISTRY.json`，永久objects未碰。這是當時數值，仍先fresh df；所有新的工具／OUT／cache／編譯池優先用新的私有 TMP路徑，先 fresh df並保完整編譯峰值；不能只看 source物化大小。舊 alias registry只追加，不回寫歷史nlink，不把gross視為df淨增。
 
-- 原423cold receipts、2cardref受控ELF、1GEO339六alias、3large及4additionalarchive群各自禁寫。新增3+2+7共12archive群61paths真0，靜態／actual827/0、589/0、1000/0；gross365010944不等df淨回收。
-- 105可重建來源副本由root另授保全退休真0；16unique原payload與105path map完整tar2849441B SHA9daa4fc1743fe2c864740dfeb679170da2adaa851a25b471f00e176b7f00c340，1658/0peer。12群＋105小metadata包4084members／933474B SHA280cff70d2a7c3460da26af7153d88c865a4e1016a4bc036107856471f140eed，16438/0peer；**105 payload是包外必須同刊**。
-- 11個root archive葉再加入既有七alias群，各成8；3136/0peer，88paths全保、11transition／564Git／12consumer。只有這11root葉凍結，其他docs可正常；不是新增11群。19個cold archive群現113paths，舊registry不回寫；所有適用alias完整de-link後才可寫。gross134045696非df淨回收。11root collector123/0已審，完整小包尚看storage原RESULT。
-- storage另受授21PNG×7保路徑去重：原producer/actual已回報真0、147paths保留，獨立peer仍待；原圖片內容與路徑不可刪。只新smallmetadata審，不二讀147body。舊L175 ELF當時已全absent，不冒新回收。
-- 新共享alias記錄只追加合法事件，不回寫歷史nlink。原consumer無hit受可見性限制，不擴稱全機。性能／canvas獨占期間禁止另打大包或hash，所有其他重測最多兩個。
+主代理接續：收斂 N16 的單因 H 修正與正常撤回／恢復，固定新的可解析來源後只跑所需正式輪次；同時處理 #344／#348及其他可推進線。原件、PROGRESS與唯一正文矩陣逐步普通 push，無任何停止指示。
 
-root取得原R6啟動或終態後，只改對應state欄；本稿E/D placeholder必須由真普通push結果替換，未推不稱已推。這是恢復點，不是停工或完成報告。
+## 最新審查與立即接續
 
-本輪額外8組nested archive各7alias已保全真0，56paths全保、gross50405376B、WS淨回收43319296B；原registry與bytes不回寫。R6開跑前WS169992192B、TMP177446912B，其他hash/pack/C已暫停。21PNG與8nested合計203paths的static＋actual metadata已7574/0，原core/1246Git小流與currentstat核，未二次讀body。其完整原包公開仍待storage後續RESULT，不以維護0當產品0。
+root已fetch handoff `ef7b319101c`，新#338審查為2026-10-24T06:38:46Z／head597bce6。B1全驗收仍待，B2本輪R7的N64已綠但N16/exact未解，B3 required CI未啟動；C1舊正文已改以F7/R7終態及真currentCI，D以表內真push值為準，bot套用狀態仍查pr-status，不等待。
 
-R6新小摘要 `/workspace/geo323-r6-terminal-summary-20261024/SUMMARY.json` SHA349c75785e5b08cf6623a1eba532ae5a39cdcd386c2e0a64431aa13c9bf2d9a1；actual `/workspace/train337-canvas-peer-resume/R6_TERMINAL_CI_LEDGER_ACTUAL_PEER.json` SHA81761ddcbc87af507c86a047efaa6d98ad5b407359cca6aa89b53dadc7abd875（671/0），同目錄helper `review_R6_terminal_CI_ledger.py`。原36sample PIPE全流/median重算/4gprof全流、五CLI/outer1、當前CI與ledger完整核。完整R6raw尚未封包，小件與F/E12f的CI、Fcheck已公開E3df56 current-R6-terminal；不要重構不存在的raw。
+#339最新2026-10-24T06:38:47Z／head8f39025明確接受F38→F1的498-path closure保留142 importer與三predicate（舊B3解除），但正式11／native／browser／ledger／架構、requiredCI、#340基底接受都仍待。#324仍open的可見接替問題，請本機Claude在#324明確重導向#339並凍結／關閉舊入口；雲端未代發留言或碰Grok分支。原審查小note在 `/tmp/geo339-review-followup-ef7b3191-20261024/`。
 
-TMP三組冷archive preserving去重已真0：14paths/bytes全保、11transition/12consumer，實際回收523485184B，TMP現665972736B；原nativeROOT/R6/K未動。來源與registry在 /workspace/tmp-three-cold-archive-groups-preserving-links-execution-20261024；獨立peer另由storage補，不提前標已審。full123新seed/ELF可用新TMPcache，但R6兩紅仍先尋因，不提前產過期帳本。
-
-#344由specials接為唯一owner，已在自己的codex分支一般mergeF2bbe成local S1=5402765c795769a77a7b249de1e3db80045a41de（尚未核實push時不得當公開），source五leaf限定、全canvas三phase仍UNRUN；不合主列車。K shadow由backlog觀察固定通用multiplicative-provider hash與兩路cache，未改產品；W rank界限只外部證明稿。
+當前H候選由combined唯一維護，backlog只寫獨立外部C harness，evidence靜審產品30/0；尚未合入列車。原O2 ELF顯示ReferenceEval 608→127,584B，persistent仍先零填不用的local，World／history BSS未增長；31/0只證真指令成本，不先宣稱能解N16。只把完整aggregate初始化延後到非persistent fallback；需真memset工作量撤回／恢復、persistent/fallback/失敗語義與原focused，再一般合流、重架構與正式性能。rank-bound外稿保持未採。H-only架構工具 `/tmp/geo337-architecture-h-local-init-tool-20261024` 已備94574f…、prior-source Me321、預期唯一input references.inc；新M尚未綁，三原裁判未在新候選跑。
