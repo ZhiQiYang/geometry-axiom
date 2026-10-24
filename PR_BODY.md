@@ -7,7 +7,7 @@ raw seam 列舉、4096 容量、錯誤類型、裁切與有板時的順序保留
 | 欄位／gate | 目前值或退出碼 | 精確界線 |
 |---|---|---|
 | product SHA | `324034812bb6effca68e0413bc0468595337b317` | 產品一 leaf、測試兩 leaf、expected 10→13；正式前後乾淨 |
-| evidence head | `eb93fbe977b381f67afbf997623f9699d0cb0f0b` | 此提交只加／更新證據；正式 execution SHA 仍為 S324 |
+| evidence head | `2e8a6ed20325aa4842dcd0f89eacd598662be598` | 此提交只加／更新證據；正式 execution SHA 仍為 S324 |
 | base | #346／`a5f1806fb3cad2dada1a56e79e01d54f9f86700f` | source parent；未改別人的分支 |
 | `python3 -B tests/test_geo261_panel_native.py` | **0：13 methods、0 skip** | 用獨審 passive observer/runpy 執行原入口、封存所有子程序；原 60 秒不變 |
 | 原 NativeBuild compile/link | **93 次全 0** | 原旗標／300 秒限制；compile error 不算反證 |
@@ -17,15 +17,17 @@ raw seam 列舉、4096 容量、錯誤類型、裁切與有板時的順序保留
 | `python3 -B formula_probe.py` | 0 | 純 Python 1150 案、488 全空、19 首 phase 空而後有板，與 C 證據分列 |
 | 來源及原件靜審 | 239/0、40/0、23/0、658/0 | 草稿、companion、公開 source、前一版 E/D 包 |
 | 正式 wrapper 獨審 | 31/0 | 四個純 parser 負例拒絕假綠；不冒稱產品執行 |
-| 新 formal 原件／E/D 獨審 | **進行中** | 正式已跑，但仍待另一代理核對這份新公開證據 |
+| 正式原件／archive roundtrip 獨審 | **621/0、3754/0** | 124 child streams、93 compile/link、1250 原件逐 bytes/hash 核對 |
 | PF-1／PF-2／PF-3、完整 native、受影響 browser | **UNRUN** | 不借其他 SHA／工作線的歷史通過 |
 | 最終突變帳本／架構三裁判與收據 | **UNRUN** | 主代理依最終來源統一重產；子代理沒有另跑帳本 |
 | 允許的 skip | **本 suite 實際 0 skip** | 沒有新增允許 skip；其餘未跑仍 UNRUN |
-| 合併狀態 | **NOT READY** | 待整合、帳本／架構與新證據審查 |
+| 合併狀態 | **NOT READY** | 待整合、帳本／架構；此版 E/D 的最後窄核另附 |
 
 成本撤回的精確失敗是 `ASSERT:empty-axis-work-independent-of-empty-row-count`，正常 OS exit 1。六次測量均保留 status 7（`WOOD_PANEL_SEAM_LIMIT`）、clip-status 0 與輸出清空斷言。三個新語意反證為 `ASSERT:empty-first-phase-keeps-other-parity`、`ASSERT:empty-axis-zero-pieces-with-raw-seams`、`ASSERT:empty-axis-legal`；每組前後正例都實際返回 0。
 
-[PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/eb93fbe977b381f67afbf997623f9699d0cb0f0b/evidence/issue128-empty-panel-rows-20261024/PROGRESS.md)、[FORMAL_SUMMARY.json](https://github.com/ZhiQiYang/geometry-axiom/blob/eb93fbe977b381f67afbf997623f9699d0cb0f0b/evidence/issue128-empty-panel-rows-20261024/FORMAL_SUMMARY.json) 與 [FORMAL_RAW_INDEX.json](https://github.com/ZhiQiYang/geometry-axiom/blob/eb93fbe977b381f67afbf997623f9699d0cb0f0b/evidence/issue128-empty-panel-rows-20261024/FORMAL_RAW_INDEX.json) 綁定 1,250 個新原件。正式 archive 共 3,308,093 bytes，SHA-256 `ca40b62ec0462b02ecc1dd8727f4317bf03cf0a8ece286cf302b968725b0adda`。每項保留指令、退出碼、完整 stdout/stderr、環境、SHA、實際 native 執行檔 hash、負例 C 與 93 條 compile/link 原件。原草稿 322 原件 archive 與歷史 UNRUN 進度仍在 Git 歷史中。
+[PROGRESS.md](https://github.com/ZhiQiYang/geometry-axiom/blob/2e8a6ed20325aa4842dcd0f89eacd598662be598/evidence/issue128-empty-panel-rows-20261024/PROGRESS.md)、[FORMAL_SUMMARY.json](https://github.com/ZhiQiYang/geometry-axiom/blob/2e8a6ed20325aa4842dcd0f89eacd598662be598/evidence/issue128-empty-panel-rows-20261024/FORMAL_SUMMARY.json) 與 [FORMAL_RAW_INDEX.json](https://github.com/ZhiQiYang/geometry-axiom/blob/2e8a6ed20325aa4842dcd0f89eacd598662be598/evidence/issue128-empty-panel-rows-20261024/FORMAL_RAW_INDEX.json) 綁定 1,250 個新原件。正式 archive 共 3,308,093 bytes，SHA-256 `ca40b62ec0462b02ecc1dd8727f4317bf03cf0a8ece286cf302b968725b0adda`。每項保留指令、退出碼、完整 stdout/stderr、環境、SHA、實際 native 執行檔 hash、負例 C 與 93 條 compile/link 原件。原草稿 322 原件 archive 與歷史 UNRUN 進度仍在 Git 歷史中。
+
+`FORMAL_LOCATORS.json` 更正原 driver 的路徑欄位：`native_execution_log` 只是 configured JSONL，**沒有物化**；真 runtime 原件在 archive 的 `formal/panel-native/observed/commands/`，cleanup build logs 在 `formal/panel-native/compile-retention/`。保留原 receipts/archive，沒有回寫或重跑。獨審完整 reports/checks/helpers（含初 helper 誤用 `local` 索引鍵的原錯誤）在 `formal-independent-peer/`。
 
 之前 `git add` 的 ignored 提示 exit 1、companion peer 初 matcher 誤判與封裝 parser 的時序調整，都保留原件；不把它們算成 C 產品反證。正式 source checkout 僅補實際需要的 131 個 Git 檔；OUT/TMP 隔離在 workspace，未碰全專案 native 的 global cache。
 
