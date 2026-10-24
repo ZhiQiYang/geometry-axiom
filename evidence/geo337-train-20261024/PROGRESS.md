@@ -18,7 +18,7 @@ K定向真實來源 S1449d430 的18＋24方法全綠、整刀calls0→16→0／�
 
 R5／R6兩輪完整原件已在 E597bce63 普通推送至 full-R5-five-stage-raw/ 與 full-R6-five-stage-raw/，附全部inventory/hash與獨審。原outer1、各自性能紅與三exact差均保原執行SHA；每輪七ELF為hash inventory，原payload仍在雲端。archive-object-store/ 同批公開永久TMP Gitobjects的原接線／讀者收據，禁止清理此store。維護原件不算產品gate。
 
-本批 current-R7-terminal/ 公開六原binding、完整外層／五CLI流、真API poll、當前CI／帳本check、stage工具與672/0獨審。完整R7 inner／source preparation原件正在一次封包，尚未公開，小摘要不冒完整原包。
+本批 current-R7-terminal/ 公開六原binding、完整外層／五CLI流、真API poll、當前CI／帳本check、stage工具與672/0獨審。完整 R7 inner／source preparation 原件本提交已公開於 full-R7-five-stage-raw/：9128 members／31,359,550B，SHA256 8f2420a2c4a78cd99355b32183928d1c8ce14c893fdbe88db0f101104622cd7e，獨立原件 roundtrip 50504/0。完整 RAW_INVENTORY.json 已在 tar 內，外部 PACKAGE.json 另釘其 hash；七個 ELF 為 hash inventory，原 payload 全保留。原環境、source、每個指令／退出碼／全輸出、175 scenes、36樣本、四profiles與三份真工具poll均保；完整 producer 初次準備失敗、自驗反證及後續 true0 原件另附。封包0不解除原outer1、N16紅與三exact差。收件時 published:false／peer PENDING 等歷史字樣原封不回寫，當前發布事實由本提交與實際 peer 分欄證明。永久TMP Gitstore中的原已驗blob以普通提交／push公開，沒有移動或刪除原objects。
 
 下一步：依已收齊結果修N16額外成本；原單次N16 pg診斷只用作因果分析，不當新正式樣本。後續在新來源重跑受影響原門檻，穩定後由root整份重產帳本及完整驗收。其他獨立工作線繼續。**目前不是READY-TO-MERGE。**
 
