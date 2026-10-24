@@ -1,29 +1,9 @@
-# GEO-300 capacity 512 progress
+# #348 容量 512 進度（2026-10-24）
 
-產品 SHA：400a6d0ca50f3aca104fb569c77c8ef753c93355；分支 `codex/geo300-capacity512-20261024`。從 #128 P2 evidence `6d9d46e8d16af75351924c6d47a078d3eb647cc0` 建立，正常 merge #346 evidence `eaf15e239324a6464a04740647afccce3a3c17c7`，merge commit `696f7f07846c6224775dab5736bd1dc45541a4bf`。沒有改其他工作線分支。
-
-## 唯一 current-state
-
-| 項目 | 結果／界線 |
-|---|---|
-| 產品七 leaf | W 唯一容量 512；H admission／真 arrays／contact／cut-list／span 共用；validation 超容量在 callback 前拒絕 |
-| 測試六 leaf＋registry兩 leaf | 原 64 witnesses 保留；新增 W 七方法、H 五方法；AST 7／5，尚未 runtime discovery |
-| 一般 merge／apply／diff check／一般 push | 0；公開 S 如上；current_geometry.c 原 CRLF 保留 |
-| 草稿／實際套用獨立靜審 | 產品計畫 12/0、W 39/0、H＋registry 60/0、實際15 leaf 73/0 |
-| W／H 新 suites、ABI compiler controls | **UNRUN** |
-| 原 contact／report／panel suites | **UNRUN at this S**；不把 #346 或 P2 的舊 SHA 綠燈貼到容量512 |
-| 新撤回／恢復反證 | **UNRUN**；測試已備，不當作 killed |
-| 完整 native／6 browser／專項／效能 | **UNRUN** |
-| 最終突變帳本／架構三裁判與四檔收據 | **UNRUN**；交主代理依最後來源統一重產 |
-| 允許 skip | 無新增；目前沒有正式執行，不能宣稱 0 skip |
-| 狀態 | **NOT READY**；正式 C 時槽尚未授權 |
-
-W companion 分別驗原64、真512、真513拒絕。validation 的512正例是未放置成員，不能當作512個已放置角材的幾何／施工驗收。H companion 使用真 bridge／World，準備512宣告與513拒絕、既有ID更新、undo／redo／dump/load byte identity，仍全未跑。
-
-安全反證界線：撤 declaration guard 只呼叫 direct API；撤 H guard 只送缺 ID 的 sentinel，在 append 前語法拒絕。不得把有效第513成員送進已撤 guard 的固定512陣列。七 ABI 負例只預期具名 typedef 編譯拒絕並恢復編譯；不把異構 mutant objects 連結後執行。
-
-登記保留所有既有 entries 的 bytes/order/values，P2=13、report=11，僅加7／5；沒有更新 mutants_results 或 tests/mutate.py。沒有新增耗時數值門檻、改SSOT／決策／K。H v1 swallowed assertion 與 registry sorting churn 已修，v1完整保留；實際套用 peer 初 matcher 把舊 members[64] 誤寫成 enum，原稿與修正也保留，均非產品執行。
-
-完整靜態原件包 original-capacity512-drafts-and-static-reviews.tar.gz：578 members、751021 bytes、SHA-256 0b6ea82d93952e40dc199483828c3e595401720f4e36da755022e9e8fe016542。每件原 path/bytes/hash 見 RAW_INDEX.json；可解析 S 的15個公開 Git blobs與指令/退出碼皆保存。
-
-下一步：主代理授槽後，在固定公開 S 跑原裁判與新 W/H suite；依真紅原因修復並補撤回／恢復，最後由主代理統一帳本與架構。順序 #343 → #346 → #128 P2 → 本線。NOT READY。
+- Current source F `0f695866c0ba12d2c70dfd7d40628d0fda0f905f` 已普通 commit／push，remote 精確核對；產品碼仍 S `400a6d0ca50f3aca104fb569c77c8ef753c93355`。21 原子命令（20 Git＋1 df）均 exit 0。
+- 修正兩個新測試缺陷：objects 排除未放置 timber，不能當宣告清單；I9 拒絕未放置 loadfile，不能改產品放行。以 canonical dump 完整 ID／唯一性核對、真互動逐行建置／重放修正，原 loadfile 負例及完整回滾保留。
+- H 原五方法保留，新增原 N64／N512 真 placed 成功 loadfile、完整 stdout bytes replay、獨立 DSL 幾何／右手 frame、513 拒絕與歷史。H7／W7 和局部 AST75 都只是靜態計數，並非正式執行。
+- v5 候選72／0、source publisher21／0、實際公開 source111／0、正文29／0均為獨立靜審。初 peer matcher 錯誤與 v1～v4 外部草稿保留，不冒充當時已通過 runtime。
+- 所有 current source runtime、三 helper 分別撤回／恢復、W／H 控制、七 ABI compiler 控制、512 placed／stack／性能、完整 native／browser／帳本／架構仍 **UNRUN**。沒有新增允許 skip，尚未 READY-TO-MERGE。
+- 下一步：依 `FORMAL_H7_W7_F0f695866_PLAN.md` 準備同 F 薄 closure；專職代理正製作並獨審 BridgeSession pre-decode 原管線保全工具。硬碟預算、工具 peer 和正式時槽滿足後，串行完成 H7／W7 及三刀真0／1／0。不得用其他 SHA 的舊綠燈替代。
+- 本次只有 evidence／PR 正文出版，不重產帳本、不執行 C／generator、不合併 PR、不改決策佇列或公理。#348 已開出，不重送建立請求。
