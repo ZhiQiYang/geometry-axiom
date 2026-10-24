@@ -2738,7 +2738,7 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_PLACEMENTS  16
 #define WORLD_MAX_GUIDES      16
 #define WORLD_MAX_GRIDS       16
-#define WORLD_MAX_TIMBERS     64
+#define WORLD_MAX_TIMBERS     WOOD_MEMBER_CAPACITY
 #define WORLD_MAX_SPACES      GEO_ENCLOSURE_CAPACITY
 #define WORLD_MAX_RC          32
 #define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2 + WORLD_MAX_GRID_SYSTEMS + WORLD_MAX_GRID_BINDINGS + PARAM_CARD_MAX)
@@ -6038,6 +6038,15 @@ typedef GeoInterval SpanInterval;
  * C11 _Static_assert: the Windows MSVC builds compile in its default C mode. */
 typedef char app_span_status_abi_check[(int)SPAN_BETWEEN_AMBIGUOUS==(int)WOOD_SPAN_BETWEEN_AMBIGUOUS?1:-1];
 typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAPACITY?1:-1];
+
+/* Bind the host admission bound to real W storage and scratch. */
+typedef char app_timber_capacity_world_check[WORLD_MAX_TIMBERS==WOOD_MEMBER_CAPACITY?1:-1];
+typedef char app_timber_capacity_timbers_check[sizeof(((World *)0)->wood.timbers)/sizeof(((World *)0)->wood.timbers[0])==WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_anchors_check[sizeof(((World *)0)->wood.anchors)/sizeof(((World *)0)->wood.anchors[0])==WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_contact_check[WOOD_CONTACT_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_cut_list_check[WOOD_CUT_LIST_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_span_check[WOOD_MEMBER_SPAN_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_stop_face_check[STOP_FACE_MAX==WOOD_CONTACT_FACE_CAPACITY?1:-1];
 
 /*
  * 解析 auto 跨距。

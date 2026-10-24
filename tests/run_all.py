@@ -199,6 +199,8 @@ PY_NEEDS = {
     'test_geo261_wood_grid_engineering': [],
     'test_geo261_wood_member_declaration': [],
     'test_geo261_wood_report_policy': [],
+    'test_geo261_timber_capacity': [],
+    'test_geo261_timber_capacity_host': [],
     'test_geo261_wood_world_validation': [],
     'test_grid_system_contract': ['bridge'],
     'test_grid_card_reference': ['bridge', 'model-base'],

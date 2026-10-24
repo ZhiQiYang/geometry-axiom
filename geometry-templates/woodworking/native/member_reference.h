@@ -99,7 +99,7 @@ typedef enum {
     WOOD_SPAN_BETWEEN_BLOCKED,WOOD_SPAN_BETWEEN_AMBIGUOUS
 } WoodMemberSpanStatus;
 /* Existing product bounds; these are W scratch capacities, not K concepts. */
-#define WOOD_MEMBER_SPAN_MEMBER_CAPACITY 64
+#define WOOD_MEMBER_SPAN_MEMBER_CAPACITY WOOD_MEMBER_CAPACITY
 #define WOOD_MEMBER_SPAN_CUT_CAPACITY (8*GEO_LOOP_MAX_VERTICES*(GEO_REGION_MAX_HOLES+1)+WOOD_MEMBER_SPAN_MEMBER_CAPACITY*2)
 typedef struct {
     GeoRegionSetView domain;
