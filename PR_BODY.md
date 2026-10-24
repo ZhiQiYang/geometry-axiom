@@ -5,7 +5,7 @@
 | 來源角色 | 完整 SHA／分支 |
 |---|---|
 | 產品與本輪 142／三組反證 execution F | `38da31bcac91db631e6325e40b228f8604810e82` |
-| 本輪 evidence head E | `dcff3a696d409db5dab9352b9f9d2ce2f76624e6` |
+| 本輪 evidence head E | `1d94ab77ab29952d5b73ec5b262dfd239819fe25` |
 | 既有架構三條／帳本 check execution M | `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` |
 | 歷史 importer／反證 execution S | `57b680140da2c6b77ab0d362a72029d8d7c9334b`（只保歷史） |
 | 已普通 merge 的 #340 source | `4d3a17c306cad42057589c5cfd964f1c32b755c4` |
@@ -41,7 +41,7 @@ M→F 只更新架構 report／receipt 兩個非執行性衍生檔，604 架構 
 
 最新已讀審查是 fresh fetch 的 handoff `1ddb1bb73b9bc0958cf488280412ba116c880a5e` 中 `handoff/pr-reviews/339.md`，2026-10-24 00:39:36 UTC／head `e9ee6d0`：B3 的 142 importer／三 predicate 部分已有同 F 新實績，aggregate native 仍 UNRUN，故 B3 尚未完全解除；B1 的完整正式清單仍未完成。
 
-B2：最新審查所列 Actions [40040764499](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40040764499) 七 required jobs 仍 failure，runner 空、steps 空。沒有宣稱已修帳戶／支出設定、已重跑 CI 或取得同 head 接受證據；舊 run 的 annotations 不當作新 run 的原因證據。這些 failure 不算產品 pass 或允許的 skip。
+B2：最新 Actions [40040764499](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40040764499) 綁定 `e9ee6d088b0cad4e3984aa2842a50acc311c2351`，七 required jobs 均 failure、runner 空、steps 空；本輪讀取各 job 的原 annotation 都指出 payment failed **或** spending limit，證明排程未開始，未分辨兩種帳戶原因。環境分類已有本次 run 的新證據，沒有宣稱帳戶／支出設定已修、CI 已重跑或 required gates 已通過。兩次 signed log 下載 Forbidden 是獨立的存取錯誤，不能推論不存在 logs；公開副本只遮蔽簽章參數，完整原值留雲端，其他 bytes 完全保留。安全證據包與 `PUBLIC_REDACTIONS.json` 位於 `evidence/geo339-final-F38da/current-actions/`，封包 SHA-256 `40567a58ce19e563245b109736ee1417a28e8d77308ce0027df19dfc6fd361c8`，獨立審查 114,024／0；65 原讀取是 63 個 exit 0、2 個下載 exit 1，並非 65 個測試。完整 Git tree 比對證明 F→舊 E 的 20 個差異皆為 evidence，所有其他 tracked path／mode／type／blob 相同；只證來源關係，表內 execution SHA 不移標。B2 仍未解除，這些 failure 不算產品 pass 或允許的 skip。
 
 C1：#339 是唯一 Codex 接替 owner，舊 #324 凍結；可見 PR／issue 的正式重導向或關閉仍須完成，不以 evidence 自述冒充已完成。C2：base #340 仍未驗收，待主代理按普通 merge 收斂穩定基底，對最終組合來源重核受影響範圍。沒有 rebase、force push、合併 PR，沒有修改公理或決策佇列。
 
