@@ -10172,7 +10172,7 @@ static void print_cut_list(const World *world)
         );
 
         for (size_t k = 0; k < groups[g].count; ++k) {
-            printf("%s%" PRIu32, k == 0 ? "" : "、", groups[g].ids[k]);
+            printf("%s%" PRIu32, k == 0 ? "" : "、", report.ids[groups[g].first+k]);
         }
 
         printf("）\n");

@@ -7,11 +7,12 @@
 typedef struct {
     GeoCoord length,size_a,size_b;
     WoodMemberRole role;
-    size_t count;
-    uint32_t ids[WOOD_CUT_LIST_MEMBER_CAPACITY];
+    size_t first,count;
 } WoodCutGroup;
 typedef struct {
     WoodCutGroup groups[WOOD_CUT_LIST_MEMBER_CAPACITY];
+    /* Owned once per report; offsets remain valid when the report is copied. */
+    uint32_t ids[WOOD_CUT_LIST_MEMBER_CAPACITY];
     size_t group_count,placed;
     GeoCoord total_length;
 } WoodCutList;
