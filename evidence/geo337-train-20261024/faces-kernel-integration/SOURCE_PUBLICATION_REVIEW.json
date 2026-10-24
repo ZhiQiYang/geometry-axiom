@@ -1,0 +1,1262 @@
+{
+  "scope": "Independent publication-only peer; committed originals/one-parent history/exact remote heads, no product test rerun",
+  "original_result_sha256": "4c176409adf1cfbb94cad267ab58eccff8ee9dbbc7d2d719bc8e6be05fd03f9f",
+  "original_result": {
+    "schema": "geo340-339-bounded-evidence-publication/1",
+    "sources": {
+      "340": "175cee44c56c89871803d955c0c525236727ba65",
+      "339": "616ce7538d23fbe7f3bbefae7f2a04e25ebd75a4"
+    },
+    "evidence": {
+      "340": "04959e04c334ceaf03f865514f76b1cac8ee91f2",
+      "339": "8f39025be6708bd9d58e576ed5b349b7ef628624"
+    },
+    "bodies": {
+      "340": "db8bf2289f8ad931c00924193e238e621f970e05",
+      "339": "283d1e245f724e13644a1379cba5cd34f3dae9d9"
+    },
+    "pushed": {
+      "evidence340": true,
+      "evidence339": true,
+      "body340": true,
+      "body339": true
+    },
+    "errors": [],
+    "exitCode": 0,
+    "sourceOrTestModified": false,
+    "ledgerRegenerated": false,
+    "formalRerunByPublisher": false,
+    "startedUTC": "2026-10-24T03:23:37.144754+00:00",
+    "freeBytes": [
+      {
+        "stage": "before-evidence-340",
+        "/workspace": 315768832,
+        "/tmp": 25231360
+      },
+      {
+        "stage": "before-evidence-339",
+        "/workspace": 314687488,
+        "/tmp": 24248320
+      },
+      {
+        "stage": "before-body-340",
+        "/workspace": 314294272,
+        "/tmp": 23265280
+      },
+      {
+        "stage": "before-body-339",
+        "/workspace": 313991168,
+        "/tmp": 23265280
+      }
+    ],
+    "endedUTC": "2026-10-24T03:23:48.181850+00:00"
+  },
+  "checks": [
+    {
+      "check": "true publication exit0",
+      "passed": true
+    },
+    {
+      "check": "all four actual pushes",
+      "passed": true
+    },
+    {
+      "check": "exact reviewed input",
+      "passed": true
+    },
+    {
+      "check": "git exit0 1",
+      "passed": true
+    },
+    {
+      "check": "340 evidence one source parent",
+      "passed": true
+    },
+    {
+      "check": "git exit0 2",
+      "passed": true
+    },
+    {
+      "check": "340 exact only new additive evidence",
+      "passed": true
+    },
+    {
+      "check": "git exit0 3",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes raw/MERGE_ORIGINALS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 4",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes raw/MERGE_ORIGINALS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 5",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes raw/AGGREGATE_ORIGINALS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 6",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes raw/AGGREGATE_ORIGINALS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 7",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes peer/PEER_AND_REVIEW_RECORDS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 8",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes peer/PEER_AND_REVIEW_RECORDS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 9",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes CURRENT_STATE.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 10",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes PROGRESS.md",
+      "passed": true
+    },
+    {
+      "check": "git exit0 11",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes tools/publish.py",
+      "passed": true
+    },
+    {
+      "check": "git exit0 12",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes MERGE_RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 13",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes AGGREGATE_RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 14",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes raw/FACES_CLOSURE_ORIGINALS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 15",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes raw/FACES_CLOSURE_ORIGINALS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 16",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes tools/publish_r2.py",
+      "passed": true
+    },
+    {
+      "check": "git exit0 17",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 18",
+      "passed": true
+    },
+    {
+      "check": "340 committed original bytes publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 19",
+      "passed": true
+    },
+    {
+      "check": "340 index exact source manifest",
+      "passed": true
+    },
+    {
+      "check": "git exit0 20",
+      "passed": true
+    },
+    {
+      "check": "340 body normal one parent",
+      "passed": true
+    },
+    {
+      "check": "git exit0 21",
+      "passed": true
+    },
+    {
+      "check": "340 only PR_BODY changed",
+      "passed": true
+    },
+    {
+      "check": "git exit0 22",
+      "passed": true
+    },
+    {
+      "check": "340 exact final body one E replacement",
+      "passed": true
+    },
+    {
+      "check": "git exit0 23",
+      "passed": true
+    },
+    {
+      "check": "340 independent remote exact codex/kernel-without-woodworking-20261023",
+      "passed": true
+    },
+    {
+      "check": "git exit0 24",
+      "passed": true
+    },
+    {
+      "check": "340 independent remote exact codex/kernel-without-woodworking-20261023-prbody",
+      "passed": true
+    },
+    {
+      "check": "git exit0 25",
+      "passed": true
+    },
+    {
+      "check": "339 evidence one source parent",
+      "passed": true
+    },
+    {
+      "check": "git exit0 26",
+      "passed": true
+    },
+    {
+      "check": "339 exact only new additive evidence",
+      "passed": true
+    },
+    {
+      "check": "git exit0 27",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes raw/MERGE_ORIGINALS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 28",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes raw/MERGE_ORIGINALS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 29",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes raw/AGGREGATE_ORIGINALS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 30",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes raw/AGGREGATE_ORIGINALS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 31",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes peer/PEER_AND_REVIEW_RECORDS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 32",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes peer/PEER_AND_REVIEW_RECORDS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 33",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes CURRENT_STATE.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 34",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes PROGRESS.md",
+      "passed": true
+    },
+    {
+      "check": "git exit0 35",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes tools/publish.py",
+      "passed": true
+    },
+    {
+      "check": "git exit0 36",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes MERGE_RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 37",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes AGGREGATE_RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 38",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes raw/FACES_CLOSURE_ORIGINALS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 39",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes raw/FACES_CLOSURE_ORIGINALS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 40",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes tools/publish_r2.py",
+      "passed": true
+    },
+    {
+      "check": "git exit0 41",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS.tar.gz",
+      "passed": true
+    },
+    {
+      "check": "git exit0 42",
+      "passed": true
+    },
+    {
+      "check": "339 committed original bytes publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "git exit0 43",
+      "passed": true
+    },
+    {
+      "check": "339 index exact source manifest",
+      "passed": true
+    },
+    {
+      "check": "git exit0 44",
+      "passed": true
+    },
+    {
+      "check": "339 body normal one parent",
+      "passed": true
+    },
+    {
+      "check": "git exit0 45",
+      "passed": true
+    },
+    {
+      "check": "339 only PR_BODY changed",
+      "passed": true
+    },
+    {
+      "check": "git exit0 46",
+      "passed": true
+    },
+    {
+      "check": "339 exact final body one E replacement",
+      "passed": true
+    },
+    {
+      "check": "git exit0 47",
+      "passed": true
+    },
+    {
+      "check": "339 independent remote exact codex/geo324-faces-20261024",
+      "passed": true
+    },
+    {
+      "check": "git exit0 48",
+      "passed": true
+    },
+    {
+      "check": "339 independent remote exact codex/geo324-faces-20261024-prbody",
+      "passed": true
+    }
+  ],
+  "passed": 99,
+  "failed": 0,
+  "findings": [],
+  "read_commands": [
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "-s",
+        "--format=%P",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "38a34bb00473cb8407e37a4765f3b345f6f4727b2e24aba8599d16e423e66a0d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/001"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "diff",
+        "--name-status",
+        "--no-renames",
+        "175cee44c56c89871803d955c0c525236727ba65",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "418d16b0225872a66caf38057a8b6e4d6955bbf4c10f32abb759dd39f9788e50",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/002"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS.tar.gz"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "27f5d4e9a840824aa12ed97b1dedf0f811cbafdd56f42d2560a7d3e3f9ffee4b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/003"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/raw/MERGE_ORIGINALS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "f6776a9d0c9a14e042afd1c32ab343f3a2d6471efadf864b0fdd2a8c8e05eac5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/004"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS.tar.gz"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "f9b4fea298f6837d2a585addef82a7997d4e6883dc343ea4be7d750a9e5592d9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/005"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/raw/AGGREGATE_ORIGINALS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "6939b988b288f89b176fe5f52df0ff5c1f03015a37d820c6ff5502f0a0272ab5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/006"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS.tar.gz"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "211fb5836efdef5bef892a709ce5e0039d34f2755773afc13fef90bc030b288a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/007"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/peer/PEER_AND_REVIEW_RECORDS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "e0765a0c8f03b1cf6740e38acdefa7f476de94467a396c59c7adf8807bed3965",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/008"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/CURRENT_STATE.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "a44e6ff2f7757a8cf803b52997538e1ce1a9ab7624827e2b973426744fba1262",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/009"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/PROGRESS.md"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "a2d330930f2352e09445889bb2c3e3cdbde7f7e7a355b23cc847cf464c3cf274",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/010"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/tools/publish.py"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "597fcd507e563d1ba08df7cdc8dfb580d424e3322c0fe6ef5da3596a155b8153",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/011"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/MERGE_RESULT.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "70c6e67901095d6ee4c0f7b377a5c78b3a3d97bfb80dbe4e0f824284b33fee78",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/012"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/AGGREGATE_RESULT.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "71efa5fc4c75f0afd592d2f9c2e6f45b80968c9d2f87ca6cd6c74eacd2c0f400",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/013"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS.tar.gz"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "95ba193c6b8290573d8baf54c115296975adf8710f9fff78397aa5c97bac7b60",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/014"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/raw/FACES_CLOSURE_ORIGINALS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "201cc357a2a26cac160b4465e14f9723f442e0cca2076da53f8803a6b80f9414",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/015"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/tools/publish_r2.py"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "3569d44ee2c6ed8ce8fc690863ec616a973644607a3b8a5572911ab7a37c3706",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/016"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS.tar.gz"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "b944839e958214fdd562b727c7307180955caa68d7a47b2fcbe2cd2acdaaa7d5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/017"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "5e2c311c4ced27956143c56d992c636213863bd02e44b1487575098d3dce2507",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/018"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "04959e04c334ceaf03f865514f76b1cac8ee91f2:evidence/geo340-convergence-175cee44/PUBLICATION_INDEX.json"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "0d90b9afb796d96cd7e6a2b8d6b845351d0acf147cf90977a84969b76c054ca9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/019"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "remote.origin.url=https://github.com/ZhiQiYang/geometry-axiom.git",
+        "show",
+        "-s",
+        "--format=%P",
+        "db8bf2289f8ad931c00924193e238e621f970e05"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/metadata.git",
+      "actual_exit": 0,
+      "stdout_sha256": "e7b910148cd9bcbaf38aa2865ad21a43485338cff0d1d1395f787e321e3b730a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/020"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "remote.origin.url=https://github.com/ZhiQiYang/geometry-axiom.git",
+        "diff",
+        "--name-status",
+        "77a007711f48b47daa10fbe1cb594d25937e295a",
+        "db8bf2289f8ad931c00924193e238e621f970e05"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/metadata.git",
+      "actual_exit": 0,
+      "stdout_sha256": "568d55f7ce7d3434af8feea555456e3ef79da41edbd04c3e08c4453ad228ef98",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/021"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "remote.origin.url=https://github.com/ZhiQiYang/geometry-axiom.git",
+        "show",
+        "db8bf2289f8ad931c00924193e238e621f970e05:PR_BODY.md"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/metadata.git",
+      "actual_exit": 0,
+      "stdout_sha256": "ae48e46750125ea526c4ba86c11adf9474c73e6780b9d32df269cbe3c1a3136f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/022"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/kernel-without-woodworking-20261023"
+      ],
+      "cwd": "/tmp/geo340-L-merge-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "5578d7afeb70554551a416e6b3ece9bf97e4fd898ec68b2459d8705f1df49560",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/023"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "remote.origin.url=https://github.com/ZhiQiYang/geometry-axiom.git",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/kernel-without-woodworking-20261023-prbody"
+      ],
+      "cwd": "/workspace/kernel-no-wood-prep/metadata.git",
+      "actual_exit": 0,
+      "stdout_sha256": "5c846118ee6c6b52bb5363fd12a567802cb549d02e28ad8ab7e63dafc6069919",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/024"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "-s",
+        "--format=%P",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "d437c40ce3adeb3d9cf8524b9224116186b929598b3aa56eb389442dd8f6275f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/025"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "diff",
+        "--name-status",
+        "--no-renames",
+        "616ce7538d23fbe7f3bbefae7f2a04e25ebd75a4",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "23bcac1dba5eca530ea47c33b816b2b97d95cd6767760db7e4784e12ef349e50",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/026"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/raw/MERGE_ORIGINALS.tar.gz"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "27f5d4e9a840824aa12ed97b1dedf0f811cbafdd56f42d2560a7d3e3f9ffee4b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/027"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/raw/MERGE_ORIGINALS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "f6776a9d0c9a14e042afd1c32ab343f3a2d6471efadf864b0fdd2a8c8e05eac5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/028"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/raw/AGGREGATE_ORIGINALS.tar.gz"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "f9b4fea298f6837d2a585addef82a7997d4e6883dc343ea4be7d750a9e5592d9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/029"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/raw/AGGREGATE_ORIGINALS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "6939b988b288f89b176fe5f52df0ff5c1f03015a37d820c6ff5502f0a0272ab5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/030"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/peer/PEER_AND_REVIEW_RECORDS.tar.gz"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "211fb5836efdef5bef892a709ce5e0039d34f2755773afc13fef90bc030b288a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/031"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/peer/PEER_AND_REVIEW_RECORDS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "e0765a0c8f03b1cf6740e38acdefa7f476de94467a396c59c7adf8807bed3965",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/032"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/CURRENT_STATE.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "a44e6ff2f7757a8cf803b52997538e1ce1a9ab7624827e2b973426744fba1262",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/033"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/PROGRESS.md"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "a2d330930f2352e09445889bb2c3e3cdbde7f7e7a355b23cc847cf464c3cf274",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/034"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/tools/publish.py"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "597fcd507e563d1ba08df7cdc8dfb580d424e3322c0fe6ef5da3596a155b8153",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/035"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/MERGE_RESULT.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "70c6e67901095d6ee4c0f7b377a5c78b3a3d97bfb80dbe4e0f824284b33fee78",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/036"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/AGGREGATE_RESULT.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "71efa5fc4c75f0afd592d2f9c2e6f45b80968c9d2f87ca6cd6c74eacd2c0f400",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/037"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/raw/FACES_CLOSURE_ORIGINALS.tar.gz"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "95ba193c6b8290573d8baf54c115296975adf8710f9fff78397aa5c97bac7b60",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/038"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/raw/FACES_CLOSURE_ORIGINALS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "201cc357a2a26cac160b4465e14f9723f442e0cca2076da53f8803a6b80f9414",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/039"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/tools/publish_r2.py"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "3569d44ee2c6ed8ce8fc690863ec616a973644607a3b8a5572911ab7a37c3706",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/040"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS.tar.gz"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "b944839e958214fdd562b727c7307180955caa68d7a47b2fcbe2cd2acdaaa7d5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/041"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/publication-environment-r1/PUBLICATION_ENV_R1_ORIGINALS_MANIFEST.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "5e2c311c4ced27956143c56d992c636213863bd02e44b1487575098d3dce2507",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/042"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "8f39025be6708bd9d58e576ed5b349b7ef628624:evidence/geo339-convergence-616ce753/PUBLICATION_INDEX.json"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "f492828a17d1faa13047821948c4f350cba9320dab4bfb3b0a22a1b5f3408f2f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/043"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "-s",
+        "--format=%P",
+        "283d1e245f724e13644a1379cba5cd34f3dae9d9"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "f69abe6e1be785bdc382b67c71ebb02681ecafd446fa80a3f5cfbd0815f1509b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/044"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "diff",
+        "--name-status",
+        "71113ce739f6fe7c327b162e47e6fd7dba349824",
+        "283d1e245f724e13644a1379cba5cd34f3dae9d9"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "568d55f7ce7d3434af8feea555456e3ef79da41edbd04c3e08c4453ad228ef98",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/045"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "show",
+        "283d1e245f724e13644a1379cba5cd34f3dae9d9:PR_BODY.md"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "43ecb7590466f26bf1bde4b9001c060494e4dab5e05ae959f09082d8f20d522c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/046"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/geo324-faces-20261024"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "6b6ea0cf3d313b5860132795c01d0ed517736ef5540ecb8e1bf9ff7d2bfc2144",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/047"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "refs/heads/codex/geo324-faces-20261024-prbody"
+      ],
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "actual_exit": 0,
+      "stdout_sha256": "02e1ff996d4faf0cd906d692086345035b3980b70bfcc55b336f674bebfbdbda",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "directory": "/workspace/geo340-339-convergence-evidence-peer-20261024/actual-publication/048"
+    }
+  ],
+  "mutations_performed": false,
+  "product_tests_run": false,
+  "ended_epoch": 1792812278.355632
+}

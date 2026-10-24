@@ -4,6 +4,8 @@
 
 目前產品已一般 merge 核心 edge probe 修正來源 `a543eef67b81f8d8800f32d5dc4a5641840d2943`；此提交的 HEAD 是新整合來源，但最後 union 尚未固定。子分支原 17 方法零 skip、56 次 compile/link 全 0、43 次 native 已實跑；十組語意控制及完整撤回／恢復（hash calls 21／31／21、exit 0／1／0）已通過，獨立原流審查 1427／0。第一輪 Linux 測試目錄／執行檔撞名的失敗完整保留，修測試路徑後重跑，未更動斷言或時限。詳見 `edge-probe-integration/`；完整子分支原包由 owner 接續發布後合入。
 
+已再一般 merge #339 證據頭 `8f39025be6708bd9d58e576ed5b349b7ef628624`（含 #340）。#340 原 strict aggregate 13／13、exit0 已公開；#339 舊 F38 的 142 方法／三組反證保原 execution SHA，與新 F616 的 498 項 executable closure 全等收據已公開。合流保留核心新 17 方法、host 45、rectangle 13；這些定向結果不冒作合流後完整驗收。詳見 `faces-kernel-integration/`。
+
 **新來源尚未通過最終帳本、架構或整套驗收，也沒有新的效能結論。** 下表是上一輪固定 L 的真終態，不能移標為目前 HEAD；四個既有阻擋仍保留。其餘工作線先完成定向驗收再合流，之後由 root 一次重產帳本／架構並執行受影響正式項。
 
 

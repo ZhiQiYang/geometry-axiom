@@ -1,0 +1,181 @@
+{
+  "role": "Actual four original non-compiling checks on true clean M; no ledger regeneration",
+  "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "rows": [
+    {
+      "gate": "architecture-tests",
+      "originalExit": 0,
+      "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "receipt": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/GENERIC_ACTUAL.json"
+    },
+    {
+      "gate": "architecture-contract",
+      "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "actualCommand": {
+        "command": [
+          "python3",
+          "-B",
+          "tests/architecture_contract.py",
+          "--root",
+          ".",
+          "--manifest",
+          "geometry-core/domain-decoupling/product-architecture.json"
+        ],
+        "cwd": "/tmp/geo324-faces-work-20261024",
+        "acceptance_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "source_variant": "architecture-contract-original-judge",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/remaining-tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792793010.7877743,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000043",
+        "ended_epoch": 1792793015.2921517,
+        "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 132559,
+        "stderr_bytes": 0
+      },
+      "originalExit": 0
+    },
+    {
+      "gate": "product-architecture-tests",
+      "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "actualCommand": {
+        "command": [
+          "python3",
+          "-B",
+          "tests/test_product_architecture.py"
+        ],
+        "cwd": "/tmp/geo324-faces-work-20261024",
+        "acceptance_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "source_variant": "product-architecture-tests-original-judge",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/remaining-tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792793015.2942026,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000044",
+        "ended_epoch": 1792793026.1258028,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "23ecb34d3e4c780943c50fe58aea6223a4037e7d6f2b230990c562fb3ea20833",
+        "stdout_bytes": 0,
+        "stderr_bytes": 118
+      },
+      "originalExit": 0
+    },
+    {
+      "gate": "mutation-check",
+      "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "actualCommand": {
+        "command": [
+          "python3",
+          "-B",
+          "tests/mutate.py",
+          "--check"
+        ],
+        "cwd": "/tmp/geo324-faces-work-20261024",
+        "acceptance_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+        "source_variant": "mutation-check-original-judge",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/remaining-tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792793026.1277144,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 1,
+        "timeout_expired": false,
+        "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000045",
+        "ended_epoch": 1792793027.4080904,
+        "stdout_sha256": "b0d6e6d7cc009750110d36fb4a12a3b27153f8e37098032d488caf1b69810cfd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 18147,
+        "stderr_bytes": 0
+      },
+      "originalExit": 1
+    }
+  ],
+  "sourceBefore": [
+    "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+    "7255a862b86d7aea138318ede38c963d6630c92f"
+  ],
+  "sourceAfter": [
+    "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+    "7255a862b86d7aea138318ede38c963d6630c92f"
+  ],
+  "sourceBeforeClean": true,
+  "sourceAfterClean": true,
+  "inputCount": 1119,
+  "allOriginalGitBytesBeforeAfterSame": true,
+  "inputIdentity": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/M_INPUT_IDENTITY_BEFORE.json",
+  "allFourOriginalExitZero": false,
+  "ledgerRegenerated": false,
+  "testsAssertionsProductChanged": false,
+  "newCloneCreated": false,
+  "remainingFormalUnrun": [
+    "native-and-full-expected",
+    "canvas",
+    "assembly",
+    "documents",
+    "grid",
+    "space",
+    "timber"
+  ]
+}

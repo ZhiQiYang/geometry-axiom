@@ -1,0 +1,1447 @@
+{
+  "schema": "geo324-pure18-originals-independent-peer/1",
+  "source_sha": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "subject_exit": 0,
+  "check_count": 356,
+  "checks": [
+    {
+      "name": "receipt pin",
+      "pass": true
+    },
+    {
+      "name": "subject terminal",
+      "pass": true
+    },
+    {
+      "name": "request original",
+      "pass": true
+    },
+    {
+      "name": "request before first original",
+      "pass": true
+    },
+    {
+      "name": "pure partialscope",
+      "pass": true
+    },
+    {
+      "name": "c1 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c1 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c1 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c1 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c1 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c2 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c2 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c2 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c2 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c2 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c3 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c3 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c3 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c3 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c3 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c4 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c4 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c4 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c4 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c4 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c5 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c5 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c5 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c5 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c5 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c6 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c6 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c6 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c6 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c6 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c7 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c7 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c7 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c7 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c7 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c8 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c8 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c8 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c8 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c8 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c9 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c9 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c9 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c9 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c9 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c10 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c10 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c10 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c10 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c10 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c11 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c11 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c11 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c11 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c11 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c12 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c12 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c12 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c12 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c12 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c13 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c13 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c13 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c13 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c13 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c14 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c14 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c14 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c14 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c14 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c15 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c15 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c15 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c15 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c15 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c16 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c16 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c16 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c16 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c16 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c17 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c17 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c17 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c17 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c17 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c18 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c18 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c18 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c18 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c18 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c19 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c19 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c19 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c19 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c19 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c20 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c20 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c20 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c20 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c20 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c21 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c21 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c21 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c21 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c21 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c22 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c22 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c22 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c22 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c22 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c23 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c23 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c23 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c23 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c23 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c24 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c24 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c24 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c24 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c24 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c25 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c25 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c25 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c25 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c25 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c26 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c26 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c26 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c26 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c26 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c27 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c27 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c27 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c27 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c27 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c28 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c28 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c28 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c28 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c28 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c29 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c29 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c29 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c29 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c29 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c30 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c30 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c30 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c30 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c30 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c31 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c31 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c31 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c31 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c31 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c32 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c32 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c32 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c32 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c32 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c33 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c33 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c33 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c33 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c33 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c34 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c34 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c34 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c34 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c34 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c35 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c35 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c35 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c35 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c35 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c36 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c36 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c36 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c36 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c36 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c37 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c37 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c37 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c37 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c37 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c38 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c38 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c38 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c38 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c38 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c39 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c39 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c39 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c39 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c39 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c40 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c40 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c40 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c40 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c40 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c41 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c41 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c41 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c41 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c41 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c42 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c42 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c42 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c42 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c42 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c43 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c43 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c43 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c43 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c43 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c44 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c44 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c44 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c44 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c44 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c45 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c45 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c45 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c45 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c45 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c46 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c46 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c46 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c46 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c46 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c47 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c47 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c47 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c47 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c47 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c48 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c48 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c48 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c48 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c48 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c49 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c49 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c49 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c49 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c49 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c50 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c50 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c50 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c50 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c50 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c51 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c51 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c51 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c51 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c51 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c52 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c52 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c52 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c52 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c52 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c53 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c53 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c53 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c53 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c53 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c54 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c54 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c54 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c54 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c54 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c55 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c55 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c55 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c55 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c55 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "c56 finalrecordsame",
+      "pass": true
+    },
+    {
+      "name": "c56 prerequestsame",
+      "pass": true
+    },
+    {
+      "name": "c56 stdin hash",
+      "pass": true
+    },
+    {
+      "name": "c56 stdout hash",
+      "pass": true
+    },
+    {
+      "name": "c56 stderr hash",
+      "pass": true
+    },
+    {
+      "name": "initial/last source SHA",
+      "pass": true
+    },
+    {
+      "name": "initial/last source clean",
+      "pass": true
+    },
+    {
+      "name": "final source exact",
+      "pass": true
+    },
+    {
+      "name": "47 exact inputs",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/bootstrap.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/model_codec.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/model_common.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/model_geometry.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/model_native.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/model_profile_compat.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/model_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/model_world.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-app/geometry_app/source_closure.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/README.md",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/canonical.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/errors.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/evaluate.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/graph.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/session.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/transactions.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/geometry_kernel/types.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/modeling/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/modeling/_host.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/modeling/base.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/modeling/common.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/modeling/engine.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/modeling/geometry.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/modeling/kernel_errors.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-core/modeling/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "pass": true
+    },
+    {
+      "name": "input geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/__init__.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/_unittest_runner.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/binaries.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/rectangular_python_consumer.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/run_all.expected.json",
+      "pass": true
+    },
+    {
+      "name": "input tests/test_geometry_host_sources.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/test_geometry_host_world.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/test_geometry_kernel_compatibility.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/test_geometry_kernel_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/test_geometry_source_runtime.py",
+      "pass": true
+    },
+    {
+      "name": "input tests/test_rectangular_python.py",
+      "pass": true
+    },
+    {
+      "name": "test_rectangular_python exact argv/exit",
+      "pass": true
+    },
+    {
+      "name": "test_rectangular_python exact expected contract",
+      "pass": true
+    },
+    {
+      "name": "test_rectangular_python original JSONexact",
+      "pass": true
+    },
+    {
+      "name": "test_rectangular_python allpassed no skip",
+      "pass": true
+    },
+    {
+      "name": "test_rectangular_python original log",
+      "pass": true
+    },
+    {
+      "name": "test_rectangular_python no optimize env",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_host_world exact argv/exit",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_host_world exact expected contract",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_host_world original JSONexact",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_host_world allpassed no skip",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_host_world original log",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_host_world no optimize env",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_kernel_compatibility exact argv/exit",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_kernel_compatibility exact expected contract",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_kernel_compatibility original JSONexact",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_kernel_compatibility allpassed no skip",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_kernel_compatibility original log",
+      "pass": true
+    },
+    {
+      "name": "test_geometry_kernel_compatibility no optimize env",
+      "pass": true
+    },
+    {
+      "name": "18 exact total",
+      "pass": true
+    },
+    {
+      "name": "wrapper declared original timeout",
+      "pass": true
+    }
+  ],
+  "findings": [],
+  "exit_code": 0,
+  "counts": [
+    9,
+    8,
+    1
+  ],
+  "scope": "三個完整原 Python module，共18方法、各0fail/0skip；整專案仍PARTIAL。未重跑subject。",
+  "limits": [
+    "非 full native、非 browser、非全部 affected importer 閉包或全帳本。原 native transport 是 tests 原 synthetic/mock fixture。",
+    "原56 c387輸出/47 Git input bytes已核；capture只封選定環境欄位，沒有宣稱整個宿主 environment dump。",
+    "外部 wrapper SHA 在本次 peer 才獨立計算；原 request 未 pin wrapper hash。原原版runner與tests則有事前 Git bytes核，argv/原streams皆保。",
+    "1200s 由原 request 與保存 wrapper 讀得；c387 每列未另記timeout_seconds，不冒每列此欄存在。"
+  ],
+  "wrapper_post_execution_sha256": "665f6d4017c6cbd2351b4412804c2aff64146b6c7f8213bbd980d5ee88981c12"
+}

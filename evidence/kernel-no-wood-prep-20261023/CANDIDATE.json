@@ -1,0 +1,73 @@
+{
+  "schema": "kernel-no-wood-minimal-test-candidate/1",
+  "source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "path": "tests/test_rectangular_template.py",
+  "original_sha256": "d4c6e3707222c60d493c6a8a910f4d4613a7acb47d2108f9b7328f53e1c71504",
+  "candidate_sha256": "7d0de74bbcbc436044aba1bb98cb197a21d77f46fb990847cb3dad5580d510c6",
+  "patch_sha256": "2b14c750746c3c7912bc6fa8b3119ea4672e003a206f9a4eb71ffba0639aaaaa",
+  "changes": [
+    {
+      "role": "K must not depend on the available second template",
+      "before": "                    self.assertTrue(any(target.is_file() and target.resolve().is_relative_to(root) for target in targets),\n                                    f\"non-isolated include: {relative}: {include}\")\n",
+      "after": "                    self.assertTrue(any(target.is_file() and target.resolve().is_relative_to(root) for target in targets),\n                                    f\"non-isolated include: {relative}: {include}\")\n                    if relative.startswith(\"geometry-core/kernel/\"):\n                        self.assertTrue(all(target.resolve().is_relative_to(root / \"geometry-core/kernel\")\n                                            for target in targets if target.is_file()),\n                                        f\"K source includes template dependency: {relative}: {include}\")\n",
+      "anchor_count": 1
+    },
+    {
+      "role": "block the actual woodworking package name",
+      "before": "                if root in (\"modeling\", \"geometry_app\") or root.startswith(\"woodworking\"):\n",
+      "after": "                if root in (\"modeling\", \"geometry_app\", \"geometry_woodworking\") or root.startswith(\"woodworking\"):\n",
+      "anchor_count": 1
+    },
+    {
+      "role": "runtime import blocking and real K-to-W dependency controls",
+      "before": "    def test_exact_1000_by_600_has_15_200_by_200_cells(self): self.check(\"exact-cells\")\n",
+      "after": "    def test_application_and_woodworking_imports_are_rejected_when_available(self):\n        names = (\"modeling\", \"geometry_app\", \"geometry_woodworking\", \"woodworking_probe\")\n        with tempfile.TemporaryDirectory(prefix=\"forbidden-packages-\", dir=self.build.work) as directory:\n            root = Path(directory)\n            for name in names:\n                package = root / name\n                package.mkdir()\n                (package / \"__init__.py\").write_text(\"IS_FORBIDDEN_IMPORT_SENTINEL = True\\n\", encoding=\"utf-8\")\n                self.assertNotIn(name, sys.modules, \"isolation requires a fresh package import: \" + name)\n            sys.path.insert(0, str(root))\n            try:\n                for name in names:\n                    with self.subTest(package=name):\n                        with self.assertRaisesRegex(AssertionError, \"application/template import in isolated recipe tests: \" + name):\n                            __import__(name)\n                        self.assertNotIn(name, sys.modules, \"forbidden sentinel was imported: \" + name)\n            finally:\n                sys.path.remove(str(root))\n                for name in names:\n                    sys.modules.pop(name, None)\n\n    def test_kernel_cannot_include_the_available_template_header(self):\n        source = self.build.kernel / \"grid.c\"\n        original = source.read_bytes()\n        include = b'#include \"../../geometry-templates/rectangular-grid/rectangular_grid.h\"\\n'\n        self.assertNotIn(include, original)\n        test = self.build.source_root / \"tests/test_rectangular_template.py\"\n\n        def isolation_gate(variant):\n            command = [sys.executable, \"-I\", \"-B\", str(test),\n                       \"RectangularTemplateSourceIsolation.test_source_installation_is_closed_and_contains_only_core_recipe_and_tests\"]\n            result = subprocess.run(command, cwd=self.build.source_root, env=self.build.env,\n                                    capture_output=True, text=True, timeout=120)\n            self.build.logs.append({\"isolation_gate\": variant, \"command\": command,\n                                    \"exit\": result.returncode, \"stdout\": result.stdout, \"stderr\": result.stderr})\n            return result\n\n        baseline = isolation_gate(\"baseline-k-to-template-include\")\n        self.assertEqual(0, baseline.returncode, baseline.stdout + baseline.stderr)\n        try:\n            source.write_bytes(include + original)\n            # The dependency really exists and is buildable. A missing include,\n            # compile failure or crash must not impersonate the layer rejection.\n            mutant = self.build.compile(source, \"grid-template-include-control\")\n            objects = [mutant if key == \"grid\" else obj for key, obj in self.build.objects.items()]\n            executable = self.build.link(\"rectangular-template-include-control\", objects)\n            self.assertEqual(0, self.case(\"exact-cells\", executable).returncode)\n            rejected = isolation_gate(\"one-k-to-template-include\")\n            self.assertEqual(1, rejected.returncode, rejected.stdout + rejected.stderr)\n            self.assertIn(\"K source includes template dependency\", rejected.stderr)\n            self.assertIn(\"Ran 1 test\", rejected.stderr)\n            self.assertNotIn(\"ImportError\", rejected.stderr)\n            self.assertNotIn(\"SyntaxError\", rejected.stderr)\n        finally:\n            source.write_bytes(original)\n        restored = isolation_gate(\"restored-k-to-template-include\")\n        self.assertEqual(0, restored.returncode, restored.stdout + restored.stderr)\n        self.check(\"exact-cells\")\n\n    def test_exact_1000_by_600_has_15_200_by_200_cells(self): self.check(\"exact-cells\")\n",
+      "anchor_count": 1
+    }
+  ],
+  "activity": "prepared only; no repository, product, compiler, test or ledger execution",
+  "test_methods_added": 2,
+  "source_read_command": {
+    "command": [
+      "git",
+      "--git-dir",
+      "/workspace/kernel-no-wood-prep/metadata.git",
+      "show",
+      "13d02c1db7022145a52ee063286a558e595eb212:tests/test_rectangular_template.py"
+    ],
+    "cwd": "/workspace/kernel-no-wood-prep",
+    "acceptance_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+    "source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+    "source_variant": "fixed-source-candidate-preparation-only",
+    "environment": {
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PYTHONIOENCODING": null,
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONOPTIMIZE": null,
+      "TMPDIR": null,
+      "CC": null,
+      "CFLAGS": null,
+      "CPPFLAGS": null,
+      "LDFLAGS": null,
+      "C_INCLUDE_PATH": null,
+      "CPATH": null,
+      "LIBRARY_PATH": null,
+      "LD_LIBRARY_PATH": null,
+      "GCC_EXEC_PREFIX": null,
+      "COMPILER_PATH": null
+    },
+    "started_epoch": 1792739057.7045453,
+    "stdin_provided": false,
+    "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "actual_process_returncode": 0,
+    "timeout_expired": false,
+    "directory": "/workspace/kernel-no-wood-prep/candidate/source-read/subcommands/000001",
+    "ended_epoch": 1792739057.7074144,
+    "stdout_sha256": "d4c6e3707222c60d493c6a8a910f4d4613a7acb47d2108f9b7328f53e1c71504",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 11160,
+    "stderr_bytes": 0
+  }
+}

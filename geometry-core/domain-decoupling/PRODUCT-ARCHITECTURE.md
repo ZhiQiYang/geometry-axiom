@@ -1,3 +1,15 @@
+# Product architecture — #339 Linux 固定來源收據
+
+三原裁判真在乾淨 Git HEAD `1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599` 執行，原 exit0/0/0；generic205／product18，無skip。manifest分類、根範圍、exclusion、policy、928/55原字不變；604inputs、334owned／270excluded、798edges／0diagnostics。
+
+相對原ec8收據，只有 owned W `geometry-templates/woodworking/geometry_woodworking/model_sources.py` 的LF hash改變；其餘603輸入與三judge相同。新 LF closure `de2a5856529c18ec7e49decaf0f03cfb50b4299562f893eea085f70c40aa53cf`。原scan stdout逐bytes不變不等於LF closure不變，收據以本次M／604原Git blob重綁。
+
+原manifest digest反證已在本次M重跑0/1/0，唯一正常紅是run_axiom_mutations.py的EXCLUSION_DIGEST；只改外部manifest參數，不改source/test/斷言。舊P17反證保持歷史身份，不改標M。
+
+同M原帳本check仍exit1：table123／records110／stale107／retired3／unrun13；本次不重產帳本。完整native／expected及六browser仍UNRUN。604架構範圍不涵蓋全部tests/*.py，三條綠不代語意／runtime驗收。
+
+四檔只在repo外重產；manifest及scan bytes均不變，實際衍生diff只report／receipt。receipt不hash自身。以下原報告只保留歷史角色。
+
 # Product architecture — Linux 固定來源重產
 
 本輪真原三裁判在乾淨 Git HEAD `ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 執行，退出0/0/0；generic205與product18方法，無skip。manifest分類與全部政策逐bytes不變，928/55原政策保留。完整604inputs、334owned／270excluded；原scanner記798edges、0diagnostics，完整stdout與P17相同。LF closure `6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338` 與P17完全相同。
