@@ -177,6 +177,9 @@ CONTROLS = (
 )
 
 
+MONOTONIC_SORT_BLOCK = '    /* Placement order commonly already matches the admitted sequence.\n     * Equal orders keep their original member and side order. */\n    if(members<2)return;\n    uint64_t previous=contact_order(world,orders,out[first].timber_id);\n    bool ordered=true;\n    for(size_t i=first+1;i<count;++i){\n        uint64_t current=contact_order(world,orders,out[i].timber_id);\n        if(previous>current){ordered=false;break;}\n        previous=current;\n    }\n    if(ordered)return;\n'
+MONOTONIC_SORT_ANCHOR = '    size_t members=count-first;\n    for(size_t i=first;i<count;++i)index->sorted[i]=i;\n'
+
 class WoodContactWorld(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -253,6 +256,64 @@ class WoodContactWorld(unittest.TestCase):
 
     def test_stable_index_merge_preserves_complete_sequence_and_fallback(self):
         self.assertEqual(0, self.case("indexed-sort").returncode)
+
+
+    def monotonic_executable(self,source,label):
+        build=native()
+        anchor="static uint64_t contact_order(const WoodContactWorld *world,const ContactOrderIndex *index,uint32_t id)\n{"
+        counted="static size_t geo_test_sort_order_calls;\n"+anchor+"\n    ++geo_test_sort_order_calls;"
+        self.assertEqual(1,source.count(anchor),"One original contact_order definition")
+        instrumented=source.replace(anchor,counted)
+        self.assertEqual(source,instrumented.replace(counted,anchor),"Counter removal preserves actual product bytes")
+        subject=build.woodworking/("contact-monotonic-"+label+"-source.c")
+        subject.write_text(instrumented,encoding="utf-8")
+        harness=(ROOT/"tests/geo343_monotonic_sort_harness.c").read_text(encoding="utf-8")
+        include='#include "contact-monotonic-subject.c"'
+        self.assertEqual(1,harness.count(include))
+        client=build.woodworking/("contact-monotonic-"+label+"-client.c")
+        client.write_text(harness.replace(include,'#include "'+subject.name+'"'),encoding="utf-8")
+        obj=build.compile(client,"contact-monotonic-"+label+"-client")
+        return build.link("contact-monotonic-"+label+"-exe",
+            [obj,build.wood_contacts_object,build.wood_supports_object,*build.kernel_objects()])
+
+    def test_monotonic_sort_preserves_full_fields_and_linear_sorted_lookup_work(self):
+        source=(native().woodworking/"contact_world.c").read_text(encoding="utf-8")
+        self.assertEqual(1,source.count(MONOTONIC_SORT_BLOCK))
+        self.assertEqual(1,source.count(MONOTONIC_SORT_ANCHOR))
+        withdrawn=source.replace(MONOTONIC_SORT_BLOCK,"")
+        restored=withdrawn.replace(MONOTONIC_SORT_ANCHOR,MONOTONIC_SORT_ANCHOR+MONOTONIC_SORT_BLOCK)
+        self.assertEqual(source,restored,"Complete sort optimization restoration is exact")
+        cases=("sorted","reverse","ties","all-ties","prefix","no-member","one-member","last-inversion","middle-inversion","full-uint64")
+        fixed=None
+        for phase,variant,expected in (("fixed",source,0),("withdrawn",withdrawn,1),("restored",restored,0)):
+            with self.subTest(whole_phase=phase):
+                executable=self.monotonic_executable(variant,phase)
+                if phase=="fixed":fixed=executable
+                for case in cases:
+                    result=self.case(case,executable,phase=phase,control="monotonic-whole")
+                    self.assertEqual(0,result.returncode,result.stderr)
+                result=self.case("work",executable,phase=phase,control="monotonic-whole",
+                    assertion="monotonic-linear-order-lookups")
+                print("monotonic-whole phase="+phase+" "+result.stdout,end="")
+                self.assertEqual(expected,result.returncode,result.stderr)
+                if expected:self.assertIn("ASSERT:monotonic-linear-order-lookups",result.stderr)
+        self.assertIsNotNone(fixed)
+        controls=(
+            ("missed-inversion","if(previous>current){ordered=false;break;}","if(previous>current){ordered=true;break;}","last-inversion","monotonic-last-inversion-full-fields"),
+            ("missed-last-face","for(size_t i=first+1;i<count;++i){","for(size_t i=first+1;i+1<count;++i){","last-inversion","monotonic-last-inversion-full-fields"),
+            ("truncated-previous","uint64_t previous=contact_order(world,orders,out[first].timber_id);","uint32_t previous=contact_order(world,orders,out[first].timber_id);","full-uint64","monotonic-full-uint64-fields"),
+            ("missed-previous-update","previous=current;","(void)current;","middle-inversion","monotonic-middle-inversion-full-fields"),
+        )
+        for label,before,after,case,marker in controls:
+            with self.subTest(monotonic_control=label):
+                baseline=self.case(case,fixed,phase="baseline",control=label,assertion=marker)
+                self.assertEqual(0,baseline.returncode,baseline.stderr)
+                self.assertEqual(1,source.count(before),"One actual monotonic guard")
+                executable=self.monotonic_executable(source.replace(before,after),label)
+                result=self.case(case,executable,phase="mutant",control=label,assertion=marker)
+                self.assertEqual(1,result.returncode,result.stderr);self.assertIn("ASSERT:"+marker,result.stderr)
+                result=self.case(case,fixed,phase="restored",control=label,assertion=marker)
+                self.assertEqual(0,result.returncode,result.stderr)
 
     def extension_transaction(self, executable):
         with _bridge.BridgeSession(executable) as bridge:
