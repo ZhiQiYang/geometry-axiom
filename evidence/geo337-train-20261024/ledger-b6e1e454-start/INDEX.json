@@ -1,0 +1,116 @@
+{
+  "source_sha": "b6e1e45425f055cd825b259f46ef2c454f3ff13a",
+  "started_utc": "2026-10-23T21:00:13.194516+00:00",
+  "archive": "start-originals-and-reviewed-tools.tar.gz",
+  "archive_sha256": "e3d023bd251d7aca1d2a2e5ffd807862252c4bae5530af5392622b69f92d9ace",
+  "archive_bytes": 43939,
+  "members": [
+    {
+      "path": "original-start/request.json",
+      "bytes": 2935,
+      "sha256": "993c18dd231bdb69662ad0e33332c053ec182b9df600682f4e0c343a2c69083f"
+    },
+    {
+      "path": "original-start/full-launch-request.json",
+      "bytes": 56912,
+      "sha256": "bf5eef66613c6456804324a9ece1032b4be4b7827b548847a3a36d7c8e56de3f"
+    },
+    {
+      "path": "original-start/root-before-identity.json",
+      "bytes": 329,
+      "sha256": "2af21f9eefcc1afdd2100ed1579261dc2601f209f8b0cd3cca22b270b4eeb7d3"
+    },
+    {
+      "path": "original-start/root-ready-identity.json",
+      "bytes": 329,
+      "sha256": "16f1099b76c3f3e0defd28c0c946f2fae071630f001eb330f67f4ba450b4c689"
+    },
+    {
+      "path": "original-start/seed-before-identity.json",
+      "bytes": 396,
+      "sha256": "5e82096cd6884fc9f11203338297d6b7a208722fdacefba21af5d62a392dff69"
+    },
+    {
+      "path": "original-start/seed-ready-identity.json",
+      "bytes": 396,
+      "sha256": "d687c222f5b7b667cb8f8e385df00df710a8ed8d35b36dd74431b90a15caef15"
+    },
+    {
+      "path": "original-start/CORE_CACHE_RELOCATION.json",
+      "bytes": 47419,
+      "sha256": "24ab34acbdd9fbea2dbdb57237bcf2bdf1d1c55811d12cce9fb55d74909ae6e9"
+    },
+    {
+      "path": "original-start/OLD_CORE_METADATA_PATHS.json",
+      "bytes": 12059,
+      "sha256": "742ff39cd89e45d2bf2d4b35578c5c30db6cff285e63d0d23c678ccec31f7e1b"
+    },
+    {
+      "path": "original-start/immediate-before-core-cache-move-consumers.json",
+      "bytes": 6214,
+      "sha256": "fe6359d492af362744412883211ab191ff8caae5fedd5400081b77ffd6e94968"
+    },
+    {
+      "path": "tools/DISK_BUDGET.json",
+      "bytes": 867,
+      "sha256": "c0b27f85dd370494f9aab0d6bae806630c6561978e119cfd27fa050a060af9fe"
+    },
+    {
+      "path": "tools/PREPARATION.json",
+      "bytes": 1444,
+      "sha256": "c4418db523be7e14e4054e5495c9d9d4d16d7f03570738ba27622307b8c2eeff"
+    },
+    {
+      "path": "tools/README.md",
+      "bytes": 2334,
+      "sha256": "62d379ea6b2bccd3d8c8ce29b9fc43b0a21404958e6924362e665f68f5ae77b6"
+    },
+    {
+      "path": "tools/V4_TO_V5.diff",
+      "bytes": 14295,
+      "sha256": "f790537cf2b065dceb48f61a50984ab4fa31a3cae5e5c4b1dd78060251f873ad"
+    },
+    {
+      "path": "tools/V5_V1_TO_V2.diff",
+      "bytes": 6014,
+      "sha256": "74fdea62190db8d04d29faf80686836dcaf86536bb0c0c0f96772e66ebe0da2b"
+    },
+    {
+      "path": "tools/retain_mutation_streams.py",
+      "bytes": 11262,
+      "sha256": "67af8f6768232aa8439a0815a490a8b1076560afd0e40656f6de7edaa009e895"
+    },
+    {
+      "path": "tools/run_root_full_ledger_v5.py",
+      "bytes": 25938,
+      "sha256": "6925b810d24e2902cb6b10de40e8694407e7918e3097e6547d9ec44c3ce054e1"
+    },
+    {
+      "path": "tools/run_root_full_ledger_v5.v1.py.txt",
+      "bytes": 24309,
+      "sha256": "c4e81b90bad4c9ad3e8435e70d049668b0c16ebdff0a74b2c10bb158c9a228fd"
+    },
+    {
+      "path": "tools/verify_observed_core_raw.py",
+      "bytes": 7532,
+      "sha256": "12aa2060d03078b96d81ee6b4d28facdb4d3727fb6ff7d0b4c41271f550ac46b"
+    },
+    {
+      "path": "peer/FULL_LEDGER_V5_V2_STATIC_PEER.json",
+      "bytes": 3251,
+      "sha256": "e97ad5379931cc0aa7c1e32e73c6c0f3a1b41f47fe29c48da89a6d6fa728677c"
+    },
+    {
+      "path": "tools/launch_geo337_full_ledger_v5.py",
+      "bytes": 1680,
+      "sha256": "3084cd60ea351eb45fdf819e6f379695ba30fc5e8824f354e88d127067990346"
+    },
+    {
+      "path": "outer/launch-context.json",
+      "bytes": 415,
+      "sha256": "fbcd5ea5c937e3a5cba1f7d6c4d2ebc9dff1cee056a4ca8e7a6c8419a6260f17"
+    }
+  ],
+  "final_result_claimed": false,
+  "limits": "Start only. Initial passed=false/exit_code=1 fields in the original launch request are default pending fields, not a terminal verdict. The separate receipt will retain the actual CLI/verifier/check exits. Old 4f4 ENOSPC108/123 remains failed."
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "b6-original-terminal-package-peer/1",
+  "source_sha": "b6e1e45425f055cd825b259f46ef2c454f3ff13a",
+  "checks": 4529,
+  "exit_code": 0,
+  "findings": [],
+  "index_sha256": "3878f6f93d0db149b7ac78873fd0e343a9c30d2ec4e188e89bc28acd215aa5d4",
+  "archive_sha256": "e69d9d78e571fd798944e0c448baf768509b9b4287b80c66fd9ad1fc3355175b",
+  "member_count": 1239,
+  "original_bytes": 45345757,
+  "actual_peer": {
+    "path": "/tmp/train337-adversarial/FULL_LEDGER_B6_TERMINAL_ACTUAL_PEER.json",
+    "sha256": "cd86c701330bb00a0b9f9e0b053aa66e61fdb281c051e8f503698b2305205861",
+    "checks": 35756,
+    "exit": 0
+  },
+  "initial_reviewer_correction": {
+    "report": "/tmp/train337-adversarial/FULL_LEDGER_B6_INITIAL_REVIEWER_ASSUMPTIONS.json",
+    "sha256": "ad84de78dcce0a5b97c32e7ebe742e32c610c9f003031f54ea665913780038a6",
+    "script": "/tmp/train337-adversarial/review_full_ledger_b6_initial_portable_subtest_assumptions.py.txt",
+    "script_sha256": "81c4a0091c1878555cb5604a750ab0dcfb321f1cd4c999e1db703f589eda2646",
+    "reason": "初reviewer假設輸出必列unrun0、將原<work>替為<repo>、要求subTest完整名稱等method造成report1；固定原裁判實碼證明這三假設錯，僅更正reviewer並保初件，無subject重跑或放寬原oracle。"
+  },
+  "limits": [
+    "本包完整原JOB/launch/cache streams及metadata；ELF payload/seed/Git並未封進包，不宣稱binary archive。",
+    "原0為b6完整123生成CLI；生成前trackedcheck1仍保，下一L另須fullCLI及四phase0。",
+    "原core文字UTF8與bridge原bytes各按原schema保存；不宣稱core OS predecode pipes。",
+    "未抽取第二份原件、未跑任何subject；每member stream直接對原文件及index核。"
+  ]
+}
