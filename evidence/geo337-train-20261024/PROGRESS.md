@@ -2,9 +2,9 @@
 
 ## 唯一 current-state（2026-10-24；K provider hint 已合流，準備 R7）
 
-目前產品／測試合流來源 **M=`e321026fb9bc9bc19c54b8034af6e6eaec2857f9`**，已一般 merge 並 push 子來源 **S=`1449d430d1c4734bb1bc3a9f91f3851c845cc0f3`**。四個產品／測試葉與 S 完全相同；本次採用 M 實跑的衍生架構 report／receipt，採用後的可解析 SHA 才作為 R7 來源，不能把 M 或 S 的結果改標。
+固定 R7 產品／測試／架構產物來源 **F=`6df0264f75e84f03adb70746b6ac3db07a9910fc`**。其產品／測試合流來源 **M=`e321026fb9bc9bc19c54b8034af6e6eaec2857f9`**，已一般 merge 並 push 子來源 **S=`1449d430d1c4734bb1bc3a9f91f3851c845cc0f3`**。四個產品／測試葉與 S 完全相同；本次採用 M 實跑的衍生架構 report／receipt，採用後的可解析 SHA 才作為 R7 來源，不能把 M 或 S 的結果改標。
 
-修正沿既有 256-entry hint 對 provider token 做乘法混合，保留完整 key／provider equality、graph 有序內容、失效／清除／fallback 與 allocation 行為。外部同場景 shadow 先確認跨 provider 碰撞；單樣本的計數不宣稱 wall 改善。原 18 方法與相關 24 方法在 S 全綠、零 skip。整刀反證 warm lookup calls 為 0→16→0、正常 exit 0/1/0；十組既有鄰接控制及 full-provider／middle-byte 對照保留。完整 child 原件已另推其 E，稍後一般合入。
+修正沿既有 256-entry hint 對 provider token 做乘法混合，保留完整 key／provider equality、graph 有序內容、失效／清除／fallback 與 allocation 行為。外部同場景 shadow 先確認跨 provider 碰撞；單樣本的計數不宣稱 wall 改善。原 18 方法與相關 24 方法在 S 全綠、零 skip。整刀反證 warm lookup calls 為 0→16→0、正常 exit 0/1/0；十組既有鄰接控制及 full-provider／middle-byte 對照保留。完整 child 原件已於 E4d3ac4bf 公開，並一般合入目前列車；實跑來源仍是 S144。
 
 架構三原裁判於 M exit 0/0/0，generic205／product18、604 inputs、334 owned／270 excluded、798 edges／0 diagnostics。九組原 guard 重新 0/1/0、neutral2 綠；manifest 937／55 與 scan bytes 不變，對前份 receipt 的 input delta 僅 K source.c。四檔原件、51 原命令流與 1755/0 獨審在 architecture-e321-complete/。本次只採用兩個實際有差的衍生檔，沒有改架構裁判或公理。
 
@@ -12,7 +12,11 @@ R7 原五 stage／36 交錯樣本／四 profile 尚未執行。全帳本重產�
 
 required CI 的既有原 failure annotation 明確是付款失敗或支出上限而未啟動，沒有正式替代接受紀錄；不以較早 run 代新 head。除了原 Linux Windows-GDI skip 外，零新增允許 skip。**目前不是 READY-TO-MERGE。**
 
-下一步：固定本次採用 SHA，獨立 checkout 執行 R7；同時公開已完成 R5／R6 的全部原件，維持唯一 current-state，其他歷史矩陣不作目前通過證明。
+R5（原執行來源 a22df116）與 R6（原執行來源 2bbe54f1）的完整原件已於本提交公開：full-R5-five-stage-raw/ 9055 members、31,186,327B，SHA256 caaf311a748c2ce1dc4ebd754fbebc9c4d70f59a5d0938fb2e9e34e57f2dd794；full-R6-five-stage-raw/ 9062 members、31,317,807B，SHA256 a9113e5e8e3474da70ee21970a29d451a46e148a3abdde1cecded4c36631d3f1。每包附完整 inventory／summary／原命令、環境、SHA、原 stdout/stderr、36 樣本與四 profiles；各七個 ELF 只附 hash inventory，原 payload 仍保存在雲端。原 outer exit1、compare 三差、量化紅燈與 full_acceptance=null 均保留，沒有把封包成功冒作產品通過。各自獨審 50132/0、50171/0。收件時的 published:false 保原文，公開事實由本次普通證據提交另證。
+
+archive-object-store/ 同時公開永久 TMP Git object store 的原命令／完整讀者驗證／646/0 peer；此儲存區已成 Git objects，禁止當快取刪除。兩大包以既有已驗 Git blob 納入普通提交，沒有再複製進工作目錄；其餘 maintenance 包保留硬連結前後的全部路徑、bytes、hash 與原收據，沒有刪 fixtures 或 Git objects。
+
+下一步：在固定 F 的獨立 checkout 執行 R7；維持唯一 current-state，以下歷史矩陣不作目前通過證明。
 
 ### 歷史 R6 終態（來源 F2bbe；不可移標新 K 來源）
 

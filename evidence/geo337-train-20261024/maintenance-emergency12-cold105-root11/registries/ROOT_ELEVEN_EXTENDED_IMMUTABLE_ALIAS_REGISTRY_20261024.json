@@ -1,0 +1,880 @@
+{
+  "created_utc": "2026-10-24T05:20:28.715274+00:00",
+  "published": false,
+  "scope": "Extend11 existing archive groups from7to8, not11new groups. Overall historical19 groups now113 paths; other8groups/25paths are unchanged.",
+  "plan": {
+    "path": "/workspace/root-eleven-archive-alias-extension-preparation-20261024/PLAN.json",
+    "sha256": "14d1725cd02e9c0d2eacb720f02f439f5592cf556909f805435b65a27191f6b1"
+  },
+  "actual": {
+    "path": "/workspace/root-eleven-archive-alias-extension-execution-20261024/RESULT.json",
+    "sha256": "c4114fce395cfd3157fb33e00fd6a5717f50c7215ec93bfcbe124a89967f5769"
+  },
+  "groups": [
+    {
+      "group": 1,
+      "git_path": "tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+          "bytes": 39046314,
+          "device": 27,
+          "inode": 310870,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+          "bytes": 39046314,
+          "device": 27,
+          "inode": 310870,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+          "bytes": 39046314,
+          "device": 27,
+          "inode": 310870,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+          "bytes": 39046314,
+          "device": 27,
+          "inode": 310870,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+          "bytes": 39046314,
+          "device": 27,
+          "inode": 310870,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+          "bytes": 39046314,
+          "device": 27,
+          "inode": 310870,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+          "bytes": 39046314,
+          "device": 27,
+          "inode": 310870,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+          "bytes": 39046314,
+          "device": 27,
+          "inode": 310870,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 2,
+      "git_path": "tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+          "bytes": 15356034,
+          "device": 27,
+          "inode": 310869,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+          "bytes": 15356034,
+          "device": 27,
+          "inode": 310869,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+          "bytes": 15356034,
+          "device": 27,
+          "inode": 310869,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+          "bytes": 15356034,
+          "device": 27,
+          "inode": 310869,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+          "bytes": 15356034,
+          "device": 27,
+          "inode": 310869,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+          "bytes": 15356034,
+          "device": 27,
+          "inode": 310869,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+          "bytes": 15356034,
+          "device": 27,
+          "inode": 310869,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+          "bytes": 15356034,
+          "device": 27,
+          "inode": 310869,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 3,
+      "git_path": "tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "8f376ebd8d093f7750fb7b0d32da930a537163440ef195d4ca6087c435a67f80",
+          "bytes": 11886655,
+          "device": 27,
+          "inode": 306323,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "8f376ebd8d093f7750fb7b0d32da930a537163440ef195d4ca6087c435a67f80",
+          "bytes": 11886655,
+          "device": 27,
+          "inode": 306323,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "8f376ebd8d093f7750fb7b0d32da930a537163440ef195d4ca6087c435a67f80",
+          "bytes": 11886655,
+          "device": 27,
+          "inode": 306323,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "8f376ebd8d093f7750fb7b0d32da930a537163440ef195d4ca6087c435a67f80",
+          "bytes": 11886655,
+          "device": 27,
+          "inode": 306323,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "8f376ebd8d093f7750fb7b0d32da930a537163440ef195d4ca6087c435a67f80",
+          "bytes": 11886655,
+          "device": 27,
+          "inode": 306323,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "8f376ebd8d093f7750fb7b0d32da930a537163440ef195d4ca6087c435a67f80",
+          "bytes": 11886655,
+          "device": 27,
+          "inode": 306323,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "8f376ebd8d093f7750fb7b0d32da930a537163440ef195d4ca6087c435a67f80",
+          "bytes": 11886655,
+          "device": 27,
+          "inode": 306323,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/evidence/pf3-native-20261015/mutations-v2-originals.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "8f376ebd8d093f7750fb7b0d32da930a537163440ef195d4ca6087c435a67f80",
+          "bytes": 11886655,
+          "device": 27,
+          "inode": 306323,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 4,
+      "git_path": "tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "5b90058f7169b4da0f58845bf3812cfae1846b29a1dc4187efa60e30810dd537",
+          "bytes": 11886101,
+          "device": 27,
+          "inode": 306318,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "5b90058f7169b4da0f58845bf3812cfae1846b29a1dc4187efa60e30810dd537",
+          "bytes": 11886101,
+          "device": 27,
+          "inode": 306318,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "5b90058f7169b4da0f58845bf3812cfae1846b29a1dc4187efa60e30810dd537",
+          "bytes": 11886101,
+          "device": 27,
+          "inode": 306318,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "5b90058f7169b4da0f58845bf3812cfae1846b29a1dc4187efa60e30810dd537",
+          "bytes": 11886101,
+          "device": 27,
+          "inode": 306318,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "5b90058f7169b4da0f58845bf3812cfae1846b29a1dc4187efa60e30810dd537",
+          "bytes": 11886101,
+          "device": 27,
+          "inode": 306318,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "5b90058f7169b4da0f58845bf3812cfae1846b29a1dc4187efa60e30810dd537",
+          "bytes": 11886101,
+          "device": 27,
+          "inode": 306318,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "5b90058f7169b4da0f58845bf3812cfae1846b29a1dc4187efa60e30810dd537",
+          "bytes": 11886101,
+          "device": 27,
+          "inode": 306318,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/evidence/pf3-native-20261015/mutations-originals.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "5b90058f7169b4da0f58845bf3812cfae1846b29a1dc4187efa60e30810dd537",
+          "bytes": 11886101,
+          "device": 27,
+          "inode": 306318,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 5,
+      "git_path": "tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "1139f364e55dd5af72fae9cc791830f9253b9bc210395329d34dc1ad62bfe935",
+          "bytes": 10875864,
+          "device": 27,
+          "inode": 306344,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "1139f364e55dd5af72fae9cc791830f9253b9bc210395329d34dc1ad62bfe935",
+          "bytes": 10875864,
+          "device": 27,
+          "inode": 306344,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "1139f364e55dd5af72fae9cc791830f9253b9bc210395329d34dc1ad62bfe935",
+          "bytes": 10875864,
+          "device": 27,
+          "inode": 306344,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "1139f364e55dd5af72fae9cc791830f9253b9bc210395329d34dc1ad62bfe935",
+          "bytes": 10875864,
+          "device": 27,
+          "inode": 306344,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "1139f364e55dd5af72fae9cc791830f9253b9bc210395329d34dc1ad62bfe935",
+          "bytes": 10875864,
+          "device": 27,
+          "inode": 306344,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "1139f364e55dd5af72fae9cc791830f9253b9bc210395329d34dc1ad62bfe935",
+          "bytes": 10875864,
+          "device": 27,
+          "inode": 306344,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "1139f364e55dd5af72fae9cc791830f9253b9bc210395329d34dc1ad62bfe935",
+          "bytes": 10875864,
+          "device": 27,
+          "inode": 306344,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/evidence/pf3-native-20261015/official-originals.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "1139f364e55dd5af72fae9cc791830f9253b9bc210395329d34dc1ad62bfe935",
+          "bytes": 10875864,
+          "device": 27,
+          "inode": 306344,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 6,
+      "git_path": "tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "654b58e50d0eb8a56280e6ea38a26a0be57a6c8fff4016536269859deee7c5c0",
+          "bytes": 9331025,
+          "device": 27,
+          "inode": 306102,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "654b58e50d0eb8a56280e6ea38a26a0be57a6c8fff4016536269859deee7c5c0",
+          "bytes": 9331025,
+          "device": 27,
+          "inode": 306102,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "654b58e50d0eb8a56280e6ea38a26a0be57a6c8fff4016536269859deee7c5c0",
+          "bytes": 9331025,
+          "device": 27,
+          "inode": 306102,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "654b58e50d0eb8a56280e6ea38a26a0be57a6c8fff4016536269859deee7c5c0",
+          "bytes": 9331025,
+          "device": 27,
+          "inode": 306102,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "654b58e50d0eb8a56280e6ea38a26a0be57a6c8fff4016536269859deee7c5c0",
+          "bytes": 9331025,
+          "device": 27,
+          "inode": 306102,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "654b58e50d0eb8a56280e6ea38a26a0be57a6c8fff4016536269859deee7c5c0",
+          "bytes": 9331025,
+          "device": 27,
+          "inode": 306102,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "654b58e50d0eb8a56280e6ea38a26a0be57a6c8fff4016536269859deee7c5c0",
+          "bytes": 9331025,
+          "device": 27,
+          "inode": 306102,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/evidence/pf2-b1-bands-20261014/core-mutants-raw.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "654b58e50d0eb8a56280e6ea38a26a0be57a6c8fff4016536269859deee7c5c0",
+          "bytes": 9331025,
+          "device": 27,
+          "inode": 306102,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 7,
+      "git_path": "tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa",
+          "bytes": 8962151,
+          "device": 27,
+          "inode": 290678,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa",
+          "bytes": 8962151,
+          "device": 27,
+          "inode": 290678,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa",
+          "bytes": 8962151,
+          "device": 27,
+          "inode": 290678,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa",
+          "bytes": 8962151,
+          "device": 27,
+          "inode": 290678,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa",
+          "bytes": 8962151,
+          "device": 27,
+          "inode": 290678,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa",
+          "bytes": 8962151,
+          "device": 27,
+          "inode": 290678,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa",
+          "bytes": 8962151,
+          "device": 27,
+          "inode": 290678,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/evidence/201-main-pf2-integration-20261014/executed-sources.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "194d9da2baf39905e8009203c75997164cb6e55cf3fc5fc205cc040449a390aa",
+          "bytes": 8962151,
+          "device": 27,
+          "inode": 290678,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 8,
+      "git_path": "tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "9eaf579b8f520df5107aa1747dbf4ea85e58234cd4742bf866e4bd3492e9a247",
+          "bytes": 8949097,
+          "device": 27,
+          "inode": 290516,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "9eaf579b8f520df5107aa1747dbf4ea85e58234cd4742bf866e4bd3492e9a247",
+          "bytes": 8949097,
+          "device": 27,
+          "inode": 290516,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "9eaf579b8f520df5107aa1747dbf4ea85e58234cd4742bf866e4bd3492e9a247",
+          "bytes": 8949097,
+          "device": 27,
+          "inode": 290516,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "9eaf579b8f520df5107aa1747dbf4ea85e58234cd4742bf866e4bd3492e9a247",
+          "bytes": 8949097,
+          "device": 27,
+          "inode": 290516,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "9eaf579b8f520df5107aa1747dbf4ea85e58234cd4742bf866e4bd3492e9a247",
+          "bytes": 8949097,
+          "device": 27,
+          "inode": 290516,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "9eaf579b8f520df5107aa1747dbf4ea85e58234cd4742bf866e4bd3492e9a247",
+          "bytes": 8949097,
+          "device": 27,
+          "inode": 290516,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "9eaf579b8f520df5107aa1747dbf4ea85e58234cd4742bf866e4bd3492e9a247",
+          "bytes": 8949097,
+          "device": 27,
+          "inode": 290516,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/evidence/201-p104-wsl-budgets-20261014/executed-sources.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "9eaf579b8f520df5107aa1747dbf4ea85e58234cd4742bf866e4bd3492e9a247",
+          "bytes": 8949097,
+          "device": 27,
+          "inode": 290516,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 9,
+      "git_path": "tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+          "bytes": 7859803,
+          "device": 27,
+          "inode": 308039,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+          "bytes": 7859803,
+          "device": 27,
+          "inode": 308039,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+          "bytes": 7859803,
+          "device": 27,
+          "inode": 308039,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+          "bytes": 7859803,
+          "device": 27,
+          "inode": 308039,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+          "bytes": 7859803,
+          "device": 27,
+          "inode": 308039,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+          "bytes": 7859803,
+          "device": 27,
+          "inode": 308039,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+          "bytes": 7859803,
+          "device": 27,
+          "inode": 308039,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e",
+          "bytes": 7859803,
+          "device": 27,
+          "inode": 308039,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 10,
+      "git_path": "tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "741aa19e0148ebdd6bb496d3905d0189d6218b8ef32c138a14e2c8c9451c71fa",
+          "bytes": 5069241,
+          "device": 27,
+          "inode": 303170,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "741aa19e0148ebdd6bb496d3905d0189d6218b8ef32c138a14e2c8c9451c71fa",
+          "bytes": 5069241,
+          "device": 27,
+          "inode": 303170,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "741aa19e0148ebdd6bb496d3905d0189d6218b8ef32c138a14e2c8c9451c71fa",
+          "bytes": 5069241,
+          "device": 27,
+          "inode": 303170,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "741aa19e0148ebdd6bb496d3905d0189d6218b8ef32c138a14e2c8c9451c71fa",
+          "bytes": 5069241,
+          "device": 27,
+          "inode": 303170,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "741aa19e0148ebdd6bb496d3905d0189d6218b8ef32c138a14e2c8c9451c71fa",
+          "bytes": 5069241,
+          "device": 27,
+          "inode": 303170,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "741aa19e0148ebdd6bb496d3905d0189d6218b8ef32c138a14e2c8c9451c71fa",
+          "bytes": 5069241,
+          "device": 27,
+          "inode": 303170,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "741aa19e0148ebdd6bb496d3905d0189d6218b8ef32c138a14e2c8c9451c71fa",
+          "bytes": 5069241,
+          "device": 27,
+          "inode": 303170,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/evidence/geo198/review-dc4e929/geometry-198-review-dc4e929.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "741aa19e0148ebdd6bb496d3905d0189d6218b8ef32c138a14e2c8c9451c71fa",
+          "bytes": 5069241,
+          "device": 27,
+          "inode": 303170,
+          "nlink": 8
+        }
+      ]
+    },
+    {
+      "group": 11,
+      "git_path": "tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+      "aliases": [
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/codex-geo261-fe863b03/repo/tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "0e8e868d8ed876e3d2c2c17cbe82eb596c083bde6f0ac613b4b1898fd50db817",
+          "bytes": 4800328,
+          "device": 27,
+          "inode": 306134,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r2/work/q38/repo/tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "0e8e868d8ed876e3d2c2c17cbe82eb596c083bde6f0ac613b4b1898fd50db817",
+          "bytes": 4800328,
+          "device": 27,
+          "inode": 306134,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/codex-geo261-a12d184e/repo/tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "0e8e868d8ed876e3d2c2c17cbe82eb596c083bde6f0ac613b4b1898fd50db817",
+          "bytes": 4800328,
+          "device": 27,
+          "inode": 306134,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261a1/work/q38/repo/tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "0e8e868d8ed876e3d2c2c17cbe82eb596c083bde6f0ac613b4b1898fd50db817",
+          "bytes": 4800328,
+          "device": 27,
+          "inode": 306134,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/codex-geo261-f2c8837a/repo/tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "0e8e868d8ed876e3d2c2c17cbe82eb596c083bde6f0ac613b4b1898fd50db817",
+          "bytes": 4800328,
+          "device": 27,
+          "inode": 306134,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/work/q38/repo/tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "0e8e868d8ed876e3d2c2c17cbe82eb596c083bde6f0ac613b4b1898fd50db817",
+          "bytes": 4800328,
+          "device": 27,
+          "inode": 306134,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geo261-cold/g261r1/source-final/tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+          "role": "existing-cold-alias",
+          "sha256": "0e8e868d8ed876e3d2c2c17cbe82eb596c083bde6f0ac613b4b1898fd50db817",
+          "bytes": 4800328,
+          "device": 27,
+          "inode": 306134,
+          "nlink": 8
+        },
+        {
+          "path": "/workspace/geometry-axiom/tests/evidence/pf2-b1-bands-20261014/panel-mutants-raw.tar.gz",
+          "role": "new-root-immutable-leaf",
+          "sha256": "0e8e868d8ed876e3d2c2c17cbe82eb596c083bde6f0ac613b4b1898fd50db817",
+          "bytes": 4800328,
+          "device": 27,
+          "inode": 306134,
+          "nlink": 8
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Exact11 root archive leaves and all77 corresponding cold aliases are immutable until every alias in a group is safely de-linked. No checkout/reset/clean/overwrite of these leaves.",
+    "Unrelated root documents, branch publication, and ordinary Git operations may continue if they do not rewrite these exact leaves.",
+    "This new event supersedes historical nlink7 for only these11groups; older registry/package bytes are retained unchanged.",
+    "Read-only metadata and original executor hashes only; no second archive body hash.",
+    "Other423cold/2cardref/1GEO339 bans remain separate."
+  ]
+}
