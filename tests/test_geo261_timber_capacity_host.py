@@ -18,6 +18,11 @@ from tests.test_geo261_native_kernel import native
 from tests.test_geo261_wood_world_validation import copy_product_closure,PRODUCT_DEFINES
 
 CAPACITY_ERROR="角材的數量超過上限"
+GRAMMAR_ERROR="欄位數不對"
+# Four fields cross the dispatcher, but the handler rejects count<5 before
+# append after its capacity guard is withdrawn. Never send a valid 513th
+# append to the withdrawn fixed-size storage.
+INCOMPLETE_DECLARATION="timber 513 27 33"
 
 
 class TimberCapacityHost(unittest.TestCase):
@@ -59,6 +64,14 @@ class TimberCapacityHost(unittest.TestCase):
         self.assertEqual(before,bridge.command("dump"))
         self.assert_count(bridge,512)
 
+    def reject_missing_id_unchanged(self,bridge,before):
+        response=bridge.line("timber")
+        self.assertFalse(response["ok"],response)
+        self.assertIn(GRAMMAR_ERROR,response["error"],"dispatcher-rejects-before-capacity")
+        self.assertNotIn(CAPACITY_ERROR,response["error"])
+        self.assertEqual(before,bridge.command("dump"))
+        self.assert_count(bridge,512)
+
     def test_actual_host_independent_admission_storage_and_scratch_values(self):
         result=subprocess.run([str(self.exe),"values"],capture_output=True,text=True,encoding="utf-8",timeout=10)
         self.assertEqual(0,result.returncode,result.stderr)
@@ -73,7 +86,8 @@ class TimberCapacityHost(unittest.TestCase):
                 if identifier in (64,65,511,512):self.assert_count(bridge,identifier)
             before=bridge.command("dump")
             self.reject_unchanged(bridge,"timber 513 27 33 role primary",before)
-            self.reject_unchanged(bridge,"timber",before)
+            self.reject_unchanged(bridge,INCOMPLETE_DECLARATION,before)
+            self.reject_missing_id_unchanged(bridge,before)
 
     def test_full_capacity_redeclaration_replay_and_rejected_edit_preserve_history(self):
         with _bridge.BridgeSession(self.bridge) as bridge:
@@ -93,9 +107,11 @@ class TimberCapacityHost(unittest.TestCase):
             self.assertTrue(bridge.line("undo")["ok"])
             self.assertEqual(original["text"],bridge.command("dump")["text"])
             self.assert_count(bridge,512)
-            # A syntax-less capacity refusal must also preserve a pending redo.
+            # Both the handler capacity refusal and dispatcher grammar refusal
+            # must preserve the pending redo and complete dump identity.
             before_redo=bridge.command("dump")
-            self.reject_unchanged(bridge,"timber",before_redo)
+            self.reject_unchanged(bridge,INCOMPLETE_DECLARATION,before_redo)
+            self.reject_missing_id_unchanged(bridge,before_redo)
             self.assertTrue(bridge.line("redo")["ok"])
             self.assertEqual(changed["text"],bridge.command("dump")["text"])
             replay=native().work/"timber-capacity-512-replay.scene"
@@ -245,6 +261,7 @@ class TimberCapacityHost(unittest.TestCase):
         commands=[("reset","reset")]+[(f"statement-{index}","line "+line) for index,line in enumerate(statements)]
         commands += [("dump","dump"),("objects","objects"),("references","references"),
             ("reject-513","line timber 513 27 33 role primary"),("after-513","dump"),
+            ("reject-incomplete","line "+INCOMPLETE_DECLARATION),("after-incomplete","dump"),
             ("reject-missing","line timber"),("after-missing","dump"),
             ("delete","line "+meta["leaf"]["delete"]),("deleted","dump"),
             ("undo","line undo"),("undone","dump"),
@@ -252,10 +269,12 @@ class TimberCapacityHost(unittest.TestCase):
             ("redo","line redo"),("redone","dump"),("final-undo","line undo"),("final-dump","dump"),
             ("final-objects","objects"),("final-references","references")]
         rows,_=self.placed_batch(commands,"placed-512-sequential-history")
-        refused={"reject-513","reject-missing","reject-pending-redo"}
+        refused={"reject-513":CAPACITY_ERROR,"reject-incomplete":CAPACITY_ERROR,
+            "reject-missing":GRAMMAR_ERROR,"reject-pending-redo":CAPACITY_ERROR}
         for name,_ in commands:
             if name in refused:
-                self.assertFalse(rows[name]["ok"],{name:rows[name]});self.assertIn(CAPACITY_ERROR,rows[name]["error"])
+                self.assertFalse(rows[name]["ok"],{name:rows[name]});self.assertIn(refused[name],rows[name]["error"])
+                if name=="reject-missing":self.assertNotIn(CAPACITY_ERROR,rows[name]["error"])
             else:
                 self.assertTrue(rows[name]["ok"],{name:rows[name]});self.assertNotIn("preview",rows[name],name)
         self.assert_placed_geometry(512,text,rows["dump"],rows["objects"],rows["references"])
@@ -263,6 +282,7 @@ class TimberCapacityHost(unittest.TestCase):
         self.assertEqual(loaded["dump"]["definition_sha256"],rows["dump"]["definition_sha256"])
         self.assertEqual(loaded["references"],rows["references"])
         self.assertEqual(rows["dump"],rows["after-513"]);self.assertEqual(rows["dump"],rows["after-missing"])
+        self.assertEqual(rows["dump"],rows["after-incomplete"])
         leaf=meta["leaf"]["id"]
         canonical_lines=rows["dump"]["text"].splitlines(keepends=True)
         leaf_comment=f"# R18 角材 {leaf}:"
@@ -281,12 +301,12 @@ class TimberCapacityHost(unittest.TestCase):
             # Exactly 512 valid inputs are safe even with the guard withdrawn.
             # No valid 513th append is ever sent to the withdrawn executable.
             self.populate_full(bridge);before=bridge.command("dump")
-            response=bridge.line("timber")
+            response=bridge.line(INCOMPLETE_DECLARATION)
             self.assertFalse(response["ok"],response)
-            self.assertIn(CAPACITY_ERROR,response["error"],"host-capacity-first-missing-id")
+            self.assertIn(CAPACITY_ERROR,response["error"],"host-capacity-first-incomplete-declaration")
             self.assertEqual(before,bridge.command("dump"))
 
-    def test_real_bridge_guard_withdrawal_uses_safe_missing_id_then_restores(self):
+    def test_real_bridge_guard_withdrawal_uses_safe_incomplete_declaration_then_restores(self):
         build=native();self.capacity_first_sentinel(self.bridge)
         source=(build.woodworking/"member_declaration.c").read_text(encoding="utf-8")
         before="if(*context->count==context->capacity){"
@@ -297,7 +317,7 @@ class TimberCapacityHost(unittest.TestCase):
         objects=build.product_objects();self.assertEqual(1,objects.count(build.wood_member_declaration_object))
         withdrawn=build.link("capacity-host-withdrawn-bridge",[build.bridge_object,
             *[obj if item==build.wood_member_declaration_object else item for item in objects]])
-        with self.assertRaisesRegex(AssertionError,"host-capacity-first-missing-id") as failure:
+        with self.assertRaisesRegex(AssertionError,"host-capacity-first-incomplete-declaration") as failure:
             self.capacity_first_sentinel(withdrawn)
         print("capacity-host phase=withdrawn framework-assertion="+str(failure.exception))
         restored_source=build.woodworking/"capacity-host-restored-declaration.c"
