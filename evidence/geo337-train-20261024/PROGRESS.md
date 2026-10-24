@@ -4,7 +4,7 @@
 
 已一般 merge 排序修正來源 `aa16e73d6e1f2965e0a911581e2a545aaaf66870`，整合提交 `48f6e79d1192c8bcdb37cee631795bf147e2445b`。原三suite共35方法／零skip、332 compile/link全0；整刀實際128→896→128、exit0/1/0，四細控制正常assert撤回／恢復；獨立3139／0。這些實跑屬子分支S，不移標到合流提交；完整native／browser／新載入性能尚未跑。
 
-本提交再採完整W原lexer盤點出的9個Reading A guard，928→937 identifiers，55 strings與全部原分類／排除／trust／其餘政策不變。原U產品／physical E4d上的九組原scanner assertion各0/1/0、兩neutral0、fullscanner0，329／0獨審；完整原件在reading-a-architecture-guard-strengthening。舊架構receipt仍是歷史，接著在新的可解析來源重跑三原裁判、同來源guard反證並重產四檔，再由root處理最終整份帳本。沒有把U舊紅燈或CI改綠，也沒有READY-TO-MERGE。
+本提交再採完整W原lexer盤點出的9個Reading A guard，928→937 identifiers，55 strings與全部原分類／排除／trust／其餘政策不變。原U產品／physical E4d上的九組原scanner assertion各0/1/0、兩neutral0、fullscanner0，329／0獨審；完整原件在reading-a-architecture-guard-strengthening。三原裁判及四檔已在固定來源 `b9c9fb818f031828530994a4d66f1976da0d8138` 真完成並於本提交採用；generic205／product18、零skip，604 inputs／334 owned／270 exclusions／798 edges／零diagnostics，九組同來源guard反證各0/1/0與兩neutral0。原execution仍為b9，不把產物提交冒作執行來源；1696／0獨審與完整原流在architecture-b9-complete。由root接著處理最終整份帳本。沒有把U舊紅燈或CI改綠，也沒有READY-TO-MERGE。
 
 ### 前輪 U 終態與歷史矩陣（不代表上述新來源）
 
@@ -345,3 +345,7 @@ compare真175 scenes/350 runs後於verify_linux.py:156 `assert not failures,fail
 ### 新增四組儲存收據公開
 
 本次另公開 maintenance-additional-four-archive-groups/：28 個原 archive 路徑與內容保留，四組 hardlink 維護原 exit0；原件包 359949B／1597 members，SHA256 e85764f616d5801a9fa13e23ea56cbfdaf32d8ccc203b1b0f48012c423bd31b6。完整收件原流與獨審 6417／0、alias registry 及其 77／0 另列；這是磁碟保全，不是 U 產品 gate。後續若要寫入任一共享副本，必須先解除該組全部 hardlink。
+
+### b9 架構四檔採用
+
+三原裁判0/0/0、九組原scanner具名assert反證0/1/0已在同一可解析b9完成，完整48條原命令、604Git/blob/raw/LF與兩SSOT初末保全。manifest／scan bytes不變，衍生diff只有report／receipt；前份928產物與本次937執行來源分開保存，沒有把較早native/browser/ledger移標。下一次性能使用已獨審的PIPE計時收件工具，原v4／U紅燈完整保留；測試門檻與樣本不變。
