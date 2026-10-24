@@ -1,0 +1,58 @@
+"""Publish the reviewed UNRUN draft only after root releases the disk-write hold."""
+from pathlib import Path
+import hashlib,importlib.util,json,os,shutil
+H=Path(__file__).resolve().parent;R=Path('/workspace/geo300-capacity512-work-20261024');OUT=H/'evidence-and-body-publication'
+S='400a6d0ca50f3aca104fb569c77c8ef753c93355';BR='codex/geo300-capacity512-20261024';PREFIX='evidence/geo300-capacity512-20261024/'
+def h(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def need(v,m):
+    if not v:raise RuntimeError(m)
+need(shutil.disk_usage('/workspace').free>=64*1024*1024,'root authorized small publication at81MiB; retain64MiB environment guard, not a product gate')
+peer=Path('/workspace/geo300-capacity512-public-package-peer-20261024')
+need(h(peer/'REVIEW.json')=='bc79460ee3a229f1d2d8e23f0b909e7c55d3f217d79f770c29389a64fb075cf4','accepted public source/archive peer')
+need(h(peer/'BODY_REVIEW.json')=='26616582765cfa290c8cd0232d48326ace8e2beb6d1aca17e1077c692f2b27c0','accepted body peer')
+need(h(H/'PR_BODY.template.md')=='6e9e2d007a72d9a675c44e9f0399fdefd9b5a61f8ae044b53990d08db43a2af0','accepted final body template')
+need(h(H/'PR_REQUEST.json')=='12018e50c9fb75b1da038360d3ff1689024720287202abbe3eebcd717032b819','accepted fivefield request')
+need(h(H/'PROGRESS.md')=='87a0b419f35e5867e7246192bed487f8d07f64c5ab35608bee5829b42e4d1e6b','accepted progress')
+need(h(H/'package/original-capacity512-drafts-and-static-reviews.tar.gz')=='0b6ea82d93952e40dc199483828c3e595401720f4e36da755022e9e8fe016542','accepted578raw archive')
+cap=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py');need(h(cap)=='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762','recorder')
+spec=importlib.util.spec_from_file_location('c387',cap);c=importlib.util.module_from_spec(spec);spec.loader.exec_module(c)
+OUT.mkdir(exist_ok=False);env=dict(os.environ)
+for key in ['GIT_INDEX_FILE','GIT_DIR','GIT_WORK_TREE','GIT_COMMON_DIR']:env.pop(key,None)
+rec=c.Recorder(OUT,env,S)
+def run(args,data=None):return rec.run(['git',*args],cwd=R,data=data,timeout=180,source_sha=S,source_variant='Static capacity512 evidence and body only; all runtime UNRUN')
+files={PREFIX+'PROGRESS.md':H/'PROGRESS.md',PREFIX+'QUESTIONS.md':H/'QUESTIONS.md',PREFIX+'body/PR_BODY.template.md':H/'PR_BODY.template.md',PREFIX+'body/PR_BODY.template.before-assertion-wording.md':H/'PR_BODY.template.before-assertion-wording.md'}
+for p in (H/'package').iterdir():
+    if p.is_file():files[PREFIX+p.name]=p
+for p in peer.iterdir():
+    if p.is_file():files[PREFIX+'publication-peer/'+p.name]=p
+for p in [H/'package_draft.py',Path(__file__).resolve()]:files[PREFIX+'producers/'+p.name+'.txt']=p
+report={'product_sha':S,'branch':BR,'formal':'UNRUN','compiled':False,'commands':rec.rows,'evidence_published':False,'body_published':False}
+try:
+    _,head,_=run(['rev-parse','HEAD']);need(head.decode().strip()==S,'fixed public source')
+    _,branch,_=run(['symbolic-ref','--short','HEAD']);need(branch.decode().strip()==BR,'own branch')
+    _,status,_=run(['status','--porcelain=v1','--untracked-files=all']);need(not status,'clean source')
+    _,remote,_=run(['ls-remote','--heads','origin','refs/heads/'+BR]);need(remote.decode().split()==[S,'refs/heads/'+BR],'source remote fixedS')
+    for rel,p in files.items():
+        _,oid,_=run(['hash-object','-w','--stdin'],data=p.read_bytes());run(['update-index','--add','--cacheinfo','100644,'+oid.decode().strip()+','+rel]);run(['update-index','--skip-worktree','--',rel])
+    _,names,_=run(['diff','--cached','--name-only','-z']);need(set(names.rstrip(b'\0').split(b'\0'))=={x.encode() for x in files},'exact newly owned evidence only')
+    run(['diff','--cached','--check']);run(['commit','-m','docs(GEO-300): preserve capacity 512 draft and static reviews'])
+    _,head,_=run(['rev-parse','HEAD']);E=head.decode().strip();report['evidence_sha']=E
+    _,names,_=run(['diff','--name-only',S,E]);need(all(x.startswith(PREFIX) for x in names.decode().splitlines()),'source closure unchanged')
+    run(['push','origin','refs/heads/'+BR+':refs/heads/'+BR]);_,remote,_=run(['ls-remote','--heads','origin','refs/heads/'+BR]);need(remote.decode().split()==[E,'refs/heads/'+BR],'public E exact');report['evidence_published']=True
+    template=(H/'PR_BODY.template.md').read_bytes();need(template.count(b'EVIDENCE_HEAD_PLACEHOLDER')==1,'oneE replacement');body=template.replace(b'EVIDENCE_HEAD_PLACEHOLDER',E.encode());(H/'PR_BODY.md').write_bytes(body)
+    index_before=h(R/'.git/index');DBR=BR+'-prbody';_,remote,_=run(['ls-remote','--heads','origin','refs/heads/'+DBR]);need(not remote,'new owned body branch')
+    _,entries,_=run(['ls-tree','-z',E]);tree={}
+    for row in entries.rstrip(b'\0').split(b'\0'):
+        meta,name=row.split(b'\t',1);tree[name]=meta
+    for name in ['PR_BODY.md','PR_REQUEST.json']:
+        _,oid,_=run(['hash-object','-w','--stdin'],data=(H/name).read_bytes());tree[name.encode()]=b'100644 blob '+oid.strip()
+    _,treeid,_=run(['mktree','-z'],data=b''.join(meta+b'\t'+name+b'\0' for name,meta in sorted(tree.items())))
+    _,commit,_=run(['commit-tree',treeid.decode().strip(),'-p',E],data=b'docs(GEO-300): prepare capacity 512 draft pull request\n');D=commit.decode().strip();report['body_sha']=D
+    _,names,_=run(['diff','--name-only','-z',E,D]);need(set(names.rstrip(b'\0').split(b'\0'))=={b'PR_BODY.md',b'PR_REQUEST.json'},'body/request only')
+    run(['update-ref','refs/heads/'+DBR,D,'0'*40]);run(['push','origin','refs/heads/'+DBR+':refs/heads/'+DBR]);_,remote,_=run(['ls-remote','--heads','origin','refs/heads/'+DBR]);need(remote.decode().split()==[D,'refs/heads/'+DBR],'public D exact')
+    _,actual,_=run(['show',D+':PR_BODY.md']);need(actual==body,'public body exact')
+    _,head,_=run(['rev-parse','HEAD']);need(head.decode().strip()==E and h(R/'.git/index')==index_before,'body left source HEAD/index unchanged')
+    _,status,_=run(['status','--porcelain=v1','--untracked-files=all']);need(not status,'source clean')
+    report.update(body_published=True,exit_code=0,body_sha256=hashlib.sha256(body).hexdigest())
+finally:(OUT/'RESULT.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({k:v for k,v in report.items() if k!='commands'}))

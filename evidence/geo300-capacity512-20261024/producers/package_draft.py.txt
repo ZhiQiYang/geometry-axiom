@@ -1,0 +1,67 @@
+from pathlib import Path
+import hashlib,io,json,tarfile,datetime
+H=Path(__file__).resolve().parent;P=H/'package';P.mkdir(exist_ok=False)
+S='400a6d0ca50f3aca104fb569c77c8ef753c93355'
+def h(b):return hashlib.sha256(b).hexdigest()
+roots={
+ 'product-draft':Path('/tmp/geo300-capacity512-draft-v1-20261024'),
+ 'product-draft-peer':Path('/tmp/geo300-capacity512-product-draft-peer'),
+ 'W-companion':Path('/workspace/geo300-capacity512-companion-draft-20261024'),
+ 'W-peer':Path('/workspace/geo300-capacity512-companion-static-peer-20261024'),
+ 'H-companion':Path('/workspace/geo300-capacity512-host-draft-20261024'),
+ 'H-peer':Path('/workspace/geo300-capacity512-host-static-peer-20261024'),
+ 'applied-peer':Path('/workspace/geo300-capacity512-applied-source-peer-20261024'),
+ 'source-preparation':H/'source-preparation','source-publication':H/'source-publication'}
+items={}
+for prefix,root in roots.items():
+    assert root.is_dir(),str(root)
+    for p in sorted(root.rglob('*')):
+        if p.is_file():assert not p.is_symlink();items[prefix+'/'+str(p.relative_to(root))]=p
+for p in [H/'create_source.py',H/'commit_source.py',Path(__file__).resolve()]:items['producers/'+p.name]=p
+archive=P/'original-capacity512-drafts-and-static-reviews.tar.gz';rows=[]
+with tarfile.open(archive,'w:gz',compresslevel=6) as tf:
+    for name,p in sorted(items.items()):
+        raw=p.read_bytes();info=tarfile.TarInfo(name);info.size=len(raw);info.mode=0o644;info.mtime=0
+        tf.addfile(info,io.BytesIO(raw));rows.append({'member':name,'source':str(p),'bytes':len(raw),'sha256':h(raw)})
+with tarfile.open(archive,'r:gz') as tf:
+    members=tf.getmembers();assert len(members)==len(rows)
+    for row,member in zip(rows,members):
+        raw=tf.extractfile(member).read();assert member.name==row['member'] and h(raw)==row['sha256'] and raw==Path(row['source']).read_bytes()
+index={'product_sha':S,'archive':archive.name,'archive_bytes':archive.stat().st_size,'archive_sha256':h(archive.read_bytes()),'member_count':len(rows),'files':rows,'scope':'Static source preparation and peer originals only. No compiler, suite, bridge, ledger or architecture execution.'}
+(P/'RAW_INDEX.json').write_text(json.dumps(index,ensure_ascii=False,indent=2)+'\n')
+summary={k:v for k,v in index.items() if k!='files'}
+summary.update(base_sha='6d9d46e8d16af75351924c6d47a078d3eb647cc0',merged_346_evidence='eaf15e239324a6464a04740647afccce3a3c17c7',ordinary_merge_sha='696f7f07846c6224775dab5736bd1dc45541a4bf',source_leaves=15,product_leaves=7,companion_leaves=6,registry_leaves=2,old_panel_count=13,old_report_count=11,new_methods_ast_only={'W':7,'H':5},static_peers={'product_plan': '12/0','W_companion':'39/0','H_and_registry_v2':'60/0','applied_source':'73/0'},runtime='UNRUN',compile='UNRUN',mutation_proofs='UNRUN',ledger='UNRUN; main agent only',architecture='UNRUN',created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat())
+(P/'SUMMARY.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+progress=f'''# GEO-300 capacity 512 progress
+
+產品 SHA：{S}；分支 `codex/geo300-capacity512-20261024`。從 #128 P2 evidence `6d9d46e8d16af75351924c6d47a078d3eb647cc0` 建立，正常 merge #346 evidence `eaf15e239324a6464a04740647afccce3a3c17c7`，merge commit `696f7f07846c6224775dab5736bd1dc45541a4bf`。沒有改其他工作線分支。
+
+## 唯一 current-state
+
+| 項目 | 結果／界線 |
+|---|---|
+| 產品七 leaf | W 唯一容量 512；H admission／真 arrays／contact／cut-list／span 共用；validation 超容量在 callback 前拒絕 |
+| 測試六 leaf＋registry兩 leaf | 原 64 witnesses 保留；新增 W 七方法、H 五方法；AST 7／5，尚未 runtime discovery |
+| 一般 merge／apply／diff check／一般 push | 0；公開 S 如上；current_geometry.c 原 CRLF 保留 |
+| 草稿／實際套用獨立靜審 | 產品計畫 12/0、W 39/0、H＋registry 60/0、實際15 leaf 73/0 |
+| W／H 新 suites、ABI compiler controls | **UNRUN** |
+| 原 contact／report／panel suites | **UNRUN at this S**；不把 #346 或 P2 的舊 SHA 綠燈貼到容量512 |
+| 新撤回／恢復反證 | **UNRUN**；測試已備，不當作 killed |
+| 完整 native／6 browser／專項／效能 | **UNRUN** |
+| 最終突變帳本／架構三裁判與四檔收據 | **UNRUN**；交主代理依最後來源統一重產 |
+| 允許 skip | 無新增；目前沒有正式執行，不能宣稱 0 skip |
+| 狀態 | **NOT READY**；正式 C 時槽尚未授權 |
+
+W companion 分別驗原64、真512、真513拒絕。validation 的512正例是未放置成員，不能當作512個已放置角材的幾何／施工驗收。H companion 使用真 bridge／World，準備512宣告與513拒絕、既有ID更新、undo／redo／dump/load byte identity，仍全未跑。
+
+安全反證界線：撤 declaration guard 只呼叫 direct API；撤 H guard 只送缺 ID 的 sentinel，在 append 前語法拒絕。不得把有效第513成員送進已撤 guard 的固定512陣列。七 ABI 負例只預期具名 typedef 編譯拒絕並恢復編譯；不把異構 mutant objects 連結後執行。
+
+登記保留所有既有 entries 的 bytes/order/values，P2=13、report=11，僅加7／5；沒有更新 mutants_results 或 tests/mutate.py。沒有新增耗時數值門檻、改SSOT／決策／K。H v1 swallowed assertion 與 registry sorting churn 已修，v1完整保留；實際套用 peer 初 matcher 把舊 members[64] 誤寫成 enum，原稿與修正也保留，均非產品執行。
+
+完整靜態原件包 {archive.name}：{len(rows)} members、{archive.stat().st_size} bytes、SHA-256 {summary['archive_sha256']}。每件原 path/bytes/hash 見 RAW_INDEX.json；可解析 S 的15個公開 Git blobs與指令/退出碼皆保存。
+
+下一步：主代理授槽後，在固定公開 S 跑原裁判與新 W/H suite；依真紅原因修復並補撤回／恢復，最後由主代理統一帳本與架構。順序 #343 → #346 → #128 P2 → 本線。NOT READY。
+'''
+(H/'PROGRESS.md').write_text(progress)
+(H/'QUESTIONS.md').write_text('# Capacity 512 questions\n\n本片沒有新增待拍板的公理、鎖定決策或時間門檻。512 個已放置成員與完整 UI／幾何行為仍待正式驗收；未放置 fixture 不取代它。若驗收發現需要新門檻或公理語意，另列選項，先做不受影響部分。\n')
+print(json.dumps(summary,ensure_ascii=False))

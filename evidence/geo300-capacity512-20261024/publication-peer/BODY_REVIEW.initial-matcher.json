@@ -1,0 +1,83 @@
+{
+  "schema": "independent-capacity512-body-template-peer/1",
+  "checks": [
+    {
+      "name": "final-template-exact-pin",
+      "passed": true
+    },
+    {
+      "name": "old-wording-preserved",
+      "passed": true
+    },
+    {
+      "name": "request-exact-pin",
+      "passed": true
+    },
+    {
+      "name": "exact-five-request-fields",
+      "passed": true
+    },
+    {
+      "name": "own-branches-and-P2-base",
+      "passed": true
+    },
+    {
+      "name": "one-current-state",
+      "passed": true
+    },
+    {
+      "name": "one-unpublished-E-placeholder",
+      "passed": true
+    },
+    {
+      "name": "public-product-correct",
+      "passed": true
+    },
+    {
+      "name": "formal-not-executed",
+      "passed": true
+    },
+    {
+      "name": "no-old-S-green-borrowed",
+      "passed": true
+    },
+    {
+      "name": "static-peer-not-runtime",
+      "passed": true
+    },
+    {
+      "name": "512-unplaced-not-placed",
+      "passed": true
+    },
+    {
+      "name": "safe-withdrawal-no-overrun",
+      "passed": true
+    },
+    {
+      "name": "ABI-compile-not-unsafe-execution",
+      "passed": true
+    },
+    {
+      "name": "capacity-assertions-honestly-updated",
+      "passed": false
+    },
+    {
+      "name": "scope-no-policy-expansion",
+      "passed": false
+    },
+    {
+      "name": "real-archive-pin",
+      "passed": true
+    }
+  ],
+  "passed": 15,
+  "failed": 2,
+  "findings": [],
+  "resolved_finding": "Initial body incorrectly said assertions were unchanged. Final text explicitly states authorized 512/513 and 3328 capacity contract updates while retaining legacy64 witnesses.",
+  "template_sha256": "6e9e2d007a72d9a675c44e9f0399fdefd9b5a61f8ae044b53990d08db43a2af0",
+  "request_sha256": "12018e50c9fb75b1da038360d3ff1689024720287202abbe3eebcd717032b819",
+  "limits": [
+    "Unpublished template only; E placeholder must be replaced with actual pushed evidence SHA before publishing.",
+    "No product/compiler/runtime test run; C and final gates remain UNRUN."
+  ]
+}
