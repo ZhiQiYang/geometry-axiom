@@ -24,6 +24,15 @@
 - `_s1_p8_l_room_primary_through_reflex_extension.scene`：新增 `——定位邊 e3 [3000,4800] mm，低端超出 [27,3000] mm`。
 - `_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`：新增 `——定位邊 e1 [0,1800] mm，高端超出 [1800,4773] mm`。
 
+本輪L正式重跑更新：同L #323原prepare0／build0／compare1已真完成；equivalence.json記175 scenes／350 runs，差異僅列`_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`三個stdout。原`verify_linux.py:156`的`assert not failures,failures`拋出；ABC_result尚未設定、quantitative_targets為空，不能冒完整後續audit四元組或性能已通過。前後來源同L且clean；perf／profile／memo仍UNRUN，原比較器未改，B2未解除。
+
+## Q-P189-EXACT：同族I22診斷差異，保原正式紅燈
+
+L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`的原P-189 full已在2026-10-24 02:01:49～02:02:52 UTC真exit1。這次base是`3e600772076465fc65a26ac09055028301c0fb0b`，不是Q-323-ABC的b74。原`p189_verify.py:195`以`assert raw['base'] == raw['fix']`比較完整stdout，126組相同後在第127個`repo-_role_priority_mutant.scene`中止；175組未全完成，原full timing未啟動。
+
+兩版load均reject、第二行完整dump相同；L的第一行error及stderr多了現行I22要求的`——定位邊 e2 [2000,4000] mm，低端超出 [0,2000] mm`。它與既有B2同族，但不是同一基準或同一執行證據。原assert訊息稱dump不同，不代表幾何dump真的不同。
+
+本輪保守採取：保留原full exit1與原始完整輸出，不刪診斷、不過濾error、不放寬comparator；已審獨立timing原0且四個數值門檻均通過，其他不受影響驗收繼續。待裁決選項仍是明確登記診斷版本界線／具名完整差異的處理，或建立核可的新診斷基準後另跑；兩者目前都未採納，不能冒原基準exact已綠。獨立timing成功只解答數值門檻，不能解除這個完整比較紅燈。
 ## Q-314-SSOT：現行規範已採納；有序補句另列寫入差額
 
 本項不再列為等待使用者決定。現行 `公理層.md` D10b 已含只在提交比較、整體取代／隔離重放／復原重做豁免的相容例外；I24 已含參數卡改值例外，D29 已含按當下有效整數解除引用。對應 2026-10-18 的逐字稿核可已記於決策佇列；不能再把這些既有條文寫成「暫緩採納」。

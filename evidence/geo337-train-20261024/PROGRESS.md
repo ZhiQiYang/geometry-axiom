@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 02:01 UTC）
+## 唯一 current-state（2026-10-24 02:30 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -11,10 +11,12 @@
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | r2原CLI／workflow／CI35／outer全0；r1環境1保歷史 | r2全230列，5309=5308pass+0fail+1原允許WindowsGDI skip；1819.561s<35min，Node737/737；完整原件封final-L-native-r2-complete；r1四ENOENT不改舊判 |
 | canvas／assembly／documents／grid／space／timber | L | canvas0；assembly0；documents0；grid0；space0；timber0 | canvas2267原assert全0／1718.885s<35min，85 golden一致、零skip；P88=143；其餘五job各原收據已封，獨立checkout／埠／暫存、canvas獨占、原CI時限保留 |
-| P52／Q38／§7兩項／P-189 | L | §7 compiled0／axiom0；Q38原0／outer0，完整原件已公開；P52 formal／verifier／driver／outer0（終態原收據已封，完整流包待）；P-189 UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
+| P52／Q38／§7兩項 | L | §7 compiled0／axiom0；Q38原0／outer0，完整原件已公開；P52 formal／verifier／driver／outer0（終態原收據已封，完整原件包已在雲端核對、待推送） | P52 main中位218.2650215ms、fix176.218242ms，原fix≤main成立，無+5寬限；首次收件工具exit1不改產品0 |
+| P-189原完整比較 | L／base3e600772；main adbaebf9 | 原CLI／driver／outer1；已跑，仍紅 | 原p189_verify.py:195的assert raw[base]==raw[fix]；126組完整stdout逐bytes相同後，第127個repo-_role_priority_mutant.scene首次不同而中止，未完成175。兩版皆reject、完整dump相同，差在I22載入診斷與stderr；原full內timing未啟動，小原收據已公開，完整原件包雲端已核、待推送 |
+| P-189獨立timing tail | L／main adbaebf9／base3e600772 | 原CLI／driver／outer0，小原收據已公開；完整原件包雲端已核、待推送 | 原36samples，N16/32/48/64四receipt ratio約1.101333／0.958790／1.277641／1.371567皆≤2；此tail的dump_count=0、overall_P189_passed=false，不能將原full exit1改成綠 |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | required-eight原exit0／PF3原exit0，完整原件包已封；timing／profile／memo UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
-| #323跨版本175／350 exact | F對原b74 | 1，仍阻擋B2 | 三個I22所需診斷差異，L尚未重跑；未改裁判或刪診斷 |
+| #323跨版本175／350 exact | L對原b74 | prepare0／build0／compare1；同L已跑仍紅 | 原175 scenes／350 runs，三個具名stdout差；verify_linux.py:156原assert not failures,failures；來源前後L clean。原ABC_result尚未設定，未冒後續audit或性能已通過 |
 | 最新B3：Actions 40043471807 required jobs | head f05e7cf | 七項failure；新run原annotation已分類帳戶／支出環境阻擋 | 同批封新run原件及source binding；未取得CI真啟動終態或正式替代接受，B3仍未解除；舊c6／40034196788只作歷史 |
 
 允許skip沒有新增；Chrome156.0.8078.47／Node24.19.0／NotoCJK在雲端可用。RUNNING不等於通過，peer計數不計產品測試。最終L原trackedJSON保自然b6 heads；L新external帳本完成後只封E，不反覆修改trackedJSON。
@@ -25,7 +27,7 @@ L帳本已真終態並核對ROOT/SEED初末HEAD、tree、stage、refs、clean與
 
 ## 並行工作
 
-- #339 F38da31bc／Ee9ee6d08／De1b5b171 已一般推送：真M1f0架構3綠、mutate check1（107stale／13unrun）；11正式項3PASS／1RED／7UNRUN，舊S57的142與3反證不移標新F。
+- #339 歷史快照Ee9ee6d08／De1b5b171：三架構0、mutate check1（107stale／13unrun）；舊S57結果不移標。後續同F38da的142及三組反證已公開於E1d94ab77ab29952d5b73ec5b262dfd239819fe25／D71113ce739f6fe7c327b162e47e6fd7dba349824；正式11項仍3PASS／1RED／7UNRUN。最新各線來源與owner見handoff 2e7963d3的handoff/NEXT.md，不把本歷史段落當current矩陣。
 - #340 noWood：13項／7phase原實跑0/1/0/1/0/1/0；source4d3a、Ed45d、D77a已推，列車完整正式項仍待。
 - #341前置與#342 GEO260：各原定向驗收已封自己的SHA；#342全44為43killed／SPM24equivalent、539inputs相同，不能替代aggregate/native/browser。
 - #343 contact index＋穩定排序：Scc2ea1b3原三套已收齊0／1／0（318build全0）；唯一紅是placement-order負控制仍改舊後備路徑，新快路未受損而正常PASS ordering。新Sccfaf057只修原tuple錨點；三套34methods／64controls／318build全0，tuple原單方法8controls撤回／恢復0／1／0。Ea934a554與D56ed8d00正常推，完整1499members包及獨立actual1222／693、public6181均0；whole-opt、性能／512仍未跑。舊S1ee4e830的33／56／302build全0只作歷史，容量512／性能仍未跑。
@@ -267,3 +269,17 @@ cardref另有兩組受控突變ELF aliases，原116路徑與bytes全留，63個�
 ## 2026-10-24 02:01 UTC：P52原正式量測與五控制真終態0
 
 同L原main/fix/fix/main交錯四區塊、每側16筆全部保留，main中位218.2650215ms、fix176.218242ms，ratio0.8073590573008969；原門檻fix<=main成立，沒有+5ms容忍。normal/delay原0，revert-delay/wrong/missing原1且各符合原控制判準；formal/verifier/driver/outer全0。四份原終態收據先封於final-L-p52-terminal-status-only，完整streams仍在原OUT，尚待完整原件包與獨立核對，沒有冒稱已全封。第一次collector遇Chrome SingletonCookie symlink退出1，屬收件工具假設錯誤，完整失敗保留；沒有重跑產品、改斷言或改時限。P-189與#323性能接續，B2及B3仍未解除。
+
+## P-189首個exact差異：正式full原exit1，獨立timing另列
+
+原正式full於2026-10-24 02:01:49～02:02:52 UTC執行，真正退出碼1，不再列UNRUN。原stderr精確為`p189_verify.py:195`的`assert raw['base'] == raw['fix']`，訊息`AssertionError: dump 不同：repo-_role_priority_mutant.scene`。訊息寫dump不同，但該assert比較完整load回覆加dump的stdout；兩版拒絕相同、第二行完整dump逐byte相同，第一行load error及stderr在L多`——定位邊 e2 [2000,4000] mm，低端超出 [0,2000] mm`。
+
+原stdout先有126組逐bytes相同（含四個生成場景），第127組首個mismatch即終止，未完成175組，也未啟動full原程式內後續timing。這是既有I22診斷功能版本與原跨版本exact的界線衝突，屬待裁決的驗收紅，不是環境或dump幾何差異；P189 base3e600772與#323 baseb74不同，不能把兩門檻當成同一實跑。保全部原判與差異，不過濾／正規化或放寬比較。
+
+已依預先審過的獨立p189-timing tail完成三方量測，原CLI／driver／outer全0，36samples四receipt ratio皆≤2；該tail明列dump_count=0及overall_P189_passed=false，不把full紅燈改綠。P52已正式0、status-only於E58a75f4公開；collector先因Chrome IPC、再因原ledger附加欄位各退出1，兩次工具失敗均保留；v3已封完整包並核對13496/0，原產品沒有重跑。45個IPC只存metadata，65項原annotation保留，六個ELF只省包內payload；完整包待推送。
+
+## #323同L比較終態與小原收據出版
+
+同L #323原prepare0／build0／compare1已真完成；equivalence.json記175 scenes／350 runs，差異僅列`_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`三個stdout。原`verify_linux.py:156`的`assert not failures,failures`拋出；ABC_result尚未設定、quantitative_targets為空，不能冒完整後續audit四元組或性能已通過。前後來源同L且clean；perf／profile／memo仍UNRUN，原比較器未改，B2未解除。
+
+本批final-L-performance-terminal-status-only只公開P189兩原終態／assertion與首次差異streams、timing原36表／receipt／scope，以及#323比較後receipt／equivalence與outer；三份已完成完整包仍在雲端，沒有壓縮或入Git。P52／P189full／timing的actual核對為13496／14330／1457各0，不當產品測試；產品結果仍為0／1／0。
