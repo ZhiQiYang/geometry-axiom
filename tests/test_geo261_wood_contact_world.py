@@ -164,7 +164,7 @@ CONTROLS = (
     ('indexed-plane-offset', 'size_t value=index->maximum[begin+at-1];', 'size_t value=index->maximum[at-1];', 'indexed-dedup', 'indexed-full-coordinate-plane'),
     ('indexed-single-witness', 'return witness&&contact_prefix_hi(out[witness-1].hi,face);', 'return witness!=0;', 'indexed-dedup', 'indexed-two-halves-not-one-cover'),
     ('indexed-survivor-count', 'active[i]=false;--*remaining;', 'active[i]=false;', 'ordering', 'earlier-full-cover-deduplicates'),
-    ('indexed-reversed-skip', 'size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'if(face->hi<face->lo)return false;size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'indexed-dedup', 'indexed-enclosed-reversed-span'),
+    ('indexed-reversed-skip', 'size_t begin,end;contact_face_index_bounds(index,ordinal,&begin,&end);', 'if(face->hi<face->lo)return false;size_t begin,end;contact_face_index_bounds(index,ordinal,&begin,&end);', 'indexed-dedup', 'indexed-enclosed-reversed-span'),
     ('legacy-partial-shadow', 'if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;', 'if(earlier)duplicate=true;', 'indexed-dedup', 'indexed-duplicate-fallback-keeps-partial-shadow'),
     ('legacy-placement-order', 'if(previous<=order)break;', 'if(true)break;', 'indexed-sort', 'sort-legacy-last-order'),
     ('legacy-stable-ties', 'if(previous<=order)break;', 'if(previous<order)break;', 'indexed-sort', 'sort-legacy-stable-fields'),
@@ -179,6 +179,8 @@ CONTROLS = (
 
 MONOTONIC_SORT_BLOCK = '    /* Placement order commonly already matches the admitted sequence.\n     * Equal orders keep their original member and side order. */\n    if(members<2)return;\n    uint64_t previous=contact_order(world,orders,out[first].timber_id);\n    bool ordered=true;\n    for(size_t i=first+1;i<count;++i){\n        uint64_t current=contact_order(world,orders,out[i].timber_id);\n        if(previous>current){ordered=false;break;}\n        previous=current;\n    }\n    if(ordered)return;\n'
 MONOTONIC_SORT_ANCHOR = '    size_t members=count-first;\n    for(size_t i=first;i<count;++i)index->sorted[i]=i;\n'
+
+PLANE_RANGE_EDITS = (('    for(size_t i=0;i<count;++i)index->rank[index->sorted[i]]=i;\n}', "    for(size_t i=0;i<count;++i)index->rank[index->sorted[i]]=i;\n    /* Sorting no longer needs scratch. Retain every face in each plane range,\n     * including inactive or later-covered faces: only maximum tracks admission.\n     * A group's first rank stores its exclusive end; other ranks store first.\n     * This index and the out array stay fixed throughout indexed deduplication. */\n    for(size_t begin=0;begin<count;){\n        size_t end=begin+1;GeoCoord plane=out[index->sorted[begin]].fixed;\n        while(end<count&&out[index->sorted[end]].fixed==plane)++end;\n        index->scratch[begin]=end;\n        for(size_t rank=begin+1;rank<end;++rank)index->scratch[rank]=begin;\n        begin=end;\n    }\n}"), ('static void contact_face_plane_range(const ContactFaceIndex *index,const WoodStopFace *out,\n    size_t count,GeoCoord fixed,size_t *begin,size_t *end)\n{\n    size_t lo=0,hi=count;\n    while(lo<hi){size_t mid=lo+(hi-lo)/2;\n        if(contact_face_plane_compare(out[index->sorted[mid]].fixed,fixed)<0)lo=mid+1;else hi=mid;\n    }\n    *begin=lo;hi=count;\n    while(lo<hi){size_t mid=lo+(hi-lo)/2;\n        if(contact_face_plane_compare(out[index->sorted[mid]].fixed,fixed)<=0)lo=mid+1;else hi=mid;\n    }\n    *end=lo;\n}\n', 'static void contact_face_index_bounds(const ContactFaceIndex *index,size_t face,size_t *begin,size_t *end)\n{\n    size_t rank=index->rank[face],marker=index->scratch[rank];\n    *begin=marker>rank?rank:marker;\n    *end=index->scratch[*begin];\n}\n'), ('    size_t begin,end;contact_face_plane_range(index,out,count,out[face].fixed,&begin,&end);', '    (void)count;size_t begin,end;contact_face_index_bounds(index,face,&begin,&end);'), ('static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodStopFace *out,\n    size_t count,const WoodStopFace *face)\n{\n    size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodStopFace *out,\n    size_t count,size_t ordinal)\n{\n    (void)count;const WoodStopFace *face=&out[ordinal];\n    size_t begin,end;contact_face_index_bounds(index,ordinal,&begin,&end);'), ('contact_face_index_covered(&index,out,count,&out[i])', 'contact_face_index_covered(&index,out,count,i)'))
 
 class WoodContactWorld(unittest.TestCase):
     @classmethod
@@ -314,6 +316,75 @@ class WoodContactWorld(unittest.TestCase):
                 self.assertEqual(1,result.returncode,result.stderr);self.assertIn("ASSERT:"+marker,result.stderr)
                 result=self.case(case,fixed,phase="restored",control=label,assertion=marker)
                 self.assertEqual(0,result.returncode,result.stderr)
+
+    def plane_executable(self,source,label):
+        build=native()
+        anchor="static int contact_face_plane_compare(GeoCoord a,GeoCoord b)\n{"
+        counted="static size_t geo_test_plane_comparisons;\n"+anchor+"++geo_test_plane_comparisons;"
+        self.assertEqual(1,source.count(anchor),"One actual full-coordinate comparator")
+        instrumented=source.replace(anchor,counted)
+        self.assertEqual(source,instrumented.replace(counted,anchor),"Counter reverses exactly")
+        subject=build.woodworking/("contact-plane-"+label+"-source.c")
+        subject.write_text(instrumented,encoding="utf-8")
+        harness=(ROOT/"tests/geo343_plane_range_harness.c").read_text(encoding="utf-8")
+        include='#include "contact-plane-subject.c"'
+        self.assertEqual(1,harness.count(include))
+        client=build.woodworking/("contact-plane-"+label+"-client.c")
+        cached=int("static void contact_face_index_bounds(" in source)
+        client.write_text("#define GEO_TEST_CACHED "+str(cached)+"\n"+harness.replace(include,'#include "'+subject.name+'"'),encoding="utf-8")
+        obj=build.compile(client,"contact-plane-"+label+"-client")
+        return build.link("contact-plane-"+label+"-exe",
+            [obj,build.wood_contacts_object,build.wood_supports_object,*build.kernel_objects()])
+
+    def test_cached_plane_ranges_match_linear_oracle_and_remove_repeat_search(self):
+        source=(native().woodworking/"contact_world.c").read_text(encoding="utf-8")
+        withdrawn=source
+        for before,after in reversed(PLANE_RANGE_EDITS):
+            self.assertEqual(1,withdrawn.count(after),"One whole plane optimization site")
+            withdrawn=withdrawn.replace(after,before)
+        restored=withdrawn
+        for before,after in PLANE_RANGE_EDITS:
+            self.assertEqual(1,restored.count(before),"One restoration site")
+            restored=restored.replace(before,after)
+        self.assertEqual(source,restored,"Whole cached-range restoration is exact")
+        fixed=None
+        public_cases=("ordering","regions","active-dedup","intervals","extensions","ends","indexed-dedup","indexed-sort")
+        for phase,variant,expected in (("fixed",source,0),("withdrawn",withdrawn,1),("restored",restored,0)):
+            with self.subTest(plane_phase=phase):
+                build=native();path=build.woodworking/("contact-plane-public-"+phase+".c")
+                path.write_text(variant,encoding="utf-8")
+                changed=build.compile(path,"contact-plane-public-"+phase)
+                public=build.link("contact-plane-public-"+phase+"-exe",self.objects(build,changed))
+                for case in public_cases:
+                    result=self.case(case,public,phase=phase,control="plane-whole-public")
+                    self.assertEqual(0,result.returncode,result.stderr)
+                executable=self.plane_executable(variant,phase)
+                if phase=="fixed":fixed=executable
+                for case in ("empty","singleton","bounds","coverage","full-capacity"):
+                    result=self.case(case,executable,phase=phase,control="plane-whole-oracle")
+                    self.assertEqual(0,result.returncode,result.stderr)
+                result=self.case("work",executable,phase=phase,control="plane-whole",assertion="plane-cached-query-no-plane-search")
+                print("plane-whole phase="+phase+" "+result.stdout,end="")
+                self.assertEqual(expected,result.returncode,result.stderr)
+                if expected:self.assertIn("ASSERT:plane-cached-query-no-plane-search",result.stderr)
+        controls=(
+            ("physical-ordinal","size_t rank=index->rank[face],marker=index->scratch[rank];","size_t rank=face,marker=index->scratch[rank];","bounds"),
+            ("nonfirst-begin","*begin=marker>rank?rank:marker;","*begin=rank;","bounds"),
+            ("nonfirst-end","*end=index->scratch[*begin];","*end=marker;","bounds"),
+            ("singleton-end","index->scratch[begin]=end;","index->scratch[begin]=end-1;","singleton"),
+            ("truncated-plane","out[index->sorted[end]].fixed==plane","(uint32_t)out[index->sorted[end]].fixed==(uint32_t)plane","bounds"),
+        )
+        for label,before,after,case in controls:
+            with self.subTest(plane_control=label):
+                baseline=self.case(case,fixed,phase="baseline",control=label,assertion="plane-linear-range-oracle")
+                self.assertEqual(0,baseline.returncode,baseline.stderr)
+                self.assertEqual(1,source.count(before),"One actual range-cache control")
+                executable=self.plane_executable(source.replace(before,after),label)
+                result=self.case(case,executable,phase="mutant",control=label,assertion="plane-linear-range-oracle")
+                self.assertEqual(1,result.returncode,result.stderr)
+                self.assertIn("ASSERT:plane-linear-range-oracle",result.stderr)
+                restored_result=self.case(case,fixed,phase="restored",control=label,assertion="plane-linear-range-oracle")
+                self.assertEqual(0,restored_result.returncode,restored_result.stderr)
 
     def extension_transaction(self, executable):
         with _bridge.BridgeSession(executable) as bridge:
