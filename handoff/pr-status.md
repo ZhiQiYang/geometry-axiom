@@ -12,6 +12,6 @@
 | geo324-faces-20261024.json | `codex/geo324-faces-20261024` | #339 | up to date (body 283d1e24) |
 | issue128-empty-panel-rows-20261024.json | `codex/issue128-empty-panel-rows-20261024` | #347 | up to date (body 0109cab1) |
 | issue214-http-fixture-20261024.json | `codex/issue214-http-fixture-20261024` | #345 | up to date (body c5515c14) |
-| issue320-connection-recovery.json | `codex/issue320-connection-recovery-20261024` | #344 | up to date (body a066115b) |
+| issue320-connection-recovery.json | `codex/issue320-connection-recovery-20261024` | #344 | body -> a710224c |
 | kernel-without-woodworking-20261024.json | `codex/kernel-without-woodworking-20261023` | #340 | up to date (body db8bf228) |
-| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | body -> 3989f0b0 |
+| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | up to date (body 3989f0b0) |
