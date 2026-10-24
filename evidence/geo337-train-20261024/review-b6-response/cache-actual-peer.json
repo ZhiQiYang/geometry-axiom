@@ -1,0 +1,179 @@
+{
+  "schema": "terminal-chrome-cache-actual-peer/1",
+  "checks": [
+    {
+      "check": "frozen plan pin before actual",
+      "passed": true
+    },
+    {
+      "check": "driver pinned in launch request",
+      "passed": true
+    },
+    {
+      "check": "scope peer original pin",
+      "passed": true
+    },
+    {
+      "check": "real terminal all0",
+      "passed": true
+    },
+    {
+      "check": "5678 exact unique removed files no extras",
+      "passed": true
+    },
+    {
+      "check": "994 exact empty directories only",
+      "passed": true
+    },
+    {
+      "check": "all recorded targets now absent",
+      "passed": true
+    },
+    {
+      "check": "71 original profile parents retained",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g261r3/seven-final/assembly/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g261r3/seven-final/canvas/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g261r3/seven-final/documents/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g261r3/seven-final/grid/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g261r3/seven-final/space/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g261r3/seven-final/timber/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g288p88o1/workflow/canvas/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g288p88o2/workflow/canvas/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g288p88o3/workflow/canvas/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g288p88q/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g288p88r/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g288pf/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g288pff/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/tmp/g288pr/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/workspace/geo261-cold/g261-p73-F/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/workspace/geo261-cold/g261a1/special/p52/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/workspace/geo261-cold/g261r1/seven-final/documents/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/workspace/geo261-cold/g261r1/special/p52/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "/workspace/geo261-cold/g261r2/special/p52/receipt.json terminal bytes preserved",
+      "passed": true
+    },
+    {
+      "check": "allocated sum exact not claimed free gain",
+      "passed": true
+    },
+    {
+      "check": "observed independent mount free values",
+      "passed": true
+    },
+    {
+      "check": "consumer latest scan no accessible hits",
+      "passed": true
+    },
+    {
+      "check": "38 inaccessible process fields honest",
+      "passed": true
+    },
+    {
+      "check": "root maintenance embargo explicit",
+      "passed": true
+    },
+    {
+      "check": "only unlink and empty rmdir no recursion",
+      "passed": true
+    },
+    {
+      "check": "fresh file identity/hash twice by original driver",
+      "passed": true
+    },
+    {
+      "check": "membership and ancestor checks present",
+      "passed": true
+    },
+    {
+      "check": "19 receipt hashes checked before and after",
+      "passed": true
+    },
+    {
+      "check": "stdout exact original outer hash/length",
+      "passed": true
+    },
+    {
+      "check": "stderr exact original outer hash/length",
+      "passed": true
+    },
+    {
+      "check": "original stdout equals actual summary",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "actual_result": {
+    "path": "/workspace/cache-terminal-execution-20261023/RESULT.json",
+    "sha256": "c8b5d8f60b1d4a2e92d65f045d7fd6bb75720598bd74c0835b13178adb5ca804"
+  },
+  "outer_receipt": {
+    "path": "/workspace/cache-terminal-execution-launch-20261023/receipt.json",
+    "sha256": "ad454a56a73c79934019e3778d9872acb8d1d16dc91e2a2ad0cad929959a7015"
+  },
+  "original_exit": 0,
+  "limits": [
+    "Original cache bytes were intentionally not archived; they are the independently scoped rebuildable leaves.",
+    "No general claim all profile/state bytes hashed before/after: exact unlink allowlist and code review establish no write to other files; all19 original receipts independently rehashed and all71 parents remain.",
+    "Consumer scan contains38 inaccessible fields; maintenance embargo and no accessible matches do not prove OS-wide visibility.",
+    "Allocation metadata total and observed free-space deltas are distinct; live ledger still changes shared storage."
+  ],
+  "subject_tests_run": false,
+  "exit_code": 0
+}

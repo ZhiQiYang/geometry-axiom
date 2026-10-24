@@ -1,0 +1,133 @@
+{
+  "schema": "root-original-full-ledger-123/1",
+  "sourceSHA": "4f4a24d76e816274bfae06868b4dbf31f0860299",
+  "startedUtc": "2026-10-23T19:32:59.016129+00:00",
+  "argv": [
+    "/tmp/train337-ledger-retainer-prep/run_root_full_ledger_v4.py"
+  ],
+  "root": "/tmp/train337-323-f64d638f-source",
+  "old_seed": "/workspace/geo314-train-f64d638f-m121/mutation-cache/_bridge-work/f64d638f15c48d2b9723b7ae9d230fb5dacb82d9/repo",
+  "new_seed": "/workspace/train337-ledger-cache-4f4a24d7/_bridge-work/4f4a24d76e816274bfae06868b4dbf31f0860299/repo",
+  "seed_moved": true,
+  "whole_ledger_writer": "root only",
+  "outer_capture_timeout": null,
+  "original_child_timeouts_changed": false,
+  "product_test_source_changed": false,
+  "passed": false,
+  "phases": [
+    {
+      "phase": "original-committed-ledger-check",
+      "command": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "tests/mutate.py",
+          "--check"
+        ],
+        "cwd": "/tmp/train337-323-f64d638f-source",
+        "acceptance_sha": "4f4a24d76e816274bfae06868b4dbf31f0860299",
+        "source_sha": "4f4a24d76e816274bfae06868b4dbf31f0860299",
+        "source_variant": "committed-final-source",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/tmp/train337-ledger-4f4a24d7-r2-tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792783979.6466405,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 1,
+        "timeout_expired": false,
+        "directory": "/tmp/train337-ledger-4f4a24d7-r2/subcommands/000040",
+        "ended_epoch": 1792783981.0149384,
+        "stdout_sha256": "c6aa833848149ab3fc79a7ed355df3f0d8fb344a9ac59c1a69d7bb8edd2ea6be",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 18149,
+        "stderr_bytes": 0
+      }
+    }
+  ],
+  "exit_code": 1,
+  "generated_outputs": [
+    {
+      "phase": "before-F64",
+      "source": "/tmp/train337-323-f64d638f-source/current_geometry.svg",
+      "retained": "/tmp/train337-ledger-4f4a24d7-r2/generated-outputs/before-F64-current_geometry.svg",
+      "source_context_sha": "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+      "bytes": 5323,
+      "sha256": "7a1dfb9a489e1645a6d8d3ac25058d3edd93861b4dd40740d83a18669a8be971",
+      "xml_root": "{http://www.w3.org/2000/svg}svg",
+      "move": "same-filesystem rename; no deletion",
+      "original_main_raw_sha256": "05c05a8028efe7723a552154e2db2e52223c2e4c00d5875540e1e58f9076fbca",
+      "main_lines_10456_10485": "    /*\n     * 純 C 輸出三視圖 SVG：\n     * 只用 stdio 把上面算好的幾何印成 SVG 標籤，\n     * 預設放在本原始碼旁邊（current_geometry.svg），--out 可以改。\n     */\n    Scene scene = scene_from_world(&world);\n\n    SceneLayout layout;\n\n    if (!scene_compute_layout(&scene, &layout)) {\n        fprintf(stderr, \"無法計算三視圖版面。\\n\");\n        return 1;\n    }\n\n    char svg_path[512];\n\n    if (out_path != NULL) {\n        int written = snprintf(svg_path, sizeof svg_path, \"%s\", out_path);\n\n        if (written < 0 || (size_t)written >= sizeof svg_path) {\n            fprintf(stderr, \"--out 的路徑太長。\\n\");\n            return 1;\n        }\n    } else if (!path_beside_source(\n                   svg_path, sizeof svg_path, \"current_geometry.svg\")) {\n        fprintf(stderr, \"無法組出 SVG 的輸出路徑。\\n\");\n        return 1;\n    }\n\n    if (!emit_svg_three_views(svg_path, &scene, &layout)) {",
+      "run_tests_lines_288_292": "    proc = subprocess.run(\n        [exe, \"--scene\", str(scene), \"--no-window\"],\n        capture_output=True, text=True, encoding=\"utf-8\", errors=\"replace\",\n        timeout=30,\n    )",
+      "provenance_limit": "Existing pre-ledger SVG matches original CLI default output; no claim which historical command created it."
+    }
+  ],
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/tmp/train337-ledger-4f4a24d7-r2-tmp",
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "PYTHONOPTIMIZE": null,
+    "NODE_OPTIONS": null,
+    "PYTHONPATH": null,
+    "PYTHONSTARTUP": null,
+    "GITHUB_SHA": "4f4a24d76e816274bfae06868b4dbf31f0860299",
+    "GITHUB_WORKSPACE": "/tmp/train337-323-f64d638f-source"
+  },
+  "stack_before": [
+    8388608,
+    -1
+  ],
+  "stack_after": [
+    16777216,
+    -1
+  ],
+  "tools_sha256": {
+    "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+    "/workspace/geo261-environment/reap_children.py": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+    "/tmp/train337-ledger-retainer-prep/run_root_full_ledger_v4.py": "023a9df5f6fbef7d627cd999b981140a8b1a8514b56c859bc78be926d6c9705d"
+  },
+  "full_environment_explicit": {
+    "MUTATE_RESULTS": "/tmp/train337-ledger-4f4a24d7-r2/mutants_results.json",
+    "MUTATE_CACHE": "/workspace/train337-ledger-cache-4f4a24d7",
+    "GEO261_REAPER_LOG": "/tmp/train337-ledger-4f4a24d7-r2/full-ledger-reaper.jsonl",
+    "GITHUB_SHA": "4f4a24d76e816274bfae06868b4dbf31f0860299",
+    "GITHUB_WORKSPACE": "/tmp/train337-323-f64d638f-source",
+    "TMPDIR": "/tmp/train337-ledger-4f4a24d7-r2-tmp"
+  },
+  "full_outer_argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-environment/reap_children.py",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/train337-ledger-retainer-prep/retain_mutation_streams.py",
+    "--root",
+    "/tmp/train337-323-f64d638f-source",
+    "--sha",
+    "4f4a24d76e816274bfae06868b4dbf31f0860299",
+    "--out",
+    "/tmp/train337-ledger-4f4a24d7-r2/observer",
+    "--"
+  ]
+}
