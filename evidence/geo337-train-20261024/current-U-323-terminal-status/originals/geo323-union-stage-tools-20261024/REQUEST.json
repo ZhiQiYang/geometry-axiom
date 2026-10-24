@@ -1,0 +1,172 @@
+{
+  "status": "FIXED_SOURCE_PREPARED; formal stages still UNRUN",
+  "source_sha": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+  "source_owner_repo": "/workspace/geometry-axiom",
+  "source_checkout": "/workspace/geo323-union-fixed-source-20261024",
+  "acceptance_out": "/workspace/g337323U",
+  "base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "original_tools": "/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding",
+  "stages": [
+    "prepare",
+    "build",
+    "compare",
+    "perf",
+    "profile"
+  ],
+  "global_locks": [
+    "/tmp/g261r3/heavy.lock",
+    "/tmp/g261r3/secondary.lock"
+  ],
+  "inner_lock": "/workspace/g337323U/stage.lock",
+  "source_budget_bytes": 20971520,
+  "source_resource_min_free_bytes": 41943040,
+  "source_budget_scope": "Storage admission only; no product performance threshold",
+  "tool_files": {
+    "ADAPTATION.json": {
+      "bytes": 3363,
+      "sha256": "ae35ae00913221c38f4bf5b1f25960422d0ac22c351fe209ed45be36e1ea3634"
+    },
+    "ORIGINAL_SOURCE_BINDING.json": {
+      "bytes": 2657,
+      "sha256": "67642adb6ae946900b00e3c5eacd4a88d4f27738be4937a38421cd02bf7495c0"
+    },
+    "PREPARATION.json": {
+      "bytes": 829,
+      "sha256": "52a3d852f3e6c1c91aab049b1efc7e0b1cf6d3ffa9930d38bcb99162ceafa95a"
+    },
+    "PUBLICATION_WHITELIST.json": {
+      "bytes": 783,
+      "sha256": "7465222c0be2b7f70a69004e34d6d25ab0b9b8e4a693ccb3879dd0a40902477f"
+    },
+    "README.md": {
+      "bytes": 6559,
+      "sha256": "ac54f62bf2302d6eb9cb1337f9ceb394779dca0edff61f7d8d9cfdd6d9e4375b"
+    },
+    "SCENE_BINDING.json": {
+      "bytes": 7534,
+      "sha256": "35aa093a20461b4f14a47353b3c5bd0607ef0995a0d67d2ae17d68b8b94cbe38"
+    },
+    "SHA256SUMS": {
+      "bytes": 2425,
+      "sha256": "59b135643fa83b7c58126b3d636dd7c055bd21042db8d5cdac4ffae09f1ec3f0"
+    },
+    "SYNTAX_CHECK.json": {
+      "bytes": 1739,
+      "sha256": "2780896f50220dc5de728410ffdb76bd0739910c636ab4ab8755ffd83e6f59bb"
+    },
+    "TOOLKIT_MANIFEST.json": {
+      "bytes": 4332,
+      "sha256": "d72b35bcd5a33ff693db80c89b61c6c9423d16d2b038beeaab2ba27b820f51c9"
+    },
+    "V1_BASELINE.json": {
+      "bytes": 4210,
+      "sha256": "556caa1fae547b4885ad28a285c025321f23ab750159cd5363a054d2e2f37fc8"
+    },
+    "V1_TO_V2.diff": {
+      "bytes": 1683,
+      "sha256": "85a8638f30bd827c19471e8173dfcea99d59273fd62e0345862ed6236b8d07a3"
+    },
+    "V1_TO_V2.json": {
+      "bytes": 2359,
+      "sha256": "d6e3b484d9a712fe6f419790d7e76c1dbb5b20f0bceede1e3a6f4e0b329f4aba"
+    },
+    "V3-ADAPTATION.md": {
+      "bytes": 1467,
+      "sha256": "fe2ba8bd1119076a909ba9722faeb978e7c2666d5933b0ea06c82de97ae53f83"
+    },
+    "V3-STATIC-CHECK.json": {
+      "bytes": 1459,
+      "sha256": "8607ec91b740475ccdc5db1f04e2027b83aec4ea2d67bcc6db7433a79622fc54"
+    },
+    "geo323_record.py": {
+      "bytes": 6313,
+      "sha256": "8aa05afded8738078cb319606422270345abc0317257d63e8879009acaaabb9b"
+    },
+    "geo323_record.py.v2-to-v3.diff": {
+      "bytes": 1276,
+      "sha256": "fdf57e43b3170b395d3fedfa73aa31141862b2a213f86c25c8a9ab0ba93e3d48"
+    },
+    "mini_gen.py": {
+      "bytes": 1560,
+      "sha256": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749"
+    },
+    "original/PROMPT-B-load-residual.md": {
+      "bytes": 8191,
+      "sha256": "6bba3f1caddf809e6b6563683f464653381c5c6f5572c5f4555211920d0eea3b"
+    },
+    "original/PROMPT-C-load-residual-fix.md": {
+      "bytes": 4401,
+      "sha256": "c6680d72804bd2d26c9c898f575ded40d3f49f558f9aa68b8a7b52b0235de04b"
+    },
+    "original/audit.py.txt": {
+      "bytes": 2162,
+      "sha256": "f9f01f345e6c8108596a2b2f1bbad8948ec9831d9addf8a8e68d1b4dd45ca52f"
+    },
+    "original/finalize.py.txt": {
+      "bytes": 23083,
+      "sha256": "1f345b53c1976d747d1494e86083c9ef63c03cc5940f899952a1d0f7a7488799"
+    },
+    "original/mini_gen.py.txt": {
+      "bytes": 1560,
+      "sha256": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749"
+    },
+    "original/profile.py.txt": {
+      "bytes": 1510,
+      "sha256": "98a7e12fb03370dfa7f4b12fa07597b296794409fbfc95b7ae06e6d7d19b7540"
+    },
+    "original/reap_children.py.txt": {
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    "original/record.py.txt": {
+      "bytes": 926,
+      "sha256": "29f52032e91b5e6d8a84a8e2ee9369ca3e65a7d6b8cb904eeb3b3f3294d6f044"
+    },
+    "original/verify.py.txt": {
+      "bytes": 11029,
+      "sha256": "40dcba62568a90d38187472ba8157bc06b3c35f6411a63fd9687d32a6d47be7d"
+    },
+    "profile_linux.py": {
+      "bytes": 1630,
+      "sha256": "0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c"
+    },
+    "profile_linux.py.diff": {
+      "bytes": 2372,
+      "sha256": "2695532ae82567d657018816146da0853c0044d3de39e5681b85ab858768c9eb"
+    },
+    "reap_children.py": {
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    "run.py": {
+      "bytes": 25725,
+      "sha256": "d4a38b7b60ac698eba4a274c5d26c83684cd1c665b8399f5e47546befae1f70e"
+    },
+    "run.py.scene-binding.diff": {
+      "bytes": 1576,
+      "sha256": "c40637b226d691a16e4a105925ab2a9fab8c3c45145e2e01dbad50f7b8654e77"
+    },
+    "run.py.v2-to-v3.diff": {
+      "bytes": 6307,
+      "sha256": "f40ee1bf64d79a9a3d6f3c332426e1be1dcd381f3ac250744ecb7d344121e57f"
+    },
+    "select_outputs.py": {
+      "bytes": 2295,
+      "sha256": "1282c635fd7a76d5caeafdadcf4cafe8f36e825a4406e86bdc7877fa169ea53f"
+    },
+    "verify_linux.py": {
+      "bytes": 11459,
+      "sha256": "c3db1834c49365a08ef5720d38156253a355e9f5d5db0239486013871d0e2cac"
+    },
+    "verify_linux.py.diff": {
+      "bytes": 1960,
+      "sha256": "2dd4cfc0cc1e03138ff6c4dcd0726e5a1640df4bf7a68c268a13105c220642b8"
+    },
+    "verify_linux.py.scene-binding.diff": {
+      "bytes": 675,
+      "sha256": "85e5695f793d5251ceaf15bed5d5ef5c0db8d8beef5d0927a401fa5026dddbdc"
+    }
+  },
+  "selected_final_source": "ca7838e0f4950452b9befcf40899d606db9b81fa"
+}

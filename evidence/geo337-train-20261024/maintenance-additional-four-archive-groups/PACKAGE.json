@@ -1,0 +1,30 @@
+{
+  "schema": "four-additional-archive-groups-originals/1",
+  "createdUtc": "2026-10-24T04:11:31.073642+00:00",
+  "exit_code": 0,
+  "member_count": 1597,
+  "original_member_count": 1596,
+  "original_bytes": 2618843,
+  "archive": "/workspace/four-additional-archive-groups-originals-20261024/four-additional-archive-groups-originals.tar.gz",
+  "archive_bytes": 359949,
+  "archive_sha256": "e85764f616d5801a9fa13e23ea56cbfdaf32d8ccc203b1b0f48012c423bd31b6",
+  "inventory": "/workspace/four-additional-archive-groups-originals-20261024/MEMBER_INVENTORY.json",
+  "inventory_sha256": "4db25ad5ef500ae8139a79e48b8b1494aab4a833d44c183d93bc03a8ae2177ec",
+  "roundtrip_original_bytes": true,
+  "groups_added": {
+    "additional_large_archive_groups": 4
+  },
+  "configured_gross_source_block_saving": 300097536,
+  "limits": [
+    "Maintenance only; no product gate is executed or relabeled.",
+    "All28 named archive paths and original bytes remain; no archive bodies or ELF payloads are duplicated into this metadata package.",
+    "Original423 cold groups,2 cardref ELF groups,1 six-alias group,3 previous large archive groups and4 additional groups are separate write/reuse bans. Every applicable alias must be de-linked before rewrite.",
+    "Original54 terminal rows including failures remain unchanged; maintenance0 does not turn them green.",
+    "Owner fresh byte/Git checks remain in journals; independent actual reviews inspect metadata/small streams without second large body hash.",
+    "Gross300097536 source block saving is not net df recovery; package/Git overhead and concurrent writes remain.",
+    "F2perf source-counterfactual excluded because its owner receipt is truncated; baseline formal-F is not that owner terminal.",
+    "Original prep producers ran via direct exec, with full recorded Git subcommands but no independent outer producer transcript; nothing is backfilled.",
+    "Initial exact-prefix preparation exit1 omitted tests/evidence; original tool/partial captures/direct exec transcript remain, no links occurred. The r2 scope stays exact4groups/28paths.",
+    "Independent post-package peer is adjacent to avoid self-reference."
+  ]
+}

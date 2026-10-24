@@ -1,0 +1,6961 @@
+{
+  "scope": "U actual five-stage small receipts, full CLI streams and four small gprof streams only",
+  "checks": 1728,
+  "exit_code": 0,
+  "findings": [],
+  "source_U": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+  "summary_sha256": "a1c97a1309cf38aea995dab79929e2ea500606d640e0f91bf5ebbc06cde48d63",
+  "original_cli_exits": [
+    0,
+    0,
+    1,
+    1,
+    1
+  ],
+  "original_stage_exits": [
+    0,
+    0,
+    1,
+    0,
+    0
+  ],
+  "launcher_exit": 1,
+  "N64_fix_main": 1.429347781620555,
+  "N64_target_met": false,
+  "source_calls_ratio": 4.407618425509266,
+  "source_calls_target_met": true,
+  "compare_failures": [
+    [
+      "_role_priority_mutant.scene",
+      "stdout"
+    ],
+    [
+      "_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "stdout"
+    ],
+    [
+      "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "stdout"
+    ]
+  ],
+  "limitations": [
+    "No product rerun and no archive created.",
+    "Ordered graph/body byte equivalence here is checked against original recorded hashes/guard tuples; all graph payloads were not re-read or independently byte-compared by this small review.",
+    "Missing ABC_result and false/null full-acceptance fields retained; audit/mutations/additional I11 remain UNRUN.",
+    "Temporary lock release is a producer observation, not freshly acquired/tested by reviewer."
+  ],
+  "check_details": [
+    {
+      "check": "exact summary snapshot pin",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/REQUEST.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/EXEC_COMPLETION.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/g337323U/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/g337323U/evidence/equivalence.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/g337323U/evidence/performance.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/g337323U/evidence/profile-counts.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/CACHE_DISK_PREFLIGHT.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/INCLUDE_CLOSURE_CLASSIFICATION.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/prepare/result.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/prepare/stderr",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/prepare/stdout",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/build/result.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/build/stderr",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/build/stdout",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/compare/result.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/compare/stderr",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/compare/stdout",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/perf/result.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/perf/stderr",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/perf/stdout",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/profile/result.json",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/profile/stderr",
+      "passed": true
+    },
+    {
+      "check": "small original locator /workspace/geo323-union-stage-tools-20261024/launch-five/profile/stdout",
+      "passed": true
+    },
+    {
+      "check": "all original source identities U",
+      "passed": true
+    },
+    {
+      "check": "original fixed base/main denominators",
+      "passed": true
+    },
+    {
+      "check": "exact one sequence of five stages",
+      "passed": true
+    },
+    {
+      "check": "real launcher and process completion1 retained",
+      "passed": true
+    },
+    {
+      "check": "stage original result maps aggregate prepare",
+      "passed": true
+    },
+    {
+      "check": "true CLI exit prepare",
+      "passed": true
+    },
+    {
+      "check": "stage execution separate from cumulative CLI prepare",
+      "passed": true
+    },
+    {
+      "check": "original stage terminal prepare",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U prepare/source_before",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U prepare/source_after",
+      "passed": true
+    },
+    {
+      "check": "full original CLI prepare/stdout",
+      "passed": true
+    },
+    {
+      "check": "full original CLI prepare/stderr",
+      "passed": true
+    },
+    {
+      "check": "exact CLI source/stage/base/main prepare",
+      "passed": true
+    },
+    {
+      "check": "stage original result maps aggregate build",
+      "passed": true
+    },
+    {
+      "check": "true CLI exit build",
+      "passed": true
+    },
+    {
+      "check": "stage execution separate from cumulative CLI build",
+      "passed": true
+    },
+    {
+      "check": "original stage terminal build",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U build/source_before",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U build/source_after",
+      "passed": true
+    },
+    {
+      "check": "full original CLI build/stdout",
+      "passed": true
+    },
+    {
+      "check": "full original CLI build/stderr",
+      "passed": true
+    },
+    {
+      "check": "exact CLI source/stage/base/main build",
+      "passed": true
+    },
+    {
+      "check": "stage original result maps aggregate compare",
+      "passed": true
+    },
+    {
+      "check": "true CLI exit compare",
+      "passed": true
+    },
+    {
+      "check": "stage execution separate from cumulative CLI compare",
+      "passed": true
+    },
+    {
+      "check": "original stage terminal compare",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U compare/source_before",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U compare/source_after",
+      "passed": true
+    },
+    {
+      "check": "full original CLI compare/stdout",
+      "passed": true
+    },
+    {
+      "check": "full original CLI compare/stderr",
+      "passed": true
+    },
+    {
+      "check": "exact CLI source/stage/base/main compare",
+      "passed": true
+    },
+    {
+      "check": "stage original result maps aggregate perf",
+      "passed": true
+    },
+    {
+      "check": "true CLI exit perf",
+      "passed": true
+    },
+    {
+      "check": "stage execution separate from cumulative CLI perf",
+      "passed": true
+    },
+    {
+      "check": "original stage terminal perf",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U perf/source_before",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U perf/source_after",
+      "passed": true
+    },
+    {
+      "check": "full original CLI perf/stdout",
+      "passed": true
+    },
+    {
+      "check": "full original CLI perf/stderr",
+      "passed": true
+    },
+    {
+      "check": "exact CLI source/stage/base/main perf",
+      "passed": true
+    },
+    {
+      "check": "stage original result maps aggregate profile",
+      "passed": true
+    },
+    {
+      "check": "true CLI exit profile",
+      "passed": true
+    },
+    {
+      "check": "stage execution separate from cumulative CLI profile",
+      "passed": true
+    },
+    {
+      "check": "original stage terminal profile",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U profile/source_before",
+      "passed": true
+    },
+    {
+      "check": "exact original clean U profile/source_after",
+      "passed": true
+    },
+    {
+      "check": "full original CLI profile/stdout",
+      "passed": true
+    },
+    {
+      "check": "full original CLI profile/stderr",
+      "passed": true
+    },
+    {
+      "check": "exact CLI source/stage/base/main profile",
+      "passed": true
+    },
+    {
+      "check": "original judges unchanged, assertions enabled, 16MiB stack",
+      "passed": true
+    },
+    {
+      "check": "original optional/null/false receipt field ABC_result",
+      "passed": true
+    },
+    {
+      "check": "original optional/null/false receipt field all_required_stages_completed",
+      "passed": true
+    },
+    {
+      "check": "original optional/null/false receipt field all_executed_stage_commands_passed",
+      "passed": true
+    },
+    {
+      "check": "original optional/null/false receipt field all_measured_original_targets_met",
+      "passed": true
+    },
+    {
+      "check": "original optional/null/false receipt field full_acceptance_passed",
+      "passed": true
+    },
+    {
+      "check": "original optional/null/false receipt field wrapper_exit",
+      "passed": true
+    },
+    {
+      "check": "no invented ABC or full acceptance",
+      "passed": true
+    },
+    {
+      "check": "original compare 175 scenes / 350 traces",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/_wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/_wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/_wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/_wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/_wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/_wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/s16.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/s16.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/s16.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/s16.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/s16.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/s16.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/s32.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/s32.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/s32.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/s32.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/s32.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/s32.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/s48.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/s48.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/s48.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/s48.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/s48.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/s48.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 base/s64.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command base/s64.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version base/s64.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded process/trace0 fix/s64.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact load+dump command fix/s64.scene",
+      "passed": true
+    },
+    {
+      "check": "unique scene/version fix/s64.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_d12_i14_canvas.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i12_auto_with_at.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i12_explicit_with_atgrid.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i14_canvas_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i16_beam_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i17_delete_space.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i18_nopriority.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i18_norole.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i18_priority_misuse.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i1_frame_degenerate.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i4_duplicate_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i4_empty_space.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i4_missing_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i4_no_carrier.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i5_collinear_vertex_rect_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i5_hole_vertex_touches_rect_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i5_notch_cell_corners_on_ring.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i5_notch_edge_cuts_interior.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i5_notch_floor_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i5_notch_wall_flush_inside.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i7_guide_out_of_range.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i9_forward_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_i9_orphan_timber.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r08_snapshot.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r09_unplaced.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r10_hole_follows_piece.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r10_hole_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r12_prefix_beam.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r12_prefix_col.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r12_uncut_complex_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r13_anchor_follows.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r13_anchor_lost.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r14_straddles_cut.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r14_uncut_strip_multiple_pieces.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r15_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r15_uncut_strip_missing_item.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r16_not_full_span.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r16_top_drop.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r17_wall_column_face.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r20_delete_cascade.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_notch_disconnected.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_point_tangent.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_rectangle_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_rectangle_plus_point.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_remote_flush_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_remote_flush_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_ridge_crossing.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_ridge_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r7_strip_plus_line.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r8_three_residual_components.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _ax_r8_three_residual_strip.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _demo_ceiling.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_axis_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_between_badref.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_between_blocked.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_between_conflict.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_between_free.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_concave.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_dir_violation.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_face_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_free.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_freeze.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_at_border.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_locked.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_locked_other_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_locked_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_panel_empty.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_panel_empty_place.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_panel_from.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_panel_index8.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_panel_odd_gap.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_panel_overflow.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_panel_shrink.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_series_count0.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_series_out.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_series_step0.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_grid_twoline.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_gridref_midline.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_gridref_no_support.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_gridref_wrong_axis.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_gridref_wrong_face.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_hole_anchor.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_hole_bottom.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_i19_place_order.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_i8a_confirm.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_place_through_short.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_rect_only.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_rect_stops.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_stop_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_straddle_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_two_holes.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _edge_upper_seg.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_beam_diag.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_col_noz.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_col_outside.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_col_overlap.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_edge_touch_only.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_free_hole_end.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_grid_dup.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_grid_panel_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_neg_hole_ref.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_notch_straddle.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_reval_free_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_through_boundary.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _mut_zero_len.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _p2_source_navigation.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _rc_beam_cross.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _rc_beam_edge.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _rc_col_corner.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _rc_col_free.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _rc_col_wall.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_axis_boundary_first.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_axis_fallback.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_axis_second_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_between_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_cover_short.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_ext_stop_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_priority_convex.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_priority_ext_custom.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_priority_ext_primary.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_priority_mutant.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_priority_primary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_priority_primary_secondary.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_priority_secondary_rc.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_rc_boundary_ok.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _role_rc_custom_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _s1_p3_alcove_side_boundary_extension_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _s1_p4_alcove_wall_primary_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _s1_p8_l_room_primary_through_reflex_extension.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _s1_p9_l_room_custom_inner_wall_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _s7a_flush_inside_accept.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _s7b_poke_out_1mm_i5_reject.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_ambiguous.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_between.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_collide.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_fixed.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_free.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_grid.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_grid_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_grid_redeclare.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_grid_redeclare_series.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_grid_series.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_hole.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_hole_auto.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_lshape.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_tx.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _test_tx2.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_d19_subgrid_cell.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_d28_engineering_sources.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_d29_grid_system.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_d2_wall_frame.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_d30_infinite_grid_binding.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_d31_parameters.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_d6_guide_segments.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_d6c_datum_shared.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_i13_odd_width.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_i35_engineering_zero_panel.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_i37_grid_system_missing.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_i38_fractional_geometry.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_r19_edge_primary_2560.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions _wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal _wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal _wit_r6_span_cells.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal ceiling-a.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal demo-two-timbers.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal room_a.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal room_box.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal room_full.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal subgrid-local.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions s16.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal s16.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal s16.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions s32.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal s32.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal s32.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions s48.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal s48.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal s48.scene",
+      "passed": true
+    },
+    {
+      "check": "both versions s64.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded ordered graph byte hash equal s64.scene",
+      "passed": true
+    },
+    {
+      "check": "recorded exact process-guard traffic equal s64.scene",
+      "passed": true
+    },
+    {
+      "check": "exact three stdout differences independently classified from recorded hashes",
+      "passed": true
+    },
+    {
+      "check": "precise original comparison assertion retained",
+      "passed": true
+    },
+    {
+      "check": "all 36 original timing samples",
+      "passed": true
+    },
+    {
+      "check": "original interleaved sample order retained",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 16/base",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 16/base",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 16/fix",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 16/fix",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 16/main",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 16/main",
+      "passed": true
+    },
+    {
+      "check": "recomputed ratio 16/base",
+      "passed": true
+    },
+    {
+      "check": "recomputed ratio 16/main",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 32/base",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 32/base",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 32/fix",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 32/fix",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 32/main",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 32/main",
+      "passed": true
+    },
+    {
+      "check": "recomputed ratio 32/base",
+      "passed": true
+    },
+    {
+      "check": "recomputed ratio 32/main",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 48/base",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 48/base",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 48/fix",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 48/fix",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 48/main",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 48/main",
+      "passed": true
+    },
+    {
+      "check": "recomputed ratio 48/base",
+      "passed": true
+    },
+    {
+      "check": "recomputed ratio 48/main",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 64/base",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 64/base",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 64/fix",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 64/fix",
+      "passed": true
+    },
+    {
+      "check": "three successful original samples 64/main",
+      "passed": true
+    },
+    {
+      "check": "recomputed raw median 64/main",
+      "passed": true
+    },
+    {
+      "check": "recomputed ratio 64/base",
+      "passed": true
+    },
+    {
+      "check": "recomputed ratio 64/main",
+      "passed": true
+    },
+    {
+      "check": "summary quantitative targets exact original receipt",
+      "passed": true
+    },
+    {
+      "check": "N64 performance remains red without threshold change",
+      "passed": true
+    },
+    {
+      "check": "small N original base threshold 16",
+      "passed": true
+    },
+    {
+      "check": "small N original base threshold 32",
+      "passed": true
+    },
+    {
+      "check": "small N original base threshold 48",
+      "passed": true
+    },
+    {
+      "check": "original gprof full small stream hash base-32",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-32/wd_read",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-32/geo_eval_source",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-32/contact_order",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-32/app_reference_member_footprint",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-32/wood_contact_collect_stops",
+      "passed": true
+    },
+    {
+      "check": "original gprof full small stream hash base-64",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-64/wd_read",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-64/wood_contact_collect_stops",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-64/geo_eval_source",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-64/contact_order",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count base-64/app_reference_member_footprint",
+      "passed": true
+    },
+    {
+      "check": "original gprof full small stream hash fix-32",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-32/contact_order",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-32/geo_eval_depend",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-32/wd_read",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-32/geo_eval_source",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-32/wood_contact_collect_stops",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-32/app_reference_member_footprint",
+      "passed": true
+    },
+    {
+      "check": "original gprof full small stream hash fix-64",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-64/geo_eval_depend",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-64/geo_eval_source",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-64/wood_contact_collect_stops",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-64/contact_order",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-64/wd_read",
+      "passed": true
+    },
+    {
+      "check": "original gprof flat count fix-64/app_reference_member_footprint",
+      "passed": true
+    },
+    {
+      "check": "source calls ratio recomputed from full original gprof streams",
+      "passed": true
+    },
+    {
+      "check": "source-call target green does not change compare/CLI1",
+      "passed": true
+    },
+    {
+      "check": "local small terminal proof, no package/publication/full acceptance claim",
+      "passed": true
+    }
+  ]
+}

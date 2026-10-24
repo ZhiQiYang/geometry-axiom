@@ -8,7 +8,7 @@
 
 本輪再一般 merge #343 `a934a554ae58f16f124f1b264523947f170b3f0b`，只納入同 load 路徑的 contact index／穩定排序及其祖先 #341、#342；容量 512、cut-list storage 與 panel empty-row 仍留後續分支。#343 原 34 方法／64 控制、318 compile 的實跑頭為 `ccfaf057088a80c7aad4049f1c67e5eedfc2fdec`，#342 原 44 案也保原 SHA；組合後效能及 #341 整段成本審查仍待，不以既有單元結果宣稱達標。tracked 帳本保 root 原 L 版本，檢查曾因新 source.c／測試閉包得到 120 stale／3 retired，最後固定來源後由 root 整份重產。詳見 `contact-index-integration/`。
 
-**新來源尚未通過最終帳本、架構四檔重產或整套驗收，也沒有新的效能結論。** 架構三原裁判已於實際 HEAD `b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5` 執行 0／0／0（205／18 方法、334 sources／6 trusted／798 edges／零 diagnostics）；原 Git diff 證明該 HEAD 除 evidence 外與 U 完全相同，但不把實際 execution SHA 改寫為 U。完整指令／原流封存於 `current-U-architecture-and-ci/architecture/`。
+**新來源尚未通過最終帳本、架構四檔重產或整套驗收。U 原五 stage 已終態 1：compare 的三個 stdout 差異與 N64 fix/main=1.429347781620555>1.3 仍紅；完整結果見本文末新增 U 終態段落。** 架構三原裁判已於實際 HEAD `b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5` 執行 0／0／0（205／18 方法、334 sources／6 trusted／798 edges／零 diagnostics）；原 Git diff 證明該 HEAD 除 evidence 外與 U 完全相同，但不把實際 execution SHA 改寫為 U。完整指令／原流封存於 `current-U-architecture-and-ci/architecture/`。
 
 新 required CI 原件已讀並封存：U 的 Actions run **40058889738**、證據頭 b09 的 run **40059064935**，各七個 job 為 failure，steps 都是空；原 annotation 明載付款失敗或支出上限導致工作未啟動。Ubuntu 26 runner label 遷移 notice 另外保留，不冒充失敗原因。尚未修復帳戶環境，也沒有正式替代已獲接受的證據，B3 仍未解除；f05 舊 run 只留歷史。完整原 API 指令與退出碼在 `current-U-architecture-and-ci/ci/`。 下表是上一輪固定 L 的真終態，不能移標為目前 HEAD；四個既有阻擋仍保留。其餘工作線先完成定向驗收再合流，之後由 root 一次重產帳本／架構並執行受影響正式項。
 
@@ -323,3 +323,19 @@ cold128 原包 15,922 members、2,774,412B、SHA256 4949b46b18d9b8b8bbaaec0fd65d
 四組原包 840 members、248,731B、SHA256 fc852b7d53c9c0c41feb2ce6256e61723cf2903fcdff4142e1076bb237ce73e7，保全部 19 個原 archive/stream 路徑及 bytes。來源配置節省量 476,540,928B，不替代含其他寫入的 df 差額；原 6alias publication 的 1/1/1/0 與 54 列歷史終態含紅結果原樣保留。原方案、精確原工具、完整 Git/consumer/journal/outer、獨審皆入包；當次 collector 外層、靜審 22/0 與完整包獨審 3,421/0 另附。F2 counterfactual 因原收據截斷無可信終態而排除，兩個候選原檔未動。
 
 寫入禁令分開記錄：既有三個 seal cold checkout 的 423 組、cardref 的 2 組 ELF、GEO339 的 1 組六 alias、另 3 組大型歷史 archive。任一受保護 alias 寫入或復用前必須完整 delink。原 inode／nlink 與非 canonical 時間戳會按原方案改變，未宣稱保留 inode 身份；沒有刪收據、fixture、Git object 或受控 ELF。兩包完整 inventory 已在各 tar 內，未額外複製大 JSON。這些維護核對不計入產品 gate，也不把舊 L 收據移標成其他來源 SHA。
+
+### U 原五stage終態（本段由root新證據提交附入）
+
+產品來源固定 `ca7838e0f4950452b9befcf40899d606db9b81fa`，原prepare/build/compare/perf/profile各一次；execution=0/0/1/0/0，CLI=0/0/1/1/1，整輪launcher1。五階段前後均同U clean，兩重測鎖已釋。原命令、退出碼、環境、SHA及小終態原件在 `evidence/geo337-train-20261024/current-U-323-terminal-status`；完整U原流封包仍待保全／出版，不借L全包移標。
+
+compare真175 scenes/350 runs後於verify_linux.py:156 `assert not failures,failures`判三stdout差：_role_priority_mutant、_s1_p8_l_room_primary_through_reflex_extension、_s1_p8b_l_room_primary_through_reflex_extension_hi。原ABC_result key不存在，all_required_stages_completed=false/full_acceptance_passed=null；compare後段audit因assert未達，required-eight/pf3/native三stage未跑，不冒完整audit通過。
+
+原36樣本：N16/32/48 fix/base=0.9999532917535622/0.8129671517479105/0.806276034902179全綠；N64fix/main=1.429347781620555>1.3仍紅。profile execution0，原N32/N64 source calls=82668/364369，ratio4.407618425509266≤4.5綠；CLI1仍帶累積比較與性能紅。沒有改閾值、選樣或丟棄慢樣本。
+
+下一步修性能病因並撤回／恢復自證；其餘新U原gate仍按最終來源重產／重跑。#345原六phase已真終態0、各19／零skip，獨審2493／0；完整包仍待公開，結果由獨立線原OUT `/workspace/geo345-six-original-requests-20261024` 保存，不列本列車gate。不是READY-TO-MERGE。
+
+原v4 outer的source_role/source_sha依argv中的--base啟發式可能標base，原欄不改；產品綁定以明確U acceptance_sha、inner原receipt及前後Git guards為準。
+
+### 新增四組儲存收據公開
+
+本次另公開 maintenance-additional-four-archive-groups/：28 個原 archive 路徑與內容保留，四組 hardlink 維護原 exit0；原件包 359949B／1597 members，SHA256 e85764f616d5801a9fa13e23ea56cbfdaf32d8ccc203b1b0f48012c423bd31b6。完整收件原流與獨審 6417／0、alias registry 及其 77／0 另列；這是磁碟保全，不是 U 產品 gate。後續若要寫入任一共享副本，必須先解除該組全部 hardlink。

@@ -61,3 +61,9 @@ L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`的原P-189 full已在2026-10-24 02:
 U=`ca7838e0f4950452b9befcf40899d606db9b81fa` 的 run40058889738，及證據頭 b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5 的 run40059064935，七個 required jobs 都是 failure／steps=[]，原 annotation 明載 recent account payments failed 或 spending limit。原 API 讀取全退出0；沒有把未啟動的 job 算作產品測試紅燈或成功。完整原件已封 current-U-architecture-and-ci/ci。
 
 保守處理是保留 required checks 阻擋，繼續同產品來源的雲端原門檻與修正；本代理不改付款設定、支出上限、required checks 或原 workflow。可由帳戶環境修復後取得同 head 真 CI 終態，或由既有正式替代流程明確接受同來源補跑收據；目前兩者都尚未成立，不能自行解除 B3 或標 READY-TO-MERGE。這不阻斷其他工作線，也不在對話要求使用者回覆。
+
+### U 五stage新終態補記（不改既有裁決）
+
+在U=`ca7838e0f4950452b9befcf40899d606db9b81fa`，原#323 compare再現同三個stdout差，verify_linux.py:156原assert1；I22版本界線仍待既有裁決，不刪診斷或放寬exact。新N64fix/main=1.429347781620555>1.3，屬可自主修正的性能缺陷，不要求新門檻；small-N與calls比雖綠，不解除它。
+
+原ABC_result key不存在、all_required_stages_completed=false/full_acceptance_passed=null，compare後段audit因assert未達；原八stage中required-eight/pf3/native三項尚未執行。小原件見`evidence/geo337-train-20261024/current-U-323-terminal-status`；完整U原流封包仍未公開。原L結果及待決選項保持歷史身份，不移標。
