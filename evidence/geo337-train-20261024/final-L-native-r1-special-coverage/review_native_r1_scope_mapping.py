@@ -1,0 +1,23 @@
+import hashlib,json,pathlib,tarfile,subprocess
+P=pathlib.Path;B=P('/tmp/train337-native-r1-special-coverage-mapping');j=json.loads((B/'MAPPING.json').read_text());count=0;find=[]
+def ck(n,x):
+ global count;count+=1
+ if not x:find.append(n)
+def h(b):return hashlib.sha256(b).hexdigest()
+ck('original L/native archive',j['L']=='7af8c5d80d34cb4f49d01ba67deb78a3a6d725db' and h(P(j['archive']).read_bytes())==j['archiveSHA256']=='a9a855cf58baec13059d2eede4f0ca4d6ca3c33380fea62aea176dc123402885')
+with tarfile.open(j['archive']) as tf:
+ def member(r):
+  data=tf.extractfile(r['member']).read();ck('immutable member hash '+r['member'],h(data)==r['memberSHA256'] and r['archiveSHA256']==j['archiveSHA256']);return data
+ for key,group in j['groups'].items():
+  ck(key+' declared total',sum(x['total'] for x in group['modules'])==group['totalOriginalMethods']);ck(key+' no standalone rerun',group['standaloneRerun'] is False)
+  for m in group['modules']:
+   result=json.loads(member(m['json']));log=member(m['unittestLog']).decode();member(m['exposedLog']);text=member(m['finalRow']).decode().splitlines();ck(m['module']+' exact row location',text[m['originalRowLine']-1]==m['originalRow'] and m['originalRowLine'] in m['finalRow']['lines']);ck(m['module']+' full original JSON',result['total']==result['run']==result['passed']==m['total']==m['passed'] and result['file']==m['registeredFullModule'] and result['failed']==result['skipped']==result['extra_errors']==result['blocked_by_error']==0 and result['import_error'] is None);ck(m['module']+' full unittest log',f"Ran {m['total']} tests" in log and '\nOK\n' in log and 'FAILED (' not in log);ck(m['module']+' direct exit not invented',m['directRecordedChildOSExit'] is None and m['childOSExitSupportedByOriginalJudgeContract']==0)
+ ck('six103 two21 three50',{k:(len(v['modules']),v['totalOriginalMethods']) for k,v in j['groups'].items()}=={'314-six':(6,103),'reading-a-native-oracle':(2,21),'323-fixed-three':(3,50)})
+ node=j['314Node13'];text=member(node['events']).decode().splitlines();ck('13 exact native inspector pass events',len(node['actualPassEvents'])==node['checksObservedPassing']==13 and node['parentChecks']==1 and node['nestedChecks']==12)
+ for x in node['actualPassEvents']:ck('Node exact event '+str(x['line']),text[x['line']-1]==x['text'] and '✔' in x['text'])
+ enclosing=node['containingNodeSuite'];full=member(enclosing['finalRow']).decode().splitlines();ck('enclosing 737 still red',enclosing['total']==737 and enclosing['passed']==733 and enclosing['failed']==4 and enclosing['skipped']==0 and enclosing['originalRow']==full[enclosing['finalRow']['lines'][0]-1]);ck('Node13 no separate exit0',node['separateNode13ProcessExit'] is None and enclosing['directRecordedProcessOSExit'] is None and node['notAdditionalTests'] is True)
+ agg=j['aggregateNative'];lines=member(agg['row']).decode().splitlines();ck('aggregate exact original row',lines[agg['row']['lines'][0]-1]==agg['originalTotalRow']);ck('aggregate1 preserved',agg['originalNativeExit']==agg['workflowExit']==agg['outerExit']==1 and agg['CI35GateExit']==0 and (agg['originalCountedTotal'],agg['passed'],agg['failed'],agg['skipped'])==(5309,5304,4,1))
+for rel,pin in j['sourcePins'].items():
+ p=subprocess.run(['git','-C','/workspace/geometry-axiom','show',j['L']+':'+rel],capture_output=True);ck('immutable source pin '+rel,p.returncode==0 and h(p.stdout)==pin)
+runall=(B/'L_run_all.py.txt').read_text();unit=(B/'L__unittest_runner.py.txt').read_text();ck('source-contract nonzero cannot passingPyrow',"if code not in (0, None) and not row.failed and not row.crashed and not row.env_problem and suite.kind != 'run_tests':" in runall and 'return emit(0 if result.wasSuccessful() else 1)' in unit);ck('exact Node file in original registry',"'tests/test_grid_inspector_stagger.cjs'" in runall)
+r={'scope':'Specific historical L native-r1 module/event coverage mapping only; no rerun or overall failure reclassification','checks':count,'findings':find,'exit_code':int(bool(find)),'mapping_sha256':h((B/'MAPPING.json').read_bytes()),'limits':['Original native/workflow/outer remain1; four ENOENT failures unchanged.','Python per-suite OS exit was not separately persisted: direct=null, contract-supported0 remains explicitly inferential.','Node13 are 13 original passing events within failed737 aggregate, not a separate Node process0.','No substitution for independent performance, ABC, required-eight, PF3 or RC controls.']};o=P('/tmp/train337-adversarial/FINAL_L_NATIVE_R1_SPECIFIC_COVERAGE_MAPPING_PEER.json');o.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'path':str(o),'sha256':h(o.read_bytes()),'checks':count,'findings':find,'exit_code':r['exit_code']}));raise SystemExit(r['exit_code'])

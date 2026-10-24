@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 00:44 UTC）
+## 唯一 current-state（2026-10-24 00:53 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -11,7 +11,7 @@
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | r1原exit1：4個ENOENT環境紅；同L三fixture已補齊、完整r2 RUNNING（啟動紀錄，無終態判決） | 原全230列／5309=5304pass+4fail+1原允許WindowsGDI skip，1873.241s<35min；原完整流封final-L-native-r1-environment-failure |
 | canvas／assembly／documents／grid／space／timber | L | canvas0；assembly0；documents0；grid0；space0；timber0 | canvas2267原assert全0／1718.885s<35min，85 golden一致、零skip；P88=143；其餘五job各原收據已封，獨立checkout／埠／暫存、canvas獨占、原CI時限保留 |
-| P52／Q38／§7兩項／P-189 | L | §7 compiled0／axiom0，完整原件已公開；P52／Q38／P-189 UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
+| P52／Q38／§7兩項／P-189 | L | §7 compiled0／axiom0，完整原件已公開；Q38 RUNNING（僅雲端、無終態判決）；P52／P-189 UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
 | #323跨版本175／350 exact | F對原b74 | 1，仍阻擋B2 | 三個I22所需診斷差異，L尚未重跑；未改裁判或刪診斷 |
@@ -213,3 +213,15 @@ canvas 原完整 CDP_RESULT 為2267通過／0失敗、skipped=[]，85個golden s
 完整742members／51,393,525原bytes封於final-L-browser-canvas，tar為10,485,838B、SHA256 4153cafa4e1a24b75368a31c4fe8c71ab7b8bb5dde056c55880820bb41b78dbc。包含原指令、結束碼、完整streams、環境、L來源、4張workflow截圖及5個本地artifact；本地保存不冒GitHub上傳。三個可重建ELF僅省略payload而保真hash與sidecar；82個Chrome cache葉列明省略且未刪除。前後checkout／pool守門、reaper均原0，獨立3712核對0只驗收據，不增加產品測試數。六項browser現已同L全0。
 
 native第二輪已在三個原fixture補齊後，依原完整230列入口重新啟動；final-L-native-r2-start只保存不變的啟動argv、原環境、來源SHA與launcher靜審，沒有封未完成streams，也不宣稱native通過。第一輪環境exit1保留。P52、Q38、P-189、#323 required-eight／PF3／timing／profile／memo仍UNRUN；B2原跨版本exact紅與B3待同L完整補驗仍未解除，沒有READY-TO-MERGE。
+
+## 2026-10-24 00:53 UTC：終態維護完整原件、native切片映射與issue盤點封存
+
+原27項終態維護完整3101-member包、collector最外argv／環境／完整streams及退出碼，封於terminal-maintenance-round2-originals；原source SHA逐項保留，不把維護capture綁定的L當成所有歷史工作來源。包括95＋37普通終態ELF退休、receipt保真去重、4個外部index退休、第二組raw保真跨filesystem搬移、12＋15普通ELF退休。原失敗、修正、工具、原PLAN、側車與既有對抗審查皆保。12側車使用退休時已核原hash的凍結副本，沒有把native R2重建後的cache冒成原收據。跨filesystem搬移只轉移占用，不能算全機節省。維護不是產品gate。
+
+新增212組三份相同archive保真hardlink去重與seven-final舊15個普通ELF退休的原命令／退出碼／完整streams／原來源／PLAN／peer，封於terminal-maintenance-212-plus-15-originals。新212加既有24，共236組archive aliases；/workspace/geo261-cold/g261seal/{p-source,a-source,l-source}三個cold checkout一律禁寫，所有alias完全脫鉤前不可啟動測試或修改來源。收據、fixtures、Git objects與受控mutant／trace／withdrawn來源均保留；普通可重建ELF退休不算測試成功，未移標原歷史判決。
+
+final-L-native-r1-special-coverage保存原52項映射核對、三份L原Git來源、extractor及獨立122核對：#314六完整Python module共103、閱讀A兩module21、#323三module50原row與完整unittest log皆pass。Python child0僅原裁判契約支持，per-child OS欄位原本未保存而明列null；Node inspector13是失敗Node737中的13個通過事件，沒有獨立Node13 exit0。完整native r1／workflow／outer仍1，四個ENOENT未改判；此映射不替代完整native、專項或性能。
+
+open-issue-triage-originals封原90-member／1,482,357原bytes的534,257B小包及producer完整原流、初始outer未mkdir的準備1、286獨審與初helper錯誤。38個issue全文是既有歷史capture，不冒最新完整GitHub清單。r1把#340誤說已在L的finding1及r2修正均保：#340原獨立13項不在L原11項中；#214與#300仍是部分切片，不能宣稱母issue結案。沒有寫issue狀態或碰Grok分支。
+
+draft #346已由本機橋接開出，沒有重複請求。native R2及Q38仍待原正式終態；Q38環境物化0不算產品通過，啟動紀錄目前僅雲端。P52、P-189與#323其餘專項繼續排程；B1／B2／B3仍未解除，沒有READY-TO-MERGE。
