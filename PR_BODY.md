@@ -1,33 +1,28 @@
-把角材容量從 64 擴至 512，將 W 單一常數連到 H admission、document arrays、contact、cut-list、span scratch，並在 validation callback 前拒絕超容量。七個具名編譯契約防止 H／W 容量不同。其他資源容量與公理不改。
+容量 512 分支目前固定來源為 `73b21e64dce72f0d16ca29e18559c51815b9724d`。本次只修驗收的安全哨兵：一欄 `timber` 會先被 dispatcher 的四欄最低語法拒絕，無法驗證 handler 的容量守門；改用 `timber 513 27 33` 跨過 dispatcher，撤除容量守門時仍會在 handler 的 `count<5` 檢查拒絕，避免追加第 513 筆越界。原一欄負例繼續驗語法拒絕、完整 dump 與歷史不變。
 
-本 PR 是 #300 的容量草稿，疊在 #347，已一般 merge #346 的正式證據。尚未完成正式執行，不關閉 #300。
+| Current state | 證據來源與結果 |
+|---|---|
+| Product C SHA | `400a6d0ca50f3aca104fb569c77c8ef753c93355`；本次沒有改產品 C |
+| Current test/source SHA | `73b21e64dce72f0d16ca29e18559c51815b9724d` |
+| Evidence head | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
+| 三個受影響的 H 方法 | 在 F73 執行，原退出 0、3/3、零 skip |
+| count helper 撤回／恢復 | F73 真 0/1/0，正常具名 AssertionError |
+| population helper 撤回／恢復 | F73 真 0/1/0，原 I9 拒絕與完整 raw 保留 |
+| unplaced replay helper 撤回／恢復 | F73 真 0/1/0，獨立原 I9 負例，不被哨兵遮蔽 |
+| 哨兵測試修正撤回／恢復 | F73 補跑真 0/1/0，精確 `host-capacity-first-incomplete-declaration`；不是編譯錯或越界 |
+| W 容量 7 方法 | 歷史 F0f 原 7/7 全綠；本次 F73 沒有重新跑整組 |
+| H ABI 兩方法 | 歷史 F0f 兩方法通過；本次定向範圍沒有重跑 |
+| 512 placed load / sequential history | 歷史 F0f 兩個原 600 秒 `TimeoutExpired` 仍未解；本次沒有重跑／沒有放寬時限 |
+| Full native / 六個 browser / 帳本／架構 | 此分支目前來源尚未完成；待產品根因修正與後續整合驗收 |
+| 允許 skip | 無；缺跑一律列 UNRUN／環境原因 |
+| 整體狀態 | 不是 READY-TO-MERGE；兩個 512 placed 問題仍擋住容量驗收 |
 
-## 唯一 current-state
+F73 第一輪 partial 原 driver／外層退出 **1**：前十個 phase 符合預期，最後三個哨兵修正 phase 被原 100 MiB 環境容量守門標 `UNRUN_ENVIRONMENT`。保留該原退出碼；環境回收後，另用新 OUT 只補這三個缺跑 phase，真退出 **0**、0/1/0、雙 observer complete、來源還原且 clean。沒有重跑原已綠十個 phase 或舊 U 的效能樣本。
 
-| 欄位／gate | 目前 SHA 或退出碼 | 界線 |
-|---|---|---|
-| current source SHA | `0f695866c0ba12d2c70dfd7d40628d0fda0f905f` | parent 為舊 evidence E391；這次只改 H suite、原 generator test helper、expected H count |
-| product code SHA | `400a6d0ca50f3aca104fb569c77c8ef753c93355` | 七個產品檔在 current source 未再改；不冒作新的執行 SHA |
-| evidence head | `41481f280495e14f5a6905d29784cea3a218df10` | 新 source 出版原流、v5 草稿與獨立靜審；沒有 runtime PASS |
-| base／一般 merge | #347 舊 E `6d9d46e8d16af75351924c6d47a078d3eb647cc0`；M `696f7f07846c6224775dab5736bd1dc45541a4bf` | M 第二 parent 是 #346 E `eaf15e239324a6464a04740647afccce3a3c17c7`；未聲稱含 #347 最後 E2e8 |
-| 本次套用／一般 commit／push | **0** | 精確三葉；21 個原子命令（20 Git＋1 df）全0、remote精確核對、工作樹乾淨 |
-| 本次獨立靜審 | **72/0、21/0、111/0** | 候選、publisher、實際公開 source；不是 compiler 或產品測試 |
-| W／H suites | **UNRUN** | AST 7／7；原 H 五方法保留，新增兩個 placed/replay 方法；局部總 AST75 非 runtime discovery |
-| 三個測試修正撤回／恢復 | **UNRUN** | count、population、unplaced replay 分別單獨撤回；不可讓早紅遮蔽另一刀 |
-| W runtime 控制／H safe guard／七 ABI 控制 | **UNRUN** | 未宣稱 killed；ABI 只有具名 compiler拒絕才算該控制 |
-| 原 contact／report／panel | **UNRUN at current source** | 原64 witnesses、panel13、report11保留；舊 SHA 的結果不挪用 |
-| 真512放置／載入／重放／513歷史 | **UNRUN** | 測試已加入；沒有執行 generator、bridge 或 C |
-| 完整 native／六 browser／專項／效能／stack | **UNRUN** | N128/256/512性能與stack只完成靜態計畫，不新定門檻 |
-| 帳本／架構三裁判及四檔 | **UNRUN** | root 在最後組合來源統一處理，沒有自行重產帳本 |
-| skip | 沒有新增允許項 | 尚未正式跑，不能宣稱零 skip |
-| 狀態 | **NOT READY** | 所有 runtime gate 待真執行與反證 |
+歷史 F0f 全批原件的 W7 退出 0、H7 退出 1；H7 包含三個哨兵 assertion 與兩個原 600 秒 timeout。當時三個 helper 的實際三態皆是 1/1/1，不能當成已完成反證。該完整紅包有 6369 個原 member，gzip SHA256 `dbe988b880024aee708d85d3b0364adf5ab61c9587f861271d8e2170755b37a7`，已獨立逐位元組核對及分類。原 `TimeoutExpired` 沒有正常 CompletedProcess returncode，照實記 null；四份 scene 是執行中事後保全，沒有冒稱事前捕捉。
 
-本次修正兩個新測試的契約錯誤：`objects` 只列 placed，原 helper 卻用它計算未放置宣告；`loadfile` 依 I9 拒絕未放置場景，原測試卻期待成功。改用 canonical dump 核對完整 ID 序列與唯一性，另驗 objects 為空／沒有 place。滿容量宣告與未放置 canonical replay 改走真互動逐條 line；原兩個 unplaced loadfile 保留為 I9 拒絕與完整回滾負例。產品 I9 沒有修改。原靜審未查出這兩點，保留歷史報告，不把先前靜審當成執行通過。
+F73 使用另版 v2 observer，在原 command／run 前保留實際 loadfile bytes。這是功能測試的輸入保全，不能拿其額外讀檔當效能測量。保留原 64 witnesses；容量契約先前依授權同步為 512/513 與 3328，其他 golden 與原時限保留。仍未證明完整 512 placed 世界、stack 峰值或容量效能驗收通過。
 
-另外新增原 N64 與 N512 的真 placed 成功載入測試：沿原 P-189 generator，從 DSL 獨立推導矩形，再驗真 bridge 的角色、ID、長度、方向、右手座標框架與四角；兩個新進程的同一 replay protocol 完整 stdout 原 bytes 相等。512 逐條重放與 loadfile 比較 canonical text/hash 和幾何，正常 valid513／缺ID拒絕保持完整 dump（含 revision/hash）；delete／undo／拒絕／redo／undo 保葉節點與歷史。這些都是**尚未執行的斷言**，不聲稱 UI、完整施工、RC／凹角或效能已驗。
+下一步：先定位兩個 512 placed 逾時的真根因，正常合入主列車的新前置修正後，再在新的可解析來源執行受影響正式驗收。此線不合併 PR、不 force push、不修改決策佇列或未核可公理。
 
-安全邊界不變：撤容量 guard 只送 direct API／缺ID sentinel，不對失去 guard 的固定陣列送 valid513。七個 ABI 控制只接受指定 typedef 診斷後恢復原值真重編；不執行混用容量的物件。新 placed batch 用 binary mode 保存原 stdout，未放置 BridgeSession 的原管線在正式封裝時須另保全，不能把 subprocess.run observer 當成已捕獲所有 Popen 流。
-
-舊 E `391f44da1c3e37e50c7a25a8a855b93c2865062c` 的 578-member／751,021-byte 原件包及先前 15-leaf source 檢查只屬 S400 歷史；原件不改寫。本次採用 v5，v1～v4 草稿及 peer matcher 初錯誤保留；R18 只精確移除被刪 leaf 的具名注解，未清掉其他注解或放寬 golden。
-
-未改公理、決策佇列或 K。既有64 witnesses保留；原容量斷言依授權同步512／513／3328，其餘斷言與時限不放寬。最不確定的是實際512放置成本、stack與完整跨層行為，必須由 current source 的正式收據判定。
+兩批完整原件保存在 `evidence/geo300-capacity512-20261024/formal-F73b21e64/`。F0f 紅包逐原 byte 獨審 25485/0、原流分類 1809/0；F73 包 5901 member 已逐原 byte 獨審 23643/0，原 phase／具名反證另核 171/0。六個刻意建立的 symlink/FIFO 自驗 fixture 只保存 lstat／readlink 描述，未循連結或讀 FIFO。這些是原件完整性與定向驗收結論，不替代兩個 512 placed 正式方法。主代理目前優先修正 #338 的效能紅燈；本線後續一般 merge 與重測依列車的驗收結果安排，沒有預報改善。
