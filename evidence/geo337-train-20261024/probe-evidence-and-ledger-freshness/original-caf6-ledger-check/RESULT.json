@@ -1,0 +1,38 @@
+{
+  "source": "caf6c9ca7286b2ab83ec3ab767690a22a1227064",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "exit": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "exit": 1
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "exit": 0
+    }
+  ],
+  "full_regeneration_deferred_to_final_union": true
+}
