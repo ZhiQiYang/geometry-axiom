@@ -185,7 +185,9 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
     if(!ctx||!index||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
     ctx->started=true;
     /* 只快取既有身分的插入序號；碰撞仍完整比對 K 持有的鍵。 */
-    size_t slot=(size_t)source.provider^source.key_size;
+    /* Mix only the provider bucket; collisions still require exact key equality. */
+    uint32_t provider_hint=(uint32_t)(source.provider*UINT32_C(2654435761));
+    size_t slot=(size_t)(provider_hint>>24)^source.key_size;
     if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}
     slot&=255;
     size_t hint=ctx->node_hint[slot];

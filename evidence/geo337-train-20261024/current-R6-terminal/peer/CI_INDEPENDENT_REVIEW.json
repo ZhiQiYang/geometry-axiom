@@ -1,0 +1,13 @@
+{
+  "exit": 0,
+  "findings": [],
+  "checks": 475,
+  "product_source": "2bbe54f19b2d19e8a816530f0c4edca950629a34",
+  "evidence_head": "12f36515d61011ea6072d52a425370aa5fdcd932",
+  "api_reads": 18,
+  "runs": 2,
+  "required_jobs": 14,
+  "scope": "Read-only original API result/full stream verification; no new API/Git/network/C/browser execution.",
+  "peer_correction": "Initial reviewer assumed outer stdout was a single JSON object; actual stream contains two original JSON lines. Full hashes passed; parser corrected without altering subject/raw.",
+  "conclusion": "Both required integration runs remain failure before runner allocation, with explicit billing-failed OR spending-limit annotation. No product failure or pass inferred; Ubuntu26 notice is separate."
+}
