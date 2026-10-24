@@ -1,7 +1,0 @@
-case,id,command,browser_fetch_ms,runtime_lock_wait_ms,fresh_total_ms,fresh_body_approx_ms,receipt_lock_wait_ms,bridge_lock_wait_ms,stdin_write_ms,stdin_flush_ms,response_queue_wait_ms,http_write_ms,http_total_ms,browser_headers_received,http_error
-bridge18,fetch-26,source-inspect,15002.0,,,,,17999.714816,0.015613,1.249752,0.088531,0.686649,18002.347493,False,BrokenPipeError
-bridge18,fetch-28,dump,15000.299999982119,,,,,17466.017304,0.011004,0.011909,0.897619,0.252699,17467.408423,False,BrokenPipeError
-native18,fetch-26,source-inspect,15000.299999982119,,,,,0.011833,0.007524,0.007964,17997.636243,0.290567,17999.036729,False,BrokenPipeError
-native18,fetch-28,dump,15000.40000000596,,,,,17482.395873,0.067228,0.027026,1.849735,0.140648,17484.766209,False,BrokenPipeError
-receipt18,fetch-6,"line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",15000.600000023842,33.025768,86.993477,53.967709,17898.452149,0.01946,0.008565,0.026625,14.394886,0.218629,18000.785378,False,BrokenPipeError
-runtime18,fetch-6,"line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100",15000.800000011921,17994.791663,18051.186215,56.39455200000157,0.020172,,,,,0.161572,18051.635747,False,BrokenPipeError

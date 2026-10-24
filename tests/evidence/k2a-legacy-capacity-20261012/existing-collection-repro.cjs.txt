@@ -1,9 +1,0 @@
-const {test}=require('node:test'),assert=require('node:assert/strict');
-const F=require('/workspace/geometry-k2aa-review/geometry-web/feature-attachments.js'),C=require('/workspace/geometry-k2aa-review/tests/test_grid_drafts_lifecycle_capacity.js');
-test('B1 existing collection keeps its own byte ceiling after orphan annotation',()=>{
- const d=C.largeDraft();d.inputRefs=[];C.pad(d,128*1024);
- const value={schema:F.GRID_DRAFTS_SCHEMA,drafts:[d],orphans:[]},envelope={schema:F.SCHEMA,records:[C.record(value)]};
- assert.doesNotThrow(()=>F.validate(envelope));
- value.orphans.push(d.draftId);
- assert.doesNotThrow(()=>F.validate(envelope,true),/容量|上限/);
-});

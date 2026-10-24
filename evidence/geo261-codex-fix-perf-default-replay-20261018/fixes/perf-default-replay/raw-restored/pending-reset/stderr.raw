@@ -1,8 +1,0 @@
-I8a preview 1: valid; confirm token to apply
- timber 1 center 20 -> 20 length 1000 -> 1000
-  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]
- guide 1: surface 1 u=500 world [500,0,0] direction [0,1,0] -> surface 1 u=600 world [600,0,0] direction [0,1,0]
- visible: {[500,0]-[500,1000]} -> {[600,0]-[600,1000]}
-input:3: I8a: missing/invalid preview token; cannot apply
-input:4: 沒有可復原的操作
-input:5: 沒有可重做的操作

@@ -1,8 +1,0 @@
-tree 686a443030dae819d2296bc27288d734214819a9
-parent 5fe3bfd5d50bc9770e28feb70fe05f186e3496ea
-author Yang <b10102230@gmail.com> 1792171640 +0800
-committer Yang <b10102230@gmail.com> 1792171640 +0800
-
-test(native): expect the exact successful preview diagnostic
-
-The enclosure product harness legitimately emits the existing I8a preview line before success or the named negative-control assertion. Require the full exact stderr sequence instead of empty output; no product, timeout, marker, or test-count change.

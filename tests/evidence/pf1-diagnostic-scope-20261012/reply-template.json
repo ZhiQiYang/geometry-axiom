@@ -1,3 +1,0 @@
-{
-  "body": "【Codex】回覆6115524959 M1；文件更正 head `{{HEAD_SHA}}`，產品／原裁判bytes仍與687e2c2全同。\n\n- M1成立：先前「缺件／重複／非法型別仍INVALID」泛化了入口。正文及6115302508已限縮為scene障礙清單；JSON `obstacles` 超過64項先回UNSUPPORTED/CAPACITY，不繼續驗型別／唯一性／存在性。65個現存c1重複，JSON容量拒絕、scene非法拒絕，兩者都零提交。名稱完整驗證後判容量的兩入口證據仍保留，不推成障礙清單同優先序。\n- 同一687e2c2的fresh原生bridge有限對照：重複c1／重複缺件c99／重複非法x1各2項與65項，六組各走JSON／scene，共12個拒絕路徑。JSON候選不能確認，scene不能載入；全部dump／read state／revision相同，actual exit0。多錯誤可同存，不把重複c99的原因冒稱純缺件，也不制定未定案的錯誤優先級。\n- 只更正驗證文件及新增界線原件。產品、SSOT／白話／正典／🔒、原測試／expected／runner、核心帳本與既有323原件不變；未再跑不變的76題／五突變／全核心表，沒有冒稱新產品驗收。原子拒絕、I55白名單、PF12固定oracle與名稱容量修正不倒退。\n- B1正式最終整合SHA七job仍待既定owner；PF11真瀏覽器／完整.gcanvas、I53pending及與#201共用桥接增量待整合維持，不排WSL全量、不合併。\n\n原件：tests/evidence/pf1-diagnostic-scope-20261012/README.md。維持draft。"
-}

@@ -1,1 +1,0 @@
-First attempt did not execute target: run.py input_hashes called pathlib.is_file on a long python -c argument and raised OSError 36 File name too long. Corrected invocation uses a script file; no product or test criterion changed. Original tool call exit1.

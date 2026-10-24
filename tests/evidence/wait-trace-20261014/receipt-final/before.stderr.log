@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/tmp/receipt-trace-probe.py", line 21, in <module>
-    assert receipt_rows[0]['businessRequestId']==receipt, 'WAIT_TRACE_RECEIPT_ID_PRECEDENCE'
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: WAIT_TRACE_RECEIPT_ID_PRECEDENCE

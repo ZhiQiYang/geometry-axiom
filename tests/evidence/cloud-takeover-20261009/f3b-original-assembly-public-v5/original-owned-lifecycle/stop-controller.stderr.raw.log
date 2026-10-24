@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "<workspace-path>", line 9, in <module>
-    assert all(g['before']['git']['head'] == '9eb670110379ec0d726914f3e5b2d8e7237f2b9c' for g in gates)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError

@@ -1,9 +1,0 @@
-import sys,json,math
-gap=int(sys.argv[1]); mode=sys.argv[2]
-P=915; c=P+gap//2; footprint=[c-13,c+14]
-def overlap(a,b): return max(0,min(a[1],b[1])-max(a[0],b[0]))
-left=overlap(footprint,[0,P]); right=overlap(footprint,[P+gap,2*P+gap])
-accepted=(left>=8 and right>=8) if mode=="check" else True
-print(json.dumps(dict(gap=gap,X=8,footprint=footprint,bearing=[left,right],accepted=accepted,diagnostic="FT06_BEARING" if not accepted else None)))
-# Deliberately expects green; the insufficient fixture must exit red.
-sys.exit(0 if accepted else 1)

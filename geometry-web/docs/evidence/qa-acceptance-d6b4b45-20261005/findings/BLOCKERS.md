@@ -1,6 +1,0 @@
-T1 | [環境事件,原因未確認] 22:25 左右 T1 的 8831 服務其 bridge 行程消失,serve.py 回「橋接器連線中斷」;T1 已重啟 8831(PID 17364),probe fresh:true 已存檔 | evidence/T1/44-p2-applied-with-typed5.png, probe_8831_after_interrupt.txt
-T2 | 環境:22:25 前後 bridge 子行程全部消失(我只確認 8832:serve.py 仍在、/api 回「橋接器連線中斷」);原因未確認。T2 已重啟自己的 8832(僅停自己 PID 26656 前之舊 PID 42352),中斷前案例以重跑結果為準。證據 evidence/T2/041-edge1-4000.png、probe_8832_restart.txt
-T3 | [環境事件,原因未確認] 22:25 前後我的 8833 服務 bridge 子行程消失(serve.py 在、/api 回「橋接器連線中斷」),當時的世界遺失;已重啟 8833 並重驗 fresh:true,中斷前案例全部以正式操作重跑(以重跑結果為準) | evidence/T3/probe_8833_after_interrupt.txt
-T4 | T4-01 資料遺失(次要):走「以此底圖連續新增房間」(#77 共享房間來源)路徑後保存,底圖不透明度/鎖定/取景crop/records 未寫入 .gcanvas(manifest.faces=[]、format /10),重開後重置為 0.5/未鎖定;對照組一般匯入路徑(format /1)有存 opacity/locked | evidence/T4/findings.md#T4-01 ; evidence/T4/downloads/t4-ulset-save4.gcanvas vs ctrl-plain-import-op-lock.gcanvas
-T4 | 環境事件:22:25 前後我的 8834 服務 bridge 行程消失(serve.py 在、放置面時回「橋接器連線中斷」),原因未確認;已用 stop_server/start_server 僅處理自己的 PID,probe fresh:true(evidence/T4/probe-8834-after-interruption.txt),22:27 起整個專案以正式操作重建(r2-* 截圖),中斷前結果不採用
-V2 | T4-01 複驗成立且更廣:共享來源 adopt 當下/任何基準變更即把不透明度與鎖定重置為 0.5/未鎖(兩房皆然),只改不透明度不標髒;保存後 opacity/locked/crop 不入檔。新發現,未列 #77 gates;#137 未修但同函式 | evidence/V2/verdict.md

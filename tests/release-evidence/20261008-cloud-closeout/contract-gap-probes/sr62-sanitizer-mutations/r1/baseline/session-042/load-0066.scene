@@ -1,8 +1,0 @@
-boundary 1 outline 0,0 4000,0 4000,3000 0,3000
-boundary 2 outline 0,0 4000,0 4000,3000 0,3000
-placement 1 on boundary 1 origin 0 0 0 u +x v +y
-placement 2 on boundary 2 origin 0 0 0 u +x v +y
-spec unrelated 10
-grid-system 0 name-hex e5a4a9e88ab120e7b6b2e6a0bc2041 main-along none u series 150 250 3 v explicit 300 700
-grid 10 on 1 from-system 0 origin 0 0
-grid 20 on 2 from-system 0 origin 100 200

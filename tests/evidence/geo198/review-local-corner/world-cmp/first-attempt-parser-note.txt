@@ -1,1 +1,0 @@
-First driver attempt exited 1 while decoding merged stdout/stderr: JSONDecodeError, Unterminated string at column 81. Native diagnostic stderr interleaved with buffered stdout. The corrected driver preserves separate stdout and stderr; this was a probe logging failure, not a product acceptance verdict. Initial merged raw is preserved.

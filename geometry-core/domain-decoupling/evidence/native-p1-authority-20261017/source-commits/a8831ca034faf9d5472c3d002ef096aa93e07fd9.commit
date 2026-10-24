@@ -1,8 +1,0 @@
-tree b7fa77536f34e8f6ece4da8792483a172ea82207
-parent 9006036d5417c67c1d96994002289ccd3d6a9420
-author Yang <b10102230@gmail.com> 1792167847 +0800
-committer Yang <b10102230@gmail.com> 1792167847 +0800
-
-Preserve the native header layout in isolated woodworking builds
-
-The five-stage 72d gate passed kernel-only compilation and failed at definition_sources.h because its explicit ../native/document.h include was copied into a flat isolated-woodworking directory. Keep W under isolated-woodworking/native so actual repository includes resolve without rewriting headers or compiler flags. Test counts unchanged; the failed 72d receipt remains unchanged and all focused259 methods remain UNRUN.

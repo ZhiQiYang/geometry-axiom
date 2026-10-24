@@ -1,7 +1,0 @@
-  bridge：建置（找不到 /tmp/pf3-current-binaries/bridge）…
-PF3_BASELINE: {"effectiveSeams": null, "support": null, "derivedPlacement": null, "pending": ["PF-3 effective seams and support", "PF-5 timber layer and derived placement"]}
-Traceback (most recent call last):
-  File "/tmp/pf3-dependency-probe.py", line 23, in <module>
-    assert derived['support'] is not None,'PF3_SUPPORT_MISSING: expected R43 support results, got null'
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: PF3_SUPPORT_MISSING: expected R43 support results, got null

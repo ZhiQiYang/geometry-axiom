@@ -1,4 +1,0 @@
-集合節點未驗證突變：exit=1；ASSERT:reset-collection-must-be-evaluated line=143 expr=geo_eval_node_at(graph,find_node(graph,collection),&node)&&node.state==GEO_NODE_VALID&&node.value
-跨 consumer 共用突變：exit=1；ASSERT:cross-consumer-placement-edge-missing line=109 expr=has_edge(ctx.sources,second, wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),GEO_DEPENDENCY_DEFINITION_REQUIRED)
-永不失效突變：exit=1；ASSERT:stale-footprint-after-move line=57 expr=app_footprint_memo_read(&memo,2,1,&next)&& app_reference_member_footprint(world,2,1,&actual)&&same_rect(next,actual)&&!same_rect(first,next)
-永不失效突變（參數）：exit=1；ASSERT:stale-footprint-after-parameter line=51 expr=app_footprint_memo_read(&memo,2,1,&next)&& app_reference_member_footprint(world,2,1,&actual)&&same_rect(next,actual)&&!same_rect(first,next)

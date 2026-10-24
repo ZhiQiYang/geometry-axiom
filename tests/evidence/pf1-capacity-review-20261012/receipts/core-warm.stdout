@@ -1,9 +1,0 @@
-Mutation scope: partial M01
-BASELINE exe 已重編
-BASELINE OK: 139/139 全過(未變異原始碼)
-M01  exe 已重編
-M01  KILLED    I5：邊上判定:含端點改嚴格(端點不在邊上)  <- _ax_i5_collinear_vertex_rect_corner.scene: FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊
-
-本次 1:殺死 killed 1 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
-歷次紀錄(不是本次覆蓋)1:殺死 killed 1 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 47
-  (過期明細用 --check 列出)

@@ -1,8 +1,0 @@
-tree f4e316eabd4695329e08292ed9e7a31d9a36b6f2
-parent 4004a1cf29a8acaf93dbc1a99f0c6054c8ae464c
-author Yang <b10102230@gmail.com> 1792172002 +0800
-committer Yang <b10102230@gmail.com> 1792172002 +0800
-
-test: derive engineering grid line oracle from D10a
-
-The existing new GridSources witness used 95 for anchor=10, panel=50, gap=10 and k=1. D10a gives 10+(50+10)+50+5=125. Correct only the expected coordinate; product sources, failure marker, all 11 method counts and timeouts remain unchanged. Native verification pending P1.

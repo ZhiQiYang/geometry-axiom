@@ -1,6 +1,0 @@
-M1-empty-lost-selection
-Traceback (most recent call last):
-  File "/workspace/geometry-k2aa-review/tests/k2a_lifecycle_browser_mutate.py", line 14, in <module>
-    code,raw=run('red',override=True);assert code!=0 and re.search(r'AssertionError \[ERR_ASSERTION\]: '+re.escape(expected)+r'(?:\n|$)',raw),(name,raw)
-                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: ('M3-undo-scan-reflags', 'page.evaluate: Error: 草稿或專案已變更，請重新預覽確認。\n    at Object.prepareFeatureConfirmation (http://127.0.0.1:8814/reference-workspace.js:99:13)\n    at eval (eval at evaluate (:311:30), <anonymous>:23:22)\n    at async <anonymous>:337:30\n    at /workspace/geometry-k2aa-review/tests/k2a_native_browser.cjs:7:27 {\n  log: []\n}\n')

@@ -1,9 +1,0 @@
-{
-  "classification": "publication tool only; product tests not executed",
-  "observed_tool_exit": 1,
-  "observed_git_diff_cached_check_exit": 2,
-  "reason": "generated PROGRESS.md had an extra blank line at EOF",
-  "original_tool_output_location": "task tool-call transcript; no separate raw publisher stream was recorded for this call",
-  "product_or_judge_modified": false,
-  "repair": "remove generated trailing blank line, refresh evidence checksums, commit and push explicit evidence path"
-}

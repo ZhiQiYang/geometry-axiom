@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/tmp/p134-repeat.py", line 6, in <module>
-    eh=hashlib.sha256(json.dumps(ENV,sort_keys=True).encode()).hexdigest();assert eh==plan['environmentSha256'],(eh,plan['environmentSha256'])
-                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: ('9f1ce789b4c1fb62f7379cf15236cd626d2b0c253aeef8a6e3e7f2632058e768', '3aa875af87b671ad81ddd764ff52aee38943558e83e012da5dd5e4551f1d863e')

@@ -1,5 +1,0 @@
-# 樑走向軸只能是 x|y(D14:AABB 走向軸水平),along z 應在解析層拒絕
-surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
-surface 2 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000
-space 1 boundary 1 2
-beam 1 in 1 along z from 0 to 2500 at 1500 width 300 depth 500

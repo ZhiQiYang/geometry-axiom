@@ -1,8 +1,0 @@
-tree 67af25c6e0d6cbe0c537e79d7cf522cf948eaa6c
-parent a8831ca034faf9d5472c3d002ef096aa93e07fd9
-author Yang <b10102230@gmail.com> 1792168417 +0800
-committer Yang <b10102230@gmail.com> 1792168417 +0800
-
-Seed the document witness with a valid named-value identifier
-
-The existing named-value contract rejects ASCII hyphens. Replace the document witness's document-width token consistently at put/find/remove with document_width. No production behavior, test methods, assertions or timeouts change. Exact a883 focused result remains101 original methods PASS plus Document10 with6PASS/4failed methods (15 unittest failure records),148 UNRUN; its premature seed failures are not mutation kills.

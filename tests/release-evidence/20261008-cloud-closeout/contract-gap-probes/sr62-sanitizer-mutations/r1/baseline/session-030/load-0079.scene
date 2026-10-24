@@ -1,6 +1,0 @@
-boundary 1 outline 0,0 2500,0 2500,2500 0,2500
-placement 1 on boundary 1 origin 0 0 0 u +x v +y
-boundary-vertex-keys 1 outer 1 2 3 4 next-key 5
-grid-system 0 name-hex 6f7261636c652030 main-along none u repeat-panel 915 gap 2 from 0 v repeat-panel 915 gap 2 from 0
-grid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell 0 0 anchor 0 1 0 1
-grid 10 on 1 from-binding 0

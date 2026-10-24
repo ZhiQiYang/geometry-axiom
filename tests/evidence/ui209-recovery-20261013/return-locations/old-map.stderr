@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/workspace/geometry-axiom/tests/diagnostics/ui209_correct_returns.py", line 144, in <module>
-    main()
-  File "/workspace/geometry-axiom/tests/diagnostics/ui209_correct_returns.py", line 87, in main
-    require(int(corrected[1]) == line and recorded[2] == corrected[2] == value, 'Incorrect fixed label/value')
-  File "/workspace/geometry-axiom/tests/diagnostics/ui209_correct_returns.py", line 33, in require
-    raise ValueError(message)
-ValueError: Incorrect fixed label/value

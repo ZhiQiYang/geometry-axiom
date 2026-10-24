@@ -1,3 +1,0 @@
-# GEO-098:series 的間距必須大於 0(step=0 會讓座標不嚴格遞增)→ 拒絕。
-surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
-grid 1 on 1 u series 1000 0 3

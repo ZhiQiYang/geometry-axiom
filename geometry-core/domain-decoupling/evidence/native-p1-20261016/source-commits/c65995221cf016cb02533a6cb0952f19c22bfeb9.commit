@@ -1,8 +1,0 @@
-tree 3d8c98be80d24cf12903995701ef0a75df2bf504
-parent a52b0d32dd872f0d4fef5bb39b125b194a415352
-author Yang <b10102230@gmail.com> 1792113864 +0800
-committer Yang <b10102230@gmail.com> 1792113864 +0800
-
-GEO-261: keep rectangular evidence destination in aggregate runs
-
-Rename the test-only evidence destination to GEO261_RECTANGULAR_EVIDENCE, which survives the existing clearing of inherited GEOMETRY_* inputs. Test count remains 11; native execution is queued.

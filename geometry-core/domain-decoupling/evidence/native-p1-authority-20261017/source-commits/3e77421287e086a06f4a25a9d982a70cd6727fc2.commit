@@ -1,8 +1,0 @@
-tree d348a3fd1415cfb1ee577f668e03e348d7b6596c
-parent 344935de58ec936645f4e6b7058b8ee878f735fe
-author Yang <b10102230@gmail.com> 1792170173 +0800
-committer Yang <b10102230@gmail.com> 1792170173 +0800
-
-fix(native): declare version adapter before source registration
-
-Restore actual bridge compilation when references precede the engineering include. No runtime behavior or test count change; exact-source gate rerun required.

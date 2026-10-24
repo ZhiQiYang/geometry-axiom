@@ -1,5 +1,0 @@
-# GEO-100:同上,但錨在 index 8——本軸只推出 8 條(0..7)→ 拒絕並說明共幾條。
-surface 1 origin 0 0 2500 u +x v +y outline 0,0 3600,0 3600,3000 0,3000
-grid 1 on 1 u panel 400 gap 20
-timber 1 27 33 role primary
-place 1 on 1 at-line grid 1 u 8 +v +n

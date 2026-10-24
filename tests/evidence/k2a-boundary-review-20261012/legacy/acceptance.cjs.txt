@@ -1,3 +1,0 @@
-'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),P=require('/workspace/geometry-k2aa-review/geometry-web/project-store.js'),zip=require('/workspace/geometry-k2aa-review/geometry-web/vendor/fflate/umd/index.js');
-(async()=>{await assert.doesNotReject(()=>P.unpack(new Uint8Array(fs.readFileSync('/tmp/k2aa-legacy-capacity.gcanvas')),zip),'I68 historical valid ZIP must remain readable before first marking');})().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,8 +1,0 @@
-G-08.setup.1382 {"parameters": 1, "cards": ["1"], "state0": {"sel": "[]", "selk": "null", "left": false, "right": false, "name": "P2draft", "draftCard": false}}
-G-08.cancel.1382 {"dialogs": [{"type": "confirm", "msg": "參數有未套用的草稿。選擇確定會捨棄，取消可繼續編輯。", "act": "dismiss"}], "state_after": {"sel": "[]", "selk": "null", "left": false, "right": false, "name": "P2draft", "draftCard": false}, "unchanged": true, "draft_name_kept": true}
-G-09.accept.1382 {"dialogs": [{"type": "confirm", "msg": "參數有未套用的草稿。選擇確定會捨棄，取消可繼續編輯。", "act": "accept"}], "state_after": {"sel": "[{\"kind\":\"parameter\",\"id\":1}]", "selk": "{\"kind\":\"parameter\",\"id\":1}", "left": false, "right": false, "name": "P1", "draftCard": false}, "target": "1"}
-console_errors.1382 []
-G-08.setup.390 {"parameters": 1, "cards": ["1"], "state0": {"sel": "[]", "selk": "null", "left": false, "right": false, "name": "P2draft", "draftCard": false}}
-G-08.cancel.390 {"dialogs": [{"type": "confirm", "msg": "參數有未套用的草稿。選擇確定會捨棄，取消可繼續編輯。", "act": "dismiss"}], "state_after": {"sel": "[]", "selk": "null", "left": false, "right": false, "name": "P2draft", "draftCard": false}, "unchanged": true, "draft_name_kept": true}
-G-09.accept.390 {"dialogs": [{"type": "confirm", "msg": "參數有未套用的草稿。選擇確定會捨棄，取消可繼續編輯。", "act": "accept"}], "state_after": {"sel": "[{\"kind\":\"parameter\",\"id\":1}]", "selk": "{\"kind\":\"parameter\",\"id\":1}", "left": false, "right": true, "name": "P1", "draftCard": false}, "target": "1"}
-console_errors.390 []

@@ -1,5 +1,0 @@
-# 柱足跡越出所屬空間平面範圍:I15 重驗應拒絕
-surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000   # 天花 +Z
-surface 2 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000    # 地板 -Z
-space 1 boundary 1 2
-column 1 in 1 at 3800 2800 size 500 500    # x_hi=4300 > 4000

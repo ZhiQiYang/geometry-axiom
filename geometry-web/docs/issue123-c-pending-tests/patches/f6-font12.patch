@@ -1,9 +1,0 @@
---- a/geometry-web/space-workspace.css
-+++ b/geometry-web/space-workspace.css
-@@ -74,3 +74,6 @@
- .sm-status[data-kind=warning],.sm-missing{color:#795719}
- .sm-close{flex:none;white-space:nowrap}
- @media(max-width:720px){.sm-header{flex-shrink:0}.sm-brand{min-width:0}.sm-close{min-height:44px}.sm-library-panel>header{flex-wrap:wrap}}
-+
-+/* TEMP PATCH F6: 12px (only in export copy) */
-+.sm-guide,.sm-help,.sm-view-direction{font-size:12px}

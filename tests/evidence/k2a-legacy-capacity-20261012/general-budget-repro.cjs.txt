@@ -1,9 +1,0 @@
-const {test}=require('node:test'),assert=require('node:assert/strict');
-const P=require('/workspace/geometry-k2aa-review/geometry-web/project-store.js'),C=require('/workspace/geometry-k2aa-review/tests/test_grid_drafts_lifecycle_capacity.js');
-test('B1 normalization cannot turn unrelated metadata into marking credit',()=>{
- const m=C.nearManifest();m.requiredCapabilities=[P.ENGINEERING_CAPABILITY,P.Features.GRID_RULE_SCHEMA].sort();
- m.assemblyDrafts={schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[]};m.engineeringDrafts.records.at(-1).data.raw='';
- m.engineeringDrafts.records.at(-1).data.raw='x'.repeat(8*1024*1024+1-C.bytes(m));
- assert.equal(C.bytes(m),8*1024*1024+1);
- assert.throws(()=>P.assertManifestCapacity(m,'',true),/8 MB|容量/);
-});

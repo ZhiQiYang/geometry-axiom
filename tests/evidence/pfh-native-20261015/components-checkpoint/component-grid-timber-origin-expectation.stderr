@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/tmp/geometry-wake41/probe_component_grid_timber.py", line 11, in <module>
-    geom=records[-2]['reply']['timbers'][0]['geometry'];assert (geom['u'],geom['v'],geom['length'])==(90,0,100),geom
-                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: {'surface': 10, 'centerline': 95, 'length': 100, 'u': 100, 'v': 0, 'dir': '+v', 'side': '+n', 'A': 10, 'B': 30, 'origin': [100, 0, 9], 'axes': [[0, 1, 0], [-1, 0, 0], [0, 0, 1]]}

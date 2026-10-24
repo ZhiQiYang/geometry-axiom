@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/tmp/geometry217-opt-bad-fixed/tests/diagnostics/fragment_oom.py", line 22, in <module>
-    assert replies[2]['ok'] is False, 'OOM must reject the transaction instead of selecting the other fragment'
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: OOM must reject the transaction instead of selecting the other fragment

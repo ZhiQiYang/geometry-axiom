@@ -1,4 +1,0 @@
-# R7: cut-strip must not throw away an isolated contact line before cutting.
-surface 1 origin 0 0 100 u +x v +y outline 0,0 100,0 100,100 60,100 60,40 40,40 40,100 0,100
-beam 2 along x from 30 to 60 at 65 width 30 depth 10 top 100
-apply-proj 1 b2 cut-strip

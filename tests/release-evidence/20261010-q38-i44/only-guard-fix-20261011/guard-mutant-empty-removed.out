@@ -1,8 +1,0 @@
-FAIL: test_unknown_id_and_empty_selection_raise (__main__.SelectCases.test_unknown_id_and_empty_selection_raise) (only=['SPM36'], groups=['native'])
-AssertionError: ValueError not raised
-FAIL: test_selection_outside_the_chosen_group_is_empty_and_rejected (__main__.SelectionGuardCli.test_selection_outside_the_chosen_group_is_empty_and_rejected) (only='SPM36', group='native')
-AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
-FAIL: test_selection_outside_the_chosen_group_is_empty_and_rejected (__main__.SelectionGuardCli.test_selection_outside_the_chosen_group_is_empty_and_rejected) (only='SPM01', group='model')
-AssertionError: 0 != 2 : exit 0 means the mistyped selection was taken as a success: no case was selected, so no baseline ran and all([]) reported success; stdout='{"summary": {}}\n' stderr=''
-Ran 9 tests in 24.621s
-FAILED (failures=3)

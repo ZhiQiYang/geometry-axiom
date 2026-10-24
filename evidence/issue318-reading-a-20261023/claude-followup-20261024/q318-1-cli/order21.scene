@@ -1,6 +1,0 @@
-# Q318-1: 13 mm thin step, two same-axis boundaries; place e2 boundary first
-surface 1 origin 0 0 2500 u +x v +y outline 0,0 500,0 500,13 1000,13 1000,1000 0,1000
-timber 1 27 20 role boundary
-timber 2 27 20 role boundary
-place 2 on 1 at-face e2 +u +n
-place 1 on 1 at-face e0 +u +n

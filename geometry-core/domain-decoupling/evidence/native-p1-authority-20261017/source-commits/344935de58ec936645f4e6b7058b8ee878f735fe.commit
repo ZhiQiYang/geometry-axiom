@@ -1,8 +1,0 @@
-tree fb894563301a249e16c0ff988e11ffa51ece9994
-parent 1e437e12e19ada7de74bc7cbd966d9d09d965b0a
-author Yang <b10102230@gmail.com> 1792169924 +0800
-committer Yang <b10102230@gmail.com> 1792169924 +0800
-
-fix(native): defer owned dimensions during assembly scene replay
-
-Preserve the existing replay admission until the full scene is loaded; final world validation still resolves assembly-owned dimensions. The existing assembly graph product reload tests exposed this regression. Test counts unchanged; exact-source native rerun follows publication.

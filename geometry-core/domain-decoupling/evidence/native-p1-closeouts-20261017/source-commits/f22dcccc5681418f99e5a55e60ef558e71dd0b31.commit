@@ -1,8 +1,0 @@
-tree 8bfaf4b405c0c8854cb303a40320f2fe30917f4d
-parent de62cd680d2cbc71df0becc111bc071c490eeb9b
-author Yang <b10102230@gmail.com> 1792189647 +0800
-committer Yang <b10102230@gmail.com> 1792189647 +0800
-
-fix(kernel): preserve parameter cache padding during evaluation
-
-Keep byte-exact store equality and update only quantity members in both successful cache writers. Add deterministic sentinel checks and two isolated production controls; parameter definition suite increases from 18 to 20 methods. Portable boundary checks: 3 passed. Native regression and controls await serialized P1 execution.

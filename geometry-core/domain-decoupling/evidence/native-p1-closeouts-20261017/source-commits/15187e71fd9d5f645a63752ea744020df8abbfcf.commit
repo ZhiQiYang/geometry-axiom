@@ -1,8 +1,0 @@
-tree b7e7d8cb5f60b1359aeb66b241bc64ff6b3f060e
-parent 12422c69e4ca1a0e1aed575fcf8e5a67816b5cfb
-author Yang <b10102230@gmail.com> 1792172300 +0800
-committer Yang <b10102230@gmail.com> 1792172300 +0800
-
-test: seed the declared D30 grid vertex ledger explicitly
-
-The new GridDefinitionsProduct fixture used canonical vertex-key 1 before declaring any key ledger. D30 does not initialize keys on plain surface reads. Add the exact four-key ledger already required by the existing oracle before grid-binding. Product behavior, all four method counts, assertions and timeouts remain unchanged. Native verification pending P1.

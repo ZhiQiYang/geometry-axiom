@@ -1,7 +1,0 @@
-{
-  "observed_exec_exit_code": 1,
-  "kind": "Independent metadata reviewer script TypeError; no producer/subject defect",
-  "error": "TypeError: argument should be integer or bytes-like object, not str",
-  "cause": "Used bytes.count(str) for matrix header; fixed to decoded-text count.",
-  "provenance": "Recorded from functions exec tool response 9b494f; original first git-read streams retained as final-body-before.*. Not claiming an independently pipe-captured original stderr."
-}

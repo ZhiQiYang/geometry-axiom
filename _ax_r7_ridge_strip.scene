@@ -1,4 +1,0 @@
-# #198: the STRIP call site must classify and clip the same ridge exactly.
-surface 1 origin 0 0 100 u +x v +y outline 0,0 100,0 100,50 60,50 60,90 40,90 40,50 0,50
-beam 1 along x from 20 to 80 at 75 width 10 depth 10 top 100
-apply-proj 1 b1 cut-strip

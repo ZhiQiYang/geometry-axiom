@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/workspace/scratch/860de1a99063/geometry-axiom/tests/diagnostics/reference_fragment_stack.py", line 13, in <module>
-    assert result.returncode == 0, f'bridge reference-fragment exit {result.returncode}: {result.stderr!r}'
-           ^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: bridge reference-fragment exit -11: b''

@@ -1,9 +1,0 @@
-Mutation scope: partial M66
-BASELINE exe 已重編
-BASELINE OK: 155/155 全過(未變異原始碼)
-M66  exe 已重編
-M66  KILLED    R3/R4/R8/#202：第三段覆蓋弧循環接回第一片  <- _ax_r8_three_residual_components.scene: FAIL 應拒絕但接受 (L=[])
-
-本次 1:殺死 killed 1 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
-歷次紀錄(不是本次覆蓋)1:殺死 killed 1 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 55
-  (過期明細用 --check 列出)

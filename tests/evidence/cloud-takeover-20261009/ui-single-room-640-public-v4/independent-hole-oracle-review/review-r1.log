@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "<workspace-path>", line 126, in <module>
-    receipt = review_receipt(folder, head, script_path, passed, failed)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<workspace-path>", line 76, in review_receipt
-    check(tag + ':executor-script-bound', before['scripts']['projection_supplement.py'] == expected_script_sha == wrapper['script']['sha256'])
-                                                                                                                  ~~~~~~~^^^^^^^^^^
-KeyError: 'script'

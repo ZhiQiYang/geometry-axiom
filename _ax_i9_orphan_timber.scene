@@ -1,7 +1,0 @@
-# 公理:I9:收尾時仍有沒被 place 的角材 → 整份拒絕。
-# 角材 1 有放,角材 2 只宣告沒放 → 拒絕,不會靜默忽略它。
-# 注意這個檢查發生在讀完整份檔案之後,所以錯誤訊息沒有行號。
-surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
-timber 1 20 20 role boundary
-place 1 on 1 at-face e0 +u +n
-timber 2 20 20 role primary

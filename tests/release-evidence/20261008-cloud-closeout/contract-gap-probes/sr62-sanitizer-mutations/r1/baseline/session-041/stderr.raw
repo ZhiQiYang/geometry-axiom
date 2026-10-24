@@ -1,8 +1,0 @@
-I8a preview 1: valid; confirm token to apply
-grid 10 unavailable -> grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 3: k=0@500{[500,0]-[500,3000]} k=1@1000{[1000,0]-[1000,3000]} k=2@1500{[1500,0]-[1500,3000]} v stride 1 total 2: k=0@1000{[0,1000]-[4000,1000]} k=1@2000{[0,2000]-[4000,2000]}
-input:4: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
-preview:0: I23：父網格 10 仍有子格，u 軸線數不可從 3 改成 4；請先處理子格與引用
-input:7: I23：父網格 10 仍有子格，u 軸線數不可從 3 改成 4；請先處理子格與引用
-I8a preview 2: invalid; cannot apply
-grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 3: k=0@500{[500,0]-[500,3000]} k=1@1000{[1000,0]-[1000,3000]} k=2@1500{[1500,0]-[1500,3000]} v stride 1 total 2: k=0@1000{[0,1000]-[4000,1000]} k=1@2000{[0,2000]-[4000,2000]} -> grid 10 on 1 from-system 1 origin 0 0 sample (not complete geometry) u stride 1 total 4: k=0@500{[500,0]-[500,3000]} k=1@1000{[1000,0]-[1000,3000]} k=2@1500{[1500,0]-[1500,3000]} k=3@2000{[2000,0]-[2000,3000]} v stride 1 total 2: k=0@1000{[0,1000]-[4000,1000]} k=1@2000{[0,2000]-[4000,2000]}
- timber 0 I8 expected: all world invariants pass; actual: line 7: I23：父網格 10 仍有子格，u 軸線數不可從 3 改成 4；請先處理子格與引用
