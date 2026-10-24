@@ -1,0 +1,42 @@
+{
+  "source_materialized": false,
+  "C_run": false,
+  "formal_run": false,
+  "final_source": "UNSET until root adopts fresh architecture four files",
+  "required_ancestor": "df66452e7a514032453bea93b8b18ab74d7b1457",
+  "tool_delta": [
+    {
+      "file": "prepare_source.py",
+      "original_sha256": "a598fed13faae894a3a003a32afd58b42e8289f6455315b0aae03fed9bcd6b82",
+      "new_sha256": "a598fed13faae894a3a003a32afd58b42e8289f6455315b0aae03fed9bcd6b82",
+      "bytes": 9762
+    },
+    {
+      "file": "launch_stages.py",
+      "original_sha256": "480e07e9002f9a84f2779d93073a545755e78dba02d645232a41483aec762345",
+      "new_sha256": "480e07e9002f9a84f2779d93073a545755e78dba02d645232a41483aec762345",
+      "bytes": 4290
+    },
+    {
+      "file": "bind_final_request.py",
+      "original_sha256": "76b14b4147d539bbcc0d4c8ea3f4db2f4a04830ea280c42c309e0923ad022bff",
+      "new_sha256": "0170a02d57d3afe4b980ccbd6ba512a36ff2b89caae8c25508df37d507c8121b",
+      "bytes": 1944
+    },
+    {
+      "file": "start_five.py",
+      "original_sha256": "1d2106bc0c565faf1b23d25a7d05c42930b2462e823253af831ef478da4b3c8f",
+      "new_sha256": "4e763fa50a530aec4d41698bd37734fea19767aea05e6dd55847352e6d59432c",
+      "bytes": 1287
+    }
+  ],
+  "unchanged": [
+    "accepted v5 runtime six files including original PIPE and deferred perf flush",
+    "original base/main/source closure and full 175-scenes/36-samples/4-profile-points",
+    "original thresholds and clock boundaries and child timeouts",
+    "both global exclusive locks; fresh private inner lock",
+    "continue after compare/perf red and preserve cumulative CLI versus original stage execution exits",
+    "R5 source/outputs are never rewritten"
+  ],
+  "prior_R5_preserved": "/workspace/g337323R5"
+}

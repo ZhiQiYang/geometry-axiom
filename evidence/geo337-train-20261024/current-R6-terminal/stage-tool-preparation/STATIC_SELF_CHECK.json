@@ -1,0 +1,85 @@
+{
+  "checks": [
+    {
+      "check": "prepare_source.py original bytes unchanged",
+      "passed": true
+    },
+    {
+      "check": "launch_stages.py original bytes unchanged",
+      "passed": true
+    },
+    {
+      "check": "binding only ancestor changed",
+      "passed": true
+    },
+    {
+      "check": "outer only source CLI changed",
+      "passed": true
+    },
+    {
+      "check": "request exact five parameter keys only",
+      "passed": true
+    },
+    {
+      "check": "unbound template exact",
+      "passed": true
+    },
+    {
+      "check": "no fixed source yet",
+      "passed": true
+    },
+    {
+      "check": "v5 original geo323_record.py",
+      "passed": true
+    },
+    {
+      "check": "v5 original mini_gen.py",
+      "passed": true
+    },
+    {
+      "check": "v5 original profile_linux.py",
+      "passed": true
+    },
+    {
+      "check": "v5 original reap_children.py",
+      "passed": true
+    },
+    {
+      "check": "v5 original run.py",
+      "passed": true
+    },
+    {
+      "check": "v5 original verify_linux.py",
+      "passed": true
+    },
+    {
+      "check": "AST prepare_source.py",
+      "passed": true
+    },
+    {
+      "check": "AST launch_stages.py",
+      "passed": true
+    },
+    {
+      "check": "AST bind_final_request.py",
+      "passed": true
+    },
+    {
+      "check": "AST start_five.py",
+      "passed": true
+    },
+    {
+      "check": "no preparation or formal run",
+      "passed": true
+    },
+    {
+      "check": "fresh source/output remain nonexistent",
+      "passed": true
+    }
+  ],
+  "passed": 19,
+  "failed": 0,
+  "C_run": false,
+  "source_materialized": false,
+  "formal_run": false
+}

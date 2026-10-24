@@ -1,6 +1,24 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24；平面區間快取已合流，準備 R6）
+## 唯一 current-state（2026-10-24；F2bbe 的 R6 已收齊終態）
+
+固定產品／測試／架構產物來源 **F=`2bbe54f19b2d19e8a816530f0c4edca950629a34`**。後續普通 evidence 合流不改來源；獨立乾淨F checkout已一次跑完R6原prepare/build/compare/perf/profile，stage execution=0/0/1/0/0、累積CLI=0/0/1/1/1、outer1，原雙鎖正常釋放。全36交錯樣本保留，未重抽、未放寬門檻。
+
+原性能判定兩紅：**N64 fix/main=1.3731562025736295>1.3**（median fix0.6787833540s、main0.4943234810s）；**N16 fix/base=1.0434575834374764>1**。N32/base0.8823227658668896與N48/base0.7581122695004152綠；source calls82668→364369、64/32=4.407618425509266≤4.5綠。不能把stage本身exit0冒作量化門檻全綠，或以gprof秒數代原O2 wall。
+
+原compare完成175scenes/350base-fix runs，仍在verify_linux.py:156的assert not failures,failures真1：role_priority、P8低／高凹角三個stdout差。完整有序圖／guards前段相同不能代後段audit，原ABC_result缺席、all_required_stages_completed=false、full_acceptance_passed=null保留。QUESTIONS既有診斷版本界線仍待決；不刪I22必要定位、不過濾或正規化exact。
+
+F自身原tracked `python3 tests/mutate.py --check` 真1：123筆、120stale/3retired/0invalid，前後HEAD=F且clean；全量帳本尚未重產。完整native、六browser、P52、Q38(44)、§7兩項、P189full/timing、required-eight/PF3/native後段、memo/隔離ABC、三reader/RC兩刀/#314/ReadingA專項在F仍UNRUN。既有Linux Windows-GDI skip以外零新增允許skip，原斷言/golden/時限均保。
+
+F required CI run40066383912與當時E12f36515 run40066703178各七job failure，runner_id0、steps0；18API原讀均0，原failure annotation為付款失敗或支出上限，Ubuntu migration notice另列。這是未啟動的環境阻擋，沒有修付款／required checks，沒有自認正式替代被接受；新純證據E不能冒用上述E12f的CI run。B3未解除。
+
+架構三原裁判實跑M=`8d2a69421560b83c0b69f3e82db8f5e97ccc037b`真0/0/0，generic205/product18零skip；F已採四檔，937→937、604inputs/798edges/0diagnostics，九fresh guard0/1/0。實跑SHA不移標。W來源df664的36方法與整刀0/84/0、五細控制及四行反例0/1/0全包已普通合入E12f的evidence/geo343-plane-ranges-df66452e/；定向綠不能解除本輪wall雙紅。
+
+本次current-R6-terminal公開原終態投影/六原bindings/五CLI與outer全流、當前CI/帳本原件、671/0實績/3353來源準備/704架構採用與check等獨審。完整R6 inner graph/所有命令/gprof原流及source準備原件仍在雲端待完整封包；小摘要不冒全包。R5完整9055member/31,186,327B原包已在TMP封成，尚待公開；U9091member全包已公開E586。
+
+下一步依新profile分工：W剩餘查詢成本只準備可撤回證明，K做外部shadow觀察以量測短key衝突；不先猜新策略、不並改產品、不以同源重抽樣本取得綠。**目前非READY-TO-MERGE。**
+
+### 歷史 W 合流與架構採用（正式 R6 前的狀態）
 
 最新產品／測試合流來源 M=`8d2a69421560b83c0b69f3e82db8f5e97ccc037b` 已普通 push。它將 child F=`df66452e7a514032453bea93b8b18ab74d7b1457` 的5個產品／測試葉一般 merge 到前輪列車；產品與測試 bytes 完全相同，其餘差異只有 evidence。沒有改公理、決策、原門檻或容量64。既有 scratch 在排序後記錄各完整64-bit平面區間，移除重複二分搜尋，不增加堆疊或改遮擋判定。
 
