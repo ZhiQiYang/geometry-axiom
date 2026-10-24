@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 00:06 UTC）
+## 唯一 current-state（2026-10-24 00:07 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -11,7 +11,7 @@
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | r1原exit1：4個ENOENT環境紅；同L三fixture已補齊、完整r2待跑 | 原全230列／5309=5304pass+4fail+1原允許WindowsGDI skip，1873.241s<35min；原完整流封final-L-native-r1-environment-failure |
 | canvas／assembly／documents／grid／space／timber | L | documents0；assembly0；grid0；space0；timber0；canvas RUNNING | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
-| P52／Q38／§7兩項／P-189 | L | §7 compiled0／axiom0，終態原件待封；P52／Q38／P-189 UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
+| P52／Q38／§7兩項／P-189 | L | §7 compiled0／axiom0，完整原件已公開；P52／Q38／P-189 UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
 | #323跨版本175／350 exact | F對原b74 | 1，仍阻擋B2 | 三個I22所需診斷差異，L尚未重跑；未改裁判或刪診斷 |
@@ -197,3 +197,7 @@ grid同L原workflow／outer／reaper皆0，356個原斷言全通過、0skip／un
 space原SPACE_RESULT 242/0、八組完整，229.754秒低於原15分鐘；timber原SPACE_RESULT 79/0、五組2/48/8/19/2完整，124.236秒低於原20分鐘。原模式既定省略的互補組別沒有改動，不新增skip；timber job不冒P52呈現耗時。原workflow／outer／reaper及前後獨立pool守門皆0，完整685／660 members、各指令、退出碼、完整streams、環境、SHA與輸入／ELF排除hash明列，包及獨立3479／3383核對封於final-L-browser-space、final-L-browser-timber。peer數不是產品斷言。
 
 完整canvas同L已於2026-10-24 00:04 UTC獨占啟動，session18785，原35分鐘與golden／斷言不改；目前無終態exit。native r1全230列原exit1環境失敗已公開，三fixture補齊後源SHA及完整index tree不變，尚未重跑，不能標綠。§7兩原CLI已真0，原件待獨審收齊另封。ROOT、SEED與六個browser source持續隔離。
+
+## 2026-10-24 00:07 UTC：§7 兩個原完整突變 CLI 通過
+
+同L原card-reference run_mutations.py／run_axiom_mutations.py及其driver／outer皆真0。compiled baseline43全通過，原53刀逐一正常assert1、各restore0，116compile全0；axiom baseline44全通過，原V01～V05各精準CARD_AXIOM_* AssertionError真1、各restore完整44全綠。未縮原table、斷言、golden或時限，初末HEAD／tree／index／refs／clean守門一致。完整commands／streams／環境／SHA封於final-L-section7-cardref（932members）及final-L-section7-axiom（188members），獨立6360／937收據核對0不算產品測試。compiled116個ELF的真hash與保留位置明列，150,289,288B payload留雲端原地；axiom僅所選OUT/OUTER無ELF，不宣稱其他cache無ELF或內部compiler輸出已被捕捉。原工具未暴露的內部pipe不捏造。

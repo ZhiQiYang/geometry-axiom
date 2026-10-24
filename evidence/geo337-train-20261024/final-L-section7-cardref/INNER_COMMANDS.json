@@ -1,0 +1,3329 @@
+[
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR01",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR01",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR04",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR04",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-cache/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR04",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR04",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M01-index/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR25",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR25",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-id/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR25",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR25",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-name/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR25",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR25",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-order/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR25",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR25",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M02-value/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR11",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR11",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-complete/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR07",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR07",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-distinct/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR07",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR07",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M03-same-card/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR11",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR11",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-source/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR31",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR31",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M04-token/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR08",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR08",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-dimension/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR09",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR09",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-integer/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR09",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR09",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-positive/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR10",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR10",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-precision/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR09",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR09",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M05-range/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR26",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR26",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-card/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR06",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR06",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M06-extra-field/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR12",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR12",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M07/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR03",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR03",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M08/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR13",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR13",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M09/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR15",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR15",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M10/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR17",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR17",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-expiry/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR17",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR17",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-revalidation/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR17",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR17",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M11-undo/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR20",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR20",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-capability/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR19",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR19",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M13-unused/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR22",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR22",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-import/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR21",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR21",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M14-legacy/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR26",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR26",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M16/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR13",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR13",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M17/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/restored/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/restored/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/restored/model",
+      "--case",
+      "CR29",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/model",
+      "--case",
+      "CR29",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-capability/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/restored/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/restored/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/restored/model",
+      "--case",
+      "CR29",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/model",
+      "--case",
+      "CR29",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-closure/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/restored/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/restored/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/restored/model",
+      "--case",
+      "CR29",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/model",
+      "--case",
+      "CR29",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-numbers/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/restored/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/restored/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/restored/model",
+      "--case",
+      "CR29",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/model",
+      "--case",
+      "CR29",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M18-refs/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR13",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR13",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-missing/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR13",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR13",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-axis-scope/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR28",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR28",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-order/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR27",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR27",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M19-partial-owner/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR30",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR30",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M20/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR22",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR22",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M21/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR32",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR32",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M22/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR33",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR33",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/M24/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR11",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR11",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-complete-grid-id/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P146_ERROR",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P146_ERROR",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-error-fields/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR11",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR11",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-mode-grid-id/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR07",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR07",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-same-card-grid-id/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR26",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "CR26",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P146-use-field-path/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P154_GRID",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P154_GRID",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-code/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P154_GRID",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P154_GRID",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-format-id/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P154_IDENTITY",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P154_IDENTITY",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-boundary/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/restored/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/restored/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/restored/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/restored/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P154_IDENTITY",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/restored/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/test.command.json",
+    "exit_code": 1,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "P154_IDENTITY",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/P154-identity-one-message/tests.json"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/compile-bridge.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-web/web_bridge.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/bridge"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/compile-model.command.json",
+    "exit_code": 0,
+    "command": [
+      "cc",
+      "-std=c11",
+      "-O0",
+      "/tmp/train337-323-f64d638f-source/geometry-core/model_base.c",
+      "-lm",
+      "-o",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model"
+    ]
+  },
+  {
+    "path": "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/test.command.json",
+    "exit_code": 0,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_mutations.py",
+      "--child",
+      "--bridge",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/bridge",
+      "--model",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/model",
+      "--case",
+      "all",
+      "--result",
+      "/workspace/train337-final-L-cardref-7af8c5d8/cardref/subject/baseline/tests.json"
+    ]
+  }
+]
