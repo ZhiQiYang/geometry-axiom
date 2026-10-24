@@ -14,7 +14,7 @@
 | 本次身分控制 | S；兩項正常 exit 1 | 全寬 provider、middle-byte key 分別在精確具名斷言轉紅；不冒稱每個細控制各有獨立重編譯恢復。真正未對齊位址由 union 與 uintptr_t 斷言確認。 |
 | 相關核心／產品原 runner | S；exit 0／0／0、0 skip | 原 native_sources 9、describe 7、context 8 全部通過，維持 NativeBuild、K/W/H、bridge 與原時限。 |
 | 完整 native、6 browser、專項、架構、帳本 | 新列車 final 尚未完成 | 由主代理合流後依影響與原清單驗收；本切片不自行重產全量帳本。不把此處 18 項冒充完整 native。 |
-| 正式效能 R7 與 required CI | 未跑／環境限制仍存在 | 正式效能必須在主列車新 final 以原門檻跑；required CI 原付款／額度啟動問題不以本機結果代替。 |
+| 正式效能 R7 與 required CI | R7 未跑；本 head 的 CI 未讀 | 正式效能必須在主列車新 final 以原門檻跑；歷史 train CI 的付款／額度啟動問題保留，不能推定本 head 的 CI 狀態，也不以本機結果代替。 |
 
 ## 根因與驗證
 
