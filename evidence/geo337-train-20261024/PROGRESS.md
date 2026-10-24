@@ -1,6 +1,28 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24；K provider hint 已合流，準備 R7）
+## 唯一 current-state（2026-10-24；F6df 的 R7 已收齊終態）
+
+固定產品／測試／架構產物 **F=`6df0264f75e84f03adb70746b6ac3db07a9910fc`**。R7 在獨立乾淨 F checkout 於 06:36:52–06:40:10 UTC 一次完成原 prepare/build/compare/perf/profile；stage execution=0/0/1/0/0、累積 CLI=0/0/1/1/1、outer=1。完整36交錯樣本保留，沒有重抽或混入 R6；原雙鎖正常釋放。三份真正工具 poll JSON 亦保留，終態 chunk87c3e8 明確 exit1。
+
+**N64 fix/main=1.2292230778583162≤1.3，已綠；N16 fix/base=1.05190582882169>1，仍紅。** N16 median fix0.12007854899275117s、base0.1141533259942662s，差5.925ms。N32/base0.8290229168845338、N48/base0.7499983665267913與source calls82668→364369、64/32=4.407618425509266≤4.5綠。不把 perf/profile stage exit0 冒作量化門檻全過，也不以 O1/pg 時間代 O2 wall。
+
+原 compare 完成175 scenes／350 runs，程序／trace皆0，但 verify_linux.py:156 的 assert not failures,failures 仍真1：role_priority、P8低／高凹角三個 stdout 差。完整 graph／guards 前段相同不能代未到的後段 audit；ABC_result缺席、all_required=false、full_acceptance=null保原。Q-323-ABC／Q-P189-EXACT仍待診斷版本界線裁決，不刪I22必要診斷、不過濾或正規化 exact。
+
+原 tracked `python3 tests/mutate.py --check` 在實際 E51e36b94 真1，120 stale／3 retired／0 invalid；E51前後clean、非evidence tree與F相同，不移標成F實跑。全123帳本尚未重產。完整native、六browser、P52、Q38(44)、§7、P189 full/timing、required-eight/PF3、memo/隔離ABC、readers/RC/#314/ReadingA在F仍UNRUN。只允許原Linux Windows-GDI skip，不新增skip、不放寬golden／斷言／時限。
+
+F 的 required CI run40070571951 與證據 E597bce63 的 run40070806058，原18次API讀皆0；兩組各七job failure，runner_id0／steps0，原annotation為付款失敗或支出上限而未啟動。Ubuntu migration notice另列。這是環境阻擋，沒有修改付款設定或宣稱正式替代已接受；本提交以後的新E之CI未讀，不以E597的run移標。
+
+架構實跑 M=e321026fb9bc9bc19c54b8034af6e6eaec2857f9 的三原judge0/0/0、205/18零skip、604inputs/798edges/0diagnostics，九guard各0/1/0＋neutral2。F已採四檔，只有report/receipt兩個實際差異；manifest937／55與scan bytes不變。299原件在 architecture-e321-complete/，本批附674/0採用獨審，不把M結果改標F。
+
+K定向真實來源 S1449d430 的18＋24方法全綠、整刀calls0→16→0／正常exit0/1/0及原鄰接控制，完整3201member原包已公開child E4d3ac4bf，再一般合入root E51e36b94。這些定向結果不代本輪N16 wall或全native。
+
+R5／R6兩輪完整原件已在 E597bce63 普通推送至 full-R5-five-stage-raw/ 與 full-R6-five-stage-raw/，附全部inventory/hash與獨審。原outer1、各自性能紅與三exact差均保原執行SHA；每輪七ELF為hash inventory，原payload仍在雲端。archive-object-store/ 同批公開永久TMP Gitobjects的原接線／讀者收據，禁止清理此store。維護原件不算產品gate。
+
+本批 current-R7-terminal/ 公開六原binding、完整外層／五CLI流、真API poll、當前CI／帳本check、stage工具與672/0獨審。完整R7 inner／source preparation原件正在一次封包，尚未公開，小摘要不冒完整原包。
+
+下一步：依已收齊結果修N16額外成本；原單次N16 pg診斷只用作因果分析，不當新正式樣本。後續在新來源重跑受影響原門檻，穩定後由root整份重產帳本及完整驗收。其他獨立工作線繼續。**目前不是READY-TO-MERGE。**
+
+### 歷史 K 合流與架構採用（正式 R7 前的狀態）
 
 固定 R7 產品／測試／架構產物來源 **F=`6df0264f75e84f03adb70746b6ac3db07a9910fc`**。其產品／測試合流來源 **M=`e321026fb9bc9bc19c54b8034af6e6eaec2857f9`**，已一般 merge 並 push 子來源 **S=`1449d430d1c4734bb1bc3a9f91f3851c845cc0f3`**。四個產品／測試葉與 S 完全相同；本次採用 M 實跑的衍生架構 report／receipt，採用後的可解析 SHA 才作為 R7 來源，不能把 M 或 S 的結果改標。
 

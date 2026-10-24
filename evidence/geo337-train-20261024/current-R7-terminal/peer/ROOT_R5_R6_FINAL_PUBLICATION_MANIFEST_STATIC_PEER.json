@@ -1,0 +1,21 @@
+{
+  "schema": "root-R5-R6-and-maintenance-final-publication-manifest-static-peer-v1",
+  "checks": 1215,
+  "exit_code": 0,
+  "findings": [],
+  "manifest_sha256": "f602cabe1d0dfe5fcf43de1d8c484c6f45a1cc047d58c0c75c33168002bea526",
+  "product_source": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "expected_runtime_parent": "51e36b94b327c7bc1142c82b59e26ce9ab983d69",
+  "files": 398,
+  "logical_bytes": 77488565,
+  "previously_reviewed_archives": 6,
+  "preloaded_large_blobs": 2,
+  "fresh_archive_body_reads": 0,
+  "limits": [
+    "Final manifest and small original metadata pins only; no six archive body rehash, object body read, network or Git mutation.",
+    "Two large raw archives use exact verified permanent TMP store OIDs; root executor still validates ordinary object type/size and original receipt/stat identity before tree adoption.",
+    "Product F7/current parent51 differs from historical R5a22/R6F2bbe execution; original reds/false/null and all prior progress history remain unchanged.",
+    "Root PROGRESS is deliberately updated in current-state section with true F7 and publication facts; historical suffix remains intact. Publication words become true only after successful ordinary push/remote verification.",
+    "Expected-parent is a runtime guard, not implicit approval to use any changed parent; root remains sole integration writer."
+  ]
+}

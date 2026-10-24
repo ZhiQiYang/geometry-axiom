@@ -1,0 +1,40 @@
+Merge made by the 'ort' strategy.
+ .../COLLECTOR_EXEC_COMPLETION.json                 |     7 +
+ .../EXTERNAL_INPUTS.json                           |    31 +
+ evidence/geo323-provider-hint-1449d430/NEXT.md     |    12 +
+ .../PACKAGE_PLAN.json                              | 16033 ++++++++++++++++
+ evidence/geo323-provider-hint-1449d430/PROGRESS.md |    11 +
+ .../include-classification.json                    |   797 +
+ .../original-profile-load.json                     |     9 +
+ .../SHADOW_EXTERNAL_INPUTS/s64.scene               |   130 +
+ .../geo323-provider-hint-1449d430/TOOLS/capture.py |    40 +
+ evidence/geo323-provider-hint-1449d430/collect.py  |    31 +
+ .../package/ORIGINAL_PROVIDER_HINT_EVIDENCE.tar.gz |   Bin 0 -> 6289014 bytes
+ .../package/RAW_INDEX.json                         | 19213 +++++++++++++++++++
+ .../package/SUMMARY.json                           |    19 +
+ ...K_PROVIDER_HINT_SINGLE_PACKAGE_ACTUAL_PEER.json |    19 +
+ .../review_K_provider_hint_package_actual.py       |    52 +
+ .../REVIEW.initial-all-child-zero.json             | 10191 ++++++++++
+ .../peer-related24/REVIEW.json                     | 10282 ++++++++++
+ .../review.initial-all-child-zero.py.txt           |    58 +
+ .../peer-related24/review.py                       |    76 +
+ 19 files changed, 57011 insertions(+)
+ create mode 100644 evidence/geo323-provider-hint-1449d430/COLLECTOR_EXEC_COMPLETION.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/EXTERNAL_INPUTS.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/NEXT.md
+ create mode 100644 evidence/geo323-provider-hint-1449d430/PACKAGE_PLAN.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/PROGRESS.md
+ create mode 100644 evidence/geo323-provider-hint-1449d430/SHADOW_EXTERNAL_INPUTS/include-classification.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/SHADOW_EXTERNAL_INPUTS/original-profile-load.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/SHADOW_EXTERNAL_INPUTS/s64.scene
+ create mode 100644 evidence/geo323-provider-hint-1449d430/TOOLS/capture.py
+ create mode 100644 evidence/geo323-provider-hint-1449d430/collect.py
+ create mode 100644 evidence/geo323-provider-hint-1449d430/package/ORIGINAL_PROVIDER_HINT_EVIDENCE.tar.gz
+ create mode 100644 evidence/geo323-provider-hint-1449d430/package/RAW_INDEX.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/package/SUMMARY.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/peer-package/K_PROVIDER_HINT_SINGLE_PACKAGE_ACTUAL_PEER.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/peer-package/review_K_provider_hint_package_actual.py
+ create mode 100644 evidence/geo323-provider-hint-1449d430/peer-related24/REVIEW.initial-all-child-zero.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/peer-related24/REVIEW.json
+ create mode 100644 evidence/geo323-provider-hint-1449d430/peer-related24/review.initial-all-child-zero.py.txt
+ create mode 100644 evidence/geo323-provider-hint-1449d430/peer-related24/review.py

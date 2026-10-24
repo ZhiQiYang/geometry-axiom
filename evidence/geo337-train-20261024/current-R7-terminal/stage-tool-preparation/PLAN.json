@@ -1,0 +1,47 @@
+{
+  "source_unbound": true,
+  "source_materialized": false,
+  "C_run": false,
+  "formal_run": false,
+  "required_ancestor": "1449d430d1c4734bb1bc3a9f91f3851c845cc0f3",
+  "new_raw_filesystem": "/tmp",
+  "tool_changes": [
+    {
+      "name": "prepare_source.py",
+      "old_sha256": "a598fed13faae894a3a003a32afd58b42e8289f6455315b0aae03fed9bcd6b82",
+      "new_sha256": "c0422c0f727c13b3af28f541390a7de9eb0739b5cfa220e25a90247121b3ab7c",
+      "bytes": 9812
+    },
+    {
+      "name": "launch_stages.py",
+      "old_sha256": "480e07e9002f9a84f2779d93073a545755e78dba02d645232a41483aec762345",
+      "new_sha256": "480e07e9002f9a84f2779d93073a545755e78dba02d645232a41483aec762345",
+      "bytes": 4290
+    },
+    {
+      "name": "bind_final_request.py",
+      "old_sha256": "0170a02d57d3afe4b980ccbd6ba512a36ff2b89caae8c25508df37d507c8121b",
+      "new_sha256": "fb33efae5e3b4d259cd815309b09b60384cf9b6b392624f8bc743897f420ddc8",
+      "bytes": 1944
+    },
+    {
+      "name": "start_five.py",
+      "old_sha256": "4e763fa50a530aec4d41698bd37734fea19767aea05e6dd55847352e6d59432c",
+      "new_sha256": "d10ccdfdcbe66e434d6d8860c28a2bcb4f2a04da0ba5e9230debd76397abae96",
+      "bytes": 2182
+    }
+  ],
+  "unchanged": [
+    "original launch_stages.py all bytes",
+    "accepted v5 six runtime tools and original source/sample/scene/profile/golden/threshold/600-second semantics",
+    "both nonblocking global locks plus new private inner stage lock",
+    "collect all five stages despite red; separate cumulative CLI and own execution exit",
+    "R5/R6 original red records remain untouched"
+  ],
+  "resource_only_change": {
+    "before_materialization_and_before_formal": 278921216,
+    "round_estimate_bytes": 144703488,
+    "native_reserve_bytes": 134217728,
+    "unit_note": "Use MiB conservatively for root 138MB round request; this is disk admission, never a numerical product threshold"
+  }
+}
