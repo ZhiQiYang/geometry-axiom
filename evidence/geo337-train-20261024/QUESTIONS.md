@@ -54,3 +54,10 @@ L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`的原P-189 full已在2026-10-24 02:
 同L原36樣本timing的stage execution0，但N64 fix/main=1.4282954375137715>1.3，target_met=false；outer CLI1另包含累積compare1。N16/32/48 fix/base原三門檻皆true，原四profile的source calls64/32=4.407618425509266≤4.5亦true。memo撤回6.053833206336931>4.5真1、恢復4.407618425509266真0，隔離175/350 ABC0，不代表N64載入時間或跨版本診斷exact已綠。
 
 本項不要求使用者定新數值。原1.3門檻與分母保留，性能病因待依原profile剖析，不逕歸環境、不挑樣本、不改比較器。可自主進行不改公理／鎖定決策的效能修正，須做撤回／恢復並按影響更新驗收。原B2與P189診斷版本界線另保待裁決，不以這次memo因果證據解除。
+
+
+## Q-CI-CURRENT-U：新合流來源的 required jobs 仍受帳戶環境阻擋
+
+U=`ca7838e0f4950452b9befcf40899d606db9b81fa` 的 run40058889738，及證據頭 b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5 的 run40059064935，七個 required jobs 都是 failure／steps=[]，原 annotation 明載 recent account payments failed 或 spending limit。原 API 讀取全退出0；沒有把未啟動的 job 算作產品測試紅燈或成功。完整原件已封 current-U-architecture-and-ci/ci。
+
+保守處理是保留 required checks 阻擋，繼續同產品來源的雲端原門檻與修正；本代理不改付款設定、支出上限、required checks 或原 workflow。可由帳戶環境修復後取得同 head 真 CI 終態，或由既有正式替代流程明確接受同來源補跑收據；目前兩者都尚未成立，不能自行解除 B3 或標 READY-TO-MERGE。這不阻斷其他工作線，也不在對話要求使用者回覆。

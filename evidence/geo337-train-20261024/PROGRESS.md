@@ -8,7 +8,9 @@
 
 本輪再一般 merge #343 `a934a554ae58f16f124f1b264523947f170b3f0b`，只納入同 load 路徑的 contact index／穩定排序及其祖先 #341、#342；容量 512、cut-list storage 與 panel empty-row 仍留後續分支。#343 原 34 方法／64 控制、318 compile 的實跑頭為 `ccfaf057088a80c7aad4049f1c67e5eedfc2fdec`，#342 原 44 案也保原 SHA；組合後效能及 #341 整段成本審查仍待，不以既有單元結果宣稱達標。tracked 帳本保 root 原 L 版本，檢查曾因新 source.c／測試閉包得到 120 stale／3 retired，最後固定來源後由 root 整份重產。詳見 `contact-index-integration/`。
 
-**新來源尚未通過最終帳本、架構或整套驗收，也沒有新的效能結論。** 下表是上一輪固定 L 的真終態，不能移標為目前 HEAD；四個既有阻擋仍保留。其餘工作線先完成定向驗收再合流，之後由 root 一次重產帳本／架構並執行受影響正式項。
+**新來源尚未通過最終帳本、架構四檔重產或整套驗收，也沒有新的效能結論。** 架構三原裁判已於實際 HEAD `b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5` 執行 0／0／0（205／18 方法、334 sources／6 trusted／798 edges／零 diagnostics）；原 Git diff 證明該 HEAD 除 evidence 外與 U 完全相同，但不把實際 execution SHA 改寫為 U。完整指令／原流封存於 `current-U-architecture-and-ci/architecture/`。
+
+新 required CI 原件已讀並封存：U 的 Actions run **40058889738**、證據頭 b09 的 run **40059064935**，各七個 job 為 failure，steps 都是空；原 annotation 明載付款失敗或支出上限導致工作未啟動。Ubuntu 26 runner label 遷移 notice 另外保留，不冒充失敗原因。尚未修復帳戶環境，也沒有正式替代已獲接受的證據，B3 仍未解除；f05 舊 run 只留歷史。完整原 API 指令與退出碼在 `current-U-architecture-and-ci/ci/`。 下表是上一輪固定 L 的真終態，不能移標為目前 HEAD；四個既有阻擋仍保留。其餘工作線先完成定向驗收再合流，之後由 root 一次重產帳本／架構並執行受影響正式項。
 
 
 上一輪完整驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。同L正式清單的原終態已收齊；P189／#323 exact、N64性能與required CI仍紅，沒有READY-TO-MERGE。

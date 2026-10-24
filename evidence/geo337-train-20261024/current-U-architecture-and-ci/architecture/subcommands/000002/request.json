@@ -1,0 +1,41 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--name-only",
+    "ca7838e0f4950452b9befcf40899d606db9b81fa",
+    "b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5",
+    "--",
+    ".",
+    ":(exclude)evidence"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "acceptance_sha": "b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5",
+  "source_sha": "b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5",
+  "source_variant": "U product source, evidence-only execution head E",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": "/workspace/geo337-U-architecture-precheck-20261024/tmp",
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1792813162.755118,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": null,
+  "timeout_expired": false,
+  "directory": "/workspace/geo337-U-architecture-precheck-20261024/subcommands/000002"
+}
