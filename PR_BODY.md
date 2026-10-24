@@ -1,26 +1,35 @@
-成功恢復連線時清除 `connection.error` 的過時錯誤，保留失敗狀態、編輯停用與原協定守門。這是 #320 的替代實作線 #344。本輪用一般 merge 納入整合列車產品 F2bbe；未改寫歷史，未改公理、決策、golden、時限或斷言。
+成功恢復連線時清除 `connection.error` 的過時錯誤，保留失敗狀態、編輯停用與原協定守門。這是 #320 的替代實作線 #344。產品以一般 merge 納入整合列車 F2bbe，本輪在同一 S540 真跑原 NodeVM9 三相與原 strict row9；未改寫歷史，未改公理、決策、golden、時限或斷言。
 
 唯一 current-state 矩陣：
 
 | 項目 | 來源／原退出碼 | 現況與界線 |
 |---|---|---|
 | 產品 SHA | S1=`5402765c795769a77a7b249de1e3db80045a41de` | 一般雙親 merge：原 E0=`42790be40eee56efada08de84ab2acb1681df981` 與 train F=`2bbe54f19b2d19e8a816530f0c4edca950629a34`；這是來源合流，並非測試執行 |
-| Evidence head | E=`c9303843208a9e4f90085075acec920a3da1e856` | 本輪 `evidence/issue344-converged-5402765c/` 只新增收據；產品仍 S1 |
+| Evidence head | E=`c5a9d099863afdf030a5262a6aa26be16f094dbf` | 本輪 `evidence/issue344-vm9-5402765c/` 保存新原執行；先前合流收據保留在 `evidence/issue344-converged-5402765c/`，產品仍 S1 |
 | 一般 merge／來源核對 | merge 0；39 原 Git 與 48 blob proof 獨審475／0 | 無衝突；所有 F registry rows 保留，另加原 `node:connection_recovery` count9；相對 F 只有下述五個非證據路徑 |
-| whitespace 診斷 | 完整 staged diff check **2**；五個來源路徑 check **0** | 原 48 個歷史 evidence 路徑警告完整保存，48 個結果 blob 全等 F；沒有刪改封存證據換取0 |
-| 新 S1 Node9／完整 native | **UNRUN** | 本輪未執行 Node 或原生裁判；舊 VM 不能轉標為 S1 已跑 |
+| whitespace 診斷 | 完整 staged diff check **2**；五個來源路徑 check **0** | 先前合流的原 48 個歷史 evidence 路徑警告完整保存，48 個結果 blob 全等 F；沒有刪改封存證據換取0 |
+| 新 S1 原 VM9 baseline | exit **0** | 9 tests／9 pass／0 fail／0 skip，原 Node 命令與300秒 |
+| 新 S1 唯一 app clearline 撤回 | exit **1** | 9 tests／6 pass／3原具名 ERR_ASSERTION／0 skip；原測試不變，明示私有 working-tree variant |
+| 新 S1 app 原 bytes 恢復 | exit **0** | 9 tests／9 pass／0 skip；HEAD、來源 bytes／stage／clean 全還原 |
+| 新 S1 原 aggregate selected row | exit **0** | `python3 -B tests/run_all.py --only node:connection_recovery`；完整registry check0、原expected9與needs=[]、9/9／零skip，不加--build |
+| 完整 native | **UNRUN** | selected row9 只驗其選定範圍，不能代完整 native |
+| 新局部執行獨立核對 | actual318／0 | 原27命令、五VM Git inputs、唯一撤回、原300秒與strict9；全域 binary／sidecar 原前後hash與stablemetadata相同 |
 | 新 S1 完整 canvas fixed／withdrawn／restored | **UNRUN / UNRUN / UNRUN** | 原完整預設 canvas、35 分鐘、golden 與具名 P53/P61 assertions 不變；新 S1 的 app-only 撤回來源 V1 尚未建立 |
 | 其餘五 browser jobs | **UNRUN** | 不借原 train 或舊 #344 SHA 的綠燈移標 |
 | mutation check／完整帳本 | **UNRUN on S1** | 帳本由 root 在最後共同來源統一重產；本輪未重產、未改 execution.head。F2bbe 的既有 freshness 紅不能當成 S1 的新執行 |
 | 架構三裁判／四檔 | **UNRUN on S1** | app 為 H 層來源；待最後來源判定 closure 與重產，不把 root 其他來源的四檔移標 |
 | base 收斂 | 已納入 F2bbe 產品 | 未追隨其後每個純證據 head；root 若有新產品 F，先一般 merge 並按受影響閉包重驗 |
 | 歷史 VM 與舊撤回來源 | S0=`7b45013da647b791acda8f5977475e4123d5f8c4` 原 Node 0/1/0；V0=`082feb0662fea32131f3f7fb8ca451679ab6421d` | 每階段9案、pass9/6/9、零skip；只屬 S0 的替身 VM。V0 單親 S0、只撤 app clear 一行，不能當成 S1 的 V1 |
-| 允許 skip／合併狀態 | 無新增 skip；**未 READY** | 本輪沒有產品測試執行；完整 canvas 三相及上述正式項未完成，不合併 PR |
+| 允許 skip／合併狀態 | 無新增 skip；**未 READY** | 本輪只有VM與其selected row局部執行；完整 canvas 三相及其餘正式項未完成，不合併 PR |
 
 相對 F 的五個非證據路徑只有 `geometry-web/app.js`、`geometry-web/cdp_test.js`、`tests/run_all.py`、`tests/run_all.expected.json`、`tests/test_connection_recovery.js`。registry 是全部 F rows 加回原 count9；其他四檔逐 blob 等 E0。核心 C/H/inc、原生介面、SSOT、workflow 與 golden 逐 Git 閉包未因本次合流再改。整合列車內既有產品修正與其歷史收據全部保留。
 
-S0 的原命令為 `node --test --test-reporter=spec tests/test_connection_recovery.js`，每階段原300秒。撤回時三個正常具名斷言為 `successful recovery kept stale error`、`completed retry kept stale error`、`loading echoed stale error`。DOM、transport 與 ReferenceWorkspace 為明示替身；它們不能代替真 Chrome、HTTP 或原生恢復測試。完整歷史原件保持在 `evidence/issue320-final-7b45013d/` 與 `evidence/issue344-real-cdp-preparation-7b45013d/`，不重寫其判決。
+S0 歷史與本輪 S1 各自真執行的原命令均為 `node --test --test-reporter=spec tests/test_connection_recovery.js`，每階段原300秒。撤回時三個正常具名斷言為 `successful recovery kept stale error`、`completed retry kept stale error`、`loading echoed stale error`。DOM、transport 與 ReferenceWorkspace 為明示替身；它們不能代替真 Chrome、HTTP 或原生恢復測試。完整歷史原件保持在 `evidence/issue320-final-7b45013d/` 與 `evidence/issue344-real-cdp-preparation-7b45013d/`，不重寫其判決。
 
 下一步在 root 排程允許時，從最終 S 建立唯一 app clearline 撤回的乾淨 V，保其他 tracked blobs/modes 完全相同；真正執行原 full canvas S/V/S 三相，HTTP19681/19682/19683、CDP9731/9732/9733 與獨立 TMP/profile，canvas 獨占。fixed/restored 必須完整 matched；撤回須原 P53-3、P61-10、P61-11 stale-error 正常斷言，並保全部協定、dump/source/1600 診斷。crash、timeout、前置 clean-SHA 拒絕或其他 golden 差異不能冒有效反證。此處是尚未執行計畫。
 
 本輪原 merge argv／exit／完整 stdout、stderr／環境／SHA、三份 registry、五檔閉包、原 whitespace2 與 48 blob 保全、獨立475核對均隨新收據封存。新的 PR 留言同步檔尚無留言（已讀 handoff `5a02993f` 的 `handoff/pr-reviews/344.md`）；這不代表審查已判可合併。
+
+S1 新 VM9 與 selected row 的完整原件見 `evidence/issue344-vm9-5402765c/`。私有 TMP checkout 真 HEAD=S1；648個原source／完整registry路徑由Git物化，五VM input逐bytes核對。原三相取同一份未改測試，只撤回成功ready轉移的唯一 `connection.error = "";` 後恢復。原三個錯誤訊息與舊測試相同，沒有新增寬鬆例外。
+
+原 selected row 使用既有 `binaries.ProcessLock(run_all)`；外層先以非阻塞原鎖確認沒有既有runner，並持原build鎖防同時改binary。沒有--build、cache覆寫或skip；所有既有top-level binary／sidecar逐hash與stablemetadata前後相同。原 `node_connection_recovery.*` log 均不存在，這輪新.log 同時保留全域原path與私有收據，沒有刪掉舊／新原件或虛稱復原原本不存在的檔。這些都是局部Node驗收，沒有Chrome、HTTP、C或wall效能執行。
