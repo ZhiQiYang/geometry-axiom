@@ -4,7 +4,7 @@
 |---|---|
 | 唯一驗收來源 L | `7af8c5d80d34cb4f49d01ba67deb78a3a6d725db` |
 | 產品沿自 F／測試沿自 S | `f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`／`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` |
-| evidence head E | `b621a4fbc3cdea359b3676fb22dc8ef566968b8a`；純證據提交，不是實跑 SHA |
+| evidence head E | `1952b0ae604291a2ec447a5cc684d6ab91306779`；純證據提交，不是實跑 SHA |
 
 ### 唯一 current-state 矩陣
 
@@ -53,6 +53,6 @@ P-189原`p189_verify.py:195`是`assert raw['base'] == raw['fix']`，訊息為`As
 以下相對路徑均在E的`evidence/geo337-train-20261024/`：
 
 - 已公開完整原件：`final-L-ledger-complete/`、`final-L-native-r2-complete/`、`final-L-browser-canvas/`、`final-L-browser-assembly/`、`final-L-browser-documents/`、`final-L-browser-grid/`、`final-L-browser-space/`、`final-L-browser-timber/`、`final-L-Q38/`、`final-L-section7-cardref/`與`final-L-section7-axiom/`、`final-L-required-eight-complete/`、`final-L-pf3-complete/`、`final-L-readers-RC/`、`final-L-reading-a-complete/`與`final-L-architecture/`。
-- P52已公開`final-L-p52-terminal-status-only/`；P-189兩項與#323 compare小原收據在`final-L-performance-terminal-status-only/`，包含原assert輸出、首次差異streams、36樣本表、原receipt／scope及175／350 equivalence。**P52／P189full／timing三份完整包雲端已封核，尚未推送**；13496／14330／1457是原件peer核對數，不是產品gate。新`final-L-all-terminal-status-only/`另保formal performance／profile原JSON、完整memo driver receipt與三outer；#323/memo完整原流尚未公開，這些小收據也不代完整封包。完整archive未公開的限制不因附PACKAGE或peer JSON而解除。
+- 五份完整性能原件已於`final-L-performance-complete/{p52,p189,p189-timing,geo323,memo}/`公開，tar共74,496,801B，3150／3455／261／7485／5501 members；各附原PACKAGE、SUMMARY、完整collector outer及actual peer。完整RAW_INVENTORY在各tar內，發布manifest另保其hash與locator，不以小摘要取代原流。原status-only資料保歷史；原PACKAGE的published:false是封存時原值，不回寫，發布事實由此E及publisher RESULT證明。ELF僅省包內payload而留原址/hash；五包產品結果仍為P520、P189full1/timing0、#323 compare1/N64目標false、memo0，沒有改判。
 - P52 collector先因Chrome IPC、再因原ledger附加欄位各exit1；v3封包保兩次失敗、45個IPC metadata、65 annotations，六ELF只省包內payload，未重跑產品。R8／PF3原v4外層因argv含`--base`誤標source_role/source_sha，原欄位不改；acceptance_sha、--sha L、真inner與Git guards另綁L，診斷在`final-L-required-eight-pf3-tools-and-peer/`。
 - 歷史失敗與沿革不重寫：`final-L-native-r1-environment-failure/`、`ledger-b6-complete/`、`review-b6-response/b2-diagnostic-originals-and-peer.tar.gz`。#314既有SSOT例外已採納，後續精確有序補句的寫入差額仍列QUESTIONS；Reading A不冒#335初放能力。儲存維護及其他PR的獨立SHA不列本PR產品通過項。
