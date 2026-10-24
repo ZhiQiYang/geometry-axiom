@@ -1,0 +1,13 @@
+{
+  "classification": "Evidence packaging: verbatim upstream review has a blank line at EOF.",
+  "originalDiffCheckExit": 2,
+  "originalReviewSHA256": "dcafc57f309a7b65bea083fddce5c0b9db93a9cd182fb7d95b46a0b469b8df36",
+  "originalReviewBytes": 3619,
+  "compressedReviewSHA256": "f866aed0978041e55f5c89494c215296db722812433412d369b39a17985b198b",
+  "action": "Preserve original bytes in deterministic gzip; retain original local raw; rerun full staged diff-check.",
+  "testsOrAssertionsChanged": false,
+  "originalReviewEdited": false,
+  "originalPublisherFailureRetained": true,
+  "sparseIndexRecovery": "Original git rm refused outside sparse definition; same owned staged evidence path handled with documented --sparse.",
+  "recoveryEnvironmentFailure": "First raw retain rename crossed /tmp to /workspace and failed EXDEV before removal; second uses same filesystem destination."
+}

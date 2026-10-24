@@ -1,0 +1,133 @@
+{
+  "schema": "geo339-final-F38da-current-state/1",
+  "productSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+  "evidenceParent": "e9ee6d088b0cad4e3984aa2842a50acc311c2351",
+  "formal11": [
+    {
+      "gate": "native-and-full-expected",
+      "status": "UNRUN",
+      "originalExit": null,
+      "executionSHA": null
+    },
+    {
+      "gate": "canvas",
+      "status": "UNRUN",
+      "originalExit": null,
+      "executionSHA": null
+    },
+    {
+      "gate": "assembly",
+      "status": "UNRUN",
+      "originalExit": null,
+      "executionSHA": null
+    },
+    {
+      "gate": "documents",
+      "status": "UNRUN",
+      "originalExit": null,
+      "executionSHA": null
+    },
+    {
+      "gate": "grid",
+      "status": "UNRUN",
+      "originalExit": null,
+      "executionSHA": null
+    },
+    {
+      "gate": "space",
+      "status": "UNRUN",
+      "originalExit": null,
+      "executionSHA": null
+    },
+    {
+      "gate": "timber",
+      "status": "UNRUN",
+      "originalExit": null,
+      "executionSHA": null
+    },
+    {
+      "gate": "mutation-check",
+      "status": "RED",
+      "originalExit": 1,
+      "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "stale": 107,
+      "retired": 3,
+      "unrun": 13,
+      "rerunThisPublication": false
+    },
+    {
+      "gate": "architecture-contract",
+      "status": "PASS",
+      "originalExit": 0,
+      "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "rerunThisPublication": false
+    },
+    {
+      "gate": "architecture-tests",
+      "status": "PASS",
+      "originalExit": 0,
+      "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "rerunThisPublication": false
+    },
+    {
+      "gate": "product-architecture-tests",
+      "status": "PASS",
+      "originalExit": 0,
+      "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "rerunThisPublication": false
+    }
+  ],
+  "formalCounts": {
+    "PASS": 3,
+    "RED": 1,
+    "UNRUN": 7
+  },
+  "affectedImporterSource": "38da31bcac91db631e6325e40b228f8604810e82",
+  "affectedImporterOriginalExits": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "affectedImporterMethods": 142,
+  "affectedImporterPassed": 142,
+  "affectedImporterSkipped": 0,
+  "predicateSource": "38da31bcac91db631e6325e40b228f8604810e82",
+  "predicateOriginalExits": {
+    "list": [
+      0,
+      1,
+      0
+    ],
+    "dict": [
+      0,
+      1,
+      0
+    ],
+    "feature": [
+      0,
+      1,
+      0
+    ]
+  },
+  "latestReview": {
+    "handoff": "1ddb1bb73b9bc0958cf488280412ba116c880a5e",
+    "path": "handoff/pr-reviews/339.md",
+    "utc": "2026-10-24T00:39:36Z",
+    "head": "e9ee6d088b0cad4e3984aa2842a50acc311c2351"
+  },
+  "B1": "Formal integration incomplete",
+  "B2": "Run40040764499 remains failure; no CI repair/rerun claim",
+  "B3": "142 and three predicates now rerun at F; aggregate native remains UNRUN",
+  "C1": "Visible formal takeover still pending",
+  "C2": "Base340 remains unaccepted draft",
+  "readyToMerge": false,
+  "productTestsLedgerArchitectureChangedThisPublication": false,
+  "newAllowedSkips": [],
+  "archiveSHA256": "c2d2c75b39536d7e801cb31af2cc49d0de3aafd130a0a0cdd27b6701b8abc435"
+}
