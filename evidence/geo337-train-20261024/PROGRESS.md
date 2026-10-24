@@ -1,6 +1,18 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24；R5 正式五階段已終態）
+## 唯一 current-state（2026-10-24；平面區間快取已合流，準備 R6）
+
+最新產品／測試合流來源 M=`8d2a69421560b83c0b69f3e82db8f5e97ccc037b` 已普通 push。它將 child F=`df66452e7a514032453bea93b8b18ab74d7b1457` 的5個產品／測試葉一般 merge 到前輪列車；產品與測試 bytes 完全相同，其餘差異只有 evidence。沒有改公理、決策、原門檻或容量64。既有 scratch 在排序後記錄各完整64-bit平面區間，移除重複二分搜尋，不增加堆疊或改遮擋判定。
+
+child F 三原 suite 真0/0/0，14+15+7=36方法、零skip，354次 compile/link 均0；整刀正常0/1/0對應 plane comparisons 0→84→0，五細控制亦0/1/0。原 full-coordinate 反證曾在R1存活；原斷言保留，補第三個同平面成員後重新全綠。這四行反例另做固定／撤回／恢復真0/1/0，撤回精確 `Guard survived: indexed-plane-coordinate`。R1紅與兩項環境未跑仍保留；不能以定向綠外推正式 N64 wall。
+
+本提交採用 M 真執行的架構四檔：三原 exit0/0/0、generic205/product18零skip、604inputs/334owned/270excluded/798edges/0diagnostics。manifest 937→937、55 strings 與 scan bytes 完全不變；相較前份b9收據，完整架構closure僅 contact_world.c 改變。九個既有guard在M重新0/1/0，withdrawn明確使用歷史U的928版manifest，不冒稱上一份937版。完整原件與獨審在 architecture-8d2a-complete/。
+
+新的正式效能來源將固定於本次衍生report／receipt採用提交後，以可解析SHA啟動R6；目前 R6、全123帳本、完整native、六browser及P52/Q38/§7/P189/required-eight/PF3/readers/閱讀A均為新來源UNRUN。前輪R5 N64/main=1.3369644933292553>1.3、三項exact差及required CI付款／支出上限阻擋沒有被此專項解除；以下僅保留歷史實跑SHA。沒有新增skip，沒有READY-TO-MERGE。
+
+K觀察證據已普通合入 b4639b4d；沒有改K策略。R5小終態/v5工具原件和U完整9091member原包已於586f01d公開；R5完整原流正在封存。下一步在新固定來源獨占跑原五stage，完整保存36樣本與退出碼，不挑綠重抽。
+
+### 歷史 R5 終態（執行來源 a22df116；不移標新來源）
 
 當前產品／架構產物來源 **R=`a22df116c7e9f6b7d074451f1c8052d59e7e4f3e`**。它已一般合入排序修正與9個Reading A架構guard；後續純證據提交不改受測來源。R5在獨立乾淨R checkout以v5收件工具執行原prepare/build/compare/perf/profile各一次，execution=0/0/1/0/0、CLI=0/0/1/1/1，outer1，雙鎖已正常釋放。**N64 fix/main=1.3369644933292553>1.3仍紅**；small-N fix/base16/32/48=0.9903333938/0.8627250817/0.7692726791均綠；source calls82668/364369比4.4076184255≤4.5綠。原36樣本全保、不重抽、不放寬門檻。
 
