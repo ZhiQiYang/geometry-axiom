@@ -1,0 +1,30 @@
+{
+  "schema": "independent-required-eight-actual-package-peer-v1",
+  "exit_code": 0,
+  "checks": 2768,
+  "findings": [],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "archive_sha256": "81937992087ce136bdc34ece9d9da468e05beba5c931add719c9fb2501e661e4",
+  "original_files": 840,
+  "archive_members": 841,
+  "original_bytes": 9977144,
+  "original_cli_exit": 0,
+  "nested_wrapper_exit": 0,
+  "stage_execution_exit": 0,
+  "driver_exit": 0,
+  "outer_exit": 0,
+  "current_selected_suites": 8,
+  "current_typed_registered_units": 676,
+  "current_passed": 676,
+  "current_failed": 0,
+  "current_skipped": 0,
+  "copied_log_files": 619,
+  "capture_records_including_collector": 34,
+  "limitations": [
+    "Original v4 outer Recorder.role() labels its orchestration CLI source_role=base/source_sha=b74f9a2 because --base appears in argv. Original field retained; acceptance_sha, explicit --sha L, actual run_all inner source, and before/after Git guards independently bind execution to L.",
+    "676 combines Python tests, C checkpoints and core scenarios; it is not 676 unittest methods.",
+    "619 copied suite-log files include older unselected outputs. Only original --only eight argv and its eight current rows count as this execution.",
+    "This original runner reused original source/hash-matched native binaries; full native R2 was separately verified. Current mutable ROOT/global cache were not read.",
+    "Only required-eight stage passed here; performance, comparison, memo, Q38/PF3 and full acceptance are not inferred. No subject rerun or source edit by reviewer."
+  ]
+}
