@@ -3,7 +3,7 @@
 | 身分 | SHA |
 |---|---|
 | 固定產品／測試／架構產物 F | `6df0264f75e84f03adb70746b6ac3db07a9910fc` |
-| 證據 head E | `bd5df6b7fb3c563fa10d0e4cfd37e2ee3ca2b99e`；與 F 的非 evidence tree 相同 |
+| 證據 head E | `5f27125c950162d9232c22bd966aad9a77e33dbd`；與 F 的非 evidence tree 相同 |
 | 架構真正執行 M | `e321026fb9bc9bc19c54b8034af6e6eaec2857f9`；F 只採用 M 的衍生 report／receipt |
 | K 定向執行 S | `1449d430d1c4734bb1bc3a9f91f3851c845cc0f3`；四個產品／測試葉一般合入 M |
 
@@ -27,7 +27,7 @@
 | 閱讀 A native／oracle／mutants-only／完整 quick | UNRUN at F | #335 未核可 CLI 初放能力仍另案，不冒已解決 |
 | 架構三原裁判＋四檔 | M 真 exit0/0/0，F 已採用；generic205／product18，零 skip | 604 inputs／334 owned／270 excluded／798 edges／0 diagnostics；唯一 input delta 為 K source.c。manifest937／55、scan bytes不變；九 guard 各 0/1/0、neutral2 綠，withdrawn 明用歷史 928 |
 | K provider hint 定向與反證 | S 原 18＋24 方法全綠、零 skip；完整原件已普通合入 E51 | 整刀 warm lookup calls 0→16→0、正常 exit0/1/0；原十控制、full-provider／middle-byte／unaligned／allocation fallback 見原件。定向綠不替代正式 wall 或完整 native |
-| required CI | F run40070571951／E597bce63 run40070806058，18原API讀0；各七job failure、runner_id0／steps0，failure annotation 為付款失敗或支出上限未啟動；Ubuntu notice 另列。當前 Ebd5 的 CI 未讀，不能移標 E597 的 run | 歷史 CI 付款失敗或支出上限未啟動，不能推定新 head 的 CI；沒有自行宣布正式替代已獲接受 |
+| required CI | F run40070571951／E597bce63 run40070806058，18原API讀0；各七job failure、runner_id0／steps0，failure annotation 為付款失敗或支出上限未啟動；Ubuntu notice 另列。當前 E5f27125c 的 CI 未讀，不能移標 E597 的 run | 歷史 CI 付款失敗或支出上限未啟動，不能推定新 head 的 CI；沒有自行宣布正式替代已獲接受 |
 
 允許 skip 僅原 Linux 的 `py:test_gdi_contract` 缺 compiled Windows GDI harness；F 的完整 native 尚未跑，不預先計入一次 skip。Q38 原 registry 的既定排除不擴張。
 
@@ -44,7 +44,7 @@
 - `evidence/geo337-train-20261024/full-R5-five-stage-raw/`：9055 members／31,186,327B，SHA256 `caaf311a748c2ce1dc4ebd754fbebc9c4d70f59a5d0938fb2e9e34e57f2dd794`。
 - `evidence/geo337-train-20261024/full-R6-five-stage-raw/`：9062 members／31,317,807B，SHA256 `a9113e5e8e3474da70ee21970a29d451a46e148a3abdde1cecded4c36631d3f1`。
 - R5／R6 的完整原件、inventory、環境、原指令／退出碼／全輸出、36 原樣本與四 profiles 已在 E597bce63 普通推送；每輪七個 ELF 只附 hash inventory，原 payload 仍保存在雲端。原 outer1／exact 三差／null 完整保留，封包成功不是產品通過。原件收件時的 published:false 保留，公開事實由後續普通提交另證。
-- R7 六原binding、小終態、五CLI與outer完整流、三份真正工具poll JSON、當前CI／帳本check、stage工具與672/0獨審，已公開於 Ebd5 的 `evidence/geo337-train-20261024/current-R7-terminal/`（399檔／1,122,842B）。完整R7包已在雲端單次封存並經50504/0獨審：9128members／31,359,550B，SHA256 `8f2420a2c4a78cd99355b32183928d1c8ce14c893fdbe88db0f101104622cd7e`；尚未公開，不把小摘要冒全包
+- R7 六原binding、小終態、五CLI與outer完整流、三份真正工具poll JSON、當前CI／帳本check、stage工具與672/0獨審，已公開於 Ebd5 的 `evidence/geo337-train-20261024/current-R7-terminal/`（399檔／1,122,842B）。完整R7包已在 E5f27125c 普通提交／push 公開於 `evidence/geo337-train-20261024/full-R7-five-stage-raw/`：9128members／31,359,550B，SHA256 `8f2420a2c4a78cd99355b32183928d1c8ce14c893fdbe88db0f101104622cd7e`，50504/0獨立roundtrip；完整inventory在tar內且PACKAGE另釘hash，七個ELF原payload全保留，原outer1/N16紅/三exact差不改。完整producer、準備初敗、原反證與preload原流另附；原published:false/PENDING是收件當下字樣，不回填歷史
 
 歷史結果只供追溯：R6 來源 `2bbe54f1` 的 N64/main=1.3731562025736295>1.3、N16/base=1.0434575834374764>1；R5 來源 `a22df116` 的 N64/main=1.3369644933292553>1.3。全樣本與紅燈保留，不混成 R7、不重抽同源樣本挑綠、不以 gprof 時間代 O2 wall。更早 L 的完整 native／browser 綠僅為歷史，不能外推 F。
 
