@@ -1,0 +1,30 @@
+{
+  "schema": "geo324.manifest-validation-timing-qualification.v1",
+  "sourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "originalStatementFile": "evidence/geo324-final-57b68014/revision-3-peer-and-manifest/MANIFEST_CORRECTION.json",
+  "originalStatementEvidenceHead": "495e625a86e54c47a0445a22056ded55b4ebab3e",
+  "originalPackagePeerExit": 1,
+  "originalPackagePeerSHA256": "f8dcbdcd89da4da3fa8b79546794f4e3c7c7e8b404bbaefbd2ed188ea9bab3f4",
+  "statementField": "allOtherOriginalListedFilesBytesHashVerifiedUnchanged",
+  "preciseVerificationTime": "In publish_merge_peer_and_manifest_correction.py, the strict E792 existing-files verification loop completed BEFORE revision-3 creation and BEFORE PROGRESS.md was appended. The field records that pre-edit validation snapshot only. It is not an assertion that generated metadata stayed unchanged in E495 or later commits.",
+  "verifiedSnapshotEvidenceHead": "792d086eb046263384888b3b0a064ae96f0cdc27",
+  "intentionalGeneratedMetadataChangeInE495": {
+    "path": "evidence/geo324-final-57b68014/PROGRESS.md",
+    "operation": "append only",
+    "appendedLines": 6,
+    "priorSHA256": "42b2336d77ae05199e342bb706fb4912915867ee6a2bde282fbd4db644af2452",
+    "E495SHA256": "c764de77626b0799987c828755030d57f1826193c7485d2eb14177e20aab4930",
+    "appendBytes": 673,
+    "appendSHA256": "8615d8397de06a1490068ac554b701b8dc8ead1432b1988fd0d1f349146388c1",
+    "exactAppendSnapshot": "E495_PROGRESS_APPEND.bin"
+  },
+  "otherIntentionalMetadataChangesInE495": [
+    "PACKAGE_MANIFEST.json regenerated excluding itself",
+    "new revision-3 metadata members added",
+    "PR_BODY.md in separate prbody branch updated"
+  ],
+  "originalSourceAndRawOutputsUnchanged": true,
+  "originalE495ManifestPreserved": "E495_PACKAGE_MANIFEST.json",
+  "oldPeerAndE495NotRewritten": true,
+  "formalGateRowsUnchangedUNRUN": 16
+}

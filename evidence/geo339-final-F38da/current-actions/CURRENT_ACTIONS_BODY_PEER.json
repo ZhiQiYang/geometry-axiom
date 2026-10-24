@@ -1,0 +1,57 @@
+{
+  "subject": "/workspace/geo339-publication-20261024/PR_BODY.current-actions.template.md",
+  "sha256": "16ca4eddad598d1530a20a987179a2ade2df34125f30d5e04dfe6a508829b156",
+  "checks_total": 11,
+  "failed_checks": 0,
+  "checks": [
+    {
+      "name": "fixed-template-pin",
+      "passed": true
+    },
+    {
+      "name": "only-B2-changed",
+      "passed": true
+    },
+    {
+      "name": "bound-new-run-and-head",
+      "passed": true
+    },
+    {
+      "name": "OR-cause-not-invented-resolution",
+      "passed": true
+    },
+    {
+      "name": "failures-still-red",
+      "passed": true
+    },
+    {
+      "name": "forbidden-not-no-logs",
+      "passed": true
+    },
+    {
+      "name": "redaction-explicit",
+      "passed": true
+    },
+    {
+      "name": "65-read-not-tests",
+      "passed": true
+    },
+    {
+      "name": "closure-not-execution-relabelling",
+      "passed": true
+    },
+    {
+      "name": "one-placeholder",
+      "passed": true
+    },
+    {
+      "name": "pack-pin",
+      "passed": true
+    }
+  ],
+  "scope": "Narrow wording/diff review of B2 after independent 114024-check safe-package review by another peer.",
+  "limitations": [
+    "Did not read signed secrets or rerun the large raw-package peer.",
+    "Replace placeholder by actual public E; other gates remain prior explicit RED/UNRUN."
+  ]
+}

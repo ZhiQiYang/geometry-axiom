@@ -1,0 +1,140 @@
+{
+  "schema": "geo340-339-ordinary-L-source-merges/1",
+  "incomingL": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "kernelParent": "4d3a17c306cad42057589c5cfd964f1c32b755c4",
+  "facesProductParent": "38da31bcac91db631e6325e40b228f8604810e82",
+  "facesBranchParent": "1d94ab77ab29952d5b73ec5b262dfd239819fe25",
+  "newKernelSource": "175cee44c56c89871803d955c0c525236727ba65",
+  "newFacesSource": "616ce7538d23fbe7f3bbefae7f2a04e25ebd75a4",
+  "kernelPushed": true,
+  "facesPushed": true,
+  "originalKernelCheckout": {
+    "path": "/workspace/kernel-no-wood-work",
+    "head": "bfbab207a92a809fca50fefcefb3fa4b2af05ea9"
+  },
+  "ledgerRegenerated": false,
+  "subjectTestsRun": false,
+  "sevenJobsRun": false,
+  "sourceEditsOtherThanOrdinaryMerges": false,
+  "largePayloadCopied": false,
+  "originalEnvironmentFailureRetained": "/workspace/geo340-339-L-normal-merges-20261024/RESULT.json",
+  "bootstrapRecovery": "Original fresh --no-checkout K has no index or source files; root authorizes dry-run then read-tree -m -u at fixed S.",
+  "errors": [],
+  "spaceObservations": [
+    {
+      "stage": "before-any-source-mutation",
+      "availableBytes": {
+        "/workspace": 40321024,
+        "/tmp": 29130752
+      }
+    },
+    {
+      "stage": "before-kernel-normal-merge",
+      "availableBytes": {
+        "/workspace": 34213888,
+        "/tmp": 28958720
+      }
+    },
+    {
+      "stage": "before-faces-normal-merge",
+      "availableBytes": {
+        "/workspace": 33570816,
+        "/tmp": 28958720
+      }
+    }
+  ],
+  "exitCode": 0,
+  "startedUTC": "2026-10-24T02:44:50.188709+00:00",
+  "incomingLedgerGitEntry": {
+    "mode": "100644",
+    "type": "blob",
+    "blob": "fb470f96399093f6b25b2b2358011d26f3c36898"
+  },
+  "originalElevenKernelGitEntries": {
+    "geometry-core/kernel/types.h": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1942edd61798d9edafc89682b33ccfe7b38dc442"
+    },
+    "geometry-core/kernel/exact.h": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8046e2e1923810710df412e9cf290c3aed7b511c"
+    },
+    "geometry-core/kernel/exact.c": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "49d76ea6005ebcc3afbde5122368284d2a6f3996"
+    },
+    "geometry-core/kernel/geometry.h": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3b91ec7f17ecae540527ced17d1e6a2daec21899"
+    },
+    "geometry-core/kernel/geometry.c": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "61221a6cbb0c39d1971836fc39769a36195d2c6d"
+    },
+    "geometry-core/kernel/grid.h": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "24d02d170e1a2b7f15af9d4ab7508f1c6ae058c2"
+    },
+    "geometry-core/kernel/grid.c": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "694149d1b4ed5266ee6d7ee7fc8063b36dc53311"
+    },
+    "geometry-templates/rectangular-grid/rectangular_grid.h": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "72ac18cb052ef10da06f3c19f381c14886338062"
+    },
+    "geometry-templates/rectangular-grid/rectangular_grid.c": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "92ad8c37e7bcd250e2341bd2eb366413c1a2a412"
+    },
+    "tests/rectangular_template_harness.c": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ac063f8c512f6493735db5c80b94aab4a7d8b72f"
+    },
+    "tests/test_rectangular_template.py": {
+      "mode": "100644",
+      "type": "blob",
+      "blob": "640f727de5646102b291b9cee78e72c59337a517"
+    }
+  },
+  "kernelExpected": {
+    "suiteEntries": 230,
+    "kernel": {
+      "mode": "count",
+      "count": 13,
+      "unit": "unittest"
+    },
+    "host": {
+      "mode": "count",
+      "count": 39,
+      "unit": "test"
+    }
+  },
+  "facesExpected": {
+    "suiteEntries": 230,
+    "kernel": {
+      "mode": "count",
+      "count": 13,
+      "unit": "unittest"
+    },
+    "host": {
+      "mode": "count",
+      "count": 45,
+      "unit": "test"
+    }
+  },
+  "formalResultsAtNewSources": "UNRUN; no old execution SHA relabelled",
+  "sourceOnlyOrdinaryPushes": true,
+  "globalLedgerDeferredToRoot": true,
+  "endedUTC": "2026-10-24T02:44:56.191070+00:00"
+}

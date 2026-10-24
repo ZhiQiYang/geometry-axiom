@@ -1,6 +1,6 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "headBinding": "三原裁判實際在ec8乾淨Git source執行；封存checkout是純evidence後續E，與ec8的604raw-LF/Git inputs逐項相同。本工具只讀來源，四產物寫repo外；真HEAD/index/inputs前後不變。",
+  "headBinding": "三原裁判與manifest 0/1/0實際在同一乾淨M執行；完整604raw/LF/Git blob及Git HEAD初末不變。只讀來源，四檔寫repo外。",
   "hashMode": "sha256 after CRLF-to-LF normalization",
   "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for the path-sorted inputs array, with ensure_ascii=false and separators=(comma,colon); each entry has path then sha256, and no trailing newline.",
   "inputClosureExcludes": [
@@ -18,16 +18,16 @@
     "Windows supplemental probes",
     "new W lexicon completeness audit"
   ],
-  "createdUtc": "2026-10-23T20:14:43.189613+00:00",
-  "basis": "同ec8真三裁判raw、原manifest、完整物理/Git/blob inventory；604closure等P17，manifest反證只沿P17原身份。",
-  "sourceBaseHead": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
-  "headObservedBefore": "a6072dde8eac809e93ccd9373946dea98fa5c362",
-  "headObservedAfter": "a6072dde8eac809e93ccd9373946dea98fa5c362",
+  "createdUtc": "2026-10-23T22:08:51.474472+00:00",
+  "basis": "沿原Linux schema；唯一owned W face-binding LF hash改變，原三judge和manifest政策不改；使用本次M真raw，不繼承舊execution。",
+  "sourceBaseHead": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "headObservedBefore": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "headObservedAfter": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
   "manifestSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
-  "reportSha256": "c1de6a1ac6a4a3f5fc14f885e18a6807941fb9e7e085c477bca2cc01fecf52e2",
-  "inputClosureSha256": "6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338",
+  "reportSha256": "1f548c95683eea1cca2890c32d343dcba54944c58a184dbb175444f321a41daa",
+  "inputClosureSha256": "de2a5856529c18ec7e49decaf0f03cfb50b4299562f893eea085f70c40aa53cf",
   "counts": {
     "executableFiles": 604,
     "ownedSources": 334,
@@ -60,18 +60,18 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "/workspace/geometry-axiom",
-    "acceptance_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
-    "source_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
-    "source_variant": null,
+    "cwd": "/tmp/geo324-faces-work-20261024",
+    "acceptance_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+    "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+    "source_variant": "architecture-contract-original-judge",
     "environment": {
-      "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
       "LANG": "C.UTF-8",
       "LC_ALL": "C.UTF-8",
-      "PYTHONIOENCODING": null,
+      "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
       "PYTHONOPTIMIZE": null,
-      "TMPDIR": null,
+      "TMPDIR": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/remaining-tmp",
       "CC": null,
       "CFLAGS": null,
       "CPPFLAGS": null,
@@ -83,13 +83,13 @@
       "GCC_EXEC_PREFIX": null,
       "COMPILER_PATH": null
     },
-    "started_epoch": 1792786098.0269606,
+    "started_epoch": 1792793010.7877743,
     "stdin_provided": false,
     "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "actual_process_returncode": 0,
     "timeout_expired": false,
-    "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000004",
-    "ended_epoch": 1792786103.4337716,
+    "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000043",
+    "ended_epoch": 1792793015.2921517,
     "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "stdout_bytes": 132559,
@@ -98,19 +98,19 @@
   },
   "validation": [
     {
-      "command": "python -B tests/test_architecture_contract.py",
-      "cwd": "/workspace/geometry-axiom",
-      "acceptance_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
-      "source_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
-      "source_variant": null,
+      "command": "python3 -B tests/test_architecture_contract.py",
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "acceptance_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "source_variant": "original-generic-architecture-contract-suite",
       "environment": {
-        "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
-        "PYTHONIOENCODING": null,
+        "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": null,
+        "TMPDIR": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/generic-tmp",
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -122,15 +122,15 @@
         "GCC_EXEC_PREFIX": null,
         "COMPILER_PATH": null
       },
-      "started_epoch": 1792786103.4346282,
+      "started_epoch": 1792792846.095149,
       "stdin_provided": false,
       "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "actual_process_returncode": 0,
       "timeout_expired": false,
-      "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000005",
-      "ended_epoch": 1792786104.0101807,
+      "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000024",
+      "ended_epoch": 1792792846.5327926,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "ce143b901efef3e9505d46c78a09259ebb6f541e7c404dc9ae0d400d17b043a3",
+      "stderr_sha256": "c904b1a7e8a799067b881ec21ad782eff535544d9b12a3e9d6ede46dfc099759",
       "stdout_bytes": 0,
       "stderr_bytes": 29577,
       "exitCode": 0,
@@ -138,22 +138,22 @@
       "passed": 205,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 0.451
+      "unittestSeconds": 0.347
     },
     {
-      "command": "python -B tests/test_product_architecture.py",
-      "cwd": "/workspace/geometry-axiom",
-      "acceptance_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
-      "source_sha": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
-      "source_variant": null,
+      "command": "python3 -B tests/test_product_architecture.py",
+      "cwd": "/tmp/geo324-faces-work-20261024",
+      "acceptance_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "source_sha": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+      "source_variant": "product-architecture-tests-original-judge",
       "environment": {
-        "PATH": "/workspace/geo261-environment/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
-        "PYTHONIOENCODING": null,
+        "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": null,
+        "TMPDIR": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/remaining-tmp",
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -165,15 +165,15 @@
         "GCC_EXEC_PREFIX": null,
         "COMPILER_PATH": null
       },
-      "started_epoch": 1792786104.010679,
+      "started_epoch": 1792793015.2942026,
       "stdin_provided": false,
       "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "actual_process_returncode": 0,
       "timeout_expired": false,
-      "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000006",
-      "ended_epoch": 1792786114.8876753,
+      "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000044",
+      "ended_epoch": 1792793026.1258028,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "72b08366ed77da6f8b06300503b2b95c0423b0fe4b7aca29b5dd23332f6f7618",
+      "stderr_sha256": "23ecb34d3e4c780943c50fe58aea6223a4037e7d6f2b230990c562fb3ea20833",
       "stdout_bytes": 0,
       "stderr_bytes": 118,
       "exitCode": 0,
@@ -181,7 +181,7 @@
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 10.764
+      "unittestSeconds": 10.737
     }
   ],
   "inputs": [
@@ -1327,7 +1327,7 @@
     },
     {
       "path": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
-      "sha256": "e04d5a3029aabf0e4eb1e00928137461989b0bba67e40ec10043de2a3cabc8ed"
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
     },
     {
       "path": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
@@ -2618,23 +2618,39 @@
         "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
       },
       "PRODUCT-ARCHITECTURE.md": {
-        "bytes": 40338,
-        "rawSha256": "032df92c593226e2777c3f079a1710424e67f79fce108e483acc06059b65a32e",
-        "lfSha256": "032df92c593226e2777c3f079a1710424e67f79fce108e483acc06059b65a32e"
+        "bytes": 41881,
+        "rawSha256": "c1de6a1ac6a4a3f5fc14f885e18a6807941fb9e7e085c477bca2cc01fecf52e2",
+        "lfSha256": "c1de6a1ac6a4a3f5fc14f885e18a6807941fb9e7e085c477bca2cc01fecf52e2"
       },
       "product-architecture-receipt.json": {
-        "bytes": 117271,
-        "rawSha256": "753b7af3948ec29c878d8291f1527bdc0fd7281522cec7a2d6b976a50577fbb8",
-        "lfSha256": "753b7af3948ec29c878d8291f1527bdc0fd7281522cec7a2d6b976a50577fbb8"
+        "bytes": 115624,
+        "rawSha256": "2c75ea1a05f85bcf39e2c718aefa3fb17690d4f301f21e6dcfedc080e6480a33",
+        "lfSha256": "2c75ea1a05f85bcf39e2c718aefa3fb17690d4f301f21e6dcfedc080e6480a33"
       }
     },
-    "sourceReceiptEvidenceDirectory": "/tmp/train337-ec8e0d7e-impact-gates",
+    "sourceReceiptEvidenceDirectory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight",
     "originalThreeGateExits": [
       0,
       0,
       0
     ],
-    "manifestProof": [],
+    "manifestProof": [
+      {
+        "phase": "baseline",
+        "exit": 0,
+        "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000043"
+      },
+      {
+        "phase": "withdrawn",
+        "exit": 1,
+        "directory": "/tmp/geo339-architecture-four-M1f0ebd3e/subcommands/000004"
+      },
+      {
+        "phase": "restored",
+        "exit": 0,
+        "directory": "/tmp/geo339-architecture-four-M1f0ebd3e/subcommands/000005"
+      }
+    ],
     "inheritedManifestProof": {
       "executionSha": "17b3576434ffd0833056668898e1fd1a8cc2d560",
       "proof": [
@@ -2660,12 +2676,12 @@
         0
       ],
       "executedAtCurrentHead": false,
-      "basis": "完整604 LF closure、manifest、三judge bytes、原scanstdout均與P17相同；P17原streams已核hash。"
+      "basis": "只保留原P17歷史身份；本輪新604 LF closure不同，不能沿用其same-closure推論；本輪M的真manifest反證另列manifestProof。"
     },
     "originalReceiptRawRows": [
       {
-        "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000004",
-        "resultSha256": "98437b59d8e6df506f5a1091980029fc4c4facda6fb220bbed9d53b1ad16da93",
+        "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000043",
+        "resultSha256": "135af387daa5af028ab6fede2a8191b418adda11b3ca639fbd00bcd0a12cfe85",
         "command": [
           "python3",
           "-B",
@@ -2678,8 +2694,8 @@
         "actualExit": 0
       },
       {
-        "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000005",
-        "resultSha256": "2ed091f538f3d5de38897dc2e11bcd6f45d73696df6ea44c7ce9a772a5092d74",
+        "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000024",
+        "resultSha256": "8feca80b3f2426a473d5bec526144600ce9de38bf2f5772e330dd3e189f299c2",
         "command": [
           "python3",
           "-B",
@@ -2688,8 +2704,8 @@
         "actualExit": 0
       },
       {
-        "directory": "/tmp/train337-ec8e0d7e-impact-gates/subcommands/000006",
-        "resultSha256": "ec5d00b962bdd5c6f0a6afdc7d551b7c57f8525a12249a58a87b534fdb085ac7",
+        "directory": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/subcommands/000044",
+        "resultSha256": "fd937df030b667343707f7d735520815996f44ef14c6d2917e1de874138e9c9d",
         "command": [
           "python3",
           "-B",
@@ -2698,7 +2714,7 @@
         "actualExit": 0
       }
     ],
-    "note": "ec8原三條0/0/0；manifest不改，P17反證保原SHA；兩變動test不在604架構inventory。"
+    "note": "本輪M三原judge0/0/0與真manifest0/1/0；唯一owned W hash改變，manifest/policy/分類/exclusion均不改。"
   },
   "completeInventoryVerification": {
     "sourceRoots": [
@@ -2726,8 +2742,8 @@
       "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
       "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
-    "inputClosureSha256Before": "6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338",
-    "inputClosureSha256After": "6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338"
+    "inputClosureSha256Before": "de2a5856529c18ec7e49decaf0f03cfb50b4299562f893eea085f70c40aa53cf",
+    "inputClosureSha256After": "de2a5856529c18ec7e49decaf0f03cfb50b4299562f893eea085f70c40aa53cf"
   },
   "supplementalStaticGuardProbes": {
     "executedAtCurrentHead": false,
@@ -2735,25 +2751,15 @@
   },
   "nativeAcceptance": "另取原收據，本四檔不代稱產品native綠。",
   "refreshDriver": {
-    "bytes": 21071,
-    "rawSha256": "50ac2685e66f9d153947125c32899e52a126e88db9f69271a390ced733b392ce",
-    "lfSha256": "50ac2685e66f9d153947125c32899e52a126e88db9f69271a390ced733b392ce",
-    "path": "/tmp/geo337-linux-generation-ec8/seal_four_linux_ec8.py",
+    "bytes": 13623,
+    "rawSha256": "bc91016d63cd1b6bb75393ef61bfb63a2c2d9750778e4d2e4e77149ab5f78c6f",
+    "lfSha256": "bc91016d63cd1b6bb75393ef61bfb63a2c2d9750778e4d2e4e77149ab5f78c6f",
+    "path": "/tmp/geo339-light-gates-M1f0ebd3e-preflight/refresh_architecture_four.py",
     "argv": [
-      "/tmp/geo337-linux-generation-ec8/seal_four_linux_ec8.py",
-      "--repo",
-      "/workspace/geometry-axiom",
-      "--sha",
-      "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
-      "--checkout-head",
-      "a6072dde8eac809e93ccd9373946dea98fa5c362",
-      "--evidence",
-      "/tmp/train337-ec8e0d7e-impact-gates",
-      "--out",
-      "/tmp/train337-architecture-four-ec8e0d7e"
+      "/tmp/geo339-light-gates-M1f0ebd3e-preflight/refresh_architecture_four.py"
     ],
     "recorderSha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
-    "runDirectory": "/tmp/train337-architecture-four-ec8e0d7e"
+    "runDirectory": "/tmp/geo339-architecture-four-M1f0ebd3e"
   },
   "environment": {
     "safeVariables": {
@@ -2769,7 +2775,8 @@
     "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
   },
   "uncertainties": [
-    "本輪不以manifest digest修復代稱928/55新W詞彙盤點。",
-    "未由root提交推送前，本四檔不是已發布驗收；後續正式final要重新綁定。"
+    "未重產帳本；完整native/expected及六browser仍未跑。",
+    "未由owner安裝提交推送前，此四檔僅repo外產物；不宣稱新的execution SHA。",
+    "未新作928/55詞彙完整性或Windows supplemental驗收。"
   ]
 }

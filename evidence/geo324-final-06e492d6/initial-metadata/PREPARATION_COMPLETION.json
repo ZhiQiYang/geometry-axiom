@@ -1,0 +1,10 @@
+{
+  "schema": "geo324.readonly-preparation-completion.v1",
+  "originalCollectorExitCode": 1,
+  "productOrTestExecuted": false,
+  "originalFailure": "google-chrome was not found in inherited PATH; original command/result and traceback retained",
+  "correction": "prepend /workspace/geo261-environment/bin to PATH, per root; no installation and no product change",
+  "correctedEnvironmentReceipt": "/tmp/geo324-owner-20261024/base-branch-publication/receipt.json",
+  "initialCommands": 24,
+  "noGateResultClaimed": true
+}

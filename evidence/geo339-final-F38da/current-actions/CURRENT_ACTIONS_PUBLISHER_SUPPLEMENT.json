@@ -1,0 +1,95 @@
+{
+  "subject": "/workspace/geo339-publication-20261024/publish_current_actions.py",
+  "subject_sha256": "77a60b3ce1dc278ee54ac666bb904b7a6c442ed27abd35ad92b26c252595e9d2",
+  "checks_total": 15,
+  "failed_checks": 0,
+  "checks": [
+    {
+      "name": "fixed-new-publisher",
+      "passed": true
+    },
+    {
+      "name": "only-reviewed-metadata-additions",
+      "passed": true
+    },
+    {
+      "name": "self-exact-peer-gate",
+      "passed": true
+    },
+    {
+      "name": "no-signed-query-value:CURRENT_ACTIONS_SAFE_PACKAGE_PEER.initial-schema-assumptions.json",
+      "passed": true
+    },
+    {
+      "name": "no-GitHub-token-literal:CURRENT_ACTIONS_SAFE_PACKAGE_PEER.initial-schema-assumptions.json",
+      "passed": true
+    },
+    {
+      "name": "no-JWT-literal:CURRENT_ACTIONS_SAFE_PACKAGE_PEER.initial-schema-assumptions.json",
+      "passed": true
+    },
+    {
+      "name": "no-signed-query-value:review_current_actions_safe_package.py",
+      "passed": true
+    },
+    {
+      "name": "no-GitHub-token-literal:review_current_actions_safe_package.py",
+      "passed": true
+    },
+    {
+      "name": "no-JWT-literal:review_current_actions_safe_package.py",
+      "passed": true
+    },
+    {
+      "name": "no-signed-query-value:review_current_actions_safe_package.v1.py.txt",
+      "passed": true
+    },
+    {
+      "name": "no-GitHub-token-literal:review_current_actions_safe_package.v1.py.txt",
+      "passed": true
+    },
+    {
+      "name": "no-JWT-literal:review_current_actions_safe_package.v1.py.txt",
+      "passed": true
+    },
+    {
+      "name": "no-signed-query-value:CURRENT_ACTIONS_PUBLISHER_REVIEW.json",
+      "passed": true
+    },
+    {
+      "name": "no-GitHub-token-literal:CURRENT_ACTIONS_PUBLISHER_REVIEW.json",
+      "passed": true
+    },
+    {
+      "name": "no-JWT-literal:CURRENT_ACTIONS_PUBLISHER_REVIEW.json",
+      "passed": true
+    }
+  ],
+  "metadata_inputs": [
+    {
+      "path": "/workspace/train337-canvas-peer-resume/CURRENT_ACTIONS_SAFE_PACKAGE_PEER.initial-schema-assumptions.json",
+      "bytes": 2457,
+      "sha256": "bcb1bef99a7dcca1af3ed2a4bd27d12f413686e6bc7cd3e02d748df350d0e2c6"
+    },
+    {
+      "path": "/workspace/train337-canvas-peer-resume/review_current_actions_safe_package.py",
+      "bytes": 10027,
+      "sha256": "ed068e1568cbf3548ec67185a13be1fa09f5ca0fcff620d22a64ac4816a4f2c9"
+    },
+    {
+      "path": "/workspace/train337-canvas-peer-resume/review_current_actions_safe_package.v1.py.txt",
+      "bytes": 9930,
+      "sha256": "e4802a18e22d8d84486e763b0fffe5116cd25046c433304fc48964fb7ff43082"
+    },
+    {
+      "path": "/workspace/geo339-body-peer-combined-20261024/CURRENT_ACTIONS_PUBLISHER_REVIEW.json",
+      "bytes": 2060,
+      "sha256": "f521b7db103af4502aa63f8b91fd0b5f849c347b33dd610356ef4a29b51afcaf"
+    }
+  ],
+  "scope": "Supplementary static review: removing exactly the metadata additions reconstructs the prior17/0 publisher bytes. Only four named metadata/code inputs inspected; this report contains no raw credentials.",
+  "limitations": [
+    "Private original bundle and signed URLs were not read.",
+    "Actual publication remains pending root disk-write grant; no Git mutation or compiler executed."
+  ]
+}
