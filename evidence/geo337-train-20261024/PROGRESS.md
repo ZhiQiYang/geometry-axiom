@@ -1,6 +1,12 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24；開始合流下一個來源）
+## 唯一 current-state（2026-10-24；新修正已合流，準備固定下一輪來源）
+
+已一般 merge 排序修正來源 `aa16e73d6e1f2965e0a911581e2a545aaaf66870`，整合提交 `48f6e79d1192c8bcdb37cee631795bf147e2445b`。原三suite共35方法／零skip、332 compile/link全0；整刀實際128→896→128、exit0/1/0，四細控制正常assert撤回／恢復；獨立3139／0。這些實跑屬子分支S，不移標到合流提交；完整native／browser／新載入性能尚未跑。
+
+本提交再採完整W原lexer盤點出的9個Reading A guard，928→937 identifiers，55 strings與全部原分類／排除／trust／其餘政策不變。原U產品／physical E4d上的九組原scanner assertion各0/1/0、兩neutral0、fullscanner0，329／0獨審；完整原件在reading-a-architecture-guard-strengthening。舊架構receipt仍是歷史，接著在新的可解析來源重跑三原裁判、同來源guard反證並重產四檔，再由root處理最終整份帳本。沒有把U舊紅燈或CI改綠，也沒有READY-TO-MERGE。
+
+### 前輪 U 終態與歷史矩陣（不代表上述新來源）
 
 目前合流產品來源固定為 **U=`ca7838e0f4950452b9befcf40899d606db9b81fa`**，供下一輪原 #323 五段驗收；之後純證據提交不改 U 產品／測試。已一般 merge 核心 edge probe 修正來源 `a543eef67b81f8d8800f32d5dc4a5641840d2943`；此提交的 HEAD 是新整合來源，但最後 union 尚未固定。子分支原 17 方法零 skip、56 次 compile/link 全 0、43 次 native 已實跑；十組語意控制及完整撤回／恢復（hash calls 21／31／21、exit 0／1／0）已通過，獨立原流審查 1427／0。第一輪 Linux 測試目錄／執行檔撞名的失敗完整保留，修測試路徑後重跑，未更動斷言或時限。詳見 `edge-probe-integration/`；完整子分支原包與 1503 members inventory 已公開於 `evidence/geo323-edge-probe-a543eef6/`（E9b41d395），本次一般 merge 合入；CAF6 原帳本 check1／120 stale／3 retired 的完整四指令與原流也封存於 `probe-evidence-and-ledger-freshness/`。
 
