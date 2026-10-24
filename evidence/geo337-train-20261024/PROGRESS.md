@@ -6,6 +6,8 @@
 
 已再一般 merge #339 證據頭 `8f39025be6708bd9d58e576ed5b349b7ef628624`（含 #340）。#340 原 strict aggregate 13／13、exit0 已公開；#339 舊 F38 的 142 方法／三組反證保原 execution SHA，與新 F616 的 498 項 executable closure 全等收據已公開。合流保留核心新 17 方法、host 45、rectangle 13；這些定向結果不冒作合流後完整驗收。詳見 `faces-kernel-integration/`。
 
+本輪再一般 merge #343 `a934a554ae58f16f124f1b264523947f170b3f0b`，只納入同 load 路徑的 contact index／穩定排序及其祖先 #341、#342；容量 512、cut-list storage 與 panel empty-row 仍留後續分支。#343 原 34 方法／64 控制、318 compile 的實跑頭為 `ccfaf057088a80c7aad4049f1c67e5eedfc2fdec`，#342 原 44 案也保原 SHA；組合後效能及 #341 整段成本審查仍待，不以既有單元結果宣稱達標。tracked 帳本保 root 原 L 版本，檢查曾因新 source.c／測試閉包得到 120 stale／3 retired，最後固定來源後由 root 整份重產。詳見 `contact-index-integration/`。
+
 **新來源尚未通過最終帳本、架構或整套驗收，也沒有新的效能結論。** 下表是上一輪固定 L 的真終態，不能移標為目前 HEAD；四個既有阻擋仍保留。其餘工作線先完成定向驗收再合流，之後由 root 一次重產帳本／架構並執行受影響正式項。
 
 
