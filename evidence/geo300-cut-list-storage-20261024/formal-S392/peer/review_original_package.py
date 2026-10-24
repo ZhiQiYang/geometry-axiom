@@ -1,0 +1,143 @@
+"""Independent read-only audit of the completed cut-list11/9 evidence."""
+from pathlib import Path
+import hashlib
+import json
+import re
+import tarfile
+
+BASE = Path('/workspace/geo346-formal-originals-publication-20261024')
+HERE = Path(__file__).resolve().parent
+S = '39273bc0229fbbb16565134e1f8fad3a0d598c31'
+checks = []
+findings = []
+
+def check(value, message):
+    checks.append({'check': message, 'passed': bool(value)})
+    if not value:
+        findings.append(message)
+
+def read(path):
+    return json.loads(path.read_text())
+
+def digest(body):
+    return hashlib.sha256(body).hexdigest()
+
+result = read(BASE / 'RESULT.json')
+index = read(BASE / 'RAW_INDEX.json')
+archive = BASE / result['archive']
+check(archive.stat().st_size == result['archive_bytes'] == 3455626, 'archive original byte length')
+check(digest(archive.read_bytes()) == result['archive_sha256'] == 'a6c35f31f6c1da542d04e2f2ffed849c20aabde1d1e7d829ccb79349c2df67a2', 'archive exact hash')
+expected = {row['member']: row for row in index['files']}
+check(len(expected) == len(index['files']) == result['member_count'] == 603, 'exact603 unique inventory entries')
+seen = set()
+with tarfile.open(archive, 'r:gz') as stream:
+    for member in stream:
+        check(member.isfile() and member.name in expected and member.name not in seen, 'regular exact member ' + member.name)
+        if not member.isfile() or member.name not in expected:
+            continue
+        seen.add(member.name)
+        row = expected[member.name]
+        body = stream.extractfile(member).read()
+        check(len(body) == row['bytes'] and digest(body) == row['sha256'], 'archived raw bytes/hash ' + member.name)
+        check(Path(row['source']).is_file() and Path(row['source']).read_bytes() == body, 'unchanged original member ' + member.name)
+check(seen == set(expected), 'no original member missing')
+
+formal = Path('/workspace/geo300-cut-list-storage-39273bc0-formal')
+r = read(formal / 'receipt.json')
+o = read(Path(str(formal) + '-launch') / 'receipt.json')
+ob = read(formal / 'wood-report/observed/receipt.json')
+check(r['source'] == S and r['actual_source_identity'][0] == S and r['source_after_identity'] == r['actual_source_identity'], 'actual executed HEAD and restored identity are S')
+check(r['completed_checkout_previous_identity'][0] == 'a5f1806fb3cad2dada1a56e79e01d54f9f86700f' and r['source_after_clean'], 'prior metadata HEAD is not relabelled as execution')
+check(r['accepted'] and len(r['suites']) == 1 and r['suites'][0]['actual_exit'] == 0, 'original suite true exit0')
+suite = r['suites'][0]
+check(o['source'] == S and o['reaper_process_exit'] == o['primary_returncode'] == o['launcher_exit'] == 0
+      and not o['metadata_problems'], 'real outer/reaper/primary terminal0')
+reaper_events = [json.loads(line) for line in Path(o['reaper_log']).read_text().splitlines()]
+terminal_events = [row for row in reaper_events if row.get('event') == '完成']
+check(len(terminal_events) == 1 and reaper_events[-1] == terminal_events[0]
+      and terminal_events[0]['primary_returncode'] == 0, 'unique real terminal reaper event')
+for label, records in [('formal', r['commands']), ('outer', o['commands'])]:
+    for row in records:
+        folder = Path(row['directory'])
+        check(read(folder / 'result.json') == row and row['actual_process_returncode'] == 0
+              and not row['timeout_expired'], 'original c387 real result ' + label + '/' + folder.name)
+        for kind in ('stdout', 'stderr'):
+            raw = (folder / (kind + '.bin')).read_bytes()
+            check(len(raw) == row[kind + '_bytes'] and digest(raw) == row[kind + '_sha256'],
+                  'original c387 whole stream ' + label + '/' + folder.name + '/' + kind)
+git_identity = [row for row in r['commands'] if row['command'] == ['git', 'rev-parse', 'HEAD', 'HEAD^{tree}']]
+actual_identities = [(Path(row['directory']) / 'stdout.bin').read_text().splitlines() for row in git_identity]
+check(actual_identities == [r['completed_checkout_previous_identity'], r['actual_source_identity'], r['source_after_identity']],
+      'actual Git stdout proves priorE to S and final S')
+check(any(row['command'] == ['git', 'checkout', '--detach', S] and row['actual_process_returncode'] == 0
+          for row in r['commands']), 'actual original checkout command to S')
+fixture_r1 = [read(Path(row['source'])) for name, row in expected.items()
+              if name.startswith('fixture-r1/subcommands/') and name.endswith('/result.json')]
+fixture_r2 = [read(Path(row['source'])) for name, row in expected.items()
+              if name.startswith('fixture-r2/subcommands/') and name.endswith('/result.json')]
+check(sum(row['actual_process_returncode'] == 129 for row in fixture_r1) == 1,
+      'original fixture R1 environment129 retained')
+check(all(row['actual_process_returncode'] == 0 for row in fixture_r2), 'original fixture R2 commands all0')
+fixture_blobs = [row for row in fixture_r2 if row['command'][:2] == ['git', 'show']
+                 and row['command'][-1].endswith(':room_a.scene')]
+check(len(fixture_blobs) == 1 and fixture_blobs[0]['stdout_bytes'] == 370
+      and fixture_blobs[0]['stdout_sha256'] == 'c3c0ba589285ef5ecd835b89a38174ebe050c85c4b8814510e139f72550f1f7c',
+      'original fixture exact370 Git bytes retained')
+check(suite['original_expected_methods'] == 11 and suite['zero_skips'] and suite['passed'], 'original11 and zero skip')
+stderr = Path(suite['command']['directory']) / 'stderr.bin'
+text = stderr.read_text()
+check(len(re.findall(r'^Ran 11 tests in ', text, re.M)) == 1 and re.search(r'\nOK\s*$', text) is not None, 'original unittest terminal11 OK')
+check('skipped=' not in text and 'FAILED' not in text, 'unittest output has no skipped/failure terminal')
+check(ob['source_sha'] == S and ob['original_completed'] and ob['original_exit'] == 0 and not ob['observation_errors'], 'observer preserves actual original completion')
+check(ob['observer_complete'] and not ob['subject_verdicts_changed'] and ob['source_tool_bytes_unchanged'], 'passive observation and original source checks')
+commands = {row['number']: row for row in ob['commands']}
+check(len(commands) == len(ob['commands']) == 118, '118 original observed commands unique')
+for number, row in commands.items():
+    check(row['completed_process_returned'] and row['exception'] is None, 'real process return ' + str(number))
+    for key in ('stdout', 'stderr'):
+        value = row[key]
+        path = Path(value['path'])
+        check(value['captured'] and path.is_file() and path.stat().st_size == value['bytes']
+              and digest(path.read_bytes()) == value['sha256'], 'complete observed stream ' + str(number) + '/' + key)
+compilers = [row for row in commands.values() if Path(row['args'][0][0]).name in ('cc', 'gcc', 'clang')]
+check(len(compilers) == suite['compile_commands'] == 83, '83 actual compiler commands')
+check(all(row['returncode'] == 0 for row in compilers), 'all compiler returns0; no compile kill')
+proofs = suite['control_proofs']
+check(len(proofs) == 9 and len({row['control'] for row in proofs}) == 9, 'nine distinct original controls')
+for proof in proofs:
+    selected = [commands[number] for number in proof['command_numbers']]
+    check([row['returncode'] for row in selected] == proof['actual_exits'] == [0, 1, 0], 'actual0/1/0 ' + proof['control'])
+    check(proof['passed'] and proof['mutant_matches'] == 1, 'unique intended control ' + proof['control'])
+    check(all(row['args'][0][-1] == proof['case'] for row in selected), 'same named original case ' + proof['control'])
+    check(Path(selected[1]['args'][0][0]).name == proof['control'], 'withdrawn executable identity ' + proof['control'])
+    red = Path(selected[1]['stderr']['path']).read_text()
+    check(proof['expected_assertion'] in red and selected[1]['returncode'] == 1,
+          'normal named assertion1, not signal/crash ' + proof['control'])
+snapshots = ob['storage_header_snapshots']
+check(len(snapshots) == 2 and {row['role'] for row in snapshots} == {'client', 'cut'}, 'both storage-control translation-unit headers captured')
+for row in snapshots:
+    body = Path(row['retained']).read_bytes()
+    check(len(body) == row['bytes'] and digest(body) == row['sha256'], 'actual before-launch header bytes ' + row['role'])
+    check(row['event'] == 'subprocess.Popen-before-launch', 'before-launch header capture ' + row['role'])
+check(snapshots[0]['sha256'] == snapshots[1]['sha256'], 'same mutant header for client and cut implementation')
+
+# This configured locator is not an actual file; do not manufacture its contents.
+audit = Path(suite['native_execution_log'])
+configured_audit_missing = not audit.exists()
+metadata_notes = []
+if configured_audit_missing:
+    metadata_notes.append('The original receipt native_execution_log is a configured-but-unmaterialized pathname. Actual complete streams are the passive observer commands; do not claim a NativeBuild JSONL audit was archived.')
+report = {
+    'schema': 'independent-geo346-original-package-peer/1', 'sourceSHA': S,
+    'checks': len(checks), 'findings': findings, 'exitCode': 0 if not findings else 1,
+    'metadataNotes': metadata_notes, 'configuredNativeExecutionLogMissing': configured_audit_missing,
+    'archiveSHA256': result['archive_sha256'], 'actualMethods': 11, 'actualControls': 9,
+    'compilerCommands': len(compilers), 'currentPayloadRetirementOrRerunPerformed': False,
+    'limitations': ['Partial cut-list suite only; not full native/browser/performance/ledger/architecture.',
+                   'Text-mode subprocess streams retain the original returned text encoded as UTF-8, not claimed raw bytes from a hidden pre-decoding pipe.',
+                   'NativeBuild audit locator note requires visible publication clarification; original receipt remains unchanged.'],
+}
+(HERE / 'CHECKS.json').write_text(json.dumps(checks, ensure_ascii=False, indent=2) + '\n')
+(HERE / 'REVIEW.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps(report, ensure_ascii=False))
+raise SystemExit(report['exitCode'])

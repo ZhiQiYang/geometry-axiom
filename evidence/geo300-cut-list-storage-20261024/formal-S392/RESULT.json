@@ -1,0 +1,191 @@
+{
+  "product_sha": "39273bc0229fbbb16565134e1f8fad3a0d598c31",
+  "actual_execution_head": "39273bc0229fbbb16565134e1f8fad3a0d598c31",
+  "execution_tree": "01fbacdde254c2b12d7de74e7f9d78dd4243b052",
+  "previous_checkout_head": "a5f1806fb3cad2dada1a56e79e01d54f9f86700f",
+  "source_after_head": "39273bc0229fbbb16565134e1f8fad3a0d598c31",
+  "source_after_clean": true,
+  "outer_exit": 0,
+  "reaper_exit": 0,
+  "original_suite_exit": 0,
+  "methods": 11,
+  "skips": 0,
+  "controls": [
+    {
+      "control": "report-unplaced",
+      "case": "grouping",
+      "expected_assertion": "report-placed-only",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        92,
+        95,
+        96
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "control": "report-role",
+      "case": "grouping",
+      "expected_assertion": "report-exact-spec-identity",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        97,
+        100,
+        101
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "control": "report-free",
+      "case": "fixity",
+      "expected_assertion": "fixity-default-fixed",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        102,
+        105,
+        106
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "control": "report-reverse-length",
+      "case": "ordering",
+      "expected_assertion": "report-length-order",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        110,
+        113,
+        117
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "control": "report-pool-offset",
+      "case": "pool",
+      "expected_assertion": "report-pool-offsets",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        72,
+        75,
+        76
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "control": "report-pool-value",
+      "case": "pool",
+      "expected_assertion": "report-pool-id-order",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        77,
+        80,
+        81
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "control": "report-pool-reverse",
+      "case": "pool",
+      "expected_assertion": "report-pool-id-order",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        82,
+        85,
+        86
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "control": "report-exact-capacity",
+      "case": "limits",
+      "expected_assertion": "report-capacity",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        87,
+        90,
+        91
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "control": "report-storage-control",
+      "case": "pool",
+      "expected_assertion": "report-group-linear-storage",
+      "mutant_matches": 1,
+      "passed": true,
+      "command_numbers": [
+        64,
+        68,
+        69
+      ],
+      "actual_exits": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "compiler_commands": 83,
+  "all_compiler_exits_zero": true,
+  "storage_mutant_both_client_and_cut_header_snapshots": true,
+  "archive": "original-report-suite-fixture-and-control-streams.tar.gz",
+  "archive_bytes": 3455626,
+  "archive_sha256": "a6c35f31f6c1da542d04e2f2ffed849c20aabde1d1e7d829ccb79349c2df67a2",
+  "member_count": 603,
+  "roundtrip_all_original_bytes": true,
+  "fixture_r1": "Environment preparation only; unsupported sparse-checkout add --no-cone, original Git exit129 retained; no fixture/source mutation occurred.",
+  "fixture_r2": "Original non-cone mode preserved; add /room_a.scene exit0;370 bytes exact committed S; initial Ea5 clean and original patterns preserved.",
+  "runtime_payloads": "All retained private TMP compile objects/executables remain in place. Archive includes complete formal/outer streams and source/header/compile-retention records; TMP object payloads are outside selected receipt roots, not deleted.",
+  "unrun": [
+    "full native",
+    "6 browser jobs",
+    "P52",
+    "Q38",
+    "section7",
+    "P189 and GEO323 performance",
+    "final ledger and architecture"
+  ],
+  "started_utc": "2026-10-24T01:04:27.713901+00:00",
+  "ended_utc": "2026-10-24T01:04:33.962775+00:00",
+  "created_utc": "2026-10-24T01:07:30.854336+00:00"
+}
