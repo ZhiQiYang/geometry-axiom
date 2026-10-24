@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 00:08 UTC）
+## 唯一 current-state（2026-10-24 00:44 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -9,8 +9,8 @@
 | tracked `mutate.py --check` | L | 0 | 22:25:16–22 UTC 原命令，完整流在 final-L-start |
 | 原完整123帳本 | L | tracked／fullCLI／core-map／external-check 全0；outer0 | 23:00:25 UTC真終態；123筆／120自然execution heads皆L，114killed／5equivalent／1原允許crashed／3retired；完整原流封final-L-ledger-complete |
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
-| 完整 native | L | r1原exit1：4個ENOENT環境紅；同L三fixture已補齊、完整r2待跑 | 原全230列／5309=5304pass+4fail+1原允許WindowsGDI skip，1873.241s<35min；原完整流封final-L-native-r1-environment-failure |
-| canvas／assembly／documents／grid／space／timber | L | documents0；assembly0；grid0；space0；timber0；canvas RUNNING | documents47原assert全0／64.316s；assembly150原assert全0／191.692s；獨立checkout／埠／暫存，canvas獨占、原CI時限保留 |
+| 完整 native | L | r1原exit1：4個ENOENT環境紅；同L三fixture已補齊、完整r2 RUNNING（啟動紀錄，無終態判決） | 原全230列／5309=5304pass+4fail+1原允許WindowsGDI skip，1873.241s<35min；原完整流封final-L-native-r1-environment-failure |
+| canvas／assembly／documents／grid／space／timber | L | canvas0；assembly0；documents0；grid0；space0；timber0 | canvas2267原assert全0／1718.885s<35min，85 golden一致、零skip；P88=143；其餘五job各原收據已封，獨立checkout／埠／暫存、canvas獨占、原CI時限保留 |
 | P52／Q38／§7兩項／P-189 | L | §7 compiled0／axiom0，完整原件已公開；P52／Q38／P-189 UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | 全部UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
@@ -21,7 +21,7 @@
 
 b6 原全123已22:08:38 UTC真完成，生成前check1／完整CLI0／coremap0／externalcheck0，114killed／5equivalent／M20原允許crashed／3retired；1239原件與原JSON已封L的ledger-b6-complete。原4f4 ENOSPC、108筆／15未跑與CLI2原失敗保歷史。前次B3五原包47,120,357B及13865member公開於bea6f309，已獨立逐byte核對；M1現有D10b/I24/D29已採納，僅後續精確順序補文尚未literal寫入，QUESTIONS已改正。B2保守待裁決方案仍在QUESTIONS，不能自行放寬exact。
 
-L帳本已真終態並核對ROOT/SEED初末HEAD、tree、stage、refs、clean與1362歷史raw、175保全sidecars；ROOT `/tmp/train337-323-f64d638f-source` 的reader／RC已真終態釋放，native r1及§7均已終態釋放；同L補齊三fixture，r2待canvas終態後原完整重跑。SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 已由root建立六browser獨立checkout的只讀pool；SEED禁止回借mutator，原ROOT inode與它獨立。175對ELF及sidecar搬移歷史完整保留，builder自行判fingerprint，沒有搬判決。終態actual35760、身份/raw8220與package6776獨立核對只驗來源與原件，不是額外產品gate。
+L帳本已真終態並核對ROOT/SEED初末HEAD、tree、stage、refs、clean與1362歷史raw、175保全sidecars；ROOT `/tmp/train337-323-f64d638f-source` 的reader／RC已真終態釋放，native r1、§7及canvas均已終態；同L補齊三fixture後，r2已於00:38 UTC啟動原完整重跑，ROOT與共用cache由native獨占。SEED `/workspace/train337-ledger-cache-L-7af8c5d8/_bridge-work/7af8c5d80d34cb4f49d01ba67deb78a3a6d725db/repo` 已由root建立六browser獨立checkout的只讀pool；SEED禁止回借mutator，原ROOT inode與它獨立。175對ELF及sidecar搬移歷史完整保留，builder自行判fingerprint，沒有搬判決。終態actual35760、身份/raw8220與package6776獨立核對只驗來源與原件，不是額外產品gate。
 
 ## 並行工作
 
@@ -205,3 +205,11 @@ space原SPACE_RESULT 242/0、八組完整，229.754秒低於原15分鐘；timber
 ## 2026-10-24 00:08 UTC：native r1 四個環境失敗的原件與同L修復
 
 原230項完整執行的唯一紅列node:tests-js為737/733/4/0，四個readFileSync ENOENT對應L原有legacy6a.gcanvas、legacy6a-with-scene.gcanvas、legacy/base49-capacity.gcanvas三個fixture（其中一個用於兩案）；薄checkout的skip-worktree使三檔未物化。原r1完整exit1、完整Node stdout、3個原Gitblob、初始掃描器誤配及修正後literal閉包掃描全保。用原git sparse-checkout add --stdin精確補397,952B，HEAD／完整index tree保持L；只改物化及index stat/skip旗標，無產品／測試／expected修改。修復tool/outer0、actual104及獨立包333核對0、107原件封於final-L-native-fixture-environment-repair。literal掃描不保證計算型路徑皆完備，仍須原完整230項r2判官；目前r2未啟動，不以補檔0代替native綠。
+
+## 2026-10-24 00:44 UTC：完整 canvas 通過，六項 browser 同 L 收齊
+
+canvas 原完整 CDP_RESULT 為2267通過／0失敗、skipped=[]，85個golden section完全相符；P88=143、P73=69，原workflow與outer皆0。原elapsed1718.8848816149984秒，低於原35分鐘，沒有改斷言、golden或時限。原紀錄的1個uncaughtBrowserExceptions是P38故意注入fb-auto-probe，原EXPECTED標記及兩個P38檢查均通過，沒有UNEXPECTED EXCEPTION標記；transport/network故障注入診斷亦逐字保留，沒有宣稱例外欄位為0。
+
+完整742members／51,393,525原bytes封於final-L-browser-canvas，tar為10,485,838B、SHA256 4153cafa4e1a24b75368a31c4fe8c71ab7b8bb5dde056c55880820bb41b78dbc。包含原指令、結束碼、完整streams、環境、L來源、4張workflow截圖及5個本地artifact；本地保存不冒GitHub上傳。三個可重建ELF僅省略payload而保真hash與sidecar；82個Chrome cache葉列明省略且未刪除。前後checkout／pool守門、reaper均原0，獨立3712核對0只驗收據，不增加產品測試數。六項browser現已同L全0。
+
+native第二輪已在三個原fixture補齊後，依原完整230列入口重新啟動；final-L-native-r2-start只保存不變的啟動argv、原環境、來源SHA與launcher靜審，沒有封未完成streams，也不宣稱native通過。第一輪環境exit1保留。P52、Q38、P-189、#323 required-eight／PF3／timing／profile／memo仍UNRUN；B2原跨版本exact紅與B3待同L完整補驗仍未解除，沒有READY-TO-MERGE。
