@@ -1,6 +1,20 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24；F2bbe 的 R6 已收齊終態）
+## 唯一 current-state（2026-10-24；K provider hint 已合流，準備 R7）
+
+目前產品／測試合流來源 **M=`e321026fb9bc9bc19c54b8034af6e6eaec2857f9`**，已一般 merge 並 push 子來源 **S=`1449d430d1c4734bb1bc3a9f91f3851c845cc0f3`**。四個產品／測試葉與 S 完全相同；本次採用 M 實跑的衍生架構 report／receipt，採用後的可解析 SHA 才作為 R7 來源，不能把 M 或 S 的結果改標。
+
+修正沿既有 256-entry hint 對 provider token 做乘法混合，保留完整 key／provider equality、graph 有序內容、失效／清除／fallback 與 allocation 行為。外部同場景 shadow 先確認跨 provider 碰撞；單樣本的計數不宣稱 wall 改善。原 18 方法與相關 24 方法在 S 全綠、零 skip。整刀反證 warm lookup calls 為 0→16→0、正常 exit 0/1/0；十組既有鄰接控制及 full-provider／middle-byte 對照保留。完整 child 原件已另推其 E，稍後一般合入。
+
+架構三原裁判於 M exit 0/0/0，generic205／product18、604 inputs、334 owned／270 excluded、798 edges／0 diagnostics。九組原 guard 重新 0/1/0、neutral2 綠；manifest 937／55 與 scan bytes 不變，對前份 receipt 的 input delta 僅 K source.c。四檔原件、51 原命令流與 1755/0 獨審在 architecture-e321-complete/。本次只採用兩個實際有差的衍生檔，沒有改架構裁判或公理。
+
+R7 原五 stage／36 交錯樣本／四 profile 尚未執行。全帳本重產、完整 native、六 browser、P52、Q38(44)、§7、P189、required-eight/PF3、readers／RC／#314／Reading A 在此新來源均 UNRUN。R6 的 N64/main1.373156>1.3、N16/base1.043458>1 與三個跨版本 stdout 差仍是歷史紅燈，必須以原門檻確認是否解除；不重抽同源樣本挑綠、不刪診斷、不改 comparator。
+
+required CI 的既有原 failure annotation 明確是付款失敗或支出上限而未啟動，沒有正式替代接受紀錄；不以較早 run 代新 head。除了原 Linux Windows-GDI skip 外，零新增允許 skip。**目前不是 READY-TO-MERGE。**
+
+下一步：固定本次採用 SHA，獨立 checkout 執行 R7；同時公開已完成 R5／R6 的全部原件，維持唯一 current-state，其他歷史矩陣不作目前通過證明。
+
+### 歷史 R6 終態（來源 F2bbe；不可移標新 K 來源）
 
 固定產品／測試／架構產物來源 **F=`2bbe54f19b2d19e8a816530f0c4edca950629a34`**。後續普通 evidence 合流不改來源；獨立乾淨F checkout已一次跑完R6原prepare/build/compare/perf/profile，stage execution=0/0/1/0/0、累積CLI=0/0/1/1/1、outer1，原雙鎖正常釋放。全36交錯樣本保留，未重抽、未放寬門檻。
 

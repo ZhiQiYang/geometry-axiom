@@ -18,16 +18,16 @@
     "new W lexicon completeness audit"
   ],
   "headBinding": "All commands executed at the same clean source SHA; four derived outputs written outside source and excluded from executable closure.",
-  "createdUtc": "2026-10-24T05:25:47.904278+00:00",
+  "createdUtc": "2026-10-24T06:29:00.655320+00:00",
   "basis": "Original Linux receipt schema and original judges; unchanged 937-identifier manifest, full 604-source inventory, and fresh assertions against pinned historical 928 baseline.",
-  "sourceBaseHead": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-  "headObservedBefore": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-  "headObservedAfter": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+  "sourceBaseHead": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "headObservedBefore": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "headObservedAfter": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
   "manifestSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
-  "reportSha256": "de05ef0b509c432cb8f2f87d6f46f3a8cfac651ee2f114401427ff6c09bae8ef",
-  "inputClosureSha256": "bbef58c185e90d99db7cfcb95ddedf1ba4884c8361f8339fb7984c2281a52e91",
+  "reportSha256": "28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac",
+  "inputClosureSha256": "6ce0a6e52281613d069826a689b7a67d1268c5730932b43f88b35e66d29b9bf7",
   "counts": {
     "executableFiles": 604,
     "ownedSources": 334,
@@ -61,8 +61,8 @@
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
     "cwd": "/workspace/geometry-axiom",
-    "acceptance_sha": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-    "source_sha": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+    "acceptance_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+    "source_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
     "source_variant": "original architecture gate at fixed clean source",
     "environment": {
       "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -71,7 +71,7 @@
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
       "PYTHONOPTIMIZE": null,
-      "TMPDIR": "/workspace/geo337-8d2a-architecture-four-20261024/tmp",
+      "TMPDIR": "/tmp/geo337-e321-architecture-four-20261024/tmp",
       "CC": null,
       "CFLAGS": null,
       "CPPFLAGS": null,
@@ -83,13 +83,13 @@
       "GCC_EXEC_PREFIX": null,
       "COMPILER_PATH": null
     },
-    "started_epoch": 1792819513.5519218,
+    "started_epoch": 1792823304.5884902,
     "stdin_provided": false,
     "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "actual_process_returncode": 0,
     "timeout_expired": false,
-    "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000018",
-    "ended_epoch": 1792819518.355203,
+    "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000018",
+    "ended_epoch": 1792823309.677537,
     "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "stdout_bytes": 132559,
@@ -104,8 +104,8 @@
         "tests/test_architecture_contract.py"
       ],
       "cwd": "/workspace/geometry-axiom",
-      "acceptance_sha": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-      "source_sha": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+      "acceptance_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+      "source_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
       "source_variant": "original architecture gate at fixed clean source",
       "environment": {
         "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -114,7 +114,7 @@
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/workspace/geo337-8d2a-architecture-four-20261024/tmp",
+        "TMPDIR": "/tmp/geo337-e321-architecture-four-20261024/tmp",
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -126,15 +126,15 @@
         "GCC_EXEC_PREFIX": null,
         "COMPILER_PATH": null
       },
-      "started_epoch": 1792819518.3563669,
+      "started_epoch": 1792823309.6783307,
       "stdin_provided": false,
       "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "actual_process_returncode": 0,
       "timeout_expired": false,
-      "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000019",
-      "ended_epoch": 1792819518.8790376,
+      "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000019",
+      "ended_epoch": 1792823310.1472461,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "26354138bf1a0e358eee1683cd2459de09ab1d5dbecab4f4cc948f8c459f2c8f",
+      "stderr_sha256": "a277ff2c2cb958e2619a2b11533293dbaa00b762040eb1735528f4afa633f2f8",
       "stdout_bytes": 0,
       "stderr_bytes": 29577,
       "exitCode": 0,
@@ -142,7 +142,7 @@
       "passed": 205,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 0.427
+      "unittestSeconds": 0.371
     },
     {
       "command": [
@@ -151,8 +151,8 @@
         "tests/test_product_architecture.py"
       ],
       "cwd": "/workspace/geometry-axiom",
-      "acceptance_sha": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-      "source_sha": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+      "acceptance_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+      "source_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
       "source_variant": "original architecture gate at fixed clean source",
       "environment": {
         "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -161,7 +161,7 @@
         "PYTHONIOENCODING": "utf-8",
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONOPTIMIZE": null,
-        "TMPDIR": "/workspace/geo337-8d2a-architecture-four-20261024/tmp",
+        "TMPDIR": "/tmp/geo337-e321-architecture-four-20261024/tmp",
         "CC": null,
         "CFLAGS": null,
         "CPPFLAGS": null,
@@ -173,15 +173,15 @@
         "GCC_EXEC_PREFIX": null,
         "COMPILER_PATH": null
       },
-      "started_epoch": 1792819518.8800235,
+      "started_epoch": 1792823310.1480298,
       "stdin_provided": false,
       "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "actual_process_returncode": 0,
       "timeout_expired": false,
-      "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000020",
-      "ended_epoch": 1792819529.8562644,
+      "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000020",
+      "ended_epoch": 1792823321.481036,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "5b7a6640bd3227bfcdcb41df88c77eccf7d655f7786c6ae4f507716e391f412f",
+      "stderr_sha256": "e839aa453022d8ec6e9614c8c672983631311a3aecb741a706ff11faab0aaf37",
       "stdout_bytes": 0,
       "stderr_bytes": 118,
       "exitCode": 0,
@@ -189,7 +189,7 @@
       "passed": 18,
       "failed": 0,
       "skipped": 0,
-      "unittestSeconds": 10.893
+      "unittestSeconds": 11.232
     }
   ],
   "inputs": [
@@ -1115,7 +1115,7 @@
     },
     {
       "path": "geometry-core/kernel/source.c",
-      "sha256": "b5e6c4825c7c729c489a1bcd34a03c0b4b5a085de2c209ad7572e1b0849a6ddf"
+      "sha256": "64c7a6223be0e824232bc0ec0139a3728606fb9666a991a951b5aa9357cf3e09"
     },
     {
       "path": "geometry-core/kernel/source.h",
@@ -2619,8 +2619,8 @@
       "otherManifestFieldsEqual": true
     },
     "sourceClassificationsUnchanged": true,
-    "previousSource": "b9c9fb818f031828530994a4d66f1976da0d8138",
-    "previousArtifactCommit": "a22df116c7e9f6b7d074451f1c8052d59e7e4f3e",
+    "previousSource": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+    "previousArtifactCommit": "2bbe54f19b2d19e8a816530f0c4edca950629a34",
     "previousOutputs": {
       "product-architecture.json": {
         "bytes": 221953,
@@ -2633,14 +2633,14 @@
         "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
       },
       "PRODUCT-ARCHITECTURE.md": {
-        "bytes": 1159,
-        "rawSha256": "5cf002a54a777e5a2e90d79f55a9a79ddb9e59c1aaee948d17e45bf232701763",
-        "lfSha256": "5cf002a54a777e5a2e90d79f55a9a79ddb9e59c1aaee948d17e45bf232701763"
+        "bytes": 1469,
+        "rawSha256": "de05ef0b509c432cb8f2f87d6f46f3a8cfac651ee2f114401427ff6c09bae8ef",
+        "lfSha256": "de05ef0b509c432cb8f2f87d6f46f3a8cfac651ee2f114401427ff6c09bae8ef"
       },
       "product-architecture-receipt.json": {
-        "bytes": 123023,
-        "rawSha256": "cf48d2b2409b7ed4e6b7385c0b2129f5d72894c65e6ec5b26f827978065efa0e",
-        "lfSha256": "cf48d2b2409b7ed4e6b7385c0b2129f5d72894c65e6ec5b26f827978065efa0e"
+        "bytes": 132225,
+        "rawSha256": "1eb0ab7a70ffa65eb5022169cf3f1485259ec534c65e9887d83fa919d53342dd",
+        "lfSha256": "1eb0ab7a70ffa65eb5022169cf3f1485259ec534c65e9887d83fa919d53342dd"
       }
     },
     "executionSourceOutputs": {
@@ -2655,23 +2655,23 @@
         "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
       },
       "PRODUCT-ARCHITECTURE.md": {
-        "bytes": 1159,
-        "rawSha256": "5cf002a54a777e5a2e90d79f55a9a79ddb9e59c1aaee948d17e45bf232701763",
-        "lfSha256": "5cf002a54a777e5a2e90d79f55a9a79ddb9e59c1aaee948d17e45bf232701763"
+        "bytes": 1469,
+        "rawSha256": "de05ef0b509c432cb8f2f87d6f46f3a8cfac651ee2f114401427ff6c09bae8ef",
+        "lfSha256": "de05ef0b509c432cb8f2f87d6f46f3a8cfac651ee2f114401427ff6c09bae8ef"
       },
       "product-architecture-receipt.json": {
-        "bytes": 123023,
-        "rawSha256": "cf48d2b2409b7ed4e6b7385c0b2129f5d72894c65e6ec5b26f827978065efa0e",
-        "lfSha256": "cf48d2b2409b7ed4e6b7385c0b2129f5d72894c65e6ec5b26f827978065efa0e"
+        "bytes": 132225,
+        "rawSha256": "1eb0ab7a70ffa65eb5022169cf3f1485259ec534c65e9887d83fa919d53342dd",
+        "lfSha256": "1eb0ab7a70ffa65eb5022169cf3f1485259ec534c65e9887d83fa919d53342dd"
       }
     },
     "changedPriorInputs": [
       {
-        "path": "geometry-templates/woodworking/native/contact_world.c",
-        "sha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b"
+        "path": "geometry-core/kernel/source.c",
+        "sha256": "64c7a6223be0e824232bc0ec0139a3728606fb9666a991a951b5aa9357cf3e09"
       }
     ],
-    "sourceReceiptEvidenceDirectory": "/workspace/geo337-8d2a-architecture-four-20261024",
+    "sourceReceiptEvidenceDirectory": "/tmp/geo337-e321-architecture-four-20261024",
     "originalThreeGateExits": [
       0,
       0,
@@ -2682,17 +2682,17 @@
         "identifier": "WOOD_BOUNDARY_END_BARE_RC",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000021",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000021",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "WOOD_BOUNDARY_END_BARE_RC",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000022",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000022",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2700,26 +2700,26 @@
         "identifier": "WOOD_BOUNDARY_END_BARE_RC",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000023",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000023",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "WOOD_BOUNDARY_END_ORDINARY",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000024",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000024",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "WOOD_BOUNDARY_END_ORDINARY",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000025",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000025",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2727,26 +2727,26 @@
         "identifier": "WOOD_BOUNDARY_END_ORDINARY",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000026",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000026",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "WOOD_BOUNDARY_END_PARTIAL",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000027",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000027",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "WOOD_BOUNDARY_END_PARTIAL",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000028",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000028",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2754,26 +2754,26 @@
         "identifier": "WOOD_BOUNDARY_END_PARTIAL",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000029",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000029",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "WoodBoundaryEndAdmission",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000030",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000030",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "WoodBoundaryEndAdmission",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000031",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000031",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2781,26 +2781,26 @@
         "identifier": "WoodBoundaryEndAdmission",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000032",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000032",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_contact_boundary_end_admission",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000033",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000033",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_contact_boundary_end_admission",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000034",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000034",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2808,26 +2808,26 @@
         "identifier": "wood_contact_boundary_end_admission",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000035",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000035",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_contact_boundary_end_uses_member_facts",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000036",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000036",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_contact_boundary_end_uses_member_facts",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000037",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000037",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2835,26 +2835,26 @@
         "identifier": "wood_contact_boundary_end_uses_member_facts",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000038",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000038",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_contact_end_support_check",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000039",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000039",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_contact_end_support_check",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000040",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000040",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2862,26 +2862,26 @@
         "identifier": "wood_contact_end_support_check",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000041",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000041",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_reference_boundary_end",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000042",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000042",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_reference_boundary_end",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000043",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000043",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2889,26 +2889,26 @@
         "identifier": "wood_reference_boundary_end",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000044",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000044",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_reference_partial_ref_candidates",
         "phase": "fixed",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000045",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000045",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       },
       {
         "identifier": "wood_reference_partial_ref_candidates",
         "phase": "withdrawn",
         "exit": 1,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000046",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000046",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestSourceGitSHA": "ca7838e0f4950452b9befcf40899d606db9b81fa",
         "manifestRawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
       },
@@ -2916,9 +2916,9 @@
         "identifier": "wood_reference_partial_ref_candidates",
         "phase": "restored",
         "exit": 0,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000047",
-        "executionSourceSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "manifestSourceGitSHA": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000047",
+        "executionSourceSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "manifestSourceGitSHA": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "manifestRawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
       }
     ],
@@ -2935,8 +2935,8 @@
           "ca7838e0f4950452b9befcf40899d606db9b81fa:geometry-core/domain-decoupling/product-architecture.json"
         ],
         "cwd": "/workspace/geometry-axiom",
-        "acceptance_sha": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
-        "source_sha": "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+        "acceptance_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+        "source_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
         "source_variant": "Read pinned historical 928-identifier manifest; not the previous 937-identifier artifact",
         "environment": {
           "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
@@ -2945,7 +2945,7 @@
           "PYTHONIOENCODING": "utf-8",
           "PYTHONDONTWRITEBYTECODE": "1",
           "PYTHONOPTIMIZE": null,
-          "TMPDIR": "/workspace/geo337-8d2a-architecture-four-20261024/tmp",
+          "TMPDIR": "/tmp/geo337-e321-architecture-four-20261024/tmp",
           "CC": null,
           "CFLAGS": null,
           "CPPFLAGS": null,
@@ -2957,13 +2957,13 @@
           "GCC_EXEC_PREFIX": null,
           "COMPILER_PATH": null
         },
-        "started_epoch": 1792819512.981736,
+        "started_epoch": 1792823304.0260878,
         "stdin_provided": false,
         "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "actual_process_returncode": 0,
         "timeout_expired": false,
-        "directory": "/workspace/geo337-8d2a-architecture-four-20261024/subcommands/000008",
-        "ended_epoch": 1792819512.9847488,
+        "directory": "/tmp/geo337-e321-architecture-four-20261024/subcommands/000008",
+        "ended_epoch": 1792823304.0287821,
         "stdout_sha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 221591,
@@ -2999,8 +2999,8 @@
       "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
       "tests/test_product_architecture.py": "12e83386323afbffda89babcaea46eaa337ade1383f85cf63ec17e114238713e"
     },
-    "inputClosureSha256Before": "bbef58c185e90d99db7cfcb95ddedf1ba4884c8361f8339fb7984c2281a52e91",
-    "inputClosureSha256After": "bbef58c185e90d99db7cfcb95ddedf1ba4884c8361f8339fb7984c2281a52e91",
+    "inputClosureSha256Before": "6ce0a6e52281613d069826a689b7a67d1268c5730932b43f88b35e66d29b9bf7",
+    "inputClosureSha256After": "6ce0a6e52281613d069826a689b7a67d1268c5730932b43f88b35e66d29b9bf7",
     "protectedSsotBefore": {
       "公理層.md": {
         "bytes": 323066,
@@ -3042,23 +3042,23 @@
   },
   "nativeAcceptance": "Separate original receipts required; this architecture receipt does not certify runtime behavior.",
   "refreshDriver": {
-    "bytes": 16754,
-    "rawSha256": "c83dc3c006df535927e7e96cecacffc53c2dc1597e8816d7feb33c5567d46b12",
-    "lfSha256": "c83dc3c006df535927e7e96cecacffc53c2dc1597e8816d7feb33c5567d46b12",
-    "path": "/workspace/geo337-architecture-zero-delta-tool-20261024/refresh_architecture_zero_delta.py",
+    "bytes": 16730,
+    "rawSha256": "5b76f54d810a736e1008450eb2822f8c0d5a427cbd3e7d3138a578909203a7fb",
+    "lfSha256": "5b76f54d810a736e1008450eb2822f8c0d5a427cbd3e7d3138a578909203a7fb",
+    "path": "/workspace/geo337-architecture-k-source-delta-tool-20261024/refresh_architecture_k_source_delta.py",
     "argv": [
-      "/workspace/geo337-architecture-zero-delta-tool-20261024/refresh_architecture_zero_delta.py",
+      "/workspace/geo337-architecture-k-source-delta-tool-20261024/refresh_architecture_k_source_delta.py",
       "--root",
       "/workspace/geometry-axiom",
       "--sha",
-      "8d2a69421560b83c0b69f3e82db8f5e97ccc037b",
+      "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
       "--out",
-      "/workspace/geo337-8d2a-architecture-four-20261024",
+      "/tmp/geo337-e321-architecture-four-20261024",
       "--prior-source",
-      "b9c9fb818f031828530994a4d66f1976da0d8138"
+      "8d2a69421560b83c0b69f3e82db8f5e97ccc037b"
     ],
     "recorderSha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
-    "runDirectory": "/workspace/geo337-8d2a-architecture-four-20261024"
+    "runDirectory": "/tmp/geo337-e321-architecture-four-20261024"
   },
   "environment": {
     "safeVariables": {
@@ -3068,7 +3068,7 @@
       "PYTHONIOENCODING": "utf-8",
       "PYTHONDONTWRITEBYTECODE": "1",
       "PYTHONOPTIMIZE": null,
-      "TMPDIR": "/workspace/geo337-8d2a-architecture-four-20261024/tmp",
+      "TMPDIR": "/tmp/geo337-e321-architecture-four-20261024/tmp",
       "CC": null,
       "CFLAGS": null,
       "CPPFLAGS": null,

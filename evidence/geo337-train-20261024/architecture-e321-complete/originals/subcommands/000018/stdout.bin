@@ -1,0 +1,4340 @@
+{
+  "ok": true,
+  "sources": [
+    "current_geometry.c",
+    "geometry-app/application.js",
+    "geometry-app/geometry_app/__init__.py",
+    "geometry-app/geometry_app/bootstrap.py",
+    "geometry-app/geometry_app/kernel_errors.py",
+    "geometry-app/geometry_app/model_codec.py",
+    "geometry-app/geometry_app/model_common.py",
+    "geometry-app/geometry_app/model_geometry.py",
+    "geometry-app/geometry_app/model_native.py",
+    "geometry-app/geometry_app/model_profile_compat.py",
+    "geometry-app/geometry_app/model_runtime.py",
+    "geometry-app/geometry_app/model_sources.py",
+    "geometry-app/geometry_app/model_world.py",
+    "geometry-app/geometry_app/source_closure.py",
+    "geometry-app/native/app_candidate.c",
+    "geometry-app/native/app_candidate.h",
+    "geometry-app/native/candidate_unity.inc",
+    "geometry-app/native/definition_texts.h",
+    "geometry-app/native/document.h",
+    "geometry-app/native/domains.inc",
+    "geometry-app/native/enclosure_sources.inc",
+    "geometry-app/native/grid_adapter.inc",
+    "geometry-app/native/grid_context.inc",
+    "geometry-app/native/history.c",
+    "geometry-app/native/history.h",
+    "geometry-app/native/history_unity.inc",
+    "geometry-app/native/kernel_storage.h",
+    "geometry-app/native/legacy_json.inc",
+    "geometry-app/native/model_sources.inc",
+    "geometry-app/native/reference_sources.inc",
+    "geometry-app/native/stagger_facts.inc",
+    "geometry-app/native/versions_adapter.inc",
+    "geometry-app/native/woodworking_unity.inc",
+    "geometry-app/native/world_candidate.inc",
+    "geometry-app/native/world_validation.inc",
+    "geometry-core/assembly.inc",
+    "geometry-core/assembly_generation.inc",
+    "geometry-core/assembly_types.h",
+    "geometry-core/boundary_vertex_keys.inc",
+    "geometry-core/card_reference.inc",
+    "geometry-core/derived_placements.inc",
+    "geometry-core/engineering.inc",
+    "geometry-core/engineering_commands.inc",
+    "geometry-core/engineering_json.inc",
+    "geometry-core/engineering_types.h",
+    "geometry-core/finish_surface_types.h",
+    "geometry-core/finish_surfaces.inc",
+    "geometry-core/geometry_kernel/__init__.py",
+    "geometry-core/geometry_kernel/canonical.py",
+    "geometry-core/geometry_kernel/errors.py",
+    "geometry-core/geometry_kernel/evaluate.py",
+    "geometry-core/geometry_kernel/geometry.py",
+    "geometry-core/geometry_kernel/graph.py",
+    "geometry-core/geometry_kernel/session.py",
+    "geometry-core/geometry_kernel/transactions.py",
+    "geometry-core/geometry_kernel/types.py",
+    "geometry-core/grid_bindings.inc",
+    "geometry-core/grid_lattice.inc",
+    "geometry-core/grid_subdivision.inc",
+    "geometry-core/grid_subdivision_query.inc",
+    "geometry-core/grid_systems.inc",
+    "geometry-core/kernel/candidate.c",
+    "geometry-core/kernel/candidate.h",
+    "geometry-core/kernel/clip.c",
+    "geometry-core/kernel/clip.h",
+    "geometry-core/kernel/codec.c",
+    "geometry-core/kernel/codec.h",
+    "geometry-core/kernel/datums.c",
+    "geometry-core/kernel/datums.h",
+    "geometry-core/kernel/document.c",
+    "geometry-core/kernel/document.h",
+    "geometry-core/kernel/enclosure.c",
+    "geometry-core/kernel/enclosure.h",
+    "geometry-core/kernel/enclosure_sources.c",
+    "geometry-core/kernel/enclosure_sources.h",
+    "geometry-core/kernel/exact.c",
+    "geometry-core/kernel/exact.h",
+    "geometry-core/kernel/geometry.c",
+    "geometry-core/kernel/geometry.h",
+    "geometry-core/kernel/grid.c",
+    "geometry-core/kernel/grid.h",
+    "geometry-core/kernel/grid_store.c",
+    "geometry-core/kernel/grid_store.h",
+    "geometry-core/kernel/guides.c",
+    "geometry-core/kernel/guides.h",
+    "geometry-core/kernel/internal/datums.h",
+    "geometry-core/kernel/internal/document.h",
+    "geometry-core/kernel/internal/enclosures.h",
+    "geometry-core/kernel/internal/grid_store.h",
+    "geometry-core/kernel/internal/guides.h",
+    "geometry-core/kernel/internal/named_values.h",
+    "geometry-core/kernel/internal/parameter_store.h",
+    "geometry-core/kernel/internal/placements.h",
+    "geometry-core/kernel/internal/regions.h",
+    "geometry-core/kernel/internal/versions.h",
+    "geometry-core/kernel/kernel_unity.inc",
+    "geometry-core/kernel/linear.c",
+    "geometry-core/kernel/linear.h",
+    "geometry-core/kernel/linear_definition_sources.c",
+    "geometry-core/kernel/linear_definition_sources.h",
+    "geometry-core/kernel/named_values.c",
+    "geometry-core/kernel/named_values.h",
+    "geometry-core/kernel/parameter_sources.c",
+    "geometry-core/kernel/parameter_sources.h",
+    "geometry-core/kernel/parameters.c",
+    "geometry-core/kernel/parameters.h",
+    "geometry-core/kernel/placement_sources.c",
+    "geometry-core/kernel/placement_sources.h",
+    "geometry-core/kernel/placements.c",
+    "geometry-core/kernel/placements.h",
+    "geometry-core/kernel/region_key_sources.c",
+    "geometry-core/kernel/region_key_sources.h",
+    "geometry-core/kernel/regions.c",
+    "geometry-core/kernel/regions.h",
+    "geometry-core/kernel/source.c",
+    "geometry-core/kernel/source.h",
+    "geometry-core/kernel/types.h",
+    "geometry-core/kernel/version_sources.c",
+    "geometry-core/kernel/version_sources.h",
+    "geometry-core/kernel/versions.c",
+    "geometry-core/kernel/versions.h",
+    "geometry-core/model_base.c",
+    "geometry-core/modeling/__init__.py",
+    "geometry-core/modeling/_host.py",
+    "geometry-core/modeling/base.py",
+    "geometry-core/modeling/common.py",
+    "geometry-core/modeling/engine.py",
+    "geometry-core/modeling/geometry.py",
+    "geometry-core/modeling/kernel_errors.py",
+    "geometry-core/modeling/section_profile.py",
+    "geometry-core/modeling_cli.py",
+    "geometry-core/panel_fill_layout.inc",
+    "geometry-core/panel_fill_support.inc",
+    "geometry-core/panel_layout_math.h",
+    "geometry-core/parameter_types.h",
+    "geometry-core/parameters.inc",
+    "geometry-core/reference_types.h",
+    "geometry-core/references.inc",
+    "geometry-core/rule_cases/__init__.py",
+    "geometry-core/rule_cases/__main__.py",
+    "geometry-core/rule_cases/catalog.py",
+    "geometry-core/rule_cases/definition.py",
+    "geometry-core/rule_cases/executor.py",
+    "geometry-core/rule_cases/request.py",
+    "geometry-core/rule_cases/runtime.py",
+    "geometry-core/section_profile_conversion.inc",
+    "geometry-core/section_profile_types.h",
+    "geometry-core/section_profiles.inc",
+    "geometry-core/subgrid_commands.inc",
+    "geometry-core/subgrid_rebind.inc",
+    "geometry-core/subgrid_world.inc",
+    "geometry-core/subgrids.inc",
+    "geometry-core/transactions.inc",
+    "geometry-guide/axiom_examples.py",
+    "geometry-guide/axiom_matrix.py",
+    "geometry-guide/axiom_transcripts.py",
+    "geometry-guide/check_panels.py",
+    "geometry-guide/current_geometry-導讀.html",
+    "geometry-guide/make_guide.py",
+    "geometry-guide/sync_axiom_reader.py",
+    "geometry-guide/witness.py",
+    "geometry-guide/公理層-閱讀器.html",
+    "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+    "geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+    "geometry-templates/rectangular-grid/rectangular_grid.c",
+    "geometry-templates/rectangular-grid/rectangular_grid.h",
+    "geometry-templates/woodworking/frontend.js",
+    "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+    "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+    "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+    "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+    "geometry-templates/woodworking/native/assembly.c",
+    "geometry-templates/woodworking/native/assembly.h",
+    "geometry-templates/woodworking/native/assembly_sources.c",
+    "geometry-templates/woodworking/native/assembly_sources.h",
+    "geometry-templates/woodworking/native/boundary_policy.c",
+    "geometry-templates/woodworking/native/boundary_policy.h",
+    "geometry-templates/woodworking/native/contact_sources.c",
+    "geometry-templates/woodworking/native/contact_sources.h",
+    "geometry-templates/woodworking/native/contact_world.c",
+    "geometry-templates/woodworking/native/contact_world.h",
+    "geometry-templates/woodworking/native/contacts.c",
+    "geometry-templates/woodworking/native/contacts.h",
+    "geometry-templates/woodworking/native/cut_list.c",
+    "geometry-templates/woodworking/native/cut_list.h",
+    "geometry-templates/woodworking/native/definition_sources.c",
+    "geometry-templates/woodworking/native/definition_sources.h",
+    "geometry-templates/woodworking/native/derived_placement.c",
+    "geometry-templates/woodworking/native/derived_placement.h",
+    "geometry-templates/woodworking/native/document.h",
+    "geometry-templates/woodworking/native/domain_values.h",
+    "geometry-templates/woodworking/native/engineering.c",
+    "geometry-templates/woodworking/native/engineering.h",
+    "geometry-templates/woodworking/native/engineering_operations.c",
+    "geometry-templates/woodworking/native/engineering_operations.h",
+    "geometry-templates/woodworking/native/engineering_sources.c",
+    "geometry-templates/woodworking/native/engineering_sources.h",
+    "geometry-templates/woodworking/native/finish.c",
+    "geometry-templates/woodworking/native/finish.h",
+    "geometry-templates/woodworking/native/finish_sources.c",
+    "geometry-templates/woodworking/native/finish_sources.h",
+    "geometry-templates/woodworking/native/grid_application.c",
+    "geometry-templates/woodworking/native/grid_application.h",
+    "geometry-templates/woodworking/native/grid_cells.c",
+    "geometry-templates/woodworking/native/grid_definition_codec.c",
+    "geometry-templates/woodworking/native/grid_definition_codec.h",
+    "geometry-templates/woodworking/native/grid_rules.c",
+    "geometry-templates/woodworking/native/grid_sources.c",
+    "geometry-templates/woodworking/native/grid_sources.h",
+    "geometry-templates/woodworking/native/member_declaration.c",
+    "geometry-templates/woodworking/native/member_declaration.h",
+    "geometry-templates/woodworking/native/member_placement.h",
+    "geometry-templates/woodworking/native/member_reference.c",
+    "geometry-templates/woodworking/native/member_reference.h",
+    "geometry-templates/woodworking/native/members.c",
+    "geometry-templates/woodworking/native/members.h",
+    "geometry-templates/woodworking/native/obstacles.h",
+    "geometry-templates/woodworking/native/panel_layout.c",
+    "geometry-templates/woodworking/native/panel_layout.h",
+    "geometry-templates/woodworking/native/panel_support.c",
+    "geometry-templates/woodworking/native/panel_support.h",
+    "geometry-templates/woodworking/native/section_profile.c",
+    "geometry-templates/woodworking/native/section_profile.h",
+    "geometry-templates/woodworking/native/section_profile_sources.c",
+    "geometry-templates/woodworking/native/section_profile_sources.h",
+    "geometry-templates/woodworking/native/supports.c",
+    "geometry-templates/woodworking/native/supports.h",
+    "geometry-templates/woodworking/native/world_validation.c",
+    "geometry-templates/woodworking/native/world_validation.h",
+    "geometry-web/app.js",
+    "geometry-web/archive_wait_trace.py",
+    "geometry-web/assembly-workspace.js",
+    "geometry-web/assembly_bridge.inc",
+    "geometry-web/context-menu-shell.js",
+    "geometry-web/context-operations.js",
+    "geometry-web/cursor-v2.js",
+    "geometry-web/document-cases.js",
+    "geometry-web/document-format.js",
+    "geometry-web/documents.js",
+    "geometry-web/engineering-adapter.js",
+    "geometry-web/engineering-workspace.js",
+    "geometry-web/engineering_bridge.inc",
+    "geometry-web/engineering_transport.py",
+    "geometry-web/evidence-links-app.js",
+    "geometry-web/evidence-links-ui.js",
+    "geometry-web/evidence-links.js",
+    "geometry-web/face-context-menu.js",
+    "geometry-web/face-menu-icons.js",
+    "geometry-web/feature-attachments.js",
+    "geometry-web/feedback.js",
+    "geometry-web/feedback_cli.py",
+    "geometry-web/feedback_store.py",
+    "geometry-web/grid-anchor-positions.js",
+    "geometry-web/grid-inspector.js",
+    "geometry-web/grid-rule-lines.js",
+    "geometry-web/grid-system-workspace.js",
+    "geometry-web/grid-trial.js",
+    "geometry-web/grid_binding_bridge.inc",
+    "geometry-web/grid_subdivision_bridge.inc",
+    "geometry-web/grid_system_bridge.inc",
+    "geometry-web/index.html",
+    "geometry-web/model-update-app.js",
+    "geometry-web/model-update.js",
+    "geometry-web/model-viewer.js",
+    "geometry-web/model_update.py",
+    "geometry-web/native-transport.js",
+    "geometry-web/native_context.py",
+    "geometry-web/panel_fill_bridge.inc",
+    "geometry-web/panel_layout_bridge.inc",
+    "geometry-web/parameter_bridge.inc",
+    "geometry-web/parameters.js",
+    "geometry-web/polydraft.js",
+    "geometry-web/prepare_wait_trace.py",
+    "geometry-web/project-store.js",
+    "geometry-web/project-ui.js",
+    "geometry-web/reference-display.js",
+    "geometry-web/reference-ui.js",
+    "geometry-web/reference-workspace.js",
+    "geometry-web/reference_bridge.inc",
+    "geometry-web/room-collection-workspace.js",
+    "geometry-web/room-collection.js",
+    "geometry-web/room-outline-worker.js",
+    "geometry-web/room-outline-workspace.js",
+    "geometry-web/room-outline.js",
+    "geometry-web/rule-case-data.js",
+    "geometry-web/rule-case-host.js",
+    "geometry-web/rule-case-workbench.js",
+    "geometry-web/rule_case_host.py",
+    "geometry-web/rule_case_workbench_adapter.py",
+    "geometry-web/rule_case_workbench_standalone.py",
+    "geometry-web/runtime_version.py",
+    "geometry-web/scenario-catalog.js",
+    "geometry-web/scenario-diff.js",
+    "geometry-web/scenario-integration.js",
+    "geometry-web/scenario-snapshots.js",
+    "geometry-web/scenario-workspace.js",
+    "geometry-web/scenario_verify.py",
+    "geometry-web/scene-import-bridge.inc",
+    "geometry-web/section-profile-workspace.js",
+    "geometry-web/section_profile_bridge.inc",
+    "geometry-web/section_profile_diagnostics.inc",
+    "geometry-web/section_profile_source_index.inc",
+    "geometry-web/section_profile_transport.py",
+    "geometry-web/serve.py",
+    "geometry-web/source-inspector-app.js",
+    "geometry-web/source-inspector-bridge.inc",
+    "geometry-web/source-inspector.js",
+    "geometry-web/source-plane.js",
+    "geometry-web/source_inspector_transport.py",
+    "geometry-web/space-workspace.js",
+    "geometry-web/space_modeling.py",
+    "geometry-web/start_local.py",
+    "geometry-web/timber-schedule.js",
+    "geometry-web/timber-supports.js",
+    "geometry-web/timber_support_projection.inc",
+    "geometry-web/vendor/fflate/umd/index.js",
+    "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+    "geometry-web/vendor/pdfjs-dist/build/pdf.worker.mjs",
+    "geometry-web/vendor/pdfjs-dist/wasm/jbig2_nowasm_fallback.js",
+    "geometry-web/vendor/pdfjs-dist/wasm/openjpeg_nowasm_fallback.js",
+    "geometry-web/vendor/pdfjs-dist/wasm/quickjs-eval.js",
+    "geometry-web/wait_trace.py",
+    "geometry-web/web_bridge.c",
+    "geometry-web/work-manager/adapter.py",
+    "geometry-web/work-manager/cli.py",
+    "geometry-web/work-manager/screenshot.py",
+    "geometry-web/work-manager/server.py",
+    "geometry-web/work-manager/static/app.js",
+    "geometry-web/work-manager/static/index.html",
+    "geometry-web/work-manager/store.py",
+    "geometry-web/workspace-guidance.js",
+    "geometry-web/workspace-shell.js",
+    "tests/__init__.py",
+    "tests/binaries.py"
+  ],
+  "trustedSourcesNotParsed": [
+    "geometry-web/vendor/fflate/umd/index.js",
+    "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+    "geometry-web/vendor/pdfjs-dist/build/pdf.worker.mjs",
+    "geometry-web/vendor/pdfjs-dist/wasm/jbig2_nowasm_fallback.js",
+    "geometry-web/vendor/pdfjs-dist/wasm/openjpeg_nowasm_fallback.js",
+    "geometry-web/vendor/pdfjs-dist/wasm/quickjs-eval.js"
+  ],
+  "edges": [
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/document.h",
+      "line": 14
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/domains.inc",
+      "line": 2795
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/enclosure_sources.inc",
+      "line": 7544
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/grid_adapter.inc",
+      "line": 2797
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/grid_context.inc",
+      "line": 6202
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/history_unity.inc",
+      "line": 2952
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/legacy_json.inc",
+      "line": 12
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/stagger_facts.inc",
+      "line": 7542
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/woodworking_unity.inc",
+      "line": 13
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/world_candidate.inc",
+      "line": 3024
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/world_validation.inc",
+      "line": 6205
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/assembly.inc",
+      "line": 7551
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/assembly_generation.inc",
+      "line": 7552
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/assembly_types.h",
+      "line": 650
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/boundary_vertex_keys.inc",
+      "line": 7546
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/derived_placements.inc",
+      "line": 7556
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/engineering.inc",
+      "line": 7545
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/engineering_commands.inc",
+      "line": 7550
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/engineering_types.h",
+      "line": 649
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/finish_surface_types.h",
+      "line": 652
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/finish_surfaces.inc",
+      "line": 7554
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/grid_bindings.inc",
+      "line": 7547
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/grid_lattice.inc",
+      "line": 893
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/grid_subdivision.inc",
+      "line": 7548
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/grid_subdivision_query.inc",
+      "line": 7549
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/grid_systems.inc",
+      "line": 7216
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/kernel/internal/document.h",
+      "line": 2787
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/kernel/kernel_unity.inc",
+      "line": 11
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/panel_fill_layout.inc",
+      "line": 7555
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/panel_fill_support.inc",
+      "line": 7557
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/panel_layout_math.h",
+      "line": 892
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/parameter_types.h",
+      "line": 648
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/parameters.inc",
+      "line": 7541
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/reference_types.h",
+      "line": 647
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/references.inc",
+      "line": 7543
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/section_profile_types.h",
+      "line": 651
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/section_profiles.inc",
+      "line": 7553
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/subgrid_commands.inc",
+      "line": 7526
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/subgrid_rebind.inc",
+      "line": 8562
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/subgrid_world.inc",
+      "line": 6203
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/subgrids.inc",
+      "line": 944
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-core/transactions.inc",
+      "line": 9998
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-templates/woodworking/native/contact_world.h",
+      "line": 5758
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-templates/woodworking/native/cut_list.h",
+      "line": 10151
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-templates/woodworking/native/domain_values.h",
+      "line": 159
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 889
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-templates/woodworking/native/member_declaration.h",
+      "line": 7082
+    },
+    {
+      "source": "geometry-app/application.js",
+      "target": "geometry-templates/woodworking/frontend.js",
+      "line": 5
+    },
+    {
+      "source": "geometry-app/geometry_app/bootstrap.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/bootstrap.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 16
+    },
+    {
+      "source": "geometry-app/geometry_app/bootstrap.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 16
+    },
+    {
+      "source": "geometry-app/geometry_app/bootstrap.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-app/geometry_app/bootstrap.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-app/geometry_app/kernel_errors.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/kernel_errors.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-app/geometry_app/kernel_errors.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-app/geometry_app/model_codec.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/model_codec.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-app/geometry_app/model_codec.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 76
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-app/geometry_app/kernel_errors.py",
+      "line": 76
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 75
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 84
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 93
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-core/geometry_kernel/canonical.py",
+      "line": 84
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-core/geometry_kernel/canonical.py",
+      "line": 93
+    },
+    {
+      "source": "geometry-app/geometry_app/model_common.py",
+      "target": "geometry-core/geometry_kernel/errors.py",
+      "line": 75
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 12
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-app/geometry_app/kernel_errors.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 12
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 10
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 11
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-core/geometry_kernel/errors.py",
+      "line": 10
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-core/geometry_kernel/geometry.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-app/geometry_app/model_geometry.py",
+      "target": "geometry-core/geometry_kernel/types.py",
+      "line": 11
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 19
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 193
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 255
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/bootstrap.py",
+      "line": 193
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/model_sources.py",
+      "line": 255
+    },
+    {
+      "source": "geometry-app/geometry_app/model_native.py",
+      "target": "geometry-app/geometry_app/source_closure.py",
+      "line": 19
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/bootstrap.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/kernel_errors.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-app/geometry_app/model_geometry.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-app/geometry_app/model_profile_compat.py",
+      "target": "geometry-core/geometry_kernel/geometry.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 17
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 20
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 22
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/kernel_errors.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/model_codec.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 17
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/model_geometry.py",
+      "line": 20
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-app/geometry_app/model_sources.py",
+      "line": 22
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-app/geometry_app/model_runtime.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 10
+    },
+    {
+      "source": "geometry-app/geometry_app/model_sources.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/model_sources.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-app/geometry_app/model_sources.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-app/geometry_app/model_sources.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 14
+    },
+    {
+      "source": "geometry-app/geometry_app/model_sources.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 19
+    },
+    {
+      "source": "geometry-app/geometry_app/model_sources.py",
+      "target": "geometry-core/geometry_kernel/types.py",
+      "line": 19
+    },
+    {
+      "source": "geometry-app/geometry_app/model_world.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/model_world.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-app/geometry_app/model_world.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-app/geometry_app/model_world.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-app/geometry_app/model_world.py",
+      "target": "geometry-app/geometry_app/source_closure.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-app/geometry_app/model_world.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-app/geometry_app/model_world.py",
+      "target": "geometry-core/geometry_kernel/transactions.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-app/geometry_app/source_closure.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/geometry_app/source_closure.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 23
+    },
+    {
+      "source": "geometry-app/native/app_candidate.c",
+      "target": "geometry-app/native/app_candidate.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/native/app_candidate.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-app/native/app_candidate.h",
+      "target": "geometry-core/kernel/candidate.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-app/native/candidate_unity.inc",
+      "target": "geometry-app/native/app_candidate.c",
+      "line": 7
+    },
+    {
+      "source": "geometry-app/native/candidate_unity.inc",
+      "target": "geometry-app/native/app_candidate.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-app/native/document.h",
+      "target": "geometry-app/native/definition_texts.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-app/native/document.h",
+      "target": "geometry-core/kernel/document.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-app/native/document.h",
+      "target": "geometry-templates/woodworking/native/document.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-app/native/history.c",
+      "target": "geometry-app/native/history.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-app/native/history_unity.inc",
+      "target": "geometry-app/native/history.c",
+      "line": 5
+    },
+    {
+      "source": "geometry-app/native/history_unity.inc",
+      "target": "geometry-app/native/history.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-app/native/kernel_storage.h",
+      "target": "geometry-app/native/document.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-app/native/kernel_storage.h",
+      "target": "geometry-core/kernel/internal/document.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-app/native/legacy_json.inc",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/assembly.c",
+      "line": 52
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/assembly.h",
+      "line": 22
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/assembly_sources.c",
+      "line": 53
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/assembly_sources.h",
+      "line": 23
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/boundary_policy.c",
+      "line": 41
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/boundary_policy.h",
+      "line": 14
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/contact_sources.c",
+      "line": 36
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/contact_sources.h",
+      "line": 9
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/contact_world.c",
+      "line": 35
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/contact_world.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/contacts.c",
+      "line": 34
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/contacts.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/cut_list.c",
+      "line": 37
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/cut_list.h",
+      "line": 10
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/definition_sources.c",
+      "line": 39
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/definition_sources.h",
+      "line": 12
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/derived_placement.c",
+      "line": 55
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/derived_placement.h",
+      "line": 25
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/engineering.c",
+      "line": 42
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 15
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/engineering_operations.c",
+      "line": 63
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/engineering_operations.h",
+      "line": 17
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/engineering_sources.c",
+      "line": 46
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/engineering_sources.h",
+      "line": 16
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/finish.c",
+      "line": 54
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/finish.h",
+      "line": 24
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/finish_sources.c",
+      "line": 56
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/finish_sources.h",
+      "line": 26
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/grid_application.c",
+      "line": 57
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 27
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/grid_cells.c",
+      "line": 61
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/grid_definition_codec.c",
+      "line": 59
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/grid_definition_codec.h",
+      "line": 29
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/grid_rules.c",
+      "line": 62
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/grid_sources.c",
+      "line": 58
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/grid_sources.h",
+      "line": 28
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/member_declaration.c",
+      "line": 38
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/member_declaration.h",
+      "line": 11
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/member_reference.c",
+      "line": 60
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/member_reference.h",
+      "line": 30
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/members.c",
+      "line": 32
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/panel_layout.c",
+      "line": 48
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/panel_layout.h",
+      "line": 18
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/panel_support.c",
+      "line": 49
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/panel_support.h",
+      "line": 19
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/section_profile.c",
+      "line": 50
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/section_profile.h",
+      "line": 20
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/section_profile_sources.c",
+      "line": 51
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/section_profile_sources.h",
+      "line": 21
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/supports.c",
+      "line": 33
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/supports.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/world_validation.c",
+      "line": 40
+    },
+    {
+      "source": "geometry-app/native/woodworking_unity.inc",
+      "target": "geometry-templates/woodworking/native/world_validation.h",
+      "line": 13
+    },
+    {
+      "source": "geometry-app/native/world_candidate.inc",
+      "target": "geometry-app/native/candidate_unity.inc",
+      "line": 3
+    },
+    {
+      "source": "geometry-app/native/world_validation.inc",
+      "target": "geometry-templates/woodworking/native/world_validation.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/assembly_types.h",
+      "target": "geometry-templates/woodworking/native/assembly.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/derived_placements.inc",
+      "target": "geometry-templates/woodworking/native/derived_placement.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/engineering.inc",
+      "target": "geometry-app/native/versions_adapter.inc",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/engineering.inc",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/engineering_commands.inc",
+      "target": "geometry-core/card_reference.inc",
+      "line": 35
+    },
+    {
+      "source": "geometry-core/engineering_commands.inc",
+      "target": "geometry-templates/woodworking/native/engineering_operations.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/engineering_json.inc",
+      "target": "geometry-app/native/legacy_json.inc",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/engineering_json.inc",
+      "target": "geometry-core/kernel/codec.c",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/engineering_types.h",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/finish_surface_types.h",
+      "target": "geometry-templates/woodworking/native/finish.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/finish_surfaces.inc",
+      "target": "geometry-templates/woodworking/native/finish.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 15
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 16
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/canonical.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/errors.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/evaluate.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/graph.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/session.py",
+      "line": 16
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/transactions.py",
+      "line": 15
+    },
+    {
+      "source": "geometry-core/geometry_kernel/__init__.py",
+      "target": "geometry-core/geometry_kernel/types.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/geometry_kernel/canonical.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/geometry_kernel/canonical.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/geometry_kernel/canonical.py",
+      "target": "geometry-core/geometry_kernel/errors.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/geometry_kernel/errors.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 10
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/errors.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/geometry.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/graph.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/geometry_kernel/evaluate.py",
+      "target": "geometry-core/geometry_kernel/types.py",
+      "line": 10
+    },
+    {
+      "source": "geometry-core/geometry_kernel/geometry.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/geometry_kernel/geometry.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 14
+    },
+    {
+      "source": "geometry-core/geometry_kernel/geometry.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 15
+    },
+    {
+      "source": "geometry-core/geometry_kernel/geometry.py",
+      "target": "geometry-core/geometry_kernel/errors.py",
+      "line": 14
+    },
+    {
+      "source": "geometry-core/geometry_kernel/geometry.py",
+      "target": "geometry-core/geometry_kernel/types.py",
+      "line": 15
+    },
+    {
+      "source": "geometry-core/geometry_kernel/graph.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/geometry_kernel/graph.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/geometry_kernel/graph.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/geometry_kernel/graph.py",
+      "target": "geometry-core/geometry_kernel/errors.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/geometry_kernel/graph.py",
+      "target": "geometry-core/geometry_kernel/types.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/canonical.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/evaluate.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/graph.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/geometry_kernel/session.py",
+      "target": "geometry-core/geometry_kernel/transactions.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/geometry_kernel/transactions.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/geometry_kernel/types.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/geometry_kernel/types.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-core/geometry_kernel/types.py",
+      "target": "geometry-core/geometry_kernel/errors.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-core/kernel/candidate.c",
+      "target": "geometry-core/kernel/candidate.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/candidate.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/candidate.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/clip.c",
+      "target": "geometry-core/kernel/clip.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/clip.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/codec.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/datums.c",
+      "target": "geometry-core/kernel/internal/datums.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/datums.h",
+      "target": "geometry-core/kernel/linear.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/document.c",
+      "target": "geometry-core/kernel/internal/document.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/datums.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/enclosure.h",
+      "line": 14
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/grid_store.h",
+      "line": 12
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/guides.h",
+      "line": 9
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/named_values.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/parameters.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/placements.h",
+      "line": 11
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/regions.h",
+      "line": 10
+    },
+    {
+      "source": "geometry-core/kernel/document.h",
+      "target": "geometry-core/kernel/versions.h",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/kernel/enclosure.c",
+      "target": "geometry-core/kernel/internal/enclosures.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/enclosure.h",
+      "target": "geometry-core/kernel/placements.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/enclosure_sources.c",
+      "target": "geometry-core/kernel/enclosure_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/enclosure_sources.h",
+      "target": "geometry-core/kernel/enclosure.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/enclosure_sources.h",
+      "target": "geometry-core/kernel/placement_sources.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/exact.c",
+      "target": "geometry-core/kernel/exact.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/exact.h",
+      "target": "geometry-core/kernel/types.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/geometry.c",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/geometry.h",
+      "target": "geometry-core/kernel/types.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/kernel/grid.c",
+      "target": "geometry-core/kernel/grid.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/grid.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/grid_store.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/grid_store.c",
+      "target": "geometry-core/kernel/internal/grid_store.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/grid_store.h",
+      "target": "geometry-core/kernel/grid.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/grid_store.h",
+      "target": "geometry-core/kernel/parameters.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/guides.c",
+      "target": "geometry-core/kernel/internal/guides.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/guides.h",
+      "target": "geometry-core/kernel/datums.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/internal/datums.h",
+      "target": "geometry-core/kernel/datums.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/document.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/datums.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/enclosures.h",
+      "line": 12
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/grid_store.h",
+      "line": 10
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/guides.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/named_values.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/parameter_store.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/placements.h",
+      "line": 9
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/regions.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/kernel/internal/document.h",
+      "target": "geometry-core/kernel/internal/versions.h",
+      "line": 11
+    },
+    {
+      "source": "geometry-core/kernel/internal/enclosures.h",
+      "target": "geometry-core/kernel/enclosure.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/internal/grid_store.h",
+      "target": "geometry-core/kernel/grid_store.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/internal/guides.h",
+      "target": "geometry-core/kernel/guides.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/internal/named_values.h",
+      "target": "geometry-core/kernel/named_values.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/internal/parameter_store.h",
+      "target": "geometry-core/kernel/parameters.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/internal/placements.h",
+      "target": "geometry-core/kernel/placements.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/internal/regions.h",
+      "target": "geometry-core/kernel/regions.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/internal/versions.h",
+      "target": "geometry-core/kernel/versions.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/candidate.c",
+      "line": 42
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/candidate.h",
+      "line": 17
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/clip.c",
+      "line": 34
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/clip.h",
+      "line": 9
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/codec.c",
+      "line": 31
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/datums.c",
+      "line": 40
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/datums.h",
+      "line": 15
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/document.c",
+      "line": 54
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/document.h",
+      "line": 29
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/enclosure.c",
+      "line": 52
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/enclosure.h",
+      "line": 27
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/enclosure_sources.c",
+      "line": 53
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/enclosure_sources.h",
+      "line": 28
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/exact.c",
+      "line": 32
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/exact.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/geometry.c",
+      "line": 33
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/grid.c",
+      "line": 35
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/grid.h",
+      "line": 10
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/grid_store.c",
+      "line": 51
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/grid_store.h",
+      "line": 26
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/guides.c",
+      "line": 50
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/guides.h",
+      "line": 25
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/linear.c",
+      "line": 38
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/linear.h",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/linear_definition_sources.c",
+      "line": 48
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/linear_definition_sources.h",
+      "line": 23
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/named_values.c",
+      "line": 39
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/named_values.h",
+      "line": 14
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/parameter_sources.c",
+      "line": 37
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/parameter_sources.h",
+      "line": 12
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/parameters.c",
+      "line": 36
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/parameters.h",
+      "line": 11
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/placement_sources.c",
+      "line": 44
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/placement_sources.h",
+      "line": 19
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/placements.c",
+      "line": 43
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/placements.h",
+      "line": 18
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/region_key_sources.c",
+      "line": 47
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/region_key_sources.h",
+      "line": 22
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/regions.c",
+      "line": 46
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/regions.h",
+      "line": 21
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/source.c",
+      "line": 41
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/source.h",
+      "line": 16
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/version_sources.c",
+      "line": 49
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/version_sources.h",
+      "line": 24
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/versions.c",
+      "line": 45
+    },
+    {
+      "source": "geometry-core/kernel/kernel_unity.inc",
+      "target": "geometry-core/kernel/versions.h",
+      "line": 20
+    },
+    {
+      "source": "geometry-core/kernel/linear.c",
+      "target": "geometry-core/kernel/linear.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/linear.h",
+      "target": "geometry-core/kernel/exact.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/linear.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/kernel/linear_definition_sources.c",
+      "target": "geometry-core/kernel/linear_definition_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/linear_definition_sources.h",
+      "target": "geometry-core/kernel/guides.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/linear_definition_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/kernel/named_values.c",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/named_values.c",
+      "target": "geometry-core/kernel/internal/named_values.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/named_values.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/parameter_sources.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/parameter_sources.c",
+      "target": "geometry-core/kernel/internal/parameter_store.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/parameter_sources.c",
+      "target": "geometry-core/kernel/parameter_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/parameter_sources.h",
+      "target": "geometry-core/kernel/parameters.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/parameter_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/kernel/parameters.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/parameters.c",
+      "target": "geometry-core/kernel/internal/parameter_store.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/kernel/parameters.c",
+      "target": "geometry-core/kernel/parameters.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/parameters.h",
+      "target": "geometry-core/kernel/exact.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/kernel/parameters.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/placement_sources.c",
+      "target": "geometry-core/kernel/placement_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/placement_sources.h",
+      "target": "geometry-core/kernel/placements.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/placement_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/kernel/placements.c",
+      "target": "geometry-core/kernel/internal/placements.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/placements.h",
+      "target": "geometry-core/kernel/regions.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/region_key_sources.c",
+      "target": "geometry-core/kernel/placement_sources.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/region_key_sources.c",
+      "target": "geometry-core/kernel/region_key_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/region_key_sources.h",
+      "target": "geometry-core/kernel/regions.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/region_key_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/regions.c",
+      "target": "geometry-core/kernel/internal/regions.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/regions.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/kernel/source.c",
+      "target": "geometry-core/kernel/source.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/source.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/kernel/version_sources.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/version_sources.c",
+      "target": "geometry-core/kernel/version_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/version_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/kernel/version_sources.h",
+      "target": "geometry-core/kernel/versions.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/kernel/versions.c",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/kernel/versions.c",
+      "target": "geometry-core/kernel/internal/versions.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/kernel/versions.h",
+      "target": "geometry-core/kernel/exact.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/model_base.c",
+      "target": "current_geometry.c",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/model_base.c",
+      "target": "geometry-app/native/model_sources.inc",
+      "line": 425
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 382
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 389
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 390
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-app/geometry_app/bootstrap.py",
+      "line": 389
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-app/geometry_app/model_world.py",
+      "line": 382
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-app/geometry_app/model_world.py",
+      "line": 390
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 228
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 388
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-core/modeling/base.py",
+      "line": 388
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-core/modeling/common.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/modeling/__init__.py",
+      "target": "geometry-core/modeling/engine.py",
+      "line": 228
+    },
+    {
+      "source": "geometry-core/modeling/_host.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/modeling/_host.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 10
+    },
+    {
+      "source": "geometry-core/modeling/_host.py",
+      "target": "geometry-app/geometry_app/bootstrap.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/modeling/_host.py",
+      "target": "geometry-app/geometry_app/source_closure.py",
+      "line": 10
+    },
+    {
+      "source": "geometry-core/modeling/_host.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/modeling/base.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/base.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/modeling/base.py",
+      "target": "geometry-app/geometry_app/model_native.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/base.py",
+      "target": "geometry-app/geometry_app/model_native.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/modeling/base.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/modeling/base.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/base.py",
+      "target": "geometry-core/modeling/_host.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/common.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/common.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/modeling/common.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/common.py",
+      "target": "geometry-app/geometry_app/model_common.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/modeling/common.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/modeling/common.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/common.py",
+      "target": "geometry-core/modeling/_host.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-app/geometry_app/bootstrap.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-app/geometry_app/model_geometry.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-app/geometry_app/model_runtime.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-core/modeling/_host.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/engine.py",
+      "target": "geometry-core/modeling/base.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/modeling/geometry.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/geometry.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/modeling/geometry.py",
+      "target": "geometry-app/geometry_app/model_geometry.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/geometry.py",
+      "target": "geometry-app/geometry_app/model_geometry.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/modeling/geometry.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/modeling/geometry.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/geometry.py",
+      "target": "geometry-core/modeling/_host.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/kernel_errors.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/kernel_errors.py",
+      "target": "geometry-app/geometry_app/kernel_errors.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/kernel_errors.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/modeling/kernel_errors.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/kernel_errors.py",
+      "target": "geometry-core/modeling/_host.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/section_profile.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/section_profile.py",
+      "target": "geometry-app/geometry_app/model_profile_compat.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/modeling/section_profile.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/modeling/section_profile.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling/section_profile.py",
+      "target": "geometry-core/modeling/_host.py",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/modeling_cli.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 12
+    },
+    {
+      "source": "geometry-core/parameter_types.h",
+      "target": "geometry-core/kernel/parameters.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/parameters.inc",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/parameters.inc",
+      "target": "geometry-core/kernel/exact.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/reference_types.h",
+      "target": "geometry-app/native/definition_texts.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/reference_types.h",
+      "target": "geometry-templates/woodworking/native/member_reference.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/references.inc",
+      "target": "geometry-app/native/reference_sources.inc",
+      "line": 638
+    },
+    {
+      "source": "geometry-core/references.inc",
+      "target": "geometry-templates/woodworking/native/member_reference.h",
+      "line": 471
+    },
+    {
+      "source": "geometry-core/rule_cases/__init__.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/rule_cases/__init__.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/rule_cases/__init__.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/rule_cases/__init__.py",
+      "target": "geometry-core/rule_cases/definition.py",
+      "line": 3
+    },
+    {
+      "source": "geometry-core/rule_cases/__init__.py",
+      "target": "geometry-core/rule_cases/executor.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-core/rule_cases/__init__.py",
+      "target": "geometry-core/rule_cases/request.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-core/rule_cases/__main__.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/rule_cases/__main__.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/rule_cases/__main__.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/rule_cases/__main__.py",
+      "target": "geometry-core/rule_cases/catalog.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-core/rule_cases/__main__.py",
+      "target": "geometry-core/rule_cases/executor.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/rule_cases/catalog.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/rule_cases/definition.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/rule_cases/executor.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/rule_cases/executor.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 22
+    },
+    {
+      "source": "geometry-core/rule_cases/executor.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 23
+    },
+    {
+      "source": "geometry-core/rule_cases/executor.py",
+      "target": "geometry-core/rule_cases/definition.py",
+      "line": 22
+    },
+    {
+      "source": "geometry-core/rule_cases/executor.py",
+      "target": "geometry-core/rule_cases/runtime.py",
+      "line": 23
+    },
+    {
+      "source": "geometry-core/rule_cases/request.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/rule_cases/request.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/rule_cases/request.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/rule_cases/request.py",
+      "target": "geometry-core/rule_cases/definition.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-core/rule_cases/request.py",
+      "target": "geometry-core/rule_cases/executor.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-core/rule_cases/runtime.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 14
+    },
+    {
+      "source": "geometry-core/rule_cases/runtime.py",
+      "target": "geometry-app/geometry_app/source_closure.py",
+      "line": 14
+    },
+    {
+      "source": "geometry-core/rule_cases/runtime.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/rule_cases/runtime.py",
+      "target": "geometry-core/modeling/_host.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-core/rule_cases/runtime.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-core/rule_cases/runtime.py",
+      "target": "tests/__init__.py",
+      "line": 12
+    },
+    {
+      "source": "geometry-core/rule_cases/runtime.py",
+      "target": "tests/binaries.py",
+      "line": 12
+    },
+    {
+      "source": "geometry-core/section_profile_types.h",
+      "target": "geometry-templates/woodworking/native/section_profile.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-core/section_profiles.inc",
+      "target": "geometry-core/section_profile_conversion.inc",
+      "line": 76
+    },
+    {
+      "source": "geometry-core/section_profiles.inc",
+      "target": "geometry-templates/woodworking/native/section_profile.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-guide/axiom_examples.py",
+      "target": "geometry-guide/axiom_matrix.py",
+      "line": 266
+    },
+    {
+      "source": "geometry-guide/axiom_transcripts.py",
+      "target": "geometry-guide/axiom_examples.py",
+      "line": 17
+    },
+    {
+      "source": "geometry-guide/sync_axiom_reader.py",
+      "target": "geometry-guide/axiom_matrix.py",
+      "line": 29
+    },
+    {
+      "source": "geometry-guide/witness.py",
+      "target": "geometry-guide/axiom_examples.py",
+      "line": 47
+    },
+    {
+      "source": "geometry-guide/witness.py",
+      "target": "geometry-guide/axiom_matrix.py",
+      "line": 48
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "target": "geometry-core/geometry_kernel/evaluate.py",
+      "line": 4
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "target": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "line": 48
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "target": "geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+      "line": 48
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+      "target": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/geometry_rectangular/protocol.py",
+      "target": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
+      "line": 14
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/rectangular_grid.c",
+      "target": "geometry-templates/rectangular-grid/rectangular_grid.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/rectangular_grid.h",
+      "target": "geometry-core/kernel/exact.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-templates/rectangular-grid/rectangular_grid.h",
+      "target": "geometry-core/kernel/grid.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 53
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 57
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 61
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "line": 53
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "line": 57
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "line": 61
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 8
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "target": "geometry-core/geometry_kernel/__init__.py",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/__init__.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+      "target": "geometry-templates/woodworking/geometry_woodworking/model_policy.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/assembly.c",
+      "target": "geometry-templates/woodworking/native/assembly.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/assembly.h",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-templates/woodworking/native/assembly.h",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/assembly_sources.c",
+      "target": "geometry-templates/woodworking/native/assembly_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/assembly_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/assembly_sources.h",
+      "target": "geometry-templates/woodworking/native/assembly.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/boundary_policy.c",
+      "target": "geometry-templates/woodworking/native/boundary_policy.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/boundary_policy.h",
+      "target": "geometry-core/kernel/regions.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contact_sources.c",
+      "target": "geometry-templates/woodworking/native/contact_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contact_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contact_sources.h",
+      "target": "geometry-templates/woodworking/native/contact_world.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contact_world.c",
+      "target": "geometry-templates/woodworking/native/contact_world.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contact_world.h",
+      "target": "geometry-templates/woodworking/native/contacts.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contact_world.h",
+      "target": "geometry-templates/woodworking/native/domain_values.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contacts.c",
+      "target": "geometry-templates/woodworking/native/contacts.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contacts.h",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/contacts.h",
+      "target": "geometry-templates/woodworking/native/supports.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/cut_list.c",
+      "target": "geometry-templates/woodworking/native/cut_list.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/cut_list.h",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/definition_sources.c",
+      "target": "geometry-templates/woodworking/native/definition_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/definition_sources.h",
+      "target": "geometry-core/kernel/enclosure_sources.h",
+      "line": 10
+    },
+    {
+      "source": "geometry-templates/woodworking/native/definition_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/definition_sources.h",
+      "target": "geometry-templates/woodworking/native/document.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/derived_placement.c",
+      "target": "geometry-templates/woodworking/native/derived_placement.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-templates/woodworking/native/derived_placement.h",
+      "target": "geometry-core/kernel/placements.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/derived_placement.h",
+      "target": "geometry-templates/woodworking/native/finish.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/assembly.h",
+      "line": 13
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/boundary_policy.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 14
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/finish.h",
+      "line": 15
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/member_placement.h",
+      "line": 10
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 9
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/obstacles.h",
+      "line": 11
+    },
+    {
+      "source": "geometry-templates/woodworking/native/document.h",
+      "target": "geometry-templates/woodworking/native/section_profile.h",
+      "line": 12
+    },
+    {
+      "source": "geometry-templates/woodworking/native/domain_values.h",
+      "target": "geometry-templates/woodworking/native/boundary_policy.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering.c",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering.h",
+      "target": "geometry-core/kernel/codec.h",
+      "line": 15
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering.h",
+      "target": "geometry-core/kernel/named_values.h",
+      "line": 12
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering.h",
+      "target": "geometry-core/kernel/parameters.h",
+      "line": 9
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering.h",
+      "target": "geometry-core/kernel/versions.h",
+      "line": 18
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering_operations.c",
+      "target": "geometry-templates/woodworking/native/engineering_operations.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering_operations.h",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering_operations.h",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering_sources.c",
+      "target": "geometry-templates/woodworking/native/engineering_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering_sources.h",
+      "target": "geometry-core/kernel/version_sources.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/engineering_sources.h",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish.c",
+      "target": "geometry-core/kernel/grid.h",
+      "line": 4
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish.c",
+      "target": "geometry-templates/woodworking/native/finish.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish.c",
+      "target": "geometry-templates/woodworking/native/section_profile.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish.h",
+      "target": "geometry-templates/woodworking/native/domain_values.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish.h",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish.h",
+      "target": "geometry-templates/woodworking/native/panel_layout.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish_sources.c",
+      "target": "geometry-templates/woodworking/native/finish_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/finish_sources.h",
+      "target": "geometry-templates/woodworking/native/derived_placement.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_application.c",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_application.h",
+      "target": "geometry-core/kernel/grid_store.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_application.h",
+      "target": "geometry-core/kernel/placements.h",
+      "line": 10
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_application.h",
+      "target": "geometry-templates/woodworking/native/domain_values.h",
+      "line": 12
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_application.h",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 13
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_cells.c",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_definition_codec.c",
+      "target": "geometry-templates/woodworking/native/grid_definition_codec.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_definition_codec.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_definition_codec.h",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_rules.c",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_sources.c",
+      "target": "geometry-core/kernel/region_key_sources.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_sources.c",
+      "target": "geometry-templates/woodworking/native/engineering_sources.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_sources.c",
+      "target": "geometry-templates/woodworking/native/grid_definition_codec.h",
+      "line": 2
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_sources.c",
+      "target": "geometry-templates/woodworking/native/grid_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/grid_sources.h",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_declaration.c",
+      "target": "geometry-templates/woodworking/native/member_declaration.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_declaration.h",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_placement.h",
+      "target": "geometry-templates/woodworking/native/member_reference.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_reference.c",
+      "target": "geometry-templates/woodworking/native/member_reference.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_reference.h",
+      "target": "geometry-core/kernel/grid_store.h",
+      "line": 10
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_reference.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 13
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_reference.h",
+      "target": "geometry-templates/woodworking/native/contact_world.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_reference.h",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_reference.h",
+      "target": "geometry-templates/woodworking/native/supports.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/members.c",
+      "target": "geometry-templates/woodworking/native/members.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/members.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/obstacles.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/panel_layout.c",
+      "target": "geometry-core/kernel/grid.h",
+      "line": 3
+    },
+    {
+      "source": "geometry-templates/woodworking/native/panel_layout.c",
+      "target": "geometry-templates/woodworking/native/panel_layout.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/panel_layout.h",
+      "target": "geometry-core/kernel/clip.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/panel_support.c",
+      "target": "geometry-templates/woodworking/native/panel_support.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/panel_support.h",
+      "target": "geometry-templates/woodworking/native/panel_layout.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/section_profile.c",
+      "target": "geometry-templates/woodworking/native/section_profile.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/section_profile.h",
+      "target": "geometry-templates/woodworking/native/domain_values.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/section_profile.h",
+      "target": "geometry-templates/woodworking/native/engineering.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/section_profile_sources.c",
+      "target": "geometry-templates/woodworking/native/section_profile_sources.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/section_profile_sources.h",
+      "target": "geometry-core/kernel/source.h",
+      "line": 8
+    },
+    {
+      "source": "geometry-templates/woodworking/native/section_profile_sources.h",
+      "target": "geometry-templates/woodworking/native/section_profile.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-templates/woodworking/native/supports.c",
+      "target": "geometry-templates/woodworking/native/supports.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/supports.h",
+      "target": "geometry-core/kernel/geometry.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/world_validation.c",
+      "target": "geometry-templates/woodworking/native/world_validation.h",
+      "line": 1
+    },
+    {
+      "source": "geometry-templates/woodworking/native/world_validation.h",
+      "target": "geometry-templates/woodworking/native/contact_world.h",
+      "line": 7
+    },
+    {
+      "source": "geometry-templates/woodworking/native/world_validation.h",
+      "target": "geometry-templates/woodworking/native/grid_application.h",
+      "line": 5
+    },
+    {
+      "source": "geometry-templates/woodworking/native/world_validation.h",
+      "target": "geometry-templates/woodworking/native/member_reference.h",
+      "line": 6
+    },
+    {
+      "source": "geometry-web/documents.js",
+      "target": "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+      "line": 62
+    },
+    {
+      "source": "geometry-web/feature-attachments.js",
+      "target": "geometry-web/evidence-links.js",
+      "line": 4
+    },
+    {
+      "source": "geometry-web/feature-attachments.js",
+      "target": "geometry-web/rule-case-data.js",
+      "line": 5
+    },
+    {
+      "source": "geometry-web/feature-attachments.js",
+      "target": "geometry-web/source-plane.js",
+      "line": 3
+    },
+    {
+      "source": "geometry-web/feedback_cli.py",
+      "target": "geometry-web/feedback_store.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-app/application.js",
+      "line": 668
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-templates/woodworking/frontend.js",
+      "line": 667
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/app.js",
+      "line": 695
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/assembly-workspace.js",
+      "line": 713
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/context-menu-shell.js",
+      "line": 699
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/context-operations.js",
+      "line": 710
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/cursor-v2.js",
+      "line": 694
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/document-cases.js",
+      "line": 722
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/document-format.js",
+      "line": 721
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/documents.js",
+      "line": 723
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/engineering-adapter.js",
+      "line": 708
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/engineering-workspace.js",
+      "line": 707
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/evidence-links-app.js",
+      "line": 717
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/evidence-links-ui.js",
+      "line": 674
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/evidence-links.js",
+      "line": 673
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/face-context-menu.js",
+      "line": 700
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/face-menu-icons.js",
+      "line": 698
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/feature-attachments.js",
+      "line": 676
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/feedback.js",
+      "line": 686
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-anchor-positions.js",
+      "line": 702
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-inspector.js",
+      "line": 704
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-rule-lines.js",
+      "line": 688
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-system-workspace.js",
+      "line": 703
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/grid-trial.js",
+      "line": 701
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/index.html",
+      "line": 665
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/model-update-app.js",
+      "line": 719
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/model-update.js",
+      "line": 718
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/model-viewer.js",
+      "line": 705
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/native-transport.js",
+      "line": 669
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/parameters.js",
+      "line": 709
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/polydraft.js",
+      "line": 689
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/project-store.js",
+      "line": 678
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/project-ui.js",
+      "line": 683
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/reference-display.js",
+      "line": 671
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/reference-ui.js",
+      "line": 687
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/reference-workspace.js",
+      "line": 682
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-collection-workspace.js",
+      "line": 697
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-collection.js",
+      "line": 696
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-outline-workspace.js",
+      "line": 693
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/room-outline.js",
+      "line": 692
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/rule-case-data.js",
+      "line": 675
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/rule-case-host.js",
+      "line": 712
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/rule-case-workbench.js",
+      "line": 711
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-catalog.js",
+      "line": 677
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-diff.js",
+      "line": 680
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-integration.js",
+      "line": 681
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-snapshots.js",
+      "line": 679
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-workspace.js",
+      "line": 665
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/scenario-workspace.js",
+      "line": 720
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/section-profile-workspace.js",
+      "line": 714
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/source-inspector-app.js",
+      "line": 716
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/source-inspector.js",
+      "line": 715
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/source-plane.js",
+      "line": 672
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/space-workspace.js",
+      "line": 706
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/timber-schedule.js",
+      "line": 690
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/timber-supports.js",
+      "line": 691
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/vendor/fflate/umd/index.js",
+      "line": 670
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/workspace-guidance.js",
+      "line": 684
+    },
+    {
+      "source": "geometry-web/index.html",
+      "target": "geometry-web/workspace-shell.js",
+      "line": 685
+    },
+    {
+      "source": "geometry-web/model_update.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 19
+    },
+    {
+      "source": "geometry-web/model_update.py",
+      "target": "geometry-app/geometry_app/source_closure.py",
+      "line": 19
+    },
+    {
+      "source": "geometry-web/model_update.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 20
+    },
+    {
+      "source": "geometry-web/model_update.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-web/model_update.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 22
+    },
+    {
+      "source": "geometry-web/model_update.py",
+      "target": "geometry-core/modeling/base.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-web/model_update.py",
+      "target": "geometry-core/modeling/common.py",
+      "line": 22
+    },
+    {
+      "source": "geometry-web/model_update.py",
+      "target": "geometry-web/space_modeling.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-web/panel_fill_bridge.inc",
+      "target": "geometry-web/panel_layout_bridge.inc",
+      "line": 48
+    },
+    {
+      "source": "geometry-web/project-store.js",
+      "target": "geometry-web/feature-attachments.js",
+      "line": 3
+    },
+    {
+      "source": "geometry-web/project-store.js",
+      "target": "geometry-web/scenario-catalog.js",
+      "line": 3
+    },
+    {
+      "source": "geometry-web/reference-workspace.js",
+      "target": "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+      "line": 779
+    },
+    {
+      "source": "geometry-web/reference_bridge.inc",
+      "target": "geometry-web/timber_support_projection.inc",
+      "line": 382
+    },
+    {
+      "source": "geometry-web/room-collection.js",
+      "target": "geometry-web/source-plane.js",
+      "line": 3
+    },
+    {
+      "source": "geometry-web/rule_case_host.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-web/rule_case_host.py",
+      "target": "geometry-core/rule_cases/runtime.py",
+      "line": 13
+    },
+    {
+      "source": "geometry-web/rule_case_host.py",
+      "target": "geometry-web/rule_case_workbench_adapter.py",
+      "line": 11
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 17
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 20
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 22
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 301
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/catalog.py",
+      "line": 17
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/definition.py",
+      "line": 18
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/executor.py",
+      "line": 20
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/executor.py",
+      "line": 301
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/request.py",
+      "line": 21
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_adapter.py",
+      "target": "geometry-core/rule_cases/runtime.py",
+      "line": 22
+    },
+    {
+      "source": "geometry-web/rule_case_workbench_standalone.py",
+      "target": "geometry-web/rule_case_workbench_adapter.py",
+      "line": 15
+    },
+    {
+      "source": "geometry-web/scenario-catalog.js",
+      "target": "geometry-web/feature-attachments.js",
+      "line": 3
+    },
+    {
+      "source": "geometry-web/scenario-snapshots.js",
+      "target": "geometry-web/project-store.js",
+      "line": 3
+    },
+    {
+      "source": "geometry-web/scenario-snapshots.js",
+      "target": "geometry-web/scenario-catalog.js",
+      "line": 3
+    },
+    {
+      "source": "geometry-web/scenario-workspace.js",
+      "target": "geometry-web/index.html",
+      "line": 1
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-app/geometry_app/__init__.py",
+      "line": 26
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-app/geometry_app/model_native.py",
+      "line": 26
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-app/geometry_app/source_closure.py",
+      "line": 26
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 27
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 28
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 29
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-core/modeling/base.py",
+      "line": 28
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-core/modeling/common.py",
+      "line": 29
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "geometry-web/space_modeling.py",
+      "line": 25
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "tests/__init__.py",
+      "line": 34
+    },
+    {
+      "source": "geometry-web/scenario_verify.py",
+      "target": "tests/binaries.py",
+      "line": 34
+    },
+    {
+      "source": "geometry-web/section_profile_bridge.inc",
+      "target": "geometry-web/section_profile_diagnostics.inc",
+      "line": 70
+    },
+    {
+      "source": "geometry-web/section_profile_transport.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 6
+    },
+    {
+      "source": "geometry-web/section_profile_transport.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-web/section_profile_transport.py",
+      "target": "geometry-core/modeling/base.py",
+      "line": 7
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 442
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 449
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 559
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 640
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 659
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 687
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 543
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/rule_cases/__init__.py",
+      "line": 544
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/rule_cases/definition.py",
+      "line": 543
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-core/rule_cases/executor.py",
+      "line": 544
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/engineering_transport.py",
+      "line": 651
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/feedback_store.py",
+      "line": 27
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/model_update.py",
+      "line": 692
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/native_context.py",
+      "line": 87
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/rule_case_host.py",
+      "line": 330
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/rule_case_host.py",
+      "line": 541
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/rule_case_workbench_adapter.py",
+      "line": 399
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/rule_case_workbench_adapter.py",
+      "line": 542
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/runtime_version.py",
+      "line": 29
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/scenario_verify.py",
+      "line": 558
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/scenario_verify.py",
+      "line": 639
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/section_profile_transport.py",
+      "line": 658
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/source_inspector_transport.py",
+      "line": 669
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/space_modeling.py",
+      "line": 441
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/space_modeling.py",
+      "line": 700
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/space_modeling.py",
+      "line": 703
+    },
+    {
+      "source": "geometry-web/serve.py",
+      "target": "geometry-web/wait_trace.py",
+      "line": 28
+    },
+    {
+      "source": "geometry-web/source-inspector-bridge.inc",
+      "target": "geometry-web/section_profile_source_index.inc",
+      "line": 144
+    },
+    {
+      "source": "geometry-web/source-plane.js",
+      "target": "geometry-web/reference-display.js",
+      "line": 4
+    },
+    {
+      "source": "geometry-web/space_modeling.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 16
+    },
+    {
+      "source": "geometry-web/space_modeling.py",
+      "target": "geometry-core/modeling/__init__.py",
+      "line": 17
+    },
+    {
+      "source": "geometry-web/space_modeling.py",
+      "target": "geometry-core/modeling/base.py",
+      "line": 17
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "current_geometry.c",
+      "line": 27
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/assembly_bridge.inc",
+      "line": 1009
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/engineering_bridge.inc",
+      "line": 1005
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/grid_binding_bridge.inc",
+      "line": 293
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/grid_subdivision_bridge.inc",
+      "line": 294
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/grid_system_bridge.inc",
+      "line": 292
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/panel_fill_bridge.inc",
+      "line": 1007
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/parameter_bridge.inc",
+      "line": 786
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/reference_bridge.inc",
+      "line": 295
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/scene-import-bridge.inc",
+      "line": 1008
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/section_profile_bridge.inc",
+      "line": 1006
+    },
+    {
+      "source": "geometry-web/web_bridge.c",
+      "target": "geometry-web/source-inspector-bridge.inc",
+      "line": 1010
+    },
+    {
+      "source": "geometry-web/work-manager/adapter.py",
+      "target": "geometry-web/work-manager/store.py",
+      "line": 16
+    },
+    {
+      "source": "geometry-web/work-manager/cli.py",
+      "target": "geometry-web/work-manager/server.py",
+      "line": 39
+    },
+    {
+      "source": "geometry-web/work-manager/cli.py",
+      "target": "geometry-web/work-manager/store.py",
+      "line": 9
+    },
+    {
+      "source": "geometry-web/work-manager/server.py",
+      "target": "geometry-web/work-manager/store.py",
+      "line": 10
+    },
+    {
+      "source": "geometry-web/work-manager/static/index.html",
+      "target": "geometry-web/work-manager/static/app.js",
+      "line": 9
+    },
+    {
+      "source": "tests/binaries.py",
+      "target": "tests/__init__.py",
+      "line": 1
+    }
+  ],
+  "diagnostics": []
+}
