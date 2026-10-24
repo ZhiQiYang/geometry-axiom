@@ -1,0 +1,166 @@
+{
+  "source_sha": "73b21e64dce72f0d16ca29e18559c51815b9724d",
+  "archive": "ORIGINAL_AFFECTED_H3_HELPERS_AND_ENVIRONMENT_RESUME.tar.gz",
+  "archive_bytes": 13842178,
+  "archive_sha256": "72eb29033c8d7d6bed80fd045ba302846313815ca0953a8aa5148abbbf0c3b23",
+  "member_count": 5901,
+  "original_exit": 1,
+  "original_accepted": false,
+  "source_clean_after": true,
+  "phases": [
+    {
+      "label": "H3-affected",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "count-fixed",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "count-withdrawn",
+      "variant": "withdrawn",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "count-restored",
+      "variant": "restored",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "population-fixed",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "population-withdrawn",
+      "variant": "withdrawn",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "population-restored",
+      "variant": "restored",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "unplaced_replay-fixed",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "unplaced_replay-withdrawn",
+      "variant": "withdrawn",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "unplaced_replay-restored",
+      "variant": "restored",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "sentinel-fix-fixed",
+      "variant": "fixed",
+      "state": "UNRUN_ENVIRONMENT",
+      "actual_exit": null,
+      "passed": false,
+      "observation_complete": null
+    },
+    {
+      "label": "sentinel-fix-withdrawn",
+      "variant": "withdrawn",
+      "state": "UNRUN_ENVIRONMENT",
+      "actual_exit": null,
+      "passed": false,
+      "observation_complete": null
+    },
+    {
+      "label": "sentinel-fix-restored",
+      "variant": "restored",
+      "state": "UNRUN_ENVIRONMENT",
+      "actual_exit": null,
+      "passed": false,
+      "observation_complete": null
+    }
+  ],
+  "roundtrip_all_bytes_equal": true,
+  "original_bytes": 92383591,
+  "created_utc": "2026-10-24T05:01:58.774074+00:00",
+  "limits": [
+    "Only affected original H3, three helper triples and sentinel-fix triple; not full W7/H7, either unresolved512 method, native/browser/ledger/architecture or performance.",
+    "Original compiler text=True outputs retain decoded-text representation; original binary run/Bridge pipes captured before decoding.",
+    "Original subprocess TimeoutExpired may have no CompletedProcess returncode or output; do not invent a child exit.",
+    "V2 fixture observer captures actual loadfile input bytes before command send; this is not proof the child consumed those bytes. No old F0f fixture is retroactively reconstructed.",
+    "Original NativeBuild cleanup retained unchanged; source/command/ELF hashes are not retained ELF payloads.",
+    "The original13-phase batch retains exit1 with last3 ENV_UNRUN; separate sameF resume runs only those3. This package does not rewrite the original exit or rerun the first10.",
+    "The v2 rejection selftests deliberately contain three symlink and three FIFO fixtures. These six entries are represented as explicit metadata, while all regular source/raw files preserve exact original bytes. The initial strict-symlink packaging rejection remains archived."
+  ],
+  "original_partial_exit": 1,
+  "original_partial_accepted": false,
+  "environment_resume_exit": 0,
+  "environment_resume_accepted": true,
+  "environment_resume_phases": [
+    {
+      "label": "sentinel-fix-fixed",
+      "variant": "fixed",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "sentinel-fix-withdrawn",
+      "variant": "withdrawn",
+      "state": "COMPLETED",
+      "actual_exit": 1,
+      "passed": true,
+      "observation_complete": true
+    },
+    {
+      "label": "sentinel-fix-restored",
+      "variant": "restored",
+      "state": "COMPLETED",
+      "actual_exit": 0,
+      "passed": true,
+      "observation_complete": true
+    }
+  ],
+  "environment_resume_source_clean": true,
+  "intentional_selftest_special_entries": {
+    "count": 6,
+    "symlinks": 3,
+    "fifos": 3,
+    "descriptor_member": "selftest-special-fixture-metadata/SPECIAL_FIXTURE_ENTRIES.json",
+    "representation": "Exact readlink bytes in hex and original lstat kind/mode, no follow/no stream read."
+  }
+}
