@@ -13,3 +13,7 @@
 主代理已一般 merge 本來源，整合提交為 `8d2a69421560b83c0b69f3e82db8f5e97ccc037b`；上述 36 方法與反證的實際執行 SHA 仍是 F，沒有移標為整合提交。
 
 尚未完成：這個 F 的完整 native／六 browser、最終帳本、架構衍生檔與正式效能量測。歷史 R5 在 `a22df116…` 的 N64/main = 1.3369644933292553 仍超過 1.3；本次工作量證據不能替代新的 wall gate。**非 READY-TO-MERGE**；主代理將另行完成整合來源的最終驗收。不 force push，不合併 PR。
+
+後續整合來源 R6（`2bbe54f19b2d19e8a816530f0c4edca950629a34`）的正式 N64/main = 1.3731562025736295、N16/base = 1.0434575834374764 仍紅，原樣本不重抽。原 profile 證實 plane comparator 呼叫從 17,741,288 降至 4,552,096；index build 次數 12,792、covered 914,100、prefix_lo 2,996,796 沒有改變。來源顯示 index build 只初始化目前 count，並無整個 face capacity 清零病因。這些是呼叫數與來源觀察，不能用取樣 self seconds 推論 O2 wall 改善。
+
+下一個 W 候選只準備「以 query 自身 rank 縮小既有二分範圍」的獨立證明，尚未提交產品；原 predicate／Fenwick 與所有空、零、反向、同座標案例必須保留。主代理優先評估獨立 K 診斷後再決定下一個單因正式量測，沒有新的數值門檻。本分支原 36 方法／反證的執行 SHA 仍是 F，沒有移標為 R6。
