@@ -20,7 +20,9 @@ static GeoEvalContext *provider_context(void)
 static int provider_semantics(void)
 {
     /* Deliberately unaligned keys; the middle byte differs, both ends match. */
-    unsigned char a[8]={0,0,1,0,0,0,0,0},b[8]={0,0,2,0,0,0,0,0};
+    union { uint64_t aligned; unsigned char bytes[8]; } a_store={0},b_store={0};
+    unsigned char *a=a_store.bytes,*b=b_store.bytes;a[2]=1;b[2]=2;
+    REQUIRE("provider-hint-unaligned-keys",(uintptr_t)(a+1)%sizeof(uint64_t)!=0&&(uintptr_t)(b+1)%sizeof(uint64_t)!=0);
     GeoSourceRef input[]={
         {2,a+1,4},{UINT32_C(0x80000002),a+1,4},{UINT32_MAX,a+1,4},{0,a+1,4},
         {2,b+1,4},{2,NULL,0},{2,b+1,0},{19,a+1,4}};
