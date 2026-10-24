@@ -1,15 +1,15 @@
-# 持續工作恢復點（2026-10-24，L 全項取得終態）
+# 持續工作恢復點（2026-10-24，L全項終態已公開，產品合流進行中）
 
 這是執行中的恢復點，不是階段停止或完成報告。使用者不在，不提問、不等答覆；未核可的公理／鎖定決策差額寫 QUESTIONS，繼續其他工作。繁體中文、英文 commit；不 force push、不合併 PR、不推 claude/* 或 grok/*。主列車只由 root 寫入，子代理分支各一位 owner，產出須獨立對抗審查。
 
 ## 先讀的公開來源
 
-- #338：`codex/train-337-continue-20261024`。固定受測 L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`；最新終態證據 E=`b621a4fbc3cdea359b3676fb22dc8ef566968b8a`，正常 push 已確認。
-- 唯一現況矩陣正文 D=`733360596e6febaf66a27dd9e61a8991406be0e4`，分支 `codex/train-337-continue-20261024-prbody`。原發布結果 `/workspace/geo337-all-terminal-compact-prbody-publication-20261024/RESULT.json`，真 push0；等 bot 更新 PR 不阻斷其他工作。
-- 最新已讀 handoff=`d2ed8e6e`；#338 最後審查仍 2026-10-24 00:39:37 UTC／head f05e7cf，#339 00:39:36／e9ee6d0，兩者均未判可合併。新#340/#341審查為02:38:33/34 UTC，詳見下文；#342–348當次無審查留言。每輪先 explicit fetch 再讀 `handoff/pr-reviews/*.md` 與 `pr-status.md`，不要依本快照猜有沒有新審查。
+- #338：`codex/train-337-continue-20261024`。上一輪固定受測 L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`；L完整證據 E_L=`1952b0ae604291a2ec447a5cc684d6ab91306779`（五性能全包亦已正常push）。目前合流來源 U=`ca7838e0f4950452b9befcf40899d606db9b81fa`，本輪產品scope只加K edge、#339/#340與#343（祖先#341/#342），不含#346/#347/#348。最新證據E_U=76ba3b2dad42f5d68fdd3bbdd7e54f5b0c337c65已普通push；U完整native／六browser／帳本與其餘專項尚未跑；#323原五stage已啟RUNNING，未取得新終態；三原架構裁判已在同closure physical E=b09真0/0/0，四生成檔尚未重產。L執行不移標。
+- 唯一現況矩陣正文 D=`792e3502a207d7607cd88edc7972100e26ef06f9`，分支 `codex/train-337-continue-20261024-prbody`。新正文已普通 push，原發布結果 `/workspace/geo337-U-current-prbody-publication-20261024/RESULT.json`；等 bot 更新 PR 不阻斷其他工作。
+- 最新已讀 handoff=`d36861ff65e941ed941bc8d86231b7cb5e16a1aa`；#338 最後審查仍 2026-10-24 00:39:37 UTC／head f05e7cf，#339 00:39:36／e9ee6d0，兩者均未判可合併。新#340/#341審查為02:38:33/34 UTC，詳見下文；#342–348當次無審查留言。每輪先 explicit fetch 再讀 `handoff/pr-reviews/*.md` 與 `pr-status.md`，不要依本快照猜有沒有新審查。
 - main=`425c092eaf16f90256d76433243baebde45163ac`、Claude=`8f9301fc1b78712d930ffc68074437e44d068aab`。#323 已包含列車；舊 #323／#314／#318／combined 不再各自修。
 
-## L 正式結果：不要重啟已完成項
+## L既有正式結果：保原execution，依新union影響決定重跑
 
 | 項目 | 原終態與限制 |
 |---|---|
@@ -29,45 +29,64 @@
 
 單一#323 receipt的`all_required_stages_completed=false`、`full_acceptance_passed=null`保原值：它只有五stage，R8/PF3/native在其他原OUT完成。全清單須逐項引用，不回寫裁判欄位。原v4外層role掃`--base`誤標base的歷史亦保留，以真inner／明確L／前後Git guard另綁來源。
 
-四個阻擋仍是 **P189 exact、#323 exact、N64性能、required CI**，沒有 READY-TO-MERGE。前兩者的I22資訊為現行SSOT所需，不可為舊基準exact刪回；裁決選項已寫列車QUESTIONS及正文。N64是可自主修正的效能缺陷，沒有要求新門檻。CI已查 f05/e9 兩run共14個job為付款失敗或支出上限、runner空／steps=[]；Forbidden不能證明log不存在，兩個signed-log signature只在公開副本遮罩。補跑不自動代表正式替代流程已接受。
+U帳本還未重產；前一caf6原`mutate.py --check` exit1，120 stale／3 retired全流已公開在E_U的`probe-evidence-and-ledger-freshness/original-caf6-ledger-check/`，不能以L綠帳本代替。U因含#342，Q38應跑44；#342歷史S eb846c345881cc6fc73a53c457a291175365b88c的44=43killed+SPM24保持原execution，L的42也不移標U。新U #323原五stage工具已靜審65/0；薄source準備真0，447檔／4,290,370B、U clean、nlink1唯讀與獨立index；REQUEST SHA256=`5e2a4b75e948ca1cea2d37fa676419c8a08486fae878a51ae69cb2159376c8ee`。新U五stage已啟，原終態由後續PROGRESS更新，尚無新性能終態；最終L2須待後續完整帳本／架構重產才固定。
+
+四個阻擋仍是 **P189 exact、#323 exact、N64性能、required CI**，沒有 READY-TO-MERGE。前兩者的I22資訊為現行SSOT所需，不可為舊基準exact刪回；裁決選項已寫列車QUESTIONS及正文。N64是可自主修正的效能缺陷，沒有要求新門檻。本輪真CI已另讀U ca7838的run40058889738及physical E b09的run40059064935，各七required jobs failure、steps0、runner空；十四failure annotation為付款失敗或支出上限，另保Ubuntu遷移notice。本次未抓signed logs。f05/e9與Forbidden／兩signature遮罩只保歷史，不能代新run。原件已由E_U76ba公開，B3仍未解除；補跑不自動代表正式替代流程已接受。
+
+## 新U架構前檢（已公開，非四檔重產）
+
+原physical execution=`b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5`，U=`ca7838e0f4950452b9befcf40899d606db9b81fa`；原Git diff證全非evidence路徑相同、source未改。三原裁判真0/0/0、205/18，334sources／6trusted／798edges／diagnostics0。四生成檔尚未重產，不能冒成U直接執行或新manifest/scan/report/receipt已出。與兩新CI run的124份351354B原件在E_U76ba的`evidence/geo337-train-20261024/current-U-architecture-and-ci/`。
 
 ## 原件位置與下一輪直接入口
 
-所有L原執行均已終態，性能獨占已釋放。原命令表 `/workspace/final-L-performance-exact-argv-20261024.json`，launcher `/workspace/launch_geo337_L_performance.py`；不要重新執行同OUT。
+所有L原執行均已終態且完整原包已公開；新union尚無完整驗收。#348整批終態1已釋secondary；root新U #323五stage已啟獨占執行，#345原六phase排其後。性能／完整canvas不得與其他重測重疊；靜態小檔工作可繼續。原命令表 `/workspace/final-L-performance-exact-argv-20261024.json`，launcher `/workspace/launch_geo337_L_performance.py`；不要重新執行同OUT。
 
 - P52 `/tmp/g337p52L`；P189 `/workspace/g337p189L`、獨立tail `/workspace/g337p189L-timing`；#323 `/workspace/g337323L`；memo `/workspace/g337323memoL`。各outer為 `/workspace/train337-L-<gate>-original-launch-20261024`，原RESULT保真CLI退出碼。
 - 已公開全包：native r2、六browser、Q38、§7、全帳本、reader/RC、Reading A、三架構、R8及PF3。完整路徑見新D唯一矩陣。
-- P52／P189full／timing完整包已在 `/workspace/train337-final-performance-collection-preparation/{p52-v3,p189-v2,p189-timing-v2}/` 封存並獨審，**尚未公開tar**。#323/memo正在準備原件封包。Eb621只新公開28小原件2,936,868B，包括完整memo driver receipt及原性能/profile JSON；不是全raw已推。
-- 下一步先回收可保原路徑的重複immutable原件空間，發布尚未推送完整包；再讓定向修正與後續分支合流。最新小publisher與結果：`/workspace/publish_geo337_all_terminal_status.py`、`/workspace/geo337-all-terminal-status-publication/RESULT.json`。不要重跑已成功publisher。
+- 五份完整性能原包已於E_L1952的`evidence/geo337-train-20261024/final-L-performance-complete/{p52,p189,p189-timing,geo323,memo}/`公開，共74,496,801B、3150／3455／261／7485／5501 members。原PACKAGE內published:false保封存時原值，以publisher RESULT真push0證明公開；沒有改原P189full1、#323compare1／N64false。原status-only歷史不刪。
+- root已將K edge probe、#339/#340及#343等祖先普通merge固定Uca783；E_Ub09a又普通merge probe完整原件及caf6 check收據。原17方法0／整刀0-1-0，沒有新性能結果。目前已固定U的原#323五stage已啟RUNNING，其後完整帳本／架構／受影響正式驗收；#346/347/348留獨立線。五包publisher結果在`/workspace/geo337-complete-performance-publication-20261024/RESULT.json`；不要重跑成功publisher。
 
 ## 分支與 owner
 
 | 工作線 | 已知公開來源／下一步 |
 |---|---|
-| #339 faces；specials | `codex/geo324-faces-20261024`，最新source F616ce7538d23fbe7f3bbefae7f2a04e25ebd75a4已正常push；舊純evidence E1d94ab77ab29952d5b73ec5b262dfd239819fe25／D71113ce739f6fe7c327b162e47e6fd7dba349824待更新。原142及三刀證據仍綁舊F38da31bcac91db631e6325e40b228f8604810e82；新F只合更新#340與L帳本，正式項未重跑，不移標 |
-| #340 noWood；specials | `codex/kernel-without-woodworking-20261023`，最新source S175cee44c56c89871803d955c0c525236727ba65已正常push；舊純evidence Ed45dbbc3e96c85e6d1caa629f6abafdfd62c5974／D77a007711f48b47daa10fbe1cb594d25937e295a待更新。由S4d3a17c306cad42057589c5cfd964f1c32b755c4正常merge L，原13方法/七phase證據保舊實跑頭。新thin checkout首輪無index環境1保留，r2用read-tree初始化後merge0；新S正式項未跑 |
+| #339 faces；specials | `codex/geo324-faces-20261024`，F616ce7538d23fbe7f3bbefae7f2a04e25ebd75a4；新E8f39025be6708bd9d58e576ed5b349b7ef628624／D283d1e245f724e13644a1379cba5cd34f3dae9d9真推，獨立四head actual99/0。原142與三刀保execution F38da，493+5 Git entries逐byte相同且whole非evidence僅ledger，root准沿用有效局部實績；新F完整正式11仍UNRUN，不因純ledger重跑局部 |
+| #340 noWood；specials | `codex/kernel-without-woodworking-20261023`，S175cee44c56c89871803d955c0c525236727ba65；新E04959e04c334ceaf03f865514f76b1cac8ee91f2／Ddb8bf2289f8ad931c00924193e238e621f970e05真推。S175原selected aggregate13/13、strict0、零skip；35native命令31×0與4預期1。原bfb七phase仍保舊execution／精確closure；完整native/browser／帳本／架構仍待union |
 | #341／#343前置 | `codex/geo300-prerequisites-20261024` S aa0e3938f17dc996ef5e7410db4844b31856d2a6；`codex/geo300-contact-index-20261024` S ccfaf057088a80c7aad4049f1c67e5eedfc2fdec。原32/46及34/64方法/控制已證；不能預報新N64性能 |
 | #342 AC23 | `codex/geo260-ac23-proof-20261024` S eb846c345881cc6fc73a53c457a291175365b88c／Edf230da57619e437c30527dbede8c67fd0ec6b50／Dbe1f69dc5ca7f9cdc2f00d22a1940d877f6002bb。44案例43killed+SPM24，不能以L42替代 |
 | #344連線恢復 | `codex/issue320-connection-recovery-20261024` S7b45013da647b791acda8f5977475e4123d5f8c4／E42790be40eee56efada08de84ab2acb1681df981／Da066115bb7062bbacd8ec005e7e0bc6a286ead3b。NodeVM0/1/0已證；完整canvas三phase仍未跑，原PLAN在/workspace/issue320-20261024/full-canvas-three-phase-preparation/ |
-| #345 HTTP fixture | `codex/issue214-http-fixture-20261024` S2199cda8896b47c7ad2b6c10479e5e0cbdb67c83／E9896410a84b31fb742b5e92bc5601715bf242267／Dac478611e683c3b5684104e811804acaa23a1558。原19方法/1200秒與六請求仍未跑；四控制為等價0不是functional kill。已審請求/tmp/issue214-http-fixture-preparation-20261024/RUNTIME_REQUESTS_READY.json |
+| #345 HTTP fixture；specials | `codex/issue214-http-fixture-20261024` S2199cda8896b47c7ad2b6c10479e5e0cbdb67c83／E9896410a84b31fb742b5e92bc5601715bf242267／Dac478611e683c3b5684104e811804acaa23a1558。原19方法/1200秒與六請求仍未跑，specials的排程wrapper24d148已靜審48/0，原ready/helper/判準不變，#348 secondary已釋，排root新#323五stage之後才獨占執行；四控制為等價0不是functional kill。已審請求/tmp/issue214-http-fixture-preparation-20261024/RUNTIME_REQUESTS_READY.json |
 | #346 cut-list；combined | `codex/geo300-cut-list-storage-20261024` S39273bc0229fbbb16565134e1f8fad3a0d598c31／Eeaf15e239324a6464a04740647afccce3a3c17c7／D4e6a42e908f66ef4475704e0ce97a068e65a8ff6。原11/九組反證/83compile0；O(N)儲存但排序仍O(N²)，完整驗收未跑 |
 | #347 P2；backlog | `codex/issue128-empty-panel-rows-20261024` S324034812bb6effca68e0413bc0468595337b317／E2e8a6ed20325aa4842dcd0f89eacd598662be598／D0109cab1a638cd5baa52673e83b136265c10f722。13方法、原十刀及新四組已證。raw seam後續只有外部三檔草稿與靜審，未建分支/未C |
-| #348容量512；combined | `codex/geo300-capacity512-20261024`，產品S400a6d0ca50f3aca104fb569c77c8ef753c93355；最新測試F0f695866c0ba12d2c70dfd7d40628d0fda0f905f，最後純evidence E391f44da1c3e37e50c7a25a8a855b93c2865062c，正文Dfd206036052bfb4f8c7ea0025c31b1b2a21cc4b8待新稿。修H計數/I9與真正placed64/512、W7/H7局部75皆仍UNRUN；evidence代理正備完整Popen原流collector，不冒靜審為C通過 |
+| #348容量512；combined | `codex/geo300-capacity512-20261024`，產品S400a6d0ca50f3aca104fb569c77c8ef753c93355／測試F0f695866c0ba12d2c70dfd7d40628d0fda0f905f；新E41481f280495e14f5a6905d29784cea3a218df10／D9cca9a4d7ea5992366c8ef5df7ef639a455544c7已推、actual2361/0。formal整批終態1，OUT `/workspace/geo348-F0f695866-formal`；W7真7/7零skip exit0，H7為2PASS/5RED（三sentinel測試缺陷與兩512load原Timeout600）；三helper各fixed/withdrawn/restored全1/1/1，無完整有效三態，不能寫全綠。局部75其餘與完整gate仍未跑 |
 
-backlog另正準備#323 K edge miss重用probe的外部最小補丁，`/workspace/geo323-runtime-static-analysis-20261024/edge-probe-draft/`；root已靜讀，未合分支/未C/未性能。必保完整圖順序、五guards、rehash碰撞與allocation fallback，撤回/恢復後才合主列車，不另在舊#323重修。
+backlog的K edge probe已公開source Sa543eef67b81f8d8800f32d5dc4a5641840d2943，branch `codex/train337-edge-probe-20261024`，E9b41d395fb2c5d6c971de4b13d4d2ac6701ff22c／D853a7a294b9201236da01d3a34ba397e62e29ecd；root已普通merge source成caf6。原17方法/零skip、56compile/link0、43native、整刀成本21→31→21且0/1/0，actual1427/0；R1目錄/執行檔同名linker紅保留，不能算mutation kill。完整原件在該E的`evidence/geo323-edge-probe-a543eef6/`，root caf6存binding與actualpeer。**沒有新N64性能結果**，四個原阻擋仍在。
 
-root最終依來源祖先收斂 #340→#339→#343/#346/#347/#348，再#342/#344/#345；可省重複祖先merge，不能省新組合驗收。產品/測試union固定後root統一一次全帳本/架構與七jobs；子代理不各自重產。所有既有定向證據保原execution SHA，不移標。#325/#331/#333仍Grok所有；#335初放原子操作未核可，只保設計/待決。
+本輪root實際U只納K edge、#339/#340與#343（祖先#341/#342）；#346/#347/#348不在此final，保持各自分支後續推進。#344/#345也依其實際受驗範圍另收尾，未宣稱已合U。可省重複祖先merge，不能省新組合驗收。root在固定U一次全帳本/架構與七jobs；子代理不各自重產。所有既有定向證據保原execution SHA，不移標。#325/#331/#333仍Grok所有；#335初放原子操作未核可，只保設計/待決。
 
-#340/#339兩個正常merge的原RESULT在`/workspace/geo340-339-L-normal-merges-20261024-r2/RESULT.json`，原退出0、兩remote精確核對、兩checkout clean；L帳本blob保真，230列保留13/39與13/45。首輪環境1及完整3MB輸出保留，沒有reset或刪檔；新source的獨立actual審查與各分支evidence/body出版仍由owner接續。
+#340/#339兩個正常merge的原RESULT在`/workspace/geo340-339-L-normal-merges-20261024-r2/RESULT.json`，原退出0、兩remote精確核對、兩checkout clean；L帳本blob保真，230列保留13/39與13/45。首輪環境1及完整3MB輸出保留，沒有reset或刪檔；兩E與兩D新出版已真0且獨立99/0。publisher原R1因KGIT缺origin在第一個readonly ls-remote128，尚無寫入；R2只用command-local遠端URL＋新OUT，原14件失敗完整封包，不改永久config、產品或test。
 
-新審查追加：#340 head4d3要求在final closure真正跑原run_all的rectangular registry row（13、strict count及原時限），直接13方法不能替代；CI run40019345512七failure另須正式處理。specials已被指派優先準備新S175的原aggregate與來源閉包，未跑前不能標READY。#341 head823729b要求完整優化撤回，對無重複／少量重複／密集／超capacity fallback逐項保存work、CPU、wall原樣本，不能由46組語意控制推論改善；另需原aggregate expected9→10、最終native／受影響timber與CI。combined已接手此要求，原run40022843722環境紅未解除。兩者都要更新base／唯一current-state與受影響bytes證明；這些新要求不允許放寬門檻或宣稱準備即通過。
+新審查追加：#340 head4d3要求在final closure真正跑原run_all的rectangular registry row（13、strict count及原時限），直接13方法不能替代；CI run40019345512七failure另須正式處理。specials已真補S175的原selected aggregate13/strict0與精確closure；仍未取得完整正式清單／CI接受，不能標READY。#341 head823729b要求完整優化撤回，對無重複／少量重複／密集／超capacity fallback逐項保存work、CPU、wall原樣本，不能由46組語意控制推論改善；另需原aggregate expected9→10、最終native／受影響timber與CI。combined已接手此要求，原run40022843722環境紅未解除。兩者都要更新base／唯一current-state與受影響bytes證明；這些新要求不允許放寬門檻或宣稱準備即通過。
 
 ## 磁碟與排程
 
-兩個merge後最後df約/workspace30MiB、/tmp29MiB，只是快照。每次重測前fresh df；最多兩個重測，性能與完整canvas獨占。不能刪收據、fixtures或Gitobjects，也不可在資料不完整時把環境錯誤算mutation kill。
+磁碟快照：root五包出版前420,945,920B／後341,942,272B可用（/workspace，僅當時快照），不能沿用舊30MiB結論，也不能將配置節省當df淨回收。每次重測前fresh df；最多兩個重測，性能與完整canvas獨占。不能刪收據、fixtures或Gitobjects。#348已釋secondary；新U #323五stage現獨占，#345排其後。
 
-128組保存式去重已全部真0；連原295共423個cold immutable alias群全部禁寫，原path/bytes保留，全部aliases脫鉤前不得復用p/a/l checkout。另2個cardref受控ELF群分開計。cold59/cardref完整包已公開Ef16；cold128新包在`/workspace/cold128-originals-20261024/`，15922members、2,774,412B，SHA4949b46b18d9b8b8bbaaec0fd65dc212ded056757b13589422f56fe702aeb2cd，獨審63835/0，尚未推。gross配置量不能當df淨回收。
+保全lease分四類，各自計數、任何alias寫入／復用前必須**全部delink**，原path/bytes全保：
 
-另有#339一組六個archive／捕獲stdin/stdout aliases已於02:52:59真0保存式去重，全部原path/bytes保留；這一組不併入423cold或2cardref，全部aliases脫鉤前亦禁寫。固定PLAN在`/workspace/geo339-six-original-aliases-preparation-20261024/`，完整原RESULT／journal在`/workspace/geo339-six-terminal-originals-preserving-links-execution-20261024/`及其`-launch`；原失敗1/1/1與末成功0保留。配置節省23,592,960B，原free前後29,868,032→53,329,920，差額包含新收據，不能等同配置量。
+1. 三個cold checkout共423組（原295＋新128；新128保384 paths）。
+2. cardref 2組受控ELF（58＋5＝63 alias paths；另53唯一ELF仍留，共116原paths）。
+3. GEO339 1組六alias（原tar＋五份c387 stdin/stdout，6 paths）。
+4. 大型歷史archive 3組（7＋4＋2＝13 paths）；F2兩個receipt截斷候選已排除，未動。
+
+原295＋cardref2早已公開；cold128完整包2,774,412B／15922members、SHA4949b46b…以及新四群完整包248,731B／840members、SHAfc852b7d…均已於E2787ee3167deec7588bde26265152bcf6dc4a939公開。其原actual peers分別63835/0、3421/0，不冒本輪重驗原423或2。新四群19paths的gross配置節省476,540,928B，不等同df淨回收。先前三次環境失敗與成功原件皆保。最新storage量到WS313,602,048B／TMP23,265,280B是歷史快照，fresh df才可排新重測。
 
 storage優先核終態原archive/捕獲stdin/stdout的保路徑去重；新版原包大多已直接hash-object/skip-worktree，root checkout沒有第二份tar，不能憑假設計算節省。/dev/shm為唯讀tmpfs，不能借symlink繞sandbox。環境瞬斷已恢復；若後續再失效，先保本地未推狀態，繼續不依賴它的工作，不詢問使用者。
+
+## 本輪外部工具／待定稿欄位
+
+H collector固定 `/workspace/geo300-capacity512-h-pipe-capture-20261024/TOOL_PINS.json` SHA0d7cdc2ef7bcce382f5a02bc38effcec695326358d40c2f2c156be09b702c033，獨審120/0；20假child/run/unit與4合成原入口1/0/1/2保真、stdin/stdout兩份獨立副本0/1/0。不改原Popen、buffer、timeout；compiler原text僅保decodedtext，不能稱predecode。formal外層須核兩observercomplete與真正OSexit，complete不是產品PASS。工具不得在formal執行中改寫。
+
+本稿尚未發布；U與E_U已固定，正文先經root真推後填唯一D placeholder，再推handoff。這是continuation，不是stop或完成報告。#348整批終態仍紅；U五stage已啟，原終態由後續PROGRESS更新，#345依排程其後執行，不自行猜測；原出錯也不抹掉。下一輪先讀最新NEXT與各PROGRESS，不重啟既有OUT。證據代理只備外部稿，不寫root或handoff分支。
+
+H原場景補件：collector的input.bin載loadfile路徑，未自動捕獲scene內容；combined在原NativeBuild temp尚活著時唯讀保4個scene／75,875B，`/workspace/geo348-F0f695866-formal-input-supplement-20261024/pass-001`有原path/hash/前後stat與時點。這是事後保全，不冒事前capture；當前工具仍凍結。下一輪須另版補原run前loadfile bytes snapshot並獨審，不能改正在跑的工具。
