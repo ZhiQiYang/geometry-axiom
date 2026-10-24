@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 00:07 UTC）
+## 唯一 current-state（2026-10-24 00:08 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -201,3 +201,7 @@ space原SPACE_RESULT 242/0、八組完整，229.754秒低於原15分鐘；timber
 ## 2026-10-24 00:07 UTC：§7 兩個原完整突變 CLI 通過
 
 同L原card-reference run_mutations.py／run_axiom_mutations.py及其driver／outer皆真0。compiled baseline43全通過，原53刀逐一正常assert1、各restore0，116compile全0；axiom baseline44全通過，原V01～V05各精準CARD_AXIOM_* AssertionError真1、各restore完整44全綠。未縮原table、斷言、golden或時限，初末HEAD／tree／index／refs／clean守門一致。完整commands／streams／環境／SHA封於final-L-section7-cardref（932members）及final-L-section7-axiom（188members），獨立6360／937收據核對0不算產品測試。compiled116個ELF的真hash與保留位置明列，150,289,288B payload留雲端原地；axiom僅所選OUT/OUTER無ELF，不宣稱其他cache無ELF或內部compiler輸出已被捕捉。原工具未暴露的內部pipe不捏造。
+
+## 2026-10-24 00:08 UTC：native r1 四個環境失敗的原件與同L修復
+
+原230項完整執行的唯一紅列node:tests-js為737/733/4/0，四個readFileSync ENOENT對應L原有legacy6a.gcanvas、legacy6a-with-scene.gcanvas、legacy/base49-capacity.gcanvas三個fixture（其中一個用於兩案）；薄checkout的skip-worktree使三檔未物化。原r1完整exit1、完整Node stdout、3個原Gitblob、初始掃描器誤配及修正後literal閉包掃描全保。用原git sparse-checkout add --stdin精確補397,952B，HEAD／完整index tree保持L；只改物化及index stat/skip旗標，無產品／測試／expected修改。修復tool/outer0、actual104及獨立包333核對0、107原件封於final-L-native-fixture-environment-repair。literal掃描不保證計算型路徑皆完備，仍須原完整230項r2判官；目前r2未啟動，不以補檔0代替native綠。

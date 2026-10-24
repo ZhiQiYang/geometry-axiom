@@ -1,0 +1,1350 @@
+{
+  "schema": "independent-L-native-fixture-environment-package-peer/1",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "readScope": "107 completed archive members and their exact original sourcePath bytes; no live ROOT/product C/index/cache or test execution",
+  "checks": 333,
+  "exitCode": 0,
+  "findings": [],
+  "archiveSHA256": "07dd83132891312f2378528e29c47a4d97d4c3c4b6b4f7c7eeee781563d937c7",
+  "indexSHA256": "5fff9be5bee11b90485ceb50668354fa353f108c93d79049aca8d1983328141f",
+  "memberCount": 107,
+  "completeNativePassClaimed": false,
+  "limits": [
+    "Narrow archive roundtrip and original completed metadata only; prior104 actual/tool15 checks not re-executed.",
+    "Original native r1 exit1 and four ENOENT retained; exact fixture materialization is environment repair only. Full original230 native rerun remains required."
+  ],
+  "details": [
+    {
+      "name": "fixed_index_pin",
+      "passed": true
+    },
+    {
+      "name": "fixed_L_and_environment_only",
+      "passed": true
+    },
+    {
+      "name": "archive_original_bytes_hash",
+      "passed": true
+    },
+    {
+      "name": "index_unique107",
+      "passed": true
+    },
+    {
+      "name": "archive_exact107_members",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/DIAGNOSIS.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/DIAGNOSIS.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/DIAGNOSIS.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/LITERAL_INPUTS.initial-conservative.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/LITERAL_INPUTS.initial-conservative.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/LITERAL_INPUTS.initial-conservative.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/LITERAL_INPUTS.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/LITERAL_INPUTS.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/LITERAL_INPUTS.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/MANUAL_FINITE_TEMPLATED_INPUTS.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/MANUAL_FINITE_TEMPLATED_INPUTS.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/MANUAL_FINITE_TEMPLATED_INPUTS.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/ORIGINAL_NODE_R1.log",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/ORIGINAL_NODE_R1.log",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/ORIGINAL_NODE_R1.log",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/THREE_FIXTURES.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/THREE_FIXTURES.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/THREE_FIXTURES.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/base49-capacity.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/base49-capacity.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/base49-capacity.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/legacy6a-with-scene.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/legacy6a-with-scene.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/legacy6a-with-scene.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/legacy6a.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/legacy6a.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/legacy6a.gcanvas",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/materialize_three_original_fixtures.py",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/materialize_three_original_fixtures.py",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/materialize_three_original_fixtures.py",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/review_actual_and_pack.py",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/review_actual_and_pack.py",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/review_actual_and_pack.py",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/scan_literal_inputs.initial-conservative.py.txt",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/scan_literal_inputs.initial-conservative.py.txt",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/scan_literal_inputs.initial-conservative.py.txt",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/scan_literal_inputs.py",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/scan_literal_inputs.py",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/scan_literal_inputs.py",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/BEFORE.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/BEFORE.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/BEFORE.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:materialization/commands/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:materialization/commands/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:materialization/commands/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:outer/REQUEST.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:outer/REQUEST.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:outer/REQUEST.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:outer/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:outer/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:outer/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:outer/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:outer/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:outer/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:outer/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:outer/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:outer/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:outer/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:outer/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:outer/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:outer/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:outer/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:outer/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:outer/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:outer/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:outer/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "safe_member:outer/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:outer/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:outer/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:diagnosis/synthetic-sparse-mechanics-command-record.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:diagnosis/synthetic-sparse-mechanics-command-record.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:diagnosis/synthetic-sparse-mechanics-command-record.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:tool-peer/FINAL_L_THREE_FIXTURE_MATERIALIZATION_TOOL_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:tool-peer/FINAL_L_THREE_FIXTURE_MATERIALIZATION_TOOL_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:tool-peer/FINAL_L_THREE_FIXTURE_MATERIALIZATION_TOOL_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "safe_member:actual-peer/ACTUAL_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "member_index_bytes:actual-peer/ACTUAL_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "member_original_bytes:actual-peer/ACTUAL_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "exact_member_set",
+      "passed": true
+    },
+    {
+      "name": "prior_native_four_ENOENT_not_passed",
+      "passed": true
+    },
+    {
+      "name": "materialization_only_no_subject",
+      "passed": true
+    },
+    {
+      "name": "head_complete_tree_unchanged_flags_documented",
+      "passed": true
+    },
+    {
+      "name": "exact_three_fixtures_397952",
+      "passed": true
+    },
+    {
+      "name": "materialization_outer0_not_timeout",
+      "passed": true
+    },
+    {
+      "name": "original104peer_scope",
+      "passed": true
+    }
+  ]
+}
