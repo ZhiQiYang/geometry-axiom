@@ -1,0 +1,58 @@
+{
+  "scope": "Independent narrow append-only locator clarification; no subject rerun",
+  "checks": 12,
+  "findings": [],
+  "exitCode": 0,
+  "correctionSHA256": "6fc81eb9acd77179f4fdd95a82e3c8dc9dad2e6dedffe37560715a1323e2f22c",
+  "progressSHA256": "2aac23f6316a385c4379df0e8c7664091af041b01ec7fec80201020e398cd0e2",
+  "rows": [
+    {
+      "check": "exact correction pin",
+      "passed": true
+    },
+    {
+      "check": "configured log absent",
+      "passed": true
+    },
+    {
+      "check": "original receipt unchanged /workspace/geo300-cut-list-storage-39273bc0-formal/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "original receipt unchanged /workspace/geo300-cut-list-storage-39273bc0-formal/wood-report/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "observer receipt exists",
+      "passed": true
+    },
+    {
+      "check": "observer commands exist",
+      "passed": true
+    },
+    {
+      "check": "one actual cleanup record",
+      "passed": true
+    },
+    {
+      "check": "actual cleanup size",
+      "passed": true
+    },
+    {
+      "check": "actual cleanup SHA",
+      "passed": true
+    },
+    {
+      "check": "compiled source records retained",
+      "passed": true
+    },
+    {
+      "check": "original archive unchanged",
+      "passed": true
+    },
+    {
+      "check": "visible locator clarification",
+      "passed": true
+    }
+  ]
+}
