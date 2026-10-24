@@ -1,0 +1,51 @@
+{
+  "scope": "Independent actual single N64 external instrumentation audit; no new C/performance/branch mutation",
+  "source_sha": "a22df116c7e9f6b7d074451f1c8052d59e7e4f3e",
+  "result_sha256": "f1f5b83b1a9f7ffd229a76de0d4978b3e9635765d68dc314c15fbe7bd9cbb741",
+  "passed": 895,
+  "failed": 1,
+  "exit": 1,
+  "failures": [
+    "69slotindices used by multiple families (not eviction count)"
+  ],
+  "original_commands": 7,
+  "source_files": 187,
+  "families": 10,
+  "totals": {
+    "node_call": 2364478,
+    "hint_empty": 4080,
+    "hint_hit": 626713,
+    "hint_conflict": 1733685,
+    "hint_invalid": 0,
+    "key_empty": 0,
+    "first_zero": 144,
+    "last_zero": 1005164,
+    "find_indexed": 1737693,
+    "find_linear": 72,
+    "find_sealed": 0,
+    "find_occupied": 1777944,
+    "find_vacant": 238607,
+    "find_linear_compare": 0,
+    "find_existing": 1499086,
+    "find_missing": 238679,
+    "node_new": 238679,
+    "node_provider_missing": 0,
+    "node_memory": 0,
+    "hash": 2300604,
+    "append": 238679,
+    "index_insert": 562911,
+    "rehash_insert": 324884
+  },
+  "shared_slot_indices": 71,
+  "manual_control_flow_review": [
+    "22 edits only add pure diagnostic counters/locals and brace existing returns; original key probe increment, hint update, allocation sites, fallback, return statuses and node index assignments are retained.",
+    "Diagnostic family aggregation is by provider token/key_size across the one single-threaded process; contexts are not independently distinguished.",
+    "69 shared slot indices record aggregate use by more than one family, not chronological cross-family eviction events.",
+    "Both originalR stdout and non-diagnostic stderr are byte-identical for this actual N64 load. This single observation does not certify all inputs or improve a wall-time gate."
+  ],
+  "limits": [
+    "Instrumented O1/fno-inline/pg execution is diagnostic only; originalR formal wall verdict remains separate and red as recorded.",
+    "OriginalR1 storage guard and R2 known guarded-include rejection remain failures before C; R3 classifies30 fallbacks rather than changing headers.",
+    "Initial exploratory metadata print treated list SOURCE_MANIFEST as dict and raised AttributeError; only reviewer display failed, actual subject outputs unchanged."
+  ]
+}

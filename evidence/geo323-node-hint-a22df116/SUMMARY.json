@@ -1,0 +1,22 @@
+{
+  "exit": 0,
+  "scope": "Original diagnostic capture; not product/performance acceptance",
+  "excluded": [
+    {
+      "archive_path": "R3-execution/bridge",
+      "local": "/tmp/geo323-node-hint-R-diagnostic-r3-20261024/execution/bridge",
+      "bytes": 1063256,
+      "sha256": "a056ca5719eb2f232ead7c0daa62187728b9c90c1d4e9070ed136feca93f0a64",
+      "reason": "ELF original retained in place; hash only"
+    }
+  ],
+  "members": 250,
+  "logical_bytes": 3242349,
+  "archive": {
+    "path": "/tmp/geo323-node-hint-R-package-20261024/ORIGINAL_DIAGNOSTIC.tar.gz",
+    "bytes": 636451,
+    "sha256": "f5b8e082a793bec73a78275f7646972141b5d73eda840e36059af52378bb8c5e"
+  },
+  "raw_index_sha256": "8fd90449cac5cae5598ca04757b4efa12cdfa51f7f7b3a2451fec94b3b4e23a1",
+  "roundtrip_all_original_bytes": true
+}
