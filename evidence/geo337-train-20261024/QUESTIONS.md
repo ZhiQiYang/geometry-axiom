@@ -67,3 +67,8 @@ U=`ca7838e0f4950452b9befcf40899d606db9b81fa` 的 run40058889738，及證據頭 b
 在U=`ca7838e0f4950452b9befcf40899d606db9b81fa`，原#323 compare再現同三個stdout差，verify_linux.py:156原assert1；I22版本界線仍待既有裁決，不刪診斷或放寬exact。新N64fix/main=1.429347781620555>1.3，屬可自主修正的性能缺陷，不要求新門檻；small-N與calls比雖綠，不解除它。
 
 原ABC_result key不存在、all_required_stages_completed=false/full_acceptance_passed=null，compare後段audit因assert未達；原八stage中required-eight/pf3/native三項尚未執行。小原件見`evidence/geo337-train-20261024/current-U-323-terminal-status`；完整U原流封包仍未公開。原L結果及待決選項保持歷史身份，不移標。
+
+
+### R5 本輪原判補記
+
+R=a22df116c7e9f6b7d074451f1c8052d59e7e4f3e，v5原36樣本N64/main=1.3369644933292553>1.3，屬繼續自主修正的性能缺陷；其餘小N與sourcecalls目標綠不解除它。跨版本compare仍同三個I22 stdout差，未改原裁判或刪新版必要診斷，既有版本界線待決仍有效。最新R／E39a required CI原run40063478544／40063689734明為帳戶付款或支出上限未啟動，不能自行將它們標綠。完整R5未封包與未跑正式項明列PROGRESS，沒有要求使用者停下回覆。

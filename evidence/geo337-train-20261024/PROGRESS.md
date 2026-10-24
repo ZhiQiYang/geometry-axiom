@@ -1,10 +1,18 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24；新修正已合流，準備固定下一輪來源）
+## 唯一 current-state（2026-10-24；R5 正式五階段已終態）
 
-已一般 merge 排序修正來源 `aa16e73d6e1f2965e0a911581e2a545aaaf66870`，整合提交 `48f6e79d1192c8bcdb37cee631795bf147e2445b`。原三suite共35方法／零skip、332 compile/link全0；整刀實際128→896→128、exit0/1/0，四細控制正常assert撤回／恢復；獨立3139／0。這些實跑屬子分支S，不移標到合流提交；完整native／browser／新載入性能尚未跑。
+當前產品／架構產物來源 **R=`a22df116c7e9f6b7d074451f1c8052d59e7e4f3e`**。它已一般合入排序修正與9個Reading A架構guard；後續純證據提交不改受測來源。R5在獨立乾淨R checkout以v5收件工具執行原prepare/build/compare/perf/profile各一次，execution=0/0/1/0/0、CLI=0/0/1/1/1，outer1，雙鎖已正常釋放。**N64 fix/main=1.3369644933292553>1.3仍紅**；small-N fix/base16/32/48=0.9903333938/0.8627250817/0.7692726791均綠；source calls82668/364369比4.4076184255≤4.5綠。原36樣本全保、不重抽、不放寬門檻。
 
-本提交再採完整W原lexer盤點出的9個Reading A guard，928→937 identifiers，55 strings與全部原分類／排除／trust／其餘政策不變。原U產品／physical E4d上的九組原scanner assertion各0/1/0、兩neutral0、fullscanner0，329／0獨審；完整原件在reading-a-architecture-guard-strengthening。三原裁判及四檔已在固定來源 `b9c9fb818f031828530994a4d66f1976da0d8138` 真完成並於本提交採用；generic205／product18、零skip，604 inputs／334 owned／270 exclusions／798 edges／零diagnostics，九組同來源guard反證各0/1/0與兩neutral0。原execution仍為b9，不把產物提交冒作執行來源；1696／0獨審與完整原流在architecture-b9-complete。由root接著處理最終整份帳本。沒有把U舊紅燈或CI改綠，也沒有READY-TO-MERGE。
+compare完成175 scenes/350 runs，仍於原verify_linux.py:156正常assert1，三個stdout差為role_priority與P8低／高凹角。原ABC_result缺席、all_required_stages_completed=false、full_acceptance_passed=null；不能把比較前段graph／guards相同冒作後段audit或完整八stage通過。新R完整native、六browser、P52/Q38/§7/P189、required-eight/PF3、reader/ReadingA與全帳本尚未跑。
+
+R的tracked帳本check已在同非evidence tree的physical E39a執行1：123筆、120stale／3retired／0invalid，原件在current-R5-status/ledger-freshness。源碼仍需修性能，root待穩定來源整份生成，不讓子代理各自重產。架構三原裁判及四檔生成真執行於b9c9fb818f031828530994a4d66f1976da0d8138：0/0/0、205/18零skip、604inputs與九組guard反證0/1/0；R只採非執行性report／receipt。原件已公開architecture-b9-complete，不移標執行SHA。
+
+最新CI原讀：R的run40063478544與當時E39a的run40063689734，各7個job均failure／steps=[]，annotation明載付款失敗或支出上限未啟動；另有Ubuntu label notice。沒有修改付款／required checks或取得正式替代接受，B3仍未解除；這不是產品程式執行失敗或成功。新純證據head的CI不以這兩run冒充。
+
+v5只恢復原subprocess.run PIPE並把性能收據落盤延至原perf返回後，原judge、36樣本、timer、timeout、門檻都未改；48合成契約及兩組0/1/0、87/0peer完整公開於current-R5-status/recorder-v5-originals。R5終態／CI／check原件及671/0獨審已同批公開，但R5完整graph／gprof／所有command原件仍在雲端待完整封包。上一輪U五stage完整9091member原包（31,361,891B，SHAa276bd4f…）本次已公開於full-U-five-stage-raw，50331/0獨審；包內原published:false保收件時間，發布事實由本提交另證。沒有用U包代R5原流。
+
+排序修正Saa16的35方法、332compile/link與整刀128→896→128／四細控制真0/1/0已完整合入evidence/geo343-monotonic-aa16e73d；實跑來源仍Saa16。下一刀由W owner針對17,741,288次plane_compare尋因，K僅做觀察儀表、不並改產品策略。原三診斷版本界線與CI限制照QUESTIONS保留。**尚未READY-TO-MERGE；所有原skip、斷言、golden、時限均未放寬。**
 
 ### 前輪 U 終態與歷史矩陣（不代表上述新來源）
 

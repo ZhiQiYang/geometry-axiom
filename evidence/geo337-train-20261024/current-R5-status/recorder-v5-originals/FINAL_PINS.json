@@ -1,0 +1,65 @@
+{
+  "scope": "External recorder fidelity v5; no product sampling authorization implied",
+  "files": {
+    "tools-v5/geo323_record.py": {
+      "sha256": "c997611f5ba14298d0a06759528c192adb0619a9587cb0cab4fd051d95126810",
+      "bytes": 10675
+    },
+    "tools-v5/mini_gen.py": {
+      "sha256": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749",
+      "bytes": 1560
+    },
+    "tools-v5/profile_linux.py": {
+      "sha256": "0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c",
+      "bytes": 1630
+    },
+    "tools-v5/reap_children.py": {
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+      "bytes": 2096
+    },
+    "tools-v5/run.py": {
+      "sha256": "881d618cd06b3edddf10a6676504923bbd982c8901c632410db434cfd480e849",
+      "bytes": 25764
+    },
+    "tools-v5/verify_linux.py": {
+      "sha256": "c3db1834c49365a08ef5720d38156253a355e9f5d5db0239486013871d0e2cac",
+      "bytes": 11459
+    },
+    "tests/run_counterfactuals.py": {
+      "sha256": "5cb8e7fc93eb9abbcfa92554ad613399fee628d0412a7c5b923fcc117916e860",
+      "bytes": 3492
+    },
+    "tests/test_recorder_contract.py": {
+      "sha256": "b22cdaa86b9b8749a920320e494e92e3b044c2ea067d104fc3d09555cb2a1992",
+      "bytes": 13048
+    },
+    "README.md": {
+      "sha256": "9df51007da708a287d99b9f8d50ebc86055dba7f5619443207e8492304ebb7e6",
+      "bytes": 3418
+    },
+    "P52_P189_SCOPE.md": {
+      "sha256": "573eb895daef519927a90c233a6855488740adf39783355aa75c355f0e8b471a",
+      "bytes": 1785
+    },
+    "STATIC_INVARIANTS.json": {
+      "sha256": "842553d97279d7bf74e580b1ab8031dfc243303555710f51fbc0fed0702720ca",
+      "bytes": 1181
+    },
+    "ORIGINAL_V4_PINS.json": {
+      "sha256": "dd9a49579bd0080b703496414ee5ce379cfafaf45892f76304b84bd9e535eec6",
+      "bytes": 643
+    },
+    "SCOPE_PINS.json": {
+      "sha256": "0f58aec02111de34820cee9bd2e8b87cee90b2f64bdd507881cf1ec4b5c35a39",
+      "bytes": 2509
+    },
+    "geo323_record.py.v4-to-v5.diff": {
+      "sha256": "021a4d7577cb5d101ffcf36a25a16279d29b1e1b417d828ded8715bf72ebbe05",
+      "bytes": 12101
+    },
+    "run.py.v4-to-v5.diff": {
+      "sha256": "4e2d076c60f5961e0c42380a5e84f2ca964ac66a0491574cac96e907a19cf7e6",
+      "bytes": 486
+    }
+  }
+}
