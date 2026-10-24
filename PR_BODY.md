@@ -3,14 +3,14 @@
 | SHA 欄位 | 精確來源 |
 |---|---|
 | 目前合流產品／測試來源 U | `ca7838e0f4950452b9befcf40899d606db9b81fa`；本輪已普通 merge 並 push 固定 |
-| 目前證據 head E_U | `76ba3b2dad42f5d68fdd3bbdd7e54f5b0c337c65`；證據／完整 probe 原件與原帳本 check 收據已公開，不是新增測試執行 |
+| 目前證據 head E_U | `4d0ef8dee14873256efae1ee646c01d8dcfe947f`；含 U 五stage終態小原件；U完整raw封包尚未公開，不能借用L全包 |
 | 上一輪完整驗收來源 L | `7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`；以下既有正式實績均保原 execution SHA |
 | L 完整證據 head E_L | `1952b0ae604291a2ec447a5cc684d6ab91306779`；已公開五份性能全包 |
 | 原17方法 probe 來源 S_probe | `a543eef67b81f8d8800f32d5dc4a5641840d2943`；已普通 merge 進 caf6，不能冒 U 全套驗收 |
 
 ### 唯一 current-state 矩陣
 
-**目前合流來源 U 的完整帳本、四檔架構收據、native、六 browser 與受影響專項尚待重產／重跑。** 三個架構原裁判已有同產品closure的新原終態，精確execution見下列；四檔尚未重產。 下表同時列出 U 的待驗狀態與最近 L 的原終態；L 的綠燈沒有移標成 U 綠燈。CLI、stage 與數值門檻分開，peer 核對數不是產品測試。單一 L #323 driver 的 `all_required_stages_completed=false`、`full_acceptance_passed=null` 保原值。
+**目前合流來源 U 的完整帳本、四檔架構收據、native、六 browser 與受影響專項尚待重產／重跑。** 三個架構原裁判已有同產品closure的新原終態，精確execution見下列；四檔尚未重產。 U原#323五stage已各跑一次並真終態；下表同時列出U當輪結果、其餘待驗狀態與最近L的原終態；L 的綠燈沒有移標成 U 綠燈。CLI、stage 與數值門檻分開，peer 核對數不是產品測試。L與本輪U的單一#323 driver均保 `all_required_stages_completed=false`、`full_acceptance_passed=null`；U原`ABC_result` key不存在，compare後段audit因assert未達；原八stage中的required-eight／PF3／native三項尚未跑，不冒完整通過。
 
 | Gate | 目前 U | 最近原結果（execution L，另列者除外） | 範圍與限制 |
 |---|---|---|---|
@@ -26,9 +26,9 @@
 | P-189獨立timing | UNRUN at U | CLI／driver／outer0；四數值門檻綠 | main `adbaebf9`／base `3e600772`／L，36samples；N16/32/48/64原receipt fix/main約1.101333／0.958790／1.277641／1.371567，皆≤2。dump_count=0、overall_P189_passed=false |
 | #323 fixed-three／required-eight | UNRUN at U | 原0／0 | fixed-three原13/22/15由native完整module覆蓋；R8八列676是Python tests、C檢查點與core場景混合單位，零skip。619份複製logs含歷史，只計當次八列 |
 | #323 PF3 | UNRUN at U | 原CLI／stage／driver／outer全0 | baseline20／19刀指定AssertionError 1／restored20；21次build invocation產42binary，不虛構42份獨立compiler OS退出碼 |
-| #323 prepare／build／compare | RUNNING at U；等待當輪終態 | **0／0／1** | base `b74f9a2`對L；175 scenes／350 runs，三個具名stdout差，前後同L clean。原compare中斷後ABC_result未設定，不冒後續完整audit通過 |
-| #323 timing | RUNNING at U；等待當輪終態 | stage execution0；**原outer CLI1、N64目標false** | N16/32/48 fix/base約0.998983／0.811880／0.806587均≤1；**N64 fix/main=1.4282954375>1.3**。CLI1含累積compare紅與數值紅，不改分母或門檻 |
-| #323 profile | RUNNING at U；等待當輪終態 | stage execution0；原outer CLI1；呼叫比門檻綠 | N32 geo_eval_source=82668、N64=364369；64/32=4.4076184255≤4.5。outer1仍帶累積compare／性能紅 |
+| #323 prepare／build／compare | **execution／CLI 0／0／1**；175 scenes／350 runs後三stdout差 | **0／0／1** | base `b74f9a2`對L；175 scenes／350 runs，三個具名stdout差，前後同L clean。原compare中斷後ABC_result未設定，不冒後續完整audit通過 |
+| #323 timing | execution0／**CLI1；N64 fix/main=1.429347781620555>1.3**；N16/32/48 fix/base=0.9999532918／0.8129671517／0.8062760349皆綠 | stage execution0；**原outer CLI1、N64目標false** | N16/32/48 fix/base約0.998983／0.811880／0.806587均≤1；**N64 fix/main=1.4282954375>1.3**。CLI1含累積compare紅與數值紅，不改分母或門檻 |
+| #323 profile | execution0／CLI1；N32=82668／N64=364369，ratio4.4076184255≤4.5綠 | stage execution0；原outer CLI1；呼叫比門檻綠 | N32 geo_eval_source=82668、N64=364369；64/32=4.4076184255≤4.5。outer1仍帶累積compare／性能紅 |
 | #323 whole-memo撤回／恢復 | UNRUN at U | 原driver／outer0；withdrawn1／restored0／隔離ABC0 | calls比撤回6.0538332063>4.5、恢復4.4076184255≤4.5；三phase execution_complete true，隔離175/350原audit tuple一致。不解除formal compare1或N64載入性能紅 |
 | reader三條 | UNRUN at U | 0／0／0 | 原sync生成、--check、reader unit51；各原CLI退出碼0 |
 | RC-run builder／checker撤回 | UNRUN at U | 各0/1/0 | 各以原單一方法、六assert；未拿native或全帳本的其他控制替代 |
@@ -46,7 +46,7 @@ P-189原`p189_verify.py:195`是`assert raw['base'] == raw['fix']`，訊息為`As
 
 #323原`verify_linux.py:156`的`assert not failures,failures`列三個stdout差：`_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene`。它完成175／350後才判紅，與P-189的base及中止範圍不同。
 
-K edge probe 的17方法與整刀已通過，但新合流來源沒有新的效能結果，N64的既有紅燈尚未解除。
+K edge probe 的17方法與整刀已通過；本輪U五stage真終態1，原順序execution為0／0／1／0／0、CLI為0／0／1／1／1。新U的N64 fix/main=1.429347781620555仍大於原1.3；小N與calls比通過沒有解除它。原36樣本全部保留，不重抽樣取綠。U compare也保同三個具名stdout差與`verify_linux.py:156`原assert1；`ABC_result`尚未建立，compare後段audit因assert未達；其餘required-eight／PF3／native三stage尚未跑，不宣稱完整graph／audit通過。
 
 現行I22及既有正反例要求定位邊／超出區間；未取得診斷版本界線或comparator裁決前，保留完整原差異與exit1，不刪診斷、過濾、正規化或放寬exact。歷史F的同列車memo-only因果證據不能取代跨版本門檻。待決選項及原版本來源在`evidence/geo337-train-20261024/QUESTIONS.md`的Q-323-ABC／Q-P189-EXACT。
 
@@ -54,7 +54,9 @@ K edge probe 的17方法與整刀已通過，但新合流來源沒有新的效�
 
 最新已讀#338審查仍為2026-10-24 00:39:37 UTC／head f05e7cf；它是審查歷史，不代替本輪CI。新讀 U=`ca7838e0f4950452b9befcf40899d606db9b81fa` 的run40058889738與當時 E=`b09a34c53ccac652cf0efa3f3e9b4b18ca74d6c5` 的run40059064935，各七required jobs均failure、runner空、steps0。十四個failure-level annotation皆為付款失敗**或**支出上限，另有Ubuntu遷移notice；API不分兩種帳戶原因。本輪未抓signed logs，沒有把舊Forbidden或signature遮罩套到新run，沒有環境已修或替代驗收已接受的主張。
 
-新三裁判與兩run共124份原件／351,354B已在E_U的 `evidence/geo337-train-20261024/current-U-architecture-and-ci/` 公開。舊f05/e9完整原讀65次（63 exit0與兩log Forbidden1）、兩signed-log signature遮罩和原review仍留歷史原件；Forbidden不證明log不存在。
+本輪U五stage的原命令、CLI／execution、receipt、36樣本表與比較小原件，於E_U的 `evidence/geo337-train-20261024/current-U-323-terminal-status` 公開；這是終態小件，不是完整graph／profile原流封包，完整raw仍在雲端。原TERMINAL_SUMMARY的published:false保收件當時原值，公開事實由新E與publisher原RESULT證明。原v4 outer的source_role/source_sha依argv中的--base啟發式可能標base，原欄不改；產品綁定以明確U acceptance_sha、inner原receipt及前後Git guards為準。
+
+新三裁判與兩run共124份原件／351,354B已於先前E76ba的 `evidence/geo337-train-20261024/current-U-architecture-and-ci/` 公開。舊f05/e9完整原讀65次（63 exit0與兩log Forbidden1）、兩signed-log signature遮罩和原review仍留歷史原件；Forbidden不證明log不存在。
 
 以下 L 相對路徑均以 E_L=`1952b0ae604291a2ec447a5cc684d6ab91306779` 的 `evidence/geo337-train-20261024/` 為準；不冒 U 新執行：
 
@@ -69,4 +71,7 @@ K edge probe 的17方法與整刀已通過，但新合流來源沒有新的效�
 
 K probe 完整原件已透過一般 merge 納入 E_U 的 `evidence/geo323-edge-probe-a543eef6/`；execution 仍為 S_probe，root另保 source binding 與原 actual peer。caf6原帳本check1全流在 `evidence/geo337-train-20261024/probe-evidence-and-ledger-freshness/original-caf6-ledger-check/`。維護兩個完整包也已於歷史 E=`2787ee3167deec7588bde26265152bcf6dc4a939` 公開，僅為保全與儲存收據，不是產品 gate。
 
-#348 F0f695866 留在獨立分支繼續，不納本輪U。其原整批終態1，W7真7／7、零skip、exit0；H7為2PASS／5RED（三個 sentinel 測試缺陷與兩個512 load原600秒Timeout），三helper各 fixed／withdrawn／restored皆1／1／1，沒有完整有效三態，也沒有放寬時限或標綠。secondary已釋；#345原19方法／六phase執行器已就緒，排新U的#323原五stage之後獨占執行。五stage工具已靜審65／0；薄source準備真0（447檔／4,290,370B、U clean、nlink1唯讀與獨立index）。新U五stage已啟，原終態由後續PROGRESS更新，尚無新性能終態。後續帳本／架構整份重產後才固定L2。這些進度不解除四個原阻擋，也不是 READY-TO-MERGE。
+#348 F0f695866 留在獨立分支繼續，不納本輪U。其原整批終態1，W7真7／7、零skip、exit0；H7為2PASS／5RED（三個 sentinel 測試缺陷與兩個512 load原600秒Timeout），三helper各 fixed／withdrawn／restored皆1／1／1，沒有完整有效三態，也沒有放寬時限或標綠。secondary已釋；新U的#323原五stage也已真終態並釋雙鎖。#345原六phase已真終態0、各19／零skip，獨審2493／0；完整包已於獨立 E99646d418bc5e886a92bfdabe33e68780e88fe3b 公開，結果歸其獨立線OUT，不列本列車通過項。五stage工具已靜審65／0；薄source準備真0（447檔／4,290,370B、U clean、nlink1唯讀與獨立index）。新U五stage原終態1與兩個產品紅已列唯一矩陣；其餘新U正式項目仍未跑。後續帳本／架構整份重產後才固定L2。這些進度不解除四個原阻擋，也不是 READY-TO-MERGE。
+
+
+本輪原件發布補記：新增四組 archive 儲存保全已於 E_U 的 `evidence/geo337-train-20261024/maintenance-additional-four-archive-groups/` 公開，原包359949B／1597 members；不是產品gate。#345已普通推送完整六phase原件 E=`99646d418bc5e886a92bfdabe33e68780e88fe3b` 與正文 D=`c5515c14ac9cb59d147563f3dd75dbde5b75ca4e`，沒有移作U驗收或標READY。
