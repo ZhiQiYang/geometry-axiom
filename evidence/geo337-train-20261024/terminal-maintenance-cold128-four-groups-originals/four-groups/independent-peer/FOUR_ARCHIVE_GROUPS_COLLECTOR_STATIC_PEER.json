@@ -1,0 +1,13 @@
+{
+  "schema": "four-archive-groups-collector-static-peer-v1",
+  "checks": 22,
+  "exit_code": 0,
+  "findings": [],
+  "collector_sha256": "778c03422749422fb2b522f7562920edc1f52bb8705ae5de3ff220d5f44e29da",
+  "original_collector_sha256": "ecf974c68609a926c57d52da43e3d1fa12dd0366a12b6cd0d45a119feab5a153",
+  "limits": [
+    "Only static exact original add/tree/tar-recheck comparison and narrow scope/guard audit; collector not executed by reviewer.",
+    "Actual small package still needs independent member/hash review after execution; no archive bodies or maintenance subjects rerun.",
+    "Original historical red outcomes and direct-prep-no-outer limitation retained."
+  ]
+}

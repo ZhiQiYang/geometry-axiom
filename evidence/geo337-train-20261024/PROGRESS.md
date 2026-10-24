@@ -308,3 +308,14 @@ cardref另有兩組受控突變ELF aliases，原116路徑與bytes全留，63個�
 memo於02:35:07.864974 UTC真完成，原driver/outer0；撤回1的calls比6.053833206336931>4.5，恢復0的比4.407618425509266，兩phase execution_complete true。memo隔離175/350 ABC原0、原audit tuple一致，仍不解除formal跨版本compare1、P189full1或N64載入性能紅。
 
 本批final-L-all-terminal-status-only保原13KB formal receipt、performance/profile原JSON、三outer完整小流與原2,877,262B memo driver receipt；沒有摘欄冒原件。完整#323/memo原流與P52/P189三完整封包尚未推送，本小收據不代完整封包。下一步先查N64熱點與做受影響修正／撤回恢復，保原比較紅與QUESTIONS的版本裁決界線，繼續其他已授權工作，不放寬門檻。
+
+
+## 2026-10-24 03:33 UTC：cold128 與四組保存式去重原件封存
+
+本提交只補歷史維護證據，不執行產品測試、不改任何正式 exit、PR 正文或目前產品驗收狀態。兩份固定 tar 直接寫入 Git blob 並設 skip-worktree，工作樹不另物化副本；原 PACKAGE 欄位不回寫。
+
+cold128 原包 15,922 members、2,774,412B、SHA256 4949b46b18d9b8b8bbaaec0fd65dc212ded056757b13589422f56fe702aeb2cd；128 組的 384 個來源路徑與 bytes 全保，原配置節省量 150,953,984B，不是 df 淨回收。完整原準備、執行、root 序列、命令與 stdout/stderr 已在包內；當次 collector 外層、靜審 24/0、完整包獨審 63,835/0 另附。先前 12.3MB Git-tree 原件沿包內固定 prior PACKAGE 連到既已公開的 cold59/cardref 包，未聲稱再次收錄；selector 的直接 exec／無獨立 c387 outer 限制照原披露。
+
+四組原包 840 members、248,731B、SHA256 fc852b7d53c9c0c41feb2ce6256e61723cf2903fcdff4142e1076bb237ce73e7，保全部 19 個原 archive/stream 路徑及 bytes。來源配置節省量 476,540,928B，不替代含其他寫入的 df 差額；原 6alias publication 的 1/1/1/0 與 54 列歷史終態含紅結果原樣保留。原方案、精確原工具、完整 Git/consumer/journal/outer、獨審皆入包；當次 collector 外層、靜審 22/0 與完整包獨審 3,421/0 另附。F2 counterfactual 因原收據截斷無可信終態而排除，兩個候選原檔未動。
+
+寫入禁令分開記錄：既有三個 seal cold checkout 的 423 組、cardref 的 2 組 ELF、GEO339 的 1 組六 alias、另 3 組大型歷史 archive。任一受保護 alias 寫入或復用前必須完整 delink。原 inode／nlink 與非 canonical 時間戳會按原方案改變，未宣稱保留 inode 身份；沒有刪收據、fixture、Git object 或受控 ELF。兩包完整 inventory 已在各 tar 內，未額外複製大 JSON。這些維護核對不計入產品 gate，也不把舊 L 收據移標成其他來源 SHA。
