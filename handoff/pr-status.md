@@ -5,13 +5,13 @@
 | 請求檔 | head | PR | 狀態 |
 |---|---|---|---|
 | geo260-ac23-proof-20261024.json | `codex/geo260-ac23-proof-20261024` | #342 | up to date (body be1f69dc) |
-| geo300-capacity512-20261024.json | `codex/geo300-capacity512-20261024` | #348 | body -> 1f0e9d86 |
+| geo300-capacity512-20261024.json | `codex/geo300-capacity512-20261024` | #348 | up to date (body 1f0e9d86) |
 | geo300-contact-index-20261024.json | `codex/geo300-contact-index-20261024` | #343 | up to date (body 56ed8d00) |
 | geo300-cut-list-storage-20261024.json | `codex/geo300-cut-list-storage-20261024` | #346 | up to date (body 4e6a42e9) |
 | geo300-prerequisites-20261024.json | `codex/geo300-prerequisites-20261024` | #341 | up to date (body ea1a153b) |
 | geo324-faces-20261024.json | `codex/geo324-faces-20261024` | #339 | up to date (body 283d1e24) |
 | issue128-empty-panel-rows-20261024.json | `codex/issue128-empty-panel-rows-20261024` | #347 | up to date (body 0109cab1) |
 | issue214-http-fixture-20261024.json | `codex/issue214-http-fixture-20261024` | #345 | up to date (body c5515c14) |
-| issue320-connection-recovery.json | `codex/issue320-connection-recovery-20261024` | #344 | body -> d637822c |
+| issue320-connection-recovery.json | `codex/issue320-connection-recovery-20261024` | #344 | up to date (body d637822c) |
 | kernel-without-woodworking-20261024.json | `codex/kernel-without-woodworking-20261023` | #340 | up to date (body db8bf228) |
 | train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | up to date (body 3989f0b0) |
