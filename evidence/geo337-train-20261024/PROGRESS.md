@@ -1,6 +1,6 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24 01:50 UTC）
+## 唯一 current-state（2026-10-24 02:01 UTC）
 
 唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送。C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；L 相對生成來源 b6 只採原帳本與 evidence。後續 evidence head E 是本檔所在提交，不能冒作受測 SHA。沒有 READY-TO-MERGE，B1 完整清單及 B2 原跨版本 exact 尚未解除。
 
@@ -11,7 +11,7 @@
 | 架構三原裁判 | L | 0／0／0 | generic205／product18、零skip，604輸入及index前後一致；final-L-architecture |
 | 完整 native | L | r2原CLI／workflow／CI35／outer全0；r1環境1保歷史 | r2全230列，5309=5308pass+0fail+1原允許WindowsGDI skip；1819.561s<35min，Node737/737；完整原件封final-L-native-r2-complete；r1四ENOENT不改舊判 |
 | canvas／assembly／documents／grid／space／timber | L | canvas0；assembly0；documents0；grid0；space0；timber0 | canvas2267原assert全0／1718.885s<35min，85 golden一致、零skip；P88=143；其餘五job各原收據已封，獨立checkout／埠／暫存、canvas獨占、原CI時限保留 |
-| P52／Q38／§7兩項／P-189 | L | §7 compiled0／axiom0；Q38原0／outer0，完整原件已公開；P52／P-189 UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
+| P52／Q38／§7兩項／P-189 | L | §7 compiled0／axiom0；Q38原0／outer0，完整原件已公開；P52 formal／verifier／driver／outer0（終態原收據已封，完整流包待）；P-189 UNRUN | 原判準；P-189 main adbaebf9／base3e600772，原交錯36samples與175 loadfile+dump exact |
 | #323 required-eight／PF3／timing／profile／memo反證 | L | required-eight原exit0／PF3原exit0，完整原件包已封；timing／profile／memo UNRUN | 原676／20-19-20／36timings／4profiles與原門檻；不移標舊F結果 |
 | reader三條／RC-run兩精準刀／ReadingA mutants-only及完整quick | L | reader0／0／0；RC各0／1／0；mutants-only0／quick0 | reader unit51、原RC單方法各6assert；原quick列39850 builds／failures0、既有C11六案限制仍保；兩批outer0、r1環境1仍保 |
 | #323跨版本175／350 exact | F對原b74 | 1，仍阻擋B2 | 三個I22所需診斷差異，L尚未重跑；未改裁判或刪診斷 |
@@ -263,3 +263,7 @@ PF3原baseline20全部通過，19刀各命中指定方法與marker的正常Asser
 cardref另有兩組受控突變ELF aliases，原116路徑與bytes全留，63個重複payload以保全link共享；原plan配置節省量79,196,160B，不是df淨回收。這兩組與295組cold aliases分開，任一alias寫入或復用前須全部delink。原inode與per-path mtime不保原樣，原metadata在PLAN；沒有刪受控ELF、收據、fixture或git object。
 
 固定原件包7487members、4,160,382B、SHA256 0c9cb4ef4f425d7cb7ab7542c0b183ac55f09d6ada7350ea7e4e36bf7c95fcdb已公開於terminal-maintenance-cold59-cardref-originals。它保存原小metadata與完整命令流，不另複製cold receipt本體或ELF payload；cardref原931份非ELF原件由既有§7完整包／inventory覆蓋，沒有聲稱新包二次包含。collector完整外層與包外root sequential原件另外公開，未回寫固定tar；原收包0、獨審30026/0及collector靜審19/0均保。這些核對數不計產品gate，不更新其他效能終態，也不宣稱整體READY。
+
+## 2026-10-24 02:01 UTC：P52原正式量測與五控制真終態0
+
+同L原main/fix/fix/main交錯四區塊、每側16筆全部保留，main中位218.2650215ms、fix176.218242ms，ratio0.8073590573008969；原門檻fix<=main成立，沒有+5ms容忍。normal/delay原0，revert-delay/wrong/missing原1且各符合原控制判準；formal/verifier/driver/outer全0。四份原終態收據先封於final-L-p52-terminal-status-only，完整streams仍在原OUT，尚待完整原件包與獨立核對，沒有冒稱已全封。第一次collector遇Chrome SingletonCookie symlink退出1，屬收件工具假設錯誤，完整失敗保留；沒有重跑產品、改斷言或改時限。P-189與#323性能接續，B2及B3仍未解除。
