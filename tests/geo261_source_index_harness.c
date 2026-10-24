@@ -27,6 +27,7 @@ static void test_free(void *p){if(p)--live_allocations;free(p);}
 #define calloc test_calloc
 #define realloc test_realloc
 #define free test_free
+static uint64_t edge_probe_hash_calls;
 #include "source.c"
 #undef malloc
 #undef calloc
@@ -359,10 +360,90 @@ static int statuses(void)
     REQUIRE("failed-status-memoized",geo_eval_source(ctx,refs[5],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_FAILED);
     geo_eval_destroy(ctx);REQUIRE("status-frees-all",live_allocations==0);return 0;
 }
+static int probe_seed_nodes(GeoEvalContext *ctx)
+{
+    GeoSourceDescriptor descriptor;
+    for(size_t i=0;i<40;++i){linear_node(refs[i]);
+        REQUIRE("edge-probe-seed",geo_eval_describe(ctx,refs[i],&descriptor)==GEO_SOURCE_OK);}
+    return graph_equal(ctx);
+}
+static int probe_add_ordered(GeoEvalContext *ctx,size_t consumer,size_t source,GeoDependencyKind kind)
+{
+    linear_edge(consumer,source,kind);ctx->active=consumer;
+    GeoSourceStatus status=geo_eval_depend(ctx,refs[source],kind);ctx->active=SIZE_MAX;
+    REQUIRE("edge-probe-depend-status",status==GEO_SOURCE_OK);
+    return graph_equal(ctx);
+}
+static int probe_resize_precondition(GeoEvalContext *ctx)
+{
+    REQUIRE("edge-probe-resize-boundary",ctx->edge_count==8&&ctx->edge_index_capacity==16);
+    GeoSourceEdge edge={0,9,GEO_DEPENDENCY_VALUE_REQUIRED};size_t fresh[32]={0};
+    size_t old_slot=(size_t)geo_source_edge_hash(edge)&15;
+    while(ctx->edge_index[old_slot])old_slot=(old_slot+1)&15;
+    for(size_t i=0;i<8;++i){size_t slot=(size_t)geo_source_edge_hash(ctx->edges[i])&31;
+        while(fresh[slot])slot=(slot+1)&31;fresh[slot]=i+1;}
+    size_t next_slot=(size_t)geo_source_edge_hash(edge)&31;
+    while(fresh[next_slot])next_slot=(next_slot+1)&31;
+    REQUIRE("edge-probe-old-empty-slot-is-wrong-after-resize",old_slot==9&&next_slot==25&&!fresh[old_slot]);
+    return 0;
+}
+static int probe_edges(void)
+{
+    for(int faults=0;faults<2;++faults){
+        oracle_node_count=oracle_edge_count=0;
+        GeoEvalContext *ctx=context();REQUIRE("edge-probe-context",ctx);
+        if(probe_seed_nodes(ctx))return 1;
+        unsigned failures_before=index_failures;
+        for(size_t i=1;i<=33;++i){
+            if(!faults&&i==9&&probe_resize_precondition(ctx))return 1;
+            int inject=faults&&(i==1||i==9||i==17);fail_indexes=inject;
+            int result=probe_add_ordered(ctx,0,i,GEO_DEPENDENCY_VALUE_REQUIRED);fail_indexes=0;
+            if(result)return result;
+            if(inject)REQUIRE("edge-probe-index-failure-is-linear",!ctx->edge_index&&!ctx->edge_index_capacity);
+            if(!faults&&(i==1||i==9||i==17||i==33)){
+                size_t expected=i==1?16:i==9?32:i==17?64:128;
+                REQUIRE("edge-probe-doubled-capacity",ctx->edge_index_capacity==expected);}
+            /* Check the just-inserted edge before a later rebuild can repair its index. */
+            if(i==9&&(probe_add_ordered(ctx,0,9,GEO_DEPENDENCY_VALUE_REQUIRED)||
+                       probe_add_ordered(ctx,0,1,GEO_DEPENDENCY_VALUE_REQUIRED)))return 1;
+        }
+        REQUIRE("edge-probe-fallback-count",index_failures-failures_before==(unsigned)(faults?3:0));
+        if(probe_add_ordered(ctx,1,1,GEO_DEPENDENCY_VALUE_REQUIRED)||
+           probe_add_ordered(ctx,1,1,GEO_DEPENDENCY_DEFINITION_REQUIRED)||
+           probe_add_ordered(ctx,1,1,GEO_DEPENDENCY_EVALUATE_BEFORE)||
+           probe_add_ordered(ctx,0,1,GEO_DEPENDENCY_DEFINITION_REQUIRED))return 1;
+        /* Revisit final post-rehash insertions as well as the first 33 edges. */
+        if(probe_add_ordered(ctx,0,1,GEO_DEPENDENCY_DEFINITION_REQUIRED)||
+           probe_add_ordered(ctx,1,1,GEO_DEPENDENCY_EVALUATE_BEFORE)||
+           probe_add_ordered(ctx,1,1,GEO_DEPENDENCY_DEFINITION_REQUIRED)||
+           probe_add_ordered(ctx,1,1,GEO_DEPENDENCY_VALUE_REQUIRED))return 1;
+        for(size_t i=33;i>0;--i)if(probe_add_ordered(ctx,0,i,GEO_DEPENDENCY_VALUE_REQUIRED))return 1;
+        REQUIRE("edge-probe-exact-37-ordered-edges",ctx->edge_count==37);
+        geo_eval_destroy(ctx);REQUIRE("edge-probe-frees-all",live_allocations==0);
+    }
+    return 0;
+}
+static int probe_cost(void)
+{
+    oracle_node_count=oracle_edge_count=0;
+    GeoEvalContext *ctx=context();REQUIRE("edge-probe-cost-context",ctx);
+    if(probe_seed_nodes(ctx))return 1;
+    edge_probe_hash_calls=0;
+    for(size_t i=1;i<=12;++i)if(probe_add_ordered(ctx,0,i,GEO_DEPENDENCY_VALUE_REQUIRED))return 1;
+    uint64_t observed=edge_probe_hash_calls;
+    geo_eval_destroy(ctx);REQUIRE("edge-probe-cost-frees-all",live_allocations==0);
+    printf("PROBE_HASH_CALLS=%llu\n",(unsigned long long)observed);
+    REQUIRE("edge-probe-cost-instrumentation-live",observed>0);
+    REQUIRE("edge-probe-reuses-lookup-hash",observed==21);
+    return 0;
+}
+
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;prepare_refs();int result;
-    if(!strcmp(argv[1],"nodes"))result=nodes_and_seal();
+    if(!strcmp(argv[1],"edge-probe"))result=probe_edges();
+    else if(!strcmp(argv[1],"edge-probe-cost"))result=probe_cost();
+    else if(!strcmp(argv[1],"nodes"))result=nodes_and_seal();
     else if(!strcmp(argv[1],"edges"))result=edges_and_reset();
     else if(!strcmp(argv[1],"edge-collisions"))result=edge_collisions();
     else if(!strcmp(argv[1],"edge-search"))return edge_search();
