@@ -14,9 +14,10 @@
 | 外部獨立公式 | 0：1150 案、488 全空、19 首 phase 空後有板 | 純 Python，與 C 正式證據分列 |
 | 產品／companion／公開 source 靜審 | 239/0、40/0、23/0 | 先前原件不改寫 |
 | 先前公開 E/D 原件包／formal wrapper 審查 | 658/0、31/0 | wrapper 四個純 parser 負例拒絕假綠；不是產品 C 反證 |
+| 正式執行原件／封存 roundtrip 獨審 | **621/0、3754/0** | 124 child 原件、93 build、全部 1250 archive members 與原 bytes 相符 |
 | PF-1／PF-2／PF-3、完整 native、受影響 browser | **UNRUN** | 未借 train、#343、#346 或其他 SHA 的歷史通過 |
 | 最終全帳本、架構三裁判／收據 | **UNRUN** | 主代理依最終列車統一重產；本子代理未執行 |
-| 合併狀態 | **NOT READY** | 還需受影響正式整合、帳本／架構及新證據獨審 |
+| 合併狀態 | **NOT READY** | 還需受影響正式整合、帳本／架構；此提交 E/D 的最後窄核另交同儕 |
 
 ## 成本反證的實際 C 輸出
 
@@ -32,6 +33,12 @@
 
 ## 下一步與界線
 
-把本次公開結果交另一代理對抗審查；主代理依最終列車更新帳本／架構並跑 PF 與其他受影響正式項。分支順序 #343 → #346 → 本 P2 → 512，後續採一般 merge。
+正式原件與封存已由另一代理通過 621/0、3754/0；主代理依最終列車更新帳本／架構並跑 PF 與其他受影響正式項。分支順序 #343 → #346 → 本 P2 → 512，後續採一般 merge。
 
 本片只略過 body 的全空外層，raw seam 原件與容量不改；staggered raw seam 的空外層仍未優化。#128 P1 JSON 精度、P3 UI 回執、P4 allocator 契約與 P5 舊工具另案。最不確定的是未跑的整合及最終帳本／架構；不能宣稱整個 PR 或 #128 已完成。
+
+## 收據路徑更正（不改原件）
+
+沿用的 driver 原 receipt 欄位 `native_execution_log` 與對應環境變數只是設定路徑，該 JSONL **未物化**。本 suite 的真 124 個 runtime 子程序原件在 archive 的 `formal/panel-native/observed/commands/`，93 條 build 在 `formal/panel-native/compile-retention/`。`FORMAL_LOCATORS.json` 列完整對照，不能把設定中的 JSONL 當成第二份執行證據。原 receipt、工具、archive 與所有 stdout/stderr 完整保留，未回寫或重測。
+
+獨審完整 reports/checks/helpers 在 `formal-independent-peer/`。package peer 初次 helper 誤用索引鍵（實際為 `local`），原錯誤與修正前 helper 亦保留；僅修正 reader 後為 3754/0，不是產品紅燈。
