@@ -151,7 +151,7 @@ class SourceIndex(unittest.TestCase):
         for phase,contents,expected,calls in (("fixed",source,0,21),("withdrawn",withdrawn,1,31),("restored",restored,0,21)):
             with self.subTest(phase=phase):
                 self.assertEqual(1,contents.count(anchor))
-                work=self.build.work/("edge-probe-cost-"+phase);work.mkdir()
+                work=self.build.work/("edge-probe-source-"+phase);work.mkdir()
                 (work/"source.c").write_text(contents.replace(anchor,anchor+"++edge_probe_hash_calls;"),encoding="utf-8")
                 client=work/"client.c";shutil.copy2(self.harness,client)
                 exe=self.build.link("edge-probe-cost-"+phase,[self.build.compile(client,"edge-probe-cost-"+phase)])
