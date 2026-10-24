@@ -14,4 +14,4 @@
 | issue214-http-fixture-20261024.json | `codex/issue214-http-fixture-20261024` | #345 | up to date (body ac478611) |
 | issue320-connection-recovery.json | `codex/issue320-connection-recovery-20261024` | #344 | up to date (body a066115b) |
 | kernel-without-woodworking-20261024.json | `codex/kernel-without-woodworking-20261023` | #340 | up to date (body db8bf228) |
-| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | up to date (body f6085e4f) |
+| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | body -> 792e3502 |
