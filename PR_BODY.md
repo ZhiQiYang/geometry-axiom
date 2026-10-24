@@ -1,6 +1,6 @@
 本 PR 接手並取代 #337，整合 #299+#316、#314 題3鎖定比較器、#318 已核可閱讀 A 及 #323 memo 修正。唯一最終驗收來源 **L=`7af8c5d80d34cb4f49d01ba67deb78a3a6d725db`** 已一般推送；目前仍是 draft，**B1 同 L 完整驗收未完成，B2 原跨版本 exact 比較及新 B3 required CI 失敗仍阻擋合併**。
 
-L 的 C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，正式測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；相對帳本生成來源 b6，L 只採用原 `tests/mutants_results.json` 及 evidence，沒有修改產品、測試、裁判或判決欄位。架構 manifest 修正與 Linux 四檔已先按原 schema 採用。目前 evidence head E 為 **`6d26aaaa9eade6ac3fdeba7a7d2d1e0291d72119`**；往後純 evidence 提交另記 E，不移動 L，不把 E 當受測 SHA。
+L 的 C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，正式測試沿自 S=`ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0`；相對帳本生成來源 b6，L 只採用原 `tests/mutants_results.json` 及 evidence，沒有修改產品、測試、裁判或判決欄位。架構 manifest 修正與 Linux 四檔已先按原 schema 採用。目前 evidence head E 為 **`732ac159043ab311fd66e338c21d33f322f6e968`**；往後純 evidence 提交另記 E，不移動 L，不把 E 當受測 SHA。
 
 ### 唯一 current-state 矩陣
 
@@ -9,7 +9,7 @@ L 的 C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，正式測
 | Gate／事項 | 實際來源 | 原 exit／目前結果 | 範圍與限制 |
 |---|---|---|---|
 | 最終完整 123 帳本 CLI＋tracked check | L | **0／0／0／0；root 0** | tracked check／完整123 CLI／core-map／external-new-check全0；114 killed／5 equivalent／M20原允許crashed／3 retired，120 execution heads均L。終態原包及獨立核對已公開於E/final-L-ledger-complete |
-| 完整 native | L | **r1 exit1，環境紅；r2 RUNNING，尚無終態判決** | r1原全230列：5309=5304pass+4fail+1具名WindowsGDI skip，1873.241s<35min；四個Node ENOENT指向三個L既有fixture缺檔，已同SHA補齊；r2於00:38 UTC原完整入口啟動，原35分鐘不變 |
+| 完整 native | L | **r2原CLI／workflow／CI35／outer皆0；原件已公開** | 原230列恰各一次，5309=5308pass+0fail+1原允許WindowsGDI skip；1819.561s<原35min、Node737/737。r1四ENOENT由同SHA補三fixture後消除；r1原exit1保歷史，不改舊判 |
 | canvas | L | **0；原件已公開** | 原完整2267 assert／0失敗／skipped=[]，85 golden sections一致；P88=143、P73=69；1718.884882s<原35分鐘。原例外欄位1是P38故意fb-auto-probe；詳見下文原件分類 |
 | assembly | L | **0；原件已公開** | 原150 assert／0skip／191.692s<原15分鐘；原job既定partial模式不比golden，非完整canvas |
 | documents | L | **0；原件已公開** | 原47 assert／64.316s<原10分鐘；原exit0／outer0／前後sourceguard0，8截圖 |
@@ -17,25 +17,25 @@ L 的 C/JS 產品沿自 F=`f64d638f15c48d2b9723b7ae9d230fb5dacb82d9`，正式測
 | space | L | **0；原件已公開** | 原242 assert／八組完整，229.754s<原15分鐘；原space既定範圍不冒timber組別 |
 | timber | L | **0；原件已公開** | 原79 assert／五組完整，124.236s<原20分鐘；原timber既定範圍不冒P52呈現耗時 |
 | P52 放置後 timber 出現耗時 | L | **UNRUN** | 原放置／呈現判準及耗時收據 |
-| Q38 | L | **RUNNING，尚無終態判決** | 同L獨立來源由22補齊至565原檔，物化exit0；私有bridge／secondary lock執行原 `tests/section_profile_mutation_check.py`，啟動原件目前僅雲端未出版 |
+| Q38 | L | **原CLI／driver／兩outer皆0；原件已公開** | 原42案例=41 killed＋SPM24 equivalent；native27／model20 baseline全通過且零skip；既定registry排除未改。私有bridge／同L565原檔，原600/900秒子時限與完整table不改 |
 | §7 card-reference／axiom mutations | L | **0／0；原件已公開** | compiled baseline43、原53刀assert1各restore0、116compile0；axiom baseline44、V01～V05各assert1各restore完整44綠；原table不縮 |
 | P-189 | L；main adbaebf9／base 3e600772 | **UNRUN** | N=16/32/48/64 三方交錯；每點 fix/main≤2×；固定base的171原scene＋4生成案，共175組完整load回覆／dump逐bytes相同（原拒絕案保拒絕，4生成案須載入成功） |
-| #323 fixed-three／required-eight／PF3 | L | **三suite原0／UNRUN／UNRUN** | fixed-three原load_residual13／host_facts_authority22／contact_sources15由完整native精確module覆蓋，不另重複C；required-eight原676、PF3原20/19/20仍各依原專項 |
+| #323 fixed-three／required-eight／PF3 | L | **三suite原0／required-eight原outer 0／PF3原outer 0** | fixed-three原13/22/15由完整native精確module覆蓋；required-eight原676及PF3原20/19/20各依原專項執行。兩項真終態outer RESULT已於E的status-only目錄公開；完整原件包仍待獨立封存，不以小收據冒完整raw驗收 |
 | #323 原 timing／profile／完整 memo 反證 | L；原 base b74f9a2／main adbaebf9 | **UNRUN** | 原 36 timing、4 profile、N32/base≤1、N64/main≤1.3、calls64/32≤4.5；memo 撤回／還原保原斷言與分母 |
 | #323 跨版本 175 場景／350 組 exact | L | **UNRUN** | 原 comparator 保留；下列歷史 exit1 仍是 B2，未獲裁決前不能宣稱解除 |
 | reader 三條 | L | **0／0／0** | 原 sync 生成、`--check`、`tests/test_axiom_reader.py`（51）三 CLI 各自原退出碼0；終態原件已於E的final-L-readers-RC公開 |
-| #314 六 suite 103＋Node inspector 13 | L | **Python六完整module共103全pass；Node13個pass事件** | Python完整row與unittest OK按原裁判契約支持child exit0，原件未另存per-child OS碼；Node13為parent1＋nested12，enclosing Node737仍exit1，不能宣稱獨立Node13 exit0；不另重複C |
-| 閱讀 A native 7／oracle 14 | L | **0／0（native r1原兩列）** | 由完整 native 的兩個精確 module 覆蓋；typed facts 不代表 #335 真 CLI 初放支持 |
+| #314 六 suite 103＋Node inspector 13 | L | **r2原Python六module共103全pass；Node aggregate737/737、exit0** | Python每child OS碼未另存，完整pass row依原裁判契約支持0；Node inspector13為parent1＋nested12通過事件，沒有獨立Node13 process exit。r1映射保歷史，r1 Node737原exit1不改判 |
+| 閱讀 A native 7／oracle 14 | L | **r2原兩個完整module全pass** | 由完整native精確7/14兩列覆蓋，子exit0是原判官契約支持、沒有另存per-child OS碼；typed facts不代表#335真CLI初放支持 |
 | RC-run 精準 builder／checker 源撤回 | L | **0/1/0／0/1/0** | 各以原單一方法、6 個原 assert 做 0/1/0；這兩刀未被完整 native／全帳本／quick 的其他控制取代 |
 | 閱讀 A `--mutants-only`／完整 `--quick` | L | **0／0；outer 0** | r2同L環境閉包修復後正式完成；9402矩形逐毫米、14208二維、凹角579×8、step410×8／mirror820×8、odd1872、額外t10 mirror392、正例528／1056全保。原t4族6筆已知C11_MAIN_NOT_BUTTED另案保留，未改原判決；不宣稱此6缺陷已修 |
 | 架構三原裁判 | L | **0／0／0** | architecture_contract、test_architecture_contract（205）、test_product_architecture（18），零skip；604輸入、HEAD/index前後一致，原流在 E/final-L-architecture |
 | 帳本生成歷史（不是 L 驗收） | b6e1e45425f055cd825b259f46ef2c454f3ff13a | **1／0／0／0** | 生成前舊 tracked check1、完整123 CLI0、core-map0、external-new-check0；114 killed／5 equivalent／M20 原允許 crashed／3 retired，120 execution head 自然 b6；原 root0 |
 | B2 歷史跨版本 exact | F 對原 base b74f9a2 | **1，仍阻擋** | 三個 #299 V_EXTENSION 診斷差異；同列車 memo-only 對照不取代此門檻 |
 | 舊 B3 原始證據入庫 | 已公開 evidence | **已處理；非產品 gate** | 五原包、inventory、hash、指令與完整 streams 已入庫且可獨立重算 |
-| 新 B3 required CI | Actions run40034196788；實際head c6c0b0d | **7項 failure；環境阻擋未解除** | 七check-run各有付款失敗或支出上限annotation；runner_id=0、steps=[]。原API真0；不是L測試結果，不能列pass或skip |
+| 最新 B3 required CI | Actions run40043471807；實際head f05e7cf | **7項failure；新run環境分類已公開，CI仍未接受** | 新head七annotation各為付款失敗或支出上限、runner空／steps=[]；同批新run40040764499屬#339。舊c6分類不移標；來源tree相等及雲端補跑不自動解除正式替代流程要求 |
 | M1 Q-314-SSOT 現況更正 | 已公開 QUESTIONS／正文 | **已處理；非產品 gate** | 現行提交例外已採納；後續精確有序補句的寫入差額另列，沒有重新要求決策 |
 
-**允許 skip：沒有新增。** native r1實際唯一skip為原`py:test_gdi_contract`（1/0/0/1），因雲端Linux沒有compiled Windows GDI harness；不能用此skip掩蓋四個ENOENT環境失敗。各尚未執行項不預報實際數量。Chrome156.0.8078.47、Nodev24.19.0、NotoCJK 已在雲端可用；browser 未跑不可改標成通過或環境 skip。
+**允許 skip：沒有新增。** native r2實際唯一skip為原`py:test_gdi_contract`（1/0/0/1），因雲端Linux沒有compiled Windows GDI harness；r1同一skip與四個ENOENT原失敗皆保歷史，r2已無ENOENT或其他fail。各尚未執行項不預報實際數量。Chrome156.0.8078.47、Nodev24.19.0、NotoCJK 已在雲端可用；browser 未跑不可改標成通過或環境 skip。
 
 ### B2 仍須解除
 
@@ -56,25 +56,31 @@ reader 生成會寫 canonical 閱讀器的暫存再替換原檔，RC兩刀僅產
 
 閱讀A原件已由root一般推送至E3c663。r1兩CLI原exit1是薄checkout缺`make_golden`的環境失敗，完整原流／guard與同L補齊22檔閉包過程保留；未算突變擊殺。r2於22:39:03～22:45:53 UTC執行，原mutants0、quick0、outer0，初末L／22檔bytes／完整index stage相同。quick原印39850是原顯示計數，不能冒稱涵蓋全部內部build、odd及額外t10對照；兩組528／1056正例皆missing0、nonbuildable0。原t4族6筆`C11_MAIN_NOT_BUTTED`依原判官另案保留；沒有刪案、改golden、放寬斷言或新增skip。此oracle證據不表示#335真CLI初放可達。
 
-新B3與上述舊原件B3分開：[Actions run40034196788](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40034196788)在head c6c0b0d的七個required job仍為failure。七份check-run annotation逐項明示「recent account payments have failed **or** your spending limit needs to be increased」，因此屬排程前帳戶付款／支出上限環境阻擋；API未區分是哪一項，不作進一步猜測。七job均runner_id0／steps空；原14條API／Git命令及完整流已取得並獨立核對，分類報告及完整原流已於E的actions-40034196788-environment入庫。這次沒有重跑CI、改帳戶設定或修復限制；B3不能自動解除，同L雲端補跑也不冒稱CI綠燈。gh不支持`attempt`欄位的原讀取1及刪欄位重讀0皆保留，並非API403。
+歷史c6的B3分類保留：[Actions run40034196788](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40034196788)在head c6c0b0d的七個required job仍為failure。七份check-run annotation逐項明示「recent account payments have failed **or** your spending limit needs to be increased」，因此屬排程前帳戶付款／支出上限環境阻擋；API未區分是哪一項，不作進一步猜測。七job均runner_id0／steps空；原14條API／Git命令及完整流已取得並獨立核對，分類報告及完整原流已於E的actions-40034196788-environment入庫。這次沒有重跑CI、改帳戶設定或修復限制；B3不能自動解除，同L雲端補跑也不冒稱CI綠燈。gh不支持`attempt`欄位的原讀取1及刪欄位重讀0皆保留，並非API403。
 
 M1 已更正為現行 D10b 提交相容例外、I24 參數卡改值例外、D29 按當下有效值解除引用均已採納。10/23另核可的精確有序補句尚未逐字寫入／同步的差額留在 QUESTIONS；不把既有條文寫成暫緩，不重問題3／4。#335 的13mm薄牆階兩種初放路徑仍另追蹤，oracle可施工不代表 CLI 已支持；本輪不新增放置公理或豁免。
 
 後續 #339／#340、GEO260、#300新索引與#320各自分支的定向驗收保原SHA，不轉標成L、也不充本PR gate。無 force push、無合併 PR；儲存維護不列產品驗收。B1 全部正式項、B2 與新 B3 未解除前，不標 READY-TO-MERGE。
 
-最新已讀審查：handoff `85e51142` 的 `handoff/pr-reviews/338.md`，最後評論2026-10-23 22:39:41 UTC、head c6c0b0d。舊B3原件入庫與M1已處理；新B3是七required CI未啟動的環境阻擋。本文只保一個current-state矩陣，依真執行SHA／原exit列示；peer核對數不當產品gate結果。
+最新已讀審查：handoff `e3934fbdee70c4dbd226eb19137fb4a5ecf885d6` 的 `handoff/pr-reviews/338.md`，最後評論2026-10-24 00:39:37 UTC、head f05e7cf。該輪認可帳本、五browser、reader/RC、Reading A及§7已有終態；評論當時canvas／native r2未終態，現在兩者原0且完整原件已封。依C1等這兩項完成才更新本次唯一矩陣；B1其餘專項、B2原exact與最新head B3仍未解除。#339最新評論為同handoff 00:39:36/head e9ee6d0；不拿舊run分類替新head。
 
-documents及assembly皆真完成並獨立核對，670／672-member完整原包已分別公開於E的`final-L-browser-documents/`與`final-L-browser-assembly/`，保完整原指令、退出碼、環境、SHA、streams、runtime fingerprints與8／9截圖。peer3420／3431核對不算產品assert；原cache/ELF排除清單明列且未刪。grid亦真0，675-member原包、4截圖、完整原CDP結果及後續339行server trace在`final-L-browser-grid/`；獨立3438核對0，不計作產品斷言。space／timber亦已真0，685／660-member完整原包於`final-L-browser-space`／`final-L-browser-timber`公開，獨立3479／3383核對不計產品斷言。canvas於2026-10-24 00:04 UTC獨占啟動，已真終態0／outer0；1718.8848816149984秒低於原35分鐘。742-member完整原包公開於`final-L-browser-canvas`，10,485,838B、SHA256 `4153cafa4e1a24b75368a31c4fe8c71ab7b8bb5dde056c55880820bb41b78dbc`，獨立3712核對0；完整streams、環境、來源、4張workflow截圖、5個本地artifact與守門均保。這些本地artifact不冒GitHub上傳。原CDP_RESULT記錄1個例外，精確為P38故意`fb-auto-probe`，唯一EXPECTED標記及兩個P38檢查綠、沒有UNEXPECTED EXCEPTION標記；原transport/network故障注入診斷亦未隱藏。六個browser現已同L全0，沒有改golden、斷言、skip或時限。native r1完整原包與4005收據核對已於`final-L-native-r1-environment-failure`公開；四個原ENOENT不改標成pass。三fixture補齊是checkout環境修復，L及完整index tree未變；完整r2已於00:38 UTC啟動，`final-L-native-r2-start`只保存不變啟動指令／環境／SHA及靜審，沒有將未完成streams或未出現的exit當終態。
+documents及assembly皆真完成並獨立核對，670／672-member完整原包已分別公開於E的`final-L-browser-documents/`與`final-L-browser-assembly/`，保完整原指令、退出碼、環境、SHA、streams、runtime fingerprints與8／9截圖。peer3420／3431核對不算產品assert；原cache/ELF排除清單明列且未刪。grid亦真0，675-member原包、4截圖、完整原CDP結果及後續339行server trace在`final-L-browser-grid/`；獨立3438核對0，不計作產品斷言。space／timber亦已真0，685／660-member完整原包於`final-L-browser-space`／`final-L-browser-timber`公開，獨立3479／3383核對不計產品斷言。canvas於2026-10-24 00:04 UTC獨占啟動，已真終態0／outer0；1718.8848816149984秒低於原35分鐘。742-member完整原包公開於`final-L-browser-canvas`，10,485,838B、SHA256 `4153cafa4e1a24b75368a31c4fe8c71ab7b8bb5dde056c55880820bb41b78dbc`，獨立3712核對0；完整streams、環境、來源、4張workflow截圖、5個本地artifact與守門均保。這些本地artifact不冒GitHub上傳。原CDP_RESULT記錄1個例外，精確為P38故意`fb-auto-probe`，唯一EXPECTED標記及兩個P38檢查綠、沒有UNEXPECTED EXCEPTION標記；原transport/network故障注入診斷亦未隱藏。六個browser現已同L全0，沒有改golden、斷言、skip或時限。native r1完整原包與4005收據核對已於`final-L-native-r1-environment-failure`公開；四個原ENOENT不改標成pass。三fixture補齊是checkout環境修復，L及完整index tree未變；r2已於01:09 UTC真完成。`final-L-native-r2-start`保原啟動紀錄，完整終態原件另於`final-L-native-r2-complete`公開，沒有覆寫r1或把起始當通過。
 
 browser外部執行工具只新增允許輸出於/workspace且repository外的路徑，解決/tmp容量限制；native仍只用/tmp，原workflow／golden／斷言／時限不變。舊storage工具實際也限制/tmp，先前交接的可直接使用workspace描述已更正。七批已終態儲存維護的完整原件及collector最外原流已封`terminal-maintenance-seven-originals/`，保所有收據、fixtures、Gitobjects、受控source；快取退休／相同archive hardlink去重與原raw保真搬移不是產品驗收。
 
 
 §7兩原CLI真0及原命令／退出碼／完整暴露輸出／環境／SHA已入庫`final-L-section7-cardref`（932members）與`final-L-section7-axiom`（188members），獨立6360／937核對0。compiled116個ELF以真hash及雲端保留位置列示，payload未納壓縮包；axiom所選OUT/OUTER無ELF，不宣稱全部cache無ELF，也不捏造原工具未暴露的內部compiler輸出。初末HEAD/tree/index/refs/clean一致。
 
-三fixture原Gitbytes、r1完整Node失敗、literal掃描沿革、精確同L物化工具／完整streams及actual104＋獨立包333核對均已封`final-L-native-fixture-environment-repair`（107members）。這是checkout修復收據；完整native r2已啟動，尚無終態判決。
+三fixture原Gitbytes、r1完整Node失敗、literal掃描沿革、精確同L物化工具／完整streams及actual104＋獨立包333核對均已封`final-L-native-fixture-environment-repair`（107members）。這是checkout修復收據；其後同L原完整native r2已真0，原失敗仍按r1保留。
 
-#314切片已完成精確映射核對：六個Python module共103方法、閱讀A兩module共21、#323三module共50，皆可在已公開native r1完整包的`native/workflow/native/run_all-logs/`找到原JSON與完整unittest log；原裁判把非零child列為失敗，因此各完整pass row支持child0，但沒有另存per-child OS returncode，不捏造直接退出碼欄位。Node inspector13只是失敗的Node737 aggregate內13個原通過事件（parent1＋nested12）；其原enclosing exit1與四個ENOENT不變。獨立映射122核對0不是額外產品gate，映射衍生檔目前雲端待出版，原完整r1包已公開。
+#314切片已完成精確映射核對：六個Python module共103方法、閱讀A兩module共21、#323三module共50，皆可在已公開native r1完整包的`native/workflow/native/run_all-logs/`找到原JSON與完整unittest log；原裁判把非零child列為失敗，因此各完整pass row支持child0，但沒有另存per-child OS returncode，不捏造直接退出碼欄位。這份r1歷史映射的Node inspector13只是失敗Node737 aggregate內13個通過事件（parent1＋nested12）；r1原enclosing exit1與四個ENOENT不改判。映射及獨立122核對已公開於E935的`final-L-native-r1-special-coverage`，不是額外產品gate。r2完整Node737/737與aggregate exit0另有原完整包，不用歷史映射冒新結果。
 
-後續draft #346為#300下料清單O(N)自有ID池切片，11方法／9組反證仍未跑；容量512未宣稱完成。此獨立分支不列入本PR同L通過項。
+後續draft #346的#300下料清單O(N)自有ID池切片已在獨立來源S39273bc0229fbbb16565134e1f8fad3a0d598c31完成原11方法（零skip）、9組0/1/0反證及83次編譯0；原件公開於Eeaf15e239324a6464a04740647afccce3a3c17c7，獨審2279/0。該線完整native／browser／效能／帳本／架構仍UNRUN、NOT READY，容量512未宣稱完成；此獨立分支不算本PR的L gate。
 
-Q38於00:44 UTC完成同L獨立checkout的22→565檔物化（原exit0）並啟動正式項；私有bridge及secondary lock使其不共用native R2的來源或global cache。物化0只證明環境準備，原Q38尚無終態exit，不能宣稱通過。啟動capture在雲端`/workspace/train337-L-q38-execution-capture-20261024`，未封入目前E；P52、P-189及#323其餘原專項仍UNRUN，native R2也仍RUNNING。
+Q38已於00:44:33～00:57:50 UTC原完整42案例真0：41 killed、SPM24原equivalent，native27／model20 baseline零skip；原registry排除`test_source_index_typed_closure_and_display_identity`不是新增skip，SPM38／40的允許ModelError沿原判決。449-member完整原包、環境driver／22→565物化／兩outer／所有已暴露命令與streams封於`final-L-Q38`，tar4,717,550B、SHA256 `acbf826d08488d4d678c68004d0c5e9e5979d0ba05951f5926dc73a6a28a1690`。兩個privateELF只省略payload、保真hash與sidecar原址；TemporaryDirectory原清理的突變payload不虛構仍在。獨立2080核對0不計產品gate。
+
+完整native R2原230列與expected逐列相符、5309=5308pass+0fail+1具名GDI skip，Node737/737、全部原exit0；workflow原時間00:38:48.178258～01:09:07.739721 UTC約1819.561秒，小於35分鐘。1366-member／2,230,143B完整包在`final-L-native-r2-complete`，SHA256 `f9c5ca6b5d6b368a52657aff6ac73b4b7b31195973d840e1f99180eae4e0efde`；globalcache原側車／raw及來源前後守門完整，6個普通ELF只省payload而保hash／sidecar。7386獨審0與初peer誤讀producer schema的工具失敗都保留。收包與原件核對完成後root才交還cache並啟動required-eight及後續PF3；兩項原outer終態分別為0、0。`final-L-required-eight-pf3-status-only`僅保存兩份原RESULT與hash snapshot，完整原始輸出及子命令收據尚待獨立封存；不以native通過代替專項結果。
+
+最新#338 Actions40043471807與#339 Actions40040764499的安全原件公開於`actions-f05-e9-environment-public-v2`，365members／4,334,205B、SHA256 `40567a58ce19e563245b109736ee1417a28e8d77308ce0027df19dfc6fd361c8`。65條原讀取為63 exit0＋2次log Forbidden exit1；14個原annotation都明示付款失敗**或**支出上限，API不區分哪一項，Forbidden也不能證明log不存在。兩個signed-log stderr只遮罩signature查詢值，`PUBLIC_REDACTIONS.json`保精確位置與原hash，未遮罩原件留雲端；其餘公開bytes逐件一致，原Ubuntu migration notice也未刪。
+
+新Actions包另含四份完整Git tree與rawdiff：L7af→E935的260個變動路徑、F38→Ee9的20個變動路徑均只在evidence/，非evidence path／mode／type／blob逐項相同。這只是來源關係，沒有改寫實跑SHA，不能冒CI已啟動、綠燈或正式替代驗收已被接受。#338 f05與#339 e9最新審查原文／來源Git讀取封於`review-f05-e9-originals-and-preparation`；舊c6／47fd分類只保歷史。B3仍未解除，維持draft。
