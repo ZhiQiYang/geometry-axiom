@@ -1,0 +1,159 @@
+{
+  "schema": "geo261-cloud-workflow/1",
+  "sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "job": "native",
+  "workflow_job_key": "native",
+  "matrix": {},
+  "started": "2026-10-25T09:53:11.697952+00:00",
+  "checkout_before": {
+    "head": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+    "root": "/tmp/train337-323-f64d638f-source",
+    "status": ""
+  },
+  "status": "執行中",
+  "exit_code": null,
+  "workflow_sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+  "driver_sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310",
+  "workflow_environment": {},
+  "environment": {
+    "CI": "true",
+    "GITHUB_ACTIONS": "true",
+    "GITHUB_SHA": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+    "GITHUB_WORKSPACE": "/tmp/train337-323-f64d638f-source",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "RUNNER_OS": "Linux",
+    "TERM": "dumb",
+    "TMPDIR": "/tmp/geo337-F9-native-4f8a794f-20261025/tmp/workflow/native",
+    "XDG_CACHE_HOME": "/workspace/geo261-environment/xdg-cache",
+    "XDG_DATA_HOME": "/workspace/geo261-environment/xdg-data"
+  },
+  "cleared_inherited_geometry_names": [],
+  "platform": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "python_driver": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "python_driver_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "logical_cpus": 5,
+    "pyyaml": "6.0.3"
+  },
+  "temporary_directory": "/tmp/geo337-F9-native-4f8a794f-20261025/tmp/workflow/native",
+  "server_port": null,
+  "ci_timeout_minutes": 35,
+  "watchdog_factor": 3,
+  "versions": [
+    {
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "cwd": "/tmp/train337-323-f64d638f-source",
+      "started": "2026-10-25T09:53:11.757394+00:00",
+      "stdout": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/0.stdout",
+      "stderr": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/0.stderr",
+      "combined": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/0.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-25T09:53:11.821867+00:00",
+      "seconds": 0.06447589304298162,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/tmp/train337-323-f64d638f-source",
+      "started": "2026-10-25T09:53:11.822137+00:00",
+      "stdout": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/1.stdout",
+      "stderr": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/1.stderr",
+      "combined": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/1.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-25T09:53:11.827714+00:00",
+      "seconds": 0.005581311008427292,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "cwd": "/tmp/train337-323-f64d638f-source",
+      "started": "2026-10-25T09:53:11.827847+00:00",
+      "stdout": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/2.stdout",
+      "stderr": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/2.stderr",
+      "combined": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/2.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-25T09:53:11.829287+00:00",
+      "seconds": 0.001441921980585903,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "/tmp/train337-323-f64d638f-source",
+      "started": "2026-10-25T09:53:11.829392+00:00",
+      "stdout": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/3.stdout",
+      "stderr": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/3.stderr",
+      "combined": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/3.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-25T09:53:11.830659+00:00",
+      "seconds": 0.0012691749725490808,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    },
+    {
+      "command": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "cwd": "/tmp/train337-323-f64d638f-source",
+      "started": "2026-10-25T09:53:11.830755+00:00",
+      "stdout": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/4.stdout",
+      "stderr": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/4.stderr",
+      "combined": "/tmp/geo337-F9-native-4f8a794f-20261025/workflow/native/versions/4.combined.log",
+      "timeout_seconds": 30,
+      "ended": "2026-10-25T09:53:11.841491+00:00",
+      "seconds": 0.010739621997345239,
+      "actual_process_returncode": 0,
+      "exit_code": 0,
+      "watchdog_expired": false,
+      "owned_process_group_cleanup": false
+    }
+  ],
+  "steps": [
+    {
+      "index": 0,
+      "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "original_step": {
+        "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "with": {
+          "persist-credentials": false
+        }
+      },
+      "outcome": "以現有乾淨固定 SHA checkout 取代，未執行 GitHub action"
+    }
+  ],
+  "notes": [
+    "逐項串行，任何失敗都不自動重跑；沒有 flaky 豁免。",
+    "原 run 僅替換矩陣、/tmp 路徑及服務埠；Chrome 路徑另明列環境覆寫。",
+    "stdout/stderr 分別保留原始 bytes；combined 檔只作閱讀。"
+  ]
+}

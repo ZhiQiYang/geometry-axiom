@@ -505,3 +505,11 @@ F8 `75a1e93811a52b69385cbdaf6a09d773ed9052ad` 的原完整帳本於 07:38:36 開
 #341 F8 fallback-only成本原546CLI、378樣本（42診斷／42暖機／294正式）與9ELF已全收：14cases各7正式樣本、固定／撤回／恢復完整保留，語意與收件exit0；actual4416/0、完整2894member包24831/0。N64 none wall fixed/withdrawn=23846/22334 ns（約+6.77%），dense=7601/10816（約−29.72%）；沒有只報改善點或重抽樣。這是成本實測，performance_acceptance_decided=false，不能解除舊Sc493整體#341B1或新增數值門檻。
 
 下一步為隔離ROOT／seed切到同一F9，完整native與六browser及專項仍UNRUN。R8實際F8性能已過原門檻，不重跑；exact三差、B/C未核可及CI仍保原限制。這是進度，非READY。
+
+## 2026-10-25T10:03:10.606328+00:00：F9完整native已正式在背景跑
+
+兩隔離來源於09:47:42–57完成普通F8→F9切換exit0，actual12,224checks/0；原6997／2738物理葉、五fixtures、refs/sparse、index原件保全，兩HEAD同F9。source轉移64MiB純準備reserve與native另128MiB啟動headroom分開，沒有改產品門檻。完整轉移原流仍在雲端保全，本次先公開compact原真終態/peer，不冒全流已在此目錄。
+
+完整native原workflow於 **2026-10-25T09:53:11.697952+00:00** 在 `4f8a794f4167c3562eb182045102e86e9e37cca9` 開始，root exec41942，原指令 `ulimit -s 16384; python3 tests/run_all.py --build`，全部230登記項、原35分鐘裁判未改。driver前置ROOT clean／F9與workflow原文均核；原cache638檔同device整目錄rename保存，未刪除。`F9-native-start/` 只保存啟動與明確標記RUNNING的快照；尚無正式native退出碼，不把部分進度當通過。
+
+native持heavy/secondary排他鎖；其間只備browser外層／來源alias及#341完整撤回／#348診斷外稿，未跑任何browser或其他heavy。下一步真終態後保存原exit/全流、獨審並續canvas，exact與CI限制仍未解除。
