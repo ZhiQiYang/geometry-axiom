@@ -1,0 +1,33 @@
+{
+  "schema": "F8-ledger-adoption-static-peer/1",
+  "utc": "2026-10-25T09:20:59.057559+00:00",
+  "subject": "/tmp/adopt_geo337_F8_ledger_F9_20261025.py",
+  "sha256": "39f9a63efbfc69f3534e3a009670ae8fb83d79a8069c5d8c16a6bcc92e03ace4",
+  "passed": false,
+  "exit": 1,
+  "findings": [
+    {
+      "id": "A1",
+      "blocking": true,
+      "issue": "required_peer_files may be empty; >=3 published_bindings does not enforce archive/index/original-peer/package-peer roles or matching exact accepted peer bytes. peer exit allows False == 0.",
+      "fix": "Require exact named roles, original/package accepted source/ledger bindings and original peer hashes present in published evidence; require integer0 exit."
+    },
+    {
+      "id": "A2",
+      "blocking": true,
+      "issue": "After commit the final ledger blob is not reread; name-only allowed-path check does not prove exact original ledger bytes remain in F9. Single parent and F8 ancestry are not explicitly checked.",
+      "fix": "Before push verify final ledger git show SHA2560123548b29bf8adbaf3cf896bfffb212134452f2574eaf8ae1d1b663104ead1b, final single parent exactlybefore, and merge-base --is-ancestor F8 before."
+    }
+  ],
+  "accepted_static_elements": [
+    "Original ledger hash pinned before write and staged bytes checked.",
+    "Clean branch/remote expected parent checked; no force/rebase.",
+    "F8 closure uses --no-renames and only ledger/evidence allowed.",
+    "Original 120 execution.head bytes not rewritten.",
+    "All MUTATE_* env removed before actual tracked check, output/env/exit captured."
+  ],
+  "limits": [
+    "Static read only; no execution, Git writes, product tests or synthetic mirrors.",
+    "Request unbound and no adoption performed. Root coordination/lease and fresh exact bound request still needed."
+  ]
+}

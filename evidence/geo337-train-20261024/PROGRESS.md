@@ -495,3 +495,13 @@ F8 `75a1e93811a52b69385cbdaf6a09d773ed9052ad` 的原完整帳本於 07:38:36 開
 原完整123、7,625項原件peer與11,165項封包peer已通過，完整公開證據head為 `f0f7888213a8cc5b54f0a4303fb0577fe812cefd`。本提交只把原F8生成的JSON逐byte採入 `tests/mutants_results.json` 並附本進度；原120 execution.head仍為 `75a1e93811a52b69385cbdaf6a09d773ed9052ad`，沒有變更日期、判定或產品／裁判。帳本SHA256 `0123548b29bf8adbaf3cf896bfffb212134452f2574eaf8ae1d1b663104ead1b`。
 
 此提交作為F9正式驗收基準；其完整SHA與普通push、清除MUTATE_*後原trackedcheck的實際退出碼將記在後續收據，不先宣告check或正式gate通過。F8生成／R8量測與F9採用／後續正式項分列，R8不重抽樣。完整native、六browser與專項仍待實跑；exact三差及CI尚未解除，非READY。
+
+## 2026-10-25T09:35:06.690815+00:00：F9 trackedcheck與三架構原裁判通過，成本原值公開
+
+固定F9 `4f8a794f4167c3562eb182045102e86e9e37cca9` 已正常push，清MUTATE_*後原trackedcheck exit0、stale0／blocked0，原120 F8 execution不移標。採入／公開actual924checks/0；F9只相對F8變帳本與evidence。
+
+三條原架構judge在F9主repo實跑exit0/0/0：334 source、6 trusted、798 edges、0 diagnostics，205契約測試與18產品架構測試全ok；actual144checks/0，前後HEAD與clean狀態不變。四artifact與F8相同，既有receipt仍綁M `6e50aef65513b7b38f93228919272c6d40d6c196`，不冒F9重產。原件在 `F9-initial-gates/`。
+
+#341 F8 fallback-only成本原546CLI、378樣本（42診斷／42暖機／294正式）與9ELF已全收：14cases各7正式樣本、固定／撤回／恢復完整保留，語意與收件exit0；actual4416/0、完整2894member包24831/0。N64 none wall fixed/withdrawn=23846/22334 ns（約+6.77%），dense=7601/10816（約−29.72%）；沒有只報改善點或重抽樣。這是成本實測，performance_acceptance_decided=false，不能解除舊Sc493整體#341B1或新增數值門檻。
+
+下一步為隔離ROOT／seed切到同一F9，完整native與六browser及專項仍UNRUN。R8實際F8性能已過原門檻，不重跑；exact三差、B/C未核可及CI仍保原限制。這是進度，非READY。

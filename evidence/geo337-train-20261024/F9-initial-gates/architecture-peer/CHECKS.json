@@ -1,0 +1,578 @@
+[
+  {
+    "check": "actual F9 request/result",
+    "passed": true
+  },
+  {
+    "check": "three original argv exact",
+    "passed": true
+  },
+  {
+    "check": "three original gate exits",
+    "passed": true
+  },
+  {
+    "check": "all seven original commands",
+    "passed": true
+  },
+  {
+    "check": "catalog original result 000001",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 command",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 cwd",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 acceptance_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 source_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 source_variant",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 environment",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 started_epoch",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 stdin_provided",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 stdin_sha256",
+    "passed": true
+  },
+  {
+    "check": "original request 000001 directory",
+    "passed": true
+  },
+  {
+    "check": "full stdout 000001",
+    "passed": true
+  },
+  {
+    "check": "full stderr 000001",
+    "passed": true
+  },
+  {
+    "check": "stdin 000001",
+    "passed": true
+  },
+  {
+    "check": "true original completed0 000001",
+    "passed": true
+  },
+  {
+    "check": "source/cwd 000001",
+    "passed": true
+  },
+  {
+    "check": "assertions/runtime environment 000001",
+    "passed": true
+  },
+  {
+    "check": "catalog original result 000002",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 command",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 cwd",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 acceptance_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 source_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 source_variant",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 environment",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 started_epoch",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 stdin_provided",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 stdin_sha256",
+    "passed": true
+  },
+  {
+    "check": "original request 000002 directory",
+    "passed": true
+  },
+  {
+    "check": "full stdout 000002",
+    "passed": true
+  },
+  {
+    "check": "full stderr 000002",
+    "passed": true
+  },
+  {
+    "check": "stdin 000002",
+    "passed": true
+  },
+  {
+    "check": "true original completed0 000002",
+    "passed": true
+  },
+  {
+    "check": "source/cwd 000002",
+    "passed": true
+  },
+  {
+    "check": "assertions/runtime environment 000002",
+    "passed": true
+  },
+  {
+    "check": "catalog original result 000003",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 command",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 cwd",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 acceptance_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 source_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 source_variant",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 environment",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 started_epoch",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 stdin_provided",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 stdin_sha256",
+    "passed": true
+  },
+  {
+    "check": "original request 000003 directory",
+    "passed": true
+  },
+  {
+    "check": "full stdout 000003",
+    "passed": true
+  },
+  {
+    "check": "full stderr 000003",
+    "passed": true
+  },
+  {
+    "check": "stdin 000003",
+    "passed": true
+  },
+  {
+    "check": "true original completed0 000003",
+    "passed": true
+  },
+  {
+    "check": "source/cwd 000003",
+    "passed": true
+  },
+  {
+    "check": "assertions/runtime environment 000003",
+    "passed": true
+  },
+  {
+    "check": "catalog original result 000004",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 command",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 cwd",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 acceptance_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 source_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 source_variant",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 environment",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 started_epoch",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 stdin_provided",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 stdin_sha256",
+    "passed": true
+  },
+  {
+    "check": "original request 000004 directory",
+    "passed": true
+  },
+  {
+    "check": "full stdout 000004",
+    "passed": true
+  },
+  {
+    "check": "full stderr 000004",
+    "passed": true
+  },
+  {
+    "check": "stdin 000004",
+    "passed": true
+  },
+  {
+    "check": "true original completed0 000004",
+    "passed": true
+  },
+  {
+    "check": "source/cwd 000004",
+    "passed": true
+  },
+  {
+    "check": "assertions/runtime environment 000004",
+    "passed": true
+  },
+  {
+    "check": "catalog original result 000005",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 command",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 cwd",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 acceptance_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 source_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 source_variant",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 environment",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 started_epoch",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 stdin_provided",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 stdin_sha256",
+    "passed": true
+  },
+  {
+    "check": "original request 000005 directory",
+    "passed": true
+  },
+  {
+    "check": "full stdout 000005",
+    "passed": true
+  },
+  {
+    "check": "full stderr 000005",
+    "passed": true
+  },
+  {
+    "check": "stdin 000005",
+    "passed": true
+  },
+  {
+    "check": "true original completed0 000005",
+    "passed": true
+  },
+  {
+    "check": "source/cwd 000005",
+    "passed": true
+  },
+  {
+    "check": "assertions/runtime environment 000005",
+    "passed": true
+  },
+  {
+    "check": "catalog original result 000006",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 command",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 cwd",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 acceptance_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 source_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 source_variant",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 environment",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 started_epoch",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 stdin_provided",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 stdin_sha256",
+    "passed": true
+  },
+  {
+    "check": "original request 000006 directory",
+    "passed": true
+  },
+  {
+    "check": "full stdout 000006",
+    "passed": true
+  },
+  {
+    "check": "full stderr 000006",
+    "passed": true
+  },
+  {
+    "check": "stdin 000006",
+    "passed": true
+  },
+  {
+    "check": "true original completed0 000006",
+    "passed": true
+  },
+  {
+    "check": "source/cwd 000006",
+    "passed": true
+  },
+  {
+    "check": "assertions/runtime environment 000006",
+    "passed": true
+  },
+  {
+    "check": "catalog original result 000007",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 command",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 cwd",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 acceptance_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 source_sha",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 source_variant",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 environment",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 started_epoch",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 stdin_provided",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 stdin_sha256",
+    "passed": true
+  },
+  {
+    "check": "original request 000007 directory",
+    "passed": true
+  },
+  {
+    "check": "full stdout 000007",
+    "passed": true
+  },
+  {
+    "check": "full stderr 000007",
+    "passed": true
+  },
+  {
+    "check": "stdin 000007",
+    "passed": true
+  },
+  {
+    "check": "true original completed0 000007",
+    "passed": true
+  },
+  {
+    "check": "source/cwd 000007",
+    "passed": true
+  },
+  {
+    "check": "assertions/runtime environment 000007",
+    "passed": true
+  },
+  {
+    "check": "original source HEAD 0",
+    "passed": true
+  },
+  {
+    "check": "original source HEAD 5",
+    "passed": true
+  },
+  {
+    "check": "original source clean 1",
+    "passed": true
+  },
+  {
+    "check": "original source clean 6",
+    "passed": true
+  },
+  {
+    "check": "actual complete original gate argv",
+    "passed": true
+  },
+  {
+    "check": "actual scan no diagnostics",
+    "passed": true
+  },
+  {
+    "check": "actual scanner counts",
+    "passed": true
+  },
+  {
+    "check": "architecture contract205 exact terminal OK",
+    "passed": true
+  },
+  {
+    "check": "all205 unique named cases ok no skip",
+    "passed": true
+  },
+  {
+    "check": "product architecture18 dots exact OK no skip",
+    "passed": true
+  },
+  {
+    "check": "fresh F9 judges not relabel prior receipt",
+    "passed": true
+  },
+  {
+    "check": "readonly Git success 1",
+    "passed": true
+  },
+  {
+    "check": "F9 Git resolvable",
+    "passed": true
+  },
+  {
+    "check": "readonly Git success 2",
+    "passed": true
+  },
+  {
+    "check": "F8->F9 only ledger outside evidence",
+    "passed": true
+  },
+  {
+    "check": "readonly Git success 3",
+    "passed": true
+  },
+  {
+    "check": "readonly Git success 4",
+    "passed": true
+  },
+  {
+    "check": "four artifacts identical F8/F9 blobs and modes",
+    "passed": true
+  },
+  {
+    "check": "readonly Git success 5",
+    "passed": true
+  },
+  {
+    "check": "retained original receipt actual M binding",
+    "passed": true
+  },
+  {
+    "check": "new F9 scanner bytes equal originally accepted scan",
+    "passed": true
+  }
+]
