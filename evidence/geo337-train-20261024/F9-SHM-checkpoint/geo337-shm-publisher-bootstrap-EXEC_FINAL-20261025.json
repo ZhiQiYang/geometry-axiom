@@ -1,0 +1,14 @@
+{
+  "session_id": 45057,
+  "actual_tool_result": {
+    "chunk_id": "c8734d",
+    "wall_time_seconds": 0.000030637,
+    "exit_code": 0,
+    "original_token_count": 108,
+    "output": "{\"exit_code\": 0, \"source_sha\": \"4f8a794f4167c3562eb182045102e86e9e37cca9\", \"parent\": \"70d00309d7985db722c339c77331c436d26a7ab1\", \"new_repo\": \"/dev/shm/geometry-axiom-geo337-20261025/publisher-source\", \"delivered\": false, \"remote_blob_verification\": \"UNRUN\", \"old_repo_modified\": false, \"old_before_after_equal\": true, \"only_progress_materialized\": true, \"new_git_objects_copied\": 0, \"normal_private_remote_read_succeeded\": true}\n"
+  },
+  "preparation_pins_sha256": "77ae24721bfb81c457e91840a529297b1dd6e9bdb899b157eb23771109f8465c",
+  "peer_sha256": "a07bd0a057322174b8dc165b5e0ab310fef1d45167a99e511b4eb5d1b4bd9e74",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "execution_permission": "require_escalated; existing task SHM; no mount/quota/security changes"
+}
