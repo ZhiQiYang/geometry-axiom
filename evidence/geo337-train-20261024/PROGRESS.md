@@ -489,3 +489,9 @@ F8 `75a1e93811a52b69385cbdaf6a09d773ed9052ad` 的原完整帳本於 07:38:36 開
 `ledger-F8-complete/` 保存1486葉／49,703,520原bytes，gzip8,584,878B（SHA256 `806ab05886963c6dd2673096e04272c734f09c602f830ded9561a79729e13be8`）。原件7,625checks/0、封包11,165checks/0；原完整mutator/root/outer/exec均0，四phase1/0/0/0原判保留。123列／120自然F8 head／3retired未改寫。兩次v2環境讀權失敗原件全保；v3真verify0/collect0，外部UID程序cwd unknown明列，本任務不可觀測仍拒絕，產品裁判不變。
 
 下一步是逐byte採入帳本固定F9、原trackedcheck，再完整native／六browser及專項。R8有效性能不重抽；exact三差與CI仍未解除，非READY。#341 F8 fallback-only成本另已收原546CLI／378樣本exit0，正在獨審封包；語意通過不等於性能接受，N64無重複wall約+6.77%、密集重複約−29.72%，全部樣本保留且不新增門檻。
+
+## 2026-10-25T09:27:52.287208+00:00：逐byte採入F8帳本，固定下一輪F9
+
+原完整123、7,625項原件peer與11,165項封包peer已通過，完整公開證據head為 `f0f7888213a8cc5b54f0a4303fb0577fe812cefd`。本提交只把原F8生成的JSON逐byte採入 `tests/mutants_results.json` 並附本進度；原120 execution.head仍為 `75a1e93811a52b69385cbdaf6a09d773ed9052ad`，沒有變更日期、判定或產品／裁判。帳本SHA256 `0123548b29bf8adbaf3cf896bfffb212134452f2574eaf8ae1d1b663104ead1b`。
+
+此提交作為F9正式驗收基準；其完整SHA與普通push、清除MUTATE_*後原trackedcheck的實際退出碼將記在後續收據，不先宣告check或正式gate通過。F8生成／R8量測與F9採用／後續正式項分列，R8不重抽樣。完整native、六browser與專項仍待實跑；exact三差及CI尚未解除，非READY。
