@@ -8,8 +8,8 @@
 
 | 項目 | 身份／實際結果 | 下一步與界線 |
 |---|---|---|
-| #338 主列車 | `codex/train-337-continue-20261024`；固定產品／測試／架構 F8=`75a1e93811a52b69385cbdaf6a09d773ed9052ad`；證據 E=`996aeded246090de87efc631a29cb7e4b5585d30` | E 的非 evidence tree 與 F8 相同；只有 root 可續寫此分支。 |
-| 正文 | 分支 `codex/train-337-continue-20261024-prbody`，D=`aebadf14ae832053fca5c932900ba821dcb18f13`，真普通 push 成功 | `/tmp/geo337-R8-running-prbody-publication-20261025/RESULT.json` 為原結果。此草稿所讀 pr-status 還列舊正文47ace3da；不能把分支已推送說成 bot 已套用，不重複排請求或空等。 |
+| #338 主列車 | `codex/train-337-continue-20261024`；固定產品／測試／架構 F8=`75a1e93811a52b69385cbdaf6a09d773ed9052ad`；證據 E=`80fc475cef8cbb6dd01700a79ff9536f116d3015` | E 的非 evidence tree 與 F8 相同；只有 root 可續寫此分支。 |
+| 正文 | 分支 `codex/train-337-continue-20261024-prbody`，D=`927db8e1670420139b7ad5802c9d62c989bf737b`，真普通 push 成功 | `/tmp/geo337-R8-prepared-prbody-publication-20261025/RESULT.json` 為原結果。此草稿所讀 pr-status 還列舊正文47ace3da；不能把分支已推送說成 bot 已套用，不重複排請求或空等。 |
 | R8 原五 stage | F8，prepare/build/compare/perf/profile execution=`0/0/1/0/0`；累積 CLI=`0/0/1/1/1`；outer真exit1 | 全36樣本／4 profiles／175 scenes、350比較已收。五stage不等於八stage；all_required=false、full_acceptance=null，ABC_result原欄缺席。 |
 | R8 性能 | N16/base=`0.9834192453688345`、N32/base=`0.9007932884873169`、N48/base=`0.7392862448969592`，皆≤1；N64/main=`1.2846970752586067`≤1.3 | 原量化門檻全綠，沒有放寬、不重抽有效R8。後續帳本採用不能把這輪改稱其他 execution SHA。 |
 | R8 source calls／exact | N32=82668、N64=364369，比例=`4.407618425509266`≤4.5。exact仍同三個stdout mismatch，compare exit1 | role_priority、P8低／高凹角；原assert與版本基準保留。B′／C未核可，見公開逐項報告與QUESTIONS。 |
@@ -17,7 +17,7 @@
 | 完整正式清單 | F8 full native、6 browser、P52、Q38全44、§7兩項、P-189 full與timing、required-eight／PF3／native後段、memo、reader／RC／#314／閱讀A專項皆仍UNRUN | H focused或R8量化通過不代替這些正式gate。native原16MiB stack、strict registry；性能與完整canvas獨占，其餘重工作最多兩個。 |
 | H局部修正 | 原定向來源 S=`2c4635577a8fcb11e88b346547f7bb1c7b739fb7`，14/14、exit0、零skip；原13方法不變，修正已入列車 | 固定／撤回／恢復actual memset工作量exit0/1/0、calls0/2/0、bytes0/255168/0；不是Windows或完整native驗收。 |
 | 架構三裁判／四檔 | 真執行 M=`6e50aef65513b7b38f93228919272c6d40d6c196`，三judge exit0/0/0，205＋18、零skip；F8採用其report／receipt | 604inputs僅references.inc變動；scan與937／55政策不變；九guard各0/1/0、neutral2通過。最終正式三gate仍另跑，不把M移標為F8執行。 |
-| required CI | F8 run40170221039／較早E815cd2e3 run40170692505各7 failure，runner_id0／steps0；原18 API讀0 | 當前E996aeded的CI未讀，不能移標舊run。原annotation是付款失敗或支出上限；未改帳戶，亦無正式替代接受紀錄。 |
+| required CI | F8 run40170221039／較早E815cd2e3 run40170692505各7 failure，runner_id0／steps0；原18 API讀0 | 當前E80fc475c的CI未讀，不能移標舊run。原annotation是付款失敗或支出上限；未改帳戶，亦無正式替代接受紀錄。 |
 | native ROOT | `/tmp/train337-323-f64d638f-source` 已普通detach到F8，checkout真0，actual獨審通過 | 來源轉移不是全帳本或產品gate；full123獨立source/cache/seed與每filesystem入場已完成，observer正在執行，結果未定。 |
 
 允許skip僅原Linux `py:test_gdi_contract` 缺compiled Windows GDI harness；新完整native未跑，不預先計入。不得新增skip、刪測試或放寬門檻。
@@ -71,7 +71,7 @@ apply保留原refs並另加 `refs/codex-preserved/native-root-L-before-75a1e938-
 
 來源配置 `/tmp/geo337-F8-full123-source-materialize-20261025/RESULT.json` 真exit0，SHA256 `c058ce31c147707643eeef027bbcd0e61d6c62450f56282c4251fd2ea9c0f229`；它只證原root／新seed／cache準備與closure，不是正式結果。先前root抄driver pin少了`a7`，原launcher在輸出目錄／鎖／admission／正式入口之前拒絕exit1；原失敗保 `/tmp/geo337-F8-full123-prelaunch-20261025/FAILED_PIN_TYPING.json`，formal_executed=false，修正CLI pin後只正式啟動一次，未改工具、門檻或產品。
 
-由root單獨整份重產123（120自然項／3 retired），保每列真execution.head，完整原流封存；所有原終態完成並獨審後才採用帳本JSON、普通commit／push固定FINAL。正式tracked check必清除所有MUTATE_*，外置候選check不能替代tracked check。歷史正文D757發布時尚未開始full123；當前正文D aebadf14已同步真開始時間與RUNNING狀態，尚無終態，不把D757移標為已記錄啟動。
+由root單獨整份重產123（120自然項／3 retired），保每列真execution.head，完整原流封存；所有原終態完成並獨審後才採用帳本JSON、普通commit／push固定FINAL。正式tracked check必清除所有MUTATE_*，外置候選check不能替代tracked check。歷史正文D757發布時尚未開始full123；當前正文D927db8e1已同步真開始時間與RUNNING狀態，尚無終態，不把D757移標為已記錄啟動。
 
 完整123的原prepare／observer／mapper保持。外部容量入場稿 `/tmp/geo337-full123-F7-admission-draft-20261024` 的名稱含F7只是工具來源歷史，真正request必綁F8；driver `7b6c57008921d7622ee6e47a987d7225a9318a7e53b582d3c1b9a1a5dd177eb1`、helper `bc93c7e37c29ed0ef3c93819e6e67ae0674f4b054ac7ab7df48a25ee718ba121`，原52/0 static peer。必同時計算TMP／workspace各filesystem的mutable seed、編譯池、全raw、Git出版與預留，不能用另一filesystem的free抵帳；來源轉移192MiB admission不替全123背書。完整操作順序保於 `/workspace/geo337-native-root-transition-and-final-chain-20261024/PLAN.v2.md`，其中R6舊紅／未轉移敘述是歷史，當前身份以本檔及F8原件為準。
 
@@ -83,8 +83,26 @@ apply保留原refs並另加 `refs/codex-preserved/native-root-L-before-75a1e938-
 
 歷史同bytes封包的共享inode只限已登記冷資料；所有alias保持immutable，禁止原地寫入，重新使用前須獨立解除每個alias。registry只追加，不回寫歷史nlink。四冷TMP群維護已真0且actual709/0，19原路徑全保，實際TMP淨增加137,879,552B；後續六群原RESULT真0（30paths、原net86,007,808B）與其獨立actual核對分開看，不推定全部storage已封包公開。WS375經獨立第二靜審後已原exit0，2622個原path全保，workspace free由57,393,152增至376,119,296B，實際回收318,726,144B；原件在 `/tmp/geo337-ws375-preserving-execution-20261025/` 與 `-launch`，獨立actual已完成19791項資料核對／0錯誤，收據 `/tmp/geo337-ws375-second-actual-peer-20261025/REVIEW.json` SHA256 `63a996840e8eb6f24ba881dd83adf6fa334ef3496f85cc1d75a04dad1b4e22a5`；同目錄IMMUTABLE_ALIAS_REGISTRY.json SHA256 `a919b549016076e75911ba7af42c0f2d27b40952009ec3deac0b718995f376f6`。完整維護收據仍待另公開，不冒已入E219。跨device容量因此可重新判定，full123原admission已真通過；磁碟維護不代產品gate。每次重工作前fresh df，不拿任何歷史free數字當當下容量。新工具／OUT／cache優先新私有TMP，永久objects與全raw除外。
 
-本草稿所讀 handoff 為 `7a31dc436c78f16979b8f4cb97550118355f6d3a`；#338最後【ChatGPT 審查】仍是2026-10-24T06:38:46Z、head597bce6。B1完整final驗收尚未完成；B2性能部分已有F8/R8原量化綠，但跨版本exact與未核可B′／C仍紅；B3 requiredCI未解除。新正文已普通推D aebadf14，bot套用與新審查再讀pr-status／pr-reviews，不自行標READY。
+本草稿所讀 handoff 為 `7a31dc436c78f16979b8f4cb97550118355f6d3a`；#338最後【ChatGPT 審查】仍是2026-10-24T06:38:46Z、head597bce6。B1完整final驗收尚未完成；B2性能部分已有F8/R8原量化綠，但跨版本exact與未核可B′／C仍紅；B3 requiredCI未解除。新正文已普通推D927db8e1，bot套用與新審查再讀pr-status／pr-reviews，不自行標READY。
 
 每輪先fetch handoff分支，讀 `handoff/pr-reviews/*.md`、`handoff/pr-status.md`與`handoff/pr-requests/README.md`。新阻擋優先修；需要新PR／正文依既定5欄請求流程，已排請求不重複排，不等待bot空轉。等審查時照優先順序推進未合列車上的其他工作線；主線full123執行時可做靜審與小metadata，性能或完整canvas則獨占。任何紅燈保原assert／exit／輸出，先分類，未核可公理或數值政策寫QUESTIONS並繼續不受影響工作。全程無合併PR授權。
 
 最新啟動證據已普通push：[F8 full123 RUNNING 收據](https://github.com/ZhiQiYang/geometry-axiom/tree/996aeded246090de87efc631a29cb7e4b5585d30/evidence/geo337-train-20261024/current-F8-full123-start/)；7葉349860 bytes，非evidence tree不變。此處只公開啟動、來源配置小收據與預啟動pin輸入錯誤，不宣稱整份重產已完成或所有維護raw已公開。
+
+## 08:55 UTC 接續更新：不要重新啟動全帳本
+
+原 full123 仍是 session58101、F8、07:38:36 UTC開始；08:55增量117/123，尚無真終態，不當通過。先用write_stdin讀真session終態並保存原工具回應（exit_code整數，完成後無session_id），再核job/outer原RESULT。不要重新跑已完成R8。
+
+E80fc475c已普通推準備包882葉／6,948,494B（prepared-during-F8目錄881葉，另PROGRESS），非evidence精確F8；actual peer `/tmp/geo337-prepared-during-F8-publication-actual-peer-20261025/REVIEW.json` SHA7ec28ab4cd0e6349e13073b1b16c2c4331e28a400497c28094cb888fec792879。正文D927db8e1普通push0，原結果`/tmp/geo337-R8-prepared-prbody-publication-20261025/RESULT.json`；bot套用仍未見新status。QUESTIONS已另在Eecdcc22c補current，R8數值紅解除、exact三差與CI未解除，B/C無批准，P189不自動擴及。
+
+立即順序：
+1. 真全123終態後釋鎖，先檢磁碟；需要時由root執行兩項已審窄維護（不得在full123持鎖時跑）：七對terminal stdout TMP48,807,936B與Chrome純cache WS7,098,368B候選；精確v2 launchers及pins在 `/tmp/geo337-resume-resource-review-20261025/NEXT.md`，共同peer7a6923f7。新actual與alias registry仍需收件，不能把gross當已回收。
+2. 全123終態collector用 `/tmp/geo337-F8-full123-terminal-preparation-v2-20261025/`，PREPARATION45058091b308950ee18af616f6add2e4fe6535dc130cd5dc390f57f175d3369f、peer7bab5cae204f0b0d79c4ef2b4464fae8c681e4eb051b47ca4c490bb6ae463628。新BOUND request綁真job/outer/工具FINAL；先verify再collect，全raw與123/120 F8/3retired/四phase必真核。壞子JSON可保原紅封包，但不得採用。讀README精確CLI，保全原ELF/source/cache、不刪。
+3. 成功且原每列／raw／封包經另一peer後，root逐byte採帳本，正常commit/push固定F9；原120 execution.head仍F8，不篡改。清所有MUTATE_*跑真正tracked --check。原R8仍F8，不重跑／不移標；須證F8→F9只有ledger＋evidence差異。ROOT/seed轉移F9須另綁實際終態與只ledger差，不能直接改舊L轉移工具常數。
+4. native原763a6e工具可參數綁F9；37條命令計畫 `/tmp/geo337-F9-original-gate-command-plan-v2-20261025/`。nonperf僅採v2 `/tmp/geo337-F9-nonperf-original-tools-v2-20261025/`（PREP593ab353、wrapper993ee010），原681／Q38全44，tiny Git no-renames真0/1/0；v1審查已撤回啟動結論。正式仍UNRUN。
+5. browser分device單job工具 `/tmp/geo337-browser-single-job-split-preparation-20261025/` 已peer144/0（59ae64748d2e17232d1e894299e95fa910380f0d7391591141de2440ee2f0cb9）；來源WS、Gitdir/raw/job輸出TMP，原門檻與64MiBreserve保留。完整F9seed缺1025readonly葉的新增alias工具仍由resource owner備，未執行；不能拿nativeROOT冒seed，不可把含alias seed再給mutator。先fresh雙device預算，再逐job完整跑，canvas獨占。
+6. memo只用F8 copy-only v2 `/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/`，PREPcee50f54e8c28b059c17a223091a2780b7268406d14474c200869a5fd3ed53bd；peer98/0 b370a26a0cdf0352bd19a78826338b50d0b405e715d6c36703409ed15cb00b6b（完整原pin以該REVIEW檔為準）。四處撤回精確H＋local-init；原R8三ELF只私有copy，增加4,340,968B之外仍須全成本預算；原same-F8/4.5/175ABC不改。driver各phase持heavy，root只保secondary，避免同heavy自撞。
+7. #341成本外稿root v2 `/tmp/geo341-cost-preparation-v2-20261025/`，PINS008b50d645074777e38c2d2b61074d510a28e7069319b9afc79d20e2966cbeab；peer188/0 16a003022be036836fd665f70edd0cf63b82014ba508b18b57c1dbe9c94c36fc。修FACE截斷收件缺陷、五組0/1/0，C/性能未跑。僅F8 fallback，不冒舊Sc493全刀B1。
+8. #348診斷工具 `/tmp/geo348-command-boundary-diagnostic-tools-20261025/`，current FINAL_INVENTORY.R3 e8967ccccfab8ff0f2c559917fa0667ff3c67ae9f38f98a512129b1070dce8af；小C原件 `/tmp/geo348-synthetic-c-protocol-20261025/`（61checks/26CLI），actual peer355/0 cf629f40fafd55259ab3a61554b7de035ed55c855a32aafba4f931df9d5eb067。未實跑r2不補重跑；產品ELF/原512/性能仍UNRUN，先固定真正產品來源與ELF再校準，原四指令整批600不變。
+
+本更新是持續工作checkpoint，沒有停止或完成宣告；全123、native、六browser與專項未完成前不能READY。其他工作線原S/E/D以上表保留。
