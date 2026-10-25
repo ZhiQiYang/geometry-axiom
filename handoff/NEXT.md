@@ -1,3 +1,28 @@
+# 2026-10-25 主代理接續點：S10正常同步main＋採入#314，完整帳本尚未啟動
+
+本增量已由主代理正常提交至handoff；下方舊文完整保留。這是持續工作中的checkpoint，不是階段停工；下方舊文全保留。
+
+- 只由root寫列車 `codex/train-337-continue-20261024`。可解析產品／裁判來源 S10=`82c922a3941525d3a094ac0158bdc7dea57ea360`，兩parents E249a05ed4c8a085bdf3353ac781638f2a9b3d460 / main405f8c5e1a637a16cbe47470faf5ae1fa02b8676。普通merge main進列車，未合PR或寫main。
+- 新證據 E=`d45e66aebdcd27602134990eefb6a5d0ff9bad21`；52葉/46unique遠端完整bytes/hash核0。完整F9 #314 v2/v3、S10採入原件已持久化，不能只依SHM副本交付。正文D由本次publisher原收據綁定；原D5ce914是E249舊快照，勿混用。
+- **新S10不是已全綠final**：只改 `tests/test_geo314_commit_paths.py`（3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032）及`決策佇列.md`（fe822051b5413fb79490b333e23f3c9d6b96959c01f937c274d3246772c15e14）。決策兩側新增原文精確保留；K／產品／公理／golden／fixtures／workflow均無改動。原normalmerge exit1是唯一決策同點插入衝突，解完後採入executor/push/remote2blobs全0。39CLI原件＋16語意核0，完整包202檔8353186B→1812721B；archive sha8e9a31452e348e6abe1269093ff7fc311306607b3acf88af91fc8b72917a1b02。
+- #314暫態F9+patch：v3完整11為0/1/0、4K負例各1→0、外層0、restoration errors空、原index每command保全；實際38commands/76streams、獨審349/0。v2原外層1（index變動）及INDEX_AFTER_FAILURE完整保留，歷史寫入者尚未完全確定。完整1826檔36200174B／3包7918998B，actual14194/0。**F9正式native仍1，不移標S10或改成綠。**
+- F9=`4f8a794f4167c3562eb182045102e86e9e37cca9`：六browser真0（canvas2267/1723.223173s、assembly150/188.843305s、documents47/63.197160s、grid356/464.984065s、space242/209.339s、timber79/124.531604s），原時限全保。assembly首輪環境1完整留存。六套完整原件已在E249及祖先E3447/Eaea遠端交付，勿重跑或移標。native5327pass/1fail/1allowedGDI skip，原1846.506872s。reader3原0/0/0、axiom原44+V01–05全0/kill已交付。
+- Q38 F9完整44真0，43killed+SPM24 equivalent，原ModelError白名單保持；14:45:38–14:59:28 UTC。完整原件300檔14309477B，actual2051/0與獨立peer已完成，封包出版仍待r8_terminal_peer。舊Q38 session66508已FINISHED0，不再輪詢。
+- S10改test.py，mutation_bridge oracle含tests/*.py，**須先原mutate --check，再整份123重產**。原F8帳本0/F9check0只留歷史，尚無S10check或新ledger。最小sourcepreparer已綁S10：`/workspace/geo337-F10-full123-source-shm-preparation-20261025/COMMAND.bound-S82c922a3.pending-capacity.json`，工具0859bff8…、peer52/0。保原reserve 25165824B（24MiB；舊稿曾誤寫25MiB，數值不變）。freshpool3763與seed2738，privateGit/nlink1/604architecture/5fixture guards不動。
+- 啟動阻礙具體為WS約11MiB不足上述reserve，**不是正在重產**。resource_and_transition_review準備四個已終態OWN private index cache完整保全（約23.4MB）；須先SHM gzip/raw hash/meta/roundtrip/fsync、一般push且remote完整blob驗後，root才能unlink四個可重建index。不可刪source/fixtures/dirty/refs/Gitobjects/原始收據；四舊根標INACTIVE_REQUIRE_INDEX_RESTORE。TMP約46.9MB，也不足原native128MiB cache准入，仍查可安全回收cache，未降低門檻。
+- full123 SHM launcher/driver最小path配置由acceptance_plan_audit準備，resource_admission/observer/verify與freshcache原bytes不變；1GiB額外配置僅保守filesystem估計，不是假稱測得peak。兩OWN SHM root共用2GiB規畫上限與真free/memory事件守門保持，SHM17.8GB原掛載不改quota/安全。原native硬cache `/tmp/geometry-tests`，只改TMPDIR不會轉址，不用symlink或mount繞過。
+- 後續：S10新全帳本完成後正常採入產新final F，再原架構3judge/當次收據、完整native；P52/card/P189/required-eight/PF3/memo/ABC/RC/#314六suite+Node/閱讀A完整專項仍未完成。原F8 R8 36samples性能門檻綠但outer1保持；F9 #323 comparison精確OWNER三差白名單後0，PUBLIC正式700CLI全流已E249交付，私有profile唯一2795B留雲端；不延伸P189、不重抽R8。
+- 新nonperf配置 `/workspace/geo337-F10-nonperf-original-tools-preparation-20261025/` 只固定S10/pathdigest；ledger採用新SHA後需另綁，不默認接受未知commit。原card是53mutants內4額外model重編，不是57案例。
+- 最近審查handoff fd35d1415／#338 14:35:15Z head3447：B1完整native、B2清單、B3merge、C1evidencehead；S10真merge完成B3所指工作，B1/B2仍未解除。每輪fetch讀最新，不問使用者，不等審查就繼續獨立工作。
+- canonical root publisher為 `/dev/shm/geometry-axiom-geo337-20261025/publisher-source`，舊 `/workspace/geometry-axiom` HEAD固定E70、clean歷史provider；不要寫回舊train。全部SHM操作必正式require_escalated（普通sandbox另一namespace不可見，不能繞路）。新S10 object只在SHM私有.git與origin；舊WS對S10 badobject是尚未fetch，不是產品紅。
+- 新S10出版工具 `/workspace/geo337-F10-shm-publication-preparation-20261025/`：只改bootstrap helper PRODUCT與wrapper pin，原publisher/verifier不改，peer15/0。**不可重跑bootstrap main**。後續使用fresh直屬SHM out，正常push後全remote blob核；oldWS commonGit metadata窗口不能與prbody/handoff/fetch重疊。
+- #344保持獨立：source9aec9a32630fc65f94c53d49e99969e546574d6e／Edf39d1933402c76b2f8b35ca013412daf16ed4c9／Dcbb1aa30b83d1b368ce1cb27885a39003bc58fed，架構hash修正已推，strict9舊綠不代完整canvas/native，其餘未驗，不READY。#341完整撤回成本及#348 N512仍未跑，舊備稿保留。#325/#331/#333不碰Grok分支。其他工作線完整狀態見下方舊NEXT，不能當作已完成。
+
+不得force push、合PR、部署、新增公理／數值門檻或付費安全變更；所有原始證據與5protectedfixtures保持。沒有usage-limit拒絕，曾agent thread limit只限制同時喚醒，未換模型或另建替代task。
+
+
+---
+
 # 接續增量：SHM 出版入口已切換；assembly／documents／grid 已正式通過（2026-10-25；工作持續）
 
 本段由主代理正常提交至 handoff；原已審外稿只補入其後真實終態。它更新下方舊 NEXT 的來源／證據／正文、五個 browser 與工作排程；完整舊文逐 byte 保留作歷史。不是完成報告，不標 READY-TO-MERGE，不自行合併 PR。
