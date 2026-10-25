@@ -1,3 +1,50 @@
+# 接續增量：SHM 出版入口已切換；assembly／documents／grid 已正式通過（2026-10-25；工作持續）
+
+本段由主代理正常提交至 handoff；原已審外稿只補入其後真實終態。它更新下方舊 NEXT 的來源／證據／正文、五個 browser 與工作排程；完整舊文逐 byte 保留作歷史。不是完成報告，不標 READY-TO-MERGE，不自行合併 PR。
+
+產品仍固定 **F9 `4f8a794f4167c3562eb182045102e86e9e37cca9`**；帳本生成／R8 仍是 F8 `75a1e93811a52b69385cbdaf6a09d773ed9052ad`，不得移標。整合分支 `codex/train-337-continue-20261024` 的目前證據 **E=`60909ad5062c6bc6f072442f5c2957b08b15f443`**；正文分支 `codex/train-337-continue-20261024-prbody` 最新 **D=`01d782516ecc07d2fe121095e8fccb45ae425826`**（parent `e6955eab31bd849ba2e671cec29d2795960d0bbe`，body SHA256 `605cb42017131ac9c6e4157d8fe45fbf49fa589f6186f8e7a58ba3da9f0624e2`）。兩者 normal push 真0；未確認網站 bot 已套用正文，不能宣稱已同步。
+
+E609 是本批 checkpoint manifest 的交付：root publication／remote verification 均0、23 個唯一 raw blob 完整下載並核 bytes／SHA256／Git OID、舊 WS repo 不變。它**不代表 assembly／documents／axiom／新 comparison 的完整原流已全部公開**。原 FINAL `/workspace/geo337-F9-SHM-checkpoint-publication-EXEC_FINAL-20261025.json` SHA `3d7acba9d640331ecbc06c0c6543bd1cb7743de46a6a050563735adb79854b71`；正文實績 `/workspace/geo337-F9-checkpoint-609-prbody-publication-20261025/RESULT.json`。證據目錄仍是 `evidence/geo337-train-20261024/`。
+
+**出版入口與 namespace 必須沿用：**目前唯一 train publisher 是 `/dev/shm/geometry-axiom-geo337-20261025/publisher-source` 的獨立實體 `.git`，由主代理單一寫入。舊 `/workspace/geometry-axiom` train 保留在 E70 作歷史 provider，不能從它另推 train，也不能把 SHM objects 加回舊 repo alternates。借用方向僅為新私有 SHM objects → 舊 WS objects → 既有 TMP protected store。原 `/tmp/geo337-published-archive-git-objects-20261024`、所有原 Git objects／fixtures／收據均禁止刪除。新 publisher 工具與 pins 在 `/workspace/geo337-shm-publication-preparation-v3-20261025/`，正常 publication 入口 `publish_and_verify.py`，不是把舊 WS reset 到新 E。
+
+所有 SHM 讀寫均用正式 `require_escalated`／auto-review；普通 sandbox 看不到相同 SHM 檔案時的 FileNotFound 是 namespace 可見性差異，不是原件不存在，禁止用 symlink 或 alternates 繞過。既有掛載是 tmpfs，未改 mount／quota／安全設定，未付費。兩個 OWN 根 `/dev/shm/geo337-F9-browsers-20261025` 與 `/dev/shm/geometry-axiom-geo337-20261025` 共計容量，不重複扣 shared inode。SHM 原件與新 objects 是受保護的揮發性資料：完整收件／roundtrip、normal push、遠端可解析 SHA、完整 archive raw 下載核 bytes/hash/OID 成功後才交付；交接應保遠端重建位置，不能以本地壓縮成功代交付。
+
+目前 browser 狀態：
+
+- **assembly r2 正式0**：原 workflow／launcher／sampler／host 全0，188.843304699054秒≤原15分鐘；150 assertions（P77 134＋P82 16）、0 fail／skip，before/after guard0。原 P77 故意 `Injected lost success response` 的 transport 紀錄保留。這是原 assembly partial scope，不冒完整 canvas golden。原件在 SHM `launches/assembly-r2`、`sampled/assembly-r2`、`r/a2`。actual peer `/workspace/geo337-F9-assembly-r2-SHM-actual-peer-20261025/REVIEW.json` SHA `3de0179640e77507d3af29722450254faf9e8e87928eb7fecc133f8b2f67603e`，237/0。**完整 raw 已封包，推送仍待後續批次。**
+- assembly attempt1 的 **環境1完整保留**：Chrome `Socket path too long` → `no CDP`，0產品斷言、golden未比較。完整 socket path113B／含NUL114超過108B；只換 fresh out/storage 為 `r/a2`，新完整 path104B／NUL105，原 launcher、driver、端口、時限、判定不變。原件在 `launches/assembly`、`sampled/assembly`、`runs/assembly`；actual202/0 在 `/workspace/geo337-F9-assembly-first-SHM-actual-peer-20261025/`，它的 verifier0 不把正式1變綠。
+- **documents 正式0**：原 workflow／launcher／sampler／host 全0，63.19715973001439秒≤原10分鐘；47 assertions全PASS，8張原截圖（4desktop／4mobile）hash全對，scene／未存draft／undo保全，無失敗asset與未捕捉browser例外。原件在 SHM `launches/documents`、`sampled/documents`、`r/d`。actual peer `/workspace/geo337-F9-documents-SHM-actual-peer-20261025/REVIEW.json` SHA `b4ca35f50d42e48faf209da3b747cdbef09f3271dc057b9e0e6bbcde3f8fb697`，237/0。**完整 raw 收件／推送仍待後續批次。**
+- **grid 正式0**：原host／sampler／launcher／workflow exit0，host50577已終態，`/workspace/geo337-F9-grid-SHM-EXEC_FINAL-20261025.json`保存真tool回傳。原件在SHM `sampled/grid`、`launches/grid`、`r/g`；actual peer與完整封包正在接續，不能移標為已遠端交付。
+- space、timber仍未完成；依原 source plan/materialize及launcher，各用獨立source／Gitdir/index／HTTP/CDP／TMP／profile。後續storage為 `r/s`、`r/t`；documents/grid/space/timber完整socket含NUL各105/100/101/102B。已審 root helper `/workspace/launch_geo337_F9_next_browser_root_20261025.py` SHA `fddc43230619c4c3d0a1c36adc6ed2c55c9838f4a82e3e8ee674409d4b53b8ba`，peer19/0。不因準備工具0就把 job 記綠。
+
+不要重跑已完成的 F9 canvas取樣（原2267 assertions／85段golden／35分鐘gate0）、reader三項0/0/0、已採F8全123帳本與F9 check0、F9架構三judge0/0/0。native仍正式1：唯一 `I24 submission policy must not change K files`，額外 `geometry-core/kernel/source.c`；35分鐘gate0與唯一Windows GDI skip1保持原紀錄。§7 axiom原項已0／五mutants全killed，不應因新專項工具支持它而重跑；其完整包仍待公開。
+
+取樣外層 `/workspace/geo337-F9-browser-sampler-preparation-20261025/sample_original_browser_v2.py` SHA `919eafb54f20454ee44a27754ce04f6f63f05f6e1c9b32a5b51652058735af30` 已審。每秒只讀三掛載statvfs及memory.current/events，OWN inode census僅前後；啟前 actual allocated＋416MiB≤共享2GiB是容量規劃，不是新產品門檻，沒有 runtime64MiB追加或動態kill。assembly r2 193樣本／maxgap1.013863秒，共享SHM觀測used最大229,765,120B；documents 68樣本／maxgap1.002719秒、used最大262,922,240B；OOM／oom_kill均0。這些包含同時出版I/O，只是共享掛載取樣峰值，不是連續真峰值、單job峰值或R8性能證據。
+
+新 F9 comparison 的 formal outer/stage/audit0與175 scenes／350 base-fix rows／700 ordinary+trace CLI維持已核結果；原F8 R8 outer1、36樣本及三差歷史不重抽、不移標、不擴到P-189。**PUBLIC版本仍待collector及普通推送／遠端驗證。**公開scope只排除一份無關完整GET `/user` profile：`comparison/tools-frozen/authority/connected-user/subcommands/000001/stdout.bin`（2795B，SHA `b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29`）；原私有來源與完整五包全部保留，沒有刪正式比較command stream。v2掃描與精確排除檔在 `/workspace/geo323-F9-public-comparison-preparation-v2-20261025/`；`PUBLIC_EXCLUSIONS.json` SHA `8c811e191c924a6e1960597b5008bfa69d55ecdae878224ad082ed51fa696d24`。不得推含完整無關profile的私有包，也不得把PUBLIC缺少該原guard輸入說成全輸入可原地重播。
+
+**#314修正尚未正式跑或採進F9。**已就緒反證工具 `/workspace/geo314-F9-kernel-scope-counterproof-preparation-20261025/run_counterproof_v2_final.py` SHA `706913fa818b14b91c9a9b09f6e12e55ddd9b463e06287fcb90599c2b376ba63`；獨審 `/workspace/geo314-F9-counterproof-v2-final-static-peer-n37dc_7n/REVIEW.json` SHA `962df072ff186804db4871738cc02494f3a84ddd44f59b90627fd04b5da0bc7f`，226/0。正式 full11＋四類K負例仍UNRUN，四項rootlease皆false；28次tiny故障proof不是正式驗收。主代理在browser全終態後才排，避免nativeROOT被來源guard引用時發生暫時修改；SIGKILL／持續I/O故障仍依原RECOVERY/manual保全，不廣域reset。
+
+**與main合流仍待辦。**已讀 `main 405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的差異是決策文件新增28行；主代理fetch後以普通merge合當下origin/main，完整保留列車10/24與main10/25原文、前六行條文寫入綁定，不能重寫鎖定決策。這是分支合流，不是PR合併；不rebase／force。合流及#314產品／測試修正後固定新final，依closure重產必要帳本／架構、重跑受影響正式項與反證；F9結果保持原SHA身份。
+
+**#344另線未合入列車。**`codex/issue320-connection-recovery-20261024` 的S=`9aec9a32630fc65f94c53d49e99969e546574d6e`、E=`df39d1933402c76b2f8b35ca013412daf16ed4c9`、D=`cbb1aa30b83d1b368ce1cb27885a39003bc58fed`已正常push；架構三原judge／反證與report/receipt採用、出版actual3615/0已完成。收據 `/workspace/geo344-architecture-publication-actual-peer-20261025/REVIEW.json` SHA `d97e6dab50158bbc0fc89b865fc16e93ab3864b52e9812ca1b8cf925ccec0e8c`。歷史strict9不代完整canvas、native、帳本及其餘尚未跑項，不能標整張PR可合併。
+
+P52／P-189、Q38／cardref、required-eight／PF3、whole-memo／隔離ABC與其餘RC／閱讀A／#314專項依既有清單繼續。Q38/cardref等最小SHM外稿 `/workspace/geo337-F9-nonperf-SHM-placement-preparation-20261025/` 已獨審35/0（`/workspace/geo337-F9-nonperf-SHM-placement-static-peer-20261025/REVIEW.json`，SHA `505abceeddf75b56360ad42d4a7be2de220a468b67653c36204b4fb9de31080d`），未正式執行；required-eight原POSIX仍硬寫`/tmp/geometry-tests`，必須另查共享cache與free，不能冒全在SHM。P52/P189盤點在 `/workspace/geo337-F9-p52-p189-inventory-20261025/REPORT.md`（SHA `0a18ccb5496fd8aeacd7a6517086dd3ea24fb01512ecf62eaa5e8bf86f626f65`），SHM placement仍待準備／審核／真資源准入；L36不重抽、不移標，三差批准不擴P-189。
+
+下一步保持進行：grid已真終態0，核原結果與完整收件，接space／timber；間隙完成PUBLIC comparison／已終態browser原件出版、逐包遠端hash與PROGRESS。全部browser終態後排#314 full11／K反例與普通main合流，依影響固定新final。長測試時做不競爭的文稿／靜審，不空等、不宣稱全專案完成。不碰Grok／Claude分支，不force push、不merge PR。此稿保留原 NEXT 下方全部歷史，較新已核狀態以本段為準。
+
+---
+
+以下原 NEXT 為歷史全文，逐 byte 保留；其中舊 current E／D、UNRUN或RUNNING不能覆蓋以上現況。
+
+
+本段封存時assembly兩次完整包已完成：828 regular／35,366,094B＋5 links，三gzip共8,121,472B，collector0／actual6741/0；原first1與r2zero不改。完整raw尚未正常push／遠端驗hash，不能算已交付。space已plan/materialize啟動，尚未正式執行。
+
+
+
+---
+
 # 接續增量：F9 canvas／axiom／新comparison已執行（2026-10-25 12:34 UTC；工作持續）
 
 本段取代舊NEXT頂部的canvas RUNNING、reader未收件及comparison未執行狀態。原 `handoff/NEXT.md` 的其餘工作線、來源路徑與歷史原文保留，舊gate文字只當歷史，不可拿來取代下面的現況；本增量已由主代理正常提交至handoff；下方舊文完整保留。
