@@ -1,0 +1,1 @@
+封包actual通過。1,486個regular成員、49,703,520原bytes逐一核對tar/INDEX/原sourcehash/state；archive8,584,878bytes。原123逐列審查由另一peer完成，這裡只核其八個根binding吻合。保原tracked1、M20crashed、F8 executionheads。foreignUID cwd未知、兩次v2環境紅與v3完整收件流須公開，沒有因此冒全系統可見或其他正式驗收已跑。

@@ -483,3 +483,9 @@ F8 `75a1e93811a52b69385cbdaf6a09d773ed9052ad` 的原完整帳本於 07:38:36 開
 下一步：修復封存環境檢查、完成每列與封包 peer，才逐 byte 採入新 F9；之後原 tracked check、完整 native、六 browser 與專項仍待執行。R8 效能已有效完成，不重抽樣；三個 exact stdout 差異仍紅，B／C 未獲核可，P-189 不自動沿用。CI 支付／額度阻擋不自行改設定。不是 READY-TO-MERGE。
 
 09:12 補記：透過工具正式審批做唯讀程序檢查後，PID 1 cwd 可讀為 `/workspace`；未改權限或安全設定。同一未改 v2 在獲准執行範圍再試，因不同 UID65534 的系統 dockerd（PID208）cwd 不可讀再 exit1；也未封包或採帳本。第二次原流一併保留，正修正封存工具對本任務程序的範圍判定，任何本 UID／未知 UID 不可觀測仍應拒絕，產品裁判不變。
+
+## 2026-10-25 09:25 UTC：F8完整帳本原件／封包均獨審通過
+
+`ledger-F8-complete/` 保存1486葉／49,703,520原bytes，gzip8,584,878B（SHA256 `806ab05886963c6dd2673096e04272c734f09c602f830ded9561a79729e13be8`）。原件7,625checks/0、封包11,165checks/0；原完整mutator/root/outer/exec均0，四phase1/0/0/0原判保留。123列／120自然F8 head／3retired未改寫。兩次v2環境讀權失敗原件全保；v3真verify0/collect0，外部UID程序cwd unknown明列，本任務不可觀測仍拒絕，產品裁判不變。
+
+下一步是逐byte採入帳本固定F9、原trackedcheck，再完整native／六browser及專項。R8有效性能不重抽；exact三差與CI仍未解除，非READY。#341 F8 fallback-only成本另已收原546CLI／378樣本exit0，正在獨審封包；語意通過不等於性能接受，N64無重複wall約+6.77%、密集重複約−29.72%，全部樣本保留且不新增門檻。
