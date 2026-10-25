@@ -1,6 +1,20 @@
 # 新列車進度：draft #338（取代 #337）
 
-## 唯一 current-state（2026-10-24；F6df 的 R7 已收齊終態）
+## 唯一 current-state（2026-10-25；H 初始化修正已合流，準備 R8）
+
+產品／測試合流來源 M=`6e50aef65513b7b38f93228919272c6d40d6c196`，子來源 S=`2c4635577a8fcb11e88b346547f7bb1c7b739fb7`。四個產品／測試葉與公開 S 相同；本提交採用 M 的架構 report／receipt。採用 commit 將固定為 R8 的 F8，再獨立 checkout 執行；M 與 S 的實跑不得改標 F8。
+
+H 修正把原每次 reference_rebuild 都做的 127,584-byte 區域清零移入 fallback，持續快取路徑不再做這段無用工作。S 原 LoadResidual 14/14、零 skip、exit0；舊13方法未改。固定／撤回／恢復 actual memset calls=0/2/0、bytes=0/255168/0，work exit0/1/0；各 phase 的 persistent、fallback、allocation-failure、ordered-graph 語意均0。精確撤回 assertion 是 persistent-reference-local-zero-work。這是 O0 focused 反證，尚不代表 O2/N16 wall 通過；子分支原件正在另行出版，不能把未出版件稱為已入庫。
+
+M 架構三原 judge exit0/0/0，generic205／product18、零 skip；604 inputs、798 edges／0 diagnostics，唯一 input delta 是 references.inc。九既有 guard 各0/1/0、neutral2綠；937／55政策與 scan bytes 不變。完整原件、51原命令、合流原流及獨審在 architecture-6e50-complete/。本提交只採用 report／receipt 兩個實際改動的衍生檔，未改公理、裁判或架構政策。
+
+R8 原五 stage／36交錯樣本／4 profiles 尚未執行；全123帳本、完整native、六browser、P52、Q38(44)、§7、P189、required-eight/PF3、memo、readers／RC／#314／Reading A在新來源均UNRUN。只允許原Linux Windows-GDI skip。原R7 N16/base=1.05190582882169>1與三個stdout exact差保留為歷史紅；N64/main=1.2292230778583162是舊F7綠，不移標新F8。
+
+Q-323-ABC／Q-P189-EXACT 的診斷版本界線尚無裁決，維持原exact紅，不刪I22診斷、不正規化比較。required CI既有付款失敗或支出上限分類仍在；新M／採用commit的CI未讀，沒有正式替代接受紀錄，不變更付費或安全設定。
+
+下一步：固定採用SHA，以原工具和門檻跑R8；性能與完整canvas獨占，其他重測最多兩個。**目前不是READY-TO-MERGE。**
+
+### 歷史 R7 終態（F6df；不可移標 H 修正來源）
 
 固定產品／測試／架構產物 **F=`6df0264f75e84f03adb70746b6ac3db07a9910fc`**。R7 在獨立乾淨 F checkout 於 06:36:52–06:40:10 UTC 一次完成原 prepare/build/compare/perf/profile；stage execution=0/0/1/0/0、累積 CLI=0/0/1/1/1、outer=1。完整36交錯樣本保留，沒有重抽或混入 R6；原雙鎖正常釋放。三份真正工具 poll JSON 亦保留，終態 chunk87c3e8 明確 exit1。
 

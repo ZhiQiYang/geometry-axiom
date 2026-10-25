@@ -1,0 +1,57 @@
+{
+  "schema": "geo337-h-architecture-actual-peer/1",
+  "utc": "2026-10-25T06:43:21.808493+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "6e50aef65513b7b38f93228919272c6d40d6c196",
+  "child_source": "2c4635577a8fcb11e88b346547f7bb1c7b739fb7",
+  "prior_actual_architecture_source": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "original_gate_exits": [
+    0,
+    0,
+    0
+  ],
+  "original_unittest_counts": [
+    205,
+    18
+  ],
+  "architecture_commands": 51,
+  "architecture_exit_histogram": {
+    "0": 42,
+    "1_intentional_withdrawn": 9
+  },
+  "outer_commands": 2,
+  "merge_commands": 16,
+  "input_count": 604,
+  "input_closure_sha256": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
+  "changed_prior_input": [
+    "geometry-core/references.inc"
+  ],
+  "fresh_guard_triples": 9,
+  "guard_exits": [
+    0,
+    1,
+    0
+  ],
+  "neutral_cases": 2,
+  "manifest_and_scan_unchanged": true,
+  "new_artifact_changed_paths": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json"
+  ],
+  "bindings": {
+    "/tmp/geo337-h-architecture-four-20261025/RESULT.json": "f85eadd0a80e27ec8935b9c62ca9553f89e625b10da2bc2278846f4246efbf0f",
+    "/tmp/geo337-h-architecture-four-launch-20261025/RESULT.json": "f2f584a3d5d2bfaac613e0183983d0007a9754ead94e3b2c56d0828e86d1597d",
+    "/tmp/geo337-h-local-init-integration-20261025/RESULT.json": "02a65f63b48d095a7ff1dc553741b8e29cfe8935edb3026c7977686c84123319",
+    "/tmp/merge_geo337_h_local_init_20261025.py": "323cd2ef755017d4aa27b0346bf12051186fad23cafa9775fed6a7233ac07151",
+    "/tmp/geo337-h-architecture-resume-peer-20261025/audit_actual.py": "e04236cc745cfd1faeb8703e78631d50071972190ff0782125ab9e13001587cc"
+  },
+  "advisories": [
+    "Merge script did not assert child ls-remote tip, but the preserved premerge remote stdout is exactly public S; verified independently here. No history or raw output rewritten."
+  ],
+  "limits": [
+    "Read-only audit of actual receipts; no product gates rerun.",
+    "M is the actual architecture execution SHA; later adoption SHA must remain separate.",
+    "No full native, ledger, browsers, or N16/O2 performance acceptance is implied."
+  ]
+}
