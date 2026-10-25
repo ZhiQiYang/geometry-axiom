@@ -1,0 +1,29 @@
+{
+  "schema": "geo337-r8-three-exact-triage-independent-peer/1",
+  "utc": "2026-10-25T07:13:09.564460+00:00",
+  "reviewer": "/root/r8_terminal_peer",
+  "checks": 424,
+  "exit": 1,
+  "findings": [
+    "five-file selected patch scope disclosed; not entire introducing commit"
+  ],
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "fixed_base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "introduced_commit": "6366304eb787b2a50282e4132f45e51eb7d21290",
+  "introduced_parent": "4b665fae21ab63aaffb7d84f6a32d5a469ba1675",
+  "files": 150,
+  "original_compare_exit": 1,
+  "new_policy_accepted": false,
+  "report_sha256": "337c42769598af8c4ca46bf440970e0e3e0fbf767367e773730beca46823b7de",
+  "facts_sha256": "bbb66b1f5f19ede946a10ce40987569cda71c75578e597e7557fd5d0b5b00849",
+  "final_inventory_sha256": "140d3c1c0d24ac7f61fae9beb38c1e03edb84b22f195d99a6a92a126283b4e5b",
+  "questions_sha256": "647026430081a6b04e6f8f5561c7dd44e91a4d985976734f201a60dc3ff240e0",
+  "independent_git_reads": 21,
+  "limits": [
+    "Read-only evidence and contract review; no C, mutation, performance or P189 execution.",
+    "Per-scene guard values verified against original equivalence report, not independently reconstructed from unavailable historical guard file payloads.",
+    "No lawful product-only repair identified under unchanged full old-base bytes plus explicit current diagnostic assertions; this is scoped to current documented contracts, not a proof about every conceivable future design.",
+    "Initial report ambiguity between maintained option A and unadopted B/C corrected before final review; source facts and original collector receipts unchanged.",
+    "Initial factual finding: stored introducing patch was five explicitly selected files, not whole commit. Owner corrected report scope only; original failed REVIEW.json/audit.py/Git reads retained, original collector/patch/facts unchanged."
+  ]
+}

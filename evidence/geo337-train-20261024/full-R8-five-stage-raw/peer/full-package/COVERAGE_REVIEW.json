@@ -1,0 +1,17 @@
+{
+  "schema": "geo323-r8-archive-original-scope-actual-peer/1",
+  "utc": "2026-10-25T07:03:30.715398+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "whole_current_roots_reenumerated": {
+    "original": 7375,
+    "original-orchestration": 1201,
+    "tools/v5": 6,
+    "terminal-summary": 1,
+    "terminal-summary-producer": 2
+  },
+  "fixed_source_entries": 447,
+  "scope_matches_frozen_plan": true,
+  "read_scope": "Only current file metadata and small frozen plan/preparation JSON; no product rerun or archive reread."
+}

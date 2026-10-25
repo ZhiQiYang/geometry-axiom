@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "log",
+    "--format=%H",
+    "-S",
+    "——定位邊 e%d",
+    "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+    "--",
+    "geometry-templates/woodworking/native/contacts.c"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "exit": 0,
+  "stdout_sha256": "75411e3a62120deec773b995ade4f55c292e6f7291b7b3a91094fb9b71af84d8",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

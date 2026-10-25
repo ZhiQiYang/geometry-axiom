@@ -6,7 +6,7 @@
 
 **原性能門檻全部通過：N16/base=0.9834192453688345≤1、N32/base=0.9007932884873169≤1、N48/base=0.7392862448969592≤1、N64/main=1.2846970752586067≤1.3。** source calls82668→364369，64/32=4.407618425509266≤4.5。N16 median fix0.1123812579899095s、base0.11427604098571464s；不剔除第二輪較慢樣本，不以O0工作反證或O1/pg時間代O2 wall。
 
-原compare仍exit1：175scenes／350runs的程序與trace皆0，但role_priority、P8低／高凹角三個stdout差觸發 verify_linux.py:156 的 assert not failures,failures。ABC_result仍缺席、all_required=false／full_acceptance=null；前段graph／guards相同不能代後段未到audit。Q-323-ABC／Q-P189-EXACT維持待明確版本界線裁決，不刪必要I22診斷、不正規化輸出。
+原compare仍exit1：175scenes／350runs的程序與trace皆0，但role_priority、P8低／高凹角三個stdout差觸發 verify_linux.py:156 的 assert not failures,failures。ABC_result仍缺席、all_required=false／full_acceptance=null；前段graph／guards相同不能代後段未到audit。Q-323-ABC／Q-P189-EXACT維持待明確版本界線裁決，不刪必要I22診斷、不正規化輸出。 三差已逐expected／actual與Git來源核對，診斷補齊引入6366304eb787b2a50282e4132f45e51eb7d21290；b74固定base與F8的I22整條逐byte相同且早已要求定位邊／超出區間。已批准規格內未找到同時保舊bytes與必要診斷的產品修法。current-R8-exact-three/公開150檔原件與424/0獨審；QUESTIONS列A保留紅、B′診斷一致基準、C具名三pair政策，B′／C均未核可、未採用，性能分母與有效R8不變。
 
 F8真正tracked `python3 tests/mutate.py --check` 已真exit1，120stale／3retired／0invalid，前後同F8 clean，所有MUTATE_*清除。外層完成0不等check0。產品暫定穩定，root接續整份123重產；完整native、六browser、P52、Q38(44)、§7、P189 full/timing、required-eight/PF3、memo、readers／RC／#314／Reading A在F8仍UNRUN。只允許原Linux Windows-GDI skip，不新增skip。
 
@@ -16,7 +16,7 @@ H定向來源S=`2c4635577a8fcb11e88b346547f7bb1c7b739fb7`原14/14、零skip、wo
 
 F8 required CI run40170221039與證據E815cd2e3 run40170692505，18原API讀皆0，各七job failure、runner_id0／steps0；annotation明示付款失敗或支出上限，Ubuntu migration notice另列。沒有變更帳戶或自行核可替代流程。本提交以後的新E未讀CI，不把E815結果移標。
 
-本批current-R8-terminal/公開原六bindings、全部36樣本／profiles摘要、五CLI／outer完整流、真工具poll、帳本check、CI與採用／H公開原件。完整R8 inner/source preparation大型封包尚未公開，不能把小摘要冒完整原包；R5／R6／R7公開原件保留原source／紅燈。root將接續補全R8大包與全帳本、其餘正式驗收。**目前不是READY-TO-MERGE。**
+本批current-R8-terminal/公開原六bindings、全部36樣本／profiles摘要、五CLI／outer完整流、真工具poll、帳本check、CI與採用／H公開原件。完整R8 inner/source preparation原件本提交已公開於full-R8-five-stage-raw/：9057members／31,362,296B，SHA2564503955cefc6fb1a6491ad2a146c259e59a2185401d0fbebc09908a47e3bf9d0。完整inventory在tar內且PACKAGE另釘hash，111,407,792B原件逐member/hash/source roundtrip經獨審；七ELF僅hash inventory，原payload仍保留。原正式outer1／compare1不因收包0而變綠，歷史published:false/PENDING字樣保原不回填；R5／R6／R7公開原件保留原source／紅燈。native ROOT已在保留原refs／五fixtures／sparse與全部原件的條件下，普通detach切至F8並獨審通過；本批只公開轉移小RESULT／request／actualpeer，完整轉移原流仍在雲端保存待另行出版；全帳本仍未啟動，正在按實際檔案系統配置新cache／seed與資源預算。root接續全帳本、其餘正式驗收。**目前不是READY-TO-MERGE。**
 
 ### 歷史 H 合流與架構採用（正式 R8 前）
 

@@ -1,0 +1,34 @@
+{
+  "schema": "geo323-r8-collector-template-static-peer/1",
+  "utc": "2026-10-25T06:56:13.605188+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "reviewed_files": {
+    "collect.template.py": "dffac4dfea4c954f15ef738b4a778e9d752c4da041b8ec27ec0eeb27a6ed4f5e",
+    "launch.template.py": "22e37f8e2eb8b8a012a45de5db275e6a0a4cf875658b5abe64806b947216e665",
+    "freeze_terminal_plan.py": "f49ac614c307b0ac2c350dcd30af99bf4e510c5e809383a72b5245669237cda6",
+    "prepare_plan.py": "f49ac614c307b0ac2c350dcd30af99bf4e510c5e809383a72b5245669237cda6",
+    "PROVENANCE.json": "b802bb3dbd7e9dd7065457880a86a3544dc34a06d6c054ec7785867b995ed424"
+  },
+  "checks": [
+    "collect.template.py: exact draft/original pins, syntax and diff",
+    "launch.template.py: exact draft/original pins, syntax and diff",
+    "freeze_terminal_plan.py: exact draft/original pins, syntax and diff",
+    "Collector and launcher byte-for-byte original after only necessary parameter substitutions.",
+    "Original initial/session62076 and exactly one terminal exit required; missing API sequence not reconstructed.",
+    "Current raw orchestration/v5/source/summary scope retained; historical R7 and old ledger distinctions accurate.",
+    "Original resource limits, terminal/exit/ABC fields and byte roundtrip remain.",
+    "Historical collector and R8 static peer paths exist; only metadata inspected."
+  ],
+  "initial_review_error": {
+    "actual_tool_command_exit": 1,
+    "kind": "reviewer path assumption",
+    "detail": "Initial read assumed original-r7-small-tools/collect.template.py; actual retained file has .txt suffix. Producer unchanged; corrected reviewer path only."
+  },
+  "scope": [
+    "Collector/launcher/freeze drafts only; summary assigned separately.",
+    "Small source and metadata reads only; no product execution, Git operations, raw hashing or archive creation.",
+    "Frozen PLAN, actual collector and archive completeness require separate actual review."
+  ]
+}

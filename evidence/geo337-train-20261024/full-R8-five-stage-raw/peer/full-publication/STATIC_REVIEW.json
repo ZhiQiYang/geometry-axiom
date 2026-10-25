@@ -1,0 +1,36 @@
+{
+  "schema": "geo337-r8-full-publication-static-peer/1",
+  "utc": "2026-10-25T07:19:19.187716+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "product_source": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "expected_evidence_parent": "0687f3bd67c150de4856585dae1cbaeded460bc6",
+  "manifest_sha256": "69082f06a43ca6b758968b25a20d888a72ee6dc255b186aefa6ab5c3fd3ee3d7",
+  "files": 578,
+  "logical_bytes": 40320773,
+  "hashed_metadata_files": 577,
+  "hashed_metadata_bytes": 8958477,
+  "preloaded_blob": "0aaa8e61ddbffbec5e1771a1960b3d5d1e5238aa",
+  "preloaded_archive_validation": "Prior full archive independent byte review plus original pinned core preload/receipt and unchanged file identity; no 31MB reread.",
+  "only_existing_destination_overwritten": "evidence/geo337-train-20261024/PROGRESS.md",
+  "all_destinations_evidence_only": true,
+  "unique_current_state": true,
+  "current_native_ROOT_claim_supported_by_actual_peer": "ab5b4e7fb1c9b991942f4ee05f5b15e8c08921693cbdbb98bd5b893ca45e04e5",
+  "bindings": {
+    "/tmp/geo337-R8-full-publication-preparation-20261025/FILES.review.json": "69082f06a43ca6b758968b25a20d888a72ee6dc255b186aefa6ab5c3fd3ee3d7",
+    "/tmp/geo337-R8-full-publication-preparation-20261025/PROGRESS.publish.md": "5fa120b8c94c0d656dbf5cfe3f703e6bcd03fd20bcd6fe8326980733686d6f60",
+    "/tmp/geo337-r8-exact-three-triage-peer-20261025/REVIEW_ACCEPTED.json": "bb74c86a13b68925d4dae7e3714ef88940547e5fd51b319c0ddf36c3a41d0ec3",
+    "/tmp/geo337-native-root-transition-actual-peer-20261025/REVIEW.json": "ab5b4e7fb1c9b991942f4ee05f5b15e8c08921693cbdbb98bd5b893ca45e04e5",
+    "/tmp/geo337-native-root-transition-F8-apply-20261025/RESULT.json": "5e0f65a2abf983b582a1844d30695a8d5a50ec0abc1f805b26204a0ded473aa2",
+    "/tmp/prepare_geo337_R8_full_publication_20261025.py": "90345c3bd8d4c8fc19566ed807344b8d8bb8e86b30eb230072626317a71671ee"
+  },
+  "pending": [
+    "Append ROOT actual result/peer and explicitly state complete transition raw still unpublished; check final manifest delta before execution.",
+    "Append current preload actual peer if publishing it in this batch.",
+    "Actual publication not executed by reviewer."
+  ],
+  "limits": [
+    "No fixture/source/product modifications, gates reruns, archive reread, or Git writes.",
+    "Exact3 remains product acceptance blocker; triage peer acceptance is not comparator policy approval."
+  ]
+}

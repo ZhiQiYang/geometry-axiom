@@ -1,0 +1,32 @@
+{
+  "schema": "geo337-r8-archive-preload-actual-peer/1",
+  "utc": "2026-10-25T07:17:56.812114+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "product_source": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "root_head": "0687f3bd67c150de4856585dae1cbaeded460bc6",
+  "object_oid": "0aaa8e61ddbffbec5e1771a1960b3d5d1e5238aa",
+  "core_commands": 29,
+  "core_zero_exits": 28,
+  "expected_missing_object_probe_exit": 1,
+  "outer_exit": 0,
+  "ordinary_readers": [
+    "/tmp/geo323-final-r8-source-20261024",
+    "/tmp/train337-323-f64d638f-source",
+    "/workspace/geo300-capacity512-work-20261024",
+    "/workspace/geometry-axiom"
+  ],
+  "before_after_refs_index_head_identical": true,
+  "permanent_lease_and_alternates_unchanged": true,
+  "archive_and_object_identity_unchanged": true,
+  "bindings": {
+    "/tmp/geo337-R8-archive-preload-20261025/RESULT.json": "9e1fb7d172546221f459ead3bf6250aff71db155eb531513437a47f784da6447",
+    "/tmp/geo337-R8-archive-preload-20261025/r8/RESULT.json": "0daf0acdef0f9207fae95591c57b031f4f987fe671c69938dae1069dd3d46076",
+    "/tmp/geo337-R8-preload-peer-20261025/STATIC_REVIEW.json": "e69b25596a9c526c91ab4b8b0193ecb350d33efeb1a933fc310aa3f4ac46c001"
+  },
+  "limits": [
+    "Lightweight original stream/receipt/metadata audit; 31MB archive and compressed object not reread.",
+    "Original pinned core performed archive SHA/Git object/compression verification; archive payload independently checked earlier.",
+    "Object is permanently protected; this preload does not publish a Git ref or alter product gates."
+  ]
+}

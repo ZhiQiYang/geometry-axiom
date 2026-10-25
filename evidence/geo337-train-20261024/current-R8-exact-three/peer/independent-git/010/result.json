@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "show",
+    "75a1e93811a52b69385cbdaf6a09d773ed9052ad:tests/run_tests.py"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "exit": 0,
+  "stdout_sha256": "a2dedfa2cf511770d87eb524ca34892e8b7dd3bea48f3c56bed6305b7c100185",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
