@@ -7,7 +7,8 @@
 | 新產品／裁判來源 S10 | `82c922a3941525d3a094ac0158bdc7dea57ea360`，已一般推送，兩個變動葉皆從 GitHub 下載完整 bytes 核對 |
 | main 同步 parent | `405f8c5e1a637a16cbe47470faf5ae1fa02b8676`；一般 merge 到列車，未寫 main |
 | 前一完整證據 E／另一 parent | `249a05ed4c8a085bdf3353ac781638f2a9b3d460`；217葉、190 unique blobs 遠端核對0，獨審5066/0 |
-| 目前正文 D | `5ce9141d4eccfb98a22fb67f0519c12254cd7ffc` 為前一E249快照；本批證據推送後再以新E更新，不能視為S10已驗 |
+| 最新已交付 checkpoint E／正文 D | E=`d45e66aebdcd27602134990eefb6a5d0ff9bad21`、D=`74f4f0b27858568dbbd72977aee61b9030e870bf`，含完整#314及S10採入包；52葉／46unique遠端核0、publication actual1368/0；正文已push、bot套用另以pr-status為準 |
+| 本批index保全package head | 本檔所在新證據提交；一般push後逐blob驗證，再於新PR_BODY列其完整SHA，不能用checkpoint E冒此新包已交付 |
 | 舊正式來源 F9 | `4f8a794f4167c3562eb182045102e86e9e37cca9`，所有F9執行SHA保留原值 |
 | 帳本與R8執行 F8 | `75a1e93811a52b69385cbdaf6a09d773ed9052ad`，原R8不重抽 |
 | 後續正式驗收 final F | 尚待S10整份帳本重產／採入與必要架構產物固定；不得把S10與之後帳本commit混寫為同一SHA |
@@ -51,8 +52,13 @@ R8完整原實測：N16/base `0.9834192453688345`、N32 `0.9007932884873169`、N
 
 共同環境仍使用原有tmpfs `/dev/shm`，各browser來源、port、TMP隔離，未改掛載／配額／安全設定。各原取樣shared-SHM used max：assembly第二次229765120、documents262922240、grid320098304、space383094784、timber416649216 bytes；是共享掛載取樣峰值，不是連續真峰值／job獨占峰值，不外推R8。
 
-下一步：保持原25,165,824B（24MiB）WS及後續runtime資源守門，僅回收確定本任務已完成可重建純source/cache，保留所有fixture、原始證據、Git objects與未提交修改；為S10建立乾淨SHM pool/seed，原check後整份123重產，再採入帳本固定正式final並跑必要架構、完整native及其他尚未跑專項。待候期間完成Q38與新來源完整收據持久化、更新正文和handoff，不宣稱全部完成。
+共同容量查核更新：來源準備原reserve為25,165,824B（24MiB），full123原F8真CLI另要求285,212,672B（272MiB）。舊272MiB源於cache當時在WS的224MiB binaries＋8MiB compiler＋8MiB metadata＋32MiB reserve，原工具把statvfs硬綁/workspace。新pool／seed／cache／job／TMP全部計畫位於既有SHM，仍使用原MUTATE_CACHE／MUTATE_RESULTS／TMPDIR路由；不能把舊WS guard漏掉，也不降低數值。依本輪管理指示，正在準備明示actual-resource-anchor的受測工具適配：預設保舊行為，額外只接受實際輸出mount且綁定所有device；24MiB／272MiB原數值及其餘資源守門不改。正式source／full123仍UNRUN，只有測過且獨審通過的新適配才能使用。
 
+本批完整持久化四個已終態OWN私有index cache的保全：原23,386,440B分四gzip4,547,550B，full roundtrip與actual308/0；四個原index、所有來源／既有三D／refs／objects均原地保留。尚未unlink，實際回收0；不以小量回收誤稱滿足272MiB。以新工作掛載方案優先處理整體容量，必要時再依完整原件遠端核對後單獨重新檢查是否退役可重建cache。絕不刪不可重建原始證據、使用者資料、fixtures或未提交修改。
+
+整體路徑仍需保留差異：full123新輸出及原始raw在SHM，只有既有/tmp重測鎖仍在TMP；native原tests/binaries.py的Linux OUT_DIR卻確實是/tmp/geometry-tests，TMPDIR不會改它，須另確保原TMP128MiB與真峰值預算；browser原SHM獨立checkout/port/TMP方案已在F9實證。封包、Gitobjects、remote-verifier原流都計入兩OWN SHM共2GiB規畫，原掛載／配額／安全不改，取樣峰值不冒真峰值。正在一次列完整後續路徑與缺額，不逐job小量騰空。
+
+下一步：驗證actual-mount適配與一次容量規畫，為S10建立乾淨pool/seed，原check後整份123重產；採入帳本固定正式final，再跑必要架構、完整native與其他尚未跑專項。既有F9六browser、Q38、axiom、reader以及F8 R8只保留原執行SHA，另做產品／裁判閉包身份證據供沿用審查，不自行跨SHA宣告全綠。所有仍UNRUN專項須正式執行。新來源/原件/正文持續推送，不宣稱全部完成。
 
 <details>
 <summary>歷史：F9／E249完整矩陣，以下原文不代表S10結果</summary>
