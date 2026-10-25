@@ -4,7 +4,7 @@
 |---|---|
 | 固定最終驗收 F9 | `4f8a794f4167c3562eb182045102e86e9e37cca9` |
 | 帳本生成／R8真正執行 F8 | `75a1e93811a52b69385cbdaf6a09d773ed9052ad`；F8→F9只變帳本與evidence，產品／裁判不變 |
-| 證據 head E | `782bc80b0a13ecd19670f5285a8edb1824349686`；非 evidence tree 與 F9 相同 |
+| 證據 head E | `cd19c63a9fe625c039a421c52d3c6d335e2009c4`；非 evidence tree 與 F9 相同 |
 | 架構四檔原執行 M | `6e50aef65513b7b38f93228919272c6d40d6c196`；F8採用其report／receipt |
 | H 定向執行 S | `2c4635577a8fcb11e88b346547f7bb1c7b739fb7` |
 
@@ -13,7 +13,7 @@
 | Gate | 結果與實際來源 | 尚待完成 |
 |---|---|---|
 | 全123突變帳本／tracked check | F8完整重產真0，原四phase1/0/0/0；123列＝114killed／5equivalent／M20crashed／3retired，120execution.head自然F8。原件peer7625/0、包peer11165/0。逐byte採入F9後，清MUTATE_*的原trackedcheck真0，stale0／blocked0 | F8生成與F9採用分列；不改日期／判定／execution SHA，舊tracked1保留 |
-| 完整native | UNRUN at F9 | 原aggregate、16MiB stack、strict registry |
+| 完整native | RUNNING at F9，自2026-10-25 09:53:11 UTC；原全230登記項、尚無退出碼 | 原aggregate、16MiB stack、strict registry、35分鐘裁判未改 |
 | canvas | UNRUN at F9 | 完整golden、P73/P88，獨占執行 |
 | assembly、documents、grid、space、timber | 各UNRUN at F9 | 原workflow，各獨立埠／TMP |
 | P52 | UNRUN at F9 | 原fix median≤main |
@@ -29,9 +29,9 @@
 | 架構三原judge＋四檔 | F9原三judge真0/0/0，205＋18全ok、零skip；actual144/0。四檔仍為M原收據經F8採用，F8→F9逐blob相同 | F9掃描334sources／6trusted／798edges／0diagnostics；既有M九guard各0/1/0、neutral2綠不移標F9，未冒重產 |
 | #341四類成本 | F8 fallback-only真0：546CLI、14cases／378全樣本、9ELF；actual4416/0、包24831/0。N64 none wall +6.77%、dense −29.72%，全work／CPU／wall原值保留 | performance_acceptance_decided=false；無新門檻，不解舊Sc493整體B1；R8載入比率不能代此項 |
 | H局部修正與反證 | S 原14/14、exit0、零skip；舊13方法不變；三phase work exit0/1/0 | O0 focused，不代O2 wall；Windows未驗 |
-| required CI | F8 run40170221039／E815cd2e3 run40170692505，各七job failure、runner_id0／steps0，原18 API讀0。當前F9／E782bc80b尚未讀CI，不移標較早run | 歷史annotation為付款失敗或支出上限，未修改帳戶；沒有正式替代接受紀錄 |
+| required CI | F8 run40170221039／E815cd2e3 run40170692505，各七job failure、runner_id0／steps0，原18 API讀0。當前F9／Ecd19c63a尚未讀CI，不移標較早run | 歷史annotation為付款失敗或支出上限，未修改帳戶；沒有正式替代接受紀錄 |
 
-允許skip只限原Linux `py:test_gdi_contract` 缺compiled Windows GDI harness；F9尚未跑native，不預先計入skip。未刪測試或放寬數值門檻。
+允許skip只限原Linux `py:test_gdi_contract` 缺compiled Windows GDI harness；F9 native執行中，不預先計入skip。未刪測試或放寬數值門檻。
 
 H的撤回反證精確失敗為 `ASSERT:persistent-reference-local-zero-work line=166 expr=local_zero_calls==0&&local_zero_bytes==0`；fixed／withdrawn／restored清零calls=0/2/0、bytes=0/255168/0。三phase的persistent、fallback、allocation-failure與ordered-graph語意皆exit0，fallback校準各實際攔截一次127584-byte清零。原ELF為hash-only，未宣稱保留payload。
 
@@ -50,6 +50,6 @@ H的撤回反證精確失敗為 `ASSERT:persistent-reference-local-zero-work lin
 
 三差的[逐項原輸出與Git歸因](https://github.com/ZhiQiYang/geometry-axiom/blob/219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6/evidence/geo337-train-20261024/current-R8-exact-three/originals/REPORT.md)及[具體選項](https://github.com/ZhiQiYang/geometry-axiom/blob/219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6/evidence/geo337-train-20261024/current-R8-exact-three/originals/QUESTIONS.md)已公開並通過424/0獨審。維持A保紅；B′僅補診斷的比較基準或C具名三pair政策均需明確裁決，尚未採用。B′會改exact基準版本，C會改允許差異政策；任何方案皆不改性能分母或重抽有效R8。P-189適用範圍另需明示。
 
-完整帳本於F8實跑07:38:36–09:00:48 UTC，真終態0；[完整原件及雙獨審](https://github.com/ZhiQiYang/geometry-axiom/tree/f0f7888213a8cc5b54f0a4303fb0577fe812cefd/evidence/geo337-train-20261024/ledger-F8-complete/)共1486members／49,703,520原bytes，gzip SHA256 `806ab05886963c6dd2673096e04272c734f09c602f830ded9561a79729e13be8`。兩次封存環境讀權失敗完整保留；v3只校正任務程序範圍，外部UID cwd未知明列，未改產品裁判。F9採入與公開actual924/0、trackedcheck及三架構原流與#341成本全包在[本輪證據](https://github.com/ZhiQiYang/geometry-axiom/tree/782bc80b0a13ecd19670f5285a8edb1824349686/evidence/geo337-train-20261024/F9-initial-gates/)。native ROOT／seed的F9保全轉移尚在完成，未把來源準備冒正式native通過。
+完整帳本於F8實跑07:38:36–09:00:48 UTC，真終態0；[完整原件及雙獨審](https://github.com/ZhiQiYang/geometry-axiom/tree/f0f7888213a8cc5b54f0a4303fb0577fe812cefd/evidence/geo337-train-20261024/ledger-F8-complete/)共1486members／49,703,520原bytes，gzip SHA256 `806ab05886963c6dd2673096e04272c734f09c602f830ded9561a79729e13be8`。兩次封存環境讀權失敗完整保留；v3只校正任務程序範圍，外部UID cwd未知明列，未改產品裁判。F9採入與公開actual924/0、trackedcheck及三架構原流與#341成本全包在[本輪證據](https://github.com/ZhiQiYang/geometry-axiom/tree/782bc80b0a13ecd19670f5285a8edb1824349686/evidence/geo337-train-20261024/F9-initial-gates/)。native ROOT／seed已普通轉為F9，兩邊fixtures／refs／sparse／index保全，actual12224/0；完整native現正執行，未冒通過。[啟動收據](https://github.com/ZhiQiYang/geometry-axiom/tree/cd19c63a9fe625c039a421c52d3c6d335e2009c4/evidence/geo337-train-20261024/F9-native-start/)含明確RUNNING快照。
 
-已公開[重產期間的工具準備及對抗審查](https://github.com/ZhiQiYang/geometry-axiom/tree/80fc475cef8cbb6dd01700a79ff9536f116d3015/evidence/geo337-train-20261024/prepared-during-F8/)；本批共882檔6,948,494B（含PROGRESS.md；連結目錄為881檔6,857,277B）。F9 nonperf v2（681／Q38全44）及其餘正式命令仍未執行；F9已固定，三架構judge依本表已真跑。memo-copy v2仍只完成工具反證；#341截斷FACE收件修正經五組0/1/0；#348小C／pipe校準61項不代原512。各正式gate仍以本表實際狀態為準，沒有因準備完成而解除exact或CI。
+已公開[重產期間的工具準備及對抗審查](https://github.com/ZhiQiYang/geometry-axiom/tree/80fc475cef8cbb6dd01700a79ff9536f116d3015/evidence/geo337-train-20261024/prepared-during-F8/)；本批共882檔6,948,494B（含PROGRESS.md；連結目錄為881檔6,857,277B）。F9 nonperf v2（681／Q38全44）與其餘工具的這批歷史準備收據不代表正式驗收；F9已固定，實際進度只依上表。memo-copy v2仍只完成工具反證；#341截斷FACE收件修正經五組0/1/0；#348小C／pipe校準61項不代原512。各正式gate仍以本表實際狀態為準，沒有因準備完成而解除exact或CI。
