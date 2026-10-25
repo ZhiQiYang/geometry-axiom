@@ -1,0 +1,66 @@
+{
+  "schema": "geo344-exact-architecture-adapter-plan/1",
+  "execution": "UNRUN",
+  "default": "plan only; no checkout reads, capture import, output mkdir, or judges",
+  "ancestor": "a5ec136baf3909453867b3eed50f1b93b229ca59",
+  "source_requirement": "clean resolvable descendant; only one manifest hash patch plus evidence changes from ancestor",
+  "prior_execution": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "expected_inputs": 604,
+  "expected_owned": 334,
+  "expected_exclusions": 270,
+  "expected_edges": 798,
+  "only_changed_inputs": [
+    "geometry-web/app.js",
+    "geometry-web/cdp_test.js"
+  ],
+  "other_602_git_blobs": "must equal prior execution source",
+  "manifest_delta": "only exclusions[path=geometry-web/cdp_test.js].sha256; formatting and all other bytes fixed",
+  "policy": {
+    "identifiers": 937,
+    "strings": 55,
+    "new_identifiers": 0
+  },
+  "original_judges": [
+    [
+      "python3",
+      "-B",
+      "tests/architecture_contract.py",
+      "--root",
+      ".",
+      "--manifest",
+      "geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    [
+      "python3",
+      "-B",
+      "tests/test_architecture_contract.py"
+    ],
+    [
+      "python3",
+      "-B",
+      "tests/test_product_architecture.py"
+    ]
+  ],
+  "unit_expectations": [
+    205,
+    18
+  ],
+  "allowed_skips": 0,
+  "digest_proof": "same source fixed/withdrawn/restored, actual 0/1/0; sole named EXCLUSION_DIGEST for cdp_test.js",
+  "policy_proof": "nine original W guards, exact original historical928 raw preserved; separately derived control changes only same cdp digest",
+  "outputs": [
+    "product-architecture.json",
+    "product-architecture-scan.json",
+    "PRODUCT-ARCHITECTURE.md",
+    "product-architecture-receipt.json"
+  ],
+  "not_run": [
+    "Node strict9",
+    "browser",
+    "native",
+    "ledger",
+    "C build",
+    "performance"
+  ],
+  "resource": "owner must provide complete clean source and fresh outside-source output after resource scheduling; no new acceptance threshold"
+}

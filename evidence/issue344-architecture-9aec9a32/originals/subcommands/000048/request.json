@@ -1,0 +1,41 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-c",
+    "import json,sys\nfrom pathlib import Path\nfrom tests.architecture_contract import ContractError,Scanner,load_manifest\nroot=Path(sys.argv[1]);manifest=load_manifest(Path(sys.argv[2]));name=sys.argv[3];protected=sys.argv[4]=='protected'\npath='geometry-core/kernel/geometry.c';text=(root/path).read_text(encoding='utf-8')+'\\nint '+name+';\\n'\nscanner=Scanner(root,manifest);diagnostics=[]\ntry:scanner.validate_manifest();scanner.scan_c(path,text)\nexcept ContractError as error:diagnostics=[error.diagnostic.__dict__]\nprint(json.dumps({'identifier':name,'diagnostics':diagnostics},ensure_ascii=False),flush=True)\nif protected:\n assert len(diagnostics)==1, 'new W identifier must be rejected from K: '+name\n assert diagnostics[0]['code']=='FORBIDDEN_IDENTIFIER' and diagnostics[0]['path']==path and name in diagnostics[0]['message'],diagnostics\nelse:assert diagnostics==[],diagnostics\n",
+    "/workspace/issue320-work-20261024",
+    "/workspace/issue320-work-20261024/geometry-core/domain-decoupling/product-architecture.json",
+    "wood_reference_boundary_end",
+    "protected"
+  ],
+  "cwd": "/workspace/issue320-work-20261024",
+  "acceptance_sha": "9aec9a32630fc65f94c53d49e99969e546574d6e",
+  "source_sha": "9aec9a32630fc65f94c53d49e99969e546574d6e",
+  "source_variant": "same-source W guard fixed; withdrawn DERIVED historical928 control 2661beb6a5223d2aeecd64d708194261d97f0a738c1fc3adb22ff431c07bbbb8 from original Git ca7838e0f4950452b9befcf40899d606db9b81fa raw 80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": "/tmp/geo344-architecture-exact-20261025/tmp",
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1792931629.7915955,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": null,
+  "timeout_expired": false,
+  "directory": "/tmp/geo344-architecture-exact-20261025/subcommands/000048"
+}

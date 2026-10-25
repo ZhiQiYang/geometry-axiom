@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/geo344-architecture-adapter-preparation-20261025/refresh_architecture_cdp_exclusion.py", line 7, in <module>
+    if sys.flags.optimize:raise RuntimeError('Python optimization forbidden')
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Python optimization forbidden

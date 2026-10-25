@@ -1,0 +1,36 @@
+{
+  "schema": "geo344-exact-architecture-adapter-preparation/1",
+  "source_ancestor": "a5ec136baf3909453867b3eed50f1b93b229ca59",
+  "source_S344": "UNBOUND pending owner single-hash commit",
+  "original_driver_sha256": "5b76f54d810a736e1008450eb2822f8c0d5a427cbd3e7d3138a578909203a7fb",
+  "adapter_sha256": "71cb2e314a3d3e7c3419bbe436f2c308a702d6b3be5f9668594fe729248de2de",
+  "ast_valid": true,
+  "default_dry_plan_and_optimization_rejection_actual_exits": [
+    0,
+    1,
+    0
+  ],
+  "metadata_only": true,
+  "formal_judges_executed": false,
+  "single_hash_EXCLUSION_DIGEST_proof_executed": false,
+  "historical_nine_policy_guards_executed": false,
+  "strict_node9_rerun": false,
+  "C_or_Chrome_executed": false,
+  "checkout_or_branch_written_by_preparer": false,
+  "large_checkout_materialized": false,
+  "outputs_report_receipt_generated": false,
+  "expected_inputs": 604,
+  "expected_other_unchanged_git_blobs": 602,
+  "policy_identifiers": 937,
+  "policy_strings": 55,
+  "expected_owned_sources": 334,
+  "expected_edges": 798,
+  "prior_prep_peer": "/workspace/geo344-exclusion-digest-static-peer-20261025/REVIEW.v2.json",
+  "prior_prep_peer_sha256": "518ec703401ab3bb66fb4f98a5a115c5dc6fe26dc462530dbf4e80b48b731ffa",
+  "limitations": [
+    "This adapter is ready for independent static review; no formal architecture run has occurred.",
+    "Only manifest-only descendant of a5ec136b accepted; a later train merge requires new exact closure review.",
+    "Formal failure leaves c387 streams; owner must capture outer true exit and never infer remaining gates passed.",
+    "Original historical928 bytes retained at formal execution; derived cdp-hash-aligned control has separate explicit SHA."
+  ]
+}
