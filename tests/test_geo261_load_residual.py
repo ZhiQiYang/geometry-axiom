@@ -59,6 +59,8 @@ def includes(source, origin):
                   lambda m: m[1] + '"' + (origin.parent / m[2]).resolve().as_posix() + '"', source, flags=re.M)
 
 
+REFERENCE_LOCAL_INIT_EDITS = (('    ReferenceEval local={0},*ctx=&local;bool persistent=false;', '    ReferenceEval local,*ctx;bool persistent=false;'), ('        if(!ctx)return false;persistent=true;\n    }\n    ctx->world=w;bool ok=true;', '        if(!ctx)return false;persistent=true;\n    }else{\n        local=(ReferenceEval){0};ctx=&local;\n    }\n    ctx->world=w;bool ok=true;'))
+
 class LoadResidual(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -187,6 +189,81 @@ class LoadResidual(unittest.TestCase):
         result = self.case(name, exe, phase=phase, control=control)
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         self.assertEqual("PASS " + name + "\n", result.stdout)
+
+    @classmethod
+    def compile_reference_local(cls,name,source):
+        build=cls.build
+        references_path=ROOT/"geometry-core/references.inc"
+        references=source
+        old="    ReferenceEval local={0},*ctx=&local;bool persistent=false;"
+        fixed="        local=(ReferenceEval){0};ctx=&local;"
+        self_sites=references.count(old)+references.count(fixed)
+        assert self_sites==1,"Exactly one actual aggregate initializer"
+        if old in references:
+            references=references.replace(old,old+"reference_local_note(sizeof local);")
+        else:
+            references=references.replace(fixed,"        local=(ReferenceEval){0};reference_local_note(sizeof local);ctx=&local;")
+        anchor="} ReferenceEval;"
+        assert references.count(anchor)==1
+        references=references.replace(anchor,anchor+"\nstatic bool reference_local_probe(ReferenceEval *,bool);")
+        anchor="    ReferenceEval *ctx=calloc(1,sizeof *ctx);if(!ctx)return NULL;"
+        assert references.count(anchor)==1
+        references=references.replace(anchor,"    ReferenceEval *ctx=reference_local_test_calloc(1,sizeof *ctx);if(!ctx)return NULL;")
+        anchor="    ctx->world=w;bool ok=true;"
+        assert references.count(anchor)==1
+        references=references.replace(anchor,"    if(!reference_local_probe(ctx,persistent))return false;\n"+anchor)
+        reference_copy=build.work/(name+"-references.inc")
+        reference_copy.write_text(includes(references,references_path),encoding="utf-8")
+        geometry_path=ROOT/"current_geometry.c"
+        geometry=includes(geometry_path.read_bytes().decode("utf-8"),geometry_path)
+        assert geometry.count(references_path.as_posix())==1
+        geometry=geometry.replace(references_path.as_posix(),reference_copy.as_posix())
+        geometry_copy=build.work/(name+"-geometry.c")
+        geometry_copy.write_text(geometry,encoding="utf-8")
+        original_path=ROOT/"tests/geo261_load_residual_harness.c"
+        original=includes(original_path.read_text(encoding="utf-8"),original_path)
+        assert original.count(geometry_path.as_posix())==1
+        original=original.replace(geometry_path.as_posix(),geometry_copy.as_posix())
+        entry="int main(int argc,char **argv)"
+        assert original.count(entry)==1
+        original=original.replace(entry,"int residual_original_main(int argc,char **argv)")
+        prefix="#include <stddef.h>\nstatic void reference_local_note(size_t);\nstatic void *reference_local_test_calloc(size_t,size_t);\n"
+        original_copy=build.work/(name+"-original-harness.c")
+        original_copy.write_text(prefix+original,encoding="utf-8")
+        harness=(ROOT/"tests/geo337_reference_local_init_harness.c").read_text(encoding="utf-8")
+        anchor='#include "local-init-original-harness.c"'
+        assert harness.count(anchor)==1
+        client=build.work/(name+"-local-client.c")
+        client.write_text(harness.replace(anchor,'#include "'+original_copy.as_posix()+'"'),encoding="utf-8")
+        obj=build.compile(client,"local-init-"+name,() if build.windows else ("REFERENCE_LOCAL_WRAP=1",))
+        if build.windows:return build.link("local-init-"+name,[obj])
+        executable=build.work/("local-init-"+name)
+        build.run_build([build.cc,str(obj),"-Wl,--wrap=memset","-lm","-o",str(executable)])
+        return executable
+
+    def test_persistent_reference_context_avoids_unused_local_initialization(self):
+        source=(ROOT/"geometry-core/references.inc").read_text(encoding="utf-8")
+        withdrawn=source
+        for before,after in reversed(REFERENCE_LOCAL_INIT_EDITS):
+            self.assertEqual(1,withdrawn.count(after),"One whole local-init optimization site")
+            withdrawn=withdrawn.replace(after,before)
+        restored=withdrawn
+        for before,after in REFERENCE_LOCAL_INIT_EDITS:
+            self.assertEqual(1,restored.count(before),"One local-init restoration site")
+            restored=restored.replace(before,after)
+        self.assertEqual(source,restored,"Whole local-init restoration is byte exact")
+        fixed=None
+        for phase,variant,expected in (("fixed",source,0),("withdrawn",withdrawn,1),("restored",restored,0)):
+            with self.subTest(local_init_phase=phase):
+                executable=self.compile_reference_local("local-"+phase,variant)
+                if phase=="fixed":fixed=executable
+                for case in ("persistent","fallback","allocation-failure","ordered-graph"):
+                    result=self.case(case,executable,phase=phase,control="local-init-whole-semantics")
+                    self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+                result=self.case("work",executable,phase=phase,control="local-init-whole",expected_assertion="persistent-reference-local-zero-work")
+                print("local-init-whole phase="+phase+" "+result.stdout,end="",flush=True)
+                self.assertEqual(expected,result.returncode,result.stdout+result.stderr)
+                if expected:self.assertIn("ASSERT:persistent-reference-local-zero-work ",result.stderr)
 
     def test_cached_reads_preserve_each_consumer_exact_source_kind_and_order(self):
         for case in ("cache-definition", "cache-anchor", "cache-contact", "cache-footprint", "cache-pose", "cache-pose-kind"):
