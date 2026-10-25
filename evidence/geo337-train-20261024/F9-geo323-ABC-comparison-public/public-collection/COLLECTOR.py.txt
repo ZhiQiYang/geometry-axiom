@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+"""Prepare PUBLIC logical five-part bundle; rewrite only the approved auxiliary-profile part."""
+from pathlib import Path,PurePosixPath
+import argparse,gzip,hashlib,json,os,shutil,sys,tarfile,time,traceback
+
+HERE=Path(__file__).resolve().parent
+OWN=Path('/dev/shm/geometry-axiom-geo337-20261025')
+PRIVATE=OWN/'geo323-F9-owner-comparison-terminal-package-shm-v2-20261025'
+F='4f8a794f4167c3562eb182045102e86e9e37cca9'
+IPIN='1ab22f16962fb861204932c4c46ff379c9c1e6144d9b7006999ded216a0f416f'
+PPIN='14f6ddb9cb1358f93125d86f3dc8b716400fa16e2a62e9d6b9007d5e35745143'
+PRIVATE_RESULT='3e657ca399ad833d714c00e8ce0bf37739cbd5dc9d955adbd1c4a4925438febd'
+XPIN='8c811e191c924a6e1960597b5008bfa69d55ecdae878224ad082ed51fa696d24'
+DPIN='576e266ab77394da4b9aaeb877bc4b3c64a47546834be02f4cc170a488dbd4fd'
+SPIN='fc4c14241913c0c63c75a11ddf6868f00bd0f8b7f4ff8a046af998213a696306'
+APIN='0e72b129e08d054b8482a1e91ce9075732b0bd16bf819152d32275852b1d6e98'
+SCOPE_PEER='7a2d95d1898d203a35d81df0497987f3c244e66930033f1325e11edb2e62687b'
+MPIN='50e31f8dabf95a7cc2d9819ada8dcec8f3a25de8ca5f780a4175e467d749b70d'
+RESERVE=64*1024*1024;META=2*1024*1024
+EXCLUDED='comparison/tools-frozen/authority/connected-user/subcommands/000001/stdout.bin'
+EXCLUDED_SHA='b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29'
+
+def sha(b):return hashlib.sha256(b).hexdigest()
+def digest(p):
+ h=hashlib.sha256()
+ with Path(p).open('rb') as f:
+  for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
+ return h.hexdigest()
+def J(p):return json.loads(Path(p).read_bytes())
+def write(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+def need(v,msg):
+ if not v:raise RuntimeError(msg)
+def overhead(n):return (n+4095)//4096+(n+16383)//16384+(n+33554431)//33554432+1024
+def stream_hash(f):
+ h=hashlib.sha256();n=0
+ for b in iter(lambda:f.read(1024*1024),b''):h.update(b);n+=len(b)
+ return n,h.hexdigest()
+
+class HashingReader:
+ def __init__(self,f):self.f=f;self.h=hashlib.sha256();self.bytes=0
+ def read(self,n=-1):
+  b=self.f.read(n);self.h.update(b);self.bytes+=len(b);return b
+
+def main():
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--execute',action='store_true');p.add_argument('--request',type=Path);a=p.parse_args()
+ if not a.execute:
+  print(json.dumps({'state':'PREPARATION_ONLY','source_sha':F,'rewrite_part':4,'private_bundle_untouched':True,
+                    'archive_created':False,'requires':'approved require_escalated root execution, exact public scope and collector peers'}));return 0
+ need(not sys.flags.optimize and a.request is not None,'Explicit nonoptimized root request required')
+ request_raw=a.request.read_bytes();request=json.loads(request_raw);toolpin=digest(__file__)
+ need(request.get('execute') is True and request.get('root_execution_lease') is True and request.get('source_sha')==F,'Exact root execution lease required')
+ expected={'collector_sha256':toolpin,'private_inventory_sha256':IPIN,'private_parts_sha256':PPIN,
+           'public_inventory_delta_sha256':DPIN,'public_exclusions_sha256':XPIN,'profile_scan_sha256':SPIN,
+           'safe_authority_locator_sha256':APIN}
+ need(all(request.get(k)==v for k,v in expected.items()),'Root public input/tool pins changed')
+ scope_path=Path(request['scope_peer']['path']);scope_raw=scope_path.read_bytes();scope=json.loads(scope_raw)
+ need(sha(scope_raw)==request['scope_peer']['sha256']==SCOPE_PEER and scope['exit_code']==0,'Exact accepted public scope peer required')
+ peer_raw=Path(request['collector_peer']['path']).read_bytes();peer=json.loads(peer_raw)
+ need(sha(peer_raw)==request['collector_peer']['sha256'] and peer['exit_code']==0
+      and all(peer.get(k)==expected[k] for k in ['collector_sha256','private_inventory_sha256','private_parts_sha256','public_inventory_delta_sha256','public_exclusions_sha256']),
+      'Exact accepted PUBLIC collector peer required')
+ out=Path(request['out'])
+ need(out.is_absolute() and out.parent==OWN and not OWN.is_symlink() and OWN.resolve()==OWN
+      and out.name.startswith('geo323-F9-PUBLIC-comparison-') and not out.exists(),'Fresh direct approved SHM OWN child required')
+ need(digest(PRIVATE/'ORIGINAL_INVENTORY.json')==IPIN and digest(PRIVATE/'ORIGINAL_PARTS.json')==PPIN
+      and digest(PRIVATE/'RESULT.json')==PRIVATE_RESULT,'Private original inventory/parts/result changed')
+ for name,pin in [('PUBLIC_EXCLUSIONS.json',XPIN),('PUBLIC_INVENTORY_DELTA.json',DPIN),('PROFILE_SCAN.json',SPIN),('SAFE_AUTHORITY_LOCATOR.json',APIN)]:
+  need(digest(HERE/name)==pin,'Public preparation changed: '+name)
+ delta=J(HERE/'PUBLIC_INVENTORY_DELTA.json');exclusions=J(HERE/'PUBLIC_EXCLUSIONS.json');scan=J(HERE/'PROFILE_SCAN.json')
+ need(scan['exit_code']==0 and scan['all_formal_command_source_hashes_unchanged'] is True,'Successful complete privacy scan required')
+ need(delta['excluded_private_indices']==[4627] and len(exclusions['exclusions'])==1,'Only the single reviewed auxiliary profile may be excluded')
+ exclusion=exclusions['exclusions'][0]
+ need(exclusion['member']==EXCLUDED and exclusion['bytes']==2795 and exclusion['sha256']==EXCLUDED_SHA,'Wrong excluded leaf')
+ private=J(PRIVATE/'RESULT.json');inv=J(PRIVATE/'ORIGINAL_INVENTORY.json');parts=J(PRIVATE/'ORIGINAL_PARTS.json')
+ need(private['collection_exit']==0 and private['source_sha']==F and len(private['parts'])==5,'Original private complete collection not successful')
+ index={}
+ for i,row in enumerate(inv['records']):
+  ri,rel,kind,size,h,st,target=row;name=inv['roots'][ri]['prefix']+'/'+rel
+  need(name not in index and not PurePosixPath(name).is_absolute() and '..' not in PurePosixPath(name).parts,'Invalid private member scope')
+  index[name]={'index':i,'type':kind,'bytes':size,'sha256':h,'state':st,'target':target}
+ selected_indices=set(delta['selected_private_indices'])
+ selected={name for name,row in index.items() if row['index'] in selected_indices}
+ need(set(index)-selected=={EXCLUDED} and len(selected)==4666,'Exact once public difference is not one auxiliary leaf')
+ need(all(name in selected for name in index if name.startswith('comparison/invocation/commands/')),'Formal comparison command raw would be removed')
+ original_part=parts[3];names=[name for name in original_part['members_exact'] if name in selected]
+ need(original_part['part']==4 and len(names)==31 and EXCLUDED in original_part['members_exact'],'Only original part4 needs rewriting')
+ need(all(set(p['members_exact'])<=selected for p in parts if p['part']!=4),'Another private part contains an exclusion')
+ logical=sum(index[n]['bytes'] for n in names if index[n]['type']=='regular')
+ need(logical==6429790,'Unexpected PUBLIC part4 regular bytes')
+ n=logical+4096*len(names)+11264;upper=n+overhead(n);required=upper+RESERVE+META
+ # No whole payload copy. Four safe archives remain at their immutable original paths.
+ for row in private['parts']:
+  path=PRIVATE/f'ORIGINAL_COMPARISON_PART{row["part"]}.tar.gz'
+  need(str(path)==row['archive_path'] and path.is_file() and not path.is_symlink()
+       and path.stat().st_size==row['archive_bytes'] and digest(path)==row['archive_sha256'],'Private archive original bytes changed')
+ need(digest(HERE/'PUBLIC_METADATA_MANIFEST.json')==MPIN,'PUBLIC metadata manifest changed')
+ metadata=J(HERE/'PUBLIC_METADATA_MANIFEST.json')['files'];metadata_sources=[]
+ for item in metadata:
+  rel=item['relative_path'];need(not PurePosixPath(rel).is_absolute() and '..' not in PurePosixPath(rel).parts,'Unsafe metadata relative path')
+  source=HERE/rel;need(source.is_file() and not source.is_symlink() and source.stat().st_size==item['bytes'] and digest(source)==item['sha256'],'PUBLIC metadata source changed')
+  metadata_sources.append((rel,source))
+ metadata_sources.append(('PUBLIC_METADATA_MANIFEST.json',HERE/'PUBLIC_METADATA_MANIFEST.json'))
+ metadata_upper=sum(p.stat().st_size for _,p in metadata_sources)+len(scope_raw)+len(peer_raw)+len(request_raw)+Path(__file__).stat().st_size+65536
+ need(metadata_upper<META,'Bounded PUBLIC metadata exceeds2MiB')
+ need(shutil.disk_usage(OWN).free>=required,'Fresh SHM space lacks full gzip upper plus64MiB/2MiB reserve')
+ out.mkdir();write(out/'RESULT.json',{'collection_exit':None,'published':False,'delivered':False})
+ result={'schema':'geo323-PUBLIC-comparison-logical-bundle/1','source_sha':F,'collection_exit':None,'errors':[],
+         'collector_sha256':toolpin,'private_collection_result_sha256':PRIVATE_RESULT,'private_inventory_sha256':IPIN,
+         'private_parts_sha256':PPIN,'public_inventory_delta_sha256':DPIN,'public_exclusions_sha256':XPIN,
+         'scope_peer_sha256':SCOPE_PEER,'collector_peer_sha256':sha(peer_raw),'started_epoch':time.time(),
+         'storage_is_volatile':True,'published':False,'remote_hash_verified':False,'delivered':False,
+         'private_complete_bundle_mutated':False,'subject_rerun':False,'parts':[],'metadata_upper_bytes':metadata_upper}
+ try:
+  (out/'BOUND_REQUEST.json').write_bytes(request_raw);(out/'COLLECTOR.py.txt').write_bytes(Path(__file__).read_bytes())
+  (out/'SCOPE_PEER.json').write_bytes(scope_raw);(out/'COLLECTOR_PEER.json').write_bytes(peer_raw)
+  for name,p in metadata_sources:
+   dest=out/'metadata'/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(p.read_bytes())
+   need(digest(dest)==digest(p),'PUBLIC metadata copy mismatch')
+  budget={'part':4,'members':len(names),'logical_regular_bytes':logical,'tar_upper_bytes':n,'gzip_upper_bytes':upper,
+          'reserve_bytes':RESERVE,'metadata_bytes':META,'required_fresh_bytes':required,
+          'fresh_output_free':shutil.disk_usage(out).free,'compression_ratio_assumed':False}
+  budget['admitted']=budget['fresh_output_free']>=required;write(out/'PUBLIC_PART4_BUDGET.json',budget)
+  need(budget['admitted'],'Actual out-device free cannot admit PUBLIC part4')
+  archive=out/'PUBLIC_COMPARISON_PART4.tar.gz';skipped=[]
+  with tarfile.open(PRIVATE/'ORIGINAL_COMPARISON_PART4.tar.gz','r:gz') as src, tarfile.open(archive,'w:gz',compresslevel=1,format=tarfile.PAX_FORMAT) as dst:
+   members=src.getmembers();need([m.name for m in members]==original_part['members_exact'],'Private part4 ordered scope changed')
+   for m in members:
+    row=index[m.name]
+    if m.name==EXCLUDED:
+     need(m.isfile() and not m.issym() and not m.islnk() and m.size==2795,'Excluded profile member type/size changed')
+     with src.extractfile(m) as f:size,h=stream_hash(f)
+     need(size==2795 and h==EXCLUDED_SHA,'Excluded profile raw/hash changed');skipped.append(m.name);continue
+    need(m.name in selected and len(m.tobuf(tarfile.PAX_FORMAT))+511<=4096,'Unapproved member or header exceeds bound')
+    if row['type']=='symlink':
+     need(m.issym() and m.linkname==row['target'] and m.size==0,'Literal ELF symlink changed')
+     dst.addfile(m)
+    else:
+     need(m.isfile() and not m.issym() and not m.islnk() and m.size==row['bytes'],'Original regular type/size changed')
+     with src.extractfile(m) as f:
+      checked=HashingReader(f);dst.addfile(m,checked)
+      need(checked.bytes==row['bytes'] and checked.h.hexdigest()==row['sha256'],'Unmodified PUBLIC member bytes/hash mismatch')
+  need(skipped==[EXCLUDED] and archive.stat().st_size<=upper,'Exact profile exclusion/gzip upper failed')
+  gzip_bytes=0
+  with gzip.open(archive,'rb') as gz:
+   for b in iter(lambda:gz.read(1024*1024),b''):gzip_bytes+=len(b)
+  need(gzip_bytes<=n,'PUBLIC complete gzip stream exceeds tar upper')
+  with tarfile.open(archive,'r:gz') as tar:
+   members=tar.getmembers();need([m.name for m in members]==names,'PUBLIC part4 roundtrip ordered members wrong')
+   for m in members:
+    row=index[m.name]
+    if row['type']=='symlink':need(m.issym() and m.linkname==row['target'],'PUBLIC link roundtrip mismatch')
+    else:
+     need(m.isfile() and not m.issym() and not m.islnk() and m.size==row['bytes'],'PUBLIC regular roundtrip type/size mismatch')
+     with tar.extractfile(m) as f:size,h=stream_hash(f)
+     need(size==row['bytes'] and h==row['sha256'],'PUBLIC full bytes roundtrip mismatch')
+  for row in private['parts']:
+   i=row['part'];path=PRIVATE/f'ORIGINAL_COMPARISON_PART{i}.tar.gz'
+   need(path.stat().st_size==row['archive_bytes'] and digest(path)==row['archive_sha256'],'Private original changed during public collection')
+   selected_path=archive if i==4 else path
+   result['parts'].append({'part':i,'public_name':f'PUBLIC_COMPARISON_PART{i}.tar.gz','source_path':str(selected_path),
+                          'bytes':selected_path.stat().st_size,'sha256':digest(selected_path),
+                          'reused_original_bytes':i!=4,'members':31 if i==4 else row['members'],
+                          'regular_bytes':logical if i==4 else row['logical_regular_bytes'],
+                          'roundtrip_executed_this_run':i==4,
+                          'reused_parts_original_actual_result_sha256':'276a34627e63e2664e6ae504d7c516ac0992241aae6ad0306452d400a9af5e56' if i!=4 else None})
+  need(digest(PRIVATE/'RESULT.json')==PRIVATE_RESULT,'Private original receipt changed')
+  for item in metadata:need(digest(HERE/item['relative_path'])==item['sha256'],'PUBLIC metadata source changed during collection')
+  need(shutil.disk_usage(out).free>=RESERVE,'64MiB reserve not preserved')
+  metadata_bytes=sum(p.stat().st_size for p in out.rglob('*') if p.is_file() and not p.name.endswith('.tar.gz'))
+  need(metadata_bytes+16384<META,'PUBLIC metadata actual upper exceeded')
+  result.update(collection_exit=0,selected_members=4666,selected_regular_files=4662,selected_symlinks=4,
+                selected_regular_bytes=19843056,excluded_auxiliary_profile_members=1,excluded_auxiliary_profile_bytes=2795,
+                all_formal_comparison_commands_preserved=712,formal_O2_trace_commands=700,
+                all_auxiliary_API_raw_public=False,public_full_authority_input_replay_self_contained=False,
+                public_part4_gzip_crc_verified=True,public_part4_decompressed_tar_bytes=gzip_bytes,
+                original_R8_outer_exit_unchanged=1,performance_rerun=False,final_free=shutil.disk_usage(out).free)
+ except BaseException:
+  result['collection_exit']=1;result['errors'].append(traceback.format_exc());traceback.print_exc()
+ finally:
+  result['ended_epoch']=time.time();write(out/'RESULT.json',result);print(json.dumps(result,ensure_ascii=False),flush=True)
+ return result['collection_exit']
+
+if __name__=='__main__':raise SystemExit(main())

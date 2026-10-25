@@ -1,0 +1,22 @@
+{
+  "schema": "F9-four-browser-additive-publication-static-peer/1",
+  "utc": "2026-10-25T14:37:43.228940+00:00",
+  "exit_code": 0,
+  "checks": 171,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "manifest_sha256": "e72e205ef894d28b76526d7f37bf831d822538a8d562abe755797563daeb95f8",
+  "files": 72,
+  "logical_bytes": 33664136,
+  "archive_count": 9,
+  "archive_bytes": 31278535,
+  "source_prefix": "evidence/geo337-train-20261024/F9-four-browser-terminal/",
+  "prepared_against_evidence_parent": "3447ab384c4c777f9d2685128044b9b9d043e17d",
+  "parent_is_execution_binding": false,
+  "blocking_findings": [],
+  "limits": [
+    "Only fixed additive manifest and small source files reviewed; existing17156/0 full archive peer reused, archives not rehashed/recollected.",
+    "No PROGRESS/body/common branch writes; root must bind actual publication parent and compose one current-state matrix.",
+    "Original four browser assertions/times/scopes match their independent actual peers; no native or314 acceptance inferred.",
+    "SHM original data retained; normal push plus full remote blob verification still required."
+  ]
+}

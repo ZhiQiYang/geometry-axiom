@@ -1,0 +1,116 @@
+{
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "jobs": [
+    {
+      "job": "documents",
+      "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "formal_exit": 0,
+      "wrapper_exit": 0,
+      "ci_gate_exit": 0,
+      "seconds": 63.19715973001439,
+      "ci_timeout_minutes": 10,
+      "passed_assertions": 47,
+      "failed_assertions": 0,
+      "original_result_scope": {
+        "coverage": "Trusted pointer/keyboard navigation plus synthetic file fixtures; PDF page rendering and safe Markdown checks."
+      },
+      "golden_compare": "not reinterpreted by this manifest",
+      "peer_path": "/workspace/geo337-F9-documents-SHM-actual-peer-20261025/REVIEW.json",
+      "peer_sha256": "b4ca35f50d42e48faf209da3b747cdbef09f3271dc057b9e0e6bbcde3f8fb697"
+    },
+    {
+      "job": "grid",
+      "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "formal_exit": 0,
+      "wrapper_exit": 0,
+      "ci_gate_exit": 0,
+      "seconds": 464.98406516801333,
+      "ci_timeout_minutes": 15,
+      "passed_assertions": 356,
+      "failed_assertions": 0,
+      "original_result_scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_GRID_SYSTEM_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:19084/",
+        "feedbackDirectory": "/dev/shm/geo337-F9-browsers-20261025/r/g/tmp/original/grid/geometry-integration-feedback",
+        "browserProfile": "/dev/shm/geo337-F9-browsers-20261025/r/g/tmp/original/grid/geometry-cdp-GhtBiF",
+        "cdpPort": 9334,
+        "browserPid": 2022934
+      },
+      "golden_compare": "not compared (partial mode)",
+      "peer_path": "/workspace/geo337-F9-grid-SHM-actual-peer-20261025/REVIEW.json",
+      "peer_sha256": "f85bcc89825ec38b38cf9f7fe3ae4471ccd04ac78768d04a7fcee371857f522a"
+    },
+    {
+      "job": "space",
+      "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "formal_exit": 0,
+      "wrapper_exit": 0,
+      "ci_gate_exit": 0,
+      "seconds": 209.33900470699882,
+      "ci_timeout_minutes": 15,
+      "passed_assertions": 242,
+      "failed_assertions": 0,
+      "original_result_scope": {
+        "mode": "full-space-suite",
+        "filters": [],
+        "included": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow",
+          "projection-close"
+        ],
+        "omitted": [
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "url": "http://127.0.0.1:19085/",
+        "feedbackDirectory": "/dev/shm/geo337-F9-browsers-20261025/r/s/tmp/original/space/geometry-integration-feedback"
+      },
+      "golden_compare": "not reinterpreted by this manifest",
+      "peer_path": "/workspace/geo337-F9-space-SHM-actual-peer-20261025/REVIEW.json",
+      "peer_sha256": "1304901fb6f3e289db19cfad2d6380ccf36b6b1071f36da821c50e6ae18a5224"
+    },
+    {
+      "job": "timber",
+      "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "formal_exit": 0,
+      "wrapper_exit": 0,
+      "ci_gate_exit": 0,
+      "seconds": 124.53160412202124,
+      "ci_timeout_minutes": 20,
+      "passed_assertions": 79,
+      "failed_assertions": 0,
+      "original_result_scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_TIMBER_ONLY"
+        ],
+        "included": [
+          "timber-material",
+          "timber-source-guards",
+          "font-layout"
+        ],
+        "omitted": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "space-flow",
+          "projection-close"
+        ],
+        "url": "http://127.0.0.1:19086/",
+        "feedbackDirectory": "/dev/shm/geo337-F9-browsers-20261025/r/t/tmp/original/timber/geometry-integration-feedback"
+      },
+      "golden_compare": "not reinterpreted by this manifest",
+      "peer_path": "/workspace/geo337-F9-timber-SHM-actual-peer-20261025/REVIEW.json",
+      "peer_sha256": "775c58106ac1cdab27c5b9cf6991729aa15db1a31f2fd6a53b21a26443b2e7b6"
+    }
+  ],
+  "scope": "Original job results, not new execution; native1 unchanged; no whole-train readiness claim",
+  "delivered": false
+}

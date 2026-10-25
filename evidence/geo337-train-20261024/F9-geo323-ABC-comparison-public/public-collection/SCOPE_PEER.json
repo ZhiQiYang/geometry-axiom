@@ -1,0 +1,331 @@
+{
+  "schema": "geo323-F9-public-scope-adversarial-peer/1",
+  "created_utc": "2026-10-25T13:53:44.694649+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "scanner_sha256": "9dfe7dd170477ffc99d2cbbf580325a300d4437649c9b40737a7a30a1321422a",
+  "profile_scan_sha256": "fc4c14241913c0c63c75a11ddf6868f00bd0f8b7f4ff8a046af998213a696306",
+  "public_exclusions_sha256": "8c811e191c924a6e1960597b5008bfa69d55ecdae878224ad082ed51fa696d24",
+  "public_inventory_delta_sha256": "576e266ab77394da4b9aaeb877bc4b3c64a47546834be02f4cc170a488dbd4fd",
+  "safe_authority_locator_sha256": "0e72b129e08d054b8482a1e91ce9075732b0bd16bf819152d32275852b1d6e98",
+  "checks_count": 1463,
+  "checks": [
+    {
+      "check": "fixed input scan_profile_scope.py",
+      "passed": true
+    },
+    {
+      "check": "fixed input PROFILE_SCAN.json",
+      "passed": true
+    },
+    {
+      "check": "fixed input PUBLIC_EXCLUSIONS.json",
+      "passed": true
+    },
+    {
+      "check": "fixed input PUBLIC_INVENTORY_DELTA.json",
+      "passed": true
+    },
+    {
+      "check": "fixed input SAFE_AUTHORITY_LOCATOR.json",
+      "passed": true
+    },
+    {
+      "check": "fixed input encoding-proof/RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "same exact scope afterdecoderfix PUBLIC_EXCLUSIONS.json",
+      "passed": true
+    },
+    {
+      "check": "same exact scope afterdecoderfix PUBLIC_INVENTORY_DELTA.json",
+      "passed": true
+    },
+    {
+      "check": "same exact scope afterdecoderfix SAFE_AUTHORITY_LOCATOR.json",
+      "passed": true
+    },
+    {
+      "check": "original privateinventory unchanged",
+      "passed": true
+    },
+    {
+      "check": "exactone exclusion partition",
+      "passed": true
+    },
+    {
+      "check": "exclude exactly unrelatedGETuserprofile payload",
+      "passed": true
+    },
+    {
+      "check": "explicit privacy-only exclusion",
+      "passed": true
+    },
+    {
+      "check": "exact preservedsethash all_formal_metadata",
+      "passed": true
+    },
+    {
+      "check": "exact preservedsethash all_formal_streams",
+      "passed": true
+    },
+    {
+      "check": "exact preservedsethash all_graph_gzip",
+      "passed": true
+    },
+    {
+      "check": "exact preservedsethash all_saved_comparison_streams",
+      "passed": true
+    },
+    {
+      "check": "all formal/rawgraph stream counts",
+      "passed": true
+    },
+    {
+      "check": "700actualproduct12readonlygit rows",
+      "passed": true
+    },
+    {
+      "check": "retained original API request.json",
+      "passed": true
+    },
+    {
+      "check": "retained original API result.json",
+      "passed": true
+    },
+    {
+      "check": "original API exit/hash retained withoutbody",
+      "passed": true
+    },
+    {
+      "check": "safeidentity witness retained unchanged",
+      "passed": true
+    },
+    {
+      "check": "publicscope precise totals notcollection",
+      "passed": true
+    },
+    {
+      "check": "only part4 mustrepack others may reuseexact",
+      "passed": true
+    },
+    {
+      "check": "complete fixedsource scanner scope0",
+      "passed": true
+    },
+    {
+      "check": "synthetic decoderactual0/1/0 notrealprofile",
+      "passed": true
+    },
+    {
+      "check": "syntheticoriginalrc before",
+      "passed": true
+    },
+    {
+      "check": "synthetic fullstream beforestdout",
+      "passed": true
+    },
+    {
+      "check": "synthetic fullstream beforestderr",
+      "passed": true
+    },
+    {
+      "check": "synthetic namedred or originalgreen before",
+      "passed": true
+    },
+    {
+      "check": "syntheticoriginalrc withdrawn",
+      "passed": true
+    },
+    {
+      "check": "synthetic fullstream withdrawnstdout",
+      "passed": true
+    },
+    {
+      "check": "synthetic fullstream withdrawnstderr",
+      "passed": true
+    },
+    {
+      "check": "synthetic namedred or originalgreen withdrawn",
+      "passed": true
+    },
+    {
+      "check": "syntheticoriginalrc restored",
+      "passed": true
+    },
+    {
+      "check": "synthetic fullstream restoredstdout",
+      "passed": true
+    },
+    {
+      "check": "synthetic fullstream restoredstderr",
+      "passed": true
+    },
+    {
+      "check": "synthetic namedred or originalgreen restored",
+      "passed": true
+    }
+  ],
+  "scope": "僅WS既有metadata／程式／synthetic原streams核對；未讀完整profile、未印profile值、未讀SHM／重收／重跑comparison/R8/產品。",
+  "public_selection": {
+    "private_members": 4667,
+    "excluded_indices": [
+      4627
+    ],
+    "excluded_bytes": 2795,
+    "excluded_member": "comparison/tools-frozen/authority/connected-user/subcommands/000001/stdout.bin",
+    "retained_members": 4666,
+    "retained_regular_files": 4662,
+    "retained_symlinks": 4,
+    "retained_regular_bytes": 19843056,
+    "parts_require_repack": [
+      4
+    ],
+    "parts_reuse_original_exact_archive_bytes": [
+      1,
+      2,
+      3,
+      5
+    ]
+  },
+  "formal_evidence_preserved": {
+    "product_commands": 700,
+    "readonly_git_commands": 12,
+    "original_full_command_streams": 1424,
+    "ordered_graph_gzip": 350,
+    "saved_full_comparison_streams": 700,
+    "metadata_tuple_sets_and_hashes_unchanged": true,
+    "canonical_sets": {
+      "all_formal_metadata": {
+        "leaves": 3549,
+        "canonical_order": "sort tuples(member,bytes,sha256), JSON ensure_ascii=false,separators=(comma,colon), UTF8",
+        "canonical_sha256": "a9fac8a48782ac5a4e8d9e57c757014af7f6da58c94b9c51cd8329889fb5bd0f"
+      },
+      "all_formal_streams": {
+        "leaves": 1424,
+        "canonical_order": "sort tuples(member,bytes,sha256), JSON ensure_ascii=false,separators=(comma,colon), UTF8",
+        "canonical_sha256": "bb58ed7295e7e54307ef97812fdcecf5dbd6604cebc3a2f0bf77707c5fac633d"
+      },
+      "all_graph_gzip": {
+        "leaves": 350,
+        "canonical_order": "sort tuples(member,bytes,sha256), JSON ensure_ascii=false,separators=(comma,colon), UTF8",
+        "canonical_sha256": "ca0a8d08243974a90894f356592cf6c79e5a0b21f931d3017b11021812cb5b6f"
+      },
+      "all_saved_comparison_streams": {
+        "leaves": 700,
+        "canonical_order": "sort tuples(member,bytes,sha256), JSON ensure_ascii=false,separators=(comma,colon), UTF8",
+        "canonical_sha256": "c2fad50c184d474474e55ad3a9b4338d41628e7f9b2993268fc054ec9c9ed12e"
+      }
+    }
+  },
+  "API_provenance_preserved": {
+    "original_request_result": [
+      {
+        "member": "comparison/tools-frozen/authority/connected-user/subcommands/000001/request.json",
+        "bytes": 1561,
+        "sha256": "91b1db939d79cc80b09fec57630d9aef7c73d2a04a242971eef58ec70e1ec926"
+      },
+      {
+        "member": "comparison/tools-frozen/authority/connected-user/subcommands/000001/result.json",
+        "bytes": 1813,
+        "sha256": "2850023fdea1f4d587c0ef00f41e27490c6ba1755c21715482b65faf179bd9fd"
+      }
+    ],
+    "original_API_exit": 0,
+    "original_full_profile_stdout_bytes": 2795,
+    "original_full_profile_stdout_sha256": "b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29",
+    "argv_sha256": "a7ad8a99bc9da6b7eb31adec9123d0050463de541b026b732eb7a5f6f8ae3565",
+    "safe_identity_witness": {
+      "private_inventory_index": 4621,
+      "member": "comparison/tools-frozen/authority/IDENTITY_AND_ORIGINAL_COMMENT.json",
+      "sha256": "a8f03fddb979e168e86558230b2d3bd1c4ed9c906943404dbce14e8d5e9efc00",
+      "bytes": 2568
+    },
+    "existing_public_proof": "https://github.com/ZhiQiYang/geometry-axiom/tree/c32e70aa2c848f89a0e2e9fd92ed232a4dd27bcc/evidence/geo337-train-20261024/F9-readers-and-verified-decision/",
+    "full_body_public": false,
+    "original_authority_guard_full_input_public_replay_self_contained": false
+  },
+  "scanner_gap_resolution": "v1已保留；v2對hex/base64 decoded UTF8遞迴走相同JSON/subobject/string檢查且移除prettybody長度閾值，visited/depth failclosed仍在。六種假profile序列化/編碼變體具名0/1/0收據已核，safe四欄subset不當完整profile。全固定來源再掃仍只此一payload。",
+  "status": {
+    "public_collector_reviewed": false,
+    "public_collection_executed": false,
+    "published": false,
+    "remote_hash_verified": false,
+    "archivecollector0_equals_formal_allgreen": false,
+    "original_private_five_archives_unchanged": true,
+    "original_R8_outer_exit_unchanged": 1
+  },
+  "limits": [
+    "本peer未重新全掃19.8MB原來源或47.3MB解壓圖，核scanner程式與其固定input hashes／scan0及synthetic原streams；public差集與1424commandstream逐列tuple原hash已獨立核。",
+    "此scope只審固定4667候選來源／常見rawJSON/HTTP、JSON strings、hex/base64及gzip，不是全盤private-data或任意加密資料掃描。",
+    "未讀完整GET/user body或用其值作新fixture；僅使用payload bytes/hash及已批准安全identity定位。",
+    "公開包故意不含原authority guard的一個完整輸入；原工具/binding保留但不能聲稱authority全raw自足重放，也不能聲稱每個APIraw公開。",
+    "PUBLICpart4仍須新具名collector與actual roundtrip；其他四包僅在新public清單綁定下沿用原bytes，不得公開私有part4。",
+    "正常push與遠端hash仍待root；本scope0/原私有collection0不代表PUBLIC已交付、整列車或性能通過。"
+  ],
+  "pins": [
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/scan_profile_scope.py",
+      "bytes": 12146,
+      "sha256": "9dfe7dd170477ffc99d2cbbf580325a300d4437649c9b40737a7a30a1321422a"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/PROFILE_SCAN.json",
+      "bytes": 2989,
+      "sha256": "fc4c14241913c0c63c75a11ddf6868f00bd0f8b7f4ff8a046af998213a696306"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/PUBLIC_EXCLUSIONS.json",
+      "bytes": 1509,
+      "sha256": "8c811e191c924a6e1960597b5008bfa69d55ecdae878224ad082ed51fa696d24"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/PUBLIC_INVENTORY_DELTA.json",
+      "bytes": 47492,
+      "sha256": "576e266ab77394da4b9aaeb877bc4b3c64a47546834be02f4cc170a488dbd4fd"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/SAFE_AUTHORITY_LOCATOR.json",
+      "bytes": 1493,
+      "sha256": "0e72b129e08d054b8482a1e91ce9075732b0bd16bf819152d32275852b1d6e98"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/encoding-proof/RESULT.json",
+      "bytes": 247,
+      "sha256": "df481fa4cb33581838b23d3f4ff90441daf9418b36bc1ed49dc2269fb8bee09b"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/VERSIONING_NOTE.md",
+      "bytes": 289,
+      "sha256": "7eaa02bf56e170dd3b71a5492f7836815bec028244fec73b970dc94860fc016a"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/test_encoded_profile.py",
+      "bytes": 1957,
+      "sha256": "e74f91521fbbcb7efcdcdd1362929024d703e3e4afd332a59e36d4b1fd1da9a4"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/prove_decoder_guard.py",
+      "bytes": 1788,
+      "sha256": "c10e0d869eb95d75cc42f1492646b0be16a56a337386328851c98d2f2432ddec"
+    },
+    {
+      "path": "/workspace/geo323-F9-owner-comparison-collection-preparation-20261025/INVENTORY.json",
+      "bytes": 834952,
+      "sha256": "1ab22f16962fb861204932c4c46ff379c9c1e6144d9b7006999ded216a0f416f"
+    },
+    {
+      "path": "/workspace/geo323-F9-owner-comparison-collection-preparation-20261025/PARTS.json",
+      "bytes": 258756,
+      "sha256": "14f6ddb9cb1358f93125d86f3dc8b716400fa16e2a62e9d6b9007d5e35745143"
+    }
+  ],
+  "per_original_stream_check_summary": {
+    "count": 1424,
+    "all_passed": true,
+    "ordered_check_results_sha256": "e906a3d485866ea29438a51be29546059e55f03d0f21d0c020539bb7bd596ed5",
+    "scope": "逐712命令×stdout/stderr；原result bytes/hash精確等私有inventory且所對index在PUBLIC selected內。完整tuple集合canonicalhash另列，原證據不複製。"
+  }
+}

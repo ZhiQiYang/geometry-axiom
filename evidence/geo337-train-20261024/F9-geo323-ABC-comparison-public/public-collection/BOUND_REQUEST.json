@@ -1,0 +1,23 @@
+{
+  "schema": "geo323-PUBLIC-comparison-collection-request/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "execute": true,
+  "root_execution_lease": true,
+  "collector_sha256": "529d363cc5d07dc0cca155c98dc028d0bff1dcdd27d29d7b192bee85d9d8cfdb",
+  "private_inventory_sha256": "1ab22f16962fb861204932c4c46ff379c9c1e6144d9b7006999ded216a0f416f",
+  "private_parts_sha256": "14f6ddb9cb1358f93125d86f3dc8b716400fa16e2a62e9d6b9007d5e35745143",
+  "public_inventory_delta_sha256": "576e266ab77394da4b9aaeb877bc4b3c64a47546834be02f4cc170a488dbd4fd",
+  "public_exclusions_sha256": "8c811e191c924a6e1960597b5008bfa69d55ecdae878224ad082ed51fa696d24",
+  "profile_scan_sha256": "fc4c14241913c0c63c75a11ddf6868f00bd0f8b7f4ff8a046af998213a696306",
+  "safe_authority_locator_sha256": "0e72b129e08d054b8482a1e91ce9075732b0bd16bf819152d32275852b1d6e98",
+  "public_metadata_manifest_sha256": "50e31f8dabf95a7cc2d9819ada8dcec8f3a25de8ca5f780a4175e467d749b70d",
+  "scope_peer": {
+    "path": "/workspace/geo323-F9-public-scope-static-peer-d8xfnkwv/REVIEW.json",
+    "sha256": "7a2d95d1898d203a35d81df0497987f3c244e66930033f1325e11edb2e62687b"
+  },
+  "collector_peer": {
+    "path": "/workspace/geo323-F9-PUBLIC-collector-static-peer-f4au2tlj/REVIEW.json",
+    "sha256": "39dba4a22ffa9bae8a66f3b669965e1da4b6fe14fa4908910a6a6ebe2c6fe632"
+  },
+  "out": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-PUBLIC-comparison-20261025"
+}

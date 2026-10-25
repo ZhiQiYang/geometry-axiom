@@ -1,0 +1,30 @@
+{
+  "phase": "withdrawn",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/test_encoded_profile.py",
+    "--withdraw-decoder"
+  ],
+  "cwd": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null
+  },
+  "started_epoch": 1792936223.478157,
+  "ended_epoch": 1792936223.541807,
+  "exit_code": 1,
+  "expected_exit": 1,
+  "source_sha256": "9dfe7dd170477ffc99d2cbbf580325a300d4437649c9b40737a7a30a1321422a",
+  "test_sha256": "e74f91521fbbcb7efcdcdd1362929024d703e3e4afd332a59e36d4b1fd1da9a4",
+  "synthetic_only": true,
+  "real_profile_read": false,
+  "product_run": false,
+  "stdout_bytes": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_bytes": 3924,
+  "stderr_sha256": "8caf2ccb731dd0a91956f2543cbb2b0a2a907660a4a39dcd25d968110276acd4"
+}
