@@ -1,3 +1,7 @@
+# 接替 #337：固定 F9 完整驗收與收尾
+
+以下唯一矩陣是目前狀態；最末完整舊文只留歷史。assembly兩次與documents原件、§7 axiom與新comparison完整原件尚待另批公開；本次是進度與已完成核對的checkpoint，並非這些完整封包已交付。
+
 本 PR 接替 #337，整合 #299+#316、#314 題3、#318 閱讀 A、#323、K 索引及 #339/#340/#343（含 #341/#342）。容量仍64，未合 #344–#348。**維持 draft；native 尚紅，完整驗收未完成。**
 
 以下是唯一 current-state 矩陣；原門檻、golden、時限不變，歷史結果不移標。
@@ -6,7 +10,7 @@
 |---|---|
 | 最終來源 F9 | `4f8a794f4167c3562eb182045102e86e9e37cca9` |
 | 帳本生成／R8／成本執行 F8 | `75a1e93811a52b69385cbdaf6a09d773ed9052ad`；F8→F9僅帳本／evidence |
-| 證據 E | `70d00309d7985db722c339c77331c436d26a7ab1` |
+| 證據 E | `60909ad5062c6bc6f072442f5c2957b08b15f443`（23個checkpoint檔已從遠端完整核hash） |
 | 架構四檔原執行 M／H 定向執行 S | M=`6e50aef65513b7b38f93228919272c6d40d6c196`；S=`2c4635577a8fcb11e88b346547f7bb1c7b739fb7` |
 
 | Gate | 實際結果／未完成項 |
@@ -14,7 +18,10 @@
 | 全123帳本／tracked check | F8完整重產0：114 killed／5 equivalent／M20 crashed／3 retired。逐byte採入F9，tracked check0、stale0／blocked0 |
 | 完整 native | F9 exit1；35分鐘裁判0（1846.506872秒）。230登記列；5327 pass／1 fail／1 skip。唯一紅為下述 #314 assertion |
 | canvas | F9 原workflow／wrapper exit0，35分鐘裁判0；1723.223173秒。完整2267 assertions、零fail／skip；85段golden相符，P73=69、P88=143；原件peer170/0 |
-| assembly、documents、grid、space、timber | 五項各UNRUN at F9；原workflow，各獨立埠／TMP |
+| assembly | F9第二次原workflow／launcher／sampler／host exit0；150 assertions（P77 134＋P82 16）、0 fail／skip，188.8433秒≤原15分鐘。actual peer237/0。首次環境exit1完整保留，詳下文；兩次完整封包尚待公開 |
+| documents | F9原workflow／launcher／sampler／host exit0，63.197160秒≤原10分鐘；獨立source／port19083／CDP9366／TMP，47 assertions全PASS、8張截圖與scene／draft／undo保全原PASS、actual237/0；完整封包尚待公開，未以此代其餘browser |
+| grid | F9原流程已在E609 checkpoint推送後啟動，尚未終態；host50577，獨立source／port19084／CDP9334／TMP；此進度不代表通過 |
+| space、timber | 兩項各UNRUN at F9；原workflow，各獨立埠／TMP |
 | P52／Q38／§7 card mutations | 各 UNRUN at F9；保留P52原median門檻、Q38全44及完整card mutations |
 | §7 axiom mutations | F9原CLI／outer exit0；baseline與五次restored各44 tests、零skip；V01–V05全killed、原件peer428/0。完整原件待收件推送，尚未公開 |
 | P-189 full exact／timing | 兩項 UNRUN at F9；歷史exact紅保留，三差裁決未明示延伸本項 |
@@ -27,7 +34,7 @@
 | 架構三原judge／四檔 | F9 exit0/0/0、205＋18全ok；334 sources／6 trusted／798 edges／0 diagnostics。四檔為M原收據經F8採用，F9逐blob相同 |
 | #341四類成本 | F8 fallback-only exit0；14 cases全樣本。N64 none wall +6.77%、dense −29.72%；未判性能接受，未解除完整優化撤回B1；新F9完整撤回尚未實跑 |
 | H局部修正／反證 | S：14/14 exit0、零skip；work反證0/1/0，清零calls=0/2/0、bytes=0/255168/0。O0定向不代O2性能 |
-| required CI／替代驗收 | 母證據E c32的原API查詢exit0、total_count0／runs[]，僅代表當時沒有run；本次新E的Actions未讀。OWNER批准同一final SHA七項＋專項全綠替代；目前native1、五browser未跑，替代條件尚未達成 |
+| required CI／替代驗收 | 母證據E c32的原API查詢exit0、total_count0／runs[]，僅代表當時沒有run；本次新E的Actions未讀。OWNER批准同一final SHA七項＋專項全綠替代；目前native1、grid執行中與兩browser未跑，替代條件尚未達成 |
 
 native精確失敗：`test_geo314_commit_paths.Geo314CommitPaths.test_kernel_has_no_changes_against_the_fixed_integration_base`，assertion `I24 submission policy must not change K files`，原額外stdout為 `geometry-core/kernel/source.c`。已定位固定歷史基底的測試範圍問題；嚴格修正草案待主代理批次採入與撤回／恢復反證，尚未修改F9或免除斷言。唯一允許skip是Linux缺compiled Windows GDI harness的 `test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources`，實際1項。native原件獨審2208/0、包6191/0只證收件正確，不改正式exit1。
 
@@ -37,7 +44,7 @@ R8原36樣本不重抽：N16/base=`0.9834192453688345`、N32/base=`0.90079328848
 
 Q-323-ABC只准三個指定場景各自逐字的新增定位邊文字，其他bytes／返回碼／完整有序圖／五guards與效能門檻不變；第四差、錯字、位置或次數不符仍紅。依核可白名單執行的新F9 comparison單項已於12:14:21 UTC取得outer／stage／audit exit0；175場景／350 base-fix列／700原CLI完整性actual17231/0、對抗peer10144/0已完成。三指定場景各stdout／stderr的六次精確插入保留，strict tuple without exceptions仍false；有序graph逐byte及五guards依原scope核對，不能改稱完全沒有字串差。完整封包尚未推送。原R8 outer1與全36樣本保留，不換base、不重抽，不擴及P-189，也不把此單項0當作required-eight或整份驗收通過。範圍文字見main [`405f8c5e…`](https://github.com/ZhiQiYang/geometry-axiom/blob/405f8c5e1a637a16cbe47470faf5ae1fa02b8676/決策佇列.md#L841)。CI替代須每張PR同一可解析final SHA七項與專項全綠及完整證據；stale-only帳本例外不含survived／invalid／blocked。本輪帳本check仍0，不需援用，也不自行合併。
 
-最新已讀[審查原文](https://github.com/ZhiQiYang/geometry-axiom/blob/e34e6d784ad9b0ffd2a68be7db92584f953594b0/handoff/pr-reviews/338.md#L151)：2026-10-25T10:40:50Z、head cd19c63。B1的native已終態1，其餘未跑項保留；B2／B3的當次OWNER批准已經原API核實；新comparison單項0與已完成雙獨審的完整原流待下一批公開，完整替代驗收條件仍未達成；不標READY-TO-MERGE。
+最新已讀[審查原文](https://github.com/ZhiQiYang/geometry-axiom/blob/9529067629486edff726faded5798af2f9fad4da/handoff/pr-reviews/338.md)：2026-10-25T12:42:21Z、head70d0030。審查已解除#323三差comparison的單項阻擋，保留B1 native測試範圍紅燈、B2其餘正式清單未閉合、B3與main衝突。12:47衝突說明與唯讀分析一致：main405f8只新增決策文件28行；將正常merge，完整保留列車10/24與main10/25原文（含列車前六行條文寫入綁定），不改既有鎖定內容。目前尚未merge、不移標F9收據；採納測試直接讀此文件，整合後須跑受影響項。維持draft，未標READY-TO-MERGE。
 
 原件索引：[F9 native完整原流與雙獨審](https://github.com/ZhiQiYang/geometry-axiom/tree/59064fe0478f7ebe9126e6fe042c2054f336a42f/evidence/geo337-train-20261024/F9-native-terminal/)（1374 members、13,895,527原bytes，gzip SHA256 `42217b1827d010e8eac017b95799a24910835c202aa1e32a0137cfee32e95d5c`）；[F9帳本採用／架構／F8成本](https://github.com/ZhiQiYang/geometry-axiom/tree/782bc80b0a13ecd19670f5285a8edb1824349686/evidence/geo337-train-20261024/F9-initial-gates/)；[R8完整五stage](https://github.com/ZhiQiYang/geometry-axiom/tree/59064fe0478f7ebe9126e6fe042c2054f336a42f/evidence/geo337-train-20261024/full-R8-five-stage-raw/)與[全部歷史進度／證據連結](https://github.com/ZhiQiYang/geometry-axiom/blob/59064fe0478f7ebe9126e6fe042c2054f336a42f/evidence/geo337-train-20261024/PROGRESS.md)。
 
@@ -46,3 +53,18 @@ Q-323-ABC只准三個指定場景各自逐字的新增定位邊文字，其他by
 
 
 [F9完整canvas原件與雙獨審](https://github.com/ZhiQiYang/geometry-axiom/tree/aea7456bc8d48e3a9a8038eb598b4e0d018f8fdb/evidence/geo337-train-20261024/F9-canvas-terminal/)：原workflow在11:22:04.734796–11:50:47.957901 UTC執行，原35分鐘界線2100秒未放寬。P38故意注入fb-auto-probe，原uncaughtBrowserExceptions=1且標EXPECTED、unexpected=0；P53 API故障與被取消的網路請求亦完整保留，不能改寫成診斷總數0。原件裁判170/0與封包5396/0分列，封包peer不代產品gate。四包保留656個regular檔45,780,854B＋4個symlink，全部ELF／cache／profile／診斷均收；只將5個SOURCEPLAN Git metadata／mutable latest葉作精確hash-only及1個Unix socket作metadata-only，原payload保留，私有index完整封存另案。這是一輪F9完整canvas通過，不外推其他browser或重複穩定性已驗。
+
+
+
+
+本輪雲端共同容量配置已實際執行：既有`/dev/shm`為tmpfs，沒有增加掛載、配額、付費或安全設定。各job獨立source/gitdir/index/port/TMP/profile；共用經逐byte核對的唯讀seed。原WS與TMP接近滿載，故新出版repo改在獨立SHM私有Gitdir，單向唯讀借用舊objects；bootstrap31條CLI真0、actual465/0，舊WS metadata/status/PROGRESS前後相同，零既有Git objects複製。後續train只由主代理於此私有repo正常push；所有SHM原件與新objects受保護，揮發性副本不算已交付。每份完整封包必須正常push後，由GitHub API下載完整raw並核bytes/SHA256/Git OID；此checkpoint尚不宣稱assembly完整原件已遠端驗證。
+
+assembly第一次原workflow在13:30:01.714515–13:31:27.087503 UTC exit1（85.372989秒）：Chrome明確`FATAL: Socket path too long`→`no CDP`；完整socket literal113B（含NUL114）超過Unix socket108B容量，0產品assertions、golden未比較。建置與前後來源guard均0。第二次只更換fresh out/storage，縮短socket為104B（含NUL105），原sampler/launcher/driver/argv/15分鐘時限與判定未改，結果150 assertions全部綠。原partial assembly scope不冒完整canvas golden。P77故意注入`Injected lost success response`負例仍完整保留，不能把預期transport紀錄刪掉。
+
+第一次90個資源樣本、最大間隔1.000906秒；第二次193個、最大間隔1.013863秒。共享SHM取樣used最大分別209,575,936B、229,765,120B，OOM／oom_kill均0；第二次同期間有出版準備增量，故這是共享掛載取樣峰值，不是連續真峰值或單job獨占峰值，也不能外推R8性能。後四job完整socket bytes已逐literal核對含NUL≤108。
+
+#344另線已正常推送來源`9aec9a32630fc65f94c53d49e99969e546574d6e`、證據`df39d1933402c76b2f8b35ca013412daf16ed4c9`、正文`cbb1aa30b83d1b368ce1cb27885a39003bc58fed`，修正CDP exclusion LF hash並保留三原架構judge／反證原件。該線仍未合入本列車，strict9的歷史綠不替代其完整canvas/native/其餘未跑清單。
+
+
+
+此正文以E609完成狀態為基準，補記其後grid原正式啟動；不把執行中或封包準備視為通過。完整原件逐批公開與遠端驗證，合併仍由使用者／本機負責。
