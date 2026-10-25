@@ -1,0 +1,53 @@
+{
+  "schema": "geo337-decision-349-api-public-subset-independent-peer/1",
+  "exit_code": 0,
+  "checks": 106,
+  "failed_checks": [],
+  "review_utc": "2026-10-25T11:14:03.987294+00:00",
+  "subject_directory": "/workspace/geo337-decision-349-api-publication-preparation-20261025",
+  "subject_pins_sha256": "88f95b257c5dc555d95367ba74a922a1760ee70682db4a3a670d43add56f42a4",
+  "api_identity_condition_verified": true,
+  "connected_identity": {
+    "login": "ZhiQiYang",
+    "id": 59477728,
+    "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+    "type": "User"
+  },
+  "comment_id": 6396611849,
+  "comment_author_association": "OWNER",
+  "comment_created_updated_at": "2026-10-25T10:39:52Z",
+  "comment_permalink": "https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6396611849",
+  "comment_body_bytes": 1727,
+  "comment_body_sha256": "300ddb476038d6e3339abfb872bad0b32ed112d52b66df29158484175a95bb0f",
+  "public_account_data_minimized": true,
+  "actual_human_or_program_operator_verified": false,
+  "direct_B_prime_conversation_reply": false,
+  "management_condition_basis": "Root delegated that management instruction permits using the recorded approval if these original API identity conditions hold. This review verifies those technical conditions; it does not infer approval from Git authorship or independently authenticate the human operating the account.",
+  "scope_limits": [
+    "Only the three named exact diagnostic additions and comments stated CI/stale-only scopes; no P-189 extension.",
+    "No baseline version change, no R8 rerun or retagging; original R8 compare/outer=1 preserved.",
+    "API identity evidence does not mean any formal gate passed; native1 and unrun gates remain.",
+    "Full authenticated account profile remains only at original local path; peer records its hash, not unrelated profile values.",
+    "No API request, product test, branch write, merge or deployment by this reviewer."
+  ],
+  "original_bindings": [
+    {
+      "scope": "account",
+      "original_directory": "/tmp/geo337-decision-349-api-verification-20261025/connected-user/subcommands/000001",
+      "raw_sha256": "b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29",
+      "raw_bytes": 2795,
+      "actual_exit": 0,
+      "http_status": 200,
+      "raw_profile_published": false
+    },
+    {
+      "scope": "comments",
+      "original_directory": "/tmp/geo337-decision-349-api-verification-20261025/original-comments/subcommands/000001",
+      "raw_sha256": "64c662334a1dc9ac470894219e0cb284a58ed3c4a37c65c87dd753bab1002544",
+      "raw_bytes": 42331,
+      "actual_exit": 0,
+      "http_status": 200,
+      "raw_profile_published": null
+    }
+  ]
+}

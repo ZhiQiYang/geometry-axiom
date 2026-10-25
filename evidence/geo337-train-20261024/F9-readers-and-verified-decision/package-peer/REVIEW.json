@@ -1,0 +1,53 @@
+{
+  "schema": "geo337-F9-readers-and-identity-two-part-independent-actual-peer/1",
+  "exit_code": 0,
+  "checks": 7041,
+  "failed_checks": [],
+  "review_utc": "2026-10-25T11:37:22.352788+00:00",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "package_result_sha256": "fe30a5a86f4fa614a722ffd10b317d94be950c6ac057ba4ae516975caed639d4",
+  "manifest_sha256": "2fdf0e429f0b757e613333d6224d3daee5bc4d48c1272e564bd2f0f1ebbefdcc",
+  "inventory_sha256": "57ada657368d71560f8384798a69ce2d248e928cf818dd5c72cf94397dc77b7d",
+  "collector_sha256": "2427df3bcf99364eb148a0b356c091337436c567332a8bde06a7b915205aa368",
+  "original_collection_tool_exit": 0,
+  "parts": [
+    {
+      "part": 1,
+      "required_bytes": 77662660,
+      "actual_fresh_free_bytes": 78598144,
+      "reserve_bytes": 67108864,
+      "archive_bytes": 2494645,
+      "archive_sha256": "c948ba69335b99b8db6927a3a0e07564ec72b9f68fd5a1af1568093ddf132720",
+      "members": 1
+    },
+    {
+      "part": 2,
+      "required_bytes": 72126098,
+      "actual_fresh_free_bytes": 76095488,
+      "reserve_bytes": 67108864,
+      "archive_bytes": 188676,
+      "archive_sha256": "cfe692aa9ce1a309d5742a778d4b18f5343a851369d66f42802a96c901f190c1",
+      "members": 581
+    }
+  ],
+  "members": 582,
+  "original_logical_bytes": 11063364,
+  "all_original_source_hash_stat_and_tar_members_verified": true,
+  "native_exit_unchanged": 1,
+  "R8_exit_unchanged": 1,
+  "reader_exits": [
+    0,
+    0,
+    0
+  ],
+  "reader_unit_count": 51,
+  "api_full_profile_excluded": true,
+  "limits": [
+    "Only original terminal evidence packaging reviewed; no collector rerun or product/browser/C execution.",
+    "API technical identity approval conditions reuse independent106/0 review; this package does not create a direct B-prime answer or extend P-189.",
+    "Reader original semantics reuse prior1972/0 review; collection0 does not make native1 or unrun gates pass.",
+    "Source comparison ignores atime, which read access may update; device/inode/size/mode/mtime_ns/nlink and complete source bytes were verified.",
+    "Fresh resource budgets are original observations and worst-case bounds, not a guarantee of future canvas peak.",
+    "No full private account profile copied into this peer or package; original remains local."
+  ]
+}
