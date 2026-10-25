@@ -1,0 +1,61 @@
+{
+  "number": 80,
+  "started_epoch": 1792812980.0056427,
+  "args": [
+    [
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge"
+    ]
+  ],
+  "kwargs": {
+    "input": {
+      "type": "bytes",
+      "bytes": 139,
+      "sha256": "c3c4631b3e3c88c4ab7aa5ae70bfc5b60de3d3c7e2fc11f12c3535a31f68a358"
+    },
+    "capture_output": true,
+    "timeout": 600
+  },
+  "selected_environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/geo348-F0f695866-formal-tmp",
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "PYTHONOPTIMIZE": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": null
+  },
+  "executable": {
+    "retained": true,
+    "path": "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge",
+    "bytes": 1316392,
+    "sha256": "050123dadc7e7082ff211fd1469594ddc49188b565a3d707309f682583681841",
+    "event": "before-original-subprocess.run",
+    "payload_retained": false
+  },
+  "input": {
+    "captured": true,
+    "representation": "original-bytes",
+    "bytes": 139,
+    "sha256": "c3c4631b3e3c88c4ab7aa5ae70bfc5b60de3d3c7e2fc11f12c3535a31f68a358"
+  },
+  "ended_epoch": 1792812981.400461,
+  "completed_process_returned": true,
+  "returncode": 0,
+  "exception": null,
+  "stdout": {
+    "captured": true,
+    "representation": "original-bytes",
+    "bytes": 74419,
+    "sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef"
+  },
+  "stderr": {
+    "captured": true,
+    "representation": "original-bytes",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

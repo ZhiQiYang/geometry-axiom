@@ -1,0 +1,27 @@
+{
+  "schema": "geo348-command-boundary-diagnostic/1",
+  "argv": [
+    "synthetic-never-launched"
+  ],
+  "source_sha": "synthetic",
+  "synthetic": true,
+  "timeout": 600,
+  "input_sha256": "866c040a788781a299c1b1865caecda91fc2a5b101298d8b8cbbd169ccab4271",
+  "input_bytes": 59,
+  "bindings": {},
+  "environment": {
+    "LANG": null,
+    "LC_ALL": null,
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "LD_PRELOAD": null,
+    "LD_LIBRARY_PATH": null,
+    "GEO348_DIAG_EVENT_FD": "3",
+    "GEO348_DIAG_STATUS_FD": "4"
+  },
+  "started_monotonic_ns": 258875950814975,
+  "product_gate_verdict": null
+}

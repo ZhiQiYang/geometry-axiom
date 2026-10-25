@@ -1,0 +1,15 @@
+{
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "formal_executed_by_preparation": false,
+  "root": "/tmp/train337-323-f64d638f-source",
+  "job": "/tmp/geo337-full123-F8-job-20261025",
+  "outer": "/tmp/geo337-full123-F8-launch-20261025",
+  "cache": "/workspace/geo337-full123-F8-cache-20261025",
+  "tmp": "/tmp/geo337-full123-F8-tmp-20261025",
+  "scope_rule": "all regular JOB+outer files; cache M*/_baseline/_bridge-baseline recursive stdout/stderr/json only; original tools and collection control; do not add ELF/source/Git/cache payloads",
+  "live_scope_enumerated_or_hashed": false,
+  "original_scope_script": "/workspace/prepare_geo337_ledger_4f4_terminal.py",
+  "original_scope_script_sha256": "50cbc04791eca6c61c893ffbcff9f33c7feab72c07390db20167817f1b2e94f1",
+  "legacy_adoption_reference_only": "/workspace/adopt_geo337_b6_ledger.py",
+  "legacy_adoption_reference_sha256": "010bb02be5552d93be23df866d279a97940f7bf642a3514103b18107c0b82e69"
+}

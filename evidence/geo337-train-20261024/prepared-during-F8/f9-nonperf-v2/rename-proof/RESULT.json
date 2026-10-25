@@ -1,0 +1,55 @@
+{
+  "schema": "no-renames-metadata-git-counterproof/1",
+  "utc": "2026-10-25T07:53:24.770622+00:00",
+  "exit_code": 0,
+  "formal_executed": false,
+  "real_product_F8_untouched": true,
+  "fixture_only": "/tmp/geo337-F9-no-rename-metadata-proof-20261025/fixture",
+  "fixture_base": "029bbf73068a16a494bbd4bf556ab0c59dba8d11",
+  "fixture_tip": "1895bc1ccec04e91b28ce1927554dbf6c5008eb4",
+  "fixture_original_leaf_sha256": "d9e83057bb1c01ea4310c6f7d1d002099fef9c88c67a024f317ea342a508286a",
+  "phases": [
+    {
+      "phase": "fixed",
+      "actual_exit": 0,
+      "closure_accepted": false,
+      "git_paths": [
+        "evidence/moved-source.c",
+        "geometry-core/kernel/source.c",
+        "tests/mutants_results.json"
+      ],
+      "command_index": 10
+    },
+    {
+      "phase": "withdrawn-no-rename-flag",
+      "actual_exit": 1,
+      "closure_accepted": true,
+      "git_paths": [
+        "evidence/moved-source.c",
+        "tests/mutants_results.json"
+      ],
+      "command_index": 11
+    },
+    {
+      "phase": "restored",
+      "actual_exit": 0,
+      "closure_accepted": false,
+      "git_paths": [
+        "evidence/moved-source.c",
+        "geometry-core/kernel/source.c",
+        "tests/mutants_results.json"
+      ],
+      "command_index": 12
+    }
+  ],
+  "actual_exits": [
+    0,
+    1,
+    0
+  ],
+  "git_rename_config": "diff.renames=true within disposable fixture only; explicit100% byte identical rename",
+  "metadata_helper": "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/binding_guards.py",
+  "helper_sha256": "1b7556db553c17265407adf77023c63e6b6166da9297b5461d3c1eeaab17eeb3",
+  "commands": "/tmp/geo337-F9-no-rename-metadata-proof-20261025/commands.json",
+  "scope": "Only synthetic local Git metadata and pure binding guard; not a product/test run or evidence of an attack on actual F8. Original v1 review77/0 preserved as historical and superseded for future launch by v2."
+}

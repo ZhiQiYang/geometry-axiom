@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "-C",
+    "/workspace/geometry-axiom",
+    "show",
+    "0f695866c0ba12d2c70dfd7d40628d0fda0f905f:tests/test_geo261_timber_capacity_host.py"
+  ],
+  "exit": 128,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "d0c457c69f596cfb0a6e17775fdd6f1d6cfa637258e47bfee35e776af95b68f3"
+}

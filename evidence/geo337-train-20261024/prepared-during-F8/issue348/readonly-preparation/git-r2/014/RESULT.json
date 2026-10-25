@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "-C",
+    "/workspace/geo348-F73b21e64-source",
+    "ls-tree",
+    "-r",
+    "-z",
+    "73b21e64dce72f0d16ca29e18559c51815b9724d",
+    "--",
+    "tests/test_geo261_timber_capacity_host.py",
+    "tests/_bridge.py",
+    "tests/geo300_scene_generator.py",
+    "geometry-web/web_bridge.c",
+    "geometry-web/reference_bridge.inc",
+    "geometry-web/engineering_bridge.inc",
+    "geometry-core/references.inc",
+    "geometry-core/kernel/source.c",
+    "geometry-app/native/reference_sources.inc",
+    "geometry-templates/woodworking/native/contact_world.c",
+    "geometry-templates/woodworking/native/contact_sources.c",
+    "current_geometry.c"
+  ],
+  "exit": 0,
+  "stdout_sha256": "258522fa8bab7a3c51b786bbfa63b88b141884593ca7cb3ef83cd1a8447b3796",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

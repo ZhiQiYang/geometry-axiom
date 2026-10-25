@@ -1,0 +1,66 @@
+{
+  "formal_executed": false,
+  "actual_exits": [
+    0,
+    1,
+    0
+  ],
+  "rows": [
+    {
+      "phase": "fixed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/check_copy_metadata.py",
+        "--mode",
+        "fixed",
+        "--out",
+        "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/metadata/copy-fixture-fixed"
+      ],
+      "cwd": "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025",
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "dbf0688d6367a20463492000b2e891377be6d20bc3fd22eddf3c06a5362ec20a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "withdraw-copy-to-hardlink",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/check_copy_metadata.py",
+        "--mode",
+        "hardlink",
+        "--out",
+        "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/metadata/copy-fixture-withdraw-copy-to-hardlink"
+      ],
+      "cwd": "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025",
+      "actual_exit": 1,
+      "expected_exit": 1,
+      "stdout_sha256": "d63b9e4499a22983958b0df9b7f6534035b8211a21cbd2523773bf75c94da76b",
+      "stderr_sha256": "4a7be5ad08783c2de153b730167bd638cab8f8fe572c95cf745b15dd42066cd9"
+    },
+    {
+      "phase": "restored",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/check_copy_metadata.py",
+        "--mode",
+        "fixed",
+        "--out",
+        "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/metadata/copy-fixture-restored"
+      ],
+      "cwd": "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025",
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "a77d28ec49ead043dca77af87cfbf6968451c17873a368e5d024828cda90baa1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "exit": 0,
+  "R8_payload_read": false,
+  "R8_inode_or_bytes_changed": false,
+  "scope": "Only synthetic 504-byte fake ELF fixture. Withdraw private copy to hardlink triggers the original-source metadata/nlink preservation guard before the distinct-inode guard; fixed/restored copy retains exact bytes/mode and distinct nlink1 inode. No binary executed or rebuilt.",
+  "initial_summary_correction": "Initial derived prose mistakenly said472bytes and distinct-inode assertion. Actual original stdout is504bytes; actual negative RuntimeError is original R8 ELF metadata/bytes changed during copy because source nlink1→2. Raw outputs and actual0/1/0 unchanged."
+}

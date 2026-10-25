@@ -1,0 +1,62 @@
+--- withdrawn-before/geometry-core/references.inc
++++ withdrawn-after/geometry-core/references.inc
+@@ -123,9 +123,6 @@
+     struct {
+         bool anchor_valid,definition_valid,pose_valid,footprint_valid,footprint_ok;
+         uint32_t id,pose_id,placement;
+-        /* Contact keeps only its successful three-field decode; its key is independent of the full anchor. */
+-        bool contact_valid;uint32_t contact_id;
+-        WoodMemberPlacementContact contact;
+         WoodMemberPlacement anchor;
+         WoodMemberDefinition definition;
+         GeoBox3 pose;
+--- withdrawn-before/geometry-app/native/reference_sources.inc
++++ withdrawn-after/geometry-app/native/reference_sources.inc
+@@ -499,26 +499,6 @@
+     if(!wood_definition_sources_member(ctx->definition_sources,id,out))return false;
+     ctx->member_reads[i].definition=*out;ctx->member_reads[i].definition_valid=true;return true;
+ }
+-static bool reference_member_placement_depend(ReferenceEval *ctx,uint32_t id)
+-{
+-    WoodDefinitionKey key;
+-    if(geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),
+-            GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+-    return true;
+-}
+-static bool reference_member_contact_read(ReferenceEval *ctx,size_t i,uint32_t id,WoodMemberPlacementContact *out)
+-{
+-    if(i>=WORLD_MAX_TIMBERS||geo_eval_is_sealed(ctx->sources))
+-        return wood_definition_sources_placement_contact(ctx->definition_sources,id,out);
+-    if(ctx->member_reads[i].contact_valid&&ctx->member_reads[i].contact_id==id){
+-        /* Use the original shared edge site for every current consumer. */
+-        if(!reference_member_placement_depend(ctx,id))return false;
+-        *out=ctx->member_reads[i].contact;return true;
+-    }
+-    if(!wood_definition_sources_placement_contact(ctx->definition_sources,id,out))return false;
+-    ctx->member_reads[i].contact=*out;ctx->member_reads[i].contact_id=id;
+-    ctx->member_reads[i].contact_valid=true;return true;
+-}
+ static void reference_member_footprint_invalidate(ReferenceEval *ctx,size_t i)
+ {
+     ctx->member_reads[i].footprint_valid=false;
+@@ -528,7 +508,10 @@
+     if(i>=WORLD_MAX_TIMBERS||geo_eval_is_sealed(ctx->sources))
+         return wood_definition_sources_placement(ctx->definition_sources,id,out);
+     if(ctx->member_reads[i].anchor_valid&&ctx->member_reads[i].id==id){
+-        if(!reference_member_placement_depend(ctx,id))return false;
++        WoodDefinitionKey key;
++        /* 解碼命中仍須記錄當前 consumer 的依賴邊。 */
++        if(geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),
++            GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+         *out=ctx->member_reads[i].anchor;return true;
+     }
+     if(!wood_definition_sources_placement(ctx->definition_sources,id,out))return false;
+@@ -632,7 +615,7 @@
+         if(!fact->member->placed||fact->member==request->exclude)continue;
+         uint32_t id=fact->member->id;GeoSourceValue value;
+         if(!ctx->use_current_values){WoodMemberPlacementContact anchor;
+-            if(!reference_member_contact_read(ctx,i,id,&anchor)){
++            if(!wood_definition_sources_placement_contact(ctx->definition_sources,id,&anchor)){
+                 if(deferred)app_contact_raw_complete(&placement,raw,out->members,visited);return false;
+             }
+             /* 接觸只解碼原有三欄；slot 換成另一 canonical member 時，

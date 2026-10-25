@@ -1,0 +1,505 @@
+{
+  "schema": "geo341-cost-static-adversarial/1",
+  "utc": "2026-10-25T08:09:06.826201+00:00",
+  "subject": "/tmp/geo341-cost-preparation-20261025",
+  "subject_pins_sha256": "b56ae79481390f36bf9ddfeffd32fd7322cedb5fbb7697bf55a8817a01207558",
+  "checks": 121,
+  "failed_checks": [],
+  "checks_performed": [
+    {
+      "name": "exact submitted PINS",
+      "passed": true
+    },
+    {
+      "name": "pinned run_costs.py",
+      "passed": true
+    },
+    {
+      "name": "pinned prepare_instrumentation.py",
+      "passed": true
+    },
+    {
+      "name": "pinned test_metadata_guards.py",
+      "passed": true
+    },
+    {
+      "name": "pinned cost_harness.c",
+      "passed": true
+    },
+    {
+      "name": "pinned fixed.c",
+      "passed": true
+    },
+    {
+      "name": "pinned withdrawn.c",
+      "passed": true
+    },
+    {
+      "name": "pinned restored.c",
+      "passed": true
+    },
+    {
+      "name": "pinned fixed-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "pinned withdrawn-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "pinned restored-diagnostic.c",
+      "passed": true
+    },
+    {
+      "name": "pinned INSTRUMENTATION.json",
+      "passed": true
+    },
+    {
+      "name": "pinned WITHDRAWAL.json",
+      "passed": true
+    },
+    {
+      "name": "pinned WITHDRAW_FALLBACK.patch",
+      "passed": true
+    },
+    {
+      "name": "pinned PROVENANCE.json",
+      "passed": true
+    },
+    {
+      "name": "pinned PLAN.md",
+      "passed": true
+    },
+    {
+      "name": "pinned run_metadata_proof.py",
+      "passed": true
+    },
+    {
+      "name": "pinned metadata-original-capture/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "source fixed equals original Git stdout",
+      "passed": true
+    },
+    {
+      "name": "original Git read success and fixed full SHA",
+      "passed": true
+    },
+    {
+      "name": "one exact legacy fallback block",
+      "passed": true
+    },
+    {
+      "name": "withdrawal exact entire leaf",
+      "passed": true
+    },
+    {
+      "name": "restore exact entire F8 leaf",
+      "passed": true
+    },
+    {
+      "name": "343 function unchanged contact_indexed_dedup",
+      "passed": true
+    },
+    {
+      "name": "343 function unchanged contact_member_index_sort",
+      "passed": true
+    },
+    {
+      "name": "343 function unchanged contact_face_index_build",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 0",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 1",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 2",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 3",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 4",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 5",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 6",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 7",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 8",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 9",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor fixed 10",
+      "passed": true
+    },
+    {
+      "name": "diagnostic reconstructed fixed",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 10",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 9",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 8",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 7",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 6",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 5",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 4",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 3",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 2",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 1",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse fixed 0",
+      "passed": true
+    },
+    {
+      "name": "diagnostic byte reversible fixed",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 0",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 1",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 2",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 3",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 4",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 5",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 6",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 7",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor withdrawn 8",
+      "passed": true
+    },
+    {
+      "name": "diagnostic reconstructed withdrawn",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 8",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 7",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 6",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 5",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 4",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 3",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 2",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 1",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse withdrawn 0",
+      "passed": true
+    },
+    {
+      "name": "diagnostic byte reversible withdrawn",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 0",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 1",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 2",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 3",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 4",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 5",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 6",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 7",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 8",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 9",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation anchor restored 10",
+      "passed": true
+    },
+    {
+      "name": "diagnostic reconstructed restored",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 10",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 9",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 8",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 7",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 6",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 5",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 4",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 3",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 2",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 1",
+      "passed": true
+    },
+    {
+      "name": "unique instrumentation reverse restored 0",
+      "passed": true
+    },
+    {
+      "name": "diagnostic byte reversible restored",
+      "passed": true
+    },
+    {
+      "name": "frozen plan matches actual plan",
+      "passed": true
+    },
+    {
+      "name": "all14 cases retained",
+      "passed": true
+    },
+    {
+      "name": "eight original semantic cases",
+      "passed": true
+    },
+    {
+      "name": "metadata proof phase exit 0 1 0",
+      "passed": true
+    },
+    {
+      "name": "metadata stdout pin fixed",
+      "passed": true
+    },
+    {
+      "name": "metadata stderr pin fixed",
+      "passed": true
+    },
+    {
+      "name": "metadata parsed stdout fixed",
+      "passed": true
+    },
+    {
+      "name": "metadata exactly14 fixed",
+      "passed": true
+    },
+    {
+      "name": "metadata stdout pin withdrawn",
+      "passed": true
+    },
+    {
+      "name": "metadata stderr pin withdrawn",
+      "passed": true
+    },
+    {
+      "name": "metadata parsed stdout withdrawn",
+      "passed": true
+    },
+    {
+      "name": "metadata exactly14 withdrawn",
+      "passed": true
+    },
+    {
+      "name": "metadata stdout pin restored",
+      "passed": true
+    },
+    {
+      "name": "metadata stderr pin restored",
+      "passed": true
+    },
+    {
+      "name": "metadata parsed stdout restored",
+      "passed": true
+    },
+    {
+      "name": "metadata exactly14 restored",
+      "passed": true
+    },
+    {
+      "name": "withdrawn unique failing guard",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard fcntl.LOCK_EX|fcntl.LOCK_NB",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard for name in ('heavy.lock','secondary.lock')",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard not out.exists()",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard out.is_relative_to('/tmp')",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard no checkout changes",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard timeout=300",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard round_no in range(8)",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard order=VARIANTS if round_no%2==0 else tuple(reversed(VARIANTS))",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard all(len(xs)==7",
+      "passed": true
+    },
+    {
+      "name": "runtime static guard performance_acceptance_decided=False",
+      "passed": true
+    }
+  ],
+  "exit": 1,
+  "passed": false,
+  "finding": "TRUNCATED_FACE_FINDING.json",
+  "finding_severity": "collector completeness guard must be fixed before formal execution",
+  "positive_scope": "fallback block only; later #343 functions byte unchanged; restored exact F8; original locks/timeouts/samples retained",
+  "limits": [
+    "Pure metadata/static review only, no C/performance/Chrome executed.",
+    "Four-class work/CPU/wall and all original eight semantic cases remain UNRUN.",
+    "The fallback plan cannot by itself discharge historical Sc493 whole-withdrawal B1.",
+    "Initial parser accepts a one-row truncated none/N8 output; no claim this occurred in actual product output."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "geo348-protocol-only-command/1",
+  "name": "027-fixed-stdout_error",
+  "argv": [
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/fixed/stub",
+    "stdout_error"
+  ],
+  "cwd": "/tmp/geo348-synthetic-c-protocol-20261025",
+  "timeout_seconds": 10,
+  "synthetic_protocol_only": true,
+  "product_process": false,
+  "input": {
+    "bytes": 87,
+    "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+  },
+  "selected_environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "STUB_PID_PATH": "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/pid.txt",
+    "STUB_FIXTURE": "/tmp/geo348-synthetic-c-protocol-20261025/fixture.txt",
+    "GEO348_DIAG_EVENT_FD": "3",
+    "GEO348_DIAG_STATUS_FD": "4"
+  }
+}

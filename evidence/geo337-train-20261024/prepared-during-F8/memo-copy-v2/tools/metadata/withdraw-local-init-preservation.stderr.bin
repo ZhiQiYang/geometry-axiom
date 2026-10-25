@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/geo337-F8-memo-counterfactual-tools-20261025/check_metadata.py", line 9, in <module>
+    assert withdrawn.count(m.LOCAL_INIT)==1,'ASSERT:memo-counterfactual-retains-H-local-init'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ASSERT:memo-counterfactual-retains-H-local-init

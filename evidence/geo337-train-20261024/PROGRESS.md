@@ -463,3 +463,13 @@ compare真175 scenes/350 runs後於verify_linux.py:156 `assert not failures,fail
 ### F8 全帳本已啟動（2026-10-25 07:38 UTC）
 
 WS375維護真exit0：375組／2622路徑／2247次共用儲存，實際workspace由57,393,152增至376,119,296 bytes；所有路徑／內容保留，沒有刪收據、fixtures或Gitobjects。來源配置真exit0，2738 seed檔獨立inode，原Sources／oracle／fingerprint／RESTORED closure與F8 ROOT一致。先前root誤抄工具pin少a7遭原守門拒絕1，沒有正式執行；原錯誤保留且工具未改。修正輸入後原全123正在執行，未將預檢／配置0稱為帳本通過。正文已普通push D=757d8104861f49da7890828eff3c72a7105e9eb4；當時UNRUN狀態的後續更新以本啟動紀錄為準，bot狀態另查。exact三差仍紅，B/C未獲批准，未更改golden或門檻。
+
+### F8 重產期間的已完成工具準備（2026-10-25）
+
+全123仍在執行中；08:33 UTC的增量為92／123，不是終態或驗收通過。本批prepared-during-F8/公開已完成且受對抗審查的外部工具、完整選定合成命令原流及限制，沒有讀取或封存活動中的帳本資料。產品／測試／架構仍F8，沒有新增或放寬門檻。
+
+F9 nonperf v2保原required-eight681／Q38全44、37條正式命令計畫；F9仍UNBOUND，未跑正式項。tiny Git rename反例0/1/0修正外部來源closure守門，v1保歷史。全123 collector v2保原123／120執行head／3retired及真終態守門，也能封存截斷子JSON的原失敗，不能把封包0當產品0。F8 memo copy-v2只撤回四處memo並保H local-init，以不同inode的私有副本保護R8 ELF；正式profile／175ABC未跑。
+
+#341 cost v2修正截斷FACE可能被接受的工具缺陷；精確case/n、原公式FACE數與9整數欄，五組純metadata固定／撤回／恢復0/1/0，對抗審查188/0，所有C／樣本／時限未改。F8僅fallback成本仍未量測，也不能替代舊Sc493全刀B1。#348工具保原四指令整批600秒；小型C stub的61項／26命令與真pipe/timeout-reap/guard反證經355/0獨審，但產品ELF／原512仍UNRUN。首次缺事前env/disk紀錄、ELF hash於review時取值等限制原樣保留，未補造或重抽首輪。
+
+出版清單為877葉5,825,898B的選定原件，另附清單／摘要／檢查／README；所有.git objects與未跑r2稿排除、原處不刪。原歷史準備文字與失敗稿保真，不回填成已執行。QUESTIONS當前節已另推Eecdcc22c，明列R8性能紅已解除，exact三差／B′C未批准／P189與CI仍保原阻擋。**目前不是READY-TO-MERGE。**

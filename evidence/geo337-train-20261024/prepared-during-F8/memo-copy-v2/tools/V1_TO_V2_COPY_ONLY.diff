@@ -1,0 +1,34 @@
+--- /tmp/geo337-F8-memo-counterfactual-tools-20261025/run.py
++++ /tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/run.py
+@@ -12,11 +12,13 @@
+ def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+ HERE=Path(__file__).resolve().parent
+ PINS.update({HERE/'memo_variant.py':'80f1c1c583d2b812f829035099e3612c5fd436915892437f27179f2072eb097e',HERE/'COUNTERFACTUAL.json':'4fb12fc272fb55e92f441f24f34f6657c64020b5c90c2c3c1f0fd117eff61a04'})
++PINS.update({HERE/'copy_r8_elf.py':'07bc1f02c9d813fa20f7289e4fde687362ef5db5e9831b831dc9307a5a5a47e5',HERE/'R8_ELF_COPY_BINDINGS.json':'fa0d0cdc150addfa6107e203b00f54399145e2315516069dc339918c2e93f13b'})
+ for file,want in PINS.items():assert sha(file.read_bytes())==want,('tool pin',str(file))
+ if sys.flags.optimize:raise RuntimeError('Original assertions require optimize0')
+ def load(name,path):
+  s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
+ memo_variant=load('memo_only_counterfactual',HERE/'memo_variant.py')
++elf_copy=load('private_R8_ELF_copy',HERE/'copy_r8_elf.py')
+ assert a.sha==memo_variant.F8,'This counterfactual is fixed to actual F8, never ledger-adoption F9'
+ cap=load('original_capture',CAP);sys.path.insert(0,str(V3));import geo323_record as original_record
+ v3=load('original_verify',V3/'verify_linux.py');v4=load('bound_verify',V4/'verify_linux.py');bound=load('bound_session',V4/'run.py')
+@@ -73,7 +75,7 @@
+      raw=memo_variant.withdraw_memo(path,(source/path).read_bytes());assert sha(raw)==withdrawn;(source/path).write_bytes(raw)
+    r['source_after_variant']=inv(source);changed=[p for p in r['source_before_variant'] if r['source_before_variant'][p]!=r['source_after_variant'][p]];assert set(changed)==(set(PRODUCT) if a.phase=='withdrawn' else set());r['changed_source_paths']=changed
+    patch=''.join(''.join(difflib.unified_diff(product_before[path].splitlines(keepends=True),(source/path).read_text().splitlines(keepends=True),fromfile='F/'+path,tofile=a.phase+'/'+path)) for path in PRODUCT);(a.out/'product-variant.patch').write_text(patch);r['product_variant_patch_sha256']=sha(patch.encode())
+-   src=a.formal_out/'work/base-pg/bridge';dst=work/'base-pg/bridge';dst.parent.mkdir();assert src.stat().st_dev==work.stat().st_dev;os.link(src,dst);r['base_binary_binding']={'path':str(src),'sha256':sha(src.read_bytes()),'source_sha':BASE}
++   src=a.formal_out/'work/base-pg/bridge';dst=work/'base-pg/bridge';dst.parent.mkdir();copy_binding=elf_copy.copy_r8_binary('base-pg',src,dst);r['base_binary_binding']={'path':str(src),'sha256':copy_binding['sha256'],'source_sha':BASE,'private_copy':copy_binding}
+    v3.build(source,work/'fix-pg',profile=True);r['fix_binary_binding']={'path':str(work/'fix-pg/bridge'),'sha256':sha((work/'fix-pg/bridge').read_bytes()),'source_sha':a.sha,'variant':a.phase};os.environ.update(GEO323_ROOT=str(source),GEO323_WORK=str(work),GEO323_EVIDENCE=str(evidence));original.env.update(GEO323_ROOT=str(source),GEO323_WORK=str(work),GEO323_EVIDENCE=str(evidence));runpy.run_path(str(V3/'profile_linux.py'),run_name='__main__')
+    counts={}
+    for version in ['base','fix']:
+@@ -83,7 +85,7 @@
+   else:
+    withdrawn=a.out.parent/'withdrawn/source';restored=a.out.parent/'restored/source';w=json.loads((a.out.parent/'withdrawn/receipt.json').read_text());s=json.loads((a.out.parent/'restored/receipt.json').read_text());assert inv(withdrawn)==w['source_after_variant'] and inv(restored)==s['source_after_variant'];r['variant_sources']={'withdrawn':w['source_after_variant'],'fixed':s['source_after_variant']}
+    for label in ['fix','fix-trace']:
+-    src=a.formal_out/'work'/label/'bridge';dst=work/label/'bridge';dst.parent.mkdir();assert src.stat().st_dev==work.stat().st_dev;assert sha(src.read_bytes())==next(x['binary_sha256'] for x in formal['builds'] if x['label']==label);os.link(src,dst);r.setdefault('fixed_binary_bindings',[]).append({'label':label,'source':str(src),'sha256':sha(src.read_bytes())})
++    src=a.formal_out/'work'/label/'bridge';dst=work/label/'bridge';dst.parent.mkdir();assert sha(src.read_bytes())==next(x['binary_sha256'] for x in formal['builds'] if x['label']==label);copy_binding=elf_copy.copy_r8_binary(label,src,dst);r.setdefault('fixed_binary_bindings',[]).append({'label':label,'source':str(src),'sha256':copy_binding['sha256'],'private_copy':copy_binding})
+    v4.build(withdrawn,work/'base');v4.build(withdrawn,work/'base-trace',trace=True)
+    session=object.__new__(bound.Session);session.a=argparse.Namespace(repo=a.repo);session.work=work;session.evidence=evidence;session.v=v4;session.record={'builds':[{'label':x,'execution_exit':0} for x in ['base','fix','base-trace','fix-trace']]}
+    try:bound.Session.compare(session)

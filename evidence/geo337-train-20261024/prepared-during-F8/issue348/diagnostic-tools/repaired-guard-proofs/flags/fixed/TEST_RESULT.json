@@ -1,0 +1,167 @@
+{
+  "control": "flags",
+  "passed": true,
+  "exit": 0,
+  "detail": {
+    "valid": false,
+    "errors": [
+      "negative-libc-flag-or-length"
+    ],
+    "events": [
+      {
+        "seq": 1,
+        "kind": "stdin_line_returned",
+        "command": 1,
+        "monotonic_ns": 1000,
+        "rc": 1,
+        "length": 35,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 2,
+        "kind": "stdout_flush_enter",
+        "command": 1,
+        "monotonic_ns": 1100,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 3,
+        "kind": "stdout_flush_return",
+        "command": 1,
+        "monotonic_ns": 1200,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 4,
+        "kind": "stdin_line_returned",
+        "command": 2,
+        "monotonic_ns": 1300,
+        "rc": 1,
+        "length": 5,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 5,
+        "kind": "stdout_flush_enter",
+        "command": 2,
+        "monotonic_ns": 1400,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 6,
+        "kind": "stdout_flush_return",
+        "command": 2,
+        "monotonic_ns": 1500,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 7,
+        "kind": "stdin_line_returned",
+        "command": 3,
+        "monotonic_ns": 1600,
+        "rc": 1,
+        "length": 8,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 8,
+        "kind": "stdout_flush_enter",
+        "command": 3,
+        "monotonic_ns": 1700,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 9,
+        "kind": "stdout_flush_return",
+        "command": 3,
+        "monotonic_ns": 1800,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 10,
+        "kind": "stdin_line_returned",
+        "command": 4,
+        "monotonic_ns": 1900,
+        "rc": 1,
+        "length": 11,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 11,
+        "kind": "stdout_flush_enter",
+        "command": 4,
+        "monotonic_ns": 2000,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 12,
+        "kind": "stdout_flush_return",
+        "command": 4,
+        "monotonic_ns": 2100,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      }
+    ],
+    "flushed_commands": [
+      {
+        "command": 1,
+        "rc": 0
+      },
+      {
+        "command": 2,
+        "rc": 0
+      },
+      {
+        "command": 3,
+        "rc": 0
+      },
+      {
+        "command": 4,
+        "rc": 0
+      }
+    ],
+    "last_boundary": {
+      "kind": "stdout_flush_return",
+      "command": 4,
+      "monotonic_ns": 2100
+    },
+    "root_cause": null,
+    "product_gate_verdict": null,
+    "status": {
+      "attached": 1,
+      "attempts": 13,
+      "successes": 13,
+      "faults": 0
+    }
+  },
+  "synthetic": true,
+  "product_executed": false,
+  "wrapper_compiled": false
+}

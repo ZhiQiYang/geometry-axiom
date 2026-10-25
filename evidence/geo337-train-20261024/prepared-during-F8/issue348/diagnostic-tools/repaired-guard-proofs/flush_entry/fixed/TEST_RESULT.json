@@ -1,0 +1,40 @@
+{
+  "control": "flush_entry",
+  "passed": true,
+  "exit": 0,
+  "detail": {
+    "valid": false,
+    "errors": [
+      "flush-entry-fields"
+    ],
+    "events": [
+      {
+        "seq": 1,
+        "kind": "stdin_line_returned",
+        "command": 1,
+        "monotonic_ns": 1000,
+        "rc": 1,
+        "length": 35,
+        "feof": 0,
+        "ferror": 0
+      }
+    ],
+    "flushed_commands": [],
+    "last_boundary": {
+      "kind": "stdin_line_returned",
+      "command": 1,
+      "monotonic_ns": 1000
+    },
+    "root_cause": null,
+    "product_gate_verdict": null,
+    "status": {
+      "attached": 1,
+      "attempts": 13,
+      "successes": 13,
+      "faults": 0
+    }
+  },
+  "synthetic": true,
+  "product_executed": false,
+  "wrapper_compiled": false
+}

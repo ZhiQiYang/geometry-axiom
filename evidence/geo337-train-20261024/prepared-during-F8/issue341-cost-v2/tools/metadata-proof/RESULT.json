@@ -1,0 +1,242 @@
+{
+  "phases": [
+    {
+      "name": "fixed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo341-cost-preparation-20261025/test_metadata_guards.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "8520a55bf8f1d38dd39ec82badf2491a0250e12966bba84d7ae43272af94eba1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": {
+        "exit": 0,
+        "checks": 14,
+        "failures": [],
+        "withdraw_source_guard": false,
+        "C_executed": false,
+        "product_mutation_proof": false,
+        "details": [
+          {
+            "name": "baseline-complete-plan",
+            "passed": true
+          },
+          {
+            "name": "wrong-source",
+            "passed": true
+          },
+          {
+            "name": "missing-withdrawn",
+            "passed": true
+          },
+          {
+            "name": "missing-positive",
+            "passed": true
+          },
+          {
+            "name": "missing-fallback",
+            "passed": true
+          },
+          {
+            "name": "discarded-sample",
+            "passed": true
+          },
+          {
+            "name": "changed-runtime-timeout",
+            "passed": true
+          },
+          {
+            "name": "invented-threshold",
+            "passed": true
+          },
+          {
+            "name": "false-historical-completion",
+            "passed": true
+          },
+          {
+            "name": "timing-protocol",
+            "passed": true
+          },
+          {
+            "name": "missing-full-face-stream",
+            "passed": true
+          },
+          {
+            "name": "diagnostic-not-performance",
+            "passed": true
+          },
+          {
+            "name": "duplicate-time-record",
+            "passed": true
+          },
+          {
+            "name": "invalid-clock-number",
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "withdrawn",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo341-cost-preparation-20261025/test_metadata_guards.py",
+        "--withdraw-source-guard"
+      ],
+      "exit": 1,
+      "stdout_sha256": "c45bb671273f46d6613e16332f1c202eaf6720bb5f59ab95b7b292a1c7bb0afb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": {
+        "exit": 1,
+        "checks": 14,
+        "failures": [
+          "wrong-source"
+        ],
+        "withdraw_source_guard": true,
+        "C_executed": false,
+        "product_mutation_proof": false,
+        "details": [
+          {
+            "name": "baseline-complete-plan",
+            "passed": true
+          },
+          {
+            "name": "wrong-source",
+            "passed": false
+          },
+          {
+            "name": "missing-withdrawn",
+            "passed": true
+          },
+          {
+            "name": "missing-positive",
+            "passed": true
+          },
+          {
+            "name": "missing-fallback",
+            "passed": true
+          },
+          {
+            "name": "discarded-sample",
+            "passed": true
+          },
+          {
+            "name": "changed-runtime-timeout",
+            "passed": true
+          },
+          {
+            "name": "invented-threshold",
+            "passed": true
+          },
+          {
+            "name": "false-historical-completion",
+            "passed": true
+          },
+          {
+            "name": "timing-protocol",
+            "passed": true
+          },
+          {
+            "name": "missing-full-face-stream",
+            "passed": true
+          },
+          {
+            "name": "diagnostic-not-performance",
+            "passed": true
+          },
+          {
+            "name": "duplicate-time-record",
+            "passed": true
+          },
+          {
+            "name": "invalid-clock-number",
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "restored",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo341-cost-preparation-20261025/test_metadata_guards.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "8520a55bf8f1d38dd39ec82badf2491a0250e12966bba84d7ae43272af94eba1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": {
+        "exit": 0,
+        "checks": 14,
+        "failures": [],
+        "withdraw_source_guard": false,
+        "C_executed": false,
+        "product_mutation_proof": false,
+        "details": [
+          {
+            "name": "baseline-complete-plan",
+            "passed": true
+          },
+          {
+            "name": "wrong-source",
+            "passed": true
+          },
+          {
+            "name": "missing-withdrawn",
+            "passed": true
+          },
+          {
+            "name": "missing-positive",
+            "passed": true
+          },
+          {
+            "name": "missing-fallback",
+            "passed": true
+          },
+          {
+            "name": "discarded-sample",
+            "passed": true
+          },
+          {
+            "name": "changed-runtime-timeout",
+            "passed": true
+          },
+          {
+            "name": "invented-threshold",
+            "passed": true
+          },
+          {
+            "name": "false-historical-completion",
+            "passed": true
+          },
+          {
+            "name": "timing-protocol",
+            "passed": true
+          },
+          {
+            "name": "missing-full-face-stream",
+            "passed": true
+          },
+          {
+            "name": "diagnostic-not-performance",
+            "passed": true
+          },
+          {
+            "name": "duplicate-time-record",
+            "passed": true
+          },
+          {
+            "name": "invalid-clock-number",
+            "passed": true
+          }
+        ]
+      }
+    }
+  ],
+  "exit": 0,
+  "C_executed": false,
+  "product_mutation_proof": false,
+  "utc": "2026-10-25T07:56:28.752213+00:00"
+}

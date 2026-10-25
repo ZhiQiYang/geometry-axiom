@@ -1,0 +1,18 @@
+{
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "original_harness": "/workspace/geo341-c493-whole-cost-draft-20261024/cost_harness.c",
+  "original_harness_sha256": "8eaa6f8fda39a9d7dfd41077dd14fc8b9513d9fa55b9e04a95cdc9ba5894d8e6",
+  "original_peer": "/workspace/geo341-c493-cost-peer-evidence-20261024/REVIEW.json",
+  "historical_source": "c493b7315d0cd3b16014add96af969c49ebf4660",
+  "historical_base": "a6072dde8eac809e93ccd9373946dea98fa5c362",
+  "old_fallback_source": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+  "C_executed": false,
+  "scope": "new F8 fallback-only sources and modified harness; old static peer does not automatically approve this draft",
+  "files": {
+    "fixed.c": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b",
+    "withdrawn.c": "6114a70c2a67e2f021010d4181f2225285a14578a81b110a85aabc1641c415ff",
+    "restored.c": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b",
+    "WITHDRAW_FALLBACK.patch": "2a54c6919fc753e4235b5af47c2ff06d6c4596a3c25fdf8bb065ce4bbe8a5f52",
+    "cost_harness.c": "127c4997dc5aa4ec9588ff384d3ba9cd58db2a9b1eb8c040ee446b455bd89d31"
+  }
+}
