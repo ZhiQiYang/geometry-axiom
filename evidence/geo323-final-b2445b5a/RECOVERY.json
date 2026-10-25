@@ -1,0 +1,42 @@
+{
+  "schema": "geo323-append-only-transport-recovery/1",
+  "source_sha": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+  "created_utc": "2026-10-23T15:08:19.867431+00:00",
+  "original_unified_session_handle": 18009,
+  "observation_file": "/tmp/geo323-merge-20261023/PLATFORM_TRANSPORT_OBSERVATION_20261023T1500.json",
+  "observed_pid": 1305238,
+  "observed_pid_status_at_150348": "Z (zombie), PPid1",
+  "observed_pid_kernel_wait_status": 0,
+  "kernel_status_not_used_as_a_gate": true,
+  "exact_scheduler_script_processes_at_1504": [],
+  "original_scheduler_TOP_RESULT_present": false,
+  "original_scheduler_final_console_exit": "unknown after unified session loss; not inferred from other PID or judges",
+  "actual_recorded_stage_wrapper_exits": [
+    {
+      "stage": "required-eight",
+      "actual_wrapper_exit": 1,
+      "directory": "/tmp/geo323-baseline-b2445b5a-v3-remaining-launch/subcommands/000001"
+    },
+    {
+      "stage": "pf3",
+      "actual_wrapper_exit": 1,
+      "directory": "/tmp/geo323-baseline-b2445b5a-v3-remaining-launch/subcommands/000002"
+    },
+    {
+      "stage": "native",
+      "actual_wrapper_exit": 1,
+      "directory": "/tmp/geo323-baseline-b2445b5a-v3-remaining-launch/subcommands/000003"
+    }
+  ],
+  "native_original_process_exit": 1,
+  "native_execution_ended_utc": "2026-10-23T15:01:42.146457+00:00",
+  "source_after": {
+    "head": "b2445b5a270d60fdf48b07f6edddbe91266d8aa2",
+    "status": ""
+  },
+  "no_original_raw_or_receipt_rewritten": true,
+  "no_stage_reopened": true,
+  "no_resampling": true,
+  "interpretation": "只補封裝／傳輸觀測。排程器最後 JSON 缺口照實保留；正式 stage 原 exit、完整 stdout/stderr 與 SHA 已由原內層 recorder 封存，不補造成功出口。",
+  "role_metadata_scope": "原 v3 role heuristic 遇包含 --base SHA 的 orchestration argv 會標 base；acceptance_sha 仍是 S。真正 run_all／PF3 程序由內層 source_sha、cwd 與前後 clean Git state 綁 S，不把 orchestration role 當受驗產品。"
+}

@@ -1,0 +1,307 @@
+{
+  "archive": "completed-baseline-06.tar.gz",
+  "bytes": 57335572,
+  "sha256": "8a7cc27c592afeb5c36c26c3f3c0a5588178cd39fc12911b8c6bfe1aaa6212a3",
+  "members": [
+    {
+      "path": "large_merge_stdout/stdout.part-0002.gz",
+      "bytes": 54798960,
+      "sha256": "2f4244dde6691fa6b801ad7f700ef0e05faa5ddcb8a7939910404aeffc2da31e"
+    },
+    {
+      "path": "large_merge_stdout/stdout.part-0003.gz",
+      "bytes": 2272791,
+      "sha256": "1f19d785cf201a83bba410881c55daa9b61759ccfccbab811a4048cadeb186d9"
+    },
+    {
+      "path": "large_stream_packer/pack_lossless_command_stream.py",
+      "bytes": 6640,
+      "sha256": "c2ef885d592f54f35673a0d434d8654ebd23ab425fffd782ba796db803cc82f4"
+    },
+    {
+      "path": "large_stream_pack_execution/receipt.json",
+      "bytes": 4413,
+      "sha256": "956ef3dd289c7756cb40fe670008037ac17718ccda9549a30d59b52af702cd6a"
+    },
+    {
+      "path": "large_stream_pack_execution/subcommands/000001/request.json",
+      "bytes": 1752,
+      "sha256": "260b426984900ea39e4a55bb142afe7188347f65d27ea5f45f8205929e4badf1"
+    },
+    {
+      "path": "large_stream_pack_execution/subcommands/000001/result.json",
+      "bytes": 2004,
+      "sha256": "b1b670c36392abd336a5f7058178f957c022ea0354893004ab70a4109f689f37"
+    },
+    {
+      "path": "large_stream_pack_execution/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "large_stream_pack_execution/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "large_stream_pack_execution/subcommands/000001/stdout.bin",
+      "bytes": 241,
+      "sha256": "8b806b70b03542f1f57943e187b0363293c52a982d99b7e5761e5d860abe3001"
+    },
+    {
+      "path": "large_stream_pack_execution/subcommands.json",
+      "bytes": 2102,
+      "sha256": "0569149f4bca1e993b5f652d22ba43e869d057f3089edc720214566a0903f312"
+    },
+    {
+      "path": "large_stream_pack_peer/REVIEW.json",
+      "bytes": 1342,
+      "sha256": "fd026bfe998e350c7b913bd3eb9e3e11816a04175709c8c6c5adce1ad865985f"
+    },
+    {
+      "path": "large_stream_pack_peer/REVIEW.md",
+      "bytes": 2411,
+      "sha256": "5ef88b770f7ae2ab5c71109ad4072434807bad007cfca3f401cb278ddb136685"
+    },
+    {
+      "path": "memo_v2_peer/CHECKS.json",
+      "bytes": 21969,
+      "sha256": "1fc9724b72a224396a89373564c688a030e72df224e2e341d54701701c3e2b2e"
+    },
+    {
+      "path": "memo_v2_peer/REVIEW.md",
+      "bytes": 4456,
+      "sha256": "4890a60daf78addce42bacce398663b36ebe8efa13a2bfa3f489306a8b97a004"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/geometry-app/native/app_candidate.c",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/geometry-app/native/reference_sources.inc",
+      "bytes": 61205,
+      "sha256": "4cb8d3d59d39776570880c17cddaacc4169900802df1b4f6b7547e7f96123713"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/geometry-app/native/world_validation.inc",
+      "bytes": 7897,
+      "sha256": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/geometry-core/kernel/source.c",
+      "bytes": 16890,
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/geometry-core/references.inc",
+      "bytes": 63717,
+      "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/geometry-templates/woodworking/native/definition_sources.c",
+      "bytes": 17633,
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/tests/geo261_load_residual_harness.c",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/tests/geo261_member_reads_cases.inc",
+      "bytes": 8458,
+      "sha256": "f1e29c860e9273c661c58c1bfff5e4e73cc6f37810690577fcfab86dae12b641"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/tests/test_geo261_contact_sources.py",
+      "bytes": 13423,
+      "sha256": "b12b36e967feb08be661f39e7f39b450c3f04dc59e91c647e6d4bad6e2a0e94a"
+    },
+    {
+      "path": "memo_v2_peer/inputs/5c29eba30a40f20ea5c7eb8dc139e5788235d3b6/tests/test_geo261_load_residual.py",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/geometry-app/native/app_candidate.c",
+      "bytes": 8674,
+      "sha256": "dd28eaa879d09599e629f0814dbe82d693847d2a66f06c2ce03b098af3824eb9"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/geometry-app/native/reference_sources.inc",
+      "bytes": 61205,
+      "sha256": "4cb8d3d59d39776570880c17cddaacc4169900802df1b4f6b7547e7f96123713"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/geometry-app/native/world_validation.inc",
+      "bytes": 7897,
+      "sha256": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/geometry-core/kernel/source.c",
+      "bytes": 16890,
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/geometry-core/references.inc",
+      "bytes": 63717,
+      "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/geometry-templates/woodworking/native/definition_sources.c",
+      "bytes": 17633,
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/tests/geo261_load_residual_harness.c",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/tests/geo261_member_reads_cases.inc",
+      "bytes": 8458,
+      "sha256": "f1e29c860e9273c661c58c1bfff5e4e73cc6f37810690577fcfab86dae12b641"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/tests/test_geo261_contact_sources.py",
+      "bytes": 13423,
+      "sha256": "b12b36e967feb08be661f39e7f39b450c3f04dc59e91c647e6d4bad6e2a0e94a"
+    },
+    {
+      "path": "memo_v2_peer/inputs/b2445b5a270d60fdf48b07f6edddbe91266d8aa2/tests/test_geo261_load_residual.py",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "memo_v2_peer/inputs/candidate/CANDIDATE.json",
+      "bytes": 1662,
+      "sha256": "a85227e0a32b27c1d77ecdf4866d64d7899d67d23b2dcfb2824d72e417742131"
+    },
+    {
+      "path": "memo_v2_peer/inputs/candidate/candidate.patch",
+      "bytes": 3481,
+      "sha256": "5a25dfe85440c0cee6dd44de3f3af6a38340e9fb9d98b88942583542de4ff152"
+    },
+    {
+      "path": "memo_v2_peer/inputs/candidate/geometry-app/native/reference_sources.inc",
+      "bytes": 62049,
+      "sha256": "d582024fdbb7f3bec786a91db55cb3139ec13c464ce2142edb6acb48c069e1d0"
+    },
+    {
+      "path": "memo_v2_peer/inputs/candidate/geometry-core/references.inc",
+      "bytes": 63920,
+      "sha256": "f82763c401cc892f0bf78844ed67d080b7a62991d53bd29046bf07fd982928fa"
+    },
+    {
+      "path": "testfix_v1_peer/CHECKS.json",
+      "bytes": 7949,
+      "sha256": "a8e53aa2174c5f1e8750c03eac66d4bf703ed599a213000eafe8f57174e1c696"
+    },
+    {
+      "path": "testfix_v1_peer/REPORT.md",
+      "bytes": 1771,
+      "sha256": "d29605c2ac17e14e8710b18b31cc16f4922dd571055afa17fe38050332c681e6"
+    },
+    {
+      "path": "testfix_v1_peer/header-api.txt",
+      "bytes": 709,
+      "sha256": "c05b8ba7433e643914cf4d4388f93b1277bc2d3865c27a56b19a593f356c142b"
+    },
+    {
+      "path": "testfix_v1_peer/original-inputs/geometry-app/native/reference_sources.inc",
+      "bytes": 61205,
+      "sha256": "4cb8d3d59d39776570880c17cddaacc4169900802df1b4f6b7547e7f96123713"
+    },
+    {
+      "path": "testfix_v1_peer/original-inputs/geometry-core/kernel/placement_sources.c",
+      "bytes": 16248,
+      "sha256": "45e754f4260e15679797b8f44c8c6a25132b199d47a7239da1e2045a8a814c31"
+    },
+    {
+      "path": "testfix_v1_peer/original-inputs/geometry-core/kernel/placement_sources.h",
+      "bytes": 3775,
+      "sha256": "9c11cb94b20231dabf746c6f23480b5c3d324fc9d268b0140a3e01fab4781aa8"
+    },
+    {
+      "path": "testfix_v1_peer/original-inputs/geometry-core/kernel/source.c",
+      "bytes": 16890,
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+    },
+    {
+      "path": "testfix_v1_peer/original-inputs/geometry-templates/woodworking/native/definition_sources.c",
+      "bytes": 17633,
+      "sha256": "83f9aa499708d3f75b027cf323c3c62ff9de38f0d73b60630f78366f4d9d3d16"
+    },
+    {
+      "path": "testfix_v1_peer/original-inputs/tests/geo261_load_residual_harness.c",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "testfix_v1_peer/original-inputs/tests/test_geo261_load_residual.py",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "testfix_v1_peer/original-inputs/tests/test_geo261_native_kernel.py",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    {
+      "path": "combined_candidate_peer/CHECKS.json",
+      "bytes": 8528,
+      "sha256": "b9cd8e64ad69c1f78f72093deaf98d6a0cce606d25cdcc6b01f0c4aa7610fc65"
+    },
+    {
+      "path": "combined_candidate_peer/REPORT.md",
+      "bytes": 1488,
+      "sha256": "f6613f34760618f301b60a172e3025b7baea3b6efe792f45c4eb0a07cdfe2e2f"
+    },
+    {
+      "path": "combined_candidate_peer/original-inputs/geometry-app/native/reference_sources.inc",
+      "bytes": 61205,
+      "sha256": "4cb8d3d59d39776570880c17cddaacc4169900802df1b4f6b7547e7f96123713"
+    },
+    {
+      "path": "combined_candidate_peer/original-inputs/geometry-core/references.inc",
+      "bytes": 63717,
+      "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+    },
+    {
+      "path": "combined_candidate_peer/original-inputs/tests/geo261_load_residual_harness.c",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "combined_candidate_peer/original-inputs/tests/test_geo261_load_residual.py",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "fixed_three_launcher_peer/CHECKS.json",
+      "bytes": 3531,
+      "sha256": "a83265f3a49773b06b8f57d98a2cb5cdba0d5689818d11bcdf3257c4c2ee23c5"
+    },
+    {
+      "path": "baseline_current_body_peer/CHECKS.json",
+      "bytes": 1595,
+      "sha256": "ff3beeb58676c34ffe8d3e44e7ddec8a3ab76fd750e9553ea074fe8c6aa8ebe1"
+    },
+    {
+      "path": "baseline_current_body_peer/ORIGINAL_RECEIPT_AT_REVIEW.json",
+      "bytes": 14584,
+      "sha256": "01ec1c76b3fffa5b112541675c84c5871fa6a8d3783d245db77549e01e1adbde"
+    },
+    {
+      "path": "baseline_current_body_peer/PR_BODY.md",
+      "bytes": 7269,
+      "sha256": "5a07964b11477630a434c0d050f977021841ae1a5df9104ef11859a4e1495293"
+    },
+    {
+      "path": "source_static_peer/REVIEW323_STATIC_5c29eba3.md",
+      "bytes": 3380,
+      "sha256": "6714133cdefa53355cd7d4d2534c91517ee8936cd6399803fc66753907ee4734"
+    }
+  ]
+}

@@ -6249,7 +6249,8 @@ static bool world_validate_derived(const World *world)
         }
     }
 
-    WoodWorldValidationContext context=app_world_validation_context(world);
+    AppValidationInputs inputs={0};
+    WoodWorldValidationContext context=app_world_validation_context(world,&inputs);
     char error[256]="";
     if(!wood_world_validate_members(&context,error,sizeof error)){
         if(error[0])set_revalidate_error(error);return false;

@@ -1,0 +1,19 @@
+import importlib.util,json,os,datetime,traceback
+from pathlib import Path
+S="b2445b5a270d60fdf48b07f6edddbe91266d8aa2"
+stage=Path("/tmp/geo323-baseline-handoff-stage");out=Path("/tmp/geo323-baseline-b2445b5a-publication");out.mkdir(exist_ok=False)
+s=importlib.util.spec_from_file_location("cap","/workspace/geo288-main-merge-20261023/native-final-tools/capture.py");c=importlib.util.module_from_spec(s);s.loader.exec_module(c)
+r=c.Recorder(out,dict(os.environ),S);report={"source_sha":S,"commands":r.rows,"errors":[]}
+inputs={"preparation":stage/"preparation","staging":stage/"STAGING.json","handoff_notes":stage/"handoff-notes","publication_tools":stage/"publication-tools","three_suite":Path("/tmp/geo323-baseline-b2445b5a-three"),"v3_baseline":Path("/tmp/geo323-baseline-b2445b5a-v3-r1"),"first_five_launch":Path("/tmp/geo323-baseline-b2445b5a-v3-first-five-launch"),"remaining_launch":Path("/tmp/geo323-baseline-b2445b5a-v3-remaining-launch"),"large_merge_stdout":Path("/workspace/geo323-merge-stdout-lossless-20261023"),"large_stream_packer":Path("/workspace/geo288-main-merge-20261023/pack_lossless_command_stream.py"),"large_stream_pack_execution":Path("/workspace/geo288-main-merge-20261023/geo323-merge-stdout-pack-execution"),"large_stream_pack_peer":Path("/workspace/geo318-lossless-pack-static-20261023"),"memo_v2_peer":Path("/workspace/geo288-main-merge-20261023/p88-priority/geo323-contact-memo-v2-review"),"testfix_v1_peer":Path("/workspace/geo288-main-merge-20261023/p88-priority/geo323-test-control-refresh-v1-review"),"combined_candidate_peer":Path("/workspace/geo288-main-merge-20261023/p88-priority/geo323-combined-memo-controls-v1-review"),"fixed_three_launcher_peer":Path("/workspace/geo314-owner-20261023/review-323-fixed-three-preparation"),"baseline_current_body_peer":Path("/workspace/geo314-owner-20261023/review-323-body-b63add26"),"source_static_peer":Path("/workspace/geo318-reading-a-prep/REVIEW323_STATIC_5c29eba3.md")}
+argv=["python3","-B",str(stage/"publication-tools/publish_followup_progress_bound.py"),"--repo","/tmp/g261-next323","--branch","codex/geo261-load-residual-20261020","--issue","323","--sha",S,"--label","completed-baseline","--result","原8stage全部終態：175ABC等價、PF3原0；36timing/4gprof保原N64綠、N32與calls紅；完整native5200pass/2fail/1具名WindowsGDI允許skip，另ledger STALE。兩test-control drift保原失敗。scheduler傳輸TOP缺口照實RECOVERY，不冒全綠。候選完全未套未測。","--next","依使用者階段性停止，交接已跑原件與未套候選；後續owner按root次序確認finalbase再修，原門檻不變，現在不開新測試","--receipt","/tmp/geo323-merge-20261023/BASELINE_CURRENT_SUMMARY.json"]
+for label,path in inputs.items():
+ if not path.exists():raise RuntimeError("Missing original input "+str(path))
+ argv += ["--input",label+"="+str(path)]
+c.dump(out/"TOP_REQUEST.json",{"argv":argv,"source_sha":S,"input_roots":{k:str(v) for k,v in inputs.items()},"only_large_stream_transformed_losslessly":True,"no_source_or_test_fix_started":True})
+try:
+ row,stdout,stderr=r.run(argv,cwd="/tmp/g261-next323",timeout=None,check=False);report["original_publisher"]=row;report["actual_exit"]=row["actual_process_returncode"]
+except BaseException:report["errors"].append(traceback.format_exc());report["actual_exit"]=2
+finally:
+ report["ended_utc"]=datetime.datetime.now(datetime.timezone.utc).isoformat();c.dump(out/"PUBLICATION.json",report)
+print(json.dumps({k:v for k,v in report.items() if k!="commands"},ensure_ascii=False))
+raise SystemExit(report["actual_exit"])

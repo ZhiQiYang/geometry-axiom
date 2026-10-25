@@ -1,0 +1,27 @@
+{
+  "name": "required",
+  "command": [
+    "python3",
+    "tests/run_all.py",
+    "--build",
+    "--only",
+    "py:test_geo261_source_index",
+    "--only",
+    "py:test_geo261_candidate_cache",
+    "--only",
+    "py:test_geo261_graph_product",
+    "--only",
+    "py:test_geo261_assembly_graph_product",
+    "--only",
+    "py:test_bridge_integrity",
+    "--only",
+    "c:integrity",
+    "--only",
+    "core:run_tests",
+    "--only",
+    "py:test_geo261_load_residual"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "stack_bytes": 16777216,
+  "exit": 0
+}
