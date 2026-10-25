@@ -1,0 +1,1 @@
+初版唯讀審查 exit1：誤把 wrapper.request_sha256 當成衍生 BOUND_REQUEST.json 的 pin。原 wrapper 第53/70行綁的是 root 輸入請求，真 root-request pin df5d8d8b 正確；BOUND_REQUEST 是第84–87行從既審 template 衍生的另份文件。更正審查器後分別核兩份，未修改原收據／產品，也未重跑測試。初版程式保留 review.initial.py。

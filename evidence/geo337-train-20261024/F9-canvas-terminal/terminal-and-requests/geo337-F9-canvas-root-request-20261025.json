@@ -1,0 +1,29 @@
+{
+  "schema": "geo337-F9-single-browser-launch/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "job": "canvas",
+  "resource_lock": "heavy",
+  "root_scheduled_single_browser": true,
+  "root_execution_lease": true,
+  "plan_dir": "/tmp/geo337-F9-canvas-sourceplan-20261025",
+  "plan_sha256": "c1a1ce03b782b7a26db3b908edebb18d22abad784bcb2926a2934941356a7bde",
+  "source_layout": "/workspace/geo337-F9-canvas-source-20261025",
+  "out": "/tmp/geo337-F9-browser-canvas-launch-20261025",
+  "storage": "/tmp/geo337-F9-browser-canvas-run-20261025",
+  "source_preparation": {
+    "path": "/tmp/geo337-F9-canvas-source-materialize-launch-20261025/subcommands/000001/result.json",
+    "sha256": "8e8cb7d60b05624eff1d6d610ec85b44930cc55c6dc070d515ffa8f0bd4f4a86"
+  },
+  "source_preparation_peer": {
+    "path": "/workspace/geo337-F9-canvas-materialize-actual-peer-20261025/REVIEW.json",
+    "sha256": "a18f7f5d4208e5a5361206dd4cb0a46143d6ed4b12035fea12d95be2ee265ef2"
+  },
+  "root_fresh_resource_observation": {
+    "tmp_free_bytes": 97746944,
+    "workspace_free_bytes": 79261696,
+    "source_preparation_original_gate_passed": true,
+    "no_other_heavy_job_scheduled": true,
+    "future_runtime_peak_measured": false,
+    "limitation": "Actual future Chrome/build/output peak is not established as a hard upper bound. Root checked available storage and preserves any actual ENOSPC as an environment failure; no test/assertion/time limit changes."
+  }
+}

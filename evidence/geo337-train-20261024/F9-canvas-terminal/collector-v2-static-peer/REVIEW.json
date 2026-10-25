@@ -1,0 +1,22 @@
+{
+  "schema": "geo337-F9-canvas-terminal-collector-v2-delta-static-peer/1",
+  "exit_code": 0,
+  "checks": 17,
+  "failed_checks": [],
+  "collector_sha256": "a0ffc6813506cbebe85cf770981f06534f348094934e36b6154556fedf4c6e9f",
+  "inventory_sha256": "9608b89734fa688bfd9c40c5b0377a6e80cb117caaf389336f11cef27415986d",
+  "parts_sha256": "aca3014a5cfb4dab89d128dc4cbe2bf654724a5f94df3a228dae6b51d143de60",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "base_review_sha256": "d52aae1692334786f5c8e6eeeb70b48599ce906b7c47ab536c5fa299fe06f7db",
+  "base_checks_not_repeated": 3364,
+  "accepted_delta": "fresh direct own output in /workspace or /tmp; free-space label now fresh_output_free; unchanged disk_usage(out) follows real output filesystem",
+  "collection_executed": false,
+  "verdict": "STATIC_DELTA_ACCEPTED_PENDING_ROOT_LEASE_AND_ACTUAL_FRESH_SPACE",
+  "limits": [
+    "No tool execution, archive creation, product/C/Chrome, large payload read or new fixture.",
+    "All v1 scope, four parts, exact hashes, worst-case bounds,2MiB metadata,64MiBreserve and source/peer/lease guards unchanged.",
+    "Root must bind this new collector hash and this exact peer receipt. Actual per-part disk_usage(out) must pass; this peer does not assert present free space or authorize collection.",
+    "Base static peer limitations remain, including full canvas actual review being independent and excluded metadata-only nodes having only prearchive checks.",
+    "Initial reviewer expected four fresh_output_free occurrences; actual exact substitution has three. Original reviewer failure retained; corrected metadata count only, subject unchanged."
+  ]
+}

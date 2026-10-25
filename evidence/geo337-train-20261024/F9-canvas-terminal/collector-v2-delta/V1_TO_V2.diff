@@ -1,0 +1,25 @@
+--- /workspace/collect_geo337_F9_canvas_terminal_parts_20261025.py
++++ /workspace/collect_geo337_F9_canvas_terminal_parts_v2_20261025.py
+@@ -43,7 +43,7 @@
+ for name in index:
+  if PurePosixPath(name).is_absolute() or '..' in PurePosixPath(name).parts:raise RuntimeError('unsafe member path')
+ out=Path(request['out'])
+-if not out.is_absolute() or out.parent!=Path('/workspace') or not out.name.startswith('geo337-F9-canvas-terminal-package-') or out.exists():raise RuntimeError('fresh direct OWN workspace output required')
++if not out.is_absolute() or out.parent not in (Path('/workspace'),Path('/tmp')) or not out.name.startswith('geo337-F9-canvas-terminal-package-') or out.exists():raise RuntimeError('fresh direct OWN workspace or tmp output required')
+ out.mkdir();(out/'BOUND_REQUEST.json').write_bytes(a.request.read_bytes());(out/'COLLECTOR.py.txt').write_bytes(Path(__file__).read_bytes())
+ result={'schema':'geo337-F9-canvas-terminal-complete-package/1','source_sha':F,'collection_exit':None,'collector_sha256':toolpin,'inventory_sha256':IPIN,'parts_sha256':PPIN,'peer_sha256':sha(peerraw),'started_epoch':time.time(),'parts':[],'errors':[],'subject_rerun':False,'no_source_seed_git_object_payload_copied':True,'no_regular_launch_storage_payload_excluded':True}
+ write(out/'RESULT.json',result)
+@@ -60,10 +60,10 @@
+   names=part['members_exact'];logical=sum(index[n]['bytes'] for n in names if index[n]['type']=='regular');n=logical+4096*len(names)+10240
+   required=n+overhead(n)+META+RESERVE
+   if required!=part['required_fresh_bytes'] or part['reserve_bytes']!=RESERVE or part['metadata_bytes']!=META:raise RuntimeError('fixed budget formula mismatch')
+-  budget=dict(part);budget.pop('members_exact');budget.update(fresh_epoch=time.time(),fresh_workspace_free=shutil.disk_usage(out).free,required_bytes=required,compression_ratio_assumed=False)
+-  budget['admitted']=budget['fresh_workspace_free']>=required;write(out/f'PART{part["part"]}_BUDGET.json',budget)
++  budget=dict(part);budget.pop('members_exact');budget.update(fresh_epoch=time.time(),fresh_output_free=shutil.disk_usage(out).free,required_bytes=required,compression_ratio_assumed=False)
++  budget['admitted']=budget['fresh_output_free']>=required;write(out/f'PART{part["part"]}_BUDGET.json',budget)
+   if not budget['admitted']:raise RuntimeError('fresh space insufficient for part '+str(part['part']))
+-  print(json.dumps({'event':'part-budget','part':part['part'],'free':budget['fresh_workspace_free'],'required':required}),flush=True)
++  print(json.dumps({'event':'part-budget','part':part['part'],'free':budget['fresh_output_free'],'required':required}),flush=True)
+   archive=out/f'ORIGINAL_CANVAS_PART{part["part"]}.tar.gz'
+   with tarfile.open(archive,'w:gz',compresslevel=1,format=tarfile.PAX_FORMAT) as tar:
+    for name in names:

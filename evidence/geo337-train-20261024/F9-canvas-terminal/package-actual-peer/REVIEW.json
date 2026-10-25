@@ -1,0 +1,76 @@
+{
+  "schema": "geo337-F9-canvas-terminal-four-part-independent-actual-peer/1",
+  "exit_code": 0,
+  "checks": 5396,
+  "failed_checks": [],
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "package_result_sha256": "eb604c5973fa7e19549d85cd3c7c045485a84a0697730fe6a682f984121fe704",
+  "collector_sha256": "a0ffc6813506cbebe85cf770981f06534f348094934e36b6154556fedf4c6e9f",
+  "inventory_sha256": "9608b89734fa688bfd9c40c5b0377a6e80cb117caaf389336f11cef27415986d",
+  "parts_sha256": "aca3014a5cfb4dab89d128dc4cbe2bf654724a5f94df3a228dae6b51d143de60",
+  "true_collection_tool_exit": 0,
+  "collection_exit": 0,
+  "regular_files": 656,
+  "symlinks": 4,
+  "members": 660,
+  "original_regular_bytes": 45780854,
+  "archive_bytes": 11914524,
+  "parts": [
+    {
+      "part": 1,
+      "members": 184,
+      "archive_bytes": 5809642,
+      "archive_sha256": "5c83c8442ee73fdcc15995a763351bbbe25ec8719aeeb3d3bad4bab765db716f",
+      "logical_regular_bytes": 15331604,
+      "required_fresh_bytes": 85307462,
+      "actual_fresh_output_free": 107720704
+    },
+    {
+      "part": 2,
+      "members": 357,
+      "archive_bytes": 3289865,
+      "archive_sha256": "48abef9bbd049757fc3082fbc7af4a7f5bfdb1f549e6240742f6edc9e64b921e",
+      "logical_regular_bytes": 13173737,
+      "required_fresh_bytes": 83857760,
+      "actual_fresh_output_free": 101904384
+    },
+    {
+      "part": 3,
+      "members": 42,
+      "archive_bytes": 2423746,
+      "archive_sha256": "0b2a043c36ee45b3850f7cfbd514cc6d92f9c1567bbfeee620be5052c2d9bbb8",
+      "logical_regular_bytes": 13672717,
+      "required_fresh_bytes": 83066259,
+      "actual_fresh_output_free": 98607104
+    },
+    {
+      "part": 4,
+      "members": 77,
+      "archive_bytes": 391271,
+      "archive_sha256": "559e04f5ca0c1eb3bd2e8da7381a25b9b4080391a83542727d14c280ae80e519",
+      "logical_regular_bytes": 3602796,
+      "required_fresh_bytes": 73136669,
+      "actual_fresh_output_free": 96178176
+    }
+  ],
+  "original_recorder_stream_bundles_verified": 6,
+  "original_recorder_exit_histogram": {
+    "0": 6
+  },
+  "all_regular_original_and_tar_bytes_verified": true,
+  "all_symlink_targets_verified": true,
+  "source_stat_before_after_peer_unchanged": true,
+  "original_canvas_exit": 0,
+  "original_35minute_gate_exit": 0,
+  "hash_only_sourceplan_count": 5,
+  "nonregular_metadata_socket_count": 1,
+  "subject_rerun": false,
+  "review_utc": "2026-10-25T12:15:27.008903+00:00",
+  "limits": [
+    "Packaging actual review only; no collector rerun, large copy, C/Chrome/product test, or branch write.",
+    "All660 selected originals and tar members were checked. Full canvas assertions/golden and expected fb-auto negative semantics remain independent formal actual review; no assumption that every nested command must exit0.",
+    "Five sourceplan Gitdir/LATEST payloads remain hash-only inventory snapshots; Unixsocket metadata only. They are not tar payload and are not relabelled as postarchive source-state observations.",
+    "Atime excluded from identity checks because read access may update it; device/inode/mode/size/mtime_ns/nlink were compared before and after this review.",
+    "Collection0 and canvas0 do not change native1, R8 exact1, other unrun gates, or acceptance policy."
+  ]
+}
