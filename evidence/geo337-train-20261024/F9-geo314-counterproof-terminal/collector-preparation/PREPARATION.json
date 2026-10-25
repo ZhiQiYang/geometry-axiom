@@ -1,0 +1,46 @@
+{
+  "schema": "geo314-terminal-collector-preparation-only/1",
+  "base_collector_sha256": "813a770b414c6b57f4ffde568e6242614ed3bf28287a3e487ed9811f1113d741",
+  "static_checks": {
+    "need": true,
+    "sha": true,
+    "digest": true,
+    "J": true,
+    "write": true,
+    "safe": true,
+    "state": true,
+    "overhead": true,
+    "verify": true,
+    "archive_tail_original_bytes_except_labels": true
+  },
+  "product_rerun": false,
+  "collector_executed": false,
+  "SHM_written": false,
+  "live_NATIVE_access": false,
+  "raw_roots": [
+    {
+      "name": "v2",
+      "regular_files": 204,
+      "regular_bytes": 13578903,
+      "exit_code": 1
+    },
+    {
+      "name": "v3",
+      "regular_files": 258,
+      "regular_bytes": 20191163,
+      "exit_code": 0
+    }
+  ],
+  "known_raw_plus_fixed_supplement_bytes": 35658673,
+  "fixed_supplement_files": 1357,
+  "preparation_builder_original_exit": 0,
+  "planned_gzip_level": 1,
+  "part_target_bytes": 16777216,
+  "original_reserve_bytes": 67108864,
+  "metadata_allowance_bytes": 8388608,
+  "fresh_SHM_observed_bytes": 17369022464,
+  "fresh_WS_observed_bytes": 12578816,
+  "archive_ratio_assumed": false,
+  "formal_F9_native_original_exit": 1,
+  "v3_formal_F9_pass": false
+}

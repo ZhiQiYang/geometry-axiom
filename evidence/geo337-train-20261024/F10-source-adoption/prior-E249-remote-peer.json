@@ -1,0 +1,33 @@
+{
+  "schema": "F9-completed-browser-specials-full-publication-actual-peer/1",
+  "utc": "2026-10-25T15:07:18.327214+00:00",
+  "exit_code": 0,
+  "checks": 5066,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "evidence_head": "249a05ed4c8a085bdf3353ac781638f2a9b3d460",
+  "parent": "3447ab384c4c777f9d2685128044b9b9d043e17d",
+  "manifest_sha256": "ee3a06127e5956d203c6643cb2ed25724ee969853f6719ceed0a3d3dac87db43",
+  "selected_leaves": 217,
+  "logical_bytes": 40733496,
+  "unique_remote_blobs": 190,
+  "original_command_counts": {
+    "root": 11,
+    "publication": 368,
+    "remote_verification": 632
+  },
+  "full_remote_delivery_verified": true,
+  "old_snapshot_before_after_equal": true,
+  "blocking_findings": [],
+  "pins": {
+    "root_result": "687e4940855e6ad46fcc257c7a7fcf711967ed4891a14c909f9fdca4724994bd",
+    "publication_result": "161854311edc1f5540fee3bf3c27fe969e02512e216a85cc0b91f949e3d08f6c",
+    "remote_result": "bcc080ad27cd528e13adea6f640e89959322bce0a048a6be6ae59c442b223df4"
+  },
+  "limits": [
+    "All190 unique complete raw API responses covering217selectedleaves verified SHA256/bytes/GitOID with exactremote ref/tree/parent; no archive extraction or product rerun.",
+    "Original publication before/after oldWS snapshots equal; no live sharedGitmetadata read or write.",
+    "Evidence tree only; immutable source F9 unchanged. Native1 and incompleteformal gates remain as published matrix.",
+    "Large archive member reviews reused; this checks normal push and full remote delivery, not another gate sample.",
+    "Exact newPRBODY and subsequent source adoption are separate actions."
+  ]
+}
