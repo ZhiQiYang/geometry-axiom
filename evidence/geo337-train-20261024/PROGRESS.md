@@ -16,7 +16,7 @@ H定向來源S=`2c4635577a8fcb11e88b346547f7bb1c7b739fb7`原14/14、零skip、wo
 
 F8 required CI run40170221039與證據E815cd2e3 run40170692505，18原API讀皆0，各七job failure、runner_id0／steps0；annotation明示付款失敗或支出上限，Ubuntu migration notice另列。沒有變更帳戶或自行核可替代流程。本提交以後的新E未讀CI，不把E815結果移標。
 
-本批current-R8-terminal/公開原六bindings、全部36樣本／profiles摘要、五CLI／outer完整流、真工具poll、帳本check、CI與採用／H公開原件。完整R8 inner/source preparation原件本提交已公開於full-R8-five-stage-raw/：9057members／31,362,296B，SHA2564503955cefc6fb1a6491ad2a146c259e59a2185401d0fbebc09908a47e3bf9d0。完整inventory在tar內且PACKAGE另釘hash，111,407,792B原件逐member/hash/source roundtrip經獨審；七ELF僅hash inventory，原payload仍保留。原正式outer1／compare1不因收包0而變綠，歷史published:false/PENDING字樣保原不回填；R5／R6／R7公開原件保留原source／紅燈。native ROOT已在保留原refs／五fixtures／sparse與全部原件的條件下，普通detach切至F8並獨審通過；本批只公開轉移小RESULT／request／actualpeer，完整轉移原流仍在雲端保存待另行出版；全帳本仍未啟動，正在按實際檔案系統配置新cache／seed與資源預算。root接續全帳本、其餘正式驗收。**目前不是READY-TO-MERGE。**
+本批current-R8-terminal/公開原六bindings、全部36樣本／profiles摘要、五CLI／outer完整流、真工具poll、帳本check、CI與採用／H公開原件。完整R8 inner/source preparation原件本提交已公開於full-R8-five-stage-raw/：9057members／31,362,296B，SHA2564503955cefc6fb1a6491ad2a146c259e59a2185401d0fbebc09908a47e3bf9d0。完整inventory在tar內且PACKAGE另釘hash，111,407,792B原件逐member/hash/source roundtrip經獨審；七ELF僅hash inventory，原payload仍保留。原正式outer1／compare1不因收包0而變綠，歷史published:false/PENDING字樣保原不回填；R5／R6／R7公開原件保留原source／紅燈。native ROOT已在保留原refs／五fixtures／sparse與全部原件的條件下，普通detach切至F8並獨審通過；本批只公開轉移小RESULT／request／actualpeer，完整轉移原流仍在雲端保存待另行出版；全123帳本已於2026-10-25T07:38:36.624220+00:00在固定F8正式啟動（RUNNING，尚無終態）。原driver以實際空間通過workspace272MiB／TMP240MiB入場，獨立seed2738檔與原ROOT的原closure完全相同；120真execution.head與3retired要求未改。完整R8已有效完成，不重跑、不改標新帳本採用SHA。current-F8-full123-start/只公開啟動與來源配置小收據，維護／來源配置完整原流仍在雲端保留待另行出版。root接續全帳本、其餘正式驗收。**目前不是READY-TO-MERGE。**
 
 ### 歷史 H 合流與架構採用（正式 R8 前）
 
@@ -459,3 +459,7 @@ compare真175 scenes/350 runs後於verify_linux.py:156 `assert not failures,fail
 ### b9 架構四檔採用
 
 三原裁判0/0/0、九組原scanner具名assert反證0/1/0已在同一可解析b9完成，完整48條原命令、604Git/blob/raw/LF與兩SSOT初末保全。manifest／scan bytes不變，衍生diff只有report／receipt；前份928產物與本次937執行來源分開保存，沒有把較早native/browser/ledger移標。下一次性能使用已獨審的PIPE計時收件工具，原v4／U紅燈完整保留；測試門檻與樣本不變。
+
+### F8 全帳本已啟動（2026-10-25 07:38 UTC）
+
+WS375維護真exit0：375組／2622路徑／2247次共用儲存，實際workspace由57,393,152增至376,119,296 bytes；所有路徑／內容保留，沒有刪收據、fixtures或Gitobjects。來源配置真exit0，2738 seed檔獨立inode，原Sources／oracle／fingerprint／RESTORED closure與F8 ROOT一致。先前root誤抄工具pin少a7遭原守門拒絕1，沒有正式執行；原錯誤保留且工具未改。修正輸入後原全123正在執行，未將預檢／配置0稱為帳本通過。正文已普通push D=757d8104861f49da7890828eff3c72a7105e9eb4；當時UNRUN狀態的後續更新以本啟動紀錄為準，bot狀態另查。exact三差仍紅，B/C未獲批准，未更改golden或門檻。
