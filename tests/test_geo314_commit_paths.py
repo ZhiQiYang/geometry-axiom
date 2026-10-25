@@ -17,6 +17,13 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_BASE = "4b665fae21ab63aaffb7d84f6a32d5a469ba1675"
+# The original I24 implementation must remain kernel-neutral. Later train
+# work may adopt separately reviewed generic K changes; pin its complete K
+# tree instead of exempting source.c or accepting arbitrary future edits.
+I24_IMPLEMENTATION_HEAD = "32f42e3d991c7d2d916d21bfe8ac5d3dd0f9b131"
+# 9430bae568feb98805072930c92f9a03a1250d4e: reuse a missing edge's slot.
+# 81b6c388f8b73e9aaf885b1d948e5f306b77bafd: generic provider hint bucket.
+GENERIC_SOURCE_INDEX_KERNEL_HEAD = "81b6c388f8b73e9aaf885b1d948e5f306b77bafd"
 
 # Common scene/validation helpers serve both interactive submissions and file
 # replay.  Their classification therefore explicitly retains both contexts;
@@ -254,11 +261,19 @@ class Geo314CommitPaths(unittest.TestCase):
                          "I24 rule belongs to W; host context and submission classification remain in H")
 
     def test_kernel_has_no_changes_against_the_fixed_integration_base(self):
-        changed = subprocess.run(["git", "diff", "--name-only", INTEGRATION_BASE, "--", "geometry-core/kernel"],
-                                 cwd=ROOT, capture_output=True, text=True, check=True)
+        introduced = subprocess.run(
+            ["git", "diff", "--name-only", "--no-renames", INTEGRATION_BASE,
+             I24_IMPLEMENTATION_HEAD, "--", "geometry-core/kernel"],
+            cwd=ROOT, capture_output=True, text=True, check=True)
+        self.assertEqual("", introduced.stdout, "original I24 implementation must not change K files")
+        changed = subprocess.run(
+            ["git", "diff", "--name-only", "--no-renames", GENERIC_SOURCE_INDEX_KERNEL_HEAD,
+             "--", "geometry-core/kernel"],
+            cwd=ROOT, capture_output=True, text=True, check=True)
         added = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "--", "geometry-core/kernel"],
                                cwd=ROOT, capture_output=True, text=True, check=True)
-        self.assertEqual("", changed.stdout + added.stdout, "I24 submission policy must not change K files")
+        self.assertEqual("", changed.stdout + added.stdout,
+                         "I24 submission policy must not change K files outside the exact reviewed generic K tree")
 
     def test_ordered_facts_capture_step_values_without_extra_candidate_or_validation_work(self):
         path = "geometry-app/native/stagger_facts.inc"
