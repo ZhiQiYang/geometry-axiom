@@ -1,3 +1,31 @@
+# 接續狀態：F9 canvas 執行中（2026-10-25 11:31 UTC；工作持續，非階段停止）
+
+唯一產品來源 F9 `4f8a794f4167c3562eb182045102e86e9e37cca9`。整合分支 `codex/train-337-continue-20261024` 證據 E=`59064fe0478f7ebe9126e6fe042c2054f336a42f`；正文分支 `codex/train-337-continue-20261024-prbody` D=`f752e23466c6804334bb0a3d1ab84126d1f0526a`。handoff `6cd6871fd7cdd42662a44f669fa632cf773875ea` 的 pr-status 已回報 body -> f752e234。正文中批准身分待核實的文字已被下述 API 核實取代，下一個正文提交需同步，不可改寫舊收據。
+
+- native **已結束 exit1，並非逾時**：09:53:11.697952–10:23:58.204824 UTC，1846.506872 秒，35分鐘gate0；230 rows，5327 pass/1 fail/1允許Windows GDI skip。唯一失敗是 `Geo314CommitPaths.test_kernel_has_no_changes_against_the_fixed_integration_base`，多出 `geometry-core/kernel/source.c`；#314歷史基底測試誤含後續通用K優化。完整原包、兩peer2208/0、6191/0在 E59064fe 的 `evidence/geo337-train-20261024/F9-native-terminal/`；不可重跑取樣。嚴格修補草案及負例計畫已公開，但尚未施作；先收齊當輪其他gates。
+- canvas **RUNNING**：工具session15990；原workflow於11:22:04 UTC開始，npm build已0，完整瀏覽器步驟未終態。原wrapper `/tmp/geo337-F9-browser-launch-preparation-v2-20261025/launch_F9_browser.py`、原driver/35分鐘門檻不變，heavy+secondary獨占；禁止另一重測。OUT `/tmp/geo337-F9-browser-canvas-launch-20261025`，storage `/tmp/geo337-F9-browser-canvas-run-20261025`。request `/workspace/geo337-F9-canvas-root-request-20261025.json` SHA256 `df5d8d8b4e1d00a0ba62668684a748083c011944e511b2c3bc7ff18bf3b8cef8`。先收真正工具終態、原exit/CI gate/source afterguard，再收件，不能把活動receipt null當通過。其餘五browser尚未跑。
+- canvas來源已完整建立：PLAN `/tmp/geo337-F9-canvas-sourceplan-20261025`，WS source `/workspace/geo337-F9-canvas-source-20261025/jobs/canvas/source`；materialize真0/fullguard3759/peer18927/0。nativeROOT和seed仍F9、1025 aliases已真0/peer45597/0；沒有再變產品。
+- reader三原項已 **0/0/0，unit51/51、零skip**；207 clauses/1261 blocks。原件 `/workspace/geo337-F9-readers-actual-urce1nqh/environment-retry1/`，原SUMMARY pin `a08d1aa92b2f1fcb6cb2b6c7cdbe46c3ab2002f4a2b10867432c87db1c756b4f`；peer `/workspace/geo337-F9-readers-original-actual-peer-20261025/REVIEW.json` pin `6060db0bd12ada66519ba67f4e7a3c542326b5f28df1aeadba89685bbfe49099`。首輪reaper缺GEO261_REAPER_LOG三個啟動前1保留；只補環境後原命令真跑。h_init正在完整收件，不重跑。
+- 全123帳本F8生成0、F9採用check0（stale0/blocked0）、F9架構三原judge0/0/0都已公開；不重做。R8原F8 `75a1e93811a52b69385cbdaf6a09d773ed9052ad` 五階段outer1與36樣本全部保留；性能全綠，原exact三差仍1，不能改標。P52/Q38/§7/P189/required-eight/PF3/memo/RC/#314/閱讀A等獨立專項尚未跑。
+
+## API核實的當次批准（不等於測試通過）
+
+2026-10-25 11:02:38 UTC，`GET /user` 與原 #338 comments API 真HTTP200/gh0。連線user與10:39:52Z留言作者皆 ZhiQiYang，id59477728、node_id MDQ6VXNlcjU5NDc3NzI4完全相同，OWNER；原留言 https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6396611849 。明示【使用者裁決】，記四個選項原文與Claude整理的適用說明。API證明帳戶，不能證明真人手動操作，也不是本任務B′問題的直接答覆。依管理代理明示的API核實條件，可按這則當次批准接續：只實作三具名診斷精確白名單，其他bytes/rc/有序圖/5guards/性能不變；**不改base、不重抽R8、不擴P189**。CI替代要同一final SHA七項與專項全綠；stale-only帳本例外不含survived/invalid/blocked。禁止自行合併。
+
+原API `/tmp/geo337-decision-349-api-verification-20261025/`；公開子集準備 `/workspace/geo337-decision-349-api-publication-preparation-20261025/`，完整私人帳戶profile留本地不公開，comments原流完整；peer106/0 pin `f9c68e7c1c3938a1d03f7f48059cd18fd0b289c42d6c404a8f78dea0accbeadc`。root下一步需發布這份核實、reader全原流，更新唯一current矩陣。
+
+## 平行工作與資源
+
+- r8_terminal_peer：`/workspace/geo323-owner-authorized-policy-20261025/` 已綁批准/審查，正做新conditional guard反證及原run.py後段audit整合，預備正式single-compare入口；未執175/C/perf，原R8不變。新comparison若F9，必分列F8 binary build SHA與完整C closure等價，不能偷改execution SHA。
+- #344 `codex/issue320-connection-recovery-20261024` 仍E a5ec136baf3909453867b3eed50f1b93b229ca59，未合列車。cdp_test.js排除hash漏改已核：應1f3e2e36283ed7bbf6c4ad2cf3dc12c685667356d186d9fbd47bc5f0520f07ee。cost外部稿 `/tmp/geo344-exclusion-digest-preparation-20261025/`，未施作/架構未跑；現OWN checkout sparse缺manifest，不能直接跑架構。原strict9不重做；完整canvas三phase仍未跑。
+- #341 whole-F9成本runner已靜審727/0，尚未校準C/量測；先原24 C正例＋42diagnostics＋兩組具名0/1/0、actualpeer後才量測。舊F8 fallback-only成本及R8全樣本保留。#348 F73原512診斷工具備妥但未build/產品校準/600秒批次，不重跑舊tiny C或把舊timeout變綠。
+- 三輪保真共用維護真0，窗口net總50,511,872B（非全期間淨增）；46原path/10inode保留，第三份archive inode/mtime採canonical，原meta/journal完整。actual1237/0＋peer682/0，WS `/workspace/geo337-F9-canvas-maintenance-actual-summary-20261025/`。不能再跑已完成維護。原fixtures/Git objects/ELFs/收據全保留；不可刪永久Git alternate store。
+- canvas入口freshTMP97,746,944B/WS79,261,696B；執行峰值未量測，歷史L retained29,958,144B只是參考。不要重加source64MiB留白為新的runtime測試門檻；實際ENOSPC如實分類。canvas活動期間不做維護、不編其他C/效能/Chrome。新metadata放WS小份，防止再次填滿TMP。
+
+main目前405f8c5e1a637a16cbe47470faf5ae1fa02b8676，Claude head仍8f9301fc1b78712d930ffc68074437e44d068aab。先完成F9剩餘原gates、收齊再一起修；之後按受影響closure更新來源/帳本/架構。每步一般push；不得force push、merge PR、修改Grok/Claude分支或決策佇列。下方全文是歷史快照，包含當時已失效的RUNNING/未核實文字，不作現在狀態。
+
+---
+
 # 目前接續狀態 — F9 完整 native 執行中
 
 這是持續工作的 checkpoint，不是階段停止或完成報告。下面舊區塊全屬歷史；以本段身分與真原件為準。全程繁中／英文commit；不合併PR、不forcepush、不碰claude/grok分支、不改未核可公理或決策佇列；使用者不在，不提問空等。
