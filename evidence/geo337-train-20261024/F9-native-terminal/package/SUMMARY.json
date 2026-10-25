@@ -1,0 +1,103 @@
+{
+  "schema": "geo337.F9-original-native-terminal-collection/1",
+  "sourceSHA": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "createdUTC": "2026-10-25T10:43:08.086332+00:00",
+  "originalExecFinalExit": 1,
+  "originalTerminalBindingIssues": [],
+  "originalFormalCandidate": false,
+  "formalAcceptanceRequiresActualPeer": true,
+  "onlyOriginalAllowedSkip": "Windows-only GDI unavailable on Linux; strict registry and all other original assertions unchanged",
+  "outerExit": 1,
+  "workflowExit": 1,
+  "CI35MinuteGateExit": 0,
+  "originalDriverExit": 1,
+  "passed": false,
+  "metadataErrors": [],
+  "sourceBefore": {
+    "head": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+    "tree": "7e937217cc1d40e2caa77b7e2fe7f3524b52fa8d",
+    "status": "",
+    "index_sha256": "6c48906dac7929f3a4861d8daa5f3950aee73a456868ec6c97c3011c0b986648"
+  },
+  "sourceAfter": {
+    "head": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+    "tree": "7e937217cc1d40e2caa77b7e2fe7f3524b52fa8d",
+    "status": "",
+    "index_sha256": "6c48906dac7929f3a4861d8daa5f3950aee73a456868ec6c97c3011c0b986648"
+  },
+  "expectedFullRows": 230,
+  "fullRowsNotInferredFromNames": "Independent actual peer must parse original final230 rows/count/allowed skips, including original errors or timeout; collector does not change judge.",
+  "ordinaryRegistryExeNames": [
+    "bridge",
+    "core",
+    "engineering-json-test",
+    "gdi-contract",
+    "integrity",
+    "model-base",
+    "pf3-algorithm"
+  ],
+  "excludedOrdinaryELFs": [
+    {
+      "originalPath": "/tmp/geometry-tests/bridge",
+      "bytes": 1126456,
+      "sha256": "71c2616efd966ed9f6f3f99acef487fd58ecff48cfaa63816b8887a0a723a4df",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/core",
+      "bytes": 908240,
+      "sha256": "b21ec238530945337eb910883aa6f0d0a9e6fce441e0c0d34f4bb524a6763d26",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/engineering-json-test",
+      "bytes": 34864,
+      "sha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/integrity",
+      "bytes": 938392,
+      "sha256": "398ca9b8e9072c302d756a41ad011597f565e5208f4ee12d50c6170933fc3dc4",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/model-base",
+      "bytes": 969040,
+      "sha256": "17e8ef86455b9112bd278b16c664daa08cd12d29453b7c550238079c97198dfc",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    },
+    {
+      "originalPath": "/tmp/geometry-tests/pf3-algorithm",
+      "bytes": 908448,
+      "sha256": "6bcab148658354058c1613f8e206eb4b72831d2bc244f35e4986cf2aa2354b72",
+      "reason": "original registry ordinary executable payload; sidecar included; no deletion"
+    }
+  ],
+  "excludedOldCache": {
+    "exactPath": "/tmp/geo337-F9-native-4f8a794f-20261025/preserved-global-geometry-tests",
+    "payloadNotTraversed": true,
+    "originalManifestsIncluded": [
+      "native/GLOBAL_CACHE_BEFORE.json",
+      "native/GLOBAL_CACHE_PRESERVED.json"
+    ],
+    "meaning": "historical cache preserved in place, not claimed as new native outputs"
+  },
+  "nonRegularNodes": [],
+  "rawLimits": "Only original exposed Python/native workflow streams and original run_all-logs are saved. Inner compiler/test capture_output pipes and cleaned NativeBuild scratch are not claimed as separate raw pipes.",
+  "nativeCacheModifiedByCollector": false,
+  "ROOTModifiedByCollector": false,
+  "noFilesDeleted": true,
+  "noSubjectRerun": true,
+  "originalRegistryGitRead": {
+    "argv": [
+      "git",
+      "--git-dir=/workspace/geometry-axiom/.git",
+      "show",
+      "4f8a794f4167c3562eb182045102e86e9e37cca9:tests/binaries.py"
+    ],
+    "exit": 0,
+    "stdoutSHA256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

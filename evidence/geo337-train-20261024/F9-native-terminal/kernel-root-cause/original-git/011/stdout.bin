@@ -1,0 +1,13 @@
+commit 81b6c388f8b73e9aaf885b1d948e5f306b77bafd
+Author:     Chih-Chi Yang <b10102230@gmail.com>
+AuthorDate: Sat Oct 24 06:03:43 2026 +0000
+Commit:     Chih-Chi Yang <b10102230@gmail.com>
+CommitDate: Sat Oct 24 06:03:43 2026 +0000
+
+    Reduce source hint collisions with a generic provider bucket
+
+ geometry-core/kernel/source.c        |  4 +-
+ tests/geo323_provider_hint_harness.c | 80 ++++++++++++++++++++++++++++++++++++
+ tests/run_all.expected.json          |  2 +-
+ tests/test_geo261_source_index.py    | 58 ++++++++++++++++++++++++++
+ 4 files changed, 142 insertions(+), 2 deletions(-)
