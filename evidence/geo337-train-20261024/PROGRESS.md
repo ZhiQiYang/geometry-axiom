@@ -473,3 +473,13 @@ F9 nonperf v2保原required-eight681／Q38全44、37條正式命令計畫；F9�
 #341 cost v2修正截斷FACE可能被接受的工具缺陷；精確case/n、原公式FACE數與9整數欄，五組純metadata固定／撤回／恢復0/1/0，對抗審查188/0，所有C／樣本／時限未改。F8僅fallback成本仍未量測，也不能替代舊Sc493全刀B1。#348工具保原四指令整批600秒；小型C stub的61項／26命令與真pipe/timeout-reap/guard反證經355/0獨審，但產品ELF／原512仍UNRUN。首次缺事前env/disk紀錄、ELF hash於review時取值等限制原樣保留，未補造或重抽首輪。
 
 出版清單為877葉5,825,898B的選定原件，另附清單／摘要／檢查／README；所有.git objects與未跑r2稿排除、原處不刪。原歷史準備文字與失敗稿保真，不回填成已執行。QUESTIONS當前節已另推Eecdcc22c，明列R8性能紅已解除，exact三差／B′C未批准／P189與CI仍保原阻擋。**目前不是READY-TO-MERGE。**
+
+## 2026-10-25 09:00 UTC：F8 完整帳本真終態 0，封存工具待修環境讀權
+
+F8 `75a1e93811a52b69385cbdaf6a09d773ed9052ad` 的原完整帳本於 07:38:36 開始執行，09:00:48 真正結束，原 CLI、root driver、outer 與 exec final 均 exit 0。原四階段為舊 tracked check 1／full123 0／core raw mapping 0／新外置帳本 check 0；舊 1 保留。帳本 123 列：114 killed、5 equivalent、M20 原允許 crashed、3 retired；120 個 execution.head 自然為 F8。帳本 SHA256 `0123548b29bf8adbaf3cf896bfffb212134452f2574eaf8ae1d1b663104ead1b`，未改寫任何列。
+
+本次先發布原真終態與退出碼，逐列獨立審查正在進行。原 v2 封存 verifier 因 `/proc/1/cwd` 的 PermissionError 在封包前 exit 1，未進 collect、未採用帳本；完整原件仍在原處，不能將封存失敗稱為通過。該程序目前讀得到的 cmdline 是 `tail -f /dev/null`，正在確認保守程序檢查方式，不改權限或忽略拒絕。
+
+下一步：修復封存環境檢查、完成每列與封包 peer，才逐 byte 採入新 F9；之後原 tracked check、完整 native、六 browser 與專項仍待執行。R8 效能已有效完成，不重抽樣；三個 exact stdout 差異仍紅，B／C 未獲核可，P-189 不自動沿用。CI 支付／額度阻擋不自行改設定。不是 READY-TO-MERGE。
+
+09:12 補記：透過工具正式審批做唯讀程序檢查後，PID 1 cwd 可讀為 `/workspace`；未改權限或安全設定。同一未改 v2 在獲准執行範圍再試，因不同 UID65534 的系統 dockerd（PID208）cwd 不可讀再 exit1；也未封包或採帳本。第二次原流一併保留，正修正封存工具對本任務程序的範圍判定，任何本 UID／未知 UID 不可觀測仍應拒絕，產品裁判不變。
