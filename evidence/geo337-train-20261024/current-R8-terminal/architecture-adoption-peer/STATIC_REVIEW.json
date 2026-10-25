@@ -1,0 +1,21 @@
+{
+  "schema": "geo337-h-architecture-adoption-static-peer/1",
+  "utc": "2026-10-25T06:45:37.985158+00:00",
+  "exit_code": 0,
+  "script": "/tmp/adopt_geo337_h_architecture_20261025.py",
+  "script_sha256": "d1416be00347ea15166bb4ee4b542ed341fb855d1b9772ff0bd660d6b367b387",
+  "findings": [],
+  "corrected_before_execution": [
+    "Read peer exit_code rather than absent exit.",
+    "Check every immutable peer binding before adoption."
+  ],
+  "checks": [
+    "Expected clean source M and train branch.",
+    "Source artifacts tied to actual peer RESULT hash.",
+    "Exactly report/receipt changes outside evidence.",
+    "Copies all architecture, outer, preparation, integration and peer originals with byte inventory.",
+    "Replaces sole current-state and labels previous R7 state historical.",
+    "Normal commit/push with remote head and source difference verification."
+  ],
+  "executed_by_reviewer": false
+}

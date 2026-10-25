@@ -1,0 +1,66 @@
+Merge made by the 'ort' strategy.
+ .../ORIGINAL_TOOL_FINAL.json                       |     1 +
+ .../ORIGINAL_TOOL_INITIAL.json                     |     1 +
+ .../PACKAGE_PLAN.json                              | 15284 +++++++++++++++++++
+ .../PAYLOAD_INDEX.json                             |   162 +
+ .../PREPARATION.json                               |    14 +
+ .../PROGRESS.md                                    |    11 +
+ .../PUBLICATION_TOOL.json                          |    13 +
+ .../actual-focused-peer/REVIEW.json                |   103 +
+ .../actual-focused-peer/REVIEW.md                  |    18 +
+ .../actual-focused-peer/audit.py                   |   115 +
+ .../collect.py                                     |    31 +
+ .../collection-launch/RESULT.json                  |    49 +
+ .../collection-launch/subcommands.json             |    43 +
+ .../subcommands/000001/request.json                |    36 +
+ .../subcommands/000001/result.json                 |    41 +
+ .../subcommands/000001/stderr.bin                  |     0
+ .../collection-launch/subcommands/000001/stdin.bin |     0
+ .../subcommands/000001/stdout.bin                  |     1 +
+ .../ACTUAL_PACKAGE_REVIEW.json                     |    35 +
+ .../PUBLICATION_STATIC_REVIEW.json                 |   265 +
+ .../STATIC_REVIEW.json                             |   169 +
+ .../actual_package_review.py                       |    36 +
+ .../publication_static_review.py                   |    29 +
+ .../collection-publication-peers/static_review.py  |    32 +
+ .../launch_collect.py                              |    17 +
+ .../ORIGINAL_REFERENCE_LOCAL_INIT_EVIDENCE.tar.gz  |   Bin 0 -> 6369236 bytes
+ .../package/RAW_INDEX.json                         | 15283 ++++++++++++++++++
+ .../package/SUMMARY.json                           |    19 +
+ .../prepare.py                                     |    38 +
+ .../prepare_manifest.py                            |    25 +
+ .../prepare_publication.py                         |    25 +
+ .../publish.py                                     |    46 +
+ 32 files changed, 31942 insertions(+)
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/ORIGINAL_TOOL_FINAL.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/ORIGINAL_TOOL_INITIAL.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/PACKAGE_PLAN.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/PAYLOAD_INDEX.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/PREPARATION.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/PROGRESS.md
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/PUBLICATION_TOOL.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/actual-focused-peer/REVIEW.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/actual-focused-peer/REVIEW.md
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/actual-focused-peer/audit.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collect.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-launch/RESULT.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-launch/subcommands.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-launch/subcommands/000001/request.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-launch/subcommands/000001/result.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-launch/subcommands/000001/stderr.bin
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-launch/subcommands/000001/stdin.bin
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-launch/subcommands/000001/stdout.bin
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-publication-peers/ACTUAL_PACKAGE_REVIEW.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-publication-peers/PUBLICATION_STATIC_REVIEW.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-publication-peers/STATIC_REVIEW.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-publication-peers/actual_package_review.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-publication-peers/publication_static_review.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/collection-publication-peers/static_review.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/launch_collect.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/package/ORIGINAL_REFERENCE_LOCAL_INIT_EVIDENCE.tar.gz
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/package/RAW_INDEX.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/package/SUMMARY.json
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/prepare.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/prepare_manifest.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/prepare_publication.py
+ create mode 100644 evidence/geo323-reference-local-init-2c463557/publish.py

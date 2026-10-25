@@ -1,0 +1,292 @@
+{
+  "schema": "geo323-linux-acceptance/1",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "source_repo": "/tmp/geo323-final-r8-source-20261024",
+  "base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "started_utc": "2026-10-25T06:46:20.666919+00:00",
+  "stages": {
+    "prepare": {
+      "started_utc": "2026-10-25T06:46:20.677457+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "source_after": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-25T06:46:22.347820+00:00"
+    },
+    "build": {
+      "started_utc": "2026-10-25T06:46:22.487202+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "source_after": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-25T06:47:43.213816+00:00"
+    },
+    "compare": {
+      "started_utc": "2026-10-25T06:47:43.351906+00:00",
+      "execution_exit": 1,
+      "source_before": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "source_after": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "errors": [
+        "Traceback (most recent call last):\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py\", line 346, in stage\n    function()\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py\", line 232, in compare\n    self.v.compare(self.a.repo, self.work, self.evidence)\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/verify_linux.py\", line 156, in compare\n    assert not failures,failures\n           ^^^^^^^^^^^^\nAssertionError: [['_role_priority_mutant.scene', 'stdout'], ['_s1_p8_l_room_primary_through_reflex_extension.scene', 'stdout'], ['_s1_p8b_l_room_primary_through_reflex_extension_hi.scene', 'stdout']]\n"
+      ],
+      "ended_utc": "2026-10-25T06:49:08.214303+00:00"
+    },
+    "perf": {
+      "started_utc": "2026-10-25T06:49:08.383954+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "source_after": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-25T06:49:21.337465+00:00"
+    },
+    "profile": {
+      "started_utc": "2026-10-25T06:49:21.481877+00:00",
+      "execution_exit": 0,
+      "source_before": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "source_after": {
+        "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+        "status": ""
+      },
+      "errors": [],
+      "ended_utc": "2026-10-25T06:49:43.319533+00:00"
+    }
+  },
+  "errors": [],
+  "quantitative_targets": {
+    "N64_fix_main": {
+      "actual": 1.2846970752586067,
+      "target": "<=1.3",
+      "target_met": true,
+      "method": "原36樣本，N16/32/48/64，每輪base→fix→main，共3輪；中位數"
+    },
+    "small_N_no_regression": {
+      "reference": "原固定base的變更前載入時間；不得變慢",
+      "points": {
+        "16": {
+          "fix_base": 0.9834192453688345,
+          "target_met": true
+        },
+        "32": {
+          "fix_base": 0.9007932884873169,
+          "target_met": true
+        },
+        "48": {
+          "fix_base": 0.7392862448969592,
+          "target_met": true
+        }
+      }
+    },
+    "geo_eval_source_64_32": {
+      "N32_calls": 82668,
+      "N64_calls": 364369,
+      "actual": 4.407618425509266,
+      "target": "<=4.5",
+      "target_met": true,
+      "method": "原-O1 -fno-inline -pg；base/fix各N32/N64一次；無main profile；原profile無timeout"
+    }
+  },
+  "status": "完成；原命令與量化目標分欄，未執行項不代表通過",
+  "ABC_method": {
+    "A": "base/fix loadfile+dump完整stdout逐bytes及stderr",
+    "B": "每次seal完整ordered node/edge/descriptor/value序列",
+    "C": "每scene/process五guard總呼叫數；不是每seal五計數"
+  },
+  "original_judges_modified": false,
+  "policy": "沒有挑綠重跑；每個stage僅執行一次，任何原紅保留；未完成一律null。",
+  "tool_hashes": {
+    "geo323_record.py": "c997611f5ba14298d0a06759528c192adb0619a9587cb0cab4fd051d95126810",
+    "mini_gen.py": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749",
+    "profile_linux.py": "0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c",
+    "reap_children.py": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+    "run.py": "881d618cd06b3edddf10a6676504923bbd982c8901c632410db434cfd480e849",
+    "verify_linux.py": "c3db1834c49365a08ef5720d38156253a355e9f5d5db0239486013871d0e2cac"
+  },
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/tmp/g337323R8/tmp",
+    "GITHUB_SHA": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+    "GITHUB_WORKSPACE": "/tmp/geo323-final-r8-source-20261024",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONOPTIMIZE": null,
+    "PYTHONPATH": null,
+    "PYTHONSTARTUP": null,
+    "NODE_OPTIONS": null,
+    "CC": null,
+    "CXX": null,
+    "CFLAGS": null,
+    "CXXFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "CPATH": null,
+    "C_INCLUDE_PATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null,
+    "GEO261_GRAPH": null,
+    "GEO261_GUARDS": null,
+    "GEO261_REAPER_LOG": "/tmp/g337323R8/control/2026-10-25T064921.4043040000/reaper.jsonl",
+    "GEO261_HOST_FACTS_EXECUTION_LOG": null,
+    "GEO261_CONTACT_SOURCES_EXECUTION_LOG": null,
+    "GEO261_LOAD_RESIDUAL_EXECUTION_LOG": null,
+    "GEO323_ROOT": null,
+    "GEO323_WORK": null,
+    "GEO323_EVIDENCE": null,
+    "GEO323_BASE_SHA": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+    "GEO323_MAIN_SHA": "adbaebf9c73ea6801d7b4d5214e4b846b132923b"
+  },
+  "cleared_environment_names": [],
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python_optimize": 0,
+  "stack_before": [
+    16777216,
+    16777216
+  ],
+  "stack_during": [
+    16777216,
+    16777216
+  ],
+  "updated_utc": "2026-10-25T06:49:43.319807+00:00",
+  "additional_root_scene": {
+    "name": "_i11_two_surfaces_same_uv_accept.scene",
+    "origin": "6366304eb787b2a50282e4132f45e51eb7d21290",
+    "sha256": "4a1c2e411aa070ef89333eff235036f27d6c2f42806eefc6d0351c68cade89cb",
+    "bytes": 1182,
+    "scope": "不納入原175；另補比較／原run_tests.py具名accept+lengths正例，未跑不得當綠"
+  },
+  "versions": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Python 3.12.14\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gcc",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gprof",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "GNU gprof (GNU Binutils for Debian) 2.44\nBased on BSD gprof, copyright 1983 Regents of the University of California.\nThis program is free software.  This program has absolutely no warranty.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "git version 2.52.0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.19.0\n",
+      "stderr": ""
+    }
+  ],
+  "source_archives": {
+    "base": "/tmp/g337323R8/work/source-base",
+    "main": "/tmp/g337323R8/work/source-main",
+    "fix": "/tmp/geo323-final-r8-source-20261024",
+    "scopes": [
+      "current_geometry.c",
+      "geometry-core",
+      "geometry-app",
+      "geometry-templates",
+      "geometry-web"
+    ],
+    "exclude": [
+      "geometry-core/domain-decoupling",
+      "geometry-web/docs",
+      "geometry-web/prototypes",
+      "geometry-web/vendor",
+      "geometry-web/node_modules"
+    ]
+  },
+  "scene_count": 175,
+  "all_executed_stage_commands_passed": false,
+  "all_measured_original_targets_met": true,
+  "all_required_stages_completed": false,
+  "wrapper_exit": 1,
+  "full_acceptance_passed": null,
+  "builds": [
+    {
+      "label": "base",
+      "source": "/tmp/g337323R8/work/source-base",
+      "execution_exit": 0,
+      "binary_sha256": "aaef15289d76d37bfad256049414ae3db30127b212ce3a6bacece28ab435f7cf"
+    },
+    {
+      "label": "fix",
+      "source": "/tmp/geo323-final-r8-source-20261024",
+      "execution_exit": 0,
+      "binary_sha256": "e07c98a5be1f28b151b2abf6b206bb2add438024424d5bb6c6d614428ead7088"
+    },
+    {
+      "label": "main",
+      "source": "/tmp/g337323R8/work/source-main",
+      "execution_exit": 0,
+      "binary_sha256": "458f9fe2ada0f4040afa34cd4af3e32d523d6c650c20ebeb10fd7a9501849343"
+    },
+    {
+      "label": "base-trace",
+      "source": "/tmp/g337323R8/work/source-base",
+      "execution_exit": 0,
+      "binary_sha256": "b15f9838d937c071fa0125e300deceaafa65e68fec035afbf5f83cd8e005e615"
+    },
+    {
+      "label": "fix-trace",
+      "source": "/tmp/geo323-final-r8-source-20261024",
+      "execution_exit": 0,
+      "binary_sha256": "fa793dd393932b946bfe521e30c12c3ca8a8096f20b50818a1ce9a50f881a978"
+    }
+  ]
+}
