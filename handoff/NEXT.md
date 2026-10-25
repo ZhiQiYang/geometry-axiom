@@ -1,3 +1,25 @@
+# 2026-10-25 16:25 UTC 接續：S10 全123正式執行中，勿重啟
+
+本增量已由主代理正常提交至handoff；下方舊文完整保留。持續工作中的checkpoint，非階段停工；下方歷史原文保留但不代表目前狀態。
+
+- root唯一列車writer：`codex/train-337-continue-20261024`。產品／裁判來源 S10=`82c922a3941525d3a094ac0158bdc7dea57ea360`，E=`963cbfa71d01aacf9275e384cdafc67ad7dcaeeb`，正文D=`74f4f0b27858568dbbd72977aee61b9030e870bf`（body目前指E d45，bot已套用，下一份正文必同步新E）。canonical writer `/dev/shm/geometry-axiom-geo337-20261025/publisher-source`，舊WS root只作歷史唯讀provider，禁止重設／競寫。
+- main405f8c5e正常merge進列車已完成，未合PR或寫main。非evidence來源僅#314測試與決策兩塊逐字合入變動；K/runtime/公理/golden/fixtures/workflow不變。
+- **整份原123已啟動，host session26296尚RUNNING**。啟動2026-10-25T16:05Z；root `/dev/shm/geometry-axiom-geo337-20261025/F10-pool`、cache `F10-cache`、job `F10-ledger-job`、tmp `F10-ledger-tmp`、outer `F10-ledger-launch`。原雙heavy locks獨占；所有代理禁止讀寫活動pool/seed。不重啟／不把RUNNING算通過；終態要原stdout/stderr、exit、source與完整ledger。root launcher `/workspace/launch_geo337_S10_full123_root_20261025.py`；driver pin `7af6f3d7efe4987ed32ea0f356541630181fa6435684e72d83f7e3e7018148ef`，filesystem admission `d76ac62b52b17d615952d418a3b209d072dc04608de796cdf51f7b045eb65ddf`。
+- S10來源準備真0：3763來源、2738獨立seed、604架構inputs、5必要fixtures、342Git原CLI、actual18498/0。原24MiB與full123原272MiB值不變，舊hardcoded WS修為explicit實際掛載anchor；預設舊行為保留，小反證0/1/0與獨審217/135均0。未改掛載／配額／安全。啟動時OWN已用952,905,728B＋1GiB額外規畫≤原2GiB計畫，SHM free16,918,974,464B；是規畫不是連續真峰值。
+- S10 preledger原gate真`1/0/0/0/0/0`，完整12CLI／actual198/0。mutate check為53bridge oracle stale（52原killed＋M110 equivalent），因tests/*.py指紋含#314改動；不是120stale，也非還原失敗。架構3條0/0/0，generic205/product18、#314完整11、決策adoption15皆0、零skip。closed原件 `/dev/shm/geometry-axiom-geo337-20261025/S10-preledger-checks-original-20261025`；source原件 `F10-source-preparation-reserve-anchor`＋`S10-source-preparation-root-original-20261025`。三closed收件1214members/23,510,881B，collector準備於 `/tmp/geo337-S10-closed-original-collection-preparation-20261025`，尚未正式封包出版。
+- F9六browser原exit全0、reader3全0、axiom原0，完整包已於E249及祖先公開。F9 native仍原1（5327pass/1fail/1允許GDI skip），不得移標。#314 v3暫態full11 fixed/withdrawn/restored0/1/0、四K違規各1→0、原index每command保全，v2原index紅與原件保留。新S10完整native必重跑，尚UNRUN。
+- Q38 F9原44真0，43killed＋SPM24 equivalent。完整346檔14,674,721B→gzip3,194,792B、actual2476/0與獨審已完成。原45leaf manifest `/workspace/geo337-F9-q38-package-publication-manifest-20261025.json`。root待發布46leaf含PROGRESS manifest `/tmp/geo337-Q38-S10-progress-publication-20261025/FILES.json` pin `faf9b7be3d261184bd7c6fba640d6a95f62dcba2c612e9f51323a883ee3fc145`，peer28/0；尚未push，不能說已交付。預期parentE963；publisher務必普通push＋全部remote bytes/hash驗0再更新正文。
+- 四個WS舊index已完整遠端保存E963，原index仍存在，回收0。native實際OUT仍`/tmp/geometry-tests`、原128MiB守門保持；一次TMP回收候選107,233,280B已獨審14999/0，排除73個裁判／歧義葉，保護F9六ELF。`/tmp/geo337-native-TMP-combined-preservation-20261025/PLAN.v2.json` pin `38e28b2e0b63ad263d2eb22beb6f80e90190073d68a40ad9cc9b81f6e1ac83be`。四leases全false、沒有unlink；resource準備archive-only與exactretirement工具、h_init獨審。26index/ELF原payload須先完整封包且遠端核對再退役，且要等full123原雙鎖釋出。任何未列資料、fixtures、Gitobjects、dirty、原始證據均不得刪。
+- 額外資源事故如實保留：gate影響分析第一輪誤取含evidence的binarydiff，產98,525,587B／36files，WS ENOSPC在第8命令啟動前。前7CLI全0且完整未截斷，經逐hash同冷移至 `/dev/shm/geometry-axiom-geo337-20261025/gate-impact-first-attempt-20261025`；唯一raw不可刪。`COLD_MOVE.json` pin `cfabfee09762ce6caa8dc290c093ae8b9928669aa7f413b084581a812f829a36`。這98.6MB需算入共享容量，不再搬到不足的TMP；第二輪小scope收件在`/tmp/geo337-F9-S10-gate-impact-20261025-r2`限1MiB，已確認非evidence恰兩葉。其他大封包順序執行，不超額平行占用。
+- 架構四檔最小更新由architecture代理準備：manifest/scan相同則保原bytes，report/receipt綁S10當次三judge、決策snapshot fe822/241596B；歷史九guard留M6e50身份，不冒本輪執行。全ledger採入後固定newF，check與完整native／所有UNRUN專項照原規格執行。
+- 待跑專項仍有P52、§7card、P-189、#323 required-eight/PF3/whole-memo/ABC、RC/#314六suite+Node/ReadingA完整。R8原36性能樣本有效，原outer1保留，不重抽；F9 #323限三差comparison單項0已交付，不擴及P-189。closure相同可引用的依據正在獨立審查，不能自行豁免同final規則或宣告跨SHA全綠。
+- 最新handoff已fetch604a14f93，#338最新審查仍14:35:15Z head3447ab3。B3實際merge已做；B1完整native/B2其餘正式驗收尚未關。#344及其他線保持各自既有分支，未合列車，未標READY。禁止force push、PR合併、部署、修改其他代理分支。
+
+下一步：先檢session26296真終態，不重跑已完成gate；完整保存新ledger後採入final。背景期間完成架構工具、逐gate沿用矩陣、native一次保全工具及Q38普通發布。所有工作仍持續，沒有完成報告。
+
+
+---
+
 # 2026-10-25 主代理接續點：S10正常同步main＋採入#314，完整帳本尚未啟動
 
 本增量已由主代理正常提交至handoff；下方舊文完整保留。這是持續工作中的checkpoint，不是階段停工；下方舊文全保留。
