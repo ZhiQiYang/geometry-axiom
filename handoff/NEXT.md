@@ -1,3 +1,55 @@
+# 目前接續狀態 — F9 完整 native 執行中
+
+這是持續工作的 checkpoint，不是階段停止或完成報告。下面舊區塊全屬歷史；以本段身分與真原件為準。全程繁中／英文commit；不合併PR、不forcepush、不碰claude/grok分支、不改未核可公理或決策佇列；使用者不在，不提問空等。
+
+## 已公開身分
+
+- 主列車／#338：codex/train-337-continue-20261024，固定正式驗收F9=`4f8a794f4167c3562eb182045102e86e9e37cca9`。
+- 原完整帳本生成／R8真正執行F8=`75a1e93811a52b69385cbdaf6a09d773ed9052ad`；F8→F9只有tests/mutants_results.json及evidence，所有產品／裁判相同。不要移標原execution。
+- 最新證據E=`cd19c63a9fe625c039a421c52d3c6d335e2009c4`，相對F9只evidence；追加9葉/739736B native起跑收據。上一E782bc80b0a13ecd19670f5285a8edb1824349686的226葉/25,493,554B初始gates已actual2354/0。
+- 最新正文D=`37555b9e24ccd58d13afe4b3e20d86fc9ca1f206`，分支codex/train-337-continue-20261024-prbody；唯一current-state矩陣已標native RUNNING，末稿b13c36…／新E與起跑事實peer153/0、真push0。上一D4e6bc0edbeca54d166d823a8cb6017732c2ad710已actual78/0。pr-status仍舊47ace3da，尚不能稱bot已套用正文。既有請求會自動讀body_ref，不新增重複請求。
+- main=`425c092eaf16f90256d76433243baebde45163ac`，Claude head仍`8f9301fc1b78712d930ffc68074437e44d068aab`。最新fetch的handoff=`4b4d72287975a952558eb9f256be158631becb23`，評論/狀態與前次無新增；#338最新審查仍2026-10-24T06:38:46Z/head597bce6。所有PR仍未READY。
+
+## 正在跑：不可重啟／不可碰來源
+
+完整native root原exec session **41942**，F9，原workflow開始 **2026-10-25T09:53:11.697952+00:00**。
+- 外層：`/tmp/geo337-F9-native-launch-20261025`；內層：`/tmp/geo337-F9-native-4f8a794f-20261025`。
+- 真原指令：`ulimit -s 16384; python3 tests/run_all.py --build`，全部230登記項、原35分鐘CI gate不變，watchdog不是放寬門檻。
+- 原ROOT：`/tmp/train337-323-f64d638f-source`，HEAD真F9，前置clean；driver入場TMP135462912B。native外層釘原128MiB啟動headroom，後續不可把開跑後下降當另一產品門檻。
+- secondary由外層持、heavy由原driver持；舊/tmp/geometry-tests原638檔/5,455,046B已同device整目錄rename保存在內層preserved-global-geometry-tests，不刪任何原件。
+- 原工具`/tmp/native-final-executable-preparation/run_full_native_workflow_v2.py` pin763a6e8064be212a020522a43a80bdb6cd353d329997c83479f469c2359f4d21；root外層`/tmp/launch_geo337_F9_native_20261025.py` pinface7315bc0a6dc65ab67928f0b195571559d04aede94cdef263c3f579401c82，靜審d5443d5f…已0。
+- 真終態前不freeze/hash活動完整payload、不改ROOT／seed、不啟heavy或性能/canvas。只可讀小metadata/末尾狀態。拿到exec真正exit後立刻保存完整tool FINAL，不把receipt存在或部分綠當終態。
+- 目前只知執行中，正式native出口尚未有；任何紅照規則收齊、分類，不放寬斷言/時限。
+
+## 已完成：不要重跑
+
+1. **F8完整123**：原session58101真0，07:38:36–09:00:48；原四phase舊tracked1/full0/map0/新外置check0。123＝114killed/5equivalent/M20原允許crashed/3retired，120自然F8 head。原JSON SHA2560123548b29bf8adbaf3cf896bfffb212134452f2574eaf8ae1d1b663104ead1b。原件peer7625/0、封包11165/0。
+   公開於E f0f7888213a8cc5b54f0a4303fb0577fe812cefd 的 evidence/geo337-train-20261024/ledger-F8-complete/；1486regular/49,703,520原bytes，gzip8,584,878B，archive806ab05886963c6dd2673096e04272c734f09c602f830ded9561a79729e13be8，INDEX c4ab625602baffd3e073f4dec765e586793a337963d1c4aec221277d4bfbcaa4。兩次v2/proc讀權失敗完整保留；v3正式獲准環境封存0，不改安全設定，外部UID0系統cwd仍明列unknown。
+2. **F9採入**：/tmp/geo337-F9-byte-adoption-20261025/RESULT.json，普通push0、清MUTATE_*原trackedcheck0/stale0/blocked0。原F8頭／日期／分類逐byte保持。採入/公開actual924/0，evidence F9-initial-gates/ 已全收。
+3. **F9三架構原judge**：/tmp/geo337-F9-architecture-original-20261025，0/0/0；205契約＋18產品測試全ok、334sources/6trusted/798edges/0diagnostics。actual144/0。四artifact與F8同blob，原receipt仍M6e50aef65513b7b38f93228919272c6d40d6c196，不冒F9重產。
+4. **F8→F9雙來源轉移**：09:47:42–57真0，/tmp/geo337-F8-F9-dual-source-apply-20261025；原exec34408 final在/tmp/geo337-F8-F9-dual-source-EXEC_FINAL-20261025.json。native6997／seed2738原物理葉保全、兩邊五fixtures、refs/sparse/完整index gzip/忽略原件保留，只有新帳本葉改。actual12224/0在/tmp/geo337-F8-F9-dual-source-actual-peer-20261025/REVIEW.v2.json，pine4a85545e379708190885effbcff8ba56d950e824520015c7d1b44eac42d5c25。**不可再跑F8-bound轉移入口**。seed路徑仍包含F8，但其HEAD已F9：/workspace/geo337-full123-F8-cache-20261025/_bridge-work/75a1e93811a52b69385cbdaf6a09d773ed9052ad/repo。
+5. **R8**：全部原36樣本與calls門檻已達，outer仍1因三stdout差；不重抽有效R8。B/C仍未核可、P189也未另核可。I22原必要診斷不得刪，不更新golden/正規化。具體三差/選項已公開、QUESTIONS保紅。CI原付款/額度阻擋不自行改帳戶或安全設定；新F9/E CI未讀。
+6. **F8 #341 fallback-only成本**：原session33499真0，/tmp/geo341-F8-fallback-cost-run-20261025；546CLI/14cases/378samples（42diag/42warmup/294scored）/9ELF。actual4416/0、包24831/0，全包公開在F9-initial-gates/。N64 none wall23846/22334ns約+6.77%、dense7601/10816約−29.72%；保存全點，performance_acceptance_decided=false，不自訂門檻。原B1要求「完整優化撤回」但沒指定Sc493唯一基準；新的fallback實測未覆蓋unique-ID全撤回。cost_tool_adversarial正準備最小完整withdrawal草稿、保H/#343，未編譯/量測/改產品。勿把前輪結果改成全面性能改善。
+
+## 接續工作與擁有者
+
+- 主代理唯一寫train。native真終態收原tool/receipt/logs、peer、發布PROGRESS；其他原正式gate照37命令計畫。Q38全44、required-eight681、§7、PF3、P52、P189、reader/RC/閱讀A/#314各UNRUN，不得冒正式已跑。
+- Browser來源：resource_and_transition_review正修1025 docs/prototype唯讀alias工具，architecture_actual_review對抗審。只有外部小草稿/合成，不曾新增alias。**native結束才可實執**。轉移/alias純準備64MiB＋真峰值，native另128MiB，browser原64MiB/各job重新入場；不是產品數值門檻。
+- 已審split單job preparer：/tmp/geo337-browser-single-job-split-preparation-20261025/browser_readonly_pool_preparer_split_single_job.py，pin5e9b3fc3daeaf95ca4349e934dafb90eb915dc3dca17f6d1c418fe1d2ab85787。h_init_actual_review已備F9外層v2（見下），保原workflow/driver2a425…/Chrome156/Node24/六埠/TMP；尚未啟任何browser。
+- 小磁碟：native開始前TMP約141MB，後續只按fresh真值。不要刪收據/fixtures/Gitobjects/原ELF，不碰永久/tmp/geo337-published-archive-git-objects-20261024與其alternates。七對raw去重與36Chrome cache已真完成且actual741/0，**勿重做**；新immutable registry pinec140cfd…在/tmp/geo337-terminal-narrow-maintenance-actual-peer-20261025。WS375與舊四/六冷群也早已做完。另剩6冷TMP群gross23,388,160B只是候選，未新plan/執行，不能預算成已可用。
+- #348：r8_terminal_peer備F73重建/真小fixture校準/原512四指令整批600s的明確診斷；不與native/canvas爭資源。F0f兩timeout保原身份；9個F73舊TMP ELF已不存在，不可宣稱復用，現可復用乾淨204檔F73 source與已審wrapper。tinyC協議已過，不重跑它代正式512。
+- #344仍S7 cbb318d76d7d242ae0db760ae15d57ef1cad4aa0 strict9/9原0，完整canvas三phase與整合UNRUN；VM010仍S540。#345/#346/#347/#348未合入train。#325/#331/#333歸Grok不碰。
+
+最新已備browser外層v2：/tmp/geo337-F9-browser-launch-preparation-v2-20261025/launch_F9_browser.py pin1af311d824c2dfcfd946d44d677501ac1356549cdabaf33690d1c34d82a04281，PINS9e690a03df64762ffbeac2534d876fbc9d10dc1499a41e774af89739cae14fdf；peer55/0在/tmp/geo337-F9-browser-launch-static-peer-20261025/V2_REVIEW.json（75daac0ab5e53815e7429b8a9ae275c45b1ffc07b5bbe0ac9d4ec892f57fa6f7）。六requests仍UNBOUND，必須native真終態＋alias與完整sourceprep真0、原c387/PREPARER/MATERIALIZER/PLAN/FREEZE/GUARD pins才排，各項目前UNRUN。不要直接跑舊L launcher。
+
+1025alias最新v3：/tmp/geo337-missing-readonly-alias-preparation-20261025/add_missing_readonly_browser_aliases_v3.py，pin7b65de06c6488d06e535135333e12bfeb631ace546fec02939ae8f87b20883ed；REQUEST.v3.F9.pending.json lease/review都false，待architecture最後審查，不曾實執。#341完整withdrawal OWN已有peer86/0（f5bc2bd7…），cost代理正接插樁/runner，C與新成本仍未跑。
+
+一次試喚醒舊acceptance代理遇agent thread limit；沒有重試、換模型或另開任務。現有代理繼續分工，這不是產品紅燈或usage limit宣告。
+
+以下舊內容完整保留作歷史；其中RUNNING、E/D、F8來源等不得覆蓋上述新狀態。
+
+---
+
 # 持續工作 checkpoint：F8 的 R8 量化門檻全綠，exact 三差保紅，接續完整帳本與正式驗收
 
 這是接續點，不是停工或完成報告。使用者不在，不提問、不空等；繁體中文、英文 commit。不 force push、不合併 PR、不推 claude/*／grok/*。主代理唯一寫 #338 主列車；每條來源由一人維護、另一人對抗審查。不得放寬斷言／golden／時限，不改決策佇列；公理只依已核可 SSOT 流程。主列車保持 draft，尚無 READY-TO-MERGE 裁決。
