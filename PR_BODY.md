@@ -3,7 +3,7 @@
 | 身分 | 完整 SHA |
 |---|---|
 | 固定產品／測試／架構產物 F8 | `75a1e93811a52b69385cbdaf6a09d773ed9052ad` |
-| 證據 head E | `219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6`；非 evidence tree 與 F8 相同 |
+| 證據 head E | `996aeded246090de87efc631a29cb7e4b5585d30`；非 evidence tree 與 F8 相同 |
 | 架構真正執行 M | `6e50aef65513b7b38f93228919272c6d40d6c196`；F8採用其report／receipt |
 | H 定向執行 S | `2c4635577a8fcb11e88b346547f7bb1c7b739fb7` |
 
@@ -11,7 +11,7 @@
 
 | Gate | 結果與實際來源 | 尚待完成 |
 |---|---|---|
-| 全123突變帳本／tracked check | F8 tracked check真exit1，120stale／3retired／0invalid；全量重產UNRUN，正配置獨立cache與seed | 穩定來源整份重產，由root採用；不重寫帳本內真正execution SHA |
+| 全123突變帳本／tracked check | F8 tracked check真exit1，120stale／3retired／0invalid；全量重產RUNNING，自2026-10-25 07:38:36 UTC在F8執行，尚無終態 | 穩定來源整份重產，由root採用；不重寫帳本內真正execution SHA |
 | 完整native | UNRUN at F8 | 原aggregate、16MiB stack、strict registry |
 | canvas | UNRUN at F8 | 完整golden、P73/P88，獨占執行 |
 | assembly、documents、grid、space、timber | 各UNRUN at F8 | 原workflow，各獨立埠／TMP |
@@ -27,7 +27,7 @@
 | 閱讀A native／oracle／mutants-only／完整quick | UNRUN at F8 | #335未核可CLI初放能力另案 |
 | 架構三原judge＋四檔 | M exit0/0/0，205＋18、零skip；F8已採用 | 604inputs唯一references.inc變動；937／55政策與scan不變；九guard各0/1/0、neutral2綠。最終驗收的三gate另跑 |
 | H局部修正與反證 | S 原14/14、exit0、零skip；舊13方法不變；三phase work exit0/1/0 | O0 focused，不代O2 wall；Windows未驗 |
-| required CI | F8 run40170221039／E815cd2e3 run40170692505，各七job failure、runner_id0／steps0，原18 API讀0。當前E219bf5d4尚未讀CI，不移標較早run | 歷史annotation為付款失敗或支出上限，未修改帳戶；沒有正式替代接受紀錄 |
+| required CI | F8 run40170221039／E815cd2e3 run40170692505，各七job failure、runner_id0／steps0，原18 API讀0。當前E996aeded尚未讀CI，不移標較早run | 歷史annotation為付款失敗或支出上限，未修改帳戶；沒有正式替代接受紀錄 |
 
 允許skip只限原Linux `py:test_gdi_contract` 缺compiled Windows GDI harness；F8尚未跑native，不預先計入skip。未刪測試或放寬數值門檻。
 
@@ -48,4 +48,4 @@ H的撤回反證精確失敗為 `ASSERT:persistent-reference-local-zero-work lin
 
 三差的[逐項原輸出與Git歸因](https://github.com/ZhiQiYang/geometry-axiom/blob/219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6/evidence/geo337-train-20261024/current-R8-exact-three/originals/REPORT.md)及[具體選項](https://github.com/ZhiQiYang/geometry-axiom/blob/219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6/evidence/geo337-train-20261024/current-R8-exact-three/originals/QUESTIONS.md)已公開並通過424/0獨審。維持A保紅；B′僅補診斷的比較基準或C具名三pair政策均需明確裁決，尚未採用。B′會改exact基準版本，C會改允許差異政策；任何方案皆不改性能分母或重抽有效R8。P-189適用範圍另需明示。
 
-native ROOT已普通detach至F8，五fixture／sparse／原refs完整保留並經actual獨審；完整轉移原流在雲端保全待另行公開。全帳本仍未啟動，不把資源／來源準備冒正式測試。
+native ROOT已普通detach至F8，五fixture／sparse／原refs完整保留並經actual獨審；完整轉移原流在雲端保全待另行公開。全帳本已於07:38:36 UTC正式啟動，原123／120執行head／3retired要求未改，尚無終態；不把來源配置0冒完整帳本通過。已公開啟動收據：`evidence/geo337-train-20261024/current-F8-full123-start/`。
