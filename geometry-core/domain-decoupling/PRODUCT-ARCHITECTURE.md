@@ -1,7 +1,7 @@
-# Product architecture — integration train fixed-source receipt
+# Product architecture — a6 original-gate receipt assembly
 
-產品／裁判實際來源 `6e50aef65513b7b38f93228919272c6d40d6c196`。三條原命令 exit 0／0／0；generic 205、product 18，零 skip。完整604 inputs、334 owned／270 exclusions、798 edges／0 diagnostics。LF closure `8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89`。來源 HEAD、604個Git blob／raw／LF、三個裁判及兩份 SSOT 前後不變。
+產品／裁判實際來源 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`。使用本輪已封閉三原命令exit0／0／0（generic205、product18、零skip），本組裝階段沒有再次執行三裁判。完整604 inputs、334 owned／270 exclusions、798 edges／0 diagnostics；LF closure `8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89`。manifest與原scan逐byte不變，937 identifiers／55 strings政策不變。
 
-本輪 manifest 與前份產物逐 bytes 相同：forbiddenIdentifiers 937→937、forbiddenStrings 55；分類、路徑、exclusion、trust及所有政策不變。完整604輸入相較前份收據僅 `geometry-core/references.inc` 的來源雜湊改變。原完整 W lexer 盤點仍覆蓋全部 W identifiers。九組既有 guard 在本次來源重新實跑0／1／0；撤回用歷史928版 Git `ca7838e0f4950452b9befcf40899d606db9b81fa`、原SHA256 `80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525`，明確不同於上一份937版 manifest。兩個neutral probe亦重新通過，沒有移標歷史判決。
+604輸入相對真正前次執行 `6e50aef65513b7b38f93228919272c6d40d6c196` 零差異；前四檔採入提交 `75a1e93811a52b69385cbdaf6a09d773ed9052ad`。相對前次執行的test_geo314_commit_paths.py與決策不在604inputs；全帳本保留S10實際重產原件，其於a6有效性由獨立--check判定，本架構收據不認證帳本。公理層快照不變；決策新快照SHA256 `e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740`，為a6既有檔案的逐byte快照，不以其內容自行擴張授權。
 
-前份收據 source `e321026fb9bc9bc19c54b8034af6e6eaec2857f9`，產物提交 `6df0264f75e84f03adb70746b6ac3db07a9910fc`；本次完整輸入差異在 receipt／source-inputs.json，歷史報告保於該Git提交。四檔寫至來源外，receipt不hash自己。原native／browser／mutation ledger／效能需各自原收據，本四檔不代稱它們通過。
+原三judge執行時間/環境完整保留於receipt，604/raw/LF/Git/tool/SSOT快照是在本組裝階段重新採集並前後比對，不能冒作同時點快照。歷史9組0／1／0及2 neutral controls仍屬M6e50，未在a6重跑或移標。四檔寫於來源外，receipt不hash自己；native、browser、全帳本與performance各需獨立原收據。
