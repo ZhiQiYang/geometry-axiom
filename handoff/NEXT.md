@@ -1,3 +1,77 @@
+# 2026-10-26 Codex 接續入口：原件已回收，仍有明確阻擋
+
+這是既有任務 `01a162a6-2bb5-7393-902c-19dd519d60b9` 的續作，沒有建立替代任務。專案尚未完成，也未標 READY-TO-MERGE。先讀本節與最新 PROGRESS，再讀下方保留的歷史；不要從頭重跑已有效收據。
+
+- 候選產品 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`；`codex/train337-recovered-evidence-20261026`。
+- 證據 head E：`d803910822803a020a57a7568c62325a076239f0`；同分支，自 F 起只變更 evidence。
+- 正文 D：`990440297d851dccbc077cdf59fe654fdbd9ffd8`；`codex/train337-recovered-evidence-20261026-prbody/PR_BODY.md`，完整6321B/raw SHA256 `4f8e24fe0096db68f93cf06df8e3e23612d8b15748577593d09a25fb5c21731a`已推送並核遠端。原#338 request僅body_ref指向此分支，保留head/base/title；是否已實際套用須讀pr-status，不可只據排隊宣稱完成。
+- 原#338產品head仍`a6f4013364e21bcb7239b5dcc25caac0f6d61f77`；本輪沒有改其ref或合併PR/main。
+- [最新PROGRESS](https://github.com/ZhiQiYang/geometry-axiom/blob/d803910822803a020a57a7568c62325a076239f0/evidence/geo337-train-20261024/resume-20261026/PROGRESS.md)；[具體依賴](https://github.com/ZhiQiYang/geometry-axiom/blob/d803910822803a020a57a7568c62325a076239f0/evidence/geo337-train-20261024/current-status-clarified-20261026/QUESTIONS.md)。
+
+S10全帳本真exit0已回收且逐byte採入；新F的tracked check與架構三條真0/0/0/0。全123原件不重跑，R8原36樣本不重抽；這兩項是既有有效證據。新F native、六browser及剩餘專項尚未完成，不能因四項或封包綠就標全綠。17組原件的24,966檔案/7,905目錄/189,987,205原始bytes完整封包已遠端核實，所有原件仍保留。
+
+## #338 接續：新候選來源與剩餘驗收
+
+候選分支：`codex/train337-recovered-evidence-20261026`。固定 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`，父提交 E：`9a57aea2128a7bc3985064932c24e2229fd8fcb8`。一般 push 與遠端三檔全文核對已 exit 0；尚未宣告 READY-TO-MERGE。
+
+原列車 `codex/train-337-continue-20261024` 遠端仍是 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`。為避免與 Claude session f46787ac 競寫，本輪不更動原列車產品 ref；正文由對應 prbody 與原交接 request 更新 #338，不新增替代產品 PR。此候選屬同一個既有任務的獨立恢復分支。
+
+F 僅採入三個已有原件並經對抗審查的檔案：`tests/mutants_results.json`、`geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md`、`geometry-core/domain-decoupling/product-architecture-receipt.json`。其餘產品／測試／公理／決策不變；manifest 與 scan 也逐 byte 不變。
+
+- S10 全帳本已真正完成，exit 0；123 筆為 114 killed、5 equivalent、M20 crashed、3 retired，120 執行 head 原值保留 `82c922a3941525d3a094ac0158bdc7dea57ea360`。不要重跑已有效的 full123，也不要把紀錄中的執行 head 改為 F。
+- a6 三條架構原裁判為 0/0/0，generic 205、product 18，零 skip。四檔組裝 exit 0，604 個來源 raw/LF/Git closure 不變；架構 receipt 如實綁 a6，歷史 M6e50 反證保持歷史來源。
+- 獨立 a6 source checkout 已一般 FF 到 F；原 `mutate.py --check` 與三條架構裁判真實退出碼均0，獨審12837項／exit0。完整命令、原始輸出、退出碼、環境與F均封存；RESULT雜湊`4ef99c7b38f0ab5f451e508d6fffd4e78e30d52a6df133f9a9fd7f9210359784`。3763 葉的這個 checkout 不能冒充 native 所需的 6997 葉來源。
+- 原 F9 六組 browser 皆 exit 0，原 F9 native 為 exit 1；新 F native 與六 browser 尚未完成。不要用原件封包或工具合成反證冒充產品全綠。
+- R8 原 36 份效能樣本與 outer exit 1 都保留，不重抽樣。#338 原裁決留言（內容為Q-323-ABC）刊載帳戶已核實，但對PR適用範圍自述「本機Claude整理，非原話」；既有#323 exact收據保持原三差限定，本輪不新增比較例外。新的P-189／跨SHA沿用文字仍僅有轉錄與審查引用，未核實對應原始批准，原比較器不變。
+
+## 共用空間阻擋
+
+2026-10-26 10:16 UTC 附近：兩個 OWN 去重使用量 `1,741,426,688` B，原 2 GiB 規劃上限餘裕 `406,056,960` B。單個 browser 原 416 MiB 准入尚缺 `30,150,656` B，且未含新準備產物。實際 SHM free 約 16.13 GB 不代表可以忽略原 2 GiB 規劃守門。此數字是當次觀測，執行前須重查。
+
+native 真正使用 `/tmp/geometry-tests`；當時 `/tmp` 約 24–25 MB，未達原 128 MiB 准入。不得只設定 TMPDIR 就宣稱已繞開此需求，也不降低門檻。
+
+自動審核已拒絕原 3156 葉清理：2439 來源副本、691 Chrome cache、2 私有 index、24 ELF；原工具另含 108 個空目錄。命令沒有啟動，刪除 0。原 true 請求已撤銷，禁止重試、拆批或換路徑執行同範圍。另 165 個 GPU cache 不在此次批准範圍內，也未執行。完整保全已交付 E9；精確範圍與所有限制見同批 approval packet。協調者取得具體批准前，不處理此刪除。
+
+## 執行者與保全
+
+root 是 recovery 候選與對應 prbody 唯一 writer。publisher 的 HEAD/index/原 train ref 固定 `3e4f2560aa11ed2a626db98ba5ed6f129e791052`；舊 workspace provider HEAD 固定 `70d00309d7985db722c339c77331c436d26a7ab1`。未修改兩者工作樹或原 index。
+
+保留全部原始失敗、收據、五個 fixtures、Git objects、原取樣與未提交修改。不得合併 PR/main、部署、付費、修改安全／掛載設定或新增公理。正式程序終態以原始 result/exit 為準，不依訊息延遲猜測超時。
+
+
+## 各工作線來源與下一步（唯讀快照，未宣告完成）
+
+| PR/工作線 | 分支 | 完整head | 下一步 |
+|---|---|---|---|
+| #338 | `codex/train-337-continue-20261024` | `a6f4013364e21bcb7239b5dcc25caac0f6d61f77` | 最新審查以 a6 為 checkpoint，列 S10／架構／final F、完整 native、六 browser、閱讀 A oracle 缺口。主代理已另推進新候選 F；本快照不把兩者視為同一受測來源，也不覆蓋已回收的新收據。 |
+| #344 | `codex/issue320-connection-recovery-20261024` | `df39d1933402c76b2f8b35ca013412daf16ed4c9` | 完整實際 canvas 撤回／恢復與具名 P53-3/P61-10/P61-11、其他五 browser、native、帳本仍待；strict aggregate 九項不是整合通過。當前 API 顯示衝突。 |
+| #341 | `codex/geo300-prerequisites-20261024` | `823729be5f4f025aebbf02c2dc85e09907c28812` | 最佳化整組撤回與 none/few/dense/overflow 成本／CPU／wall 證據、final native／受影響 timber browser 仍缺；語意反證不是效能驗收。 |
+| #346 | `codex/geo300-cut-list-storage-20261024` | `eaf15e239324a6464a04740647afccce3a3c17c7` | 與上游 #343 來源鏈須收斂；完整 native、六 browser、效能、帳本與架構尚缺。歷史 11 methods／9 controls／83 builds 不移作新 final。 |
+| #347 | `codex/issue128-empty-panel-rows-20261024` | `2e8a6ed20325aa4842dcd0f89eacd598662be598` | 先收斂 #346 來源鏈；PF1/PF2/PF3、native/browser、帳本與架構缺口。先前 empty-row 修補不代表整體面材完成。 |
+| #348 | `codex/geo300-capacity512-20261024` | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` | 先收斂 #343→#346→#347→#348；兩次 N512 全 batch 600 s 原失敗保留，無 partial bytes 不能分派至四命令中的某一命令；完整七項、#297、帳本／架構仍缺。 |
+| #323 | `codex/geo261-load-residual-20261020` | `4ea6c50796711ed1e79bae89c93d07037d317837` | 2026-10-23 審查所列舊 head 的 N32/base、source calls 比例、負控制與帳本紅燈需與新列車 R8／exact 證據逐一銜接。API 現在 baseRefName=main，舊 retarget 要求不可再記為現況未做。 |
+| #324 | `grok/geo261-faces-keyerror-322` | `4e176e830b691269cc72d021ce7e1bc0b167d621` | 最新留言是承接前一則 ChatGPT 審查的回覆；五 public paths／45 tests 是舊收據。正式 native、六 browser、importers／帳本整合缺口仍轉交 successor；不修改 grok 分支。 |
+| #342 | `codex/geo260-ac23-proof-20261024` | `df230da57619e437c30527dbede8c67fd0ec6b50` | 讀最新審查與原PROGRESS，依既有批准邊界補缺口，不擴張公理。 |
+| #343 | `codex/geo300-contact-index-20261024` | `a934a554ae58f16f124f1b264523947f170b3f0b` | 與#341/#346來源鏈收斂，保存原反證並補正式驗收。 |
+| #339 | `codex/geo324-faces-20261024` | `8f39025be6708bd9d58e576ed5b349b7ef628624` | 接替#324；先依既有收據銜接正式整合缺口，不改Grok原分支。 |
+| #345 | `codex/issue214-http-fixture-20261024` | `99646d418bc5e886a92bfdabe33e68780e88fe3b` | 讀最新審查與原PROGRESS；本輪只取得ref，未宣告新驗收。 |
+| #340 | `codex/kernel-without-woodworking-20261023` | `04959e04c334ceaf03f865514f76b1cac8ee91f2` | 依#338來源鏈收斂，完成原13項；沒有在本輪重跑。 |
+
+這些是非原子唯讀快照；開始寫入前先fetch並確認owner。#325與#331仍由Grok負責，不改其分支；#333已合入main。46個open issues只有#198列為待原始反例核對的關閉候選，並未關閉；6項是待核實既有批准，39項是本輪未取得整單驗收證據，不能解讀成39個已確認產品bug。完整盤點與raw API位於E的`current-status-clarified-20261026/geo-project-status-20261026/`。
+
+## 資源阻擋期間已完成的獨立工作
+
+#300兩個C檔已精確對比：#348尚缺F的四組優化；沒有重寫演算法。兩次N512原600秒失敗皆同140-byte四命令preload，原observer已會保存exception輸出，但當次無partial bytes，不能定位單一loadfile。目前#348 sequential history是1048命令、歷史F0f是1046；都不是原失敗實際input。完整靜態原件/對抗審查位於E的`resume-peers-and-sources-20261026/geo300-capacity-static-20261026/`。
+
+若所有正式執行仍卡容量，先繼續不占重建置的反例/來源核對，例如逐一核對#198原始凹口/尖脊與main回歸，或準備既有容量鏈的來源同步計畫。不得藉此重抽R8、改門檻或繞過已拒清理。#338新P-189／跨SHA沿用批准仍未核實；原#338刊載Q-323-ABC的帳戶核實與「本機Claude整理，非原話」必須並列，不冒稱本對話新增批准。
+
+本節最後修改前沒有新授權刪除3156葉加108空目錄，亦沒有改掛載/配額。若協調者轉入具體批准，先重新核對範圍與fresh consumer/hash/容量，不能沿用撤銷的舊true lease。原index、ELF、fixtures、Git objects、原始失敗與使用者修改均保全。
+
+
+---
+
+## 先前交接原文（完整保留，以下為歷史）
+
 # 2026-10-25 16:25 UTC 接續：S10 全123正式執行中，勿重啟
 
 本增量已由主代理正常提交至handoff；下方舊文完整保留。持續工作中的checkpoint，非階段停工；下方歷史原文保留但不代表目前狀態。
