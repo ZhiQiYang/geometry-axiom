@@ -1,46 +1,38 @@
-# #338 current-state：閱讀器通過；新增容量候選已備份，尚未清理
+# #338 current-state：整鏈容量受阻，正式未驗維持原值
 
-2026-10-26 UTC。產品 F 仍為 `cbf0fb621888596aa14ad5f2349b503e23b1b72d`。本提交只增加證據；父證據為 `df84890966a600d3ba7e39c5b8ba882b18d1a9b2`。原 #338 head 仍為 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，未改寫原列車。尚未 READY-TO-MERGE。
+2026-10-26 UTC。候選產品 F=`cbf0fb621888596aa14ad5f2349b503e23b1b72d`；父證據 E=`9bd32131e1657ea3a35c41707ae3e1f42df5fdb8`。本提交只增證據，不改產品、測試、公理或原列車。原 #338 產品 ref 基線仍為 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`；沒有採入 F、沒有合併，尚未 READY-TO-MERGE。
 
 ## 唯一 current-state 矩陣
 
-| Gate | 執行來源與真實結果 | 目前限制 |
+| Gate | 真實執行來源與結果 | 現況 |
 |---|---|---|
-| 全 123 突變帳本 | S10 `82c922a3941525d3a094ac0158bdc7dea57ea360` exit 0；114 killed／5 equivalent／M20 crashed／3 retired | 原件已採入 F；120 execution heads 不改標，未重跑已有效結果 |
-| mutation check | F exit 0，123/123 | 既有同 F 驗證 |
-| 架構三條 | F 0/0/0；798 edges、205 generic、18 product | 既有同 F 驗證，非本次新跑 |
-| reader generate／check／unit | F 0/0/0，inner／outer 均 0；51 tests／0 skip | 173 則 ResourceWarning 原樣保留；原件已在父證據交付 |
-| native | 新 F UNRUN；F9 歷史 exit 1：5327 pass／1 fail／1 原允許 GDI skip | 原 `/tmp` 128 MiB 准入未達；先準備完整來源轉移 |
-| canvas／assembly／documents／grid／space／timber | 新 F 六項 UNRUN；F9 歷史六項 0 | assembly 原 r1 環境失敗保留；space 原 2、timber 原 5 個分組 skip 保持；未新增 skip |
-| Q38 | F9 完整 44 項 exit 0，43 killed＋SPM24 equivalent | 不改標新 F |
-| §7 axiom／card | 新 F 正式項目均 UNRUN；F9 axiom 歷史 0 | 本次四個 `cc -###` 資源診斷 0，不是編譯或突變驗證；card 原 448 MiB 規劃保持 |
-| #323 R8／exact | R8 原 36 效能樣本達原門檻，outer 1 保留；F9 exact outer／stage／audit 0 | 不重抽樣；既有三差範圍不擴及 P-189 |
-| P52／P-189／required-eight／PF3／whole-memo／RC／#314／Reading A 其餘項目 | 尚未閉合；P-189 原 exact 紅燈保留 | 不接受新語意例外、不放寬斷言／golden／時限 |
+| 全 123 帳本 | S10 `82c922a3941525d3a094ac0158bdc7dea57ea360` exit 0；114 killed、5 equivalent、M20 crashed、3 retired | 已逐 byte 採入 F；120 execution heads 原值保留，不重跑 |
+| mutation check | F exit 0，123/123 | 已有效，不重測 |
+| 架構三條 | F 0/0/0；798 edges、205 generic、18 product，0 skip | 已有效，不重測 |
+| reader generate/check/unit | F inner/outer 均 0/0/0；51 tests、0 skip | 已交付 Edf848909；173 ResourceWarning 保留，不重測 |
+| native | F **UNRUN**；F9 歷史 exit 1，5327 pass／1 fail／1 原 GDI skip | D4 裁判與 D5 queue 變更有真依賴，不能沿用舊結果；容量受阻 |
+| canvas／assembly／documents／grid／space／timber | F 六項 **UNRUN**；F9 歷史六項 0 | assembly r1 原環境 1 保留；space 原 2、timber 原 5 分組 skip 保留，無新增 skip；相同產品 bytes 不等於新 F 已執行 |
+| Q38 | F **UNRUN**；F9 全 44 exit 0，43 killed＋SPM24 equivalent | 新證據確認 D4 納入模型副本 digest，必補 F 原件；原 320 MiB 排程受阻 |
+| §7 axiom／card | F 正式 **UNRUN**；F9 axiom 歷史 0 | 四次 `cc -###` 診斷 0；v3 codegen 前置真 exit 1、compiler 未啟動。全鏈峰值未知，停止逐段試探；card 原 448 MiB 計畫受阻 |
+| #323 R8／exact | R8 固定源 `75a1e93811a52b69385cbdaf6a09d773ed9052ad` 36 樣本各比例綠，但 outer 1 保留；F9 exact outer/stage/audit 0 | 不重抽、不改標 F，不將三差限定擴至 P-189 |
+| P52／P-189／required-eight／PF3／whole-memo／replay／#314／RC／Reading A 其他 | 新 F 尚未閉合；P-189 strict exact 原紅保留 | 完整執行來源／資源／部分原批准依賴未閉合，不放寬門檻 |
 
-F9 為 `4f8a794f4167c3562eb182045102e86e9e37cca9`。原結果、失敗及執行 SHA 都保留；封包或發布核對不代替產品驗收。
+F9=`4f8a794f4167c3562eb182045102e86e9e37cca9`。舊矩陣留在 Git 歷史；封包、靜審與資源工具測試不算產品 gate 通過。
 
-## 已完成並交付的工作
+## 本次實質交付
 
-使用者 17:59:47 UTC 新批准的固定舊清單已於 18:30 完成：3156 檔、108 空目錄、跳過 0、exit 0；`/tmp` 實測回收 107,233,280 bytes。這一批不再待批准。原排除 73 項、fixtures、Git objects、F9 ELF 與未知修改保全。
+- F9→F 影響報告及獨立 peer exit 0：native、Q38 有真 closure 變更；六 browser／§7／RC 等只知局部 bytes 同，動態來源與原驗收規則仍須遵守。報告不重新取樣或跑已驗項。
+- 完整 §7 codegen→as→link→11 原子程序→原件保留／單次發布模型：最大成本未知，結論 **BLOCKED**。沒有以更小的診斷 minimum 重試；v3 真 exit 1 的完整命令與輸出保留在同包。
+- 2 GiB 起源、完整剩餘流程與最小解除條件見 `resource-impact-20261026/RESOURCE_STATUS.md`；全部原計畫與原 v3 終態資料見同目錄 `EVIDENCE.tar.gz`。它是任務規劃，不是平台硬配額或產品數值；現有守門保持。
 
-新 F 閱讀器三項原件與完整清理原件已推送父證據 `df84890966a600d3ba7e39c5b8ba882b18d1a9b2`，六份遠端 payload 全文讀回一致。封包實際核收 12837 項、發布實際核收 1062 項，均 exit 0。
+20:35:17 UTC 唯一觀測：兩 OWN 去重 allocated=2,078,834,688 bytes，原 2 GiB 規劃餘 68,648,960；實體 free：workspace=4,378,624、TMP=111,140,864、SHM=15,793,045,504 bytes。native 原 128 MiB 啟動門檻差 23,076,864；browser 原 416 MiB 規劃差 367,558,656＋thin seed。Q38/card 相對規劃分別差 266,895,360／401,113,088，不是 SHM 實體缺額。這些不是整輪最大成本或下一次准入憑證。
 
-正文分支已推至 `a51af370fcfe4bc5022250d2b393db233e9951b6`，交接分支至 `2d18b25b56ae47308a56c478497fd10193cf6e26`。正文／交接實際核收分別 336／363 項、exit 0；原 NEXT 全文與 request 保留，原 publisher HEAD/index 不變。PR 是否已自動套用該正文另待 handoff/pr-status 核實，不能用分支推送代稱已套用。
+## 已交付與待決範圍
 
-## 新增 168 葉容量方案
+原批准清理 3156 檔＋108 空目錄已 exit 0、跳過 0、TMP 實測回收 107,233,280 bytes，不再待批准。原件／fixtures／Git objects／排除項及未知修改保全。
 
-新增範圍只有三個已退役 checkout 的私有 index 與十一個舊 profile 的 165 個 GPU cache 葉。完整固定清單見 `extra168-preservation-candidate-20261026/SNAPSHOT.tar.xz` 內的 `BYTE_MAP.json`，原始 allocated 合計 **23,707,648 bytes**。33 個 cache 目錄僅保存 metadata，沒有列入新增刪除範圍。
+新增固定 168 葉（3 私有 index＋165 GPU cache）23,707,648 allocated bytes，完整備份、遠端核對已在父證據 E9bd32131 交付；**仍未批准、刪除 0**。即假設全部零成本回收，20:35 native 啟動僅多 630,784 bytes，扣來源永久估量 507,904 後僅餘 122,880，未算其他成本；不能宣稱獲批就全輪可跑。另 221 個 SHM cache metadata 候選是不同未批准範圍，亦未刪除，不能拆批規避。
 
-備份於 19:30:34–19:30:42 UTC 實際完成，exit 0；完整 tar.xz 723,012 bytes，SHA256 `f9770ca505999057c23c898d559836f74594bc66e90bf5c83479e3d76f0385f6`。168 葉的完整身份與內容前後一致，42 條 Git 原命令及完整輸出已保存；前三根 HEAD／refs／dirty 狀態精確符合原退役紀錄，沒有新的 staged 或未知修改。這是新增備份，**沒有新增刪除批准，也沒有刪除任何新增候選**。
+正文 D=`2cce6afaeac87521924bde28660a71e43ad306e5` 已推送且全文核讀；最新同步 handoff `c3d00fe41d9f1940af8938749896cfa5480161fe` 的 pr-status 顯示 `body -> 2cce6afa`，本輪沒有直接重讀 PR API 來核實正文套用，也沒有再次改正文。相對先前 handoff 只有該 status 行改變，reviews/NEXT 未變。
 
-備份 INDEX 保存的是備份前測量，內含 `new_backup_written=false`；真正落盤終態在新 backup AUDIT/RESULT，不能混為同一時點。可恢復完整 bytes／權限／mtime；inode／ctime 不能重建。不可讀的平台程序界線如實保留，任何後續刪除仍須另有批准並重新核對 consumer、身份與遠端可恢復性。
-
-19:27:33 UTC 的 native 來源觀測因保留完整原始資料占用了 `/tmp` 4,640,768 bytes；當時可用 111,865,856 bytes。即使日後批准並實際回收整批 23,707,648 bytes，純加總僅比原 134,217,728-byte 准入多 1,355,776 bytes。來源轉移另外預估永久增加約 507,904 bytes，加少量 refs/logs 與可能的 index extension；所以不能再沿用先前「另有 4 MiB 餘裕」的舊估計。這些是估算，真正 native 准入必須在轉移／清理後重新實測。備份成功不等於 native 或 browser 已可啟動。
-
-## 接續與未解依賴
-
-§7 的四個 driver 診斷已真實完成，receipt SHA256 `f087dfcd582114bc8ae26afc5ffe2ea9996a2d448069c0b3e89406a9083d9905`，來源保持，未產生編譯暫存；下一步是有完整收件預算的編譯資源診斷，再決定原正式 axiom 五組突變是否可執行。診斷資源上限不帶入正式裁判，原 60／180 秒不變。
-
-native 會重用原完整 checkout，沿原 sparse 規則核實新 F 的 6997 個實際選取葉，保全五份 fixture、ignored 原件及 Git metadata；尚未執行轉移。原 `/tmp` 128 MiB、browser 416 MiB＋thin seed、card 448 MiB、兩 OWN 合計 2 GiB 規劃都保持。
-
-現有工作管理 CLI 入口已核實，但私有 ledger 仍 unknown；import-snapshot／reconcile／list-ready／list-alerts 都未執行，沒有新建空佇列。#54 僅單房候選，不擴 #87。未合併 PR/main、部署、付費、改安全設定或新增公理。
+原始資料全部保留。後續只在能覆蓋整鏈的資源安排、或核實新的無重疊實質工作後執行；不以反覆整理／相同 SHA 重核作進度。其他工作線的 selected 通過與原紅燈保持，工作管理 private ledger 仍 unknown，沒有造新佇列。未合併、部署、付費、改安全／掛載設定或新增公理。
