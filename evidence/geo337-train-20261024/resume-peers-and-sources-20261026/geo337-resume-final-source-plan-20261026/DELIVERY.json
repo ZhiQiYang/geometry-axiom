@@ -1,0 +1,80 @@
+{
+  "schema": "candidate-final-source-preparation/1",
+  "state": "PREPARATION_STATIC_ACCEPTED_RUNTIME_UNRUN",
+  "candidate_branch": "codex/train337-recovered-evidence-20261026",
+  "ledger_execution_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "architecture_execution_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "actual_adoption": false,
+  "product_tests_executed": false,
+  "remote_mutation": false,
+  "final_sha": null,
+  "files": [
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/ADOPTER_DELTA.diff",
+      "bytes": 18473,
+      "sha256": "1ee143891ac2fa60beaaf72345d67ccc3b1c39c8bccdad69fcbd5e10b8201a84"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/ADOPTER_PEER.json",
+      "bytes": 4388,
+      "sha256": "dd2c9e9d6eb5a16d1ac705f6156c2da71438f8988ca839eed923d33c576c398b"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/ADOPTER_README.md",
+      "bytes": 2499,
+      "sha256": "da516bb379e60466440aa93800bcfec6a7e6dd1166696e29cc0c05312ce70d89"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/ARCHITECTURE_SELECTED_GIT.json.gz",
+      "bytes": 24412,
+      "sha256": "858488ca62465de4c30f7ef94e75fcddaea0dadbd93c0ee99ba1eb1391f23859"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/PEER.json",
+      "bytes": 3359,
+      "sha256": "78d603dd6ab31b4a93e2cb916dee26162fe313fd5714d003302585772ac7b2ea"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/PLAN.md",
+      "bytes": 10122,
+      "sha256": "1ae7370102c702aac921ef139e9240aa972e9d28115096b78d7cf3a8f122d897"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/REQUEST.UNBOUND.json",
+      "bytes": 3184,
+      "sha256": "dba4fa3be27ab5ee7e714e3dea2e4a06d95a005e5786ec0e896cb38fb95965d9"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/REQUEST_TEMPLATE.json",
+      "bytes": 1108,
+      "sha256": "fc2fe4c7276a15560dab85ad588b25dfccb48aaaeaddb227658148d025034e92"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/adopt_candidate_three_leaves.py",
+      "bytes": 19066,
+      "sha256": "71b0b4eb9ddde59f6b8e9ab90eb2492f8e403d1469a645d81864585a631fefba"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/compact_own_git_plan.py",
+      "bytes": 1063,
+      "sha256": "313e09b94e89edda197c5cef769aeb7322cfcb185dbead7f81eb8467cbbcd60f"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/prepare_adopter.py",
+      "bytes": 8281,
+      "sha256": "e88a4bf247de5c9b818c09aff75096429af25af00a45a09dbf2061f1b35eb42a"
+    },
+    {
+      "path": "/tmp/geo337-resume-final-source-plan-20261026/prepare_request.py",
+      "bytes": 1167,
+      "sha256": "4112c43e60098f60184b72a579ae4555ae8b65e8da73f75ba0db84feccd854c1"
+    }
+  ],
+  "bytes_before_delivery": 97122,
+  "future_checks": [
+    "root bound current parent/index/source delta/artifacts/peers/capacity/leases",
+    "candidate tool focused withdrawal/restoration",
+    "actual adoption with unchanged historical provider state",
+    "new final tracked ledger check and formal acceptance"
+  ]
+}

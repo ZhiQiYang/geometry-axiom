@@ -1,0 +1,74 @@
+{
+  "schema": "final-after-ff-four-light-gates-independent-static-peer/1",
+  "utc": "2026-10-26T10:28:23.227674+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 55,
+  "subject_sha256": "dde595446f259dac13a81e39ec43d64c8df9f28831b2c542ec631acc99b9b4f4",
+  "executor_sha256": "dde595446f259dac13a81e39ec43d64c8df9f28831b2c542ec631acc99b9b4f4",
+  "fixed_final_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "historical_prepared_source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "ledger_execution_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "closed_findings": [
+    "B1"
+  ],
+  "old_ws_counterproof_actual_exits": [
+    0,
+    1,
+    0
+  ],
+  "source_transition_implemented_by_runner": false,
+  "formal_gate_or_ff_executed": false,
+  "actual_source_or_SHM_read": false,
+  "cleanup_executed": false,
+  "product_or_historical_files_modified": false,
+  "oldws_and_publisher_protected_fields": [
+    "HEAD",
+    "index",
+    "config",
+    "packed-refs",
+    "refs/*",
+    "objects/info/alternates"
+  ],
+  "three_changed_paths": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "tests/mutants_results.json"
+  ],
+  "four_original_argv_suffixes": [
+    [
+      "tests/mutate.py",
+      "--check"
+    ],
+    [
+      "tests/architecture_contract.py",
+      "--root",
+      ".",
+      "--manifest",
+      "geometry-core/domain-decoupling/product-architecture.json"
+    ],
+    [
+      "tests/test_architecture_contract.py"
+    ],
+    [
+      "tests/test_product_architecture.py"
+    ]
+  ],
+  "resource_thresholds": {
+    "stack_bytes": 16777216,
+    "additional_bytes": 67108864,
+    "two_OWN_ceiling_bytes": 2147483648
+  },
+  "conditions": [
+    "Root must complete and capture source ordinary FF with original preflight and source index/fixture preservation; this runner performs no FF.",
+    "Root alone binds actual adoption/source receipt pins and three true leases only after independent adoption peer accepts the actual F.",
+    "Do not run publisher/ref/oldWS writers concurrently; protected metadata is compared before/after.",
+    "All source/cache cleanup remains forbidden; no resource deficit may be solved by this runner.",
+    "This static peer is not actual F gate evidence and certifies no native or browser job."
+  ],
+  "limits": [
+    "Original selected source remains3763, not native6997/browser3759.",
+    "Actual new gate results remain unrun until root execution; S10 and A original receipts retain their original identities."
+  ],
+  "review_script_sha256": "e66200c32e58b1d9b44148e8d10664c7a0583baced7d96432150d75c05015ec5"
+}

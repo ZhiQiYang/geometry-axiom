@@ -1,0 +1,44 @@
+{
+  "schema": "candidate-adopter-nine-phase-tiny-runtime-static-peer/1",
+  "exit_code": 0,
+  "state": "STATIC_PREPARATION_ACCEPTED_RUNTIME_UNRUN",
+  "subject_sha256": "71b0b4eb9ddde59f6b8e9ab90eb2492f8e403d1469a645d81864585a631fefba",
+  "harness_sha256": "473e8668b6120179b102da9437d87e204566d50cf0b10ea78f894b85617206a7",
+  "runner_sha256": "ef136f13a7037f37e98e19f0e7e72f9da6fd8d3e07e446031c7ba7bb8d381d0c",
+  "harness_bytes": 11416,
+  "runner_bytes": 5456,
+  "blocking_findings": [],
+  "scope": {
+    "read_only_text_and_ast": true,
+    "module_imported": false,
+    "git_executed": false,
+    "shm_accessed": false,
+    "network_access": false,
+    "fixtures_created": false,
+    "product_source_modified": false,
+    "runtime_executed": false,
+    "root_lease_granted": false
+  },
+  "accepted_properties": [
+    "Both entries default to preparation-only and no Git/source access; actual runner requires exact pinned request, subject, helpers, capture, explicit execute and two root leases.",
+    "All generated worktrees, local bare remotes, Git objects, mutated fixtures, raw command records and TMP paths are within fresh canonical phases under one root-bound direct OWN child.",
+    "Subject main is never executed; only the pinned original top-level pure helpers/build_tree and AST-extracted publisher_state, clean and the unique CAS Git call are used with the synthetic ROOT.",
+    "Every phase first proves an actual three-leaf tree/commit, expected-old-value ref update and ordinary push to a local bare remote while historical publisher HEAD/index/train state stays unchanged.",
+    "CAS fixed/restored cases require a genuine Git refusal, unchanged race ref and stderr containing both exact observed/expected commit IDs plus expected; withdrawal removes only expected-old argument and must fail the named CAS assertion.",
+    "Scope fixed/restored reject one existing fourth product leaf through original build_tree; withdrawal changes the in-memory fixed allowlist by that one leaf, and must fail the named scope assertion after setup succeeds.",
+    "Preservation fixed/restored mutate HEAD, index and train_ref separately, require the exact subject refusal, and restore each original state in finally; withdrawal removes only the first clean-state guard and must fail the named aggregate assertion.",
+    "Each phase is a fresh Python process and fresh tiny Git fixture, so in-memory withdrawal cannot contaminate restored phases or the original subject file.",
+    "Original subject bytes remain untouched, and synthetic policy/schema identities are explicitly not formal acceptance identities.",
+    "Original c387 recorder captures each real Git invocation and each phase's full streams, true exit and timeout state.",
+    "Runner requires exact 0/1/0 exits for each of three cases; withdrawn exit1 additionally requires exact AssertionError marker and a successful original positive. Setup failure, timeout or unrelated refusal cannot count as a kill.",
+    "Git system/global configuration and templates/hooks are isolated for synthetic setup; injected GIT_* variables are removed before synthetic Git commands. Only the explicit local bare remote is used.",
+    "Original adopter, native, compiler, real source root, real publisher objects and actual GitHub remote are not executed or modified by these fixtures.",
+    "16MiB actual-mount admission and per-phase observed allocated bound are present; full raw failures are retained if exceeded."
+  ],
+  "limits": [
+    "No phase was executed by this static review; all nine runtime exits remain UNRUN.",
+    "16MiB is a root-admitted synthetic planning/observed bound, not a continuous peak measurement or an OS quota. Root must account for shared OWN commitments separately.",
+    "These fixtures validate selected real-Git primitives, not the adopter's full request/schema validation, real-root admission, exact original ledger/architecture peers or actual remote API delivery.",
+    "The original subject and reviewed helper pins must be rechecked immediately before execution; any changed bytes invalidate this review."
+  ]
+}

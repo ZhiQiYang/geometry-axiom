@@ -23,6 +23,8 @@ F 只採入 S10 原帳本、a6 架構 report、a6 架構 receipt 三葉，其他
 
 新 F 四項原始 RESULT SHA256：`4ef99c7b38f0ab5f451e508d6fffd4e78e30d52a6df133f9a9fd7f9210359784`；獨立 actual peer 12837 checks／exit0，SHA256 `2d1576d20796f86ed99c948e3222c3dc39d37bb648db052994c1a6190bebeb1c`。原始命令、stdout、stderr、環境、SHA、exit與一般FF紀錄全部封存。
 
+第一批完整原件已於 `f90db245f228b7a95a800cab176c3f9ca497133f` 持久化：27檔、25唯一遠端blob完整核對，含17組原件的24,966檔案／7,905目錄／189,987,205原始bytes。封包SHA256 `ac08de092c1ceefd01e01cec3091c69183aa834d31ac197c05b0b535f4694ce6`，遠端交付獨審127009 checks／exit0。第二批保存其完整審查稿、其他獨審、API批准原件核對及#300靜態盤點，無產品變更。
+
 a6 三原裁判0/0/0與四檔組裝0也保留；組裝RESULT `a532b83a67e19b37e2cf724fb4d9ec86753b3a090de554093646b2e2c3d1b2df`，獨審2620 checks／0。新 F 驗收期間3763 selected leaves、5 fixtures、604 raw/LF/Git inputs、source index、publisher及old workspace保全。3763葉這個checkout不是native6997或browser3759的驗收來源。
 
 ## 空間與拒絕紀錄

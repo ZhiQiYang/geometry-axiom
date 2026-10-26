@@ -1,0 +1,119 @@
+{
+  "schema": "candidate-S10-A-three-leaf-byte-adoption/1",
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "expected_parent": "9a57aea2128a7bc3985064932c24e2229fd8fcb8",
+  "root_execution_lease": false,
+  "root_exclusive_publisher_window": false,
+  "root_originals_and_peers_reviewed": false,
+  "out": "/dev/shm/geometry-axiom-geo337-20261025/candidate-three-leaf-adoption-original-20261026",
+  "artifacts": {
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md": {
+      "path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "geometry-core/domain-decoupling/product-architecture-receipt.json": {
+      "path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "geometry-core/domain-decoupling/product-architecture-scan.json": {
+      "path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "geometry-core/domain-decoupling/product-architecture.json": {
+      "path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "tests/mutants_results.json": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/mutants_results.json",
+      "sha256": "a4b5f1957e4bde6d30e4c05328e8a8dc1282fa811c52260eb01670cd560d56e7",
+      "bytes": null
+    }
+  },
+  "original_receipts": {
+    "terminal": {
+      "path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "ledger_index": {
+      "path": null,
+      "sha256": null,
+      "bytes": null
+    },
+    "architecture_result": {
+      "path": null,
+      "sha256": null,
+      "bytes": null
+    }
+  },
+  "peers": {
+    "ledger_actual": {
+      "path": "/tmp/geo337-S10-full123-actual-peer-20261025/REVIEW.json",
+      "sha256": "1a766fb7d0130ecd378d62afd73e94378728669fe873fc11f4c5fe6d877df8cb",
+      "bytes": 3956,
+      "key_paths": {
+        "exit": [
+          "exit_code"
+        ],
+        "source": [
+          "source_sha"
+        ],
+        "ledger_sha256": [
+          "ledger_sha256"
+        ]
+      }
+    },
+    "ledger_package": {
+      "path": "/tmp/geo337-S10-full123-package-actual-peer-20261025/REVIEW.json",
+      "sha256": "be903744e898c18c0a0e00c25d20652c47277c1bef5a9cdaeb7fd5bc25579f90",
+      "bytes": 3340,
+      "key_paths": {
+        "exit": [
+          "exit_code"
+        ],
+        "source": [
+          "source_sha"
+        ],
+        "index_sha256": [
+          "index_sha256"
+        ],
+        "archive_sha256": [
+          "archive_sha256"
+        ]
+      }
+    },
+    "architecture_actual": {
+      "path": null,
+      "sha256": null,
+      "bytes": null,
+      "key_paths": {
+        "exit": null,
+        "source": null,
+        "result_sha256": null
+      }
+    }
+  },
+  "architecture_source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "candidate_branch": "codex/train337-recovered-evidence-20261026",
+  "expected_publisher_head": "3e4f2560aa11ed2a626db98ba5ed6f129e791052",
+  "expected_publisher_index_sha256": null,
+  "root_candidate_ref_exclusive": false,
+  "s10_to_architecture_decision": {
+    "old": {
+      "mode": "100644",
+      "oid": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "new": {
+      "mode": "100644",
+      "oid": null,
+      "bytes": null,
+      "sha256": null
+    }
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "schema": "closed-originals-collector-independent-static-peer/1",
+  "exit_code": 0,
+  "collector_sha256": "e3c516027d8868dda1c501631eb1d870e38269b78cf5856cdb6a470ba920eb7f",
+  "collector_path": "/tmp/geo337-closed-originals-collection-preparation-20261026/collect_closed.py",
+  "plan_sha256": "3e91e87b2ba26ec42c6a4351af59ab0c873d7b269d8280ddcd93158ff9e97986",
+  "plan_path": "/tmp/geo337-closed-originals-collection-preparation-20261026/PLAN.all.json",
+  "blocking_findings": [],
+  "checks": [
+    {
+      "name": "exact_subject_pin",
+      "passed": true
+    },
+    {
+      "name": "exact_plan_all_pin",
+      "passed": true
+    },
+    {
+      "name": "fixed_17_unique_roots",
+      "passed": true
+    },
+    {
+      "name": "no_active_product_checkouts",
+      "passed": true
+    },
+    {
+      "name": "plan_every_root_has_closed_terminal",
+      "passed": true
+    },
+    {
+      "name": "plan_counts",
+      "passed": true
+    },
+    {
+      "name": "fixed_original_capacity",
+      "passed": true
+    },
+    {
+      "name": "exact_archive_bound",
+      "passed": true
+    },
+    {
+      "name": "historical_admission_arithmetic",
+      "passed": true
+    },
+    {
+      "name": "pinned_request_plan_peer",
+      "passed": true
+    },
+    {
+      "name": "explicit_root_no_writers_lease",
+      "passed": true
+    },
+    {
+      "name": "peer_is_true_integer_zero",
+      "passed": true
+    },
+    {
+      "name": "fresh_full_inventory_matches_plan_before_write",
+      "passed": true
+    },
+    {
+      "name": "fresh_direct_OWN_output",
+      "passed": true
+    },
+    {
+      "name": "fresh_admission_before_SHM_mkdir",
+      "passed": true
+    },
+    {
+      "name": "metadata_bytes_measured_and_bounded",
+      "passed": true
+    },
+    {
+      "name": "OWN_physical_and_roots_no_symlinks",
+      "passed": true
+    },
+    {
+      "name": "all_traversed_entries_checked",
+      "passed": true
+    },
+    {
+      "name": "before_after_stat_and_sha",
+      "passed": true
+    },
+    {
+      "name": "all_original_bytes_streamed_without_links",
+      "passed": true
+    },
+    {
+      "name": "archive_scope_order_exact",
+      "passed": true
+    },
+    {
+      "name": "every_member_size_mode_time_checked",
+      "passed": true
+    },
+    {
+      "name": "every_regular_member_full_hash",
+      "passed": true
+    },
+    {
+      "name": "complete_gzip_crc_to_eof_and_exact_length",
+      "passed": true
+    },
+    {
+      "name": "final_entire_original_scope_unchanged",
+      "passed": true
+    },
+    {
+      "name": "final_original_capacity_preserved",
+      "passed": true
+    },
+    {
+      "name": "no_source_sha_relabelling_or_delivery_claim",
+      "passed": true
+    },
+    {
+      "name": "no_deletion_or_subprocess_git_network",
+      "passed": true
+    },
+    {
+      "name": "source_writes_only_named_new_package_outputs",
+      "passed": true
+    },
+    {
+      "name": "actual_capacity_case_1",
+      "passed": true
+    },
+    {
+      "name": "actual_capacity_case_2",
+      "passed": true
+    },
+    {
+      "name": "actual_capacity_case_3",
+      "passed": true
+    },
+    {
+      "name": "actual_row_guard_withdraw_restore_010",
+      "passed": true
+    },
+    {
+      "name": "actual_archive_readback_valid",
+      "passed": true
+    },
+    {
+      "name": "actual_archive_readback_wrong_member_bytes",
+      "passed": true
+    },
+    {
+      "name": "actual_archive_readback_truncated_gzip_footer",
+      "passed": true
+    },
+    {
+      "name": "wrong_bytes_precise_failure",
+      "passed": true
+    },
+    {
+      "name": "truncated_footer_rejected",
+      "passed": true
+    },
+    {
+      "name": "default_PLAN_ONLY_exit0",
+      "passed": true
+    }
+  ],
+  "check_count": 39,
+  "formal_execution": false,
+  "SHM_access": false,
+  "Git_or_network": false,
+  "product_tests_rerun": false,
+  "cleanup_permitted": false,
+  "approval_scope": "Only the pinned fixed-17-roots PLAN.all collection, with exact peer/request/plan binding and fresh unchanged original capacity guards; root owns formal execution.",
+  "conditions": [
+    "Root must bind PLAN.all and preserve no-writers lease through collection.",
+    "Actual package needs independent member/hash/CRC review and durable publication before delivery.",
+    "Historical capacity sample is not a current admission.",
+    "Archive includes synthetic proof Git fixtures as evidence, never active publisher/product checkout.",
+    "No product, native, browser or full123 success is established by this static review."
+  ],
+  "proofs_sha256": "c282e2902a32942ab8c0b33d37ad317b2cd951fed46a055e63fd590fcf60d627",
+  "total_generated_bytes_before_review": 13762
+}
