@@ -1,34 +1,42 @@
-# 2026-10-26 原任務恢復：已完成原件回收
+# #338 current-state：候選 cbf0fb62 的帳本與架構已驗
 
-此分支只交付已執行的證據，沒有採用新帳本、改產品或移動列車分支；未標 READY-TO-MERGE。完整驗收尚未結束。
+2026-10-26 UTC。本文件取代此路徑先前的 current-state；舊提交仍保留歷史原件。尚未 READY-TO-MERGE。
 
-| 身分 | 完整 SHA／範圍 |
-|---|---|
-| 原始執行來源 S10 | `82c922a3941525d3a094ac0158bdc7dea57ea360` |
-| 本次回收分支 parent | `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`；只有決策新增，相對原 E3e4 無產品或測試修改 |
-| 舊正式執行 F9 | `4f8a794f4167c3562eb182045102e86e9e37cca9` |
-| R8 執行 F8 | `75a1e93811a52b69385cbdaf6a09d773ed9052ad`，保留原有效取樣，不重抽 |
-| 回收分支 | `codex/train337-recovered-evidence-20261026`，由 root 唯一寫入；當次提交 SHA 由 Git 與發布原件辨識 |
-| 最終驗收 F | 尚未固定；不得把此 evidence commit 或 a6 當成已通過的新 F |
+固定候選 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`，分支 `codex/train337-recovered-evidence-20261026`。一般 push 與遠端三個原件完整核對 exit 0；獨立採入審查 5019 checks／exit 0。原 #338 列車仍是 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，本輪未改其 ref 或正文。證據 E 是本文件所屬提交，由對應 prbody 另固定完整 E SHA，產品與 F 相同。
 
-| 項目 | 真實結果與限制 |
-|---|---|
-| S10 完整 123 帳本 | 正式 exit 0，2026-10-25 16:05:01.489647 至 17:30:37.969428 UTC；114 killed／5 equivalent／M20 crashed／3 retired，120 自然執行項的 head 全為 S10。四階段原退出碼 1/0/0/0，原 stale 紅燈保留。 |
-| 帳本完整原件 | 封包 1284 members／52,999,273B；gzip 9,025,694B，SHA256 `1ffc61c1c0d8713653d599e34f2f3882b0535817097ffc44bc05a4b4a3b2a97e`；恢復後重新核全部成員與原件一致，沒有重跑 mutate。生成帳本 SHA256 `a4b5f1957e4bde6d30e4c05328e8a8dc1282fa811c52260eb01670cd560d56e7`，尚未採入產品路徑。 |
-| S10 架構四檔 | 組裝 exit 0；原三裁判 0/0/0、generic 205／product 18、零 skip，604 輸入吻合。manifest／scan 不變，只 report／receipt 變更。歷史九組反證仍屬原 M6e50，未冒重跑。 |
-| a6 架構界線 | a6 決策檔 SHA256 `e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740` 不同於 S10 `fe822051…`。本批四檔只代表 S10，下一個 final 的快照須重新固定。 |
-| F9 Q38 | 原完整 44 項 exit 0；43 killed＋SPM24 equivalent，不是 skip。完整346檔／14,674,721B，既有gzip及完整原流一併回收。未將執行 SHA 改成 S10/a6。 |
-| 新 final native／六 browser／Reading A oracle | 尚未執行；F9 native exit 1、六 browser exit 0 都仍屬歷史。最新審查 2026-10-26T06:43:48Z 明列此批仍需執行。 |
-| R8 與其他專項 | R8 原36性能樣本與原outer1完整保留，沒有重抽、沒有移標。P52／card／P-189／required-eight／PF3／memo／RC 等未驗或歷史結果維持原狀，不以封包核對冒全綠。 |
+F 只採入 S10 原帳本、a6 架構 report、a6 架構 receipt 三葉，其他產品／測試／SSOT 不變。manifest／scan 原 bytes 不變。帳本自然 execution heads 保持 S10；receipt 生成來源保持 a6；新四項裁判真正執行來源是 F，沒有互相移標。
 
-環境已能執行，Git fetch／GitHub API 唯讀成功。預設沙箱的 /dev/shm 視圖不同；用正式 require_escalated 確認原兩個 OWN 目錄、封包與私有 publisher 均仍在。原 full123 和暫存保全程序都已退出，沒有重啟；本機目前未見仍執行的正式測試。原 /workspace checkout 與私人 publisher 皆乾淨，HEAD 分別 E70 與 E3e4，未重設它們。
+| Gate | 實際退出碼／結果 | 來源與剩餘工作 |
+|---|---|---|
+| 全123帳本 | S10 exit 0；114 killed／5 equivalent／M20 crashed／3 retired | `82c922a3941525d3a094ac0158bdc7dea57ea360`，完整原件已採入，不重跑已有效生成 |
+| tracked `mutate.py --check` | **0**；123/123，stale／survived／invalid／blocked 全0 | 真正 F；M20 原 crashed 分類保持 |
+| architecture contract | **0**；798 edges，diagnostics 0 | 真正 F；604 closure 不變 |
+| architecture unit | **0**；205 tests、0 skip | 真正 F |
+| product architecture | **0**；18 tests、0 skip | 真正 F |
+| native | F9 exit 1：5327 pass／1 fail／1原允許GDI skip | 新 F UNRUN；原 `/tmp` 128MiB 准入不足 |
+| 六 browser | F9 六組原正式 exit 全0；歷史環境失敗仍保留 | 新 F canvas／assembly／documents／grid／space／timber 全 UNRUN；原容量不足 |
+| Q38 | F9 完整44項 exit0，43 killed＋SPM24 equivalent | 保 F9 身分，完整原件已於 E9 交付 |
+| reader／§7 axiom | F9 reader 0/0/0、axiom 0 | 歷史來源；card 等未完成項不冒綠 |
+| #323 R8 | 原效能項全部達門檻，outer exit1保持 | 不重抽36個原樣本，不用新掛載結果替換它 |
+| #323 exact | F9 outer/stage/audit 0，175場景／350列 | 依原已核實三差白名單；不外推P-189 |
+| P52／P-189／card／required-eight／PF3／whole-memo／RC／#314／Reading A | 仍有未跑或未閉合項；P-189原exact紅燈保留 | 逐項補正式終態，不能以封包核對代替產品驗收 |
 
-使用者已要求原任務繼續；協調者另提 Claude session f46787ac 可能接手。這次實際查得 a6 的決策敘述提到該 session，但最新 API 留言與正文未給出可驗的工作占用／驗收結果。為避免競寫，本批僅用獨立回收分支，不修改 train、prbody 或 handoff 分支。這不是已確認另一執行者停止，也不是已驗收完成。
+新 F 四項原始 RESULT SHA256：`4ef99c7b38f0ab5f451e508d6fffd4e78e30d52a6df133f9a9fd7f9210359784`；獨立 actual peer 12837 checks／exit0，SHA256 `2d1576d20796f86ed99c948e3222c3dc39d37bb648db052994c1a6190bebeb1c`。原始命令、stdout、stderr、環境、SHA、exit與一般FF紀錄全部封存。
 
-批准邊界：2026-10-25 的 #323 三筆白名單原留言已核實 OWNER 身分。a6 新增的 P-189／沿用裁決含「協調 agent 整理，非原話」；目前只讀到 repository 轉錄與新審查的引用，沒有取得新的原始批准紀錄。因此本批不修改任何 comparator，不擴張原批准，也不把未跑項當沿用通過。待核實問題記於 QUESTIONS.md；不妨礙本次原件回收。
+a6 三原裁判0/0/0與四檔組裝0也保留；組裝RESULT `a532b83a67e19b37e2cf724fb4d9ec86753b3a090de554093646b2e2c3d1b2df`，獨審2620 checks／0。新 F 驗收期間3763 selected leaves、5 fixtures、604 raw/LF/Git inputs、source index、publisher及old workspace保全。3763葉這個checkout不是native6997或browser3759的驗收來源。
 
-容量：恢復時 /workspace 可用 4,386,816B、/tmp 27,676,672B。原 native 實際輸出仍在 /tmp，128MiB 門檻不足；已完成的 26 index/ELF 保全 exit0，原件未刪、尚未遠端交付。沒有採用未完成的退役計畫。這次只在原 OWN 內發布證據，保原 2GiB 規畫及 64MiB reserve，完整 source／fixtures／Git objects／未提交修改不刪。
+## 空間與拒絕紀錄
 
-本批另包含 S10 來源準備／preledger 的完整封包（1214 members／23,510,881B；gzip SHA256 `b23b3662c4f35d59c047ad138e5e843ec1ac79bcb2fde2b9062d5fc521ac8305`），以及 native 退役前的26個raw與26個gzip完整保全、127條原命令和原owner收據。原資料均仍存在；沒有回收空間或冒作native入場通過。出版器的Git環境隔離與遠端清單schema修正，分別有純記憶體0/1/0反證，原失敗保留；未改產品裁判。
+原3156葉清理被自動審核拒絕；命令未啟動、刪除0、原true請求撤銷，不拆批或換路徑重試。範圍為2439來源副本、691 Chrome cache、2私有index、24ELF，另原工具包含108個空目錄。26原index/ELF raw＋gzip完整保全與遠端核對已交付E9；不因此推定刪除獲准。另165個GPU cache不屬此範圍，也未執行。精確scope、毛bytes、ownership限制與排除項見本批approval-packet；協調者負責取得具體批准。
 
-下一步：先核實回收分支的每個遠端 blob 全 bytes/hash，讓原件離開揮發性儲存；再按真正 final SHA 採用帳本與相符架構快照，完成 native／browser／oracle 和其他仍缺正式項。寫入分工未核實前可在本root獨占候選分支驗證，不改原train；候選新F須另明列，不能把本次證據提交冒作已驗。所有舊失敗及未驗項保留。不合併 PR、不部署。
+native真正使用`/tmp/geometry-tests`，目前未達原128MiB准入；新browser的單job原416MiB＋thinseed增量也未達原兩OWN合計2GiB規劃守門。實際SHM掛載仍有大量空間，不代表可忽略已保留的規劃上限。browser可逐job物化／驗收／封存，不需六份同時物化；本輪沒有創建seed/cache或修改守門。任何批准後仍須fresh consumer、來源與容量檢查，不宣稱107,233,280B毛回收就足夠。
+
+## 批准、下一步與其他工作線
+
+原2026-10-25 10:39:52Z使用者留言已透過GitHub API核實：ZhiQiYang／id59477728與GET /user相同；只批准#323既有三差白名單。最新a6的P-189／跨SHA沿用文字仍只查到Claude轉錄與ChatGPT審查引用，沒有對應新的原始使用者批准；比較器保持原規格。具體原件及剩餘選項列於QUESTIONS。
+
+接著先完成本輪原件封包與遠端全文核驗、更新對應prbody。空間可合法准入後，原native來源一般transition到F、原native＋六browser＋適用專項繼續；全綠前不標READY-TO-MERGE。
+
+平行#300靜態盤點已通過獨立審查：新F三個效能前置都已實作；#348缺F中的四個快路。兩次原600秒逾時皆在同一140-byte四命令preload batch，沒有可封存的partial stdout/stderr；原observer已具備保存該輸出的路徑，不能說漏實作，也不能歸因loadfile。目前#348的sequential-history組合是1048命令，歷史F0f則1046；兩者都不是該兩次失敗的實際四命令輸入。該工作不重抽效能、不改產品，完整原件與獨審另批交付。
+
+所有未完成項繼續明列；沒有合併PR/main、部署、付費、改安全／掛載設定或新增公理。

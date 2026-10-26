@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+"""Collect only fixed closed evidence roots; never modify sources, Git, or cleanup."""
+from pathlib import Path,PurePosixPath
+import argparse,datetime,gzip,hashlib,json,os,shutil,stat,sys,tarfile,traceback
+
+OWN=Path('/dev/shm/geometry-axiom-geo337-20261025')
+OTHER=Path('/dev/shm/geo337-F9-browsers-20261025')
+PREP=Path('/tmp/geo337-closed-originals-collection-preparation-20261026')
+BASE_ROOTS=['a6-architecture-source-original-20261026','a6-source-root-original-20261026','a6-architecture-gates-original-20261026','a6-gates-root-original-20261026','a6-architecture-four-original-20261026','a6-assembly-root-original-20261026','candidate-three-leaf-adoption-original-20261026','candidate-adoption-root-original-20261026','recovery-publication-original-20261026','recovery-prbody-root-original-20261026','recovery-prbody-publication-20261026','geo337-candidate-adopter-tiny-20261026','candidate-tiny-root-original-20261026','geo337-native-final-focused-20261026','native-focused-root-original-20261026']
+FINAL_ROOTS=['final-light-root-original-20261026','F-final-light-gates-original-20261026']
+SETS={'base':BASE_ROOTS,'final':FINAL_ROOTS,'all':BASE_ROOTS+FINAL_ROOTS}
+FIELDS=['member','type','bytes','sha256','mode','device','inode','mtime_ns','nlink']
+RESERVE=64*1024**2;META=16*1024**2;CEILING=2*1024**3
+EMPTY=hashlib.sha256(b'').hexdigest()
+def sha(b):return hashlib.sha256(b).hexdigest()
+def digest(p):
+ h=hashlib.sha256()
+ with Path(p).open('rb') as f:
+  for b in iter(lambda:f.read(1024**2),b''):h.update(b)
+ return h.hexdigest()
+def need(ok,msg):
+ if not ok:raise RuntimeError(msg)
+def encoded(x):return json.dumps(x,ensure_ascii=False,separators=(',',':')).encode()
+def write(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+def stamp():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def facts(p):
+ s=p.lstat();return [s.st_mode,s.st_dev,s.st_ino,s.st_mtime_ns,s.st_nlink]
+def row_for(p):
+ before=p.lstat();mode=before.st_mode
+ need(stat.S_ISREG(mode) or stat.S_ISDIR(mode),'refuse symlink/special member: '+str(p))
+ isfile=stat.S_ISREG(mode);size=before.st_size if isfile else 0;hh=digest(p)if isfile else EMPTY
+ after=p.lstat();need(all(getattr(before,k)==getattr(after,k)for k in ['st_mode','st_dev','st_ino','st_size','st_mtime_ns','st_ctime_ns','st_nlink']),'source stat changed while hashing: '+str(p))
+ return [p.relative_to(OWN).as_posix(),'file'if isfile else 'directory',size,hh,*facts(p)]
+def info_for(row):
+ name,kind,size,hh,mode,dev,ino,mtime,nlink=row
+ need(not PurePosixPath(name).is_absolute()and '..'not in PurePosixPath(name).parts,'unsafe archive member')
+ i=tarfile.TarInfo(name);i.type=tarfile.REGTYPE if kind=='file'else tarfile.DIRTYPE;i.mode=mode&0o777;i.size=size;i.mtime=mtime//10**9;i.uid=i.gid=0;i.uname=i.gname=''
+ return i
+def verify(row):need(row_for(OWN/row[0])==row,'source identity changed: '+row[0])
+def scan(names):
+ need(names in SETS.values(),'root set is not one of fixed base/final/all groups')
+ need(OWN.is_dir()and not OWN.is_symlink()and OWN.resolve()==OWN,'OWN must be exact physical directory')
+ rows=[];roots=[]
+ for name in names:
+  root=OWN/name;need(root.is_dir()and not root.is_symlink(),'missing or aliased closed root: '+name)
+  terminal=root/'RESULT.json';need(terminal.is_file()and not terminal.is_symlink(),'missing terminal RESULT: '+name)
+  raw=terminal.read_bytes();j=json.loads(raw)
+  if name=='recovery-prbody-publication-20261026':need(j.get('passed')is True and j.get('errors')==[]and j.get('published')is True,'prbody inner not terminal')
+  else:need(type(j.get('exit_code'))is int and j['exit_code']==0,'root does not have completed exit0: '+name)
+  begin=len(rows);rows.append(row_for(root))
+  for directory,dirs,files in os.walk(root,followlinks=False):
+   dirs.sort();files.sort()
+   for leaf in dirs+files:rows.append(row_for(Path(directory)/leaf))
+  part=sorted(rows[begin:],key=lambda r:r[0]);rows[begin:]=part
+  roots.append({'name':name,'terminal_sha256':sha(raw),'terminal_exit':j.get('exit_code'),'terminal_passed':j.get('passed'),'files':sum(r[1]=='file'for r in part),'directories':sum(r[1]=='directory'for r in part),'logical_bytes':sum(r[2]for r in part),'member_identity_sha256':sha(encoded(part))})
+ need(len({r[0]for r in rows})==len(rows),'duplicate member')
+ headers=0;payload=0;pax=0
+ for r in rows:
+  hb=len(info_for(r).tobuf(tarfile.PAX_FORMAT));need(hb%512==0,'non-block tar header');headers+=hb;pax+=hb>512;payload+=(r[2]+511)//512*512
+ tar_exact=((headers+payload+1024+10239)//10240)*10240
+ # Same conservative DEFLATE upper-bound terms as the original S10 collector, no compression-ratio assumption.
+ gzip_upper=tar_exact+(tar_exact+4095)//4096+(tar_exact+16383)//16384+(tar_exact+33554431)//33554432+1024
+ data={'schema':'closed-originals-fixed-scope-inventory/1','root_names':names,'roots':roots,'member_count':len(rows),'file_count':sum(r[1]=='file'for r in rows),'directory_count':sum(r[1]=='directory'for r in rows),'logical_bytes':sum(r[2]for r in rows),'identity_sha256':sha(encoded(rows)),'tar_format':'PAX; exact TarInfo.tobuf header sizes, 512-byte member padding, 1024-byte EOF plus 10240-byte record padding','pax_members':pax,'tar_headers_bytes':headers,'tar_payload_padded_bytes':payload,'tar_exact_bytes':tar_exact,'gzip_upper_bytes':gzip_upper,'metadata_upper_bytes':META,'reserve_bytes':RESERVE,'additional_bound_bytes':gzip_upper+META+RESERVE,'record_fields':FIELDS}
+ return data,rows
+def usage():
+ seen=set();used=0
+ for root in [OWN,OTHER]:
+  need(root.is_dir()and not root.is_symlink(),'shared accounting root missing/aliased')
+  for p in [root,*root.rglob('*')]:
+   s=p.lstat();key=(s.st_dev,s.st_ino)
+   if key not in seen:seen.add(key);used+=s.st_blocks*512
+ return {'sampled_utc':stamp(),'shared_allocated_bytes':used,'shared_ceiling_bytes':CEILING,'mount_free_bytes':shutil.disk_usage(OWN).free}
+def admission(summary):
+ result=usage();extra=summary['additional_bound_bytes'];result.update(additional_bound_bytes=extra,required_reserve_bytes=RESERVE,shared_admitted=result['shared_allocated_bytes']+extra<=CEILING,mount_admitted=result['mount_free_bytes']>=extra)
+ result['admitted']=result['shared_admitted']and result['mount_admitted'];return result
+def manifest(out):
+ return {'schema':'closed-originals-package-publication-manifest/1','files':[{'source_path':str(p),'destination':'evidence/geo337-train-20261024/resume-closed-originals-20261026/'+out.name+'/'+p.name,'bytes':p.stat().st_size,'sha256':digest(p)}for p in sorted(out.iterdir())if p.is_file()and p.name!='PUBLICATION_MANIFEST.json'],'originals_removed':False,'delivered':False}
+def main():
+ ap=argparse.ArgumentParser();ap.add_argument('--plan',choices=list(SETS));ap.add_argument('--execute',action='store_true');ap.add_argument('--request',type=Path);ap.add_argument('--request-sha256');a=ap.parse_args()
+ if a.plan:
+  need(not a.execute and a.request is None,'plan cannot execute')
+  summary,_=scan(SETS[a.plan]);report={'inventory':summary,'capacity':admission(summary),'archive_created':False,'originals_removed':False,'created_utc':stamp()}
+  PREP.mkdir(exist_ok=True);target=PREP/('PLAN.'+a.plan+'.json');need(not target.exists(),'refuse overwrite existing plan');write(target,report);print(json.dumps({'plan':str(target),'sha256':digest(target),**{k:summary[k]for k in ['file_count','directory_count','logical_bytes','tar_exact_bytes','gzip_upper_bytes','additional_bound_bytes']},'capacity':report['capacity']},ensure_ascii=False));return
+ if not a.execute:print('PLAN_ONLY: fixed closed evidence roots; no archive, Git, network, tests or cleanup');return
+ need(not sys.flags.optimize and a.request is not None,'nonoptimized explicit request required')
+ raw=a.request.read_bytes();need(sha(raw)==a.request_sha256,'request pin');q=json.loads(raw)
+ need(q.get('execute')is True and q.get('root_execution_lease')is True and q.get('root_no_writers_in_selected_roots')is True,'explicit closed-root lease required')
+ tool=Path(__file__).read_bytes();need(q.get('collector_sha256')==sha(tool),'collector pin')
+ plan_raw=Path(q['plan']['path']).read_bytes();need(sha(plan_raw)==q['plan']['sha256'],'plan pin');plan=json.loads(plan_raw)
+ peer_raw=Path(q['peer']['path']).read_bytes();need(sha(peer_raw)==q['peer']['sha256'],'peer pin');peer=json.loads(peer_raw)
+ need(type(peer.get('exit_code'))is int and peer['exit_code']==0 and peer.get('blocking_findings')==[]and peer.get('collector_sha256')==sha(tool),'accepted exact independent peer required')
+ summary,rows=scan(plan['inventory']['root_names']);need(summary==plan['inventory'],'source scope/stat/hash or budget changed since plan')
+ out=Path(q['out']);need(out.parent==OWN and out.name.startswith('resume-closed-original-package-')and not out.exists(),'fresh direct OWN package child required')
+ index=encoded({'schema':'closed-originals-full-member-index/1','inventory':summary,'record_fields':FIELDS,'members':rows})+b'\n'
+ metadata_upper=len(index)+len(raw)+len(plan_raw)+len(peer_raw)+len(tool)+1024**2;need(metadata_upper<=META,'actual bounded metadata exceeds16MiB')
+ capacity=admission(summary);need(capacity['admitted'],'original shared 2GiB or mount64MiB capacity guard rejected')
+ # No SHM write happens before all input, terminal, peer, source and capacity guards above.
+ out.mkdir();result={'schema':'closed-originals-complete-package/1','exit_code':None,'started_utc':stamp(),'collector_sha256':sha(tool),'source_execution_sha':None,'original_source_bindings_retained':True,'originals_removed':False,'cleanup_executed':False,'git_or_network_executed':False,'product_tests_rerun':False,'archive_created':False,'published':False,'delivered':False,'storage_is_volatile':True,'capacity_before':capacity,'errors':[]}
+ write(out/'RESULT.json',result)
+ try:
+  for name,data in [('COLLECTOR.py.txt',tool),('REQUEST.json',raw),('PLAN.json',plan_raw),('INDEPENDENT_STATIC_PEER.json',peer_raw),('INDEX.json',index)]: (out/name).write_bytes(data)
+  write(out/'CAPACITY.json',capacity);archive=out/'CLOSED_ORIGINALS.tar.gz'
+  with tarfile.open(archive,'w:gz',compresslevel=1,format=tarfile.PAX_FORMAT)as tar:
+   for row in rows:
+    verify(row);info=info_for(row)
+    if row[1]=='file':
+     with (OWN/row[0]).open('rb')as f:tar.addfile(info,f)
+    else:tar.addfile(info)
+    verify(row)
+  need(archive.stat().st_size<=summary['gzip_upper_bytes'],'archive exceeds uncompressed-safe gzip bound')
+  with tarfile.open(archive,'r:gz')as tar:
+   members=tar.getmembers();need([m.name for m in members]==[r[0]for r in rows],'tar member order/scope mismatch')
+   for m,r in zip(members,rows):
+    need(m.size==r[2]and m.mode==(r[4]&0o777)and m.mtime==r[7]//10**9,'tar member metadata mismatch')
+    if r[1]=='directory':need(m.isdir(),'directory changed kind');continue
+    need(m.isfile()and not m.islnk()and not m.issym(),'regular file changed kind');f=tar.extractfile(m);need(f is not None,'missing member data');hh=hashlib.sha256();n=0
+    with f:
+     for b in iter(lambda:f.read(1024**2),b''):hh.update(b);n+=len(b)
+    need(n==r[2]and hh.hexdigest()==r[3],'member full-byte SHA mismatch')
+  n=0
+  with gzip.open(archive,'rb')as f:
+   for b in iter(lambda:f.read(1024**2),b''):n+=len(b)
+  need(n==summary['tar_exact_bytes'],'complete gzip CRC/trailer or tar length mismatch')
+  after,_=scan(summary['root_names']);need(after==summary,'closed originals changed during collection')
+  final_usage=usage();need(final_usage['shared_allocated_bytes']+RESERVE<=CEILING and final_usage['mount_free_bytes']>=RESERVE,'original shared ceiling/64MiB reserve not preserved')
+  need(sum(p.stat().st_size for p in out.iterdir()if p.is_file()and p!=archive)+1024**2<=META,'metadata final reserve exceeded')
+  result.update(exit_code=0,archive_created=True,archive_sha256=digest(archive),archive_bytes=archive.stat().st_size,index_sha256=sha(index),member_count=len(rows),file_count=summary['file_count'],directory_count=summary['directory_count'],logical_bytes=summary['logical_bytes'],all_members_exact_once=True,all_member_sha256_verified=True,complete_gzip_crc_verified=True,originals_unchanged=True,capacity_after=final_usage)
+ except BaseException:result.update(exit_code=1);result['errors'].append(traceback.format_exc());traceback.print_exc()
+ finally:result['ended_utc']=stamp();write(out/'RESULT.json',result)
+ if result['exit_code']==0:write(out/'PUBLICATION_MANIFEST.json',manifest(out))
+ print(json.dumps(result,ensure_ascii=False));sys.exit(result['exit_code'])
+if __name__=='__main__':main()
