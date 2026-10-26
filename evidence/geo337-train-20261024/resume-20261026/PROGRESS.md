@@ -1,52 +1,48 @@
-# #338 current-state：候選 cbf0fb62 的帳本與架構已驗
+# #338 current-state：本輪清理與新 F reader 已完成
 
-2026-10-26 UTC。本文件取代此路徑先前的 current-state；舊提交仍保留歷史原件。尚未 READY-TO-MERGE。
+2026-10-26 UTC。產品候選仍是 `cbf0fb621888596aa14ad5f2349b503e23b1b72d`（F），分支 `codex/train337-recovered-evidence-20261026`。本輪只增證據；上一輪證據 `dea5d12a88c0a2ed93141014524dce5d104f8b1f` 是基線，不當成本輪新成果。尚未 READY-TO-MERGE。
 
-固定候選 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`，分支 `codex/train337-recovered-evidence-20261026`。一般 push 與遠端三個原件完整核對 exit 0；獨立採入審查 5019 checks／exit 0。原 #338 列車仍是 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，本輪不改其產品 ref；正文已推至對應 prbody；既有交接 request 已排入，尚未證實 PR 正文套用，不新增替代產品 PR。已交付正文 D `990440297d851dccbc077cdf59fe654fdbd9ffd8` 固定主要證據 E3 `d803910822803a020a57a7568c62325a076239f0`；本次只新增 #198 映射與阻塞說明，產品仍與 F 相同。
+原 #338 head 仍是 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，F 尚未採入其產品 ref。本輪 fetch 的 main 為 `405f8c5e1a637a16cbe47470faf5ae1fa02b8676`，handoff 為 `628507bceec091241ee3c83fc1003ff2ac31ac74`；沒有競寫原列車或 Grok 分支。
 
-F 相對 a6 的非 evidence 差異僅為 S10 原帳本、a6 架構 report、a6 架構 receipt 三葉，其他產品／測試／SSOT 不變。manifest／scan 原 bytes 不變。帳本自然 execution heads 保持 S10；receipt 生成來源保持 a6；新四項裁判真正執行來源是 F，沒有互相移標。
+## 唯一 current-state 矩陣
 
-| Gate | 實際退出碼／結果 | 來源與剩餘工作 |
+| 項目 | 真實結果／來源 | 本輪狀態與限制 |
 |---|---|---|
-| 全123帳本 | S10 exit 0；114 killed／5 equivalent／M20 crashed／3 retired | `82c922a3941525d3a094ac0158bdc7dea57ea360`，完整原件已採入，不重跑已有效生成 |
-| tracked `mutate.py --check` | **0**；123/123，stale／survived／invalid／blocked 全0 | 真正 F；M20 原 crashed 分類保持 |
-| architecture contract | **0**；798 edges，diagnostics 0 | 真正 F；604 closure 不變 |
-| architecture unit | **0**；205 tests、0 skip | 真正 F |
-| product architecture | **0**；18 tests、0 skip | 真正 F |
-| native | F9 exit 1：5327 pass／1 fail／1原允許GDI skip | 新 F UNRUN；原 `/tmp` 128MiB 准入不足 |
-| 六 browser | F9 六組原正式 exit 全0；歷史環境失敗仍保留 | 新 F canvas／assembly／documents／grid／space／timber 全 UNRUN；原容量不足 |
-| Q38 | F9 完整44項 exit0，43 killed＋SPM24 equivalent | 保 F9 身分，完整原件已於 E9 交付 |
-| reader／§7 axiom | F9 reader 0/0/0、axiom 0 | 歷史來源；card 等未完成項不冒綠 |
-| #323 R8 | 原效能項全部達門檻，outer exit1保持 | 不重抽36個原樣本，不用新掛載結果替換它 |
-| #323 exact | F9 outer/stage/audit 0，175場景／350列 | 依原已核實三差白名單；不外推P-189 |
-| P52／P-189／card／required-eight／PF3／whole-memo／RC／#314／Reading A | 仍有未跑或未閉合項；P-189原exact紅燈保留 | 逐項補正式終態，不能以封包核對代替產品驗收 |
+| 全123突變帳本 | S10 `82c922a3941525d3a094ac0158bdc7dea57ea360` 真 exit0 | 既有原件已採入F，不重產已有效帳本；114 killed／5 equivalent／M20 crashed／3 retired保持 |
+| mutate.py --check | F exit0，123/123 | 上一輪同F有效驗證，不計為本輪新跑 |
+| 架構三條 | F 0/0/0，798 edges／205 generic／18 product | 上一輪有效驗證；本輪產品/測試bytes未改，不重跑製造進度 |
+| reader generate | **本輪 F exit0**，207 clauses／1261 blocks／31 witnesses | 原命令與reaper；inner 4.566017秒 |
+| reader check | **本輪 F exit0** | inner 1.664875秒，正典bytes仍與F一致 |
+| reader unit | **本輪 F exit0**，51 tests／0 skip | inner 163.323779秒；173個ResourceWarning完整保留，不能稱零警告 |
+| native | 新F UNRUN；F9歷史exit1：5327 pass／1 fail／1原允許GDI skip | 本輪清理後仍未通過原/tmp 128MiB准入，不把未啟動算通過 |
+| 六browser | 新F canvas／assembly／documents／grid／space／timber均UNRUN | F9歷史六組0仍保留歷史身分；原單job416MiB＋thin seed及兩OWN合計2GiB規劃不變 |
+| Q38 | F9完整44項exit0，43 killed＋SPM24 equivalent | 歷史來源，未冒充新F |
+| §7 axiom／card | 新F尚未執行；F9 axiom歷史0 | 正準備獨立axiom資源核對；card原448MiB規劃仍不足，兩者分列 |
+| #323 R8／exact | R8原36效能樣本達門檻但outer1保留；F9 exact outer/stage/audit0 | 不重抽樣；三差例外不外推P-189 |
+| P52／P-189／required-eight／PF3／whole-memo／RC／#314／Reading A其他專項 | 尚未閉合；P-189原exact紅燈保留 | 沒有新增skip、修改golden、放寬斷言／時限或擴張批准 |
 
-新 F 四項原始 RESULT SHA256：`4ef99c7b38f0ab5f451e508d6fffd4e78e30d52a6df133f9a9fd7f9210359784`；獨立 actual peer 12837 checks／exit0，SHA256 `2d1576d20796f86ed99c948e3222c3dc39d37bb648db052994c1a6190bebeb1c`。原始命令、stdout、stderr、環境、SHA、exit與一般FF紀錄全部封存。
+Reader三正式項的inner/outer真退出碼均0。RESULT SHA256：`c4f253756cdb03d0f753c60b8a33b824104caa9cbd383f8e93f057a67a2fd94c`；actual peer `805e8a051614c2d9d47a2852998fe54f283f9b46515c0c4451fba1ec7763a6f9`。212個必要來源、五份fixture、index/HEAD及publisher保全；canonical inode因原生成器替換而改變，bytes/hash相同。51 tests的兩個docstring換行案例造成首次peer解析失敗，原1保留，窄幅修正後1955項核對0；沒有重跑裁判。原runner實際outer timeout=None的事實保持，不將未使用的300/1200變數當已執行限時。
 
-第一批完整原件已於 `f90db245f228b7a95a800cab176c3f9ca497133f` 持久化：27檔、25唯一遠端blob完整核對，含17組原件的24,966檔案／7,905目錄／189,987,205原始bytes。封包SHA256 `ac08de092c1ceefd01e01cec3091c69183aa834d31ac197c05b0b535f4694ce6`，遠端交付獨審127009 checks／exit0。第二批保存其完整審查稿、其他獨審、API批准原件核對及#300靜態盤點，無產品變更。
+## 本輪新批准清理的真實終態
 
-a6 三原裁判0/0/0與四檔組裝0也保留；組裝RESULT `a532b83a67e19b37e2cf724fb4d9ec86753b3a090de554093646b2e2c3d1b2df`，獨審2620 checks／0。新 F 驗收期間3763 selected leaves、5 fixtures、604 raw/LF/Git inputs、source index、publisher及old workspace保全。3763葉這個checkout不是native6997或browser3759的驗收來源。
+使用者於2026-10-26 17:59:47 UTC針對固定E9清單給予新批准；原拒絕紀錄保留，不能繼續把這一批列為待批准。範圍只限E9 `9a57aea2128a7bc3985064932c24e2229fd8fcb8` 的0000 retained_rows、0010、0009、0008。
 
-## 空間與拒絕紀錄
+先完整重驗3156葉/108目錄；額外maps檢查因兩個平台程序不可讀退出1，沒有刪除。後續以本機Docker endpoint、零容器/volume/plugin、原可讀proc與root no-reuse規則核實有限的無已知任務consumer，保留不可讀界線；沒有修改安全設定。Fresh遠端4份manifest＋26份raw共30路徑真0，24個唯一API完整讀回與E9逐byte相同。
 
-原3156葉清理被自動審核拒絕；命令未啟動、刪除0、原true請求撤銷，不拆批或換路徑重試。範圍為2439來源副本、691 Chrome cache、2私有index、24ELF，另原工具包含108個空目錄。26原index/ELF raw＋gzip完整保全與遠端核對已交付E9；不因此推定刪除獲准。另165個GPU cache不屬此範圍，也未執行。精確scope、毛bytes、ownership限制與排除項見本批approval-packet；協調者負責取得具體批准。
+原未修改清理本體只執行一次，18:30:29.532759至18:30:39.271074，**exit0；3156檔、108空目錄實際完成，跳過0**。原排除73項、F9六ELF、fixtures與Git保全成立，沒有擴刪新cache。RESULT SHA256 `075534e2c72f827b30fbe3d5d7da65398a371183fa263df12180ae5d8949aa4e`；最終actual peer R2 `839c02c12613bd46b101a0ba2155a006c66c9af10f09fb65cf6d81008232639c`，17192項核對0。首輪peer程式的欄位/刪index先後解析錯誤與原1亦保留。
 
-native真正使用`/tmp/geometry-tests`，目前未達原128MiB准入；新browser的單job原416MiB＋thinseed增量也未達原兩OWN合計2GiB規劃守門。實際SHM掛載仍有大量空間，不代表可忽略已保留的規劃上限。browser可逐job物化／驗收／封存，不需六份同時物化；本輪沒有創建seed/cache或修改守門。任何批准後仍須fresh consumer、來源與容量檢查，不宣稱107,233,280B毛回收就足夠。
+| 實際掛載 | 清理前可用bytes | 清理後可用bytes | 實測淨變化 |
+|---|---:|---:|---:|
+| /tmp | 10,326,016 | 117,559,296 | **+107,233,280** |
+| /workspace | 4,378,624 | 4,378,624 | 0 |
+| /dev/shm | 15,815,753,728 | 15,808,962,560 | -6,791,168（新原始收據） |
 
-## 批准、下一步與其他工作線
+這是18:30的實測；native當時距134,217,728 bytes原准入尚差16,658,432 bytes。後續新收據會消耗空間，真正啟動前仍須fresh原准入。清理成功不等於native/browser可執行。額外暫存正在依新指示唯讀盤點並準備具體範圍，**沒有額外刪除批准或執行**；原2GiB／native128MiB／browser416MiB守門不變。
 
-原2026-10-25 10:39:52Z的#338留言（issuecomment-6396611849，內容為Q-323-ABC與B3裁決）刊載帳戶已透過GitHub API核實：ZhiQiYang／id59477728與GET /user相同。留言引述使用者選項，但對PR適用範圍自述「本機Claude整理，非原話」；這不等於本對話直接原話。既有#323收據保持原三差限定，本輪不新增比較例外。最新a6的P-189／跨SHA沿用文字仍只查到轉錄與審查引用，沒有對應新的原始批准；比較器保持原規格。完整原件已於第二批`f99b6e63d52b1a87e6fe3546e2604cdf9bbb2304`交付。
+## 原件交付、管理入口與下一步
 
-既有原件、正文 D 與交接 H `023c35e40fd2f4f1c108cdbb7cfc4506c0b0a7df` 已交付；PR 正文請求已排入，最後核對尚未證實套用。沒有新的重驗收程序執行中。空間可合法准入後才恢復原 native／browser 與專項；全綠前不標 READY-TO-MERGE。
+本包保留本輪獨有的完整argv、退出碼、stdout/stderr、環境、SHA、journal、原失敗與修正後審查。只有freshremote的24個API stdout改以固定E9已有完整raw bytes逐項索引；全部30個path aliases、Git OID、bytes/hash及fresh時間/命令都保留。新tar不含這24個gzip容器，不能宣稱容器在包內；本地原件未刪。本次ls-tree輸出及所有新reader/清理原流仍完整收入tar。
 
-平行#300靜態盤點已通過獨立審查：新F三個效能前置都已實作；#348缺F中的四個快路。兩次原600秒逾時皆在同一140-byte四命令preload batch，沒有可封存的partial stdout/stderr；原observer已具備保存該輸出的路徑，不能說漏實作，也不能歸因loadfile。目前#348的sequential-history組合是1048命令，歷史F0f則1046；兩者都不是該兩次失敗的實際四命令輸入。該工作不重抽效能、不改產品，完整原件與獨審另批交付。
+既有工作管理CLI入口已核實：geometry-web/work-manager/cli.py。現行私有ledger仍unknown；預設.local不存在，有限搜尋不等於證明全機無DB。為避免另建空佇列，import-snapshot/reconcile/list-ready/list-alerts均UNRUN；舊資料保持，不另造替代任務或佇列。
 
-所有未完成項繼續明列；沒有合併PR/main、部署、付費、改安全／掛載設定或新增公理。
-
-## 本輪新增 #198 與明確阻塞
-
-首次補交 #198 原案例、撤回／恢復與 F13 收據映射及獨立審查，位於本提交 `issue198-source-map-20261026/`。維持關閉候選，未關 issue；不將片段或單檔相同視為完整 closure，不將歷史 F13 全綠搬到目前來源。
-
-可解除條件詳見同目錄 `BLOCKERS.md`：11:29:02Z 的容量觀測中，即批准並全數釋放原 3,156 葉毛 allocated，native 仍至少差 11,059,200 bytes；browser 原規劃仍差至少 319,729,664 bytes 加未物化 thin seed 增量。這是有日期的至少缺額，不是新量測。清理批准未到，不重試；管理入口未核實，匯入觀測／reconcile／list-ready／list-alerts 均 UNRUN，不另造佇列。
-
-目前沒有可宣告完成的全專案驗收；不再因沒有新輸入反覆包裝或重核既有同版，後續只處理有新輸入且可執行的工作。
+接續工作是補native最小容量解除範圍、實證standalone axiom編譯暫存需求，繼續可負擔的正式項目。完整card與六browser仍按原資源守門處理。#54若另行核收只限單房候選，不擴#87；沒有合併PR/main、部署、付費或新增公理。
