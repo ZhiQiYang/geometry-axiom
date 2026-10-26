@@ -1,0 +1,8 @@
+{
+  "exit_code": 1,
+  "scope": "Peer metadata parser only; no subject or tiny proof executed",
+  "error": "TypeError: list indices must be integers or slices, not str",
+  "cause": "Original proof rows wrap a command object; late-proof commands are direct recorder rows whose command is an argv list.",
+  "original_traceback_location": "initial tools.exec_command response in this thread; not claimed as captured child stdout/stderr",
+  "fix": "Select wrapper command only if it is a dict; raw proof data stays unchanged."
+}

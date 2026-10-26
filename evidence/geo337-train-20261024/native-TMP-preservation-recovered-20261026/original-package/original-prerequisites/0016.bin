@@ -1,0 +1,96 @@
+{
+  "utc": "2026-10-25T15:56:04.836989+00:00",
+  "readonly": true,
+  "no_cleanup": true,
+  "original_retirement_results_exit0": true,
+  "bindings": {
+    "/workspace/tmp-coldcode-cleanup-20261024/execution-r2/RESULT.json": "1afcb86680408976a770b6b54c406282796e4543155ddfa869cf53aaeeed3593",
+    "/workspace/tmp-coldcode-cleanup-20261024/execution-r2/UNLINKED.jsonl": "4bc7e3815d332ab1bcd17de46e1f5b6ad927a7e4b8548447537153b9b6fd730c",
+    "/workspace/tmp-coldcode-cleanup-20261024/PLAN.json": "ce32400214caa9aa343e8ccb8c0816d9ba917bc10068157e314ee154b52bea0c",
+    "/workspace/ordinary-code-retirement-20261023/RESULT.json": "d8ec58f94595d7bd10f89d3ba2a66fee3d5dd8141fe644bcbe5788dc6fb62e30"
+  },
+  "roots": [
+    {
+      "root": "/tmp/g261r3/source-final",
+      "HEAD": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+      "current_status_sha256": "e7ace6de70b83e28957d21d8dee2957ded7e02070637b1627b7b6da4e27b5a45",
+      "current_count": 950,
+      "all_current_records_exact_unstaged_D": true,
+      "old_receipt_union_count": 950,
+      "status_exact_old_authorized_D_union": true,
+      "unknown_current_D": [],
+      "old_D_not_current": [],
+      "retirement_head_matches": true,
+      "whole_tree_exclusion_on_any_new_dirty": true
+    },
+    {
+      "root": "/tmp/g261r3/work/codex-geo261-8f76f2b7/repo",
+      "HEAD": "8f76f2b7d6f669670e5834310bfc26495b4a4aa6",
+      "current_status_sha256": "e7ace6de70b83e28957d21d8dee2957ded7e02070637b1627b7b6da4e27b5a45",
+      "current_count": 950,
+      "all_current_records_exact_unstaged_D": true,
+      "old_receipt_union_count": 950,
+      "status_exact_old_authorized_D_union": true,
+      "unknown_current_D": [],
+      "old_D_not_current": [],
+      "retirement_head_matches": true,
+      "whole_tree_exclusion_on_any_new_dirty": true
+    },
+    {
+      "root": "/tmp/g261-next314",
+      "HEAD": "f426be38fdf297d66296fb527309a7b8912ab034",
+      "current_status_sha256": "8ec0e8eb25c2324847f6acd3e63871a54907e71607dfbe0b19e5288c7950c356",
+      "current_count": 958,
+      "all_current_records_exact_unstaged_D": true,
+      "old_receipt_union_count": 958,
+      "status_exact_old_authorized_D_union": true,
+      "unknown_current_D": [],
+      "old_D_not_current": [],
+      "retirement_head_matches": true,
+      "whole_tree_exclusion_on_any_new_dirty": true
+    },
+    {
+      "root": "/tmp/g261p3/source-final",
+      "HEAD": "551b00f6b9733f39635b49c200188ea60829c2a8",
+      "current_status_sha256": "e3b8b763a223cd9f3df108025f4b92f06560cb0f93d21c415ece12a9297f079b",
+      "current_count": 355,
+      "all_current_records_exact_unstaged_D": true,
+      "old_receipt_union_count": 355,
+      "status_exact_old_authorized_D_union": true,
+      "unknown_current_D": [],
+      "old_D_not_current": [],
+      "retirement_head_matches": true,
+      "whole_tree_exclusion_on_any_new_dirty": true
+    },
+    {
+      "root": "/tmp/g261-next323",
+      "HEAD": "4ea6c50796711ed1e79bae89c93d07037d317837",
+      "current_status_sha256": "46f27f9c3ae3f16857ca83d99e2f317b06132e1f44bd7919ec08adb9174cd824",
+      "current_count": 953,
+      "all_current_records_exact_unstaged_D": true,
+      "old_receipt_union_count": 953,
+      "status_exact_old_authorized_D_union": true,
+      "unknown_current_D": [],
+      "old_D_not_current": [],
+      "retirement_head_matches": true,
+      "whole_tree_exclusion_on_any_new_dirty": true
+    },
+    {
+      "root": "/tmp/g261htmlseal/html-source",
+      "HEAD": "8a80abc1402b0c4c394969025c93a6019b4bb91d",
+      "current_status_sha256": "9dceb0fd106aeeff235613e0c7a9ad0c36671954502a61d02038e035987203fa",
+      "current_count": 953,
+      "all_current_records_exact_unstaged_D": true,
+      "old_receipt_union_count": 953,
+      "status_exact_old_authorized_D_union": true,
+      "unknown_current_D": [],
+      "old_D_not_current": [],
+      "retirement_head_matches": true,
+      "whole_tree_exclusion_on_any_new_dirty": true
+    }
+  ],
+  "limits": [
+    "Exact original status snapshots only; root itself may change later; execution needs fresh full status/staged/untracked equality and consumers.",
+    "All original D remain; this is not ignoring dirty files. Current file bytes and Git hash not yet verified."
+  ]
+}

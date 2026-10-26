@@ -1,0 +1,112 @@
+{
+  "schema": "TMP-source-candidate-initial-static-peer/1",
+  "utc": "2026-10-25T16:04:32.402171+00:00",
+  "exit_code": 1,
+  "metadata_checks_passed": 7657,
+  "candidate_summary_sha256": "da4c7b1db8a6b5385d69a82ff1b7cf2b68d1e4c6bf9bf5b68f2d5e5ae651c66b",
+  "scope": "candidate classification only, no execution acceptance",
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "message": "原候選包含真正的 *_browser_check.js 測試入口，與禁止刪測試／自稱不含 tests 衝突。須保留本稿另作排除新版、重算，不得以路徑沒有 tests component 視為產品來源。",
+      "matched_candidate_leaves": [
+        {
+          "root": "/tmp/g261r3/source-final",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g261r3/work/codex-geo261-8f76f2b7/repo",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g261-next314",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g261p3/source-final",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g261-next323",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g261htmlseal/html-source",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g261-next299316",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g288f-13d02c1d",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g261f314-cc67e251",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/g261-final299316-5bfadf18-r2",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/source-proof",
+          "relative": "geometry-web/assembly_binding_source_browser_check.js",
+          "allocated": 12288
+        },
+        {
+          "root": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/source-proof",
+          "relative": "geometry-web/evidence_links_browser_check.js",
+          "allocated": 36864
+        },
+        {
+          "root": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/source-proof",
+          "relative": "geometry-web/model_update_browser_check.js",
+          "allocated": 24576
+        },
+        {
+          "root": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/source-proof",
+          "relative": "geometry-web/source_inspector_browser_check.js",
+          "allocated": 20480
+        }
+      ],
+      "matched_allocated_bytes": 462848,
+      "immutable_purpose_proof": {
+        "argv": [
+          "git",
+          "--no-optional-locks",
+          "-C",
+          "/workspace/geometry-axiom",
+          "show",
+          "0c1bbf9970f6ad2d5c6e0976362b892d1da3e287:geometry-web/evidence_links_browser_check.js"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "8cc311ec281c3d564739804ef1b4ea3bee5c628eed1b5ea972192fbf1803795d",
+        "stdout_bytes": 36614,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "scope": "Immutable Git source bytes only; no test execution"
+      }
+    }
+  ],
+  "nonblocking_verified": [
+    "10 個歷史 dirty checkout 當時全部 D 逐筆恰等原授權退役 receipt union；P73原 status 空，無 blanket-ignore 新 dirty。",
+    "11 roots/2512 leaves/69,447,680B 及原缺額算式正確，但包含 B1 測試候選，不能沿用為修訂後預算。",
+    "未曾實清、未fresh payloadhash／consumer／no-reuse lease；現存metadata只作候選，執行仍須完整新守門。"
+  ],
+  "product_tests_run": false,
+  "cleanup_executed": false,
+  "fresh_source_scan_or_payload_hash": false,
+  "check_count": 7657
+}

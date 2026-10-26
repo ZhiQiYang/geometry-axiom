@@ -1,0 +1,1610 @@
+[
+  {
+    "check": "fixed v2 preparation",
+    "ok": true
+  },
+  {
+    "check": "fixed v2 executor",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member POST_PROOF_ARCHIVE_COPY_ONLY.diff",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes POST_PROOF_ARCHIVE_COPY_ONLY.diff",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member PREPARATION.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes PREPARATION.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member PROOF_APPLICABILITY.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes PROOF_APPLICABILITY.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member PUBLICATION_SCOPE.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes PUBLICATION_SCOPE.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member README.md",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes README.md",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member README.v2.md",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes README.v2.md",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member REQUEST.pending.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes REQUEST.pending.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member REQUEST.v2.pending.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes REQUEST.v2.pending.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member UNCHANGED_CORE.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes UNCHANGED_CORE.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member V1_TO_V2_LATE_FAILURE.diff",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes V1_TO_V2_LATE_FAILURE.diff",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member V2_APPLICABILITY.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes V2_APPLICABILITY.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member assemble_architecture.proof-version.py",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes assemble_architecture.proof-version.py",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member assemble_architecture.py",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes assemble_architecture.py",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member assemble_architecture_v2.py",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes assemble_architecture_v2.py",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/fixed/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/fixed/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000001/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000001/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000001/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000001/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000001/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000001/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000001/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000001/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000001/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000001/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000002/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000002/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000002/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000002/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000002/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000002/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000002/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000002/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000002/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000002/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000003/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000003/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000003/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000003/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000003/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000003/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000003/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000003/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands/000003/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands/000003/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/original-commands/subcommands.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/original-commands/subcommands.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/restored/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/restored/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member late-failure-proof/withdrawn/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes late-failure-proof/withdrawn/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/RESULT.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000001/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000001/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000001/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000001/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000001/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000001/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000001/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000001/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000001/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000001/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000002/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000002/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000002/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000002/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000002/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000002/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000002/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000002/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000002/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000002/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000003/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000003/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000003/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000003/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000003/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000003/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000003/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000003/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000003/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000003/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000004/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000004/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000004/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000004/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000004/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000004/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000004/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000004/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000004/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000004/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000005/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000005/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000005/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000005/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000005/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000005/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000005/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000005/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000005/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000005/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000006/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000006/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000006/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000006/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000006/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000006/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000006/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000006/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000006/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000006/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000007/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000007/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000007/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000007/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000007/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000007/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000007/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000007/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000007/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000007/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000008/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000008/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000008/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000008/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000008/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000008/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000008/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000008/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000008/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000008/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000009/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000009/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000009/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000009/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000009/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000009/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000009/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000009/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000009/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000009/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000010/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000010/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000010/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000010/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000010/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000010/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000010/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000010/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000010/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000010/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000011/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000011/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000011/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000011/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000011/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000011/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000011/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000011/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000011/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000011/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000012/request.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000012/request.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000012/result.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000012/result.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000012/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000012/stderr.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000012/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000012/stdin.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands/000012/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands/000012/stdout.bin",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny-proof/original-commands/subcommands.json",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny-proof/original-commands/subcommands.json",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny_bindings.py",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny_bindings.py",
+    "ok": true
+  },
+  {
+    "check": "regular sealed member tiny_late_failure.py",
+    "ok": true
+  },
+  {
+    "check": "sealed bytes tiny_late_failure.py",
+    "ok": true
+  },
+  {
+    "check": "only v2 delta resets late error exit1",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged H",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged LF",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged need",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged info",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged pinned",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged dump",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged validate_gate",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged validate_inputs",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged historical_probes",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged snapshot",
+    "ok": true
+  },
+  {
+    "check": "all helper AST unchanged require_full_index",
+    "ok": true
+  },
+  {
+    "check": "original four proofs apply to final helper H",
+    "ok": true
+  },
+  {
+    "check": "original four proofs apply to final helper need",
+    "ok": true
+  },
+  {
+    "check": "original four proofs apply to final helper validate_gate",
+    "ok": true
+  },
+  {
+    "check": "original four proofs apply to final helper validate_inputs",
+    "ok": true
+  },
+  {
+    "check": "original four proofs apply to final helper historical_probes",
+    "ok": true
+  },
+  {
+    "check": "original H driver pin",
+    "ok": true
+  },
+  {
+    "check": "original hash/schema helper H",
+    "ok": true
+  },
+  {
+    "check": "original hash/schema helper LF",
+    "ok": true
+  },
+  {
+    "check": "original hash/schema helper info",
+    "ok": true
+  },
+  {
+    "check": "original complete snapshot body",
+    "ok": true
+  },
+  {
+    "check": "accepted full-index helper source pin",
+    "ok": true
+  },
+  {
+    "check": "full DIRC parser AST unchanged",
+    "ok": true
+  },
+  {
+    "check": "first proof source pin not relabelled",
+    "ok": true
+  },
+  {
+    "check": "four original metadata proofs actual 0/1/0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 0",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 1",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 2",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 3",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 4",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 5",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 6",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 7",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 8",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 9",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 10",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof saved result 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdin 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stdout 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stdout 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original stderr 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof size stderr 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof no timeout 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof unoptimized 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof original prelaunch request 11",
+    "ok": true
+  },
+  {
+    "check": "original-binding-proof synthetic source tag 11",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 0",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 1",
+    "ok": true
+  },
+  {
+    "check": "named withdrawal assertion 1",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 2",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 3",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 4",
+    "ok": true
+  },
+  {
+    "check": "named withdrawal assertion 4",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 5",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 6",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 7",
+    "ok": true
+  },
+  {
+    "check": "named withdrawal assertion 7",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 8",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 9",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 10",
+    "ok": true
+  },
+  {
+    "check": "named withdrawal assertion 10",
+    "ok": true
+  },
+  {
+    "check": "actual binding exit 11",
+    "ok": true
+  },
+  {
+    "check": "actual late-result proof scope",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof saved result 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stdin 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stdout 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof size stdout 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stderr 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof size stderr 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof no timeout 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof unoptimized 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original prelaunch request 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof synthetic source tag 0",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof saved result 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stdin 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stdout 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof size stdout 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stderr 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof size stderr 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof no timeout 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof unoptimized 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original prelaunch request 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof synthetic source tag 1",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof saved result 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stdin 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stdout 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof size stdout 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original stderr 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof size stderr 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof no timeout 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof unoptimized 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof original prelaunch request 2",
+    "ok": true
+  },
+  {
+    "check": "late-result-proof synthetic source tag 2",
+    "ok": true
+  },
+  {
+    "check": "actual saved inner late-failure fixed",
+    "ok": true
+  },
+  {
+    "check": "actual saved inner late-failure withdrawn",
+    "ok": true
+  },
+  {
+    "check": "actual saved inner late-failure restored",
+    "ok": true
+  },
+  {
+    "check": "named false-green counterexample",
+    "ok": true
+  },
+  {
+    "check": "formal source lease remains false and UNRUN",
+    "ok": true
+  },
+  {
+    "check": "pending command cannot execute silently",
+    "ok": true
+  },
+  {
+    "check": "pending argv binds v2",
+    "ok": true
+  },
+  {
+    "check": "nine probes remain historical",
+    "ok": true
+  },
+  {
+    "check": "full raw/LF/Git604 comparison remains strict",
+    "ok": true
+  },
+  {
+    "check": "manifest scan identity and precise two output delta",
+    "ok": true
+  },
+  {
+    "check": "no new product execution claim",
+    "ok": true
+  }
+]

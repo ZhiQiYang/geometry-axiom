@@ -1,0 +1,75 @@
+{
+  "schema": "native-TMP-two-stage-static-peer/1",
+  "checks": 132,
+  "plan_sha256": "38e28b2e0b63ad263d2eb22beb6f80e90190073d68a40ad9cc9b81f6e1ac83be",
+  "common_sha256": "d11e9dd829a0a0d53386943556b55bd0f6721eb12301534e875ce485202409b5",
+  "preparation_sha256": "c9314ac96fd8423e9feec1cbb39a70170f4567a92d7ef449283c366c971bf98f",
+  "proof_original_flows": [
+    {
+      "name": "archive-default",
+      "exit": 0,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/executor-synthetic-proof/commands/subcommands/000001"
+    },
+    {
+      "name": "archive-false-lease",
+      "exit": 1,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/executor-synthetic-proof/commands/subcommands/000002"
+    },
+    {
+      "name": "retirement-default",
+      "exit": 0,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/executor-synthetic-proof/commands/subcommands/000003"
+    },
+    {
+      "name": "retirement-false-lease",
+      "exit": 1,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/executor-synthetic-proof/commands/subcommands/000004"
+    },
+    {
+      "name": "fixed",
+      "exit": 0,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/executor-synthetic-proof/commands/subcommands/000005"
+    },
+    {
+      "name": "withdrawn-hash-guard",
+      "exit": 1,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/executor-synthetic-proof/commands/subcommands/000006"
+    },
+    {
+      "name": "restored",
+      "exit": 0,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/executor-synthetic-proof/commands/subcommands/000007"
+    },
+    {
+      "name": "fixed",
+      "exit": 0,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/remote-guard-synthetic-proof/commands/subcommands/000001"
+    },
+    {
+      "name": "withdrawn-delivery-guard",
+      "exit": 1,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/remote-guard-synthetic-proof/commands/subcommands/000002"
+    },
+    {
+      "name": "restored",
+      "exit": 0,
+      "capture": "/tmp/geo337-native-TMP-combined-preservation-20261025/remote-guard-synthetic-proof/commands/subcommands/000003"
+    }
+  ],
+  "formal_tests_run": false,
+  "real_candidate_payloads_accessed": false,
+  "SHM_accessed": false,
+  "global_locks_acquired": false,
+  "reviewed_utc": "2026-10-25T16:45:57.237004+00:00",
+  "limits": [
+    "本次靜讀工具與既有tiny原0/1/0；未重掃原2439來源、691cache、26payload，未archive／unlink。",
+    "原consumer沿已審c51的accessible proc範圍，不能冒全系統可見；root fresh無活動租約與正式權限仍必要。",
+    "A只保存原件，不能授權C刪除；真archiveactual、普通push及完整remoteactual各需獨立新收據。",
+    "107233280B為候選配置量；回收與native128MiB入場必另真df及原driverfresh判斷。"
+  ],
+  "exit_code": 0,
+  "blocking_findings": [],
+  "stage": "A-archive-only",
+  "executor_sha256": "a385936e869061b12d905799a09e93461ce5db30d7d666700ea2f1af99be48c8",
+  "summary": "A可由root在full123雙鎖自然釋放、fresh租約及SHM預算通過後正式封存26raw+26gzip；來源不unlink。"
+}
