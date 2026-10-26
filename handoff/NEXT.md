@@ -1,3 +1,58 @@
+# 2026-10-26 接續入口：整鏈資源依賴已列明，三份審查文案已交付
+
+這是既有任務 `01a162a6-2bb5-7393-902c-19dd519d60b9` 的續作。專案尚未完成，沒有合併、部署或 READY-TO-MERGE 宣告。先讀本節及最新 PROGRESS，下方舊 NEXT 完整保留作歷史；不要因歷史「準備中」重新啟動已完成項。
+
+- 產品候選 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`。
+- 最新證據 E：`3c95a1b75d431495ff6298e2fe929ddbb9fca362`，分支 `codex/train337-recovered-evidence-20261026`；自 F 只增加證據。容量／影響分析原提交 `28880901d74b1ba62d287f680cb54e0071778980` 保持可解析。
+- #338 正文 D：`2cce6afaeac87521924bde28660a71e43ad306e5`，`codex/train337-recovered-evidence-20261026-prbody`；本輪沒有再次改它。20:56 UTC 讀取 H=`75a8493a70eda7900001d8a295a02ce741b4bd46` 的 pr-status 為 `up to date (body 2cce6afa)`；沒有冒稱以 PR API 核全文套用。
+- 原 #338 產品分支 `codex/train-337-continue-20261024` 仍以 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77` 為未改動基線；F 尚未採入原 ref。開始任何產品寫入前須核對 Claude session f46787ac 與其他 owner，不能競寫。
+
+[最新 PROGRESS](https://github.com/ZhiQiYang/geometry-axiom/blob/3c95a1b75d431495ff6298e2fe929ddbb9fca362/evidence/geo337-train-20261024/resume-20261026/PROGRESS.md)；[完整容量來源與依賴](https://github.com/ZhiQiYang/geometry-axiom/blob/28880901d74b1ba62d287f680cb54e0071778980/evidence/geo337-train-20261024/resource-impact-20261026/RESOURCE_STATUS.md)。容量證據包含原計畫、gate 影響報告、完整 v3 前置失敗原件；新文案原件另在最新 E 的 `review-docs-20261026/EVIDENCE.tar.gz`，不重封既有同版資料。
+
+## 已完成，勿重跑
+
+原批准 3156 檔／108 空目錄清理已真 exit 0、跳過 0，TMP 實測回收 107,233,280 bytes；原批不再待批准。新 F reader generate/check/unit 真 0/0/0、51 tests、0 skip，173 ResourceWarning 保留。S10 全 123 真 exit 0 已採入 F，F check 0、架構三條 0/0/0 已有效。R8 固定原 36 樣本及 outer exit 1 不重抽。封包或工具靜審不代產品通過。
+
+## 新正式驗收仍受阻
+
+F native、六 browser、Q38、§7、P52/P-189、required-eight/PF3/whole-memo/replay、RC/#314/Reading A 其餘項目未閉合。Q38 的模型副本 digest 包含變動的 #314 tests 檔，因此確實受影響。六 browser 等局部 bytes 相同不能自行跨 SHA 沿用；F9 原六項 0 與 native 1 保持歷史身份。P-189 strict exact 原紅保留，#323 三差不擴張。
+
+§7 四個 `cc -###` 只是 driver 診斷 0；v3 在 compiler 啟動前 exit 1，沒有產生新 assembly/ELF。完整 codegen→as→link→11 個正式程序→原流／封包／發布的最大成本未知，這條正式路徑明標 BLOCKED，不再逐 phase 降小診斷 minimum。
+
+20:35 UTC 唯一整合觀測：twoOWN=2,078,834,688 bytes，距原 2 GiB 規劃上限餘 68,648,960；TMP free111,140,864、workspace4,378,624、SHM實體15,793,045,504。native 原128MiB入場短23,076,864；單browser原416MiB規劃短367,558,656＋seed；Q38/card相對規劃短266,895,360／401,113,088。這是當次下界，不是下一次 fresh admission 或整輪足量。
+
+2 GiB 起源是 2026-10-25 12:52 browser PLAN 的任務規劃，13:01 addendum 指定兩 OWN 共用；文件明示不是新CI/斷言門檻、不是已測最大峰值。它不是平台硬配額；管理指示要求保持，不能自行調整。原 64 MiB 發布保留及原公式亦保持。新文案發布以既有 Git API 一般快進（force:false）留全原流於 TMP，仍檢原 twoOWN/實際輸出掛載容量，沒有更動掛載、配額或安全設定。
+
+新增固定 168 葉仍未批准、刪除 0；完整清單／備份／QUESTIONS 已在 E9bd32131。候選 allocated23,707,648 bytes；即假設全回收，20:35 入場僅多630,784，扣來源永久估量507,904僅餘122,880，未含其他成本，不能預告全輪可跑。另221個SHM快取metadata候選是另一未批准範圍，未刪。任何之後批准都須重新核身份、consumer、dirty及遠端可恢復性；不得拆批／換範圍規避。
+
+
+三份新文案原件正式發布的原准入收據另量得 TMP free109,780,992 bytes；相對原 native128MiB仍差24,436,736，即使固定168候選零成本全回收也尚差729,088，另有來源轉移與未測完整峰值。這是該次已執行發布的觀測，沒有為容量再重跑診斷；其後原流仍保留，不能當下一次native admission。
+
+## 不依賴編譯的新修正，已各有獨立核收
+
+| PR | 已發布正文分支與完整 SHA | 尚未解除 |
+|---|---|---|
+| #343 | `codex/geo300-contact-index-20261024-prbody`：`9d3931a70c442c640bba155c1735362f69f76a61` | 修正文案，四陣列是本PR新增並在兩階段共用；實際frame與完整native未量，成本／完整整合缺口保留。 |
+| #347 | `codex/issue128-empty-panel-rows-20261024-prbody`：`1801e3fd2222b5d9146f97de2ac53589ae7ee526` | 分開產品parent／觀測PRbase／product／evidence。產品分支PROGRESS歷史base字句尚未改，C1未全關，B1/B2仍阻擋。 |
+| #348 | `codex/geo300-capacity512-20261024-prbody`：`dcc1022de2ce03d79ee65fd90cade1966f25759c` | 核實相對base2e8a6的head9a858為ahead8/behind2/diverged；來源鏈未修、兩個原600秒逾時仍紅，原F0f/F73未移綁。 |
+
+三次發布各真 exit 0、11 筆 API 原件完整保存、唯一正文檔、普通快進、遠端全文一致，實際 peer 均 0。PR頁自動套用仍未在本輪核實，既有request不重複排。不要為了等待bot再改同一正文。
+
+## 下一個確實可執行的入口
+
+1. 先讀最新 handoff review/status 與新批准。新阻擋依原規則修，任何產品工作先確認 branch owner 與完整來源；沒有擅自取得原列車寫權。
+2. 若只有原168批准到達，先重新核精確固定範圍，真實回收後才算餘額；它不能解除整個SHM／native交付依賴。完整保留資源安排須覆蓋整鏈，不能以下一小段可入場就宣告可跑。
+3. 非編譯後續包括 #347 產品分支 PROGRESS 的 C1 剩餘字句與來源合流；需先核 owner／精確parent，再普通提交。來源合流會增加正式驗收／帳本負擔，不能把 merge 本身標驗收完成。
+4. #340 selected13、#344 strict9及已有同源項不重跑；#339/#342/#341/#343/#344/#345/#346/#347/#348 的正式缺口留在各正文與下方歷史工作線表。#54仍只單房候選，不擴#87；Grok #325/#331/#333不碰。
+5. 現有工作管理CLI已知，private ledger仍unknown，import/reconcile/list-ready/list-alerts未執行，不造替代空佇列。沒有新的已授權實質項時，明列依賴，不以輪詢、相同SHA重測或重複封包製造進度。
+
+所有原始失敗、收據、fixtures、Git objects、未知修改保留。原本機與publisher HEAD/index未被本輪產品操作改動。未合併PR/main、部署、付費、改安全設定或新增公理。
+
+
+---
+
+## 先前交接原文（完整保留，以下為歷史）
+
 # 2026-10-26 19 時後接續：核准清理與新 F 閱讀器已交付
 
 本節是最新入口；下方舊 NEXT 完整保留為歷史。既有任務 `01a162a6-2bb5-7393-902c-19dd519d60b9` 繼續，沒有替代任務、合併或部署。尚未 READY-TO-MERGE。
