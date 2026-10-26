@@ -1,7 +1,13 @@
 容量 512 分支目前固定來源為 `73b21e64dce72f0d16ca29e18559c51815b9724d`。本次只修驗收的安全哨兵：一欄 `timber` 會先被 dispatcher 的四欄最低語法拒絕，無法驗證 handler 的容量守門；改用 `timber 513 27 33` 跨過 dispatcher，撤除容量守門時仍會在 handler 的 `count<5` 檢查拒絕，避免追加第 513 筆越界。原一欄負例繼續驗語法拒絕、完整 dump 與歷史不變。
 
+本次正文補正依 2026-10-26T20:50:46.978696+00:00 的 PR 原始資料及 2026-10-26T20:50:47.584191+00:00 的固定 SHA 比較觀測；只補列來源鏈狀態，沒有 merge、改產品或重跑驗收。[固定 base…head 比較](https://github.com/ZhiQiYang/geometry-axiom/compare/2e8a6ed20325aa4842dcd0f89eacd598662be598...9a8584f57be7935604c3bad4c2481945a6ec3d9f)為 `diverged`（ahead 8 / behind 2），不是相對 main 的計數。F0f／F73 以下結果仍綁原執行來源，不能視為修鏈後最終來源已通過。
+
 | Current state | 證據來源與結果 |
 |---|---|
+| PR head（本次觀測） | `codex/geo300-capacity512-20261024`：`9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
+| 目前直接 base（#347） | `codex/issue128-empty-panel-rows-20261024`：`2e8a6ed20325aa4842dcd0f89eacd598662be598` |
+| 相對目前 base | **behind 2**、ahead 8、`diverged`；merge-base `6d9d46e8d16af75351924c6d47a078d3eb647cc0`，尚未納入目前 base 的兩個提交 |
+| 上游鏈阻擋 | 直接依賴 #347；最新審查指出 #346→#343 上游鏈仍有既有阻擋。先修好 #346/#347 鏈，以一般 merge 納入精確的 #347 head；逐 leaf 重審，並在新 source SHA 重跑受影響驗收，同步更新 base／product／evidence SHA。此正文補正沒有解除阻擋，維持 Draft |
 | Product C SHA | `400a6d0ca50f3aca104fb569c77c8ef753c93355`；本次沒有改產品 C |
 | Current test/source SHA | `73b21e64dce72f0d16ca29e18559c51815b9724d` |
 | Evidence head | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
