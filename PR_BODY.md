@@ -14,7 +14,7 @@
 | tuple 明確撤回／恢復 | 原受影響一方法／8控制每phase，**fixed0→舊tuple撤回1→restored0**；77×3＝231 builds全0；outer0、HEAD／tree／index還原clean；actual peer693／0。不是完整15方法／全部11控制或whole-opt撤回 |
 | 上輪 Scc2 真紅 | wood12/41 exit0、contact-sources15 exit1、ReadingA7/12 exit0；318 builds全0／0skip、outer1。舊 placement-order 控制被快路旁路，原meta正常失敗1；原件與有限actual peer95／0全保，沒有移標 |
 | 靜態／工具審查 | 排序283／0、單leaf15／0、r2 runner10／0、tuple工具26／0；各自 scope 限於靜態，不替代上述實跑 |
-| 既定 16MiB stack | 上述三套與tuple都維持原limit並通過。原四個 size_t[2432] 固定長度區域陣列共用、不新增或加大；此64位環境陣列資料約77,824B，compiler frame／完整場景上限未另量 |
+| 既定 16MiB stack | 上述三套與tuple都維持原limit並通過。本 PR 新增四個 size_t[2432] 區域陣列，兩階段共用；此64位環境陣列資料約77,824B，compiler frame／完整場景上限未另量 |
 | 整條快路語意撤回 | **UNRUN**；本 S 另規劃8原正例等價0/0/0，不計killed、不冒完整12方法suite；與已完成tuple反證分開 |
 | 性能／正式 P-189／容量512 | **UNMEASURED／UNRUN／未完成未驗**；沒有新數值門檻 |
 | 完整 native、browser、全帳本、架構 | 本 S **UNRUN**；最終全帳本／架構由主代理統一處理 |
