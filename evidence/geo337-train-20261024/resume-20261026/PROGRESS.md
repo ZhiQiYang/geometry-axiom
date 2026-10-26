@@ -2,9 +2,9 @@
 
 2026-10-26 UTC。本文件取代此路徑先前的 current-state；舊提交仍保留歷史原件。尚未 READY-TO-MERGE。
 
-固定候選 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`，分支 `codex/train337-recovered-evidence-20261026`。一般 push 與遠端三個原件完整核對 exit 0；獨立採入審查 5019 checks／exit 0。原 #338 列車仍是 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，本輪未改其 ref 或正文。證據 E 是本文件所屬提交，由對應 prbody 另固定完整 E SHA，產品與 F 相同。
+固定候選 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`，分支 `codex/train337-recovered-evidence-20261026`。一般 push 與遠端三個原件完整核對 exit 0；獨立採入審查 5019 checks／exit 0。原 #338 列車仍是 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，本輪不改其產品 ref；正文經對應 prbody 與既有交接 request 更新，不新增替代產品 PR。證據 E 是本文件所屬提交，由 prbody 另固定完整 E SHA，產品與 F 相同。
 
-F 只採入 S10 原帳本、a6 架構 report、a6 架構 receipt 三葉，其他產品／測試／SSOT 不變。manifest／scan 原 bytes 不變。帳本自然 execution heads 保持 S10；receipt 生成來源保持 a6；新四項裁判真正執行來源是 F，沒有互相移標。
+F 相對 a6 的非 evidence 差異僅為 S10 原帳本、a6 架構 report、a6 架構 receipt 三葉，其他產品／測試／SSOT 不變。manifest／scan 原 bytes 不變。帳本自然 execution heads 保持 S10；receipt 生成來源保持 a6；新四項裁判真正執行來源是 F，沒有互相移標。
 
 | Gate | 實際退出碼／結果 | 來源與剩餘工作 |
 |---|---|---|
@@ -35,7 +35,7 @@ native真正使用`/tmp/geometry-tests`，目前未達原128MiB准入；新brows
 
 ## 批准、下一步與其他工作線
 
-原2026-10-25 10:39:52Z使用者留言已透過GitHub API核實：ZhiQiYang／id59477728與GET /user相同；只批准#323既有三差白名單。最新a6的P-189／跨SHA沿用文字仍只查到Claude轉錄與ChatGPT審查引用，沒有對應新的原始使用者批准；比較器保持原規格。具體原件及剩餘選項列於QUESTIONS。
+原2026-10-25 10:39:52Z的#338留言（issuecomment-6396611849，內容為Q-323-ABC與B3裁決）刊載帳戶已透過GitHub API核實：ZhiQiYang／id59477728與GET /user相同。留言引述使用者選項，但對PR適用範圍自述「本機Claude整理，非原話」；這不等於本對話直接原話。既有#323收據保持原三差限定，本輪不新增比較例外。最新a6的P-189／跨SHA沿用文字仍只查到轉錄與審查引用，沒有對應新的原始批准；比較器保持原規格。完整原件已於第二批`f99b6e63d52b1a87e6fe3546e2604cdf9bbb2304`交付。
 
 接著先完成本輪原件封包與遠端全文核驗、更新對應prbody。空間可合法准入後，原native來源一般transition到F、原native＋六browser＋適用專項繼續；全綠前不標READY-TO-MERGE。
 
