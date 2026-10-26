@@ -1,3 +1,28 @@
+# 2026-10-26 19 時後接續：核准清理與新 F 閱讀器已交付
+
+本節是最新入口；下方舊 NEXT 完整保留為歷史。既有任務 `01a162a6-2bb5-7393-902c-19dd519d60b9` 繼續，沒有替代任務、合併或部署。尚未 READY-TO-MERGE。
+
+- 候選 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`；`codex/train337-recovered-evidence-20261026`。
+- 本輪證據 E：`df84890966a600d3ba7e39c5b8ba882b18d1a9b2`；同分支，只增 evidence。
+- 新正文 D：`a51af370fcfe4bc5022250d2b393db233e9951b6`；`codex/train337-recovered-evidence-20261026-prbody/PR_BODY.md`。既有 request 已指向這個 body_ref，不須再改 head/base/title；是否套用仍看最新 pr-status，不能只據分支推送宣稱 PR 已更新。
+- 原 #338 產品 ref 仍以 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77` 為核對基線；F 未採入原 ref，root 不競寫原列車或 Grok 分支。
+- [本輪 PROGRESS](https://github.com/ZhiQiYang/geometry-axiom/blob/df84890966a600d3ba7e39c5b8ba882b18d1a9b2/evidence/geo337-train-20261024/resume-20261026/PROGRESS.md)；[原件 INDEX](https://github.com/ZhiQiYang/geometry-axiom/blob/df84890966a600d3ba7e39c5b8ba882b18d1a9b2/evidence/geo337-train-20261024/resume-175947-20261026/INDEX.json)。
+
+使用者 17:59:47 UTC 新批准的固定 3156 檔／108 空目錄清理已真實完成一次，exit 0、跳過 0；/tmp 實測淨回收 107,233,280 bytes。**原批已完成，不再待批准，不得重跑**。先前拒絕／maps preflight exit 1 保留為歷史；兩個平台程序 maps 不可讀的有限 consumer 界線保持，未改安全設定。原排除 73 項、F9 ELF、五份 fixture、Git objects、未知修改保全。
+
+新 F reader generate/check/unit 的 inner/outer 均 0，51 tests、0 skip，173 則 ResourceWarning 原樣保留。RESULT SHA256 `c4f253756cdb03d0f753c60b8a33b824104caa9cbd383f8e93f057a67a2fd94c`；actual peer `805e8a051614c2d9d47a2852998fe54f283f9b46515c0c4451fba1ec7763a6f9`。canonical bytes 沒變；不需要因相同 bytes 再重產帳本／架構。S10 原 full123 exit 0、F check exit 0、F 架構三條 0/0/0 仍有效，不重跑製造進度。R8 原 36 樣本不重抽。
+
+18:30 清理後 /tmp 可用 117,559,296 bytes，距原 native 134,217,728 bytes 准入仍差 16,658,432 bytes；不是即時容量，下一次 admission 要 fresh。新增 3 私有 index＋165 GPU cache 只在唯讀盤點／完整備份規劃，**未取得新刪除批准**。只准準備可恢復範圍並回報，不延伸舊批准。
+
+下一步：固定新證據／正文遠端核讀後，繼續 standalone §7 axiom 資源診斷及正式驗收；新 F axiom/card、native、六 browser 與其他未閉合專項不得冒綠。原 2 GiB 規劃、native 128 MiB、browser 416 MiB＋thin seed、card 448 MiB 保持。真正 /tmp native 不因 TMPDIR 改名就解除。完整 canvas／效能獨占，其他重測試最多兩個。
+
+#323 exact 僅保留其原三差範圍，P-189 原紅燈與比較器不變；新增裁決仍須核對原始批准。#54 僅單房，不擴 #87。工作管理 CLI 已找到，現行 private ledger unknown，四個同步／整理操作 UNRUN，不初始化空 DB。原各工作線分支／SHA 清單保留在下方；開始寫入前 fetch 核對 owner，不把歷史快照當即時狀態。
+
+
+---
+
+## 先前交接原文（完整保留，以下為歷史）
+
 # 2026-10-26 Codex 接續入口：原件已回收，仍有明確阻擋
 
 這是既有任務 `01a162a6-2bb5-7393-902c-19dd519d60b9` 的續作，沒有建立替代任務。專案尚未完成，也未標 READY-TO-MERGE。先讀本節與最新 PROGRESS，再讀下方保留的歷史；不要從頭重跑已有效收據。
