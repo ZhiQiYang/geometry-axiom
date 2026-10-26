@@ -1,0 +1,96 @@
+{
+  "schema": "geo198-new-source-map-independent-peer/1",
+  "reviewed_utc": "2026-10-26T12:07:36.005021+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "reviewed_report": {
+    "path": "/tmp/geo198-source-map-20261026/REPORT.md",
+    "bytes": 10531,
+    "sha256": "4e5c11971525f4041e7d7b895a728d615ca35d817d1c3a3a4e85636a1577153c"
+  },
+  "reviewed_manifest": {
+    "path": "/tmp/geo198-source-map-20261026/MANIFEST.json",
+    "bytes": 24961,
+    "sha256": "730a2b13603c9561cca99faf3092a585218dc7015079c4def915a79464fdd2a1"
+  },
+  "supporting_reviews": [
+    {
+      "path": "/tmp/geo198-source-map-peer-20261026/LOCAL_FACTS.json",
+      "bytes": 3989,
+      "sha256": "4f8f3f0fa86f922dfde6cf3dbe030b3262d630ebb39c21be8cb0f406d98b6225"
+    },
+    {
+      "path": "/tmp/geo198-source-map-peer-20261026/F13_REVIEW.json",
+      "bytes": 8783,
+      "sha256": "d2e16422dd0bcbd24cfa473294ee01fa28b911033469856944fa1eb22ed7c53a"
+    }
+  ],
+  "scope": "只讀這份新包及其既存原件；本地hash/JSON/原字串/AST身分紀錄審核，222KB已存tar純記憶體核選件；沒有編譯/native/Git/API/新增下載或修改來源分支。",
+  "verified": {
+    "manifest_files": 149,
+    "capture_stream_pairs": 45,
+    "A_before": "query誤列hole [30,50,70,80]，apply後續拒絕且dump不變；不能稱成功提交錯孔。",
+    "A_after": "query/apply具名R7拒絕，dump不變；交集兩塊各300。",
+    "B_before": "query空清單，apply缺項拒絕。",
+    "B_after": "精確split [40,70,60,80]且apply成功；保存z0片面積5400+200，z70的boundary3未混算。",
+    "historical_withdrawal_exits": {
+      "removed": {
+        "native": 1,
+        "bridge": 1,
+        "scenes": 1
+      },
+      "restored": {
+        "native": 0,
+        "bridge": 0,
+        "scenes": 0
+      }
+    },
+    "probe_source_identity": "before head d44d784…不是精確base196 head；兩probe均明記可能未提交修改，只沿原source/binary hash，不假稱乾淨commit重建。",
+    "F13_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+    "F13_archive_bytes": 222197,
+    "F13_archive_sha256": "4ac2c0d5ff5c5607fb5e500b66953329a44309d191be711f53f2c17318869879",
+    "F13_selected_members_verified": 5,
+    "F13_workflow_exit": 0,
+    "F13_original_step_exit": 0,
+    "F13_step_seconds": 1683.9267737960035,
+    "F13_over_CI_timeout": false,
+    "F13_relevant_counts": {
+      "integrity": [
+        432,
+        432
+      ],
+      "scenes": [
+        165,
+        165
+      ],
+      "reference": [
+        51,
+        51
+      ]
+    },
+    "F13_three_named_scenes": "A/B/strip PASS",
+    "four_way_fragments": "PR202/train291/F13/main分類函式、native反例函式、18個bridge方法hash、3場景spec/fixture一致。",
+    "full_current_geometry_c_F13_main_recorded_hash_equal": true,
+    "full_current_geometry_c_sha256": "f91cfa7d3160558a0bed1d0d41381d7af1cc5dd0bcda2e016b2fd7275d49c996"
+  },
+  "scope_boundaries": [
+    "F13/main相同的是一個完整C blob加指定測試/fixture片段；完整呼叫者、headers/types/capacity、imports、build flags與執行工具閉包未建，不可移標F13成current main或新F全綠。",
+    "C函式原文可重新hash；18個歷史方法/整blob身份依記錄的完整Git命令/exit/hash，包內未存每個歷史Git show完整stdout，不能宣稱更廣獨立原件重建。",
+    "最初probe允許dirty來源、舊ELF未在本輪再hash；withdrawal是歷史修補反證，不是current main撤回/恢復。",
+    "tar只驗5指定member與所需原執行script；不是整archive全部member或所有native場景閉包新驗。",
+    "#291七項是API正文轉述，D:原憑證未讀，不借該轉述當原件。",
+    "歷史整數面積/內部集合不證零面積邊界拓撲、ghost像素或其他產品路徑；A/B返回值不能單獨涵蓋整個issue downstream範圍。"
+  ],
+  "why_only_closure_candidate": [
+    "原問題有歷史精確反例與修補反證，且修補/具名回歸仍存在，足以交負責人核收。",
+    "本輪沒有current main/newF同來源正式native/browser結果，也沒有可授權跨SHA沿用的完整依賴閉包。",
+    "issue提及ghost等下游風險，此原生/橋接映射沒有替代視覺驗收；負責結案者仍需核對整單原範圍。",
+    "本代理不執行issue關閉或將已有史料標成目前專案完成。"
+  ],
+  "wording_changes_required": [],
+  "additional_clarification_for_root": "單一current_geometry.c完整blob在F13/main相同，不是不同；其他PR202/train291整blob不同。維持既有closure限制即可，無須為此擴大或重跑同版審查。",
+  "product_runtime_rerun": false,
+  "new_semantics_or_thresholds": false,
+  "closure_or_merge_action_taken": false,
+  "verdict": "可納此新映射為#198關閉候選的支援資料；不可據此直接宣告#198關閉、目前main/newF全綠或完整closure已同一。"
+}

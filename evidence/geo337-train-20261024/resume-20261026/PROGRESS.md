@@ -2,7 +2,7 @@
 
 2026-10-26 UTC。本文件取代此路徑先前的 current-state；舊提交仍保留歷史原件。尚未 READY-TO-MERGE。
 
-固定候選 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`，分支 `codex/train337-recovered-evidence-20261026`。一般 push 與遠端三個原件完整核對 exit 0；獨立採入審查 5019 checks／exit 0。原 #338 列車仍是 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，本輪不改其產品 ref；正文經對應 prbody 與既有交接 request 更新，不新增替代產品 PR。證據 E 是本文件所屬提交，由 prbody 另固定完整 E SHA，產品與 F 相同。
+固定候選 F：`cbf0fb621888596aa14ad5f2349b503e23b1b72d`，分支 `codex/train337-recovered-evidence-20261026`。一般 push 與遠端三個原件完整核對 exit 0；獨立採入審查 5019 checks／exit 0。原 #338 列車仍是 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，本輪不改其產品 ref；正文已推至對應 prbody；既有交接 request 已排入，尚未證實 PR 正文套用，不新增替代產品 PR。已交付正文 D `990440297d851dccbc077cdf59fe654fdbd9ffd8` 固定主要證據 E3 `d803910822803a020a57a7568c62325a076239f0`；本次只新增 #198 映射與阻塞說明，產品仍與 F 相同。
 
 F 相對 a6 的非 evidence 差異僅為 S10 原帳本、a6 架構 report、a6 架構 receipt 三葉，其他產品／測試／SSOT 不變。manifest／scan 原 bytes 不變。帳本自然 execution heads 保持 S10；receipt 生成來源保持 a6；新四項裁判真正執行來源是 F，沒有互相移標。
 
@@ -37,8 +37,16 @@ native真正使用`/tmp/geometry-tests`，目前未達原128MiB准入；新brows
 
 原2026-10-25 10:39:52Z的#338留言（issuecomment-6396611849，內容為Q-323-ABC與B3裁決）刊載帳戶已透過GitHub API核實：ZhiQiYang／id59477728與GET /user相同。留言引述使用者選項，但對PR適用範圍自述「本機Claude整理，非原話」；這不等於本對話直接原話。既有#323收據保持原三差限定，本輪不新增比較例外。最新a6的P-189／跨SHA沿用文字仍只查到轉錄與審查引用，沒有對應新的原始批准；比較器保持原規格。完整原件已於第二批`f99b6e63d52b1a87e6fe3546e2604cdf9bbb2304`交付。
 
-接著先完成本輪原件封包與遠端全文核驗、更新對應prbody。空間可合法准入後，原native來源一般transition到F、原native＋六browser＋適用專項繼續；全綠前不標READY-TO-MERGE。
+既有原件、正文 D 與交接 H `023c35e40fd2f4f1c108cdbb7cfc4506c0b0a7df` 已交付；PR 正文請求已排入，最後核對尚未證實套用。沒有新的重驗收程序執行中。空間可合法准入後才恢復原 native／browser 與專項；全綠前不標 READY-TO-MERGE。
 
 平行#300靜態盤點已通過獨立審查：新F三個效能前置都已實作；#348缺F中的四個快路。兩次原600秒逾時皆在同一140-byte四命令preload batch，沒有可封存的partial stdout/stderr；原observer已具備保存該輸出的路徑，不能說漏實作，也不能歸因loadfile。目前#348的sequential-history組合是1048命令，歷史F0f則1046；兩者都不是該兩次失敗的實際四命令輸入。該工作不重抽效能、不改產品，完整原件與獨審另批交付。
 
 所有未完成項繼續明列；沒有合併PR/main、部署、付費、改安全／掛載設定或新增公理。
+
+## 本輪新增 #198 與明確阻塞
+
+首次補交 #198 原案例、撤回／恢復與 F13 收據映射及獨立審查，位於本提交 `issue198-source-map-20261026/`。維持關閉候選，未關 issue；不將片段或單檔相同視為完整 closure，不將歷史 F13 全綠搬到目前來源。
+
+可解除條件詳見同目錄 `BLOCKERS.md`：11:29:02Z 的容量觀測中，即批准並全數釋放原 3,156 葉毛 allocated，native 仍至少差 11,059,200 bytes；browser 原規劃仍差至少 319,729,664 bytes 加未物化 thin seed 增量。這是有日期的至少缺額，不是新量測。清理批准未到，不重試；管理入口未核實，匯入觀測／reconcile／list-ready／list-alerts 均 UNRUN，不另造佇列。
+
+目前沒有可宣告完成的全專案驗收；不再因沒有新輸入反覆包裝或重核既有同版，後續只處理有新輸入且可執行的工作。

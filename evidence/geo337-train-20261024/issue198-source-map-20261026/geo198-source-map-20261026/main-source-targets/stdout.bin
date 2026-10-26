@@ -1,0 +1,21 @@
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:current_geometry.c:7989:static int classify_rect_outline(
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:current_geometry.c:8140:            int contact = classify_rect_outline(&b->outline, u0, v0, u1, v1,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:current_geometry.c:8811:        int contact = classify_rect_outline(&b->outline, u0, v0, u1, v1,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:current_geometry.c:9088:                    contact = classify_rect_outline(&pb[j]->outline,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:329:                int contact=classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d);
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:340:                int closed=classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d);
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:375:    int counterexample_A = classify_rect_outline(&notch, 30,50,70,80,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:377:    CHECK(counterexample_A < 0); /* Two disconnected contacts cannot be one hole/rectangle. */
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:378:    int counterexample_B = classify_rect_outline(&ridge, 20,70,80,80,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:380:    CHECK(counterexample_B > 0);
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:383:    CHECK(classify_rect_outline(&notch, 10,10,20,20,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:387:    CHECK(classify_rect_outline(&notch, 110,110,120,120,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:389:    CHECK(classify_rect_outline(&notch, -10,10,20,20,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:405:        CHECK(classify_rect_outline(&small, -1,0,2,1,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:407:        CHECK(classify_rect_outline(&small, 0,0,1,1,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:412:    CHECK(classify_rect_outline(&notch, 100,100,110,110,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:414:    int rectangle_plus_isolated_line = classify_rect_outline(&notch, 30,50,60,80,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:421:    int rectangle_plus_isolated_point = classify_rect_outline(&stepped, 30,50,60,80,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:471:        int corner_only_despite_remote_side_contact=classify_rect_outline(&loop,
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:477:        CHECK(classify_rect_outline(&loop,l,bottom,r,top,&cls,&a,&b,&c,&d)>0);
+405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c:510:        CHECK(classify_rect_outline(&loop,u0,v0,u1,v1,&cls,&a,&b,&c,&d)==1);
