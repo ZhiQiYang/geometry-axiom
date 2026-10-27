@@ -1,0 +1,23 @@
+{
+  "name": "golden-compare",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-c",
+    "from pathlib import Path;import hashlib,json,sys;a=Path(sys.argv[1]).read_bytes();b=Path(sys.argv[2]).read_bytes();print(json.dumps({'generated_sha256':hashlib.sha256(a).hexdigest(),'committed_sha256':hashlib.sha256(b).hexdigest(),'byte_identical':a==b}));sys.exit(0 if a==b else 1)",
+    "/workspace/scratch/geo337-reading-a-oracle-F-cbf0fb62-20261027/golden-generated.json",
+    "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/oracle-golden.json"
+  ],
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "timeout_seconds": 30,
+  "started_utc": "2026-10-27T03:36:40.382976+00:00",
+  "actual_exit": 0,
+  "timed_out": false,
+  "elapsed_seconds": 0.032490887000676594,
+  "ended_utc": "2026-10-27T03:36:40.415661+00:00",
+  "sha_after": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "status_after": "",
+  "source_unchanged": true,
+  "passed": true
+}

@@ -1,0 +1,217 @@
+[紅] no_sliver          預期 C7_SEAMS_NOT_FROM_START  實得 ['C7_SEAMS_NOT_FROM_START']  拿掉挪縫規則:3700 寬時最後一條縫沒挪
+[紅] shift_origin       預期 C7_SEAMS_NOT_FROM_START  實得 ['C3_EDGE_UNSUPPORTED', 'C5_MAIN_GAP', 'C7_SEAMS_NOT_FROM_START']  起鋪點整組錯移 20 mm,其餘幾何照樣自洽
+[紅] floor_n            預期 C4_SPACING               實得 ['C12_JIG_MARK_MISSING', 'C4_SPACING']  副支格數改用無條件捨去:間距超過上限
+[紅] drop_mark          預期 C4_SPACING               實得 ['C12_JIG_MARK_MISSING', 'C4_SPACING']  每格少放第一支記號副支:間距超過上限
+[紅] no_column_strips   預期 C3_EDGE_UNSUPPORTED      實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C9_MARKS_NOT_ALIGNED']  柱邊不放角材:柱邊面材沒有支撐
+[紅] shift_main         預期 C3_EDGE_UNSUPPORTED      實得 ['C3_EDGE_UNSUPPORTED']  主支偏離板縫 15 mm:板縫沒有支撐
+[紅] split_main_mid     預期 C5_MAIN_GAP              實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C5_MAIN_END_NOT_ON_RC', 'C5_MAIN_GAP', 'C6_END_NOT_ON_TIMBER', 'C8_END_NOT_ON_ONE_TIMBER', 'C9_MARKS_NOT_ALIGNED']  主支在室內中間斷開 100 mm(不是停在 RC)
+[紅] split_main_mid     預期 C5_MAIN_END_NOT_ON_RC    實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C5_MAIN_END_NOT_ON_RC', 'C5_MAIN_GAP', 'C6_END_NOT_ON_TIMBER', 'C8_END_NOT_ON_ONE_TIMBER', 'C9_MARKS_NOT_ALIGNED']  同上:斷開處的端面不在 RC 或外牆邊界材上
+[紅] seam_centered      預期 C1_OVERLAP               實得 ['C1_OVERLAP', 'C8_END_NOT_ON_ONE_TIMBER']  板端縫副支一律置中、不貼著 RC 角材挪:撞到凹角邊界材
+[紅] misalign_marks     預期 C9_MARKS_NOT_ALIGNED     實得 ['C12_JIG_MARK_MISSING', 'C12_MARK_OFF_JIG', 'C13_EXTRA_OFF_RULE', 'C4_SPACING', 'C9_MARKS_NOT_ALIGNED']  第一支主支右側的記號副支整組偏 20 mm:兩側不對齊
+[紅] no_fill            預期 C4_SPACING               實得 ['C4_SPACING']  記號撞到壁柱邊界材拿掉後,不在旁邊補一支:間距超過上限
+[紅] shift_mark_rects   預期 C12_MARK_OFF_JIG         實得 ['C12_JIG_MARK_MISSING', 'C12_MARK_OFF_JIG', 'C13_EXTRA_OFF_RULE', 'C4_SPACING']  記號副支的矩形整排移 -8 mm、at 標籤不動:C12 要看實際位置
+[紅] fill_relabel       預期 C13_EXTRA_OFF_RULE       實得 ['C12_JIG_MARK_MISSING', 'C13_EXTRA_OFF_RULE', 'C4_SPACING']  把一支記號移 -8 mm 後改標 fill:fill 沒有貼著擋料
+[紅] fill_extra         預期 C13_EXTRA_UNNEEDED       實得 ['C13_EXTRA_OFF_RULE', 'C13_EXTRA_UNNEEDED']  在兩支記號中間憑空多放一支 fill:拿掉它間距也不超上限
+[紅] fill_double        預期 C13_EXTRA_DOUBLED        實得 ['C13_EXTRA_DOUBLED', 'C13_EXTRA_OFF_RULE']  fill 改成貼著旁邊那支記號:雙拼
+[紅] no_seam_window     預期 C4_SPACING               實得 ['C4_SPACING']  縫上副支的範圍不受「與鄰近記號的間距上限」約束:為了對齊挪到 3151,與記號 3536 空檔 345
+[紅] extra_seam_mid     預期 C13_EXTRA_OFF_RULE       實得 ['C13_EXTRA_OFF_RULE', 'C13_EXTRA_UNNEEDED']  兩支記號正中間多放一支、標成 seam:不在縫上、不貼擋料
+[紅] extra_norole_mid   預期 C13_EXTRA_OFF_RULE       實得 ['C13_EXTRA_OFF_RULE', 'C13_EXTRA_UNNEEDED']  同上,但不給 role
+[紅] seam_relabel       預期 C12_JIG_MARK_MISSING     實得 ['C12_JIG_MARK_MISSING', 'C13_EXTRA_OFF_RULE', 'C4_SPACING']  把一支記號移 -8 mm 後改標 seam:治具位置空了,改標的那支不算合法擋料
+[紅] no_seam_at_end     預期 C4_SPACING               實得 ['C4_SPACING']  P-180 拿掉:柱面料蓋住縫時不放縫上副支,空檔 342
+[紅] no_merge_seam_end  預期 C12_JIG_MARK_MISSING     實得 ['C12_JIG_MARK_MISSING', 'C4_SPACING']  板端縫端不合併平分:1470 那格最後一支碰到下一條縫的縫上副支,掉了
+[紅] even_split         預期 C12_MARK_OFF_JIG         實得 ['C12_JIG_MARK_MISSING', 'C12_MARK_OFF_JIG', 'C13_EXTRA_OFF_RULE']  記號退回逐格均分(舊公式 m=⌈L/n⌉):F3 最後一格 1449 mm 用 363,不是同一治具 367
+[紅] no_merge_split     預期 C12_JIG_MARK_MISSING     實得 ['C12_JIG_MARK_MISSING']  拿掉「最後一支記號碰到格端就合併平分」:1470 mm 那格的最後一支掉了,3117 沒有記號
+[紅] no_main_shift      預期 C1_OVERLAP               實得 ['C1_OVERLAP', 'C8_END_NOT_ON_ONE_TIMBER']  主支不平移:撞到內牆的沿牆角材
+[紅] no_doubling        預期 C3_EDGE_UNSUPPORTED      實得 ['C3_EDGE_UNSUPPORTED']  主支平移 8 mm 後不補併料:另一側整片板邊承接不足
+[紅] no_end_push        預期 C8_MAIN_ON_EXTENSION     實得 ['C8_I19_PRIORITY', 'C8_MAIN_ON_EXTENSION']  主支跨在凹角牆線上、不推進牆段:端面一部分落在延伸段
+[紅] gap_floor_both     預期 C7_SEAMS_NOT_FROM_START  實得 ['C5_MAIN_GAP', 'C7_SEAMS_NOT_FROM_START']  縫寬 3、反向起鋪仍取下界:首縫偏 1 mm(提案 FT01 反向取上界)
+[紅] one_sided_delete   預期 C9_MARKS_NOT_ALIGNED     實得 ['C12_JIG_MARK_MISSING', 'C4_SPACING', 'C9_MARKS_NOT_ALIGNED']  第一支主支右側少一支記號副支,左側那支還在
+[紅] drop_mark_row_at_column 預期 C4_SPACING               實得 ['C12_JIG_MARK_MISSING', 'C4_SPACING']  柱子 x 座標附近整排記號被拿掉(兩側一起):空檔跨過柱的座標,舊 C4 會切段漏抓
+[紅] rc_through_reflex  預期 C8_I22_NON_BOUNDARY_EXTENDS 實得 ['C8_I22_NON_BOUNDARY_EXTENDS']  凹角處沿牆料穿過凹角(舊排法):核心 I22 不接受
+[紅] no_boundary_extension 預期 C6_END_NOT_ON_TIMBER     實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C6_END_NOT_ON_TIMBER', 'C8_END_NOT_ON_ONE_TIMBER', 'C8_I19_BOUNDARY_END', 'C9_MARKS_NOT_ALIGNED']  凹角處邊界材不延伸:沿牆料端面懸空
+[紅] no_r_butt          預期 C11_MAIN_NOT_BUTTED      實得 ['C11_MAIN_NOT_BUTTED']  拿掉 R-butt:挪縫後主支離左牆沿牆料 1 mm,沒有貼住
+[紅] no_r_butt          預期 C11_MAIN_NOT_BUTTED      實得 ['C11_MAIN_NOT_BUTTED']  拿掉 R-butt:主支離柱面沿柱料 2 mm,沒有貼住
+[紅] allow_short_pieces 預期 C10_SHORT_PIECE          實得 ['C10_SHORT_PIECE']  拿掉 R-nosliver:沿柱料與主支之間 23 mm 的縫裡放 23 mm 長的副支與柱面料
+[紅] allow_short_pieces 預期 C10_SHORT_PIECE          實得 ['C10_SHORT_PIECE']  拿掉 R-nosliver:沿柱料與主支之間 10 mm 的縫裡放 10 mm 長的副支
+[紅] nosliver_too_wide  預期 C4_SPACING               實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C9_MARKS_NOT_ALIGNED']  R-nosliver 門檻誤設 100:93 mm 寬的跨也不放副支(窄縫豁免只到 min_piece)
+[紅] nosliver_too_wide  預期 C3_EDGE_UNSUPPORTED      實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C9_MARKS_NOT_ALIGNED']  同上:板端縫跨過 93 mm 的空檔沒有承接
+[紅] no_custom4         預期 C8_I19_PRIORITY          實得 ['C8_I19_PRIORITY']  不套 custom 4:副支(3)端面頂壁柱沿牆料(custom 3),I19 要嚴格小於
+[紅] sliver_le          預期 C4_SPACING               實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C9_MARKS_NOT_ALIGNED']  R-nosliver 邊界誤寫成 <=:剛好 27 mm 的跨不放副支;檢查端 bridged 若也誤寫成 <= 就抓不到
+[紅] sliver_le          預期 C3_EDGE_UNSUPPORTED      實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C9_MARKS_NOT_ALIGNED']  同上:剛好 27 mm 的柱面料也不放,柱面與板端縫邊沒有承接
+[紅] no_ext_custom3     預期 C8_I19_PRIORITY          實得 ['C8_I19_PRIORITY']  牆階 20 mm:沿牆料端面頂延伸段卻沒宣告 custom 3(primary 2 頂延伸段 2)
+[紅] short_face_conflict 預期 C10_SHORT_PIECE          實得 ['C10_SHORT_PIECE']  牆階 40 mm:牆階面只剩 13 mm 也放沿牆料(不照短於 27 不放的規則;牆面比照柱面是推論)
+[紅] bbox_ft02          預期 C7_SEAMS_NOT_FROM_START  實得 ['C7_SEAMS_NOT_FROM_START']  FT02 退回照外框挪縫:外框深 3720,縫留在 3667;縫線上最近的對牆是 x>2600 的 y=3690 牆,應挪到 3649(這間的主支推開 18 mm、補併料就排得出,原縫位可行,P-182 不會退縫補救;牆階 20–40 mm 那幾間原縫位排不出,P-182 照主支寬度裡的擋料退到同一處,照外框挪縫的錯在那裡看不出來)
+[紅] bbox_ft02          預期 C7_SEAMS_NOT_FROM_START  實得 ['C13_EXTRA_OFF_RULE', 'C3_EDGE_UNSUPPORTED', 'C7_G7_TOO_CLOSE', 'C7_SEAMS_NOT_FROM_START']  同上,板端縫(B 軸):30 mm 牆階應挪到 3629(40 mm 牆階時退縫規則也會退到同一處,抓不出差別,所以換這間)
+[紅] bbox_ft02+no_push_fallback+no_main_band_depth 預期 C1_OVERLAP               實得 ['C1_OVERLAP', 'C3_EDGE_UNSUPPORTED', 'C5_MAIN_GAP', 'C7_G7_TOO_CLOSE', 'C7_SEAMS_NOT_FROM_START']  照外框挪縫時,讓開牆料的平移撞到 y=3700 的牆料,沒有退回置中
+[紅] no_seam_retreat    預期 C7_SEAMS_NOT_FROM_START  實得 ['C13_EXTRA_OFF_RULE', 'C3_EDGE_UNSUPPORTED', 'C7_SEAMS_NOT_FROM_START']  45 mm 牆階:板端縫 3659 的承接帶落在牆階面沒料的 18 mm 裡,沒有往內退到 3614
+[紅] no_resettle        預期 C7_SEAMS_NOT_FROM_START  實得 ['C13_EXTRA_OFF_RULE', 'C13_EXTRA_UNNEEDED', 'C3_EDGE_UNSUPPORTED', 'C7_G7_TOO_CLOSE', 'C7_SEAMS_NOT_FROM_START']  雙牆階:退縫到 3614 後沒有再跑 G7,x>3300 那段只剩 13 mm 的收邊板條(應挪到 3587)
+[紅] no_main_band_depth 預期 C7_P182_TRACE_MISSING    實得 ['C7_P182_TRACE_MISSING', 'C8_I19_PRIORITY', 'C8_MAIN_ON_EXTENSION']  拿掉 P-182:y=3655 那面牆落在最後一支主支 [3646,3673] 的寬度裡,建構端卻沒有候選 trace
+[紅] p182_always        預期 C7_P182_FALSE_FAIL       實得 ['C7_P182_FALSE_FAIL', 'C7_P182_SKIPPED_FEASIBLE']  P-182 跳過原縫位(主支寬度裡一有擋料就退):左牆壁柱 y 2745–2900,舊規則推開 8 mm、補併料就排得出,卻退縫到 2704
+[紅] p182_always        預期 C7_P182_FALSE_FAIL       實得 ['C7_P182_FALSE_FAIL', 'C7_P182_SKIPPED_FEASIBLE']  同上,上下鏡像的 54 mm 牆階:R-butt 平移 1 mm 就排得出,卻退縫到 95;退縫後副支 [27,81] 的中線剛好在 y=54 牆線上,檢查也不能當掉
+[紅] p182_no_backface   預期 C7_P182_TRACE_MISSING    實得 ['C7_P182_TRACE_MISSING', 'C8_I19_PRIORITY', 'C8_MAIN_ON_EXTENSION']  建構端不認背向起鋪側的牆:分辨房 x 0–300 的 y=3655 那面牆沒當成擋料,沒有候選
+[紅] p182_far_first     預期 C7_P182_TRACE_INCOMPLETE 實得 ['C7_P182_TRACE_INCOMPLETE']  候選由遠到近試:三段牆階先試 3609 就成功,比它優先的 3614 沒試
+[紅] p182_conflicts_only 預期 C8_I19_PRIORITY          實得 ['C7_P182_CHOSE_FAILED', 'C7_P182_FALSE_OK', 'C8_I19_PRIORITY']  候選只看衝突碼、不跑 check():壁柱加柱那間原縫位沒有衝突碼卻檢查紅,沒有退縫
+[紅] no_reflex_by_wall_line 預期 C3_EDGE_UNSUPPORTED      實得 ['C3_EDGE_UNSUPPORTED', 'C6_END_NOT_ON_TIMBER', 'C8_END_NOT_ON_ONE_TIMBER', 'C8_I19_BOUNDARY_END']  凹角只看料帶、不看牆線:牆階的邊界材不越過凹角,柱上緣 x 2973–3000 那段板邊沒有料
+[紅] no_reflex_by_wall_line 預期 C6_END_NOT_ON_TIMBER     實得 ['C3_EDGE_UNSUPPORTED', 'C6_END_NOT_ON_TIMBER', 'C8_END_NOT_ON_ONE_TIMBER', 'C8_I19_BOUNDARY_END']  同上:y=3661 沿牆料在 x=3000 的端面懸空
+[紅] no_col_trim_by_wall 預期 C3_EDGE_UNSUPPORTED      實得 ['C3_EDGE_UNSUPPORTED', 'C6_END_NOT_ON_TIMBER', 'C8_END_NOT_ON_ONE_TIMBER', 'C8_I19_PRIORITY']  柱面料不在沿牆料經過的地方分段:左下起鋪板長沿 X 沒有主支切過柱右面料,y=3661 的沿牆料被擋在 3027,牆邊 x 3000–3027 那段板邊沒有料
+[紅] no_face_part_conflict 預期 C3_EDGE_UNSUPPORTED      實得 ['C3_EDGE_UNSUPPORTED', 'C6_END_NOT_ON_TIMBER', 'C8_END_NOT_ON_ONE_TIMBER']  柱跨過牆階垂直牆 x=2900:柱上緣 x 2900–3000 前面只有 17 mm,放不下料,建構端不報衝突
+[紅] no_stepped_end     預期 C4_SPACING               實得 ['C12_JIG_MARK_MISSING', 'C3_EDGE_UNSUPPORTED', 'C4_SPACING', 'C9_MARKS_NOT_ALIGNED']  錯階跨端不處理:牆階 20 mm 旁那一跨整跨不放副支,間距超過上限
+[歷史政策負控] rc_through_reflex 舊排法的 I19 端面；只驗通用 matcher/fallback，不作當前可施工證據
+[紅] rc_through_reflex  預期 C8_I19_BOUNDARY_END      實得 ['C8_I19_BOUNDARY_END', 'C8_I22_NON_BOUNDARY_EXTENDS']  凹角另一面的邊界材端面頂到沿牆料,舊政策 I19 不接受
+[紅] no_custom4         14/14 個排法被 C8_I19_PRIORITY 抓到(多抓 [],漏抓 []);套用時升格 custom 4 的副支 60 支
+[綠] 對照 F1客廳 左上 Y
+[綠] 對照 F2主臥 左上 Y
+[綠] 對照 F3次臥 左上 Y
+[綠] 對照 F5廚房 左上 Y
+[綠] 對照 20 mm 牆階 左下 X(沿牆料端面頂延伸段,宣告 custom 3)[]
+[綠] 對照 40 mm 牆階 左下起鋪,板長沿Y:可施工(牆階面剩 13 mm 不放料)[][]
+[綠] 對照 20 mm 牆階 左上起鋪,板長沿X:可施工(G7 照 y=3680 牆挪縫,主支貼住 x>2600 的牆料,最後一條縫要在 3639(實得 3639))[][]
+[綠] 對照 40 mm 牆階 左上起鋪,板長沿X:可施工(G7 挪縫,最後一條縫要在 3619(實得 3619))[][]
+[綠] 對照 40 mm 牆階 左上起鋪,板長沿Y:可施工(板端縫 G7 挪縫,最後一條板端縫要在 3619(實得 3619))[][]
+[綠] 對照 45 mm 牆階 左上起鋪,板長沿Y:可施工(板端縫退到 y=3655 牆的 G7 位置,承接帶不落在牆階短段,最後一條板端縫要在 3614(實得 3614))[][]
+[綠] 對照 41 mm 牆階 左上起鋪,板長沿X:可施工(縫挪到 3659 時剛好落在牆線上,那面牆算在縫前面,再挪,最後一條縫要在 3618(實得 3618))[][]
+[綠] 對照 外框 3720、牆階牆 3690 左上起鋪,板長沿X:可施工(G7 照縫線上的對牆 3690 挪縫,最後一條縫要在 3649(實得 3649))[][]
+[綠] 對照 30 mm 牆階 左上起鋪,板長沿Y:可施工(板端縫 G7 照 y=3670 牆挪縫,最後一條板端縫要在 3629(實得 3629))[][]
+[綠] 對照 雙牆階 左上起鋪,板長沿Y:可施工(板端縫先退到 3614,縫線伸進 x>3300 那段(對牆 3628),G7 再挪,最後一條板端縫要在 3587(實得 3587))[][]
+[綠] 對照 45 mm 牆階 左上起鋪,板長沿X:可施工(P-182:y=3655 牆落在主支寬度裡,主支縫退到 ⌊3655 − 40.5⌋,最後一條縫要在 3614(實得 3614))[][]
+[綠] 對照 54 mm 牆階 左上起鋪,板長沿X:可施工(y=3646 剛好貼著主支起鋪側側面 [3646,3673],不算擋到主支,不退,最後一條縫要在 3659(實得 3659))[][]
+[綠] 對照 53 mm 牆階 右上起鋪,板長沿X:可施工(P-182:主支縫退到 ⌊3647 − 40.5⌋,最後一條縫要在 3606(實得 3606))[][]
+[綠] 對照 雙牆階 3649/3597 左上起鋪,板長沿X:可施工(P-182:先退到 3608,主支 [3595,3622] 又跨過 y=3597,G7 再退到 3556,最後一條縫要在 3556(實得 3556))[][]
+[綠] 對照 雙牆階 3658/3570 右上起鋪,板長沿X:可施工(P-182:退到 3617,主支 [3604,3631] 不碰 y=3570,停在離原位最近的位置,最後一條縫要在 3617(實得 3617))[][]
+[綠] 對照 雙牆階 3667/3615 左上起鋪,板長沿X:可施工(縫線 G7 先照 y=3667 挪到 3626,主支 [3613,3640] 跨過 y=3615,P-182 再退到 3574,最後一條縫要在 3574(實得 3574))[][]
+[綠] 對照 54 mm 牆階(上下鏡像) 左下起鋪,板長沿X:可施工(置中主支跨過 y=54 一 mm,R-butt 平移 1 mm 就不跨,不退(原房間 3659 的鏡像),最後一條縫要在 41(實得 41))[][]
+[綠] 對照 53 mm 牆階(上下鏡像) 左下起鋪,板長沿X:可施工(P-182 退到原房間 3606 的鏡像,最後一條縫要在 94(實得 94))[][]
+[綠] 對照 雙牆階 3649/3597(上下鏡像) 左下起鋪,板長沿X:可施工(P-182 退到原房間 3556 的鏡像,最後一條縫要在 144(實得 144))[][]
+[綠] 對照 牆階 344 mm + 柱 左上起鋪,板長沿X:可施工(原縫位往上推 2 mm 會壓到柱面料 [3681,3708],排不出;P-182 照 y=3656 退,最後一條縫要在 3615(實得 3615))[][]
+[綠] 對照 牆階 342 mm + 柱 左上起鋪,板長沿X:可施工(同上,照 y=3658 退,最後一條縫要在 3617(實得 3617))[][]
+[綠] 對照 左牆壁柱 y 2745–2900 左上起鋪,板長沿X:可施工(舊規則排得出(推開 8 mm、補併料),不退,最後一條縫要在 2750(實得 2750))[][]
+[綠] 對照 左牆壁柱 y 2750–2900 左上起鋪,板長沿X:可施工(縫線本身碰到壁柱面,照縫線上的對牆(G7)退,這是既有的不連續,最後一條縫要在 2709(實得 2709))[][]
+[綠] 對照 壁柱 y 2745 加柱 x 1000 左上起鋪,板長沿X:可施工(原縫位檢查紅(C8 I19),退到 ⌊2745 − 40.5⌋,最後一條縫要在 2704(實得 2704))[][]
+[綠] 對照 壁柱 y 2745 加柱 x 265 左上起鋪,板長沿X:可施工(原縫位檢查紅(C8 I19、C10),退到 2704,最後一條縫要在 2704(實得 2704))[][]
+[綠] 對照 45 mm 牆階加柱 左上起鋪,板長沿X:可施工(原縫位報 MAIN_HITS_RC_TIMBER,退到 3614,最後一條縫要在 3614(實得 3614))[][]
+[綠] 對照 分辨房 左上起鋪,板長沿X:可施工(背向起鋪側的 y=3655 給 3614,但 3614 離 y=3654 那面牆不到 1.5w(C7b),再試 3613,最後一條縫要在 3613(實得 3613))[][]
+[綠] 對照 分辨房 右上起鋪,板長沿X:可施工(同上,最後一條縫要在 3613(實得 3613))[][]
+[綠] 對照 分辨房(上下鏡像) 左下起鋪,板長沿X:可施工(鏡像:3720 − 3613,最後一條縫要在 107(實得 107))[][]
+[綠] 對照 分辨房(上下鏡像) 右下起鋪,板長沿X:可施工(鏡像:3720 − 3613,最後一條縫要在 107(實得 107))[][]
+[綠] 對照 三段牆階 左上起鋪,板長沿X:可施工(近的候選 3614 不可行(C7b),3609 可行,最後一條縫要在 3609(實得 3609))[][]
+[綠] 對照 左牆壁柱 y 1831–2000 左上起鋪,板長沿Y:可施工(壁柱下緣剛好在縫線上,算在縫前面,板端縫挪到 1790,最後一條板端縫要在 1790(實得 1790))[][]
+[綠] P-182 原縫位:左牆壁柱 y 2745–2900 左上 X,主支 [(2745, 2772)](要 [(2745, 2772)]),併料 [(2718, 2745)] 長 3846(要 3846),縫 2750(要 2750,收邊 449)
+[綠] P-182 都不可行:trace [3667, 3624, 3579]、C7 候選 [3667, 3624, 3579](都要 [3667, 3624, 3579]),trace 重跑 check() 沒失敗的 [](要沒有)
+[綠] P-182 手算 H1 貼著寬度下緣:trace 縫位 None(要 None),最後一條主支縫 3667(要 3667),衝突 [],檢查失敗 []
+[綠] P-182 手算 H1' 重疊 1 mm:trace 縫位 [3667](要 [3667]),最後一條主支縫 3667(要 3667),衝突 [],檢查失敗 []
+[綠] P-182 手算 H2 貼著寬度上緣:trace 縫位 None(要 None),最後一條主支縫 3667(要 3667),衝突 [],檢查失敗 []
+[綠] P-182 手算 H2' 重疊 1 mm:trace 縫位 [3667](要 [3667]),最後一條主支縫 3667(要 3667),衝突 [],檢查失敗 []
+[綠] P-182 手算 H3 寬度 w 對 ⌈w/2⌉:trace 縫位 [3667, 3609](要 [3667, 3609]),最後一條主支縫 3609(要 3609),衝突 [],檢查失敗 []
+[綠] P-182 手算 H4 外框 3653/3650(審查員 samewrong):trace 縫位 [3667, 3609](要 [3667, 3609]),最後一條主支縫 3609(要 3609),衝突 [],檢查失敗 []
+[綠] P-182 手算 H5 寬度 w 對 ⌈w/2⌉(可行時):trace 縫位 None(要 None),最後一條主支縫 3667(要 3667),衝突 [],檢查失敗 []
+[綠] P-182 手算 H6 退縫後的候選要補併料:trace 縫位 [3667, 3605](要 [3667, 3605]),最後一條主支縫 3605(要 3605),衝突 [],檢查失敗 []
+[綠] P-182 手算 H4 鏡像:trace 縫位 [53, 111](要 [53, 111]),最後一條主支縫 111(要 111)
+[綠] P-182 手算 H1' 鏡像:trace 縫位 [53](要 [53]),最後一條主支縫 53(要 53)
+[綠] P-182 手算 H1 鏡像:trace 縫位 None(要 None),最後一條主支縫 53(要 53)
+[綠] P-182 H6:選中的 3605 的主支 [(3600, 3627)](要 [(3600, 3627)]),併料 [(3573, 3600)](要 [(3573, 3600)],恰一支),縫 3605(要 3605)
+[綠] P-182 板長沿 Y(轉置)STEP45       4 種排法:左上/左下 trace [3659, 3614] 縫 3614,右上/右下縫 41
+[綠] P-182 板長沿 Y(轉置)L53          4 種排法:左上/左下 trace [3659, 3606] 縫 3606,右上/右下縫 41
+[綠] P-182 板長沿 Y(轉置)DS3649,3597  4 種排法:左上/左下 trace [3659, 3608, 3556] 縫 3556,右上/右下縫 41
+[綠] P-182 板長沿 Y(轉置)DS3658,3570  4 種排法:左上/左下 trace [3659, 3617] 縫 3617,右上/右下縫 41
+[綠] P-182 板長沿 Y(轉置)DS3667,3615  4 種排法:左上/左下 trace [3626, 3574] 縫 3574,右上/右下縫 41
+[綠] P-182 板長沿 Y(轉置)T9COL344     4 種排法:左上/左下 trace [3667, 3615] 縫 3615,右上/右下縫 333
+[綠] P-182 板長沿 Y(轉置)PILCOL1000   4 種排法:左上/左下 trace [2750, 2704] 縫 2704,右上/右下縫 450
+[綠] P-182 板長沿 Y(轉置)PILCOL265    4 種排法:左上/左下 trace [2750, 2704] 縫 2704,右上/右下縫 450
+[綠] P-182 板長沿 Y(轉置)S45COL       4 種排法:左上/左下 trace [3659, 3614] 縫 3614,右上/右下縫 41
+[綠] P-182 板長沿 Y(轉置)DISTR        4 種排法:左上/左下 trace [3667, 3614, 3613] 縫 3613,右上/右下縫 53
+[綠] P-182 板長沿 Y(轉置)TRIPLE       4 種排法:左上/左下 trace [3659, 3614, 3609] 縫 3609,右上/右下縫 41
+[綠] P-182 板長沿 Y(轉置)DBLCOL       4 種排法:左上/左下 trace [3667, 3624, 3579] 縫 3667['P182_NO_FEASIBLE_CANDIDATE'],右上/右下縫 53['TIMBERS_COLLIDE']
+[綠] P-182 板長沿 Y(轉置)H3           4 種排法:左上/左下 trace [3667, 3609] 縫 3609,右上/右下縫 53
+[綠] P-182 板長沿 Y(轉置)H4           4 種排法:左上/左下 trace [3667, 3609] 縫 3609,右上/右下縫 53
+[綠] P-182 板長沿 Y(轉置)PIL2745      4 種排法:左上/左下 trace [2750] 縫 2750,右上/右下縫 450
+[綠] P-182 板長沿 Y(轉置)H6           4 種排法:左上/左下 trace [3667, 3605] 縫 3605,右上/右下縫 53
+[綠] #318 缺陷 2 Region.inside 牆線上的探測點 12 個:不一致 []
+[綠] #318 缺陷 2 L 3600×3000 缺 1800×1000:8 種排法的縫位(手算)、可施工、檢查全過;不一致 0
+[綠] #318 缺陷 2 L 3600×3000 缺 1800×1000 的上下/左右鏡像與轉置 24 種排法:全部可施工、檢查全過;不一致 0
+[綠] #318 缺陷 2 L 4000×3000 缺 2000×1000:8 種排法的縫位(手算)、可施工、檢查全過;不一致 0
+[綠] #318 缺陷 2 L 4000×3000 缺 2000×1000 的上下/左右鏡像與轉置 24 種排法:全部可施工、檢查全過;不一致 0
+[綠] #318 缺陷 2 L 5000×4000 缺 2500×1600:8 種排法的縫位(手算)、可施工、檢查全過;不一致 0
+[綠] #318 缺陷 2 L 5000×4000 缺 2500×1600 的上下/左右鏡像與轉置 24 種排法:全部可施工、檢查全過;不一致 0
+[綠] #318 缺陷 2 STEP45 加孔 x 2500–2700 y 500–800:8 種排法不當掉,可施工 8 個的檢查全過、不可施工的 trace 沒問題;不一致 0
+[綠] #318 缺陷 2 STEP45 加孔 x 2400–2800 y 1000–1300:8 種排法不當掉,可施工 8 個的檢查全過、不可施工的 trace 沒問題;不一致 0
+[綠] #318 缺陷 2 缺角寬 = 房寬一半的 L 形 216 個排法:不當掉、可施工的檢查全過;不一致 0(不可施工 0 個,預期 0)
+[綠] W/2 對照 REVIEW_W2_REGRESSION:3000×2600 缺 1500×913 的八種排法各多一個 conflict 必須失敗(W2_UNB_NOT_ASSERTED);外框對得上=True,不可施工 8(要 8),檢查問題 0(要 0),掃描仍通過=False
+[綠] #318 缺陷 1 柱右面 = 牆階垂直牆(x=3000) 左上起鋪,板長沿X:判定 buildable(要 buildable),衝突碼 [](要 []),手算的料與位置對不上的 [],檢查問題 []
+[綠] #318 缺陷 1 柱跨過牆階垂直牆(x=2900) 左上起鋪,板長沿X:判定 unbuildable(要 unbuildable),衝突碼 ['RC_FACE_PART_NO_ROOM'](要 ['RC_FACE_PART_NO_ROOM']),手算的料與位置對不上的 [],檢查問題 []
+[綠] #318 缺陷 1 牆階垂直牆在柱右邊(x=3100) 左上起鋪,板長沿X:判定 buildable(要 buildable),衝突碼 [](要 []),手算的料與位置對不上的 [],檢查問題 []
+[綠] #318 缺陷 1 左右鏡像:柱左面 = 牆階垂直牆(x=1100) 右上起鋪,板長沿X:判定 buildable(要 buildable),衝突碼 [](要 []),手算的料與位置對不上的 [],檢查問題 []
+[綠] #318 缺陷 1 COLSTEP(3000) 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 0
+[綠] #318 缺陷 1 COLSTEP(2900) 原房與上下、左右鏡像 × 8 種排法:全部 unbuildable;不一致 0
+[綠] #318 缺陷 1 COLSTEP(3100) 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 0
+[綠] #318 缺陷 1 FZ9 原房與上下、左右鏡像 × 8 種排法:全部 buildable;不一致 0
+[綠] #318 缺陷 1 FZ97 原房與上下、左右鏡像 × 8 種排法:沒有 inconsistent;不一致 0
+[綠] 阻擋 2 FZ145(原房與上下、左右鏡像 × 8 種排法):全部可施工、檢查全過、trace 沒問題;以前 FAIL_UNCONFIRMED 的 6 個排法選原縫位;不一致 0
+[綠] 阻擋 2 FZ139(原房與上下、左右鏡像 × 8 種排法):全部可施工、檢查全過、trace 沒問題;以前 FAIL_UNCONFIRMED 的 6 個排法選原縫位;不一致 0
+[綠] 阻擋 2 FZ146(原房與上下、左右鏡像 × 8 種排法):全部可施工、檢查全過、trace 沒問題;以前 FAIL_UNCONFIRMED 的 6 個排法選原縫位;不一致 0
+[綠] 第 22 輪副作用 FZ120(原房與上下、左右鏡像 × 8 種排法):判定與核心限制和手算相同;不一致 0
+[綠] 第 22 輪副作用 FZ148M(原房與上下、左右鏡像 × 8 種排法):判定與核心限制和手算相同;不一致 0
+[綠] 閱讀 A P-182 FZ107 左上起鋪,板長沿Y:要第一可行縫 3667、trace [(3667, True, False)]；實得 buildable、縫 3667、trace [(3667, True, False)]、問題 []
+[綠] 閱讀 A P-182 FZ107左右鏡像 右上起鋪,板長沿Y:要第一可行縫 433、trace [(433, True, False)]；實得 buildable、縫 433、trace [(433, True, False)]、問題 []
+[綠] 閱讀 A P-182 FZ114 右上起鋪,板長沿Y:要第一可行縫 491、trace [(433, False, False), (491, True, False)]；實得 buildable、縫 491、trace [(433, False, False), (491, True, False)]、問題 []
+[綠] 閱讀 A P-182 FZ114 左上起鋪,板長沿X:要第一可行縫 3544、trace [(3656, False, True), (3604, False, False), (3544, True, False)]；實得 buildable、縫 3544、trace [(3656, False, True), (3604, False, False), (3544, True, False)]、問題 []
+[歷史政策負控] P-182 通用 core-limited fallback／三種 C7 偽造；只驗通用 matcher/fallback，不作當前可施工證據
+[綠] P-182 只有核心限制的候選 FZ107 左上起鋪,板長沿Y:判定 core_limited(要 core_limited),最後一條主支縫 3667(要 3667),trace(縫, 可行, 只有核心限制)[(3667, False, True), (3609, False, True)](要 [(3667, False, True), (3609, False, True)]),問題 []
+[綠] P-182 只有核心限制的候選 FZ107(左右鏡像) 右上起鋪,板長沿Y:判定 core_limited(要 core_limited),最後一條主支縫 433(要 433),trace(縫, 可行, 只有核心限制)[(433, False, True), (491, False, True)](要 [(433, False, True), (491, False, True)]),問題 []
+[綠] P-182 只有核心限制的候選 FZ114 右上起鋪,板長沿Y:判定 core_limited(要 core_limited),最後一條主支縫 491(要 491),trace(縫, 可行, 只有核心限制)[(433, False, False), (491, False, True)](要 [(433, False, False), (491, False, True)]),問題 []
+[綠] P-182 只有核心限制的候選 FZ114 左上起鋪,板長沿X:判定 buildable(要 buildable),最後一條主支縫 3544(要 3544),trace(縫, 可行, 只有核心限制)[(3656, False, True), (3604, False, False), (3544, True, False)](要 [(3656, False, True), (3604, False, False), (3544, True, False)]),問題 []
+[綠] P-182 只有核心限制的候選 FZ107 原房與上下、左右鏡像 × 8 種排法:沒有 inconsistent、trace 沒問題、沒有 P182_NO_FEASIBLE_CANDIDATE;不一致 0
+[綠] P-182 只有核心限制的候選 FZ114 原房與上下、左右鏡像 × 8 種排法:沒有 inconsistent、trace 沒問題、沒有 P182_NO_FEASIBLE_CANDIDATE;不一致 0
+[紅] p182_no_core_fallback 預期 P182_NO_FEASIBLE_CANDIDATE  實得 ['P182_NO_FEASIBLE_CANDIDATE']  FZ107 左上 Y:兩個候選都只有核心限制
+[紅] tamper_core_skip   預期 C7_P182_SKIPPED_FEASIBLE 實得 ['C7_P182_SKIPPED_FEASIBLE']  都只有核心限制時改選 491:更優先的 433 也是物理解
+[紅] tamper_core_phys   預期 C7_P182_PHYS_MISMATCH    實得 ['C7_P182_PHYS_MISMATCH']  3609 宣稱不是只有核心限制,重建後是
+[紅] tamper_core_nonphys 預期 C7_P182_CHOSE_FAILED     實得 ['C7_P182_CHOSE_FAILED']  改選物理上排不出的 433
+[紅] no_ext_end_flag    預期 CORE_LIMIT_UNDECLARED(C8_EXTENSION_END_FREE)  實得 [('CORE_LIMIT_UNDECLARED', 'C8_EXTENSION_END_FREE')]  FZ120 左上 Y:延伸段端面懸空沒宣告
+[綠] #319 候選 3605 H6 板長沿 X:有併料時衝突 []、檢查失敗 [](C3 要沒有);不放併料時 C3 缺口 [(3596, 3600)](要 [(3596, 3600)],共 3 處)
+[綠] #319 候選 3605 H6 轉置(板長沿 Y):有併料時衝突 []、檢查失敗 [](C3 要沒有);不放併料時 C3 缺口 [(3596, 3600)](要 [(3596, 3600)],共 3 處)
+[綠] #319 候選 115 H6 轉置再左右鏡像(右上起鋪):有併料時衝突 []、檢查失敗 [](C3 要沒有);不放併料時 C3 缺口 [(120, 124)](要 [(120, 124)],共 3 處)
+[綠] #319 x_band(承接帶跨分塊)手寫案例 6 個:不一致 []
+[綠] 牆線 y=3646 上的室內區間取兩側交集:要 [(0, 2600)],實得 [(0, 2600)]
+[綠] 牆線 y=54 上的室內區間取兩側交集:要 [(0, 2600)],實得 [(0, 2600)]
+[紅] tamper_seam        預期 C7_G7_TOO_CLOSE          實得 ['C7_G7_TOO_CLOSE', 'C7_SEAMS_NOT_FROM_START']  雙牆階的板端縫改回 3614:離 x>3300 的對牆只剩 13 mm
+[紅] tamper_main_seam   預期 C7_P182_CHOSE_FAILED     實得 ['C7_P182_CHOSE_FAILED']  45 mm 牆階的主支縫改回 3659(trace 判它不可行)
+[紅] tamper_false_fail  預期 C7_P182_FALSE_FAIL       實得 ['C7_P182_FALSE_FAIL', 'C7_P182_SKIPPED_FEASIBLE', 'C7_P182_TRACE_INCOMPLETE']  左牆壁柱 y 2745:trace 把可行的原縫位標成失敗
+[紅] tamper_trace_drop  預期 C7_P182_TRACE_INCOMPLETE 實得 ['C7_P182_TRACE_INCOMPLETE']  雙牆階 3649/3597:比選中的 3556 優先的 3608 不在 trace
+[紅] tamper_noncandidate 預期 C7_P182_NOT_CANDIDATE    實得 ['C7_P182_NOT_CANDIDATE']  選中 3600:不在 C7 自己算的候選集合
+[紅] tamper_skip_feasible 預期 C7_P182_SKIPPED_FEASIBLE+C7_P182_FALSE_OK 實得 ['C7_P182_FALSE_OK', 'C7_P182_SKIPPED_FEASIBLE']  trace 說 3608 可行,卻選了 3556
+[紅] tamper_codes       預期 C7_P182_CODES_MISMATCH   實得 ['C7_P182_CODES_MISMATCH']  雙牆階 3608 確實不可行,但 trace 寫的失敗碼和 C7 重建出來的不同
+[紅] tamper_false_ok    預期 C7_P182_FALSE_OK+C7_P182_CHOSE_FAILED 實得 ['C7_P182_CHOSE_FAILED', 'C7_P182_FALSE_OK']  trace 說 3608 可行並選它,C7 重建後 3608 其實不可行
+[紅] tamper_give_up     預期 C7_P182_TRACE_INCOMPLETE 實得 ['C7_P182_TRACE_INCOMPLETE']  三個候選都不可行(3667、3624、3579)的房間:trace 只列原縫位就放棄,C7 要求涵蓋全部候選
+[紅] tamper_chosen_mismatch 預期 C7_P182_CHOSE_FAILED     實得 ['C7_P182_CHOSE_FAILED', 'C7_P182_SKIPPED_FEASIBLE']  結果是另一個可行的候選 2704,trace 說選的是原縫位 2750
+[紅] tamper_extra_entry 預期 C7_P182_NOT_CANDIDATE    實得 ['C7_P182_NOT_CANDIDATE']  trace 多列了一個不在 C7 候選集合裡的位置 3000(選中的 3556 沒動)
+[紅] tamper_none_unflagged 預期 C7_P182_CHOSE_FAILED     實得 ['C7_P182_CHOSE_FAILED']  都不可行的房間:trace 說沒有可行的候選,結果卻沒報 P182_NO_FEASIBLE_CANDIDATE
+[紅] tamper_none_seam   預期 C7_P182_CHOSE_FAILED     實得 ['C7_P182_CHOSE_FAILED']  都不可行的房間:報了 P182_NO_FEASIBLE_CANDIDATE,結果的縫位卻不是原縫位
+[紅] tamper_give_up_ds  預期 C7_P182_TRACE_INCOMPLETE+C7_P182_SKIPPED_FEASIBLE 實得 ['C7_P182_SKIPPED_FEASIBLE', 'C7_P182_TRACE_INCOMPLETE']  審查員 forge.py 的放棄:雙牆階 3649/3597 其實可行,trace 只留原縫位就報都不可行
+[紅] tamper_fake_seam   預期 C7_P182_FALSE_FAIL+C7_P182_SKIPPED_FEASIBLE 實得 ['C7_P182_FALSE_FAIL', 'C7_P182_SKIPPED_FEASIBLE']  審查員 forge.py 的偽造佈局(b):假佈局換掉前面一條縫、最後一條縫仍是 2750;C7 不看存的佈局
+[紅] tamper_fake_layout 預期 C7_P182_FALSE_FAIL+C7_P182_SKIPPED_FEASIBLE 實得 ['C7_P182_FALSE_FAIL', 'C7_P182_SKIPPED_FEASIBLE']  審查員 forge.py 的偽造佈局:原縫位 2750 其實可行,trace 附一份刪了併料的假佈局說它失敗;C7 不看存的佈局
+[紅] tamper_blind_check  預期 C7_P182_FAIL_UNCONFIRMED  實得 ['C7_P182_CODES_MISMATCH', 'C7_P182_FAIL_UNCONFIRMED', 'C7_P182_PHYS_MISMATCH']  C7 重建的候選有衝突碼、檢查全過(檢查端盲點)
+[紅] tamper_fill_plausible 預期 C13_EXTRA_OFF_RULE   實得 ['C12_JIG_MARK_MISSING', 'C13_EXTRA_OFF_RULE', 'C4_SPACING']  F2 右上 X 把放得下的記號換成貼邊界材的 fill
+[綠] 對照 40 mm 牆階 左上 X、照舊縫位:平移撞牆料時退回置中,原因要是核心限制 ['CORE_LIMIT_MAIN_ON_EXTENSION'](不是衝突 []),端面 [(2573, (27, 2573))](要 [(2573, (27, 2573))]),和 C8 對不上的 []
+[綠] 對照 45 mm 牆階 左上 Y、不退縫:板端縫承接帶落在牆階短段要報衝突 ['SHORT_FACE_SEAM_EDGE_UNSUPPORTED']
+[綠] 對照 20 mm 牆階 左上起鋪,板長沿Y:閱讀 A 可施工(buildable,要 buildable),核心限制 [],C8 [];錯階那一跨的副支 10 支(和手算相同)
+[歷史政策負控] STEP20 通用宣告↔C8 逐筆 matcher；只驗通用 matcher/fallback，不作當前可施工證據
+[紅] core_limit_match   拿掉宣告 ['CORE_LIMIT_UNDECLARED']、多一筆假宣告 ['CORE_LIMIT_UNCONFIRMED']、建構端不宣告(no_end_free_flag)['CORE_LIMIT_UNDECLARED'](要 CORE_LIMIT_UNDECLARED、CORE_LIMIT_UNCONFIRMED、CORE_LIMIT_UNDECLARED)
+[綠] 記號 F3 第一格 1831(牆到板端縫) 左上 Y:要 [4083, 4450, 4817, 5184],實得 [4083, 4450, 4817, 5184]
+[綠] 記號 F1 第一格 1831 左上 Y:要 [363, 730, 1097, 1464],實得 [363, 730, 1097, 1464]
+[綠] 記號 F1 第二格 1832(板端縫到板端縫) 左上 Y:要 [2198, 2565, 2932, 3299],實得 [2198, 2565, 2932, 3299]
+[綠] 記號 合成格 1470(牆端,餘數 2) 左上 Y:要 [2198, 2565, 2932, 3117],實得 [2198, 2565, 2932, 3117]
+[綠] 記號 合成格 1470(板端縫端,餘數 2) 左上 Y:要 [1836, 2203, 2570, 2755],實得 [1836, 2203, 2570, 2755]
+[綠] 縫上副支受間距上限約束:F1 右上 X 板端縫 3169 的副支起點 [3146, 3156](要 [3146, 3156]),fill 0 支(要 0)
+[綠] P-180 [3600, 3000] 左上起鋪,板長沿X:可施工,縫 1831 的縫上副支起點 [1818, 1843](要 [1818, 1843]),fill 0 支
+[綠] P-180 [4000, 1846] 左上起鋪,板長沿Y:可施工,縫 1831 的縫上副支起點 [1792, 1818],fill 0 支
+[紅] compare_unbuildable 合成:預期 3 筆、實得少一筆又改掉一筆的原因代碼;多出 [('L_ch:2', '左上起鋪,板長沿Y', ('CORE_LIMIT_BOUNDARY_END_FREE',))],少了 [('L_ch:2', '左上起鋪,板長沿Y', ('CORE_LIMIT_BOUNDARY_END_FREE', 'SPAN_END_NOT_ON_BOUNDARY')), ('L_cw:3', '左下起鋪,板長沿X', ('CORE_LIMIT_BOUNDARY_END_FREE', 'SPAN_END_NOT_ON_BOUNDARY'))]
+[紅] expected_for_scan  預期 --quick/--full 報少了漏掉的房間、CI 只比對掃到的房間:非 CI 少了 2 筆(要 2)、CI 少了 0 筆(要 0)
+[紅] sweep_assert       預期 不可施工清單不一致  拿掉 P-180 時柱房退化成 MARK_NO_ROOM:多出 6 筆(第一筆 ('C:3600,3000,1366,1021,450', '左上起鋪,板長沿X', ('MARK_NO_ROOM',))),少了 0 筆;照原樣建構時多出 0、少了 0
+[綠] 小型牆階/鏡像掃描 4 間:原房 32 次、鏡像 64 次可施工(只有核心限制的 0、0),檢查失敗 0;和預期清單(不可施工、核心限制)、鏡像對應的差異 [(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0)]
+[紅] C4NEG sweep_family inconsistent  3600×3000 拿掉一支記號副支:要 8 筆 inconsistent,檢查含 C4_SPACING、C9_MARKS_NOT_ALIGNED、C12_JIG_MARK_MISSING;實得 bad 8、不可施工 0、只有核心限制 0
+[綠] 引文逐字(工作樹 /workspace/geo337-native-F-cbf0fb62/決策佇列.md):標成原話的引文 67 段都逐字出現在 決策佇列.md(不一致 0);反例 58 個都抓到、正例 11 個都過,拿掉「2026-10-16 縫上副支撞到邊界角材」那一節的佇列要指出缺了這一節(判錯 0)
+[綠] 剛好 27 mm 要放:副支 7 支、柱面料 2 支(要 2),衝突 [],檢查失敗 []
+[綠] custom 4 合成案例:升格 ['col', 'sec'](要 ['col', 'sec'];柱面料分支與寬向條件都有走到)
+[綠] 標準答案逐支比對:8 個房間 × 8 種排法,不一致 0
+[綠] golden core_limits 對回料件:見證排法的矩形對得上;舊三元組報 GOLDEN_CORE_LIMIT_UNBOUND
+[綠] README 審查 6332818768 的計數、方向、端面敘述:對
+(--mutants-only:跳過掃描)

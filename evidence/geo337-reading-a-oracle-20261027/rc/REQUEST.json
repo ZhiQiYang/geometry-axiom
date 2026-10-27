@@ -1,0 +1,146 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/scratch/geo337-reading-a-rc-F-cbf0fb62-20261027/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GITHUB_SHA": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "GITHUB_WORKSPACE": "/workspace/geo337-native-F-cbf0fb62"
+  },
+  "stack_bytes": 16777216,
+  "started_utc": "2026-10-27T03:45:19.052758+00:00",
+  "worker_sha256": "34baecbd743921179327ec0700c9a3915f0a7f498dcf0850c372343b8edf5d4d",
+  "owner_lock": "/tmp/geo337-native-owner.lock",
+  "lock_mode": "EX|NB held across all six original method invocations; task-local replacement for unavailable historical container lock",
+  "watchdog_seconds": 300,
+  "watchdog_origin": "local conservative process-collection cap; original worker declares no internal timeout; no original test assertions or expected exits changed",
+  "requests": [
+    {
+      "control": "builder-whole-face",
+      "old": "            unlined = iv_subtract([(lo, hi)], lined)\n",
+      "new": "            unlined = [(lo, hi)]\n",
+      "uniqueSourceAnchorRequired": 1,
+      "onlyReplacementBytesAllowed": true,
+      "originalMethod": "ReadingAOracle.test_rc_face_is_measured_along_its_unlined_run",
+      "phases": [
+        {
+          "phase": "baseline",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "ROOT_FINAL/geometry-core/framing-template/oracle/framing_oracle.py",
+            "--control",
+            "baseline"
+          ],
+          "expectedOriginalExit": 0
+        },
+        {
+          "phase": "withdrawn",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "OUT/builder-whole-face/framing_oracle.py",
+            "--control",
+            "builder-whole-face"
+          ],
+          "expectedOriginalExit": 1
+        },
+        {
+          "phase": "restored",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "ROOT_FINAL/geometry-core/framing-template/oracle/framing_oracle.py",
+            "--control",
+            "baseline"
+          ],
+          "expectedOriginalExit": 0
+        }
+      ]
+    },
+    {
+      "control": "checker-whole-face",
+      "old": "                    run_lo = max([lo] + [b for a, b in lined if b <= bare_lo])\n                    run_hi = min([hi] + [a for a, b in lined if a >= bare_hi])\n",
+      "new": "                    run_lo, run_hi = lo, hi\n",
+      "uniqueSourceAnchorRequired": 1,
+      "onlyReplacementBytesAllowed": true,
+      "originalMethod": "ReadingAOracle.test_rc_face_is_measured_along_its_unlined_run",
+      "phases": [
+        {
+          "phase": "baseline",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "ROOT_FINAL/geometry-core/framing-template/oracle/framing_oracle.py",
+            "--control",
+            "baseline"
+          ],
+          "expectedOriginalExit": 0
+        },
+        {
+          "phase": "withdrawn",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "OUT/checker-whole-face/framing_oracle.py",
+            "--control",
+            "checker-whole-face"
+          ],
+          "expectedOriginalExit": 1
+        },
+        {
+          "phase": "restored",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "ROOT_FINAL/geometry-core/framing-template/oracle/framing_oracle.py",
+            "--control",
+            "baseline"
+          ],
+          "expectedOriginalExit": 0
+        }
+      ]
+    }
+  ]
+}

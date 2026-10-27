@@ -1,0 +1,22 @@
+{
+  "name": "golden-generate",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/make_golden.py",
+    "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/rooms.json",
+    "/workspace/scratch/geo337-reading-a-oracle-F-cbf0fb62-20261027/golden-generated.json"
+  ],
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "timeout_seconds": 300,
+  "started_utc": "2026-10-27T03:36:39.507151+00:00",
+  "actual_exit": 0,
+  "timed_out": false,
+  "elapsed_seconds": 0.6656637329997466,
+  "ended_utc": "2026-10-27T03:36:40.173012+00:00",
+  "sha_after": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "status_after": "",
+  "source_unchanged": true,
+  "passed": true
+}

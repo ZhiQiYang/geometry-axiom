@@ -1,0 +1,21 @@
+{
+  "control": "checker-whole-face",
+  "phase": "baseline",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/scratch/geo337-reading-a-oracle-tools-20261027/run_original_rc_method.py",
+    "--root",
+    "/workspace/geo337-native-F-cbf0fb62",
+    "--sha",
+    "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "--source",
+    "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/framing_oracle.py",
+    "--control",
+    "baseline"
+  ],
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "expected_exit": 0,
+  "started_utc": "2026-10-27T03:45:20.569809+00:00"
+}

@@ -1,0 +1,25 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "started_utc": "2026-10-27T03:36:38.131847+00:00",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/scratch/geo337-reading-a-oracle-F-cbf0fb62-20261027/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONOPTIMIZE": "0",
+    "GITHUB_SHA": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "GITHUB_WORKSPACE": "/workspace/geo337-native-F-cbf0fb62"
+  },
+  "stack_bytes": 16777216,
+  "owner_lock": "/tmp/geo337-native-owner.lock",
+  "oracle_witness_lock": "/workspace/scratch/geo337-reading-a-oracle-F-cbf0fb62-20261027/heavy.lock",
+  "stage_limit_source": "run_stage.historical.py branches; historical wrapper assigned these values but invoked reaper with timeout=None; this launcher explicitly enforces those declared caps without changing the test commands",
+  "free_before": {
+    "/tmp": 17852465152,
+    "/workspace": 22691438592
+  }
+}

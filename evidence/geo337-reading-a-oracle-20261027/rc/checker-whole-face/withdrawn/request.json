@@ -1,0 +1,21 @@
+{
+  "control": "checker-whole-face",
+  "phase": "withdrawn",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/scratch/geo337-reading-a-oracle-tools-20261027/run_original_rc_method.py",
+    "--root",
+    "/workspace/geo337-native-F-cbf0fb62",
+    "--sha",
+    "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "--source",
+    "/workspace/scratch/geo337-reading-a-rc-F-cbf0fb62-20261027/checker-whole-face/framing_oracle.py",
+    "--control",
+    "checker-whole-face"
+  ],
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "expected_exit": 1,
+  "started_utc": "2026-10-27T03:45:21.057173+00:00"
+}

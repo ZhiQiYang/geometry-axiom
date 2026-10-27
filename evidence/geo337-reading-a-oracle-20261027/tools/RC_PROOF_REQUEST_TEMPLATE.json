@@ -1,0 +1,144 @@
+{
+  "schema": "geo337.rc-run-original-method-proof-preparation/1",
+  "executed": false,
+  "workerPath": "/tmp/train337-reading-a-sweep-plan/run_original_rc_method.py",
+  "workerSha256": "34baecbd743921179327ec0700c9a3915f0a7f498dcf0850c372343b8edf5d4d",
+  "originalTestUnmodified": true,
+  "environment": {
+    "GITHUB_SHA": "FINAL_SHA",
+    "GITHUB_WORKSPACE": "ROOT_FINAL",
+    "PYTHONOPTIMIZE": "unset",
+    "PYTHONPATH": "unset",
+    "PYTHONHOME": "unset",
+    "PYTHONSTARTUP": "unset"
+  },
+  "sourceIdentityMustBeReboundToActualCommittedSha": true,
+  "variantsGeneratedFrom": "actual final original oracle bytes, not current prepared historical source",
+  "requests": [
+    {
+      "control": "builder-whole-face",
+      "old": "            unlined = iv_subtract([(lo, hi)], lined)\n",
+      "new": "            unlined = [(lo, hi)]\n",
+      "uniqueSourceAnchorRequired": 1,
+      "onlyReplacementBytesAllowed": true,
+      "originalMethod": "ReadingAOracle.test_rc_face_is_measured_along_its_unlined_run",
+      "phases": [
+        {
+          "phase": "baseline",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "ROOT_FINAL/geometry-core/framing-template/oracle/framing_oracle.py",
+            "--control",
+            "baseline"
+          ],
+          "expectedOriginalExit": 0
+        },
+        {
+          "phase": "withdrawn",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "OUT/builder-whole-face/framing_oracle.py",
+            "--control",
+            "builder-whole-face"
+          ],
+          "expectedOriginalExit": 1
+        },
+        {
+          "phase": "restored",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "ROOT_FINAL/geometry-core/framing-template/oracle/framing_oracle.py",
+            "--control",
+            "baseline"
+          ],
+          "expectedOriginalExit": 0
+        }
+      ]
+    },
+    {
+      "control": "checker-whole-face",
+      "old": "                    run_lo = max([lo] + [b for a, b in lined if b <= bare_lo])\n                    run_hi = min([hi] + [a for a, b in lined if a >= bare_hi])\n",
+      "new": "                    run_lo, run_hi = lo, hi\n",
+      "uniqueSourceAnchorRequired": 1,
+      "onlyReplacementBytesAllowed": true,
+      "originalMethod": "ReadingAOracle.test_rc_face_is_measured_along_its_unlined_run",
+      "phases": [
+        {
+          "phase": "baseline",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "ROOT_FINAL/geometry-core/framing-template/oracle/framing_oracle.py",
+            "--control",
+            "baseline"
+          ],
+          "expectedOriginalExit": 0
+        },
+        {
+          "phase": "withdrawn",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "OUT/checker-whole-face/framing_oracle.py",
+            "--control",
+            "checker-whole-face"
+          ],
+          "expectedOriginalExit": 1
+        },
+        {
+          "phase": "restored",
+          "argv": [
+            "python3",
+            "-B",
+            "TOOL_DIR/run_original_rc_method.py",
+            "--root",
+            "ROOT_FINAL",
+            "--sha",
+            "FINAL_SHA",
+            "--source",
+            "ROOT_FINAL/geometry-core/framing-template/oracle/framing_oracle.py",
+            "--control",
+            "baseline"
+          ],
+          "expectedOriginalExit": 0
+        }
+      ]
+    }
+  ],
+  "infrastructureExitNotAkill": 2,
+  "zeroTestsSkipErrorOrCrashNeverKilled": true,
+  "noR3BypassAuthorized": true
+}

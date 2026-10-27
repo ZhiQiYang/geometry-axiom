@@ -1,0 +1,232 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "completed_utc": "2026-10-27T03:45:22.047728+00:00",
+  "passed": true,
+  "stages": [
+    {
+      "control": "builder-whole-face",
+      "phase": "baseline",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/geo337-reading-a-oracle-tools-20261027/run_original_rc_method.py",
+        "--root",
+        "/workspace/geo337-native-F-cbf0fb62",
+        "--sha",
+        "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "--source",
+        "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/framing_oracle.py",
+        "--control",
+        "baseline"
+      ],
+      "cwd": "/workspace/geo337-native-F-cbf0fb62",
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "expected_exit": 0,
+      "started_utc": "2026-10-27T03:45:19.053625+00:00",
+      "actual_exit": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.42072190799990494,
+      "ended_utc": "2026-10-27T03:45:19.474463+00:00",
+      "outcomes": [
+        {
+          "sourceSha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "method": "test_rc_face_is_measured_along_its_unlined_run",
+          "testsRun": 1,
+          "assertionFailures": 0,
+          "errors": 0,
+          "skips": 0,
+          "originalFilesUnchanged": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "control": "builder-whole-face",
+      "phase": "withdrawn",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/geo337-reading-a-oracle-tools-20261027/run_original_rc_method.py",
+        "--root",
+        "/workspace/geo337-native-F-cbf0fb62",
+        "--sha",
+        "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "--source",
+        "/workspace/scratch/geo337-reading-a-rc-F-cbf0fb62-20261027/builder-whole-face/framing_oracle.py",
+        "--control",
+        "builder-whole-face"
+      ],
+      "cwd": "/workspace/geo337-native-F-cbf0fb62",
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "expected_exit": 1,
+      "started_utc": "2026-10-27T03:45:19.576424+00:00",
+      "actual_exit": 1,
+      "timed_out": false,
+      "elapsed_seconds": 0.41603152099924046,
+      "ended_utc": "2026-10-27T03:45:19.992717+00:00",
+      "outcomes": [
+        {
+          "sourceSha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "method": "test_rc_face_is_measured_along_its_unlined_run",
+          "testsRun": 1,
+          "assertionFailures": 1,
+          "errors": 0,
+          "skips": 0,
+          "originalFilesUnchanged": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "control": "builder-whole-face",
+      "phase": "restored",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/geo337-reading-a-oracle-tools-20261027/run_original_rc_method.py",
+        "--root",
+        "/workspace/geo337-native-F-cbf0fb62",
+        "--sha",
+        "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "--source",
+        "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/framing_oracle.py",
+        "--control",
+        "baseline"
+      ],
+      "cwd": "/workspace/geo337-native-F-cbf0fb62",
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "expected_exit": 0,
+      "started_utc": "2026-10-27T03:45:20.103607+00:00",
+      "actual_exit": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.3699723930003529,
+      "ended_utc": "2026-10-27T03:45:20.473885+00:00",
+      "outcomes": [
+        {
+          "sourceSha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "method": "test_rc_face_is_measured_along_its_unlined_run",
+          "testsRun": 1,
+          "assertionFailures": 0,
+          "errors": 0,
+          "skips": 0,
+          "originalFilesUnchanged": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "control": "checker-whole-face",
+      "phase": "baseline",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/geo337-reading-a-oracle-tools-20261027/run_original_rc_method.py",
+        "--root",
+        "/workspace/geo337-native-F-cbf0fb62",
+        "--sha",
+        "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "--source",
+        "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/framing_oracle.py",
+        "--control",
+        "baseline"
+      ],
+      "cwd": "/workspace/geo337-native-F-cbf0fb62",
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "expected_exit": 0,
+      "started_utc": "2026-10-27T03:45:20.569809+00:00",
+      "actual_exit": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.3662878630002524,
+      "ended_utc": "2026-10-27T03:45:20.936278+00:00",
+      "outcomes": [
+        {
+          "sourceSha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "method": "test_rc_face_is_measured_along_its_unlined_run",
+          "testsRun": 1,
+          "assertionFailures": 0,
+          "errors": 0,
+          "skips": 0,
+          "originalFilesUnchanged": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "control": "checker-whole-face",
+      "phase": "withdrawn",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/geo337-reading-a-oracle-tools-20261027/run_original_rc_method.py",
+        "--root",
+        "/workspace/geo337-native-F-cbf0fb62",
+        "--sha",
+        "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "--source",
+        "/workspace/scratch/geo337-reading-a-rc-F-cbf0fb62-20261027/checker-whole-face/framing_oracle.py",
+        "--control",
+        "checker-whole-face"
+      ],
+      "cwd": "/workspace/geo337-native-F-cbf0fb62",
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "expected_exit": 1,
+      "started_utc": "2026-10-27T03:45:21.057173+00:00",
+      "actual_exit": 1,
+      "timed_out": false,
+      "elapsed_seconds": 0.41635445400061144,
+      "ended_utc": "2026-10-27T03:45:21.474406+00:00",
+      "outcomes": [
+        {
+          "sourceSha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "method": "test_rc_face_is_measured_along_its_unlined_run",
+          "testsRun": 1,
+          "assertionFailures": 1,
+          "errors": 0,
+          "skips": 0,
+          "originalFilesUnchanged": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "control": "checker-whole-face",
+      "phase": "restored",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/geo337-reading-a-oracle-tools-20261027/run_original_rc_method.py",
+        "--root",
+        "/workspace/geo337-native-F-cbf0fb62",
+        "--sha",
+        "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "--source",
+        "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/framing_oracle.py",
+        "--control",
+        "baseline"
+      ],
+      "cwd": "/workspace/geo337-native-F-cbf0fb62",
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "expected_exit": 0,
+      "started_utc": "2026-10-27T03:45:21.577156+00:00",
+      "actual_exit": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.37244532800013985,
+      "ended_utc": "2026-10-27T03:45:21.949817+00:00",
+      "outcomes": [
+        {
+          "sourceSha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "method": "test_rc_face_is_measured_along_its_unlined_run",
+          "testsRun": 1,
+          "assertionFailures": 0,
+          "errors": 0,
+          "skips": 0,
+          "originalFilesUnchanged": true
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "source_unchanged": true,
+  "status_after": ""
+}
+

@@ -1,0 +1,21 @@
+{
+  "name": "oracle-mutants",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo337-native-F-cbf0fb62/geometry-core/framing-template/oracle/selftest.py",
+    "--mutants-only"
+  ],
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "timeout_seconds": 1200,
+  "started_utc": "2026-10-27T03:36:40.619025+00:00",
+  "actual_exit": 0,
+  "timed_out": false,
+  "elapsed_seconds": 22.237299966000137,
+  "ended_utc": "2026-10-27T03:37:02.856505+00:00",
+  "sha_after": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "status_after": "",
+  "source_unchanged": true,
+  "passed": true
+}

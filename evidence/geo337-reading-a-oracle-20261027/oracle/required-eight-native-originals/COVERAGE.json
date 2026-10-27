@@ -1,0 +1,72 @@
+{
+  "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "basis": "original complete native exit0, all exact eight suite rows and original logs; no new selected-run invocation or separate historical wrapper exit claimed",
+  "evidence_commit": "732ef20e34876379a37eb69693a481becebea43e",
+  "total": 681,
+  "rows": [
+    {
+      "suite": "py:test_geo261_source_index",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "original_stdout_row": "py:test_geo261_source_index                         18    18     0     0     4.6"
+    },
+    {
+      "suite": "py:test_geo261_candidate_cache",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "original_stdout_row": "py:test_geo261_candidate_cache                      18    18     0     0     3.2"
+    },
+    {
+      "suite": "py:test_geo261_graph_product",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "original_stdout_row": "py:test_geo261_graph_product                         5     5     0     0     5.9"
+    },
+    {
+      "suite": "py:test_geo261_assembly_graph_product",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "original_stdout_row": "py:test_geo261_assembly_graph_product                4     4     0     0     8.0"
+    },
+    {
+      "suite": "py:test_bridge_integrity",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "original_stdout_row": "py:test_bridge_integrity                            24    24     0     0    32.3"
+    },
+    {
+      "suite": "c:integrity",
+      "total": 432,
+      "passed": 432,
+      "failed": 0,
+      "skipped": 0,
+      "original_stdout_row": "c:integrity                                        432   432     0     0     6.8  C 檢查點數（非 test 級）"
+    },
+    {
+      "suite": "core:run_tests",
+      "total": 166,
+      "passed": 166,
+      "failed": 0,
+      "skipped": 0,
+      "original_stdout_row": "core:run_tests                                     166   166     0     0    15.7"
+    },
+    {
+      "suite": "py:test_geo261_load_residual",
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "original_stdout_row": "py:test_geo261_load_residual                        14    14     0     0    71.5"
+    }
+  ]
+}

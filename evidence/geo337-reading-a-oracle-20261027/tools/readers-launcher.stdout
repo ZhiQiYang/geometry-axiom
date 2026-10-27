@@ -1,0 +1,60 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "completed_utc": "2026-10-27T03:44:14.777165+00:00",
+  "passed": true,
+  "stages": [
+    {
+      "stage": "reader-generate",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo337-native-F-cbf0fb62/geometry-guide/sync_axiom_reader.py"
+      ],
+      "cwd": "/workspace/geo337-native-F-cbf0fb62",
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "timeout_seconds": 300,
+      "started_utc": "2026-10-27T03:44:08.997678+00:00",
+      "actual_exit": 0,
+      "timed_out": false,
+      "elapsed_seconds": 4.080242013000316,
+      "ended_utc": "2026-10-27T03:44:13.078154+00:00",
+      "source_unchanged": true,
+      "status_after": "",
+      "passed": true
+    },
+    {
+      "stage": "reader-check",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo337-native-F-cbf0fb62/geometry-guide/sync_axiom_reader.py",
+        "--check"
+      ],
+      "cwd": "/workspace/geo337-native-F-cbf0fb62",
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "timeout_seconds": 300,
+      "started_utc": "2026-10-27T03:44:13.256345+00:00",
+      "actual_exit": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.371335617999648,
+      "ended_utc": "2026-10-27T03:44:14.627799+00:00",
+      "source_unchanged": true,
+      "status_after": "",
+      "passed": true
+    }
+  ],
+  "status_after": "",
+  "same_F_native_unit_reused": {
+    "passed": 51,
+    "failed": 0,
+    "skipped": 0,
+    "evidence_commit": "732ef20e34876379a37eb69693a481becebea43e"
+  },
+  "source_after": {
+    "geometry-guide/公理層-閱讀器.html": "768be0fe5aa1b4e06a0823492030749a08965dee4a9eeabf89b0cd2ee0e6a342",
+    "geometry-guide/sync_axiom_reader.py": "a9f8bb8869219b3abbfdc06ef5acf3dbc84b1ffceec926f67a9d28e2656136f6",
+    "geometry-guide/公理層-白話.md": "7c8263ef4a59f9c0b0f5215b7dde8f915aa5b38d5a3969bace160937b441ee8c",
+    "公理層.md": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
+  }
+}
+

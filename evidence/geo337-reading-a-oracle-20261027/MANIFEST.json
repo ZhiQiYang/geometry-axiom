@@ -1,0 +1,553 @@
+{
+  "source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "files": {
+    "evidence/geo337-reading-a-oracle-20261027/README.md": {
+      "bytes": 4673,
+      "sha256": "374b9175b13cb15b8b39ed96ede12672fa4df1bc384be75fdeda2f8a2eaabbf3"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/HANDOFF.md": {
+      "bytes": 4673,
+      "sha256": "374b9175b13cb15b8b39ed96ede12672fa4df1bc384be75fdeda2f8a2eaabbf3"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/RC_PROOF_REQUEST_TEMPLATE.json": {
+      "bytes": 4382,
+      "sha256": "7c9bd8f20ad923c929d73eddc17517ed3e6729981241ca254778f0265e54b558"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/launcher.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/launcher.stdout": {
+      "bytes": 9131,
+      "sha256": "55ad4b360b4f75b0240d286a62bde607995ef58822fe2418df28ab14a653060a"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/publish.py": {
+      "bytes": 2239,
+      "sha256": "0a2bbc24987f77b291c7ac6fae01a42fb0fb8cb6cd93c71f2d5fda3afdb6bd1d"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/rc-launcher.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/rc-launcher.stdout": {
+      "bytes": 7966,
+      "sha256": "449e944792c3a8367358f398d377d56d4d647b1a6c03b0127b34893eaacc899f"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/readers-launcher.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/readers-launcher.stdout": {
+      "bytes": 2145,
+      "sha256": "44d48f9d5088696032bdb1ffdf3225bf6cfa907cbe794b79efafbc9e00cd6157"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/reaper.py": {
+      "bytes": 1194,
+      "sha256": "956eefdbf7adbaf19a5410e013fc16126c26cbbf03f539a43558ba3541204e17"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/run.py": {
+      "bytes": 6258,
+      "sha256": "bda320b093a36120ea8ebda54428c798c7e42ae5a6450f78512ec17b5090b735"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/run_original_rc_method.py": {
+      "bytes": 5837,
+      "sha256": "34baecbd743921179327ec0700c9a3915f0a7f498dcf0850c372343b8edf5d4d"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/run_rc.py": {
+      "bytes": 4859,
+      "sha256": "e07b5126c0b9fead4ed03e406f51765bf9179fb5dbb4c3e81a43bc4db7e5dbec"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/run_readers.py": {
+      "bytes": 4151,
+      "sha256": "165711ce9cd8751d45ed2f2763285b21a3d9b530f359c9346e76401275bac69c"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/tools/run_stage.historical.py": {
+      "bytes": 10603,
+      "sha256": "1f10c3028e2491a4076e83b9f4396e9428ede31389a8577224da85f7f1272c8a"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/REAPED.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/REQUEST.json": {
+      "bytes": 1508,
+      "sha256": "27e1216c7ff914a4254c3a20a189a549d7812e16c871f8cbe62ae2a507dafd88"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/RESULT.json": {
+      "bytes": 5096,
+      "sha256": "1efb6091ce7454afb7982e3e0c658c05326e6d58686f2dc33cd79191bf9bdef5"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/RUNNING.json": {
+      "bytes": 179,
+      "sha256": "42ca9e75470c1386988a77d307d1f16a25cec02990ab570c16c738667ff9c259"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/SOURCE_AFTER.json": {
+      "bytes": 3582,
+      "sha256": "35a01b649fcb61e3748e6377b8c043d52e5687426a45a0d19496449d98f79667"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/SOURCE_BEFORE.json": {
+      "bytes": 3582,
+      "sha256": "35a01b649fcb61e3748e6377b8c043d52e5687426a45a0d19496449d98f79667"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/STAGES.json": {
+      "bytes": 4562,
+      "sha256": "f5f8fd1739320a6554088fbbd2000d386974b751123003b755b7ed115fe93c1b"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-compare/request.json": {
+      "bytes": 809,
+      "sha256": "bd5ca72b4e7f845d49869a48765717fbf01546892725fa1f81818626fe7ea38b"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-compare/result.json": {
+      "bytes": 1072,
+      "sha256": "bb00e0b935bed8e5882f138cfe245d3eec5a19bdcce98f1ecc91eea4751371ee"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-compare/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-compare/stdout.bin": {
+      "bytes": 201,
+      "sha256": "e4cee4e16d7de42e4ab200a733344d26c6abd89ca10e524d681e0652c50565af"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-generate/request.json": {
+      "bytes": 599,
+      "sha256": "51d2a30a572ae363ba1430cb2b6598a306c3253270233c99d35b203269b68444"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-generate/result.json": {
+      "bytes": 860,
+      "sha256": "fd32b2e8fec33b8f8b24090538d679dc7418c3ad6b38f1503a3e08e39baaa272"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-generate/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-generate/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-generated.json": {
+      "bytes": 362847,
+      "sha256": "67027cbf023301d5280613856d7d26a3b29f2b6c0ec52073e428eeaae74f0ef1"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/baseline/framing_oracle.py": {
+      "bytes": 139970,
+      "sha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/baseline/make_golden.py": {
+      "bytes": 5014,
+      "sha256": "654a794cddbaac702921256a1f7e6d8a806cd3cc1a3100657856a72fd181c586"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/baseline/oracle-golden.json": {
+      "bytes": 362847,
+      "sha256": "67027cbf023301d5280613856d7d26a3b29f2b6c0ec52073e428eeaae74f0ef1"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/baseline/rooms.json": {
+      "bytes": 699,
+      "sha256": "42a86840217a103912f89d923e307daa820b30aae745ef250304de7e93e8b4b4"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/baseline/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/baseline/stdout.txt": {
+      "bytes": 68,
+      "sha256": "b5d3f60ed470f02e3efb8d88e1399be512b2ac4ed3d87d766ae8264d270903c6"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/receipt.json": {
+      "bytes": 16631,
+      "sha256": "2a9546d33c5ad9ee1e36ddeb1ff4ebeaa7df07414ec90c6e72ea380aa4a80399"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/restored/framing_oracle.py": {
+      "bytes": 139970,
+      "sha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/restored/make_golden.py": {
+      "bytes": 5014,
+      "sha256": "654a794cddbaac702921256a1f7e6d8a806cd3cc1a3100657856a72fd181c586"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/restored/oracle-golden.json": {
+      "bytes": 362847,
+      "sha256": "67027cbf023301d5280613856d7d26a3b29f2b6c0ec52073e428eeaae74f0ef1"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/restored/rooms.json": {
+      "bytes": 699,
+      "sha256": "42a86840217a103912f89d923e307daa820b30aae745ef250304de7e93e8b4b4"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/restored/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/restored/stdout.txt": {
+      "bytes": 68,
+      "sha256": "b5d3f60ed470f02e3efb8d88e1399be512b2ac4ed3d87d766ae8264d270903c6"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/withdrawn/framing_oracle.py": {
+      "bytes": 139970,
+      "sha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/withdrawn/make_golden.py": {
+      "bytes": 4986,
+      "sha256": "87cdee6eb63613fb3a280106de1caf383ee6ba0abddeef2ca71971dc19952efa"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/withdrawn/oracle-golden.json": {
+      "bytes": 362847,
+      "sha256": "67027cbf023301d5280613856d7d26a3b29f2b6c0ec52073e428eeaae74f0ef1"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/withdrawn/rooms.json": {
+      "bytes": 699,
+      "sha256": "42a86840217a103912f89d923e307daa820b30aae745ef250304de7e93e8b4b4"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/withdrawn/stderr.txt": {
+      "bytes": 3165,
+      "sha256": "676eab07085203689e55644206f7b4cf656e7ba7f23108eb62b058bcbe197ea8"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-proof/withdrawn/stdout.txt": {
+      "bytes": 39,
+      "sha256": "f9622949524b3d5c9bf2157b0ae62355f0389be39923b0747dbc1413feedd093"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-source-proof/request.json": {
+      "bytes": 751,
+      "sha256": "938d93ae6628b7f65164c9fd2bd8564982747e9e3713a449a54472ae47de9001"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-source-proof/result.json": {
+      "bytes": 1012,
+      "sha256": "f15196e5a5932e8d3ba2bedf725d1f32eba44885faf4047b1880f0fd0a3fc14d"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-source-proof/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/golden-source-proof/stdout.bin": {
+      "bytes": 184,
+      "sha256": "188da91edf69a7aa6044e620bdbbc54ae3632474f2462a42006263a6929bf640"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/oracle-mutants/request.json": {
+      "bytes": 434,
+      "sha256": "66df216332931280f8490a80ba4abff7e45054119bfa02eaa625bb7494c8113c"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/oracle-mutants/result.json": {
+      "bytes": 695,
+      "sha256": "652526be598e2a5781b6215f2f57f308e287ed3582e01694538a33eeb41c4cac"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/oracle-mutants/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/oracle-mutants/stdout.bin": {
+      "bytes": 37012,
+      "sha256": "c54a19424c0238410b605a41968219d3a4e3dbbaad164fa2bfa4ca4fff2e3a86"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/oracle-quick/request.json": {
+      "bytes": 425,
+      "sha256": "a9e8d8bcb2054f451386a4c7f761f1c535ee7e9d7a9153ec7b030a21474436d7"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/oracle-quick/result.json": {
+      "bytes": 685,
+      "sha256": "4c1fcec1045fc872cc44195496ac45e4ab2ff633bb1eb9935557fad96b47d0ee"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/oracle-quick/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/oracle-quick/stdout.bin": {
+      "bytes": 39821,
+      "sha256": "b87ccbac4c41fac1c050347292d7bd3180d5cb9410c46f9c55d3c6e944c11201"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/COVERAGE.json": {
+      "bytes": 2335,
+      "sha256": "c40e66b6f5aa26ac0bd0cbcc7dcbecc74428256fef0534e488e98781e811047f"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/c_integrity.log": {
+      "bytes": 5857,
+      "sha256": "de71669e13286944b645688bf0af37f4d1cda3a0d057368daaa57b238be5d286"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/core_run_tests.log": {
+      "bytes": 25163,
+      "sha256": "7d380b7bf1a384b3199d4d90545ff91542e29b908f6d660283d992cdb1ddb64c"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_bridge_integrity.json": {
+      "bytes": 352,
+      "sha256": "a2bdf4264e9baf7d955a72fea60d27ae438f109495bff71a54e8beb0f442a79c"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_bridge_integrity.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_bridge_integrity.unittest.log": {
+      "bytes": 124,
+      "sha256": "6692185e786cb0a6d7cf530e599d0dafd64c96728ddd807b5395590c2894284f"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_assembly_graph_product.json": {
+      "bytes": 361,
+      "sha256": "e0361419386652fe58efe81687ff522ea3e1deadadb850719b6b7cae81fcc535"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_assembly_graph_product.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_assembly_graph_product.unittest.log": {
+      "bytes": 102,
+      "sha256": "271614eea3bba8641420009f7d7662fe498d354cd0942983ea3dfd733ee4538f"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_candidate_cache.json": {
+      "bytes": 357,
+      "sha256": "7616819295aac6d5bb6cf1d88eef7e566a9878f3202f9f9123fba217650965bd"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_candidate_cache.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_candidate_cache.unittest.log": {
+      "bytes": 117,
+      "sha256": "5fee10b4e9144502e9c48b7993ffd55f421815a3e53587093dd5022ea0374323"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_graph_product.json": {
+      "bytes": 352,
+      "sha256": "e36b4a23a5d3e0f0c43ad610856ec8258e05d3dac77af8ef49f71183ac48b1ec"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_graph_product.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_graph_product.unittest.log": {
+      "bytes": 103,
+      "sha256": "55f4a8e58d4ccbf6f99ecc1c4cc39fb1bffcb9a501caafc3ca5b0d89c3ed6dee"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_load_residual.json": {
+      "bytes": 356,
+      "sha256": "de6699a39446c9322ab84698fc13402f841706a3c6b79a036d7f8263357e94c6"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_load_residual.log": {
+      "bytes": 5889,
+      "sha256": "d55b79028023e95ea872224d95c007c3375343945d065a8a3ee329b0ab654150"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_load_residual.unittest.log": {
+      "bytes": 114,
+      "sha256": "dff244706bb694808143241fdb05436e9e12ed76342c3054939824fab2065cf7"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_source_index.json": {
+      "bytes": 354,
+      "sha256": "5c53d77afefc2d3af350da1797be7a0101491bfa67dd2e98acdf2170d0683913"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_source_index.log": {
+      "bytes": 2205,
+      "sha256": "6d5f377fe9f7a99373971d75ad67c63b73b1c0b49c7129d24c9ebaa8430d9c79"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/py_test_geo261_source_index.unittest.log": {
+      "bytes": 117,
+      "sha256": "99ed44e84c94e9f1d566e6d9318e177d0c534ea54b9fe2ee9b03a8df92445bde"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/REQUEST.json": {
+      "bytes": 1748,
+      "sha256": "e0a26f3348430ff6ab5ae7645f53402399a81a68bf345f3ad2df0dcbcb1f4c05"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/RESULT.json": {
+      "bytes": 952,
+      "sha256": "d2625cac9e4e40c904e490a7b07e63c119589cf6e6cc9834f0af34f439638ba6"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/SUMMARY.json": {
+      "bytes": 463,
+      "sha256": "f948a2a95ac49d3a448acd1a953428afabb6db2512ce2fb23a6bfa42bf696692"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/oracle_framing-selftest.log": {
+      "bytes": 39805,
+      "sha256": "6ad5f8d836aefaa8dc735036079280a39530575ad207fa3b001f83c12ce3b3fa"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/py_test_geo318_reading_a_native.json": {
+      "bytes": 354,
+      "sha256": "f2452910bf26eaeba615eedc146578044811e22ae63c1f2c036effa0d540c2e8"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/py_test_geo318_reading_a_native.log": {
+      "bytes": 6429,
+      "sha256": "1cb767956a36001872c1197bdaabe33f96cc4498324e02c46a11059c63372c36"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/py_test_geo318_reading_a_native.unittest.log": {
+      "bytes": 105,
+      "sha256": "cca9b984a907eea3eced4d51d04c1cd465858781ddad3e882c5cb73a19070970"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/py_test_geo318_reading_a_oracle.json": {
+      "bytes": 358,
+      "sha256": "60cc3f57d106e6ae7aae6886c7424f255706f72e79877100acd3b6d30dd09b02"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/py_test_geo318_reading_a_oracle.log": {
+      "bytes": 4018,
+      "sha256": "a108263e34ea31ca020c8b22028576aa0689a404e329ba2f2aabac8b66ac5e42"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/oracle/same-F-native-originals/py_test_geo318_reading_a_oracle.unittest.log": {
+      "bytes": 113,
+      "sha256": "d7da68d73539621c36518c8cbe0987d5fa6060c0c357392052016eeb1c623597"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/REAPED.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/REQUEST.json": {
+      "bytes": 1595,
+      "sha256": "02f9a660a958d7c097fcb9d223030e2694eddb364b955c349b287e63876a8919"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/RESULT.json": {
+      "bytes": 2144,
+      "sha256": "5ee73cc51ef625ed0efbe243f219f95b338993965a38ddebedef9bf45cfb2530"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/reader-check/request.json": {
+      "bytes": 411,
+      "sha256": "8c700f5a3c47e0cf0b68618b3d1178090a94e3f356b7d318b43ab0008188ec09"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/reader-check/result.json": {
+      "bytes": 612,
+      "sha256": "53a4b38972bc3e7de28ea8b15def131817b97dac30be6f54926a94900d1f5d92"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/reader-check/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/reader-check/stdout.bin": {
+      "bytes": 368,
+      "sha256": "64d21af4f9cda282249b5cd69bfaf69c4bed4357893822c698fc12ff8f7eb9d5"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/reader-generate/request.json": {
+      "bytes": 399,
+      "sha256": "c90df0ee6434b30b0907fff7c88c41319ba03b970ef0dddae427ee0d70f6d443"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/reader-generate/result.json": {
+      "bytes": 600,
+      "sha256": "6454c0804fe9c74e2ada86d4f812faba251b831869345cc3d1b833da1fe7f9e3"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/reader-generate/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/reader-generate/stdout.bin": {
+      "bytes": 369,
+      "sha256": "1885655f919534a7430c3f1a969c691284e4b1ab06d4fb8cff460acd5af59e5e"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/same-F-native-unit/py_test_axiom_reader.json": {
+      "bytes": 349,
+      "sha256": "382b30f31935c510577f107937c037c0f5de3527e6e3c41a1d31730f3ce71214"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/same-F-native-unit/py_test_axiom_reader.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/reader/same-F-native-unit/py_test_axiom_reader.unittest.log": {
+      "bytes": 152,
+      "sha256": "f2e1ef958df41985f86e7161e336b8b39f608cf07cb8ced6b95053cf702ea44e"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/REAPED.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/REQUEST.json": {
+      "bytes": 5093,
+      "sha256": "e49983bfc7e0136051ba7aa9bdc7e79e45f6d80673038a52564a3d728136c723"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/RESULT.json": {
+      "bytes": 7965,
+      "sha256": "7a126ae37ff6e2b24e02b950f387383acf852f8c68bd4cacc46fed5a1f33f299"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/baseline/request.json": {
+      "bytes": 701,
+      "sha256": "ffa7c1d5af24de714ea3f46f262f99fbce498e132204bc393d40301f4eae7beb"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/baseline/result.json": {
+      "bytes": 1141,
+      "sha256": "ee3d30357792f04cda1747652ec746df87708cf9128880def619d39044a384e9"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/baseline/stderr.bin": {
+      "bytes": 248,
+      "sha256": "a0129493555a787032e27cc6d0d9950ba58a7e2d8f1b25fb439874b041700902"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/baseline/stdout.bin": {
+      "bytes": 283283,
+      "sha256": "abcc973383ec91830e90f860bf2eff1843d3c8b4aae955f39b9ad90661b4279b"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/framing_oracle.py": {
+      "bytes": 139950,
+      "sha256": "b01216fbf6f3481a62f19abaa895eece8e2046970dc3c576299fadfdaa92b486"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/restored/request.json": {
+      "bytes": 701,
+      "sha256": "b7e6ca87bfdcb7b5c65e24c5def2a357f6d1531b0d65425766a455a96f87540c"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/restored/result.json": {
+      "bytes": 1140,
+      "sha256": "db6d110c7405f9f0cf6f1ff101ea0c5815d6b0728ad7135432e0627bb9755835"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/restored/stderr.bin": {
+      "bytes": 248,
+      "sha256": "713be33d7a9e070eb00d277477e90f2f28a6ab555e27518e68c7557ac00e8ac6"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/restored/stdout.bin": {
+      "bytes": 283283,
+      "sha256": "abcc973383ec91830e90f860bf2eff1843d3c8b4aae955f39b9ad90661b4279b"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/withdrawn/request.json": {
+      "bytes": 716,
+      "sha256": "0ecb2dd0361809060c38dd643bccba1bbd7d223bd597e17552e1d6a728001dec"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/withdrawn/result.json": {
+      "bytes": 1156,
+      "sha256": "f87075810a1fc63543a552644b9bb60556b21580e0456f7702d60b59f880c4e4"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/withdrawn/stderr.bin": {
+      "bytes": 1127,
+      "sha256": "0bab0362694cf4e9dab567f6a12236912069dd5a1cf3ec52a5cdff8a48485b3d"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/builder-whole-face/withdrawn/stdout.bin": {
+      "bytes": 283297,
+      "sha256": "fed053594ee02f9a4ce257ce1625a74b6f1634e65fc9c3fba403be7acf26e991"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/baseline/request.json": {
+      "bytes": 701,
+      "sha256": "2946ea92162c15fbc9e78770b23698dddda1f368e7fb04d1a4c13767d9393ad9"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/baseline/result.json": {
+      "bytes": 1140,
+      "sha256": "a77e8849bbfe4fc5c74abf85f947841123ba659eec854c6f9412fbcbe179adee"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/baseline/stderr.bin": {
+      "bytes": 248,
+      "sha256": "a0129493555a787032e27cc6d0d9950ba58a7e2d8f1b25fb439874b041700902"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/baseline/stdout.bin": {
+      "bytes": 283283,
+      "sha256": "abcc973383ec91830e90f860bf2eff1843d3c8b4aae955f39b9ad90661b4279b"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/framing_oracle.py": {
+      "bytes": 139856,
+      "sha256": "c6acd7320cde4fe28bdf400fb1e2876dbe649f6992a9b6e78d7e0b14039c732f"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/restored/request.json": {
+      "bytes": 701,
+      "sha256": "7a822a7997e41c74487db8b7fca1694901efc03b5db7c5c4b804f1a4bce1b0d2"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/restored/result.json": {
+      "bytes": 1141,
+      "sha256": "431de0e3ce80fed4f4fa23250d4c7e2b1c1a48817bf2770d96523019a732f477"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/restored/stderr.bin": {
+      "bytes": 248,
+      "sha256": "346e0a01afb06cf7f77013c3a71c3630a019dfdf16ac364029c0049aa2668877"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/restored/stdout.bin": {
+      "bytes": 283283,
+      "sha256": "abcc973383ec91830e90f860bf2eff1843d3c8b4aae955f39b9ad90661b4279b"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/withdrawn/request.json": {
+      "bytes": 716,
+      "sha256": "ab9e102506767589b3cd2d8aaf75f5ab645e126513911cdf1bdf93c3644158e1"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/withdrawn/result.json": {
+      "bytes": 1156,
+      "sha256": "d17cf23d2d20a1726357d11d8fff8711f8647d1b395c909bd25de3d9b59768f1"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/withdrawn/stderr.bin": {
+      "bytes": 867,
+      "sha256": "96fcb1e574bd7b71aeb5fcaf5621a3bd87d5c8944ae3db9fe1766d9d700412c8"
+    },
+    "evidence/geo337-reading-a-oracle-20261027/rc/checker-whole-face/withdrawn/stdout.bin": {
+      "bytes": 283297,
+      "sha256": "f3b66dfc901ada5d6cef8d5aa7f179590949ea9cced23bc98a67268d27b5007e"
+    }
+  }
+}
