@@ -27,13 +27,23 @@ static void json_engineering_capabilities(const World *w)
     putchar(']');
     fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
 }
+static void json_eng_terminal(const EngTerminal *terminal)
+{
+    if(!terminal||!terminal->valid){fputs("null",stdout);return;}
+    const char *kind=terminal->kind==ENG_MATERIAL?"material":terminal->kind==ENG_SPEC?"spec":terminal->kind==ENG_PARAMETER?"parameter":"literal";
+    fputs("{\"kind\":",stdout);js_string(kind);
+    if(terminal->kind==ENG_MATERIAL){fputs(",\"id\":",stdout);js_string(terminal->material.id);printf(",\"version\":%u,\"fingerprint\":",terminal->material.version);js_string(terminal->fingerprint);}
+    putchar('}');
+}
 static void json_engineering_sources(const World *w)
 {
     putchar('[');
     for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];char source[640],override[640],path[400];Coord value;
         eng_source_json(&b->source,source,sizeof source);if(b->has_override)eng_source_json(&b->override_value,override,sizeof override);else snprintf(override,sizeof override,"null");
         printf("%s{\"target\":",i?",":"");eng_target_json(&b->target,stdout);printf(",\"source\":%s,\"override\":%s,\"effective\":",source,override);
-        if(eng_effective((World*)w,b,&value,path,sizeof path)){printf("%lld,\"path\":",(long long)value);js_string(path);}else{fputs("null,\"path\":null,\"error\":",stdout);js_string(g_engineering_error);}putchar('}');
+        EngTerminal terminal={0};bool resolved=eng_effective_terminal((World*)w,b,&value,path,sizeof path,&terminal);
+        if(resolved){printf("%lld,\"path\":",(long long)value);js_string(path);}else{fputs("null,\"path\":null,\"error\":",stdout);js_string(g_engineering_error);}
+        fputs(",\"terminal\":",stdout);json_eng_terminal(resolved?&terminal:NULL);putchar('}');
     }putchar(']');
 }
 static void json_assembly_state(const World *w,bool geometry);

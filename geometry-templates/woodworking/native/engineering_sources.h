@@ -51,5 +51,6 @@ void wood_engineering_sources_bind(WoodEngineeringSources *,WoodEngineeringConte
 bool wood_engineering_sources_definitions(WoodEngineeringSources *);
 bool wood_engineering_sources_metadata(WoodEngineeringSources *);
 const EngineeringState *wood_engineering_sources_state(const WoodEngineeringSources *);
+const EngTerminal *wood_engineering_sources_last_terminal(const WoodEngineeringSources *);
 GeoEvalContext *wood_engineering_sources_context(const WoodEngineeringSources *);
 #endif

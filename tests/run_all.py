@@ -73,6 +73,7 @@ PY_NEEDS = {
     'test_domain_decoupling_adoption': [],
     'test_domain_decoupling_compatibility': ['model-base'],
     'test_engineering_core': ['bridge'],
+    'test_engineering_terminal': ['bridge'],
     'test_engineering_json': ['engjson'],
     'test_engineering_model_compatibility': ['model-base'],
     'test_engineering_model_sources': ['bridge', 'model-base'],
