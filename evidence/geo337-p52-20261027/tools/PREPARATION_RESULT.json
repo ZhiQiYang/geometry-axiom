@@ -1,0 +1,50 @@
+{
+  "source_checkouts": {
+    "fix": {
+      "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "source_files": 734,
+      "source_version": "c9980316a65a58e28992cc1dd1252fa1890bd4b415f5aef2727474c4174dd0cc"
+    },
+    "main": {
+      "sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "source_files": 466,
+      "source_version": "6487bf2445a1ea63a74b949df3f9cbe7d55678db1ec988c51c52457a5dced21c"
+    }
+  },
+  "sparse_exclusions": [
+    "evidence",
+    "tests/evidence",
+    "tests/release-evidence"
+  ],
+  "sparse_policy": "Only outside-runtime evidence omitted; the original complete_runtime_inventory independently verified the full tracked RuntimeSnapshot input set.",
+  "objects": "Independent git directories, read-only alternate object access to existing source repository; product files are separate checkout files.",
+  "chrome_alias": {
+    "path": "/workspace/geo261-environment/bin/google-chrome",
+    "target": "/usr/bin/chromium",
+    "version": "Chromium 154.0.8037.57 built on Debian GNU/Linux 13 (trixie)"
+  },
+  "ports_available": [
+    18960,
+    18961,
+    18962,
+    18963,
+    18964,
+    18965,
+    18966,
+    18967,
+    18968,
+    9400,
+    9401,
+    9402,
+    9403,
+    9404,
+    9405,
+    9406,
+    9407,
+    9408
+  ],
+  "free_before_launch": {
+    "/workspace": 22198812672,
+    "/tmp": 17852461056
+  }
+}

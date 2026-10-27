@@ -1,0 +1,17 @@
+# Fixed-F P52 original formal acceptance
+
+**PASS**, execution source `cbf0fb621888596aa14ad5f2349b503e23b1b72d`, fixed main denominator `adbaebf9c73ea6801d7b4d5214e4b846b132923b`. Original formal body, independent verifier and outer capture all exit **0**. Started 2026-10-27T04:29:18.481729+00:00; completed 2026-10-27T04:35:27.943555+00:00; elapsed 369.462 seconds. No timeout, retry or replacement of valid samples.
+
+The original main/fix/fix/main order ran eight trials in each block: main 16 and fix 16. Median main **216.281467 ms**, fix **183.654926 ms**, fix/main **0.849147775**. Original criterion fix median <= main median passed. All four blocks have zero failed checks and zero exceptions. Five original controls normal/delay/revert-delay/wrong/missing have actual Node exits **0/0/1/1/1**, all satisfying the original cause checks. Original independent verifier completed its nine unchanged assertions.
+
+Exact executed argv is in capture/REQUEST.json and original capture request. The unmodified `special/run_special.py --gate p52` used the independent clean `/workspace/geo337-p52-sources-20261027/fix` and `main` checkouts, private `/tmp/g337p52F27`, `/tmp/geo337-native-owner.lock`, and preparation pin `254accbf8562210e339509c6bff0ab80f1ba625965bb70852ee428671f1a0805`. Fixed main is the original historical denominator, not moving main. The original nested formal/verifier argv and all actual streams are retained.
+
+Original stack 16 MiB, 1200-second build/Node limits, 90-second service readiness, 900 ms delay and 5000 ms missing-placement conditions remain unchanged; outer capture has no added timeout. Original capture/reaper hashes are unchanged. Chromium 154.0.8037.57 is supplied by the private expected-path alias to `/usr/bin/chromium`; original `--no-sandbox` argument is unchanged. Installed Noto CJK, compiler, Node and Python versions are captured by original commands. No competing heavy process was present.
+
+Both sources remain clean, with original complete runtime inventories verifying all **734 F / 466 main inputs** before and after. Independent git directories share existing objects read-only; product checkout files are separate. Only historical evidence outside runtime roots is sparse. No product, test, assertion, axiom, P189 comparator, main branch or deployment changed.
+
+`capture/subject.original.tar.gz` retains all **2920 regular original files** and **36 symlinks**, including ELF bodies/fingerprints, all streams, samples, screenshots, generated probes, source/runtime inventories, verifier projections, and profiles. Every archived regular byte/mode and symlink target was read back and checked. The 9 terminal IPC sockets have metadata receipts; they have no regular-file payload to archive and remain at their original paths. No existing file was deleted. No Chrome, Node or compiler remained after original reaper completion. 80 c387 command records had all original stream lengths/hashes rechecked.
+
+The verifier's legacy launch projection is explicitly derived from real c387 records, not claimed as original launch stdout. The original formal ledger's additional Node annotations remain as originally generated; raw result files are unchanged.
+
+PF3/Q38 and native/oracle/reader/required-eight were already accepted and were not rerun. Next scope review must preserve existing #314 native/Node coverage and distinguish historical whole-memo receipts from the current recovery lineage; no P189 whitelist expansion is adopted.

@@ -1,0 +1,42 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "main_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/scratch/geo337-p52-tools-20261027/special/run_special.py",
+    "--gate",
+    "p52",
+    "--repo",
+    "/workspace/geo337-p52-sources-20261027/fix",
+    "--sha",
+    "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "--out",
+    "/tmp/g337p52F27",
+    "--main-repo",
+    "/workspace/geo337-p52-sources-20261027/main",
+    "--heavy-lock",
+    "/tmp/geo337-native-owner.lock",
+    "--preparation-sha256",
+    "254accbf8562210e339509c6bff0ab80f1ba625965bb70852ee428671f1a0805"
+  ],
+  "cwd": "/workspace/geo337-p52-sources-20261027/fix",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GITHUB_SHA": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "GITHUB_WORKSPACE": "/workspace/geo337-p52-sources-20261027/fix"
+  },
+  "outer_timeout_seconds": null,
+  "started_utc": "2026-10-27T04:29:18.481729+00:00",
+  "outer_pid": 90843,
+  "free_before": {
+    "/workspace": 22198800384,
+    "/tmp": 17852461056
+  },
+  "original_scope": "Unmodified generic run_special, unmodified P52 formal body and independent verifier. No performance rerun if valid samples already exist. No source/test/assertion/time-limit change."
+}

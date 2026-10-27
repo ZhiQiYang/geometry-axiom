@@ -1,0 +1,19 @@
+--- original/run.py
++++ run.py
+@@ -16,7 +16,6 @@
+ import capture
+ 
+ HERE = Path(__file__).resolve().parent
+-FINAL = '3d681636902371ecc528b20f51eea33e272581c9'
+ MAIN = 'adbaebf9c73ea6801d7b4d5214e4b846b132923b'
+ ORIGINAL = '5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04'
+ ORIGINAL_AST = 'af6a262bc9b906b65d2d8d5483d2ba508d7681655ac2db4b1aae82e2b34b5e1a'
+@@ -52,7 +51,7 @@
+     parser.add_argument('--out', type=Path, required=True)
+     a = parser.parse_args()
+     formal, out = a.formal_out.resolve(), a.out.resolve()
+-    need(a.sha == FINAL, '此適配只綁定已公開的本輪完整 F')
++    need(len(a.sha)==40 and all(c in '0123456789abcdef' for c in a.sha) and a.sha != MAIN, '須顯式綁定完整 final SHA')
+     need(not sys.flags.optimize and os.environ.get('PYTHONOPTIMIZE') in (None, '', '0'),
+          '原 verifier 的 assert 不得被 optimize 關閉')
+     need(formal.is_dir() and not out.exists() and out.parent.is_dir(), '正式結果須存在，輸出須全新')

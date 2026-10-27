@@ -1,0 +1,83 @@
+--- original/p189_verify.py
++++ p189_verify.py
+@@ -8,17 +8,18 @@
+ import os
+ from pathlib import Path
+ import statistics
++import shutil
+ import subprocess
+ import sys
+ import tarfile
+ import time
+ 
+ HERE = Path(__file__).resolve().parent
+-OUT = HERE / ('p189-' + sys.argv[1][:8])
+-WORK = Path('/tmp/g261r3/work/p189-' + sys.argv[1][:8])
+-REPO = '/tmp/g261r3/source-final'
+-TOOLS = Path('/tmp/g261r3/tools')
+-GEN = Path('/tmp/g261r3/tools/gen_scene.py')
++OUT = Path(os.environ['GEO261_P189_OUT'])
++WORK = Path(os.environ['GEO261_P189_WORK'])
++REPO = os.environ['GEO261_FINAL_REPO']
++TOOLS = HERE
++GEN = HERE / 'gen_scene.py'
+ SHAS = {'main': 'adbaebf9c73ea6801d7b4d5214e4b846b132923b',
+         'base': '3e600772076465fc65a26ac09055028301c0fb0b',
+         'fix': sys.argv[1]}
+@@ -99,6 +100,56 @@
+         assert git('rev-parse', sha).decode().strip() == sha
+         target = WORK / label
+         target.mkdir()
++        if label in ('main','base'):
++            provider_path=TOOLS/'REFERENCE_BASELINES.json'
++            assert digest(provider_path.read_bytes()) == '68181e2b017ca04a9fc854100fdb849b2a722b127338b320082b9ed0c5e63ad0'
++            provider=json.loads(provider_path.read_bytes())
++            reference=provider['references'][label]
++            assert reference['source_sha']==sha
++            preserved=OUT/'reference-provenance'/label
++            preserved.mkdir(parents=True)
++            for role in ('original_provenance','original_receipt'):
++                item=provider[role];body=Path(item['path']).read_bytes()
++                assert digest(body)==item['sha256']
++                (preserved/(role+'.json')).write_bytes(body)
++            prior=json.loads(Path(provider['original_provenance']['path']).read_bytes())
++            assert prior['shas'][label]==sha and prior['binaries_sha256'][label]==reference['binary_sha256']
++            for item in reference['original_metadata']:
++                path=Path(item['path']);body=path.read_bytes()
++                assert len(body)==item['bytes'] and digest(body)==item['sha256']
++                (preserved/(path.parent.name+'-'+path.name)).write_bytes(body)
++            commands=[Path(reference['original_metadata'][0]['path']).parent.parent/f'{n:06d}' for n in reference['command_numbers']]
++            for index,folder in enumerate(commands):
++                receipt=json.loads((folder/'result.json').read_bytes())
++                assert receipt['actual_process_returncode']==0 and receipt['timeout_expired'] is False
++                for stream in ('stdout','stderr'):
++                    body=(folder/(stream+'.bin')).read_bytes()
++                    assert len(body)==receipt[stream]['bytes'] and digest(body)==receipt[stream]['sha256']
++                    # Keep complete baseline streams in a lossless compressed representation.
++                    import gzip
++                    compressed=gzip.compress(body,mtime=0)
++                    destination=preserved/(folder.name+'-'+stream+'.bin.gz')
++                    destination.write_bytes(compressed)
++                    assert gzip.decompress(compressed)==body
++                    provenance.setdefault('reference_raw_files',[]).append({'original_source':str(folder/(stream+'.bin')),'source_sha':sha,'raw_bytes':len(body),'raw_sha256':digest(body),'representation':'lossless gzip, decompression equals original bytes','stored_file':str(destination),'stored_bytes':len(compressed),'stored_sha256':digest(compressed)})
++                if index==0:
++                    assert receipt['command'][-2:]==['rev-parse',sha]
++                    assert (folder/'stdout.bin').read_bytes().decode().strip()==sha
++                elif index==1:
++                    assert 'archive' in receipt['command'] and sha in receipt['command']
++                else:
++                    assert receipt['command']==['gcc','-std=c11','-O2','geometry-web/web_bridge.c','-o','bridge','-lm']
++            source=Path(reference['binary_path']);before=source.stat();body=source.read_bytes()
++            assert len(body)==reference['binary_bytes'] and digest(body)==reference['binary_sha256']
++            shutil.copy2(source,target/'bridge')
++            assert (target/'bridge').read_bytes()==body
++            after=source.stat()
++            assert (before.st_dev,before.st_ino,before.st_size,before.st_mtime_ns)==(after.st_dev,after.st_ino,after.st_size,after.st_mtime_ns)
++            provenance['binaries_sha256'][label]=digest(body)
++            provenance.setdefault('reference_build_roles',{})[label]={'role':'reused exact original baseline ELF; no new compile claimed','provider_sha256':digest(provider_path.read_bytes()),'source_sha':sha,'original_compiler':prior['compiler'],'binary_sha256':digest(body)}
++            (OUT/'provenance.json').write_text(json.dumps(provenance,ensure_ascii=False,indent=2)+'\n')
++            print(f'{label} {sha} 沿用已核原基準 ELF（未重新編譯）',flush=True)
++            continue
+         root_names = set(git('ls-tree', '-z', '--name-only', sha).decode().split('\0'))
+         paths = [p for p in ('current_geometry.c', 'geometry-core', 'geometry-app', 'geometry-templates', 'geometry-web') if p in root_names]
+         assert {'current_geometry.c', 'geometry-web'} <= set(paths)

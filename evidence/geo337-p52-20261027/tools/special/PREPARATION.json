@@ -1,0 +1,123 @@
+{
+  "schema": "train337-final-p52-p189-static-preparation/1",
+  "prepared_only": true,
+  "subject_executed": false,
+  "created_utc": "2026-10-23T21:10:52.631334+00:00",
+  "files": [
+    {
+      "path": "README.before-interface-clarification.md",
+      "bytes": 4111,
+      "sha256": "cfee94f4d995701e27576e30360f6c8c7062207e9a7c5003980da08c53c2fbfa"
+    },
+    {
+      "path": "README.interface-clarification.diff",
+      "bytes": 3809,
+      "sha256": "f2a17638e81d296f7c03e1403e6917c51b8a0b2b10542fcef460c033351671bc"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4342,
+      "sha256": "4895b8e619bcaab33ce8a70e85fdc24ea58298e6cb9a421e325d465b6ea40992"
+    },
+    {
+      "path": "STATIC_CHECKS.json",
+      "bytes": 591,
+      "sha256": "76faec71796efcc962fb1634bf986a69ffcf63d0221465adc361e2a9fda18a44"
+    },
+    {
+      "path": "p189/PARAMETER_AND_REFERENCE_BINDING.diff",
+      "bytes": 5269,
+      "sha256": "b01d96b8e19c926bae138d8492c08b20aabe28bf9634f68e374bab74c6bbbec1"
+    },
+    {
+      "path": "p189/REFERENCE_BASELINES.json",
+      "bytes": 3879,
+      "sha256": "68181e2b017ca04a9fc854100fdb849b2a722b127338b320082b9ed0c5e63ad0"
+    },
+    {
+      "path": "p189/gen_scene.py",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91"
+    },
+    {
+      "path": "p189/p189_verify.original.py.txt",
+      "bytes": 10495,
+      "sha256": "93a5d5715274bf64dcbe748dd4c724b00be0930264936a8d0ceb0e12a639a878"
+    },
+    {
+      "path": "p189/p189_verify.py",
+      "bytes": 14471,
+      "sha256": "efafef38357088710ab69ab198931fc845350bfe72201b5eaec52da5681c63f4"
+    },
+    {
+      "path": "p189/scale_compare2.py",
+      "bytes": 6534,
+      "sha256": "086805189dc5596853c0c52ca05dd2cbf5c3a605792023366004426ab61a4dd1"
+    },
+    {
+      "path": "p189/timing_only_after_dump_red.py",
+      "bytes": 4408,
+      "sha256": "2261da67a9e7a1d28afcb00d0445a7284cc54d91c8eb595ad37a74b8c891d174"
+    },
+    {
+      "path": "p52/p52-formal.py",
+      "bytes": 21223,
+      "sha256": "af5cfe9f895f0fdf41f8a13f96494f9be37c20de30c8cd06b459b5967cd46d13"
+    },
+    {
+      "path": "p52/protocol/p52_cases.cjs",
+      "bytes": 6448,
+      "sha256": "6ca75996223e94be0a503e646d58ed928b046854eb0102af309482dc4ac60f66"
+    },
+    {
+      "path": "p52/protocol/p52_measure.py",
+      "bytes": 5981,
+      "sha256": "738a36b0417e7f5cfa1dcf57fc0d14664650b8285484f866b8ceb0d3a2c8f1a4"
+    },
+    {
+      "path": "p52/protocol/p52_probe.cjs",
+      "bytes": 5565,
+      "sha256": "8c3b4b14ad35082679e4faf229bd66d65a500bd53669c13d8f41e0603e066970"
+    },
+    {
+      "path": "p52/protocol/postfix_validate.py",
+      "bytes": 6216,
+      "sha256": "b9fbcca0eb12e2e25fb5d84eda01038bf8406d1c3a533fa5dfd842e330cf8c5f"
+    },
+    {
+      "path": "p52/runtime_inventory.py",
+      "bytes": 4790,
+      "sha256": "cceb3d9080de5797cfb60e0895772f59bd4352f9c4a063d405c4bf512367027c"
+    },
+    {
+      "path": "p52-verifier/PARAMETER_BINDING.diff",
+      "bytes": 1007,
+      "sha256": "cb16518c5c0497aba181345ad66738bf6b67e3a71f567dff0777b01e046cd5df"
+    },
+    {
+      "path": "p52-verifier/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "path": "p52-verifier/original/verify_postfix_receipt.py",
+      "bytes": 1627,
+      "sha256": "5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04"
+    },
+    {
+      "path": "p52-verifier/run.original.py.txt",
+      "bytes": 15639,
+      "sha256": "363dcb18b99320d0a7b1157c2d627825901623d2eb6a8de0c05705d49d1a27d8"
+    },
+    {
+      "path": "p52-verifier/run.py",
+      "bytes": 15641,
+      "sha256": "b854b17fc2f1cbaef5fdae8ac22326d92b9976e92dd0ea5b5b4f8dd9b837c2ab"
+    },
+    {
+      "path": "run_special.py",
+      "bytes": 9949,
+      "sha256": "cbafab25c3a9ebe3d4cc07d5f14d8cf36fd38cf9b22bd28af21515c136315e42"
+    }
+  ]
+}

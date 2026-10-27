@@ -1,0 +1,263 @@
+#!/usr/bin/env python3
+"""以未修改的原獨立 P52 verifier 核新 F；舊 launch schema 只作明列的機械投影。"""
+from __future__ import annotations
+
+import argparse
+import ast
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import sys
+import traceback
+
+import capture
+
+HERE = Path(__file__).resolve().parent
+FINAL = '3d681636902371ecc528b20f51eea33e272581c9'
+MAIN = 'adbaebf9c73ea6801d7b4d5214e4b846b132923b'
+ORIGINAL = '5a109def7794ebc1e34048afe500fd97758f98781ff90597fedec0dc214f1e04'
+ORIGINAL_AST = 'af6a262bc9b906b65d2d8d5483d2ba508d7681655ac2db4b1aae82e2b34b5e1a'
+CAPTURE = 'c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+FORMAL_BOUND_DRIVER = 'af5cfe9f895f0fdf41f8a13f96494f9be37c20de30c8cd06b459b5967cd46d13'
+PROTOCOL = {
+    'postfix_validate.py': 'b9fbcca0eb12e2e25fb5d84eda01038bf8406d1c3a533fa5dfd842e330cf8c5f',
+    'p52_measure.py': '738a36b0417e7f5cfa1dcf57fc0d14664650b8285484f866b8ceb0d3a2c8f1a4',
+    'p52_probe.cjs': '8c3b4b14ad35082679e4faf229bd66d65a500bd53669c13d8f41e0603e066970',
+    'p52_cases.cjs': '6ca75996223e94be0a503e646d58ed928b046854eb0102af309482dc4ac60f66',
+}
+SAFE = ('PATH', 'LANG', 'LC_ALL', 'TMPDIR', 'PYTHONIOENCODING', 'PYTHONDONTWRITEBYTECODE',
+        'PYTHONOPTIMIZE', 'GITHUB_SHA', 'GITHUB_WORKSPACE', 'CC', 'CFLAGS', 'CPPFLAGS', 'LDFLAGS')
+
+
+def digest(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def need(condition, message):
+    if not condition:
+        raise RuntimeError(message)
+
+
+def save(path, value):
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--sha', required=True)
+    parser.add_argument('--formal-out', type=Path, required=True)
+    parser.add_argument('--out', type=Path, required=True)
+    a = parser.parse_args()
+    formal, out = a.formal_out.resolve(), a.out.resolve()
+    need(a.sha == FINAL, '此適配只綁定已公開的本輪完整 F')
+    need(not sys.flags.optimize and os.environ.get('PYTHONOPTIMIZE') in (None, '', '0'),
+         '原 verifier 的 assert 不得被 optimize 關閉')
+    need(formal.is_dir() and not out.exists() and out.parent.is_dir(), '正式結果須存在，輸出須全新')
+    need(not out.is_relative_to(formal) and not formal.is_relative_to(out), '輸出與正式原件不可互相包含')
+    need(out.is_relative_to(Path('/workspace')) or out.is_relative_to(Path('/tmp')), '輸出只在 workspace/tmp')
+    need(Path(capture.__file__).resolve() == HERE / 'capture.py'
+         and digest((HERE / 'capture.py').read_bytes()) == CAPTURE, '須使用凍結的原 c387 recorder')
+    out.mkdir()
+    (out / 'tmp').mkdir()
+    (out / 'sources').mkdir()
+    env = dict(os.environ)
+    cleared = []
+    for name in list(env):
+        if name.startswith(('GEOMETRY_', 'P52_')) or name in (
+                'PYTHONOPTIMIZE', 'PYTHONPATH', 'PYTHONSTARTUP', 'NODE_OPTIONS', 'LD_PRELOAD'):
+            cleared.append(name)
+            env.pop(name)
+    env.update(LANG='C.UTF-8', LC_ALL='C.UTF-8', PYTHONIOENCODING='utf-8',
+               PYTHONDONTWRITEBYTECODE='1', TMPDIR=str(out / 'tmp'), GITHUB_SHA=a.sha)
+    recorder = capture.Recorder(out, env, a.sha)
+    report = {
+        'schema': 'geo288-original-p52-independent-verifier-binding/1', 'sha': a.sha,
+        'formal_out': str(formal), 'out': str(out),
+        'started_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        'environment': {name: env.get(name) for name in SAFE},
+        'cleared_environment_names': sorted(cleared), 'platform': platform.platform(),
+        'python': sys.version, 'python_executable': sys.executable,
+        'original_verifier_sha256': ORIGINAL, 'original_verifier_ast_sha256': ORIGINAL_AST,
+        'original_assertions_unchanged': None,
+        'projection_truthfulness': 'DERIVED：逐一由真 c387 result 與完整原 streams 投影成 command/rc/log；不是原 launch stdout。',
+        'source_files': [], 'projections': [], 'errors': [], 'commands': recorder.rows,
+        'original_verifier_process_exit': None, 'original_verified_result': None, 'passed': False,
+    }
+    source_bytes = {}
+    copied_bytes = {}
+    code = 2
+
+    def remember(path, *, expected=None, formal_input=True):
+        path = Path(path).resolve()
+        need(not formal_input or path.is_relative_to(formal), '正式原件路徑逸出：' + str(path))
+        raw = path.read_bytes()
+        if expected is not None:
+            need(digest(raw) == expected, '原件 hash 不符：' + str(path))
+        if path in source_bytes:
+            need(source_bytes[path] == raw, '來源在讀取過程改變：' + str(path))
+        else:
+            source_bytes[path] = raw
+            report['source_files'].append({'path': str(path), 'bytes': len(raw), 'sha256': digest(raw)})
+        return raw
+
+    def copy_exact(path, target, *, expected=None, formal_input=True):
+        raw = remember(path, expected=expected, formal_input=formal_input)
+        need(not target.exists(), '拒絕覆寫適配件：' + str(target))
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(raw)
+        copied_bytes[target] = raw
+        return raw
+
+    try:
+        copy_exact(HERE / 'run.py', out / 'sources' / 'adapter.py.txt', formal_input=False)
+        copy_exact(HERE / 'capture.py', out / 'sources' / 'capture.py', expected=CAPTURE, formal_input=False)
+        original = remember(HERE / 'original' / 'verify_postfix_receipt.py', expected=ORIGINAL,
+                            formal_input=False)
+        original_tree = ast.parse(original.decode())
+        need(digest(ast.dump(original_tree, include_attributes=False).encode()) == ORIGINAL_AST,
+             '原 verifier 完整 AST 不符')
+        need(sum(isinstance(node, ast.Assert) for node in ast.walk(original_tree)) == 9,
+             '原 verifier 不是完整九個 assert')
+        report['original_assertions_unchanged'] = True
+        execution_raw = copy_exact(formal / 'execution-receipt.json', out / 'sources' / 'execution-receipt.json')
+        execution = json.loads(execution_raw)
+        need(execution['sha'] == a.sha and execution['main'] == MAIN, '正式執行收據 SHA 綁定不符')
+        env['GITHUB_WORKSPACE'] = execution['repo']
+        report['environment'] = {name: env.get(name) for name in SAFE}
+        need(execution['original_body_completed'] is True and not execution['errors']
+             and execution['original_body_system_exit'] in (0, 1)
+             and execution['actual_driver_exit_code'] == execution['original_body_system_exit'],
+             '正式 body 不完整或已有基礎設施錯誤，不得產生 verifier 綠')
+        formal_driver = formal / 'tools' / 'p52-formal.py'
+        copy_exact(formal_driver, out / 'sources' / 'p52-formal.py.txt', expected=FORMAL_BOUND_DRIVER)
+        frozen_driver = [row for row in execution['tool_hashes'].values()
+                         if Path(row['snapshot']).resolve() == formal_driver]
+        need(len(frozen_driver) == 1 and frozen_driver[0]['sha256'] == FORMAL_BOUND_DRIVER,
+             '正式執行沒有綁定既有 frozen formal driver')
+        layout = out / 'layout'
+        layout.mkdir()
+        target_out = layout / ('postfix-' + a.sha[:8])
+        target_out.mkdir()
+        copy_exact(HERE / 'original' / 'verify_postfix_receipt.py', layout / 'verify_postfix_receipt.py',
+                   expected=ORIGINAL, formal_input=False)
+        receipt_raw = copy_exact(formal / 'receipt.json', target_out / 'receipt.json')
+        receipt = json.loads(receipt_raw)
+        need(execution['original_receipt']['path'] == str(formal / 'receipt.json')
+             and execution['original_receipt']['sha256'] == digest(receipt_raw), '正式原 receipt 參照不一致')
+        for name, wanted in PROTOCOL.items():
+            copy_exact(formal / 'tools' / 'protocol' / name, layout / name, expected=wanted)
+        need(receipt['drivers_sha256'] == PROTOCOL, '正式 receipt 不是原四檔 protocol')
+        records = receipt['records'] + receipt['controls']
+        need(len(records) == 9, '正式 receipt 必須含原九個 Node')
+        record_logs = [row['log'] for row in records]
+        need(len(set(record_logs)) == len(record_logs), '正式 receipt 有重複 log')
+        nodes = execution['node_commands']
+        need(len(nodes) == len(records), '真 Node 命令與原 receipt 節點數不符')
+        command_rows = execution['commands']
+        projected = []
+        seen_directories = set()
+        for index, (row, node) in enumerate(zip(records, nodes)):
+            log = Path(row['log']).resolve()
+            need(log == formal / row['label'] / 'probe.log', '原 receipt log 路徑／label 不相符')
+            need(node['legacy_probe_log']['path'] == str(log), '真 Node 與原 probe log 連結不相符')
+            directory = Path(node['directory']).resolve()
+            need(directory.parent == formal / 'subcommands', 'Node c387 result 路徑不屬正式 out')
+            need(directory not in seen_directories, '不得重複使用同一個真 Node result')
+            seen_directories.add(directory)
+            raw_result = copy_exact(directory / 'result.json', out / 'sources' / f'node-{index}' / 'result.json')
+            recorded = json.loads(raw_result)
+            core = {key: value for key, value in node.items()
+                    if key not in ('effective_environment', 'legacy_probe_log')}
+            need(recorded == core, '真 c387 result 與 execution Node row 不同')
+            need(sum(candidate == node for candidate in command_rows) == 1,
+                 'Node row 不是完整命令紀錄中的唯一原 row')
+            need(recorded['acceptance_sha'] == a.sha and recorded['source_sha'] == row['sha'],
+                 'Node 真 source／acceptance SHA 與原 receipt 不符')
+            need(type(recorded['actual_process_returncode']) is int
+                 and recorded['timeout_expired'] is False and 'exception' not in recorded,
+                 'Node 缺真 rc、逾時或有錄製例外；不得投影為有效反證')
+            effective = node['effective_environment']
+            need(effective['P52_SHA'] == row['sha'] and effective['P52_CASE_MODE'] == row['mode']
+                 and effective['P52_REPS'] == '8', 'Node 實際 P52 綁定與原 receipt 不符')
+            need(row['sha'] in (a.sha, MAIN), '原 receipt 含未授權比較 SHA')
+            reference = row['sha'] == MAIN
+            script = 'p52_probe.cjs' if reference else 'p52_cases.cjs'
+            expected_repo = execution['main_repo'] if reference else execution['repo']
+            need(recorded['command'] == ['node', str(formal / 'tools' / 'protocol' / script), expected_repo]
+                 and recorded['cwd'] == expected_repo
+                 and recorded['source_variant'] == ('main-reference' if reference else 'fixed-final-source'),
+                 'Node 真 argv／cwd／variant 與原協定來源不符')
+            streams = {}
+            for name in ('stdin', 'stdout', 'stderr'):
+                raw = copy_exact(directory / (name + '.bin'),
+                                 out / 'sources' / f'node-{index}' / (name + '.bin'),
+                                 expected=recorded[name + '_sha256'])
+                if name != 'stdin':
+                    need(len(raw) == recorded[name + '_bytes'], 'Node 原串流 bytes 不符')
+                streams[name] = raw
+            need(recorded['stdin_provided'] is False and streams['stdin'] == b'', '原 Node 不得新增 stdin')
+            log_raw = copy_exact(log, out / 'sources' / f'node-{index}' / 'original-probe.log')
+            need(log_raw == streams['stdout'] + streams['stderr'], '原 probe.log 不是原真 stdout 後接 stderr')
+            projection = {'command': list(recorded['command']),
+                          'rc': recorded['actual_process_returncode'], 'log': row['log']}
+            projected.append(projection)
+            report['projections'].append({
+                'node_index': index, 'original_receipt_label': row['label'],
+                'source_result_path': str(directory / 'result.json'), 'source_result_sha256': digest(raw_result),
+                'source_probe_log_path': str(log), 'source_probe_log_sha256': digest(log_raw),
+                'source_stdout_sha256': recorded['stdout_sha256'], 'source_stderr_sha256': recorded['stderr_sha256'],
+                'derived_launch_row': projection,
+            })
+        launch = layout / ('postfix-' + a.sha[:8] + '-launch.log')
+        launch.write_text(''.join(json.dumps(row, ensure_ascii=False) + '\n' for row in projected))
+        copied_bytes[launch] = launch.read_bytes()
+        report['derived_launch_log'] = {'path': str(launch), 'sha256': digest(launch.read_bytes()),
+                                        'is_original_stdout': False, 'rows': len(projected),
+                                        'schema': '原 command/rc/log；僅投影九個真 Node，原非 Node 命令仍在原 execution 收據。'}
+        save(out / 'projection-index.json', {'sha': a.sha, 'derived': True,
+                                            'is_original_launch_stdout': False, 'rows': report['projections']})
+        report['input_receipt_original_bytes_sha256'] = digest(receipt_raw)
+        result, stdout, stderr = recorder.run(
+            [sys.executable, '-B', str(layout / 'verify_postfix_receipt.py'), a.sha],
+            cwd=layout, timeout=14400, check=False, source_sha=a.sha,
+            source_variant='unmodified-original-independent-verifier-with-derived-launch-schema')
+        report['original_verifier_process_exit'] = result['actual_process_returncode']
+        need(not result['timeout_expired'] and 'exception' not in result, '原 verifier 逾時／錄製錯誤')
+        code = result['actual_process_returncode'] if result['actual_process_returncode'] in (0, 1) else 2
+        if result['actual_process_returncode'] == 0:
+            verified = target_out / 'verified.json'
+            report['original_verified_result'] = json.loads(verified.read_bytes())
+            report['original_verified_file'] = {'path': str(verified), 'sha256': digest(verified.read_bytes())}
+            report['passed'] = True
+    except BaseException:
+        report['errors'].append(traceback.format_exc())
+        code = 2
+    finally:
+        for path, raw in source_bytes.items():
+            try:
+                need(path.read_bytes() == raw, '來源原件執行前後改變：' + str(path))
+            except BaseException:
+                report['errors'].append(traceback.format_exc())
+        for path, raw in copied_bytes.items():
+            try:
+                need(path.read_bytes() == raw, '凍結適配件執行中改變：' + str(path))
+            except BaseException:
+                report['errors'].append(traceback.format_exc())
+        if report['errors']:
+            report['passed'] = False
+            if code == 0:
+                code = 2
+        report.update(ended_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), actual_driver_exit_code=code)
+        save(out / 'receipt.json', report)
+    print(json.dumps({'sha': a.sha, 'passed': report['passed'],
+                      'original_verifier_process_exit': report['original_verifier_process_exit'],
+                      'actual_driver_exit_code': code, 'receipt': str(out / 'receipt.json'),
+                      'errors': report['errors']}, ensure_ascii=False))
+    return code
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
