@@ -1,0 +1,27 @@
+{
+  "command": [
+    "git",
+    "grep",
+    "-n",
+    "-e",
+    "contact_order",
+    "-e",
+    "geo_eval_depend",
+    "-e",
+    "dedup",
+    "-e",
+    "deduplicate",
+    "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "--",
+    "geometry-core",
+    "geometry-templates",
+    "tests"
+  ],
+  "cwd": "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+  "exit_code": 0,
+  "timestamp_utc": "2026-10-26T10:22:06.093450+00:00",
+  "stdout_sha256": "2dd007d5213eb86c7ad2d6e6498daf284a5263d5f569e30cdd78cff38d3feea6",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 619869,
+  "stderr_bytes": 0
+}

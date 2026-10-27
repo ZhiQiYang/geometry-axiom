@@ -1,0 +1,273 @@
+{
+  "schema": "old-TMP-cache-owner-original-metadata/1",
+  "utc": "2026-10-25T16:06:50.155262+00:00",
+  "exit_code": 0,
+  "candidate_metadata_sha256": "b6f18544c99536bece433be053dc27587d3d51dd9b9a588ee0c1013d9a7c55b3",
+  "cache_count": 4,
+  "ELF_claimed_original_inventory_matches": 24,
+  "rows": [
+    {
+      "cache": "/tmp/geometry-tests-pre-followup-261-13d02c1d",
+      "isolation_receipt": {
+        "path": "/tmp/g288s7/native-cache-isolation.json",
+        "sha256": "356c79d0db48e890fc3c52a5d24a487d5e898666e25c59d6cbe7ff2a2a9012b5"
+      },
+      "successor_terminal_receipt": {
+        "path": "/tmp/g288s7/receipt.json",
+        "sha256": "f145d11af64397af23595160a2fe35c8ee698612329605fa2d650ae60959e7ad"
+      },
+      "context": {
+        "path": "/tmp/g288s7/run-context.json",
+        "sha256": "ccaaf8706968bebe4ff07a0104497b3aca83542ea3f63b69dea47d25e866453f"
+      },
+      "owner_from_original_context": {
+        "publication_branch": "architecture/geo261-integration-20261016",
+        "issue": "261",
+        "successor_source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+        "successor_repo": "/tmp/g288f-13d02c1d"
+      },
+      "terminal": {
+        "ended_utc": "2026-10-23T06:28:13.424822+00:00",
+        "outer_exit": 1,
+        "native_exit": 0,
+        "all_jobs_terminal": true
+      },
+      "retained_ELF_metadata_bindings": [
+        {
+          "basename": "bridge",
+          "original_preservation_sha256": "ac6483d8834641b898dec4d3d94e6f513ef021215f4c716f2dcef21e5065d868",
+          "original_preservation_bytes": 1109176,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "core",
+          "original_preservation_sha256": "17fd6f6978d4431fb87affc0dbb1a597208737c820b57b7ab9b6880dc94a332b",
+          "original_preservation_bytes": 890968,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "engineering-json-test",
+          "original_preservation_sha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0",
+          "original_preservation_bytes": 34864,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "integrity",
+          "original_preservation_sha256": "4c6c01b5a7ffa5a9b9380d13fc49c201f540b86ae0f5c0bac6f2577be1043939",
+          "original_preservation_bytes": 929304,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "model-base",
+          "original_preservation_sha256": "93a7073e560ece34eb7b301d1c26f3be1b47edd51b42ccdb98a1e9366c7b14c7",
+          "original_preservation_bytes": 955864,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "pf3-algorithm",
+          "original_preservation_sha256": "91fcd0fa59797a51183699bfba57bc33cb232bc2ddbcb21f3ae74606c36b0225",
+          "original_preservation_bytes": 899360,
+          "candidate_captured_claims_match": true
+        }
+      ]
+    },
+    {
+      "cache": "/tmp/geometry-tests-pre-followup-299-316-5bfadf18",
+      "isolation_receipt": {
+        "path": "/tmp/geo299316-final-native-5bfadf18-r1/native-cache-isolation.json",
+        "sha256": "88ab2d6da8fe016753c1b208ac3bc790730e39456cca24cbd3adb6112f7c1575"
+      },
+      "successor_terminal_receipt": {
+        "path": "/tmp/geo299316-final-native-5bfadf18-r1/receipt.json",
+        "sha256": "665787c6fa7c9d28c0dc07007b47c66c0c114edbbd9c7e1670699ea5f002d52d"
+      },
+      "context": {
+        "path": "/tmp/geo299316-final-native-5bfadf18-r1/run-context.json",
+        "sha256": "f5f144578de357216791c939b02db2095367da983d0bea6cccd4d50ca0678379"
+      },
+      "owner_from_original_context": {
+        "publication_branch": "codex/geo299-316-combined-20261022",
+        "issue": "299-316",
+        "successor_source_sha": "5bfadf187e615ba0fb8466753b63ce3044ef7d1c",
+        "successor_repo": "/tmp/g261-final299316-5bfadf18-r2"
+      },
+      "terminal": {
+        "ended_utc": "2026-10-23T01:58:15.019439+00:00",
+        "outer_exit": 0,
+        "native_exit": 0,
+        "all_jobs_terminal": true
+      },
+      "retained_ELF_metadata_bindings": [
+        {
+          "basename": "bridge",
+          "original_preservation_sha256": "547ef04ad0fa7496b642461d904bc17cfedbbdf54927ab761050a0c2b3f82551",
+          "original_preservation_bytes": 1104616,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "core",
+          "original_preservation_sha256": "bf036e494afd6dcfa1eca3897610205272939f62965b5ba1895358443a56fd7f",
+          "original_preservation_bytes": 886560,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "engineering-json-test",
+          "original_preservation_sha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0",
+          "original_preservation_bytes": 34864,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "integrity",
+          "original_preservation_sha256": "873aba716f4553eaa6c86b77c9be670cfd400ca26353940b59d4e0f556e32a88",
+          "original_preservation_bytes": 924912,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "model-base",
+          "original_preservation_sha256": "ab2bd3516f0ad5d7a77aa9bb5427876944ea8c8cfd7a2f227212b343ea383a0f",
+          "original_preservation_bytes": 951456,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "pf3-algorithm",
+          "original_preservation_sha256": "98fdbb342ef4f404386bebf91148a6cde5f44dd0f459459a7e2202d05197ec4e",
+          "original_preservation_bytes": 890864,
+          "candidate_captured_claims_match": true
+        }
+      ]
+    },
+    {
+      "cache": "/tmp/geometry-tests-pre-followup-314-cc67e251",
+      "isolation_receipt": {
+        "path": "/tmp/g261s7/native-cache-isolation.json",
+        "sha256": "0b19946268696524215e8915ecb8d4623f6972841b9b80b6f64e3059d8cd08cc"
+      },
+      "successor_terminal_receipt": {
+        "path": "/tmp/g261s7/receipt.json",
+        "sha256": "526bafbad3b19359c2e337ec04ba0fb3859bad82f6f6babb1faf81350493ac15"
+      },
+      "context": {
+        "path": "/tmp/g261s7/run-context.json",
+        "sha256": "e58247dd83c1fd3856b935e1b275a69daae6fae31ccc4849cf400dc28504d81b"
+      },
+      "owner_from_original_context": {
+        "publication_branch": "codex/geo314-one-axis-stagger-20261022",
+        "issue": "314",
+        "successor_source_sha": "cc67e2518f6ab331b5ab9fdbcd5bd6334134377f",
+        "successor_repo": "/tmp/g261f314-cc67e251"
+      },
+      "terminal": {
+        "ended_utc": "2026-10-23T04:42:46.011311+00:00",
+        "outer_exit": 1,
+        "native_exit": 0,
+        "all_jobs_terminal": true
+      },
+      "retained_ELF_metadata_bindings": [
+        {
+          "basename": "bridge",
+          "original_preservation_sha256": "02f3ae876b8ec3d31d1f2fbe5b2e80b043b0827bb4ce1edbe793b80142ea0429",
+          "original_preservation_bytes": 1104744,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "core",
+          "original_preservation_sha256": "6aa5bc7401f29b128273afd002b7ae9fbf5f34607652cdcc2e01c10424787a6d",
+          "original_preservation_bytes": 886696,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "engineering-json-test",
+          "original_preservation_sha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0",
+          "original_preservation_bytes": 34864,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "integrity",
+          "original_preservation_sha256": "67d30422d5888730ee087ec373de5948df7df065a1567c11c9c9d924d777871a",
+          "original_preservation_bytes": 925032,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "model-base",
+          "original_preservation_sha256": "a77b18c9e3a27185e95bc0b74266e29d56edbbe0dfc8918a9027db274734d52a",
+          "original_preservation_bytes": 951592,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "pf3-algorithm",
+          "original_preservation_sha256": "3465235888f17264cbd25caa9bb78a403306ed6d359534ec91c6acfafbdeb155",
+          "original_preservation_bytes": 890992,
+          "candidate_captured_claims_match": true
+        }
+      ]
+    },
+    {
+      "cache": "/tmp/geometry-tests-pre-geo323-f43e8d8b",
+      "isolation_receipt": {
+        "path": "/workspace/geo261-environment/geo323-preformal-cache-isolation.json",
+        "sha256": "94b31cbf09e99e1d9380cfed9556143cea3029694deec3e0b3aba5737841da14"
+      },
+      "successor_terminal_receipt": {
+        "path": "/workspace/geo323-final-f43e8d8b-r1/receipt.json",
+        "sha256": "ed221a55e12835a6887db9a8df0c7deecf5941caadc39afd84ff32bfbf8320f0"
+      },
+      "context": null,
+      "owner_from_original_context": {
+        "issue": "323",
+        "successor_source_sha": "f43e8d8b876f587c11778fa74a80b205b51396b6",
+        "successor_repo": "/tmp/g261-next323"
+      },
+      "terminal": {
+        "ended_utc": "2026-10-23T00:42:49.997988+00:00",
+        "outer_exit": 1,
+        "native_exit": 0,
+        "all_stages_terminal": true
+      },
+      "retained_ELF_metadata_bindings": [
+        {
+          "basename": "bridge",
+          "original_preservation_sha256": "547ef04ad0fa7496b642461d904bc17cfedbbdf54927ab761050a0c2b3f82551",
+          "original_preservation_bytes": 1104616,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "core",
+          "original_preservation_sha256": "bf036e494afd6dcfa1eca3897610205272939f62965b5ba1895358443a56fd7f",
+          "original_preservation_bytes": 886560,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "engineering-json-test",
+          "original_preservation_sha256": "12653b6aee84ad0a59c857b2fe7ae2119e43638819e27f145530c9a2d89516a0",
+          "original_preservation_bytes": 34864,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "integrity",
+          "original_preservation_sha256": "873aba716f4553eaa6c86b77c9be670cfd400ca26353940b59d4e0f556e32a88",
+          "original_preservation_bytes": 924912,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "model-base",
+          "original_preservation_sha256": "9d41fd9d4d761faf2dd2f7a0964760b49c206ecf7d4852bd174320c9cc258482",
+          "original_preservation_bytes": 951592,
+          "candidate_captured_claims_match": true
+        },
+        {
+          "basename": "pf3-algorithm",
+          "original_preservation_sha256": "394b7ca868011df33693b61dad18d5f9e504e80294dead5e7794956faa3bb67b",
+          "original_preservation_bytes": 891000,
+          "candidate_captured_claims_match": true
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "只查既有隔離／原終態／context metadata；沒有讀任何 ELF payload 或活動 cache、沒有新consumer掃描／Git mutation。",
+    "pre-followup命名及source_sha是建立下一輪隔離cache的後繼正式來源，不等於舊ELF原編譯SHA；本表不把後繼終態移標為舊binary驗收。",
+    "四筆原隔離inventory與目前候選先前捕捉的24 ELF hash/size宣告一致；真正原bytes仍待新完整封存/roundtrip/遠端核。",
+    "所有後繼流程已有終態，outer1保留；原native均0不代表整輪全綠。Freshconsumer/no-reuselease與root批准仍需另驗，不授權刪除。",
+    "檔名探索曾遇無關/tmp/codex-daemon-1000 Permission denied，未升權探測或繞過；轉讀已知owner目錄。初步metadata顯示器誤把workflow files string當inventory而TypeError，隨後僅改成具名isolation欄讀取，subject不改。"
+  ]
+}

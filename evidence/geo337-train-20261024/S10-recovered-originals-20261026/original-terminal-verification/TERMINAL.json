@@ -1,0 +1,110 @@
+{
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "formal_accepted": true,
+  "adoption_eligible_before_peer": true,
+  "conditions": {
+    "exact_four_original_phases": true,
+    "original_full_map_newcheck_zero": true,
+    "tracked_check_is_recorded": true,
+    "outer_and_root_zero": true,
+    "CLI_zero": true,
+    "observer_complete": true,
+    "source_fixed": true,
+    "mapper_passed": true,
+    "bridge_inventory_complete": true,
+    "exact_123_rows": true,
+    "exact_120_natural_S10_heads": true,
+    "exact_3_retired": true,
+    "source_before_after_final_equal": true,
+    "optional_terminal_JSON_valid": true,
+    "ledger_hash_matches_original_receipt": true,
+    "mapper_ledger_hash_matches": true
+  },
+  "failed_conditions": [],
+  "phase_exits": {
+    "original-tracked-ledger-check": 1,
+    "original-full123-passive-observer": 0,
+    "original-core-stream-map": 0,
+    "original-new-ledger-check": 0
+  },
+  "original_cli_exit": 0,
+  "root_exit": 0,
+  "outer_exit": 0,
+  "record_count": 123,
+  "execution_head_counts": {
+    "82c922a3941525d3a094ac0158bdc7dea57ea360": 120
+  },
+  "retired_ids": [
+    "M35",
+    "M51",
+    "M55"
+  ],
+  "verdicts": {
+    "killed": 114,
+    "equivalent": 5,
+    "crashed": 1,
+    "retired": 3
+  },
+  "tracked_check_is_not_relabelled": true,
+  "optional_terminal_parse_errors": [],
+  "terminal_capture_ready": true,
+  "terminal_bindings": {
+    "job_receipt": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/receipt.json",
+      "sha256": "c7d00f3e144a94a7d486c8419a253ae3bd94549c080662854e9081094a008b28",
+      "bytes": 77879
+    },
+    "outer_result": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-launch/RESULT.json",
+      "sha256": "dd2888b614c7769a0879c59a1f67628ae04fdb155ef8c8a48304d3f1a2cacc02",
+      "bytes": 3138
+    },
+    "original_tool_final": {
+      "path": "/tmp/geo337-S10-full123-host-results-20261025/FINAL.json",
+      "sha256": "7eff1e024a6c6f06ca92fd5b537d6f6c4dff9c5f1595241db0b487a92ff02c86",
+      "bytes": 292
+    }
+  },
+  "terminal_files": {
+    "observer": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/observer/receipt.json",
+      "sha256": "3aacc0dcd80d76545c467d94b2dc69304456762238795c86a3ed2eaafee5a8a8",
+      "bytes": 361114
+    },
+    "mapping": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/CORE_RAW_MAPPING.json",
+      "sha256": "4b7414b90f99debd9cf25746777569523e63f0e38d8ed6625a8f28bdbca33ad8",
+      "bytes": 218311
+    },
+    "bridge": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/BRIDGE_RAW_INVENTORY.json",
+      "sha256": "03cc55c613f45f5e6fb43f2a3bc5dd06d8e67d1dad600eaaa24791b85c52f0fb",
+      "bytes": 189668
+    },
+    "ledger": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/mutants_results.json",
+      "sha256": "a4b5f1957e4bde6d30e4c05328e8a8dc1282fa811c52260eb01670cd560d56e7",
+      "bytes": 10045581
+    }
+  },
+  "missing_terminal_files": [],
+  "request_sha256": "a612272280b18c63d3a578237471de9d716d263b5763baf457f5db3caffbbb1c",
+  "adoption_requires_independent_actual_and_package_peers": true,
+  "additional_originals": {
+    "root_admission": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-root-admission-20261025.json",
+      "sha256": "6d9ddffda7791f2d4d41c832edc09d361f20a39a24d12e74809acdb627cd755a",
+      "bytes": 5240
+    },
+    "filesystem_admission": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-filesystem-admission-20261025.json",
+      "sha256": "d76ac62b52b17d615952d418a3b209d072dc04608de796cdf51f7b045eb65ddf",
+      "bytes": 1289
+    },
+    "source_preparation_result": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-source-preparation-reserve-anchor/RESULT.json",
+      "sha256": "f1e689eb26653609943e7e899aaf6d6e8430b9d0b2291d8e1ee94ebb7c14fdf9",
+      "bytes": 247108
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "F9-q38-complete-terminal-package-actual/1",
+  "utc": "2026-10-25T15:49:07.152043+00:00",
+  "exit_code": 0,
+  "checks": 2476,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "package_result_sha256": "2839caadb95dd0fecdff7628687b735c19a73173151aa6739a571d5e1b7bc3ae",
+  "outer_result_sha256": "b92bf4ddcfe325bbd54a878ece40b8470699d5f92c58592adc7ac77c175b5c7c",
+  "host_final_sha256": "8f648ddfcd4ed48aea7e7e29cc5a21e8403259ab5a18d5fc3d71414c57c4efcc",
+  "inventory_sha256": "faf6d572986bea6efbb1d073fe602b0800f3970ddf039970ecc99a27e29b6ec9",
+  "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-q38-terminal-package-20261025/ORIGINAL_Q38_PART1.tar.gz",
+  "archive_sha256": "6f75122f2588795696b4fb15cb25fa51af031f194b544a095a798dc7752564cf",
+  "archive_bytes": 3194792,
+  "regular_members": 346,
+  "logical_regular_bytes": 14674721,
+  "original_q38_regular_files": 300,
+  "original_q38_bytes": 14309477,
+  "original_gate_exit": 0,
+  "collection_exit": 0,
+  "blocking_findings": [],
+  "subject_rerun": false,
+  "case_oracle_revalidated": false,
+  "storage_is_volatile": true,
+  "published": false,
+  "remote_hash_verified": false,
+  "delivered": false,
+  "root_original_shared_admission": {
+    "shared_allocated_before_bytes": 650424320,
+    "incremental_planning_bytes": 85315157,
+    "shared_planning_ceiling_bytes": 2147483648,
+    "fresh_out_device_free_bytes": 17221455872,
+    "sampler_sha256": "919eafb54f20454ee44a27754ce04f6f63f05f6e1c9b32a5b51652058735af30",
+    "fresh_shared_plus_increment_within_ceiling": true,
+    "actual_collection_admitted": true
+  },
+  "limits": [
+    "Read-only formal require_escalated on closed package/original evidence; no source checkout or active nativeROOT access, no product test rerun.",
+    "All346 original source hashes/stat plus exact346 tar member bytes/type/mode/mtime and completegzipCRC verified.",
+    "Existing original Q38 2051/0 and independent9e6a2906 formal actual peers reused; this is package integrity, not a second product sample.",
+    "All300 retained Q38 raw leaves plus46 exact tool/peer/admission metadata retained; baseline model-base ELF preserved. Original temporary ELF/copies already removed by judge lifecycle remain unavailable; not fabricated.",
+    "SHM volatile remains deliveredfalse until normal publication and complete remote blob verification."
+  ]
+}

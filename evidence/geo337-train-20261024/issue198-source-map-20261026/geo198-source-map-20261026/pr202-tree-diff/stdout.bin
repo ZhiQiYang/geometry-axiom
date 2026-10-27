@@ -1,0 +1,29 @@
+commit 137427563de2e94e41d067282266c232f176f0d8
+Author:     Chih-Chi Yang <b10102230@gmail.com>
+AuthorDate: Sun Oct 11 22:43:12 2026 +0000
+Commit:     Chih-Chi Yang <b10102230@gmail.com>
+CommitDate: Sun Oct 11 22:43:12 2026 +0000
+
+    docs: provide lossless text parts for process sampling evidence
+
+ .../geo198/review-process-samples-parts/README.md  |  17 ++++
+ .../geo198/review-process-samples-parts/SHA256SUMS |  19 ++++
+ .../review-process-samples-parts/make-parts.py     |  27 ++++++
+ .../review-process-samples-parts/metadata.json     |  99 +++++++++++++++++++
+ .../process-samples.gzip.base64.part-01.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-02.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-03.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-04.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-05.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-06.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-07.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-08.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-09.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-10.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-11.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-12.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-13.txt        | 108 +++++++++++++++++++++
+ .../process-samples.gzip.base64.part-14.txt        |  42 ++++++++
+ .../verification-run.json                          |  12 +++
+ .../geo198/review-process-samples-parts/verify.py  |  34 +++++++
+ 20 files changed, 1654 insertions(+)

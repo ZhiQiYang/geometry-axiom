@@ -1,0 +1,42 @@
+{
+  "subject_sha256": "988a3b851db4417d41c073d02e8d3e440ea7dd22c10c53421490da79174cb720",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-peer-20261026/audit.py",
+        "--probe",
+        "fixed"
+      ],
+      "actual_process_returncode": 0,
+      "stdout": "{\"phase\": \"fixed\", \"exit_code\": 0, \"real_helper_used\": true, \"memory_only\": true, \"formal_git_network_or_cleanup_executed\": false}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-peer-20261026/audit.py",
+        "--probe",
+        "withdrawn"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-recovery-evidence-append-peer-20261026/audit.py\", line 110, in <module>\n    if len(sys.argv)==3 and sys.argv[1]=='--probe':probe(sys.argv[2])\n                                                   ^^^^^^^^^^^^^^^^^^\n  File \"/tmp/geo337-recovery-evidence-append-peer-20261026/audit.py\", line 54, in probe\n    else:raise AssertionError('UNAUTHORIZED_EVIDENCE_OVERWRITE_NOT_REJECTED')\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: UNAUTHORIZED_EVIDENCE_OVERWRITE_NOT_REJECTED\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-peer-20261026/audit.py",
+        "--probe",
+        "restored"
+      ],
+      "actual_process_returncode": 0,
+      "stdout": "{\"phase\": \"restored\", \"exit_code\": 0, \"real_helper_used\": true, \"memory_only\": true, \"formal_git_network_or_cleanup_executed\": false}\n",
+      "stderr": ""
+    }
+  ],
+  "formal_git_network_or_cleanup_executed": false
+}

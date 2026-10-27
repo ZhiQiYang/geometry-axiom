@@ -1,0 +1,103 @@
+"""Exact old Chrome cache / private index / ELF inventory, read-only."""
+from pathlib import Path
+import datetime
+import hashlib
+import importlib.util
+import json
+import os
+import stat
+import subprocess
+
+BASE=Path('/tmp/geo337-native-TMP-combined-preservation-20261025')
+OUT=BASE/'auxiliary-readonly-validation'
+OLD=Path('/workspace/geo337-TMP-retired-cache-candidates-20261025/CANDIDATES.json')
+OLD_PIN='b6f18544c99536bece433be053dc27587d3d51dd9b9a588ee0c1013d9a7c55b3'
+OWNER=Path('/workspace/geo337-old-TMP-cache-owner-metadata-20261025/FACTS.json')
+OWNER_PIN='656b7467da64843ad7de155379f6738f5652ee8915ba4e8bc0e2eec051bcf2ab'
+P52=Path('/tmp/g261r3/special/p52/receipt.json')
+CHROME=Path('/tmp/g261r3/work/codex-geo261-8f76f2b7/tmp')
+NAMES=('Cache','Code Cache','DawnGraphiteCache','DawnWebGPUCache','GPUCache')
+INDEX_ROOTS=('/tmp/g261p3/source-final','/tmp/g261htmlseal/html-source')
+
+def H(raw):return hashlib.sha256(raw).hexdigest()
+def save(name,obj):(OUT/name).write_text(json.dumps(obj,ensure_ascii=False,separators=(',',':'))+'\n')
+
+def main():
+    assert H(OLD.read_bytes())==OLD_PIN and H(OWNER.read_bytes())==OWNER_PIN
+    spec=importlib.util.spec_from_file_location('source_readonly_validator',BASE/'validate_sources_readonly.py')
+    helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+    spec=importlib.util.spec_from_file_location('consumer_original',helper.CONSUMER)
+    consumer=importlib.util.module_from_spec(spec);spec.loader.exec_module(consumer)
+    assert H(helper.CONSUMER.read_bytes())==helper.CONSUMER_PIN
+    OUT.mkdir();consumer.OUT=OUT
+    commands=[]
+    report=dict(schema='exact-old-auxiliary-cache-readonly-proof/1',started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),exit_code=1,commands=commands,archive_or_unlink_executed=False,source_or_git_mutation=False)
+    def git(root,args):
+        cmd=['git','--no-optional-locks','-c','gc.auto=0','-c','maintenance.auto=false','-C',root]+args
+        p=subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=dict(os.environ,GIT_OPTIONAL_LOCKS='0'))
+        stem=OUT/str(len(commands)).zfill(3)
+        Path(str(stem)+'.stdout.bin').write_bytes(p.stdout);Path(str(stem)+'.stderr.bin').write_bytes(p.stderr)
+        commands.append(dict(argv=cmd,exit=p.returncode,stdout_path=str(stem)+'.stdout.bin',stderr_path=str(stem)+'.stderr.bin',stdout_sha256=H(p.stdout),stderr_sha256=H(p.stderr)))
+        assert p.returncode==0
+        return p.stdout
+    try:
+        old=json.loads(OLD.read_bytes());cache_roots=[x['root'] for x in old['cache_roots']]
+        profiles=[str(CHROME/f'chrome-{n}') for n in range(9)]
+        all_consumers=cache_roots+profiles+list(INDEX_ROOTS)
+        consumer.consumer_check(all_consumers)
+        p52=json.loads(P52.read_bytes());assert p52['exit_code']==0 and p52['ended'] and p52['sha']=='8f76f2b7d6f669670e5834310bfc26495b4a4aa6'
+        elf_rows=[]
+        for group in old['cache_roots']:
+            for candidate in group['elfs']:
+                path=Path(candidate['path']);actual=helper.physical(path)
+                assert actual['sha256']==candidate['claimed_sha256'] and actual['bytes']==candidate['claimed_bytes']
+                assert (actual['device'],actual['inode'],actual['allocated'])==(candidate['device'],candidate['inode'],candidate['allocated'])
+                assert H(Path(candidate['receipt']).read_bytes())==candidate['receipt_sha256']
+                elf_rows.append(dict(path=str(path),original_state=actual,fingerprint_receipt=candidate['receipt'],fingerprint_sha256=candidate['receipt_sha256'],owner_facts_path=str(OWNER),owner_facts_sha256=OWNER_PIN,identity_limit='Isolation owner SHA is not necessarily the ELF compile SHA; retain original fingerprint identity.'))
+        assert len(elf_rows)==24 and sum(x['original_state']['allocated'] for x in elf_rows)==19243008
+        save('EXACT_ELF_LEAVES.json',elf_rows)
+        indexes=[]
+        for root in INDEX_ROOTS:
+            rootpath=Path(root);head=git(root,['rev-parse','HEAD']).decode().strip()
+            gitdir=Path(git(root,['rev-parse','--absolute-git-dir']).decode().strip())
+            common=git(root,['rev-parse','--git-common-dir']).decode().strip();common=(rootpath/common).resolve() if not Path(common).is_absolute() else Path(common).resolve()
+            index=git(root,['rev-parse','--git-path','index']).decode().strip();index=(rootpath/index).resolve() if not Path(index).is_absolute() else Path(index).resolve()
+            assert gitdir==rootpath/'.git' and common==gitdir and index==gitdir/'index' and gitdir.is_dir() and not gitdir.is_symlink()
+            assert not git(root,['diff','--cached','--name-status','-z'])
+            status=git(root,['status','--porcelain=v1','-z','--untracked-files=normal'])
+            bindings=json.loads(Path('/workspace/geo337-TMP-large-retired-source-metadata-20261025/ORIGINAL_D_RECEIPT_BINDINGS.json').read_bytes())
+            baseline=next(x for x in bindings['roots'] if x['root']==root)
+            assert head==baseline['HEAD'] and H(status)==baseline['current_status_sha256'] and baseline['status_exact_old_authorized_D_union']
+            assert not list(gitdir.glob('*.lock'))
+            refs=git(root,['for-each-ref','--format=%(refname) %(objectname)'])
+            indexes.append(dict(root=root,head=head,effective_gitdir=str(gitdir),effective_common=str(common),effective_index=str(index),status_sha256=H(status),status_known_original_D_count=baseline['current_count'],refs_sha256=H(refs),original_state=helper.physical(index)))
+        assert sum(x['original_state']['allocated'] for x in indexes)==9216000
+        save('EXACT_INDEX_LEAVES.json',indexes)
+        caches=[]
+        for n in range(9):
+            for name in NAMES:
+                leaf=CHROME/f'chrome-{n}'/'Default'/name
+                assert leaf.is_dir() and not leaf.is_symlink()
+                files=[];dirs=[]
+                for path in sorted(leaf.rglob('*')):
+                    s=path.lstat();assert not stat.S_ISLNK(s.st_mode)
+                    if stat.S_ISDIR(s.st_mode):
+                        dirs.append(dict(relative=str(path.relative_to(leaf)),device=s.st_dev,inode=s.st_ino,mode=s.st_mode,mtime_ns=s.st_mtime_ns,nlink=s.st_nlink))
+                    else:files.append(dict(relative=str(path.relative_to(leaf)),original_state=helper.physical(path)))
+                caches.append(dict(path=str(leaf),profile=str(CHROME/f'chrome-{n}'),files=files,directories=dirs,terminal_receipt=str(P52),terminal_receipt_sha256=H(P52.read_bytes())))
+        cache_bytes=sum(x['original_state']['allocated'] for c in caches for x in c['files'])
+        # The earlier du total included directory blocks; preserve both values.
+        report['Chrome_previous_metadata_total_with_directories']=10350592
+        save('EXACT_CHROME_CACHE_LEAVES.json',caches)
+        after=OUT/'after-consumers';after.mkdir();consumer.OUT=after;consumer.consumer_check(all_consumers)
+        for row in indexes:
+            assert helper.physical(Path(row['effective_index']))==row['original_state']
+            assert H(git(row['root'],['status','--porcelain=v1','-z','--untracked-files=normal']))==row['status_sha256']
+            assert H(git(row['root'],['for-each-ref','--format=%(refname) %(objectname)']))==row['refs_sha256']
+        report.update(exit_code=0,ELF_count=24,ELF_allocated_bytes=19243008,index_count=2,index_allocated_bytes=9216000,Chrome_whitelist_directories=len(caches),Chrome_file_count=sum(len(c['files']) for c in caches),Chrome_file_allocated_bytes=cache_bytes,consumer_scope_limit='Original accessible /proc only; root no-reuse lease and repeat checks still required immediately before execution.')
+    except Exception as error:
+        report['error']=repr(error);raise
+    finally:
+        report['ended_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat();save('RESULT.json',report);print(json.dumps({k:v for k,v in report.items() if k!='commands'},ensure_ascii=False))
+
+if __name__=='__main__':main()

@@ -1,0 +1,73 @@
+{
+  "schema": "geo337-resume-architecture-actual-audit/1",
+  "reviewedUtc": "2026-10-26T09:11:37.931988+00:00",
+  "sourceSHA": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "exit_code": 0,
+  "checkCount": 2720,
+  "blockingFindings": [],
+  "formalProductTestsRerun": false,
+  "productSourceModified": false,
+  "gitCommandsExecuted": true,
+  "adoptionPerformed": false,
+  "usableForS10ArchitectureArtifactAdoption": true,
+  "requiresBeforeFinalAdoption": [
+    "Root must publish full original package and verify remote bytes.",
+    "Root must verify final adoption diff contains only intended generated ledger/report/receipt.",
+    "S10 execution source remains S10; future final SHA must not be labelled as the execution source of these original gates."
+  ],
+  "actualOriginalAssemblyExit": 0,
+  "originalAssemblyStartedUtc": "2026-10-25T17:38:15.483822+00:00",
+  "originalAssemblyEndedUtc": "2026-10-25T17:38:15.949628+00:00",
+  "originalGateExits": [
+    0,
+    0,
+    0
+  ],
+  "originalGateTestCounts": [
+    null,
+    205,
+    18
+  ],
+  "originalLedgerStaleExitRetained": 1,
+  "inputCount": 604,
+  "inputClosureSHA256": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
+  "changedArtifacts": [
+    "PRODUCT-ARCHITECTURE.md",
+    "product-architecture-receipt.json"
+  ],
+  "artifactPins": {
+    "product-architecture.json": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+    "product-architecture-scan.json": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+    "PRODUCT-ARCHITECTURE.md": "e6510266388f06d19acf650ff0ecc4c307dc1f4cb41df5a8632cb5caffe17afc",
+    "product-architecture-receipt.json": "5aee34b55d42569c6d8ec012f17d631a3417cb98bd33ce6cc183a34d1d6136de"
+  },
+  "originalRegularFileCount": 118,
+  "originalLogicalBytes": 9885925,
+  "artifactInventoryCanonicalSHA256": "4cd5b6a98e752560a31952495829b8f88427012b6f3fb268e8045c17d34328d1",
+  "reviewScriptSHA256": "140a87b0cc80f461550ea9dfcb4acfe128d69c5321f23436b3d1f858f2474a71",
+  "limits": [
+    "This is a read-only actual evidence audit, not a rerun of architecture, native, browser or mutation tests.",
+    "Historical 9 fixed/withdrawn/restored controls and 2 neutral cases remain M6e50; their raw execution archive was not reaudited here.",
+    "Outer receipt/complete streams and current source confirm recorded assembly; independent cryptographic timestamps or remote delivery are outside this audit.",
+    "Latest head a6f4013364e21bcb7239b5dcc25caac0f6d61f77 has a different decision-queue snapshot. This is only an S10 historical architecture receipt; it cannot certify a6f40133 or a later final source without fresh identity/snapshot handling."
+  ],
+  "latestHeadContext": {
+    "headReportedByRoot": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+    "command": [
+      "git",
+      "--no-optional-locks",
+      "-C",
+      "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+      "show",
+      "a6f4013364e21bcb7239b5dcc25caac0f6d61f77:決策佇列.md"
+    ],
+    "exit_code": 0,
+    "stdoutBytes": 244340,
+    "stdoutSHA256": "e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historicalS10DecisionSHA256": "fe822051b5413fb79490b333e23f3c9d6b96959c01f937c274d3246772c15e14",
+    "formalGate": false,
+    "onlyMetadataSaved": true,
+    "decisionSnapshotDiffersFromS10": true
+  }
+}

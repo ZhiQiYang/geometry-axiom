@@ -1,0 +1,117 @@
+"""Read-only exact candidate validation. No cleanup, test, checkout or ref mutation."""
+from pathlib import Path
+import collections
+import datetime
+import hashlib
+import importlib.util
+import json
+import os
+import stat
+import subprocess
+
+BASE = Path('/tmp/geo337-native-TMP-combined-preservation-20261025')
+SCOPE = BASE / 'SOURCE_SCOPE.v2.json'
+PIN = '32c2828e807970d9bfa788d7394dfd5246a36ad72daf57d6bc94f67784242884'
+OUT = BASE / 'source-readonly-validation'
+CONSUMER = Path('/workspace/clear_terminal_chrome_caches.py')
+CONSUMER_PIN = 'c51b4da96fc8ce88043484d3072a870fd725a18b00e6288e12144c399069e847'
+
+def h(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def save(name, value):
+    (OUT / name).write_text(json.dumps(value, ensure_ascii=False, separators=(',', ':')) + '\n')
+
+def physical(path):
+    for parent in reversed(path.parents):
+        assert stat.S_ISDIR(parent.lstat().st_mode) and not parent.is_symlink(), str(parent)
+    s = path.lstat()
+    assert stat.S_ISREG(s.st_mode) and s.st_nlink == 1, str(path)
+    sha = hashlib.sha256()
+    git = hashlib.sha1(b'blob ' + str(s.st_size).encode() + b'\0')
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NOATIME)
+    try:
+        with os.fdopen(fd, 'rb', closefd=False) as stream:
+            for block in iter(lambda: stream.read(1024 * 1024), b''):
+                sha.update(block)
+                git.update(block)
+        after = os.fstat(fd)
+        assert (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns, s.st_mode, s.st_nlink) == (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns, after.st_mode, after.st_nlink)
+    finally:
+        os.close(fd)
+    return dict(device=s.st_dev, inode=s.st_ino, mode=s.st_mode, uid=s.st_uid, gid=s.st_gid, nlink=s.st_nlink, bytes=s.st_size, allocated=s.st_blocks * 512, mtime_ns=s.st_mtime_ns, ctime_ns=s.st_ctime_ns, atime_ns=s.st_atime_ns, sha256=sha.hexdigest(), git_blob_sha1=git.hexdigest(), xattrs={k:os.getxattr(path, k, follow_symlinks=False).hex() for k in os.listxattr(path, follow_symlinks=False)})
+
+def main():
+    assert h(SCOPE.read_bytes()) == PIN
+    assert h(CONSUMER.read_bytes()) == CONSUMER_PIN
+    scope = json.loads(SCOPE.read_bytes())
+    OUT.mkdir()
+    commands = []
+    report = dict(schema='exact-source-candidate-readonly-byte-proof/1', started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), scope_sha256=PIN, exit_code=1, source_or_index_or_refs_mutated=False, cleanup_executed=False, commands=commands, checked_leaves=0, checked_allocated_bytes=0)
+    env = dict(os.environ, GIT_OPTIONAL_LOCKS='0')
+    groups = collections.defaultdict(list)
+    for row in scope['retained_rows']:
+        groups[row['root']].append(row)
+    old = json.loads(Path('/workspace/ordinary-code-retirement-20261023/RESULT.json').read_bytes())
+    recent = json.loads(Path('/workspace/geo337-retired-three-source-retirement-execution-20261025/RESULT.json').read_bytes())
+    assert old['exit_code'] == recent['exit_code'] == 0
+    prior_paths = {r['path'] for r in old['removed']} | set(recent['removed_paths'])
+    prior_paths |= {json.loads(line)['path'] for line in Path('/workspace/tmp-coldcode-cleanup-20261024/execution-r2/UNLINKED.jsonl').read_text().splitlines()}
+    def git(root, args, stdin=None):
+        cmd = ['git','--no-optional-locks','-c','gc.auto=0','-c','maintenance.auto=false','-C',root] + args
+        result = subprocess.run(cmd, input=stdin, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+        ident = str(len(commands)).zfill(3)
+        (OUT / (ident + '.stdout.bin')).write_bytes(result.stdout)
+        (OUT / (ident + '.stderr.bin')).write_bytes(result.stderr)
+        commands.append(dict(argv=cmd, exit_code=result.returncode, stdout_path=str(OUT / (ident+'.stdout.bin')), stderr_path=str(OUT / (ident+'.stderr.bin')), stdout_sha256=h(result.stdout), stderr_sha256=h(result.stderr), stdin_sha256=h(stdin) if stdin is not None else None))
+        assert result.returncode == 0, cmd
+        return result.stdout
+    def status(root):
+        raw = git(root, ['status','--porcelain=v1','-z','--untracked-files=normal'])
+        records = [x for x in raw.split(b'\0') if x]
+        known = {x[len(root)+1:] for x in prior_paths if x.startswith(root+'/')}
+        assert len(records) == len(known) and {x[3:].decode() for x in records if x.startswith(b' D ')} == known, root
+        assert not git(root, ['diff','--cached','--name-status','-z']), root
+        return h(raw)
+    spec=importlib.util.spec_from_file_location('original_consumer_guard',CONSUMER)
+    consumer=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(consumer)
+    consumer.OUT=OUT
+    try:
+        consumer.consumer_check(sorted(groups))
+        for root, rows in groups.items():
+            assert git(root,['rev-parse','HEAD']).decode().strip() == rows[0]['head']
+            before_status = status(root)
+            batch_input=''.join(row['Git_blob']+'\n' for row in rows).encode()
+            result=git(root,['cat-file','--batch-check=%(objectname) %(objecttype) %(objectsize)'],batch_input)
+            expected=[f"{row['Git_blob']} blob {row['Git_bytes']}" for row in rows]
+            assert result.decode().splitlines() == expected
+            for row in rows:
+                p=Path(root)/row['relative']
+                actual=physical(p)
+                assert actual['bytes'] == row['Git_bytes'] and actual['git_blob_sha1'] == row['Git_blob'], str(p)
+                assert bool(actual['mode'] & 0o111) == (row['Git_mode']=='100755'), str(p)
+                assert (actual['inode'],actual['device'],actual['allocated']) == (row['inode'],row['device'],row['allocated']), str(p)
+                with (OUT/'VALIDATED.jsonl').open('a') as stream:
+                    stream.write(json.dumps(dict(path=str(p),head=row['head'],git_blob=row['Git_blob'],git_mode=row['Git_mode'],original_state=actual),ensure_ascii=False,separators=(',',':'))+'\n')
+                report['checked_leaves'] += 1
+                report['checked_allocated_bytes'] += actual['allocated']
+            assert before_status == status(root)
+            assert git(root,['rev-parse','HEAD']).decode().strip() == rows[0]['head']
+        consumer.OUT=OUT/'after-consumers'
+        consumer.OUT.mkdir()
+        consumer.consumer_check(sorted(groups))
+        assert report['checked_leaves'] == scope['retained_count']
+        assert report['checked_allocated_bytes'] == scope['retained_allocated_bytes']
+        report['exit_code']=0
+    except Exception as error:
+        report['error']=repr(error)
+        raise
+    finally:
+        report['ended_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+        report['consumer_limit']='Original accessible /proc scope only; root explicit terminal/no-reuse lease still required. This receipt is not a cleanup or formal test admission.'
+        save('RESULT.json',report)
+        print(json.dumps({k:v for k,v in report.items() if k!='commands'},ensure_ascii=False))
+
+if __name__=='__main__':
+    main()

@@ -1,0 +1,57 @@
+from pathlib import Path
+import ast,hashlib,json,difflib,datetime
+O=Path(__file__).parent
+F='cbf0fb621888596aa14ad5f2349b503e23b1b72d'
+H='9a8584f57be7935604c3bad4c2481945a6ec3d9f'
+def raw(tag):return (O/tag/'stdout.bin').read_bytes()
+def h(b):return hashlib.sha256(b).hexdigest()
+def constants(tag,names):
+ tree=ast.parse(raw(tag));found={}
+ for n in tree.body:
+  if isinstance(n,ast.Assign):
+   for t in n.targets:
+    if isinstance(t,ast.Name)and t.id in names:found[t.id]=ast.literal_eval(n.value)
+ assert set(found)==set(names);return found
+def reverse_edits(text,edits):
+ for before,after in reversed(edits):assert text.count(after)==1; text=text.replace(after,before)
+ return text
+r={'schema':'geo300-readonly-prerequisite-source-and-batch-analysis/1','analyzed_source_sha':F,'capacity_head':H,'generated_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'product_executed':False,'compiler_executed':False,'source_or_ref_modified':False,'new_performance_samples':False,'exit_code':1}
+s=constants('source-index-tests',{'EDGE_PROBE_REUSE_EDITS','PROVIDER_HINT_EDIT'})
+source=raw('kernel-source').decode();source_old=reverse_edits(reverse_edits(source,[s['PROVIDER_HINT_EDIT']]),s['EDGE_PROBE_REUSE_EDITS'])
+assert source_old.encode()==raw('pr348-source')
+w=constants('wood-contact-tests',{'MONOTONIC_SORT_BLOCK','PLANE_RANGE_EDITS'})
+contact=raw('contact-world').decode();assert contact.count(w['MONOTONIC_SORT_BLOCK'])==1
+contact_old=reverse_edits(contact.replace(w['MONOTONIC_SORT_BLOCK'],''),w['PLANE_RANGE_EDITS'])
+assert contact_old.encode()==raw('pr348-contact')
+r['missing_existing_optimizations']=[{'path':'geometry-core/kernel/source.c','current_sha256':h(raw('kernel-source')),'capacity_sha256':h(raw('pr348-source')),'exact_reversal_matches_capacity':True,'groups':['EDGE_PROBE_REUSE_EDITS','PROVIDER_HINT_EDIT']},{'path':'geometry-templates/woodworking/native/contact_world.c','current_sha256':h(raw('contact-world')),'capacity_sha256':h(raw('pr348-contact')),'exact_reversal_matches_capacity':True,'groups':['MONOTONIC_SORT_BLOCK','PLANE_RANGE_EDITS']}]
+for a,b in [('pr348-source','kernel-source'),('pr348-contact','contact-world')]:
+ (O/(a+'-to-F.diff')).write_text(''.join(difflib.unified_diff(raw(a).decode().splitlines(keepends=True),raw(b).decode().splitlines(keepends=True),fromfile=H+'/'+a,tofile=F+'/'+b)))
+# Execute only the unchanged pure generator build() in memory; its main/write/selftest paths are never called.
+ns={'__name__':'capacity_static_generator','__file__':str(O/'pr348-geo300_scene_generator.py/stdout.bin')}
+exec(compile(raw('pr348-geo300_scene_generator.py'),'unchanged-geo300-scene-generator','exec'),ns)
+host=ast.parse(raw('pr348-test_geo261_timber_capacity_host.py'))
+cls=next(n for n in host.body if isinstance(n,ast.ClassDef)and n.name=='TimberCapacityHost')
+method=next(n for n in cls.body if isinstance(n,ast.FunctionDef)and n.name=='test_real_placed_512_sequential_replay_and_safe_513_history')
+selected=[n for n in method.body if 260<=n.lineno<=270]
+assert [type(n).__name__ for n in selected]==['Assign','Assign','AugAssign']
+batch=next(n for n in cls.body if isinstance(n,ast.FunctionDef)and n.name=='placed_batch')
+calls=[n for n in ast.walk(batch)if isinstance(n,ast.Call)and isinstance(n.func,ast.Attribute)and n.func.attr=='run_once'];assert len(calls)==1
+timeout=next(k for k in calls[0].keywords if k.arg=='timeout');assert ast.literal_eval(timeout.value)==600
+r['original_timeout_seconds_per_batch']=600
+r['generator_sha256']=h(raw('pr348-geo300_scene_generator.py'))
+r['fixture_metadata']=[]
+for n in [64,128,256,512]:
+ text,meta=ns['build'](n,'single');statements=[line for line in text.splitlines()if line.strip()and not line.lstrip().startswith('#')]
+ counts={verb:sum(line.startswith(verb+' ')for line in statements)for verb in ['surface','grid','timber','place']}
+ assert counts=={'surface':1,'grid':1,'timber':n,'place':n}
+ item={'n':n,'scene_bytes':len(text.encode()),'scene_sha256':h(text.encode()),'statements':len(statements),'counts':counts,'rooms':meta['rooms'],'leaf_delete':meta['leaf']['delete']}
+ if n==512:
+  scope={'text':text,'meta':meta,'INCOMPLETE_DECLARATION':'timber 513 27 33'}
+  module=ast.fix_missing_locations(ast.Module(body=selected,type_ignores=[]));exec(compile(module,'original-host-batch-construction','exec'),scope)
+  commands=scope['commands'];assert len({name for name,_ in commands})==len(commands)
+  item.update(sequential_batch_commands=len(commands),sequential_prefix=commands[:2],sequential_suffix=commands[-21:],preload_batch_commands=['loadfile <same generated fixture>','dump','objects','references'])
+ r['fixture_metadata'].append(item)
+r['limits']=['These checks only prove source delta and original batch construction, not C behavior or speed.','The 600-second timer belongs to each placed_batch subprocess, not to loadfile alone or the whole unittest method.','Generator geometry self-check is not evidence that the bridge accepts a placed world.','Historical two TimeoutExpired results remain failures; no resampling, timeout changes or return-code fabrication.']
+r['exit_code']=0
+(O/'ANALYSIS.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(r,ensure_ascii=False,indent=2))

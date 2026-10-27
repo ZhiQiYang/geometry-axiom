@@ -1,0 +1,138 @@
+{
+  "exit_code": 0,
+  "utc": "2026-10-27T04:33:58.614704+00:00",
+  "reviewer": "/root/axiom_delivery_pack/delivery_peer",
+  "scope": "Static final four-natural-archive plan/tool review only. No package generation, SHM original payload read/hash, network, publisher execution or product rerun.",
+  "pins": {
+    "prepare.py": {
+      "bytes": 8667,
+      "sha256": "a7a7a34a0c2b252931512d6ccee1a92aef2a802ac9965a31c81ac0fac248f2fa"
+    },
+    "build.py": {
+      "bytes": 7637,
+      "sha256": "a550ac98b8faa9dfb158378c243f1e65bcf0fbc7db182a30bb7ca635023ce46f"
+    },
+    "FIXED_INPUTS.json": {
+      "bytes": 16115,
+      "sha256": "f85d5b81729c611972a37bf30f042c8501514d8477fffec710b3ab890cc8d353"
+    },
+    "FINAL_PLAN.json": {
+      "bytes": 2486592,
+      "sha256": "0857de0ecbb07ac5014155e8b7ea8bd1ce4da0d2e22368853f4d029a215fd1fd"
+    },
+    "FINAL_COST.json": {
+      "bytes": 2590,
+      "sha256": "6a91bfe195bd2144838baa9a73ca573fc2c67caf3e4881e697a69b5a195c1387"
+    }
+  },
+  "checks_passed": 1971,
+  "prior_audited_regular_files_and_hashes_preserved": 1901,
+  "bounds": [
+    {
+      "name": "F-space",
+      "regular_files": 631,
+      "original_bytes": 44128360,
+      "directories": 793,
+      "nonregular_metadata_only": 0,
+      "index_bytes": 647195,
+      "tar_exact_bytes": 46858240,
+      "gzip_worst_bytes": 46872586,
+      "blob_limit_bytes": 104857600
+    },
+    {
+      "name": "F-timber",
+      "regular_files": 605,
+      "original_bytes": 35700546,
+      "directories": 793,
+      "nonregular_metadata_only": 0,
+      "index_bytes": 634164,
+      "tar_exact_bytes": 38389760,
+      "gzip_worst_bytes": 38401521,
+      "blob_limit_bytes": 104857600
+    },
+    {
+      "name": "F-canvas",
+      "regular_files": 734,
+      "original_bytes": 56481184,
+      "directories": 838,
+      "nonregular_metadata_only": 5,
+      "index_bytes": 702623,
+      "tar_exact_bytes": 59453440,
+      "gzip_worst_bytes": 59471629,
+      "blob_limit_bytes": 104857600
+    },
+    {
+      "name": "reception-publication",
+      "regular_files": 389,
+      "original_bytes": 1377282,
+      "directories": 80,
+      "nonregular_metadata_only": 0,
+      "index_bytes": 280714,
+      "tar_exact_bytes": 2416640,
+      "gzip_worst_bytes": 2417422,
+      "blob_limit_bytes": 104857600
+    }
+  ],
+  "original_formula_bytes": 561551426,
+  "incremental_full_chain_upper_bytes": 760719254,
+  "build_one_AST_identical": true,
+  "complete_build_inverse_diff_matches_reviewed_source": true,
+  "reused_tiny_proof": {
+    "path": "/tmp/geo-next-bundle-peer-20261027/fixture/RESULT.json",
+    "sha256": "e66a53a7d6f93ffdea90f607a559f250e849c756a3f4d1863e1f88ad2103074f",
+    "gate_sequence": [
+      0,
+      1,
+      0
+    ],
+    "not_rerun": true,
+    "reason": "Exact unchanged build_one/validator/stream reader and index/tar/bound helpers; only fixed paths/result metadata changed"
+  },
+  "alias_scope": {
+    "count": 15,
+    "existing_bytes": 100217727,
+    "new_payload_bytes": 0,
+    "original_readback_files_excluded_from_payload": true,
+    "next_publisher_must_prove_same_remote_tree_OID": true
+  },
+  "reception_scope": {
+    "native_exact_small_files": [
+      "/tmp/geo338-native-reception-peer-20261027/NATIVE_RECEPTION_STATIC_PEER.json",
+      "/tmp/geo338-native-reception-peer-20261027/RECEPTION_PEER.json",
+      "/tmp/geo338-native-reception-peer-20261027/review_native.py"
+    ],
+    "reading_a_explicit_small_files": [
+      "/tmp/geo338-reading-a-reception-20261027/RECEPTION_PEER.json",
+      "/tmp/geo338-reading-a-reception-20261027/RECEPTION_PEER.v2.json",
+      "/tmp/geo338-reading-a-reception-20261027/fetch_selected.py",
+      "/tmp/geo338-reading-a-reception-20261027/manifest/MANIFEST.json",
+      "/tmp/geo338-reading-a-reception-20261027/review.py",
+      "/tmp/geo338-reading-a-reception-20261027/review_golden_binding.py",
+      "/tmp/geo338-reading-a-reception-20261027/selected-fetch/RESULT.json"
+    ],
+    "additional_complete_capture_root": "/tmp/geo338-reading-a-reception-20261027/golden-driver-F",
+    "reading_a_payload_count_in_this_bundle": 14,
+    "no112or137original_payload_copy": true
+  },
+  "canvas_final_actual_peer_included": true,
+  "original_golden_and_strict_product_rules_unchanged": true,
+  "execution_conditions": [
+    "Root must coordinate no concurrent formal jobs",
+    "Run python3 -B build.py with exact reviewed FINAL_PLAN SHA",
+    "Fresh twoOWN+full increment<=8GiB and actual SHM/memory checks must pass;64MiB and original3P reserve retained",
+    "No existing output overwrite; preserve any failure",
+    "Later multi-alias publisher requires its own independent review and final manifest/P/L/M admission"
+  ],
+  "next_command": [
+    "python3",
+    "-B",
+    "/tmp/geo-F-browser-final-delivery-plan-20261027/build.py",
+    "0857de0ecbb07ac5014155e8b7ea8bd1ce4da0d2e22368853f4d029a215fd1fd"
+  ],
+  "limits": [
+    "This review permits attempting build only after fresh admission, not claiming build or delivery success",
+    "External native/ReadingA/PF3/Q38 links are identity references, not independently revalidated result claims in this review",
+    "Source metadata for previously un-hashed small receipt files is rechecked and hashed by the actual builder; no repeated raw read performed here"
+  ],
+  "final_peer_separate_leaf_not_frozen_source": true
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "candidate-scope-withdraw-restore-metadata-proof/1",
+  "commands": [
+    {
+      "name": "fixed",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo337-native-TMP-combined-preservation-20261025/scope-counterproof/check_candidate_scope.py",
+        "/tmp/geo337-native-TMP-combined-preservation-20261025/SOURCE_SCOPE.v2.json",
+        "fixed"
+      ],
+      "exit": 0,
+      "stdout_sha256": "cf9f97d09590d715a49ef92a2a294d283d0bd4f94b4c26b4c78e4957e2bf9fda",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "withdrawn-filter",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo337-native-TMP-combined-preservation-20261025/scope-counterproof/check_candidate_scope.py",
+        "/tmp/geo337-native-TMP-combined-preservation-20261025/SOURCE_SCOPE.v2.json",
+        "original"
+      ],
+      "exit": 1,
+      "stdout_sha256": "e4a65be6bea7218b8e36f5f7fe2ca23a60e03ae049b04ec6efffca8b14305fc4",
+      "stderr_sha256": "927925e9a8884ae21ca2048376d0c3386aee6d834948208099a3d8f232c234b3"
+    },
+    {
+      "name": "restored-filter",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo337-native-TMP-combined-preservation-20261025/scope-counterproof/check_candidate_scope.py",
+        "/tmp/geo337-native-TMP-combined-preservation-20261025/SOURCE_SCOPE.v2.json",
+        "fixed"
+      ],
+      "exit": 0,
+      "stdout_sha256": "cf9f97d09590d715a49ef92a2a294d283d0bd4f94b4c26b4c78e4957e2bf9fda",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "exit_code": 0,
+  "scope_sha256": "32c2828e807970d9bfa788d7394dfd5246a36ad72daf57d6bc94f67784242884",
+  "subject_source_read_or_modified": false,
+  "formal_test": false,
+  "cleanup_executed": false,
+  "meaning": "Original scope reintroduction includes 14 browser judge leaves and fails; exclusion/restoration pass. Not a product test or cleanup execution proof."
+}

@@ -1,0 +1,234 @@
+{
+  "schema": "single-native-TMP-preservation-retirement-plan/2",
+  "utc": "2026-10-25T16:11:55.480891+00:00",
+  "plan_only": true,
+  "cleanup_executed": false,
+  "actual_freed_bytes": 0,
+  "peer_status": "PENDING_SINGLE_CURRENT_PLAN_STATIC_REVIEW",
+  "root_execution_leases": {
+    "exact_scope_owned_terminal_no_future_reuse": false,
+    "no_active_consumers_scheduler_scope": false,
+    "all_binary_index_payloads_persisted_and_remote_verified": false,
+    "maintenance_execution_authorized": false
+  },
+  "exact_scope": [
+    {
+      "kind": "Git-reconstructible pure product/static materialization",
+      "roots": [
+        "/tmp/g261-final299316-5bfadf18-r2",
+        "/tmp/g261-next299316",
+        "/tmp/g261-next314",
+        "/tmp/g261-next323",
+        "/tmp/g261f314-cc67e251",
+        "/tmp/g261htmlseal/html-source",
+        "/tmp/g261p3/source-final",
+        "/tmp/g261r3/source-final",
+        "/tmp/g261r3/work/codex-geo261-8f76f2b7/repo",
+        "/tmp/g288f-13d02c1d",
+        "/tmp/geo261-p73-resume-20261022-5z1cdxpj/source-proof"
+      ],
+      "exact_rows_manifest": "/tmp/geo337-native-TMP-combined-preservation-20261025/SOURCE_SCOPE.v2.json",
+      "current_validation": "/tmp/geo337-native-TMP-combined-preservation-20261025/source-readonly-validation/VALIDATED.jsonl",
+      "leaf_count": 2439,
+      "allocated_bytes": 68423680,
+      "cleanup_method": "After all batch preservation and root final authorization: per-leaf fresh physical identity/Git OID/hash equality, durable intent, unlink this exact leaf, durable completion. Keep original status D plus exactly newly removed paths; do not change index/refs or any other leaf.",
+      "protected_correction": "Original candidate scope B1 rejected. New v2 excludes all 14 *_browser_check.js plus 59 conservatively ambiguous leaves; old candidate/report preserved. No test removal."
+    },
+    {
+      "kind": "Terminal original P52 Chrome regenerable cache only",
+      "exact_rows_manifest": "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/EXACT_CHROME_CACHE_LEAVES.json",
+      "profile_root": "/tmp/g261r3/work/codex-geo261-8f76f2b7/tmp",
+      "profile_count": 9,
+      "whitelisted_cache_directory_count": 45,
+      "file_count": 691,
+      "allocated_bytes": 10350592,
+      "allowlist": [
+        "Default/Cache",
+        "Default/Code Cache",
+        "Default/DawnGraphiteCache",
+        "Default/DawnWebGPUCache",
+        "Default/GPUCache"
+      ],
+      "cleanup_method": "Only the frozen exact file list, fresh identity/hash and namespace equality; rmdir frozen empty cache directories only. Preserve every profile node outside exact allowlist, feedback/screenshots/receipts/sockets/source/runtime binaries. Never remove whole profile."
+    },
+    {
+      "kind": "Two independent terminal private Git index caches",
+      "exact_rows_manifest": "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/EXACT_INDEX_LEAVES.json",
+      "roots": [
+        "/tmp/g261p3/source-final",
+        "/tmp/g261htmlseal/html-source"
+      ],
+      "leaf_count": 2,
+      "allocated_bytes": 9216000,
+      "archive_before_retire_required": true,
+      "cleanup_method": "Only effective physical .git/index proved independent regular nlink1; no index.lock/live users/staged changes. Preserve original full status D and pending newly authorized source D. Before unlink require complete original raw bytes+gzip+manifest+metadata+roundtrip+fsync AND normal remote publication/full remote blob checks. Preserve .git refs/objects/config/HEAD and all source fixtures. Mark root INACTIVE_REQUIRE_INDEX_RESTORE_AND_SOURCE_REBUILD."
+    },
+    {
+      "kind": "24 old compiled ELF cache payloads",
+      "exact_rows_manifest": "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/EXACT_ELF_LEAVES.json",
+      "roots": [
+        "/tmp/geometry-tests-pre-followup-261-13d02c1d",
+        "/tmp/geometry-tests-pre-followup-299-316-5bfadf18",
+        "/tmp/geometry-tests-pre-followup-314-cc67e251",
+        "/tmp/geometry-tests-pre-geo323-f43e8d8b"
+      ],
+      "leaf_count": 24,
+      "allocated_bytes": 19243008,
+      "owner_terminal_binding": "FACTS.json pins original cache-isolation inventories and successor terminal receipts. Old ELF compile identity remains original fingerprint identity; do not relabel as successor SHA.",
+      "archive_before_retire_required": true,
+      "cleanup_method": "After complete original bytes+gzip+original fingerprint+metadata+roundtrip+fsync AND normal publication/full remote blob checks, fresh per-leaf physical/hash guard and durable journal may retire only named old ELF leaf. Leave sidecars/run_all-logs/receipts/fixtures/build-locks and every unlisted path. Mark these cache roots permanently inactive; later tests get new cache/source."
+    }
+  ],
+  "known_terminal_and_source_preservation": {
+    "old_D": "All ten changed roots current status exactly equals prior authorized retirement D union; clean P73 status empty. Original D union receipts and current full Git streams pinned. Any new M/A/unknown D/staged/untracked rejects root.",
+    "source_bytes": "2439 regular nlink1 leaves read O_NOATIME, SHA256 recorded, Git blob SHA1/type/size/exec mode equal retained object, all ancestors nonsymlink, fresh metadata/xattrs recorded. No blob/receipt copied or source changed.",
+    "auxiliary_bytes": "24 old ELF bytes equal original fingerprints and isolation metadata; two indexes actual gitdir/common/index independent and staged diff empty; 45 Chrome cache dirs exact 691 files hashes recorded.",
+    "consumer_limitation": "Original c51 accessible /proc cwd/exe/cmdline/fd guard before/after returned no observed hits. It cannot prove inaccessible OS processes; root scheduler no-reuse lease still required; repeat immediately before archive and maintenance.",
+    "read_only_validations_exit": [
+      0,
+      0
+    ],
+    "scope_fix_counterproof": "metadata-only fixed / original filter withdrawn / restored =0/1/0; original scope reintroduces browser judges. Not a formal product test."
+  },
+  "preservation_and_execution_sequence": [
+    {
+      "phase": "A — freeze metadata and archive only",
+      "action": "Root reserves these precise old roots permanently against future test reuse; independent plan/tool peer; acquire original existing heavy and secondary maintenance locks nonblocking only after current full123/other users release. Build one new own SHM archive package containing all 26 index/ELF original bytes, individual reproducible gzip streams or one fully indexed archive, original full metadata/fingerprints/owner receipts, all exact source/Chrome manifests, original Git/consumer streams, restore instructions. Use fresh absent output, regular paths, full roundtrip/hash and fsync. Original files remain intact.",
+      "OUT_reserved_not_created": "/dev/shm/geometry-axiom-geo337-20261025/native-TMP-preservation-20261025",
+      "archive_payload_leaf_count": 26,
+      "original_payload_logical_bytes": 28409963,
+      "gzip_worst_case_reference_bytes": 28421238,
+      "budget_rule": "Actual combined OWN allocated + full-original payload/raw plus gzip upper bound plus metadata/capture/remote copies and original stage reserve checked on real SHM before root executes. This plan is not an admission; no SHM write here."
+    },
+    {
+      "phase": "B — remote persistence before any retirement",
+      "action": "Independent actual archive peer; root normal-push all full payloads/manifests/restore/receipts from approved SHM publisher; remote download every archive/full-raw payload blob and check byte length/SHA256/GitOID. Save exact resolvable E and remote verification original result in root-bound request. Leave all original local index/ELF/source/Chrome files until this true0 is verified."
+    },
+    {
+      "phase": "C — exact maintenance only",
+      "action": "Root alone binds four true leases and peer/remote pins. No overlapping formal test or cache consumer. Repeat complete fresh checks for all four groups before first unlink; no unfamiliar drift. Preserve all original raw/fixtures/receipts/Git objects and retain all newly created archive/remote proof. Execute explicit per-leaf manifest only with fsynced intent/completion journal; record actual removed list on any partial failure, never overwrite unrelated files or fake rollback. Separate old roots or cache names cannot be inferred from glob.",
+      "order": "Source/Chrome leaves first, archive-backed ELF next, private indexes last; preserve each current baseline and expected new D union before removing indexes. Index removal roots cannot be Git-inspected again until deliberate restore; use physical refs/HEAD/object-preservation checks and mark no-reuse.",
+      "restore": "From exact remote-published original raw/gzip, verify size/SHA256 then write temp+fsync+safe no-clobber rename+directory fsync, restore recorded permissions/xattrs as supported. New inode/ctime are expected and must be recorded; never claim full physical metadata restoration. Source product leaves reconstruct from retained exact Git blobs after index restoration in a fresh checkout for any future formal run."
+    },
+    {
+      "phase": "D — observed resources and native admission",
+      "action": "Record true per-device statvfs before/after and actual allocated retirement counts. All original receipts remain unchanged. Only then fresh-check original native128MiB guard at /tmp/geometry-tests actual filesystem plus unchanged original source/cache quiescence guards. Do not use projected candidate sum or SHM free as TMP admission. Native wrapper retains old cache by same-device rename; preserve all new runtime/raw and original ELF bytes. Existing WS/SHM full123 guards keep original24/272 numeric values on actual work filesystem."
+    }
+  ],
+  "capacity": {
+    "initial_root_selected_superset_allocated_bytes": 108257280,
+    "conservative_ambiguous_source_exclusion_bytes": 1024000,
+    "current_exact_candidate_allocated_bytes": 107233280,
+    "fresh_TMP_bytes_before_any_execution": 43053056,
+    "native_original_startup_guard_bytes": 134217728,
+    "hypothetical_free_after_all_candidates_without_cost": 150286336,
+    "hypothetical_margin_before_new_recording_cost": 16068608,
+    "actual_net_release_bytes": 0,
+    "admitted": false,
+    "future_peak_known": false,
+    "limits": "Allocated sums are candidate/gross only; source and Chrome metadata already consume some TMP, future journaling/archives/native outputs change free. Only true fresh admission after maintenance counts. Native continuous peak is unmeasured; original native CI/CLI/assertions unchanged. SHM volatile archive requires remote persistence."
+  },
+  "prohibited": [
+    "No cleanup of F10/S10 full123 source/pool/cache, active F9 native source/cache, R8 or P189 source/binaries, future-gate dependencies, fixtures/scenes/tests/receipts/evidence/raw/Git objects.",
+    "No force push, branch mutation, product/test changes, mount/quota/security changes, symbolic-link relocation, threshold reduction or fabricated test acceptance.",
+    "No whole directory deletion or cleanup outside exact manifests; any new consumer, dirty record, link, mismatch, unknown inode alias or absent remote payload blocks maintenance."
+  ],
+  "bindings": {
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/SOURCE_SCOPE.v2.json": {
+      "sha256": "32c2828e807970d9bfa788d7394dfd5246a36ad72daf57d6bc94f67784242884",
+      "bytes": 895173
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/validate_sources_readonly.py": {
+      "sha256": "f93c34ac1ea074136fa97a12c7a04514a7237bd6001966d29d2771a14568e14d",
+      "bytes": 7045
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/source-readonly-validation/RESULT.json": {
+      "sha256": "1a7e5af6dfd9487407cf688bbf1bca5b9ecf86414b6dde4ed28abe0cbcad0019",
+      "bytes": 46538
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/source-readonly-validation/VALIDATED.jsonl": {
+      "sha256": "5b550d93396d1cd03c985bce9852d4ce53cdaaef8e15c3cffec0155bd7697f9c",
+      "bytes": 1416821
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/source-readonly-validation/CONSUMERS.json": {
+      "sha256": "289cf665335db336d919e66a0a3c55fe1ae796ed33ed978dd486abbdaf7ee78b",
+      "bytes": 2104
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/source-readonly-validation/after-consumers/CONSUMERS.json": {
+      "sha256": "32b2003487b63368c9a0339c22b5361859c7559c6d1802c726739ea51b7d958a",
+      "bytes": 2104
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/validate_auxiliary_readonly.py": {
+      "sha256": "41c7f28648cc6253bb08025f344f2a205cae2d1309ceace5e410b95b0ec29eed",
+      "bytes": 8032
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/RESULT.json": {
+      "sha256": "d4e36a4d4a3e317f6e63ac969d2d3d55a8f139c068b6a93304ce5f28c1b9d7ec",
+      "bytes": 10840
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/EXACT_ELF_LEAVES.json": {
+      "sha256": "22367d855b171261ea419ba766dac8017ce82858bcbc42269a6edc25c7e8ccd2",
+      "bytes": 21911
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/EXACT_INDEX_LEAVES.json": {
+      "sha256": "1db017689a853e29094800d0290035c2065c80e526b24bae1b5290e1633d4e43",
+      "bytes": 1644
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/EXACT_CHROME_CACHE_LEAVES.json": {
+      "sha256": "1aaef0f3dadd16304767ea6b09d7a7ae4c3cfdf76c169cf445300bfa9db16c03",
+      "bytes": 294754
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/CONSUMERS.json": {
+      "sha256": "649b2521fdda4e308f82713f36f63416d7166064571b26fb1216c9899b36f612",
+      "bytes": 2104
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/auxiliary-readonly-validation/after-consumers/CONSUMERS.json": {
+      "sha256": "649b2521fdda4e308f82713f36f63416d7166064571b26fb1216c9899b36f612",
+      "bytes": 2104
+    },
+    "/tmp/geo337-native-TMP-combined-preservation-20261025/scope-counterproof/RESULT.json": {
+      "sha256": "f147f552e600009e91d6385758224184f172e51d43455285223c93a32c5bded2",
+      "bytes": 2185
+    },
+    "/workspace/geo337-old-TMP-cache-owner-metadata-20261025/FACTS.json": {
+      "sha256": "656b7467da64843ad7de155379f6738f5652ee8915ba4e8bc0e2eec051bcf2ab",
+      "bytes": 11897
+    },
+    "/workspace/geo337-TMP-source-candidate-static-peer-20261025/REVIEW.initial.json": {
+      "sha256": "29a80b42825086d178ef1d10eaf58a9462899976d151464a6ccc2d64a9605a60",
+      "bytes": 4359
+    },
+    "/workspace/geo337-TMP-large-retired-source-metadata-20261025/ORIGINAL_D_RECEIPT_BINDINGS.json": {
+      "sha256": "d449ef43ee1aba5db1b7e36c6e86e1f7b744caed12c36c491a8f37a8de504983",
+      "bytes": 4211
+    },
+    "/workspace/tmp-coldcode-cleanup-20261024/execution-r2/RESULT.json": {
+      "sha256": "1afcb86680408976a770b6b54c406282796e4543155ddfa869cf53aaeeed3593",
+      "bytes": 55275
+    },
+    "/workspace/tmp-coldcode-cleanup-20261024/execution-r2/UNLINKED.jsonl": {
+      "sha256": "4bc7e3815d332ab1bcd17de46e1f5b6ad927a7e4b8548447537153b9b6fd730c",
+      "bytes": 1602225
+    },
+    "/workspace/ordinary-code-retirement-20261023/RESULT.json": {
+      "sha256": "d8ec58f94595d7bd10f89d3ba2a66fee3d5dd8141fe644bcbe5788dc6fb62e30",
+      "bytes": 314977
+    },
+    "/workspace/geo337-retired-three-source-retirement-execution-20261025/RESULT.json": {
+      "sha256": "12f66f25c43530a784755729bddde58eeefec996b80ac427b4e6801f41b33bc6",
+      "bytes": 131973
+    },
+    "/tmp/geo261-p73-resume-20261022-5z1cdxpj/p73-proof-summary.json": {
+      "sha256": "46a7fed475e1e27500b9f739805a2f3b4f6be29a86087dd34488bb378f8697a1",
+      "bytes": 9720
+    },
+    "/tmp/g261r3/special/p52/receipt.json": {
+      "sha256": "8927666625918029eda451b544b2f2d3a63fd9f7843c36dbb68bd69622ed2841",
+      "bytes": 11684
+    },
+    "/tmp/g261r3/special/p52-verifier/receipt.json": {
+      "sha256": "6e94c5cff8a5ce211222bc26d63a3786f96eab4736767e7bc809b4198508f515",
+      "bytes": 11716
+    }
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "schema": "candidate-adopter-nine-phase-tiny-runtime-actual-peer/1",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "subject_sha256": "71b0b4eb9ddde59f6b8e9ab90eb2492f8e403d1469a645d81864585a631fefba",
+  "runtime_result_sha256": "00150f01d1c29fae10bad159b393e242bd090e21eaf598eb3c2d7df82fa2f402",
+  "formal_adoption_executed": false,
+  "formal_schema_or_real_root_admission_proven": false,
+  "product_tests_executed": false,
+  "network_used_by_reviewer": false,
+  "git_executed_by_reviewer": false,
+  "fixtures_rerun": false,
+  "created_utc": "2026-10-26T10:08:37.522309+00:00",
+  "phases": [
+    {
+      "case": "cas",
+      "phase": "fixed",
+      "exit_code": 0,
+      "exact_assertion": null,
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 81,
+      "nonzero_git_commands": [
+        {
+          "ordinal": 76,
+          "exit_code": 128,
+          "directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-candidate-adopter-tiny-20261026/cas-fixed/git-original/subcommands/000076"
+        }
+      ],
+      "raw_result_sha256": "6c0a6ec029f05b4fd2eefdafbc680cd6f12aa91327aafd51367b143d33a5f665",
+      "commands_sha256": "e4b2bd23d3f6b456a1b1710aa181056d11b4e73e69be7bc20e1e19bec60d7868",
+      "local_base": "e5cd1d777479fe3314aa61b2da7a673b50976c16",
+      "local_tip": "6c1b671965054a58f526d069c18199dd410f6a1d",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "e5cd1d777479fe3314aa61b2da7a673b50976c16",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "6c1b671965054a58f526d069c18199dd410f6a1d"
+      }
+    },
+    {
+      "case": "cas",
+      "phase": "withdrawn",
+      "exit_code": 1,
+      "exact_assertion": "CAS_EXPECTED_PARENT_NOT_ENFORCED",
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 81,
+      "nonzero_git_commands": [],
+      "raw_result_sha256": "967227b2d5dc466bcf5af2d2a6064740cd374a903f663a3c1ff8be4b4f00a4c3",
+      "commands_sha256": "c5d0ebe2c46856f76fb95d21b93b970512d15296d83a18546d3115eb161e7098",
+      "local_base": "bc34c64fe48a71e9bde1b7869d6a6a20208eb1ce",
+      "local_tip": "a5932abd4891b62b5264d604184e6440d30257ab",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "bc34c64fe48a71e9bde1b7869d6a6a20208eb1ce",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "a5932abd4891b62b5264d604184e6440d30257ab"
+      }
+    },
+    {
+      "case": "cas",
+      "phase": "restored",
+      "exit_code": 0,
+      "exact_assertion": null,
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 81,
+      "nonzero_git_commands": [
+        {
+          "ordinal": 76,
+          "exit_code": 128,
+          "directory": "/dev/shm/geometry-axiom-geo337-20261025/geo337-candidate-adopter-tiny-20261026/cas-restored/git-original/subcommands/000076"
+        }
+      ],
+      "raw_result_sha256": "39281f037d67cadb8fa5403c06e87fdd397fbebf627dda50b6e6d0e4587dde3a",
+      "commands_sha256": "d6bde0a29d0783c45e467b33dd5ebc31f139ef5d242f0d9eb5380ce7c64583b6",
+      "local_base": "bc34c64fe48a71e9bde1b7869d6a6a20208eb1ce",
+      "local_tip": "a5932abd4891b62b5264d604184e6440d30257ab",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "bc34c64fe48a71e9bde1b7869d6a6a20208eb1ce",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "a5932abd4891b62b5264d604184e6440d30257ab"
+      }
+    },
+    {
+      "case": "scope",
+      "phase": "fixed",
+      "exit_code": 0,
+      "exact_assertion": null,
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 72,
+      "nonzero_git_commands": [],
+      "raw_result_sha256": "5295afd0d07e3d3d56b7a2c8b3816247c1be34346f9d095d914bac17238567da",
+      "commands_sha256": "95e878ac30900cb231c42f9f40eb53b3f9b28bfe05a1b500c20ce471072e95eb",
+      "local_base": "e768fdb2a1e3b617f16678879eb4ca999eef28ae",
+      "local_tip": "7574e3846b5bdcccfeedb9aef03f69f61ad31109",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "e768fdb2a1e3b617f16678879eb4ca999eef28ae",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "7574e3846b5bdcccfeedb9aef03f69f61ad31109"
+      }
+    },
+    {
+      "case": "scope",
+      "phase": "withdrawn",
+      "exit_code": 1,
+      "exact_assertion": "FOURTH_PRODUCT_PATH_NOT_REFUSED",
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 84,
+      "nonzero_git_commands": [],
+      "raw_result_sha256": "fd5c0888e7aa0d3d919426ac84eb940a7f93362fd9741f51a0e28effdbdafbe2",
+      "commands_sha256": "1f5eebb354ddb1395b29892cac965ba69496335df4d0e69c3b3796812ac1ec6e",
+      "local_base": "e768fdb2a1e3b617f16678879eb4ca999eef28ae",
+      "local_tip": "7574e3846b5bdcccfeedb9aef03f69f61ad31109",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "e768fdb2a1e3b617f16678879eb4ca999eef28ae",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "7574e3846b5bdcccfeedb9aef03f69f61ad31109"
+      }
+    },
+    {
+      "case": "scope",
+      "phase": "restored",
+      "exit_code": 0,
+      "exact_assertion": null,
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 72,
+      "nonzero_git_commands": [],
+      "raw_result_sha256": "4d67c280f396e66cb9327b84500adf19e07d3e6e78a384517d2a37bfd93ebaff",
+      "commands_sha256": "cb50c3485d6c84c532deae0502df6c9a593c621bb0fa8e819cac7e415ddb7aa7",
+      "local_base": "e768fdb2a1e3b617f16678879eb4ca999eef28ae",
+      "local_tip": "7574e3846b5bdcccfeedb9aef03f69f61ad31109",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "e768fdb2a1e3b617f16678879eb4ca999eef28ae",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "7574e3846b5bdcccfeedb9aef03f69f61ad31109"
+      }
+    },
+    {
+      "case": "preservation",
+      "phase": "fixed",
+      "exit_code": 0,
+      "exact_assertion": null,
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 109,
+      "nonzero_git_commands": [],
+      "raw_result_sha256": "7024ac43fa4a04bd9389532aa187dca0a8c4ce39b518fd5dcf607ab4410a656c",
+      "commands_sha256": "d4d1421aed5a7ee825750dbbf201120bee48e15d8b44f3fb32ca140d3821b828",
+      "local_base": "7844e542705a29c790627ce28e4151ab896f12fd",
+      "local_tip": "8bc40d3a2f616aeaa1a33c7d7713dd43b9c34b12",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "7844e542705a29c790627ce28e4151ab896f12fd",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "8bc40d3a2f616aeaa1a33c7d7713dd43b9c34b12"
+      }
+    },
+    {
+      "case": "preservation",
+      "phase": "withdrawn",
+      "exit_code": 1,
+      "exact_assertion": "HISTORICAL_PUBLISHER_CHANGE_NOT_DETECTED",
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 100,
+      "nonzero_git_commands": [],
+      "raw_result_sha256": "43c4d6e935f8d22a90d9b44461e81722f40616ef2d82a4a540916a05f5181d03",
+      "commands_sha256": "00222204e136107d55c722b39f58ebe137e203700ab701a32e50499f7f79b59f",
+      "local_base": "7844e542705a29c790627ce28e4151ab896f12fd",
+      "local_tip": "8bc40d3a2f616aeaa1a33c7d7713dd43b9c34b12",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "7844e542705a29c790627ce28e4151ab896f12fd",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "8bc40d3a2f616aeaa1a33c7d7713dd43b9c34b12"
+      }
+    },
+    {
+      "case": "preservation",
+      "phase": "restored",
+      "exit_code": 0,
+      "exact_assertion": null,
+      "setup_positive_passed": true,
+      "current_synthetic_original_state_preserved": true,
+      "git_commands": 109,
+      "nonzero_git_commands": [],
+      "raw_result_sha256": "f7c910c4ceafdd0aa95fe321bfc8f541777a97f129b643d1208c1933f3e016c6",
+      "commands_sha256": "17935449d7ca767fc196d57366ce8ef7bf5416d16acbf6d34942b6c9941acecc",
+      "local_base": "17c9684efb44801fd70ffd6b74ef8bd442a6bb36",
+      "local_tip": "4008fd63a6bdbd5eda795136918707fa4acd419e",
+      "actual_local_bare_refs": {
+        "refs/heads/codex/train-337-continue-20261024": "17c9684efb44801fd70ffd6b74ef8bd442a6bb36",
+        "refs/heads/codex/train337-recovered-evidence-20261026": "4008fd63a6bdbd5eda795136918707fa4acd419e"
+      }
+    }
+  ],
+  "actual_capture_commands": 799,
+  "actual_full_stream_bytes": 79438,
+  "actual_unique_repository_objects": 315,
+  "current_fixture_allocated_bytes": 14651392,
+  "runtime_allocated_max_observed": 14647296,
+  "capacity": {
+    "shared_used": 1697435648,
+    "synthetic_bound": 16777216,
+    "reserve": 67108864,
+    "shared_ceiling": 2147483648
+  },
+  "outer_result_sha256": "1b51b05ae4b25d7bc21dfa88459ae140126982965035a4043c6bc0e8fd9b82c9",
+  "request_sha256": "5bf6eaf27f6f839de4f6f75235396e4496ad0d5db80ca9dad3e3299c2d2c745b",
+  "all_selected_assertions_verified": true,
+  "all_positive_setups_verified": true,
+  "all_original_streams_verified": true,
+  "all_synthetic_head_index_train_states_preserved": true,
+  "real_local_bare_git_verified": true,
+  "formal_refs_not_used_by_recorded_commands": true,
+  "scope_limits": [
+    "Only pinned extracted candidate primitives were exercised in fresh tiny fixtures. The formal adopter main, formal originals/schema/peer validation, actual root admission, real candidate branch update and GitHub delivery remain unexecuted by these tests.",
+    "All original Git commands and configured origins are confined to synthetic phase directories. HEAD/index/train preservation claims here refer to those actual synthetic repositories; this is not a substitute for formal provider before/after receipts.",
+    "14,647,296 bytes is the original per-phase observed allocation maximum, not continuous peak/RSS. Current final packet allocation includes terminal metadata written after the last phase observation.",
+    "No original test was rerun, no Git subprocess/network/product access or cleanup was performed by this peer. Git objects were checked by read-only decompression and SHA-1, with full local/bare tree comparison.",
+    "No publication/delivery or final-product acceptance is certified by this synthetic runtime peer."
+  ],
+  "checked_count": 20923
+}

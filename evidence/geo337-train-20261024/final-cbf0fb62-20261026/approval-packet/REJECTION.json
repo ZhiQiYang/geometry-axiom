@@ -1,0 +1,17 @@
+{
+  "schema": "native-retirement-automatic-review-rejection/1",
+  "command": ["python3", "-B", "/tmp/geo337-run-original-retirement-root-20261026.py"],
+  "request_sha256": "66cc070dfa595b38182629c9e6e9dfcb97db0aa1791da74888eac65d6e7988a9",
+  "automatic_approval_review": "rejected_before_process_creation",
+  "reason_verbatim": "此命令會不可逆刪除約3156個暫存葉，包含私有索引與 ELF 快取；雖有封存證據，使用者並未明確授權這個完整退役範圍，且既有規則特別要求保留部分 ELF、fixtures、Git objects 與原始資料。",
+  "process_started": false,
+  "exit_code": null,
+  "actual_removed_files": 0,
+  "leases_revoked": true,
+  "previous_true_request_must_not_be_reused": true,
+  "extra_GPU_retirement_executed": false,
+  "must_not_split_or_indirectly_execute_rejected_scope": true,
+  "native_original_TMP_floor_bytes": 134217728,
+  "native_ready": false,
+  "unaffected_work": "Original evidence delivered; continue architecture and independent candidate-source work without deleting protected data or changing acceptance thresholds."
+}

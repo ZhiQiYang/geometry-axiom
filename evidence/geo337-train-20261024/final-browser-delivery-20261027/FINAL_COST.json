@@ -1,0 +1,77 @@
+{
+  "L_upper": 32,
+  "M_upper": 65536,
+  "P_upper": 163940374,
+  "alias_additional_payload_bytes": 0,
+  "alias_count": 15,
+  "aliased_original_bytes": 100217727,
+  "bounds": [
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 793,
+      "gzip_worst_bytes": 46872586,
+      "index_bytes": 647195,
+      "name": "F-space",
+      "nonregular_metadata_only": 0,
+      "original_bytes": 44128360,
+      "regular_files": 631,
+      "tar_exact_bytes": 46858240
+    },
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 793,
+      "gzip_worst_bytes": 38401521,
+      "index_bytes": 634164,
+      "name": "F-timber",
+      "nonregular_metadata_only": 0,
+      "original_bytes": 35700546,
+      "regular_files": 605,
+      "tar_exact_bytes": 38389760
+    },
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 838,
+      "gzip_worst_bytes": 59471629,
+      "index_bytes": 702623,
+      "name": "F-canvas",
+      "nonregular_metadata_only": 5,
+      "original_bytes": 56481184,
+      "regular_files": 734,
+      "tar_exact_bytes": 59453440
+    },
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 80,
+      "gzip_worst_bytes": 2417422,
+      "index_bytes": 280714,
+      "name": "reception-publication",
+      "nonregular_metadata_only": 0,
+      "original_bytes": 1377282,
+      "regular_files": 389,
+      "tar_exact_bytes": 2416640
+    }
+  ],
+  "explicit_incremental_allocated_upper": {
+    "archive_and_small_payload_creation": 163940374,
+    "complete_NEW_remote_readback": 163940374,
+    "new_loose_zlib_bound": 163990453,
+    "new_trees_metadata_command_streams": 16777216,
+    "original_publication_reserve": 67108864,
+    "outgoing_pack_bound": 180767669,
+    "state_manifest": 4194304
+  },
+  "incremental_total_upper": 760719254,
+  "notes": [
+    "Current existing raw/objects/previous archives are baseline, never duplicate or delete.",
+    "Streaming tar and roundtrip, no scratch extraction.",
+    "New payload hash-object must use file argv, no extra stdin/base64 payload; add P if changed.",
+    "Final payload/leaf/manifest counts must stay within P/L/M reservations.",
+    "Only after independent plan/tool review and fresh actual8GiB/mount/cgroup admission can build run.",
+    "Canonical PROGRESS one replacement leaf; old resume pointer stays unchanged."
+  ],
+  "original_3P_plus_L65536_plus_M8_plus64MiB": 561551426,
+  "physical_and_cgroup_fresh_observation_required_at_execution": true,
+  "plan_sha256": "0857de0ecbb07ac5014155e8b7ea8bd1ce4da0d2e22368853f4d029a215fd1fd",
+  "planning_cap_two_OWN": 8589934592,
+  "schema": 2
+}

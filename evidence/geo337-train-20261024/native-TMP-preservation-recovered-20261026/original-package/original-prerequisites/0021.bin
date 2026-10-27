@@ -1,0 +1,210 @@
+{
+  "schema": "geo261-p73-fix-proof-summary/1",
+  "product_fix_sha": "0c1bbf9970f6ad2d5c6e0976362b892d1da3e287",
+  "final_acceptance_source": "f2c8837aeba3c49eacbd77b5161f07c819204263",
+  "all_three_judges_identical": true,
+  "fixed_and_restored_product_bytes_identical_to_final": true,
+  "proof": {
+    "fixed": {
+      "exit_code": 0,
+      "expected_behavior": true,
+      "scope": "正式 P73 完整子集；不是完整 canvas，也不比較完整 golden。",
+      "cdp": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_UIUX_FIX_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:19120/",
+          "feedbackDirectory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/tmp/p73-fixed/geometry-integration-feedback",
+          "browserProfile": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/tmp/p73-fixed/chrome-profile",
+          "cdpPort": 9450,
+          "browserPid": 79135
+        },
+        "firstTransportFailure": null,
+        "firstNetworkFailure": null,
+        "completed": true,
+        "passedAssertions": 69,
+        "failedAssertions": 0,
+        "skipped": [],
+        "sections": {
+          "P73": 69
+        },
+        "goldenCompare": "not compared (partial mode)",
+        "uncaughtBrowserExceptions": 0,
+        "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+      }
+    },
+    "withdrawn": {
+      "exit_code": 1,
+      "expected_behavior": true,
+      "scope": "正式 P73 完整子集；不是完整 canvas，也不比較完整 golden。",
+      "cdp": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_UIUX_FIX_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:19121/",
+          "feedbackDirectory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/tmp/p73-withdrawn/geometry-integration-feedback",
+          "browserProfile": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/tmp/p73-withdrawn/chrome-profile",
+          "cdpPort": 9451,
+          "browserPid": 80030
+        },
+        "firstTransportFailure": null,
+        "firstNetworkFailure": null,
+        "completed": false,
+        "passedAssertions": 47,
+        "failedAssertions": 1,
+        "fatal": "P73 assertion failed: 空空間不畫假邊界，提供加入成員入口 false",
+        "skipped": [],
+        "sections": {
+          "P73": 47
+        },
+        "sectionsFailed": {
+          "P73": 1
+        },
+        "currentSection": "P73",
+        "goldenCompare": "not compared (run did not complete)"
+      }
+    },
+    "restored": {
+      "exit_code": 0,
+      "expected_behavior": true,
+      "scope": "正式 P73 完整子集；不是完整 canvas，也不比較完整 golden。",
+      "cdp": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_UIUX_FIX_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:19122/",
+          "feedbackDirectory": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/tmp/p73-restored/geometry-integration-feedback",
+          "browserProfile": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/tmp/p73-restored/chrome-profile",
+          "cdpPort": 9452,
+          "browserPid": 80911
+        },
+        "firstTransportFailure": null,
+        "firstNetworkFailure": null,
+        "completed": true,
+        "passedAssertions": 69,
+        "failedAssertions": 0,
+        "skipped": [],
+        "sections": {
+          "P73": 69
+        },
+        "goldenCompare": "not compared (partial mode)",
+        "uncaughtBrowserExceptions": 0,
+        "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+      }
+    }
+  },
+  "chrome156_svg_observations": [
+    {
+      "variant": "chrome156-original",
+      "command": {
+        "command": [
+          "/workspace/geo261-environment/bin/google-chrome",
+          "--headless=new",
+          "--disable-gpu",
+          "--no-sandbox",
+          "--disable-dev-shm-usage",
+          "--no-first-run",
+          "--no-default-browser-check",
+          "--user-data-dir=/tmp/geo261-p73-resume-20261022-5z1cdxpj/svg-compatibility-r4/profile-chrome156-original",
+          "--dump-dom",
+          "file:///tmp/geo261-p73-resume-20261022-5z1cdxpj/svg-compatibility-r4/chrome156-original.html"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "started": "2026-10-22T10:19:06.107656+00:00",
+        "ended": "2026-10-22T10:19:06.574387+00:00",
+        "seconds": 0.4667523620000793,
+        "exit_code": 0,
+        "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/svg-compatibility-r4/chrome156-original.stdout",
+        "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/svg-compatibility-r4/chrome156-original.stderr",
+        "actual_process_returncode": 0,
+        "environment_TMPDIR": "/tmp/g261svg-a8cdpn_q",
+        "cleanup": "只對本次 start_new_session 的專用程序群送 SIGTERM；不把持有pipe的輔助程序誤作主程序逾時"
+      },
+      "observation": {
+        "capability": {
+          "hiddenAttribute": true,
+          "hiddenProperty": "undefined",
+          "computedDisplay": "none",
+          "screenMatrixIsNull": false
+        },
+        "before": {
+          "countIsZero": true,
+          "hasNoShape": true,
+          "emptyExists": true,
+          "entryCopy": true
+        },
+        "after": {
+          "countIsZero": true,
+          "hasNoShape": false,
+          "emptyExists": true,
+          "entryCopy": true
+        },
+        "svgAfter": "<svg id=\"spacePlanSvg\" hidden=\"\" data-plan-grid-step=\"10\"><defs><pattern id=\"spacePlanGridPattern\" patternUnits=\"userSpaceOnUse\" width=\"10\" height=\"10\"><path data-plan-grid-path=\"\" fill=\"none\" stroke=\"var(--border)\" stroke-width=\"1\" vector-effect=\"non-scaling-stroke\" d=\"M 10 0 H 0 V 10\"></path></pattern></defs><rect data-plan-grid=\"\" fill=\"url(#spacePlanGridPattern)\" pointer-events=\"none\" x=\"0\" y=\"0\" width=\"0\" height=\"0\"></rect></svg>"
+      }
+    },
+    {
+      "variant": "chrome156-fixed",
+      "command": {
+        "command": [
+          "/workspace/geo261-environment/bin/google-chrome",
+          "--headless=new",
+          "--disable-gpu",
+          "--no-sandbox",
+          "--disable-dev-shm-usage",
+          "--no-first-run",
+          "--no-default-browser-check",
+          "--user-data-dir=/tmp/geo261-p73-resume-20261022-5z1cdxpj/svg-compatibility-r4/profile-chrome156-fixed",
+          "--dump-dom",
+          "file:///tmp/geo261-p73-resume-20261022-5z1cdxpj/svg-compatibility-r4/chrome156-fixed.html"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "started": "2026-10-22T10:19:06.575315+00:00",
+        "ended": "2026-10-22T10:19:06.940240+00:00",
+        "seconds": 0.36494489399956365,
+        "exit_code": 0,
+        "stdout": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/svg-compatibility-r4/chrome156-fixed.stdout",
+        "stderr": "/tmp/geo261-p73-resume-20261022-5z1cdxpj/svg-compatibility-r4/chrome156-fixed.stderr",
+        "actual_process_returncode": 0,
+        "environment_TMPDIR": "/tmp/g261svg-a8cdpn_q",
+        "cleanup": "只對本次 start_new_session 的專用程序群送 SIGTERM；不把持有pipe的輔助程序誤作主程序逾時"
+      },
+      "observation": {
+        "capability": {
+          "hiddenAttribute": true,
+          "hiddenProperty": "undefined",
+          "computedDisplay": "none",
+          "screenMatrixIsNull": false
+        },
+        "before": {
+          "countIsZero": true,
+          "hasNoShape": true,
+          "emptyExists": true,
+          "entryCopy": true
+        },
+        "after": {
+          "countIsZero": true,
+          "hasNoShape": true,
+          "emptyExists": true,
+          "entryCopy": true
+        },
+        "svgAfter": "<svg id=\"spacePlanSvg\" hidden=\"\"></svg>"
+      }
+    }
+  ],
+  "older_browser_limitation": "Chromium154版本查詢成功，但隔離--dump-dom在r2/r3/r4無DOM且30秒逾時，未取得其hidden IDL或P73結果；不能宣稱已證明156才改變IDL。",
+  "environment_failures": "首輪Chrome156探針撞深TMPDIR的Unix socket長度限制，-6原始stderr保留；正式工具改短scratch。舊Chromium154逾時獨立列明，不補為通過。",
+  "test_changes": false,
+  "production_patch": "commit 0c1bbf9970f6ad2d5c6e0976362b892d1da3e287\nAuthor: Chih-Chi Yang <b10102230@gmail.com>\nDate:   Thu Oct 22 10:02:06 2026 +0000\n\n    fix: check SVG hidden attribute before syncing space plan annotations\n\ndiff --git a/geometry-web/app.js b/geometry-web/app.js\nindex 4109d394..8b557a62 100644\n--- a/geometry-web/app.js\n+++ b/geometry-web/app.js\n@@ -3635,7 +3635,10 @@ function renderSpacePlan(sp) {\n   svg.onpointercancel = () => { drag = null; preview.setAttribute(\"visibility\", \"hidden\"); };\n }\n function syncSpacePlanAnnotations(){\n-  const svg=$('spacePlanSvg'),matrix=svg?.getScreenCTM();if(!svg||svg.hidden||!matrix)return;\n+  const svg=$('spacePlanSvg');\n+  // SVG 沒有 HTML 元素的 hidden 反射屬性；與 renderSpacePlan 共用 attribute 狀態。\n+  if(!svg||svg.hasAttribute('hidden'))return;\n+  const matrix=svg.getScreenCTM();if(!matrix)return;\n   const scale=Math.hypot(matrix.a,matrix.b);if(!Number.isFinite(scale)||scale<=0)return;\n   for(const label of svg.querySelectorAll('.space-plan-label'))label.style.fontSize=(12/scale)+'px';\n   const step=10**Math.floor(Math.log10(80/scale)),box=svg.viewBox.baseVal;\n"
+}
