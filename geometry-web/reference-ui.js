@@ -184,7 +184,7 @@ function appendGridDefinitionImpact(dialog, preview) {
   function cardText(r) {
     if(!r)return '';
     const card=((typeof oc!=='undefined'&&oc.parameters)||[]).map(o=>o.card).find(c=>c?.id===r.parameterId),name=id=>card?.fields?.find(f=>f.id===id)?.name??`欄位 ${id}`;
-    return `；長度來自整張參數卡「${card?.name??'#'+r.parameterId}」（u = ${name(r.uFieldId)}、v = ${name(r.vFieldId)}）`;
+    return `；長度來自整張參數卡「${card?.name??'#'+r.parameterId}」（卡 #${r.parameterId}；u = ${name(r.uFieldId)}（欄 #${r.uFieldId}）、v = ${name(r.vFieldId)}（欄 #${r.vFieldId}））`;
   }
   function source(g) {return g ? `「${g.name}」；${g.mainAlong ? '主支沿 '+g.mainAlong : '主支方向未設定'}；u ${axis(g.uDefinition)}；v ${axis(g.vDefinition)}${cardText(g.cardReference)}` : '不存在';}
   section(sources,'網格來源','system',(item,row)=>{
@@ -201,7 +201,7 @@ function appendGridDefinitionImpact(dialog, preview) {
         // Display arithmetic only after the native candidate accepted its
         // exact divisions. Never query live World as if it were pending data.
         if (preview.valid && rule.divisions.every(n=>n>0) && [value.uDefinition,value.vDefinition].every(d=>d?.source==='repeat')) {
-          const sizes=[value.uDefinition,value.vDefinition].map((d,index)=>BigInt(d.step)/BigInt(rule.divisions[index]));
+          const sizes=[value.uDefinition,value.vDefinition].map((d,index)=>BigInt(d.step ?? d.effectiveStep)/BigInt(rule.divisions[index]));
           line.textContent+=` 每一主格為 ${rule.divisions[0]*rule.divisions[1]} 個 ${sizes[0]}×${sizes[1]} mm 小格；1 等分不加內線。`;
         }
         details.append(line);
