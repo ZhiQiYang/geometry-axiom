@@ -1,10 +1,18 @@
 {
   "source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
-  "complete_F_included": false,
+  "complete_F_included": true,
   "files": {
+    "evidence/geo337-native-validation-20261027/audit/NATIVE_HANDOFF.md": {
+      "bytes": 3507,
+      "sha256": "32012945a391760b51b4ce4eb4c0f083418954ad0f70eff9cd6c6ecab56f12c5"
+    },
     "evidence/geo337-native-validation-20261027/audit/README.md": {
       "bytes": 4365,
       "sha256": "df53775a70099f9a5864bb4441d2cdd2fe5d539662ef1ce8f7cc1b268da5f56d"
+    },
+    "evidence/geo337-native-validation-20261027/audit/finalize_F.py": {
+      "bytes": 5624,
+      "sha256": "90014d05bb78bd287c100d2b00eb6f7df4d815e01c78783d986d9b4746e3dea0"
     },
     "evidence/geo337-native-validation-20261027/audit/free-bytes.txt": {
       "bytes": 256,
@@ -45,6 +53,10 @@
     "evidence/geo337-native-validation-20261027/audit/run_native_F.py": {
       "bytes": 5052,
       "sha256": "e27702e4f67e80af03e848b648d7fb883c638fae6103d3b8ab385bc476674aab"
+    },
+    "evidence/geo337-native-validation-20261027/audit/verify_remote.py": {
+      "bytes": 1278,
+      "sha256": "7a268fee948ff744c987fffd3644cebdd7230cefe35001da21c2366de14271cd"
     },
     "evidence/geo337-native-validation-20261027/a4bd-withdrawn/AGENTS.original.md": {
       "bytes": 19140,
@@ -150,6 +162,10 @@
       "bytes": 2055,
       "sha256": "cbe8e64774f44923529d0d58ae36df3dfd69b5f80a666ac9abe98e597e2f4799"
     },
+    "evidence/geo337-native-validation-20261027/F-interrupted/launcher-error.tool-transcript.txt": {
+      "bytes": 1391,
+      "sha256": "587cb5e2c9aeeb6b07711db8d773fc6ab4c2a4b8026e0e0aa874d9799794af85"
+    },
     "evidence/geo337-native-validation-20261027/F-interrupted/launcher.original.py": {
       "bytes": 5374,
       "sha256": "42b0127be22f34b09f99037351779b8bc9918f62661c8fe644bb29b61ad04311"
@@ -183,6 +199,106 @@
       "sha256": "a8e1db141902b91777106aad28c1cd0157cdfb836b445d85528dd202865e258b"
     },
     "evidence/geo337-native-validation-20261027/F-interrupted/workflow.original.yml": {
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/AGENTS.original.md": {
+      "bytes": 19140,
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/ARCHIVE_VERIFICATION.json": {
+      "bytes": 46026,
+      "sha256": "7efa1f1fc463a8b8e2f3a1da7c2ead4083bacada90f09e48583f0add8d3a9af1"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/LAUNCHER_BINDING.json": {
+      "bytes": 275,
+      "sha256": "15b921fd7880c981a7fb70911da5926e3a20f034405257b78a23ecbed986b6e7"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/OWNED_PROCESSES_AFTER.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/README.md": {
+      "bytes": 2703,
+      "sha256": "ded97c3c2d5ec20e2b92b1450bac2078da9645618fca40b5399f3ae22b15fb25"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/REAPED.json": {
+      "bytes": 954,
+      "sha256": "7b38f09c7b7e1bf7e94642608d6139ba3cc6dedec74cb27e3bcca0a8955a02a9"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/REAPER.json": {
+      "bytes": 267,
+      "sha256": "87304fdacea96ab76afd8336ce0e5a3f8ab322accf19b3b264546624468ca0dd"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/REQUEST.json": {
+      "bytes": 1748,
+      "sha256": "e0a26f3348430ff6ab5ae7645f53402399a81a68bf345f3ad2df0dcbcb1f4c05"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/RESULT.json": {
+      "bytes": 952,
+      "sha256": "d2625cac9e4e40c904e490a7b07e63c119589cf6e6cc9834f0af34f439638ba6"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/RUNNING.json": {
+      "bytes": 72,
+      "sha256": "20f25023682ef1a7f581cb2f53ff1a493090c9735b7366c9e645c056f6adc361"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/SHA256.json": {
+      "bytes": 1798,
+      "sha256": "601b3a7c0633e615cd22b9982df4d1ad8ff3153aa0613731ff5bc6653a9ddb98"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/SUMMARY.json": {
+      "bytes": 463,
+      "sha256": "f948a2a95ac49d3a448acd1a953428afabb6db2512ce2fb23a6bfa42bf696692"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/launcher.original.py": {
+      "bytes": 5052,
+      "sha256": "e27702e4f67e80af03e848b648d7fb883c638fae6103d3b8ab385bc476674aab"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/launcher.stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/launcher.stdout.bin": {
+      "bytes": 953,
+      "sha256": "b697afb9ee3d04d77a3ac798a1c704fbebeafa13e9774d5004fe446fde861c05"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/locks.before.txt": {
+      "bytes": 722,
+      "sha256": "6d71bf05f0d60b32d2faad7de741ca6816d1d5a8d16e45c39762927dba023c44"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/mountinfo.before.txt": {
+      "bytes": 3451,
+      "sha256": "0af6f86f23b18bd908b715ecb7851281e08118c28bc3278cb4599f2ffea6dac5"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/native-output.original.tar.gz": {
+      "bytes": 2563433,
+      "sha256": "56c2ab5f1e65f3a621c68551061c065dfb1cb05aa8a0b752b0de15df3a056c52"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/processes.before.txt": {
+      "bytes": 10537,
+      "sha256": "c8672a0dfddae780c7deb01466f45e433d2f4db8bf13053c5afbf19fc8c5408f"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/reaper-selftest.json": {
+      "bytes": 79,
+      "sha256": "feb079bed869bf9432c0e7c3b3169214e256e41ac322f597c645f3d31345d644"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/reaper.original.py": {
+      "bytes": 1194,
+      "sha256": "956eefdbf7adbaf19a5410e013fc16126c26cbbf03f539a43558ba3541204e17"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/samples.jsonl": {
+      "bytes": 213335,
+      "sha256": "0a067421d4acfc195daf00249575318253cd6ca4ef246f704916c0ee5538ea8a"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/stdout.bin": {
+      "bytes": 37544,
+      "sha256": "ce3af986f6b6ceaee55ba498dbf40b16e3f0e4f523a08efb13e1fa29f7671372"
+    },
+    "evidence/geo337-native-validation-20261027/F-complete/workflow.original.yml": {
       "bytes": 6854,
       "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
     }
