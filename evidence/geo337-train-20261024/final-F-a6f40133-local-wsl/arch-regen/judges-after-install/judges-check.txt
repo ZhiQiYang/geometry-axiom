@@ -1,9 +1,0 @@
-PASS judge exit 0: architecture_contract :: 0
-PASS architecture_contract counts 334/6/798/0 :: (334, 6, 798, 0)
-PASS judge exit 0: test_architecture_contract :: 0
-PASS test_architecture_contract: Ran 205 tests, OK, no skip :: [('205', '131.675')]
-FAIL judge exit 0: test_product_architecture :: 143
-FAIL test_product_architecture: Ran 18 tests, OK, no skip :: []
-RESULT: FAIL (2 failed checks)
-  FAILED: judge exit 0: test_product_architecture
-  FAILED: test_product_architecture: Ran 18 tests, OK, no skip
