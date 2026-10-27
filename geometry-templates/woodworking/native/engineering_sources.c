@@ -108,6 +108,7 @@ struct WoodDimensionResult {
     GeoCoord *requested_output;
     size_t attempts;
     char path[512];
+    EngTerminal terminal;
     WoodDimensionResult *next;
 };
 struct WoodEngineeringSources {
@@ -119,6 +120,7 @@ struct WoodEngineeringSources {
     unsigned char method_metadata[ENG_METHOD_MAX][WOOD_VERSION_METADATA_MAX];
     EngApplication applications[ENG_APPLICATION_MAX];
     char application_checks[ENG_APPLICATION_MAX][ENG_ID_MAX+32];
+    EngTerminal leaf;
 };
 static void wood_source_dimension_copy(EngDimensionSource *out,const EngDimensionSource *in)
 {
@@ -153,7 +155,7 @@ static bool wood_source_result_value(WoodEngineeringSources *s,WoodDimensionResu
         if(path&&r->attempts!=attempts&&r->path[0]!='\177')snprintf(path,cap,"%s",r->path);
         return wood_source_failure(s,status);
     }
-    *out=value.as.quantity.num;if(path)snprintf(path,cap,"%s",r->path);return true;
+    *out=value.as.quantity.num;if(path)snprintf(path,cap,"%s",r->path);if(r->terminal.valid)s->leaf=r->terminal;return true;
 }
 static bool wood_source_resolve(void *opaque,const EngDimensionSource *source,const EngTarget *target,uint32_t pid,int role,GeoCoord *out,char *path,size_t cap)
 {
@@ -393,9 +395,9 @@ static bool wood_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourc
      * K still publishes no value for the failed source. */
     GeoCoord *destination=result->requested_output;if(!destination)return false;
     ++result->attempts;result->path[0]='\177';result->path[1]=0;
-    bool ok;
+    bool ok;memset(&result->terminal,0,sizeof result->terminal);
     if(ref->provider==s->tokens.dimension){WoodDimensionKey *key=&result->key.dimension;
-        ok=wood_eng_resolve_direct(&s->context,&key->source,&key->target,key->placement,key->role,destination,result->path,sizeof result->path);
+        ok=wood_eng_resolve_direct_terminal(&s->context,&key->source,&key->target,key->placement,key->role,destination,result->path,sizeof result->path,&result->terminal);
     }else if(ref->provider==s->tokens.binding){
         WoodEngineeringBindingSourceKind kind;EngTarget target;EngBinding binding;
         if(!wood_engineering_binding_source_decode(ref,&kind,&target,&binding)||
@@ -409,7 +411,7 @@ static bool wood_source_evaluate(void *opaque,GeoEvalContext *ctx,const GeoSourc
            memcmp(definition.as.definition.content,result->definition,result->definition_size))
             return wood_eng_fail(&s->context,"I8: engineering binding definition changed during evaluation");
         if(!wood_engineering_binding_decode(definition.as.definition.content,definition.as.definition.content_size,&binding))return false;
-        ok=wood_eng_effective_direct(&s->context,&binding,destination,result->path,sizeof result->path);
+        ok=wood_eng_effective_direct_terminal(&s->context,&binding,destination,result->path,sizeof result->path,&result->terminal);
     }
     else return false;
     if(!ok)return false;result->value=*destination;out->kind=GEO_SOURCE_QUANTITY;out->as.quantity=(GeoQuantity){result->value,1,GEO_UNIT_LENGTH};return true;
@@ -428,6 +430,8 @@ WoodEngineeringSources *wood_engineering_sources_register(GeoEvalContext *ctx,co
 }
 void wood_engineering_sources_destroy(WoodEngineeringSources *s)
 {if(s){WoodDimensionResult *r=s->results;while(r){WoodDimensionResult *next=r->next;free(r);r=next;}free(s);}}
+const EngTerminal *wood_engineering_sources_last_terminal(const WoodEngineeringSources *s)
+{return s?&s->leaf:NULL;}
 bool wood_engineering_sources_definitions(WoodEngineeringSources *s)
 {
     if(!s)return false;

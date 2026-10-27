@@ -1,4 +1,5 @@
 #include "engineering.h"
+#include "engineering_sources.h"
 #include <stdio.h>
 #include <string.h>
 /* Match the host diagnostic truncation without borrowing host globals. */
@@ -394,13 +395,28 @@ bool wood_eng_target_context(const WoodEngineeringContext *w,const EngTarget *t,
     }
     return true;
 }
-bool wood_eng_resolve(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap)
+bool wood_eng_resolve_terminal(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap,EngTerminal *terminal)
 {
-    if(w->resolve_source)return w->resolve_source(w->sources,s,target,pid,role,value,path,cap);
-    return wood_eng_resolve_direct(w,s,target,pid,role,value,path,cap);
+    if(terminal)memset(terminal,0,sizeof *terminal);
+    if(w->resolve_source){
+        if(!w->resolve_source(w->sources,s,target,pid,role,value,path,cap))return false;
+        /* The provider evaluates a copy of this context, so the leaf is stored
+         * on the sources object and copied out after the hook returns. */
+        if(terminal&&w->sources){
+            const EngTerminal *leaf=wood_engineering_sources_last_terminal(w->sources);
+            if(leaf&&leaf->valid)*terminal=*leaf;
+        }
+        return true;
+    }
+    return wood_eng_resolve_direct_terminal(w,s,target,pid,role,value,path,cap,terminal);
 }
+bool wood_eng_resolve(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap)
+{return wood_eng_resolve_terminal(w,s,target,pid,role,value,path,cap,NULL);}
 bool wood_eng_resolve_direct(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap)
+{return wood_eng_resolve_direct_terminal(w,s,target,pid,role,value,path,cap,NULL);}
+bool wood_eng_resolve_direct_terminal(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap,EngTerminal *terminal)
 {
+    if(terminal)memset(terminal,0,sizeof *terminal);
     if (s->kind==ENG_LITERAL) { *value=s->value; if (path) snprintf(path,cap,"explicit integer mm"); }
     else if (s->kind==ENG_SPEC) {
         bool found=w->source_named?w->source_named(w->sources,s->ref,value):w->named_value(w->user,s->ref,value);
@@ -422,6 +438,7 @@ bool wood_eng_resolve_direct(WoodEngineeringContext *w,const EngDimensionSource 
             *value=target->field?m->b:m->a;
         }
         if(w->source_version_field&&!w->source_version_field(w->sources,0,&m->ref,(uint32_t)s->field,value))return false;
+        if(terminal){snprintf(terminal->material.id,sizeof terminal->material.id,"%s",m->ref.id);terminal->material.version=m->ref.version;snprintf(terminal->fingerprint,sizeof terminal->fingerprint,"%s",m->fingerprint);}
         if (path) snprintf(path,cap,"material:%s@%u.%s",s->ref,s->version,ENG_FIELDS[s->field]);
     } else if (s->kind==ENG_APPLICATION) {
         EngApplication *a=wood_eng_application(w,s->ref);
@@ -449,19 +466,33 @@ bool wood_eng_resolve_direct(WoodEngineeringContext *w,const EngDimensionSource 
             nested.kind=ENG_MATERIAL; nested.version=m->roles[r].version; snprintf(nested.ref,sizeof nested.ref,"%s",m->roles[r].id); nested.field=target->field?ENG_B:ENG_A;
         }
         if (override>=0 && a->overridden[override]) nested=a->overrides[override];
-        char tail[192]; if (!wood_eng_resolve(w,&nested,target,pid,role,value,tail,sizeof tail)) return false;
+        char tail[192]; if (!wood_eng_resolve_terminal(w,&nested,target,pid,role,value,tail,sizeof tail,terminal)) return false;
         if (path) snprintf(path,cap,"application:%s -> method:%s@%u -> %s%s",a->id,a->method.id,a->method.version,override>=0&&a->overridden[override]?"face override -> ":"",tail);
     } else return wood_eng_fail(w,"I35: invalid dimension source kind");
     if (*value<((!target->kind&&target->field)?0:1) || *value>GEO_COORD_LIMIT) return wood_eng_fail(w,"I35: effective dimension violates its positive/nonnegative integer mm range");
+    if(terminal&&s->kind!=ENG_APPLICATION){terminal->kind=s->kind;terminal->valid=true;}
     return true;
 }
-bool wood_eng_effective(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap)
+bool wood_eng_effective_terminal(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap,EngTerminal *terminal)
 {
-    if(w->resolve_binding)return w->resolve_binding(w->sources,b,value,path,cap);
-    return wood_eng_effective_direct(w,b,value,path,cap);
+    if(terminal)memset(terminal,0,sizeof *terminal);
+    if(w->resolve_binding){
+        if(!w->resolve_binding(w->sources,b,value,path,cap))return false;
+        if(terminal&&w->sources){
+            const EngTerminal *leaf=wood_engineering_sources_last_terminal(w->sources);
+            if(leaf&&leaf->valid)*terminal=*leaf;
+        }
+        return true;
+    }
+    return wood_eng_effective_direct_terminal(w,b,value,path,cap,terminal);
 }
+bool wood_eng_effective(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap)
+{return wood_eng_effective_terminal(w,b,value,path,cap,NULL);}
 bool wood_eng_effective_direct(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap)
+{return wood_eng_effective_direct_terminal(w,b,value,path,cap,NULL);}
+bool wood_eng_effective_direct_terminal(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap,EngTerminal *terminal)
 {
+    if(terminal)memset(terminal,0,sizeof *terminal);
     uint32_t pid; int role; if (!wood_eng_target_context(w,&b->target,&pid,&role)) return false;
     /* During scene replay a timber declaration precedes its placement. Its role
      * is already known; final revalidation after place checks the actual face. */
@@ -479,7 +510,7 @@ bool wood_eng_effective_direct(WoodEngineeringContext *w,const EngBinding *b,Geo
         GeoCoord ignored;
         if (!wood_eng_resolve(w,&b->source,&b->target,pid,role,&ignored,NULL,0)) return false;
     }
-    return wood_eng_resolve(w,b->has_override?&b->override_value:&b->source,&b->target,pid,role,value,path,cap);
+    return wood_eng_resolve_terminal(w,b->has_override?&b->override_value:&b->source,&b->target,pid,role,value,path,cap,terminal);
 }
 /* D28: these records belong to the deleted identity. This is deliberately not
  * a general orphan collector: malformed loaded references must still fail I35. */

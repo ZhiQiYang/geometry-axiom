@@ -17,6 +17,11 @@ CSV 匯出逐件相同資料，包含 typed timber/surface 身分、方向、定
 
 ## 資料與能力邊界
 
+K1-a（D49／I59(d)）在原生工程來源與 assembly slot 的有效 A/B 最後增加唯讀 `terminal`：
+材料末端包含 `(id, version, fingerprint)`，其餘末端為 literal／spec／parameter，無法求值為 null。
+它由核心既有 D28／R31 查找鏈提供；前端不可解析 path 或重做查找。做法 gap 的直接值仍標為 literal，
+不區分做法與物件直接整數。既有欄位、World dump、定義指紋與歷史不變；K1-b 另由專案功能附件宣告 `cutting-plan/1`。
+
 - `references.sourceFingerprint` 由原生 `eng_definition_hash` 對正式定義計算，排除畫布擺位。
   目前讀取整個 World 定義指紋，無關來源變動也會保守要求重新核對。
 - 只計原生 placed Timber，每個 `timber:id` 一次。兩個同截面／同長的實際構件各自保留，Timber 0 亦是有效身分。
@@ -32,6 +37,8 @@ CSV 匯出逐件相同資料，包含 typed timber/surface 身分、方向、定
   這是 #47 的剩餘追溯適配項，不能將端點座標當成支撐關係已完整辨識。
 - 料單為現場導出視圖，不增專案附件或修改保存格式；保存正式專案後可重開並重新導出。
 - F4b 加工餘量、鋸縫、毛料、原材、餘料、採購及庫存均不在本批。
+
+K1-b 由既有「排序」控制合併的「料單檢視」入口接上 F4b，範圍與料單仍共用原生正式角材；詳見 [CUTTING-PLAN.md](CUTTING-PLAN.md)。`derive` 的錯誤新增型別 `code`，原文字保持；owned slot 的來源帶入原生 `terminal`。F4a 與保存快照的 CSV 共用序列化時剔除 `terminal`，保持原有位元組。
 
 ## 驗證
 

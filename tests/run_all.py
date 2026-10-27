@@ -73,6 +73,7 @@ PY_NEEDS = {
     'test_domain_decoupling_adoption': [],
     'test_domain_decoupling_compatibility': ['model-base'],
     'test_engineering_core': ['bridge'],
+    'test_engineering_terminal': ['bridge'],
     'test_engineering_json': ['engjson'],
     'test_engineering_model_compatibility': ['model-base'],
     'test_engineering_model_sources': ['bridge', 'model-base'],
@@ -297,10 +298,13 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:cutting_owner': 'tests/test_cutting_owner.js',
+    'node:cutting_plan': 'tests/test_cutting_plan.js',
+    'node:cutting_project_store': 'tests/test_cutting_project_store.js',
+    'node:cutting_session': 'tests/test_cutting_session.js',
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
-    'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',
-    'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
+    'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',    'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
     'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',
     'node:face_projection_lifecycle': 'tests/test_face_projection_lifecycle.js',

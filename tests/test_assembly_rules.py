@@ -364,8 +364,8 @@ class AssemblyRules(unittest.TestCase):
         # A12: selecting dimensions does not silently choose a face/orientation.
         material={"id":"cedar","version":1,"kind":"timber","name":"杉木","A":13,"B":19}
         self.apply([{"op":"publish-material","value":material}])
-        expected_effective=[{"slotId":1,"A":{"value":27,"path":"explicit integer mm"},"B":{"value":33,"path":"explicit integer mm"}},
-                            {"slotId":2,"A":{"value":13,"path":"material:cedar@1.A"},"B":{"value":19,"path":"material:cedar@1.B"}}]
+        expected_effective=[{"slotId":1,"A":{"value":27,"path":"explicit integer mm","terminal":{"kind":"literal"}},"B":{"value":33,"path":"explicit integer mm","terminal":{"kind":"literal"}}},
+                            {"slotId":2,"A":{"value":13,"path":"material:cedar@1.A","terminal":{"kind":"material","id":"cedar","version":1,"fingerprint":hashlib.sha256(json.dumps(material,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()}},"B":{"value":19,"path":"material:cedar@1.B","terminal":{"kind":"material","id":"cedar","version":1,"fingerprint":hashlib.sha256(json.dumps(material,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()}}}]
         identifier=2
         for field in ("contactFace","orientation"):
             for slot_index in (0,1):
@@ -424,7 +424,8 @@ class AssemblyRules(unittest.TestCase):
                     if slot["slotId"]==2:
                         slot.update(contactFace="B",orientation="A")
                     effective.append({"slotId":slot["slotId"],**{
-                        axis:{"value":dimensions[fixed][index],"path":f"material:{material_id}@{version}.{axis}"}
+                        axis:{"value":dimensions[fixed][index],"path":f"material:{material_id}@{version}.{axis}",
+                              "terminal":{"kind":"material","id":material_id,"version":version,"fingerprint":hashlib.sha256(json.dumps({"id":material_id,"version":version,"kind":"timber","name":"松木" if material_id=="pine" else "橡木","A":dimensions[fixed][0],"B":dimensions[fixed][1]},ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()}}
                         for index,axis in enumerate(("A","B"))}})
                 value["slots"].reverse()
                 self.apply([{"op":"put-binding","value":value}])

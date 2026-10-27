@@ -170,10 +170,23 @@ bool wood_eng_publish_material(WoodEngineeringContext *w,GeoJson *j,int t,const 
 bool wood_eng_publish_method(WoodEngineeringContext *w,GeoJson *j,int t,const char *fingerprint);
 bool wood_eng_put_application(WoodEngineeringContext *w,GeoJson *j,int t);
 bool wood_eng_target_context(const WoodEngineeringContext *w,const EngTarget *t,uint32_t *pid,int *role);
+/* D49: read-only leaf reached by the existing resolver. A NULL terminal
+ * leaves every existing caller unchanged. Application and override publish
+ * the leaf, not their own kind. */
+typedef struct {
+    bool valid;
+    EngSourceKind kind;
+    EngVersionRef material;
+    char fingerprint[65];
+} EngTerminal;
 bool wood_eng_resolve(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap);
 bool wood_eng_effective(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap);
 bool wood_eng_resolve_direct(WoodEngineeringContext *,const EngDimensionSource *,const EngTarget *,uint32_t,int,GeoCoord *,char *,size_t);
 bool wood_eng_effective_direct(WoodEngineeringContext *,const EngBinding *,GeoCoord *,char *,size_t);
+bool wood_eng_resolve_terminal(WoodEngineeringContext *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,GeoCoord *value,char *path,size_t cap,EngTerminal *terminal);
+bool wood_eng_effective_terminal(WoodEngineeringContext *w,const EngBinding *b,GeoCoord *value,char *path,size_t cap,EngTerminal *terminal);
+bool wood_eng_resolve_direct_terminal(WoodEngineeringContext *,const EngDimensionSource *,const EngTarget *,uint32_t,int,GeoCoord *,char *,size_t,EngTerminal *);
+bool wood_eng_effective_direct_terminal(WoodEngineeringContext *,const EngBinding *,GeoCoord *,char *,size_t,EngTerminal *);
 bool wood_eng_validate_application_direct(WoodEngineeringContext *,const EngApplication *);
 void wood_engineering_drop_owned(WoodEngineeringContext *w,const char *kind,uint32_t id);
 bool wood_engineering_follow_fragment(WoodEngineeringContext *w,uint32_t old_pid);
