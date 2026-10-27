@@ -589,9 +589,10 @@ const ReferenceWorkspace = (() => {
         throw new Error("舊網格草稿介面不能取代集合或失效草稿。");
     }
     const proposal = featureProposal(kind,value,kind===P.Features.GRID_KIND&&options.gridWrite===gridDraftWrite&&options.storedGrid===true), previous = readFeatureAttachment(kind);
+    if(kind===P.Features.Cutting.KIND)P.Features.Cutting.transition(previous,value);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.Cutting.KIND ? "裁切設定" : kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -1932,7 +1933,7 @@ const ReferenceWorkspace = (() => {
       token=candidate.token;
       assertWritableLease();assertCurrent();
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
-      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
+      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities,{cutting:true}));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {

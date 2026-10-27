@@ -6,7 +6,7 @@ window.ScenarioIntegration = (() => {
   async function verifyProject(project,assertCurrent=()=>{}) {
     P.validate(project.manifest);
     const data=structuredClone({manifest:project.manifest,scene:project.scene});
-    const readerOnly=P.readerCapabilities([]);
+    const readerOnly=P.readerCapabilities([],{cutting:true});
     data.manifest.requiredCapabilities=(data.manifest.requiredCapabilities||[]).filter(c=>!readerOnly.includes(c));
     const response=await fetch('/scenarios/verify-native',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify(data),signal:AbortSignal.timeout(60000)});

@@ -267,7 +267,7 @@
       // missing native requirements still cannot be supplied by the reader.
       const declared=data.manifest.requiredCapabilities||[];
       const available=typeof P.readerCapabilities==='function'?
-        P.readerCapabilities(receipt.capabilities.filter(c=>declared.includes(c))):receipt.capabilities;
+        P.readerCapabilities(receipt.capabilities.filter(c=>declared.includes(c)),{cutting:true}):receipt.capabilities;
       for(const c of data.manifest.requiredCapabilities||[])if(!available.includes(c))fail('CAPABILITY','Native/reader capability is unavailable: '+c);
       const objects=[];
       for(const v of receipt.objects||[])objects.push(copy(v));
