@@ -10038,9 +10038,9 @@ function ocZoomAt(f, px, py) {
 }
 $("zoomInButton").addEventListener("click", () => ocZoomAt(1.25));
 $("zoomOutButton").addEventListener("click", () => ocZoomAt(0.8));
-$("homeButton").addEventListener("click", () => {
-  oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
-});
+/* #116 K4 PR-c:回到原點是純檢視動作，右鍵選單與工具列按鈕共用同一處理器。 */
+function ocHome() { oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply(); }
+$("homeButton").addEventListener("click", ocHome);
 /* GEO-187:回到 100% 以畫面中心為準;舊版直接改 zoom 不調 pan,從 2% 回 100% 時畫面中心的卡片會飛出畫面 */
 $("zoomLevelButton").addEventListener("click", () => ocZoomAt(1 / oc.zoom));
 /* 吸附 / 格線(aria-pressed 按鈕,A3) */
