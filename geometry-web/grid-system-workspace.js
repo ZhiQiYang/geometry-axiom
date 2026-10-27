@@ -27,6 +27,23 @@
   const samePin=(a,b)=>!!a&&!!b&&!a.lost&&!b.lost&&pinKey(a)===pinKey(b)&&a.fingerprint===b.fingerprint&&a.vertexKeysFingerprint===b.vertexKeysFingerprint;
   const rawField=(s,id)=>{const node=$(id),override=s?.rawOverrides?.get(id);return override&&node?.value===override.display?override.raw:node?.value??'';};
   const fingerprint=value=>GeometryProject.sha(new TextEncoder().encode(JSON.stringify(value)));
+  // R01/I74: one parameter card supplies both axis lengths (scene token `card-reference`).
+  // Only the length slot moves to the card; phase, gap, anchor and stagger stay per axis.
+  const CARD_IDS=['igCard','igCardU','igCardV'];
+  const paramCards=()=>(oc.parameters||[]).map(o=>o.card).filter(c=>c&&(c.fields||[]).length>=2);
+  const fieldText=f=>!f?.value?'—':f.value.den==='1'?String(f.value.num):`${f.value.num}/${f.value.den}`;
+  const cardOn=()=>!!$('igCard')?.value;
+  const cardOf=()=>paramCards().find(c=>String(c.id)===$('igCard')?.value)||null;
+  const cardField=a=>cardOf()?.fields.find(f=>String(f.id)===$(a==='u'?'igCardU':'igCardV')?.value)||null;
+  const cardLength=a=>{const f=cardField(a);return f?.value?.den==='1'?String(f.value.num):'';};
+  const lengthKey=mode=>mode==='repeat'?'step':mode==='repeat-panel'?'panel':null;
+  function cardInt(a){const v=cardLength(a),n=Number(v);if(!/^\d+$/.test(v)||!Number.isSafeInteger(n)||n<1)throw Error(`${a} 的整卡欄位不是正整數，不能當長度。`);return n;}
+  function cardOptions(selected){
+    const cards=paramCards(),missing=selected!=null&&selected!==''&&!cards.some(c=>String(c.id)===String(selected));
+    return '<option value="">逐軸設定（各軸自己的間距或面材）</option>'+cards.map(c=>`<option value="${c.id}"${String(c.id)===String(selected)?' selected':''}>${esc(c.name)}（${c.fields.length} 欄）</option>`).join('')+
+      (missing?`<option value="${esc(String(selected))}" selected>待重新選取：參數卡 #${esc(String(selected))}</option>`:'');
+  }
+  const fieldOptions=(card,selected)=>(card?.fields||[]).map(f=>`<option value="${f.id}"${String(f.id)===String(selected)?' selected':''}>${esc(f.name)} = ${esc(fieldText(f))}</option>`).join('');
   async function catalogPins(objects,schema=F.GRID_SCHEMA){
     const pins=new Map(),pending=[];
     const put=(ref,value)=>pending.push(fingerprint(value).then(hash=>pins.set(pinKey(ref),{...ref,fingerprint:hash})));
@@ -39,7 +56,9 @@
     vertexKeysFingerprint:await fingerprint(b.loops.map((loop,li)=>(loop.vertices||loop.verts.map((uv,index)=>({index,key:null}))).map(v=>[li,v.index,v.key])))};}
   function rawForm(s){
     const fields=s.mode==='source'?F.sourceFields:F.bindingFields;
-    return Object.fromEntries(fields.map(id=>[id,id==='igSystem'?s.systemRaw:rawField(s,id)]));
+    const form=Object.fromEntries(fields.map(id=>[id,id==='igSystem'?s.systemRaw:rawField(s,id)]));
+    if(s.mode==='source'&&cardOn())for(const id of CARD_IDS)form[id]=$(id)?.value??'';
+    return form;
   }
   const parameterSelections=form=>Object.entries(form).filter(([id,value])=>value&&id.endsWith('Source')&&!['igUSource','igVSource'].includes(id)).map(([id,value])=>[id,'parameter-field:'+value]);
   function approveInputReplacement(before,next) {
@@ -179,8 +198,9 @@
     const result={igName:row.name,igMainAlong:row.mainAlong||'none'};
     for(const a of axes){const p='ig'+a.toUpperCase(),d=row[a+'Definition'];result[p+'Source']=d.source;
       for(const [key,fallback] of [['step',600],['phase',0],['panel',600],['gap',0],['anchor',0],['stagger','']]){
-        const id=p+FIELD[key][0],ref=d.parameterRefs?.[key];result[id]=String(d[key]??fallback);result[id+'Source']=ref?`${ref.parameterId}:${ref.fieldId}`:'';
+        const id=p+FIELD[key][0],ref=d.parameterRefs?.[key];result[id]=String(d[key]??(key==='step'?d.effectiveStep:key==='panel'?d.effectivePanel:undefined)??fallback);result[id+'Source']=ref?`${ref.parameterId}:${ref.fieldId}`:'';
       }}
+    if(row.cardReference){result.igCard=String(row.cardReference.parameterId);result.igCardU=String(row.cardReference.uFieldId);result.igCardV=String(row.cardReference.vFieldId);}
     return result;
   }
   async function repin(s) {
@@ -232,14 +252,15 @@
   };
   const sourceKey = o => F.gridSourceKey(o);
   // Omission differs from explicit zero: an invalid zero must remain a draft.
-  const sourceFormKey = o => JSON.stringify([o.name,o.mainAlong||'none',...axes.map(a=>{const d=o[a+'Definition'];return d.source==='repeat'?[d.source,d.phase,d.step,d.stagger??null,d.parameterRefs||{}]:d.source==='repeat-panel'?[d.source,d.panel,d.gap,d.anchor,d.stagger??null,d.parameterRefs||{}]:['none'];})]);
+  const sourceFormKey = o => JSON.stringify([o.name,o.mainAlong||'none',...axes.map(a=>{const d=o[a+'Definition'];return d.source==='repeat'?[d.source,d.phase,d.step??d.effectiveStep,d.stagger??null,d.parameterRefs||{}]:d.source==='repeat-panel'?[d.source,d.panel??d.effectivePanel,d.gap,d.anchor,d.stagger??null,d.parameterRefs||{}]:['none'];}),
+    o.cardReference?[o.cardReference.parameterId,o.cardReference.uFieldId,o.cardReference.vFieldId]:null]);
   const bindingKey = o => JSON.stringify(o && [o.id, o.system, o.boundary, o.vertexKey, o.cell, o.anchor]);
   function status(text, error = false) {
     if (!$('igStatus')) return;
     ($('igDraftNote')||$('igStatus')).textContent = text; $('igStatus').classList.toggle('ig-error', error);
   }
   function sourceEditorKey() {
-    const values = [$('igName').value.trim(), $('igMainAlong').value];
+    const values = [$('igName').value.trim(), $('igMainAlong').value, ...CARD_IDS.map(id => cardOn() ? $(id)?.value || '' : '')];
     for (const a of axes) {
       const p = 'ig' + a.toUpperCase(), mode = $(p + 'Source').value;
       values.push(mode, ...(mode === 'repeat' ? ['Step','Phase','Stagger'] : mode === 'repeat-panel' ? ['Panel','Gap','Anchor','Stagger'] : []).map(key => [$(p + key).value.trim(),$(p+key+'Source')?.value||'']));
@@ -315,7 +336,7 @@
       return `<label class="ig-pfield" data-ig-field="${key}"><span class="ig-pf-label" id="${id}Label">${title}</span><span class="ig-pf-main"><span class="ig-pf-box"><span class="ig-pf-ref" aria-hidden="true">${REF_ICON}<span class="ig-pf-name"></span></span><input id="${id}" type="text" inputmode="numeric" maxlength="4096" value="${esc(value)}" aria-labelledby="${id}Label" aria-describedby="${id}Err"><span class="ig-pf-unit" aria-hidden="true">mm</span></span>${window.ParameterUI?.sourceControl(id, d?.parameterRefs?.[key]) || ''}</span><span class="ig-pf-err" id="${id}Err"></span></label>`;
     };
     const modes = MODE_LABEL.map(([v, l]) => `<label><input type="radio" name="${p}Source" value="${v}"${source === v ? ' checked' : ''}><span>${l}</span></label>`).join('');
-    return `<div class="ig-axis" data-ig-axis="${a}" role="group" aria-labelledby="${p}Name"><button type="button" class="ig-axis-head" id="${p}Head" data-ig-pick-axis="${a}"><span class="ig-axis-name" id="${p}Name">${axisHeading(a)}</span><span class="ig-axis-sum"></span><span class="ig-role" hidden></span></button><div class="ig-axis-body"><div id="${p}Source" class="ig-segment" role="radiogroup" aria-label="${a} 排格方式">${modes}</div><div data-ig-mode="repeat" class="ig-pair">${field('step', d?.step ?? 600)}${field('phase', d?.phase ?? 0)}</div><div data-ig-mode="repeat-panel" class="ig-pair">${field('panel', d?.panel ?? 600)}${field('gap', d?.gap ?? 0)}${field('anchor', d?.anchor ?? 0)}</div><p data-ig-mode="repeat-panel" class="ig-note">格線位於縫中心；向正、負方向持續重複。</p><p data-ig-mode="none" class="ig-note">此軸不產生格線。</p><div data-ig-stagger><button type="button" class="ig-link" data-ig-add-stagger="${a}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>相鄰格子相位差</button><div data-ig-stagger-field class="ig-stagger" hidden>${field('stagger', d?.stagger ?? '')}<div class="ig-stagger-foot"><span>奇數格帶的格線位移；留空即不使用。</span><button type="button" class="ig-link ig-link-quiet" data-ig-remove-stagger="${a}">移除</button></div></div></div></div></div>`;
+    return `<div class="ig-axis" data-ig-axis="${a}" role="group" aria-labelledby="${p}Name"><button type="button" class="ig-axis-head" id="${p}Head" data-ig-pick-axis="${a}"><span class="ig-axis-name" id="${p}Name">${axisHeading(a)}</span><span class="ig-axis-sum"></span><span class="ig-role" hidden></span></button><div class="ig-axis-body"><div id="${p}Source" class="ig-segment" role="radiogroup" aria-label="${a} 排格方式">${modes}</div><div data-ig-mode="repeat" class="ig-pair">${field('step', d?.step ?? d?.effectiveStep ?? 600)}${field('phase', d?.phase ?? 0)}</div><div data-ig-mode="repeat-panel" class="ig-pair">${field('panel', d?.panel ?? d?.effectivePanel ?? 600)}${field('gap', d?.gap ?? 0)}${field('anchor', d?.anchor ?? 0)}</div><p data-ig-mode="repeat-panel" class="ig-note">格線位於縫中心；向正、負方向持續重複。</p><p data-ig-mode="none" class="ig-note">此軸不產生格線。</p><div data-ig-stagger><button type="button" class="ig-link" data-ig-add-stagger="${a}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>相鄰格子相位差</button><div data-ig-stagger-field class="ig-stagger" hidden>${field('stagger', d?.stagger ?? '')}<div class="ig-stagger-foot"><span>奇數格帶的格線位移；留空即不使用。</span><button type="button" class="ig-link ig-link-quiet" data-ig-remove-stagger="${a}">移除</button></div></div></div></div></div>`;
   }
   const ruleIds={name:'igRuleName',selector:'igRuleSelector',cellI:'igRuleCellI',cellJ:'igRuleCellJ',divisionsU:'igRuleU',divisionsV:'igRuleV'};
   function ruleDraftValue(s){
@@ -415,7 +436,7 @@
     // The project bar is shared DOM; return it before rebuilding this workspace.
     WorkspaceShell.detach(dialog);
     const source = s.source || {name: '無限網格', mainAlong: null, uDefinition: {source: 'repeat', phase: 0, step: 600}, vDefinition: {source: 'repeat', phase: 0, step: 400}};
-    dialog.innerHTML = `<header class="ig-header"><button id="igClose" type="button" class="btn ig-back">${icon('arrowLeft')} 返回畫布</button><span class="ig-sep" aria-hidden="true"></span><nav class="ig-crumb" aria-label="目前位置"><span class="ig-crumb-lead ig-crumb-project" data-project-name>${esc(projectName())}</span><span class="ig-crumb-lead" aria-hidden="true">/</span><span class="ig-crumb-lead">無限網格</span><span class="ig-crumb-lead" aria-hidden="true">/</span><h1 id="igTitle">${s.mode === 'binding' ? s.binding ? `網格配置 ${s.binding.id}` : '建立網格配置' : s.source ? esc(s.source.name) : '建立無限網格'}</h1></nav></header><div class="ig-layout"><main class="ig-main"><p id="igWorkspaceLesson" class="studio-first-lesson" hidden></p><div class="ig-canvas"><svg id="igGridView" viewBox="0 0 ${W} ${H}" role="img" aria-label="可平移縮放的無限網格，點選 cell"></svg><p id="igViewNote" class="ig-hint">拖曳平移 · 滾輪縮放 · 點格子選取</p><div class="ig-zoombar"><button id="igZoomOut" type="button" class="btn" aria-label="縮小網格">${icon('minus')}</button><span id="igZoom" class="ig-zoom"></span><button id="igZoomIn" type="button" class="btn" aria-label="放大網格">${icon('plus')}</button><span class="ig-zoom-sep"></span><button id="igFit" type="button" class="btn">回到基準</button></div></div><p id="igDensity" class="ig-density" role="status" hidden></p><section id="igBoundarySection"${s.mode === 'binding' ? '' : ' hidden'}><h2>邊界實際頂點 <small>u →　v ↓</small></h2><p>點圓點選擇外環或孔環頂點；橙色圓點是目前的對齊頂點。</p><svg id="igBoundaryView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界外環及孔環的實際頂點"></svg></section><section id="igResultSection"${s.binding ? '' : ' hidden'}><h2>目前已保存的配置結果</h2><p id="igResultNote"></p><svg id="igResultView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界內實際裁切的配置格線"></svg></section></main><aside class="ig-inspector"><div class="ig-settings"><section id="igSourceForm"${s.mode === 'binding' ? ' hidden' : ''}><div class="ig-src-head"><span id="igSourcePill" class="ig-pill" data-tone="idle"></span><span class="ig-src-kind">無限網格 · 來源</span></div><label class="ig-name">名稱<input id="igName" value="${esc(source.name)}" autocomplete="off" aria-describedby="igNameErr"><span class="ig-pf-err" id="igNameErr"></span></label><div id="paramGridLessonSlot"></div><div id="igDefinition" class="ig-def" role="group" aria-label="網格定義圖"><div id="igDefStage" class="ig-def-stage"></div><p class="ig-def-hint">點圖上的尺寸或卡片標題，對應的軸與欄位會反白。</p></div><div class="ig-axes">${axes.map(a => axisForm(a, source[a + 'Definition'])).join('')}</div><div class="ig-field"><span class="ig-field-title" id="igMainAlongTitle">主支方向</span><div id="igMainAlong" class="ig-segment" role="radiogroup" aria-labelledby="igMainAlongTitle">${[['none','不設定'],['u','沿 u'],['v','沿 v']].map(([v, l]) => `<label><input type="radio" name="igMainAlong" value="${v}"${(source.mainAlong || 'none') === v ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div><p id="igMainNote" class="ig-note"></p></div><button id="igSaveSource" class="primary-button" type="button">${s.source ? '預覽來源變更' : '預覽並建立'}</button>${s.source ? `<button id="igNewBinding" class="btn" type="button">＋ 選邊界建立配置</button><section class="ig-related"><h3>使用此來源的配置</h3>${s.bindings.filter(b => b.system === s.source.id).map(b => `<button type="button" class="btn" data-ig-open-binding="${b.id}">配置 ${b.id} · 面 ${b.boundary}</button>`).join('') || '<p>尚未配置，可以先保存來源。</p>'}</section>` : ''}</section><section id="igBindingForm"${s.mode !== 'binding' ? ' hidden' : ''}><h2>對齊邊界與 cell</h2><label>來源<select id="igSystem" style="min-height:44px"><option value="">明選目前來源</option>${(s.sources||[]).map(row=>`<option value="${row.id}"${String(row.id)===s.systemRaw?' selected':''}>${esc(row.name)} · ${row.id}</option>`).join('')}</select></label><button type="button" id="igEditSource" class="grid-text-button">編輯來源</button><label>1 · 邊界<select id="igBoundary"><option value="">選擇已有邊界（可尚未放置）</option>${s.boundaries.map(b => `<option value="${b.id}"${s.binding?.boundary === b.id ? ' selected' : ''}>面 ${b.id}${b.placed ? ' · 已放置' : ' · 尚未放置'}</option>`).join('')}</select></label><p id="igVertexSummary">2 · 點選右側邊界的實際頂點。</p><label>頂點<select id="igVertex"><option value="">先選邊界</option></select></label><p>3 · 點選網格的一格，或填入精確索引。</p><div class="ig-pair"><label>cell i<input id="igCellI" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[0] ?? '0')}"></label><label>cell j<input id="igCellJ" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[1] ?? '0')}"></label></div><button id="igLocateCell" class="btn" type="button">定位這一格</button><p>4 · 格子裡的對齊位置</p><div class="ig-anchor" role="group" aria-label="格子內的對齊位置">${GridAnchorPositions.positions.map(({name:t,u,v})=>`<button type="button" data-ig-anchor="${u},${v}" aria-pressed="false">${t}</button>`).join('')}</div><details class="ig-rational"><summary>其他精確比例</summary><div class="ig-pair"><label>u 分子<input id="igAnchorUN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>u 分母<input id="igAnchorUD" type="text" inputmode="numeric" maxlength="4096" value="1"></label><label>v 分子<input id="igAnchorVN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>v 分母<input id="igAnchorVD" type="text" inputmode="numeric" maxlength="4096" value="1"></label></div></details><p id="igAlignmentSummary" class="ig-summary"></p><button id="igSaveBinding" class="primary-button" type="button">${s.binding ? '預覽配置變更' : '預覽並建立配置'}</button><section id="igApplicationSection"${s.binding ? '' : ' hidden'}><h3>套用到承載面</h3><label>承載面（僅列同一邊界）<select id="igSurface"></select></label><p id="igApplyNote"></p><button id="igApplyBinding" type="button" class="btn">預覽套用</button><div id="igApplications"></div></section><details id="igKeyedEditor"${s.binding ? '' : ' hidden'}><summary>以頂點身分修改邊界</summary><p>保留每個頂點的身分。修改會重新檢查此邊界的所有配置與構件。</p><div id="igKeyedVertices"></div><div class="ig-pair">${['Left','Right','Top','Bottom'].map((a,k)=>`<label>向${['左','右','上','下'][k]}擴大 mm<input id="igGrow${a}" type="number" step="1" min="0" value="0"></label>`).join('')}</div><button id="igGrowBoundary" type="button" class="btn">將四側擴大填入頂點草稿</button><button id="igSaveBoundary" type="button" class="primary-button">預覽邊界變更</button></details>${s.binding ? `<button id="igDeleteBinding" class="btn danger" type="button">刪除此配置</button>` : ''}</section><section id="igInfo" class="ig-info" aria-live="off"><div class="ig-info-head"><h3 id="igInfoTitle">格資訊</h3><span id="igInfoCell"></span></div><div id="igInfoRows"></div></section></div><footer class="ig-footer"><p id="igStatus" role="status" aria-live="polite">所有變更先預覽，確認後才保存到目前場景。</p></footer></aside></div>`;
+    dialog.innerHTML = `<header class="ig-header"><button id="igClose" type="button" class="btn ig-back">${icon('arrowLeft')} 返回畫布</button><span class="ig-sep" aria-hidden="true"></span><nav class="ig-crumb" aria-label="目前位置"><span class="ig-crumb-lead ig-crumb-project" data-project-name>${esc(projectName())}</span><span class="ig-crumb-lead" aria-hidden="true">/</span><span class="ig-crumb-lead">無限網格</span><span class="ig-crumb-lead" aria-hidden="true">/</span><h1 id="igTitle">${s.mode === 'binding' ? s.binding ? `網格配置 ${s.binding.id}` : '建立網格配置' : s.source ? esc(s.source.name) : '建立無限網格'}</h1></nav></header><div class="ig-layout"><main class="ig-main"><p id="igWorkspaceLesson" class="studio-first-lesson" hidden></p><div class="ig-canvas"><svg id="igGridView" viewBox="0 0 ${W} ${H}" role="img" aria-label="可平移縮放的無限網格，點選 cell"></svg><p id="igViewNote" class="ig-hint">拖曳平移 · 滾輪縮放 · 點格子選取</p><div class="ig-zoombar"><button id="igZoomOut" type="button" class="btn" aria-label="縮小網格">${icon('minus')}</button><span id="igZoom" class="ig-zoom"></span><button id="igZoomIn" type="button" class="btn" aria-label="放大網格">${icon('plus')}</button><span class="ig-zoom-sep"></span><button id="igFit" type="button" class="btn">回到基準</button></div></div><p id="igDensity" class="ig-density" role="status" hidden></p><section id="igBoundarySection"${s.mode === 'binding' ? '' : ' hidden'}><h2>邊界實際頂點 <small>u →　v ↓</small></h2><p>點圓點選擇外環或孔環頂點；橙色圓點是目前的對齊頂點。</p><svg id="igBoundaryView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界外環及孔環的實際頂點"></svg></section><section id="igResultSection"${s.binding ? '' : ' hidden'}><h2>目前已保存的配置結果</h2><p id="igResultNote"></p><svg id="igResultView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界內實際裁切的配置格線"></svg></section></main><aside class="ig-inspector"><div class="ig-settings"><section id="igSourceForm"${s.mode === 'binding' ? ' hidden' : ''}><div class="ig-src-head"><span id="igSourcePill" class="ig-pill" data-tone="idle"></span><span class="ig-src-kind">無限網格 · 來源</span></div><label class="ig-name">名稱<input id="igName" value="${esc(source.name)}" autocomplete="off" aria-describedby="igNameErr"><span class="ig-pf-err" id="igNameErr"></span></label><div class="ig-card-ref" id="igCardRef"><label class="ig-card-pick"><span>長度來源</span><select id="igCard" aria-describedby="igCardNote">${cardOptions(source.cardReference?.parameterId)}</select></label><div class="ig-card-map" id="igCardMap" hidden><label><span>u 長度</span><select id="igCardU"></select></label><button type="button" class="btn ig-card-swap" id="igCardSwap">對調 u ↔ v</button><label><span>v 長度</span><select id="igCardV"></select></label></div><p class="ig-card-note" id="igCardNote" role="status"></p></div><div id="paramGridLessonSlot"></div><div id="igDefinition" class="ig-def" role="group" aria-label="網格定義圖"><div id="igDefStage" class="ig-def-stage"></div><p class="ig-def-hint">點圖上的尺寸或卡片標題，對應的軸與欄位會反白。</p></div><div class="ig-axes">${axes.map(a => axisForm(a, source[a + 'Definition'])).join('')}</div><div class="ig-field"><span class="ig-field-title" id="igMainAlongTitle">主支方向</span><div id="igMainAlong" class="ig-segment" role="radiogroup" aria-labelledby="igMainAlongTitle">${[['none','不設定'],['u','沿 u'],['v','沿 v']].map(([v, l]) => `<label><input type="radio" name="igMainAlong" value="${v}"${(source.mainAlong || 'none') === v ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div><p id="igMainNote" class="ig-note"></p></div><button id="igSaveSource" class="primary-button" type="button">${s.source ? '預覽來源變更' : '預覽並建立'}</button>${s.source ? `<button id="igNewBinding" class="btn" type="button">＋ 選邊界建立配置</button><section class="ig-related"><h3>使用此來源的配置</h3>${s.bindings.filter(b => b.system === s.source.id).map(b => `<button type="button" class="btn" data-ig-open-binding="${b.id}">配置 ${b.id} · 面 ${b.boundary}</button>`).join('') || '<p>尚未配置，可以先保存來源。</p>'}</section>` : ''}</section><section id="igBindingForm"${s.mode !== 'binding' ? ' hidden' : ''}><h2>對齊邊界與 cell</h2><label>來源<select id="igSystem" style="min-height:44px"><option value="">明選目前來源</option>${(s.sources||[]).map(row=>`<option value="${row.id}"${String(row.id)===s.systemRaw?' selected':''}>${esc(row.name)} · ${row.id}</option>`).join('')}</select></label><button type="button" id="igEditSource" class="grid-text-button">編輯來源</button><label>1 · 邊界<select id="igBoundary"><option value="">選擇已有邊界（可尚未放置）</option>${s.boundaries.map(b => `<option value="${b.id}"${s.binding?.boundary === b.id ? ' selected' : ''}>面 ${b.id}${b.placed ? ' · 已放置' : ' · 尚未放置'}</option>`).join('')}</select></label><p id="igVertexSummary">2 · 點選右側邊界的實際頂點。</p><label>頂點<select id="igVertex"><option value="">先選邊界</option></select></label><p>3 · 點選網格的一格，或填入精確索引。</p><div class="ig-pair"><label>cell i<input id="igCellI" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[0] ?? '0')}"></label><label>cell j<input id="igCellJ" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[1] ?? '0')}"></label></div><button id="igLocateCell" class="btn" type="button">定位這一格</button><p>4 · 格子裡的對齊位置</p><div class="ig-anchor" role="group" aria-label="格子內的對齊位置">${GridAnchorPositions.positions.map(({name:t,u,v})=>`<button type="button" data-ig-anchor="${u},${v}" aria-pressed="false">${t}</button>`).join('')}</div><details class="ig-rational"><summary>其他精確比例</summary><div class="ig-pair"><label>u 分子<input id="igAnchorUN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>u 分母<input id="igAnchorUD" type="text" inputmode="numeric" maxlength="4096" value="1"></label><label>v 分子<input id="igAnchorVN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>v 分母<input id="igAnchorVD" type="text" inputmode="numeric" maxlength="4096" value="1"></label></div></details><p id="igAlignmentSummary" class="ig-summary"></p><button id="igSaveBinding" class="primary-button" type="button">${s.binding ? '預覽配置變更' : '預覽並建立配置'}</button><section id="igApplicationSection"${s.binding ? '' : ' hidden'}><h3>套用到承載面</h3><label>承載面（僅列同一邊界）<select id="igSurface"></select></label><p id="igApplyNote"></p><button id="igApplyBinding" type="button" class="btn">預覽套用</button><div id="igApplications"></div></section><details id="igKeyedEditor"${s.binding ? '' : ' hidden'}><summary>以頂點身分修改邊界</summary><p>保留每個頂點的身分。修改會重新檢查此邊界的所有配置與構件。</p><div id="igKeyedVertices"></div><div class="ig-pair">${['Left','Right','Top','Bottom'].map((a,k)=>`<label>向${['左','右','上','下'][k]}擴大 mm<input id="igGrow${a}" type="number" step="1" min="0" value="0"></label>`).join('')}</div><button id="igGrowBoundary" type="button" class="btn">將四側擴大填入頂點草稿</button><button id="igSaveBoundary" type="button" class="primary-button">預覽邊界變更</button></details>${s.binding ? `<button id="igDeleteBinding" class="btn danger" type="button">刪除此配置</button>` : ''}</section><section id="igInfo" class="ig-info" aria-live="off"><div class="ig-info-head"><h3 id="igInfoTitle">格資訊</h3><span id="igInfoCell"></span></div><div id="igInfoRows"></div></section></div><footer class="ig-footer"><p id="igStatus" role="status" aria-live="polite">所有變更先預覽，確認後才保存到目前場景。</p></footer></aside></div>`;
     $('igVertexSummary').after($('igBoundarySection'));
     mountRuleEditor(s);
     placeStudioLesson(dialog.querySelector('#igWorkspaceLesson'), 'grid:infinite-first', '這裡定無限格線；要套到邊界時再建立配置。');
@@ -473,6 +494,13 @@
       return open({binding:binding.id,expectedSource:sourceKey(s.source),expectedBinding:bindingKey(binding)});
     };
     for (const node of dialog.querySelectorAll('#igSourceForm input,#igSourceForm select')) node.addEventListener('input', () => { syncFields(); drawGrid(s); syncDefinition(s); });
+    if ($('igCard')) {
+      const onCard = () => { syncCard(s); cardPins(s); syncFields(); drawGrid(s); syncDefinition(s); };
+      for (const id of CARD_IDS) $(id).addEventListener('change', onCard);
+      for (const a of axes) for (const r of dialog.querySelectorAll(`input[name=ig${a.toUpperCase()}Source]`)) r.addEventListener('change', () => syncCard(s));
+      $('igCardSwap').onclick = () => { if (!canEdit(s)) return; const u = $('igCardU').value; $('igCardU').value = $('igCardV').value; $('igCardV').value = u; $('igCardU').dispatchEvent(new Event('change', {bubbles: true})); };
+      const cr = source.cardReference; syncCard(s, cr ? {u: cr.uFieldId, v: cr.vFieldId} : null);
+    }
     $('igBoundary').onchange = async () => {
       if (boundaryDraftChanged(s) && !window.confirm('邊界有尚未套用的頂點草稿。切換邊界會捨棄這些草稿，確定切換？')) {
         $('igBoundary').value = s.boundaryId == null ? '' : String(s.boundaryId); syncDraftState(s); return;
@@ -514,12 +542,15 @@
     dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);syncDraftState(s,event.target.id==='igSystem');};
     s.normalizedRaw=rawForm(s);s.initialRaw=JSON.stringify(s.normalizedRaw);
     if(s.restored)restoreRaw(s,s.restored.rawForm);
+    if(s.restored&&$('igCard')){const f=s.restored.rawForm;if(f.igCard!=null)syncCard(s,{u:f.igCardU,v:f.igCardV});else{$('igCard').value='';syncCard(s);}}
     s.referenceSelections=new Map(parameterSelections(rawForm(s)));
     if(!s.restored){
       for(const [,key] of s.referenceSelections){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));}
       if(s.mode==='binding'){const pin=s.pins.get('grid-system:'+s.systemRaw);if(pin)s.inputPins.set(pinKey(pin),copy(pin));}
+      cardPins(s);
     }
     for(const a of axes)for(const key of ['Step','Phase','Panel','Gap','Anchor','Stagger'])window.ParameterUI?.bindSource('ig'+a.toUpperCase()+key,()=>{drawGrid(s);syncDraftState(s);},{preserveValue:!!s.restored});
+    syncCard(s); // ParameterUI.bindSource resets readOnly; the card keeps both length slots
     s.initialSourceKey=sourceEditorKey();
     syncFields(); drawGrid(s); syncDefinition(s);
     const loadingControls=workspaceControls().map(node=>[node,node.disabled]);
@@ -535,6 +566,55 @@
       saveReason:()=>s.busy?'正在處理網格變更，完成後即可保存。':'先預覽並確認未套用的設定，再保存專案。', describedBy:'igDraftNote'});
     syncDraftState(s);
     window.ParamGridLesson?.place();
+  }
+  // R01: show the card mapping, lock the two length inputs to the card values and explain why.
+  function syncCard(s, prefer = null) {
+    if (!$('igCardRef')) return;
+    const on = cardOn(), card = cardOf(), note = $('igCardNote');
+    $('igCardMap').hidden = !on;
+    if (on) {
+      const ids = (card?.fields || []).map(f => String(f.id));
+      const want = {u: String(prefer?.u ?? $('igCardU').value ?? ''), v: String(prefer?.v ?? $('igCardV').value ?? '')};
+      $('igCardU').innerHTML = fieldOptions(card, ids.includes(want.u) ? want.u : ids[0]);
+      $('igCardV').innerHTML = fieldOptions(card, ids.includes(want.v) ? want.v : ids[1] ?? ids[0]);
+      for (const [a, id] of [['u', 'igCardU'], ['v', 'igCardV']]) if (want[a] !== '' && !ids.includes(want[a]) && prefer) {
+        const o = document.createElement('option'); o.value = want[a]; o.textContent = '待重新選取：欄位 ' + want[a]; o.selected = true; $(id).append(o);
+      }
+    }
+    for (const a of axes) {
+      const p = 'ig' + a.toUpperCase(), key = lengthKey($(p + 'Source').value);
+      for (const k of ['step', 'panel']) {
+        const id = p + FIELD[k][0], input = $(id), ref = $(id + 'Source'), locked = on && k === key;
+        if (!input) continue;
+        input.readOnly = locked; input.closest('[data-ig-field]')?.classList.toggle('ig-card-locked', locked);
+        if (locked) {
+          const value = cardLength(a); if (value !== '' && input.value !== value) { input.value = value; s?.rawOverrides?.delete(id); }
+          if (ref?.value) { ref.value = ''; ref.dispatchEvent(new Event('change', {bubbles: true})); }
+        }
+        if (ref) ref.disabled = locked;
+      }
+    }
+    let text = '', tone = '';
+    if (on) {
+      const fu = cardField('u'), fv = cardField('v');
+      if (axes.some(a => !lengthKey($('ig' + a.toUpperCase() + 'Source').value))) { text = '整張參數卡需要兩軸都是「固定間距」或「面材＋縫」。'; tone = 'error'; }
+      else if (!card || !fu || !fv) { text = '請重新選取參數卡與兩軸欄位。'; tone = 'error'; }
+      else if (fu.id === fv.id) { text = '兩軸要用卡片上兩個不同的欄位（I74）。'; tone = 'error'; }
+      else if (!cardLength('u') || !cardLength('v')) { text = '所選欄位不是整數，不能當長度。'; tone = 'error'; }
+      else text = `兩軸長度由「${card.name}」提供：u = ${fu.name}（${fieldText(fu)}）、v = ${fv.name}（${fieldText(fv)}）。第 0 線、縫寬、面材起點與相鄰格錯開仍逐軸設定。`;
+    } else if (s?.source?.cardReference) { text = '這個網格目前由整張參數卡提供長度；解除整卡還沒有在這裡提供，請保留整卡。'; tone = 'error'; }
+    note.textContent = text; note.dataset.tone = tone;
+  }
+  // The two card fields are draft inputs like any per-field reference: pin them.
+  function cardPins(s) {
+    const used = new Set([...(s.referenceSelections?.values() || [])].filter(Boolean));
+    for (const key of s.cardPinKeys || []) if (!used.has(key)) s.inputPins.delete(key);
+    s.cardPinKeys = [];
+    if (!cardOn()) return;
+    for (const id of ['igCardU', 'igCardV']) {
+      const key = `parameter-field:${$('igCard').value}:${$(id).value}`, pin = s.pins?.get(key);
+      if (pin) { s.inputPins.set(key, copy(pin)); s.cardPinKeys.push(key); }
+    }
   }
   function syncFields() {
     for (const a of axes) {
@@ -717,12 +797,18 @@
     const mainAlong=rawField(s,'igMainAlong');
     if(!['none','u','v'].includes(mainAlong))throw Error('請明確重新選取主支方向。');
     const result = {name, mainAlong, hex: Array.from(bytes, b => b.toString(16).padStart(2,'0')).join('')};
+    const card = cardOn() ? {parameterId:Number($('igCard').value), uFieldId:Number($('igCardU').value), vFieldId:Number($('igCardV').value)} : null;
+    if (card && ![card.parameterId, card.uFieldId, card.vFieldId].every(n => Number.isSafeInteger(n) && n >= 0 && n <= 4294967295)) throw Error('請重新選取整張參數卡與兩軸欄位。');
+    if (!card && s.source?.cardReference) throw Error('這個網格目前由整張參數卡提供長度；解除整卡還沒有在這裡提供，請保留整卡。');
+    if (card && card.uFieldId === card.vFieldId) throw Error('兩軸要用卡片上兩個不同的欄位（I74）。');
+    if (card) result.cardReference = card;
     for (const a of axes) { const p = 'ig' + a.toUpperCase(), source = $(p + 'Source').value;
       if(!['none','repeat','repeat-panel'].includes(source))throw Error(a+' 排格方式無法解讀，請明確重新選取；原始值仍保留。');
-      result[a + 'Definition'] = source === 'none' ? {source} : source === 'repeat' ? {source, phase: int(p+'Phase', a+' 第 0 線座標'), step: int(p+'Step', a+' 間距',1)} : {source, panel:int(p+'Panel',a+' 面材',1),gap:int(p+'Gap',a+' 縫寬',0),anchor:int(p+'Anchor',a+' 面材起點')};
+      if(card && source === 'none') throw Error('整張參數卡需要兩軸都是「固定間距」或「面材＋縫」。');
+      result[a + 'Definition'] = source === 'none' ? {source} : source === 'repeat' ? {source, phase: int(p+'Phase', a+' 第 0 線座標'), step: card ? cardInt(a) : int(p+'Step', a+' 間距',1), ...(card ? {cardLength: true} : {})} : {source, panel:card ? cardInt(a) : int(p+'Panel',a+' 面材',1),gap:int(p+'Gap',a+' 縫寬',0),anchor:int(p+'Anchor',a+' 面材起點'), ...(card ? {cardLength: true} : {})};
       const d=result[a+'Definition'];d.parameterRefs={};
       if (source !== 'none') {
-        for(const key of source==='repeat'?['Phase','Step']:['Panel','Gap','Anchor']){const ref=window.ParameterUI?.sourceRef(p+key);if(ref)d.parameterRefs[key.toLowerCase()]=ref;}
+        for(const key of source==='repeat'?['Phase','Step']:['Panel','Gap','Anchor']){if(card&&(key==='Step'||key==='Panel'))continue;const ref=window.ParameterUI?.sourceRef(p+key);if(ref)d.parameterRefs[key.toLowerCase()]=ref;}
         const sref = window.ParameterUI?.sourceRef(p+'Stagger'), raw = rawField(s,p+'Stagger').trim();
         if (sref) d.parameterRefs.stagger = sref;
         // D10b/I24: only an empty field omits stagger. Preserve explicit zero
@@ -991,8 +1077,9 @@
   }
   function sourceCommand(d,id) {
     if(!axes.every(a=>['none','repeat','repeat-panel'].includes(d[a+'Definition'].source)))throw Error('請明確重新選取排格方式。');
-    const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger!=null?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
-    return `grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong} ${parts.join(' ')}`;
+    const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{if(v.cardLength&&key===(v.source==='repeat'?'step':'panel'))return 'card';const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger!=null?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
+    const card=d.cardReference?` card-reference ${d.cardReference.parameterId} ${d.cardReference.uFieldId} ${d.cardReference.vFieldId}`:'';
+    return `grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong}${card} ${parts.join(' ')}`;
   }
   async function saveSource(s) {
     if(s.orphaned)throw Error(ruleUnsupported(s));

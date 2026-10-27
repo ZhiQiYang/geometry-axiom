@@ -19,6 +19,8 @@
   const sourceFields = ["igName", "igMainAlong", ...["U", "V"].flatMap(axis => [
     "Source", ...["Step", "Phase", "Panel", "Gap", "Anchor", "Stagger"].flatMap(field => [field, field + "Source"])
   ].map(field => "ig" + axis + field))];
+  // R01: whole-card source fields are present only while a card is chosen; card-less drafts are unchanged.
+  const sourceCardFields = ["igCard", "igCardU", "igCardV"];
   const bindingFields = ["igSystem", "igBoundary", "igVertex", "igCellI", "igCellJ", "igAnchorUN", "igAnchorUD", "igAnchorVN", "igAnchorVD"];
   const ruleFields = ["name", "selector", "cellI", "cellJ", "divisionsU", "divisionsV"];
   // One representation for current source identity. The legacy representation
@@ -232,7 +234,10 @@
       seen.add(key);
     }
     const fields = value.kind === "source" ? sourceFields : bindingFields;
-    if (!keys(value.rawForm, fields) || fields.some(field => typeof value.rawForm[field] !== "string" || value.rawForm[field].length > MAX_STRING))
+    const optional = value.kind === "source" ? sourceCardFields : [];
+    const present = object(value.rawForm) ? optional.filter(field => Object.hasOwn(value.rawForm, field)) : [];
+    if (!keys(value.rawForm, fields, optional) || [...fields, ...present].some(field => typeof value.rawForm[field] !== "string" || value.rawForm[field].length > MAX_STRING) ||
+        (present.length && present.length !== optional.length))
       fail("網格草稿原始輸入欄位不完整或不合法。");
     if (rules && value.ruleDraft !== null) {
       const rule = value.ruleDraft;
@@ -367,7 +372,7 @@
   function references(value) { validateGridDraft(value); return JSON.parse(JSON.stringify([...(value.baseRef === null ? [] : [value.baseRef]), ...value.inputRefs])); }
   return {ReferenceDisplay:Rooms.Display,Evidence,Cases,CASE_KIND,CASE_SCHEMA, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, ROOM_DISPLAY_SCHEMA, ROOM_DISPLAY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
-    sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields), ruleFields:Object.freeze(ruleFields),
+    sourceFields:Object.freeze(sourceFields), sourceCardFields:Object.freeze(sourceCardFields), bindingFields:Object.freeze(bindingFields), ruleFields:Object.freeze(ruleFields),
     gridSourceDefinition, gridSourceKey, ruleAwareSource,
     GRID_DRAFTS_SCHEMA, MAX_GRID_DRAFTS, MAX_GRID_DRAFTS_BYTES, validateGridDrafts, gridDrafts, gridDraftValue, gridLifecycleValue, gridUnmarkedEnvelope, referenceKey,
     validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins, jsonBytes, lifecycleReserve,

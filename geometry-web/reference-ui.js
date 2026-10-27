@@ -173,13 +173,20 @@ function appendGridDefinitionImpact(dialog, preview) {
   function axis(d) {
     if(!d || d.source==='none')return '不設此軸';
     const stagger = d.stagger ? `，相鄰格子相位差 ${d.stagger} mm` : '';
-    if(d.source==='repeat')return `無限重複：間距 ${d.step} mm，第 0 線 ${d.phase} mm${stagger}`;
-    if(d.source==='repeat-panel')return `無限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${d.panel+d.gap} mm${stagger}`;
+    // R01: a whole parameter card supplies the length; stored rows expose the effective value.
+    const card = key => d[key+'Source']==='card' ? '（整張參數卡）' : '';
+    if(d.source==='repeat')return `無限重複：間距 ${d.step ?? d.effectiveStep} mm${card('step')}，第 0 線 ${d.phase} mm${stagger}`;
+    if(d.source==='repeat-panel'){const panel=d.panel ?? d.effectivePanel;return `無限面材 ${panel}${card('panel')}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${panel+d.gap} mm${stagger}`;}
     if(d.source==='explicit')return `舊版有限座標 [${(d.coordinates||[]).join(', ')}] mm`;
     if(d.source==='series')return `舊版有限等差：起點 ${d.start}、間距 ${d.step} mm，共 ${d.count} 條`;
     return `舊版有限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm`;
   }
-  function source(g) {return g ? `「${g.name}」；${g.mainAlong ? '主支沿 '+g.mainAlong : '主支方向未設定'}；u ${axis(g.uDefinition)}；v ${axis(g.vDefinition)}` : '不存在';}
+  function cardText(r) {
+    if(!r)return '';
+    const card=((typeof oc!=='undefined'&&oc.parameters)||[]).map(o=>o.card).find(c=>c?.id===r.parameterId),name=id=>card?.fields?.find(f=>f.id===id)?.name??`欄位 ${id}`;
+    return `；長度來自整張參數卡「${card?.name??'#'+r.parameterId}」（u = ${name(r.uFieldId)}、v = ${name(r.vFieldId)}）`;
+  }
+  function source(g) {return g ? `「${g.name}」；${g.mainAlong ? '主支沿 '+g.mainAlong : '主支方向未設定'}；u ${axis(g.uDefinition)}；v ${axis(g.vDefinition)}${cardText(g.cardReference)}` : '不存在';}
   section(sources,'網格來源','system',(item,row)=>{
     item.append(textNode('strong','網格系統 '+row.id));
     para(item,'原：'+source(row.before),'before');para(item,'新：'+source(row.after),'after');
