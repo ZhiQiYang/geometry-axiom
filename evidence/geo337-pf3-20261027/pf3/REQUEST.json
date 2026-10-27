@@ -1,0 +1,39 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "tests/pf3_mutation_check.py",
+    "--out",
+    "/workspace/scratch/geo337-pf3-F-cbf0fb62-20261027/subject",
+    "--jobs",
+    "1"
+  ],
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/scratch/geo337-pf3-F-cbf0fb62-20261027/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GITHUB_SHA": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "GITHUB_WORKSPACE": "/workspace/geo337-native-F-cbf0fb62"
+  },
+  "started_utc": "2026-10-27T03:56:17.050481+00:00",
+  "stack_bytes": 16777216,
+  "original_child_timeout_seconds": 900,
+  "outer_timeout_seconds": null,
+  "jobs": 1,
+  "expected_source_variants": 21,
+  "expected_baseline_tests": 20,
+  "expected_semantic_kills": 19,
+  "expected_restored_tests": 20,
+  "owner_lock": "/tmp/geo337-native-owner.lock",
+  "subject_sha256": "73b622fb59033b0ebe8672fe024c3c46645c9a3e863a60545c486223e44b5692",
+  "free_before": {
+    "/workspace": 22685622272,
+    "/tmp": 17852461056
+  }
+}

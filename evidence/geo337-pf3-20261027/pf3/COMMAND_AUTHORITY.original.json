@@ -1,0 +1,282 @@
+{
+  "schema": "train337-final-original-nonperf-special-requests/1",
+  "prepared_only": true,
+  "subject_executed": false,
+  "source_sha": null,
+  "source_binding": "--sha NEW_FULL_F9 required; descendant of F8 with only ledger JSON/evidence delta; private clean checkout; F9 is currently unbound",
+  "original_judge_source": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "stack_bytes": 16777216,
+  "outer_timeout": null,
+  "gates": [
+    {
+      "gate": "q38",
+      "commands": [
+        [
+          "python3",
+          "-B",
+          "-c",
+          "from pathlib import Path; import sys; from tests import binaries; binaries.OUT_DIR=Path(sys.argv[1]); raise SystemExit(binaries.main([\"build\",\"model-base\"]))",
+          "<GATE_OUT>/q38-bin"
+        ],
+        [
+          "python3",
+          "-B",
+          "-u",
+          "tests/section_profile_mutation_check.py",
+          "--receipt",
+          "<GATE_OUT>/q38/receipt.json",
+          "--logs",
+          "<GATE_OUT>/q38/logs",
+          "--jobs",
+          "1"
+        ]
+      ],
+      "env": {
+        "GEOMETRY_MODEL_BASE": "<GATE_OUT>/q38-bin/model-base",
+        "TMPDIR": "<GATE_OUT>/tmp"
+      },
+      "writes_checkout": false,
+      "writes": "original disposable copies in private TMPDIR; complete native+model registry; no only/group/explore",
+      "original_timeouts_s": {
+        "native_compile": 600,
+        "tests": 900,
+        "model_adapter_build": 900
+      },
+      "judge": "original complete baselines0/zero skips and declared killed/equivalent; original receipt+full logs",
+      "original_case_ids": [
+        "SPM01",
+        "SPM02",
+        "SPM03",
+        "SPM04",
+        "SPM05",
+        "SPM06",
+        "SPM07",
+        "SPM08",
+        "SPM09",
+        "SPM10",
+        "SPM11",
+        "SPM12",
+        "SPM13",
+        "SPM14",
+        "SPM15",
+        "SPM16",
+        "SPM17",
+        "SPM18",
+        "SPM19",
+        "SPM20",
+        "SPM21",
+        "SPM22",
+        "SPM23",
+        "SPM24",
+        "SPM25",
+        "SPM26",
+        "SPM27",
+        "SPM28",
+        "SPM29",
+        "SPM30",
+        "SPM31",
+        "SPM32",
+        "SPM33",
+        "SPM34",
+        "SPM35",
+        "SPM36",
+        "SPM37",
+        "SPM38",
+        "SPM39",
+        "SPM40",
+        "SPM41",
+        "SPM42",
+        "SPM43",
+        "SPM44"
+      ]
+    },
+    {
+      "gate": "cardref",
+      "commands": [
+        [
+          "python3",
+          "-B",
+          "-u",
+          "geometry-core/card-reference/run_mutations.py",
+          "--output",
+          "<GATE_OUT>/subject"
+        ]
+      ],
+      "writes_checkout": true,
+      "writes": "original table source targets temporarily patched and finally byte-restored; exclusive checkout",
+      "original_timeouts_s": {
+        "compiler_or_test_child": 180
+      },
+      "judge": "original complete registry baseline, each actual compiled mutant killed normally and restored recompile green, zero skip; no only"
+    },
+    {
+      "gate": "axiom",
+      "commands": [
+        [
+          "python3",
+          "-B",
+          "-u",
+          "geometry-core/card-reference/run_axiom_mutations.py",
+          "--output",
+          "<GATE_OUT>/subject"
+        ]
+      ],
+      "writes_checkout": true,
+      "writes": "geometry-core/modeling/__init__.py temporarily patched and finally byte-restored; exclusive checkout",
+      "original_timeouts_s": {
+        "unittest_child": 180
+      },
+      "registered_baseline_and_restored_tests": 44,
+      "original_mutants": 5,
+      "judge": "original exact named terminal AssertionError marker; complete44 baseline/restored0, zero error/skip; AXIOM_ONLY unset"
+    },
+    {
+      "gate": "required-eight",
+      "commands": [
+        [
+          "python3",
+          "-B",
+          "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py",
+          "--repo",
+          "<R>",
+          "--sha",
+          "<FULL_F9>",
+          "--base",
+          "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+          "--main",
+          "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "--out",
+          "<GATE_OUT>/subject",
+          "--heavy-lock",
+          "/tmp/g261r3/heavy.lock",
+          "--stage",
+          "required-eight"
+        ]
+      ],
+      "underlying_original_argv": [
+        "python3",
+        "-B",
+        "tests/run_all.py",
+        "--build",
+        "--only",
+        "py:test_geo261_source_index",
+        "--only",
+        "py:test_geo261_candidate_cache",
+        "--only",
+        "py:test_geo261_graph_product",
+        "--only",
+        "py:test_geo261_assembly_graph_product",
+        "--only",
+        "py:test_bridge_integrity",
+        "--only",
+        "c:integrity",
+        "--only",
+        "core:run_tests",
+        "--only",
+        "py:test_geo261_load_residual"
+      ],
+      "expected_registry": {
+        "py:test_geo261_source_index": {
+          "mode": "count",
+          "count": 18,
+          "unit": "test"
+        },
+        "py:test_geo261_candidate_cache": {
+          "mode": "count",
+          "count": 18,
+          "unit": "test"
+        },
+        "py:test_geo261_graph_product": {
+          "mode": "count",
+          "count": 5,
+          "unit": "test"
+        },
+        "py:test_geo261_assembly_graph_product": {
+          "mode": "count",
+          "count": 4,
+          "unit": "test"
+        },
+        "py:test_bridge_integrity": {
+          "mode": "count",
+          "count": 24,
+          "unit": "test"
+        },
+        "c:integrity": {
+          "mode": "count",
+          "count": 432,
+          "unit": "C 檢查點"
+        },
+        "core:run_tests": {
+          "mode": "count",
+          "count": 166,
+          "unit": "場景"
+        },
+        "py:test_geo261_load_residual": {
+          "mode": "count",
+          "count": 14,
+          "unit": "test"
+        }
+      },
+      "original_selected_registered_count": 681,
+      "writes_checkout": "original tests/build only; do not share checkout while executing",
+      "shared_write_scope": "/tmp/geometry-tests binaries/fingerprints/run_all-logs: no simultaneous other writer, even with different checkout",
+      "original_timeouts_s": {
+        "selected_python_suite": 1200,
+        "selected_C_or_core_suite": 900,
+        "outer": null
+      },
+      "judge": "original run_all expected/count/skip policy and raw exit0; preserve dependencies, not whole native"
+    },
+    {
+      "gate": "pf3",
+      "commands": [
+        [
+          "python3",
+          "-B",
+          "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py",
+          "--repo",
+          "<R>",
+          "--sha",
+          "<FULL_F9>",
+          "--base",
+          "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+          "--main",
+          "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "--out",
+          "<GATE_OUT>/subject",
+          "--heavy-lock",
+          "/tmp/g261r3/heavy.lock",
+          "--stage",
+          "pf3"
+        ]
+      ],
+      "underlying_original_argv": [
+        "python3",
+        "-B",
+        "tests/pf3_mutation_check.py",
+        "--out",
+        "<OUT>/evidence/pf3",
+        "--jobs",
+        "1"
+      ],
+      "writes_checkout": false,
+      "writes": "21 original disposable C source/build variants retained inside original PF3 output",
+      "baseline_cases": 20,
+      "controls": 19,
+      "restored_cases": 20,
+      "original_timeouts_s": {
+        "child": 900,
+        "outer": null
+      },
+      "judge": "original full20 baseline/restored and19 named AssertionError kills; not replaced by native; no compile/crash/timeout accepted"
+    }
+  ],
+  "scheduling": [
+    "non-v5 gates own original R3; v5 owns R3 internally so no double lock",
+    "all5 sequential; red continues next gate; dirty-source guard never reset",
+    "no active ledger/native/browser consumer in this ROOT; never write browser readonlypool",
+    "required-eight cannot run alongside any writer of shared /tmp/geometry-tests",
+    "no performance sampling in this launcher; P52/P189 distinct original prep"
+  ],
+  "raw_policy": "each original command reaper/c387 exact argv, exit, full binary stdout/stderr; primary exit independently reconciled for external original reaper; v5 own internal reaper and original stage/wrapper raw preserved"
+}

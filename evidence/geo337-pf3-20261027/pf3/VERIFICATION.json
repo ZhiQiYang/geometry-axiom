@@ -1,0 +1,325 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "source_variants": 21,
+  "cases": [
+    {
+      "id": "baseline",
+      "verdict": "pass",
+      "counts": {
+        "run": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "",
+      "build_seconds": 33.271620720999636,
+      "test_seconds": 11.097848244999113,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "effective-merge",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "D43_T_POINT",
+      "build_seconds": 35.98379371200008,
+      "test_seconds": 0.3146209650003584,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "unplaced",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF3_UNPLACED",
+      "build_seconds": 35.37748921599996,
+      "test_seconds": 0.36482217899992975,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "two-sides",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "D43_TWO_SIDES",
+      "build_seconds": 34.62636567000027,
+      "test_seconds": 0.3149409099996774,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "board-vertices",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF23_ORIGINAL",
+      "build_seconds": 32.90448019999985,
+      "test_seconds": 0.6157656810000844,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "footprint-vertices",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF23_LEGAL",
+      "build_seconds": 34.22348573099953,
+      "test_seconds": 0.3647184910005308,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "maximal-merge",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF24",
+      "build_seconds": 33.46555478399932,
+      "test_seconds": 0.36575914100012596,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "merge-colours",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF23_LEGAL",
+      "build_seconds": 34.27300486000058,
+      "test_seconds": 0.4659546049997516,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "open-sample",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF23_LEGAL",
+      "build_seconds": 34.98109211600058,
+      "test_seconds": 0.41508935900037613,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "footprint-union",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "R43_UNION",
+      "build_seconds": 34.53215096999975,
+      "test_seconds": 0.667494104999605,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "continuous-width",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "R43_GAP",
+      "build_seconds": 32.86947189700004,
+      "test_seconds": 0.8686636970005566,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "host-identity",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF3_HOST_FILTER",
+      "build_seconds": 33.761837032000585,
+      "test_seconds": 0.41511518400056957,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "finish-reflection",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "R43_FRAME",
+      "build_seconds": 33.26931485700061,
+      "test_seconds": 0.36471623499892303,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "hidden-threshold",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF06_RATIONAL",
+      "build_seconds": 33.01599089100091,
+      "test_seconds": 0.9163831440000649,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "rounded-threshold",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF06_RATIONAL",
+      "build_seconds": 34.12283828700129,
+      "test_seconds": 0.9664267040006962,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "overflow-comparison",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF06_OVERFLOW",
+      "build_seconds": 36.88954747400021,
+      "test_seconds": 0.9693545119989722,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "odd-gap-edges",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "D43_ODD_GAP",
+      "build_seconds": 33.71994318299949,
+      "test_seconds": 0.3147806330016465,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "band-range",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "D43_NEGATIVE_BAND",
+      "build_seconds": 34.51371706899954,
+      "test_seconds": 0.31491985699904035,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "capacity-early",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF3_CAPACITY_N",
+      "build_seconds": 33.0624991170007,
+      "test_seconds": 0.26456584600055066,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "capacity-truncate",
+      "verdict": "killed",
+      "counts": {
+        "run": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "PF3_CAPACITY_N1",
+      "build_seconds": 33.31320163300006,
+      "test_seconds": 0.26442889800091507,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    },
+    {
+      "id": "restored",
+      "verdict": "pass",
+      "counts": {
+        "run": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "required_marker": "",
+      "build_seconds": 32.35866235300091,
+      "test_seconds": 10.141076709000117,
+      "source_files": 205,
+      "source_matches_original_prescribed_patch": true
+    }
+  ],
+  "source_inventory_files": 205,
+  "archive_files": 4580,
+  "archive_bytes_verified": 93718659,
+  "archive_roundtrip_all_bytes_match": true
+}
