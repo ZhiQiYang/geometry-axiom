@@ -1,0 +1,1948 @@
+{
+  "product_sha": "324034812bb6effca68e0413bc0468595337b317",
+  "base_sha": "a5f1806fb3cad2dada1a56e79e01d54f9f86700f",
+  "archive": "original-draft-formula-review-and-source-publication.tar.gz",
+  "archive_bytes": 376145,
+  "archive_sha256": "e1149775a43e15da5b7de1f887d6491248b12c0d3af5ba084c35346b38609cc1",
+  "member_count": 322,
+  "members": [
+    {
+      "member": "product-draft/DRAFT.json",
+      "source": "/workspace/issue128-p2-draft-20261024/DRAFT.json",
+      "bytes": 4192,
+      "sha256": "6a948fb828aeb6714ba593a62a3ea7273fe21b0601c1048ec30e7c0d9363231a"
+    },
+    {
+      "member": "product-draft/INDEX.json",
+      "source": "/workspace/issue128-p2-draft-20261024/INDEX.json",
+      "bytes": 14914,
+      "sha256": "2b488fefaa3dd960fdc4fe242e87a68374e58deed4f8ba392def0588fc816bff"
+    },
+    {
+      "member": "product-draft/PRODUCT_ONLY.patch",
+      "source": "/workspace/issue128-p2-draft-20261024/PRODUCT_ONLY.patch",
+      "bytes": 1874,
+      "sha256": "efe1a378aeb6551dbe16eafc124fa44985fa8c4e0244f2e8458dc52aba9726bc"
+    },
+    {
+      "member": "product-draft/R10-original-comment.md",
+      "source": "/workspace/issue128-p2-draft-20261024/R10-original-comment.md",
+      "bytes": 23756,
+      "sha256": "af6e02fd02e252079da3dcde488e2d18dc526a9c21e77600be412967a049890a"
+    },
+    {
+      "member": "product-draft/TEST_PLAN.md",
+      "source": "/workspace/issue128-p2-draft-20261024/TEST_PLAN.md",
+      "bytes": 4777,
+      "sha256": "2820d565949c7e9f68bf7703054177816b7d9e1172e4acc6cee70343041196bb"
+    },
+    {
+      "member": "product-draft/after/panel_layout.c",
+      "source": "/workspace/issue128-p2-draft-20261024/after/panel_layout.c",
+      "bytes": 6045,
+      "sha256": "c673557af4f543c7550643b3aeb142f1aa9c0e2ef15670759da712522631a9da"
+    },
+    {
+      "member": "product-draft/apply-check/geometry-templates/woodworking/native/panel_layout.c",
+      "source": "/workspace/issue128-p2-draft-20261024/apply-check/geometry-templates/woodworking/native/panel_layout.c",
+      "bytes": 5350,
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+    },
+    {
+      "member": "product-draft/before/panel_layout.c",
+      "source": "/workspace/issue128-p2-draft-20261024/before/panel_layout.c",
+      "bytes": 5350,
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000001/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000001/request.json",
+      "bytes": 1540,
+      "sha256": "111a05f2fd04af3cc27bda55b771de784ac92b5c2111d438095d77a29f40b88a"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000001/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000001/result.json",
+      "bytes": 1792,
+      "sha256": "924d3458a9c71f360158e62c5f2a24fc5113e06529e4d8ba17d0c8dc026f7ce1"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000001/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000001/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000001/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000001/stdout.bin",
+      "bytes": 5350,
+      "sha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000002/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000002/request.json",
+      "bytes": 1540,
+      "sha256": "55be51e911262c82d35135fe434df8c2d0dab26ed5fab3c67f315820b8fbe06f"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000002/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000002/result.json",
+      "bytes": 1793,
+      "sha256": "5bee89ce352b8728cb7f706fad8d2d63b475eec75227cb30f443d3fe72e8c473"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000002/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000002/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000002/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000002/stdout.bin",
+      "bytes": 1566,
+      "sha256": "e52415b20401515ea0beb8e07857de9314411facc2562f0edaaf2fda68254833"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000003/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000003/request.json",
+      "bytes": 1514,
+      "sha256": "1f445f2176d98b6b8da1f86e6c094c3ed053b1ddaad2d16ad8de26902793a5ee"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000003/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000003/result.json",
+      "bytes": 1767,
+      "sha256": "fc3fb14c6f3432fc07c322443df585c07715c2124e5d3446c609df5c5bf50c11"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000003/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000003/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000003/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000003/stdout.bin",
+      "bytes": 8062,
+      "sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000004/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000004/request.json",
+      "bytes": 1515,
+      "sha256": "05396fb6846040db737e11fa1af2af9be8d6cb4dd622df9404bdc9b2e9cd3286"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000004/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000004/result.json",
+      "bytes": 1767,
+      "sha256": "653b5716d0545c4aae69dba9921f75bd13c842e53dcff65c1391701b8e912e74"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000004/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000004/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000004/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000004/stdout.bin",
+      "bytes": 2696,
+      "sha256": "2180b532a060a54572f3e352178326c425ad216e67bb6ee567ae6f62666b4454"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000005/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000005/request.json",
+      "bytes": 1523,
+      "sha256": "a4de41c0ad3540c7aae546b5686f293febcbd16319946754446468d92d12afcd"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000005/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000005/result.json",
+      "bytes": 1775,
+      "sha256": "f0448004e7418a8a0d3eb27d8ac1aa35ebaf702b83540a7aa06ce4f3ad3e44c5"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000005/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000005/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000005/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000005/stdout.bin",
+      "bytes": 3027,
+      "sha256": "b085b167e2281432c116d238029d07e9640728d9a99063ead7821a8c3bdd8a1b"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000006/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000006/request.json",
+      "bytes": 1533,
+      "sha256": "6d53562f6efa41623ab4eb0804d687a6d91ccd723dc1b0bf1ae64bfbc33ef3d2"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000006/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000006/result.json",
+      "bytes": 1787,
+      "sha256": "a322bc53e23c4ba883ea4cb8be53aa036310988f2029fac4539dbdbddc5d2229"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000006/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000006/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000006/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000006/stdout.bin",
+      "bytes": 28866,
+      "sha256": "a7b59b32550ae57f034bb97383bee5d5f0df55e6b7c7f4b57f152e169f06f76c"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000007/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000007/request.json",
+      "bytes": 1523,
+      "sha256": "726a2a3d18462d158836a5bd14fa8f2233b0124ee090d87276fe69cc3d0bf9c6"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000007/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000007/result.json",
+      "bytes": 1776,
+      "sha256": "da4f8d6a022b26ab5f363a75909e6484ff0ba8ff339580740974c91563fc0b19"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000007/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000007/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000007/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000007/stdout.bin",
+      "bytes": 4737,
+      "sha256": "cd9dbf330690a056c9d5111409c03d8405597bf6699964107edd0c3a835bb52c"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000008/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000008/request.json",
+      "bytes": 1516,
+      "sha256": "daac63f48206074947e4530bd4a614ce4a0581350854e9e3d7e978d0a351b475"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000008/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000008/result.json",
+      "bytes": 1770,
+      "sha256": "be2d24ea4438f66a5348f277de00b846d84d2b60a3788f79cdec12765f5cb90f"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000008/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000008/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000008/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000008/stdout.bin",
+      "bytes": 13466,
+      "sha256": "2018652cf7b0359473e4db43da6b5e11060600ec0ac46b5038b1399b4e7f33f4"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000009/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000009/request.json",
+      "bytes": 1521,
+      "sha256": "900f8fe506153eaf0359c1ad76dbb575bc62fc855a4defd8636926fe8d1cad7c"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000009/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000009/result.json",
+      "bytes": 1775,
+      "sha256": "5fad4ef29e3d3de1175b41aad5072d54ec2df35ae53287ea3d82fee9b33769b0"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000009/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000009/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000009/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000009/stdout.bin",
+      "bytes": 14864,
+      "sha256": "d16cef98c44cd7e8cc784aefd86a72fe3596e4b3442457db855ada01e0bfce2f"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000010/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000010/request.json",
+      "bytes": 1519,
+      "sha256": "f5abdf1ed4e7b32490c74b0398ac02e8475a69f37d7f66b4c62e31d0766fa2aa"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000010/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000010/result.json",
+      "bytes": 1773,
+      "sha256": "5a7d586f4d0269d3f29b74fa8bc4d2e71c4fc3ed05c659918e42d28fe54574d5"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000010/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000010/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000010/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000010/stdout.bin",
+      "bytes": 16170,
+      "sha256": "f3898c73db7ead9c80528e8cf80001d2cd8e2b556de4d582a6f0fe70b74cb0c6"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000011/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000011/request.json",
+      "bytes": 1500,
+      "sha256": "300b4cc43b9cb2975419cee1a2f07529067827c081ef7c33b6f2f5be0afe0687"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000011/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000011/result.json",
+      "bytes": 1755,
+      "sha256": "415fac18d5e688fa6e27bdd0619b0a16216ae6c94571b673adbd000d6b1f8e8f"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000011/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000011/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000011/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000011/stdout.bin",
+      "bytes": 323066,
+      "sha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000012/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000012/request.json",
+      "bytes": 1502,
+      "sha256": "0d5a2f041bbc41bfd7a24e700d0443fd192a3652841b15b1a987d896b8e91edb"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000012/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000012/result.json",
+      "bytes": 1756,
+      "sha256": "8fd18b09b8521887f43f5371a494da9cdbbdde92a86ada0b0672d800efabf707"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000012/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000012/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000012/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000012/stdout.bin",
+      "bytes": 237973,
+      "sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000013/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000013/request.json",
+      "bytes": 1533,
+      "sha256": "bbdd7d4f84fb1a563b556b9b4336f1a79322e66658cb2c36b9e6619372b049a3"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000013/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000013/result.json",
+      "bytes": 1787,
+      "sha256": "c7e6f1e9668556e01ba12e4aadfd6c92244ff2c8259633f6a95430407ad2db4f"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000013/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000013/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000013/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000013/stdout.bin",
+      "bytes": 11811,
+      "sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000014/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000014/request.json",
+      "bytes": 1549,
+      "sha256": "454a3d87b4d80a05cc4429e350d070982c261111df9f0c4e353e41b3221e16a0"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000014/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000014/result.json",
+      "bytes": 1799,
+      "sha256": "c4923de987f65cd3d98305be37cec6fb59be93ef5a829688a43bbea8d9178bd6"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000014/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000014/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands/000014/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands/000014/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/capture/subcommands.json",
+      "source": "/workspace/issue128-p2-draft-20261024/capture/subcommands.json",
+      "bytes": 26039,
+      "sha256": "cc2b5f23b20a7cf7003258b58c0b090f9e276b0c15cdddc71dd72f3ca548c874"
+    },
+    {
+      "member": "product-draft/formula-execution/RESULT.json",
+      "source": "/workspace/issue128-p2-draft-20261024/formula-execution/RESULT.json",
+      "bytes": 1887,
+      "sha256": "81d5e5ab6a342e9f39a020e730b38989982c4363e4bff4c807890f59217561a9"
+    },
+    {
+      "member": "product-draft/formula-execution/subcommands/000001/request.json",
+      "source": "/workspace/issue128-p2-draft-20261024/formula-execution/subcommands/000001/request.json",
+      "bytes": 1517,
+      "sha256": "3432e87a40a0980e25d391063989b79e37255ce0973556f0769e940521f4149c"
+    },
+    {
+      "member": "product-draft/formula-execution/subcommands/000001/result.json",
+      "source": "/workspace/issue128-p2-draft-20261024/formula-execution/subcommands/000001/result.json",
+      "bytes": 1770,
+      "sha256": "d034f583b3deb373c342d5df9289292d3a34d22523d94f5065f57a42983b9fc9"
+    },
+    {
+      "member": "product-draft/formula-execution/subcommands/000001/stderr.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/formula-execution/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/formula-execution/subcommands/000001/stdin.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/formula-execution/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/formula-execution/subcommands/000001/stdout.bin",
+      "source": "/workspace/issue128-p2-draft-20261024/formula-execution/subcommands/000001/stdout.bin",
+      "bytes": 1075,
+      "sha256": "d6b877e346f75b0239b2e98e6e77079bd2e154d3dea92adf83622b5af552a9de"
+    },
+    {
+      "member": "product-draft/formula-execution/subcommands.json",
+      "source": "/workspace/issue128-p2-draft-20261024/formula-execution/subcommands.json",
+      "bytes": 1856,
+      "sha256": "2a106b68ca5015431d9c85c060effcf8b9f31e4e437fc9f72c128a05f25da2d3"
+    },
+    {
+      "member": "product-draft/formula_probe.py",
+      "source": "/workspace/issue128-p2-draft-20261024/formula_probe.py",
+      "bytes": 4116,
+      "sha256": "747fe9b35463e09265bd76d10c0f1578fe87c528ab41be3ccc3716bf8bed41a8"
+    },
+    {
+      "member": "product-draft/prepare_draft.py",
+      "source": "/workspace/issue128-p2-draft-20261024/prepare_draft.py",
+      "bytes": 4909,
+      "sha256": "86c2bb4924dac8025c91bbb4ade702fa2a90ce77572a0f4e7b4eb294ef1c6bb2"
+    },
+    {
+      "member": "companion-draft/COMPANION.patch",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/COMPANION.patch",
+      "bytes": 9096,
+      "sha256": "1ac815720bb2f0db5ac06ec14d3dfe117ad203bb992588f9da012c622543747d"
+    },
+    {
+      "member": "companion-draft/MANIFEST.json",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/MANIFEST.json",
+      "bytes": 1162,
+      "sha256": "cef3b39c75ea01df8ad3727a7c2cd3abf688b1c4307fc4a98858075adb09ff83"
+    },
+    {
+      "member": "companion-draft/README.md",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/README.md",
+      "bytes": 2074,
+      "sha256": "d49ce3554684328b2aa15b5414358e8b7011264dfb5fa135ca7083be2c3a0fe4"
+    },
+    {
+      "member": "companion-draft/before/tests/geo261_panel_harness.c",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/before/tests/geo261_panel_harness.c",
+      "bytes": 13466,
+      "sha256": "2018652cf7b0359473e4db43da6b5e11060600ec0ac46b5038b1399b4e7f33f4"
+    },
+    {
+      "member": "companion-draft/before/tests/test_geo261_panel_native.py",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/before/tests/test_geo261_panel_native.py",
+      "bytes": 14864,
+      "sha256": "d16cef98c44cd7e8cc784aefd86a72fe3596e4b3442457db855ada01e0bfce2f"
+    },
+    {
+      "member": "companion-draft/candidate/tests/geo261_panel_harness.c",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/candidate/tests/geo261_panel_harness.c",
+      "bytes": 17466,
+      "sha256": "003fbfe9254c2434ad90e4adaed7df431228e1e1d3d4f5b8540fdd2e2703eaf1"
+    },
+    {
+      "member": "companion-draft/candidate/tests/test_geo261_panel_native.py",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/candidate/tests/test_geo261_panel_native.py",
+      "bytes": 18759,
+      "sha256": "3ce788669e83971d98d278856df44f6c7473c49d52422b0ebc1f5ee2a8fdfb16"
+    },
+    {
+      "member": "companion-draft/history-v1/COMPANION.patch",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/history-v1/COMPANION.patch",
+      "bytes": 8849,
+      "sha256": "0135e5d91b1728cefcdf125fb3f7ffcee17f766b4b3a7e6d439c048f46b84c23"
+    },
+    {
+      "member": "companion-draft/history-v1/MANIFEST.json",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/history-v1/MANIFEST.json",
+      "bytes": 1162,
+      "sha256": "c27b049f05ae6836c996adb001e3297612a4600e4ae65dffb18d7a8946f52f7b"
+    },
+    {
+      "member": "companion-draft/history-v1/README.md",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/history-v1/README.md",
+      "bytes": 1602,
+      "sha256": "61b9b8aa982ec0b1cb311ff6ec086a1fcdf80d253288b06c400563b569fa3670"
+    },
+    {
+      "member": "companion-draft/history-v1/candidate/tests/geo261_panel_harness.c",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/history-v1/candidate/tests/geo261_panel_harness.c",
+      "bytes": 17479,
+      "sha256": "2bb5106281d16eac67d7ccf8f763773ed80563c5cf85732594c9a17bd228c5d1"
+    },
+    {
+      "member": "companion-draft/history-v1/candidate/tests/test_geo261_panel_native.py",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/history-v1/candidate/tests/test_geo261_panel_native.py",
+      "bytes": 18504,
+      "sha256": "72e8b444a867d09406249383744607f96e66cd41fea671707be9c2c48f7a4a42"
+    },
+    {
+      "member": "companion-draft/history-v1/prepare_companion.py",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/history-v1/prepare_companion.py",
+      "bytes": 10334,
+      "sha256": "1858314dbc66dcc715eadbb2328ad626659ea21c2649c0b6238780b62e2cb271"
+    },
+    {
+      "member": "companion-draft/prepare_companion.py",
+      "source": "/workspace/issue128-p2-companion-draft-20261024/prepare_companion.py",
+      "bytes": 10576,
+      "sha256": "24302562094e58a2ca888479f05e61516e1899c84d6e24c6cb2489b5456f4d61"
+    },
+    {
+      "member": "product-peer/REVIEW.json",
+      "source": "/workspace/issue128-p2-independent-peer-20261024/REVIEW.json",
+      "bytes": 37617,
+      "sha256": "14d022acda8083ed89e6ceedd8c54b95f649778e7388b89c0bc2d8852dd548e7"
+    },
+    {
+      "member": "product-peer/review.py",
+      "source": "/workspace/issue128-p2-independent-peer-20261024/review.py",
+      "bytes": 7775,
+      "sha256": "fa5d472dcea50fa9b8bae2ffc864b8faabf45cdc164ce5b9ad985ff684013d47"
+    },
+    {
+      "member": "companion-peer/REVIEW.before-print-pattern-correction.json",
+      "source": "/workspace/issue128-p2-companion-independent-peer-20261024/REVIEW.before-print-pattern-correction.json",
+      "bytes": 4906,
+      "sha256": "5c835c05bf9d812443bd91e2980644e1a59fb405af2d0e84bcb0100c1c568e80"
+    },
+    {
+      "member": "companion-peer/REVIEW.json",
+      "source": "/workspace/issue128-p2-companion-independent-peer-20261024/REVIEW.json",
+      "bytes": 5169,
+      "sha256": "363d1c0f3ae32d2ce2ac4c2c243580340f260ffaf2e713f628621048305a3620"
+    },
+    {
+      "member": "companion-peer/review.before-print-pattern-correction.py",
+      "source": "/workspace/issue128-p2-companion-independent-peer-20261024/review.before-print-pattern-correction.py",
+      "bytes": 4686,
+      "sha256": "3a3eb41308f64c1750ca9e525472b847022c1a87b020a7f3ac596e0934f446c6"
+    },
+    {
+      "member": "companion-peer/review.py",
+      "source": "/workspace/issue128-p2-companion-independent-peer-20261024/review.py",
+      "bytes": 4907,
+      "sha256": "55d5cfeb12f7f1f81bb0577d2ee6875ec3c0747244cde6f6803086bc588c27e7"
+    },
+    {
+      "member": "private-checkout/RESULT.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/RESULT.json",
+      "bytes": 902,
+      "sha256": "6fbfd9136384eac110b3ff3bc81400bdcb6f07dda61ed389a5611db6cacd52dc"
+    },
+    {
+      "member": "private-checkout/subcommands/000001/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000001/request.json",
+      "bytes": 1496,
+      "sha256": "379f88a989cfeb53832f4313e06946b89885bfcc003947bc3a6b3c2e2af044fc"
+    },
+    {
+      "member": "private-checkout/subcommands/000001/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000001/result.json",
+      "bytes": 1747,
+      "sha256": "a84675444a4211c5f4950a24748b48bb461c039b32119eb92dd20049beea6499"
+    },
+    {
+      "member": "private-checkout/subcommands/000001/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000001/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000001/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "bea48251ddb58b2468d0297c6de114ffbe2165ebcfbd066b36551759631319d7"
+    },
+    {
+      "member": "private-checkout/subcommands/000002/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000002/request.json",
+      "bytes": 1500,
+      "sha256": "beb0cc4ac8599dd8512ff5e697b4f2b3d17c2cdc690ef5a0fe22b85f49c40a14"
+    },
+    {
+      "member": "private-checkout/subcommands/000002/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000002/result.json",
+      "bytes": 1749,
+      "sha256": "a7523b7126ce1f78295ab910318637c7f2f804ef5ae75c3d9d6ab453068947ba"
+    },
+    {
+      "member": "private-checkout/subcommands/000002/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000002/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000002/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000003/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000003/request.json",
+      "bytes": 1511,
+      "sha256": "77df26323dcd825bffbf1d82bfda1bf0e4debcf2316db63b5f6997421f058992"
+    },
+    {
+      "member": "private-checkout/subcommands/000003/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000003/result.json",
+      "bytes": 1763,
+      "sha256": "4c3fc210fabb10c5f5f4373b8580e6647e2e47cecaa5dbaf5bf0814d99392736"
+    },
+    {
+      "member": "private-checkout/subcommands/000003/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000003/stderr.bin",
+      "bytes": 586,
+      "sha256": "3e70934f1909b0f5a846d62237fcc1509d733b9fb0321187024723dfc67176d3"
+    },
+    {
+      "member": "private-checkout/subcommands/000003/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000003/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000003/stdout.bin",
+      "bytes": 93,
+      "sha256": "f9ad2d93c7be8b72e0ae6756487a730e98e375219fa69f447c8927a776be0f30"
+    },
+    {
+      "member": "private-checkout/subcommands/000004/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000004/request.json",
+      "bytes": 1519,
+      "sha256": "831ec94f630ca26dccf43ec7d84ea4408ebb0d1b827ef2cc08725b28acdbf9c3"
+    },
+    {
+      "member": "private-checkout/subcommands/000004/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000004/result.json",
+      "bytes": 1769,
+      "sha256": "e016e12ed44cd2350eb74ed3ad709219cf872c6215b84675e3064f04e0080071"
+    },
+    {
+      "member": "private-checkout/subcommands/000004/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000004/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000004/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000005/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000005/request.json",
+      "bytes": 1532,
+      "sha256": "cde26293985fd647aa2050dcd21b8abf594debdc28335645ddc87550793a88d7"
+    },
+    {
+      "member": "private-checkout/subcommands/000005/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000005/result.json",
+      "bytes": 1782,
+      "sha256": "caeed3fe02803ef9eaa1779ef5de8ef5127a0c8058484c7b20b0d592389ac66d"
+    },
+    {
+      "member": "private-checkout/subcommands/000005/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000005/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000005/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000006/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000006/request.json",
+      "bytes": 1575,
+      "sha256": "684e39d6371ee8ac797a2f73ffbd565c514d484a2ac40e8b43f7c328b1b6afc8"
+    },
+    {
+      "member": "private-checkout/subcommands/000006/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000006/result.json",
+      "bytes": 1825,
+      "sha256": "0c1b68864a9b7def2bb2568de76da7badcd8a163e986c3268913d07c10536745"
+    },
+    {
+      "member": "private-checkout/subcommands/000006/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000006/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000006/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000007/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000007/request.json",
+      "bytes": 1525,
+      "sha256": "8f0302a61ae61071224d51a9a962047e73266f9ab14d1afacdd6358179ec14e3"
+    },
+    {
+      "member": "private-checkout/subcommands/000007/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000007/result.json",
+      "bytes": 1772,
+      "sha256": "87cce06c0400f009835177e491a50245c5c98a93959f842db731875f2128cbf8"
+    },
+    {
+      "member": "private-checkout/subcommands/000007/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000007/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000007/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000008/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000008/request.json",
+      "bytes": 1537,
+      "sha256": "1d49592d9e530ceef8e63b24fe6c39ef06625129da7fc4f1e131c4ab728ec9e8"
+    },
+    {
+      "member": "private-checkout/subcommands/000008/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000008/result.json",
+      "bytes": 1787,
+      "sha256": "efe53ff7572e4cfa23f56c0a5ba1edbc05242976a14fed15f326930543c41b7f"
+    },
+    {
+      "member": "private-checkout/subcommands/000008/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000008/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000008/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000009/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000009/request.json",
+      "bytes": 1534,
+      "sha256": "4f9e0131305f9222053a57b4dc638f01b0ac3837357fadf46753a95bdd549fc5"
+    },
+    {
+      "member": "private-checkout/subcommands/000009/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000009/result.json",
+      "bytes": 1784,
+      "sha256": "46111b87cde0105e2abec3cf64c235328f176a0d3d79226b6b61b517daedc8b6"
+    },
+    {
+      "member": "private-checkout/subcommands/000009/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000009/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000009/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000010/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000010/request.json",
+      "bytes": 1538,
+      "sha256": "09dc30b90f72f115d6197273ddfe133aa1581ac1e400d0cde191358a1ee45054"
+    },
+    {
+      "member": "private-checkout/subcommands/000010/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000010/result.json",
+      "bytes": 1788,
+      "sha256": "471bfdcaf562b1775516e797bba2936ffcef2e89e8631dcf80a04d9990aa900c"
+    },
+    {
+      "member": "private-checkout/subcommands/000010/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000010/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000010/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000010/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000011/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000011/request.json",
+      "bytes": 1601,
+      "sha256": "2c2f36807d648804f50f1c56eaf4473931aca85fb8789d21b091f3a18fc9e937"
+    },
+    {
+      "member": "private-checkout/subcommands/000011/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000011/result.json",
+      "bytes": 1851,
+      "sha256": "ac6875711efcc22904c3597f1abd341ce6bcf4454b9c1e9f1dacf087f0d9628d"
+    },
+    {
+      "member": "private-checkout/subcommands/000011/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000011/stderr.bin",
+      "bytes": 68,
+      "sha256": "4a76b59dbf3147b8bcad44af2f50055a5346ee6b76ef2b9ca53b99612feb25e4"
+    },
+    {
+      "member": "private-checkout/subcommands/000011/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000011/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000011/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000012/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000012/request.json",
+      "bytes": 1514,
+      "sha256": "ef2313b8058a894ef4321d9be9c9abe53d932f105e126ff67a697128c6f2b73e"
+    },
+    {
+      "member": "private-checkout/subcommands/000012/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000012/result.json",
+      "bytes": 1764,
+      "sha256": "d729484962e9ac973aadd946650f900f699d28f4ed31fb857f1fadd2a92f1e35"
+    },
+    {
+      "member": "private-checkout/subcommands/000012/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000012/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000012/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000012/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000013/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000013/request.json",
+      "bytes": 1510,
+      "sha256": "e976c1c9054912853896dd99fa1702c36b5227e934a041ba34c70acacce332e9"
+    },
+    {
+      "member": "private-checkout/subcommands/000013/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000013/result.json",
+      "bytes": 1761,
+      "sha256": "db68161967c242012e0284fdd93719a64d96727308e7f94c43779460b237381a"
+    },
+    {
+      "member": "private-checkout/subcommands/000013/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000013/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000013/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000013/stdout.bin",
+      "bytes": 41,
+      "sha256": "bea48251ddb58b2468d0297c6de114ffbe2165ebcfbd066b36551759631319d7"
+    },
+    {
+      "member": "private-checkout/subcommands/000014/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000014/request.json",
+      "bytes": 1494,
+      "sha256": "b68339f5a61825f3fa2621b3dffd3cbd2df22d7f4d3aee8cf46697c6a95cf9ca"
+    },
+    {
+      "member": "private-checkout/subcommands/000014/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000014/result.json",
+      "bytes": 1745,
+      "sha256": "c27a11fb5436e16fa5a16cd7430aace8f110cd33672ff24c10e11ae64ade1607"
+    },
+    {
+      "member": "private-checkout/subcommands/000014/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000014/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000014/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000014/stdout.bin",
+      "bytes": 41,
+      "sha256": "bea48251ddb58b2468d0297c6de114ffbe2165ebcfbd066b36551759631319d7"
+    },
+    {
+      "member": "private-checkout/subcommands/000015/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000015/request.json",
+      "bytes": 1499,
+      "sha256": "c919716cd5f243eb46dff57d0926b3b5c9670044f027b0c2380927725167d9ec"
+    },
+    {
+      "member": "private-checkout/subcommands/000015/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000015/result.json",
+      "bytes": 1748,
+      "sha256": "c179ad02fe10fa1b46503470b7f226328d500ce2374bc0335f325df20fb916bf"
+    },
+    {
+      "member": "private-checkout/subcommands/000015/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000015/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands/000015/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands/000015/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "private-checkout/subcommands.json",
+      "source": "/workspace/issue128-branch-publication-20261024/checkout/subcommands.json",
+      "bytes": 27903,
+      "sha256": "3862ade57d44b5031f5ef20019536181adfbefd41fdb9bb25815d5341f6e9edf"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000001/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000001/request.json",
+      "bytes": 1510,
+      "sha256": "cd1417ec49b363a870becd93c115c45845030984dda3e2852340960eb38ee703"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000001/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000001/result.json",
+      "bytes": 1760,
+      "sha256": "df9b28616f1662e52fed42ec56e44d12e028ff55aa55499c77f6420c05a68520"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000001/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000001/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000001/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000001/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000002/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000002/request.json",
+      "bytes": 1506,
+      "sha256": "c1437ce25a5237200387885c847b64f6f6e4376f1f592aa4ada439d154c27465"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000002/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000002/result.json",
+      "bytes": 1757,
+      "sha256": "bedbd29074bd0affc7d9f6d0fc478d6b44f32fc89d5380a44e0594730a651097"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000002/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000002/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000002/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000002/stdout.bin",
+      "bytes": 41,
+      "sha256": "bea48251ddb58b2468d0297c6de114ffbe2165ebcfbd066b36551759631319d7"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000003/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000003/request.json",
+      "bytes": 1580,
+      "sha256": "8ee6d5f5dca0319dbd31313582cfff6b055dc7f01e119c73258eedb26a92f0e9"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000003/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000003/result.json",
+      "bytes": 1831,
+      "sha256": "abd5bcfdf757a08658b049e598b68a74a6e09387c38f908df8c88b9a8af3ad5e"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000003/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000003/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000003/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000003/stdout.bin",
+      "bytes": 91,
+      "sha256": "7e247d56d53c66f0b533acdb7f554dec0376d48f04d86ddb481e71a5f8882902"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000004/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000004/request.json",
+      "bytes": 1568,
+      "sha256": "5fbb2cf11103dc620c1f456de53bd57f1de878de127f8b15fed89674b96a7e89"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000004/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000004/result.json",
+      "bytes": 1818,
+      "sha256": "147c09e7e976b7ce56e64b41089eac803cd93b9e49cde7166cff0fa49220fc70"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000004/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000004/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000004/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000005/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000005/request.json",
+      "bytes": 1554,
+      "sha256": "7d5e768dd799c07db6c9db8476aa450e85a21bd094d96cd53abee4d6b54a994d"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000005/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000005/result.json",
+      "bytes": 1804,
+      "sha256": "ff2afc8b71176b072767ae03f5dbc0b57a41ec20bedf68a11aed39cf3ede44a5"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000005/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000005/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000005/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000006/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000006/request.json",
+      "bytes": 1576,
+      "sha256": "990dd211ad02daeeeb6cf74a278a7899799e082882ea9693ebb6bafc099de6d4"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000006/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000006/result.json",
+      "bytes": 1826,
+      "sha256": "47748a8e0aae442dd24a92f32661b92b19f760cea2b79f1219a7914565d52ec7"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000006/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000006/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000006/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000007/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000007/request.json",
+      "bytes": 1561,
+      "sha256": "3f8a5326b75b5eec511c0e20d3eb4ccbb3eb3a620eba46d4683c2e8d1599fb21"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000007/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000007/result.json",
+      "bytes": 1811,
+      "sha256": "b1db3b340f4ab933cbee910d02aa93170c8643448a4f7ab2e0afb4f6cf0af72d"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000007/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000007/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000007/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000008/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000008/request.json",
+      "bytes": 1508,
+      "sha256": "4beab2446ddbe9d282c7336a727b58b907a953c77b9c4b4b1b1bf9bed68fe648"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000008/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000008/result.json",
+      "bytes": 1760,
+      "sha256": "f2bd0695da3e596ac49fddba1eee5f386df37a84a4cfd05726164ba77c17080c"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000008/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000008/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000008/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000008/stdout.bin",
+      "bytes": 144,
+      "sha256": "3c1aa2c9ceb80538ef1f33d930e1c52c389e577ca1a5d8e2df6c1b396d978580"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000009/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000009/request.json",
+      "bytes": 1504,
+      "sha256": "c272229bd3666cb3b1556cb50314837a1c944c5e8a9646cfdec45003d85df3a1"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000009/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000009/result.json",
+      "bytes": 1754,
+      "sha256": "61249dbb0d8c14c2c946c10b6151d0ab2620f982c51570c96b6b9bb2fd5e1421"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000009/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000009/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000009/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000010/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000010/request.json",
+      "bytes": 1671,
+      "sha256": "8f737bcaf427c6e37e1f75be2369864e20a4160cd4ebfc97f2954d4e39003798"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000010/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000010/result.json",
+      "bytes": 1925,
+      "sha256": "afa3493a89d29751636d7afcad60178b6114c8cc79e0988a0dc937609b564067"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000010/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000010/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000010/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000010/stdout.bin",
+      "bytes": 11884,
+      "sha256": "3516931c834b20822681ff0dfbfd678852626ae6a4c4973261363e58049b9f57"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000011/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000011/request.json",
+      "bytes": 1670,
+      "sha256": "18f3fb52a1a3854dd8cbfb7fb09b08888b6e744824ea5b76b10dc20615d9c596"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000011/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000011/result.json",
+      "bytes": 1921,
+      "sha256": "74b1b945c53545a26198a9939567f88ed90ddda663431970812d17fb51d53671"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000011/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000011/stderr.bin",
+      "bytes": 225,
+      "sha256": "08087c7b0bf5469bb4aab47d01f744beaf33bf7606c06dd01d90bb4a833bdd9b"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000011/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands/000011/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands/000011/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "initial-source-publication/subcommands.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source/subcommands.json",
+      "bytes": 20907,
+      "sha256": "0a6e5fd86b0bd2f19fea356c3d65e935baebcafbd1776e6aa8522a035479037e"
+    },
+    {
+      "member": "source-publication/RESULT.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/RESULT.json",
+      "bytes": 1008,
+      "sha256": "5871a89d95c9c4fc4684171b5b7657a7816d1b055a5eb3d8f5191d20b3182fdb"
+    },
+    {
+      "member": "source-publication/subcommands/000001/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000001/request.json",
+      "bytes": 1530,
+      "sha256": "bc897bcbafb66998bc33834d95b70a1f9c4390a6511e8507102e250009950775"
+    },
+    {
+      "member": "source-publication/subcommands/000001/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000001/result.json",
+      "bytes": 1781,
+      "sha256": "b2615bfbd5850237a8c60b3d136cae81dd5a9aeaca35035901b6fbcfcaeee8e5"
+    },
+    {
+      "member": "source-publication/subcommands/000001/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000001/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000001/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "bea48251ddb58b2468d0297c6de114ffbe2165ebcfbd066b36551759631319d7"
+    },
+    {
+      "member": "source-publication/subcommands/000002/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000002/request.json",
+      "bytes": 1531,
+      "sha256": "43731c95202f8c76a384d82133a8981e839880027092f554251b41ac5b6f9a9e"
+    },
+    {
+      "member": "source-publication/subcommands/000002/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000002/result.json",
+      "bytes": 1781,
+      "sha256": "1e07b4a8f7b921af7c3abdbfc5fc6fc01102a03ddd691664bd5a6588a1a215c6"
+    },
+    {
+      "member": "source-publication/subcommands/000002/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000002/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000002/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000003/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000003/request.json",
+      "bytes": 1548,
+      "sha256": "5ece58c355674f3cc94bf3f438bf857875e1794219caf638500486752582070d"
+    },
+    {
+      "member": "source-publication/subcommands/000003/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000003/result.json",
+      "bytes": 1800,
+      "sha256": "fa5bb6d1d4805504ec105216a25b9b6f2fa5dbc3c50c69f1bf6e6bb052644ffd"
+    },
+    {
+      "member": "source-publication/subcommands/000003/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000003/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000003/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000003/stdout.bin",
+      "bytes": 144,
+      "sha256": "3c1aa2c9ceb80538ef1f33d930e1c52c389e577ca1a5d8e2df6c1b396d978580"
+    },
+    {
+      "member": "source-publication/subcommands/000004/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000004/request.json",
+      "bytes": 1574,
+      "sha256": "8742f4a89df8a3b321eb1b27a86ed041b605437ce9aa3a59bb4d2d82cb47a333"
+    },
+    {
+      "member": "source-publication/subcommands/000004/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000004/result.json",
+      "bytes": 1827,
+      "sha256": "7eb1fdb801a708f29987fe5935653eb802e06ed6f3fa4547f1a58056f19fdc8e"
+    },
+    {
+      "member": "source-publication/subcommands/000004/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000004/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000004/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000004/stdout.bin",
+      "bytes": 6045,
+      "sha256": "c673557af4f543c7550643b3aeb142f1aa9c0e2ef15670759da712522631a9da"
+    },
+    {
+      "member": "source-publication/subcommands/000005/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000005/request.json",
+      "bytes": 1550,
+      "sha256": "eda53c9e39df4f1f0941d32fc587e606f4245b9b83340a77791f4bea7bfd6acb"
+    },
+    {
+      "member": "source-publication/subcommands/000005/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000005/result.json",
+      "bytes": 1804,
+      "sha256": "a0cade0cfc60155558a19d4eac743af9fa9a1e88de9f9dcdef761bf81b074ea2"
+    },
+    {
+      "member": "source-publication/subcommands/000005/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000005/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000005/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000005/stdout.bin",
+      "bytes": 17466,
+      "sha256": "003fbfe9254c2434ad90e4adaed7df431228e1e1d3d4f5b8540fdd2e2703eaf1"
+    },
+    {
+      "member": "source-publication/subcommands/000006/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000006/request.json",
+      "bytes": 1555,
+      "sha256": "2674fab41b351d30c9223e7b6d7829c48d7cea86fa5c057036b2ffc34f213112"
+    },
+    {
+      "member": "source-publication/subcommands/000006/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000006/result.json",
+      "bytes": 1808,
+      "sha256": "f3f75c77f1abe6ce4992255d07f8c8ce28a9951affcf9d3808755195da5a1e5d"
+    },
+    {
+      "member": "source-publication/subcommands/000006/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000006/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000006/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000006/stdout.bin",
+      "bytes": 18759,
+      "sha256": "3ce788669e83971d98d278856df44f6c7473c49d52422b0ebc1f5ee2a8fdfb16"
+    },
+    {
+      "member": "source-publication/subcommands/000007/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000007/request.json",
+      "bytes": 1589,
+      "sha256": "e62fef5d5f536ef33ed2afd8390ab653bf8dc9bd7f851a934b6087493979234e"
+    },
+    {
+      "member": "source-publication/subcommands/000007/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000007/result.json",
+      "bytes": 1843,
+      "sha256": "19f92955a6102447b41a74b92e43e7faaf29e6cb3521617cf97628d7fd09c735"
+    },
+    {
+      "member": "source-publication/subcommands/000007/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000007/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000007/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000007/stdout.bin",
+      "bytes": 25286,
+      "sha256": "f56fad4d30bd0540c00532bd0329061eb95b327f65a5a4f7583071c345f10bce"
+    },
+    {
+      "member": "source-publication/subcommands/000008/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000008/request.json",
+      "bytes": 1549,
+      "sha256": "98ca3ef80f64b90a287244d722b3925a1e1aa905da334d2868c6e930fb6a0650"
+    },
+    {
+      "member": "source-publication/subcommands/000008/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000008/result.json",
+      "bytes": 1803,
+      "sha256": "0081dee0f3e38b3f522cf01bc4bd1c16c68fc9cf2eacd85dd0d58db4ae3052a0"
+    },
+    {
+      "member": "source-publication/subcommands/000008/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000008/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000008/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000008/stdout.bin",
+      "bytes": 25286,
+      "sha256": "700f4533bed81f0782dc771117472e0dd2fafe57f9831b83022cc18d0506c835"
+    },
+    {
+      "member": "source-publication/subcommands/000009/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000009/request.json",
+      "bytes": 1544,
+      "sha256": "193df560fcd06aead5e5ea6217446e5cf8f17dd79b6e180d4cfd940cef827383"
+    },
+    {
+      "member": "source-publication/subcommands/000009/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000009/result.json",
+      "bytes": 1794,
+      "sha256": "a36032f0bcba9956ea8cc4f3e3f23a6d966cb85cb19bedb4fe704b9ea451ddbf"
+    },
+    {
+      "member": "source-publication/subcommands/000009/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000009/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000009/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000010/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000010/request.json",
+      "bytes": 1711,
+      "sha256": "de21f2011a57ea780e8653196825ec1d9122200adb4a98e1d26ad74bc73e51e7"
+    },
+    {
+      "member": "source-publication/subcommands/000010/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000010/result.json",
+      "bytes": 1964,
+      "sha256": "9627b897961c8961fcd977f45d0c05fe6f56d4ee0f869621129fa4e2ff327548"
+    },
+    {
+      "member": "source-publication/subcommands/000010/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000010/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000010/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000010/stdout.bin",
+      "bytes": 11884,
+      "sha256": "3516931c834b20822681ff0dfbfd678852626ae6a4c4973261363e58049b9f57"
+    },
+    {
+      "member": "source-publication/subcommands/000011/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000011/request.json",
+      "bytes": 1594,
+      "sha256": "2ed50a50920aafc4e426363f083e625c4de9b932488d725d5763ac3d1283f6ef"
+    },
+    {
+      "member": "source-publication/subcommands/000011/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000011/result.json",
+      "bytes": 1846,
+      "sha256": "49a8416bdb11b6714b3969565fe14276260c0f1634c678192456ce5c3ec79ca0"
+    },
+    {
+      "member": "source-publication/subcommands/000011/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000011/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000011/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000011/stdout.bin",
+      "bytes": 167,
+      "sha256": "2e1e27cab1fc748f8d7048715830822428b8257a9fa1d9510bbf246e44ef00d7"
+    },
+    {
+      "member": "source-publication/subcommands/000012/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000012/request.json",
+      "bytes": 1530,
+      "sha256": "29564bbcefe5c147f9a12db042077ad37dd7c36a2c7ab7119536738278ee756a"
+    },
+    {
+      "member": "source-publication/subcommands/000012/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000012/result.json",
+      "bytes": 1781,
+      "sha256": "940f5d75c422cd6e45ca7048895bf8a8c37d2c3f53557810af4679cfe54d77dd"
+    },
+    {
+      "member": "source-publication/subcommands/000012/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000012/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000012/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000012/stdout.bin",
+      "bytes": 41,
+      "sha256": "3587bc091e216991102bbbca6fdebe1b965ea9ecae145d4f11cc41ec5bd0b74e"
+    },
+    {
+      "member": "source-publication/subcommands/000013/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000013/request.json",
+      "bytes": 1534,
+      "sha256": "6536be1fc615f90176dab921afc2850bbd26b41e56be54a9d30f9aa9f6996eb6"
+    },
+    {
+      "member": "source-publication/subcommands/000013/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000013/result.json",
+      "bytes": 1784,
+      "sha256": "4188c69c1082c859ac993fc0a6581407a3304db5c89e84ea0ed1d5d83d7968f1"
+    },
+    {
+      "member": "source-publication/subcommands/000013/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000013/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000013/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000013/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000014/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000014/request.json",
+      "bytes": 1591,
+      "sha256": "9a6653a782fdab738edb09dfc684fb07299858a35676339a2a6c8912528b093e"
+    },
+    {
+      "member": "source-publication/subcommands/000014/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000014/result.json",
+      "bytes": 1843,
+      "sha256": "6365c23745c170321e82b384f36d01deb9d7ba2cd2acf3cd351df42cca7c0cc4"
+    },
+    {
+      "member": "source-publication/subcommands/000014/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000014/stderr.bin",
+      "bytes": 366,
+      "sha256": "85cccc8e938c3e149ae9539c3fb6eac1f472a4647e5173d9917ce85c6b4b78d5"
+    },
+    {
+      "member": "source-publication/subcommands/000014/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000014/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000014/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000015/request.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000015/request.json",
+      "bytes": 1606,
+      "sha256": "8e9045dfa332da581cfc4cff8c361d3e9e116e45af2fd3af2a35b4205d1cb156"
+    },
+    {
+      "member": "source-publication/subcommands/000015/result.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000015/result.json",
+      "bytes": 1857,
+      "sha256": "0c223e1797961cb703958cca1721d251413842821897bd5d62df54c9189157fc"
+    },
+    {
+      "member": "source-publication/subcommands/000015/stderr.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000015/stdin.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000015/stdout.bin",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands/000015/stdout.bin",
+      "bytes": 93,
+      "sha256": "c97a93ce6375baadaf2c165b220be3475faf09a845737a71aadf753e77c88de4"
+    },
+    {
+      "member": "source-publication/subcommands.json",
+      "source": "/workspace/issue128-branch-publication-20261024/source-finish/subcommands.json",
+      "bytes": 28586,
+      "sha256": "3b7756815b226a4db2793c317fa9f9764b169e2d6355fd184b6685b40bf09345"
+    },
+    {
+      "member": "publication-tools/create_checkout.py",
+      "source": "/workspace/issue128-branch-publication-20261024/create_checkout.py",
+      "bytes": 3630,
+      "sha256": "7ca5ff50774b3e98408519374b2891a10011d3d8032cf7d7659834658ae6ce39"
+    },
+    {
+      "member": "publication-tools/commit_source.py",
+      "source": "/workspace/issue128-branch-publication-20261024/commit_source.py",
+      "bytes": 4435,
+      "sha256": "04c297abc3c6a781f09492e2ef1da73020323c7cf28b3d080d9b6a35e3bd6ff8"
+    },
+    {
+      "member": "publication-tools/finish_source_commit.py",
+      "source": "/workspace/issue128-branch-publication-20261024/finish_source_commit.py",
+      "bytes": 3594,
+      "sha256": "6e10492bb2119748d0993d7b82a6363c010dbaa6458ef90c6902203404ef6125"
+    },
+    {
+      "member": "publication-tools/package_evidence.py",
+      "source": "/workspace/issue128-branch-publication-20261024/package_evidence.py",
+      "bytes": 6518,
+      "sha256": "5410a9bb18117a287ffe90bca5a0d310a32ca8f9acb77f09e3256c704fd21dce"
+    }
+  ],
+  "scope": "Static preparation, Python arithmetic and source publication only; no C or formal acceptance",
+  "original_failure": "git add exit 1 ignored-directory advisory; exact four tracked files had already staged and were verified before committing.",
+  "runtime_native": "UNRUN",
+  "mutation_proofs": "UNRUN",
+  "ledger": "UNRUN",
+  "architecture": "UNRUN"
+}
