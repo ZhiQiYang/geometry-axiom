@@ -1,11 +1,15 @@
 # #128 P2 空板列舉：目前狀態
 
-分支 `codex/issue128-empty-panel-rows-20261024`，產品／測試 SHA `324034812bb6effca68e0413bc0468595337b317`；base #346 `a5f1806fb3cad2dada1a56e79e01d54f9f86700f`。此提交只更新證據；全部新正式結果在乾淨 S324 執行，證據 head 不取代 product SHA。
+分支 `codex/issue128-empty-panel-rows-20261024`。本次只修正文檔的來源身分，沒有來源合流或產品／測試變更；原正式結果全部在乾淨 S324 執行，新文件提交不取代原 execution SHA。以下 PR base／head 來自 2026-10-27T00:59:18.210851+00:00 的固定 GitHub API 觀測；產品 parent 另以原 Git commit 物件核對。
 
 ## 唯一 current-state
 
 | gate | 真實結果 | 邊界 |
 |---|---|---|
+| product／test／正式 execution SHA | `324034812bb6effca68e0413bc0468595337b317` | S324 原正式執行來源；本次沒有重跑或移綁 |
+| source parent | `a5f1806fb3cad2dada1a56e79e01d54f9f86700f` | Git commit 物件證明為 S324 的直接 parent；這是歷史 #346，不是目前 PR base |
+| 目前 PR base（本輪觀測） | #346／`codex/geo300-cut-list-storage-20261024`／`eaf15e239324a6464a04740647afccce3a3c17c7` | 尚未將產品來源更新至此 base，B1 前置整合仍缺 |
+| 原正式收據 evidence head | `2e8a6ed20325aa4842dcd0f89eacd598662be598` | 也是本輪修文件前觀測的 PR head；本次新文件提交不冒充正式 execution head |
 | `python3 -B tests/test_geo261_panel_native.py` | **0：13 methods、0 skip** | 以已獨審被動 observer/runpy 封存原入口；原 60 秒單例時限 |
 | NativeBuild compile/link | **93 次全部 0** | 原編譯旗標與 300 秒限制；沒有把 compile failure 當 mutation killed |
 | 原十個 controls | **10 個正常具名 ASSERT exit 1**，同 suite 正例 exit 0 | 保留原 suite 順序；不聲稱每個原控制有額外恢復執行 |
@@ -33,7 +37,7 @@
 
 ## 下一步與界線
 
-正式原件與封存已由另一代理通過 621/0、3754/0；主代理依最終列車更新帳本／架構並跑 PF 與其他受影響正式項。分支順序 #343 → #346 → 本 P2 → 512，後續採一般 merge。
+正式原件與封存已由另一代理通過 621/0、3754/0；主代理依最終列車更新帳本／架構並跑 PF 與其他受影響正式項。#343 → #346 → 本 P2 → 512 是待完成的整合順序；原 S324 建在歷史 parent a5f1806，本次沒有執行一般 merge。2026-10-26 06:43:47Z 審查的 B1（上游來源鏈）與 B2（完整整合 gates）均未解除，保持 NOT READY。C1 的 parent／base／evidence 身分在本文件分欄更正；確切的新文件證據提交由發布收據與對應 PR 正文記錄，所有原測試結果及 UNRUN 原樣保留。
 
 本片只略過 body 的全空外層，raw seam 原件與容量不改；staggered raw seam 的空外層仍未優化。#128 P1 JSON 精度、P3 UI 回執、P4 allocator 契約與 P5 舊工具另案。最不確定的是未跑的整合及最終帳本／架構；不能宣稱整個 PR 或 #128 已完成。
 
