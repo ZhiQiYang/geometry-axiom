@@ -30,7 +30,8 @@
   // R01/I74: one parameter card supplies both axis lengths (scene token `card-reference`).
   // Only the length slot moves to the card; phase, gap, anchor and stagger stay per axis.
   const CARD_IDS=['igCard','igCardU','igCardV'];
-  const paramCards=()=>(oc.parameters||[]).map(o=>o.card).filter(c=>c&&(c.fields||[]).length>=2);
+  const dimension=f=>f?.type==='dimension';
+  const paramCards=()=>(oc.parameters||[]).map(o=>o.card).filter(c=>c&&(c.fields||[]).filter(dimension).length>=2);
   const fieldText=f=>!f?.value?'—':f.value.den==='1'?String(f.value.num):`${f.value.num}/${f.value.den}`;
   const cardOn=()=>!!$('igCard')?.value;
   const cardOf=()=>paramCards().find(c=>String(c.id)===$('igCard')?.value)||null;
@@ -40,10 +41,10 @@
   function cardInt(a){const v=cardLength(a),n=Number(v);if(!/^\d+$/.test(v)||!Number.isSafeInteger(n)||n<1)throw Error(`${a} 的整卡欄位不是正整數，不能當長度。`);return n;}
   function cardOptions(selected){
     const cards=paramCards(),missing=selected!=null&&selected!==''&&!cards.some(c=>String(c.id)===String(selected));
-    return '<option value="">逐軸設定（各軸自己的間距或面材）</option>'+cards.map(c=>`<option value="${c.id}"${String(c.id)===String(selected)?' selected':''}>${esc(c.name)}（${c.fields.length} 欄）</option>`).join('')+
+    return '<option value="">逐軸設定（各軸自己的間距或面材）</option>'+cards.map(c=>`<option value="${c.id}"${String(c.id)===String(selected)?' selected':''}>${esc(c.name)}（#${c.id}，${c.fields.filter(dimension).length} 個尺寸欄）</option>`).join('')+
       (missing?`<option value="${esc(String(selected))}" selected>待重新選取：參數卡 #${esc(String(selected))}</option>`:'');
   }
-  const fieldOptions=(card,selected)=>(card?.fields||[]).map(f=>`<option value="${f.id}"${String(f.id)===String(selected)?' selected':''}>${esc(f.name)} = ${esc(fieldText(f))}</option>`).join('');
+  const fieldOptions=(card,selected)=>'<option value="">請選擇欄位</option>'+(card?.fields||[]).map(f=>`<option value="${f.id}"${String(f.id)===String(selected)?' selected':''}${dimension(f)?'':' disabled'}>${esc(f.name)} = ${esc(fieldText(f))}（#${f.id}${dimension(f)?'':'，非尺寸'}）</option>`).join('');
   async function catalogPins(objects,schema=F.GRID_SCHEMA){
     const pins=new Map(),pending=[];
     const put=(ref,value)=>pending.push(fingerprint(value).then(hash=>pins.set(pinKey(ref),{...ref,fingerprint:hash})));
@@ -139,6 +140,7 @@
     if(!value||value.draftId!==s.draftId)throw Error('目前網格草稿已變更，請重新開啟。');
     const selectedPins=new Map(value.inputRefs.map(ref=>[pinKey(ref),ref]));
     const required=value.kind==='binding'?['grid-system:'+value.rawForm.igSystem,'boundary:'+value.rawForm.igBoundary]:parameterSelections(value.rawForm).map(([,key])=>key);
+    if(value.kind==='source'&&value.rawForm.igCard)for(const id of ['igCardU','igCardV'])required.push(`parameter-field:${value.rawForm.igCard}:${value.rawForm[id]}`);
     if(required.some(key=>!selectedPins.has(key)))throw Error('草稿的來源身分證據缺失，請明確重新選取；不會自動關聯目前的同編號內容。');
     const objects=await apiRequest('objects');if(!objects.ok||!current(s))throw Error('無法核對目前草稿來源。');
     if(value.schema===F.GRID_SCHEMA&&F.ruleAwareSource(objects.gridSystems?.find(row=>row.id===s.source?.id)))
@@ -246,8 +248,8 @@
   const def = d => {
     if (!d || d.source === 'none') return null;
     const stagger = d.stagger ? Number(d.stagger) : 0;
-    if (d.source === 'repeat') return {phase: d.phase, pitch: d.step, stagger};
-    if (d.source === 'repeat-panel') return {phase: d.anchor + d.panel + Math.floor(d.gap / 2), pitch: d.panel + d.gap, stagger};
+    if (d.source === 'repeat') return {phase: d.phase, pitch: d.step ?? d.effectiveStep, stagger};
+    if (d.source === 'repeat-panel') { const panel = d.panel ?? d.effectivePanel; return {phase: d.anchor + panel + Math.floor(d.gap / 2), pitch: panel + d.gap, stagger}; }
     return null;
   };
   const sourceKey = o => F.gridSourceKey(o);
@@ -495,9 +497,15 @@
     };
     for (const node of dialog.querySelectorAll('#igSourceForm input,#igSourceForm select')) node.addEventListener('input', () => { syncFields(); drawGrid(s); syncDefinition(s); });
     if ($('igCard')) {
-      const onCard = () => { syncCard(s); cardPins(s); syncFields(); drawGrid(s); syncDefinition(s); };
+      let lastCard = $('igCard').value;
+      $('igCard').addEventListener('change', event => {
+        const next = $('igCard').value, lost = new Set([...s.inputPins.values()].filter(r => r.kind === 'parameter-field' && r.lost).map(r => String(r.parameterId)));
+        if (next && lost.has(next)) { $('igCard').value = lastCard; status('此參數卡曾經缺失，不能重新取得同一張卡；請選另一張。', true); event.stopImmediatePropagation(); return; }
+        $('igCardU').value = ''; $('igCardV').value = ''; lastCard = next; // D64: no inherited or ordered mapping
+      });
+      const onCard = () => { syncCard(s, null, true); cardPins(s); syncFields(); drawGrid(s); syncDefinition(s); };
       for (const id of CARD_IDS) $(id).addEventListener('change', onCard);
-      for (const a of axes) for (const r of dialog.querySelectorAll(`input[name=ig${a.toUpperCase()}Source]`)) r.addEventListener('change', () => syncCard(s));
+      for (const a of axes) for (const r of dialog.querySelectorAll(`input[name=ig${a.toUpperCase()}Source]`)) r.addEventListener('change', () => syncCard(s, null, true));
       $('igCardSwap').onclick = () => { if (!canEdit(s)) return; const u = $('igCardU').value; $('igCardU').value = $('igCardV').value; $('igCardV').value = u; $('igCardU').dispatchEvent(new Event('change', {bubbles: true})); };
       const cr = source.cardReference; syncCard(s, cr ? {u: cr.uFieldId, v: cr.vFieldId} : null);
     }
@@ -542,7 +550,7 @@
     dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);syncDraftState(s,event.target.id==='igSystem');};
     s.normalizedRaw=rawForm(s);s.initialRaw=JSON.stringify(s.normalizedRaw);
     if(s.restored)restoreRaw(s,s.restored.rawForm);
-    if(s.restored&&$('igCard')){const f=s.restored.rawForm;if(f.igCard!=null)syncCard(s,{u:f.igCardU,v:f.igCardV});else{$('igCard').value='';syncCard(s);}}
+    if(s.restored&&$('igCard')){const f=s.restored.rawForm;if(f.igCard!=null)syncCard(s,{u:f.igCardU,v:f.igCardV});else{$('igCard').value='';syncCard(s);}restoreCardPins(s);}
     s.referenceSelections=new Map(parameterSelections(rawForm(s)));
     if(!s.restored){
       for(const [,key] of s.referenceSelections){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));}
@@ -568,17 +576,22 @@
     window.ParamGridLesson?.place();
   }
   // R01: show the card mapping, lock the two length inputs to the card values and explain why.
-  function syncCard(s, prefer = null) {
+  // R01: show the card mapping and lock the two length inputs. Opening, redrawing and ParameterUI
+  // binding never change the raw mapping (D57/D64): unknown or empty ids stay as they are.
+  // Only a user action (fromUser) writes the card value into the locked length inputs.
+  function syncCard(s, prefer = null, fromUser = false) {
     if (!$('igCardRef')) return;
     const on = cardOn(), card = cardOf(), note = $('igCardNote');
     $('igCardMap').hidden = !on;
     if (on) {
       const ids = (card?.fields || []).map(f => String(f.id));
-      const want = {u: String(prefer?.u ?? $('igCardU').value ?? ''), v: String(prefer?.v ?? $('igCardV').value ?? '')};
-      $('igCardU').innerHTML = fieldOptions(card, ids.includes(want.u) ? want.u : ids[0]);
-      $('igCardV').innerHTML = fieldOptions(card, ids.includes(want.v) ? want.v : ids[1] ?? ids[0]);
-      for (const [a, id] of [['u', 'igCardU'], ['v', 'igCardV']]) if (want[a] !== '' && !ids.includes(want[a]) && prefer) {
-        const o = document.createElement('option'); o.value = want[a]; o.textContent = '待重新選取：欄位 ' + want[a]; o.selected = true; $(id).append(o);
+      for (const [a, id] of [['u', 'igCardU'], ['v', 'igCardV']]) {
+        const keep = String(prefer ? prefer[a] ?? '' : $(id).value ?? '');
+        $(id).innerHTML = fieldOptions(card, keep);
+        if (keep !== '' && !ids.includes(keep)) {
+          const o = document.createElement('option'); o.value = keep; o.textContent = '待重新選取：欄位 #' + keep; o.selected = true; $(id).append(o);
+        }
+        $(id).value = keep;
       }
     }
     for (const a of axes) {
@@ -587,7 +600,7 @@
         const id = p + FIELD[k][0], input = $(id), ref = $(id + 'Source'), locked = on && k === key;
         if (!input) continue;
         input.readOnly = locked; input.closest('[data-ig-field]')?.classList.toggle('ig-card-locked', locked);
-        if (locked) {
+        if (locked && fromUser) {
           const value = cardLength(a); if (value !== '' && input.value !== value) { input.value = value; s?.rawOverrides?.delete(id); }
           if (ref?.value) { ref.value = ''; ref.dispatchEvent(new Event('change', {bubbles: true})); }
         }
@@ -598,23 +611,33 @@
     if (on) {
       const fu = cardField('u'), fv = cardField('v');
       if (axes.some(a => !lengthKey($('ig' + a.toUpperCase() + 'Source').value))) { text = '整張參數卡需要兩軸都是「固定間距」或「面材＋縫」。'; tone = 'error'; }
-      else if (!card || !fu || !fv) { text = '請重新選取參數卡與兩軸欄位。'; tone = 'error'; }
+      else if (!card) { text = '這張參數卡已不存在或沒有兩個尺寸欄位，請重新選取。'; tone = 'error'; }
+      else if ($('igCardU').value === '' || $('igCardV').value === '') { text = '請分別選 u 與 v 各用卡片上的哪一個尺寸欄位（不會自動指定）。'; tone = 'error'; }
+      else if (!fu || !fv) { text = '所選欄位已不存在，請重新選取。'; tone = 'error'; }
       else if (fu.id === fv.id) { text = '兩軸要用卡片上兩個不同的欄位（I74）。'; tone = 'error'; }
+      else if (!dimension(fu) || !dimension(fv)) { text = '只有尺寸欄位能當長度。'; tone = 'error'; }
       else if (!cardLength('u') || !cardLength('v')) { text = '所選欄位不是整數，不能當長度。'; tone = 'error'; }
-      else text = `兩軸長度由「${card.name}」提供：u = ${fu.name}（${fieldText(fu)}）、v = ${fv.name}（${fieldText(fv)}）。第 0 線、縫寬、面材起點與相鄰格錯開仍逐軸設定。`;
+      else text = `兩軸長度由「${card.name}」（#${card.id}）提供：u = ${fu.name}（#${fu.id}，${fieldText(fu)}）、v = ${fv.name}（#${fv.id}，${fieldText(fv)}）。第 0 線、縫寬、面材起點與相鄰格錯開仍逐軸設定。`;
     } else if (s?.source?.cardReference) { text = '這個網格目前由整張參數卡提供長度；解除整卡還沒有在這裡提供，請保留整卡。'; tone = 'error'; }
     note.textContent = text; note.dataset.tone = tone;
   }
-  // The two card fields are draft inputs like any per-field reference: pin them.
+  const cardKey = id => `parameter-field:${$('igCard').value}:${$(id).value}`;
+  // The two card fields are draft inputs like any per-field reference: pin them. A previously
+  // lost card may only be replaced by a different card (same rule as approveInputReplacement).
   function cardPins(s) {
     const used = new Set([...(s.referenceSelections?.values() || [])].filter(Boolean));
     for (const key of s.cardPinKeys || []) if (!used.has(key)) s.inputPins.delete(key);
     s.cardPinKeys = [];
     if (!cardOn()) return;
     for (const id of ['igCardU', 'igCardV']) {
-      const key = `parameter-field:${$('igCard').value}:${$(id).value}`, pin = s.pins?.get(key);
+      if (!$(id).value) continue;
+      const key = cardKey(id), pin = s.pins?.get(key);
       if (pin) { s.inputPins.set(key, copy(pin)); s.cardPinKeys.push(key); }
     }
+  }
+  // Restored drafts: recover which saved pins the card owns (no re-acquisition of today's content).
+  function restoreCardPins(s) {
+    s.cardPinKeys = cardOn() ? ['igCardU', 'igCardV'].filter(id => $(id).value).map(cardKey).filter(key => s.inputPins.has(key)) : [];
   }
   function syncFields() {
     for (const a of axes) {
@@ -646,7 +669,7 @@
     return axes.map(a => {
       const p = 'ig' + a.toUpperCase(), mode = $(p + 'Source').value;
       const modeError = Object.hasOwn(MODE_KEYS, mode) ? '' : '請重新選取排格方式；原始值仍保留。';
-      const fields = (modeError ? [] : MODE_KEYS[mode]).map(key => ({key, id: p + FIELD[key][0], raw: rawField(s, p + FIELD[key][0]).trim()}));
+      const fields = (modeError ? [] : MODE_KEYS[mode]).map(key => ({key, id: p + FIELD[key][0], raw: cardOn() && key === lengthKey(mode) && cardLength(a) !== '' ? cardLength(a) : rawField(s, p + FIELD[key][0]).trim()}));
       const raw = mode === 'none' ? '' : rawField(s, p + 'Stagger').trim();
       const stagger = mode !== 'none' && (raw !== '' || s.staggerOpen?.[a]) ? {key: 'stagger', id: p + 'Stagger', raw} : null;
       const all = stagger ? [...fields, stagger] : fields;
@@ -800,6 +823,9 @@
     const card = cardOn() ? {parameterId:Number($('igCard').value), uFieldId:Number($('igCardU').value), vFieldId:Number($('igCardV').value)} : null;
     if (card && ![card.parameterId, card.uFieldId, card.vFieldId].every(n => Number.isSafeInteger(n) && n >= 0 && n <= 4294967295)) throw Error('請重新選取整張參數卡與兩軸欄位。');
     if (!card && s.source?.cardReference) throw Error('這個網格目前由整張參數卡提供長度；解除整卡還沒有在這裡提供，請保留整卡。');
+    if (card && ($('igCardU').value === '' || $('igCardV').value === '')) throw Error('請分別選 u 與 v 各用卡片上的哪一個尺寸欄位。');
+    if (card && (!cardField('u') || !cardField('v'))) throw Error('所選參數卡或欄位已不存在，請重新選取。');
+    if (card && (!dimension(cardField('u')) || !dimension(cardField('v')))) throw Error('只有尺寸欄位能當長度。');
     if (card && card.uFieldId === card.vFieldId) throw Error('兩軸要用卡片上兩個不同的欄位（I74）。');
     if (card) result.cardReference = card;
     for (const a of axes) { const p = 'ig' + a.toUpperCase(), source = $(p + 'Source').value;

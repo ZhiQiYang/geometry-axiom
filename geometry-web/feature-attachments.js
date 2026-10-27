@@ -25,8 +25,11 @@
   const ruleFields = ["name", "selector", "cellI", "cellJ", "divisionsU", "divisionsV"];
   // One representation for current source identity. The legacy representation
   // is retained solely for reading /1 draft pins; it cannot attest to rules.
+  // R01: the card mapping is part of the source identity; appended only when present, so the key of
+  // every card-less source (and every existing pin of one) is unchanged.
   const gridSourceDefinition = (row, legacy = false) => row && [row.id, row.mode, row.name, row.mainAlong,
-    row.uDefinition, row.vDefinition, ...(legacy ? [] : [row.nextRuleKey ?? 1, row.rules || []])];
+    row.uDefinition, row.vDefinition, ...(legacy ? [] : [row.nextRuleKey ?? 1, row.rules || []]),
+    ...(row.cardReference ? [["card-reference", row.cardReference.parameterId, row.cardReference.uFieldId, row.cardReference.vFieldId]] : [])];
   const gridSourceKey = (row, legacy = false) => JSON.stringify(gridSourceDefinition(row, legacy));
   const ruleAwareSource = row => !!row && ((row.rules || []).length > 0 || (row.nextRuleKey ?? 1) !== 1);
   const fail = message => { throw new Error(message); };
