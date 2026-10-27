@@ -1,63 +1,38 @@
-# #338：新 F 閱讀器驗收完成，完整驗收仍未閉合
+本列車整合 #299＋#316、#314 的鎖定比較器、#318 閱讀 A 與 #323 載入修正。**維持 draft，尚未 READY-TO-MERGE。** 以下是唯一 current-state；舊正文及撤回來源的矩陣只留作歷史。
 
-本文件是唯一 current-state 矩陣；舊正文與矩陣只作歷史。候選仍未 READY-TO-MERGE，沒有合併 PR/main、改寫歷史或部署。
+正式候選回到 **F=`cbf0fb621888596aa14ad5f2349b503e23b1b72d`**，位於 `codex/train337-recovered-evidence-20261026`。原 #338 列車 head 現為 **`e1efab34d970a052a8082fa62e478ad13a0625ae`**，base main=`405f8c5e1a637a16cbe47470faf5ae1fa02b8676`；撤回提交把 tree 恢復為 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77` 的內容，尚未採入 recovery F。
 
-| 身分 | 完整 SHA／分支 |
-|---|---|
-| 原 #338 產品 head | `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`，`codex/train-337-continue-20261024` |
-| 候選產品 F | `cbf0fb621888596aa14ad5f2349b503e23b1b72d`，`codex/train337-recovered-evidence-20261026` |
-| 本輪證據 E | `9bd32131e1657ea3a35c41707ae3e1f42df5fdb8`；同分支，只增 evidence，產品與 F 相同 |
-| 全帳本執行 S10 | `82c922a3941525d3a094ac0158bdc7dea57ea360`；120 執行 head 保持原值 |
-| 架構四檔生成 A | `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`；F 已再跑三條原裁判 |
-| 歷史 F9 | `4f8a794f4167c3562eb182045102e86e9e37cca9` |
-| 歷史 F8／R8 | `75a1e93811a52b69385cbdaf6a09d773ed9052ad` |
+[撤回提交](https://github.com/ZhiQiYang/geometry-axiom/commit/e1efab34d970a052a8082fa62e478ad13a0625ae) 及 [固定 handoff 的 01:48 更正](https://github.com/ZhiQiYang/geometry-axiom/blob/8992388515172d068ee1e28526e1103ff18aa4f2/handoff/pr-reviews/338.md#L270) 明確撤回先前 F′=`a4bd77e8090f5a82f0c8934c30c5335782293922`、不採帳本與「閉包改四檔」指示；其本機參考 evidence `2d7a635ec6408f7fda80db13992d08feb4727e4b` 亦已從列車撤回。不是要求丟棄已完成的 S10 或將 F′ 結果移標 F。
 
-F 尚未採入原 #338 產品 ref。原列車與 Claude session f46787ac 的寫入範圍尚待釐清，因此 root 獨占 recovery 分支；既有交接 request 只讓 recovery prbody 更新 #338 正文，不改其 head/base/title，也不新增替代產品 PR。
+已公開且完整遠端核對的 recovery 證據 checkpoint **E=`047d93f01ba1bd349ebc256c4e8d19209bfd0f49`**；其包含 documents E=`45dd4d662eac9297eda8473742c9943a1cb336cb` 與較早 axiom E=`2d576269ab85ef64a921bc4b15d013ca2ef5b4fb`。本批 card 原件 **55,775,729 bytes 已成功發布並核對遠端 bytes**；F assembly 已在本地正式核收0，尚待公開原件。原已套用正文 D=`2cce6afaeac87521924bde28660a71e43ad306e5` 是舊版；本次新正文與其證據界線分開。
 
-| Gate | 真實結果與執行來源 | 目前界線 |
+| Gate | 固定 F 的真實結果／目前狀態 | 原件與限制 |
 |---|---|---|
-| 全 123 突變帳本 | S10 exit 0：114 killed／5 equivalent／M20 crashed／3 retired；原 stale exit 1 保留 | 原件已逐 byte 採入 F，沒有重產已有效帳本或改 execution head |
-| `mutate.py --check` | F exit 0，123/123；stale/survived/invalid/blocked 皆 0 | 同 F 的既有有效驗證；不是本輪新跑 |
-| 架構三條 | F 0/0/0；798 edges、零 diagnostics；generic 205／product 18、零 skip | A 四檔組裝 exit 0；604 raw/LF/Git closure、manifest/scan bytes 不變；不是本輪新跑 |
-| reader generate／check／unit | **本輪 F 0/0/0，inner 與 outer 全 0**；207 clauses／1261 blocks／31 witnesses；51 tests、0 skip | inner 分別 4.566017／1.664875／163.323779 秒；173 則 ResourceWarning 完整保留，未稱零警告 |
-| native | F9 exit 1：5327 pass／1 fail／1 原允許 GDI skip | 新 F **UNRUN**；清理後仍未達 `/tmp` 原 128 MiB 准入；#314 原修正反證保留 |
-| canvas | F9 exit 0：2267 assertions／85 golden | 新 F **UNRUN** |
-| assembly | F9 r2 exit 0：150 assertions；r1 環境 exit 1 保留 | 新 F **UNRUN** |
-| documents | F9 exit 0：47 assertions／8 screens | 新 F **UNRUN** |
-| grid | F9 exit 0：356 assertions | 新 F **UNRUN** |
-| space | F9 exit 0：242 assertions | 新 F **UNRUN**；原 2 個分組 skip 保持 |
-| timber | F9 exit 0：79 assertions | 新 F **UNRUN**；原 5 個分組 skip 保持 |
-| Q38 | F9 完整 44 項 exit 0：43 killed＋SPM24 equivalent | 保留 F9 執行身分，不冒充新 F |
-| §7 axiom／card | F9 axiom 歷史 exit 0；新 F 兩項尚未正式執行 | 四個 `cc -###` driver 診斷已 exit 0，但沒有編譯／正式突變；card 原 448 MiB 規劃仍不足 |
-| #323 R8 效能 | 原 36 樣本：N16/base `0.9834192453688345`≤1；N32/base `0.9007932884873169`≤1；N48/base `0.7392862448969592`≤1；N64/main `1.2846970752586067`≤1.3；calls64/32 `4.407618425509266`≤4.5 | 原 outer exit 1 與全部差異保留，不重抽最好樣本 |
-| #323 exact | F9 175 場景／350 列，outer/stage/audit 0 | 保留原三差限定，批准來源界線見下；不擴及 P-189 |
-| P52／P-189／required-eight／PF3／whole-memo／RC／#314／Reading A 其他專項 | 尚未閉合；原 P-189 exact 紅燈保留 | 不把 reader、工具或封包核對代替正式產品結果 |
-| 完整雲端替代 CI | **尚不成立** | native、六 browser、閱讀 A oracle 與適用專項未收齊 |
+| 全 123 突變帳本 | S10 `82c922a3941525d3a094ac0158bdc7dea57ea360` **exit0**：114 killed／5 equivalent／M20 crashed／3 retired | 已逐 byte 採入 F，120 execution heads原值保留；已有效成果不重產，也不使用撤回的「不採帳本」指示。 |
+| `mutate.py --check` | **F exit0，123/123**；stale／survived／invalid／blocked皆0 | 同 F 已有有效收據，不重跑。F′ check1／53 stale是撤回來源的真實歷史，不是 F 的紅燈。 |
+| 架構三裁判／四檔 | **F 0/0/0**；798 edges、205 generic、18 product、0 skip | F 採自己的架構收據；manifest/scan既有逐 byte保全。不採已撤回的 a4bd 架構兩檔，亦不以其本機 ALL PASS 摘要替換 F 原件。 |
+| reader generate／check／unit | **F inner/outer 0/0/0**，51 tests／0 skip | 已交付原件，173 ResourceWarning保留；有效結果不重跑。 |
+| §7 axiom | **F primary/reaper/outer0**；44 baseline，五組 red1／restored0，全部 killed | 11 subprocess／269 tests／0 skip，254.585306秒。完整原件已公開於 E2d576269 的 `axiom-F-cbf0fb62-20261027/EVIDENCE.tar.gz`；262葉／7fixtures／index／refs及目標恢復核對0。 |
+| §7 card | **F primary/reaper/outer0**；43 baseline、53組依原序 red1／restored0，116 ELF全留 | 107 test processes／149 test invocations，431.763707秒；2409項原件核對0，262葉／15目標／7fixtures／index／refs恢復。完整封包 **55,775,729 bytes 已公開於 E047d93f0**，遠端 byte核對0；此前 HTTP422與一般Git傳輸失敗原件均保留，沒有重跑card取新樣本。 |
+| native | **待外部正式終態；本任務未啟動 F native** | 既有外部任務已接手固定 F，尚無本次可核收final exit。F9 原1（5327 pass／1 fail／1 原 GDI skip）仍保留；#314修正0/1/0不等於完整 native通過。 |
+| canvas | **F UNRUN** | F9 歷史0，不自動沿用。撤回來源本機a6參考1亦保留，README曾列P52-3兩斷言／段落下限失敗與transport failure，不全歸成速度問題。 |
+| assembly | **F primary/reaper/wrappers0（本地已核收，尚待公開原件）**；150 assertions、0 skip、9 screenshots | 192.930640466秒＜原900秒；9151項核對0，3759葉／private index／golden bytes保全。原assembly partial模式不宣稱完整canvas golden比較；a4bd150／0及F9 r1環境1、r2正式0分開留歷史。 |
+| documents | **F inner/outer0**；47 assertions，0 fail/skip，8 screenshots | 70.97391320997849秒，原10分鐘時限保持；完整原件已公開於 E45dd4d66 的 `documents-F-cbf0fb62-20261027/EVIDENCE.tar.gz`。另一次a4bd 47／0分開留作撤回來源歷史。 |
+| grid | **F RUNNING，尚無final exit** | root session36920已正式啟動，保持原完整workflow；不得把啟動算通過，F9歷史0不移標。 |
+| space | **F UNRUN** | F9歷史0及原2個分組skip保留，沒有新增skip。 |
+| timber | **F UNRUN** | F9歷史0及原5個分組skip保留，沒有新增skip。 |
+| 閱讀 A oracle／矩形逐毫米／凹角579 | **F 尚未閉合** | 最新ChatGPT審查明列 final來源必跑；撤回來源或本機a6參考0不關閉本列。 |
+| Q38 | **F UNRUN** | F9原44 exit0／43 killed＋SPM24 equivalent保留；F9→F的#314測試變更進入副本digest，不能省略。 |
+| #323 R8效能／exact | **尚未閉合到 F** | R8固定源 `75a1e93811a52b69385cbdaf6a09d773ed9052ad`：N16/base0.9834192453688345≤1、N32/base0.9007932884873169≤1、N48/base0.7392862448969592≤1、N64/main1.2846970752586067≤1.3、calls64/32=4.407618425509266≤4.5；原36樣本及outer1保留、不重抽。F9 exact175場景／350組outer/stage/audit0維持原精確三差界線。 |
+| P52／P-189／required-eight／PF3／whole-memo／replay／#314／RC其他 | **尚未閉合** | P-189 strict exact原紅與原取樣保留；逐項完整輸入／裁判閉包或必要重跑未完成，不以card或局部相同bytes推論。 |
+| 完整雲端替代CI | **尚未成立** | final F仍缺完整native、canvas／grid／space／timber、閱讀A及適用專項／原件；assembly已本地0，公開封包尚待完成。a4bd歷史CI run40431992777七jobs failure但runner0、steps=[]，不是產品紅綠，也不是e1ef或F的新CI結果。 |
 
-Linux native 允許 skip 僅為缺 compiled Windows GDI harness。browser 保留原分組範圍，沒有新增 skip、放寬斷言、golden、時限或效能門檻。
+F9=`4f8a794f4167c3562eb182045102e86e9e37cca9`。Linux native既有允許skip僅缺 compiled Windows GDI harness；browser保留表內原分組skip，沒有放寬golden、斷言、時限或刪測試。已公開的指令、退出碼、完整stdout/stderr、環境、execution SHA與逐檔hash見 [E047d93f0 原件與進度](https://github.com/ZhiQiYang/geometry-axiom/tree/047d93f01ba1bd349ebc256c4e8d19209bfd0f49/evidence/geo337-train-20261024)。F documents環境為Chrome156.0.8078.47／Node24.19.0／Python3.12.14／GCC14.2／Noto CJK已安裝；不把工具或封包審查當產品通過。
 
-本輪 reader 原件 RESULT SHA256 `c4f253756cdb03d0f753c60b8a33b824104caa9cbd383f8e93f057a67a2fd94c`；actual peer `805e8a051614c2d9d47a2852998fe54f283f9b46515c0c4451fba1ec7763a6f9`，1955 項核對 exit 0。212 必要來源、五份 fixture、HEAD/index 保全。canonical 被原生成器替換 inode，但 bytes/hash 不變。原 runner 的實際 timeout=None 如實保留，沒有把未使用的 300/1200 變數當已執行時限。首次 peer 的兩個換行測試名稱解析失敗保留；修正解析後核收，沒有重跑裁判。
+撤回來源a4bd的assembly150／0、documents47／0與帳本check1都保留原實際SHA。該check真跑123列：killed62／crashed1／equivalent4／stale53／retired3，survived0／invalid0／blocked0；712葉來源／裁判依賴與完整Git tree核對，不是a6轉述。它證明該次check有效，沒有自動豁免或取代 F 的有效帳本。
 
-F 相對 A 的非 evidence 差異僅帳本、架構 report、架構 receipt；產品／測試／SSOT 其他 bytes 不變。本輪只新增證據。既有 3763 葉來源不冒充 native 所需 6997 葉。
+[10-25裁決留言](https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6396611849) 的作者帳戶已與 `gh api user` 核對為ZhiQiYang／59477728；使用者選項原文與留言中明標「本機Claude整理，非原話」的技術解釋仍分開。#323精確三差與效能門檻保留；**P-189擴大白名單的原始批准尚未核實，保持strict裁判**，不自行延伸。01:48更正已撤回F′／不採帳本／四檔閉包方案；不能將作廢方案當新豁免。本任務仍不合併PR或main。
 
-批准來源：GitHub `GET /user` 與 [2026-10-25 10:39:52Z 的 #338 留言](https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6396611849)刊載帳戶均核實為 ZhiQiYang／59477728。留言中的「對本 PR 的意思」自述「本機 Claude 整理，非原話」；帳戶核實不等於本對話直接原話。既有 #323 exact 原三差範圍維持；本輪沒有新增例外。新的 P-189／跨 SHA 沿用文字仍只有轉錄與審查引用，未核實對應新原始批准，原比較器與原紅燈保持。
+card一般Git傳輸曾意外產生約2.42 GB pack，使兩OWN當時實測約**5.303 GB，超過當時4 GiB工作規劃**；該次傳輸未成功push，原始失敗與原件保留，沒有修改產品。協調者其後將自訂工作規劃調為**兩OWN合計最多8 GiB**；這不是使用者數值門檻、平台配額或安全設定變更，也未降低64MiB發布保留與正式斷言／時限。須以fresh實體容量、完整執行及留證成本實證准入後串行續跑；前次SHM free約12.568 GB只是歷史觀測。固定新增168檔已獲批准，本輪實際結果：**exit0，刪除168檔／跳過0／刪目錄0；02:45:54–02:46:00 UTC 完成，`/tmp`實測回收22,892,544 bytes、終態free120,623,104 bytes，workspace／SHM回收量0；33目錄及HEAD/config/refs保全核收0；已備份的3個私有index依批准刪除，不等於native通過**。原3156檔清理早已完成，不重做。native由外部既有任務獨立接手，不能用此處SHM free抵算本環境真正 `/tmp` 准入。
 
-使用者於 2026-10-26 17:59:47 UTC 新批准固定 E9 清單後，原清理本體實際執行一次，18:30:29.532759–18:30:39.271074 **exit 0**：3156 檔與 108 空目錄完成，跳過 0。原拒絕保留為歷史，**這一批已完成，不再待批准**。先前額外 maps 檢查 exit 1 保留；以本機 Docker endpoint／零工作負載、原可讀 proc 與 root no-reuse 檢查建立有限 consumer 證據，沒有聲稱讀到兩個不可讀平台程序的 maps。Fresh 遠端 30 路徑核對 0；原排除 73 項、F9 ELF、fixtures、Git objects 及未知修改均保全。
-
-清理實測 `/tmp` 可用量 10,326,016→117,559,296 bytes，**淨回收 107,233,280 bytes**；`/workspace` 不變，SHM 因新收據減少 6,791,168 bytes。18:30 當時 native 原 134,217,728 bytes 准入仍差 16,658,432 bytes；後續寫入會改變缺額，執行前須 fresh 檢查。新增候選為 3 個舊私有 index＋165 個 GPU cache，固定 168 葉的完整備份已真 exit 0、推送並逐 byte 遠端核讀；**仍未取得新增刪除批准、未刪除**。不把它們納入已批准舊批。
-
-固定備份 tar.xz 為 723,012 bytes，SHA256 `f9770ca505999057c23c898d559836f74594bc66e90bf5c83479e3d76f0385f6`。清單與原始身份見 E 的 `extra168-preservation-candidate-20261026/BYTE_MAP.json`；毛回收估計 23,707,648 bytes，排除 33 個目錄、fixtures、Git objects/refs、F9 ELF 及原始收據。若另獲批准仍須 fresh consumer／身份／內容重驗，有疑慮保留；bytes／mode／mtime 可恢復，inode／ctime 不能恢復，三個舊 checkout 必須保持退役。
-
-19:27:33 UTC 的來源觀測原件實占 `/tmp` 4,640,768 bytes，當時可用 111,865,856 bytes。即使另批全數獲准並回收，扣預估來源轉移永久增加約 507,904 bytes，只比 native 原 128 MiB 准入多約 847,872 bytes，尚未計後續 metadata 或可能的 index extension；這是條件估算，不是 admission。真 F 的 sparse Git 集合仍為實際推導的 6997 葉，精確五檔差異已定位；完整物化／fixture 守門與來源轉移均未執行。
-
-另一個獨立阻擋是完整交付空間。新本地 codec 模型約 2,973,428 bytes，尚非完整上界；以 evidence E 發布後兩 OWN 可用 69,369,856 bytes 計，連同原 64 MiB publisher、3×payload 與單葉 allowance，最低已缺 9,698,524 bytes，還未含 manifest／journal／其他原件。這份本地模型尚未冒稱已收入 E；codec 只在受審準備，沒有因實體 SHM 仍有空間而放寬 2 GiB 規劃守門或執行來源轉移。
-
-單 browser 原 416 MiB＋thin seed、card 原 448 MiB、native 原 128 MiB 與兩 OWN 合計 2 GiB 規劃守門均保持；實體 SHM 可用量不替代規劃守門。工具允許順序執行，不要求先建立六份。只設定 TMPDIR 無法解除 native 的 `/tmp/geometry-tests` 需求。
-
-前批閱讀器／清理封包收入 1635 個原件；fresh remote 的 24 個 API stdout 以固定 E9 已有完整 raw bytes 索引，全部 30 個 path aliases、命令、時間、hash／OID 保留。新 tar 不含這 24 個 gzip 容器，本地原件未刪。新 reader／清理的完整原始輸出均在包內。
-
-既有工作管理 CLI 已核實，現行 private ledger 仍 unknown；未另建空佇列，import-snapshot/reconcile/list-ready/list-alerts 均 UNRUN。接續處理固定 168 葉待決範圍、native 來源／交付容量、standalone axiom 資源實證與其他正式驗收；#54 僅單房，不擴 #87。
-
-[最新 PROGRESS](https://github.com/ZhiQiYang/geometry-axiom/blob/9bd32131e1657ea3a35c41707ae3e1f42df5fdb8/evidence/geo337-train-20261024/resume-20261026/PROGRESS.md) · [本輪原件索引](https://github.com/ZhiQiYang/geometry-axiom/blob/9bd32131e1657ea3a35c41707ae3e1f42df5fdb8/evidence/geo337-train-20261024/resume-175947-20261026/INDEX.json) · [完整原件封包](https://github.com/ZhiQiYang/geometry-axiom/blob/9bd32131e1657ea3a35c41707ae3e1f42df5fdb8/evidence/geo337-train-20261024/resume-175947-20261026/ORIGINALS.tar.gz)
-
-[固定 168 葉與待決說明](https://github.com/ZhiQiYang/geometry-axiom/blob/9bd32131e1657ea3a35c41707ae3e1f42df5fdb8/evidence/geo337-train-20261024/extra168-preservation-candidate-20261026/QUESTIONS.md) · [完整新增備份](https://github.com/ZhiQiYang/geometry-axiom/blob/9bd32131e1657ea3a35c41707ae3e1f42df5fdb8/evidence/geo337-train-20261024/extra168-preservation-candidate-20261026/SNAPSHOT.tar.xz)
+下一步核收正在執行的固定F grid、公開F assembly原件，並依序完成其餘驗收；已公開card不重跑。按 [最新ChatGPT審查](https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6409950139) 完成固定F的native、其餘browser、閱讀A與專項；產品／測試bytes相同不自動授權移標。完整收據與最新審查通過之前維持draft。
