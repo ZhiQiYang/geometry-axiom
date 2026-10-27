@@ -1,0 +1,85 @@
+--- per-file byte comparison (tracked at F  vs  regenerated)
+product-architecture.json           221953 ->  221953 bytes  SAME  old=81882184010b new=81882184010b
+product-architecture-scan.json      132559 ->  132559 bytes  SAME  old=18f24f186445 new=18f24f186445
+PRODUCT-ARCHITECTURE.md               1444 ->    1424 bytes  DIFF  old=fa1357b249c1 new=89b0f2673a98
+product-architecture-receipt.json   131843 ->  129322 bytes  DIFF  old=00a33c42ca07 new=87c6b6420380
+PASS manifest product-architecture.json byte-identical (no manifest change needed)
+PASS scan product-architecture-scan.json byte-identical
+--- PRODUCT-ARCHITECTURE.md diff (11 lines, full text in PRODUCT-ARCHITECTURE.md.diff)
+   --- F:PRODUCT-ARCHITECTURE.md
+   +++ regenerated:PRODUCT-ARCHITECTURE.md
+   @@ -3 +3 @@
+   -產品／裁判實際來源 `6e50aef65513b7b38f93228919272c6d40d6c196`。三條原命令 exit 0／0／0；generic 205、product 18，零 skip。完整604 inputs、334 owned／270 exclusions、798 edges／0 diagnostics。LF closure `8d47b6202e793aa5755a887ea
+   +產品／裁判實際來源 `a6f4013364e21bcb7239b5dcc25caac0f6d61f77`。三條原命令 exit 0／0／0；generic 205、product 18，零 skip。完整604 inputs、334 owned／270 exclusions、798 edges／0 diagnostics。LF closure `8d47b6202e793aa5755a887ea
+   @@ -5 +5 @@
+   -本輪 manifest 與前份產物逐 bytes 相同：forbiddenIdentifiers 937→937、forbiddenStrings 55；分類、路徑、exclusion、trust及所有政策不變。完整604輸入相較前份收據僅 `geometry-core/references.inc` 的來源雜湊改變。原完整 W lexer 盤點仍覆蓋全部 W identifiers。九組既有 
+   +本輪 manifest 與前份產物逐 bytes 相同：forbiddenIdentifiers 937→937、forbiddenStrings 55；分類、路徑、exclusion、trust及所有政策不變。完整604輸入相較前份收據，來源雜湊改變的檔案：無。原完整 W lexer 盤點仍覆蓋全部 W identifiers。九組既有 guard 在本次來源重新實跑0／1／0；撤回用歷史92
+   @@ -7 +7 @@
+   -前份收據 source `e321026fb9bc9bc19c54b8034af6e6eaec2857f9`，產物提交 `6df0264f75e84f03adb70746b6ac3db07a9910fc`；本次完整輸入差異在 receipt／source-inputs.json，歷史報告保於該Git提交。四檔寫至來源外，receipt不hash自己。原native／browser／mutatio
+   +前份收據 source `6e50aef65513b7b38f93228919272c6d40d6c196`，產物提交 `75a1e93811a52b69385cbdaf6a09d773ed9052ad`；本次完整輸入差異在 receipt／source-inputs.json，歷史報告保於該Git提交。四檔寫至來源外，receipt不hash自己。原native／browser／mutatio
+--- receipt: 148 differing leaves; by top-level field (full list in receipt-diff.txt)
+   actualCliScan                    8 leaves
+   completeInventoryVerification    6 leaves
+   createdUtc                       1 leaves
+   environment                      3 leaves
+   headObservedAfter                1 leaves
+   headObservedBefore               1 leaves
+   manifestRefresh                  96 leaves
+   refreshDriver                    10 leaves
+   reportSha256                     1 leaves
+   sourceBaseHead                   1 leaves
+   validation                       20 leaves
+--- receipt: notable leaf changes
+   .completeInventoryVerification.protectedSsotAfter.決策佇列.md.bytes: 237973 -> 244340
+   .completeInventoryVerification.protectedSsotAfter.決策佇列.md.lfSha256: cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0 -> e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740
+   .completeInventoryVerification.protectedSsotAfter.決策佇列.md.rawSha256: cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0 -> e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740
+   .completeInventoryVerification.protectedSsotBefore.決策佇列.md.bytes: 237973 -> 244340
+   .completeInventoryVerification.protectedSsotBefore.決策佇列.md.lfSha256: cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0 -> e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740
+   .completeInventoryVerification.protectedSsotBefore.決策佇列.md.rawSha256: cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0 -> e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740
+   .createdUtc: 2026-10-25T06:41:39.827848+00:00 -> 2026-10-27T00:29:50.159922+00:00
+   .headObservedAfter: 6e50aef65513b7b38f93228919272c6d40d6c196 -> a6f4013364e21bcb7239b5dcc25caac0f6d61f77
+   .headObservedBefore: 6e50aef65513b7b38f93228919272c6d40d6c196 -> a6f4013364e21bcb7239b5dcc25caac0f6d61f77
+   .manifestRefresh.changedPriorInputs: [{"path": "geometry-core/references.inc", "sha256": "2f915779b14272a3c...(120 chars) -> []
+   .manifestRefresh.previousArtifactCommit: 6df0264f75e84f03adb70746b6ac3db07a9910fc -> 75a1e93811a52b69385cbdaf6a09d773ed9052ad
+   .manifestRefresh.previousOutputs.PRODUCT-ARCHITECTURE.md.bytes: 1445 -> 1444
+   .manifestRefresh.previousOutputs.PRODUCT-ARCHITECTURE.md.lfSha256: 28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac -> fa1357b249c19708824d480993a80821b7bfeccb7606be773a000395f28aafd6
+   .manifestRefresh.previousOutputs.PRODUCT-ARCHITECTURE.md.rawSha256: 28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac -> fa1357b249c19708824d480993a80821b7bfeccb7606be773a000395f28aafd6
+   .manifestRefresh.previousOutputs.product-architecture-receipt.json.bytes: 131983 -> 131843
+   .manifestRefresh.previousOutputs.product-architecture-receipt.json.lfSha256: 80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765 -> 00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af
+   .manifestRefresh.previousOutputs.product-architecture-receipt.json.rawSha256: 80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765 -> 00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af
+   .manifestRefresh.previousSource: e321026fb9bc9bc19c54b8034af6e6eaec2857f9 -> 6e50aef65513b7b38f93228919272c6d40d6c196
+   .manifestRefresh.sourceReceiptEvidenceDirectory: /tmp/geo337-h-architecture-four-20261025 -> /root/ga-arch-a6f40133-run
+   .refreshDriver.bytes: 16877 -> 16944
+   .refreshDriver.lfSha256: 94574f72984c26d72a88eac3536c6c2b316b67a63529c50835a9d6d988a194dc -> f46616f53a6e09380db44af3d52a53b36e5d7a096ac42d00c4cf8a41ac25ed0a
+   .refreshDriver.path: /tmp/geo337-architecture-h-local-init-tool-20261024/refresh_architectu...(88 chars) -> /mnt/d/geometry-axiom-work/s10-acceptance/F-a6f40133/arch-regen/tools/...(109 chars)
+   .refreshDriver.rawSha256: 94574f72984c26d72a88eac3536c6c2b316b67a63529c50835a9d6d988a194dc -> f46616f53a6e09380db44af3d52a53b36e5d7a096ac42d00c4cf8a41ac25ed0a
+   .refreshDriver.runDirectory: /tmp/geo337-h-architecture-four-20261025 -> /root/ga-arch-a6f40133-run
+   .reportSha256: fa1357b249c19708824d480993a80821b7bfeccb7606be773a000395f28aafd6 -> 89b0f2673a9848d041394144b2dcdb8e722e844cd4b8e5622a4b165e7be789ad
+   .sourceBaseHead: 6e50aef65513b7b38f93228919272c6d40d6c196 -> a6f4013364e21bcb7239b5dcc25caac0f6d61f77
+--- invariants
+PASS receipt field unchanged: inputs
+PASS receipt field unchanged: inputClosureSha256
+PASS receipt field unchanged: counts
+PASS receipt field unchanged: manifestSha256
+PASS receipt field unchanged: scannerSha256
+PASS receipt field unchanged: scanSha256
+PASS receipt field unchanged: schema
+PASS receipt field unchanged: notClaimed
+PASS receipt field unchanged: basis
+PASS receipt field unchanged: supplementalStaticGuardProbes
+PASS receipt field unchanged: nativeAcceptance
+PASS receipt field unchanged: uncertainties
+PASS receipt sourceBaseHead/headObserved* == F :: a6f4013364e21bcb7239b5dcc25caac0f6d61f77
+PASS manifestRefresh.previousSource == sourceBaseHead of the old receipt (M) :: 6e50aef65513b7b38f93228919272c6d40d6c196
+PASS manifestRefresh.changedPriorInputs == []
+PASS inputClosureSha256 unchanged (8d47b620...)
+PASS receipt scanSha256/reportSha256 match the written files
+PASS unit judges: exit 0/0, 205 + 18 tests, 0 skipped, 0 failed
+PASS architecture_contract scan exit 0, scanPassed
+PASS scan counts sources/trusted/edges/diagnostics == 334/6/798/0 :: (334, 6, 798, 0)
+PASS SSOT snapshot in receipt == bytes tracked at F: 公理層.md :: 323066 bytes c66c48e50e0c
+   (old receipt had 323066 bytes c66c48e50e0c for 公理層.md)
+PASS SSOT snapshot in receipt == bytes tracked at F: 決策佇列.md :: 244340 bytes e6f2aee29185
+   (old receipt had 237973 bytes cfad2b7ad518 for 決策佇列.md)
+PASS install delta == {PRODUCT-ARCHITECTURE.md, product-architecture-receipt.json} (as in the M adoption) :: ['PRODUCT-ARCHITECTURE.md', 'product-architecture-receipt.json']
+RESULT: ALL PASS (0 failed checks)

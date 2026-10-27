@@ -1,0 +1,41 @@
+{
+  "command": [
+    "git",
+    "show",
+    "a6f4013364e21bcb7239b5dcc25caac0f6d61f77:tests/test_architecture_contract.py"
+  ],
+  "cwd": "/root/ga-arch-a6f40133",
+  "acceptance_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "source_variant": "original architecture gate at fixed clean source",
+  "environment": {
+    "PATH": "/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": "utf-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": "/root/ga-arch-a6f40133-run/tmp",
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1793060886.713723,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": 0,
+  "timeout_expired": false,
+  "directory": "/root/ga-arch-a6f40133-run/subcommands/000014",
+  "ended_epoch": 1793060886.7207968,
+  "stdout_sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 66632,
+  "stderr_bytes": 0
+}

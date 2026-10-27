@@ -1,0 +1,1202 @@
+✔ draft-only projects require assembly capability and format 7, preserving incomplete values (87.895127ms)
+✔ scene authoring survives capability inference and coexists with prior capabilities (18.311571ms)
+✔ draft capability stripping, old format, unknown schema and duplicate IDs reject (92.61306ms)
+✔ assembly drafts and native confirmation share undo and redo without losing incomplete edits (7.965729ms)
+✔ assembly ParameterRef preserves the complete uint32 identity range through archive reopen (58.811154ms)
+✔ assembly ParameterRef rejects malformed and out-of-range identities independently on either field (3.285589ms)
+✔ zero ParameterRef support does not relax positive assembly identities or null source handling (15.778738ms)
+✔ binding create/update intent and exact original source survive formal archive reopen (56.042373ms)
+✔ binding intent rejects unknown modes, malformed sources, wrong IDs and rule attachments (2.690185ms)
+✔ generation draft archive preserves typed incomplete sources and requires format 8 (63.92822ms)
+✔ owned scene syntax infers generation capability even when requires is stripped (18.335804ms)
+✔ experimental format 8 without generation capability and malformed instance sources reject (30.601151ms)
+✔ rule confirmation removes raw draft in the same native ContextHistory step and undo/redo restores both (243.640132ms)
+✔ native rejection and preview cancellation keep rule raw and history unchanged (236.330705ms)
+✔ rule prepared leases reject context, native revision, session, raw edit and history races before sending (344.907331ms)
+✔ held rule confirmation blocks replacement and unknown receipt preserves raw until one exact recovery (65.202627ms)
+✔ late rule reply cannot remove raw or append history in an externally replaced context (62.448003ms)
+✔ held assembly confirmation blocks public project replacement and all native mutations before sending (19.086551ms)
+✔ ordinary, rejected and no-op assembly results release the guard and preserve native history counts (41.265719ms)
+✔ a late successful assembly reply cannot dirty, append history or notify an externally replaced context (21.100866ms)
+✔ an unknown assembly result retains the replacement guard until its exact receipt is recovered without resending (19.948058ms)
+✔ receipt recovery also ignores an obsolete assembly context and releases only that request guard (23.351741ms)
+✔ immediate exact-receipt recovery records one confirmation and never repeats the command (23.295383ms)
+✔ assembly confirmation requires an established receipt session and no open native history group (27.38723ms)
+✔ an already-started direct scene upload blocks confirmation throughout its pre-upload dump (26.454095ms)
+✔ releasing an older confirmation cannot unlock a later request (10.521097ms)
+✔ confirmation disables shared project editing until release and respects an already-busy canvas (24.482009ms)
+✔ ordinary recovery still aborts an unfinished group when no mutating receipt is pending (12.304455ms)
+✔ ordinary pending history-end recovery commits once without aborting a completed group (15.798319ms)
+✔ a context change during awaited receipt recovery cannot abort the new project group (19.70807ms)
+✔ actual instance creation consumes the template before ID allocation and preserves host provenance (60.301266ms)
+✔ instance policy rejection preserves the old draft and preview before ID allocation (78.38607ms)
+✔ editing saved instance data bypasses creation defaults and retains its exact fingerprint (20.694707ms)
+✔ late instance allocation discards its result after a local edit (43.217381ms)
+✔ confirming and incomplete bindings do not request instance recipes or IDs (8.349263ms)
+✔ actual binding switch consumes injected compatibility and endpoint policies (8.137899ms)
+✔ context entry pins the displayed exact version and leaves all material input explicitly unset (23.868719ms)
+✔ same tuple changed or missing context source rejects before old input flush token cancellation and native allocation (20.606583ms)
+✔ a repeated rejected context entry keeps the original displayed fingerprint (5.038943ms)
+✔ late context entry discards results after selection project or old-owner edit changes (43.212148ms)
+✔ double context activation creates only one draft and one native ID request (21.056373ms)
+✔ declining the existing leave gate preserves the old draft owner and pending token (5.919678ms)
+✔ new and copied rules/bindings skip interleaved native and draft IDs after uint32 wrap (24.178302ms)
+✔ reserved MAX wraps to a positive free ID without exceeding uint32 (13.710192ms)
+✔ new rule versions retain identity, reserve draft versions and reject the version ceiling atomically (8.51524ms)
+✔ local slot/member/joint controls wrap MAX without changing existing identities (11.228ms)
+✔ a new or legacy binding draft never previews an update to a subsequently occupied ID (15.120243ms)
+✔ explicit binding edits keep identity and reject changed, removed or replaced source values (25.237454ms)
+✔ unchanged explicit binding edits and unoccupied legacy creations reach revision-scoped preview (17.67168ms)
+✔ missing native binding fingerprint refuses an explicit edit without submitting or discarding its draft (7.322423ms)
+✔ binding creation rejects replaced or removed captured rules without changing the active draft or history (6.327884ms)
+✔ binding creation refuses malformed fixed rule identities and absent native fingerprints (42.462763ms)
+✔ new binding drafts retain the exact fresh rule provenance for both selected and null-source creation (126.284682ms)
+✔ binding preview rejects changed, removed, or mismatched captured rule provenance before any submission (24.352037ms)
+✔ explicit binding rule mapping captures only the applied selection and persists provenance-only changes (18.304867ms)
+✔ legacy null rule provenance still previews through native validation and existing binding edits keep their intent (15.257577ms)
+✔ binding rule provenance accepts uint32 MAX and rejects malformed stored refs before preview submission (31.159026ms)
+✔ explicit new-version mapping keeps typed sources and its fixed provenance through undo and redo (31.804624ms)
+✔ late binding allocation after a project switch never inserts its captured rule into the new project (13.486136ms)
+✔ published binding edits reject changed captured rule contents before flushing or allocating (7.122846ms)
+✔ published binding edits require a valid previously displayed native rule fingerprint (4.818615ms)
+✔ repeated published binding edit attempts retain the first captured rule despite fresh reads (4.268001ms)
+✔ published edit handlers pin the displayed rule before any refresh and reject repeated old UI clicks (18.916445ms)
+✔ a missing displayed rule fingerprint cannot be upgraded by retry but a fresh reopen can edit (13.16261ms)
+✔ published binding edit provenance survives archive and rejects a same-value recreation with changed rule contents (69.08359ms)
+✔ explicit published binding version mapping updates its rule pin while retaining edit intent (15.945383ms)
+✔ confirm locks actual handlers, inputs, navigation and repeated clicks until reply (19.141008ms)
+✔ a same-workspace external draft switch never cleans the newly selected draft (6.777361ms)
+✔ an external edit after submission survives both active and persisted content checks (11.173983ms)
+✔ late confirm in a replaced project does not delete or redraw the new context (8.162134ms)
+✔ a rejected confirm preserves drafts, drops its old token and permits closing (3.869897ms)
+✔ an unresolved transport result keeps editing locked and never resends on recovery (255.059599ms)
+✔ known committed result plus refresh failure never claims its removed draft was retained (263.606325ms)
+✔ endpoint and direction choices change drawn SVG attributes, not only text (5.170912ms)
+✔ all four sides and ortho-split preserve exact occurrence and endpoint identities (3.530716ms)
+✔ candidate impact renders external and transitive geometry without selecting instance members (3.925304ms)
+✔ missing complete native candidate refuses confirmation and preserves the draft (3.661339ms)
+✔ source-only instance edit keeps unchanged owned geometry in the preview (5.12134ms)
+✔ surface-only reassignment names both placements in the visible geometry diff (2.648713ms)
+✔ same-value source switches show old/new typed IDs and fixed material versions (7.88414ms)
+✔ source and value changes are separate for A/B, unset and complete no-op (13.556387ms)
+✔ source names are escaped and identical names do not hide distinct identities (5.194707ms)
+✔ CR19 CARD_SAVE_ROUNDTRIP preserves card source and reversed mapping in /18 (91.044331ms)
+✔ CR20 NO_SILENT_DOWNGRADE rejects every older format (128.4744ms)
+✔ CR20 manifest capability and source declarations cannot be stripped (17.859959ms)
+✔ CR20 unknown card capability/version and empty /18 are rejected (11.808887ms)
+✔ CR20 reader must really support card references before archive replacement (5.037314ms)
+✔ CR21 LEGACY_UNCHANGED same-card ParameterRefs remain /6 and unmerged (13.307456ms)
+✔ CR19 snapshot-only card sources require /18 and both capabilities on the root (42.178328ms)
+✔ 全等 → 無差異 (7.235479ms)
+✔ 某段數字變小 → 有差異,訊息指名該段與兩個數字 (0.795293ms)
+✔ 某段數字變大 → 有差異(嚴格相等,新增斷言須明確更新 golden) (0.811917ms)
+✔ 某段消失 → 有差異 (4.735768ms)
+✔ 多出 golden 沒有的段 → 有差異 (1.180154ms)
+✔ 多種差異同時出現 → 逐條列出,不只報第一條 (0.763704ms)
+✔ 段被保留但計數為 0 與整段消失是兩回事,0 也要與 golden 相等 (0.643402ms)
+✔ {min:N} 下限:達到(含超過)通過,低於才算差異;消失仍算差異 (2.712711ms)
+✔ golden 缺 sections 或 actual 缺 sections 不會丟例外 (0.809575ms)
+✔ sectionOf 只取主編號,子標頭歸到同一段 (1.170564ms)
+✔ buildGolden 總數等於各段加總,且自己通過 validateGolden 與 compare (0.738407ms)
+✔ validateGolden 擋下格式錯誤 (0.62193ms)
+✔ 已提交的 cdp_sections.golden.json 結構合格,且 total 等於各段加總(無 min 段時) (1.007241ms)
+✔ engineering scene remains the sole source and selects v5 with a required capability (75.03144ms)
+✔ unfinished drafts persist exact form values separately from published definitions (36.057405ms)
+✔ empty draft containers do not upgrade legacy projects or add empty engineering fields (23.280182ms)
+✔ manifest downgrade, hidden source capability and unknown capability are rejected (46.293334ms)
+✔ drafts reject duplicate identities, invalid references and unsafe or excessive JSON (120.059977ms)
+✔ engineering model snapshots force v5 even after the live scene has no engineering sources (501.112561ms)
+✔ confirmed engineering candidates occupy one native undo entry and read, preview or rejection occupy none (6.985005ms)
+✔ unfinished drafts survive older core undo after the browser history window is exhausted (8.007712ms)
+✔ draft API clones values, records save revisions and rejects stale same-project context tokens (75.607325ms)
+✔ delivered engineering project reopens through a private real service, retains seven bound sources and rejects tampering atomically (47773.195508ms)
+✔ v5 import validates complete source before mutation and capability or closure failure preserves context (44.493858ms)
+✔ a definitive core upload rejection preserves the entire current draft context and history (20.191213ms)
+✔ clean and read-only startup do not warn; geometry, engineering and draft-only changes all do (34.604481ms)
+✔ blank and comment commands cannot revive a discarded redo in the actual isolated C bridge (579.938014ms)
+✔ placement zero is a legal independently saved projection target; boundary zero remains reserved (148.19885ms)
+✔ a face with no PDF or model saves and reopens its definition as v3, independently for each placement (47.58143ms)
+✔ old projects stay v1/v2 without defining existing faces; an empty definition list is not a forced upgrade (752.072419ms)
+✔ getters and setter inputs cannot mutate definitions; changing a definition keeps context identity and emits events (11.78123ms)
+✔ metadata, clear, and core changes undo/redo without sending local steps to core (22.753168ms)
+✔ deleting/reusing a boundary does not inherit definitions and undo restores the original incarnation (6.525745ms)
+✔ placement delete/reassignment/vertical rotation retire metadata in that same undo transaction (49.922391ms)
+✔ horizontal origin and outline edits preserve the definition; authoritative surface refresh retires removed placements (16.237471ms)
+✔ reset and grouped rejection restore snapshots and never allow metadata edits inside a transaction (22.048956ms)
+✔ definition-only removal warns on leave and browser unload, including deletion of the last definition (9.156214ms)
+✔ strict metadata schema rejects extra keys, missing fields, unsupported values, duplicate pairs and vertical/missing refs (26.676696ms)
+✔ forged saved definitions and references fail before upload without changing the current project (228.583001ms)
+✔ a model retains its own source projection snapshot even after live source removal; new snapshots require consistent plan sources (355.200051ms)
+✔ M10 writer selects legacy only for one healthy draft, collection for orphans or lost (32.89954ms)
+✔ M02 two raw drafts survive real ZIP with collection capability and canonical identity order (218.880543ms)
+✔ M07 non-orphan target uniqueness rejects the entire collection; orphans do not reserve targets (17.508006ms)
+✔ M08 sixteen drafts accepted; seventeenth rejected without truncation (38.316734ms)
+✔ M09 drafts are never valid input references (7.549739ms)
+✔ M10/M14b single orphan or lost collection preserves flags through ZIP reopen (299.621927ms)
+✔ M11 strict schema, orphan membership, lost placement and flag values reject (27.576861ms)
+✔ M11 downgrade and capability stripping fail on real archive bytes (160.824267ms)
+✔ P064 save normalizes a shrunken healthy singleton but never orphan or lost (8522.893685ms)
+✔ P064 normal collection retains only a valid oversized single envelope (136.183036ms)
+✔ B1 previous collection writer ZIP retains a full-size orphan draft on cold read and re-save (1963.951355ms)
+✔ B1 legacy near-limit ZIP reads and re-saves without reserving new admission bytes (1142.901361ms)
+✔ B1 marking allowance covers only exact lost and orphan growth, never new raw payload (41.826484ms)
+✔ B1 existing collection keeps its own byte ceiling after orphan annotation and real ZIP save (1465.067179ms)
+✔ B1 collection projection keeps declared shape when the old single envelope is one byte too large (3130.580996ms)
+✔ B1 normalization cannot turn unrelated metadata into marking credit (1267.663046ms)
+✔ B1 collection record marking credit never admits one extra payload byte (431.735968ms)
+✔ B1 complete legacy manifest admits exact marking and format growth but rejects one real byte (5684.24599ms)
+✔ M2 healthy singleton collection never subtracts lifecycle capacity (2.360316ms)
+✔ M2 individual draft reserves every automatic lost flag before admission (7.215373ms)
+✔ M2 collection value reserves all lost flags and orphan identifiers (196.157725ms)
+✔ M2 collection record reserves automatic marking within its own byte limit (360.526658ms)
+✔ M2 exact individual reserve admits a singleton and its marked collection promotion (83.064682ms)
+✔ M2 complete manifest reserves grid promotion before native deletion or import (843.795403ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER u/repeat/literal
+▶ GEO263 native inspector contract
+  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat/literal (138.563331ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER u/repeat/parameter
+  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat/parameter (114.592289ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/literal
+  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/literal (133.824965ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/parameter
+  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/parameter (103.076004ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER v/repeat/literal
+  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat/literal (143.80935ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER v/repeat/parameter
+  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat/parameter (139.220613ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/literal
+  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/literal (158.505641ms)
+PASS GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/parameter
+  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/parameter (202.604596ms)
+PASS GEO263_PARAMETER_CHANGE_REEVALUATES_STAGGER
+  ✔ GEO263_PARAMETER_CHANGE_REEVALUATES_STAGGER (51.733998ms)
+PASS GEO263_SPACING_EDIT_PRESERVES_STAGGER
+  ✔ GEO263_SPACING_EDIT_PRESERVES_STAGGER (72.409515ms)
+PASS GEO263_EXPLICIT_REMOVAL_REMAINS_OMISSION
+  ✔ GEO263_EXPLICIT_REMOVAL_REMAINS_OMISSION (72.317527ms)
+PASS GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE
+12 pass / 0 fail
+  ✔ GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE (233.011001ms)
+✔ GEO263 native inspector contract (2844.984677ms)
+✔ raw source rule draft survives real ZIP with exact invalid unblurred signed strings and editor-only format13 (187.655764ms)
+✔ rule-aware source identity changes on rule-only changes or highwater while legacy pin representation remains available (1.39419ms)
+✔ legacy raw /1 preserves its exact schema and /10 format instead of receiving invented rule baselines (109.486842ms)
+✔ rule raw values including future selector, blanks and whitespace stay raw until native validation (6.712806ms)
+✔ strict raw rule shapes reject key reservation, foreign targets, nonstrings, excessive fields and unknown schema (4.032151ms)
+✔ raw rule capacity, hostile accessors and duplicate active editor records fail before archive admission (15.644584ms)
+✔ format and required-capability guards refuse every downgrade, false declaration and missing envelope (201.615638ms)
+✔ native rules, raw editor and evidence-only PDF coexist without candidate copies or lost sources (298.790173ms)
+✔ RuleLineRef retains complete typed identities and signed strings through both native commands (8.613151ms)
+✔ query decoder refuses wrong source, cell or synthetic applied reference and retains native clipping (8.212164ms)
+✔ single rule usage includes signed arithmetic references without source-wide overcount (1.747148ms)
+✔ focused exact read restores only the newly rendered button after native disabled blur (18.299682ms)
+✔ an exact action initiated without button focus never claims focus on completion (10.25876ms)
+✔ a user focus move and subsequent blur retire the original exact keyboard target (11.885014ms)
+✔ a pending exact read cannot steal a user-selected external focus target (4.97509ms)
+✔ a pointerdown on blank body prevents late exact focus restoration (8.068202ms)
+✔ a keydown on blank body prevents late exact focus restoration (6.840334ms)
+✔ an edited raw cell rejects both stale query painting and exact focus restoration (24.946429ms)
+✔ a replacement rule presentation owner rejects the prior exact focus lease (3.345803ms)
+✔ a new context with the same project id cannot receive the old exact focus lease (5.372527ms)
+✔ evidence drift invalidates the current exact owner even before a replacement exists (10.096557ms)
+✔ a newer native request prevents an older exact read from restoring focus (5.496404ms)
+✔ a hidden replacement exact target is never focused (3.846881ms)
+✔ a disabled replacement exact target is never focused (6.839178ms)
+✔ a missing replacement exact target is never focused (4.799249ms)
+✔ an unchanged live exact button is reenabled before keyboard focus is restored (7.207484ms)
+✔ invalid raw cell admission retains original focus and cleans all observation listeners (7.691753ms)
+✔ an expired face at initiation returns before native reads and still retires its listeners (2.199521ms)
+✔ a native read failure retires listeners and restores the still-owned replacement target (11.463476ms)
+✔ a stale native failure neither paints nor steals focus and still cleans its listeners (5.248217ms)
+✔ focus lease guard removals are killed by the real deferred handler counterexamples (134.068584ms)
+✔ center placement retains odd-width half mm and outside area (8.621195ms)
+✔ minimum and maximum edge plus signed offset are explicit (2.026503ms)
+✔ negative band stays finite and does not become full-height line (1.015923ms)
+✔ offset includes neighboring outside line crossing trial boundary (0.866989ms)
+✔ crossing ghosts use union occupancy and pair overlap (0.830921ms)
+✔ negative union intervals and separated intervals retain exact area (0.677754ms)
+✔ width rotation affects footprint and finite clipping (0.615794ms)
+✔ sampled results cannot masquerade as complete ghosts (1.129462ms)
+✔ source-room payload keeps one shared basis and only native boundary references (73.072489ms)
+✔ payload rejects missing source, duplicate shared basis, unknown fields and invalid membership (17.400411ms)
+✔ native final references reject missing live rooms while retaining explicit reassociation states (6.350099ms)
+✔ confirmed room pins require the full native fingerprint, and references contain no geometry (7.966042ms)
+✔ source-rooms/1 remains unchanged and requires collection capability only (196.217622ms)
+✔ v2 true ZIP preserves original PDF once, full raw receipt, unknown record JSON and explicit nulls (308.445981ms)
+✔ v2 historical boundary IDs are archival values, never live candidate references (13.411289ms)
+✔ v2 archive membership requires exact entry keys, existing plane and unique historical tuple (38.678741ms)
+✔ archive receipts preserve old calibration and alignment while enforcing original source/page dimensions (25.287044ms)
+✔ legacy history capacity allows 10000 distinct entries and 1000 original records without expanding either limit (7472.819466ms)
+✔ receipt-only archived history survives ZIP without adding historical IDs to native candidate membership (128.298818ms)
+✔ only exact canonical archive receipt geometry gains the scoped 4096-to-100000 string allowance (439.378336ms)
+✔ grid 4096-character and 128KB envelope limits remain enforced beside an archived room record (57.271433ms)
+✔ ZIP reader rejects missing history capability, schema mismatch, asset paths, duplicate members and lost PDF bytes (391.664069ms)
+✔ basis edits, boundary retirement and unlink retain archival history through owner local undo/redo (86.147063ms)
+✔ candidate fingerprint arrays reject for both live-room and unrelated candidate IDs (19.893227ms)
+✔ attachment schema and historical geometry getters are rejected without executing caller code (5.145638ms)
+✔ known native confirmation rejection can be cancelled and a fresh room can begin (41.551774ms)
+✔ known metadata rejection rolls back native work and leaves a cancellable draft (14.793857ms)
+✔ a lost rollback reply retains the owner lease until receipt recovery settles the group (25.286664ms)
+✔ a known rollback rejection retains an open native group and exposes receipt recovery (12.410838ms)
+✔ a known cancellation rejection retains the candidate lease and exposes recovery without inventing a receipt (11.664335ms)
+✔ receipt recovery clears draft candidate and redraw while lease ownership still blocks other operations (6.368459ms)
+✔ configure rejects each missing owner callback before replacing the integration adapter (5.409571ms)
+✔ shared rendering and native identity use configured callbacks without private context or history access (7.666319ms)
+✔ characterize: missing runtime version retains an explicit null through the real main entry (42.222801ms)
+✔ characterize: failed settlement retains its complete receipt and exits nonzero (16.859142ms)
+✔ characterize: premature abort keeps all available diagnostic fields (7.933514ms)
+✔ full: missing runtime version retains an explicit null through the real main entry (5.066073ms)
+✔ full: failed settlement retains its complete receipt and exits nonzero (5.965307ms)
+✔ full: premature abort keeps all available diagnostic fields (4.307639ms)
+✔ successful settlement writes one complete receipt and stays successful (14.673724ms)
+✔ cleanup failure after successful settlement cannot leave a passed receipt (10.185765ms)
+✔ authentic saved roots 0/4 survive preparation and array reversal without changing package bytes (16.538577ms)
+✔ selection requires one displayed typed root and explicit allowed roots; zero is valid (5.638518ms)
+✔ DPR2 picking uses CSS coordinates and rendered triangle interior rather than its rectangle (6.025173ms)
+✔ nearest painted solid wins and opaque non-timber occludes; translucent enclosure passes through (3.337509ms)
+✔ same-sized saved components focus independently by root, preserving actual geometry (14.496527ms)
+✔ drag, pinch, cancellation, shift-pan and wheel never emit a component click (1.749587ms)
+✔ wheel cancels a held click and a later separate click still works (1.019601ms)
+✔ hidden/malformed/replaced meshes reset selection and picking authority (2.288457ms)
+✔ destroy removes pointer handlers, authority, geometry and selection (1.278591ms)
+✔ actual native saved models include only explicit roots, with zero and real placement identities (134.232178ms)
+✔ two real saved views are independent, never merged or deduplicated by model ID, name or native hash (21.138592ms)
+✔ one genuinely produced model counts its two equal independent timbers exactly once each (8.078327ms)
+✔ actual changed live dimensions leave saved sizes frozen and report changed content with unknown continuity (34.25342ms)
+✔ real parameter field zero keeps typed dimension provenance and changed live field is detected (9.010004ms)
+✔ comments, saved package SHA and canonical native SHA retain their distinct existing hash domains (107.726542ms)
+✔ each lawful actual package candidate shares its input native World, with same-domain saved source digest (30.584567ms)
+✔ real coherent wrong-carrier and same-carrier changed-dimensions candidates cannot adopt stale saved packages (38.522644ms)
+✔ legacy absent roots and explicit empty selections do not adopt other base-scene timbers (15.637536ms)
+✔ malformed, duplicate and out-of-package roots are rejected without zero quantities or scope fallback (74.661541ms)
+✔ native snapshot envelope, source fingerprint, unique IDs and placed facts must agree (43.117462ms)
+✔ invalid native dimensions, geometry axes or altered typed support metadata cannot make a ready schedule (59.924914ms)
+✔ corrupt engineering parameter reference cannot replace the actual typed field-zero edge (8.172029ms)
+✔ engineering effective value and duplicate target cannot disagree with real native dimensions (17.700135ms)
+✔ omitted typed engineering provenance cannot silently become direct literal dimensions (15.65242ms)
+✔ genuine literal override preserves inactive parameter lineage and rejects its omission (10.073115ms)
+✔ snapshot CSV extends actual schedule quoting and formula safety, names source/model/context/units and stays readonly (5.085928ms)
+✔ actual mount displays snapshot on expansion, replaces only refresh, then rechecks and exports the displayed version (61.700919ms)
+✔ sorting and display units are local presentation and preserve actual record and native payload (26.809356ms)
+✔ held real-shaped snapshot response is discarded after context, model mutation/removal, another selection or close (146.116881ms)
+✔ late native source changes before the final export read discard the ready earlier schedule (25.733571ms)
+✔ snapshot read and native source failures do not emit a CSV or retain a misleading ready table (77.612992ms)
+✔ repeated export click while pending causes one read cycle and one download; cancellation forbids late export (73.3694ms)
+✔ close then immediate reopen starts a fresh owner and an older finally cannot unlock or publish that owner (72.649734ms)
+✔ live mount keeps its existing refresh and does not request snapshot schedules or export (12.711956ms)
+✔ single-owner app supplies current model visibility/selection guards and exports only via its mount callback (22.919603ms)
+✔ ordinary plan requires an explicit complete selection despite same source IDs and unknown identity (89.42426ms)
+✔ scope rejects faces and missing record without producing or writing (5.879415ms)
+✔ review includes old/new complete source input settings summary and package pins; getters are detached (35.840727ms)
+✔ confirmation requires this exact review, fresh producer replay and one complete local history replacement (23.411106ms)
+✔ late structural candidate refuses project changes before delivery (35.838053ms)
+✔ late structural candidate refuses frame changes before delivery (10.312992ms)
+✔ late structural candidate refuses revision changes before delivery (7.155578ms)
+✔ late structural candidate refuses history top with same stack depth changes before delivery (16.791587ms)
+✔ late structural candidate refuses redo history changes before delivery (11.269244ms)
+✔ late structural candidate refuses group changes before delivery (11.025478ms)
+✔ late structural candidate refuses blocked changes before delivery (16.230725ms)
+✔ late structural candidate refuses context token changes before delivery (14.793482ms)
+✔ late structural candidate refuses deleted record changes before delivery (11.75992ms)
+✔ late structural candidate refuses same ID different record changes before delivery (19.28777ms)
+✔ late structural candidate refuses deleted then identical re-add with history changed changes before delivery (7.02679ms)
+✔ cancelled source read and late producer results cannot revive a review or mutate the model (14.10351ms)
+✔ opening a newer update retires the earlier reply and keeps only the new selection review (19.586006ms)
+✔ same project cannot review a source whose scene changed during preparation (13.491098ms)
+✔ same project cannot review a source whose revision changed during preparation (5.659136ms)
+✔ a source changed before confirmation never invokes the confirmation producer (11.86893ms)
+✔ cancellation during each confirmation await rejects late completion without history (56.054792ms)
+✔ a source changed during final read or runtime pin changed during replay cannot commit (73.401079ms)
+✔ forged receipt identities, hashes, full record metadata, selection, settings and displayed diff all fail closed (144.446755ms)
+✔ source lookup errors, malformed reads and producer errors never manufacture a successful candidate (26.530615ms)
+✔ synchronous commit failure has no accepted review or claimed commit (13.349075ms)
+✔ a mutable host state wrapper cannot rewrite the captured revision or context token (41.090205ms)
+✔ a producer retained candidate reference cannot mutate already checked fields during hashing (19.02841ms)
+✔ a known asynchronous commit is rejected before its callback can write (1.24065ms)
+✔ a synchronous commit refusal cannot be reported as committed (35.839106ms)
+✔ a commit callback that reports a record without actually replacing it cannot claim success (19.375804ms)
+✔ a session opened or cancelled by a synchronous commit event retains its own phase (51.468694ms)
+✔ native old27/live29 receipt updates the same complete model once; source settings remain fixed (49967.002232ms)
+✔ native complete record survives actual workspace save ZIP reopen, fresh verify, undo and redo (32492.690328ms)
+✔ late native candidate delivery after cancellation or project replacement cannot write (38614.049993ms)
+✔ native valid receipts with forged displayed diff or fixed settings cannot pass controller validation (9243.547781ms)
+✔ native final confirmation refuses changed source and changed runtime receipt without adding history (52460.196308ms)
+✔ native final receipt hashing cannot complete after cancel, context switch or same-ID replacement (51587.103556ms)
+✔ native embedded rectangle timber update respects strict saved-model boundary contract; zero timbers remain supported (20767.16517ms)
+✔ actual native missing-support read fact returns UPDATE_SUPPORT_UNCHECKED and controller writes nothing (37927.49882ms)
+✔ read-only archived expressions use their own catalog and retain exact definitions (17.204838ms)
+✔ parameter projects use /6, retain scene bytes and require native support (96.968397ms)
+✔ downgrades, missing declarations and unknown parameter capabilities fail (98.196319ms)
+✔ engineering and parameter capabilities survive together (15.196369ms)
+✔ parameter definitions retained only inside model snapshots still require /6 (614.999311ms)
+✔ matrix: unknown project versions and stripped or unknown capability markers are rejected (80.962897ms)
+✔ portable project retains full source bytes, calibration and unknown records (520.011919ms)
+✔ v9 review receipts retain source basis and require real page and face references; old formats refuse receipts (167.684976ms)
+✔ rejects damaged scene, source, unknown version, duplicate paths and missing source (347.921616ms)
+✔ rejects inconsistent, out-of-page and non-finite reference data (14.634542ms)
+✔ serialized references discard runtime URLs and derived display fields (6.781291ms)
+✔ boundary incarnations survive undo/redo but a reused id does not inherit a source (12.5603ms)
+✔ scene contexts follow grouped transactions and transactional import (19.874367ms)
+✔ project-open action follows its transaction through undo/redo without leaking to ordinary edits (1.666998ms)
+✔ delete and same-id recreation in a group never inherit the old reference (12.453784ms)
+✔ history failures, previews, canvas positions and capacity do not lose context (1.753959ms)
+✔ native candidate boundary changes enter attachment history only on exact confirmation (7.073549ms)
+✔ cancel and session-unknown confirmations cannot revive room associations (10.693485ms)
+✔ current group rollback preserves its frame lease while undo creates a fresh frame (13.442283ms)
+✔ K2a P064 confirmation preflight rejects an over-budget manifest before history changes (9722.482311ms)
+✔ K2a review B1 legacy live-ref capacity survives ordinary discard, UndoRedo and cold ZIP (2186.834492ms)
+✔ K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo 130956-byte boundary (2765.383731ms)
+✔ K2a P064 ordinary discard preserves large normal singleton ZIP raw and local UndoRedo 131072-byte boundary (2654.439758ms)
+✔ K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves 130955-byte boundary (5573.342108ms)
+✔ K2a B1 collection two drafts orphan remove other manifest ZIP cold read preserves 130956-byte boundary (5702.462448ms)
+✔ K2a B1 previous collection ZIP original import and save preserves raw refs orphan and full draft size (2070.992489ms)
+✔ K2a B1 legacy missing-source scan preserves raw and unchanged flush; one byte edits still need admission (2618.670409ms)
+✔ K2a review M1 original handler replaces lost P1 with already-used P2 without permitting pure removal (176.541508ms)
+✔ K2a M2 near-limit draft admission rejects before native calls, history or dirty changes (1729.015127ms)
+✔ K2a M01/M03/M12 per-draft writes coexist, legacy replacement and late context flush cannot alter them (140.000159ms)
+✔ K2a M12/M14b lost flags cannot be erased or repinned with the same identity (191.932579ms)
+✔ K2a M04 removing one draft and local undo restores precisely that draft (92.619532ms)
+✔ K2a M04 native confirmation clears only its leased draft; failed confirmation preserves both (187.90085ms)
+✔ K2a M06/M14 deletion receipt marks orphans and lost even when identical ids still exist (101.631826ms)
+✔ K2a M14b identical native transaction gives deletion flags one reversible local history step (93.626763ms)
+✔ K2a M15 repin requires the reviewed current fingerprint and keeps raw and lost references intact (74.622519ms)
+✔ registered evidence setter uses original source metadata, one history and synchronous native busy guard (42.938546ms)
+✔ production detached prepare cancellation during byte hash never warms or selects cold PDF page (13.478881ms)
+✔ production synchronous reader commit rejects unleased or forged prepared pages before any mutation (8.092414ms)
+✔ repeated evidence exports release every detached PDF while keeping the live reader document (127.407401ms)
+✔ evidence page rejection releases detached validation handles without closing the live PDF (8.984789ms)
+✔ cancelled and failed PDF loads release temporary validation tasks exactly once (100.079525ms)
+✔ saving during PDF selection writes the selected page and its original bytes (144.882724ms)
+✔ edits completed during file writing remain unsaved (23.057187ms)
+✔ save remains dirty until close finishes; edits during close remain unsaved (42.373167ms)
+✔ writer close failure aborts and cannot report a saved project (21.370438ms)
+✔ switching context while writing never marks the new project saved (20.921646ms)
+✔ switching context in the picker or scene dump refuses mixed-project export (13.935301ms)
+✔ rapid selections retain the newest page even when an earlier PDF render resolves last (16.360358ms)
+✔ failed PDF selection leaves the old page savable and releases pending work (17.765472ms)
+✔ a save waiting for a failed current selection reports the failure without writing an older page (9.076694ms)
+✔ a newer cached selection releases saving without waiting for a superseded PDF render (14.641617ms)
+✔ switching projects cancels pending selection and export; restoring the old project cannot revive it (17.891115ms)
+✔ removing an active page cancels an earlier selection so it cannot later replace the fallback (25.615262ms)
+✔ legacy source conversion is included before the scene snapshot (26.061402ms)
+✔ source file reading cannot open a modal after the project has changed (10.870881ms)
+✔ applying a source cannot attach it to another project after async face navigation (10.784464ms)
+✔ manifest refuses a context switch while legacy source conversion is pending (8.407544ms)
+✔ edits while obtaining the scene or packing prevent a mixed snapshot from reaching the writer (36.64437ms)
+✔ scenario catalog validation releases disposable PDF leaves without releasing adopted history readers (275.548747ms)
+✔ scenario adoption releases rejected PDF candidates and preserves live and uncertain owners (160.091777ms)
+✔ opening owns the busy state from first byte read through rendering and refuses reentry (122.289952ms)
+✔ changes during project reading or its pre-upload dump prevent replacement without swallowing edits (22.424593ms)
+✔ late native candidate blocks local metadata edits and cancels after external context or revision change (24.412541ms)
+✔ missing final native targets cancel without losing source bytes, metadata or undo (14.773052ms)
+✔ late confirm rejects local metadata edits and preserves externally invalidated context without import history (18.463148ms)
+✔ native prepare blocks direct scene upload reentry until its commit finishes (22.371206ms)
+✔ retry cancels the token before a delayed confirm can mutate old or identical Worlds (40.562956ms)
+✔ retry uses the committed receipt for lost replies and refuses a later different World (48.475735ms)
+✔ real native HTTP committed ABA keeps the old project bytes references and undo (2686.668932ms)
+✔ failed reading or unpacking releases busy state and leaves the existing project untouched (13.418416ms)
+✔ automatic layout during open explains the real unsaved change; later user changes clear that explanation (6.844321ms)
+✔ example provenance does not pretend a user file exists or mark unchanged data dirty (9.878812ms)
+✔ file opening does not invent a save time and successful writer close records one (20.529455ms)
+✔ download mode records generation separately from a confirmed disk write (14.366025ms)
+✔ new project and clear contents have distinct identities and undo restores full context (41.201568ms)
+✔ cancelled empty-project action preserves context and sends no world mutation (7.785372ms)
+✔ undoing clear restores saved content and timestamps but expires the prior download status (10.734109ms)
+✔ matching reload restores complete project context without uploading or inventing undo (69.967914ms)
+✔ reload refuses different server or geometry and preserves the original backup (24.988171ms)
+✔ duplicate-tab lock, denied storage and write failure never report restored or saved (35.354109ms)
+✔ another tab invalidates saving, metadata editing and local undo until explicit project replacement (15.477018ms)
+✔ external mutation during final reload fingerprint cannot commit the earlier local context (11.530178ms)
+✔ service editing lease rejects every replacement and can be acquired only by explicit retry (9.269802ms)
+✔ backup-key lock conflict never loads another tabs attachments despite owning the service lease (7.725372ms)
+✔ owner edits keep a reader retryable and takeover discards unproven metadata before editing (7.08461ms)
+✔ readonly project rename is rejected before prompting or changing local identity (13.162344ms)
+✔ readonly reference mutation APIs preserve all page metadata and do not open the file picker (13.640861ms)
+✔ reference records and review UI reject readonly writes while the owning page can edit them (18.887472ms)
+✔ source attachment rechecks edit ownership after navigation before writing an existing face (7.970871ms)
+✔ outline completion belongs to source page, calibration, transform and exact geometry; opacity is irrelevant (7.537449ms)
+✔ review receipts undo with core changes and local review without inheriting reused face ids (12.388818ms)
+✔ formal cases detached prepare commits one common metadata history and true Undo/Redo (2599.061884ms)
+✔ formal cases cancellation or native operation after detached response produces zero writes (3479.180428ms)
+✔ formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease (3117.216536ms)
+✔ case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes (3486.216502ms)
+✔ caller mutation during real hashes cannot replace the detached snapshot verified by the core (1596.393722ms)
+In file included from geometry-web/../current_geometry.c:7541,
+                 from geometry-web/web_bridge.c:27:
+geometry-web/../geometry-core/parameters.inc: In function ‘parameter_wrap_error’:
+geometry-web/../geometry-core/parameters.inc:181:45: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 0 and 505 [-Wformat-truncation=]
+  181 |     snprintf(out,sizeof out,"%s... -> %.*s%s%s",head,inner_len,inner,inner_len?" -> ":"",root);
+      |                                             ^~
+In file included from /usr/include/stdio.h:980,
+                 from geometry-web/../current_geometry.c:7:
+In function ‘snprintf’,
+    inlined from ‘parameter_wrap_error’ at geometry-web/../geometry-core/parameters.inc:181:5:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 8 and 1289 bytes into a destination of size 512
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_parameters_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_parameters_line’ at geometry-web/../geometry-core/parameters.inc:807:251:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_parameters_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_parameters_line’ at geometry-web/../geometry-core/parameters.inc:819:6:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_section_profile_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_section_profile_line’ at geometry-web/../geometry-core/section_profiles.inc:133:30:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_assembly_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_assembly_line’ at geometry-web/../geometry-core/assembly.inc:83:156:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_assembly_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_assembly_line’ at geometry-web/../geometry-core/assembly.inc:107:6:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_panel_fill_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_panel_fill_line’ at geometry-web/../geometry-core/panel_fill_layout.inc:42:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_derived_placement_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_derived_placement_line’ at geometry-web/../geometry-core/derived_placements.inc:49:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_delete_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+ 9231 |                 scene_error(path, line_no, message);
+      |                                            ~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_delete_line’ at geometry-web/../current_geometry.c:9231:17:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_delete_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+ 9179 |         scene_error(path, line_no, message);
+      |                                    ~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_delete_line’ at geometry-web/../current_geometry.c:9179:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_applyproj_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘proj_apply_one’ at geometry-web/../current_geometry.c:8925:13,
+    inlined from ‘apply_applyproj_line’ at geometry-web/../current_geometry.c:9105:18:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘reference_checked’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:739:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:736:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_assembly_owned_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_assembly_owned_line’ at geometry-web/../geometry-core/assembly_generation.inc:77:170:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_grid_system_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_grid_system_line’ at geometry-web/../geometry-core/grid_systems.inc:233:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_grid_source_rule’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_grid_source_rule’ at geometry-web/../geometry-core/grid_subdivision.inc:107:52:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_grid_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_grid_system_application’ at geometry-web/../geometry-core/grid_systems.inc:259:9,
+    inlined from ‘apply_grid_line’ at geometry-web/../current_geometry.c:7229:16:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_grid_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_grid_binding_application’ at geometry-web/../geometry-core/grid_bindings.inc:83:13,
+    inlined from ‘apply_grid_line’ at geometry-web/../current_geometry.c:7227:16:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_space_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+ 9443 |         scene_error(path, line_no, message);
+      |                                    ~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_space_line’ at geometry-web/../current_geometry.c:9443:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_boundary_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 511 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+ 6650 |                 scene_error(path, line_no, detail);
+      |                                            ~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_boundary_line’ at geometry-web/../current_geometry.c:6650:17:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 530 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_subgrid_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_subgrid_line’ at geometry-web/../geometry-core/subgrid_commands.inc:62:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_subgrid_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_subgrid_line’ at geometry-web/../geometry-core/subgrid_commands.inc:54:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_spec_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:739:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:736:13,
+    inlined from ‘apply_spec_line’ at geometry-web/../geometry-core/references.inc:750:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_reference_move’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:739:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:736:13,
+    inlined from ‘apply_reference_move’ at geometry-web/../geometry-core/references.inc:789:16:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_datum_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:739:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:736:13,
+    inlined from ‘apply_datum_line’ at geometry-web/../geometry-core/references.inc:766:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_reference_guide’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:739:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:736:13,
+    inlined from ‘apply_reference_guide’ at geometry-web/../geometry-core/references.inc:780:12:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 274 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_engineering_line’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:739:5,
+    inlined from ‘reference_checked’ at geometry-web/../geometry-core/references.inc:736:13,
+    inlined from ‘eng_restore_grid’ at geometry-web/../geometry-core/engineering_commands.inc:73:57,
+    inlined from ‘apply_engineering_line’ at geometry-web/../geometry-core/engineering_commands.inc:88:42:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 264 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘apply_scene_line_candidate.constprop’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 767 bytes into a region of size between 238 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘apply_scene_line_candidate.constprop’ at geometry-web/../geometry-core/transactions.inc:628:13:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 786 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘parse_scene_file’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 239 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘parse_scene_file’ at geometry-web/../current_geometry.c:10128:9:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 273 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+geometry-web/../current_geometry.c: In function ‘parse_scene_file’:
+geometry-web/../current_geometry.c:5494:24: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 239 and 248 [-Wformat-truncation=]
+ 5494 |              "line %d: %s", line_no, message);
+      |                        ^~
+......
+10123 |     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
+      |                                                                                     ~~~~~~~~~~~~~~~~~~~
+In function ‘snprintf’,
+    inlined from ‘scene_error’ at geometry-web/../current_geometry.c:5493:5,
+    inlined from ‘parse_scene_file’ at geometry-web/../current_geometry.c:10123:60:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 9 and 273 bytes into a destination of size 256
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+✔ single PDF basis creates independent A and B; new/cancel cannot overwrite A (693.527894ms)
+✔ cancel before preview allocates no ID, and a colliding new ID refuses native overwrite (483.258964ms)
+✔ new ID occupied after the absent read rejects the owned native candidate without overwrite (537.782417ms)
+✔ new candidate identity rejects missing row (480.005394ms)
+✔ new candidate identity rejects duplicate row (434.669214ms)
+✔ new candidate identity rejects wrong-after row (383.370836ms)
+✔ one source page has one shared basis even when a second plane has a different ID (276.533394ms)
+✔ explicit replace preserves A holes and fixity, and leaves B unchanged (608.596113ms)
+✔ full native room_plan response keeps classification through edit and pins the native geometry fingerprint (446.674344ms)
+✔ known confirm failures retire preview for a fresh attempt; uncertain transport preserves it until owner recovery (1511.648784ms)
+✔ invalid native preview and noninteger draft leave geometry and metadata untouched (312.320909ms)
+✔ native revision rejects a stale preview even if the owner stamp did not observe the change (363.939433ms)
+✔ changed native geometry refuses a stale association pin until explicit review (417.330847ms)
+✔ basis change marks existing rooms for review, keeps geometry fixed, and new room uses current basis (533.336859ms)
+✔ rename and unlink alter metadata only; undo/redo restore each native and metadata transaction (432.201583ms)
+✔ basis review, explicit replace and their undo/redo preserve the full attachment with native geometry (408.061073ms)
+✔ native deletion/recreation retires associations even when ID and coordinates are identical (443.800806ms)
+✔ late allocate reply cannot mutate a replacement context (232.593256ms)
+✔ late read reply cannot mutate a replacement context (238.752618ms)
+✔ late preview reply cannot mutate a replacement context (311.485988ms)
+✔ late commit reply cannot mutate a replacement context (271.680167ms)
+✔ late confirmed reply cannot mutate a replacement context (362.874969ms)
+✔ late objects reply cannot mutate a replacement context (366.641655ms)
+✔ owner lease prevents context/metadata replacement during final native publication (402.652058ms)
+✔ late owned preview cannot cancel a newer workflow candidate (429.134959ms)
+✔ late existing-room read and review reject changed incarnation/context (358.292682ms)
+✔ associate blocks cancel and other room mutations during its asynchronous native read (406.434097ms)
+✔ review blocks cancel and other room mutations during its asynchronous native read (387.451158ms)
+✔ late associate read refuses a changed context and clears busy without publishing metadata (391.944291ms)
+✔ late review read refuses a changed context and clears busy without publishing metadata (429.555343ms)
+✔ boundaryPin rejects malformed native coordinates, flags and loop lengths without hashing normalized substitutes (6.015628ms)
+✔ boundary command refuses malformed existing outer and hole fixity before emitting DSL (2.659799ms)
+✔ basis changes and editable guard invalidate pending drafts; invalid metadata aborts native confirm (393.155471ms)
+✔ unknown attachment schema, excess data/capacity and wrong typed native references are rejected (340.002982ms)
+✔ persisted views survive real native room edits/reassociation and metadata-only history (444.978915ms)
+✔ fresh native context loads canonical geometry with independently validated saved attachment and PDF bytes (711.055067ms)
+✔ one batch preserves complete ordered rectangle, L and notch loops (17.718908ms)
+✔ raster batch and vector batch each retain all independent corner oracles (78.054847ms)
+✔ nested furniture frame is not another room; open crop is not a bbox room (4.569741ms)
+✔ open door joins rooms until an explicit barrier divides the same grid (1.395301ms)
+✔ canonical key normalizes only cycle and direction, not bbox or area (1.099034ms)
+✔ full analysis capacity 12 does not silently claim a complete first twelve (4.364204ms)
+✔ full analysis capacity 13 does not silently claim a complete first twelve (3.714236ms)
+✔ full analysis capacity 64 does not silently claim a complete first twelve (15.003611ms)
+✔ full analysis capacity 65 does not silently claim a complete first twelve (15.033601ms)
+✔ quarter-turns keep batch source loops exact before integer-mm projection (14.867661ms)
+✔ per-component vertex budget accepts 256 and rejects the next orthogonal comb (125.28832ms)
+✔ total vertex budget also counts internal obstacle cycles before display truncation (183.361958ms)
+✔ vector region retains every interior corner: rectangle (17.182693ms)
+✔ vector region retains every interior corner: l (4.016678ms)
+✔ vector region retains every interior corner: notch (12.612747ms)
+✔ raster proposal rejects thin dimensions and preserves topology: rectangle (34.704834ms)
+✔ raster proposal rejects thin dimensions and preserves topology: l (19.965861ms)
+✔ raster proposal rejects thin dimensions and preserves topology: notch (25.329214ms)
+✔ open doorway escapes bounds and is never silently closed (6.595329ms)
+✔ connected neighboring rooms stay connected and require review (9.805662ms)
+✔ seed on wall, excessive arrangements and unsupported geometry give explicit failure (2.66882ms)
+✔ integer proposal exposes deviation and edge dimension changes only the draft (1.551085ms)
+✔ PDF DrawOPS use viewport plus CTM; curves are excluded without orthogonalizing them (11.349498ms)
+✔ manual PDF snap keeps original path endpoints, CTM and viewport; no text, curves, dashed or clipped paths (8.392085ms)
+✔ PDF endpoints use an 8px radial tolerance, crop and exact draft axis; grid cannot steal targets (2.749082ms)
+✔ PDF intersections are finite segment crossings of closed paths; open dimension crossings and extensions excluded (0.999035ms)
+✔ PDF snap refuses excessive source capacity instead of returning a misleading partial set (4.784372ms)
+✔ six finite definitions are registered independently of native capabilities and round-trip true ZIP (2838.720816ms)
+✔ legacy formats, removed capabilities, unknown case versions and kinds fail closed (2940.328575ms)
+✔ missing setup closure and pin identity fail; altered hash fails before ZIP admission (1401.218482ms)
+✔ definitions reject executable fields, malformed typed refs, unknown predicates and excess records (54.910263ms)
+✔ definition depth and per-record bytes stay bounded without widening existing drafts (12.541763ms)
+✔ full manifest budget counts all features and room lifecycle reserve before a single archive copy (2569.111724ms)
+✔ damaged case ownership cannot hide in an otherwise valid archive (2592.908217ms)
+✔ same IDs, names, outlines and values never infer cross-scenario or cross-kind identity (23.529134ms)
+✔ only exact pinned typed copy origins trace independent copies, in either comparison direction (18.817532ms)
+✔ a basis alone, stale basis snapshot, unrelated basis, or missing typed endpoints cannot establish origin matches (16.773208ms)
+✔ changed source refs are differences even when displayed values and outline are unchanged (1.520275ms)
+✔ same bounding box preserves different parts, joints, fixed versions and draft raw input (2.12198ms)
+✔ all manifest fields are compared without discarding unknown JSON, and missing differs from explicit null (1.177803ms)
+✔ unknown snapshot/envelope fields reject instead of silently dropping possible definitions (12.914663ms)
+✔ object key ordering has no definition meaning, array order and raw world text do (5.219739ms)
+✔ asset hashes compare as sets while additions/removals remain visible (6.645314ms)
+✔ malformed, wrong typed, unpinned and ambiguous origins fail closed (16.029738ms)
+✔ required capability differences are explicit; missing, invalid or duplicate declarations do not disappear (23.836403ms)
+✔ typed objects reject invalid refs and duplicates without coercing IDs or versions (8.791012ms)
+✔ inputs and result definitions are detached, preserving editable B and untouched A (2.040568ms)
+✔ getters, toJSON, executable/non-JSON data, hidden/symbol properties and cycles never enter comparison (11.413139ms)
+✔ depth, node, string-byte and metadata-byte limits reject before definition comparison (2029.457099ms)
+✔ dangerous-looking plain JSON keys retain data without prototype pollution (1.129549ms)
+✔ valid portable JSON short escapes count encoded bytes rather than six-byte unicode escapes (154.556977ms)
+✔ browser UMD exposes the same bounded definition comparison without Node dependencies (10.248245ms)
+✔ twelve interrupted reload/Edit attempts retain one identity without allocation, iframe or import (112.063189ms)
+✔ interrupted creating and initializing tickets never replay create or ordinary import (5.488046ms)
+✔ recovered discard specifically names B and warns it may be open elsewhere; declining retains all data (3.849637ms)
+✔ confirmed recovered discard persists intent before exact close and preserves A (6.702035ms)
+✔ unreadable or malformed reserved ticket fails closed before any allocation (4.440738ms)
+✔ pre-create ticket storage refusal sends zero create and leaves A unchanged (4.735875ms)
+✔ lost pre-create ticket acknowledgement retains the committed identity and blocks the next fresh attempt (6.565832ms)
+✔ simultaneous Edit callers share the owner CAS fence and dispatch at most one fresh create (68.89188ms)
+✔ fresh flow persists creating before create and context before iframe, importing exact ticket while inert (11.298516ms)
+✔ invalid service identity or sequence never persists or dispatches a create (14.523308ms)
+✔ two lost create replies retain exact creating ticket without auto-close or initialization (3.617651ms)
+✔ malformed or root-context create reply retains ticket without mounting the iframe (14.210825ms)
+✔ unknown initialization retains its context and ticket without implicit discard (9.886103ms)
+✔ Cancel wins a held create; its late response cannot bind, mount, import or resurrect (5.712268ms)
+✔ Cancel waits an in-flight binding CAS, then retires its latest exact version without iframe import (6.569618ms)
+✔ Cancel during import aborts the wait; a late import acknowledgement never promotes active (9.465087ms)
+✔ Cancel racing the active CAS retires that exact committed phase and never re-enables the frame (8.152291ms)
+✔ unknown close preserves a retiring exact tuple; explicit retry clears only its confirmed retirement (8.399018ms)
+✔ close success without retired state cannot erase the durable ticket (11.163543ms)
+✔ discovered retirement must verify before replay and never permits fresh allocation on failed proof (4.678296ms)
+✔ verified discovered retirement replays only exact close before another user-requested Edit (14.830649ms)
+✔ Finish freezes and verifies B, durably writes A before exact close, and never separately commits catalog (11.113965ms)
+✔ checkpoint failure preserves A and active ticket, releases B freeze, and sends no close (10.262778ms)
+✔ Cancel during held export aborts its wait immediately while discard journaling remains pending (8.078449ms)
+✔ Cancel during held archive replacement prevents every late A commit (12.083849ms)
+✔ Cancel during held freeze verification prevents the critical checkpoint from starting (14.719723ms)
+✔ critical checkpoint blocks Cancel, Escape and main close until its terminal result (12.022767ms)
+✔ stale freeze verification cannot reach checkpoint or close and releases the owned freeze (21.345094ms)
+✔ successful durable Finish plus lost close stays frozen/retiring and retry does not duplicate A history (10.707883ms)
+✔ Cancel during Finish retirement coalesces the existing close and deletes the ticket once (13.022105ms)
+✔ Cancel waits an already-dispatched failed-Finish freeze release before persisting retirement (11.535577ms)
+✔ failed explicit Cancel journal never closes B or changes A (11.304789ms)
+✔ child bootstrap invokes authorized initializer with exact ticket and no ordinary import (4.997206ms)
+✔ child protocol ignores wrong origin or source before all owner operations (3.181093ms)
+✔ child export remains frozen through parent verification and releases only the exact owned freeze (3.517137ms)
+✔ child release can settle an export whose reply is still pending without losing the freeze token (10.549106ms)
+✔ formal /14 ZIP deduplicates evidence-only original assets and preserves complete independent leaf projects (778.452344ms)
+✔ root catalog cannot downgrade, strip capabilities, recurse, forge scope or retain unknown metadata (546.234106ms)
+✔ tampered scene, complete closure hashes and missing original bytes reject before publishing the root ZIP (367.224501ms)
+✔ known formats /1 through /13 remain distinct and cannot contain the new root field (138.377634ms)
+✔ capacity, duplicate IDs and forged copy origins reject instead of partially retaining data (224.538844ms)
+✔ one native context replacement carries catalog and original source closure through undo/redo (72.809213ms)
+✔ root and two native B bootstraps use distinct recovery keys and do not restore or overwrite interrupted metadata (172.630866ms)
+✔ ticket allocation is durable, unique, and rejects storage failure before exposing a create identity (217.822926ms)
+✔ durable Cancel CAS cannot be overwritten by a late create or initialization completion (79.87465ms)
+✔ unknown or stale bootstrap tickets never import an old catalog into surviving B (32.489329ms)
+✔ fresh initializing ticket authorizes exactly one import, while interrupted active bootstrap remains blocked (57.0215ms)
+✔ Finish writes proposed complete A checkpoint and retiring ticket atomically before publishing A in memory (262.521042ms)
+✔ Finish transaction abort rolls back both persistent writes and leaves A plus active B ticket unchanged (274.819784ms)
+✔ Finish retirement refuses a replaced parent package (104.10858ms)
+✔ B freeze blocks metadata mutation through the whole parent checkpoint and releases only its exact token (47.509081ms)
+✔ pre-create checkpoint preserves a just-captured A catalog before its recovery debounce (208.253257ms)
+✔ pre-create checkpoint and ticket both roll back when the second storage write fails (31.800629ms)
+✔ Finish immutable receipt survives ordinary recovery writes and an exact close retry remains verifiable (172.631172ms)
+✔ committed Finish with lost local acknowledgement restores its immutable complete A on the same parent bootstrap (187.71362ms)
+✔ a different parent tab cannot silently take over a Finish receipt or retire B (99.03874ms)
+✔ B cannot freeze while a dispatched native mutation is still awaiting its result (40.374039ms)
+✔ a later acknowledged A metadata edit wins over the older immutable Finish receipt on a second reload (341.788595ms)
+✔ unsupported strict durability refuses a ticket without allocating or overwriting the parent checkpoint (27.345159ms)
+✔ an older completed Finish marker cannot outrank a newer committed Finish with lost local acknowledgement (359.778969ms)
+✔ a queued ordinary recovery write cannot overtake the atomic Finish receipt (91.713159ms)
+✔ present null, undefined, or malformed reserved tickets block fresh allocation instead of looking absent (77.197087ms)
+✔ explicit pause stores the complete latest metadata/source package and resume attaches it once without native upload/create/close (304.46288ms)
+✔ held strict Resume disarm cannot attach metadata or enable editing before transaction completion (169.270217ms)
+✔ Resume disarm quota abort retains eligible checkpoint but never attaches old metadata (145.318798ms)
+✔ unsupported strict durability never disarms or attaches the saved B package (97.752178ms)
+✔ durably committed disarm with lost local owner acknowledgement leaves no attach and a fresh owner cannot reuse eligibility (183.393944ms)
+✔ ordinary active B debounce never creates Resume qualification and an abrupt reload rejects it (91.402448ms)
+✔ metadata-only edit after Resume keeps identical native fingerprint but old suspend metadata is ineligible on reload (100.600043ms)
+✔ Suspend transaction abort preserves current B metadata and leaves its freeze authoritative (46.278749ms)
+✔ Cancel during package validation wins over an older Resume and preserves checkpoint without attaching it (74.327611ms)
+✔ Finish during package validation wins and an old Resume cannot reopen the retired decision (211.857796ms)
+✔ native fingerprint mismatch rejects before disarm and leaves all stored records unchanged (81.237525ms)
+✔ corrupted complete package rejects without disarm, import or metadata attachment (72.931553ms)
+✔ a second editing epoch can explicitly suspend its new complete metadata before the next Resume (133.320309ms)
+✔ present malformed reserved Resume journals are not treated as absent and overwritten by Suspend (124.988262ms)
+✔ corrupted saved/dirty/provenance metadata outside ZIP cannot be accepted as the complete suspend checkpoint (86.442524ms)
+▶ all currently supported portable formats seal with actual native/model verification and exact reader validation
+  ✔ geometry-canvas/1 (4628.941239ms)
+  ✔ geometry-canvas/2 (18177.528055ms)
+  ✔ geometry-canvas/3 (17023.965134ms)
+  ✔ geometry-canvas/4 (21326.357794ms)
+  ✔ geometry-canvas/5 (24596.499735ms)
+  ✔ geometry-canvas/6 (2968.799351ms)
+  ✔ geometry-canvas/7 (4424.2854ms)
+  ✔ geometry-canvas/8 (4473.050501ms)
+  ✔ geometry-canvas/9 (2450.982389ms)
+✔ all currently supported portable formats seal with actual native/model verification and exact reader validation (100594.130693ms)
+▶ kept parameter/assembly/generation capabilities cannot mask a scene-dependent format5 downgrade
+  ✔ geometry-canvas/6 to /5 (2911.623224ms)
+  ✔ geometry-canvas/7 to /5 (4578.144541ms)
+  ✔ geometry-canvas/8 to /5 (4378.920178ms)
+✔ kept parameter/assembly/generation capabilities cannot mask a scene-dependent format5 downgrade (11873.933522ms)
+▶ real reset and delete/recreate of the same native IDs erase copy origins before diff and ZIP reopen
+  ✔ reset (9713.693793ms)
+  ✔ delete/recreate (9797.355344ms)
+✔ real reset and delete/recreate of the same native IDs erase copy origins before diff and ZIP reopen (19512.368964ms)
+Actual isolated native CLI calls: 46
+✔ foreign project replacement with identical valid native IDs is rejected atomically (10137.538552ms)
+✔ scenario namespaces require explicit strings without coercing null, booleans or numeric IDs (193.217374ms)
+✔ aggregate JSON bytes are bounded before stringify or copying repeated strings (167.73288ms)
+✔ supported native Unicode spec identifiers survive typed copy-origin without becoming scenario IDs (83.222711ms)
+✔ actual ZIP rejects duplicate JSON keys before schema/capability data can disappear (30.584093ms)
+✔ complete A/fork B ZIP reopens in a fresh archive with all portable data and original bytes (129.247379ms)
+✔ caller, verifier, list, project and returned record mutations cannot modify saved snapshots or bytes (63.067609ms)
+✔ replacing B keeps A and its exact basis, deduplicates bytes, then collects unreferenced assets (64.032757ms)
+✔ only explicit fork establishes origins; even byte-identical replacement retires them before reopen and diff (118.092519ms)
+✔ held verifier cannot inject capture origins, another project basis or late namespace and label (174.703461ms)
+✔ held verifier preserves explicit fork options and private origins despite late caller mutation (48.649351ms)
+✔ rehashed ZIP cannot retain edited-copy origins, cross-project basis or remapped same-kind IDs (89.635282ms)
+✔ reader format selector is required and retained unused capabilities do not upgrade valid legacy data (14.366286ms)
+✔ incomplete original source inventory and altered bytes/scene fail before archive writes (40.657847ms)
+✔ unknown feature attachments report missing closure capability and unsupported fields are never dropped (12.382773ms)
+✔ scene capability stripping, generation marker stripping and native capability loss reject honestly (69.503939ms)
+✔ plain JSON boundary rejects accessors, symbols, hidden fields, hooks, cycles and nonfinite values without invoking them (126.448646ms)
+✔ lowered caps fail atomically before writes; limits cannot be enlarged or guessed (67.246498ms)
+✔ actual ZIP missing/tampered bytes, descriptors and typed identities never replace a retained archive (65.706947ms)
+✔ actual ZIP duplicate, unknown, traversal and unlisted allowed paths reject (39.70154ms)
+✔ actual ZIP forged declared sizes, damaged central directory and truncated streams reject within bounds (27.487498ms)
+✔ capture copies caller bytes before waiting and blocked/missing context never reaches the verifier (11.772227ms)
+✔ late context changes during async verification retain every previous snapshot and pool byte (68.56853ms)
+✔ cancel and a newer generation supersede capture/unpack without leaking partially verified assets (48.662339ms)
+✔ section data uses new /16 format and roundtrips empty profile and unplaced run exactly (63.096164ms)
+✔ stripped marker cannot pack or reopen (37.409689ms)
+✔ old archive formats cannot carry new records, even with valid hashes (28.514548ms)
+✔ required declaration cannot be dropped or replaced by unknown capability (15.796266ms)
+✔ reader grants support only when native full capability is present (3.505717ms)
+✔ native profile confirmation is a single ordinary history entry, no-op is not (3.641823ms)
+✔ P-054 shared /17 accepts each registered feature alone and both without discarding attachments (376.034448ms)
+✔ P-054 unsupported other-owner capability and stripped capability reject whole /17 archive (48.837089ms)
+✔ P-054 nested scenario leaves retain each /17 family and reject stripped root capability (538.793943ms)
+✔ legacy room views use existing defaults and finite upgrade preserves original attachment (29.486885ms)
+✔ closed room display rejects unknown fields, invalid crop/types and future schemas without rewriting input (274.517354ms)
+✔ true portable ZIP retains per-room views, original history and exactly one original PDF; reader capability is required (243.429267ms)
+✔ shared basis change and same-ID retirement preserve separate view data and historical evidence (19.762444ms)
+✔ native typed location preserves the second placement of a shared boundary and ID0 (11.162627ms)
+✔ missing, inactive, ambiguous or mistyped native relations never guess a placement (5.489292ms)
+✔ shared navigation uses explicit placement from canvas and an already open different placement (39.254661ms)
+✔ shared navigation refuses stale/reused ID pins and missing target before changing focus (11.752275ms)
+✔ pending navigation stops on cancellation, project/history/page context or user focus changes (19.892192ms)
+✔ draft cancellation leaves the current workspace intact and source changes during focus load cannot select a reused ID (185.237325ms)
+✔ guide drag, move and picker refresh the existing inspector after their new cache arrives (35.310417ms)
+✔ guide reload cannot repaint a departed or replaced presentation owner (152.946839ms)
+✔ declined guide changes remove only the gesture preview without replacing inspector input (29.556703ms)
+✔ the navigation owner can cancel during render or the final native read before enter/select (9.032229ms)
+✔ source and list navigation honor selection cancellation and the existing owner handoff (389.911415ms)
+✔ zero field differs from card, namespaces and versions remain distinct (0.482642ms)
+✔ nearby is bounded with explicit truncation, cycles and missing sources (2.943422ms)
+✔ parameter card impact follows owned field zero without textual matches (1.503014ms)
+✔ only actual closure changes matter; presentation and unrelated nodes do not stale (1.680967ms)
+✔ possible span candidates and RC container membership are not fabricated evaluation dependencies (1.976009ms)
+✔ same effective value with different typed source and fixed versions is detected (0.556514ms)
+✔ missing, incomplete, reused identity and unsupported old model stay explicit (2.488722ms)
+✔ late async project switch, source revision change and cancellation never return stale result (56.676742ms)
+✔ invalid native response or duplicate source identities cannot yield green state (2.827184ms)
+✔ native exact supports produce typed endpoint edges including ID0 without changing raw data or claiming complete identity (7.542436ms)
+✔ all eight row and support owner fields are independently validated without comparing unrelated custom node hashes (19.72078ms)
+✔ projection corruption never becomes confirmed support or silently replaces native source facts (5.730798ms)
+✔ embedded placement, real boundary and hole0 preserve their typed native source (1.397145ms)
+✔ unknown, missing capability, missing entry and truncated native facts stay unknown rather than upgrading candidates (1.215773ms)
+✔ equal timber geometry with changed exact support source, local face or fixed owner marks source-definition without arbitrary dependency expansion (10.159366ms)
+✔ stale path expansion cannot repaint an old snapshot in the actual mount adapter (25.27428ms)
+✔ a canonical source change cannot pass a stable native revision or late context boundary (2.882066ms)
+✔ model projects round trip as v2; projects without models remain v1 and read with an empty model list (111.508932ms)
+✔ rejects duplicate models, malformed packages, nonfinite mesh values and forged summary volumes (50.745162ms)
+✔ model snapshots are values while sources retain runtime references (1.532168ms)
+✔ interleaved core and local undo/redo advances only the corresponding history (5.815665ms)
+✔ a local branch blocks stale bridge redo after undoing and redoing earlier core edits (4.890187ms)
+✔ clear and grouped rollback restore the appropriate model snapshot (1.500816ms)
+✔ older core steps remain redoable after local entries evict their browser metadata (2.587718ms)
+✔ Q23 genuine Q38 v16 archive opens with its frozen model and all profile sources preserved (381.949546ms)
+✔ model-only edits (including removing the last model) warn before leaving and getters cannot mutate saved data (15.756649ms)
+✔ import verifies all model packages before the scene transaction; verification failure leaves current project intact (115.336591ms)
+✔ valid packages with forged settings summaries are refused before scene upload (25.803562ms)
+✔ timber records round trip as v4 with exact id zero, source snapshots and independent geometry packages (58.5672ms)
+✔ legacy v1/v2/v3 archives and height-edit inputs do not gain empty timber fields or forced v4 upgrades (36.378065ms)
+✔ rejects incomplete or mismatched timber selections, roots, roles, source faces, schemas and quantities (50.868828ms)
+✔ timber import verifies its independent package and replays the stored scene before upload (40.468415ms)
+✔ timber package verification failure, replay divergence and wrong source hash leave current project intact (76.493871ms)
+✔ height updates preserve timber snapshots and coexist with core undo/redo without reading live definitions (22.096685ms)
+✔ space preview reports missing runtime instead of accepting an unsupported HTTP-200 result (4.980356ms)
+✔ space preview rejects incomplete and invalid model responses with every diagnostic (6.903777ms)
+✔ space preview keeps successful payloads and existing API failure handling (6.629592ms)
+✔ real timber package round trip, verification, replay and height update use only saved definitions (35856.989097ms)
+✔ committed rules use a versioned archive with native scene as the only formal source (7127.578113ms)
+✔ rule syntax independently requires the native marker, even without remaining objects (10.33782ms)
+✔ highwater syntax independently requires the native marker, even without remaining objects (2.570351ms)
+✔ guide syntax independently requires the native marker, even without remaining objects (2.090598ms)
+✔ direct anchor syntax independently requires the native marker, even without remaining objects (2.518225ms)
+✔ manifest capability removal, duplicate/unknown capabilities and unknown fields reject before native load (81.619096ms)
+✔ every older schema refuses rules rather than silently downgrading the scene (89.516527ms)
+✔ scene marker stripping and scene hash tampering refuse even if manifest claims support (24.122344ms)
+✔ old formats and current defaults remain readable without invented rules or new capabilities (1302.214396ms)
+✔ model records and packages explicitly refuse rules while unrelated historical models coexist (641.782192ms)
+✔ formal reader opens a real archive in a fresh project context and preserves every native identity (1961.876534ms)
+✔ formal import rejects capability/format/hash changes before asking native to prepare (1989.218012ms)
+✔ rehashing a rules scene cannot bypass the reader by stripping both version and manifest capability (765.296133ms)
+✔ a complete main4bea near-capacity v10 archive still opens and roundtrips without losing any metadata or PDF (9819.758316ms)
+✔ service without the required native capability cancels its candidate without replacing project or history (1432.661898ms)
+✔ v11 candidate capability mismatch cancels without confirming or changing native and project state (2534.571053ms)
+✔ v11 explicitly refuses a service receipt without a canonical candidate scene and cancels its token (4281.381938ms)
+✔ formal replay independently checks input and final native capability for default-only allocator (1145.499706ms)
+✔ formal replay independently checks input and final native capability for removed source (1154.170386ms)
+✔ formal replay independently checks input and final native capability for reset after rule declaration (1360.561148ms)
+✔ formal replay independently checks input and final native capability for surviving source after earlier source deletion (1258.390322ms)
+✔ native source closure preflight rejects missing highwater atomically (995.328776ms)
+✔ native source closure preflight rejects missing source atomically (801.734358ms)
+✔ native source closure preflight rejects missing rule atomically (940.708063ms)
+✔ native source closure preflight rejects wrong source ref atomically (970.522647ms)
+✔ native source closure preflight rejects invalid line index atomically (944.724012ms)
+✔ native source closure preflight rejects non-integral divisions atomically (727.854598ms)
+✔ native source closure preflight rejects unknown rule syntax atomically (861.559863ms)
+✔ native source closure preflight rejects native rule capacity atomically (1714.151969ms)
+✔ native C snapshot preserves rules but the supported Python model adapter refuses them explicitly (960.472375ms)
+✔ rules coexist with existing raw drafts, source rooms and historical records without schema conversion (18578.451582ms)
+✔ formal import is one recoverable history operation and never imports another context undo stack (1197.92573ms)
+✔ a legacy native scene remains byte-identical after formal open and save in a new context (290.616922ms)
+✔ counts native placements once, preserving two equal independent identities and an explicit surface (5.652874ms)
+✔ native timber ID zero remains a real, selectable identity (1.853132ms)
+✔ native placement surface zero remains valid while missing or malformed scope is rejected (3.888925ms)
+✔ rejects disappeared or wrong-surface selected IDs rather than changing the selected quantity (0.687798ms)
+✔ invalid native dimensions, duplicate identities and missing fingerprints cannot create zero quantities (0.890425ms)
+✔ sorting and cm presentation preserve exact native dimensions, scopes and identities (0.830193ms)
+✔ CSV preserves exact mm and source selectors and handles quotes, line breaks and formula style labels (0.987565ms)
+✔ only placed native timbers are included, bindings and stored mesh snapshots do not create material (0.515439ms)
+✔ owned timber dimensions keep the native member, fixed rule and typed binding source instead of becoming literals (7.067595ms)
+✔ decorates each native placement once and preserves typed zero support and surface identities (9.649454ms)
+✔ missing bridge capability, missing entry and unknown relation stay unknown (2.174769ms)
+✔ rejects stale source fingerprint, unknown schema and malformed exact provenance instead of guessing (3.594459ms)
+✔ duplicate projection identities reject rather than causing double counting or silent replacement (0.794204ms)
+✔ boundary and embedded placement edges keep different typed sources; hole zero is exact (2.34171ms)
+✔ checks exact owned member and fixed source versions against the schedule dependency (11.636846ms)
+✔ CSV retains all original schedule cells, safe multiline labels and exact per-row provenance (7.977958ms)
+✔ sorting and CSV export are read-only and preserve selections and unknown provenance (3.684344ms)
+✔ surface scope includes real support placements while selection scope preserves exact quantities (7.054597ms)
+✔ exact timber supports must exist as placed native timbers on the same surface (3.506556ms)
+✔ support owner provenance is checked against the actual owned supporting member in native assembly (6.557483ms)
+✔ canvas observer remains independent of the disabled server flag (10.273838ms)
+✔ first API transport failure survives later failures and other sessions (1.460981ms)
+✔ successful API and asset failures do not become API transport failures (1.694686ms)
+✔ first non-api business fetch failure survives later api failure (1.311633ms)
+✔ frontend transport flag is recorded even without a failed network event (3.808369ms)
+✔ observer preserves success and rejection and does not replay either (12.189909ms)
+✔ a broken diagnostic sink cannot alter a transport result (0.85138ms)
+ℹ tests 737
+ℹ suites 0
+ℹ pass 737
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 295607.636599
