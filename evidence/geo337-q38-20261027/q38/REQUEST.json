@@ -1,0 +1,117 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "commands": [
+    [
+      "private-bridge-build",
+      [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-c",
+        "from pathlib import Path; import sys; from tests import binaries; binaries.OUT_DIR=Path(sys.argv[1]); raise SystemExit(binaries.main([\"build\",sys.argv[2]]))",
+        "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38-bin",
+        "bridge"
+      ]
+    ],
+    [
+      "model-base-build",
+      [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-c",
+        "from pathlib import Path; import sys; from tests import binaries; binaries.OUT_DIR=Path(sys.argv[1]); raise SystemExit(binaries.main([\"build\",sys.argv[2]]))",
+        "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38-bin",
+        "model-base"
+      ]
+    ],
+    [
+      "q38-complete",
+      [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-u",
+        "tests/section_profile_mutation_check.py",
+        "--receipt",
+        "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38/receipt.json",
+        "--logs",
+        "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38/logs",
+        "--jobs",
+        "1"
+      ]
+    ]
+  ],
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GITHUB_SHA": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "GITHUB_WORKSPACE": "/workspace/geo337-native-F-cbf0fb62",
+    "GEOMETRY_MODEL_BASE": "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38-bin/model-base",
+    "GEOMETRY_TEST_BRIDGE": "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38-bin/bridge"
+  },
+  "started_utc": "2026-10-27T04:09:44.797557+00:00",
+  "stack_bytes": 16777216,
+  "original_timeouts_seconds": {
+    "native_compile": 600,
+    "tests": 900,
+    "model_adapter_build": 900
+  },
+  "outer_timeout_seconds": null,
+  "jobs": 1,
+  "expected_cases": [
+    "SPM01",
+    "SPM02",
+    "SPM03",
+    "SPM04",
+    "SPM05",
+    "SPM06",
+    "SPM07",
+    "SPM08",
+    "SPM09",
+    "SPM10",
+    "SPM11",
+    "SPM12",
+    "SPM13",
+    "SPM14",
+    "SPM15",
+    "SPM16",
+    "SPM17",
+    "SPM18",
+    "SPM19",
+    "SPM20",
+    "SPM21",
+    "SPM22",
+    "SPM23",
+    "SPM24",
+    "SPM25",
+    "SPM26",
+    "SPM27",
+    "SPM28",
+    "SPM29",
+    "SPM30",
+    "SPM31",
+    "SPM32",
+    "SPM33",
+    "SPM34",
+    "SPM35",
+    "SPM36",
+    "SPM37",
+    "SPM38",
+    "SPM39",
+    "SPM40",
+    "SPM41",
+    "SPM42",
+    "SPM43",
+    "SPM44"
+  ],
+  "owner_lock": "/tmp/geo337-native-owner.lock",
+  "free_before": {
+    "/workspace": 22500032512,
+    "/tmp": 17852461056
+  },
+  "note": "Private bridge prerequisite prevents model tests from accessing the preserved shared native output. Original producer still rebuilds every native variant. No selectors or explore mode."
+}

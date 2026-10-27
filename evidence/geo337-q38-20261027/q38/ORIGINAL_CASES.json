@@ -1,0 +1,1122 @@
+[
+  {
+    "group": "native",
+    "id": "SPM01",
+    "clause": "I44",
+    "desc": "drop the member-in-profile containment check",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "if(p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){",
+    "after": "if(0&&p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){",
+        "if(0&&p&&wood_sp_outside_regions(&p->outline,&m->rect,outside)){"
+      ]
+    ],
+    "tests": [
+      "test_concave_not_four_corners_and_winding",
+      "test_profile_geometry_and_coordinate_rejections"
+    ],
+    "cause": [
+      "expected rejection 'V_PROFILE_OUTSIDE'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM02",
+    "clause": "I45",
+    "desc": "drop the member-overlap check",
+    "file": "geometry-templates/woodworking/native/section_profile_sources.c",
+    "before": "if(!value.as.regions.count)return;GeoRect2 r;",
+    "after": "return;GeoRect2 r;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(!value.as.regions.count)return;GeoRect2 r;",
+        "return;GeoRect2 r;"
+      ]
+    ],
+    "tests": [
+      "test_touch_edges_points_and_cross_kind_overlap",
+      "test_named_sources_rebuild_and_explicit_dependency_transaction"
+    ],
+    "cause": [
+      "expected rejection 'V_PROFILE_OVERLAP'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM03",
+    "clause": "R36",
+    "desc": "u overlap uses <= : edge-sharing members become overlapping",
+    "file": "geometry-templates/woodworking/native/section_profile_sources.c",
+    "before": "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;",
+    "after": "if(am->profile_id!=bm->profile_id||r.min_u>r.max_u||r.min_v>=r.max_v)return true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;",
+        "if(am->profile_id!=bm->profile_id||r.min_u>r.max_u||r.min_v>=r.max_v)return true;"
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(!wood_sp_source_rectangle(&value,&r)){wood_sp_source_graph_error(s,error,capacity);return;}",
+        "{const GeoPoint2 *q=value.as.regions.regions[0].outline.v;r=(GeoRect2){q[0].u,q[0].v,q[2].u,q[2].v};}"
+      ]
+    ],
+    "tests": [
+      "test_touch_edges_points_and_cross_kind_overlap"
+    ],
+    "cause": [
+      "expected the candidate to be accepted",
+      "V_PROFILE_OVERLAP"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM04",
+    "clause": "R36",
+    "desc": "v overlap uses <= : members touching along v become overlapping",
+    "file": "geometry-templates/woodworking/native/section_profile_sources.c",
+    "before": "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;",
+    "after": "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>r.max_v)return true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;",
+        "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>r.max_v)return true;"
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(!wood_sp_source_rectangle(&value,&r)){wood_sp_source_graph_error(s,error,capacity);return;}",
+        "{const GeoPoint2 *q=value.as.regions.regions[0].outline.v;r=(GeoRect2){q[0].u,q[0].v,q[2].u,q[2].v};}"
+      ]
+    ],
+    "tests": [
+      "test_touch_edges_points_and_cross_kind_overlap"
+    ],
+    "cause": [
+      "expected the candidate to be accepted",
+      "V_PROFILE_OVERLAP"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM05",
+    "clause": "I46/D40",
+    "desc": "panel width w < 915 becomes w <= 915",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "m.width>=wood_sp_panel_spec.width_max",
+    "after": "m.width>wood_sp_panel_spec.width_max",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "m.width>=wood_sp_panel_spec.width_max",
+        "m.width>wood_sp_panel_spec.width_max"
+      ]
+    ],
+    "tests": [
+      "test_panel_strict_width_fixed_spec_and_long_run"
+    ],
+    "cause": [
+      "expected rejection 'V_PANEL_WIDTH'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM06",
+    "clause": "I46",
+    "desc": "panel width lower bound 1 becomes 0",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "m.width<1||",
+    "after": "m.width<0||",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "m.width<1||",
+        "m.width<0||"
+      ]
+    ],
+    "tests": [
+      "test_panel_strict_width_fixed_spec_and_long_run"
+    ],
+    "cause": [
+      "expected rejection 'V_PANEL_WIDTH'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM07",
+    "clause": "D40",
+    "desc": "panel spec identity is no longer checked",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "strcmp(spec,SP_PANEL_SPEC)",
+    "after": "0&&strcmp(spec,SP_PANEL_SPEC)",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "strcmp(spec,SP_PANEL_SPEC)",
+        "0&&strcmp(spec,SP_PANEL_SPEC)"
+      ]
+    ],
+    "tests": [
+      "test_profile_geometry_and_coordinate_rejections"
+    ],
+    "cause": [
+      "expected rejection 'panel requires calcium-silicate-6'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM08",
+    "clause": "D40",
+    "desc": "spec thickness 6 becomes 7",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "6,915,1830}",
+    "after": "7,915,1830}",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "6,915,1830}",
+        "7,915,1830}"
+      ]
+    ],
+    "tests": [
+      "test_panel_strict_width_fixed_spec_and_long_run"
+    ],
+    "cause": [
+      "D40/R36: calcium-silicate-6 is 6 mm thick"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM09",
+    "clause": "D40",
+    "desc": "spec w_max 915 becomes 914",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "6,915,1830}",
+    "after": "6,914,1830}",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "6,915,1830}",
+        "6,914,1830}"
+      ]
+    ],
+    "tests": [
+      "test_panel_strict_width_fixed_spec_and_long_run"
+    ],
+    "cause": [
+      "expected the candidate to be accepted",
+      "V_PANEL_WIDTH"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM10",
+    "clause": "I43",
+    "desc": "drop the outline validity check",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "if(!wood_sp_loop_valid(&p.outline))return wood_sp_error(w,\"I43: profile",
+    "after": "if(0&&!wood_sp_loop_valid(&p.outline))return wood_sp_error(w,\"I43: profile",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(!wood_sp_loop_valid(&p.outline))return wood_sp_error(w,\"I43: profile",
+        "if(0&&!wood_sp_loop_valid(&p.outline))return wood_sp_error(w,\"I43: profile"
+      ]
+    ],
+    "tests": [
+      "test_profile_geometry_and_coordinate_rejections"
+    ],
+    "cause": [
+      "expected rejection 'I43'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM11",
+    "clause": "D37",
+    "desc": "run length accepts a D26 material source",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "(length&&out->kind==ENG_MATERIAL)",
+    "after": "(0&&length&&out->kind==ENG_MATERIAL)",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "(length&&out->kind==ENG_MATERIAL)",
+        "(0&&length&&out->kind==ENG_MATERIAL)"
+      ]
+    ],
+    "tests": [
+      "test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip"
+    ],
+    "cause": [
+      "expected rejection 'unsupported dimension source'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM12",
+    "clause": "D36",
+    "desc": "material A/B field identity is no longer enforced",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "out->field!=(field?ENG_B:ENG_A)",
+    "after": "0&&out->field!=(field?ENG_B:ENG_A)",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "out->field!=(field?ENG_B:ENG_A)",
+        "0&&out->field!=(field?ENG_B:ENG_A)"
+      ]
+    ],
+    "tests": [
+      "test_parameter_zero_ids_types_and_fixed_material_sources_roundtrip"
+    ],
+    "cause": [
+      "rejected, but not for 'D36'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM13",
+    "clause": "I51",
+    "desc": "scene records no longer need the section-profile/1 declaration",
+    "file": "geometry-core/section_profiles.inc",
+    "before": "if(!sp_scene_required){scene_error(",
+    "after": "if(0&&!sp_scene_required){scene_error(",
+    "patches": [
+      [
+        "geometry-core/section_profiles.inc",
+        "if(!sp_scene_required){scene_error(",
+        "if(0&&!sp_scene_required){scene_error("
+      ]
+    ],
+    "tests": [
+      "test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+    ],
+    "cause": [
+      "I51: a scene with a missing requires section-profile/1 marker must be rejected"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM14",
+    "clause": "I46",
+    "desc": "timber orientation is not validated",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "(strcmp(orientation,\"A-u\")&&strcmp(orientation,\"A-v\"))",
+    "after": "0",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "(strcmp(orientation,\"A-u\")&&strcmp(orientation,\"A-v\"))",
+        "0"
+      ]
+    ],
+    "tests": [
+      "test_profile_geometry_and_coordinate_rejections"
+    ],
+    "cause": [
+      "expected rejection 'timber orientation must be A-u or A-v'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM15",
+    "clause": "I46",
+    "desc": "panel orientation is not validated",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "if(strcmp(orientation,\"thickness-v\")&&strcmp(orientation,\"thickness-u\"))return",
+    "after": "if(0)return",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(strcmp(orientation,\"thickness-v\")&&strcmp(orientation,\"thickness-u\"))return",
+        "if(0)return"
+      ]
+    ],
+    "tests": [
+      "test_profile_geometry_and_coordinate_rejections"
+    ],
+    "cause": [
+      "expected rejection 'panel orientation must be thickness-v or thickness-u'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM16",
+    "clause": "R38",
+    "desc": "V = +up instead of -up",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "r->frame.axis_v=wood_sp_scaled(r->up,-1);",
+    "after": "r->frame.axis_v=wood_sp_scaled(r->up,1);",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "r->frame.axis_v=wood_sp_scaled(r->up,-1);",
+        "r->frame.axis_v=wood_sp_scaled(r->up,1);"
+      ]
+    ],
+    "tests": [
+      "test_all_cardinal_frames_and_four_host_directions_are_exact"
+    ],
+    "cause": [
+      "R38: V must be -up"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM17",
+    "clause": "R38",
+    "desc": "negative directions (-u,-v) lose their sign",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "(r->dir%2)?-1:1",
+    "after": "1",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "(r->dir%2)?-1:1",
+        "1"
+      ]
+    ],
+    "tests": [
+      "test_all_cardinal_frames_and_four_host_directions_are_exact"
+    ],
+    "cause": [
+      "R38: N must equal the run direction d"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM18",
+    "clause": "R38",
+    "desc": "dir +u/-u and +v/-v pick the wrong host axis",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "r->dir<2?host.axis_u:host.axis_v",
+    "after": "r->dir<2?host.axis_v:host.axis_u",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "r->dir<2?host.axis_u:host.axis_v",
+        "r->dir<2?host.axis_v:host.axis_u"
+      ]
+    ],
+    "tests": [
+      "test_all_cardinal_frames_and_four_host_directions_are_exact"
+    ],
+    "cause": [
+      "R38: N must equal the run direction d"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM19",
+    "clause": "I48",
+    "desc": "p,q may lie outside the host range",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "bool inside=wood_sp_region_point(&region,(GeoPoint2){r->p,r->q});",
+    "after": "bool inside=true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "bool inside=wood_sp_region_point(&region,(GeoPoint2){r->p,r->q});",
+        "bool inside=true;"
+      ]
+    ],
+    "tests": [
+      "test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+    ],
+    "cause": [
+      "expected rejection 'outside closed host range'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM20",
+    "clause": "I48",
+    "desc": "up need not be perpendicular to the run direction",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "bool perpendicular=geo_vector_dot(r->up,r->frame.normal)==0;",
+    "after": "bool perpendicular=true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "bool perpendicular=geo_vector_dot(r->up,r->frame.normal)==0;",
+        "bool perpendicular=true;"
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(value.kind!=GEO_SOURCE_FRAME||!geo_frame_is_valid(&value.as.frame)){",
+        "if(value.kind!=GEO_SOURCE_FRAME){"
+      ]
+    ],
+    "tests": [
+      "test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+    ],
+    "cause": [
+      "expected rejection 'perpendicular'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM21",
+    "clause": "I48/D1",
+    "desc": "simple-placement origin is not range-checked",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "bool origin=geo_coord_in_range(r->frame.origin.x)&&geo_coord_in_range(r->frame.origin.y)&&geo_coord_in_range(r->frame.origin.z);",
+    "after": "bool origin=true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "bool origin=geo_coord_in_range(r->frame.origin.x)&&geo_coord_in_range(r->frame.origin.y)&&geo_coord_in_range(r->frame.origin.z);",
+        "bool origin=true;"
+      ]
+    ],
+    "tests": [
+      "test_simple_holes_closed_boundary_vertical_direction_and_invalid_up"
+    ],
+    "cause": [
+      "rejected, but not for 'origin exceeds D1'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM22",
+    "clause": "R38",
+    "desc": "origin x component swaps p and q",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "r->frame.origin=geo_frame_point(&host,r->p,r->q,0);",
+    "after": "r->frame.origin=geo_frame_point(&host,r->p,r->q,0);r->frame.origin.x=host.origin.x+r->q*host.axis_u.x+r->p*host.axis_v.x;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "r->frame.origin=geo_frame_point(&host,r->p,r->q,0);",
+        "r->frame.origin=geo_frame_point(&host,r->p,r->q,0);r->frame.origin.x=host.origin.x+r->q*host.axis_u.x+r->p*host.axis_v.x;"
+      ]
+    ],
+    "tests": [
+      "test_live_host_follow_detach_conversion_and_atomic_delete"
+    ],
+    "cause": [
+      "R38/R40: O = o_H + p*U_H + q*V_H must follow the live host"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM23",
+    "clause": "D38",
+    "desc": "advanced->simple conversion ignores the host plane",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "plane=geo_vector_dot(delta,host->normal)==0",
+    "after": "plane=true",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "plane=geo_vector_dot(delta,host->normal)==0",
+        "plane=true"
+      ]
+    ],
+    "tests": [
+      "test_conversion_reports_all_unsatisfied_conditions_and_zero_writes"
+    ],
+    "cause": [
+      "rejected, but not for 'origin not in host plane'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM24",
+    "clause": "D38",
+    "desc": "advanced->simple conversion accepts any V as up",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "bool legal_up=geo_vector_dot(up,r->frame.normal)==0&&geo_vector_dot(up,up)==1;",
+    "after": "bool legal_up=true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "bool legal_up=geo_vector_dot(up,r->frame.normal)==0&&geo_vector_dot(up,up)==1;",
+        "bool legal_up=true;"
+      ]
+    ],
+    "tests": [
+      "test_conversion_reports_all_unsatisfied_conditions_and_zero_writes",
+      "test_all_cardinal_frames_and_four_host_directions_are_exact"
+    ],
+    "cause": [],
+    "equivalent": "an advanced frame is accepted only by surface_frame_is_valid (unit cardinal axes, V perpendicular to N), so up=-V is always a legal up: the \"V has a legal up\" condition of D38 can never fail here",
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM25",
+    "clause": "D38",
+    "desc": "advanced->simple conversion takes the last host direction regardless of N",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "if(geo_vector_equal(axes[i],r->frame.normal))dir=i;",
+    "after": "dir=i;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(geo_vector_equal(axes[i],r->frame.normal))dir=i;",
+        "dir=i;"
+      ]
+    ],
+    "tests": [
+      "test_all_cardinal_frames_and_four_host_directions_are_exact"
+    ],
+    "cause": [
+      "D38: advanced->simple must recover dir/p/q/up"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM26",
+    "clause": "I49",
+    "desc": "PROFILE_CONTACT_LOST is never reported",
+    "file": "geometry-web/section_profile_bridge.inc",
+    "before": "if(!p||!m->resolved||!next||!n->resolved)return false;",
+    "after": "return false;",
+    "patches": [
+      [
+        "geometry-web/section_profile_bridge.inc",
+        "if(!p||!m->resolved||!next||!n->resolved)return false;",
+        "return false;"
+      ]
+    ],
+    "tests": [
+      "test_shrink_reject_and_expand_loses_right_contact"
+    ],
+    "cause": [
+      "PROFILE_CONTACT_LOST"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM27",
+    "clause": "I44",
+    "desc": "outside-region split drops the right-hand remainder",
+    "file": "geometry-core/kernel/geometry.c",
+    "before": "if(cursor<r->max_u){if(n==capacity)",
+    "after": "if(0&&cursor<r->max_u){if(n==capacity)",
+    "patches": [
+      [
+        "geometry-core/kernel/geometry.c",
+        "if(cursor<r->max_u){if(n==capacity)",
+        "if(0&&cursor<r->max_u){if(n==capacity)"
+      ]
+    ],
+    "tests": [
+      "test_concave_not_four_corners_and_winding"
+    ],
+    "cause": [
+      "expected rejection 'V_PROFILE_OUTSIDE'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM28",
+    "clause": "I49",
+    "desc": "a member may reference a deleted profile",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "if(!exists){wood_sp_error(w,\"I49: member %u references missing profile %u\"",
+    "after": "if(0&&!exists){wood_sp_error(w,\"I49: member %u references missing profile %u\"",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(!exists){wood_sp_error(w,\"I49: member %u references missing profile %u\"",
+        "if(0&&!exists){wood_sp_error(w,\"I49: member %u references missing profile %u\""
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,m->profile_id,&p);",
+        "if(exists&&w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,m->profile_id,&p);"
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(!m->resolved||m->missing_profile||m->outside||m->range_error)return false;",
+        "if(!m->resolved||m->outside||m->range_error)return false;"
+      ]
+    ],
+    "tests": [
+      "test_named_sources_rebuild_and_explicit_dependency_transaction"
+    ],
+    "cause": [
+      "expected rejection 'I49'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM29",
+    "clause": "I49",
+    "desc": "a run may reference a deleted profile",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "if(!exists){wood_sp_error(w,\"I49: run %u references missing profile %u\"",
+    "after": "if(0&&!exists){wood_sp_error(w,\"I49: run %u references missing profile %u\"",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(!exists){wood_sp_error(w,\"I49: run %u references missing profile %u\"",
+        "if(0&&!exists){wood_sp_error(w,\"I49: run %u references missing profile %u\""
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,r->profile_id,&p);",
+        "if(exists&&w->evaluation&&w->evaluation->profile_definition)profile_ok=w->evaluation->profile_definition(w->evaluation->user,w,r->profile_id,&p);"
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(status!=GEO_SOURCE_OK&&!s->run_errors[i][0])wood_sp_source_graph_error(s,first,capacity);",
+        "if(status!=GEO_SOURCE_OK&&!s->run_errors[i][0]&&!w->state->runs[i].missing_profile)wood_sp_source_graph_error(s,first,capacity);"
+      ]
+    ],
+    "tests": [
+      "test_named_sources_rebuild_and_explicit_dependency_transaction"
+    ],
+    "cause": [
+      "expected rejection 'I49'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM30",
+    "clause": "I47/D1",
+    "desc": "generated run vertices are not range-checked",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "if(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z)){r->range_error=true;",
+    "after": "if(0&&(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z))){r->range_error=true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "if(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z)){r->range_error=true;",
+        "if(0&&(!geo_coord_in_range(point.x)||!geo_coord_in_range(point.y)||!geo_coord_in_range(point.z))){r->range_error=true;"
+      ]
+    ],
+    "tests": [
+      "test_ac09_advanced_axes_and_vertex_range"
+    ],
+    "cause": [
+      "expected rejection 'I47/I48/D1'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM31",
+    "clause": "R36",
+    "desc": "A-v / thickness-u swap width and height the wrong way round",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "GeoCoord width=m->rotated?m->b:m->a,height=m->rotated?m->a:m->b;",
+    "after": "GeoCoord width=m->rotated?m->a:m->b,height=m->rotated?m->b:m->a;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "GeoCoord width=m->rotated?m->b:m->a,height=m->rotated?m->a:m->b;",
+        "GeoCoord width=m->rotated?m->a:m->b,height=m->rotated?m->b:m->a;"
+      ]
+    ],
+    "tests": [
+      "test_ac01_03_08_independent_rectangles_volumes_and_scope",
+      "test_ac09_advanced_axes_and_vertex_range"
+    ],
+    "cause": [
+      "expected the candidate to be accepted",
+      "V_PROFILE_"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM32",
+    "clause": "D36",
+    "desc": "panel orientation thickness-u is read as thickness-v",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "m.rotated=!strcmp(orientation,\"thickness-u\");",
+    "after": "m.rotated=!strcmp(orientation,\"thickness-v\");",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "m.rotated=!strcmp(orientation,\"thickness-u\");",
+        "m.rotated=!strcmp(orientation,\"thickness-v\");"
+      ]
+    ],
+    "tests": [
+      "test_panel_strict_width_fixed_spec_and_long_run"
+    ],
+    "cause": [
+      "expected the candidate to be accepted",
+      "V_PROFILE_OUTSIDE"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM33",
+    "clause": "D40/R37",
+    "desc": "the 1830 mm sheet length is misused as an upper bound for the run length",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "?w->evaluation->run_length(w->evaluation->user,w,i,&r->length):wood_sp_run_length_direct(w,i,&r->length);",
+    "after": "?w->evaluation->run_length(w->evaluation->user,w,i,&r->length)&&r->length<=wood_sp_panel_spec.sheet_length:wood_sp_run_length_direct(w,i,&r->length)&&r->length<=wood_sp_panel_spec.sheet_length;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "?w->evaluation->run_length(w->evaluation->user,w,i,&r->length):wood_sp_run_length_direct(w,i,&r->length);",
+        "?w->evaluation->run_length(w->evaluation->user,w,i,&r->length)&&r->length<=wood_sp_panel_spec.sheet_length:wood_sp_run_length_direct(w,i,&r->length)&&r->length<=wood_sp_panel_spec.sheet_length;"
+      ]
+    ],
+    "tests": [
+      "test_panel_strict_width_fixed_spec_and_long_run"
+    ],
+    "cause": [
+      "expected the candidate to be accepted",
+      "RUN_LENGTH_INVALID"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM34",
+    "clause": "I51",
+    "desc": "scene load accepts a duplicate profile id",
+    "file": "geometry-core/section_profiles.inc",
+    "before": "if(!strcmp(tokens[1],\"profile\")&&!sp_profile(w,id))ok=",
+    "after": "if(!strcmp(tokens[1],\"profile\"))ok=",
+    "patches": [
+      [
+        "geometry-core/section_profiles.inc",
+        "if(!strcmp(tokens[1],\"profile\")&&!sp_profile(w,id))ok=",
+        "if(!strcmp(tokens[1],\"profile\"))ok="
+      ]
+    ],
+    "tests": [
+      "test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+    ],
+    "cause": [
+      "I51: a scene with a duplicate profile id record must be rejected"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM35",
+    "clause": "I49",
+    "desc": "section-profile records may be injected line by line outside an atomic load",
+    "file": "geometry-core/section_profiles.inc",
+    "before": "if(!g_parsing_scene_file){scene_error(",
+    "after": "if(0&&!g_parsing_scene_file){scene_error(",
+    "patches": [
+      [
+        "geometry-core/section_profiles.inc",
+        "if(!g_parsing_scene_file){scene_error(",
+        "if(0&&!g_parsing_scene_file){scene_error("
+      ]
+    ],
+    "tests": [
+      "test_exact_dump_load_zero_ids_empty_profile_and_fail_closed"
+    ],
+    "cause": [
+      "I49: section-profile records must not be injected line by line"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM41",
+    "clause": "I44",
+    "desc": "a single positive-area outside region is incorrectly treated as contained",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "GEO_GEOMETRY_OK?count:0;",
+    "after": "GEO_GEOMETRY_OK?(count>1?count:0):0;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "GEO_GEOMETRY_OK?count:0;",
+        "GEO_GEOMETRY_OK?(count>1?count:0):0;"
+      ]
+    ],
+    "tests": [
+      "test_concave_not_four_corners_and_winding"
+    ],
+    "cause": [
+      "expected rejection 'V_PROFILE_OUTSIDE'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM42",
+    "clause": "I47/D1",
+    "desc": "only the start vertex of a run is range-checked, not the far end",
+    "file": "geometry-templates/woodworking/native/section_profile.c",
+    "before": "GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);",
+    "after": "GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,0);",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile.c",
+        "GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);",
+        "GeoPoint3 point=wood_sp_point(r,p->outline.v[v].u,p->outline.v[v].v,0);"
+      ]
+    ],
+    "tests": [
+      "test_ac09_advanced_axes_and_vertex_range"
+    ],
+    "cause": [
+      "expected rejection 'I47/I48/D1'"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM43",
+    "clause": "I45/R36",
+    "desc": "AC23 panel edge contact along u is incorrectly treated as overlap",
+    "file": "geometry-templates/woodworking/native/section_profile_sources.c",
+    "before": "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;",
+    "after": "if(am->profile_id!=bm->profile_id||r.min_u>r.max_u||r.min_v>=r.max_v)return true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;",
+        "if(am->profile_id!=bm->profile_id||r.min_u>r.max_u||r.min_v>=r.max_v)return true;"
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(!wood_sp_source_rectangle(&value,&r)){wood_sp_source_graph_error(s,error,capacity);return;}",
+        "{const GeoPoint2 *q=value.as.regions.regions[0].outline.v;r=(GeoRect2){q[0].u,q[0].v,q[2].u,q[2].v};}"
+      ]
+    ],
+    "tests": [
+      "test_ac23_panel_width_346_touches_timbers_u"
+    ],
+    "cause": [
+      "expected the candidate to be accepted",
+      "V_PROFILE_OVERLAP"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "native",
+    "id": "SPM44",
+    "clause": "I45/R36",
+    "desc": "AC23 panel edge contact along v is incorrectly treated as overlap",
+    "file": "geometry-templates/woodworking/native/section_profile_sources.c",
+    "before": "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;",
+    "after": "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>r.max_v)return true;",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>=r.max_v)return true;",
+        "if(am->profile_id!=bm->profile_id||r.min_u>=r.max_u||r.min_v>r.max_v)return true;"
+      ],
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "if(!wood_sp_source_rectangle(&value,&r)){wood_sp_source_graph_error(s,error,capacity);return;}",
+        "{const GeoPoint2 *q=value.as.regions.regions[0].outline.v;r=(GeoRect2){q[0].u,q[0].v,q[2].u,q[2].v};}"
+      ]
+    ],
+    "tests": [
+      "test_ac23_panel_width_346_touches_timbers_v"
+    ],
+    "cause": [
+      "expected the candidate to be accepted",
+      "V_PROFILE_OVERLAP"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "model",
+    "id": "SPM36",
+    "clause": "R37",
+    "desc": "the reference envelope becomes the bounding rectangle of the outline (L shape lost)",
+    "file": "geometry-templates/woodworking/native/section_profile_sources.c",
+    "before": "s->run_regions[i]=(GeoRegionView){{p->outline.v,p->outline.count},NULL,0};",
+    "after": "GeoPoint2 *box=malloc(4*sizeof *box);if(!box)return false;GeoCoord u0=p->outline.v[0].u,v0=p->outline.v[0].v,u1=u0,v1=v0;for(size_t k=1;k<p->outline.count;++k){if(p->outline.v[k].u<u0)u0=p->outline.v[k].u;if(p->outline.v[k].u>u1)u1=p->outline.v[k].u;if(p->outline.v[k].v<v0)v0=p->outline.v[k].v;if(p->outline.v[k].v>v1)v1=p->outline.v[k].v;}box[0]=(GeoPoint2){u0,v0};box[1]=(GeoPoint2){u1,v0};box[2]=(GeoPoint2){u1,v1};box[3]=(GeoPoint2){u0,v1};s->run_regions[i]=(GeoRegionView){{box,4},NULL,0};",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "s->run_regions[i]=(GeoRegionView){{p->outline.v,p->outline.count},NULL,0};",
+        "GeoPoint2 *box=malloc(4*sizeof *box);if(!box)return false;GeoCoord u0=p->outline.v[0].u,v0=p->outline.v[0].v,u1=u0,v1=v0;for(size_t k=1;k<p->outline.count;++k){if(p->outline.v[k].u<u0)u0=p->outline.v[k].u;if(p->outline.v[k].u>u1)u1=p->outline.v[k].u;if(p->outline.v[k].v<v0)v0=p->outline.v[k].v;if(p->outline.v[k].v>v1)v1=p->outline.v[k].v;}box[0]=(GeoPoint2){u0,v0};box[1]=(GeoPoint2){u1,v0};box[2]=(GeoPoint2){u1,v1};box[3]=(GeoPoint2){u0,v1};s->run_regions[i]=(GeoRegionView){{box,4},NULL,0};"
+      ]
+    ],
+    "tests": [
+      "test_three_timber_members_and_actual_concave_reference_envelope"
+    ],
+    "cause": [
+      "R37: exact mesh volume of the envelope object"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "model",
+    "id": "SPM37",
+    "clause": "R39",
+    "desc": "the reference envelope is counted as material volume",
+    "file": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+    "before": "details[\"material_volume_mm3\"] = \"0\" if reference else mesh[\"volume_mm3\"]",
+    "after": "details[\"material_volume_mm3\"] = mesh[\"volume_mm3\"]",
+    "patches": [
+      [
+        "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+        "details[\"material_volume_mm3\"] = \"0\" if reference else mesh[\"volume_mm3\"]",
+        "details[\"material_volume_mm3\"] = mesh[\"volume_mm3\"]"
+      ]
+    ],
+    "tests": [
+      "test_three_timber_members_and_actual_concave_reference_envelope"
+    ],
+    "cause": [
+      "R37/R39: the envelope is a reference object and carries no material volume"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "model",
+    "id": "SPM38",
+    "clause": "R37/D40",
+    "desc": "a panel is cut at the 1830 mm sheet length",
+    "file": "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+    "before": "source = ProvenanceTemplate((*identity, None, None), identity, (\"members\", str(member[\"id\"])))",
+    "after": "length = min(run[\"length\"], 1830) if member[\"kind\"] == \"panel\" else length; source = ProvenanceTemplate((*identity, None, None), identity, (\"members\", str(member[\"id\"])))",
+    "patches": [
+      [
+        "geometry-templates/woodworking/geometry_woodworking/section_profile.py",
+        "source = ProvenanceTemplate((*identity, None, None), identity, (\"members\", str(member[\"id\"])))",
+        "length = min(run[\"length\"], 1830) if member[\"kind\"] == \"panel\" else length; source = ProvenanceTemplate((*identity, None, None), identity, (\"members\", str(member[\"id\"])))"
+      ]
+    ],
+    "tests": [
+      "test_long_panel_is_one_exact_solid_in_both_orientations"
+    ],
+    "cause": [
+      "Native dimensions and derived exact member volume disagree"
+    ],
+    "equivalent": null,
+    "error_types": [
+      "geometry_app.model_common.ModelError"
+    ]
+  },
+  {
+    "group": "model",
+    "id": "SPM39",
+    "clause": "R36/R37",
+    "desc": "member rectangles are read with u and v swapped",
+    "file": "geometry-templates/woodworking/native/section_profile_sources.c",
+    "before": "GeoPoint2 *p=s->member_points[i];p[0]=(GeoPoint2){m->rect.min_u,m->rect.min_v};p[1]=(GeoPoint2){m->rect.max_u,m->rect.min_v};p[2]=(GeoPoint2){m->rect.max_u,m->rect.max_v};p[3]=(GeoPoint2){m->rect.min_u,m->rect.max_v};",
+    "after": "GeoPoint2 *p=s->member_points[i];p[0]=(GeoPoint2){m->rect.min_v,m->rect.min_u};p[1]=(GeoPoint2){m->rect.max_v,m->rect.min_u};p[2]=(GeoPoint2){m->rect.max_v,m->rect.max_u};p[3]=(GeoPoint2){m->rect.min_v,m->rect.max_u};",
+    "patches": [
+      [
+        "geometry-templates/woodworking/native/section_profile_sources.c",
+        "GeoPoint2 *p=s->member_points[i];p[0]=(GeoPoint2){m->rect.min_u,m->rect.min_v};p[1]=(GeoPoint2){m->rect.max_u,m->rect.min_v};p[2]=(GeoPoint2){m->rect.max_u,m->rect.max_v};p[3]=(GeoPoint2){m->rect.min_u,m->rect.max_v};",
+        "GeoPoint2 *p=s->member_points[i];p[0]=(GeoPoint2){m->rect.min_v,m->rect.min_u};p[1]=(GeoPoint2){m->rect.max_v,m->rect.min_u};p[2]=(GeoPoint2){m->rect.max_v,m->rect.max_u};p[3]=(GeoPoint2){m->rect.min_v,m->rect.max_u};"
+      ]
+    ],
+    "tests": [
+      "test_advanced_native_frame_controls_world_axes_and_bounds"
+    ],
+    "cause": [
+      "R36/R37: bounds of the"
+    ],
+    "equivalent": null,
+    "error_types": []
+  },
+  {
+    "group": "model",
+    "id": "SPM40",
+    "clause": "D39",
+    "desc": "an unplaced (local) run is cut by the world grid",
+    "file": "geometry-core/geometry_kernel/evaluate.py",
+    "before": "mesh_records = geo.mesh_objects(geometry, grids[geometry.domain], volume_known=volume_known, max_cells=limits.max_cells)",
+    "after": "mesh_records = geo.mesh_objects(geometry, grids.get(CoordinateDomain()) or geo.build_grid([], max_cells=limits.max_cells), volume_known=volume_known, max_cells=limits.max_cells)",
+    "patches": [
+      [
+        "geometry-core/geometry_kernel/evaluate.py",
+        "mesh_records = geo.mesh_objects(geometry, grids[geometry.domain], volume_known=volume_known, max_cells=limits.max_cells)",
+        "mesh_records = geo.mesh_objects(geometry, grids.get(CoordinateDomain()) or geo.build_grid([], max_cells=limits.max_cells), volume_known=volume_known, max_cells=limits.max_cells)"
+      ],
+      [
+        "geometry-core/geometry_kernel/geometry.py",
+        "if not isinstance(grid, _Arrangement) or grid.domain != geometry.domain:",
+        "if not isinstance(grid, _Arrangement):"
+      ]
+    ],
+    "tests": [
+      "test_local_runs_do_not_cut_other_local_or_world_mesh_grids"
+    ],
+    "cause": [
+      "A section-profile object must produce one complete solid"
+    ],
+    "equivalent": null,
+    "error_types": [
+      "geometry_app.model_common.ModelError"
+    ]
+  }
+]

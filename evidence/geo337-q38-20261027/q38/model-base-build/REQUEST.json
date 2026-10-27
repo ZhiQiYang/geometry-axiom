@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-c",
+    "from pathlib import Path; import sys; from tests import binaries; binaries.OUT_DIR=Path(sys.argv[1]); raise SystemExit(binaries.main([\"build\",sys.argv[2]]))",
+    "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38-bin",
+    "model-base"
+  ],
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "GITHUB_SHA": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "GITHUB_WORKSPACE": "/workspace/geo337-native-F-cbf0fb62",
+    "GEOMETRY_MODEL_BASE": "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38-bin/model-base",
+    "GEOMETRY_TEST_BRIDGE": "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38-bin/bridge"
+  },
+  "started_utc": "2026-10-27T04:10:03.859967+00:00"
+}

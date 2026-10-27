@@ -1,0 +1,18 @@
+{
+  "pid": 88499,
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "stage": "q38-complete",
+  "started_utc": "2026-10-27T04:10:19.764794+00:00",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "-u",
+    "tests/section_profile_mutation_check.py",
+    "--receipt",
+    "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38/receipt.json",
+    "--logs",
+    "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/q38/logs",
+    "--jobs",
+    "1"
+  ]
+}

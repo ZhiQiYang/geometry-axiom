@@ -1,0 +1,39 @@
+test_long_panel_is_one_exact_solid_in_both_orientations (tests.test_section_profile_modeling.SectionProfileModeling.test_long_panel_is_one_exact_solid_in_both_orientations) ... ERROR
+
+======================================================================
+ERROR: test_long_panel_is_one_exact_solid_in_both_orientations (tests.test_section_profile_modeling.SectionProfileModeling.test_long_panel_is_one_exact_solid_in_both_orientations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp/section-profile-mutations-hkoq55qb/SPM38/geometry-app/geometry_app/model_runtime.py", line 336, in evaluate
+    mesh["section_profile"] = self.provider.annotate_profile(definition, mesh)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp/section-profile-mutations-hkoq55qb/SPM38/geometry-templates/woodworking/geometry_woodworking/model_policy.py", line 62, in annotate_profile
+    return annotate_profile(definition, mesh)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp/section-profile-mutations-hkoq55qb/SPM38/geometry-templates/woodworking/geometry_woodworking/section_profile.py", line 77, in annotate_profile
+    raise PolicyIssue("PROFILE_VOLUME", "R37", "Native dimensions and derived exact member volume disagree", root=root)
+geometry_woodworking.model_policy.PolicyIssue: ('PROFILE_VOLUME', 'R37', 'Native dimensions and derived exact member volume disagree')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp/section-profile-mutations-hkoq55qb/SPM38/tests/test_section_profile_modeling.py", line 148, in test_long_panel_is_one_exact_solid_in_both_orientations
+    package = self.build(scene(profiles=[profile(outline=[[0, 0], [1000, 0], [1000, 1000], [0, 1000]])],
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp/section-profile-mutations-hkoq55qb/SPM38/tests/test_section_profile_modeling.py", line 85, in build
+    return build_package({"base_scene": scene() if source is None else source, "extensions": []},
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp/section-profile-mutations-hkoq55qb/SPM38/geometry-core/modeling/__init__.py", line 234, in build_package
+    result = evaluate(copy.deepcopy(definitions), copy.deepcopy(request),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp/section-profile-mutations-hkoq55qb/SPM38/geometry-core/modeling/engine.py", line 16, in evaluate
+    return runtime.evaluate(definitions, request, capabilities=capabilities,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027/tmp/section-profile-mutations-hkoq55qb/SPM38/geometry-app/geometry_app/model_runtime.py", line 340, in evaluate
+    raise _policy_error(error) from error
+geometry_app.model_common.ModelError: Native dimensions and derived exact member volume disagree
+
+----------------------------------------------------------------------
+Ran 1 test in 0.094s
+
+FAILED (errors=1)

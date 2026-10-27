@@ -1,0 +1,23 @@
+test_all_cardinal_frames_and_four_host_directions_are_exact (tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact) ... FAIL
+
+======================================================================
+FAIL: test_all_cardinal_frames_and_four_host_directions_are_exact (tests.test_section_profile_native.SectionProfileNative.test_all_cardinal_frames_and_four_host_directions_are_exact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo337-native-F-cbf0fb62/tests/test_section_profile_native.py", line 728, in test_all_cardinal_frames_and_four_host_directions_are_exact
+    self.assertEqual([-a for a in n],state["frame"]["V"],"R38: V must be -up ("+where+")")
+AssertionError: Lists differ: [0, 0, -1] != [0, 0, 1]
+
+First differing element 2:
+-1
+1
+
+- [0, 0, -1]
+?        -
+
++ [0, 0, 1] : R38: V must be -up (host U=+X V=+Y dir=+u up=+Z)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.102s
+
+FAILED (failures=1)

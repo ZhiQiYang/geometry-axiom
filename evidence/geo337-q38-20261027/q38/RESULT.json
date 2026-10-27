@@ -1,0 +1,41 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "passed": true,
+  "stages": [
+    {
+      "stage": "private-bridge-build",
+      "actual_exit": 0,
+      "elapsed_seconds": 19.061527935999038,
+      "started_utc": "2026-10-27T04:09:44.797761+00:00",
+      "completed_utc": "2026-10-27T04:10:03.859681+00:00"
+    },
+    {
+      "stage": "model-base-build",
+      "actual_exit": 0,
+      "elapsed_seconds": 15.903948645998753,
+      "started_utc": "2026-10-27T04:10:03.859967+00:00",
+      "completed_utc": "2026-10-27T04:10:19.764558+00:00"
+    },
+    {
+      "stage": "q38-complete",
+      "actual_exit": 0,
+      "elapsed_seconds": 820.1515844339992,
+      "started_utc": "2026-10-27T04:10:19.764794+00:00",
+      "completed_utc": "2026-10-27T04:23:59.916601+00:00"
+    }
+  ],
+  "elapsed_seconds": 855.233043537999,
+  "completed_utc": "2026-10-27T04:24:00.030769+00:00",
+  "status_after": "",
+  "source_unchanged": true,
+  "source_files_verified": 539,
+  "receipt_summary": {
+    "killed": 43,
+    "equivalent": 1
+  },
+  "free_after": {
+    "/workspace": 22496559104,
+    "/tmp": 17852461056
+  },
+  "temporary_source_policy": "The unmodified original producer deletes its disposable mutant source trees and binaries. Complete original persistent logs and exception receipts are preserved; the exact original source snapshot and mutation definitions are also retained. No discarded original temp is claimed to be archived."
+}

@@ -1,0 +1,43 @@
+{
+  "next_candidate": "P52 original formal and controls",
+  "subject_started": false,
+  "same_F_receipt_found": false,
+  "prior_receipt_source": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "original_tool_archive": "/workspace/geo337-native-F-cbf0fb62/evidence/geo337-train-20261024/final-L-performance-complete/p52/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+  "preparation_sha256": "254accbf8562210e339509c6bff0ab80f1ba625965bb70852ee428671f1a0805",
+  "original_plan_preparation_pin": "254accbf8562210e339509c6bff0ab80f1ba625965bb70852ee428671f1a0805",
+  "archive_tool_files_verified": [
+    "README.before-interface-clarification.md",
+    "README.interface-clarification.diff",
+    "README.md",
+    "STATIC_CHECKS.json",
+    "p189/PARAMETER_AND_REFERENCE_BINDING.diff",
+    "p189/REFERENCE_BASELINES.json",
+    "p189/gen_scene.py",
+    "p189/p189_verify.original.py.txt",
+    "p189/p189_verify.py",
+    "p189/scale_compare2.py",
+    "p189/timing_only_after_dump_red.py",
+    "p52/p52-formal.py",
+    "p52/protocol/p52_cases.cjs",
+    "p52/protocol/p52_measure.py",
+    "p52/protocol/p52_probe.cjs",
+    "p52/protocol/postfix_validate.py",
+    "p52/runtime_inventory.py",
+    "p52-verifier/PARAMETER_BINDING.diff",
+    "p52-verifier/capture.py",
+    "p52-verifier/original/verify_postfix_receipt.py",
+    "p52-verifier/run.original.py.txt",
+    "p52-verifier/run.py",
+    "run_special.py"
+  ],
+  "archive_missing_tool_files": [],
+  "fixed_environment_paths_present": {
+    "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py": false,
+    "/workspace/geo261-environment/reap_children.py": false,
+    "/workspace/geo288-main-merge-20261023/reference/main": false
+  },
+  "existing_F_git_marker_is_directory": false,
+  "next_preparation": "Materialize exact pinned original tools and capture/reaper dependencies, provision a separate clean F clone with a .git directory plus exact main adbaebf9c73ea6801d7b4d5214e4b846b132923b reference, verify exclusive performance ownership and original timeouts, then execute original formal plus controls. These are preparation requirements, not a product failure or a new permission claim.",
+  "P189": "Original comparator remains unchanged; no expanded whitelist is adopted."
+}
