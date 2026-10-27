@@ -1,0 +1,31 @@
+85 39 0:27 / / ro,nosuid,nodev,relatime master:1 - overlay overlay rw,lowerdir=/run/kata-containers/erofs-multi-layer/45620ce5a03f47259daceed9183d8ba5/lower-0,upperdir=/run/kata-containers/erofs-multi-layer/45620ce5a03f47259daceed9183d8ba5/upper/upper,workdir=/run/kata-containers/erofs-multi-layer/45620ce5a03f47259daceed9183d8ba5/upper/work,index=off,metacopy=off
+86 85 0:30 / /proc ro,nosuid,nodev,noexec,relatime master:2 - proc proc rw
+87 85 0:31 / /dev ro,nosuid,nodev master:3 - tmpfs tmpfs rw,size=65536k,mode=755
+88 87 0:32 / /dev/pts ro,nosuid,nodev,noexec,relatime master:4 - devpts devpts rw,gid=5,mode=620,ptmxmode=666
+89 87 0:26 / /dev/shm ro,nosuid,nodev,relatime master:5 - tmpfs shm rw
+90 87 0:25 / /dev/mqueue ro,nosuid,nodev,noexec,relatime master:6 - mqueue mqueue rw
+91 85 0:20 / /sys ro,nosuid,nodev,noexec,relatime master:7 - sysfs sysfs rw
+92 91 0:24 /.. /sys/fs/cgroup ro,nosuid,nodev,noexec,relatime master:8 - cgroup2 cgroup2 rw,nsdelegate
+93 85 0:33 / /run/codex-runtime-secrets ro,nosuid,nodev,noexec,relatime master:9 - tmpfs tmpfs rw,size=1024k,mode=755
+94 85 0:34 / /tmp ro,nosuid,nodev,relatime master:10 - tmpfs none rw
+95 87 0:37 / /dev rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000
+96 95 0:31 /null /dev/null rw,nosuid master:3 - tmpfs tmpfs rw,size=65536k,mode=755
+97 95 0:31 /zero /dev/zero rw,nosuid master:3 - tmpfs tmpfs rw,size=65536k,mode=755
+98 95 0:31 /full /dev/full rw,nosuid master:3 - tmpfs tmpfs rw,size=65536k,mode=755
+99 95 0:31 /random /dev/random rw,nosuid master:3 - tmpfs tmpfs rw,size=65536k,mode=755
+100 95 0:31 /urandom /dev/urandom rw,nosuid master:3 - tmpfs tmpfs rw,size=65536k,mode=755
+101 95 0:31 /tty /dev/tty rw,nosuid master:3 - tmpfs tmpfs rw,size=65536k,mode=755
+102 95 0:38 / /dev/pts rw,nosuid,noexec,relatime - devpts devpts rw,mode=620,ptmxmode=666
+103 94 0:39 / /tmp/codex-daemon-1000 ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=000,uid=1000,gid=1000
+104 85 0:27 /workspace /workspace rw,nosuid,nodev,relatime master:1 - overlay overlay rw,lowerdir=/run/kata-containers/erofs-multi-layer/45620ce5a03f47259daceed9183d8ba5/lower-0,upperdir=/run/kata-containers/erofs-multi-layer/45620ce5a03f47259daceed9183d8ba5/upper/upper,workdir=/run/kata-containers/erofs-multi-layer/45620ce5a03f47259daceed9183d8ba5/upper/work,index=off,metacopy=off
+105 104 0:40 / /workspace/.git ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=555,uid=1000,gid=1000
+106 104 0:41 / /workspace/.agents ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=555,uid=1000,gid=1000
+107 104 0:42 / /workspace/.codex ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=555,uid=1000,gid=1000
+108 104 0:43 / /workspace/.aws ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=555,uid=1000,gid=1000
+109 94 0:34 / /tmp rw,nosuid,nodev,relatime master:10 - tmpfs none rw
+110 109 0:44 / /tmp/codex-daemon-1000 ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=000,uid=1000,gid=1000
+111 109 0:45 / /tmp/.git ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=555,uid=1000,gid=1000
+112 109 0:46 / /tmp/.agents ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=555,uid=1000,gid=1000
+113 109 0:47 / /tmp/.codex ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=555,uid=1000,gid=1000
+114 109 0:48 / /tmp/.aws ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=555,uid=1000,gid=1000
+115 109 0:34 /codex-bwrap-synthetic-mount-targets-1000 /tmp/codex-bwrap-synthetic-mount-targets-1000 ro,nosuid,nodev,relatime master:10 - tmpfs none rw

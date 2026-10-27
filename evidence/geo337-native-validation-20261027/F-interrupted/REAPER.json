@@ -1,0 +1,5 @@
+{
+  "scope": "this launcher and its descendants only",
+  "reason": "Container PID 1 is tail; the prior original run left killed orphan children as zombies. Reap exited adopted children without changing any test or assertion.",
+  "prctl": "PR_SET_CHILD_SUBREAPER=1"
+}

@@ -1,0 +1,48 @@
+{
+  "sha": "a4bd77e8090f5a82f0c8934c30c5335782293922",
+  "cwd": "/workspace/geo337-native-aprime-a4bd77e",
+  "argv": [
+    "bash",
+    "--noprofile",
+    "--norc",
+    "-c",
+    "ulimit -s 16384\npython3 tests/run_all.py --build"
+  ],
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/scratch/geo337-native-aprime-a4bd77e-20261027/temp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "environment_is_explicit_allowlist": true,
+  "timeout_seconds": 2100,
+  "stack_kib": 16384,
+  "before": {
+    "/tmp/geometry-tests": {
+      "resolved": "/tmp/geometry-tests",
+      "device": 34,
+      "free": 17871798272
+    },
+    "/tmp": {
+      "resolved": "/tmp",
+      "device": 34,
+      "free": 17871798272
+    },
+    "/workspace/geo337-native-aprime-a4bd77e": {
+      "resolved": "/workspace/geo337-native-aprime-a4bd77e",
+      "device": 27,
+      "free": 27530555392
+    },
+    "/workspace/scratch/geo337-native-aprime-a4bd77e-20261027": {
+      "resolved": "/workspace/scratch/geo337-native-aprime-a4bd77e-20261027",
+      "device": 27,
+      "free": 27530555392
+    }
+  },
+  "owner_lock": "/tmp/geo337-native-owner.lock",
+  "output_was_absent": true,
+  "started_utc": "2026-10-27T02:22:37.709411+00:00"
+}

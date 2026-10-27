@@ -1,0 +1,64 @@
+{
+  "schema": "full123-filesystem-admission/1",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "paths": {
+    "root": "/tmp/train337-323-f64d638f-source",
+    "cache": "/workspace/geo337-full123-F8-cache-20261025",
+    "job": "/tmp/geo337-full123-F8-job-20261025",
+    "tmp": "/tmp/geo337-full123-F8-tmp-20261025",
+    "workspace": "/workspace"
+  },
+  "filesystems": [
+    {
+      "labels": [
+        "cache",
+        "workspace"
+      ],
+      "device": 27,
+      "additional_bytes": {
+        "binaries_additional": 234881024,
+        "raw_ledger_additional": 0,
+        "compiler_peak_additional": 8388608,
+        "metadata_additional": 8388608,
+        "reserve_additional": 33554432
+      },
+      "minimum_free_bytes": 285212672,
+      "basis": "AFTER new seed/index materialization. Historical175ELFs allocated181637120B;224MiB allows about29% additional size.8MiB temporary on-cache output plus8MiB directory/fingerprint/raw-cache metadata (some also in original raw sum, conservatively budgeted again),32MiB ordinary workspace/Git reserve. Fresh seed/index allocation is separately guarded by original prepare tool."
+    },
+    {
+      "labels": [
+        "root",
+        "job",
+        "tmp"
+      ],
+      "device": 34,
+      "additional_bytes": {
+        "binaries_additional": 0,
+        "raw_ledger_additional": 67108864,
+        "compiler_peak_additional": 33554432,
+        "metadata_additional": 16777216,
+        "reserve_additional": 134217728
+      },
+      "minimum_free_bytes": 251658240,
+      "basis": "Native ROOT and all existingR8/permanentobjects/transition receipts already allocated and excluded from incremental sum. OriginalL raw archive inventory1354members logical48375681B/pagefloor50749440B, now64MiB allowance.32MiB compiler intermediates+16MiB new JOB/PREP/outer metadata+original128MiB native reserve. This is a resource estimate, not a test threshold."
+    }
+  ],
+  "limitations": [
+    "Root accepts these per-device additional estimates after independent budget peer. Actual free-space admission remains unexecuted and is enforced afresh inside the unchanged full123 driver.",
+    "Do not count predicted archive sharing as free space; actual original prepare and resource_admission must independently pass current statvfs.",
+    "Never delete originalELF/receipts/fixtures/Gitobjects to meet this resource estimate.",
+    "NativeROOT transfer is separately true0. SourceF8 and current formal redexact are unchanged.",
+    "Workspace large object/receipt publication during full123 would consume reserved resources; coordinate through root."
+  ],
+  "preparation_status": "ROOT_ACCEPTED_BUDGET_PENDING_RUNTIME_ADMISSION",
+  "root_decision": {
+    "utc": "2026-10-25T07:37:24.538881+00:00",
+    "proposal_sha256": "4db4f23d82dd50f1b4f00194fa12844fe6fd99d6976daed8dcad18f5e819206d",
+    "budget_peer": "/tmp/geo337-split-budget-independent-peer-20261025/REVIEW.json",
+    "budget_peer_sha256": "d8f14dc25a3837c0579f4a69c70482a172bb73fcf9786208950744075350305e",
+    "source_prepare_reserve_bytes": 25165824,
+    "original_source_prepare_guard_unchanged": true,
+    "source_prepare_is_not_full_run_admission": true,
+    "formal_admission_executed": false
+  }
+}
