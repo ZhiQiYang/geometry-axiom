@@ -1,0 +1,184 @@
+{
+  "acceptance_source": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "new_test_execution": false,
+  "native_original_evidence_commit": "732ef20e34876379a37eb69693a481becebea43e",
+  "six_native_original_rows": [
+    "py:test_geo261_native_grid_product                   5     5     0     0     6.6",
+    "py:test_geo261_wood_grid_application                23    23     0     0     6.6",
+    "py:test_geo314_commit_paths                         11    11     0     0     0.4",
+    "py:test_geo314_ordered_facts                        14    14     0     0    18.0",
+    "py:test_geo314_stagger_commit                       47    47     0     0     7.6",
+    "py:test_grid_inspector_contract                      3     3     0     0     2.5"
+  ],
+  "six_native_pass_count": 103,
+  "native_archive_members": {
+    "geometry-tests/run_all-logs/node_tests-js.log": {
+      "file": "node_tests-js.log",
+      "bytes": 76728,
+      "sha256": "8dc5dec4145ed42765b7cfbdc789316c5d999faff1fa3a95500fb80441575e4a"
+    },
+    "geometry-tests/run_all-logs/py_test_geo261_native_grid_product.log": {
+      "file": "py_test_geo261_native_grid_product.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "geometry-tests/run_all-logs/py_test_geo261_wood_grid_application.log": {
+      "file": "py_test_geo261_wood_grid_application.log",
+      "bytes": 8114,
+      "sha256": "6db49f025ce4dc27721d9f09d72d8a3417f3f990bb73014590a6a902479a662f"
+    },
+    "geometry-tests/run_all-logs/py_test_geo314_commit_paths.log": {
+      "file": "py_test_geo314_commit_paths.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "geometry-tests/run_all-logs/py_test_geo314_ordered_facts.log": {
+      "file": "py_test_geo314_ordered_facts.log",
+      "bytes": 68556,
+      "sha256": "ae8a1be822f5384ff0a5c33f2019c32f7b9325f34f4b65bbacc135fc1a985489"
+    },
+    "geometry-tests/run_all-logs/py_test_geo314_stagger_commit.log": {
+      "file": "py_test_geo314_stagger_commit.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "geometry-tests/run_all-logs/py_test_grid_inspector_contract.log": {
+      "file": "py_test_grid_inspector_contract.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "inspector_original_pass_lines": [
+    "  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat/literal (35.211125ms)",
+    "  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat/parameter (33.995741ms)",
+    "  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/literal (34.309999ms)",
+    "  ✔ GEO263_RENAME_PRESERVES_STAGGER u/repeat-panel/parameter (40.19609ms)",
+    "  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat/literal (33.776145ms)",
+    "  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat/parameter (29.50789ms)",
+    "  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/literal (34.575866ms)",
+    "  ✔ GEO263_RENAME_PRESERVES_STAGGER v/repeat-panel/parameter (33.05226ms)",
+    "  ✔ GEO263_PARAMETER_CHANGE_REEVALUATES_STAGGER (12.569845ms)",
+    "  ✔ GEO263_SPACING_EDIT_PRESERVES_STAGGER (17.231783ms)",
+    "  ✔ GEO263_EXPLICIT_REMOVAL_REMAINS_OMISSION (20.823476ms)",
+    "  ✔ GEO263_RENAME_PRESERVES_MAIN_ALONG_AND_SOURCE_RULE (69.919842ms)"
+  ],
+  "inspector_cases_passed": 12,
+  "node_combined_summary": [
+    "ℹ tests 737",
+    "ℹ suites 0",
+    "ℹ pass 737",
+    "ℹ fail 0",
+    "ℹ cancelled 0",
+    "ℹ skipped 0",
+    "ℹ todo 0",
+    "ℹ duration_ms 114951.944735"
+  ],
+  "M121": {
+    "original_execution_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "adopted_ledger_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "record_sha256": "810b8ed490cb0ffa5ea25eb6a530aef4e7d00812cdfd5121508b6bcd7c968480",
+    "whole_ledger_sha256": "a4b5f1957e4bde6d30e4c05328e8a8dc1282fa811c52260eb01670cd560d56e7",
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order",
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_same_final_reference_cannot_exempt_value_changing_rebind"
+    ],
+    "baseline_mutant_restored_exit": [
+      0,
+      1,
+      0
+    ],
+    "baseline_mutant_restored_test_counts": [
+      43,
+      2,
+      43
+    ],
+    "byte_restored": true,
+    "original_streams_hash_checked": [
+      {
+        "stage": "baseline_build",
+        "stream": "stdout",
+        "original_member": "original-cache-metadata-and-streams/_bridge-baseline/82c922a3941525d3a094ac0158bdc7dea57ea360/baseline-build.stdout",
+        "sha256": "99d53fdf3216cf26333902f08f393fdf057731ecbf4f51c7b860f3994d9d1a39",
+        "bytes": 330
+      },
+      {
+        "stage": "baseline_build",
+        "stream": "stderr",
+        "original_member": "original-cache-metadata-and-streams/_bridge-baseline/82c922a3941525d3a094ac0158bdc7dea57ea360/baseline-build.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "stage": "baseline",
+        "stream": "stdout",
+        "original_member": "original-cache-metadata-and-streams/_bridge-baseline/82c922a3941525d3a094ac0158bdc7dea57ea360/baseline.stdout",
+        "sha256": "776ee7d0d85421077e0fc3b9e3a5c0a0bdd3e7b7f5d7b99acebe5ff5de0bf9b6",
+        "bytes": 21436
+      },
+      {
+        "stage": "baseline",
+        "stream": "stderr",
+        "original_member": "original-cache-metadata-and-streams/_bridge-baseline/82c922a3941525d3a094ac0158bdc7dea57ea360/baseline.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "stage": "mutant_build",
+        "stream": "stdout",
+        "original_member": "original-cache-metadata-and-streams/M121/mutant-build.stdout",
+        "sha256": "dfbd04cc28c6a9ba4bb991ca6700af1343b1a44310ade0950d57623dd61db761",
+        "bytes": 252
+      },
+      {
+        "stage": "mutant_build",
+        "stream": "stderr",
+        "original_member": "original-cache-metadata-and-streams/M121/mutant-build.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "stage": "mutant",
+        "stream": "stdout",
+        "original_member": "original-cache-metadata-and-streams/M121/mutant.stdout",
+        "sha256": "35914591d5f74cbb52376f9a97ee7923589abc0a1adf4c61b611eb3604c70ea9",
+        "bytes": 8763
+      },
+      {
+        "stage": "mutant",
+        "stream": "stderr",
+        "original_member": "original-cache-metadata-and-streams/M121/mutant.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "stage": "restored_build",
+        "stream": "stdout",
+        "original_member": "original-cache-metadata-and-streams/M121/restored-build.stdout",
+        "sha256": "ca17d1d46fd6082b352d0f380c71fd308bbb991714000f9f583897b877cd9d5e",
+        "bytes": 256
+      },
+      {
+        "stage": "restored_build",
+        "stream": "stderr",
+        "original_member": "original-cache-metadata-and-streams/M121/restored-build.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "stage": "restored",
+        "stream": "stdout",
+        "original_member": "original-cache-metadata-and-streams/M121/restored.stdout",
+        "sha256": "a76a7c8909633cdd98864d14ee421690f981e7afa0baec78dd39309e1d06fb2d",
+        "bytes": 21436
+      },
+      {
+        "stage": "restored",
+        "stream": "stderr",
+        "original_member": "original-cache-metadata-and-streams/M121/restored.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    ]
+  },
+  "limitation": "Native did not set GEOMETRY_263_TRANSCRIPT. Existing assertion coverage is verified; no standalone command or protocol-transcript sidecar is invented. The original raw Node stdout and six suite logs are retained."
+}
