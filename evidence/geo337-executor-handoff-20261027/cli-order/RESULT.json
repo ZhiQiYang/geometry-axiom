@@ -1,0 +1,27 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "actual_exit": 0,
+  "completed_utc": "2026-10-27T04:50:03.588382+00:00",
+  "diagnostic_complete": true,
+  "observed_orders": [
+    {
+      "order": [
+        1,
+        2
+      ],
+      "actual_exit": 0,
+      "both_place_accepted": false
+    },
+    {
+      "order": [
+        2,
+        1
+      ],
+      "actual_exit": 0,
+      "both_place_accepted": false
+    }
+  ],
+  "construction_route_observed": false,
+  "source_and_binary_unchanged": true,
+  "new_construction_policy_accepted": false
+}

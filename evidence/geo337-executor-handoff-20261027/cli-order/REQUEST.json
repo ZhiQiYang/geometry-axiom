@@ -1,0 +1,38 @@
+{
+  "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo337-native-F-cbf0fb62/evidence/issue318-reading-a-20261023/tools/probe_cli_order.py",
+    "--bridge",
+    "/tmp/g337p52F27/formal/work/tmp/geometry-runtime/07b702aad250b8f104d4/bridge",
+    "--sha",
+    "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "--output",
+    "/workspace/scratch/geo337-final-gap-review-20261027/cli-order/cli-order.json"
+  ],
+  "cwd": "/workspace/geo337-native-F-cbf0fb62",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "HOME": "/home/agent",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "TMPDIR": "/workspace/scratch/geo337-final-gap-review-20261027/cli-order/tmp",
+    "GITHUB_SHA": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "GITHUB_WORKSPACE": "/workspace/geo337-native-F-cbf0fb62",
+    "GEO261_REAPER_LOG": "/workspace/scratch/geo337-final-gap-review-20261027/cli-order/reaper.jsonl"
+  },
+  "started_utc": "2026-10-27T04:50:03.049564+00:00",
+  "original_probe_child_timeout_seconds": 30,
+  "outer_timeout_seconds": null,
+  "binary_reused_from": "P52 fixed-F build, evidence commit a08a036db335e88608ead761539d3e60b75e8e5d; no rebuild",
+  "binary_freshness": "fresh",
+  "source_hashes": {
+    "probe": "135763e192f9f0b3fc7e4bdb1bb1f3e3687960d596f8b83c2e5d12a25c73aa6e",
+    "bridge": "5df992b7fbd65723658f863324faf4785ff396d5ddd239d094165ca64adf6c6f",
+    "sidecar": "568698090b326a08c45af013c0cbc68f520d00d8744327bfcae17acc765941e6"
+  },
+  "scope": "Original CLI reachability diagnostic only, not #335 construction-policy acceptance."
+}

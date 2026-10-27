@@ -1,0 +1,154 @@
+{
+  "scope": "executor handoff, not replacement release matrix",
+  "checked_utc": "2026-10-27T04:54:21.215315+00:00",
+  "fixed_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "completed": [
+    {
+      "scope": "native",
+      "actual_source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "230 suites; 5328 pass, 0 fail, one original GDI skip; exit 0 within 2100 seconds",
+      "evidence_commit": "732ef20e34876379a37eb69693a481becebea43e",
+      "remote_prefix": "evidence/geo337-native-validation-20261027/F-complete/",
+      "local_raw": "/workspace/scratch/geo337-native-F-cbf0fb62-20261027-r2",
+      "remote_byte_verification_receipt": "/workspace/scratch/geo337-remote-verification-732ef20e34876379a37eb69693a481becebea43e.json"
+    },
+    {
+      "scope": "oracle/reader",
+      "actual_source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "oracle unit 14/14 and default CI reused from F native; original golden 0/1/0, generation/compare, mutants-only and full quick exit 0; reader generation/check 0 and unit 51/51 reused",
+      "evidence_commit": "7886f2eaa3da7f9f4855104ca4b028d2d06ce6da",
+      "remote_prefix": "evidence/geo337-reading-a-oracle-20261027/",
+      "local_raw": "/workspace/scratch/geo337-reading-a-oracle-F-cbf0fb62-20261027",
+      "remote_byte_verification_receipt": "/workspace/scratch/geo337-remote-verification-7886f2eaa3da7f9f4855104ca4b028d2d06ce6da.json"
+    },
+    {
+      "scope": "RC",
+      "actual_source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "builder/checker original proofs each 0/1/0, original assertion failures, no errors/skips",
+      "evidence_commit": "7886f2eaa3da7f9f4855104ca4b028d2d06ce6da",
+      "remote_prefix": "evidence/geo337-reading-a-oracle-20261027/rc/",
+      "local_raw": "/workspace/scratch/geo337-reading-a-rc-F-cbf0fb62-20261027",
+      "remote_byte_verification_receipt": "/workspace/scratch/geo337-remote-verification-7886f2eaa3da7f9f4855104ca4b028d2d06ce6da.json"
+    },
+    {
+      "scope": "required-eight",
+      "actual_source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "same-F native reuse; exact eight rows, 681 counted passes, zero fail/skip; no separate selected-wrapper run claimed",
+      "evidence_commit": "7886f2eaa3da7f9f4855104ca4b028d2d06ce6da",
+      "remote_prefix": "evidence/geo337-reading-a-oracle-20261027/oracle/required-eight-native-originals/",
+      "local_raw": "/workspace/scratch/geo337-reading-a-oracle-F-cbf0fb62-20261027/required-eight-native-originals",
+      "remote_byte_verification_receipt": "/workspace/scratch/geo337-remote-verification-7886f2eaa3da7f9f4855104ca4b028d2d06ce6da.json"
+    },
+    {
+      "scope": "PF3",
+      "actual_source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "original exit 0; baseline 20/20, 19 semantic kills, restored 20/20; all 21 source/binary variants retained",
+      "evidence_commit": "1d9b980defec2659d7b08ee0a3ac782e00354780",
+      "remote_prefix": "evidence/geo337-pf3-20261027/",
+      "local_raw": "/workspace/scratch/geo337-pf3-F-cbf0fb62-20261027",
+      "remote_byte_verification_receipt": "/workspace/scratch/geo337-remote-verification-1d9b980defec2659d7b08ee0a3ac782e00354780.json"
+    },
+    {
+      "scope": "Q38",
+      "actual_source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "original exit 0; 43 killed + SPM24 equivalent; baselines native 29/model 20; original ModelError outcomes retained",
+      "evidence_commit": "dd2cbf6a558b4af240ab4702cc8402621380881b",
+      "remote_prefix": "evidence/geo337-q38-20261027/",
+      "local_raw": "/workspace/scratch/geo337-q38-F-cbf0fb62-20261027",
+      "remote_byte_verification_receipt": "/workspace/scratch/geo337-remote-verification-dd2cbf6a558b4af240ab4702cc8402621380881b.json"
+    },
+    {
+      "scope": "P52",
+      "actual_source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "formal/verifier/outer 0; fixed main adbaebf9c73ea6801d7b4d5214e4b846b132923b; 16+16 samples, ratio 0.849147775; controls 0/0/1/1/1",
+      "evidence_commit": "a08a036db335e88608ead761539d3e60b75e8e5d",
+      "remote_prefix": "evidence/geo337-p52-20261027/",
+      "local_raw": "/tmp/g337p52F27",
+      "remote_byte_verification_receipt": "/workspace/scratch/geo337-remote-verification-a08a036db335e88608ead761539d3e60b75e8e5d.json"
+    },
+    {
+      "scope": "#314",
+      "actual_source_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": "same-F six native suites 103/103 and inspector 12/12; M121 original execution 82c922a3941525d3a094ac0158bdc7dea57ea360, 0/1/0 streams verified; no rerun or SHA relabelling",
+      "evidence_commit": "cbf8df4facf87b40db0fe46581c0b20131afada2",
+      "remote_prefix": "evidence/geo337-followup-scope-20261027/geo314/",
+      "local_raw": "/workspace/scratch/geo337-next-scope-review-20261027/geo314",
+      "remote_byte_verification_receipt": "/workspace/scratch/geo337-remote-verification-cbf8df4facf87b40db0fe46581c0b20131afada2.json"
+    }
+  ],
+  "new_diagnostic": {
+    "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "actual_exit": 0,
+    "completed_utc": "2026-10-27T04:50:03.588382+00:00",
+    "diagnostic_complete": true,
+    "observed_orders": [
+      {
+        "order": [
+          1,
+          2
+        ],
+        "actual_exit": 0,
+        "both_place_accepted": false
+      },
+      {
+        "order": [
+          2,
+          1
+        ],
+        "actual_exit": 0,
+        "both_place_accepted": false
+      }
+    ],
+    "construction_route_observed": false,
+    "source_and_binary_unchanged": true,
+    "new_construction_policy_accepted": false,
+    "original_stage_criterion_evaluation": {
+      "expression": "diagnostic_completed and construction_route_observed",
+      "value": false,
+      "derived_only": true,
+      "standalone_historical_stage_wrapper_executed": false
+    },
+    "cli_build_coverage": "Reused unchanged fresh fixed-F P52 npm build / start_local --build-only. No new standalone --binary-dir invocation or compile claimed."
+  },
+  "remaining_owner_assignment": [
+    {
+      "scope": "six browser jobs / card / axiom / extra168 / whole-memo",
+      "owner": "existing browser/recovery task 01a162a6-2bb5-7393-902c-19dd519d60b9 under coordinator",
+      "state": "Assigned elsewhere; coordinator reports browser completion/collection and has assigned original-R8-holder whole-memo. This executor does not rerun or relabel them."
+    },
+    {
+      "scope": "Reading A CLI construction / #335",
+      "owner": "coordinator and original specification decision owner",
+      "state": "New original diagnostic completes, but both tested placement orders reject one timber. No construction route observed; original stage criterion evaluates false. No new unplaced-contact or batch-exemption semantics authorized or implemented."
+    },
+    {
+      "scope": "P189 comparison policy and remote required CI",
+      "owner": "coordinator",
+      "state": "No new whitelist adopted. Keep original comparator and original red results; local acceptance is not remote CI. Do not resample valid R8 or fabricate a CI runner result."
+    }
+  ],
+  "no_independent_unowned_executable_acceptance_gap_found": true,
+  "execution_released": true,
+  "owner_lock_available": true,
+  "remaining_heavy_processes": [],
+  "checkout_identity": {
+    "/workspace/geometry-axiom": {
+      "head": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+      "status": ""
+    },
+    "/workspace/geo337-native-F-cbf0fb62": {
+      "head": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": ""
+    },
+    "/workspace/geo337-p52-sources-20261027/fix": {
+      "head": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "status": ""
+    },
+    "/workspace/geo337-p52-sources-20261027/main": {
+      "head": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "status": ""
+    }
+  },
+  "original_raw_preserved": true,
+  "new_redundant_archive_created": false
+}
