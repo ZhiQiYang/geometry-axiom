@@ -1,0 +1,132 @@
+{
+  "exit_code": 0,
+  "utc": "2026-10-27T03:29:26.561686+00:00",
+  "reviewer": "/root/axiom_delivery_pack/delivery_peer",
+  "scope": "Independent natural-archive builder static review and small synthetic build_one proof. Build-only authorization; no real archive executed by reviewer, no publication approval.",
+  "pins": {
+    "prepare.py": {
+      "bytes": 10962,
+      "sha256": "3ddfdd95a8f9121f887bfa427923d99bd67f8d89562fcc9529f8d0343093b031"
+    },
+    "build.py": {
+      "bytes": 7608,
+      "sha256": "88d3bb731c0067380f0f6b7d4c7b1f0f60805171f6ab95570f4c202c7fc95f68"
+    },
+    "PLAN.json": {
+      "bytes": 4291965,
+      "sha256": "820a069df2c39e4ada7525f03e9708653af7d3e1339a2f0452cebe0531dc1990"
+    },
+    "COST.json": {
+      "bytes": 3634,
+      "sha256": "ce2c25a30de31d4f826960f68efb5b77b1ff6d4e113b28a949b5966e761209e5"
+    }
+  },
+  "static_checks": 5195,
+  "prior_audited_file_hashes_preserved": 2586,
+  "bounds": [
+    {
+      "name": "F-assembly",
+      "regular_files": 611,
+      "original_bytes": 40679555,
+      "directories": 794,
+      "nonregular_metadata_only": 5,
+      "index_bytes": 626946,
+      "tar_exact_bytes": 43376640,
+      "gzip_worst_bytes": 43389923,
+      "blob_limit_bytes": 104857600
+    },
+    {
+      "name": "F-grid",
+      "regular_files": 616,
+      "original_bytes": 47276257,
+      "directories": 801,
+      "nonregular_metadata_only": 5,
+      "index_bytes": 622554,
+      "tar_exact_bytes": 49930240,
+      "gzip_worst_bytes": 49945523,
+      "blob_limit_bytes": 104857600
+    },
+    {
+      "name": "withdrawn-assembly",
+      "regular_files": 930,
+      "original_bytes": 69190716,
+      "directories": 1224,
+      "nonregular_metadata_only": 6,
+      "index_bytes": 927640,
+      "tar_exact_bytes": 73000960,
+      "gzip_worst_bytes": 73023284,
+      "blob_limit_bytes": 104857600
+    },
+    {
+      "name": "withdrawn-documents-ledger",
+      "regular_files": 664,
+      "original_bytes": 34985660,
+      "directories": 808,
+      "nonregular_metadata_only": 5,
+      "index_bytes": 665568,
+      "tar_exact_bytes": 37775360,
+      "gzip_worst_bytes": 37786933,
+      "blob_limit_bytes": 104857600
+    },
+    {
+      "name": "transport",
+      "regular_files": 810,
+      "original_bytes": 78570609,
+      "directories": 240,
+      "nonregular_metadata_only": 1,
+      "index_bytes": 511432,
+      "tar_exact_bytes": 80261120,
+      "gzip_worst_bytes": 80285660,
+      "blob_limit_bytes": 104857600
+    },
+    {
+      "name": "cleanup-supplements",
+      "regular_files": 276,
+      "original_bytes": 4799111,
+      "directories": 1291,
+      "nonregular_metadata_only": 2,
+      "index_bytes": 585513,
+      "tar_exact_bytes": 7403520,
+      "gzip_worst_bytes": 7405823,
+      "blob_limit_bytes": 104857600
+    }
+  ],
+  "incremental_total_upper": 1339503518,
+  "original_formula": 994786958,
+  "fixture": {
+    "result_path": "/tmp/geo-next-bundle-peer-20261027/fixture/RESULT.json",
+    "sha256": "e66a53a7d6f93ffdea90f607a559f250e849c756a3f4d1863e1f88ad2103074f",
+    "gate_exits": [
+      0,
+      1,
+      0
+    ],
+    "actual_original_stream_tool_chunk": "5d60d4",
+    "observed_failure": "audited hash mismatch on intentionally modified source with preserved size, mtime, inode",
+    "long_PAX_path": true,
+    "empty_directory": true,
+    "metadata_only_symlink": true,
+    "roundtrip": true,
+    "deterministic_restore": true
+  },
+  "tested_build_one_unchanged": true,
+  "changes_since_fixture": [
+    "Conservative memory admission subtracts dirty/writeback from inactive_file",
+    "Add independent regex reviews and original progress snapshots",
+    "Increase leaf allowance from 14 to 20",
+    "Require future publisher hash-object by path with data=None; stdin payload/base64 would require extra P"
+  ],
+  "alias_policy": "Root-approved exact original stdout maps to existing parent E047 blob e02; no fresh 55MB download or tar payload; future publisher must prove new remote tree path same OID and preserve original stream.",
+  "execution_conditions": [
+    "Root scheduler confirms no concurrent product gates",
+    "Fresh actual 8GiB two-OWN, SHM and memory admission must pass",
+    "Run only submitted build.py with exact PLAN pin",
+    "Future publisher must be reviewed separately against actual payload sizes/capture allocation; this review cannot certify unbuilt transport code",
+    "No selected source may be changed after freeze; new final peer is separate small leaf outside this frozen plan"
+  ],
+  "limits": [
+    "Metadata-only nonregular entries intentionally are not followed or emitted as archive symlinks",
+    "Production Git object payloads retained in place and excluded from copied evidence; metadata and original command streams retained",
+    "No product gates or remote artifact delivery established by this review"
+  ]
+}
