@@ -1,11 +1,11 @@
-# #348 容量 512：同來源定向修正已驗，完整放置仍紅
+# #348 阻擋 2：修復中，未達合併條件
 
-目前來源為 `73b21e64dce72f0d16ca29e18559c51815b9724d`，產品 C 仍為 `400a6d0ca50f3aca104fb569c77c8ef753c93355`。這次修正安全哨兵的測試前置，沒有改產品容量規則。
+本輪基底 B `9a8584f57be7935604c3bad4c2481945a6ec3d9f`。最新修補來源 C `3420931a4a512f08e3f4d7584958cc8630e190c3`；原逾時、環境錯誤與每版診斷均收在 timeout-diagnosis-20261028/RAW.tar.gz，MANIFEST.json 逐檔 hash／byte 回讀相符。
 
-F73 的三個受影響 H 方法全部通過，三組 helper 與哨兵測試修正各有真正 0／1／0。原 first batch 整批 exit 1 保留：它的前十個 phase 符合預期，最後三個被原 100 MiB 空間守門標為未跑；同 F 的獨立 resume 只補這三個，exit 0。兩批來源最後皆 clean。
+- **原 B 真實 placed load：600.013933527 秒，exit -9、timeout=true**；wait4 RSS 279492 KiB，stdout/stderr 均空。原 600 秒未變。兩份歷史 timeout 都停在 initial load，canonical replay／sequential history 尚未到達，不能冒稱已各自測出逾時。
+- B N128 原 O0 分離 K/W/H 的 gprof：14.914535 秒，exit 0。anchor memo 版 `42e573f59f19693d03f2f4a64bc76a5575b45690` 同 N128 14.166502 秒、N256 127.336561 秒，exit 0；N128 stdout 與 B 逐 byte 相同。這些是診斷，**不是正式 512 通過**。profile 的 child_maxrss 欄包含 compiler 累積，不能當產品峰值；詳 DIAGNOSTIC_LIMITS.json。
+- C 新的 scope-local anchor 與借用 host 測試：6 項、0 fail/error/skip，exit 0；六個獨立撤回各有具名 0/1/0。借用 host 的性能尚未測量；K source index／W contact 重複工作繼續修復。
+- 正式兩個 H7 placed/replay/history 方法、最終 ordered graph 比較、完整 native/browser、帳本與架構：**尚未完成**。I33 CAPACITY 拒絕與原 timeout 均不放寬。
+- 上游仍阻擋：審查時相對 base behind 2；目前 #347 `8bb0359331365c6f3a96872620427cf7847fcb50` 為 behind 3/ahead 8（新增一個 evidence-only 提交）。#343→#346→#347 尚未閉合；未以 evidence-only 差異冒稱上游驗收已閉合。鏈修復後才一般 merge 精確 head，逐 leaf 重審及重跑受影響項。
 
-歷史 F0f 完整 W7 全綠；H7 的三個哨兵 assertion 已由 F73 定向修正驗證。兩個真實 512 放置／重放方法的原 600 秒 timeout 仍未解，本輪沒有重跑，也沒有調整時限。完整 native／六 browser／帳本／架構及容量性能仍未完成，非 READY-TO-MERGE。
-
-完整原件已封存、原 byte roundtrip 完成：F0f 紅包 6369 member，獨審 25485/0＋原流分類 1809/0；F73 定向包 5901 member，獨審 23643/0，另有原斷言／phase 獨審 171/0。F0f 的四份 scene 為執行中事後保全；F73 v2 observer 為呼叫前保全，兩者沒有混稱。六個刻意建立的 symlink/FIFO 自驗 fixture 僅保存 lstat／readlink 描述，沒有循連結或讀 FIFO。
-
-下一步先把兩包與本進度一般 push 到本線證據目錄，再更新既有 #348 正文；不另開重複 PR。主代理正在優先修正 #338 的效能紅燈，本線依主代理指派一般 merge 完成驗收的新列車後，再診斷兩個 512 timeout；不先重跑未修的 600 秒項目。既有完整原件原位保留，出版沿獨立驗證的 Git 物件儲存與一般 push；這項環境安排不改正式 100 MiB 守門或產品時限。
+下一步：修復大量重複資料複製、接觸面順序與 source 索引工作，固定新 SHA，原方法 600 秒內驗證 placed load／canonical replay／sequential history，保留所有紅燈。原 F0f/F73 歷史證據未移標或刪除。
