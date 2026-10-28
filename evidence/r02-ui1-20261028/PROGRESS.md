@@ -1,6 +1,6 @@
 # R02 UI-1 進度
 
-## 目前狀態：2026-10-28 17:49 UTC
+## 目前狀態：2026-10-28 18:17 UTC
 
 固定最新產品／驗收來源 F2：`74d638686edc9861e9ed9d3409af4adf02350f8e`（已普通push）。D44產品缺漏已修；不標READY，UI15仍未達合併條件。
 
@@ -9,7 +9,9 @@
 - `a7a05ecf13076f0dcf5fd89d1ef6c8a9118ac836`修補在第一個await前綁request／navigation／focus，自己的導航只接受預期序號。真完整PF專項381／0／0、203.807秒、exit0；唯讀對抗審查無新增阻擋。F2僅再登記測試hash與P128=381，產品／測試相同。新增修補已完成真正UI撤回：baseline381／0、撤回UI05_D44_PREPARATION_OWNER具名紅、restored381／0；0／1／0、421.561秒、無timeout、原產品bytes恢復。原件見round9與D44_OWNER_AUDIT.json。
 - F2三原architecture裁判均exit0：604檔／798edges／0diagnostics，205與18 tests；Linux scan／receipt／report已更新。F2參數回執16／0／0、exit0。`mutate.py --check`仍exit0、0stale：70killed／1crashed／4equivalent／3retired，不把crashed算killed。
 - F1 Node aggregate748＋PF契約21＋參數回執16＝785／0／0；不改標F2。F2與F1之產品差異僅上述共用參數建立owner守門；新版完整canvas將驗既有P76與新P128，原85段golden仍全等。
-- 新版完整canvas已於17:47:27.348601 UTC在乾淨F2獨占啟動；原2100秒時限／strict golden，尚無終態，不標通過。原件持續寫入/workspace/r02-ui1-evidence/owner-final-canvas。舊 `82257ab8…` full為2616／0／0、86段strict matched、1906.993秒exit0（round6），不移標。
+- F2完整canvas首輪17:47:27啟動，18:10:23最後輸出停在P77；工具session99685消失，原測試／收件程序已不存在，沒有exit或CDP_RESULT，gzip未封尾，OOM事件0。**環境中斷、具體原因未確證，未通過，不能推定逾時或exit0。** 原result／不完整gzip逐byte原封保留於round10，INTERRUPTION.json另記觀測，不補造原退出碼。
+- 18:16:13.492780 UTC以乾淨同F2的獨立背景程序重跑完整canvas（PID197506），原2100秒／strict golden／Chrome原沙箱不變，獨占。新的原件/workspace/r02-ui1-evidence/owner-final-canvas-recovery持續寫入，尚無終態；只停止前輪已棄用的特定Chrome，profile／其他原件未刪。舊82257ab的2616／0／0 full仍僅歷史，不移標。
+
 - native原完整census的5221pass／4fail／1允許GDI skip、exit1，及原三套修復763／0／0，分開保留。grid356／0／0、space242／0舊來源原件不移標。
 - **UI15未跑／未達合併條件**：#343→#346→#347仍未閉合；WSL、實體IME／觸控、另一原生程序重開未驗。沒有修改SSOT、其他PR分支，沒有merge main。
 
