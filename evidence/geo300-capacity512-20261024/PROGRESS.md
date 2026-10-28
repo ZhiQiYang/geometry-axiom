@@ -12,6 +12,12 @@ execution C `75481194f3b85a6b07e11896403633d7d0fa0d6f`，產品仍F2 `b595e55952
 
 2026-10-28 23:13Z：隔離分支 codex/geo300-hotpath-candidate-20261028 固定 f5806c60c6067a64776f979f77981e4aba087df3 已推。K空槽/W有序快路徑/memo 的原控制與新反證已實跑，原編譯前置紅和duplicate控制存活均保留並補正。詳細逐execution在 hotpath-candidate-f5806c60/README.md。單次N128 6.691758→6.037951秒，stdout/stderr相同；只~9.8%，不足解除full1200。新有序圖比對尚未完成。原F2/C 512正式收據不變、不重跑、不移標。
 
+## 候選圖比較真終態
+
+f5806c60c6067a64776f979f77981e4aba087df3 的172場景×2新程序全過，23:24:53Z–23:25:39Z、exit0。沿用原B9a的固定E18原件並逐檔核closure；全ordered graph/stdout/stderr/5guards/allseals相同，沒有重跑B。原件 graph-candidate-f5806c60/。此候選尚未採PR348；更新中的consumer scope是另個來源，仍需自己的受影響驗收。
+
+正文同步：GH API本輪可用，23:25:37Z已PATCH並GET逐byte核對，實際正文已從舊2de/ac1更新為dbdf/F2/C；新evidence head發布後再同步。REST PR物件base.sha仍2e8a6ed20325aa4842dcd0f89eacd598662be598，但同一API git/ref及Git ls-remote均8bb0359331365c6f3a96872620427cf7847fcb50，應分開記snapshot與目前分支，不誤稱新上游修鏈。#347最新審查仍B1/B2未閉合。
+
 ## 歷史檢查點（不取代上方current state）
 
 # #348 current state：512各批已在600秒內完成；I8a history與整套時限仍紅
