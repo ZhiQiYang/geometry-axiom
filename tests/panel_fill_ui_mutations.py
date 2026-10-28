@@ -47,7 +47,7 @@ def variants(root: Path):
     workspace_bytes = workspace.read_bytes()
     entry = b"window.PanelFillWorkspace?.open(Number(fill.dataset.panelFillOpen),fill);"
     request_line = re.findall(rb"^  const requestId = connection\.session[^\n]+", app_bytes, re.MULTILINE)
-    if len(request_line) != 1 or request_line[0].count(b"panel-fill-confirm ") != 1:
+    if len(request_line) != 1 or request_line[0].count(b"|panel-fill-confirm ") != 1:
         raise ValueError("Expected one exact requestId declaration including panel-fill-confirm")
     return [
         ("entry-handler", "UI13_ENTRY_HANDLER", app, app_bytes,
@@ -56,7 +56,7 @@ def variants(root: Path):
          replace_once(adapter_bytes, b"fetch('/panel-fill/preview',",
                       b"((...args)=>Promise.reject(new Error('UI13 removed preview HTTP')))('/panel-fill/preview',")),
         ("confirm-receipt", "UI13_CONFIRM_RECEIPT", app, app_bytes,
-         replace_once(app_bytes, request_line[0], request_line[0].replace(b"panel-fill-confirm ", b"", 1))),
+         replace_once(app_bytes, request_line[0], request_line[0].replace(b"|panel-fill-confirm ", b"", 1))),
         ("preview-focus", "UI12_PREVIEW_FOCUS", workspace, workspace_bytes,
          replace_once(workspace_bytes, b"focus=region.querySelector('#pfTitle'); // PF_UI12_DISABLED_FOCUS_FALLBACK",
                       b"focus=null; // PF_UI12_DISABLED_FOCUS_FALLBACK")),
