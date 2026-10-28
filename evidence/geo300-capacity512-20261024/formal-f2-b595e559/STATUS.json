@@ -1,0 +1,295 @@
+{
+  "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+  "formal": {
+    "command": [
+      "/dev/shm/pr348-run-formal-v3.py",
+      "--root",
+      "/dev/shm/pr348-formal-b595",
+      "--out",
+      "/dev/shm/pr348-formal-placed-b595-v2",
+      "--durable",
+      "/workspace/pr348-formal-placed-b595-v2",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_64_and_512_load_dump_and_canonical_replay",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_512_sequential_replay_and_safe_513_history"
+    ],
+    "cwd": "/dev/shm/pr348-formal-b595",
+    "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+    "tracked_dirty": "",
+    "tests": [
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_64_and_512_load_dump_and_canonical_replay",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_512_sequential_replay_and_safe_513_history"
+    ],
+    "started_utc": "2026-10-28T21:13:05Z",
+    "stack_bytes": 16777216,
+    "temporary_directory": "/dev/shm/pr348-run-temp",
+    "measurement": "Original unittest methods, assertions and 600-second per-batch timeout; Popen wait4 child usage; lossless durable checkpoint after each completed batch",
+    "capacity_before": {
+      "/dev/shm/pr348-formal-placed-b595-v2": {
+        "total": 17871880192,
+        "used": 2021584896,
+        "free": 15850295296
+      },
+      "/workspace/pr348-formal-placed-b595-v2": {
+        "total": 33770192896,
+        "used": 32034168832,
+        "free": 1261568
+      }
+    },
+    "exit": 1,
+    "tests_run": 2,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 2511.5301700540003,
+    "batches": [
+      {
+        "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+        "binary": {
+          "path": "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge",
+          "bytes": 1316488,
+          "mode": 33216,
+          "sha256": "190dab7786ab0b5f5782c93b46c553d12a3f158f01bfbb1db55510fd1679a3ad"
+        },
+        "timeout_seconds": 600,
+        "seconds": 1.103514651000296,
+        "actual_exit": 0,
+        "memory": {
+          "maxrss_kib": 72636,
+          "user_seconds": 1.074237,
+          "system_seconds": 0.027857
+        },
+        "exception": null,
+        "command": [
+          "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge"
+        ],
+        "stdout_sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+        "binary": {
+          "path": "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge",
+          "bytes": 1316488,
+          "mode": 33216,
+          "sha256": "190dab7786ab0b5f5782c93b46c553d12a3f158f01bfbb1db55510fd1679a3ad"
+        },
+        "timeout_seconds": 600,
+        "seconds": 1.13207753000097,
+        "actual_exit": 0,
+        "memory": {
+          "maxrss_kib": 77232,
+          "user_seconds": 1.086665,
+          "system_seconds": 0.044552
+        },
+        "exception": null,
+        "command": [
+          "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge"
+        ],
+        "stdout_sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+        "binary": {
+          "path": "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge",
+          "bytes": 1316488,
+          "mode": 33216,
+          "sha256": "190dab7786ab0b5f5782c93b46c553d12a3f158f01bfbb1db55510fd1679a3ad"
+        },
+        "timeout_seconds": 600,
+        "seconds": 1.1550563659984618,
+        "actual_exit": 0,
+        "memory": {
+          "maxrss_kib": 77144,
+          "user_seconds": 1.120455,
+          "system_seconds": 0.032123
+        },
+        "exception": null,
+        "command": [
+          "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge"
+        ],
+        "stdout_sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+        "binary": {
+          "path": "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge",
+          "bytes": 1316488,
+          "mode": 33216,
+          "sha256": "190dab7786ab0b5f5782c93b46c553d12a3f158f01bfbb1db55510fd1679a3ad"
+        },
+        "timeout_seconds": 600,
+        "seconds": 482.5956142080031,
+        "actual_exit": 0,
+        "memory": {
+          "maxrss_kib": 251460,
+          "user_seconds": 474.625562,
+          "system_seconds": 7.860374
+        },
+        "exception": null,
+        "command": [
+          "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge"
+        ],
+        "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+        "binary": {
+          "path": "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge",
+          "bytes": 1316488,
+          "mode": 33216,
+          "sha256": "190dab7786ab0b5f5782c93b46c553d12a3f158f01bfbb1db55510fd1679a3ad"
+        },
+        "timeout_seconds": 600,
+        "seconds": 500.58719815600125,
+        "actual_exit": 0,
+        "memory": {
+          "maxrss_kib": 256668,
+          "user_seconds": 492.815826,
+          "system_seconds": 7.640478
+        },
+        "exception": null,
+        "command": [
+          "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge"
+        ],
+        "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+        "binary": {
+          "path": "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge",
+          "bytes": 1316488,
+          "mode": 33216,
+          "sha256": "190dab7786ab0b5f5782c93b46c553d12a3f158f01bfbb1db55510fd1679a3ad"
+        },
+        "timeout_seconds": 600,
+        "seconds": 529.4733887000002,
+        "actual_exit": 0,
+        "memory": {
+          "maxrss_kib": 256564,
+          "user_seconds": 520.939805,
+          "system_seconds": 8.410793
+        },
+        "exception": null,
+        "command": [
+          "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge"
+        ],
+        "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+        "binary": {
+          "path": "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge",
+          "bytes": 1316488,
+          "mode": 33216,
+          "sha256": "190dab7786ab0b5f5782c93b46c553d12a3f158f01bfbb1db55510fd1679a3ad"
+        },
+        "timeout_seconds": 600,
+        "seconds": 492.9814135600027,
+        "actual_exit": 0,
+        "memory": {
+          "maxrss_kib": 251472,
+          "user_seconds": 484.822071,
+          "system_seconds": 8.07474
+        },
+        "exception": null,
+        "command": [
+          "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge"
+        ],
+        "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+        "binary": {
+          "path": "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge",
+          "bytes": 1316488,
+          "mode": 33216,
+          "sha256": "190dab7786ab0b5f5782c93b46c553d12a3f158f01bfbb1db55510fd1679a3ad"
+        },
+        "timeout_seconds": 600,
+        "seconds": 496.0863277130011,
+        "actual_exit": 0,
+        "memory": {
+          "maxrss_kib": 431676,
+          "user_seconds": 488.914347,
+          "system_seconds": 7.034048
+        },
+        "exception": null,
+        "command": [
+          "/dev/shm/pr348-run-temp/geometry-tests/geo261-n1a-9kjj73g3/product-bridge"
+        ],
+        "stdout_sha256": "dd669562261ac28168694fe830d99afbebac06af4aac45c169f3b87108d8c02b",
+        "stderr_sha256": "a08bd16749014128bdba88df2352bc7785d8a0b2010c1f1b4d8618505cf98b87"
+      }
+    ],
+    "tracked_dirty_after": ""
+  },
+  "controls": {
+    "command": [
+      "/tmp/pr348-runs/run_formal_v2.py",
+      "--root",
+      "/dev/shm/pr348-formal-b595",
+      "--out",
+      "/dev/shm/pr348-post-formal-controls-b595",
+      "tests.test_geo300_validation_memo",
+      "tests.test_geo261_wood_contact_world",
+      "tests.test_geo261_timber_capacity",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_actual_host_independent_admission_storage_and_scratch_values",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_each_real_declaration_retains_legacy_64_and_admits_up_to_512",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_full_capacity_redeclaration_replay_and_rejected_edit_preserve_history",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_bridge_guard_withdrawal_uses_safe_incomplete_declaration_then_restores",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_host_compile_contract_rejects_each_drifted_capacity"
+    ],
+    "cwd": "/dev/shm/pr348-formal-b595",
+    "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+    "tracked_dirty": "",
+    "tests": [
+      "tests.test_geo300_validation_memo",
+      "tests.test_geo261_wood_contact_world",
+      "tests.test_geo261_timber_capacity",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_actual_host_independent_admission_storage_and_scratch_values",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_each_real_declaration_retains_legacy_64_and_admits_up_to_512",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_full_capacity_redeclaration_replay_and_rejected_edit_preserve_history",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_bridge_guard_withdrawal_uses_safe_incomplete_declaration_then_restores",
+      "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_host_compile_contract_rejects_each_drifted_capacity"
+    ],
+    "started_utc": "2026-10-28T21:55:51Z",
+    "stack_bytes": 16777216,
+    "measurement": "Popen original control flow; wait4 collects original child rusage; original unittest methods/assertions/timeouts unchanged",
+    "exit": 0,
+    "tests_run": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 118.66461928900026,
+    "batches": [],
+    "tracked_dirty_after": ""
+  },
+  "ledger": {
+    "source_sha": "b595e55952d5d66de95024432e1b29bec7525e9b",
+    "command": [
+      "python3",
+      "-B",
+      "tests/mutate.py",
+      "--check"
+    ],
+    "cwd": "/dev/shm/pr348-formal-b595",
+    "utc": "2026-10-28T21:16:37Z",
+    "exit": 1,
+    "seconds": 1.6476272559993959,
+    "meaning": "read-only fingerprint check; no compiler, Git or product execution",
+    "stdout_sha256": "9a9075db2aee4c927c15c57902642577c42cfcf00bfa5cf07b345280a71e6069",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "archive": {
+    "bytes": 4358709,
+    "sha256": "63836ba927e531676aabc56729e69ecd2f324dbbc9914f296f66b0f966ed4036"
+  },
+  "ready_to_merge": false,
+  "next": "Follow existing I8a preview/confirm in history test; preserve all assertions. Further product optimization needed for unchanged 1200s suite. Ledger/architecture/upstream remain open."
+}

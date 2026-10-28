@@ -1,3 +1,22 @@
+# #348 current state：512各批已在600秒內完成；I8a history與整套時限仍紅
+
+產品／execution F2：`b595e55952d5d66de95024432e1b29bec7525e9b`。本節為唯一 current state，以下舊段落只保留歷史。維持 Draft，未達合併條件。
+
+- 原兩個 H7 慢方法已真正結束：exit **1**，2 tests／1 failure／0 error／0 skip，2511.530170054秒。第一個方法通過；第二個不是通過。
+- **512 placed load 482.595614208秒、canonical replay 500.587198156秒與529.473388700秒**，三批真exit0，原幾何／ID／definition／fresh協定逐byte斷言通過。wait4 RSS依序251460／256668／256564KiB。
+- 第二方法的load492.981413560秒與sequential/history子程序496.086327713秒均exit0、未timeout；但test_geo261_timber_capacity_host.py:279期待delete直接ok:true，實際回I8a valid:true預覽、零violations。只刪除512，另511支幾何未變；未確認World逐byte不變，後續Undo因此不是撤銷刪除。**這是既有I8a流程的測試缺漏，將補真正token確認，不能繞過產品I8a或放寬原斷言。**
+- 另外32項受影響控制（H6、W14、W容量7、H7其餘5）已在同F2實跑exit0，118.664619289秒、0fail/error/skip。K source29與172根scene的688次有序圖／stdout／stderr／guards逐byte等價已核，不重跑同版。
+- **完整H7/native尚未通過**：run_all.py:530的Python suite時限是1200秒（先前900說法更正），native job35分鐘；第一方法六批本身1516.046849611秒，不含編譯／assertion／收件，已超整套預算。每batch600秒保持不變，不能以各批完成冒稱整套綠。
+- 帳本check已實跑exit1：107 stale／13 unrun／3 retired；需最終穩定來源完整重產。架構原三裁判與四檔、完整native／browser與其餘專項未完成。
+- 單次static-pg N128診斷10.439190712秒exit0，與既有N128 stdout/stderr逐byte相同；揭露memset0.58秒、memmove0.56秒及mcount2.07秒開銷。不能外推正式512性能；完整ELF、建置、原輸出與profile均保存。
+- 新原件位於 `formal-f2-b595e559/RAW.tar.gz`、逐檔MANIFEST及STATUS；固定execution不隨evidence提交移標。原600秒timeout、F1環境紅與F2第一輪outer130中止完整保留。
+- 取件更正：GIT_NO_LAZY_FETCH本身未阻止所有隱式歷史取件。改用獨立非promisor發布object store、只保留原parent tree並更新新葉；一般push，無刪objects、無force。原生tmpfile仍查真/tmp，未以SHM抵算。
+- 上游阻擋1仍存在：審查相對base **behind2**；已知目前#347 `8bb0359331365c6f3a96872620427cf7847fcb50`新增evidence提交後原B為behind3/ahead8。#343→#346→#347未閉合；鏈修復後才一般merge精確head、逐leaf重審與受影響重驗。未merge上游，不合併PR/main。
+
+下一步：修正I8a history測試及具名撤回；依profile繼續產品效能修復以符合原整套時限。I33仍必須CAPACITY且不截斷；公理層、決策與既有閾值不變。
+
+## 歷史檢查點（不取代上方 current state）
+
 # #348 current state：F2 索引修補及172場景等價已過；正式512待跑
 
 產品 F2 `b595e55952d5d66de95024432e1b29bec7525e9b` 已一般推送，遠端ref核對一致。本次可選索引只壓縮ordinal儲存；權威count／ID／ordered node/edge仍為size_t，超出UINT32_MAX或配置失敗會放棄索引回原線性搜尋，不截斷、不新增CAPACITY拒絕。公理與原600秒未改。
