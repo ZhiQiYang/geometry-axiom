@@ -110,3 +110,23 @@ test('UI06 obstacle selection order is a set while source identity remains exact
 test('UI02 ParameterRef zero IDs follow native uint32 identity rules',()=>{
   const {c,A,state}=populated();state.panelFills[0].definition.threshold={parameterId:0,fieldId:0};assert.equal(A.contract(c.reply()).completeForScope,true);
 });
+test('UI04 native host and timber impact is visible with exact before/after and complete records',()=>{
+  const {W}=environment();const before={finishSurfaces:[],panelFills:[],derivedPlacements:[{id:0,definition:{id:0,fillId:1,h:30},derived:{h:'30',frame:{origin:['0','0','39']}}}]};
+  const after=JSON.parse(JSON.stringify(before));after.derivedPlacements[0].definition.h=31;after.derivedPlacements[0].derived.h='31';
+  const dependencies={before:{geometry:{timbers:[{id:7,geometry:{state:'BUILDABLE',origin:[0,0,39]}}]}},after:{geometry:{timbers:[{id:7,geometry:{state:'BUILDABLE',origin:[0,0,40]}}]}}};
+  const html=W._test.impact({before,after,changes:[{record:'derived-placement',id:0,change:'modified'}],dependencies});
+  assert.match(html,/data-pf-impact/);assert.match(html,/派生宿主 #0・定義修改/);assert.match(html,/既有角材/);assert.match(html,/#7/);
+  assert.match(html,/data-pf-impact-before/);assert.match(html,/data-pf-impact-after/);assert.match(html,/data-pf-dependencies-before/);assert.match(html,/data-pf-dependencies-after/);
+  assert.match(html,/39/);assert.match(html,/40/);assert.match(html,/&quot;h&quot;:30/);assert.match(html,/&quot;h&quot;:31/);
+});
+test('UI04 host preview cannot confirm when native downstream before/after is missing',async()=>{
+  const {c,A,state}=populated();state.derivedPlacements.push({id:0,definition:{id:0,fillId:1,h:30},derived:{h:'30',frame:{origin:['0','0','39'],U:'+X',V:'+Y',N:'+Z'},components:[]}});
+  state.panelFills[0].derived.derivedPlacement=0;
+  const s=new A.Session(4);await s.read();const r=c.reply();delete r.uiContract.state;r.uiContract.before=JSON.parse(JSON.stringify(s.snapshot));r.uiContract.after=JSON.parse(JSON.stringify(s.snapshot));
+  r.uiContract.after.derivedPlacements[0].definition.h=31;r.uiContract.after.derivedPlacements[0].derived.h='31';
+  const result={revision:0,valid:true,token:8,changes:[{record:'derived-placement',id:0,change:'modified'}],uiContract:r.uiContract};
+  c.fetch=async()=>({ok:true,json:async()=>({ok:true,preview:result})});
+  await assert.rejects(()=>s.preview([{op:'put-derived-placement',value:{id:0,fillId:1,h:31}}]),/下游影響/);assert.notEqual(s.phase,'confirmable');
+  result.dependencies={before:{geometry:{timbers:[]}},after:{geometry:{timbers:[]}}};
+  await s.preview([{op:'put-derived-placement',value:{id:0,fillId:1,h:31}}]);assert.equal(s.phase,'confirmable');
+});

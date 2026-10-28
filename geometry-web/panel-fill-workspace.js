@@ -127,6 +127,36 @@ window.PanelFillWorkspace = (() => {
   }
   function exact(value) {return typeof value==='object'?JSON.stringify(value):String(value??'未提供');}
   const table=(headers,rows)=>`<div class="pf-table-scroll"><table><thead><tr>${headers.map(h=>'<th scope="col">'+esc(h)+'</th>').join('')}</tr></thead><tbody>${rows.map(row=>'<tr>'+row.map(v=>'<td>'+esc(exact(v))+'</td>').join('')+'</tr>').join('')}</tbody></table></div>`;
+  function impact(candidate) {
+    const kinds={'finish-surface':['完成面','finishSurfaces'],'panel-fill':['鋪排','panelFills'],'derived-placement':['派生宿主','derivedPlacements']};
+    const changes={created:'新增',modified:'定義修改',deleted:'刪除',derived:'原生派生結果變動'};
+    const record=(state,key,id)=>list(state?.[key]).find(r=>(r.definition?.id??r.id)===id);
+    const definition=r=>{if(!r)return '不存在';if(r.definition)return r.definition;const {derived,...value}=r;return value;};
+    const rows=list(candidate.changes).map(change=>{
+      const kind=change.record??'finish-surface',entry=kinds[kind],key=entry?.[1];
+      return [`${entry?.[0]??kind} #${change.id}`,changes[change.change]??change.change,
+        definition(record(candidate.before,key,change.id)),definition(record(candidate.after,key,change.id))];
+    });
+    const dependencies=candidate.dependencies;
+    const beforeTimbers=list(dependencies?.before?.geometry?.timbers),afterTimbers=list(dependencies?.after?.geometry?.timbers);
+    const timberIds=[...new Set([...beforeTimbers,...afterTimbers].map(t=>t.id))];
+    const beforeHosts=list(candidate.before?.derivedPlacements),afterHosts=list(candidate.after?.derivedPlacements);
+    const hostIds=[...new Set([...beforeHosts,...afterHosts].map(h=>h.definition.id))];
+    return `<section class="pf-impact" data-pf-impact aria-label="確認前後的原生變更與下游影響"><h4>確認前後影響（尚未套用）</h4>
+      <p data-pf-native-changes>原生列出 ${rows.length} 筆變更：${rows.map(r=>esc(r[0]+'・'+r[1])).join('、')||'沒有變更紀錄'}。</p>
+      ${table(['變更對象','原生判定','確認前定義','候選定義'],rows)}
+      ${hostIds.length?`<section data-pf-dependency-impact aria-label="宿主與既有角材前後影響"><h5>宿主與既有角材</h5>
+        <p>宿主 ${hostIds.map(id=>'#'+id).join('、')}；原生回覆的下游角材 ${timberIds.length} 支${timberIds.length?'（'+timberIds.map(id=>'#'+id).join('、')+'）':''}。以下保留確認前後紀錄，未變更的紀錄也列出。</p>
+        ${table(['宿主','確認前原生結果','候選原生結果'],hostIds.map(id=>['#'+id,record(candidate.before,'derivedPlacements',id)?.derived??'不存在',record(candidate.after,'derivedPlacements',id)?.derived??'不存在']))}
+        ${dependencies?table(['既有角材','確認前原生紀錄','候選原生紀錄'],timberIds.map(id=>['#'+id,beforeTimbers.find(t=>t.id===id)??'不存在',afterTimbers.find(t=>t.id===id)??'不存在'])):'<p role="alert">原生未提供宿主下游前後資料，無法核對影響。</p>'}</section>`:''}
+      <details data-pf-impact-full><summary>查看原生完整前後資料與變更清單</summary>
+        <h5>確認前</h5><pre data-pf-impact-before>${esc(JSON.stringify(candidate.before,null,2))}</pre>
+        <h5>候選後</h5><pre data-pf-impact-after>${esc(JSON.stringify(candidate.after,null,2))}</pre>
+        <h5>原生變更清單</h5><pre data-pf-impact-changes>${esc(JSON.stringify(candidate.changes,null,2))}</pre>
+        <h5>下游依賴：確認前</h5><pre data-pf-dependencies-before>${esc(JSON.stringify(dependencies?.before??null,null,2))}</pre>
+        <h5>下游依賴：候選後</h5><pre data-pf-dependencies-after>${esc(JSON.stringify(dependencies?.after??null,null,2))}</pre>
+      </details></section>`;
+  }
   function picture(fill) {
     const d=fill.derived;if(d?.error)return '';
     const loops=list(d?.tiles).flatMap(t=>list(t.fragments).map(f=>f.outer));
@@ -147,6 +177,7 @@ window.PanelFillWorkspace = (() => {
     const finishes=state.finishSurfaces.filter(f=>f.boundaryId===s.boundaryId),ids=new Set(finishes.map(f=>f.id));
     const fills=state.panelFills.filter(f=>ids.has(f.definition.finishSurfaceId)).map(f=>f.derived?f:{...f,derived:{error:'原生結果未完整提供'}}),fillIds=new Set(fills.map(f=>f.definition.id));
     return `<section class="pf-results" aria-label="原生完成面結果"><h3>${s.candidate?'候選結果（尚未套用）':'正式來源結果'}</h3>
+      ${s.candidate?impact(s.candidate):''}
       ${finishes.map(f=>`<details><summary>${esc(f.name)} · 完成面 #${f.id} · ${f.derived?.error?'錯誤':'原生框架與障礙'}</summary>${table(['欄位','精確原生值'],[['frame',f.frame],['結構側',f.structureSide],['明選障礙',f.obstacles],['region',f.derived?.region],['障礙判定',f.derived?.obstacles],...(f.derived?.error?[['錯誤',f.derived.error]]:[])])}</details>`).join('')}
       ${fills.map(f=>{const d=f.derived;return `<article data-pf-fill-result="${f.definition.id}"><h4>鋪排 #${f.definition.id}</h4>${d?.error?'<p role="alert">原生錯誤：'+esc(d.error)+'</p>':`${picture(f)}<p>片數 ${esc(d.tileCount)} · 裁片數 ${esc(d.fragmentCount)} · 整片 ${esc(d.wholeCount)} · 厚 ${esc(d.thickness)} mm</p>${table(['裁片完整 key','面積 mm²'],list(d.tiles).flatMap(t=>list(t.fragments).map(p=>[p.key,p.area])))}<h5>有效板縫／支撐</h5><p>X 來源：參數 ${esc(f.definition.threshold.parameterId)}／欄位 ${esc(f.definition.threshold.fieldId)}</p>${table(['seam','區間','左側實寬 mm','右側實寬 mm','有效 X mm','判定'],list(d.support).map(p=>[p.seam,p.range,p.left,p.right,d.threshold?d.threshold.num+'/'+d.threshold.den:'未提供',p.supported?'支撐足夠':'支撐不足（可保存）']))}<details><summary>完整板縫鍵、非板縫與障礙分層</summary>${table(['類型','精確原生值'],[['有效板縫',d.effectiveSeams],['非板縫（不是支撐不足）',d.nonSeams],['非板縫原因',d.nonSeamReason],['障礙分層',d.obstacles]])}</details>`}<details><summary>定義來源（與有效值分開）</summary><pre>${esc(JSON.stringify(f.definition,null,2))}</pre></details></article>`;}).join('')}
       ${state.derivedPlacements.filter(h=>fillIds.has(h.definition.fillId)).map(h=>`<details><summary>宿主 #${h.definition.id} · ${h.derived?.error?'錯誤':'原生 h／框架／完整邊鍵'}</summary>${table(['欄位','精確原生值'],[['h 來源',h.definition.h],['h 有效值',h.derived?.h],['frame',h.derived?.frame],['components／完整邊鍵',h.derived?.components],...(h.derived?.error?[['錯誤',h.derived.error]]:[])])}</details>`).join('')}</section>`;
@@ -271,5 +302,5 @@ window.PanelFillWorkspace = (() => {
       return false;
     },
     get pending(){return !!active && (active.dirty||['previewing','confirmable','confirming','unknown'].includes(active.phase));},
-    mayLeave:()=>close(),get isOpen(){return !!active;},_test:{sourceDraft,sourceValue,operations,scalar}};
+    mayLeave:()=>close(),get isOpen(){return !!active;},_test:{sourceDraft,sourceValue,operations,scalar,impact}};
 })();

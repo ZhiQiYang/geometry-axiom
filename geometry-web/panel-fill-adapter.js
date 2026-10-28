@@ -130,6 +130,14 @@
       wire(actual.size===expected[key].size&&[...expected[key]].every(([recordId,value])=>sameDefinition(actual.get(recordId),value,kind)), '預覽 after 不符本次 '+key+' 操作範圍');
     }
   }
+  function impactContract(candidate){
+    wire(Array.isArray(candidate.changes)&&candidate.changes.every(change=>change&&id(change.id)&&
+      ['finish-surface','panel-fill','derived-placement'].includes(change.record??'finish-surface')&&
+      ['created','modified','deleted','derived'].includes(change.change)), '原生變更清單');
+    if(candidate.before.derivedPlacements.length||candidate.after.derivedPlacements.length)
+      wire(candidate.dependencies&&['before','after'].every(stage=>candidate.dependencies[stage]&&
+        Array.isArray(candidate.dependencies[stage].geometry?.timbers)), '宿主下游影響缺少原生前後依賴');
+  }
   function definition(record, kind) {
     if (!record) return null;
     if(kind!=='finish')return clone(record.definition);
@@ -211,6 +219,7 @@
         if(!this.current(generation)){if(result.token)await apiRequest('panel-fill-cancel '+token(result.token));return null;}
         const c=contract(result,true);if(c.revision!==String(this.revision))throw new Error('預覽來源版本已變更。');
         requestScope({...result,before:c.before,after:c.after},this.snapshot,operations);
+        impactContract({...result,before:c.before,after:c.after});
         const required=['edit-definitions','read-layout','read-support'];
         this.candidate={...result,before:c.before,after:c.after,uiContract:c,generation};
         this.phase=result.valid && c.completeForScope && !c.errors.length && required.every(a=>c.supportedActions.includes(a)) ? 'confirmable':'invalid';
