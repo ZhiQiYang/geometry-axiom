@@ -1,3 +1,15 @@
+# #348 最新檢查點：正式 512 驗收執行中
+
+固定候選 F：`ac1d8017038ee9563f0cbd8596ea61c8b2577b19`，已推送可解析。20:08:28 UTC 在獨立乾淨 `/dev/shm/pr348-formal` 啟動原兩個 H7 placed 方法，原分離 K/W/H -O0、16 MiB stack、每批600秒；收據寫 `/tmp/pr348-runs/formal-placed-ac1d8017`，執行完封存。64支load及兩次canonical replay exit0，512第一批仍執行中，**尚未宣告通過**。
+
+- W contact suite：`a22d17c52f97115448160c4c13bfb72e62fd1686`，14 tests／0 failure／0 error／0 skip，exit0；保留41原控制，新增排序/plane具名撤回各0/1/0。
+- K source-index suite：F，21 tests／0 failure／0 error／0 skip，exit0；原8控制保留，新增3個具名撤回0/1/0，涵蓋非單調/nested consumer及失敗append。
+- F N128 O0-pg診斷11.654085秒、exit0；stdout與原B逐byte相同。profile不能替代原正式600秒；mcount外部成本不能歸作memcpy。完整原件見 `index-fix-20261028/RAW.tar.gz` 及逐檔manifest，靜審另列。
+- 候選保留全部ordered edges，只省重複查找；W保留穩定完整uint64順序、單一覆蓋witness和CAPACITY。H局部scope不跨candidate/history。
+- 有序source圖比較、正式512終態、帳本、架構、完整整合尚未完成；#343→#346→#347上游鏈仍阻擋。不是READY-TO-MERGE。
+
+以下為本輪較早檢查點，execution SHA各自保留：
+
 # #348 阻擋 2：修復中，未達合併條件
 
 本輪基底 B `9a8584f57be7935604c3bad4c2481945a6ec3d9f`。最新修補來源 C `3420931a4a512f08e3f4d7584958cc8630e190c3`；原逾時、環境錯誤與每版診斷均收在 timeout-diagnosis-20261028/RAW.tar.gz，MANIFEST.json 逐檔 hash／byte 回讀相符。

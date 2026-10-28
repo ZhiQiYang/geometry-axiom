@@ -1,0 +1,19 @@
+{
+  "kind": "Static peer review, not independent test rerun",
+  "H": {
+    "agent": "pr348_chain_review",
+    "source_blob": "181c0124de7e3f74981d218043f37c620a4c333d",
+    "result": "No path reenters original AppValidationInputs; synchronous borrowed view ends before cache replacement."
+  },
+  "W": {
+    "agent": "pr348_chain_review + tool_static_review",
+    "product_sha256": "4011443c9d428c055678f3200256dedc5184de3d96d3398c7fe12a0c067626d5",
+    "result": "Full uint64 stable order, one-witness coverage, fallbacks and original 41 anchors retained. Added stack53,248bytes at512 on LP64."
+  },
+  "K": {
+    "agent": "pr348_memo_test/review_source_draft",
+    "patch_sha256": "cb3d1fe347cffeec3e481c246dc1180cae65132474d4d475a55a7b35c21467a2",
+    "result": "Hint updated only after successful append; lower/nested consumer uses exact index; allocation and reset unchanged; old8 controls retained with actual nonmonotonic inputs."
+  },
+  "profile_caution": "-pg adds external GLIBC mcount overhead. Self-time gap is NOT proved memcpy cost. Formal H7 uses original separate-O0 without -pg."
+}
