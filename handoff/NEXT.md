@@ -1,3 +1,25 @@
+# 2026-10-29（台北）#338 接續：B2／B3 已閉合，B1 原 ELF 尚缺
+
+本節僅更新 #338；下方舊 #338 現況全部保留作歷史，不能再據其 native UNRUN／F 尚未採入等文字重跑。沒有合併 PR/main、force push、部署或修改公理。
+
+- 整合分支 `codex/train-337-continue-20261024`，**完整 head／E `f817f208fccc833c4a09735e904ad7e4a44dea35`**。F=`cbf0fb621888596aa14ad5f2349b503e23b1b72d` 已在 M=`0ae1728c2309e1d670369289a6b8da059fa63a50` 採入；M→新 head 只有 evidence 變動。原七項 execution 仍 F，新 B3 execution 仍 M，F8／F9／L 不移標。
+- [唯一 current-state PROGRESS](https://github.com/ZhiQiYang/geometry-axiom/blob/f817f208fccc833c4a09735e904ad7e4a44dea35/evidence/geo337-train-20261024/PROGRESS.md)，機械欄位見 `handoff/pr338-current.json`。
+- 正文 D=`41b65b02a14ec419d14ce9aaa510d0816ea7a045`，分支 `codex/train337-recovered-evidence-20261026-prbody` 的 `PR_BODY.md` 已正常 push；既有 request 不變。**relay 套用尚未核實**，看下次 `pr-status.md`，不因已推正文就宣稱 PR 頁已更新。
+- B2 分開核收 R8 perf/profile、F9 175/350 ABC、到 F/M 的排除與完整閉包。30 fallback、36+700 原命令綁定及對抗審查已關閉；原 R8 compare/overall1 與後續未完成的該次嚴審計保留。F9 另次 compare/audit0 不回填 R8。沒有重抽 R8。
+- B3 已在 M 真跑175場景／525程序，精確比較0；原序36樣本的 fix/main = 0.892801／1.118817／1.071056／1.428946，均≤2；3baseline0／27negative1／3restored0。三指定字串／位置與其餘bytes/returncode不變；原strict紅及首次ENOSPC保留。L→M 三個真C輸入有變，因此本輪只重跑受影響 P189，不冒用 L timing。
+- P52 **已正式採入** a08a036db335e88608ead761539d3e60b75e8e5d 的 F formal/verifier/outer0/0/0、16+16樣本、ratio0.849147775；不要再列未執行或重抽。
+- 外部正式 native／oracle／PF3／Q38／P52 原件仍在各固定 E，沒有重複搬大包；完整 E 欄位見 JSON。獨立 executor 總交接 E=2ef9062284849ec9a46517f1137abd3e4d0a03c8。
+
+## 唯一尚未解除的本輪阻擋與下一步
+
+**B1 whole-memo 尚未實跑，維持 draft／NOT READY-TO-MERGE。** 使用者已指示本機 Claude 搜尋原 R8 `base-pg`、`fix`、`fix-trace`。收到後核對[固定 STATUS](https://github.com/ZhiQiYang/geometry-axiom/blob/cbf8df4facf87b40db0fe46581c0b20131afada2/evidence/geo337-followup-scope-20261027/whole-memo/STATUS.json)的完整 SHA256、bytes、mode33216（0100700），私有複製後跑原工具；保留 F8=75a1e93811a52b69385cbdaf6a09d773ed9052ad 真execution與R8原outer1。F9 archive bridge entries只是symlink，不能作ELF已回收；本輪P189的新bridge也不能替代。
+
+P-189三差政策已由使用者本輪直接指示執行，**不再列待批准，不再問同一政策**。B1是缺原件，不是等待新政策。除了B1，不重跑本輪已有效B2/B3/P52或原七項。#335診斷0仍不等於兩材建構成功，保留既有分流。
+
+---
+
+## 以下為先前交接原文（歷史，不作 #338 現況）
+
 > **🔴 2026-10-27 先讀 `handoff/ROOT-CAUSE.md`(GitHub issue #351,置頂):根因是沒有人在處理使用者的需求。收尾 #338 之外，請把其中「目前最該推進的使用者需求」排進待辦;產能不夠時先在 #351 留言(或寫進 handoff),由使用者決定先後。**
 
 > **2026-10-27 新增(本機 Claude):`handoff/USER-REQUESTS.md` 是使用者需求帳。10-21 的交接漏列了這些功能，從那天起沒有人負責;相依與排序建議見該檔「相依與協調建議」(協調建議，未經使用者採納前不是規則;已採納規格的項目依規格實作，不重新設計)。回報進度一律用該檔的 L0–L5 層級，不寫「完成」。**

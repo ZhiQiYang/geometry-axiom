@@ -1,0 +1,58 @@
+{
+  "schema": "pr338-current-state/1",
+  "observedUtc": "2026-10-28T19:21:13.734799+00:00",
+  "pr": 338,
+  "branch": "codex/train-337-continue-20261024",
+  "head": "f817f208fccc833c4a09735e904ad7e4a44dea35",
+  "evidenceHead": "f817f208fccc833c4a09735e904ad7e4a44dea35",
+  "productF": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "reviewedMergeM": "0ae1728c2309e1d670369289a6b8da059fa63a50",
+  "nonEvidenceDiffMToHead": [],
+  "bodyRef": "codex/train337-recovered-evidence-20261026-prbody",
+  "bodyHead": "41b65b02a14ec419d14ce9aaa510d0816ea7a045",
+  "bodyPath": "PR_BODY.md",
+  "bodyRelayApplication": "not yet verified; existing request unchanged",
+  "progressUrl": "https://github.com/ZhiQiYang/geometry-axiom/blob/f817f208fccc833c4a09735e904ad7e4a44dea35/evidence/geo337-train-20261024/PROGRESS.md",
+  "externalEvidence": {
+    "native": "732ef20e34876379a37eb69693a481becebea43e",
+    "readingAOracleRC": "7886f2eaa3da7f9f4855104ca4b028d2d06ce6da",
+    "PF3": "1d9b980defec2659d7b08ee0a3ac782e00354780",
+    "Q38": "dd2cbf6a558b4af240ab4702cc8402621380881b",
+    "P52": "a08a036db335e88608ead761539d3e60b75e8e5d",
+    "executorHandoff": "2ef9062284849ec9a46517f1137abd3e4d0a03c8",
+    "wholeMemoMissingOriginals": "cbf8df4facf87b40db0fe46581c0b20131afada2",
+    "B2ClosureContribution": "1ea29be90ef2e26044f7d71fa1cfa674fa7c0f00",
+    "B3ExecutedContribution": "288a8688ceffdcd1a9232bb81fcef13bde4c788b"
+  },
+  "status": {
+    "readyToMerge": false,
+    "draft": true,
+    "B1": "NOT_EXECUTED: original R8 base-pg/fix/fix-trace ELF bodies missing; no rebuild substitutes",
+    "B2_1": "REUSED_WITH_CLOSURE: original F8 perf/profile exit0; R8 compare/overall1 retained",
+    "B2_2": "REUSED_WITH_CLOSURE: original F9 compare/audit exit0; literal R8 binary symlinks, not F9 builds",
+    "B2_3": "AUDITED: full input/scene/judge/build closures and all changed non-runtime paths identified",
+    "B3": "EXECUTED_M: exact comparison0, timing0, 3baseline0/27negative1/3restored0",
+    "P52": "ADOPTED_F: formal/verifier/outer0/0/0; evidence a08a036d"
+  },
+  "executionIdentities": {
+    "R8_F8": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+    "F9_ABC": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+    "historicalP189_L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "currentP189": "0ae1728c2309e1d670369289a6b8da059fa63a50",
+    "formalSevenGates": "cbf0fb621888596aa14ad5f2349b503e23b1b72d"
+  },
+  "p189": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "scenes": 175,
+    "bridgeCommands": 525,
+    "timingSamples": 36,
+    "fixMainRatios": [
+      0.8928012519561815,
+      1.118816930137685,
+      1.0710556844547565,
+      1.4289458902827186
+    ]
+  },
+  "nextAction": "Receive original R8 ELF payloads, verify exact bytes/mode/hash from fixed STATUS, execute original whole-memo proof without relabeling F8. Do not rerun valid R8 perf or adopted formal gates."
+}
