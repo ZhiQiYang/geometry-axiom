@@ -1,3 +1,17 @@
+# #348 current state：F2 索引修補及172場景等價已過；正式512待跑
+
+產品 F2 `b595e55952d5d66de95024432e1b29bec7525e9b` 已一般推送，遠端ref核對一致。本次可選索引只壓縮ordinal儲存；權威count／ID／ordered node/edge仍為size_t，超出UINT32_MAX或配置失敗會放棄索引回原線性搜尋，不截斷、不新增CAPACITY拒絕。公理與原600秒未改。
+
+- **索引29項 exit0**：原21項保留，新增4正例及4具名撤回；所有原、新控制均具名偵測，0failure/error/skip。
+- **172根場景圖等價 exit0**：B `9a8584f57be7935604c3bad4c2481945a6ec3d9f` 對F2，每場景四支診斷程序，共688次；stdout/stderr、所有seal完整有序node/edge/value/status、五守門計數與seal次數逐byte相同，無差異白名單。這是O0單編譯單元診斷，不冒正式分離K/W/H建置。
+- F2 N128原分離O0加pg診斷10.398194秒exit0，stdout與B逐byte相同；不外推512通過。profile的累積child_maxrss仍含compiler，不能冒產品RSS。
+- F1原H7第二輪：512 load546.118481秒／canonical第一輪590.554897秒均真exit0；第二fresh replay收據寫入ENOSPC，完整方法未過；sequential在原64MiB發布reserve前置失敗，沒有開始。原outer1、全部已取得raw保留；未將F1移標F2。
+- 已修正取件工具使用：GIT_NO_LAZY_FETCH=1防止隱式補抓；新失敗未索引pack完整搬存SHM並保留原路徑/hash/mode，無刪原件或indexed Git objects。正式新OUT使用SHM，逐batch完整raw壓縮後持久存/workspace；小型64場景留證smoke1/0 exit0（非完整H7），實際含binaryhash與原指令/退出碼。1MiB是留證規劃而非產品門檻，原64MiB發布reserve及600秒不變。
+- 原件固定於 `packed-index-b595e559/RAW.tar.gz`，逐檔manifest與STATUS另列。**F2正式兩方法、帳本重產、架構、完整整合未完成**；不是READY-TO-MERGE。
+- 上游仍阻擋：review時相對base behind2；當前#347 `8bb0359331365c6f3a96872620427cf7847fcb50` behind3/ahead8。#343→#346→#347未閉合；鏈修復後才一般merge精確head、逐leaf審查及受影響重驗。
+
+## 歷史檢查點（下列執行中描述均為當時狀態，不取代上方current state）
+
 # #348 最新檢查點：512 placed load 已過；replay/history 未收終態
 
 候選 F `ac1d8017038ee9563f0cbd8596ea61c8b2577b19` 的原 H7 512 load/dump/objects/references 真 exit0，546.118秒、wait4 RSS293292KiB，低於原每batch600秒；原512幾何、ID順序與dump/reference斷言已過，程序已接著進 canonical replay。完整兩個方法、第二次replay及sequential history仍未收終態，**阻擋2尚未全解除**。原件見 `placed-load-partial-ac1d8017/`；這是部分收件，不能冒完整H7通過。
