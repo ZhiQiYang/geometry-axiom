@@ -163,6 +163,30 @@ if (Number.isSafeInteger(r.state.panelFills[0].derived.tiles[0].fragments[0].are
         self.load_text(text, "reopen.scene")
         self.assertEqual(expected, self.contract(self.read())["state"], "UI_WIRE_REOPEN_RECOMPUTES")
 
+    def test_definition_reader_is_separate_from_full_product_capabilities(self):
+        self.seed()
+        self.apply([pf2.fill(), {"op": "put-derived-placement", "value": {"id": 10, "fillId": 1, "h": 30}}])
+        before = self.snapshot()
+        path = self.directory / "reader.scene"
+        path.write_text(before[0], encoding="utf-8")
+        candidate = self.command("load-prepare " + str(path))
+        self.assertTrue(candidate["ok"], candidate)
+        expected_reader = {
+            "schema": "panel-fill-definition-reader/1", "capability": "panel-fill/1",
+            "supportedRecords": ["finish-surface", "panel-fill", "derived-placement"], "complete": False,
+        }
+        original_capabilities = ["engineering-spec/1", "parameters/1", "assembly-rule-authoring/1",
+                                 "assembly-timber-generation/1", "grid-subdivision-rules/1",
+                                 "section-profile/1", "grid-card-reference/1"]
+        for response in [self.read(), self.command("engineering-read"), candidate]:
+            self.assertEqual(original_capabilities, response["capabilities"], "UI_READER_NO_FULL_PF_CLAIM")
+            self.assertEqual(expected_reader, response["panel_fill_reader"], "UI_READER_RECORD_CLOSURE")
+            self.assertIn("panel-fill/1", response["required_capabilities"])
+        self.assertEqual(before[0], candidate["final_scene"], "UI_READER_CANONICAL_DEFINITIONS")
+        self.assertEqual(before, self.snapshot(), "UI_READER_DETACHED_CANDIDATE")
+        self.assertTrue(self.command("load-cancel %d" % candidate["token"])["ok"])
+        self.assertEqual(before, self.snapshot())
+
 
 if __name__ == "__main__":
     unittest.main()

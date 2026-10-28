@@ -16,9 +16,9 @@ static bool eng_definition_hash(const World *w,char hash[65])
 }
 static void json_engineering_capabilities(const World *w)
 {
-    /* panel-fill/1 is required by scenes holding finish surfaces (I56 adds its two prerequisites), but it is not
-     * advertised as supported: PF-1 implements only the finish-surface records, and I32 forbids claiming the
-     * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
+    /* panel-fill/1 is required by scenes holding finish surfaces (I56 adds its two prerequisites), but I32
+     * forbids advertising the whole product capability. The separate, versioned definition reader below
+     * admits exactly the implemented source records for atomic project import, not PF-4/5/6 actions. */
     bool fs=fs_used(w),eng=engineering_used(w)||fs,par=geo_parameters_card_count(&w->geo.parameters)||fs,first=true;
     const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
         {w->wood.assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY},{grid_card_used(w),GRID_CARD_CAPABILITY}};
@@ -26,6 +26,8 @@ static void json_engineering_capabilities(const World *w)
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
     fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
+    fputs(",\"panel_fill_reader\":{\"schema\":\"panel-fill-definition-reader/1\",\"capability\":\"" FS_CAPABILITY "\","
+          "\"supportedRecords\":[\"finish-surface\",\"panel-fill\",\"derived-placement\"],\"complete\":false}",stdout);
 }
 static void json_engineering_sources(const World *w)
 {
