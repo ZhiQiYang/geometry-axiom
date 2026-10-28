@@ -590,6 +590,7 @@ function showConnectionState() {
 }
 function connectionFailed(message) {
   connection.phase = "error"; connection.error = message;
+  window.PanelFillWorkspace?.invalidate("連線已中斷；舊預覽失效。若正在確認，保留原回執，禁止重送。");
   showConnectionState();
 }
 async function recoverConnection() {
@@ -1871,7 +1872,7 @@ function markSceneItem() {
 }
 /* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
 function resetSceneFocus() {
-  if (window.PanelFillWorkspace?.close() === false) return;
+  window.PanelFillWorkspace?.retireContext();
   ++oc.navigationSequence;
   hoverPickScheduler.cancel();
   clearCanvasSelections();
