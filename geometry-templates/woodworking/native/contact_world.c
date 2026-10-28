@@ -78,6 +78,14 @@ static void contact_member_index_sort(const WoodContactWorld *world,const Contac
     WoodStopFace *out,size_t count,size_t first,ContactFaceIndex *index)
 {
     size_t members=count-first;
+    /* This caller admits unique IDs only. The emitted member suffix is a
+     * subsequence of declaration order, with both sides stable at equal
+     * order. If even the unfiltered facts are nondecreasing, no sort is
+     * needed. A filtered out-of-order fact merely misses this fast path. */
+    bool ordered=first<count&&out[first].kind==WOOD_STOP_MEMBER_SIDE;
+    for(size_t i=1;ordered&&i<world->member_count;++i)
+        if(world->members[i-1].order>world->members[i].order)ordered=false;
+    if(ordered)return;
     /* The immutable face suffix needs one full-width order lookup per face,
      * not two hash lookups at every merge comparison. */
     uint64_t order[WOOD_CONTACT_FACE_CAPACITY];
