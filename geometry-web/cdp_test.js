@@ -7158,7 +7158,7 @@ async function main() {
   if(scope.mode==='full')await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(scope.mode==='full')await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   } // Existing suites keep their original scope and assertions.
-  if(scope.mode==='full'||process.env.GEOMETRY_PANEL_FILL_ONLY)await require('./panel_fill_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,exceptionCount:()=>excN});
+  if(scope.mode==='full'||process.env.GEOMETRY_PANEL_FILL_ONLY)await require('./panel_fill_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();
