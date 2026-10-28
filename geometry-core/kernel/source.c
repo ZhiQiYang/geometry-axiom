@@ -9,6 +9,8 @@ typedef struct {
     GeoSourceState state;
     GeoSourceStatus status;
     size_t provider;
+    size_t edge_consumer;
+    unsigned edge_kinds;
     bool described;
 } GeoSourceNode;
 struct GeoEvalContext {
@@ -73,7 +75,7 @@ static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source
         if(geo_source_ref_equal(ctx->nodes[i]->source,source))return i;
     return SIZE_MAX;
 }
-static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge)
+static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge,size_t *empty_slot)
 {
     if(ctx->edge_index_capacity){
         size_t mask=ctx->edge_index_capacity-1,slot=(size_t)geo_source_edge_hash(edge)&mask;
@@ -81,6 +83,7 @@ static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge)
             if(geo_source_edge_equal(ctx->edges[ctx->edge_index[slot]-1],edge))return true;
             slot=(slot+1)&mask;
         }
+        *empty_slot=slot;
     }else for(size_t i=0;i<ctx->edge_count;++i)
         if(geo_source_edge_equal(ctx->edges[i],edge))return true;
     return false;
@@ -208,12 +211,31 @@ static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDepe
     if(kind<GEO_DEPENDENCY_VALUE_REQUIRED||kind>GEO_DEPENDENCY_EVALUATE_BEFORE)return GEO_SOURCE_INVALID;
     if(ctx->active==SIZE_MAX)return GEO_SOURCE_OK;
     GeoSourceEdge edge={ctx->active,source,kind};
-    if(geo_source_find_edge(ctx,edge))return GEO_SOURCE_OK;
+    GeoSourceNode *node=ctx->nodes[source];
+    unsigned kind_bit=1u<<(unsigned)kind;
+    size_t empty_slot=SIZE_MAX;
+    /* 每個 source 只記已成功追加的最大 consumer 及其 kind。
+     * 更大的 consumer 尚無邊；同一個 consumer 可直接判斷 kind；
+     * 巢狀回呼返回較早 consumer 時仍由完整索引判斷，不省略任何邊。 */
+    if(node->edge_kinds&&ctx->active<node->edge_consumer){
+        if(geo_source_find_edge(ctx,edge,&empty_slot))return GEO_SOURCE_OK;
+    }else if(node->edge_kinds&&ctx->active==node->edge_consumer&&
+             (node->edge_kinds&kind_bit))return GEO_SOURCE_OK;
     if(ctx->edge_count==SIZE_MAX/sizeof *ctx->edges)return GEO_SOURCE_MEMORY;
     GeoSourceEdge *next=geo_source_grow(ctx->edges,ctx->edge_count,&ctx->edge_capacity,sizeof *next);
     if(!next)return GEO_SOURCE_MEMORY;
     ctx->edges=next;next[ctx->edge_count++]=edge;
-    geo_source_index_append(ctx,false);return GEO_SOURCE_OK;
+    /* 查找已取得空槽；兩步間只有 edges 配置，不會改動索引或呼叫 provider。
+     * 不需擴表時直接寫入同槽，避免對新邊再雜湊與探測一次。
+     * 無索引、擴表及配置失敗的降級仍由原路徑處理。 */
+    if(empty_slot!=SIZE_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)
+        ctx->edge_index[empty_slot]=ctx->edge_count;
+    else geo_source_index_append(ctx,false);
+    /* 必須晚於必要的 edges 配置／追加；MEMORY 不能留下不存在的邊提示。 */
+    if(!node->edge_kinds||ctx->active>node->edge_consumer){
+        node->edge_consumer=ctx->active;node->edge_kinds=kind_bit;
+    }else if(ctx->active==node->edge_consumer)node->edge_kinds|=kind_bit;
+    return GEO_SOURCE_OK;
 }
 static bool geo_source_descriptor_valid(const GeoSourceDescriptor *d)
 {

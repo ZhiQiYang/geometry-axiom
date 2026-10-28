@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdint.h>
 static size_t live_allocations,fail_nth,attempts,exact_limit;
+/* 私有 source.c 的唯讀計數注入；正式 K 沒有這些變數或測試分支。 */
+static size_t edge_hash_calls,edge_probe_steps,edge_find_calls;
 static unsigned index_failures,realloc_failures;
 static int fail_indexes,fail_reallocs;
 static int allocation_fails(void){return ++attempts==fail_nth;}
@@ -77,6 +79,21 @@ static bool evaluate(void *state,GeoEvalContext *ctx,const GeoSourceRef *ref,Geo
                 for(int repeat=0;repeat<3;++repeat)
                     if(geo_eval_depend(ctx,refs[i],(GeoDependencyKind)kind)!=GEO_SOURCE_OK)callback_failure=1;
             }
+        }
+    }else if(callback_mode==6){
+        size_t consumer=linear_node(*ref);
+        if(ref->key_size==refs[100].key_size&&!memcmp(ref->key,refs[100].key,ref->key_size)){
+            size_t child=linear_node(refs[101]);GeoSourceValue v;
+            linear_edge(consumer,child,GEO_DEPENDENCY_VALUE_REQUIRED);
+            if(geo_eval_source(ctx,refs[101],GEO_DEPENDENCY_VALUE_REQUIRED,&v)!=GEO_SOURCE_OK)callback_failure=1;
+            for(int kind=0;kind<3;++kind){size_t source=linear_node(refs[0]);
+                linear_edge(consumer,source,(GeoDependencyKind)kind);
+                for(int repeat=0;repeat<2;++repeat)
+                    if(geo_eval_depend(ctx,refs[0],(GeoDependencyKind)kind)!=GEO_SOURCE_OK)callback_failure=1;
+            }
+        }else{
+            size_t source=linear_node(refs[0]);linear_edge(consumer,source,GEO_DEPENDENCY_VALUE_REQUIRED);
+            if(geo_eval_depend(ctx,refs[0],GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)callback_failure=1;
         }
     }else if(callback_mode==4){
         GeoSourceValue value;nested_status=geo_eval_source(ctx,*ref,GEO_DEPENDENCY_VALUE_REQUIRED,&value);
@@ -172,6 +189,14 @@ static int edges_and_reset(void)
         REQUIRE("consumer-evaluates",geo_eval_source(ctx,refs[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
         REQUIRE("callback-dependencies",!callback_failure);
         REQUIRE("duplicate-edge",geo_eval_edge_count(ctx)==oracle_edge_count);}
+    /* 回到第一個 consumer，要求真實索引仍能找回全部舊邊。
+     * 單調提示不得遮住原 never-find-edge 反證，也不能取代非單調查找。 */
+    ctx->active=linear_node(refs[100]);
+    for(size_t i=0;i<96;++i)for(int kind=0;kind<3;++kind){
+        REQUIRE("old-consumer-dependency",geo_eval_depend(ctx,refs[i],(GeoDependencyKind)kind)==GEO_SOURCE_OK);
+        REQUIRE("duplicate-edge",geo_eval_edge_count(ctx)==oracle_edge_count);
+    }
+    ctx->active=SIZE_MAX;
     REQUIRE("all-three-edge-fields",oracle_edge_count==4*96*3);
     REQUIRE("linear-graph-order",!graph_equal(ctx));
     REQUIRE("reset",geo_eval_reset(ctx));
@@ -244,6 +269,17 @@ static int edge_collisions(void)
         if(add_edge(ctx,p->consumer,p->source,p->kind_a)||add_edge(ctx,p->consumer,p->source,p->kind_b))return 1;}
     REQUIRE("edge-collision-all-added",oracle_edge_count==EDGE_GROUP+2*EDGE_PAIRS&&geo_eval_edge_count(ctx)==oracle_edge_count);
     REQUIRE("edge-index-in-use",ctx->edge_index&&ctx->edge_index_capacity);
+    /* 加入較晚 consumer，使下列原碰撞重訪必走完整索引。
+     * 再加一個同槽新鍵及一組不同 kind 同槽鍵，保留原索引 mutants 的牙齒。 */
+    for(size_t i=0;i<EDGE_GROUP;++i)
+        if(add_edge(ctx,EDGE_NODES-1,edge_group[i].source,0))return 1;
+    for(size_t i=0;i<EDGE_PAIRS;++i)
+        if(add_edge(ctx,EDGE_NODES-1,edge_pairs[i].source,0))return 1;
+    REQUIRE("edge-fallback-new-collision-precondition",edge_slot(60,431,0)==EDGE_SLOT_MASK);
+    if(add_edge(ctx,60,431,0))return 1;
+    REQUIRE("edge-fallback-new-kind-collision-precondition",edge_slot(354,457,1)==edge_slot(354,457,2)&&
+        edge_slot(354,457,1)!=EDGE_SLOT_MASK);
+    if(add_edge(ctx,354,457,1)||add_edge(ctx,354,457,2))return 1;
     /* 全部再加一遍：先倒序、再正序。已存在的邊不得重複，排序仍是首次插入序。 */
     for(size_t i=EDGE_PAIRS;i-->0;){const EdgePair *p=&edge_pairs[i];
         if(add_edge(ctx,p->consumer,p->source,p->kind_b)||add_edge(ctx,p->consumer,p->source,p->kind_a))return 1;}
@@ -256,6 +292,83 @@ static int edge_collisions(void)
     REQUIRE("edge-collision-order",!graph_equal(ctx));
     geo_eval_destroy(ctx);
     REQUIRE("edge-collision-frees-all",live_allocations==0);return 0;
+}
+/* 使用上面的固定碰撞鍵，經公開 depend 路徑加入真節點與真邊。
+ * 第二、三條邊不會擴表，先前的探測已找到唯一可寫空槽；圖仍須逐邊等於線性 oracle。 */
+static int edge_miss_work(void)
+{
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceDescriptor d;
+    for(size_t i=0;i<EDGE_NODES;++i){linear_node(refs[i]);
+        REQUIRE("edge-work-nodes",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);}
+    /* 先對這三個 source 寫入較晚 consumer，正式樣本便是非單調的 miss。 */
+    for(size_t i=0;i<3;++i)
+        if(add_edge(ctx,EDGE_NODES-1,edge_group[i].source,0))return 1;
+    for(size_t i=0;i<3;++i){const EdgeKey *key=&edge_group[i];
+        REQUIRE("edge-work-collision-precondition",edge_slot(key->consumer,key->source,key->kind)==EDGE_SLOT_MASK);
+        /* 無關邊可能同槽；以本次真索引當下佔用數作獨立 probe 長度 oracle。 */
+        size_t expected_probes=1,slot=EDGE_SLOT_MASK&(ctx->edge_index_capacity-1);
+        while(ctx->edge_index[slot]){++expected_probes;slot=(slot+1)&(ctx->edge_index_capacity-1);}
+        edge_hash_calls=edge_probe_steps=0;
+        if(add_edge(ctx,key->consumer,key->source,key->kind))return 1;
+        if(i){
+            REQUIRE("edge-work-index-no-resize",ctx->edge_index_capacity==16);
+            REQUIRE("edge-miss-one-hash",edge_hash_calls==1);
+            REQUIRE("edge-miss-one-probe-sequence",edge_probe_steps==expected_probes);
+        }
+    }
+    REQUIRE("edge-work-linear-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("edge-work-frees-all",live_allocations==0);return 0;
+}
+static int edge_consumer_work(void)
+{
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceDescriptor d;
+    for(size_t i=0;i<4;++i){linear_node(refs[i]);
+        REQUIRE("edge-consumer-nodes",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);}
+    if(add_edge(ctx,0,2,0))return 1;
+    edge_find_calls=edge_hash_calls=0;
+    if(add_edge(ctx,1,2,0))return 1;
+    REQUIRE("edge-monotonic-no-lookup",edge_find_calls==0);
+    REQUIRE("edge-monotonic-one-insert-hash",edge_hash_calls==1);
+    edge_find_calls=edge_hash_calls=0;
+    if(add_edge(ctx,1,2,0))return 1;
+    REQUIRE("edge-same-consumer-kind-no-lookup",!edge_find_calls&&!edge_hash_calls);
+    if(add_edge(ctx,1,2,1)||add_edge(ctx,1,2,2))return 1;
+    REQUIRE("edge-new-kind-no-lookup",!edge_find_calls);
+    edge_find_calls=0;
+    if(add_edge(ctx,0,2,0)||add_edge(ctx,0,2,1)||add_edge(ctx,0,2,2))return 1;
+    REQUIRE("edge-old-consumer-index-lookup",edge_find_calls==3);
+    REQUIRE("edge-consumer-kind-count",oracle_edge_count==6);
+    REQUIRE("edge-consumer-linear-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("edge-consumer-frees-all",live_allocations==0);return 0;
+}
+static int edge_nested(void)
+{
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceValue value;
+    callback_mode=6;linear_node(refs[100]);
+    REQUIRE("nested-root-evaluates",geo_eval_source(ctx,refs[100],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+    REQUIRE("nested-callback-dependencies",!callback_failure);
+    REQUIRE("nested-active-restored",ctx->active==SIZE_MAX);
+    REQUIRE("nested-all-kinds-preserved",geo_eval_edge_count(ctx)==5&&evaluations==2);
+    REQUIRE("nested-graph-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("nested-frees-all",live_allocations==0);return 0;
+}
+static int edge_hint_failure(void)
+{
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceDescriptor d;
+    for(size_t i=0;i<4;++i){linear_node(refs[i]);
+        REQUIRE("edge-hint-nodes",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);}
+    exact_limit=sizeof *ctx->edges;
+    if(add_edge(ctx,0,2,0))return 1;
+    REQUIRE("edge-hint-single-capacity",ctx->edge_capacity==1);
+    exact_limit=0;fail_reallocs=1;ctx->active=3;
+    REQUIRE("edge-hint-failed-append",geo_eval_depend(ctx,refs[2],GEO_DEPENDENCY_VALUE_REQUIRED)==GEO_SOURCE_MEMORY);
+    REQUIRE("edge-hint-failed-append-preserved",geo_eval_edge_count(ctx)==1);
+    fail_reallocs=0;
+    REQUIRE("edge-failed-append-retry",geo_eval_depend(ctx,refs[2],GEO_DEPENDENCY_VALUE_REQUIRED)==GEO_SOURCE_OK);
+    REQUIRE("edge-failed-append-retry-present",geo_eval_edge_count(ctx)==2);
+    linear_edge(3,2,GEO_DEPENDENCY_VALUE_REQUIRED);ctx->active=SIZE_MAX;
+    REQUIRE("edge-hint-retry-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("edge-hint-frees-all",live_allocations==0);return 0;
 }
 /* 重現上面兩張表：印出可直接貼回的 C 初始化列。 */
 static int edge_search(void)
@@ -365,6 +478,10 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"nodes"))result=nodes_and_seal();
     else if(!strcmp(argv[1],"edges"))result=edges_and_reset();
     else if(!strcmp(argv[1],"edge-collisions"))result=edge_collisions();
+    else if(!strcmp(argv[1],"edge-miss-work"))result=edge_miss_work();
+    else if(!strcmp(argv[1],"edge-consumer-work"))result=edge_consumer_work();
+    else if(!strcmp(argv[1],"edge-nested"))result=edge_nested();
+    else if(!strcmp(argv[1],"edge-hint-failure"))result=edge_hint_failure();
     else if(!strcmp(argv[1],"edge-search"))return edge_search();
     else if(!strcmp(argv[1],"allocation"))result=failures();
     else if(!strcmp(argv[1],"growth"))result=growth_failures();
