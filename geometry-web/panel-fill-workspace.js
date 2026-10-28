@@ -169,7 +169,7 @@ window.PanelFillWorkspace = (() => {
     const paths=list(d.tiles).flatMap(t=>list(t.fragments).map(f=>`<path d="${[f.outer,...list(f.holes)].map(loop=>'M '+loop.map(p=>p.map(esc).join(' ')).join(' L ')+' Z').join(' ')}" fill-rule="evenodd"><title>片 ${esc(JSON.stringify(f.key))} · 面積 ${esc(f.area)} mm²</title></path>`)).join('');
     const seams=list(d.support).map((p,index)=>{
       const seam=d.effectiveSeams[p.seam];
-      return `<line data-pf-support="${index}" data-supported="${p.supported}" x1="${esc(seam.axis==='u'?seam.coordinate:p.range[0])}" y1="${esc(seam.axis==='u'?p.range[0]:seam.coordinate)}" x2="${esc(seam.axis==='u'?seam.coordinate:p.range[1])}" y2="${esc(seam.axis==='u'?p.range[1]:seam.coordinate)}"><title>原生子段 ${esc(JSON.stringify(p.range))}：左側實寬 ${esc(p.left)} mm；右側實寬 ${esc(p.right)} mm；X ${esc(d.threshold.num+'/'+d.threshold.den)} mm；${p.supported?'支撐足夠':'支撐不足（可保存）'}</title></line>`;
+      return `<line data-pf-support="${index}" data-supported="${p.supported}" x1="${esc(seam.axis==='u'?seam.coordinate:p.range[0])}" y1="${esc(seam.axis==='u'?p.range[0]:seam.coordinate)}" x2="${esc(seam.axis==='u'?seam.coordinate:p.range[1])}" y2="${esc(seam.axis==='u'?p.range[1]:seam.coordinate)}"><title>原生子段 ${esc(JSON.stringify(p.range))}：左側實寬 ${esc(p.left)} mm；右側實寬 ${esc(p.right)} mm；X ${esc(d.threshold?d.threshold.num+'/'+d.threshold.den:'未提供')} mm；${p.supported?'支撐足夠':'支撐不足（可保存）'}</title></line>`;
     }).join('');
     return `<svg class="pf-layout" role="img" aria-label="原生裁片與有效板縫；支撐狀態另列文字" viewBox="${x} ${y} ${width||1} ${height||1}" preserveAspectRatio="xMidYMid meet"><g class="pf-tiles">${paths}</g><g class="pf-seams">${seams}</g></svg>`;
   }
