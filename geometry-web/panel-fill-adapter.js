@@ -11,6 +11,80 @@
   };
   const id = value => Number.isSafeInteger(value) && value >= 0 && value <= 4294967295;
   const workspace = () => typeof ReferenceWorkspace!=='undefined' ? ReferenceWorkspace : root.ReferenceWorkspace;
+  const wire=(ok,label)=>{if(!ok)throw new Error('原生 UI 資料不完整或型別不符：'+label);};
+  const integerText=v=>typeof v==='string'&&/^(0|-?[1-9]\d*)$/.test(v)&&BigInt(v)>=-9223372036854775808n&&BigInt(v)<=9223372036854775807n;
+  const tuple=(v,n)=>Array.isArray(v)&&v.length===n&&v.every(integerText);
+  const axis=v=>['+X','-X','+Y','-Y','+Z','-Z'].includes(v);
+  const frame=v=>!!v&&tuple(v.origin,3)&&[v.U,v.V,v.N].every(axis);
+  const loop=v=>Array.isArray(v)&&v.every(p=>tuple(p,2));
+  const region=v=>!!v&&loop(v.outline)&&Array.isArray(v.holes)&&v.holes.every(loop);
+  const unique=(items,key,label)=>{wire(new Set(items.map(key)).size===items.length,label+' 重複身分');};
+  const positiveId=v=>id(v)&&v>0;
+  const d1=v=>Number.isSafeInteger(v)&&Math.abs(v)<=100000000;
+  const parameter=v=>!!v&&id(v.parameterId)&&id(v.fieldId);
+  function sameDefinition(a,b,kind){
+    const normalized=v=>kind==='finish'&&v?{...v,obstacles:[...v.obstacles].sort()}:v;
+    return canonical(normalized(a))===canonical(normalized(b));
+  }
+  function definitionShape(value,kind){
+    wire(value&&typeof value==='object',kind+' 定義');
+    if(kind==='finish')wire(positiveId(value.id)&&positiveId(value.boundaryId)&&typeof value.name==='string'&&frame(value.frame)&&
+      [-1,1].includes(value.structureSide)&&Array.isArray(value.obstacles)&&value.obstacles.every(v=>typeof v==='string'&&/^[bc]\d+$/.test(v)), '完成面定義');
+    if(kind==='fill')wire(positiveId(value.id)&&positiveId(value.finishSurfaceId)&&value.panel&&typeof value.panel.id==='string'&&positiveId(value.panel.version)&&
+      ['u','v'].includes(value.lengthAlong)&&Array.isArray(value.origin)&&value.origin.length===2&&value.origin.every(d1)&&
+      (d1(value.gap)||parameter(value.gap))&&parameter(value.threshold)&&['straight','stagger'].includes(value.pattern)&&
+      (value.pattern==='straight'?!('stagger' in value):value.stagger&&['u','v'].includes(value.stagger.axis)&&(d1(value.stagger.value)||parameter(value.stagger.value))), '鋪排定義');
+    if(kind==='host')wire(id(value.id)&&positiveId(value.fillId)&&
+      (d1(value.h)||value.h&&(['literal','spec','parameter','material'].includes(value.h.kind))), '宿主定義');
+  }
+  function validateState(state,contract,stage){
+    unique(state.finishSurfaces,r=>r.id,'完成面');unique(state.panelFills,r=>r.definition?.id,'鋪排');unique(state.derivedPlacements,r=>r.definition?.id,'宿主');
+    const finishes=new Map(state.finishSurfaces.map(r=>[r.id,r])),fills=new Map(state.panelFills.map(r=>[r.definition?.id,r]));
+    const hosts=new Map(state.derivedPlacements.map(r=>[r.definition?.id,r]));
+    unique(state.derivedPlacements,r=>r.definition?.fillId,'鋪排宿主');
+    const failed=(r,type,recordId)=>{
+      const bad=!r.derived||typeof r.derived!=='object'||Array.isArray(r.derived)||Object.prototype.hasOwnProperty.call(r.derived,'error');
+      if(bad)wire(!contract.completeForScope&&contract.errors.some(e=>e.stage===stage&&e.recordType===type&&e.id===recordId),type+' 缺派生結果卻未宣告錯誤');
+      return bad;
+    };
+    for(const r of state.finishSurfaces){
+      definitionShape(r,'finish');unique(r.obstacles,v=>v,'明選障礙');if(failed(r,'finish-surface',r.id))continue;
+      const d=r.derived;wire(axis(d.n)&&region(d.region)&&Array.isArray(d.obstacles),'完成面區域');unique(d.obstacles,o=>o.ref,'障礙');
+      wire(d.obstacles.length===r.obstacles.length&&d.obstacles.every(o=>r.obstacles.includes(o.ref)),'明選障礙閉包');
+      for(const o of d.obstacles){
+        if(Object.prototype.hasOwnProperty.call(o,'error'))wire(!contract.completeForScope&&contract.errors.some(e=>e.stage===stage&&e.recordType==='finish-surface'&&e.id===r.id),'內層障礙錯誤');
+        else wire(tuple(o.rect,4)&&tuple(o.q,2)&&typeof o.relation==='string'&&o.layers===null,'障礙精確座標');
+      }
+    }
+    for(const r of state.panelFills){
+      const f=r.definition;definitionShape(f,'fill');wire(finishes.has(f.finishSurfaceId),'鋪排完成面來源閉包');if(failed(r,'panel-fill',f.id))continue;
+      const d=r.derived;wire(['tileCount','fragmentCount','wholeCount','cutCount'].every(k=>id(d[k]))&&integerText(d.thickness),'片數與厚度');
+      wire(['tiles','obstacles','seamLines','effectiveSeams','nonSeams','support'].every(k=>Array.isArray(d[k])),'鋪排派生集合');
+      wire(d.threshold===null&&!contract.completeForScope&&contract.errors.some(e=>e.stage===stage&&e.recordType==='panel-fill'&&e.id===f.id)||
+        d.threshold&&integerText(d.threshold.num)&&integerText(d.threshold.den)&&BigInt(d.threshold.den)>0n,'精確支撐門檻 X');
+      unique(d.tiles,t=>canonical(t.key),'片 key');let fragments=0;
+      for(const t of d.tiles){
+        wire(Array.isArray(t.key)&&t.key.length===3&&t.key[0]===f.id&&integerText(t.i)&&integerText(t.j)&&t.key[1]===t.i&&t.key[2]===t.j&&tuple(t.body,4)&&typeof t.whole==='boolean'&&Array.isArray(t.fragments),'片 key／座標');
+        unique(t.fragments,p=>canonical(p.key),'裁片 key');fragments+=t.fragments.length;
+        for(const p of t.fragments)wire(Array.isArray(p.key)&&p.key.length===4&&p.key[0]===f.id&&p.key[1]===t.i&&p.key[2]===t.j&&id(p.key[3])&&integerText(p.area)&&region({outline:p.outer,holes:p.holes}),'裁片精確面積／輪廓');
+      }
+      wire(d.tiles.length===d.tileCount&&fragments===d.fragmentCount,'裁片集合完整性');
+      const seam=(s,effective)=>['u','v'].includes(s.axis)&&integerText(s.k)&&integerText(s.coordinate)&&
+        (!('band' in s)||integerText(s.band))&&(!('range' in s)||tuple(s.range,2))&&
+        (!effective||(s.fillId===f.id&&tuple(s.range,2)&&tuple(s.edges,2)));
+      wire(d.seamLines.every(s=>seam(s,false))&&d.effectiveSeams.every(s=>seam(s,true))&&d.nonSeams.every(s=>seam(s,true)),'板縫完整 key／精確區間');
+      for(const p of d.support)wire(id(p.seam)&&p.seam<d.effectiveSeams.length&&tuple(p.range,2)&&integerText(p.left)&&integerText(p.right)&&typeof p.supported==='boolean'&&p.status===(p.supported?'supported':'insufficient'),'原生支撐分段');
+      wire(d.derivedPlacement===null||(id(d.derivedPlacement)&&hosts.get(d.derivedPlacement)?.definition.fillId===f.id),'鋪排宿主閉包');
+      const refs=finishes.get(f.finishSurfaceId).obstacles;unique(d.obstacles,o=>o.ref,'鋪排障礙');
+      wire(d.obstacles.length===refs.length&&d.obstacles.every(o=>refs.includes(o.ref)&&typeof o.panelLayer==='boolean'&&(o.timberLayer===null||typeof o.timberLayer==='boolean')),'鋪排障礙分層閉包');
+    }
+    for(const r of state.derivedPlacements){
+      const h=r.definition;definitionShape(h,'host');wire(r.id===h.id&&fills.has(h.fillId),'宿主鋪排來源閉包');if(failed(r,'derived-placement',h.id))continue;
+      const d=r.derived;wire(integerText(d.h)&&frame(d.frame)&&Array.isArray(d.components),'宿主精確框架');
+      for(const c of d.components){wire(region(c)&&Array.isArray(c.edges),'宿主分量');
+        for(const e of c.edges)wire(Array.isArray(e.key)&&e.key.length>0&&e.key.every(k=>Array.isArray(k)&&k.length===3&&typeof k[0]==='string'&&id(k[1])&&positiveId(k[2]))&&tuple(e.start,2)&&tuple(e.end,2)&&['FREE','FIXED'].includes(e.fixity),'宿主完整邊 key');}
+    }
+  }
   function contract(reply, preview=false) {
     const c=reply?.uiContract;
     if (!c || c.schema!=='panel-fill-workspace/1' || !Array.isArray(c.supportedActions) ||
@@ -21,6 +95,8 @@
         !c.scope || !['finishSurfaceIds','fillIds'].every(k=>Array.isArray(c.scope[k]) &&
           c.scope[k].every(id) && new Set(c.scope[k]).size===c.scope[k].length))
       throw new Error('目前服務未提供相容、完整的完成面 UI 契約；此片功能不可用。');
+    for(const e of c.errors)wire(e&&['finish-surface','panel-fill','derived-placement','transaction'].includes(e.recordType)&&
+      (e.id===null||id(e.id))&&['state','before','after'].includes(e.stage)&&typeof e.code==='string'&&typeof e.message==='string','具型別診斷');
     const seenFinish=new Set(),seenFill=new Set();
     for (const key of preview ? ['before','after'] : ['state']) {
       const state=c[key];
@@ -33,10 +109,26 @@
       for(const record of state.panelFills)seenFill.add(record.definition.id);
       if(c.completeForScope && (c.errors.length || [...state.finishSurfaces,...state.panelFills,...state.derivedPlacements]
         .some(r=>r.derived?.error))) throw new Error('原生完整性旗標與內層錯誤不一致，禁止確認。');
+      validateState(state,c,key);
     }
     if(c.scope.finishSurfaceIds.some(i=>!seenFinish.has(i))||c.scope.fillIds.some(i=>!seenFill.has(i)))
       throw new Error('完成面契約宣告的範圍缺少原生紀錄。');
     return c;
+  }
+  function requestScope(candidate,snapshot,operations){
+    wire(canonical(candidate.before)===canonical(snapshot),'預覽 before 不符本次來源快照');
+    if(!candidate.valid)return;
+    const keys={finishSurfaces:'finish',panelFills:'fill',derivedPlacements:'host'},expected={};
+    for(const [key,kind] of Object.entries(keys))expected[key]=new Map(snapshot[key].map(r=>[kind==='finish'?r.id:r.definition.id,definition(r,kind)]));
+    const kinds={'finish-surface':'finishSurfaces','panel-fill':'panelFills','derived-placement':'derivedPlacements'};
+    for(const op of operations){
+      const match=/^(put|delete)-(finish-surface|panel-fill|derived-placement)$/.exec(op.op||'');wire(match,'未知本片操作');
+      const values=expected[kinds[match[2]]];if(match[1]==='put')values.set(op.value.id,clone(op.value));else values.delete(op.id);
+    }
+    for(const [key,kind] of Object.entries(keys)){
+      const actual=new Map(candidate.after[key].map(r=>[kind==='finish'?r.id:r.definition.id,definition(r,kind)]));
+      wire(actual.size===expected[key].size&&[...expected[key]].every(([recordId,value])=>sameDefinition(actual.get(recordId),value,kind)), '預覽 after 不符本次 '+key+' 操作範圍');
+    }
   }
   function definition(record, kind) {
     if (!record) return null;
@@ -86,7 +178,7 @@
       const last=checked(await apiRequest('panel-fill-read'));this.assertCurrent(generation);
       const final=contract(last);if(final.revision!==c.revision)throw new Error('讀取期間原生來源已變更，請重新開啟。');
       if(!id(ids.finishSurface)||!id(ids.panelFill)||!id(ids.placement))throw new Error('目前服務未提供完成面、鋪排與宿主的正式識別。');
-      this.snapshot=final.state;this.contract=final;this.revision=last.revision;
+      this.snapshot=final.state;this.snapshotFresh=true;this.contract=final;this.revision=last.revision;
       this.owner.nativeRevision=workspace().getEvidenceState?.().nativeRevision??null;
       this.sources=engineering.state;this.objects=objects;this.ids=ids;
       this.phase='editing';this.reason=final.completeForScope?'請設定完成面與鋪排，再由原生預覽。':'來源不完整；可檢視及修正定義，尚不可確認。';
@@ -118,6 +210,7 @@
         if(!result||typeof result.valid!=='boolean')throw new Error('原生預覽資料不完整。');
         if(!this.current(generation)){if(result.token)await apiRequest('panel-fill-cancel '+token(result.token));return null;}
         const c=contract(result,true);if(c.revision!==String(this.revision))throw new Error('預覽來源版本已變更。');
+        requestScope({...result,before:c.before,after:c.after},this.snapshot,operations);
         const required=['edit-definitions','read-layout','read-support'];
         this.candidate={...result,before:c.before,after:c.after,uiContract:c,generation};
         this.phase=result.valid && c.completeForScope && !c.errors.length && required.every(a=>c.supportedActions.includes(a)) ? 'confirmable':'invalid';
@@ -138,15 +231,15 @@
       try {
         reply=await apiRequest(this.confirmationCommand);
         if(reply?.transport){this.phase='unknown';this.reason='確認結果未知。保留原 requestId 回執，禁止重送；請由連線回執復原。';this.emit();return reply;}
-        checked(reply);this.receipt=reply;this.candidate=null;this.dirty=false;
+        checked(reply);this.receipt=reply;this.candidate=null;this.dirty=false;this.snapshotFresh=false;
         // The shared apiRequest observer owns dirty/history. Never create a second entry here.
         const sameOwner=workspace().context()===this.owner.context && workspace().getProjectState().contextToken===this.owner.contextToken;
-        if(this.retired||!sameOwner){this.phase='committed';return reply;}
+        if(this.retired||!sameOwner){this.phase='committed';this.reason='原生已確認；視圖已退役，請重新開啟讀取正式資料。';return reply;}
         this.owner=owner(this.boundaryId);const official=checked(await apiRequest('panel-fill-read'));
         this.assertCurrent();const currentContract=contract(official);
-        this.snapshot=currentContract.state;this.contract=currentContract;this.revision=official.revision;
+        this.snapshot=currentContract.state;this.snapshotFresh=true;this.contract=currentContract;this.revision=official.revision;
         this.ids=checked(await apiRequest('newid'));this.assertCurrent();
-        this.phase='committed';this.reason='已確認；正式定義已重新讀取。此確認只新增一筆共用歷史。';this.emit();return reply;
+        this.phase='committed';this.reason=reply.history_changed===false?'原生確認定義未變更；零新增歷史。':'已確認；正式定義已重新讀取。此確認只新增一筆共用歷史。';this.emit();return reply;
       }catch(error){
         this.phase=reply?.ok?'committed':error.reply?'invalid':'unknown';
         this.reason=reply?.ok?'原生已確認，畫面重新讀取失敗；請重新開啟，不要重送。':
@@ -158,19 +251,20 @@
       if(this.phase!=='unknown'||command!=='panel-fill-confirm '+token(this.candidate?.token))return false;
       this.receipt=reply;this.candidate=null;
       if(!reply?.ok){this.phase='invalid';this.reason=reply?.error||'原確認回執為失敗；正式資料未套用。';this.emit();return true;}
-      this.dirty=false;this.phase='committed';this.reason='原 requestId 回執取得：已確認，未重送。';
-      if(this.retired||workspace().context()!==this.owner.context||workspace().getProjectState().contextToken!==this.owner.contextToken){this.emit();return true;}
+      this.dirty=false;this.snapshotFresh=false;this.phase='committed';this.reason=reply.history_changed===false?'原 requestId 回執取得：定義未變更，零新增歷史，未重送。':'原 requestId 回執取得：已確認，未重送。';
+      if(this.retired||workspace().context()!==this.owner.context||workspace().getProjectState().contextToken!==this.owner.contextToken||
+         (typeof connection!=='undefined'&&connection.phase!=='ready')){this.reason+=' 請重新開啟讀取正式資料。';this.emit();return true;}
       this.owner=owner(this.boundaryId);
       try {
         const official=checked(await apiRequest('panel-fill-read'));this.assertCurrent();const c=contract(official);
-        this.snapshot=c.state;this.contract=c;this.revision=official.revision;
+        this.snapshot=c.state;this.snapshotFresh=true;this.contract=c;this.revision=official.revision;
         this.ids=checked(await apiRequest('newid'));this.assertCurrent();
       }catch(error){this.reason+=' 畫面重讀失敗，請重新開啟：'+error.message;}
       this.emit();return true;
     }
     close(){if(['confirming','unknown'].includes(this.phase))return false;++this.generation;this.retired=true;this.discardCandidate();return true;}
   }
-  const api={ACTIONS,Session,contract,definition,canonical,clone,isCurrent};
+  const api={ACTIONS,Session,contract,definition,canonical,clone,isCurrent,requestScope,sameDefinition};
   root.PanelFillAdapter=api;
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

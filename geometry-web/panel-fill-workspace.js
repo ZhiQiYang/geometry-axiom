@@ -71,7 +71,7 @@ window.PanelFillWorkspace = (() => {
     const finish={id:d.finishId,name:d.name,boundaryId:s.boundaryId,frame:{origin:d.origin.map(v=>scalar(v,'框架原點')),U:d.U,V:d.V,N:d.N},
       structureSide:Number(d.side),obstacles:clone(d.obstacles)};
     const oldFinish=defs.finishSurfaces.find(r=>r.id===finish.id);
-    if(A.canonical(finish)!==A.canonical(oldFinish?A.definition(oldFinish,'finish'):null))ops.push({op:'put-finish-surface',value:finish});
+    if(!A.sameDefinition(finish,oldFinish?A.definition(oldFinish,'finish'):null,'finish'))ops.push({op:'put-finish-surface',value:finish});
     if(d.fill){
       const panel=JSON.parse(d.panel||'null');if(!Array.isArray(panel)||panel.length!==2)throw new Error('請明選已發布的固定面材版本。');
       if(!['u','v'].includes(d.lengthAlong))throw new Error('請明選面材長邊軸向，正方形面材亦需明選。');
@@ -140,13 +140,15 @@ window.PanelFillWorkspace = (() => {
     return `<svg class="pf-layout" role="img" aria-label="原生裁片與有效板縫；支撐狀態另列文字" viewBox="${x} ${y} ${width||1} ${height||1}" preserveAspectRatio="xMidYMid meet"><g class="pf-tiles">${paths}</g><g class="pf-seams">${seams}</g></svg>`;
   }
   function results(s) {
+    if(s.phase==='committed'&&!s.snapshotFresh)return '<p>確認回執已取得；請重新開啟讀取正式來源。本視圖不沿用舊結果。</p>';
+    if(s.phase==='editing'&&s.dirty)return '<p>輸入已變更；尚無目前輸入的原生結果。</p>';
     const state=s.candidate?.after||(['editing','committed'].includes(s.phase)?s.snapshot:null);
     if(!state)return '<p>尚無目前輸入的原生結果。</p>';
     const finishes=state.finishSurfaces.filter(f=>f.boundaryId===s.boundaryId),ids=new Set(finishes.map(f=>f.id));
-    const fills=state.panelFills.filter(f=>ids.has(f.definition.finishSurfaceId)),fillIds=new Set(fills.map(f=>f.definition.id));
+    const fills=state.panelFills.filter(f=>ids.has(f.definition.finishSurfaceId)).map(f=>f.derived?f:{...f,derived:{error:'原生結果未完整提供'}}),fillIds=new Set(fills.map(f=>f.definition.id));
     return `<section class="pf-results" aria-label="原生完成面結果"><h3>${s.candidate?'候選結果（尚未套用）':'正式來源結果'}</h3>
       ${finishes.map(f=>`<details><summary>${esc(f.name)} · 完成面 #${f.id} · ${f.derived?.error?'錯誤':'原生框架與障礙'}</summary>${table(['欄位','精確原生值'],[['frame',f.frame],['結構側',f.structureSide],['明選障礙',f.obstacles],['region',f.derived?.region],['障礙判定',f.derived?.obstacles],...(f.derived?.error?[['錯誤',f.derived.error]]:[])])}</details>`).join('')}
-      ${fills.map(f=>{const d=f.derived;return `<article data-pf-fill-result="${f.definition.id}"><h4>鋪排 #${f.definition.id}</h4>${d?.error?'<p role="alert">原生錯誤：'+esc(d.error)+'</p>':`${picture(f)}<p>片數 ${esc(d.tileCount)} · 裁片數 ${esc(d.fragmentCount)} · 整片 ${esc(d.wholeCount)} · 厚 ${esc(d.thickness)} mm</p>${table(['裁片完整 key','面積 mm²'],list(d.tiles).flatMap(t=>list(t.fragments).map(p=>[p.key,p.area])))}<h5>有效板縫／支撐</h5>${table(['seam','區間','左側實寬 mm','右側實寬 mm','判定'],list(d.support).map(p=>[p.seam,p.range,p.left,p.right,p.supported?'支撐足夠':'支撐不足（可保存）']))}<details><summary>完整板縫鍵、非板縫與障礙分層</summary>${table(['類型','精確原生值'],[['有效板縫',d.effectiveSeams],['非板縫（不是支撐不足）',d.nonSeams],['非板縫原因',d.nonSeamReason],['障礙分層',d.obstacles]])}</details>`}<details><summary>定義來源（與有效值分開）</summary><pre>${esc(JSON.stringify(f.definition,null,2))}</pre></details></article>`;}).join('')}
+      ${fills.map(f=>{const d=f.derived;return `<article data-pf-fill-result="${f.definition.id}"><h4>鋪排 #${f.definition.id}</h4>${d?.error?'<p role="alert">原生錯誤：'+esc(d.error)+'</p>':`${picture(f)}<p>片數 ${esc(d.tileCount)} · 裁片數 ${esc(d.fragmentCount)} · 整片 ${esc(d.wholeCount)} · 厚 ${esc(d.thickness)} mm</p>${table(['裁片完整 key','面積 mm²'],list(d.tiles).flatMap(t=>list(t.fragments).map(p=>[p.key,p.area])))}<h5>有效板縫／支撐</h5><p>X 來源：參數 ${esc(f.definition.threshold.parameterId)}／欄位 ${esc(f.definition.threshold.fieldId)}</p>${table(['seam','區間','左側實寬 mm','右側實寬 mm','有效 X mm','判定'],list(d.support).map(p=>[p.seam,p.range,p.left,p.right,d.threshold?d.threshold.num+'/'+d.threshold.den:'未提供',p.supported?'支撐足夠':'支撐不足（可保存）']))}<details><summary>完整板縫鍵、非板縫與障礙分層</summary>${table(['類型','精確原生值'],[['有效板縫',d.effectiveSeams],['非板縫（不是支撐不足）',d.nonSeams],['非板縫原因',d.nonSeamReason],['障礙分層',d.obstacles]])}</details>`}<details><summary>定義來源（與有效值分開）</summary><pre>${esc(JSON.stringify(f.definition,null,2))}</pre></details></article>`;}).join('')}
       ${state.derivedPlacements.filter(h=>fillIds.has(h.definition.fillId)).map(h=>`<details><summary>宿主 #${h.definition.id} · ${h.derived?.error?'錯誤':'原生 h／框架／完整邊鍵'}</summary>${table(['欄位','精確原生值'],[['h 來源',h.definition.h],['h 有效值',h.derived?.h],['frame',h.derived?.frame],['components／完整邊鍵',h.derived?.components],...(h.derived?.error?[['錯誤',h.derived.error]]:[])])}</details>`).join('')}</section>`;
   }
   function display() {
@@ -177,11 +179,20 @@ window.PanelFillWorkspace = (() => {
       // No implicit submit: Enter in an input (including IME completion) cannot confirm.
       if(event.key==='Enter'&&event.target.matches('input,select,textarea'))event.preventDefault();
     });
-    let focus;
-    if(focusField)focus=[...region.querySelectorAll('[data-pf-field]')].find(e=>e.dataset.pfField===focusField);
-    else if(focusAction)focus=region.querySelector(`[data-pf-action="${focusAction}"]`);
-    else if(focusObstacle)focus=[...region.querySelectorAll('[data-pf-obstacle]')].find(e=>e.dataset.pfObstacle===focusObstacle);
+    // Preserve the logical control across its temporary busy/disabled rendering.
+    // The title keeps keyboard ownership inside this inspector while that control
+    // cannot take focus; a later response restores the original enabled control.
+    let target={field:focusField,action:focusAction,obstacle:focusObstacle},focus;
+    if(focusTitle&&s.deferredFocus)target=s.deferredFocus;
+    else if(focused)s.deferredFocus=null;
+    if(target.field)focus=[...region.querySelectorAll('[data-pf-field]')].find(e=>e.dataset.pfField===target.field);
+    else if(target.action)focus=region.querySelector(`[data-pf-action="${target.action}"]`);
+    else if(target.obstacle)focus=[...region.querySelectorAll('[data-pf-obstacle]')].find(e=>e.dataset.pfObstacle===target.obstacle);
     else if(first||focusTitle)focus=region.querySelector('#pfTitle');
+    if(focus&&(focus.disabled||focus.closest('fieldset[disabled]'))){
+      s.deferredFocus=target;
+      focus=region.querySelector('#pfTitle'); // PF_UI12_DISABLED_FOCUS_FALLBACK
+    }else if(focus)s.deferredFocus=null;
     focus?.focus({preventScroll:true});if(selection&&focus?.setSelectionRange&&selection[0]!==null)try{focus.setSelectionRange(...selection);}catch(_){}
     return true;
   }
