@@ -39,7 +39,7 @@ class SourceNodeSlot(unittest.TestCase):
 
     @classmethod
     def make_executable(cls,label,source):
-        work=cls.build.work/("node-slot-"+label);work.mkdir()
+        work=cls.build.work/("node-slot-source-"+label);work.mkdir()
         (work/"source.c").write_text(instrument_node_work(source),encoding="utf-8")
         shutil.copy2(ROOT/"tests/geo261_source_index_harness.c",work/"geo261_source_index_harness.c")
         harness=work/"client.c";shutil.copy2(ROOT/"tests/geo300_source_node_slot_harness.c",harness)
