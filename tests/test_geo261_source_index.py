@@ -31,7 +31,11 @@ def instrument_edge_work(source):
         if source.count(anchor) != 1:
             raise AssertionError("工作量計數錨點必須恰好出現一次：" + anchor)
         source = source.replace(anchor, replacement)
-    return source
+    # 私有副本才把兩個 ordinal guard 的常數換成可縮小的界線。
+    # 正常案例仍用 UINT32_MAX；小圖即可驗證跨界時的原線性回退。
+    if source.count("UINT32_MAX") != 2:
+        raise AssertionError("索引序號界線必須有 append 與 miss-fastslot 兩個實際守門")
+    return source.replace("UINT32_MAX", "packed_index_limit")
 
 
 class SourceIndex(unittest.TestCase):
@@ -85,6 +89,18 @@ class SourceIndex(unittest.TestCase):
     def test_missing_invalid_failed_cycle_and_output_statuses(self):
         self.passes("statuses")
 
+    def test_packed_indexes_keep_full_size_t_authority_and_use_four_byte_slots(self):
+        self.passes("packed-width")
+
+    def test_node_ordinal_overflow_falls_back_and_reset_restores_index(self):
+        self.passes("packed-node-limit")
+
+    def test_edge_miss_ordinal_overflow_falls_back_without_losing_order(self):
+        self.passes("packed-edge-limit")
+
+    def test_real_uint32_boundary_never_allocates_after_overflow(self):
+        self.passes("packed-real-boundary")
+
     def source(self):
         return (self.build.kernel / "source.c").read_text(encoding="utf-8")
 
@@ -129,8 +145,8 @@ class SourceIndex(unittest.TestCase):
     def test_repeated_edge_hash_and_probe_mutant_reports_repeated_work(self):
         # 撤回空槽重用，走原本第二次 hash/probe；圖仍正確，但工作量斷言必須紅。
         self.kill("edge-miss-slot-reuse-removed", "edge-miss-work", "edge-miss-one-hash",
-                  self.inject("if(empty_slot!=SIZE_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)",
-                              "if(false&&empty_slot!=SIZE_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)"))
+                  self.inject("if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)",
+                              "if(false&&empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)"))
 
     def test_consumer_hint_removed_mutant_reports_repeated_lookup(self):
         self.kill("edge-consumer-hint-removed", "edge-consumer-work", "edge-monotonic-no-lookup",
@@ -141,6 +157,27 @@ class SourceIndex(unittest.TestCase):
                   self.inject("if(ctx->edge_count==SIZE_MAX/sizeof *ctx->edges)return GEO_SOURCE_MEMORY;",
                               "node->edge_consumer=ctx->active;node->edge_kinds=kind_bit;\n"
                               "    if(ctx->edge_count==SIZE_MAX/sizeof *ctx->edges)return GEO_SOURCE_MEMORY;"))
+
+    def test_wide_optional_slots_mutant_reports_storage_regression(self):
+        # 還原為八位元組槽；ordered authority、guard 與碰撞規則均不改。
+        mutated = self.source()
+        for declaration in ("uint32_t *node_index", "uint32_t *edge_index",
+                            "uint32_t **table", "uint32_t *fresh"):
+            self.assertEqual(1, mutated.count(declaration), declaration)
+            mutated = mutated.replace(declaration, declaration.replace("uint32_t", "uint64_t"))
+        self.kill("packed-slot-width-removed", "packed-width", "packed-index-slot-width", mutated)
+
+    def test_append_ordinal_guard_removed_mutant_reports_incomplete_fallback(self):
+        self.kill("packed-append-limit-removed", "packed-node-limit", "packed-node-overflow-drops-index",
+                  self.inject("if(count>UINT32_MAX)goto fallback;", "if(false&&count>UINT32_MAX)goto fallback;"))
+
+    def test_last_representable_ordinal_mutant_reports_premature_fallback(self):
+        self.kill("packed-last-ordinal-rejected", "packed-node-limit", "packed-last-node-ordinal-representable",
+                  self.inject("if(count>UINT32_MAX)goto fallback;", "if(count>=UINT32_MAX)goto fallback;"))
+
+    def test_miss_slot_ordinal_guard_removed_mutant_reports_incomplete_fallback(self):
+        self.kill("packed-miss-slot-limit-removed", "packed-edge-limit", "packed-edge-overflow-drops-index",
+                  self.inject("&&ctx->edge_count<=UINT32_MAX&&", "&&(true||ctx->edge_count<=UINT32_MAX)&&"))
 
     # 以下六個突變各自代表一種索引查找的壞法。node 由 nodes 案例（32 個刻意同槽的鍵）偵測，
     # edge 由 edge-collisions 案例（寫死的同槽鍵與只差 kind 的鍵對）確定性偵測。

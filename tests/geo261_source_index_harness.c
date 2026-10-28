@@ -9,13 +9,15 @@ static size_t live_allocations,fail_nth,attempts,exact_limit;
 static size_t edge_hash_calls,edge_probe_steps,edge_find_calls;
 static unsigned index_failures,realloc_failures;
 static int fail_indexes,fail_reallocs;
+static size_t packed_index_limit=UINT32_MAX,index_failure_width;
+static int test_is_index_slot_size(size_t);
 static int allocation_fails(void){return ++attempts==fail_nth;}
 static void *test_malloc(size_t n)
 {if(allocation_fails())return NULL;void *p=malloc(n);if(p)++live_allocations;return p;}
 static void *test_calloc(size_t n,size_t s)
 {
     if(allocation_fails())return NULL;
-    if(fail_indexes&&n>=16&&s==sizeof(size_t)){++index_failures;return NULL;}
+    if(fail_indexes&&n>=16&&test_is_index_slot_size(s)){++index_failures;index_failure_width=s;return NULL;}
     void *p=calloc(n,s);if(p)++live_allocations;return p;
 }
 static void *test_realloc(void *p,size_t n)
@@ -34,6 +36,9 @@ static void test_free(void *p){if(p)--live_allocations;free(p);}
 #undef calloc
 #undef realloc
 #undef free
+/* 定義在真 source.c 之後，取得實際的兩種槽型別；配置代理不猜 pointer 寬度。 */
+static int test_is_index_slot_size(size_t size)
+{return size==sizeof *((GeoEvalContext *)0)->node_index||size==sizeof *((GeoEvalContext *)0)->edge_index;}
 
 #define REQUIRE(label,expression) do {if(!(expression)){ \
     fprintf(stderr,"ASSERT:%s line=%d expr=%s\n",label,__LINE__,#expression);return 1;}} while(0)
@@ -419,6 +424,7 @@ static int failures(void)
         for(size_t i=100;i<104;++i){GeoSourceValue v;linear_node(refs[i]);
             REQUIRE("index-fallback-edge",geo_eval_source(ctx,refs[i],GEO_DEPENDENCY_VALUE_REQUIRED,&v)==GEO_SOURCE_OK);}
         REQUIRE("index-allocation-was-rejected",index_failures>0&&!ctx->node_index&&!ctx->edge_index);
+        REQUIRE("index-failure-uses-actual-slot-width",index_failure_width==sizeof *ctx->node_index&&index_failure_width==sizeof *ctx->edge_index);
         REQUIRE("fallback-order",!graph_equal(ctx));
         for(size_t i=0;i<100;++i)REQUIRE("fallback-duplicate-node",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);
         REQUIRE("fallback-no-duplicates",!graph_equal(ctx));
@@ -456,6 +462,103 @@ static int growth_failures(void)
     REQUIRE("edge-growth-retry",geo_eval_depend(ctx,refs[1],GEO_DEPENDENCY_DEFINITION_REQUIRED)==GEO_SOURCE_OK&&ctx->edge_count==2);
     ctx->active=SIZE_MAX;geo_eval_destroy(ctx);REQUIRE("growth-frees-all",live_allocations==0);return 0;
 }
+
+/* Only the optional lookup representation is bounded. Real nodes and edges
+ * continue through the ordinary ordered arrays and status/guard paths. */
+static int packed_width(void)
+{
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceDescriptor d;
+    REQUIRE("packed-index-slot-width",sizeof *ctx->node_index==sizeof(uint32_t)&&sizeof *ctx->edge_index==sizeof(uint32_t));
+    REQUIRE("packed-authority-keeps-size-t",sizeof ctx->node_count==sizeof(size_t)&&sizeof ctx->edge_count==sizeof(size_t)&&
+        sizeof ctx->node_index_capacity==sizeof(size_t)&&sizeof ctx->edge_index_capacity==sizeof(size_t)&&
+        sizeof ctx->node_hint[0]==sizeof(size_t));
+    linear_node(refs[0]);REQUIRE("packed-node-create",geo_eval_describe(ctx,refs[0],&d)==GEO_SOURCE_OK);
+    if(add_edge(ctx,0,0,0))return 1;
+    REQUIRE("packed-first-table-bytes",ctx->node_index_capacity*sizeof *ctx->node_index==16*sizeof(uint32_t)&&
+        ctx->edge_index_capacity*sizeof *ctx->edge_index==16*sizeof(uint32_t));
+    REQUIRE("packed-width-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("packed-width-frees-all",live_allocations==0);return 0;
+}
+static int packed_node_limit(void)
+{
+    packed_index_limit=7;
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceDescriptor d;
+    for(size_t i=0;i<7;++i){linear_node(refs[i]);
+        REQUIRE("packed-node-create",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);}
+    REQUIRE("packed-last-node-ordinal-representable",ctx->node_index&&ctx->node_index_capacity==16);
+    linear_node(refs[7]);REQUIRE("packed-node-overflow-still-admitted",geo_eval_describe(ctx,refs[7],&d)==GEO_SOURCE_OK);
+    REQUIRE("packed-node-overflow-drops-index",!ctx->node_index&&!ctx->node_index_capacity&&ctx->node_count==8);
+    for(size_t i=8;i-->0;)
+        REQUIRE("packed-node-linear-duplicate",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK&&ctx->node_count==8);
+    REQUIRE("packed-node-linear-order",!graph_equal(ctx));
+    REQUIRE("packed-node-reset",geo_eval_reset(ctx));
+    REQUIRE("packed-node-reset-frees-all",live_allocations==1&&!ctx->node_count&&!ctx->node_index&&!ctx->node_index_capacity);
+    packed_index_limit=UINT32_MAX;oracle_node_count=oracle_edge_count=0;
+    GeoSourceProvider provider={17,"packed.rebuilt","test/1",NULL,describe,evaluate};
+    REQUIRE("packed-node-reregister",geo_eval_register(ctx,&provider));
+    for(size_t i=0;i<8;++i){linear_node(refs[i]);
+        REQUIRE("packed-node-rebuild",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);}
+    REQUIRE("packed-node-index-restored",ctx->node_index&&ctx->node_index_capacity);
+    REQUIRE("packed-node-reset-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("packed-node-limit-frees-all",live_allocations==0);return 0;
+}
+static int packed_edge_limit(void)
+{
+    packed_index_limit=7;
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceDescriptor d;
+    for(size_t i=0;i<4;++i){linear_node(refs[i]);
+        REQUIRE("packed-edge-nodes",geo_eval_describe(ctx,refs[i],&d)==GEO_SOURCE_OK);}
+    /* A later consumer is already present: each following earlier consumer
+     * must use the actual edge lookup and its miss slot, not the hint. */
+    if(add_edge(ctx,3,2,0))return 1;
+    for(unsigned consumer=0;consumer<2;++consumer)for(int kind=0;kind<3;++kind)
+        if(add_edge(ctx,consumer,2,kind))return 1;
+    REQUIRE("packed-last-edge-ordinal-representable",ctx->edge_count==7&&ctx->edge_index&&ctx->edge_index_capacity==16);
+    edge_find_calls=0;
+    if(add_edge(ctx,2,2,0))return 1;
+    REQUIRE("packed-edge-crossing-used-miss-slot",edge_find_calls==1);
+    REQUIRE("packed-edge-overflow-drops-index",ctx->edge_count==8&&!ctx->edge_index&&!ctx->edge_index_capacity);
+    if(add_edge(ctx,2,2,1)||add_edge(ctx,0,2,1)||add_edge(ctx,3,2,0))return 1;
+    REQUIRE("packed-edge-linear-duplicate",ctx->edge_count==9&&!ctx->edge_index);
+    REQUIRE("packed-edge-linear-order",!graph_equal(ctx));
+    REQUIRE("packed-edge-seal",geo_eval_seal(ctx));
+    REQUIRE("packed-edge-sealed-refusal",geo_eval_depend(ctx,refs[2],GEO_DEPENDENCY_VALUE_REQUIRED)==GEO_SOURCE_INVALID);
+    REQUIRE("packed-edge-sealed-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("packed-edge-limit-frees-all",live_allocations==0);return 0;
+}
+static int packed_real_boundary(void)
+{
+    GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceDescriptor d;
+    linear_node(refs[0]);REQUIRE("packed-boundary-node",geo_eval_describe(ctx,refs[0],&d)==GEO_SOURCE_OK);
+    if(add_edge(ctx,0,0,0))return 1;
+#if SIZE_MAX > UINT32_MAX
+    /* Never allocate or visit billions of entries. The optional allocator is
+     * forced to fail, and the true counts are restored before all assertions,
+     * public graph checks and destruction. Removing the guard remains a normal
+     * assertion failure, not an allocation reaching libc or a process crash. */
+    for(int nodes=0;nodes<2;++nodes){
+        size_t *count=nodes?&ctx->node_count:&ctx->edge_count,saved=*count;
+        void *authority=nodes?(void *)ctx->nodes:(void *)ctx->edges;
+        size_t before=attempts;unsigned rejected=index_failures;fail_indexes=1;
+        *count=(size_t)UINT32_MAX;geo_source_index_append(ctx,nodes!=0);
+        *count=saved;fail_indexes=0;
+        REQUIRE("packed-max-ordinal-remains-representable",attempts>before&&index_failures>rejected);
+        REQUIRE("packed-boundary-failed-index-fallback",nodes?(!ctx->node_index&&!ctx->node_index_capacity):(!ctx->edge_index&&!ctx->edge_index_capacity));
+        geo_source_index_append(ctx,nodes!=0);
+        REQUIRE("packed-boundary-index-rebuilt",nodes?(ctx->node_index&&ctx->node_index_capacity):(ctx->edge_index&&ctx->edge_index_capacity));
+        before=attempts;fail_indexes=1;
+        *count=(size_t)UINT32_MAX+1;geo_source_index_append(ctx,nodes!=0);
+        *count=saved;fail_indexes=0;
+        REQUIRE("packed-overflow-skips-allocation",attempts==before);
+        REQUIRE("packed-overflow-frees-index",nodes?(!ctx->node_index&&!ctx->node_index_capacity):(!ctx->edge_index&&!ctx->edge_index_capacity));
+        REQUIRE("packed-overflow-retains-authority",authority==(nodes?(void *)ctx->nodes:(void *)ctx->edges));
+    }
+#endif
+    REQUIRE("packed-boundary-public-node",geo_eval_describe(ctx,refs[0],&d)==GEO_SOURCE_OK&&ctx->node_count==1);
+    if(add_edge(ctx,0,0,0))return 1;
+    REQUIRE("packed-boundary-public-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("packed-boundary-frees-all",live_allocations==0);return 0;
+}
 static int statuses(void)
 {
     GeoEvalContext *ctx=context();REQUIRE("context",ctx);GeoSourceValue value,old;
@@ -485,6 +588,10 @@ int main(int argc,char **argv)
     else if(!strcmp(argv[1],"edge-search"))return edge_search();
     else if(!strcmp(argv[1],"allocation"))result=failures();
     else if(!strcmp(argv[1],"growth"))result=growth_failures();
+    else if(!strcmp(argv[1],"packed-width"))result=packed_width();
+    else if(!strcmp(argv[1],"packed-node-limit"))result=packed_node_limit();
+    else if(!strcmp(argv[1],"packed-edge-limit"))result=packed_edge_limit();
+    else if(!strcmp(argv[1],"packed-real-boundary"))result=packed_real_boundary();
     else if(!strcmp(argv[1],"statuses"))result=statuses();
     else return 2;
     if(!result)printf("PASS %s\n",argv[1]);return result;

@@ -19,16 +19,19 @@ struct GeoEvalContext {
     size_t provider_count;
     GeoSourceNode **nodes;
     size_t node_count, node_capacity;
-    size_t *node_index, node_index_capacity;
+    uint32_t *node_index;
+    size_t node_index_capacity;
     size_t node_hint[256];
     GeoSourceEdge *edges;
     size_t edge_count, edge_capacity;
-    size_t *edge_index, edge_index_capacity;
+    uint32_t *edge_index;
+    size_t edge_index_capacity;
     size_t active;
     bool started, sealed;
 };
 /* 索引只保存插入序號加一，零為空槽；陣列仍是唯一的列舉順序。
- * 配置失敗時捨棄索引並線性查找，不能讓可選索引新增 MEMORY 結果。 */
+ * 可選槽用 32 位序號；超出可表示範圍或配置失敗時退回線性查找，
+ * ordered 陣列及其 size_t 身分不變，不新增 CAPACITY/MEMORY 結果。 */
 static uint64_t geo_source_hash_size(uint64_t hash,size_t value)
 {
     hash^=(uint64_t)value;hash*=UINT64_C(11400714785074694791);
@@ -91,14 +94,15 @@ static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge,si
 /* 負載最多一半；新表建好才換入。失敗後舊表不完整，須改走線性搜尋。 */
 static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
 {
-    size_t **table=nodes?&ctx->node_index:&ctx->edge_index;
+    uint32_t **table=nodes?&ctx->node_index:&ctx->edge_index;
     size_t *capacity=nodes?&ctx->node_index_capacity:&ctx->edge_index_capacity;
     size_t count=nodes?ctx->node_count:ctx->edge_count,first=count-1;
+    if(count>UINT32_MAX)goto fallback;
     if(count>*capacity/2){
         size_t next=*capacity?*capacity:16;
         while(count>next/2){if(next>SIZE_MAX/2)goto fallback;next*=2;}
         if(next>SIZE_MAX/sizeof **table)goto fallback;
-        size_t *fresh=calloc(next,sizeof *fresh);
+        uint32_t *fresh=calloc(next,sizeof *fresh);
         if(!fresh)goto fallback;
         free(*table);*table=fresh;*capacity=next;first=0;
     }
@@ -106,7 +110,7 @@ static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
         uint64_t hash=nodes?geo_source_node_hash(ctx->nodes[i]->source):geo_source_edge_hash(ctx->edges[i]);
         size_t mask=*capacity-1,slot=(size_t)hash&mask;
         while((*table)[slot])slot=(slot+1)&mask;
-        (*table)[slot]=i+1;
+        (*table)[slot]=(uint32_t)(i+1);
     }
     return;
 fallback:
@@ -228,8 +232,8 @@ static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDepe
     /* 查找已取得空槽；兩步間只有 edges 配置，不會改動索引或呼叫 provider。
      * 不需擴表時直接寫入同槽，避免對新邊再雜湊與探測一次。
      * 無索引、擴表及配置失敗的降級仍由原路徑處理。 */
-    if(empty_slot!=SIZE_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)
-        ctx->edge_index[empty_slot]=ctx->edge_count;
+    if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)
+        ctx->edge_index[empty_slot]=(uint32_t)ctx->edge_count;
     else geo_source_index_append(ctx,false);
     /* 必須晚於必要的 edges 配置／追加；MEMORY 不能留下不存在的邊提示。 */
     if(!node->edge_kinds||ctx->active>node->edge_consumer){
