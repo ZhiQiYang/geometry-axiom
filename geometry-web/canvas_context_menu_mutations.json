@@ -1,0 +1,86 @@
+{
+  "schema": "geometry-browser-mutations/1",
+  "suite": "canvas-context-menu-352",
+  "scope": "GEOMETRY_CANVAS_CONTEXT_MENU_ONLY",
+  "caseFilter": "GEOMETRY_CANVAS_CONTEXT_MENU_CASES",
+  "resultPrefix": "P352_CASE_RESULT ",
+  "cases": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11",
+    "C12",
+    "C13",
+    "C14",
+    "C15",
+    "C16"
+  ],
+  "inputs": [
+    "geometry-web/cdp_test.js",
+    "geometry-web/canvas_context_menu_test.js",
+    "geometry-web/canvas_context_menu_cases_a.js",
+    "geometry-web/canvas_context_menu_cases_b.js",
+    "geometry-web/browser_mutation_check.py",
+    "geometry-web/canvas_context_menu_mutations.json"
+  ],
+  "mutations": [
+    {
+      "id": "M1-entry-listener",
+      "case": "C01",
+      "assertions": [
+        "MENU_VISIBLE_FOR_42"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/canvas-context-menu.js",
+          "before": "vp.addEventListener('contextmenu', event => {",
+          "after": "vp.addEventListener('p352-disabled-contextmenu', event => {"
+        }
+      ]
+    },
+    {
+      "id": "M2-dom-only-delete",
+      "case": "C07",
+      "assertions": [
+        "DELETE_COMMAND_ONCE",
+        "NATIVE_TARGET_ABSENT",
+        "ONE_HISTORY_STEP"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/canvas-context-menu.js",
+          "before": "else if (a.act === 'delete') await deleteObject(t.kind, t.id);",
+          "after": "else if (a.act === 'delete') document.querySelector(`#ocv .ocard[data-kind=\"${t.kind}\"][data-id=\"${t.id}\"]`)?.remove();"
+        }
+      ]
+    },
+    {
+      "id": "M3-remove-final-current",
+      "case": "C11",
+      "assertions": [
+        "STALE_ACTION_ZERO_WRITES",
+        "WORLD_UNCHANGED"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/context-menu-shell.js",
+          "before": "async function run(a, node) {\n      if (!isCurrent()) { hide(); return; }",
+          "after": "async function run(a, node) {\n      /* mutation: final current recheck intentionally removed */"
+        }
+      ],
+      "env": {
+        "GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY": "1"
+      }
+    }
+  ],
+  "subcaseVariables": [
+    "GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY"
+  ]
+}

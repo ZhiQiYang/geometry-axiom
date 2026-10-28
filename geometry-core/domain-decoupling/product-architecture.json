@@ -2641,7 +2641,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "sha256": "6ce3668ff97a5ebf1b8f7317171afa677d1af68dbf213150769546aebb88a3f6",
       "hashMode": "lf"
     },
     {
@@ -3644,6 +3644,30 @@
       "path": "geometry-core/framing-template/oracle/selftest.py",
       "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
       "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_context_menu_test.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "5594772772ea28b7d87f5ea606f43ea0f96c7e995f336724ae21a4129719ade4",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_context_menu_cases_a.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "99ce764c9096151605f7093641e12eee6b697a849dfa646dbb3a3ef8c839df55",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/canvas_context_menu_cases_b.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "789594796808f2fc769910b70529731730ac00cdf4b27e0465b33f28361a8eb5",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/browser_mutation_check.py",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "7ad42d2ef3ad9e3b35dd463dbf0e963a6afc961c583cc4d7faca419b110015db",
       "hashMode": "lf"
     }
   ],
