@@ -1,21 +1,18 @@
 # R02 UI-1 進度
 
-## 目前狀態：2026-10-28 18:17 UTC
+## 目前狀態：2026-10-28T18:48:20.570656+00:00（UTC）
 
-固定最新產品／驗收來源 F2：`74d638686edc9861e9ed9d3409af4adf02350f8e`（已普通push）。D44產品缺漏已修；不標READY，UI15仍未達合併條件。
+固定產品／最新驗收來源F2：`74d638686edc9861e9ed9d3409af4adf02350f8e`。**Draft／未達合併條件：UI15上游#343→#346→#347仍未同源閉合，未跑。** 本片產品修補、真UI與受影響回歸已完成，不代表整體R02或完整native全綠。
 
-- **五組真UI反證已完成**：來源F1 `a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6`，入口、preview HTTP、confirm回執、8mm預填、原生不足紅色各具名0／1／0。六份正向各377／0／0、五份指定紅、全部來源恢復；整輪1293.054秒exit0，raw hash逐項核收。不是F2重跑。
-- 其後對抗審查發現來源準備的啟動競態：等待engineering-read時使用者真切另一面，晚回覆仍退出新面並開舊草稿。`0f37836d524c1314b26246b9d557110c21e2124a`真重現6pass／1fail、4.700秒exit1，具名UI05_D44_PREPARATION_OWNER；FATAL_UI保留focus=null、active=paramName。
-- `a7a05ecf13076f0dcf5fd89d1ef6c8a9118ac836`修補在第一個await前綁request／navigation／focus，自己的導航只接受預期序號。真完整PF專項381／0／0、203.807秒、exit0；唯讀對抗審查無新增阻擋。F2僅再登記測試hash與P128=381，產品／測試相同。新增修補已完成真正UI撤回：baseline381／0、撤回UI05_D44_PREPARATION_OWNER具名紅、restored381／0；0／1／0、421.561秒、無timeout、原產品bytes恢復。原件見round9與D44_OWNER_AUDIT.json。
-- F2三原architecture裁判均exit0：604檔／798edges／0diagnostics，205與18 tests；Linux scan／receipt／report已更新。F2參數回執16／0／0、exit0。`mutate.py --check`仍exit0、0stale：70killed／1crashed／4equivalent／3retired，不把crashed算killed。
-- F1 Node aggregate748＋PF契約21＋參數回執16＝785／0／0；不改標F2。F2與F1之產品差異僅上述共用參數建立owner守門；新版完整canvas將驗既有P76與新P128，原85段golden仍全等。
-- F2完整canvas首輪17:47:27啟動，18:10:23最後輸出停在P77；工具session99685消失，原測試／收件程序已不存在，沒有exit或CDP_RESULT，gzip未封尾，OOM事件0。**環境中斷、具體原因未確證，未通過，不能推定逾時或exit0。** 原result／不完整gzip逐byte原封保留於round10，INTERRUPTION.json另記觀測，不補造原退出碼。
-- 18:16:13.492780 UTC以乾淨同F2的獨立背景程序重跑完整canvas（PID197506），原2100秒／strict golden／Chrome原沙箱不變，獨占。新的原件/workspace/r02-ui1-evidence/owner-final-canvas-recovery持續寫入，尚無終態；只停止前輪已棄用的特定Chrome，profile／其他原件未刪。舊82257ab的2616／0／0 full仍僅歷史，不移標。
+- 最新普通完整canvas：**2648pass／0fail／0skip、exit0、1927.077秒**，原2100秒時限；86段strict golden matched，P76=87、P128=381。P38原預期注入例外1、非預期0。執行2026-10-28T18:16:13.492780+00:00至2026-10-28T18:48:20.570656+00:00，乾淨F2獨占，完整原件round11／FINAL_CANVAS_AUDIT.json。F2前次完整輪在P77環境中斷，無exit／CDP_RESULT，不計通過或推定timeout；不完整gzip與全部原件原封保留於round10。
+- D44兩項已修：明確8mm新dimension提議，經既有參數編輯器獨立確認後重新讀取真正ParameterRef；只按原生逐子段supported標紅、顯示左右精確實寬與X，合法不足可保存。來源取消零寫入／一次history／UndoRedo／正式保存重開皆真UI實跑。
+- F1 `a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6`五反證：三必要接線、8mm、紅色各具名0／1／0，六份377／0／0正向，整輪1293.054秒exit0；見round8。F2新增來源準備競態反證：baseline381／0、UI05_D44_PREPARATION_OWNER具名6／1、restored381／0；0／1／0、421.561秒，無timeout，見round9。實際來源不移標。
+- F2架構三原裁判exit0（604檔／798edges／0diagnostics、205及18tests），Linuxreceipt已更新；帳本check exit0、70killed／1crashed／4equivalent／3retired，0stale／blocked／survived；參數回執16／0／0。F1 Node785／0／0保留原來源。詳round7／8。
+- 原85段golden與四份保護檔未變；只新增本片P128=381。FINAL_SOURCE_IDENTITY.json列產品／測試blob與F1→F2差異，不將identity當跨SHA通過。
+- 完整native首輪exit1：226suites、5221pass／4fail／1允許GDI skip；修後三suite763／0／0是局部恢復。grid356／0／0、space242／0舊來源原件及原六UI反證均保留，不重標F2；round4／5。舊82257ab完整canvas2616／0／0屬D44前歷史，round6。
+- 未驗：UI15最終同源整合、WSL、實體IME／觸控／輔具、另一原生程序保存重開。fresh BrowserContext仍共用原生服務；本片不宣告PF4／5／6或整體complete。CI沒有取得runner實跑證據。
 
-- native原完整census的5221pass／4fail／1允許GDI skip、exit1，及原三套修復763／0／0，分開保留。grid356／0／0、space242／0舊來源原件不移標。
-- **UI15未跑／未達合併條件**：#343→#346→#347仍未閉合；WSL、實體IME／觸控、另一原生程序重開未驗。沒有修改SSOT、其他PR分支，沒有merge main。
-
-round8包含五反證原件、來源準備競態原紅／修後與最新輕量裁判。為保存餘下原件，只回收本任務退役mutation cache內一份逐byte等於Git正典的PDF worker副本，實測釋出2,232,320 bytes；未刪原件／fixtures／Git objects／native ELF，詳D44_CACHE_RECLAIM.json。以下為歷史紀錄，不代表現在終態。
+唯一實作分支codex/r02-ui1-panel-fill-20261028、PR#355。無SSOT變更、無其他PR分支寫入、無force push／merge main。以下只保留歷史紀錄；PR_BODY使用本次唯一current-state矩陣。
 
 基底：`405f8c5e1a637a16cbe47470faf5ae1fa02b8676`。
 工作分支：`codex/r02-ui1-panel-fill-20261028`。
