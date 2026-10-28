@@ -1,7 +1,6 @@
 /* Narrow non-DOM contract controls; true face-entry coverage lives in CDP. */
 "use strict";
-const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
-const tests=[];const test=(name,run)=>tests.push({name,run});
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),test=require('node:test');
 function environment(){
   const project={id:'project',contextToken:'context',revision:0},context={},history={frame:{ids:new Map([[4,{}]])},undo:[],redo:[]};
   const state={finishSurfaces:[],panelFills:[],derivedPlacements:[]},calls=[];
@@ -15,7 +14,7 @@ function environment(){
     if(command==='objects')return {ok:true,columns:[],beams:[]};if(command==='newid')return {ok:true,finishSurface:1,panelFill:1,placement:0};
     return {ok:true,history_changed:true};};
   c.checkApiSession=()=>{};
-  vm.createContext(c);for(const file of ['panel-fill-adapter.js','panel-fill-workspace.js'])vm.runInContext(fs.readFileSync(file==='panel-fill-adapter.js'&&process.env.PF_UI_ADAPTER_PATH?process.env.PF_UI_ADAPTER_PATH:path.join(__dirname,file),'utf8'),c,{filename:file});
+  vm.createContext(c);for(const file of ['panel-fill-adapter.js','panel-fill-workspace.js'])vm.runInContext(fs.readFileSync(file==='panel-fill-adapter.js'&&process.env.PF_UI_ADAPTER_PATH?process.env.PF_UI_ADAPTER_PATH:path.join(__dirname,'../geometry-web',file),'utf8'),c,{filename:file});
   return {c,project,context,history,state,calls,A:c.PanelFillAdapter,W:c.PanelFillWorkspace};
 }
 test('UI14 explicit contract permits global complete:false but rejects absent/unknown actions and scope loss',()=>{
@@ -111,4 +110,3 @@ test('UI06 obstacle selection order is a set while source identity remains exact
 test('UI02 ParameterRef zero IDs follow native uint32 identity rules',()=>{
   const {c,A,state}=populated();state.panelFills[0].definition.threshold={parameterId:0,fieldId:0};assert.equal(A.contract(c.reply()).completeForScope,true);
 });
-(async()=>{let failures=0;for(const {name,run} of tests)try{await run();console.log('PASS '+name);}catch(error){failures++;console.error('FAIL '+name+'\n'+error.stack);}console.log(`${tests.length-failures} passed, ${failures} failed; unit-only, no true UI claim`);process.exitCode=failures?1:0;})();
