@@ -1,9 +1,9 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "sourceBaseHead": "fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f",
-  "headObservedBefore": "fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f",
-  "headObservedAfter": "fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f",
-  "createdUtc": "2026-10-28T14:47:02.631665+00:00",
+  "sourceBaseHead": "79049d7e0c4a60f7a5e2ff4c7023cd713f0c387f",
+  "headObservedBefore": "79049d7e0c4a60f7a5e2ff4c7023cd713f0c387f",
+  "headObservedAfter": "79049d7e0c4a60f7a5e2ff4c7023cd713f0c387f",
+  "createdUtc": "2026-10-28T15:56:57.438676+00:00",
   "hashMode": "sha256 after CRLF-to-LF normalization",
   "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for path-sorted inputs array, ensure_ascii=false, separators=(comma,colon), no trailing newline",
   "inputClosureExcludes": [
@@ -13,12 +13,12 @@
     "geometry-core/domain-decoupling/product-architecture-receipt.json"
   ],
   "inputClosureExclusionReason": "Non-executable derived audit metadata; sourceRoots/sourceFiles executable inventory is unchanged by publishing evidence.",
-  "manifestSha256": "1f968f627f8927e510abd9d2977c851c31859cd44e323bcea625c22e578592f0",
+  "manifestSha256": "ad26a50b52e8c50278a04454efda83e51bf4977d672e9300b1580ebdb899405a",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "e5b180f8b9962a548c96d3e9006009e3f17e1cc756131226804eb52969036fde",
   "reportPath": "evidence/r02-ui1-20261028/architecture/REPORT.md",
-  "reportSha256": "88cdce357559e913717b003055304a884b52d59488ab7ea50bf2abffeacb7b28",
-  "inputClosureSha256": "87affc0572d2c6664e384d1fe7a32f62063363b1692436cfc762f57b6255a392",
+  "reportSha256": "f7cc1497a8939d190dd2ba2db8f079e29bf4b822542bd84b7fb63f91e33c835e",
+  "inputClosureSha256": "9d2bfea879b9fdb1c8cb0ee6ff1e83de3e09ad18f043f16abbc973640c97713f",
   "counts": {
     "executableFiles": 604,
     "ownedSources": 335,
@@ -50,11 +50,11 @@
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
     "cwd": "/tmp/r02-ui1",
-    "sha": "fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f",
+    "sha": "79049d7e0c4a60f7a5e2ff4c7023cd713f0c387f",
     "status": "",
     "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "startUtc": "2026-10-28T14:45:53.938348+00:00",
-    "timeoutSeconds": null,
+    "startUtc": "2026-10-28T15:54:30.365692+00:00",
+    "timeoutSeconds": 60,
     "environment": {
       "LANG": "C.UTF-8",
       "LC_ALL": "C.UTF-8"
@@ -68,11 +68,11 @@
     ],
     "stackBytes": 16777216,
     "exit": 0,
-    "elapsedSeconds": 5.557679792000272,
-    "endUtc": "2026-10-28T14:45:59.496387+00:00",
+    "elapsedSeconds": 7.793120798000018,
+    "endUtc": "2026-10-28T15:54:38.159276+00:00",
     "rawSha256": {
-      "stdout.gz": "8348968847cf0c69dec4f13db1ab9aa586346b29cc129d81a7256bb229cd0f4e",
-      "stderr.gz": "136f8e1ff0d18ffe83be27ee1abaa456182622bf52c14e499b3b983d9274392c"
+      "stdout.gz": "d76b3197aacded4a8b5907bdd3b621d2ca429b181ad5dc6a403f49e69fd42f23",
+      "stderr.gz": "d868fd2b797a6bae79deb141e71c2cd66e6a4dcdb4fd1af84195448359044381"
     }
   },
   "validation": [
@@ -83,11 +83,11 @@
         "tests/test_architecture_contract.py"
       ],
       "cwd": "/tmp/r02-ui1",
-      "sha": "fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f",
+      "sha": "79049d7e0c4a60f7a5e2ff4c7023cd713f0c387f",
       "status": "",
       "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "startUtc": "2026-10-28T14:45:59.611696+00:00",
-      "timeoutSeconds": null,
+      "startUtc": "2026-10-28T15:55:59.978184+00:00",
+      "timeoutSeconds": 90,
       "environment": {
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8"
@@ -101,11 +101,11 @@
       ],
       "stackBytes": 16777216,
       "exit": 0,
-      "elapsedSeconds": 0.5122607780003818,
-      "endUtc": "2026-10-28T14:46:00.124302+00:00",
+      "elapsedSeconds": 0.6712354040009814,
+      "endUtc": "2026-10-28T15:56:00.649984+00:00",
       "rawSha256": {
-        "stdout.gz": "5ee2acfb93055c4feaa0655fcabb9543ab6f3ea042450d7855bff01cf36df6e1",
-        "stderr.gz": "cb948c114b05b46cf761a6190cc6417092538be29397b889f5954b972c31ccce"
+        "stdout.gz": "942d52f521bc307c14967151313733e78c98193f76ad0acc483eeac45db90de9",
+        "stderr.gz": "4baece45a8a54bc8259f237e316355e9bff1cf9ecd064a539960bc0ce7037851"
       }
     },
     {
@@ -115,11 +115,11 @@
         "tests/test_product_architecture.py"
       ],
       "cwd": "/tmp/r02-ui1",
-      "sha": "fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f",
+      "sha": "79049d7e0c4a60f7a5e2ff4c7023cd713f0c387f",
       "status": "",
       "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "startUtc": "2026-10-28T14:46:00.239775+00:00",
-      "timeoutSeconds": null,
+      "startUtc": "2026-10-28T15:56:00.812535+00:00",
+      "timeoutSeconds": 90,
       "environment": {
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8"
@@ -133,11 +133,11 @@
       ],
       "stackBytes": 16777216,
       "exit": 0,
-      "elapsedSeconds": 11.6723439160005,
-      "endUtc": "2026-10-28T14:46:11.912530+00:00",
+      "elapsedSeconds": 12.938283214998592,
+      "endUtc": "2026-10-28T15:56:13.755242+00:00",
       "rawSha256": {
-        "stdout.gz": "d22975b00964348d1c08516f1c27e00a60c459b142f7b43537393eba1ff5ce96",
-        "stderr.gz": "6a04c9067db48cfe0d3dcc2d9c7af6f956c5175b8e3fd4a29841a8b150e66519"
+        "stdout.gz": "c69386bdf1aa8a3d3390ca8677fdcf39c3152917bc115def9240b41fa5ff5b45",
+        "stderr.gz": "a222ebbcafc123b273b521f9198287a4c4b37d553c9072b8ab5a2908833ab965"
       }
     }
   ],
@@ -320,7 +320,7 @@
     },
     {
       "path": "geometry-core/card-reference/run_archive_mutations.py",
-      "sha256": "5bc6d308bec20fa3c484f8ed5e769f23bb9ebcbfe61075d170ed1b950de88251"
+      "sha256": "4204d5bfdae1980de391c31c0ed1aef4658e23089b115566fe0cf0b33f39b95b"
     },
     {
       "path": "geometry-core/card-reference/run_axiom_mutations.py",
@@ -2574,10 +2574,10 @@
     }
   },
   "artifactsPresentBeforeSeal": {
-    "product-architecture.json": "1f968f627f8927e510abd9d2977c851c31859cd44e323bcea625c22e578592f0",
-    "product-architecture-scan.json": "1feb5b2899a20e2a7ba0f1be2ecac8195fbc444111dba304671cacfb7d75bdb1",
+    "product-architecture.json": "ad26a50b52e8c50278a04454efda83e51bf4977d672e9300b1580ebdb899405a",
+    "product-architecture-scan.json": "e5b180f8b9962a548c96d3e9006009e3f17e1cc756131226804eb52969036fde",
     "PRODUCT-ARCHITECTURE.md": "1952056c8d15ee3a3399f042433aa9c2e11e5d333a22401ce4119ac226834996",
-    "product-architecture-receipt.json": "2db66c879b81a236c789a55b77b83cc301b6d28d3b5d2d6400c4cd3887141005"
+    "product-architecture-receipt.json": "e032faa73408a6ae70d40cc46a9c0a4e0773cd610883cc7ea802935e18e2f978"
   },
   "notClaimed": [
     "native execution",
