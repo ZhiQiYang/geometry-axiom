@@ -14,9 +14,50 @@ This replaces the earlier synthetic-fixture-only evidence for the dependency
 gate. It does not replace algorithm ownership review, native no-template builds,
 runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
+## Current PR #352 verification
+
+This refresh binds to `c8eae279efe1d14ddfdd654165c790522a577471` plus
+`pr352-tests-v1` (SHA-256
+`8721dbcc6491a865b6efb7b621cb5aa391a121d580bb62ec07935ba9a037d426`)
+and the PR #352 product/test worktree changes. The local Git HEAD records a
+blob-reconstructed verification workspace, not a final product commit. The
+receipt identifies that distinction and fingerprints the actual inputs.
+
+Independent enumeration used all five recursive Git trees at that fixed base
+(`truncated:false` for each), plus the three standalone files. The base contains
+602 executable files; the four tests-v1 executable additions bring the worktree
+to 606. Local enumeration has no missing or extra executable paths, and all
+unmodified base inputs match their Git blob identities. This check did not use
+the manifest as the source of the supposedly complete inventory.
+
+The pre-refresh CLI exited 1 with `EXCLUSION_DIGEST` for `cdp_test.js`.
+Independent inventory also found the one unregistered owned source,
+`canvas-context-menu.js`. It is now H, using the same host adapter classification
+as the context-menu shell and face adapter. Four changed test exclusions receive
+their current LF-normalized digests; `browser_mutation_check.py` is unchanged.
+The mutation JSON and the changed non-executable assets are fingerprinted in the
+receipt. H source hashes belong in that receipt: the unchanged manifest schema
+permits immutable source digests only for vendor entries.
+
+The original CLI and both original test files were executed on this worktree:
+
+| Command | Observed result |
+|---|---|
+| `python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json` | Exit 0; 334 owned sources, 797 edges, 0 diagnostics |
+| `python3 -B -m unittest discover -s tests -p test_product_architecture.py` | Exit 0; 18 tests, OK |
+| `python3 -B -m unittest discover -s tests -p test_architecture_contract.py` | Exit 0; 205 tests, OK |
+
+The scanner and both test files match the fixed base Git blobs. The complete
+606-file input closure was identical before and after these executions, with
+SHA-256 `773c813a71f525d074136cb665eec26b5507914eba3cdaed20f840db515b3551`.
+These are newly executed static architecture results. Native execution and
+browser acceptance require their separate evidence; this receipt makes no
+claim for those gates or for a future merged commit. The historical refresh
+records later in this document retain their original source-version context.
+
 ## Complete inventory and responsibilities
 
-The current inventory contains 601 executable files: 333 owned sources and 268
+The current inventory contains 606 executable files: 334 owned sources and 272
 individually named exclusions. The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
@@ -28,10 +69,10 @@ New executable files anywhere under these roots fail until accounted for.
 |---|---:|---|
 | K | 69 | Public neutral C stores/evaluators/source/transaction APIs and the Python geometry kernel, including their private implementation headers |
 | W | 67 | Woodworking policy, material/recipe interpretation, construction, layout, support and presentation; rectangular-grid second-template witness |
-| H | 191 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
+| H | 192 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
 | vendor | 6 | Individually digest-locked browser PDF and ZIP dependencies, accessible only from H |
 
-The 333 sources contain 190 C/header/include files, 75 Python files, 64 JavaScript
+The 334 sources contain 190 C/header/include files, 75 Python files, 65 JavaScript
 files, and 4 HTML files. The canonical self-contained axiom reader and its
 generator are included. The separate work-manager is included as H tooling,
 although its own instructions distinguish it from the Geometry product UI.
@@ -45,9 +86,10 @@ dependency scanning alone cannot prove that every remaining H function is free
 of misplaced domain policy. It must not be cited as that stronger result.
 
 All exclusions have an exact path, individual reason, and SHA-256 using explicitly
-declared CRLF-to-LF normalization. There are 120 historical evidence programs,
-57 other documentation/reproduction/snapshot/GEO-262/framing-template tooling programs, 66 dedicated test drivers,
-and 25 engineering-spec prototype files. The prototype's `AGENTS.md` explicitly
+declared CRLF-to-LF normalization. The 272 entries retain individual historical
+evidence, documentation, reproduction, snapshot, template-tooling, dedicated-test,
+and engineering-spec prototype reasons. The four tests-v1 additions are
+individually pinned browser acceptance/mutation drivers. The prototype's `AGENTS.md` explicitly
 states it is not the production application. The manifest has no directory
 exemption. An owned dependency on any excluded file fails. Historical evidence
 and prototype programs have not been certified as active product dependencies.

@@ -1425,6 +1425,12 @@
       "purpose": "Application/runtime/protocol or workspace host assembly bridge; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/canvas-context-menu.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host canvas context menu; composes explicit K/W providers where needed"
+    },
+    {
       "path": "geometry-web/context-menu-shell.js",
       "layer": "H",
       "language": "javascript",
@@ -2641,7 +2647,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "6ce3668ff97a5ebf1b8f7317171afa677d1af68dbf213150769546aebb88a3f6",
+      "sha256": "f9c86b95acdd025175ec12cfe6b381b967dd46864cc382a62095b7bd3ce3ddb7",
       "hashMode": "lf"
     },
     {
@@ -3649,19 +3655,19 @@
     {
       "path": "geometry-web/canvas_context_menu_test.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
-      "sha256": "5594772772ea28b7d87f5ea606f43ea0f96c7e995f336724ae21a4129719ade4",
+      "sha256": "70dd910c9e9ac0f8e169b85ceec3b416398d0cbc3f96fb0a78a3438da3b0ffb6",
       "hashMode": "lf"
     },
     {
       "path": "geometry-web/canvas_context_menu_cases_a.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
-      "sha256": "99ce764c9096151605f7093641e12eee6b697a849dfa646dbb3a3ef8c839df55",
+      "sha256": "730162d4bc4e2f5d38479bf839dea4b4c619a4494d658da330a1d33864671623",
       "hashMode": "lf"
     },
     {
       "path": "geometry-web/canvas_context_menu_cases_b.js",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
-      "sha256": "789594796808f2fc769910b70529731730ac00cdf4b27e0465b33f28361a8eb5",
+      "sha256": "d06e44e49c38c75740bc5ceffb82423c237030b16aeba894c8ec46947332d090",
       "hashMode": "lf"
     },
     {
