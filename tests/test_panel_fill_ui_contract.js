@@ -14,6 +14,7 @@ function environment(){
     if(command==='objects')return {ok:true,columns:[],beams:[]};if(command==='newid')return {ok:true,finishSurface:1,panelFill:1,placement:0};
     return {ok:true,history_changed:true};};
   c.checkApiSession=()=>{};
+  c.renderObjects=async ({current})=>current();
   vm.createContext(c);for(const file of ['panel-fill-adapter.js','panel-fill-workspace.js'])vm.runInContext(fs.readFileSync(file==='panel-fill-adapter.js'&&process.env.PF_UI_ADAPTER_PATH?process.env.PF_UI_ADAPTER_PATH:path.join(__dirname,'../geometry-web',file),'utf8'),c,{filename:file});
   return {c,project,context,history,state,calls,A:c.PanelFillAdapter,W:c.PanelFillWorkspace};
 }
@@ -109,4 +110,36 @@ test('UI06 obstacle selection order is a set while source identity remains exact
 });
 test('UI02 ParameterRef zero IDs follow native uint32 identity rules',()=>{
   const {c,A,state}=populated();state.panelFills[0].definition.threshold={parameterId:0,fieldId:0};assert.equal(A.contract(c.reply()).completeForScope,true);
+});
+test('UI04 native host and timber impact is visible with exact before/after and complete records',()=>{
+  const {W}=environment();const before={finishSurfaces:[],panelFills:[],derivedPlacements:[{id:0,definition:{id:0,fillId:1,h:30},derived:{h:'30',frame:{origin:['0','0','39']}}}]};
+  const after=JSON.parse(JSON.stringify(before));after.derivedPlacements[0].definition.h=31;after.derivedPlacements[0].derived.h='31';
+  const dependencies={before:{geometry:{timbers:[{id:7,geometry:{state:'BUILDABLE',origin:[0,0,39]}}]}},after:{geometry:{timbers:[{id:7,geometry:{state:'BUILDABLE',origin:[0,0,40]}}]}}};
+  const html=W._test.impact({before,after,changes:[{record:'derived-placement',id:0,change:'modified'}],dependencies});
+  assert.match(html,/data-pf-impact/);assert.match(html,/派生宿主 #0・定義修改/);assert.match(html,/既有角材/);assert.match(html,/#7/);
+  assert.match(html,/data-pf-impact-before/);assert.match(html,/data-pf-impact-after/);assert.match(html,/data-pf-dependencies-before/);assert.match(html,/data-pf-dependencies-after/);
+  assert.match(html,/39/);assert.match(html,/40/);assert.match(html,/&quot;h&quot;:30/);assert.match(html,/&quot;h&quot;:31/);
+});
+test('UI04 host preview cannot confirm when native downstream before/after is missing',async()=>{
+  const {c,A,state}=populated();state.derivedPlacements.push({id:0,definition:{id:0,fillId:1,h:30},derived:{h:'30',frame:{origin:['0','0','39'],U:'+X',V:'+Y',N:'+Z'},components:[]}});
+  state.panelFills[0].derived.derivedPlacement=0;
+  const s=new A.Session(4);await s.read();const r=c.reply();delete r.uiContract.state;r.uiContract.before=JSON.parse(JSON.stringify(s.snapshot));r.uiContract.after=JSON.parse(JSON.stringify(s.snapshot));
+  r.uiContract.after.derivedPlacements[0].definition.h=31;r.uiContract.after.derivedPlacements[0].derived.h='31';
+  const result={revision:0,valid:true,token:8,changes:[{record:'derived-placement',id:0,change:'modified'}],uiContract:r.uiContract};
+  c.fetch=async()=>({ok:true,json:async()=>({ok:true,preview:result})});
+  await assert.rejects(()=>s.preview([{op:'put-derived-placement',value:{id:0,fillId:1,h:31}}]),/下游影響/);assert.notEqual(s.phase,'confirmable');
+  result.dependencies={before:{geometry:{timbers:[]}},after:{geometry:{timbers:[]}}};
+  await s.preview([{op:'put-derived-placement',value:{id:0,fillId:1,h:31}}]);assert.equal(s.phase,'confirmable');
+});
+test('UI05 confirmation refreshes existing scene objects before publishing committed state',async()=>{
+  const {c,A,project,calls}=environment(),s=new A.Session(4);await s.read();s.phase='confirmable';s.candidate={token:9,generation:s.generation};
+  let refreshed=false;c.renderObjects=async({current})=>{assert.equal(s.phase,'confirming');assert.equal(current(),true);project.revision++;assert.equal(current(),true);refreshed=true;return true;};
+  await s.confirm();assert.equal(refreshed,true);assert.equal(s.phase,'committed');assert.equal(s.owner.projectRevision,project.revision);
+  assert.equal(calls.filter(command=>command==='panel-fill-confirm 9').length,1);
+});
+test('UI05 confirmed receipt survives presentation failure and never claims fresh results',async()=>{
+  const {c,A,calls}=environment(),s=new A.Session(4);await s.read();s.phase='confirmable';s.candidate={token:9,generation:s.generation};
+  c.renderObjects=async()=>false;await assert.rejects(()=>s.confirm(),/未能刷新/);
+  assert.equal(s.receipt.ok,true);assert.equal(s.phase,'committed');assert.equal(s.snapshotFresh,false);
+  assert.equal(calls.filter(command=>command==='panel-fill-confirm 9').length,1);
 });

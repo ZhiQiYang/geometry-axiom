@@ -130,6 +130,14 @@
       wire(actual.size===expected[key].size&&[...expected[key]].every(([recordId,value])=>sameDefinition(actual.get(recordId),value,kind)), '預覽 after 不符本次 '+key+' 操作範圍');
     }
   }
+  function impactContract(candidate){
+    wire(Array.isArray(candidate.changes)&&candidate.changes.every(change=>change&&id(change.id)&&
+      ['finish-surface','panel-fill','derived-placement'].includes(change.record??'finish-surface')&&
+      ['created','modified','deleted','derived'].includes(change.change)), '原生變更清單');
+    if(candidate.before.derivedPlacements.length||candidate.after.derivedPlacements.length)
+      wire(candidate.dependencies&&['before','after'].every(stage=>candidate.dependencies[stage]&&
+        Array.isArray(candidate.dependencies[stage].geometry?.timbers)), '宿主下游影響缺少原生前後依賴');
+  }
   function definition(record, kind) {
     if (!record) return null;
     if(kind!=='finish')return clone(record.definition);
@@ -211,6 +219,7 @@
         if(!this.current(generation)){if(result.token)await apiRequest('panel-fill-cancel '+token(result.token));return null;}
         const c=contract(result,true);if(c.revision!==String(this.revision))throw new Error('預覽來源版本已變更。');
         requestScope({...result,before:c.before,after:c.after},this.snapshot,operations);
+        impactContract({...result,before:c.before,after:c.after});
         const required=['edit-definitions','read-layout','read-support'];
         this.candidate={...result,before:c.before,after:c.after,uiContract:c,generation};
         this.phase=result.valid && c.completeForScope && !c.errors.length && required.every(a=>c.supportedActions.includes(a)) ? 'confirmable':'invalid';
@@ -235,6 +244,7 @@
         // The shared apiRequest observer owns dirty/history. Never create a second entry here.
         const sameOwner=workspace().context()===this.owner.context && workspace().getProjectState().contextToken===this.owner.contextToken;
         if(this.retired||!sameOwner){this.phase='committed';this.reason='原生已確認；視圖已退役，請重新開啟讀取正式資料。';return reply;}
+        await this.refreshPresentation(); // PF_UI05_CONFIRM_SCENE_SYNC
         this.owner=owner(this.boundaryId);const official=checked(await apiRequest('panel-fill-read'));
         this.assertCurrent();const currentContract=contract(official);
         this.snapshot=currentContract.state;this.snapshotFresh=true;this.contract=currentContract;this.revision=official.revision;
@@ -246,6 +256,19 @@
           this.phase==='unknown'?'確認結果未知；禁止重送，請查原 requestId 回執。':error.message;
         this.emit();throw error;
       }
+    }
+    async refreshPresentation(){
+      const pin=owner(this.boundaryId);
+      // Existing card-position metadata may change revision while this refresh
+      // runs. Keep context/incarnation/history ownership, then repin after it.
+      const current=()=>{
+        const ws=workspace(),p=ws.getProjectState(),h=ws.history;
+        return !this.retired&&ws.context()===pin.context&&p.contextToken===pin.contextToken&&p.id===pin.projectId&&
+          h?.frame===pin.frame&&h?.frame?.ids?.get(this.boundaryId)===pin.incarnation&&h?.undo?.at(-1)===pin.undo&&
+          h?.redo?.at(-1)===pin.redo&&h?.undo?.length===pin.undoLength&&h?.redo?.length===pin.redoLength&&
+          (typeof connection==='undefined'||connection.session===pin.session&&connection.phase==='ready');
+      };
+      if(!current()||await renderObjects({current})!==true||!current())throw new Error('確認已完成，但原場景身分已變更或物件畫面未能刷新。');
     }
     async reconcileReceipt(reply,command) {
       if(this.phase!=='unknown'||command!=='panel-fill-confirm '+token(this.candidate?.token))return false;
