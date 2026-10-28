@@ -6,11 +6,11 @@ R02 UI-1 把 main 已有的 PF-1～3＋PF-H 接到 App：既有物件面 →「�
 
 ## 唯一 current-state 矩陣
 
-- 完整 PR／evidence head：`bf184092957ed3f99855e22df81f7915fa96dc28`。
+- 完整 PR／evidence head：`b5a61bbc0cb33a1f188112cc5c7982bffbec93ff`。
 - 固定產品與最新完整 canvas execution F2：`74d638686edc9861e9ed9d3409af4adf02350f8e`。
 - 基底：`405f8c5e1a637a16cbe47470faf5ae1fa02b8676`。
 - D44 五項反證 execution F1：`a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6`。F2 另加參數來源準備的 navigation／focus／create request 守門及真 UI 反例；舊收據保留實際來源，不冒稱 F2 重跑。
-- [原始收據與進度](https://github.com/ZhiQiYang/geometry-axiom/tree/bf184092957ed3f99855e22df81f7915fa96dc28/evidence/r02-ui1-20261028)：各包有 archive 與逐檔 SHA256，命令、exit、完整 stdout／stderr、環境、來源、失敗原件均保留。舊 PROGRESS 區段只作歷史。
+- [原始收據與進度](https://github.com/ZhiQiYang/geometry-axiom/tree/b5a61bbc0cb33a1f188112cc5c7982bffbec93ff/evidence/r02-ui1-20261028)：各包有 archive 與逐檔 SHA256，命令、exit、完整 stdout／stderr、環境、來源、失敗原件均保留。舊 PROGRESS 區段只作歷史。
 
 | 本片驗收 | 實際狀態與界線 |
 |---|---|
@@ -32,7 +32,7 @@ R02 UI-1 把 main 已有的 PF-1～3＋PF-H 接到 App：既有物件面 →「�
 
 | Gate／實際命令 | execution SHA | 結果 |
 |---|---|---|
-| 完整 `node geometry-web/cdp_test.js`（`r02-browser-run-v2.py canvas`） | F2 | 前次環境中斷，無exit／CDP_RESULT，不計通過；獨立背景恢復輪於2026-10-28T18:16:13.492780Z啟動，原2100秒／strict golden，尚無終態 |
+| 完整 `node geometry-web/cdp_test.js`（`r02-browser-run-v2.py canvas`） | F2 | 2648／0／0，exit0，1927.077秒（32分7秒），86段strict golden matched；P76=87、P128=381；P38原預期注入例外1、非預期0；18:16:13.492780–18:48:20.570656 UTC。原件round11，前次環境中斷原件round10保留 |
 | `d44-owner-mutation.py --root /tmp/r02-d44-mutations --output /workspace/r02-ui1-evidence/d44-owner-mutation --timeout 2100 -- python3 /workspace/r02-ui1-evidence/tools/r02-browser-run-v2.py pf` | F2 | baseline381／0、撤回UI05_D44_PREPARATION_OWNER具名6／1、restored381／0；0／1／0，421.561秒，外層exit0，raw hash與恢復來源已核對 |
 | `d44-ui-mutations.py --root /tmp/r02-d44-mutations --output /workspace/r02-ui1-evidence/d44-ui-mutations --timeout 2100 -- python3 /workspace/r02-ui1-evidence/tools/r02-browser-run-v2.py pf` | F1 | 五組具名0／1／0，11次CDP，1293.054秒，外層exit0、無timeout，產品bytes恢復 |
 | `GEOMETRY_PANEL_FILL_ONLY=1 node geometry-web/cdp_test.js` | `a7a05ecf13076f0dcf5fd89d1ef6c8a9118ac836` | 381／0／0，203.807秒，exit0；其後F2僅test digest與本段golden計數 |
