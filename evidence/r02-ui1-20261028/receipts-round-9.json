@@ -1,0 +1,149 @@
+{
+  "schema": "r02-ui1-receipt-package/1",
+  "archive": "receipts-round-9.tar.gz",
+  "bytes": 49045,
+  "sha256": "3ef91904176b19fb575e15ffcf5d521a42ea0fb18c7e4f48c262c858d8626999",
+  "scope": "Final-source preparation owner UI retraction: baseline381/0, named failure, restored381/0; no timeout; exact F2. Full canvas at F2 started separately and is not yet terminal.",
+  "files": [
+    {
+      "path": "d44-owner-mutation/baseline/receipt.json",
+      "bytes": 1526,
+      "sha256": "81b0593d999f6acfa30cf99ad79436aa39373ac6f2cffdec6938902d4061eb47"
+    },
+    {
+      "path": "d44-owner-mutation/baseline/started.json",
+      "bytes": 998,
+      "sha256": "3657fda0233d44c04423d7612b9d3c03ffad674593fd524630151e3d8a9ba25f"
+    },
+    {
+      "path": "d44-owner-mutation/baseline/stderr.gz",
+      "bytes": 27,
+      "sha256": "77e129259849bf999706038e752541aeeaa046a8742161055b2307b39b54fc0f"
+    },
+    {
+      "path": "d44-owner-mutation/baseline/stdout.gz",
+      "bytes": 6626,
+      "sha256": "0867bb29c1a3e13c84618d2db59290958e1ff9f1bb0c2147b3ce14dfb3dfe945"
+    },
+    {
+      "path": "d44-owner-mutation/d44-preparation-owner/receipt.json",
+      "bytes": 1538,
+      "sha256": "32b5b9f1fc294c1e3f9ae73dbf2eae78573fc7fd7b8f19a5009c0d0e8ce6d59d"
+    },
+    {
+      "path": "d44-owner-mutation/d44-preparation-owner/started.json",
+      "bytes": 1011,
+      "sha256": "cb8f849bf75c05ad369440c3053210434c794bd0834c182f102942e1eb227255"
+    },
+    {
+      "path": "d44-owner-mutation/d44-preparation-owner/stderr.gz",
+      "bytes": 27,
+      "sha256": "8b29eae83c13664e8cc51441350534f81431caabd6c11bb97bd2e4a1e399729a"
+    },
+    {
+      "path": "d44-owner-mutation/d44-preparation-owner/stdout.gz",
+      "bytes": 2915,
+      "sha256": "c7f9ab5a85730f359210af7c152ece1a3e59a8245c4fa421302b359b3087f39e"
+    },
+    {
+      "path": "d44-owner-mutation/d44-preparation-owner-restored/receipt.json",
+      "bytes": 1547,
+      "sha256": "be92ae74b030f542f0b94a5898136035660eda571be50b9bd05b56259778385d"
+    },
+    {
+      "path": "d44-owner-mutation/d44-preparation-owner-restored/started.json",
+      "bytes": 1020,
+      "sha256": "8049f0ecdefc6999b463a0ee0ecdc20b360eb4260456103e6a02b9ab69802d63"
+    },
+    {
+      "path": "d44-owner-mutation/d44-preparation-owner-restored/stderr.gz",
+      "bytes": 27,
+      "sha256": "8e5d8bcc6d79350f12a0830f3a93973ee8ae8cb77c7a42d3abac04677564923f"
+    },
+    {
+      "path": "d44-owner-mutation/d44-preparation-owner-restored/stdout.gz",
+      "bytes": 6607,
+      "sha256": "e55361e671ad8107167102b22814fcfb65273a4138d17b8b28d3b78b966eba40"
+    },
+    {
+      "path": "d44-owner-mutation/originals/parameters.js.gz",
+      "bytes": 22984,
+      "sha256": "f40c1ea51ed9bec0598f92aeb6049a833c9c3c1f87326f439272e9a0fc36a024"
+    },
+    {
+      "path": "d44-owner-mutation/summary.json",
+      "bytes": 233,
+      "sha256": "f4e2c87c8a4d0a807abf7801560d7249605020143e4e8dbfe06e4d57726090cd"
+    },
+    {
+      "path": "d44-owner-mutation-outer/result.json",
+      "bytes": 1117,
+      "sha256": "3b99061646caeedf3710c0a07210bad1141a1f959491b70488e37c09f7edb7f9"
+    },
+    {
+      "path": "d44-owner-mutation-outer/stderr.gz",
+      "bytes": 27,
+      "sha256": "77e129259849bf999706038e752541aeeaa046a8742161055b2307b39b54fc0f"
+    },
+    {
+      "path": "d44-owner-mutation-outer/stdout.gz",
+      "bytes": 455,
+      "sha256": "39e71d39ce0014e78d2a27aae71c3266f4dd457c601fb1f015db777af6a1d3ca"
+    },
+    {
+      "path": "d44-owner-mutation-support/baseline-server.log.gz",
+      "bytes": 474,
+      "sha256": "6c9392901d6f79c53eef70bfbd063c1b5e249b58657129c2659ae8442061e22e"
+    },
+    {
+      "path": "d44-owner-mutation-support/d44-preparation-owner-restored-server.log.gz",
+      "bytes": 496,
+      "sha256": "6947aa148db4028e1418df06f6a68d76df416d7b88ed34a8a92723e43a2ecf19"
+    },
+    {
+      "path": "d44-owner-mutation-support/d44-preparation-owner-server.log.gz",
+      "bytes": 425,
+      "sha256": "749257005bc9093e8531b159324fbffa588b42bf4e07e5af2c4f943f3b4954de"
+    },
+    {
+      "path": "d44-owner-mutation-support/packages/download-KfVY18/missing-parameter-source.gcanvas",
+      "bytes": 10355,
+      "sha256": "ac788062f1a7b1844d5143d8239affb315c883bc1b4fb04f01e892ed4a5b3136"
+    },
+    {
+      "path": "d44-owner-mutation-support/packages/download-KfVY18/tampered-scene.gcanvas",
+      "bytes": 11559,
+      "sha256": "4e75aeb8387e6e4c56c0b92636b71f9702b8c0740c4ab1043e35834c53cdbbef"
+    },
+    {
+      "path": "d44-owner-mutation-support/packages/download-KfVY18/unknown-capability.gcanvas",
+      "bytes": 11566,
+      "sha256": "ecddb67f2400c648e75026c291489cde68fd4710492688dd0488a70eb818b51c"
+    },
+    {
+      "path": "d44-owner-mutation-support/packages/download-KfVY18/未命名專案.gcanvas",
+      "bytes": 11537,
+      "sha256": "a9e90684f524aa18edbbe6fb850e515d2480e4296c1c49de65959db62c95f27a"
+    },
+    {
+      "path": "d44-owner-mutation-support/packages/download-rriXb6/missing-parameter-source.gcanvas",
+      "bytes": 10355,
+      "sha256": "dfb12f5f07b7ddcaf78e64cf1e11bfad45738b7c06c9d919311c9139e28092cf"
+    },
+    {
+      "path": "d44-owner-mutation-support/packages/download-rriXb6/tampered-scene.gcanvas",
+      "bytes": 11559,
+      "sha256": "cbc467317cfa6d602bf11f009e2bf385187035a9a61404575267fcfce0a020f5"
+    },
+    {
+      "path": "d44-owner-mutation-support/packages/download-rriXb6/unknown-capability.gcanvas",
+      "bytes": 11566,
+      "sha256": "4c01e6baf361c6594e90ffaa2873add69ba4d8ac02ecf3d976c2279b67b73b70"
+    },
+    {
+      "path": "d44-owner-mutation-support/packages/download-rriXb6/未命名專案.gcanvas",
+      "bytes": 11537,
+      "sha256": "8cc462e5fbb70bf0e17d18f68abf40082a0d5d157f259d31ac652ebbcec342d1"
+    }
+  ]
+}
