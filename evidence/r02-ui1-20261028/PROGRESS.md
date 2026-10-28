@@ -59,3 +59,13 @@ UI基準10來源 `f7d8802cc7a01c76d35f173473cbe45a80165c89` 真349/0/0、198.350
 六組UI具名反證已在上述F的獨立clean checkout啟動。bridge重產環境另查出：舊cache ELF嵌入不同checkout絕對路徑，來源指紋相同仍與baseline逐byte不同；原二進位相等守門正確擋下。保留原件，使用既有MUTATE_CACHE選項的全新隔離cache重產18項；不降低守門、不刪舊ELF。不把中斷與BLOCKED列為killed。最終check與native須使用同一已記錄cache。
 
 下一步：收完六反證／bridge18，驗帳本新鮮度，完整native census與相關browser。UI15仍未跑／未達合併條件。
+
+## 2026-10-28 UTC：六組反證與完整帳本完成
+
+F `fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f`：六組真UI撤線均有各自具名紅並恢復綠（入口、preview HTTP、confirm回執、預覽焦點、I8a下游影響、確認後場景同步），13次實際CDP程序包含7次349/0/0基準／恢復及6次具名exit1；外層exit0、1544.301秒。獨立核收各CDP_RESULT、raw hash與還原產品bytes，見UI_FINAL_AUDIT.json。
+
+原帳本78筆已全部重產（core60＋bridge18），在 `ffa22ad9245021c17c0a827847270bc5882cbb69` 執行 `MUTATE_CACHE=/tmp/r02-ledger-final-cache python3 tests/mutate.py --check` exit0：70 killed、1 crashed、4 equivalent、3 retired，stale0／blocked0／survived0。M20三次SIGSEGV另計crashed，沒有偽稱斷言殺死。18個bridge全部具名killed／恢復27methods，1017.946秒exit0；185份原始子程序文字／sidecar保存在封包內的original-subprocess-records.tar.gz。舊cache與失敗全部保留，沒有放寬裁判。
+
+完整native已於2026-10-28 15:16:24 UTC從乾淨 `ffa22ad9245021c17c0a827847270bc5882cbb69` 啟動 `python3 tests/run_all.py --build --update-expected`，原2100秒守門、16MiB stack；suite完成即寫持久gzip tar。grid亦已啟動，至多兩項重測；fullcanvas等native結束後獨占。此段不是native/grid已過。
+
+本收據暫由同owner的receipts分支發布，避免完整native執行中變更受驗HEAD；結束後一般merge回原PR分支。UI15仍未跑、draft／未達合併條件。

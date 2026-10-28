@@ -1,0 +1,584 @@
+{
+  "schema": "r02-ui1-receipt-package/1",
+  "archive": "receipts-round-4.tar.gz",
+  "sha256": "3d415f79d92fc04b3a59f09f31af723be77235f47d05311f3c4d898ffebf5bb6",
+  "bytes": 568011,
+  "files": [
+    {
+      "path": "RETIRED_VENDOR_RECLAIM_FINAL.json",
+      "bytes": 9137,
+      "sha256": "6a26fda0f5ffb8266df0e3516913478e7b9a945c4bb69b795c0dea7277c7fa95"
+    },
+    {
+      "path": "UI_FINAL_AUDIT.json",
+      "bytes": 7319,
+      "sha256": "be37a21d8e6bd4961ad3e189b95dca1e91fb5f10f299aa28ae8c2093f83b24fd"
+    },
+    {
+      "path": "environment-final.json",
+      "bytes": 3586,
+      "sha256": "179880af60a63e59227f6da647afa382c43c8765c2d91dd62da8930479bd5da9"
+    },
+    {
+      "path": "ledger-bridge-freshcache/original-subprocess-records.json",
+      "bytes": 29869,
+      "sha256": "ca9ec297d8eb6d5652a14d9c413a1668446519a39f2a8ba8dc3273bd5cfa2b5a"
+    },
+    {
+      "path": "ledger-bridge-freshcache/original-subprocess-records.tar.gz",
+      "bytes": 252608,
+      "sha256": "c87374472a8f12e3efdf5d371a382d10551269a875c96eca9f2e8e22c9631fa7"
+    },
+    {
+      "path": "ledger-bridge-freshcache/result.json",
+      "bytes": 1117,
+      "sha256": "4c8371299d55f2672edc5be030891c24b86170c9361f7bc59d16e291cf9af906"
+    },
+    {
+      "path": "ledger-bridge-freshcache/source.patch.gz",
+      "bytes": 10803,
+      "sha256": "63cf19042f9d2d86096a01369dc5afa2af61e86d0ffb6cf98be67d49c5d4615e"
+    },
+    {
+      "path": "ledger-bridge-freshcache/stderr.gz",
+      "bytes": 27,
+      "sha256": "fa182bb390ee9e09e3f381b2ccb7c65a8f57ce70b9156bb721c5c850136e7dd3"
+    },
+    {
+      "path": "ledger-bridge-freshcache/stdout.gz",
+      "bytes": 1480,
+      "sha256": "20850e36a6cdd5810f27f5ce56d6c2e6c1f47cec9cc2513e76c14f22c35db915"
+    },
+    {
+      "path": "mutation-check-final/result.json",
+      "bytes": 899,
+      "sha256": "a149749e80e19aa0cc4e73336ee35d3d783f2ce71c3b327dbff4b653700d8ed6"
+    },
+    {
+      "path": "mutation-check-final/stderr.gz",
+      "bytes": 27,
+      "sha256": "36c01f6fe6cb193225e771e1b1a0a49d12a0a158fd060f66eb686ef4889146f4"
+    },
+    {
+      "path": "mutation-check-final/stdout.gz",
+      "bytes": 485,
+      "sha256": "cc6b0e80eb77ab4e20b822a09b37bff748155d696c02317fd6cf442e4dbc3317"
+    },
+    {
+      "path": "tools/architecture-ROOT-REVIEW.json",
+      "bytes": 467,
+      "sha256": "cb1c3fb03b75ab4f1ef87b16b3290b314c3409ede371b7ea495728956b100b40"
+    },
+    {
+      "path": "tools/gate-run.py",
+      "bytes": 2835,
+      "sha256": "ef6f3e39b6988df538723ce8a36b09ee26aaa0c2a689e9b6ccca4e5ed45a18fb"
+    },
+    {
+      "path": "tools/native-gate.py",
+      "bytes": 3137,
+      "sha256": "636fe61b1c515cabcae9a6b89f3bd9a1e59f7a5ece1f73604940eb45b21a52e3"
+    },
+    {
+      "path": "ui-mutations-final/baseline/receipt.json",
+      "bytes": 1434,
+      "sha256": "ae3029d666d7710c64823ecc3153aaff381d737c177b4f3046bff01fafcd27a5"
+    },
+    {
+      "path": "ui-mutations-final/baseline/started.json",
+      "bytes": 1008,
+      "sha256": "c1dd68f2be77f49b74ce2dc66dab0eb8d4f672a52756848d8bd51db8a050fb1a"
+    },
+    {
+      "path": "ui-mutations-final/baseline/stderr.gz",
+      "bytes": 27,
+      "sha256": "8d576fde0c835f52bf03cd70bf2ba8060105120993632cd30d283c39cfc4ad83"
+    },
+    {
+      "path": "ui-mutations-final/baseline/stdout.gz",
+      "bytes": 6028,
+      "sha256": "6bb934bb6253eb6e85b5a5ba97f76213248b529120638d05e3b37421553d6993"
+    },
+    {
+      "path": "ui-mutations-final/confirm-receipt/receipt.json",
+      "bytes": 1441,
+      "sha256": "e708c1c2078bd83d841d81cff837335d3ff65ab8c6fccdf103a48a34e4f3bcf2"
+    },
+    {
+      "path": "ui-mutations-final/confirm-receipt/started.json",
+      "bytes": 1015,
+      "sha256": "927afeddf45a71cfbd610107fae870f0f9c080c7e1bd3f1e6929adcdc8bef9ee"
+    },
+    {
+      "path": "ui-mutations-final/confirm-receipt/stderr.gz",
+      "bytes": 27,
+      "sha256": "bbf2587678bb12a83447be14af91b6511a5e7ebf90dd9b7c62423187df5af2f9"
+    },
+    {
+      "path": "ui-mutations-final/confirm-receipt/stdout.gz",
+      "bytes": 3338,
+      "sha256": "ed8c0fcaf5a5086f429a74aacc350bb8fe4fae7ea0f12fa9932ea7d9c125b297"
+    },
+    {
+      "path": "ui-mutations-final/confirm-receipt-restored/receipt.json",
+      "bytes": 1450,
+      "sha256": "00c21978716d987a8d96a2fa04101f7c30fb92359d33ccaa167f210164c77928"
+    },
+    {
+      "path": "ui-mutations-final/confirm-receipt-restored/started.json",
+      "bytes": 1024,
+      "sha256": "42ee321701dfb4d37e7099b4dae199f7818ebc2fc04fe30cef3ae4f30c8cabee"
+    },
+    {
+      "path": "ui-mutations-final/confirm-receipt-restored/stderr.gz",
+      "bytes": 27,
+      "sha256": "b73d32e3c56964b1dc62a248a1480bf5f7c708e1cc17c725812ac385a1a8e4b7"
+    },
+    {
+      "path": "ui-mutations-final/confirm-receipt-restored/stdout.gz",
+      "bytes": 6025,
+      "sha256": "3c834c7e3d6e18507a978b891ebcac75a1df834680c1ee0fdf879041c04c38f9"
+    },
+    {
+      "path": "ui-mutations-final/confirm-scene-sync/receipt.json",
+      "bytes": 1443,
+      "sha256": "6fbe38f9a010ff51f42fcb697178d874d779a57c24825f79ede13d0467fe4548"
+    },
+    {
+      "path": "ui-mutations-final/confirm-scene-sync/started.json",
+      "bytes": 1018,
+      "sha256": "d018c2c93311486e7223dc4fe209a6ad180b44f96b5bcc92b4acfb0c81b0bc17"
+    },
+    {
+      "path": "ui-mutations-final/confirm-scene-sync/stderr.gz",
+      "bytes": 27,
+      "sha256": "a1ffd54b77f92a5a3c0938eb788e737a9f57d5690549f68ebee4b93df2ecf71d"
+    },
+    {
+      "path": "ui-mutations-final/confirm-scene-sync/stdout.gz",
+      "bytes": 3277,
+      "sha256": "bcecf6be1864eb07c0c4a756dd7329049714106e48ebedbf8239c270108555d0"
+    },
+    {
+      "path": "ui-mutations-final/confirm-scene-sync-restored/receipt.json",
+      "bytes": 1453,
+      "sha256": "a567c1a2fbef56bf70f3781cfa115ca80b9db0928e30efcf7e1f972a41dad143"
+    },
+    {
+      "path": "ui-mutations-final/confirm-scene-sync-restored/started.json",
+      "bytes": 1027,
+      "sha256": "6d1e1fc2f9a267347c93730f8fe6ec9251f5f26314d37f7b41515d8c66357561"
+    },
+    {
+      "path": "ui-mutations-final/confirm-scene-sync-restored/stderr.gz",
+      "bytes": 27,
+      "sha256": "886d18b5c1fc98dd050fec339ec6d3536e5127d19f1a279032f99e9b0e4dc3f6"
+    },
+    {
+      "path": "ui-mutations-final/confirm-scene-sync-restored/stdout.gz",
+      "bytes": 6028,
+      "sha256": "da1495fea416a7a7fae206f33892c1ef6c3582ea575c4de3eb3c9ccb22500b72"
+    },
+    {
+      "path": "ui-mutations-final/downstream-impact/receipt.json",
+      "bytes": 1442,
+      "sha256": "8387af14c0ac8eb7a8a24da8043a6c9c83c6cdf88516d45470e18b374fe02746"
+    },
+    {
+      "path": "ui-mutations-final/downstream-impact/started.json",
+      "bytes": 1017,
+      "sha256": "0e240e218ddb35668d5d927d13809e3cd1f211b4afd834ac28c1e324412722cb"
+    },
+    {
+      "path": "ui-mutations-final/downstream-impact/stderr.gz",
+      "bytes": 27,
+      "sha256": "8ee1051d8f715c48907aa078ac6c9312c9c1ff7d8ae4df37354050f86bd25b74"
+    },
+    {
+      "path": "ui-mutations-final/downstream-impact/stdout.gz",
+      "bytes": 5332,
+      "sha256": "99d230358babbe29efd34c453d01c4b144892bda54f10ceda4e54840063b0e98"
+    },
+    {
+      "path": "ui-mutations-final/downstream-impact-restored/receipt.json",
+      "bytes": 1451,
+      "sha256": "8eb633603918e4bb3963498a65c21f60fead4ee9df194f84d7c8665d9f7f96ab"
+    },
+    {
+      "path": "ui-mutations-final/downstream-impact-restored/started.json",
+      "bytes": 1026,
+      "sha256": "f4a652342b13682da3b76f2f919ead1272f0f969c05912c7b950ee64d3f29f5c"
+    },
+    {
+      "path": "ui-mutations-final/downstream-impact-restored/stderr.gz",
+      "bytes": 27,
+      "sha256": "2c7b10b3a6de48c5c13b3fd388ae68ebf53d045bca1416b0f4d01c255ef089d2"
+    },
+    {
+      "path": "ui-mutations-final/downstream-impact-restored/stdout.gz",
+      "bytes": 5989,
+      "sha256": "c72a25adf70a79f737b1266d1001f37d9a55f6ecd2c601d3d368e7b50758bc34"
+    },
+    {
+      "path": "ui-mutations-final/entry-handler/receipt.json",
+      "bytes": 1439,
+      "sha256": "531e27db0eb5e15dafdfc89a623abe9de5c3de409b1f3901eaaa558cde0b1437"
+    },
+    {
+      "path": "ui-mutations-final/entry-handler/started.json",
+      "bytes": 1013,
+      "sha256": "4d3a256cd6ea56070ddf36c491850f40b1f9a52250a987c6923e01191baac5a4"
+    },
+    {
+      "path": "ui-mutations-final/entry-handler/stderr.gz",
+      "bytes": 27,
+      "sha256": "d1db9a67f1080f06e57d8b44f38673b4569ca77cd79681553fd1642142cd41ef"
+    },
+    {
+      "path": "ui-mutations-final/entry-handler/stdout.gz",
+      "bytes": 2866,
+      "sha256": "d3a7387ec619bccca13a8c40fbf9b5e2f08bf480314acff0729beb22e077f6e3"
+    },
+    {
+      "path": "ui-mutations-final/entry-handler-restored/receipt.json",
+      "bytes": 1448,
+      "sha256": "2f7a8bd911534a022290b48600cd984a604aba7ba74d40c802670a66e4e2ac00"
+    },
+    {
+      "path": "ui-mutations-final/entry-handler-restored/started.json",
+      "bytes": 1022,
+      "sha256": "0285ec050294735e5874d3c003a656be78046241a62df2704393e2b4c32b6d03"
+    },
+    {
+      "path": "ui-mutations-final/entry-handler-restored/stderr.gz",
+      "bytes": 27,
+      "sha256": "2dbf064f9cdcd542785a2638a878ad1a6a9f70d6515b3d31f6a108f4f687bc06"
+    },
+    {
+      "path": "ui-mutations-final/entry-handler-restored/stdout.gz",
+      "bytes": 6014,
+      "sha256": "d670c438c3c23ea601d3ee4ed088867571d946ec0fa3e377c0fb61b91c8119b6"
+    },
+    {
+      "path": "ui-mutations-final/originals/app.js.gz",
+      "bytes": 200489,
+      "sha256": "0c7e19a92453cbf5dfb1245889f07c3d25e039ecad9dab6f2d1e39537e137709"
+    },
+    {
+      "path": "ui-mutations-final/originals/panel-fill-adapter.js.gz",
+      "bytes": 7748,
+      "sha256": "adf2e07e293cbd21b45a62063d0db57c8209df6fe23df1bdc7cf3380e31fd5c9"
+    },
+    {
+      "path": "ui-mutations-final/originals/panel-fill-workspace.js.gz",
+      "bytes": 10768,
+      "sha256": "ae5d5d665e490338e3db062b9ff42272cbda38896aa81268ad6a88462c42fd6d"
+    },
+    {
+      "path": "ui-mutations-final/preview-focus/receipt.json",
+      "bytes": 1439,
+      "sha256": "1825e3836d9ddc5152fbbde23f046ee1a936b2bd1978182982b45c6a365807b6"
+    },
+    {
+      "path": "ui-mutations-final/preview-focus/started.json",
+      "bytes": 1013,
+      "sha256": "d9fbe8fa3af90b0711b4c77fc1926428cd73a2258cfe74e585af106f8a2971f3"
+    },
+    {
+      "path": "ui-mutations-final/preview-focus/stderr.gz",
+      "bytes": 27,
+      "sha256": "148c2223458517c0707377ab244bb3281f03bb1f958c9583b3618007a62af3ed"
+    },
+    {
+      "path": "ui-mutations-final/preview-focus/stdout.gz",
+      "bytes": 2967,
+      "sha256": "1f857a3b39f64b7451132ed6df9adf32b762cff01080e593e2cce51f5fec0721"
+    },
+    {
+      "path": "ui-mutations-final/preview-focus-restored/receipt.json",
+      "bytes": 1448,
+      "sha256": "52af4da0314c4d94378f3fcfc6db523ab526240c697cc05633b57439805b5c60"
+    },
+    {
+      "path": "ui-mutations-final/preview-focus-restored/started.json",
+      "bytes": 1022,
+      "sha256": "6c1c833a42fcde05132d19a3d1bb5b716333f9c512577ae1783c134b9f521878"
+    },
+    {
+      "path": "ui-mutations-final/preview-focus-restored/stderr.gz",
+      "bytes": 27,
+      "sha256": "32d446937e8ab037250a1e8b747dec052a093484b9b41d6d66bbe8a01a220e2f"
+    },
+    {
+      "path": "ui-mutations-final/preview-focus-restored/stdout.gz",
+      "bytes": 5994,
+      "sha256": "956ddb88a8297c7223a6ffafc13fbf4866c9048eef2497c8fa8f33e35b1665e3"
+    },
+    {
+      "path": "ui-mutations-final/preview-http/receipt.json",
+      "bytes": 1438,
+      "sha256": "1083b52efd935b8ac970b64740b40ef53aa96960272776afaddf48c7ea207508"
+    },
+    {
+      "path": "ui-mutations-final/preview-http/started.json",
+      "bytes": 1012,
+      "sha256": "c311c61f6e2854127e1553524338bec21e0385ba7805bdae7153ebf45a5e636f"
+    },
+    {
+      "path": "ui-mutations-final/preview-http/stderr.gz",
+      "bytes": 27,
+      "sha256": "e71e75a1ed3362ffaaeb5c7fb0e7112268fe5f97026de112f7d92aec2d9fd72e"
+    },
+    {
+      "path": "ui-mutations-final/preview-http/stdout.gz",
+      "bytes": 3063,
+      "sha256": "5467186219b2605b546d226da9a6f510113320ddc204d186a33f3a95c3f36413"
+    },
+    {
+      "path": "ui-mutations-final/preview-http-restored/receipt.json",
+      "bytes": 1446,
+      "sha256": "712e501d1f78c652032f0b5e5b1da922d4e4daa44b4d7a538ac01575a808c856"
+    },
+    {
+      "path": "ui-mutations-final/preview-http-restored/started.json",
+      "bytes": 1021,
+      "sha256": "1df1870fdace7614e16ed206ea9913df82f6ad2ae5f56790d81a80ae8ddc903b"
+    },
+    {
+      "path": "ui-mutations-final/preview-http-restored/stderr.gz",
+      "bytes": 27,
+      "sha256": "b596630578dcc5f7f685c43fb4517c822ab309ced556019275118cad9215e5b8"
+    },
+    {
+      "path": "ui-mutations-final/preview-http-restored/stdout.gz",
+      "bytes": 6045,
+      "sha256": "772e597068580c18f94212a4b895df344882afe460267f328903e6792d526fdf"
+    },
+    {
+      "path": "ui-mutations-final/summary.json",
+      "bytes": 906,
+      "sha256": "5355ba9268d4990068ed151e729d99d0fe42a8abfbaad5b67fcd473d8155c4b9"
+    },
+    {
+      "path": "ui-mutations-outer/result.json",
+      "bytes": 1114,
+      "sha256": "f29f5fdb4ac7c957b08a327355f9e73682ff694d9a1ef5134a8db05904f40491"
+    },
+    {
+      "path": "ui-mutations-outer/stderr.gz",
+      "bytes": 27,
+      "sha256": "8d576fde0c835f52bf03cd70bf2ba8060105120993632cd30d283c39cfc4ad83"
+    },
+    {
+      "path": "ui-mutations-outer/stdout.gz",
+      "bytes": 1080,
+      "sha256": "cf468d797392debd1e0115bd0c09432f5d8e0e89fae61c867c9a959628a68ed3"
+    },
+    {
+      "path": "ui-mutations-support/baseline-server.log.gz",
+      "bytes": 481,
+      "sha256": "1078979ada5531224817e87da352bc5feb91d1728716eb3d864074e916f91c2a"
+    },
+    {
+      "path": "ui-mutations-support/confirm-receipt-restored-server.log.gz",
+      "bytes": 497,
+      "sha256": "8f1c284e8e427cdabf45f919a3966d05d2a244fc742f6e0327a6d031c31cf5a3"
+    },
+    {
+      "path": "ui-mutations-support/confirm-receipt-server.log.gz",
+      "bytes": 426,
+      "sha256": "a77f87603797b26cdaf3d44fa3c70afcc79e8e2ae046787dbb5dfb06d7265fad"
+    },
+    {
+      "path": "ui-mutations-support/confirm-scene-sync-restored-server.log.gz",
+      "bytes": 500,
+      "sha256": "8d416d62e1708e58a145ea60356a6d464ad5141476bdfdbbb7501b0b932b782c"
+    },
+    {
+      "path": "ui-mutations-support/confirm-scene-sync-server.log.gz",
+      "bytes": 429,
+      "sha256": "604ea4619bed8d4ebdb3887f0320c600e645ab7570413b74716e2ed393ab1086"
+    },
+    {
+      "path": "ui-mutations-support/downstream-impact-restored-server.log.gz",
+      "bytes": 499,
+      "sha256": "d7f7769be4f3feaed34dadb39041d6c1dbbcee8aa9ad3acfb645049a90eb9b6a"
+    },
+    {
+      "path": "ui-mutations-support/downstream-impact-server.log.gz",
+      "bytes": 428,
+      "sha256": "c4af8e3d1dcae89addc3e0713cbf0c0d748794bfb1ae07c85fcf24404b4468f4"
+    },
+    {
+      "path": "ui-mutations-support/entry-handler-restored-server.log.gz",
+      "bytes": 495,
+      "sha256": "52a66a7e8ae038c22cc6c57f3e1584fc76a714e6c6b941cb2054c2cab1d9a4d0"
+    },
+    {
+      "path": "ui-mutations-support/entry-handler-server.log.gz",
+      "bytes": 424,
+      "sha256": "ff59b7ad7d850cd95ec40bd94bedb71257d1909bacfb5cb14879279d6435c22f"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-2ZAiuS/missing-parameter-source.gcanvas",
+      "bytes": 10321,
+      "sha256": "fe74a944bfd02ab82434d80182c8813f4876e0afac6792f1ca5adbfaf275440e"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-2ZAiuS/tampered-scene.gcanvas",
+      "bytes": 11274,
+      "sha256": "5de4bac3eda8e7929f6c3c622b5974a74ea9b3ef1144ccf58373ffa8800ba7ed"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-2ZAiuS/unknown-capability.gcanvas",
+      "bytes": 11281,
+      "sha256": "77026b441fbfae1d2a470250abf31f275ceb36112ff33fa361269ca72af88d1e"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-2ZAiuS/未命名專案.gcanvas",
+      "bytes": 11252,
+      "sha256": "611eabd9fa9bcfffaf378465d91ba131326b40c707cfa24870072ed2b2a3682b"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-7AQ56L/missing-parameter-source.gcanvas",
+      "bytes": 10321,
+      "sha256": "80f6fd2e98422e2aff06f2fdd27d835a9e1b59baf57925762c097afb14551bb4"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-7AQ56L/tampered-scene.gcanvas",
+      "bytes": 11274,
+      "sha256": "33d6a6bbefef77d7b043bf4afa34873e40a149e72a903fbcc88b958ddf46b97a"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-7AQ56L/unknown-capability.gcanvas",
+      "bytes": 11281,
+      "sha256": "ab40edd5d825904db71b1c0a2dc23bb0c259ca1c77f82b612f94d62d1b8bf209"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-7AQ56L/未命名專案.gcanvas",
+      "bytes": 11252,
+      "sha256": "4021e29d8a56ff5f276bf50212e21ca37fac56a3155af2af93f955a8d56a2d3a"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-asu6ld/missing-parameter-source.gcanvas",
+      "bytes": 10321,
+      "sha256": "31312e4804e9f5a82c158dd348a30b9f947694612858d040b9b8c14bc4111123"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-asu6ld/tampered-scene.gcanvas",
+      "bytes": 11274,
+      "sha256": "3abb8239899625ebe041c569776512d637c99680f7b371417d8cb04ed746b0c5"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-asu6ld/unknown-capability.gcanvas",
+      "bytes": 11281,
+      "sha256": "011247f1f1ae74395e991f22deb2d8d04b5aa5e8df7c353545f3c99c0bb712cd"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-asu6ld/未命名專案.gcanvas",
+      "bytes": 11252,
+      "sha256": "bddbbfacc369950e4129129daa61936197c83f63fb04cb3f96f6d8f6dba1a766"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-cSx4wn/missing-parameter-source.gcanvas",
+      "bytes": 10321,
+      "sha256": "cb6e1ce1682a270dcbfe0e720bc4eed9364b0991fc3c71ec8f6ef3ff2b030ae5"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-cSx4wn/tampered-scene.gcanvas",
+      "bytes": 11274,
+      "sha256": "392b652db81d4452379058f9554e0604697c1611a9c4bc9807bce1844de4f2a4"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-cSx4wn/unknown-capability.gcanvas",
+      "bytes": 11281,
+      "sha256": "91b424a23c183274033d7a41f7b8ba03c11d6c160da7403c0a6b5a11d7f648d0"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-cSx4wn/未命名專案.gcanvas",
+      "bytes": 11252,
+      "sha256": "8ec946913990cb33f7d2ffb17af24e722df72f78243bb1f896f7833cc5f58cc8"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-lnnalK/missing-parameter-source.gcanvas",
+      "bytes": 10321,
+      "sha256": "1a8244db618d163472ff99bdbeef0405a6f81f3cc93c9efadbaadca14cef0a71"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-lnnalK/tampered-scene.gcanvas",
+      "bytes": 11274,
+      "sha256": "7ec3308f5e40d7b1a98a22c3493c86a9c1a2dca3be33ec2c3f6f2ab049126949"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-lnnalK/unknown-capability.gcanvas",
+      "bytes": 11281,
+      "sha256": "3514a0c88e3a2eacc8c647844d1eb0ee04cdc1e80f6fc049c71d86356326b1cd"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-lnnalK/未命名專案.gcanvas",
+      "bytes": 11252,
+      "sha256": "a4e718dacd6603d8091d34a8ae78429825ae700094c7a8ceb1eb785b388c9b4d"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-q280w2/missing-parameter-source.gcanvas",
+      "bytes": 10321,
+      "sha256": "6f14722d889deacbf66cc309a5735171ad14416b70cef7cb1035784deca0bb70"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-q280w2/tampered-scene.gcanvas",
+      "bytes": 11274,
+      "sha256": "af1997335fd03e2e8e70abdabd6168d258fd2ac394ee84ac50b4ad4702d9b6ab"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-q280w2/unknown-capability.gcanvas",
+      "bytes": 11281,
+      "sha256": "74651a7ae2745f5b3e3f9f47f2bacc5910e1785f8027eb262237065d5315702f"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-q280w2/未命名專案.gcanvas",
+      "bytes": 11252,
+      "sha256": "fcc6849e2760c41955a1fa5f06e5a0129b65e7384052e186612b9839e5957ffe"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-s3bjQ9/missing-parameter-source.gcanvas",
+      "bytes": 10321,
+      "sha256": "03c941fb9dd26e3707944fea32f2f9831f2669b118a0270eda6539194ccb58ee"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-s3bjQ9/tampered-scene.gcanvas",
+      "bytes": 11274,
+      "sha256": "03792032d12053b2f3dcd1e4ac6e27a3a5cf353a2f4f2c1b8f473b48aa50d3ac"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-s3bjQ9/unknown-capability.gcanvas",
+      "bytes": 11281,
+      "sha256": "13ae5aaaf0828f59962d3f6b6bdff1c2979f7b502ebfa48f7c0572fd21239f0b"
+    },
+    {
+      "path": "ui-mutations-support/packages/download-s3bjQ9/未命名專案.gcanvas",
+      "bytes": 11252,
+      "sha256": "3a50f54c9501bc3d3c58808fa816d557aadb6e7123146b9bfa741f86fea012f8"
+    },
+    {
+      "path": "ui-mutations-support/preview-focus-restored-server.log.gz",
+      "bytes": 495,
+      "sha256": "fa9efa350e8c21597a6f919782e7aa92f3004e21e7e89aa5bea858b533e64a88"
+    },
+    {
+      "path": "ui-mutations-support/preview-focus-server.log.gz",
+      "bytes": 424,
+      "sha256": "f1fb6455ba18e49fd8bf2583d96b9e10d0c53624765f03e686ed50aba7ea2658"
+    },
+    {
+      "path": "ui-mutations-support/preview-http-restored-server.log.gz",
+      "bytes": 494,
+      "sha256": "dedd407942e18aa76494a123ff28b3ea92078a278a41264ae347fb289b42486b"
+    },
+    {
+      "path": "ui-mutations-support/preview-http-server.log.gz",
+      "bytes": 423,
+      "sha256": "5b2cfe3ba0f1919c1a06fb1cb15f73d7e4f1050682730a88bfa1a7442b3271cd"
+    }
+  ],
+  "scope": "Completed six UI retractions and full mutation ledger; excludes active native and grid jobs. Exact execution SHA remains in each original receipt."
+}
