@@ -1,34 +1,37 @@
-容量 512 分支目前固定來源為 `73b21e64dce72f0d16ca29e18559c51815b9724d`。本次只修驗收的安全哨兵：一欄 `timber` 會先被 dispatcher 的四欄最低語法拒絕，無法驗證 handler 的容量守門；改用 `timber 513 27 33` 跨過 dispatcher，撤除容量守門時仍會在 handler 的 `count<5` 檢查拒絕，避免追加第 513 筆越界。原一欄負例繼續驗語法拒絕、完整 dump 與歷史不變。
+容量 512 的真實放置路徑仍在正式驗收；維持 Draft、未達合併條件。本輪修 H 的局部 anchor／host 讀取、W 的重複排序及 plane 查詢、K 的重複 edge 查找；不刪依賴邊、不改幾何判準、不改 I33 CAPACITY、不改公理層。原 600 秒逾時保留。
 
-本次正文補正依 2026-10-26T20:50:46.978696+00:00 的 PR 原始資料及 2026-10-26T20:50:47.584191+00:00 的固定 SHA 比較觀測；只補列來源鏈狀態，沒有 merge、改產品或重跑驗收。[固定 base…head 比較](https://github.com/ZhiQiYang/geometry-axiom/compare/2e8a6ed20325aa4842dcd0f89eacd598662be598...9a8584f57be7935604c3bad4c2481945a6ec3d9f)為 `diverged`（ahead 8 / behind 2），不是相對 main 的計數。F0f／F73 以下結果仍綁原執行來源，不能視為修鏈後最終來源已通過。
-
-| Current state | 證據來源與結果 |
+| Current state（唯一當前矩陣） | 身分與真實結果 |
 |---|---|
-| PR head（本次觀測） | `codex/geo300-capacity512-20261024`：`9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
-| 目前直接 base（#347） | `codex/issue128-empty-panel-rows-20261024`：`2e8a6ed20325aa4842dcd0f89eacd598662be598` |
-| 相對目前 base | **behind 2**、ahead 8、`diverged`；merge-base `6d9d46e8d16af75351924c6d47a078d3eb647cc0`，尚未納入目前 base 的兩個提交 |
-| 上游鏈阻擋 | 直接依賴 #347；最新審查指出 #346→#343 上游鏈仍有既有阻擋。先修好 #346/#347 鏈，以一般 merge 納入精確的 #347 head；逐 leaf 重審，並在新 source SHA 重跑受影響驗收，同步更新 base／product／evidence SHA。此正文補正沒有解除阻擋，維持 Draft |
-| Product C SHA | `400a6d0ca50f3aca104fb569c77c8ef753c93355`；本次沒有改產品 C |
-| Current test/source SHA | `73b21e64dce72f0d16ca29e18559c51815b9724d` |
-| Evidence head | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
-| 三個受影響的 H 方法 | 在 F73 執行，原退出 0、3/3、零 skip |
-| count helper 撤回／恢復 | F73 真 0/1/0，正常具名 AssertionError |
-| population helper 撤回／恢復 | F73 真 0/1/0，原 I9 拒絕與完整 raw 保留 |
-| unplaced replay helper 撤回／恢復 | F73 真 0/1/0，獨立原 I9 負例，不被哨兵遮蔽 |
-| 哨兵測試修正撤回／恢復 | F73 補跑真 0/1/0，精確 `host-capacity-first-incomplete-declaration`；不是編譯錯或越界 |
-| W 容量 7 方法 | 歷史 F0f 原 7/7 全綠；本次 F73 沒有重新跑整組 |
-| H ABI 兩方法 | 歷史 F0f 兩方法通過；本次定向範圍沒有重跑 |
-| 512 placed load / sequential history | 歷史 F0f 兩個原 600 秒 `TimeoutExpired` 仍未解；本次沒有重跑／沒有放寬時限 |
-| Full native / 六個 browser / 帳本／架構 | 此分支目前來源尚未完成；待產品根因修正與後續整合驗收 |
-| 允許 skip | 無；缺跑一律列 UNRUN／環境原因 |
-| 整體狀態 | 不是 READY-TO-MERGE；兩個 512 placed 問題仍擋住容量驗收 |
+| 完整 PR head／evidence E | `2de39d384ed21ea092b9396787899bb39d86cbea` |
+| 修前基底 B | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
+| Product／formal source F | `ac1d8017038ee9563f0cbd8596ea61c8b2577b19`；正式兩方法在獨立 clean checkout，E 僅追加證據 |
+| 目前直接 base（#347） | `8bb0359331365c6f3a96872620427cf7847fcb50`，`codex/issue128-empty-panel-rows-20261024` |
+| 相對 base | 原審查的「相對目前 base **behind 2**」以 `2e8a6ed20325aa4842dcd0f89eacd598662be598` 計；目前 base 已另加一個 evidence 提交，對現 base **behind 3／ahead 16、diverged**，未隱藏差異 |
+| 阻擋 1：上游鏈 | #343→#346→#347 尚未閉合。修鏈後才一般 merge 精確 #347 head，逐 leaf 重審並重跑受影響驗收；本次未合入未閉合來源 |
+| 阻擋 2：原 B 512 load | 新重現 timeout 600.013934 秒、exit -9、wait4 RSS279492 KiB；原兩份歷史 timeout 都在 initial load，沒有冒稱 replay/history 已各自執行逾時 |
+| F 正式兩個 H7 placed 方法 | 20:08:28 UTC 首輪的64 load＋兩次canonical replay均exit0；512輸出遭正文Git補抓引發的ENOSPC打斷，原外層exit1，產品終態未完整回收，第二方法未真正啟動。保留原錯誤，恢復空間後同F重跑；**尚無512通過聲明**。原每batch600秒、16MiB stack、分離K/W/H -O0 |
+| H scope／host借用控制 | `3420931a4a512f08e3f4d7584958cc8630e190c3`：6 tests、0 fail/error/skip、exit0；六項具名撤回各0/1/0 |
+| W contact控制 | `a22d17c52f97115448160c4c13bfb72e62fd1686`：14 tests、0 fail/error/skip、exit0；41原控制保留，加兩項排序／plane撤回0/1/0 |
+| K source-index控制 | F：21 tests、0 fail/error/skip、exit0；8原控制保留，加3項miss-slot／consumer hint／failed append撤回0/1/0 |
+| Profile | B N12814.914535秒；F N12811.654085秒，兩者exit0且stdout逐byte相同。皆原O0加-pg診斷，**不能替代正式512**；-pg外部mcount成本不能直接稱memcpy成本 |
+| ordered graph／五guards | 對照工具與基底build已備；完整比較尚未實跑通過 |
+| 阻擋 3：完整整合 | 新來源的完整native、六browser、專項、#297 probe、全帳本及架構尚未完成；未報全綠 |
+| 允許 skip | 無；未跑一律列未完成 |
+| 狀態 | 非 READY-TO-MERGE，不合併、不force push |
 
-F73 第一輪 partial 原 driver／外層退出 **1**：前十個 phase 符合預期，最後三個哨兵修正 phase 被原 100 MiB 環境容量守門標 `UNRUN_ENVIRONMENT`。保留該原退出碼；環境回收後，另用新 OUT 只補這三個缺跑 phase，真退出 **0**、0/1/0、雙 observer complete、來源還原且 clean。沒有重跑原已綠十個 phase 或舊 U 的效能樣本。
+實際執行命令（observer只保留原方法原斷言與完整stdout/stderr/returncode，沒有修改timeout）：
 
-歷史 F0f 全批原件的 W7 退出 0、H7 退出 1；H7 包含三個哨兵 assertion 與兩個原 600 秒 timeout。當時三個 helper 的實際三態皆是 1/1/1，不能當成已完成反證。該完整紅包有 6369 個原 member，gzip SHA256 `dbe988b880024aee708d85d3b0364adf5ab61c9587f861271d8e2170755b37a7`，已獨立逐位元組核對及分類。原 `TimeoutExpired` 沒有正常 CompletedProcess returncode，照實記 null；四份 scene 是執行中事後保全，沒有冒稱事前捕捉。
+```sh
+python3 -B /tmp/pr348-runs/run_formal.py --root /tmp/pr348-work --out /tmp/pr348-runs/domain-memo-tests tests.test_geo300_validation_memo
+# exit0，6 tests
+python3 -B /tmp/pr348-runs/run_formal.py --root /tmp/pr348-work --out /tmp/pr348-runs/contact-controls tests.test_geo261_wood_contact_world
+# exit0，14 tests
+python3 -B /tmp/pr348-runs/run_formal.py --root /tmp/pr348-work --out /tmp/pr348-runs/source-controls tests.test_geo261_source_index
+# exit0，21 tests
+python3 -B /tmp/pr348-runs/run_formal.py --root /dev/shm/pr348-formal --out /tmp/pr348-runs/formal-placed-ac1d8017 tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_64_and_512_load_dump_and_canonical_replay tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_512_sequential_replay_and_safe_513_history
+# 首輪exit1（ENOSPC，產品終態未回收）；恢復空間後改新OUT重跑，不能填exit0
+```
 
-F73 使用另版 v2 observer，在原 command／run 前保留實際 loadfile bytes。這是功能測試的輸入保全，不能拿其額外讀檔當效能測量。保留原 64 witnesses；容量契約先前依授權同步為 512/513 與 3328，其他 golden 與原時限保留。仍未證明完整 512 placed 世界、stack 峰值或容量效能驗收通過。
+[原逾時與初步profile／H反證完整原件](https://github.com/ZhiQiYang/geometry-axiom/tree/2de39d384ed21ea092b9396787899bb39d86cbea/evidence/geo300-capacity512-20261024/timeout-diagnosis-20261028)；[W/K控制與修後profile完整原件](https://github.com/ZhiQiYang/geometry-axiom/tree/2de39d384ed21ea092b9396787899bb39d86cbea/evidence/geo300-capacity512-20261024/index-fix-20261028)。兩包各有逐檔hash／bytes manifest及tar回讀核對；F0f／F73原歷史收據保持原execution SHA，不能當成新F整合通過。`DIAGNOSTIC_LIMITS.json`明列初次環境啟動失敗、profile RSS包含compiler的限制；正式512使用wait4的產品child峰值。
 
-下一步：先定位兩個 512 placed 逾時的真根因，正常合入主列車的新前置修正後，再在新的可解析來源執行受影響正式驗收。此線不合併 PR、不 force push、不修改決策佇列或未核可公理。
-
-兩批完整原件保存在 `evidence/geo300-capacity512-20261024/formal-F73b21e64/`。F0f 紅包逐原 byte 獨審 25485/0、原流分類 1809/0；F73 包 5901 member 已逐原 byte 獨審 23643/0，原 phase／具名反證另核 171/0。六個刻意建立的 symlink/FIFO 自驗 fixture 只保存 lstat／readlink 描述，未循連結或讀 FIFO。這些是原件完整性與定向驗收結論，不替代兩個 512 placed 正式方法。主代理目前優先修正 #338 的效能紅燈；本線後續一般 merge 與重測依列車的驗收結果安排，沒有預報改善。
+效能與記憶體仍有未驗風險：K每node新增consumer metadata，W在512容量下新增巢狀stack約53,248bytes；須由正式結果確認，不以靜審代替。所有新改動已另交代理對抗靜審，原 assertions／golden／timeout 未放寬。CI尚無本修補head已執行通過的收據。
