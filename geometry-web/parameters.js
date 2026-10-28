@@ -3,7 +3,7 @@ window.ParameterUI = (() => {
   'use strict';
   const esc = ReferenceWorkspace.escape, clone = x => structuredClone(x);
   const $ = id => document.getElementById(id);
-  let state = null, serial = 0, timer = null, sourcePreparation = null;
+  let state = null, serial = 0, timer = null, sourcePreparation = null, createRequest = 0;
   const cards = () => (oc.parameters || []).map(o => o.card);
   const current = s => state === s && s.context === ReferenceWorkspace.context();
   const types = [['dimension','尺寸 mm'],['count','數量'],['ratio','比例']];
@@ -887,13 +887,17 @@ window.ParameterUI = (() => {
     return true;
   }
   async function create(options = {}) {
-    if(!mayLeave())return;const context=ReferenceWorkspace.context(),support=await apiRequest('engineering-read');
+    if(!mayLeave())return;
+    const context=ReferenceWorkspace.context(),request=++createRequest;
+    let navigation=oc.navigationSequence,focus=oc.focus;
     const preparation=options.proposal==='panel-fill-threshold'?options:null;
-    const owns=()=>context===ReferenceWorkspace.context()&&(!preparation||preparation.isCurrent());
+    const owns=()=>request===createRequest&&oc.navigationSequence===navigation&&oc.focus===focus&&context===ReferenceWorkspace.context()&&(!preparation||preparation.isCurrent());
+    const support=await apiRequest('engineering-read');
     if(!owns())return;
     if(!support.ok||!support.state?.capabilities?.includes('parameters/1')){toast('目前服務尚未支援參數卡，請重新啟動更新後的服務。','error');return;}
     const ids=await apiRequest('newid');if(!ids.ok||!owns())return;
-    if(oc.focus){oc.stack=[];await leaveFocus();}if(view3)await setView3(false);
+    if(oc.focus){oc.stack=[];const left=await leaveFocus();navigation++;focus=null;if(left!==navigation||!owns())return;}
+    if(view3){const changing=setView3(false);navigation++;await changing;if(!owns())return;}
     if(!owns())return;
     sourcePreparation=preparation?{...preparation,parameterId:ids.parameter}:null;
     closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:preparation?'鋪排承接門檻':'參數',nextFieldId:2,fields:[{id:1,name:preparation?'X':'尺寸',type:'dimension',input:preparation?'8':'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put',draftPos:null};
