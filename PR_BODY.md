@@ -1,37 +1,36 @@
-容量 512 的真實放置路徑仍在正式驗收；維持 Draft、未達合併條件。本輪修 H 的局部 anchor／host 讀取、W 的重複排序及 plane 查詢、K 的重複 edge 查找；不刪依賴邊、不改幾何判準、不改 I33 CAPACITY、不改公理層。原 600 秒逾時保留。
+容量64→512的placed load及canonical replay已在原600秒內完成；history的I8a確認接線已修，512修後重驗待收。完整套件時限與上游鏈仍未閉合，維持 Draft、未達合併條件。不剪依賴圖、不修改公理、I33或既有時限。
 
-| Current state（唯一當前矩陣） | 身分與真實結果 |
+| 唯一 current-state 矩陣 | 固定身分／實際結果 |
 |---|---|
-| 完整 PR head／evidence E | `2de39d384ed21ea092b9396787899bb39d86cbea` |
-| 修前基底 B | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
-| Product／formal source F | `ac1d8017038ee9563f0cbd8596ea61c8b2577b19`；正式兩方法在獨立 clean checkout，E 僅追加證據 |
-| 目前直接 base（#347） | `8bb0359331365c6f3a96872620427cf7847fcb50`，`codex/issue128-empty-panel-rows-20261024` |
-| 相對 base | 原審查的「相對目前 base **behind 2**」以 `2e8a6ed20325aa4842dcd0f89eacd598662be598` 計；目前 base 已另加一個 evidence 提交，對現 base **behind 3／ahead 16、diverged**，未隱藏差異 |
-| 阻擋 1：上游鏈 | #343→#346→#347 尚未閉合。修鏈後才一般 merge 精確 #347 head，逐 leaf 重審並重跑受影響驗收；本次未合入未閉合來源 |
-| 阻擋 2：原 B 512 load | 新重現 timeout 600.013934 秒、exit -9、wait4 RSS279492 KiB；原兩份歷史 timeout 都在 initial load，沒有冒稱 replay/history 已各自執行逾時 |
-| F 正式兩個 H7 placed 方法 | 20:08:28 UTC 首輪的64 load＋兩次canonical replay均exit0；512輸出遭正文Git補抓引發的ENOSPC打斷，原外層exit1，產品終態未完整回收，第二方法未真正啟動。保留原錯誤，恢復空間後同F重跑；**尚無512通過聲明**。原每batch600秒、16MiB stack、分離K/W/H -O0 |
-| H scope／host借用控制 | `3420931a4a512f08e3f4d7584958cc8630e190c3`：6 tests、0 fail/error/skip、exit0；六項具名撤回各0/1/0 |
-| W contact控制 | `a22d17c52f97115448160c4c13bfb72e62fd1686`：14 tests、0 fail/error/skip、exit0；41原控制保留，加兩項排序／plane撤回0/1/0 |
-| K source-index控制 | F：21 tests、0 fail/error/skip、exit0；8原控制保留，加3項miss-slot／consumer hint／failed append撤回0/1/0 |
-| Profile | B N12814.914535秒；F N12811.654085秒，兩者exit0且stdout逐byte相同。皆原O0加-pg診斷，**不能替代正式512**；-pg外部mcount成本不能直接稱memcpy成本 |
-| ordered graph／五guards | 對照工具與基底build已備；完整比較尚未實跑通過 |
-| 阻擋 3：完整整合 | 新來源的完整native、六browser、專項、#297 probe、全帳本及架構尚未完成；未報全綠 |
-| 允許 skip | 無；未跑一律列未完成 |
-| 狀態 | 非 READY-TO-MERGE，不合併、不force push |
+| 完整PR head／新測試來源 C | `75481194f3b85a6b07e11896403633d7d0fa0d6f`；產品四leaf仍與F2相同，僅I8a測試及證據新增 |
+| 產品／已完成正式execution F2 | `b595e55952d5d66de95024432e1b29bec7525e9b`；完整原件evidence E=`b872264006f400d600c801fe8c096d5679ad9013`，不移標execution |
+| 原B | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
+| 直接base／阻擋1 | #347 `8bb0359331365c6f3a96872620427cf7847fcb50`；#343→#346→#347尚未閉合。原審查相對base **behind2**；目前C fresh compare為**behind3／ahead22**。鏈修好才一般merge、逐leaf重審與受影響重測 |
+| 原B 512 placed load | 真timeout600.013933527秒、exit-9、wait4 RSS279492KiB；兩份歷史timeout也都在initial load，不冒稱replay/history各自已執行逾時 |
+| F2正式512 load | **已實跑**482.595614208秒、exit0、wait4 RSS251460KiB；原幾何/ID/definition hash/reference斷言通過 |
+| F2 canonical replay | **已實跑**500.587198156秒及529.473388700秒、均exit0，RSS256668／256564KiB；原第一方法全數斷言通過 |
+| F2 sequential/history原紅 | 第二方法load492.981413560秒、sequential子程序496.086327713秒均exit0；但原test:279要求delete直接成功，實際I8a預覽必須確認，**方法exit1**。兩方法總2511.530170054秒、2tests／1failure／0error／0skip |
+| I8a測試修復 C | 已接真preview token，原delete成功／無preview及全部history斷言保留；真7支baseline0／撤回confirm→dump1／restored0，具名placed-delete-confirm-must-commit。小例執行身分為b872加測試SHA256 a6b503157d857ddcd517aecbad97c8b9a295900167372a250baaa135ab44d507，與C測試blob相同；**修後512尚未完成** |
+| F2 source-index | 29項、0fail/error/skip、exit0；原21保留，4新增正例及4具名撤回已實跑。可選uint32索引溢位回原線性搜尋，權威size_t ID/count/ordered arrays未縮窄 |
+| H/W修補控制 | **F2已實跑32項exit0**：H6＋W14＋W容量7＋H7其餘5，118.664619289秒、0failure/error/skip。原版本具名撤回也保留各自execution |
+| B→F2 exact graph | **已實跑**172原根scene×4程序，共688次；stdout/stderr、所有seal的完整有序圖、五guards及seal次數逐byte一致，exit0，無白名單。O0單翻譯單元診斷，不冒分離K/W/H正式build；容量額外N64/N128圖比較未跑 |
+| profile | 原B N12814.914534721秒；F2 N12810.398193599秒，均exit0且stdout byte相同。全部中間樣本與-pg原件保留；profile累積child_maxrss含compiler，不能作產品RSS或推定512全通過 |
+| mutation ledger | F2 `python3 -B tests/mutate.py --check` 真exit1：107stale、13unrun、3retired；需完整重產，尚未綠 |
+| 架構／完整整合／阻擋3 | 原三裁判與四檔、完整native、六browser及其餘專項尚未完成；expected新增登錄依完整census待重產。原run_all H7 Python suite1200秒、native job35分鐘不變，F2第一方法六批已1516.046849611秒，**完整H7時間預算仍不符**；不以單batch600秒代替整組通過 |
+| 允許skip／合併狀態 | 目前已跑項0 skip；完整native沿原具名允許清單（Linux無Windows GDI），不新增豁免；未跑明列未跑。不是READY-TO-MERGE、不合併、不force push |
 
-實際執行命令（observer只保留原方法原斷言與完整stdout/stderr/returncode，沒有修改timeout）：
+原始證據：[本輪6076檔完整raw與manifest](https://github.com/ZhiQiYang/geometry-axiom/tree/18c0056d9004353cdd90099ff1fa93fe0d85f841/evidence/geo300-capacity512-20261024/packed-index-b595e559)。RAW.tar.gz 6,346,587bytes，SHA256 `33a3b5ad029f7d084f38fca9f0453514d1608f556d1c078c02d17e22e27a025d`。原F0f/F73/F1各保原execution SHA，歷史失敗不得改標或抹除。
+
+正式命令（observer只保存原流、binary hash及wait4 usage，不改原assertions、commands或timeout）：
 
 ```sh
-python3 -B /tmp/pr348-runs/run_formal.py --root /tmp/pr348-work --out /tmp/pr348-runs/domain-memo-tests tests.test_geo300_validation_memo
-# exit0，6 tests
-python3 -B /tmp/pr348-runs/run_formal.py --root /tmp/pr348-work --out /tmp/pr348-runs/contact-controls tests.test_geo261_wood_contact_world
-# exit0，14 tests
-python3 -B /tmp/pr348-runs/run_formal.py --root /tmp/pr348-work --out /tmp/pr348-runs/source-controls tests.test_geo261_source_index
-# exit0，21 tests
-python3 -B /tmp/pr348-runs/run_formal.py --root /dev/shm/pr348-formal --out /tmp/pr348-runs/formal-placed-ac1d8017 tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_64_and_512_load_dump_and_canonical_replay tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_512_sequential_replay_and_safe_513_history
-# 首輪exit1（ENOSPC，產品終態未回收）；恢復空間後改新OUT重跑，不能填exit0
+GIT_NO_LAZY_FETCH=1 TMPDIR=/dev/shm/pr348-run-temp python3 -B /dev/shm/pr348-run-formal-v3.py --root /dev/shm/pr348-formal-b595 --out /dev/shm/pr348-formal-placed-b595-v2 --durable /workspace/pr348-formal-placed-b595-v2 tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_64_and_512_load_dump_and_canonical_replay tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_512_sequential_replay_and_safe_513_history
+# 21:13:05Z開始，終態exit1，2tests/1failure/0error/0skip，2511.530170054秒。
 ```
 
-[原逾時與初步profile／H反證完整原件](https://github.com/ZhiQiYang/geometry-axiom/tree/2de39d384ed21ea092b9396787899bb39d86cbea/evidence/geo300-capacity512-20261024/timeout-diagnosis-20261028)；[W/K控制與修後profile完整原件](https://github.com/ZhiQiYang/geometry-axiom/tree/2de39d384ed21ea092b9396787899bb39d86cbea/evidence/geo300-capacity512-20261024/index-fix-20261028)。兩包各有逐檔hash／bytes manifest及tar回讀核對；F0f／F73原歷史收據保持原execution SHA，不能當成新F整合通過。`DIAGNOSTIC_LIMITS.json`明列初次環境啟動失敗、profile RSS包含compiler的限制；正式512使用wait4的產品child峰值。
+[F2完整兩方法、32項控制、帳本check及static-pg原件](https://github.com/ZhiQiYang/geometry-axiom/tree/b872264006f400d600c801fe8c096d5679ad9013/evidence/geo300-capacity512-20261024/formal-f2-b595e559)：1680檔，RAW.tar.gz 4,358,709bytes，SHA256 `63836ba927e531676aabc56729e69ecd2f324dbbc9914f296f66b0f966ed4036`。
+[I8a小世界0/1/0原件與完整原fixture](https://github.com/ZhiQiYang/geometry-axiom/tree/75481194f3b85a6b07e11896403633d7d0fa0d6f/evidence/geo300-capacity512-20261024/history-protocol-20261028)：實際命令`python3 -B /dev/shm/pr348-history-protocol-check-v2.py`，outer0；fake child僅驗觀測工具deadline，不冒產品通過。
 
-效能與記憶體仍有未驗風險：K每node新增consumer metadata，W在512容量下新增巢狀stack約53,248bytes；須由正式結果確認，不以靜審代替。所有新改動已另交代理對抗靜審，原 assertions／golden／timeout 未放寬。CI尚無本修補head已執行通過的收據。
+環境紅燈保持獨立：F1兩輪曾因Git補抓歷史objects填滿/tmp使收據不完整；F2首輪64 references在/tmp滿時失敗，後續自有512程序因已確認環境錯誤被中止outer130，非性能timeout。相同ELF在恢復空間後64完整輸出與先前smoke逐byte相同。原生libc tmpfile仍使用實體/tmp，不能只看TMPDIR；正式重開前核兩實體掛載的原64MiBreserve，期間不取件/發布，每batch完整raw立即壓縮持久保存。沒有刪除原件、fixtures或indexedGitobjects。
+
+剩餘不確定：修後512 history、全suite時間預算、全帳本/架構及上游來源鏈。2026-10-28 fresh讀handoff與遠端，#343 a934a554ae58f16f124f1b264523947f170b3f0b、#346 eaf15e239324a6464a04740647afccce3a3c17c7、#347 8bb0359331365c6f3a96872620427cf7847fcb50均未變，仍有鏈阻擋。另觀測到既有dump在滿碟時仍報ok:true但輸出4096bytes的錯誤處理缺口，原件保留，未擅改該協定。
