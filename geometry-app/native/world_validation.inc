@@ -55,8 +55,8 @@ static bool app_reference_member_geometry(const World *,WoodMember *,bool *);
 static bool app_reference_end_faces(const World *,const PlacementSurface *,const SpaceBoundarySurface *,const WoodMember *,bool,
     Coord,Coord,Coord,Coord,char *,size_t);
 typedef struct {
-    PlacementSurface placement;
-    SpaceBoundarySurface boundary;
+    /* Borrow the current host for this synchronous callback. No callback keeps
+     * this view or invokes app_validation_domain again before consuming it. */
     const PlacementSurface *p;
     const SpaceBoundarySurface *b;
 } AppValidationDomain;
@@ -76,9 +76,8 @@ static bool app_validation_domain(void *user,uint32_t id,const GeoRect2 *footpri
         inputs->has_boundary=view!=NULL;if(view)inputs->boundary=*view;
         inputs->host_id=id;inputs->host_valid=true;
     }
-    out->placement=inputs->host;out->boundary=inputs->boundary;
-    out->b=inputs->has_boundary?&out->boundary:NULL;
-    out->p=&out->placement;
+    out->b=inputs->has_boundary?&inputs->boundary:NULL;
+    out->p=&inputs->host;
     if(footprint)out->b=placement_boundary_for_rect(out->p,out->b,footprint);
     return true;
 }

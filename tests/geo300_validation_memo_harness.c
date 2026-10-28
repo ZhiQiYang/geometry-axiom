@@ -62,7 +62,7 @@ static int errors(void)
     free(memo);free(world);return 0;
 }
 
-static int placed(const char *path,bool reference)
+static int placed(const char *path,const char *mode)
 {
     memset(&g_world,0,sizeof g_world);g_definition_revision=0;
     CHECK(parse_scene_file(path,&g_world),"anchor-memo-real-fixture-load");
@@ -72,7 +72,21 @@ static int placed(const char *path,bool reference)
         CHECK(g_world.wood.timbers[i].placed,"anchor-memo-real-fixture-all-placed");
     World *before=malloc(sizeof *before);CHECK(before,"anchor-memo-snapshot-allocation");
     memcpy(before,&g_world,sizeof *before);validation_test_anchor_reads=0;
-    if(reference){
+    if(!strcmp(mode,"domain")){
+        AppValidationInputs *inputs=calloc(1,sizeof *inputs);AppValidationDomain domain;
+        CHECK(inputs,"domain-borrow-inputs-allocation");
+        app_world_validation_context(&g_world,inputs);
+        CHECK(app_validation_domain(inputs,1,NULL,&domain),"domain-borrow-real-host");
+        CHECK(domain.p==&inputs->host,"domain-borrow-no-host-copy");
+        CHECK(domain.b==(inputs->has_boundary?&inputs->boundary:NULL),"domain-borrow-boundary-view");
+        PlacementSurface *expected=malloc(sizeof *expected);SpaceBoundarySurface boundary;
+        const SpaceBoundarySurface *view=NULL;CHECK(expected,"domain-borrow-expected-allocation");
+        CHECK(app_reference_host_read(&g_world,1,expected,&boundary,&view),"domain-borrow-original-reader");
+        CHECK(!memcmp(expected,domain.p,sizeof *expected),"domain-borrow-exact-host-value");
+        CHECK(!app_validation_domain(inputs,UINT32_MAX,NULL,&domain),"domain-borrow-missing-host-rejected");
+        CHECK(app_validation_domain(inputs,1,NULL,&domain)&&domain.p->id==1,"domain-borrow-after-failure");
+        free(expected);free(inputs);
+    }else if(!strcmp(mode,"reference")){
         CHECK(reference_check_all(&g_world),"anchor-memo-real-reference-validation");
         CHECK(validation_test_anchor_reads==8,"anchor-memo-reference-callsite-linear-reads");
     }else{
@@ -91,7 +105,6 @@ int main(int argc,char **argv)
 {
     if(argc==2&&!strcmp(argv[1],"scope"))return scope();
     if(argc==2&&!strcmp(argv[1],"errors"))return errors();
-    if(argc==3&&!strcmp(argv[1],"reference"))return placed(argv[2],true);
-    if(argc==3&&!strcmp(argv[1],"world"))return placed(argv[2],false);
+    if(argc==3&&(!strcmp(argv[1],"reference")||!strcmp(argv[1],"world")||!strcmp(argv[1],"domain")))return placed(argv[2],argv[1]);
     return 2;
 }

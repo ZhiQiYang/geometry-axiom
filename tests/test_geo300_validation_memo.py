@@ -64,7 +64,7 @@ class ValidationAnchorMemo(unittest.TestCase):
 
     def case(self, name, exe=None, marker=None):
         command = [str(exe or self.exe), name]
-        if name in ("reference", "world"):
+        if name in ("reference", "world", "domain"):
             command.append(str(self.fixture))
         result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", timeout=30)
         self.assertEqual(1 if marker else 0, result.returncode, result.stderr)
@@ -83,6 +83,9 @@ class ValidationAnchorMemo(unittest.TestCase):
     def test_world_validation_uses_memo_on_actual_placed_world(self):
         self.case("world")
 
+    def test_host_view_borrows_scope_storage_and_preserves_failed_read(self):
+        self.case("domain")
+
     def test_withdrawals_are_killed_by_distinct_original_assertions(self):
         adapter = "geometry-app/native/world_validation.inc"
         reference = "geometry-core/references.inc"
@@ -97,6 +100,11 @@ class ValidationAnchorMemo(unittest.TestCase):
              "reference", "anchor-memo-reference-callsite-linear-reads"),
             ("world", [(adapter, HOST_CALL, "app_reference_member_anchor(world,i,&actual)")],
              "world", "anchor-memo-world-callsite-linear-reads"),
+            ("domain", [
+                (adapter, "    const PlacementSurface *p;", "    PlacementSurface placement;\n    SpaceBoundarySurface boundary;\n    const PlacementSurface *p;"),
+                (adapter, "    out->b=inputs->has_boundary?&inputs->boundary:NULL;\n    out->p=&inputs->host;",
+                 "    out->placement=inputs->host;out->boundary=inputs->boundary;\n    out->b=inputs->has_boundary?&out->boundary:NULL;\n    out->p=&out->placement;")],
+             "domain", "domain-borrow-no-host-copy"),
         ]
         for name, changes, case, marker in controls:
             with self.subTest(control=name):
