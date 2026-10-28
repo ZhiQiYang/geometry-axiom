@@ -51,15 +51,16 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
     check('UI13_ENTRY_HANDLER 真面設定讀取並開啟完成面表單',opened&&await read(`!!document.querySelector('[data-pf-workspace="${bid}"]')`) &&
       (await wire()).filter(r=>r.body?.cmd==='panel-fill-read').length>before,{opened,records:await wire()});
   }
-  async function createDefinition(){
-    await fill(field('name'),'UI-1 完成面');
+  async function createDefinition({name='UI-1 完成面',panel='pf-board',host=true,stagger=false}={}){
+    await fill(field('name'),name);
     for(let i=0;i<3;i++)await fill(field('origin.'+i),'0');
     for(const [axis,value] of [['U','+X'],['V','+Y'],['N','+Z'],['side','1']])await choose(field(axis),value);
-    await ctl(field('fill'));await choose(field('panel'),JSON.stringify(['pf-board',1]));
+    await ctl(field('fill'));await choose(field('panel'),JSON.stringify([panel,1]));
     await choose(field('lengthAlong'),'v');
     for(let i=0;i<2;i++)await fill(field('fillOrigin.'+i),'0');
-    await choose(field('pattern'),'straight');await choose(field('threshold'),'90:1');await fill(field('gap.value'),'3');
-    await ctl(field('host'));await fill(field('h.value'),'30');
+    await choose(field('pattern'),stagger?'stagger':'straight');await choose(field('threshold'),'90:1');await fill(field('gap.value'),'3');
+    if(stagger){await choose(field('staggerAxis'),'u');await fill(field('stagger.value'),'20');}
+    if(host){await ctl(field('host'));await fill(field('h.value'),'30');}
   }
   async function preview(){
     const before=(await wire()).filter(r=>r.url==='/panel-fill/preview').length;
@@ -68,6 +69,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
     check('UI13_PREVIEW_HTTP 真POST產生同候選token與完整結果',complete&&requests.length===before+1&&r?.body?.schema==='panel-fill-transaction/1'&&
       r.reply?.preview?.valid===true&&Number.isSafeInteger(r.reply.preview.token)&&r.reply.preview.uiContract?.completeForScope===true,
       {complete,request:r,status:await read(`document.querySelector('[data-pf-status]')?.textContent`)});
+    check('UI12_PREVIEW_FOCUS 預覽完成焦點仍屬PF不落回背景',await read(`!!document.activeElement?.closest('[data-pf-workspace]')`));
     return r.reply.preview;
   }
   async function commit({drop=false}={}){
@@ -79,7 +81,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
     check('UI13_CONFIRM_RECEIPT 同requestId查復且只提交一次',committed&&requests.length===requestsBefore+1&&typeof request?.body?.requestId==='string'&&
       !!request.body.session&&(!drop||records.some(r=>r.body?.receipt===request.body.requestId))&&await history.single(pin)&&after.revision===before.revision+1,
       {committed,requests:requests.slice(requestsBefore),receipts:records.filter(r=>r.body?.receipt),beforeRevision:before.revision,afterRevision:after.revision});
-    check('UI06 共用定義通知與正式重讀',await read(`window.__pfTestWire.changed===${eventsBefore+1}&&ReferenceWorkspace.context().dirty===true`)&&after.state.panelFills.length===1);
+    check('UI06 共用定義通知與正式重讀',await read(`window.__pfTestWire.changed===${eventsBefore+1}&&ReferenceWorkspace.context().dirty===true`)&&after.state.panelFills.length>0);
     return after;
   }
   console.log('=== P128. R02 UI-1 完成面與鋪排真實入口 ===');
@@ -145,13 +147,63 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   check('UI03 非整數厚度由原生拒絕且不可確認',await read(`document.querySelector('[data-pf-action="confirm"]').disabled`)&&same(await snapshot(),cancelBefore));
   await ctl(action('cancel'));
 
+  // History identity is stronger than dump equality. Both actions use the
+  // shipping undo/redo controls; the old candidate must stay retired.
+  await openPF();await fill(field('name'),'歷史往返候選');await preview();
+  const historyDump=(await snapshot()).text;
+  await ctl('#btnUndo');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
+  await ctl('#btnRedo');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
+  check('UI05 同dump Undo/Redo不復活舊候選',await read(`!document.querySelector('[data-pf-action="confirm"]')||document.querySelector('[data-pf-action="confirm"]').disabled`) && (await snapshot()).text===historyDump);
+  if(await read(`!!document.querySelector('[data-pf-action="cancel"]')`))await ctl(action('cancel'));
+
+  // Additional faces/material are fixture setup only. Every PF definition is
+  // entered below through the actual face menu and form.
+  await read(`(async()=>{for(const line of ['placement 9 on boundary 9 origin 0 0 0 u +x v +y','boundary 10 outline 100,0 103,0 103,100 100,100','boundary 11 outline 99,0 100,0 100,100 99,100','boundary 12 outline 0,0 99999999,0 99999999,99999999 0,99999999']){const r=await apiRequest('line '+line);if(!r.ok)throw Error('PF extended fixture '+JSON.stringify(r));}const revision=(await apiRequest('engineering-read')).revision;const p=await(await fetch('/engineering/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'engineering-transaction/1',expectedRevision:revision,operations:[{op:'publish-material',value:{id:'pf-large',version:1,name:'精確面積測試板',kind:'panel',width:100000000,length:100000000,thickness:'9'}}]})})).json();if(!p.ok||!p.preview.valid)throw Error(JSON.stringify(p));const result=await apiRequest('engineering-confirm '+p.preview.token);if(!result.ok)throw Error(JSON.stringify(result));await renderObjects();})()`);
+  await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(9);
+  await ctl('[data-face-settings="9"]');await ctl('[data-fp-edit="9"]');await wait(`document.querySelector('#fpDialog')?.open===true`);
+  await choose('#fpPurpose','space-boundary-plan');await choose('#fpView','top');await ctl('#fpInterior');await ctl('#fpApply');await wait(`!document.querySelector('#fpDialog').open`);
+  const projectionBefore=await read(`ReferenceWorkspace.getFaceProjections(9)`);
+  check('UI01 原投影入口仍可正式設定',projectionBefore.length===1&&projectionBefore[0].projection.kind==='space-boundary-plan',projectionBefore);
+  await openPF(9);await createDefinition({name:'交丁與投影共存',stagger:true});const staggerPreview=await preview();
+  const staggerFinish=staggerPreview.uiContract.after.finishSurfaces.find(f=>f.boundaryId===9),staggerFill=staggerPreview.uiContract.after.panelFills.find(f=>f.definition.finishSurfaceId===staggerFinish.id);
+  check('UI03 真交丁保留負片索引與奇偶位移',staggerFill.derived.tiles.some(t=>t.i==='-1'&&t.j==='-1'&&t.body[0]==='-83')&&
+    staggerFill.derived.seamLines.some(s=>s.band!==undefined&&BigInt(s.band)<0n),staggerFill.derived);
+  await commit();await ctl(action('close'));
+  check('UI01 PF確認與原投影共存互不改寫',same(await read(`ReferenceWorkspace.getFaceProjections(9)`),projectionBefore));
+  check('UI01 原空間建立入口仍可命中',await read(`(()=>{const e=document.querySelector('[data-fp-build="9"]');e?.scrollIntoView({block:'center'});const r=e?.getBoundingClientRect();return !!e&&!e.disabled&&r.width>0&&r.height>0&&e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})()`));
+  await ctl('[data-fp-build="9"]');await wait(`document.querySelector('#smWorkspace')?.open===true`);await ctl('#smClose');
+  check('UI01 空間工作區實際開關不改兩種定義',same(await read(`ReferenceWorkspace.getFaceProjections(9)`),projectionBefore)&&(await official()).state.panelFills.length===2);
+
+  for(const spec of [{bid:10,name:'合法零片',panel:'pf-board',count:0},{bid:11,name:'一毫米裁片',panel:'pf-board',count:1},{bid:12,name:'大面積精確值',panel:'pf-large',count:1}]){
+    await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(spec.bid);await openPF(spec.bid);
+    await createDefinition({name:spec.name,panel:spec.panel,host:false});const p=await preview(),f=p.uiContract.after.finishSurfaces.find(x=>x.boundaryId===spec.bid),d=p.uiContract.after.panelFills.find(x=>x.definition.finishSurfaceId===f.id).derived;
+    check('UI04 '+spec.name+'由真UI原生預覽保留片數',d.tileCount===spec.count,{count:d.tileCount,tiles:d.tiles});
+    if(spec.bid===10)check('UI04 零片合法且仍可確認',await read(`!document.querySelector('[data-pf-action="confirm"]').disabled&&document.querySelector('.pf-results').textContent.includes('零片')`));
+    if(spec.bid===11)check('UI04 一毫米裁片保留真尺寸與面積100',d.tiles[0].fragments[0].area==='100'&&new Set(d.tiles[0].fragments[0].outer.map(v=>v[0])).size===2&&d.tiles[0].fragments[0].outer.every(v=>v[0]==='99'||v[0]==='100'));
+    if(spec.bid===12)check('UI03 大面積十進位wire逐字精確',d.tiles[0].fragments[0].area==='9999999800000001'&&
+      await read(`document.querySelector('.pf-results').textContent.includes('9999999800000001')`),d.tiles[0].fragments[0].area);
+    await ctl(action('cancel'));
+  }
+
+  // Partial/error reply preserves outer ok:true intentionally. The native
+  // response exists, then this transport control removes one derived result.
+  await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(9);await openPF(9);await fill(field('name'),'內層錯誤前');await preview();
+  check('UI04 內層錯誤控制前確有成功圖',await read(`!!document.querySelector('.pf-layout')`));
+  await fill(field('name'),'內層錯誤後');
+  await read(`(()=>{const previous=window.fetch;window.fetch=async(...args)=>{const response=await previous(...args);if(new URL(new Request(...args).url).pathname==='/panel-fill/preview'){window.fetch=previous;const json=response.json.bind(response);response.json=async()=>{const r=await json(),c=r.preview.uiContract;const f=c.after.finishSurfaces.find(x=>x.boundaryId===9),p=c.after.panelFills.find(x=>x.definition.finishSurfaceId===f.id);p.derived={error:'UI04 injected incomplete derived result'};c.completeForScope=false;c.errors=[{code:'DERIVED_ERROR',record:'panel-fill',id:p.definition.id,message:p.derived.error}];return r;};}return response;};})()`);
+  await ctl(action('preview'));await wait(phase('invalid'));
+  check('UI04 外層ok但內層error不得保留舊成功圖',await read(`document.querySelector('[data-pf-action="confirm"]').disabled&&!document.querySelector('.pf-layout')&&document.querySelector('[data-pf-workspace]').textContent.includes('UI04 injected incomplete derived result')`));
+  await ctl(action('cancel'));await openPF(9);await fill(field('name'),'切面必失效');await preview();
+  const switchBefore=await snapshot(),switchHistory=await history.capture();await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(8);
+  check('UI05 真返回並切面不帶舊候選',await read(`!document.querySelector('[data-pf-workspace]')&&!document.querySelector('[data-pf-action="confirm"]')`)&&same(await snapshot(),switchBefore)&&await history.unchanged(switchHistory));
+
   await saveAndFreshOpen({send,read,ctl,wait,check,official});
   check('UI13 沒有新增瀏覽器未處理例外',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
   console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:['UI01 entry/reduction','UI02 unplaced explicit frame','UI03 square axis/ParameterRef/fractional thickness rejection','UI04 native 9/4/5 and insufficient text','UI05 cancel/late preview/dropped confirm receipt','UI06 no-op/source identity/one history','UI11 downloaded package/fresh browser storage','UI12 390/720/1280/focus/Escape/CDP composition','UI13 three named wiring assertions','UI14 capabilities'],unrun:['UI01 projection coexistence/build-space regression (separate space suite)','UI02 obstacle selection combinations','UI03 unsafe64-bit area and negative stagger','UI04 PF05/PF23/PF24/zero/1mm/inner-error combinations','UI05 all history/incarnation/project switch cases','UI11 corrupt/unknown/missing closure packages (separate save suite)','UI12 physical IME/touch/assistive technology','UI15 final #343→#346→#347 closure']}));
 };
 
 async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
-  const before=await official(),projection=await read(`ReferenceWorkspace.getFaceProjections(8)`);
+  const before=await official(),projection=await read(`[8,9].map(id=>({id,definitions:ReferenceWorkspace.getFaceProjections(id)}))`),originalSession=await read('connection.session');
   const out=process.env.GEOMETRY_PANEL_FILL_ARTIFACT_DIR||path.join(os.tmpdir(),'geometry-tests','panel-fill-ui');
   fs.mkdirSync(out,{recursive:true});const downloadDir=fs.mkdtempSync(path.join(out,'download-'));
   await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:downloadDir,eventsEnabled:true});
@@ -191,9 +243,37 @@ async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
     await until(`!ReferenceWorkspace.busy&&ReferenceWorkspace.context().provenance?.kind==='file'`);
     const after=await evaluate(`apiRequest('panel-fill-read')`);
     check('UI11 fresh profile正式重開定義與完整原生派生逐欄相同',same(after.state,before.state),{before:before.state,after:after.state});
+    check('UI11 fresh profile exact wire逐欄相同',same(after.uiContract.state,before.uiContract.state),{before:before.uiContract.state,after:after.uiContract.state});
     check('UI11 fresh profile全域complete仍false且能力不擴張',after.complete===false&&same(after.uiContract.supportedActions,before.uiContract.supportedActions));
-    check('UI11 保存重開不改投影資料',same(await evaluate(`ReferenceWorkspace.getFaceProjections(8)`),projection));
+    check('UI11 保存重開不改投影資料',same(await evaluate(`[8,9].map(id=>({id,definitions:ReferenceWorkspace.getFaceProjections(id)}))`),projection));
     check('UI11 真開啟入口觸發檔案選擇事件',chooserSeen);
+    console.log('PF_UI_FRESH_CONTEXT '+JSON.stringify({browserContextId,originalNativeSession:originalSession,freshNativeSession:await evaluate('connection.session'),scope:'Fresh incognito browser storage and file-open UI; same native service, not a native restart.'}));
+    // These are independent package defects, not three checksum failures.
+    const zip=require('./vendor/fflate/umd/index.js'),baseEntries=zip.unzipSync(bytes),crypto=require('node:crypto');
+    const badPackages=[
+      {name:'unknown-capability',reason:/尚未支援|不支援/,change:(entries,m)=>{m.requiredCapabilities.push('panel-fill/unknown-ui-test');}},
+      {name:'missing-parameter-source',reason:/parameter|參數|欄位|unknown|未定義|不存在|missing/i,change:(entries,m)=>{
+        const original=Buffer.from(entries['world.scene']).toString('utf8');
+        const changed=original.split(/\r?\n/).filter(line=>!/^parameters\s/.test(line)).join('\n');
+        if(changed===original||!/^parameters\s/m.test(original))throw Error('Missing-source fixture did not remove actual parameters record');
+        entries['world.scene']=Buffer.from(changed);m.sceneHash=crypto.createHash('sha256').update(entries['world.scene']).digest('hex');
+      }},
+      {name:'tampered-scene',reason:/完整性/,change:entries=>{entries['world.scene']=Buffer.concat([Buffer.from(entries['world.scene']),Buffer.from('\n# altered after save\n')]);}},
+    ];
+    for(const spec of badPackages){
+      const entries=Object.fromEntries(Object.entries(baseEntries).map(([name,data])=>[name,data.slice()])),manifest=JSON.parse(Buffer.from(entries['manifest.json']).toString('utf8'));
+      spec.change(entries,manifest);entries['manifest.json']=Buffer.from(JSON.stringify(manifest));
+      const badFile=path.join(out,spec.name+'.gcanvas'),badBytes=zip.zipSync(entries,{level:0});fs.writeFileSync(badFile,badBytes);
+      await evaluate(`(()=>{const h=ReferenceWorkspace.history;window.__pfBadImportPin={context:ReferenceWorkspace.context(),project:ReferenceWorkspace.getProjectState(),frame:h.frame,undo:h.undo.slice(),redo:h.redo.slice()};})()`);
+      const beforeBad=await evaluate(`(async()=>({dump:(await apiRequest('dump')).text,state:(await apiRequest('panel-fill-read')).uiContract.state}))()`);
+      await clickFresh('#fileMenuBtn');await until(`!document.querySelector('#fileMenuPop').hidden`);await clickFresh('#btnOpenProject');
+      const document=await rpc('DOM.getDocument',{},session),input=await rpc('DOM.querySelector',{nodeId:document.root.nodeId,selector:'#projectFile'},session);
+      await rpc('DOM.setFileInputFiles',{nodeId:input.nodeId,files:[badFile]},session);
+      await until(`!ReferenceWorkspace.busy&&document.querySelector('#status').textContent.startsWith('未能完成開啟專案：')&&document.querySelector('#projectFile').value===''`);
+      const reason=await evaluate(`document.querySelector('#status').textContent`),afterBad=await evaluate(`(async()=>({dump:(await apiRequest('dump')).text,state:(await apiRequest('panel-fill-read')).uiContract.state}))()`);
+      const stable=await evaluate(`(()=>{const h=ReferenceWorkspace.history,p=window.__pfBadImportPin,same=(a,b)=>a.length===b.length&&a.every((x,i)=>x===b[i]);return p.context===ReferenceWorkspace.context()&&p.frame===h.frame&&same(p.undo,h.undo)&&same(p.redo,h.redo)&&JSON.stringify(p.project)===JSON.stringify(ReferenceWorkspace.getProjectState());})()`);
+      check('UI11 '+spec.name+'正式重開拒絕且零替換',spec.reason.test(reason)&&stable&&same(beforeBad,afterBad),{reason,stable,path:badFile,sha256:crypto.createHash('sha256').update(badBytes).digest('hex')});
+    }
     check('UI11 fresh profile無未處理例外',exceptions.length===0,exceptions);
   }finally{if(browserContextId)await rpc('Target.disposeBrowserContext',{browserContextId});ws.close();}
 }
