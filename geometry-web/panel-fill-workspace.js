@@ -179,11 +179,20 @@ window.PanelFillWorkspace = (() => {
       // No implicit submit: Enter in an input (including IME completion) cannot confirm.
       if(event.key==='Enter'&&event.target.matches('input,select,textarea'))event.preventDefault();
     });
-    let focus;
-    if(focusField)focus=[...region.querySelectorAll('[data-pf-field]')].find(e=>e.dataset.pfField===focusField);
-    else if(focusAction)focus=region.querySelector(`[data-pf-action="${focusAction}"]`);
-    else if(focusObstacle)focus=[...region.querySelectorAll('[data-pf-obstacle]')].find(e=>e.dataset.pfObstacle===focusObstacle);
+    // Preserve the logical control across its temporary busy/disabled rendering.
+    // The title keeps keyboard ownership inside this inspector while that control
+    // cannot take focus; a later response restores the original enabled control.
+    let target={field:focusField,action:focusAction,obstacle:focusObstacle},focus;
+    if(focusTitle&&s.deferredFocus)target=s.deferredFocus;
+    else if(focused)s.deferredFocus=null;
+    if(target.field)focus=[...region.querySelectorAll('[data-pf-field]')].find(e=>e.dataset.pfField===target.field);
+    else if(target.action)focus=region.querySelector(`[data-pf-action="${target.action}"]`);
+    else if(target.obstacle)focus=[...region.querySelectorAll('[data-pf-obstacle]')].find(e=>e.dataset.pfObstacle===target.obstacle);
     else if(first||focusTitle)focus=region.querySelector('#pfTitle');
+    if(focus&&(focus.disabled||focus.closest('fieldset[disabled]'))){
+      s.deferredFocus=target;
+      focus=region.querySelector('#pfTitle'); // PF_UI12_DISABLED_FOCUS_FALLBACK
+    }else if(focus)s.deferredFocus=null;
     focus?.focus({preventScroll:true});if(selection&&focus?.setSelectionRange&&selection[0]!==null)try{focus.setSelectionRange(...selection);}catch(_){}
     return true;
   }
