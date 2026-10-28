@@ -1,0 +1,4 @@
+PASS: R8 36 original samples bind role, execution/build SHA, exact stdin, stdout and exit
+PASS: F9 700 original commands bind role, execution/build SHA, exact stdin, stdout/stderr and exit
+PASS: base/F8 gcc -MM exit 0; active repo dependencies are within pinned closure; 0 active missing fallbacks
+Output SHA-256: 25fc5970f27be865e802c5f37ee9977d68944a61bf736503dfd3db334346022d
