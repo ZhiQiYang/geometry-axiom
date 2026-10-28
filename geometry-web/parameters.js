@@ -821,19 +821,19 @@ window.ParameterUI = (() => {
     $('paramPreview').onclick = () => preview(s);
     $('paramConfirm').onclick = () => confirm(s);
     const preparation = sourcePreparation?.parameterId===c.id ? sourcePreparation : null;
-    const returnToSource = async () => {
+    const returnToSource = async (discardDraft = false) => {
       if (!current(s) || s.busy || !preparation) return;
       if (!preparation.isCurrent()) { status('原專案或來源面已變更，請重新從面設定開啟。', true); return; }
+      if (discardDraft) s.changed = false; // Explicit discard, after owner checks.
       if (!mayLeave()) return;
       sourcePreparation = null;
       try { await preparation.onReturn(); } catch (e) { toast(e.message, 'error'); }
     };
-    $('paramReturnToPanelFill')?.addEventListener('click', returnToSource);
+    $('paramReturnToPanelFill')?.addEventListener('click', () => returnToSource());
     $('paramDiscard').onclick = () => {
       if (!preparation) return discard(s);
       if (!current(s) || s.busy) return;
-      s.changed = false; // The explicit discard button already means discard.
-      returnToSource();
+      returnToSource(true);
     };
     $('paramParse')?.addEventListener('click', () => applyQuick(s));
     $('paramExport')?.addEventListener('click', () => exportPackage([c.id]));
@@ -945,7 +945,7 @@ window.ParameterUI = (() => {
   window.addEventListener('beforeunload',e=>{if(state?.changed){e.preventDefault();e.returnValue='';}});
   window.addEventListener('geometry-definition-changed',()=>{if(state&&!state.busy){retirePreview(state);state.generation++;++serial;clearTimeout(timer);if(!state.changed)state=null;else{markPending(state);status('來源或物件已變更，請重新試算。');}if($('paramConfirm'))$('paramConfirm').disabled=true;}});
   document.addEventListener('click',e=>{if(e.target.closest('#parameterSelectionExport'))exportPackage(oc.selection.filter(s=>s.kind==='parameter').map(s=>s.id));});
-  window.addEventListener('project-info-changed',()=>{if(state&&!current(state)){clearTimeout(timer);state=null;paintDraft(null);oc.parameterCreating=false;++serial;}});
+  window.addEventListener('project-info-changed',()=>{if(sourcePreparation&&!sourcePreparation.isCurrent())sourcePreparation=null;if(state&&!current(state)){clearTimeout(timer);state=null;paintDraft(null);oc.parameterCreating=false;++serial;}});
   $('btnNewParameter').onclick=()=>{ $('createObjectPop').hidden=true;create(); };
   window.DraftGate?.register(intent => {
     if (!state) return true;

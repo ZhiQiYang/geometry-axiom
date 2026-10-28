@@ -95,6 +95,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
   check('UI01 單一面設定與單一確認列',await read(`document.querySelectorAll('[data-pf-workspace="8"]').length===1&&document.querySelectorAll('[data-pf-action="confirm"]').length===1&&!document.querySelector('#faceInspectorTabs [data-fi-tab="panel-fill"]')`));
   check('UI02 未放置來源與空白框架不偷設',await read(`!feSurf(8)&&[...document.querySelectorAll('[data-pf-field^="origin."],[data-pf-field="U"],[data-pf-field="V"],[data-pf-field="N"],[data-pf-field="side"]')].every(e=>e.value==='')`));
   check('UI12 開啟後焦點在本片',await read(`!!document.activeElement?.closest('[data-pf-workspace]')`));
+  let proposedThreshold;
   // D44 source preparation is a separate, visible native transaction. It is
   // exercised through the existing parameter editor, never via adapter calls.
   {
@@ -113,10 +114,15 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
   check('UI03_D44_SOURCE_COMMIT 獨立確認真正D31欄位且僅一筆history',preparedSource?.fields[0].type==='dimension'&&same(preparedSource.fields[0].value,{num:'8',den:'1',unit:'mm'})&&await history.single(sourceHistory)&&same((await official()).state,sourceBefore.state),preparedSource);
   await ctl('#paramReturnToPanelFill');await wait(phase('editing'));
   const preparedKey=preparedSource.id+':1';
+  proposedThreshold={parameterId:preparedSource.id,fieldId:1};
   check('UI03_D44_RETURN 返回重讀標明已建立卡欄名稱與精確引用',await read(`document.querySelector('[data-pf-status]').textContent.includes('已建立來源：鋪排承接門檻／X（${preparedKey}）')&&document.querySelector('[data-pf-field="threshold"]').value===${JSON.stringify(preparedKey)}&&document.querySelector('[data-pf-action="confirm"]').disabled`));
   const sourceCommitted=await snapshot(),preparedHistory=await history.capture();
   await ctl(action('cancel'));
   check('UI05_D44_SOURCE_PERSISTS 取消鋪排保留已獨立確認來源且零新history',same(await snapshot(),sourceCommitted)&&await history.unchanged(preparedHistory));
+  await ctl('#faceUndoButton');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
+  check('UI05_D44_SOURCE_UNDO 獨立來源可用真Undo撤回',await read(`apiRequest('engineering-read').then(r=>!r.state.parameters.some(c=>c.id===${preparedSource.id}))`));
+  await ctl('#faceRedoButton');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
+  check('UI05_D44_SOURCE_REDO 真Redo恢復來源且PF仍未寫入',await read(`apiRequest('engineering-read').then(r=>r.state.parameters.some(c=>c.id===${preparedSource.id}&&c.fields[0].value.num==='8'))`)&&same((await official()).state,sourceBefore.state));
   await openPF();
   }
   await createDefinition();const candidate=await preview(),fillResult=candidate.uiContract.after.panelFills[0];
@@ -125,9 +131,9 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
   check('UI03 畫面逐字呈現17/2有效值與ParameterRef身分',await read(`document.querySelector('.pf-results').textContent.includes('17/2')&&document.querySelector('.pf-results').textContent.includes('參數 90／欄位 1')`));
   check('UI04 原生九片四整五裁及左右承接文字',fillResult.derived.tileCount===9&&fillResult.derived.wholeCount===4&&fillResult.derived.cutCount===5&&
     await read(`document.querySelector('.pf-results').textContent.includes('左側實寬')&&document.querySelector('.pf-results').textContent.includes('支撐不足（可保存）')`));
-  async function checkSupportPicture(result){
+  async function checkSupportPicture(result,expectInsufficient=true){
     const d=result.derived,shown=await read(`(()=>{const root=document.querySelector('[data-pf-fill-result="${result.definition.id}"]');return [...root.querySelectorAll('line[data-pf-support]')].map(e=>({index:Number(e.dataset.pfSupport),supported:e.dataset.supported,color:getComputedStyle(e).stroke,coordinates:['x1','y1','x2','y2'].map(k=>e.getAttribute(k)),text:e.textContent}));})()`);
-    check('UI04_D44_SUPPORT_RED 原生不足子段逐段標紅且保留左右精確實寬',shown.length===d.support.length&&d.support.some(p=>!p.supported)&&shown.every((e,i)=>{
+    check('UI04_D44_SUPPORT_RED 原生不足子段逐段標紅且保留左右精確實寬',shown.length===d.support.length&&(!expectInsufficient||d.support.some(p=>!p.supported))&&shown.every((e,i)=>{
       const p=d.support[i],seam=d.effectiveSeams[p.seam],coords=seam.axis==='u'?[seam.coordinate,p.range[0],seam.coordinate,p.range[1]]:[p.range[0],seam.coordinate,p.range[1],seam.coordinate];
       return e.index===i&&e.supported===String(p.supported)&&e.color===(p.supported?'rgb(24, 93, 150)':'rgb(194, 31, 48)')&&same(e.coordinates,coords)&&e.text.includes('左側實寬 '+p.left+' mm')&&e.text.includes('右側實寬 '+p.right+' mm');
     }),{shown,native:d.support});
@@ -213,10 +219,11 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
   await choose('#fpPurpose','space-boundary-plan');await choose('#fpView','top');await ctl('#fpInterior');await ctl('#fpApply');await wait(`!document.querySelector('#fpDialog').open`);
   const projectionBefore=await read(`ReferenceWorkspace.getFaceProjections(9)`);
   check('UI01 原投影入口仍可正式設定',projectionBefore.length===1&&projectionBefore[0].projection.kind==='space-boundary-plan',projectionBefore);
-  await openPF(9);await createDefinition({name:'交丁與投影共存',stagger:true});const staggerPreview=await preview();
+  await openPF(9);await createDefinition({name:'交丁與投影共存',stagger:true,threshold:proposedThreshold.parameterId+':'+proposedThreshold.fieldId});const staggerPreview=await preview();
   const staggerFinish=staggerPreview.uiContract.after.finishSurfaces.find(f=>f.boundaryId===9),staggerFill=staggerPreview.uiContract.after.panelFills.find(f=>f.definition.finishSurfaceId===staggerFinish.id);
   check('UI03 真交丁保留負片索引與奇偶位移',staggerFill.derived.tiles.some(t=>t.i==='-1'&&t.j==='-1'&&t.body[0]==='-83')&&
     staggerFill.derived.seamLines.some(s=>s.band!==undefined&&BigInt(s.band)<0n),staggerFill.derived);
+  check('UI03_D44_PARAMETER_REF 真鋪排引用獨立建立的8mm欄位',same(staggerFill.definition.threshold,proposedThreshold)&&same(staggerFill.derived.threshold,{num:'8',den:'1'}));
   await commit();await ctl(action('close'));
   check('UI01 PF確認與原投影共存互不改寫',same(await read(`ReferenceWorkspace.getFaceProjections(9)`),projectionBefore));
   check('UI01 原空間建立入口仍可命中',await read(`(()=>{const e=document.querySelector('#faceInspectorContent [data-fp-build="9"]');e?.scrollIntoView({block:'center'});const r=e?.getBoundingClientRect();return !!e&&!e.disabled&&r.width>0&&r.height>0&&e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})()`));
@@ -281,11 +288,13 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
     check('UI04 '+spec.name+'左右實寬與極大子段符合獨立見證',same(supportWidths(d),expected),{expected,actual:supportWidths(d)});
     const tableRows=await read(`[...document.querySelectorAll('[data-pf-fill-result] tbody tr')].filter(r=>r.children.length===6).map(r=>[...r.children].map(c=>c.textContent))`);
     check('UI04 '+spec.name+'畫面保留全部左右實寬與文字判定',expected.every(e=>tableRows.some(row=>row[1]===JSON.stringify(e.slice(0,2))&&row[2]===e[2]&&row[3]===e[3]&&row[4]==='8/1'&&row[5]===(e[4]?'支撐足夠':'支撐不足（可保存）'))),tableRows);
+    await checkSupportPicture(p.uiContract.after.panelFills.find(f=>f.definition.finishSurfaceId===finish.id),spec.bid===13||spec.bid===17);
     check('UI04 '+spec.name+'非板縫不冒作不足',await read(`document.querySelector('.pf-results').textContent.includes('非板縫（不是支撐不足）')`)&&d.support.every(part=>Number.isInteger(part.seam)&&!!d.effectiveSeams[part.seam]));
     if(spec.bid===13||spec.bid===16){
       await choose(field('threshold'),spec.bid===13?'90:5':'90:4');const changed=await preview(),after=changed.uiContract.after.panelFills.find(f=>f.definition.finishSurfaceId===finish.id).derived;
       check('UI04 '+spec.name+'只改X不偽造幾何移動',same(after.tiles,d.tiles)&&same(after.effectiveSeams,d.effectiveSeams)&&same(supportWidths(after).map(r=>r.slice(0,4)),expected.map(r=>r.slice(0,4))));
       check('UI04 '+spec.name+'X變更只重判承接且合法可確認',spec.bid===13?supportWidths(after).every(r=>r[4]===true):supportWidths(after).some(r=>r[2]==='8'&&r[3]==='8'&&r[4]===false));
+      await checkSupportPicture(changed.uiContract.after.panelFills.find(f=>f.definition.finishSurfaceId===finish.id),spec.bid===16);
     }
     await commit();await ctl(action('close'));
     if(spec.bid===13){
@@ -360,7 +369,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
     !(await wire()).some(r=>r.body?.cmd==='panel-fill-confirm '+projectCandidate.token),{dumpEqual:restoredProject.text===projectBefore.text,oldProjectId});
   await enterFace(8);
 
-  await saveAndFreshOpen({send,read,ctl,wait,check,official});
+  await saveAndFreshOpen({send,read,ctl,wait,check,official,proposedThreshold});
   check('UI13 沒有新增瀏覽器未處理例外',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
   console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:[
     'UI01 entry/reduction/projection coexistence/build-space entry',
@@ -379,7 +388,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
     'UI15 final #343→#346→#347 closure']}));
 };
 
-async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
+async function saveAndFreshOpen({send,read,ctl,wait,check,official,proposedThreshold}){
   const before=await official(),projection=await read(`[8,9].map(id=>({id,definitions:ReferenceWorkspace.getFaceProjections(id)}))`),originalSession=await read('connection.session');
   const originalWorld=await read(`(async()=>({dump:(await apiRequest('dump')).text,references:await apiRequest('references')}))()`);
   const out=process.env.GEOMETRY_PANEL_FILL_ARTIFACT_DIR||path.join(os.tmpdir(),'geometry-tests','panel-fill-ui');
@@ -425,6 +434,7 @@ async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
     check('UI11 fresh profile既建角材與完整幾何鍵references逐欄相同',same(reopenedWorld.references,originalWorld.references),{before:originalWorld.references,after:reopenedWorld.references});
     check('UI11 fresh profile正式重開定義與完整原生派生逐欄相同',same(after.state,before.state),{before:before.state,after:after.state});
     check('UI11 fresh profile exact wire逐欄相同',same(after.uiContract.state,before.uiContract.state),{before:before.uiContract.state,after:after.uiContract.state});
+    check('UI11_D44_SOURCE_REOPEN 真保存重開保留新建來源的ParameterRef及8mm有效值',after.state.panelFills.some(f=>same(f.definition.threshold,proposedThreshold)&&same(f.derived.threshold,{num:'8',den:'1'})));
     check('UI11 fresh profile全域complete仍false且能力不擴張',after.complete===false&&same(after.uiContract.supportedActions,before.uiContract.supportedActions));
     check('UI11 保存重開不改投影資料',same(await evaluate(`[8,9].map(id=>({id,definitions:ReferenceWorkspace.getFaceProjections(id)}))`),projection));
     check('UI11 真開啟入口觸發檔案選擇事件',chooserSeen);
