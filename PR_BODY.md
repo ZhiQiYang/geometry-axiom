@@ -1,16 +1,17 @@
-容量64→512的placed load及canonical replay已在原600秒內完成；history的I8a確認接線已修，512修後重驗待收。完整套件時限與上游鏈仍未閉合，維持 Draft、未達合併條件。不剪依賴圖、不修改公理、I33或既有時限。
+容量64→512的placed load、canonical replay、sequential history各批均已在原600秒內完成；history的I8a確認流程已修，原幾何／保存／Undo／Redo斷言全數保留。完整套件1200秒預算與上游鏈仍未閉合，維持 Draft、未達合併條件。不剪依賴圖、不修改公理、I33或既有時限。
 
 | 唯一 current-state 矩陣 | 固定身分／實際結果 |
 |---|---|
-| 完整PR head／新測試來源 C | `75481194f3b85a6b07e11896403633d7d0fa0d6f`；產品四leaf仍與F2相同，僅I8a測試及證據新增 |
+| 完整PR head／evidence E | `0cd9739e7701293a42e244dcf2b2f51e71ea7216`；新測試／history execution C=`75481194f3b85a6b07e11896403633d7d0fa0d6f`。E只追加原件，execution不移標 |
 | 產品／已完成正式execution F2 | `b595e55952d5d66de95024432e1b29bec7525e9b`；完整原件evidence E=`b872264006f400d600c801fe8c096d5679ad9013`，不移標execution |
 | 原B | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
-| 直接base／阻擋1 | #347 `8bb0359331365c6f3a96872620427cf7847fcb50`；#343→#346→#347尚未閉合。原審查相對base **behind2**；目前C fresh compare為**behind3／ahead22**。鏈修好才一般merge、逐leaf重審與受影響重測 |
+| 直接base／阻擋1 | #347 `8bb0359331365c6f3a96872620427cf7847fcb50`；#343→#346→#347尚未閉合。原審查相對base **behind2**；目前E為**behind3／ahead23**（C為behind3／ahead22）。鏈修好才一般merge、逐leaf重審與受影響重測 |
 | 原B 512 placed load | 真timeout600.013933527秒、exit-9、wait4 RSS279492KiB；兩份歷史timeout也都在initial load，不冒稱replay/history各自已執行逾時 |
 | F2正式512 load | **已實跑**482.595614208秒、exit0、wait4 RSS251460KiB；原幾何/ID/definition hash/reference斷言通過 |
 | F2 canonical replay | **已實跑**500.587198156秒及529.473388700秒、均exit0，RSS256668／256564KiB；原第一方法全數斷言通過 |
 | F2 sequential/history原紅 | 第二方法load492.981413560秒、sequential子程序496.086327713秒均exit0；但原test:279要求delete直接成功，實際I8a預覽必須確認，**方法exit1**。兩方法總2511.530170054秒、2tests／1failure／0error／0skip |
-| I8a測試修復 C | 已接真preview token，原delete成功／無preview及全部history斷言保留；真7支baseline0／撤回confirm→dump1／restored0，具名placed-delete-confirm-must-commit。小例執行身分為b872加測試SHA256 a6b503157d857ddcd517aecbad97c8b9a295900167372a250baaa135ab44d507，與C測試blob相同；**修後512尚未完成** |
+| I8a測試修復與512 C | **已實跑原第二H7 exit0，1test／0fail/error/skip，966.209439335995秒**；load468.402912679994秒／RSS251368KiB、sequential＋confirm＋history491.646997819秒／RSS456208KiB，各batch原600秒。真7支0/1/0具名撤回命中placed-delete-confirm-must-commit；C清潔7支也exit0 |
+| F2→C沿用邊界 | 四產品子樹／192來源檔／62步build flags及第一H7方法、setup、fixture、batch、validator同源，詳E的closure原件；F2首方法按此保留原execution，**不是C重跑**。兩版ELF hash不同，不冒binary相同。整個測試module有新helper/方法，不能說全tests閉包相同 |
 | F2 source-index | 29項、0fail/error/skip、exit0；原21保留，4新增正例及4具名撤回已實跑。可選uint32索引溢位回原線性搜尋，權威size_t ID/count/ordered arrays未縮窄 |
 | H/W修補控制 | **F2已實跑32項exit0**：H6＋W14＋W容量7＋H7其餘5，118.664619289秒、0failure/error/skip。原版本具名撤回也保留各自execution |
 | B→F2 exact graph | **已實跑**172原根scene×4程序，共688次；stdout/stderr、所有seal的完整有序圖、五guards及seal次數逐byte一致，exit0，無白名單。O0單翻譯單元診斷，不冒分離K/W/H正式build；容量額外N64/N128圖比較未跑 |
@@ -31,6 +32,15 @@ GIT_NO_LAZY_FETCH=1 TMPDIR=/dev/shm/pr348-run-temp python3 -B /dev/shm/pr348-run
 [F2完整兩方法、32項控制、帳本check及static-pg原件](https://github.com/ZhiQiYang/geometry-axiom/tree/b872264006f400d600c801fe8c096d5679ad9013/evidence/geo300-capacity512-20261024/formal-f2-b595e559)：1680檔，RAW.tar.gz 4,358,709bytes，SHA256 `63836ba927e531676aabc56729e69ecd2f324dbbc9914f296f66b0f966ed4036`。
 [I8a小世界0/1/0原件與完整原fixture](https://github.com/ZhiQiYang/geometry-axiom/tree/75481194f3b85a6b07e11896403633d7d0fa0d6f/evidence/geo300-capacity512-20261024/history-protocol-20261028)：實際命令`python3 -B /dev/shm/pr348-history-protocol-check-v2.py`，outer0；fake child僅驗觀測工具deadline，不冒產品通過。
 
+[C完整512 history原件、逐項沿用閉包與環境](https://github.com/ZhiQiYang/geometry-axiom/tree/0cd9739e7701293a42e244dcf2b2f51e71ea7216/evidence/geo300-capacity512-20261024/history-complete-75481194)：630檔，RAW.tar.gz 1,768,895bytes，SHA256 `6c34c809d679cb25276371807b05c0b7a46241cdf5bd9c7a82772c41b9e81677`。正式命令：
+
+```sh
+TMPDIR=/dev/shm/pr348-run-temp python3 -B /dev/shm/pr348-run-formal-v4.py --root /dev/shm/pr348-active --out /dev/shm/pr348-history-c754-formal-v2 --durable /workspace/pr348-history-c754-formal-v2 tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_real_placed_512_sequential_replay_and_safe_513_history
+# 22:24:24Z–22:40:30Z；observer exit0，launcher exit0，完整原參數與三流在RAW。
+```
+
+「各batch低於600秒」不等於整個方法低於600秒；原第二方法真實總耗時966.209439335995秒。原首方法六批1516.046849611秒，所以完整H7 suite1200秒仍不能宣告通過。C首輪工具session中斷留下SIGKILL，沒有完整終態／沒有600秒逾時判定；原件保留，這次獨立背景重跑才是完整結果。
+
 環境紅燈保持獨立：F1兩輪曾因Git補抓歷史objects填滿/tmp使收據不完整；F2首輪64 references在/tmp滿時失敗，後續自有512程序因已確認環境錯誤被中止outer130，非性能timeout。相同ELF在恢復空間後64完整輸出與先前smoke逐byte相同。原生libc tmpfile仍使用實體/tmp，不能只看TMPDIR；正式重開前核兩實體掛載的原64MiBreserve，期間不取件/發布，每batch完整raw立即壓縮持久保存。沒有刪除原件、fixtures或indexedGitobjects。
 
-剩餘不確定：修後512 history、全suite時間預算、全帳本/架構及上游來源鏈。2026-10-28 fresh讀handoff與遠端，#343 a934a554ae58f16f124f1b264523947f170b3f0b、#346 eaf15e239324a6464a04740647afccce3a3c17c7、#347 8bb0359331365c6f3a96872620427cf7847fcb50均未變，仍有鏈阻擋。另觀測到既有dump在滿碟時仍報ok:true但輸出4096bytes的錯誤處理缺口，原件保留，未擅改該協定。
+剩餘不確定：全suite時間預算、全帳本/架構及上游來源鏈。2026-10-28 fresh讀handoff與遠端，#343 a934a554ae58f16f124f1b264523947f170b3f0b、#346 eaf15e239324a6464a04740647afccce3a3c17c7、#347 8bb0359331365c6f3a96872620427cf7847fcb50均未變，仍有鏈阻擋。另觀測到既有dump在滿碟時仍報ok:true但輸出4096bytes的錯誤處理缺口，原件保留，未擅改該協定。
