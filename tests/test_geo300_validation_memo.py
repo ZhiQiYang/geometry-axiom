@@ -46,7 +46,7 @@ class ValidationAnchorMemo(unittest.TestCase):
 
     @classmethod
     def compile_variant(cls, name, changes):
-        destination = cls.build.work / ("validation-anchor-" + name)
+        destination = cls.build.work / ("validation-anchor-source-" + name)
         harness = copy_product_closure(cls.harness, destination)
         source = destination / "geometry-app/native/reference_sources.inc"
         data = source.read_text(encoding="utf-8")
