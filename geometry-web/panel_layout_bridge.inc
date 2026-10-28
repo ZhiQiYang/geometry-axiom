@@ -37,6 +37,11 @@ static void pf_json_layout(const World *w,const PanelFill *p)
         printf(",\"supported\":%s,\"status\":\"%s\",\"colour\":\"%s\"}",s->supported?"true":"false",s->supported?"supported":"insufficient",s->supported?"green":"red");}
     fputs("],\"derivedPlacement\":",stdout);
     if(host)printf("%u",host->id);else fputs("null",stdout);
+    /* UI-1 displays the very same exact X used by PF-3. Keep the legacy view
+     * unchanged and never reconstruct this value from a browser expression. */
+    if(g_pf_ui_exact){GeoQuantity threshold;fputs(",\"threshold\":",stdout);
+        if(pf_support_threshold(w,p,&threshold)){fputs("{\"num\":",stdout);pf_json_i64(threshold.num);fputs(",\"den\":",stdout);pf_json_i64(threshold.den);putchar('}');}
+        else {pf_ui_error("panel-fill",p->id,"THRESHOLD_UNAVAILABLE",g_parameter_error);fputs("null",stdout);}}
     fputs(",\"pending\":[\"PF-5 remaining spatial flow\"]}",stdout);pf_support_free(&support);pf_free(&d);
 }
 static void pf_json_state(const World *w)
