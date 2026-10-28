@@ -151,8 +151,8 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   // shipping undo/redo controls; the old candidate must stay retired.
   await openPF();await fill(field('name'),'歷史往返候選');await preview();
   const historyDump=(await snapshot()).text;
-  await ctl('#btnUndo');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
-  await ctl('#btnRedo');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
+  await ctl('#faceUndoButton');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
+  await ctl('#faceRedoButton');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
   check('UI05 同dump Undo/Redo不復活舊候選',await read(`!document.querySelector('[data-pf-action="confirm"]')||document.querySelector('[data-pf-action="confirm"]').disabled`) && (await snapshot()).text===historyDump);
   if(await read(`!!document.querySelector('[data-pf-action="cancel"]')`))await ctl(action('cancel'));
 
@@ -199,7 +199,23 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
 
   await saveAndFreshOpen({send,read,ctl,wait,check,official});
   check('UI13 沒有新增瀏覽器未處理例外',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
-  console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:['UI01 entry/reduction','UI02 unplaced explicit frame','UI03 square axis/ParameterRef/fractional thickness rejection','UI04 native 9/4/5 and insufficient text','UI05 cancel/late preview/dropped confirm receipt','UI06 no-op/source identity/one history','UI11 downloaded package/fresh browser storage','UI12 390/720/1280/focus/Escape/CDP composition','UI13 three named wiring assertions','UI14 capabilities'],unrun:['UI01 projection coexistence/build-space regression (separate space suite)','UI02 obstacle selection combinations','UI03 unsafe64-bit area and negative stagger','UI04 PF05/PF23/PF24/zero/1mm/inner-error combinations','UI05 all history/incarnation/project switch cases','UI11 corrupt/unknown/missing closure packages (separate save suite)','UI12 physical IME/touch/assistive technology','UI15 final #343→#346→#347 closure']}));
+  console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:[
+    'UI01 entry/reduction/projection coexistence/build-space entry',
+    'UI02 unplaced explicit frame and PF-H without hidden ordinary placement',
+    'UI03 square axis/ParameterRef/17:2 wire/negative stagger/unsafe64 area/fractional thickness rejection',
+    'UI04 native 9:4:5 and insufficient text/zero/1mm/inner-error clears old result',
+    'UI05 cancel/late preview/dropped confirm receipt/same-dump undo-redo/face switch',
+    'UI06 no-op/source identity/one history and definition event per confirmation',
+    'UI11 real download/fresh browser storage/exact state/unknown capability/missing source/tampering',
+    'UI12 390/720/1280/focus/Escape/CDP composition',
+    'UI13 three named wiring assertions','UI14 capabilities'],unrun:[
+    'UI02 obstacle selection combinations',
+    'UI03 every invalid gap/stagger combination',
+    'UI04 PF05/PF23/PF24 support segmentation variants',
+    'UI05 source delete/recreate incarnation and all project-switch races',
+    'UI11 older no-PF package regression (separate save suite)',
+    'UI12 physical IME/touch/assistive technology',
+    'UI15 final #343→#346→#347 closure']}));
 };
 
 async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
@@ -209,7 +225,7 @@ async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
   await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:downloadDir,eventsEnabled:true});
   // Exercise the shipping download fallback. No fake file-handle/write result.
   await read(`Object.defineProperty(window,'showSaveFilePicker',{value:undefined,configurable:true});void 0`);
-  await ctl('#fileMenuBtn');await ctl('#btnMenuSaveProject');await wait(`ReferenceWorkspace.context().downloaded===true&&!ReferenceWorkspace.busy`);
+  await ctl('#projectBar [data-project-action="save"]');await wait(`ReferenceWorkspace.context().downloaded===true&&!ReferenceWorkspace.busy`);
   const deadline=Date.now()+15000;let filename;
   while(Date.now()<deadline){filename=fs.readdirSync(downloadDir).find(f=>f.endsWith('.gcanvas'));if(filename&&!fs.readdirSync(downloadDir).some(f=>f.endsWith('.crdownload')))break;await new Promise(r=>setTimeout(r,50));}
   check('UI11 真保存入口產生完整gcanvas檔',!!filename&&fs.statSync(path.join(downloadDir,filename)).size>0,{downloadDir,filename});
@@ -263,7 +279,7 @@ async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
     for(const spec of badPackages){
       const entries=Object.fromEntries(Object.entries(baseEntries).map(([name,data])=>[name,data.slice()])),manifest=JSON.parse(Buffer.from(entries['manifest.json']).toString('utf8'));
       spec.change(entries,manifest);entries['manifest.json']=Buffer.from(JSON.stringify(manifest));
-      const badFile=path.join(out,spec.name+'.gcanvas'),badBytes=zip.zipSync(entries,{level:0});fs.writeFileSync(badFile,badBytes);
+      const badFile=path.join(downloadDir,spec.name+'.gcanvas'),badBytes=zip.zipSync(entries,{level:0});fs.writeFileSync(badFile,badBytes);
       await evaluate(`(()=>{const h=ReferenceWorkspace.history;window.__pfBadImportPin={context:ReferenceWorkspace.context(),project:ReferenceWorkspace.getProjectState(),frame:h.frame,undo:h.undo.slice(),redo:h.redo.slice()};})()`);
       const beforeBad=await evaluate(`(async()=>({dump:(await apiRequest('dump')).text,state:(await apiRequest('panel-fill-read')).uiContract.state}))()`);
       await clickFresh('#fileMenuBtn');await until(`!document.querySelector('#fileMenuPop').hidden`);await clickFresh('#btnOpenProject');
