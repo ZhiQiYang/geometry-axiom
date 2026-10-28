@@ -14,6 +14,7 @@ function environment(){
     if(command==='objects')return {ok:true,columns:[],beams:[]};if(command==='newid')return {ok:true,finishSurface:1,panelFill:1,placement:0};
     return {ok:true,history_changed:true};};
   c.checkApiSession=()=>{};
+  c.renderObjects=async ({current})=>current();
   vm.createContext(c);for(const file of ['panel-fill-adapter.js','panel-fill-workspace.js'])vm.runInContext(fs.readFileSync(file==='panel-fill-adapter.js'&&process.env.PF_UI_ADAPTER_PATH?process.env.PF_UI_ADAPTER_PATH:path.join(__dirname,'../geometry-web',file),'utf8'),c,{filename:file});
   return {c,project,context,history,state,calls,A:c.PanelFillAdapter,W:c.PanelFillWorkspace};
 }
@@ -129,4 +130,16 @@ test('UI04 host preview cannot confirm when native downstream before/after is mi
   await assert.rejects(()=>s.preview([{op:'put-derived-placement',value:{id:0,fillId:1,h:31}}]),/下游影響/);assert.notEqual(s.phase,'confirmable');
   result.dependencies={before:{geometry:{timbers:[]}},after:{geometry:{timbers:[]}}};
   await s.preview([{op:'put-derived-placement',value:{id:0,fillId:1,h:31}}]);assert.equal(s.phase,'confirmable');
+});
+test('UI05 confirmation refreshes existing scene objects before publishing committed state',async()=>{
+  const {c,A,project,calls}=environment(),s=new A.Session(4);await s.read();s.phase='confirmable';s.candidate={token:9,generation:s.generation};
+  let refreshed=false;c.renderObjects=async({current})=>{assert.equal(s.phase,'confirming');assert.equal(current(),true);project.revision++;assert.equal(current(),true);refreshed=true;return true;};
+  await s.confirm();assert.equal(refreshed,true);assert.equal(s.phase,'committed');assert.equal(s.owner.projectRevision,project.revision);
+  assert.equal(calls.filter(command=>command==='panel-fill-confirm 9').length,1);
+});
+test('UI05 confirmed receipt survives presentation failure and never claims fresh results',async()=>{
+  const {c,A,calls}=environment(),s=new A.Session(4);await s.read();s.phase='confirmable';s.candidate={token:9,generation:s.generation};
+  c.renderObjects=async()=>false;await assert.rejects(()=>s.confirm(),/未能刷新/);
+  assert.equal(s.receipt.ok,true);assert.equal(s.phase,'committed');assert.equal(s.snapshotFresh,false);
+  assert.equal(calls.filter(command=>command==='panel-fill-confirm 9').length,1);
 });

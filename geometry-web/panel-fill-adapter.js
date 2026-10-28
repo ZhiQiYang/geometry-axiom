@@ -244,6 +244,7 @@
         // The shared apiRequest observer owns dirty/history. Never create a second entry here.
         const sameOwner=workspace().context()===this.owner.context && workspace().getProjectState().contextToken===this.owner.contextToken;
         if(this.retired||!sameOwner){this.phase='committed';this.reason='原生已確認；視圖已退役，請重新開啟讀取正式資料。';return reply;}
+        await this.refreshPresentation(); // PF_UI05_CONFIRM_SCENE_SYNC
         this.owner=owner(this.boundaryId);const official=checked(await apiRequest('panel-fill-read'));
         this.assertCurrent();const currentContract=contract(official);
         this.snapshot=currentContract.state;this.snapshotFresh=true;this.contract=currentContract;this.revision=official.revision;
@@ -255,6 +256,19 @@
           this.phase==='unknown'?'確認結果未知；禁止重送，請查原 requestId 回執。':error.message;
         this.emit();throw error;
       }
+    }
+    async refreshPresentation(){
+      const pin=owner(this.boundaryId);
+      // Existing card-position metadata may change revision while this refresh
+      // runs. Keep context/incarnation/history ownership, then repin after it.
+      const current=()=>{
+        const ws=workspace(),p=ws.getProjectState(),h=ws.history;
+        return !this.retired&&ws.context()===pin.context&&p.contextToken===pin.contextToken&&p.id===pin.projectId&&
+          h?.frame===pin.frame&&h?.frame?.ids?.get(this.boundaryId)===pin.incarnation&&h?.undo?.at(-1)===pin.undo&&
+          h?.redo?.at(-1)===pin.redo&&h?.undo?.length===pin.undoLength&&h?.redo?.length===pin.redoLength&&
+          (typeof connection==='undefined'||connection.session===pin.session&&connection.phase==='ready');
+      };
+      if(!current()||await renderObjects({current})!==true||!current())throw new Error('確認已完成，但原場景身分已變更或物件畫面未能刷新。');
     }
     async reconcileReceipt(reply,command) {
       if(this.phase!=='unknown'||command!=='panel-fill-confirm '+token(this.candidate?.token))return false;
