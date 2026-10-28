@@ -14,6 +14,16 @@ typedef struct WoodContactQuery {
     size_t collection_node_hint;
     struct WoodContactQuery *next;
 } WoodContactQuery;
+/* 單筆純計算提示；collection 借用仍由 query 清單持有的不可變位元組。
+ * facts 中的 member 是借用指標，必須另存 collector 會解參照的 id/placed。 */
+typedef struct {
+    WoodContactSourceFacts facts;
+    uint32_t member_id[WOOD_CONTACT_MEMBER_CAPACITY];
+    bool member_placed[WOOD_CONTACT_MEMBER_CAPACITY];
+    WoodContactSourceRequest request;
+    size_t cap,count,collection_size;
+    const unsigned char *collection;
+} WoodContactResultMemo;
 struct WoodContactSources {
     GeoEvalContext *graph;
     GeoProviderToken token;
@@ -21,6 +31,7 @@ struct WoodContactSources {
     void *user;
     uint64_t sequence;
     WoodContactQuery *queries;
+    WoodContactResultMemo *result_memo;
 };
 
 static void wood_contact_source_u32(unsigned char *out,uint32_t value)
@@ -87,6 +98,35 @@ static void wood_contact_source_encode_face(unsigned char *bytes,const WoodStopF
     wood_contact_source_u64(bytes+24,(uint64_t)face->fixed);wood_contact_source_u64(bytes+32,(uint64_t)face->lo);
     wood_contact_source_u64(bytes+40,(uint64_t)face->hi);
 }
+static bool wood_contact_result_matches(const WoodContactResultMemo *memo,
+    const WoodContactQuery *q,const WoodContactSourceFacts *facts)
+{
+    if(!memo||!memo->collection||memo->count>q->cap||
+       memo->collection_size!=8+memo->count*WOOD_CONTACT_SOURCE_RECORD_SIZE||
+       memo->request.placement_id!=q->request.placement_id||
+       memo->request.along_v!=q->request.along_v||memo->request.exclude!=q->request.exclude||
+       memo->cap!=q->cap||memcmp(&memo->facts,facts,sizeof *facts))return false;
+    /* 全 facts bytes 不同就重算；padding 差異也只會讓提示失效。
+     * 指標相同不代表原 member 的可觀察欄位未變。 */
+    for(size_t i=0;i<facts->member_count;++i)
+        if(memo->member_id[i]!=facts->members[i].member->id||
+           memo->member_placed[i]!=facts->members[i].member->placed)return false;
+    return true;
+}
+static void wood_contact_result_remember(WoodContactSources *s,const WoodContactQuery *q,
+    const WoodContactSourceFacts *facts,size_t count)
+{
+    WoodContactResultMemo *memo=s->result_memo;
+    if(!memo){memo=malloc(sizeof *memo);if(!memo)return;}
+    memcpy(&memo->facts,facts,sizeof *facts);
+    for(size_t i=0;i<facts->member_count;++i){
+        memo->member_id[i]=facts->members[i].member->id;
+        memo->member_placed[i]=facts->members[i].member->placed;
+    }
+    memo->request=q->request;memo->cap=q->cap;memo->count=count;
+    memo->collection=q->collection;memo->collection_size=q->collection_size;
+    s->result_memo=memo;
+}
 static bool wood_contact_source_collection(WoodContactSources *s,WoodContactQuery *q,GeoSourceValue *out)
 {
     if(!q->collection){
@@ -96,15 +136,31 @@ static bool wood_contact_source_collection(WoodContactSources *s,WoodContactQuer
         if(!s->facts(s->user,s->graph,&q->request,facts)||!wood_contact_source_facts_valid(facts)){
             free(facts);free(faces);return false;
         }
-        WoodContactWorld world={0};world.placement_id=q->request.placement_id;
-        world.region_count=facts->region_count;world.members=facts->members;world.member_count=facts->member_count;
-        for(size_t c=0;c<facts->region_count;++c)world.regions[c]=&facts->regions[c];
-        size_t count=wood_contact_collect_stops(&world,q->request.along_v,q->request.exclude,faces,q->cap);
+        /* 原必要配置、callback 及驗證全部先完成；每個新 consumer 的
+         * 來源依賴、失敗與副作用不因命中純 collector 結果而省略。 */
+        bool reused=wood_contact_result_matches(s->result_memo,q,facts);
+        size_t collected;
+        if(reused)collected=s->result_memo->count;
+        else{
+            WoodContactWorld world={0};world.placement_id=q->request.placement_id;
+            world.region_count=facts->region_count;world.members=facts->members;world.member_count=facts->member_count;
+            for(size_t c=0;c<facts->region_count;++c)world.regions[c]=&facts->regions[c];
+            size_t count=wood_contact_collect_stops(&world,q->request.along_v,q->request.exclude,faces,q->cap);
+            collected=count;
+        }
+        size_t count=collected;
         size_t size=8+count*WOOD_CONTACT_SOURCE_RECORD_SIZE;
         unsigned char *bytes=malloc(size);if(!bytes){free(facts);free(faces);return false;}
-        wood_contact_source_u64(bytes,(uint64_t)count);
-        for(size_t i=0;i<count;++i)wood_contact_source_encode_face(bytes+8+i*WOOD_CONTACT_SOURCE_RECORD_SIZE,&faces[i]);
-        free(facts);free(faces);q->collection=bytes;q->collection_size=size;
+        if(reused)memcpy(bytes,s->result_memo->collection,size);
+        else{
+            wood_contact_source_u64(bytes,(uint64_t)count);
+            for(size_t i=0;i<count;++i)wood_contact_source_encode_face(bytes+8+i*WOOD_CONTACT_SOURCE_RECORD_SIZE,&faces[i]);
+        }
+        q->collection=bytes;q->collection_size=size;
+        /* 命中仍給新 query 自有 deep copy。提示配置失敗僅停用提示，
+         * 不新增 query 錯誤，也不更新先前 query 的 borrowed value。 */
+        if(!reused)wood_contact_result_remember(s,q,facts,count);
+        free(facts);free(faces);
     }
     out->kind=GEO_SOURCE_DEFINITION;
     out->as.definition=(GeoDefinitionValue){wood_contact_collection_schema,q->collection,q->collection_size};return true;
@@ -191,6 +247,7 @@ bool wood_contact_sources_collect(WoodContactSources *s,const WoodContactSourceR
 void wood_contact_sources_destroy(WoodContactSources *s)
 {
     if(!s)return;WoodContactQuery *q=s->queries;
+    free(s->result_memo);
     while(q){WoodContactQuery *next=q->next;free(q->collection);free(q);q=next;}
     free(s);
 }
