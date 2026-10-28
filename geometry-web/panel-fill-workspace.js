@@ -118,6 +118,7 @@ window.PanelFillWorkspace = (() => {
       ${select('鋪排定義','selectFill',s.selection.fill??'new',[...fills.map(r=>[r.definition.id,'鋪排 #'+r.definition.id]),['new','新增鋪排']])}
       <label class="pf-toggle"><input type="checkbox" data-pf-field="fill"${d.fill?' checked':''}>設定鋪排（PF-2／3）</label>
       ${d.fill?`<fieldset><legend>鋪排 #${d.fillId}</legend><div class="pf-fields">${select('固定面材版本','panel',d.panel,[['','請明選'],...list(s.sources.materials).map(material).filter(r=>r.kind==='panel').map(r=>[ref(r),`${r.name} · ${r.id} v${r.version} · ${r.width}×${r.length} · 厚 ${r.thickness??'未設'}`])])}${select('面材長邊軸向','lengthAlong',d.lengthAlong,[['','請明選'],['u','u 軸'],['v','v 軸']])}${d.fillOrigin.map((v,i)=>input(['鋪排原點 u mm','鋪排原點 v mm'][i],'fillOrigin.'+i,v,'inputmode="numeric"')).join('')}${select('鋪排方式','pattern',d.pattern,[['','請明選'],['straight','正排'],['stagger','交丁']])}${select('支撐門檻 X（尺寸參數）','threshold',d.threshold,options(parameters(s)))}</div>
+      ${s.selection.fill===null?'<section data-pf-threshold-proposal><p>建議新建 8 mm 的 D31 尺寸欄位作為 X，也可在上方改選既有欄位。來源將另行建立並獨立確認、可復原；取消鋪排不撤銷來源操作。離開後本次未提交的鋪排草稿與候選會捨棄，返回時重新讀取。</p><button type="button" data-pf-action="propose-threshold">準備新的 8 mm 門檻欄位…</button></section>':''}
       ${sourceFields(s,'板縫 gap','gap',d.gap)}${d.pattern==='stagger'?select('交丁軸向','staggerAxis',d.staggerAxis,[['','請明選'],['u','u 軸'],['v','v 軸']])+sourceFields(s,'交丁量','stagger',d.stagger):''}
       ${s.selection.fill!==null?'<button type="button" data-pf-action="delete-fill">刪除此鋪排候選</button>':''}
       ${select('宿主定義','selectHost',s.selection.host??'new',[...hosts.map(r=>[r.definition.id,'宿主 #'+r.definition.id]),['new','新增宿主']])}
@@ -166,7 +167,10 @@ window.PanelFillWorkspace = (() => {
     if(display.some(p=>p.length!==2||p.some(v=>!Number.isSafeInteger(v))))return '<p>此座標無法安全繪圖，以下保留完整精確資料。</p>';
     const xs=display.map(p=>p[0]),ys=display.map(p=>p[1]),x=Math.min(...xs),y=Math.min(...ys),width=Math.max(...xs)-x,height=Math.max(...ys)-y;
     const paths=list(d.tiles).flatMap(t=>list(t.fragments).map(f=>`<path d="${[f.outer,...list(f.holes)].map(loop=>'M '+loop.map(p=>p.map(esc).join(' ')).join(' L ')+' Z').join(' ')}" fill-rule="evenodd"><title>片 ${esc(JSON.stringify(f.key))} · 面積 ${esc(f.area)} mm²</title></path>`)).join('');
-    const seams=list(d.effectiveSeams).map(seam=>`<line x1="${esc(seam.axis==='u'?seam.coordinate:seam.range[0])}" y1="${esc(seam.axis==='u'?seam.range[0]:seam.coordinate)}" x2="${esc(seam.axis==='u'?seam.coordinate:seam.range[1])}" y2="${esc(seam.axis==='u'?seam.range[1]:seam.coordinate)}"><title>${esc(JSON.stringify(seam))}</title></line>`).join('');
+    const seams=list(d.support).map((p,index)=>{
+      const seam=d.effectiveSeams[p.seam];
+      return `<line data-pf-support="${index}" data-supported="${p.supported}" x1="${esc(seam.axis==='u'?seam.coordinate:p.range[0])}" y1="${esc(seam.axis==='u'?p.range[0]:seam.coordinate)}" x2="${esc(seam.axis==='u'?seam.coordinate:p.range[1])}" y2="${esc(seam.axis==='u'?p.range[1]:seam.coordinate)}"><title>原生子段 ${esc(JSON.stringify(p.range))}：左側實寬 ${esc(p.left)} mm；右側實寬 ${esc(p.right)} mm；X ${esc(d.threshold.num+'/'+d.threshold.den)} mm；${p.supported?'支撐足夠':'支撐不足（可保存）'}</title></line>`;
+    }).join('');
     return `<svg class="pf-layout" role="img" aria-label="原生裁片與有效板縫；支撐狀態另列文字" viewBox="${x} ${y} ${width||1} ${height||1}" preserveAspectRatio="xMidYMid meet"><g class="pf-tiles">${paths}</g><g class="pf-seams">${seams}</g></svg>`;
   }
   function results(s) {
@@ -257,6 +261,36 @@ window.PanelFillWorkspace = (() => {
     try {
       if(action==='close'||action==='cancel'){close();return;}
       if(action==='sources'){if(close())await window.EngineeringWorkspace.open();return;}
+      if(action==='propose-threshold'){
+        if(s.retired||!A.isCurrent(s.owner)||s.selection.fill!==null)return;
+        const pin=s.owner,finish=s.selection.finish;
+        const sameSource=()=>{
+          const p=ReferenceWorkspace.getProjectState();
+          return ReferenceWorkspace.context()===pin.context&&p.contextToken===pin.contextToken&&p.id===pin.projectId&&
+            ReferenceWorkspace.history.frame.ids.get(s.boundaryId)===pin.incarnation&&
+            connection.phase==='ready'&&connection.session===pin.session;
+        };
+        let confirmed=null,confirmedOwner=null;
+        if(!close())return;
+        await window.ParameterUI.create({proposal:'panel-fill-threshold',isCurrent:sameSource,
+          onConfirmed:card=>{confirmed=clone(card);confirmedOwner=A.owner(s.boundaryId);},
+          onReturn:async()=>{
+            if(!sameSource())throw new Error('原專案或來源面已變更，請重新從面設定開啟。');
+            const beforeNavigation=oc.navigationSequence,pending=enterFocus('face',s.boundaryId),focus=oc.focus,navigation=oc.navigationSequence;
+            const ownsReturn=()=>sameSource()&&navigation===beforeNavigation+1&&oc.navigationSequence===navigation&&oc.focus===focus&&focus?.t==='face'&&focus.id===s.boundaryId;
+            await pending;if(!ownsReturn())return;
+            fiShowTab('prop');if(innerWidth<=900)openPanel('right',document.getElementById('workspaceToggleRight'));
+            const opening=open(s.boundaryId,null),next=active;
+            if(!await opening||!ownsReturn()||active!==next)return;
+            if(finish!==null&&finishRecords(next).some(r=>r.id===finish))selectFinish(next,String(finish));
+            const card=next.sources.parameters.find(c=>c.id===confirmed?.id),field=card?.fields.find(f=>f.id===1);
+            const valid=confirmedOwner&&A.isCurrent(confirmedOwner)&&A.canonical(card)===A.canonical(confirmed)&&field?.type==='dimension'&&BigInt(field.value?.num??'0')>0n&&BigInt(field.value?.den??'0')>0n;
+            if(valid){next.draft.fill=true;next.draft.threshold=card.id+':'+field.id;
+              next.reason=`已建立來源：${card.name}／${field.name}（${card.id}:${field.id}）。來源獨立保存，可復原；本次鋪排尚未提交。`;}
+            else next.reason='已重新讀取原面；未帶入未確認或已變更的來源。請明選有效尺寸欄位。';
+            display();
+          }});return;
+      }
       if(action==='restore-edit'){s.changed();s.draft.remove=null;display();return;}
       if(action.startsWith('delete-')){
         const kind=action.slice(7),map={finish:['finish-surface',s.selection.finish],fill:['panel-fill',s.selection.fill],host:['derived-placement',s.selection.host]};

@@ -287,7 +287,7 @@
     }
     close(){if(['confirming','unknown'].includes(this.phase))return false;++this.generation;this.retired=true;this.discardCandidate();return true;}
   }
-  const api={ACTIONS,Session,contract,definition,canonical,clone,isCurrent,requestScope,sameDefinition};
+  const api={ACTIONS,Session,contract,definition,canonical,clone,owner,isCurrent,requestScope,sameDefinition};
   root.PanelFillAdapter=api;
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

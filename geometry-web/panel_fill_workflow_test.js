@@ -95,12 +95,45 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
   check('UI01 單一面設定與單一確認列',await read(`document.querySelectorAll('[data-pf-workspace="8"]').length===1&&document.querySelectorAll('[data-pf-action="confirm"]').length===1&&!document.querySelector('#faceInspectorTabs [data-fi-tab="panel-fill"]')`));
   check('UI02 未放置來源與空白框架不偷設',await read(`!feSurf(8)&&[...document.querySelectorAll('[data-pf-field^="origin."],[data-pf-field="U"],[data-pf-field="V"],[data-pf-field="N"],[data-pf-field="side"]')].every(e=>e.value==='')`));
   check('UI12 開啟後焦點在本片',await read(`!!document.activeElement?.closest('[data-pf-workspace]')`));
+  // D44 source preparation is a separate, visible native transaction. It is
+  // exercised through the existing parameter editor, never via adapter calls.
+  {
+  await ctl(field('fill'));
+  const sourceBefore=await snapshot(),sourceHistory=await history.capture();
+  check('UI03_D44_PROPOSAL 新建明確提議8mm並可改選既有dimension',await read(`document.querySelector('[data-pf-threshold-proposal]').textContent.includes('8 mm')&&document.querySelector('[data-pf-threshold-proposal]').textContent.includes('取消鋪排不撤銷')&&document.querySelector('[data-pf-field="threshold"]').value===''&&[...document.querySelector('[data-pf-field="threshold"]').options].some(o=>o.value==='90:1')`));
+  await ctl(action('propose-threshold'));await wait(`!!document.querySelector('#paramReturnToPanelFill')`);
+  check('UI03_D44_SOURCE_8 真來源草稿預填8mm且沒有隱式寫入',await read(`document.querySelector('[data-param-field] [data-input]').value==='8'&&document.querySelector('[data-param-field] [data-type]').value==='dimension'`)&&same(await snapshot(),sourceBefore)&&await history.unchanged(sourceHistory));
+  await ctl('#paramDiscard');await wait(phase('editing'));
+  check('UI05_D44_SOURCE_CANCEL 捨棄來源草稿返回原面零變更',same(await snapshot(),sourceBefore)&&await history.unchanged(sourceHistory)&&await read(`oc.focus?.id===8&&document.querySelector('[data-pf-action="confirm"]').disabled`));
+  await ctl(field('fill'));await ctl(action('propose-threshold'));await wait(`!!document.querySelector('#paramReturnToPanelFill')`);
+  await ctl('#paramPreview');await wait(`!document.querySelector('#paramConfirm').disabled`);
+  check('UI03_D44_PREVIEW_ZERO 原生來源試算仍不寫入',same(await snapshot(),sourceBefore)&&await history.unchanged(sourceHistory));
+  await ctl('#paramConfirm');await wait(`!ParameterUI.pending&&!!document.querySelector('#paramReturnToPanelFill')`);
+  const preparedSource=await read(`apiRequest('engineering-read').then(r=>r.state.parameters.find(c=>c.id!==90&&c.name==='鋪排承接門檻'))`);
+  check('UI03_D44_SOURCE_COMMIT 獨立確認真正D31欄位且僅一筆history',preparedSource?.fields[0].type==='dimension'&&same(preparedSource.fields[0].value,{num:'8',den:'1',unit:'mm'})&&await history.single(sourceHistory)&&same((await official()).state,sourceBefore.state),preparedSource);
+  await ctl('#paramReturnToPanelFill');await wait(phase('editing'));
+  const preparedKey=preparedSource.id+':1';
+  check('UI03_D44_RETURN 返回重讀標明已建立卡欄名稱與精確引用',await read(`document.querySelector('[data-pf-status]').textContent.includes('已建立來源：鋪排承接門檻／X（${preparedKey}）')&&document.querySelector('[data-pf-field="threshold"]').value===${JSON.stringify(preparedKey)}&&document.querySelector('[data-pf-action="confirm"]').disabled`));
+  const sourceCommitted=await snapshot(),preparedHistory=await history.capture();
+  await ctl(action('cancel'));
+  check('UI05_D44_SOURCE_PERSISTS 取消鋪排保留已獨立確認來源且零新history',same(await snapshot(),sourceCommitted)&&await history.unchanged(preparedHistory));
+  await openPF();
+  }
   await createDefinition();const candidate=await preview(),fillResult=candidate.uiContract.after.panelFills[0];
   check('UI03 正方形仍保存明選軸與參數欄位',fillResult.definition.lengthAlong==='v'&&same(fillResult.definition.threshold,{parameterId:90,fieldId:1}));
   check('UI03 C到HTTP到JS保留17/2精確門檻',same(fillResult.derived.threshold,{num:'17',den:'2'}),fillResult.derived.threshold);
   check('UI03 畫面逐字呈現17/2有效值與ParameterRef身分',await read(`document.querySelector('.pf-results').textContent.includes('17/2')&&document.querySelector('.pf-results').textContent.includes('參數 90／欄位 1')`));
   check('UI04 原生九片四整五裁及左右承接文字',fillResult.derived.tileCount===9&&fillResult.derived.wholeCount===4&&fillResult.derived.cutCount===5&&
     await read(`document.querySelector('.pf-results').textContent.includes('左側實寬')&&document.querySelector('.pf-results').textContent.includes('支撐不足（可保存）')`));
+  async function checkSupportPicture(result){
+    const d=result.derived,shown=await read(`(()=>{const root=document.querySelector('[data-pf-fill-result="${result.definition.id}"]');return [...root.querySelectorAll('line[data-pf-support]')].map(e=>({index:Number(e.dataset.pfSupport),supported:e.dataset.supported,color:getComputedStyle(e).stroke,coordinates:['x1','y1','x2','y2'].map(k=>e.getAttribute(k)),text:e.textContent}));})()`);
+    check('UI04_D44_SUPPORT_RED 原生不足子段逐段標紅且保留左右精確實寬',shown.length===d.support.length&&d.support.some(p=>!p.supported)&&shown.every((e,i)=>{
+      const p=d.support[i],seam=d.effectiveSeams[p.seam],coords=seam.axis==='u'?[seam.coordinate,p.range[0],seam.coordinate,p.range[1]]:[p.range[0],seam.coordinate,p.range[1],seam.coordinate];
+      return e.index===i&&e.supported===String(p.supported)&&e.color===(p.supported?'rgb(24, 93, 150)':'rgb(194, 31, 48)')&&same(e.coordinates,coords)&&e.text.includes('左側實寬 '+p.left+' mm')&&e.text.includes('右側實寬 '+p.right+' mm');
+    }),{shown,native:d.support});
+    check('UI04_D44_INSUFFICIENT_SAVABLE 不足標紅仍可確認合法試排',await read(`!document.querySelector('[data-pf-action="confirm"]').disabled`));
+  }
+  await checkSupportPicture(fillResult);
   check('UI14 分片能力不改全域complete',(await official()).complete===false&&same(candidate.uiContract.supportedActions,['read','edit-definitions','read-layout','read-support'])&&await read(`document.querySelector('.pf-source-preparation').textContent.includes('PF-6')&&document.querySelector('.pf-source-preparation').textContent.includes('PF-4')&&document.querySelector('.pf-source-preparation').textContent.includes('PF-5')&&!document.querySelector('[data-pf-action="suggest-timbers"],[data-pf-action="from-fill-grid"]')`));
   const first=await commit({drop:true});
   const currentPlacementIds=await read(`apiRequest('surfaces').then(r=>r.surfaces.map(s=>s.id).sort((a,b)=>a-b))`);

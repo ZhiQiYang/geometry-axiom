@@ -3,7 +3,7 @@ window.ParameterUI = (() => {
   'use strict';
   const esc = ReferenceWorkspace.escape, clone = x => structuredClone(x);
   const $ = id => document.getElementById(id);
-  let state = null, serial = 0, timer = null;
+  let state = null, serial = 0, timer = null, sourcePreparation = null;
   const cards = () => (oc.parameters || []).map(o => o.card);
   const current = s => state === s && s.context === ReferenceWorkspace.context();
   const types = [['dimension','尺寸 mm'],['count','數量'],['ratio','比例']];
@@ -592,6 +592,11 @@ window.ParameterUI = (() => {
       const refreshed = await renderObjects();
       if (!ownsPresentation()) return;
       if (refreshed !== true) throw new Error('未能重新讀取畫布。');
+      const preparation = sourcePreparation;
+      if (preparation?.parameterId === id && preparation.isCurrent()) {
+        const card = cards().find(c => c.id === id);
+        if (card) preparation.onConfirmed(clone(card));
+      }
       state = null;
       oc.parameterCreating = false;
       clearTimeout(timer);
@@ -665,6 +670,7 @@ window.ParameterUI = (() => {
         </details>
       </div>
       <footer class="param-footer">
+        ${sourcePreparation?.parameterId===c.id?'<p class="param-note">這是鋪排門檻的獨立來源操作；確認後可復原。取消鋪排不會撤銷此參數卡。</p><button type="button" class="btn" id="paramReturnToPanelFill">返回原面鋪排（重新讀取）</button>':''}
         <p id="paramStatus" role="status" data-tone="wait"><span class="param-dot" aria-hidden="true"></span><span data-status-text></span></p>
         <div class="param-actions">
           <button type="button" class="btn" id="paramDiscard">${s.fresh ? '捨棄草稿' : '還原未套用修改'}</button>
@@ -814,7 +820,21 @@ window.ParameterUI = (() => {
     $('paramAdd').onclick = () => addField(s);
     $('paramPreview').onclick = () => preview(s);
     $('paramConfirm').onclick = () => confirm(s);
-    $('paramDiscard').onclick = () => discard(s);
+    const preparation = sourcePreparation?.parameterId===c.id ? sourcePreparation : null;
+    const returnToSource = async () => {
+      if (!current(s) || s.busy || !preparation) return;
+      if (!preparation.isCurrent()) { status('原專案或來源面已變更，請重新從面設定開啟。', true); return; }
+      if (!mayLeave()) return;
+      sourcePreparation = null;
+      try { await preparation.onReturn(); } catch (e) { toast(e.message, 'error'); }
+    };
+    $('paramReturnToPanelFill')?.addEventListener('click', returnToSource);
+    $('paramDiscard').onclick = () => {
+      if (!preparation) return discard(s);
+      if (!current(s) || s.busy) return;
+      s.changed = false; // The explicit discard button already means discard.
+      returnToSource();
+    };
     $('paramParse')?.addEventListener('click', () => applyQuick(s));
     $('paramExport')?.addEventListener('click', () => exportPackage([c.id]));
     $('paramDelete')?.addEventListener('click', () => {
@@ -866,13 +886,17 @@ window.ParameterUI = (() => {
     discard();
     return true;
   }
-  async function create() {
+  async function create(options = {}) {
     if(!mayLeave())return;const context=ReferenceWorkspace.context(),support=await apiRequest('engineering-read');
-    if(context!==ReferenceWorkspace.context())return;
+    const preparation=options.proposal==='panel-fill-threshold'?options:null;
+    const owns=()=>context===ReferenceWorkspace.context()&&(!preparation||preparation.isCurrent());
+    if(!owns())return;
     if(!support.ok||!support.state?.capabilities?.includes('parameters/1')){toast('目前服務尚未支援參數卡，請重新啟動更新後的服務。','error');return;}
-    const ids=await apiRequest('newid');if(!ids.ok||context!==ReferenceWorkspace.context())return;
+    const ids=await apiRequest('newid');if(!ids.ok||!owns())return;
     if(oc.focus){oc.stack=[];await leaveFocus();}if(view3)await setView3(false);
-    closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:'參數',nextFieldId:2,fields:[{id:1,name:'尺寸',type:'dimension',input:'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put',draftPos:null};
+    if(!owns())return;
+    sourcePreparation=preparation?{...preparation,parameterId:ids.parameter}:null;
+    closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:preparation?'鋪排承接門檻':'參數',nextFieldId:2,fields:[{id:1,name:preparation?'X':'尺寸',type:'dimension',input:preparation?'8':'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put',draftPos:null};
     drawObjects();if(innerWidth<=900)openPanel('right',$('toggleRight'));$('paramName')?.focus();
   }
   async function jump(kind,id) {

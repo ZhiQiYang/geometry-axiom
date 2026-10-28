@@ -17,6 +17,7 @@
 .pf-source-preparation p{font-size:.8rem}.pf-results{min-width:0}.pf-results h3,.pf-results h4,.pf-results h5{margin:.6rem 0;font-size:.9rem}
 .pf-results p{font-size:.8rem}.pf-layout{display:block;width:100%;height:auto;max-height:20rem;min-height:8rem;background:#f6f8fa;border:1px solid #c6cbd0}
 .pf-tiles path{fill:#e4edf2;stroke:#77838c;stroke-width:1;vector-effect:non-scaling-stroke}.pf-seams line{stroke:#185d96;stroke-width:2;vector-effect:non-scaling-stroke}
+.pf-seams line[data-supported="false"]{stroke:#c21f30;stroke-width:3}
 .pf-table-scroll{max-width:100%;overflow:auto}.pf-workspace table{border-collapse:collapse;font-size:.75rem;width:100%}.pf-workspace td,.pf-workspace th{border:1px solid #ccd1d5;padding:.3rem;text-align:left;overflow-wrap:anywhere}
 .pf-workspace pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:18rem;overflow:auto;font-size:.75rem}
 @media(max-width:560px){.pf-heading{align-items:flex-start;flex-direction:column}.pf-fields{grid-template-columns:1fr}.pf-workspace{padding:.1rem}.pf-actions{grid-template-columns:1fr}.pf-actions button:last-child{grid-column:auto}}
