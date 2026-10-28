@@ -49,3 +49,13 @@ Chrome 156.0.8078.73、Node v24.19.0。改用既有雲端執行器與獨立可�
 全帳本首輪1851.084秒 exit2：core60已完成（52 killed／1 crashed／4 equivalent／3 retired）；bridge18在clone前置受阻，未冒稱已跑。已以相同HEAD的獨立clean worktree核完整source closure，原裁判不改，僅接續這18項。
 
 下一步：補UI05三項明列生命周期與UI11已建角材完整保存比較；六組具名撤線、架構三裁判、完整 native／canvas。UI15仍未達合併條件。收據差額封包見 receipts-round-2.json；已完成原件不重跑或覆寫。
+
+## 2026-10-28 UTC：固定驗收來源與三條架構裁判
+
+UI基準10來源 `f7d8802cc7a01c76d35f173473cbe45a80165c89` 真349/0/0、198.350秒、exit0。新增專案切換與Undo、同id來源重建、晚A／新B交錯均通過；保存重開完整dump逐byte與references逐欄相同。仍是fresh BrowserContext／同原生服務，不冒稱另一原生程序、實體IME或OS picker。
+
+固定受驗來源 `fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f`：原架構CLI exit0（604 executable／335 owned／269 exclusions，0 diagnostics）、test_architecture_contract 205案exit0、test_product_architecture 18案exit0。Linux scan／receipt與本片報告已更新，歷史PRODUCT-ARCHITECTURE.md完全保留。原85段golden保持相同；只加入實測P128=349，尚不代表full canvas通過。
+
+六組UI具名反證已在上述F的獨立clean checkout啟動。bridge重產環境另查出：舊cache ELF嵌入不同checkout絕對路徑，來源指紋相同仍與baseline逐byte不同；原二進位相等守門正確擋下。保留原件，使用既有MUTATE_CACHE選項的全新隔離cache重產18項；不降低守門、不刪舊ELF。不把中斷與BLOCKED列為killed。最終check與native須使用同一已記錄cache。
+
+下一步：收完六反證／bridge18，驗帳本新鮮度，完整native census與相關browser。UI15仍未跑／未達合併條件。
