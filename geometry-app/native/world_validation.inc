@@ -26,6 +26,29 @@ static bool app_footprint_memo_read(AppFootprintMemo *memo,size_t i,uint32_t pla
     if(!app_reference_member_footprint(memo->world,i,placement,out))return false;
     memo->value[i]=*out;memo->placement[i]=placement;memo->valid[i]=true;return true;
 }
+/* Direct validation reads have no provider consumer; member identity, anchor
+ * definition and resolved uv are stable for this scope. Retain only successful
+ * anchors, in their first-read order.
+ * Provider callbacks must still use reference_member_anchor_read so every
+ * consumer records its own dependencies. Never retain this memo across a
+ * validation, candidate, failed edit, or history operation. */
+typedef struct {
+    const World *world;
+    bool valid[WORLD_MAX_TIMBERS];
+    WoodMemberPlacement value[WORLD_MAX_TIMBERS];
+} AppAnchorMemo;
+static void app_anchor_memo_begin(AppAnchorMemo *memo,const World *world)
+{
+    memo->world=world;
+    memset(memo->valid,0,sizeof memo->valid);
+}
+static bool app_anchor_memo_read(AppAnchorMemo *memo,size_t i,WoodMemberPlacement *out)
+{
+    if(i>=WORLD_MAX_TIMBERS)return app_reference_member_anchor(memo->world,i,out);
+    if(memo->valid[i]){*out=memo->value[i];return true;}
+    if(!app_reference_member_anchor(memo->world,i,out))return false;
+    memo->value[i]=*out;memo->valid[i]=true;return true;
+}
 static bool app_reference_validation_room(const World *,uint32_t,WoodRoomBounds *);
 static bool app_reference_validation_obstacle(const World *,bool,size_t,WoodSolidObstacle *);
 static bool app_reference_member_geometry(const World *,WoodMember *,bool *);
@@ -38,7 +61,7 @@ typedef struct {
     const SpaceBoundarySurface *b;
 } AppValidationDomain;
 typedef struct {
-    const World *world;AppFootprintMemo footprints;
+    const World *world;AppFootprintMemo footprints;AppAnchorMemo anchors;
     bool host_valid,has_boundary;
     uint32_t host_id;
     PlacementSurface host;
@@ -62,7 +85,7 @@ static bool app_validation_domain(void *user,uint32_t id,const GeoRect2 *footpri
 static bool app_validation_member(void *user,size_t i,WoodWorldMemberFact *out)
 {
     const World *world=((AppValidationInputs *)user)->world;if(i>=world->wood.timber_count)return false;
-    TimberAnchor actual;if(!app_reference_member_anchor(world,i,&actual))return false;
+    TimberAnchor actual;if(!app_anchor_memo_read(&((AppValidationInputs *)user)->anchors,i,&actual))return false;
     const TimberAnchor *a=&actual;
     *out=(WoodWorldMemberFact){.member=&world->wood.timbers[i],.uv=a->uv,.placement_id=a->placement_id,
         .grid_id=a->ref_grid,.anchor_kind=a->anchor_kind,.length_direction=a->length_direction,.depth_side=a->depth_side,
@@ -115,6 +138,7 @@ static bool app_validation_boundary_role(void *user,uint32_t id,const GeoRect2 *
 static WoodWorldValidationContext app_world_validation_context(const World *world,AppValidationInputs *inputs)
 {
     inputs->world=world;inputs->host_valid=false;app_footprint_memo_begin(&inputs->footprints,world);
+    app_anchor_memo_begin(&inputs->anchors,world);
     WoodWorldValidationContext context={0};context.grids=app_grid_context(world);context.user=inputs;
     context.member_count=world->wood.timber_count;context.placement_count=world_placement_count(world);
     context.member_at=app_validation_member;context.placement_id=app_validation_placement_id;

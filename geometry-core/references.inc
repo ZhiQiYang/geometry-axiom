@@ -641,12 +641,13 @@ static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 static bool reference_check_all(const World *w)
 {
     AppFootprintMemo footprints={0};app_footprint_memo_begin(&footprints,w);
+    AppAnchorMemo anchors;app_anchor_memo_begin(&anchors,w);
     bool ok=true;
     for (size_t i=0;i<w->wood.timber_count;++i) {
         const Timber *t=&w->wood.timbers[i];TimberAnchor actual_anchor;const TimberAnchor *a=&actual_anchor;
         if (!t->placed) continue;
         PlacementSurface placement;SpaceBoundarySurface boundary;const SpaceBoundarySurface *host_boundary;SurfaceRegion2 f;
-        if(!app_reference_member_anchor(w,i,&actual_anchor)||!app_reference_host_read(w,a->placement_id,&placement,&boundary,&host_boundary)||
+        if(!app_anchor_memo_read(&anchors,i,&actual_anchor)||!app_reference_host_read(w,a->placement_id,&placement,&boundary,&host_boundary)||
            !app_footprint_memo_read(&footprints,i,a->placement_id,&f)) { ok=reference_issue(t->id,"I5","valid footprint on existing surface","missing footprint"); continue; }
         const PlacementSurface *p=&placement;
         const SpaceBoundarySurface *b=placement_boundary_for_rect(p,host_boundary,&f);
@@ -672,7 +673,7 @@ static bool reference_check_all(const World *w)
         for (size_t j=i+1;j<w->wood.timber_count;++j) {
             SurfaceRegion2 other;TimberAnchor other_anchor;
             if(!w->wood.timbers[j].placed)continue;
-            if(!app_reference_member_anchor(w,j,&other_anchor)){ok=false;continue;}
+            if(!app_anchor_memo_read(&anchors,j,&other_anchor)){ok=false;continue;}
             if(other_anchor.placement_id!=a->placement_id)continue;
             if(!app_footprint_memo_read(&footprints,j,a->placement_id,&other)){ok=false;continue;}
             if (uv_rects_overlap(f.min_u,f.min_v,f.max_u,f.max_v,other.min_u,other.min_v,other.max_u,other.max_v)) {
