@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/pr338-b2-closure/audit_b2.py", line 86, in <module>
+    tools8={k:bind('tools/v5/'+k) for k in r8['tool_hashes']};tools9={k:bind('comparison/tools-frozen/'+k) for k in f9['tool_hashes']}
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/pr338-b2-closure/audit_b2.py", line 60, in bind
+    ar='ORIGINAL_R8_FIVE_STAGE_RAW.tar.gz' if name.startswith(('original/','original-orchestration/','fixed-R-source/','tools/v5/')) else next(n for n in archive_map if n.startswith('PUBLIC_') and name in members[n])
+                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration

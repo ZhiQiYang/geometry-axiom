@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/pr338-b2-closure/audit_b2.py", line 175, in <module>
+    must(category is not None,'unclassified changed path '+p);records.append({'path':p,'category':category,'in_product_include_closure':in_c,'in_scene_inventory':in_scene})
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/pr338-b2-closure/audit_b2.py", line 11, in must
+    if not v:raise AssertionError(msg)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unclassified changed path "evidence/geo337-train-20261024/current-R8-exact-three/originals/git-originals/files/75a1e93811a52b69385cbdaf6a09d773ed9052ad/\345\205\254\347\220\206\345\261\244.md"
