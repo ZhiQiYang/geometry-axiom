@@ -1,3 +1,11 @@
+# #348 最新檢查點：512 placed load 已過；replay/history 未收終態
+
+候選 F `ac1d8017038ee9563f0cbd8596ea61c8b2577b19` 的原 H7 512 load/dump/objects/references 真 exit0，546.118秒、wait4 RSS293292KiB，低於原每batch600秒；原512幾何、ID順序與dump/reference斷言已過，程序已接著進 canonical replay。完整兩個方法、第二次replay及sequential history仍未收終態，**阻擋2尚未全解除**。原件見 `placed-load-partial-ac1d8017/`；這是部分收件，不能冒完整H7通過。
+
+第一輪 formal 的64三批皆0，但正文Git write-tree觸發歷史物件補抓吃滿/tmp，512收據寫入ENOSPC，原外層1且產品終態未回收，第二方法沒有真正啟動。失敗原件保留。只將本輪自建clean checkout完整搬到SHM、保留原路徑連結，無刪收據/fixtures/Git objects；恢復約324MB。正文發布已改用只修改既有parent的PR_BODY葉、保留遠端既有tree的write-tree --missing-ok，不重抓歷史blobs。20:21:15 UTC於同F的新OUT重跑兩原方法，預先保存每批fixture；不放寬斷言或600秒。
+
+正文分支已推 `07789f8217677d4ac246aac6ad32b3b06fcbafd8`，尚待既有relay回讀。以下較早檢查點及各execution SHA留作歷史：
+
 # #348 最新檢查點：正式 512 驗收執行中
 
 固定候選 F：`ac1d8017038ee9563f0cbd8596ea61c8b2577b19`，已推送可解析。20:08:28 UTC 在獨立乾淨 `/dev/shm/pr348-formal` 啟動原兩個 H7 placed 方法，原分離 K/W/H -O0、16 MiB stack、每批600秒；收據寫 `/tmp/pr348-runs/formal-placed-ac1d8017`，執行完封存。64支load及兩次canonical replay exit0，512第一批仍執行中，**尚未宣告通過**。
