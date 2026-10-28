@@ -250,6 +250,21 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
       check('UI04 '+spec.name+'X變更只重判承接且合法可確認',spec.bid===13?supportWidths(after).every(r=>r[4]===true):supportWidths(after).some(r=>r[2]==='8'&&r[3]==='8'&&r[4]===false));
     }
     await commit();await ctl(action('close'));
+    if(spec.bid===13){
+      const beforeImpact=await snapshot(),impactHistory=await history.capture();
+      await openPF(spec.bid);await fill(field('origin.2'),'1');const impact=await preview();
+      const beforeHost=impact.uiContract.before.derivedPlacements.find(h=>h.definition.id===hostId),afterHost=impact.uiContract.after.derivedPlacements.find(h=>h.definition.id===hostId);
+      const beforeTimbers=impact.dependencies?.before?.geometry?.timbers||[],afterTimbers=impact.dependencies?.after?.geometry?.timbers||[];
+      const visible=await read(`(()=>{const box=document.querySelector('[data-pf-impact]'),deps=box?.querySelector('[data-pf-dependency-impact]'),tables=deps?.querySelectorAll('table');return {present:!!box&&!!deps&&!!box.querySelector('[data-pf-native-changes]'),hostRows:[...(tables?.[0]?.querySelectorAll('tbody tr')||[])].map(r=>r.cells[0].textContent),timberRows:[...(tables?.[1]?.querySelectorAll('tbody tr')||[])].map(r=>r.cells[0].textContent)};})()`);
+      check('UI04_NATIVE_DOWNSTREAM_IMPACT 既有宿主與三支角材的前後影響可見',visible.present&&visible.hostRows.includes('#'+hostId)&&ids.timbers.every(id=>visible.timberRows.includes('#'+id))&&
+        beforeHost?.derived.frame.origin[2]==='9'&&afterHost?.derived.frame.origin[2]==='10'&&ids.timbers.every(id=>{
+          const a=beforeTimbers.find(t=>t.id===id),b=afterTimbers.find(t=>t.id===id);return !!a&&!!b&&!same(a.geometry,b.geometry);
+        }),{visible,beforeHost,afterHost,beforeTimbers,afterTimbers});
+      await ctl('[data-pf-impact-full] > summary');
+      const shown=await read(`Object.fromEntries(['impact-before','impact-after','impact-changes','dependencies-before','dependencies-after'].map(key=>[key,JSON.parse(document.querySelector('[data-pf-'+key+']').textContent)]))`);
+      check('UI04 完整before/after/changes/dependencies由原生逐欄呈現',same(shown['impact-before'],impact.uiContract.before)&&same(shown['impact-after'],impact.uiContract.after)&&same(shown['impact-changes'],impact.changes)&&same(shown['dependencies-before'],impact.dependencies.before)&&same(shown['dependencies-after'],impact.dependencies.after));
+      await ctl(action('cancel'));check('UI05 取消宿主與角材移動零正式變更',same(await snapshot(),beforeImpact)&&await history.unchanged(impactHistory));
+    }
   }
   await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(8);
 
@@ -259,7 +274,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
     'UI01 entry/reduction/projection coexistence/build-space entry',
     'UI02 unplaced explicit frame/PF-H/native allocated IDs/explicit column selection',
     'UI03 square axis/ParameterRef/17:2 wire and DOM/negative stagger/unsafe64 area/invalid thickness-gap-stagger',
-    'UI04 native 9:4:5/zero/1mm/inner-error/PF05/PF23/PF24 widths and X-only changes',
+    'UI04 native 9:4:5/zero/1mm/inner-error/PF05/PF23/PF24 widths/X-only changes/native downstream impact',
     'UI05 cancel/late preview/dropped confirm receipt/same-dump undo-redo/face switch',
     'UI06 no-op/source identity/one history and definition event per confirmation',
     'UI11 real download/fresh browser storage/exact state/unknown capability/missing source/tampering',

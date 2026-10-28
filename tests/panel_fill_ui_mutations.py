@@ -60,6 +60,8 @@ def variants(root: Path):
         ("preview-focus", "UI12_PREVIEW_FOCUS", workspace, workspace_bytes,
          replace_once(workspace_bytes, b"focus=region.querySelector('#pfTitle'); // PF_UI12_DISABLED_FOCUS_FALLBACK",
                       b"focus=null; // PF_UI12_DISABLED_FOCUS_FALLBACK")),
+        ("downstream-impact", "UI04_NATIVE_DOWNSTREAM_IMPACT", workspace, workspace_bytes,
+         replace_once(workspace_bytes, b"      ${s.candidate?impact(s.candidate):''}", b"")),
     ]
 
 
