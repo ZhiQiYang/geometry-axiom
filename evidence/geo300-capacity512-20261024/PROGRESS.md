@@ -1,3 +1,15 @@
+# #348 current state：512三路徑各批已綠；整套時限與上游鏈仍阻擋
+
+execution C `75481194f3b85a6b07e11896403633d7d0fa0d6f`，產品仍F2 `b595e55952d5d66de95024432e1b29bec7525e9b`；以下舊段落只保留歷史。
+
+- **C 第二H7完整exit0，1test／0fail/error/skip**，966.209439335995秒。512 load468.402913秒／RSS251368KiB；sequential＋實際token確認＋history491.646998秒／RSS456208KiB，兩批exit0且各低於原600秒。所有原capacity rollback、delete、Undo／Redo、幾何與精確保存斷言保留並通過。
+- F2第一H7原方法exit0，512 load482.595614秒、canonical500.587198／529.473389秒；按history-complete-75481194/closure逐項同源證明沿用，execution不改標C。C小7支0/1/0、32項F2控制與K29／root172原件均保留；無未跑冒通過。
+- 原F2 I8a紅、原B600秒timeout、各環境失敗完整保留。C首輪工具session中止SIGKILL／無完整結果，獨立背景重跑才有本次正式終態，不冒成最佳樣本重抽。
+- **未達合併條件**：完整H7原1200秒預算仍不符、native35分鐘／全census expected／全帳本／架構／browser未完成；上游#343→346→347未閉合。當前直接#347 8bb0359331365c6f3a96872620427cf7847fcb50，原review behind2、C fresh behind3/ahead22，來源鏈修復後才一般merge精確head及受影響重驗。
+- 本次原件在history-complete-75481194/RAW.tar.gz與manifest／STATUS／ENVIRONMENT；正文以實際新evidence head更新。下一輪純計算memo仍僅私有候選，未採入、未證實加速。
+
+## 歷史檢查點（不取代上方current state）
+
 # #348 current state：512各批已在600秒內完成；I8a history與整套時限仍紅
 
 產品／execution F2：`b595e55952d5d66de95024432e1b29bec7525e9b`。本節為唯一 current state，以下舊段落只保留歷史。維持 Draft，未達合併條件。
