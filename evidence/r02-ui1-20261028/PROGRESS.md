@@ -1,20 +1,19 @@
 # R02 UI-1 進度
 
-## 目前狀態：2026-10-28 17:17 UTC
+## 目前狀態：2026-10-28 17:38 UTC
 
-固定新驗收來源 F：`a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6`（已普通push）。D44兩項產品缺漏已修，正式撤回／恢復仍在執行，尚不標 READY。
+固定最新產品／驗收來源 F2：`74d638686edc9861e9ed9d3409af4adf02350f8e`（已普通push）。D44產品缺漏已修；不標READY，UI15仍未達合併條件。
 
-- 新建鋪排從零 dimension 欄位也明確提議8 mm，經既有參數卡獨立預覽／確認，真正 ParameterRef返回原面；沒有把來源建立藏進PF交易。
-- 原生每個支撐子段依supported標紅或藍，畫面保留左右精確實寬；PF05／23／24不足試排仍可確認保存，前端不重算幾何。
-- 新真UI `cf58aeb61b25c55262b55193a0511f5bb2c8e516`：377／0／0、192.075秒、exit0。包括來源草稿取消零變更、獨立一次history、Undo/Redo、真ParameterRef保存fresh BrowserContext重開；是P128 partial。新增保存斷言初輪讀錯legacy view的368／1原件保留，修為版本化uiContract精確欄位，期望8/1不變。
-- F上共用Node aggregate748＋PF契約21＋參數回執16＝785／0／0、133.148秒、exit0；三原架構裁判exit0（604檔／798edges／0diagnostics、205及18 tests），Linux產物已更新。
-- F上`mutate.py --check` exit0：70killed／1crashed／4equivalent／3retired，0stale／blocked／survived；此輪只改H JavaScript/CSS與JS驗收，原全帳本仍有效，未為同一closure重產。
-- F上三個必要UI13接線撤回＋8mm預填撤回＋不足紅色撤回正在獨立checkout，正式baseline377／0／0已完成；未終態部分不冒通過。新版完整canvas尚待此串結束後獨占執行；只將P128計數提高至實跑377，原85段golden完全相同，strict full待驗。
-- 修D44前完整canvas在`82257ab8b76e4eb36a9c26539125c83649485487`：2616／0／0、86段strict golden相同、1906.993秒、exit0，原件round6。**不移標為新版完整canvas**。
-- 完整native首輪`ffa22ad9…`原exit1（5221pass／4fail／1原允許GDI skip）；三個原缺陷修後`79049d7e…`局部763／0／0，不冒稱第二次完整native。grid356／0／0、space242／0舊原件來源亦保持不變。
-- **UI15未跑／未達合併條件**：#343→#346→#347仍未閉合；不借用其他分支舊收據。未宣稱WSL／實體IME／觸控驗收。
+- **五組真UI反證已完成**：來源F1 `a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6`，入口、preview HTTP、confirm回執、8mm預填、原生不足紅色各具名0／1／0。六份正向各377／0／0、五份指定紅、全部來源恢復；整輪1293.054秒exit0，raw hash逐項核收。不是F2重跑。
+- 其後對抗審查發現來源準備的啟動競態：等待engineering-read時使用者真切另一面，晚回覆仍退出新面並開舊草稿。`0f37836d524c1314b26246b9d557110c21e2124a`真重現6pass／1fail、4.700秒exit1，具名UI05_D44_PREPARATION_OWNER；FATAL_UI保留focus=null、active=paramName。
+- `a7a05ecf13076f0dcf5fd89d1ef6c8a9118ac836`修補在第一個await前綁request／navigation／focus，自己的導航只接受預期序號。真完整PF專項381／0／0、203.807秒、exit0；唯讀對抗審查無新增阻擋。F2僅再登記測試hash與P128=381，產品／測試相同。此新增修補的完整撤回／恢復仍在原獨立checkout進行。
+- F2三原architecture裁判均exit0：604檔／798edges／0diagnostics，205與18 tests；Linux scan／receipt／report已更新。F2參數回執16／0／0、exit0。`mutate.py --check`仍exit0、0stale：70killed／1crashed／4equivalent／3retired，不把crashed算killed。
+- F1 Node aggregate748＋PF契約21＋參數回執16＝785／0／0；不改標F2。F2與F1之產品差異僅上述共用參數建立owner守門；新版完整canvas將驗既有P76與新P128，原85段golden仍全等。
+- 新版完整canvas**尚待執行**，將在來源守門反證收齊後獨占。舊 `82257ab8…` full為2616／0／0、86段strict matched、1906.993秒exit0（round6），不移標。
+- native原完整census的5221pass／4fail／1允許GDI skip、exit1，及原三套修復763／0／0，分開保留。grid356／0／0、space242／0舊來源原件不移標。
+- **UI15未跑／未達合併條件**：#343→#346→#347仍未閉合；WSL、實體IME／觸控、另一原生程序重開未驗。沒有修改SSOT、其他PR分支，沒有merge main。
 
-最新差額原件見round7；先前六包及原紅燈完整保留。以下是歷史紀錄，不作目前終態。
+round8包含五反證原件、來源準備競態原紅／修後與最新輕量裁判。為保存餘下原件，只回收本任務退役mutation cache內一份逐byte等於Git正典的PDF worker副本，實測釋出2,232,320 bytes；未刪原件／fixtures／Git objects／native ELF，詳D44_CACHE_RECLAIM.json。以下為歷史紀錄，不代表現在終態。
 
 基底：`405f8c5e1a637a16cbe47470faf5ae1fa02b8676`。
 工作分支：`codex/r02-ui1-panel-fill-20261028`。

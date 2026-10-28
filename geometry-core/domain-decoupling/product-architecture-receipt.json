@@ -1,9 +1,9 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "sourceBaseHead": "a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6",
-  "headObservedBefore": "a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6",
-  "headObservedAfter": "a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6",
-  "createdUtc": "2026-10-28T17:16:00.834830+00:00",
+  "sourceBaseHead": "74d638686edc9861e9ed9d3409af4adf02350f8e",
+  "headObservedBefore": "74d638686edc9861e9ed9d3409af4adf02350f8e",
+  "headObservedAfter": "74d638686edc9861e9ed9d3409af4adf02350f8e",
+  "createdUtc": "2026-10-28T17:37:21.449251+00:00",
   "hashMode": "sha256 after CRLF-to-LF normalization",
   "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for path-sorted inputs array, ensure_ascii=false, separators=(comma,colon), no trailing newline",
   "inputClosureExcludes": [
@@ -13,12 +13,12 @@
     "geometry-core/domain-decoupling/product-architecture-receipt.json"
   ],
   "inputClosureExclusionReason": "Non-executable derived audit metadata; sourceRoots/sourceFiles executable inventory is unchanged by publishing evidence.",
-  "manifestSha256": "0cb35d026956796b11428806115d8a98b35ace8eafae528f9d7c9a4d565c122c",
+  "manifestSha256": "1f83a2b018fa0d40e8e10e00e9e0eb52ff4729b251b52eaa4717af6c147fd7e0",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "e5b180f8b9962a548c96d3e9006009e3f17e1cc756131226804eb52969036fde",
   "reportPath": "evidence/r02-ui1-20261028/architecture/REPORT.md",
-  "reportSha256": "d8457dbebc6e03c8069315fbcda0f950f50cf8db50ec30dac1fefbf76274eff7",
-  "inputClosureSha256": "4c1a6767106a021e3ae8a9b5516798a011c4cf971412c4d54a5f89ccde654be5",
+  "reportSha256": "3140dfe7f8e20db9253562f71b21f94a90d7fe1e485441c52bd8ab5e928240dc",
+  "inputClosureSha256": "99eac0ae3f373e9df751515ebaebdae0b76247282a583c8c2aa80980558bd5b7",
   "counts": {
     "executableFiles": 604,
     "ownedSources": 335,
@@ -50,10 +50,10 @@
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
     "cwd": "/tmp/r02-ui1",
-    "sha": "a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6",
+    "sha": "74d638686edc9861e9ed9d3409af4adf02350f8e",
     "status": "",
     "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "startUtc": "2026-10-28T17:14:58.352515+00:00",
+    "startUtc": "2026-10-28T17:36:01.796057+00:00",
     "timeoutSeconds": 120,
     "environment": {
       "LANG": "C.UTF-8",
@@ -68,11 +68,11 @@
     ],
     "stackBytes": 16777216,
     "exit": 0,
-    "elapsedSeconds": 6.15536076600074,
-    "endUtc": "2026-10-28T17:15:04.508278+00:00",
+    "elapsedSeconds": 5.962334971000018,
+    "endUtc": "2026-10-28T17:36:07.758753+00:00",
     "rawSha256": {
-      "stdout.gz": "31a8eb0faf711d44fdcafd2320733c54b912663fd7027ff47e4a027aa727e645",
-      "stderr.gz": "37352d43332c470620fb72bc1e4aa281c52e68137e0d07db256836c100a5a7af"
+      "stdout.gz": "2e34209d1c4e3d7a977e72b9ee966d66e096346aa1caec431da4074accd723bc",
+      "stderr.gz": "7ab874c39ee801ea9b4d8eaba1d475aa63f03b8cfa023ec16a6a2487b3fdb0d4"
     }
   },
   "validation": [
@@ -83,10 +83,10 @@
         "tests/test_architecture_contract.py"
       ],
       "cwd": "/tmp/r02-ui1",
-      "sha": "a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6",
+      "sha": "74d638686edc9861e9ed9d3409af4adf02350f8e",
       "status": "",
       "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "startUtc": "2026-10-28T17:15:04.632976+00:00",
+      "startUtc": "2026-10-28T17:36:07.876971+00:00",
       "timeoutSeconds": 120,
       "environment": {
         "LANG": "C.UTF-8",
@@ -101,11 +101,11 @@
       ],
       "stackBytes": 16777216,
       "exit": 0,
-      "elapsedSeconds": 0.4674216189996514,
-      "endUtc": "2026-10-28T17:15:05.100859+00:00",
+      "elapsedSeconds": 0.5205448410015379,
+      "endUtc": "2026-10-28T17:36:08.397896+00:00",
       "rawSha256": {
-        "stdout.gz": "10b3290af4b19691ca75030a91adf5dae5262ed237c4f72c9addbb30fc51d302",
-        "stderr.gz": "59faa77d3646e36771e2a87435e6958491f03899927ac7e4583910df6dabf928"
+        "stdout.gz": "142441343630f1a1fedccd0ea8f50573c735d1ffc8bc9d208c548959160b35e2",
+        "stderr.gz": "8407c42c2e3a8da2906f359f616b657a55760bbac7351d6ce8542d3aa9b4e392"
       }
     },
     {
@@ -115,10 +115,10 @@
         "tests/test_product_architecture.py"
       ],
       "cwd": "/tmp/r02-ui1",
-      "sha": "a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6",
+      "sha": "74d638686edc9861e9ed9d3409af4adf02350f8e",
       "status": "",
       "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "startUtc": "2026-10-28T17:15:05.243495+00:00",
+      "startUtc": "2026-10-28T17:36:08.531507+00:00",
       "timeoutSeconds": 120,
       "environment": {
         "LANG": "C.UTF-8",
@@ -133,11 +133,11 @@
       ],
       "stackBytes": 16777216,
       "exit": 0,
-      "elapsedSeconds": 12.54998218000037,
-      "endUtc": "2026-10-28T17:15:17.793922+00:00",
+      "elapsedSeconds": 11.793698093000785,
+      "endUtc": "2026-10-28T17:36:20.325543+00:00",
       "rawSha256": {
-        "stdout.gz": "f2742d092a132c0ab1c049097d1680bb0bf526a496b08a2116358fb995af0854",
-        "stderr.gz": "6602c6731eb02e1c5be0ce908f98a21a82506432cc3961d1fd79419231402f2d"
+        "stdout.gz": "a89d811fc306582b57afde3ab8aca4306f58b83e85d2a31112cce19e467b872a",
+        "stderr.gz": "de9ea4d5a3b1b8b0ca195bab451cdaf9fa4c6d8d6d4c32c3e1ea7d71d0a35d98"
       }
     }
   ],
@@ -2080,7 +2080,7 @@
     },
     {
       "path": "geometry-web/panel_fill_workflow_test.js",
-      "sha256": "493c3f17485948cb7a3a6aa95c4759948d141b66caaa58c72de36c96a4f4b480"
+      "sha256": "b4f94f2f8962b80b517a54d4e8dd0816eeac2e00425122a5d9dff8a60d2da2c1"
     },
     {
       "path": "geometry-web/panel_layout_bridge.inc",
@@ -2104,7 +2104,7 @@
     },
     {
       "path": "geometry-web/parameters.js",
-      "sha256": "5618acc642f56c9e5e2e52c6d7a3ef8290dc4d25e8fefd54678c7780ba41dd3c"
+      "sha256": "18229bde1c00ec940e6599c981bbf071c06b62dcebb238adf439916b5e2a829f"
     },
     {
       "path": "geometry-web/pdf_tracing_snap_test.js",
@@ -2574,10 +2574,10 @@
     }
   },
   "artifactsPresentBeforeSeal": {
-    "product-architecture.json": "0cb35d026956796b11428806115d8a98b35ace8eafae528f9d7c9a4d565c122c",
+    "product-architecture.json": "1f83a2b018fa0d40e8e10e00e9e0eb52ff4729b251b52eaa4717af6c147fd7e0",
     "product-architecture-scan.json": "e5b180f8b9962a548c96d3e9006009e3f17e1cc756131226804eb52969036fde",
     "PRODUCT-ARCHITECTURE.md": "1952056c8d15ee3a3399f042433aa9c2e11e5d333a22401ce4119ac226834996",
-    "product-architecture-receipt.json": "c79a0a0ed3eaa64b3906b599efb07062bb273a53769cdf62c48d8e790b7e46e0"
+    "product-architecture-receipt.json": "d25a8d1668078959e63c92b9980eb02432acc4931a6dd3e92e1c3fa3b4c197aa"
   },
   "notClaimed": [
     "native execution",
