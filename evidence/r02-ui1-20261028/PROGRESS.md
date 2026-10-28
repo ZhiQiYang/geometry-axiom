@@ -1,19 +1,20 @@
 # R02 UI-1 進度
 
-## 目前狀態：2026-10-28 16:40 UTC
+## 目前狀態：2026-10-28 17:17 UTC
 
-產品／本片 UI 測試仍與六撤線固定來源 `fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f` 同一內容。較新受驗來源 `79049d7e0c4a60f7a5e2ff4c7023cd713f0c387f` 只再更新 census、兩個 archive 錨點、過時未知格式測試與其架構登記；沒有新增產品行為。
+固定新驗收來源 F：`a66b2022aa9603b5b2a6fc7b201d6b68a0d54bc6`（已普通push）。D44兩項產品缺漏已修，正式撤回／恢復仍在執行，尚不標 READY。
 
-- 真 UI 基準349／0／0；六組必要／修復撤線均具名0／1／0。archive另六組原指定反證亦0／1／0。
-- 完整 native census `ffa22ad9…`：1942.533秒，226 suites，5221pass／4fail／1個原允許GDI skip，**原exit1保留**。三個失敗suite分別為容器zombie、archive錨點漂移、舊測試拒絕已採用/19；修後只重跑這三個suite，763pass／0fail／0skip，128.444秒、exit0。這不是第二次完整native通過。
-- 獨立數量核收exit0：原224→226套、Node737→748、新Python9／Node21；其餘count／mode不變。原生成檔與首次核收失敗亦保留。
-- grid：356／0／0、exit0，441.562秒；space：242／0、exit0，183.846秒。兩者 execution SHA均`ffa22ad9245021c17c0a827847270bc5882cbb69`。
-- 最終帳本check exit0、0stale（70killed／1crashed／4equivalent／3retired）；架構三原裁判exit0（604檔、0diagnostics；205／18 tests），Linux產物已重封。
-- **完整canvas於82257ab8來源已exit0，2616／0／0、86段strict golden相同、1906.993秒；D44兩項新審查修補尚待；UI15未跑／未達合併條件**。#343→#346→#347仍未閉合；不借用它們的舊來源收據。不宣稱本機WSL已跑。
+- 新建鋪排從零 dimension 欄位也明確提議8 mm，經既有參數卡獨立預覽／確認，真正 ParameterRef返回原面；沒有把來源建立藏進PF交易。
+- 原生每個支撐子段依supported標紅或藍，畫面保留左右精確實寬；PF05／23／24不足試排仍可確認保存，前端不重算幾何。
+- 新真UI `cf58aeb61b25c55262b55193a0511f5bb2c8e516`：377／0／0、192.075秒、exit0。包括來源草稿取消零變更、獨立一次history、Undo/Redo、真ParameterRef保存fresh BrowserContext重開；是P128 partial。新增保存斷言初輪讀錯legacy view的368／1原件保留，修為版本化uiContract精確欄位，期望8/1不變。
+- F上共用Node aggregate748＋PF契約21＋參數回執16＝785／0／0、133.148秒、exit0；三原架構裁判exit0（604檔／798edges／0diagnostics、205及18 tests），Linux產物已更新。
+- F上`mutate.py --check` exit0：70killed／1crashed／4equivalent／3retired，0stale／blocked／survived；此輪只改H JavaScript/CSS與JS驗收，原全帳本仍有效，未為同一closure重產。
+- F上三個必要UI13接線撤回＋8mm預填撤回＋不足紅色撤回正在獨立checkout，正式baseline377／0／0已完成；未終態部分不冒通過。新版完整canvas尚待此串結束後獨占執行；只將P128計數提高至實跑377，原85段golden完全相同，strict full待驗。
+- 修D44前完整canvas在`82257ab8b76e4eb36a9c26539125c83649485487`：2616／0／0、86段strict golden相同、1906.993秒、exit0，原件round6。**不移標為新版完整canvas**。
+- 完整native首輪`ffa22ad9…`原exit1（5221pass／4fail／1原允許GDI skip）；三個原缺陷修後`79049d7e…`局部763／0／0，不冒稱第二次完整native。grid356／0／0、space242／0舊原件來源亦保持不變。
+- **UI15未跑／未達合併條件**：#343→#346→#347仍未閉合；不借用其他分支舊收據。未宣稱WSL／實體IME／觸控驗收。
 
-最新原件差額見 `receipts-round-6.tar.gz` 與逐檔manifest；先前五包完整保留。完整canvas起訖16:00:43.536578–16:32:30.530483 UTC，未超過原2100秒；P38單次預期例外已驗證。
-
-最新審查6474493782的D44缺漏仍待修：新建時明確提議獨立確認8 mm D31尺寸來源、依原生逐子段supported結果標紅並顯示精確左右實寬。修補由本owner接續，舊完整canvas不移標為新修補通過。以下為歷史紀錄，早期紅燈與「執行中」不代表目前終態。
+最新差額原件見round7；先前六包及原紅燈完整保留。以下是歷史紀錄，不作目前終態。
 
 基底：`405f8c5e1a637a16cbe47470faf5ae1fa02b8676`。
 工作分支：`codex/r02-ui1-panel-fill-20261028`。
