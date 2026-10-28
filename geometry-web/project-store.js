@@ -291,7 +291,7 @@
     // pass their separate finite validation and must be present in the subset.
     if(!Array.isArray(available)||available.length>42||new Set(available).size!==available.length||
        available.some(capability=>!str(capability,100)||!capability.length))fail('服務可用能力清單不合法。');
-    const supported=available.filter(capability=>[ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY,SUBDIVISION_CAPABILITY,SECTION_CAPABILITY,CARD_CAPABILITY, PANEL_FILL_CAPABILITY].includes(capability));
+    const supported=available.filter(capability=>[ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY,SUBDIVISION_CAPABILITY,SECTION_CAPABILITY,CARD_CAPABILITY].includes(capability));
     return validateProjectCapabilities(supported);
   }
   function assertProjectCapabilities(manifest, available) {
@@ -311,8 +311,19 @@
       fail("專案需要尚未支援的能力。");
     return capabilities;
   }
-  function readerCapabilities(nativeCapabilities) {
-    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
+  function readerCapabilities(nativeCapabilities, panelFillReader = null) {
+    // The PF subset is a versioned definition reader, not the unimplemented
+    // full panel-fill product capability. Its scope must be explicit and exact.
+    const scoped = [];
+    if (panelFillReader !== null) {
+      if (!keys(panelFillReader, ["schema", "capability", "supportedRecords", "complete"]) ||
+          panelFillReader.schema !== "panel-fill-definition-reader/1" || panelFillReader.capability !== PANEL_FILL_CAPABILITY ||
+          panelFillReader.complete !== false || !Array.isArray(panelFillReader.supportedRecords) ||
+          JSON.stringify([...panelFillReader.supportedRecords].sort()) !== JSON.stringify(["derived-placement", "finish-surface", "panel-fill"]))
+        fail("完成面與鋪排的定義閱讀能力不相容，未變更目前專案。");
+      scoped.push(PANEL_FILL_CAPABILITY);
+    }
+    return [...nativeReaderCapabilities(nativeCapabilities), ...scoped, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);

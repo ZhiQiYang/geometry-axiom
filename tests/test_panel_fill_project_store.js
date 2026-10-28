@@ -6,6 +6,8 @@ const fs=require('node:fs'),vm=require('node:vm');
 const P=require('../geometry-web/project-store.js');
 const zip=require('../geometry-web/vendor/fflate/umd/index.js');
 const capabilities=['engineering-spec/1','panel-fill/1','parameters/1'];
+const nativeCapabilities=['engineering-spec/1','parameters/1'];
+const scopedReader={schema:'panel-fill-definition-reader/1',capability:'panel-fill/1',supportedRecords:['finish-surface','panel-fill','derived-placement'],complete:false};
 const base='boundary 4 outline 0,0 800,0 800,600 0,600\n';
 const definitions=[
   'finish-surface 1 on boundary 4 origin 0 0 2480 u +x v +y n +z side +n name-hex 46',
@@ -42,8 +44,13 @@ test('PF_SAVE_NO_DOWNGRADE every old format rejects PF; missing and unknown capa
   await assert.rejects(()=>P.unpack(rewrite(old,m=>m.format=P.PANEL_FILL_FORMAT),zip));
 });
 test('PF_SAVE_READER_CAPABILITY cannot open PF with an older native service',()=>{
-  P.assertProjectCapabilities({requiredCapabilities:capabilities},P.readerCapabilities(capabilities));
+  P.assertProjectCapabilities({requiredCapabilities:capabilities},P.readerCapabilities(nativeCapabilities,scopedReader));
+  assert.throws(()=>P.assertProjectCapabilities({requiredCapabilities:capabilities},P.readerCapabilities(capabilities)),/不支援/,'a bare full capability cannot stand in for the scoped reader');
   assert.throws(()=>P.assertProjectCapabilities({requiredCapabilities:capabilities},P.readerCapabilities(['engineering-spec/1','parameters/1'])),/不支援/);
+  for(const reader of [{...scopedReader,schema:'panel-fill-definition-reader/2'}, {...scopedReader,complete:true},
+    {...scopedReader,capability:'panel-fill/2'}, {...scopedReader,supportedRecords:scopedReader.supportedRecords.slice(1)},
+    {...scopedReader,supportedRecords:[...scopedReader.supportedRecords,'unknown']}, {...scopedReader,supportedRecords:['panel-fill','panel-fill','derived-placement']},
+    {...scopedReader,unknown:true}])assert.throws(()=>P.readerCapabilities(nativeCapabilities,reader),/定義閱讀能力不相容/);
 });
 test('PF_SAVE_PROJECTION_COEXISTS source and projection definitions remain independent',async()=>{
   const faceProjections=[{bid:4,placement_id:0,projection:{kind:'space-boundary-plan',view:'top',region:'interior',wallSide:'outside'}}];
@@ -74,6 +81,7 @@ function workspace(options={}){
     oc:{busy:false,faces:[],bmap:{},edit:null},fe:{feats:{}},connection:{phase:'ready',session:'a'.repeat(32)},
     api:async command=>{calls.push(command);assert.equal(command,'dump');return {ok:true,text:base};},
     fetch:async(url,request)=>{calls.push(url);if(url==='/upload/cancel')return {ok:true,json:async()=>({ok:true})};
+      if(url==='/upload/confirm'&&options.allowConfirm)return {ok:true,json:async()=>({ok:true})};
       assert.equal(url,'/upload/prepare');return {ok:true,json:async()=>options.candidate};},
     setStatus:s=>messages.push(s),toast:s=>messages.push(s),drawFaceEditor(){},renderFaceInspector(){},innerWidth:1280};
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
@@ -115,10 +123,25 @@ test('PF_SAVE_ATOMIC_REJECTION keeps World/context/dirty/history before native c
     {ok:true,token:7,capabilities,required_capabilities:capabilities,final_objects:{boundaries:[],placements:[]},final_scene:scene.replace(definitions[1],'')},
     {ok:true,token:7,capabilities,required_capabilities:['engineering-spec/1'],final_objects:{boundaries:[],placements:[]},final_scene:scene}
   ]){
-    const {w,calls}=workspace({candidate}),before=w.context(),state=w.getProjectState();
+    const {w,calls}=workspace({candidate:{panel_fill_reader:scopedReader,...candidate}}),before=w.context(),state=w.getProjectState();
     await assert.rejects(()=>w.uploadScene(scene,{manifest:loaded.manifest,context:{},ids:[]}));
     assert.equal(w.context(),before);assert.deepEqual(w.getProjectState(),state);assert.equal(w.history.undo.length,0);
     assert.equal(calls.includes('/upload/confirm'),false);
     assert.deepEqual(calls,['dump','/upload/prepare',...(candidate.ok?['/upload/cancel']:[])]);
+  }
+});
+test('PF_SAVE_SCOPED_READER_IMPORT only exact scoped native reader can reach commit',async()=>{
+  const loaded=await P.unpack(await pack(),zip);
+  const candidate={ok:true,token:7,capabilities:nativeCapabilities,required_capabilities:capabilities,
+    final_objects:{boundaries:[],placements:[]},final_scene:scene};
+  const accepted=workspace({candidate:{...candidate,panel_fill_reader:scopedReader},allowConfirm:true});
+  assert.equal((await accepted.w.uploadScene(scene,{manifest:loaded.manifest,context:accepted.w.context(),ids:[]})).ok,true);
+  assert.deepEqual(accepted.calls,['dump','/upload/prepare','/upload/confirm']);
+  for(const reader of [undefined,{...scopedReader,complete:true},{...scopedReader,supportedRecords:['finish-surface','panel-fill']}]){
+    const rejected=workspace({candidate:{...candidate,panel_fill_reader:reader},allowConfirm:true});
+    const state=rejected.w.getProjectState();
+    await assert.rejects(()=>rejected.w.uploadScene(scene,{manifest:loaded.manifest,context:rejected.w.context(),ids:[]}));
+    assert.deepEqual(rejected.calls,['dump','/upload/prepare','/upload/cancel']);
+    assert.deepEqual(rejected.w.getProjectState(),state);assert.equal(rejected.w.history.undo.length,0);
   }
 });
