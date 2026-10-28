@@ -8,6 +8,9 @@
 enum { CONTACT_TOKEN=16, BOX_TOKEN=4 };
 bool contact_test_disable_memo;
 static bool transform_features;
+static unsigned feature_evaluations,feature_fail_remaining;
+bool contact_test_reject_feature(void)
+{++feature_evaluations;if(feature_fail_remaining){--feature_fail_remaining;return true;}return false;}
 static unsigned collector_calls,allocation_calls[4],fail_remaining;
 static const char *fail_role;
 static int role_index(const char *role)
@@ -36,6 +39,10 @@ typedef struct {
     WoodMember members[2];
     unsigned facts_calls,box_calls;
     bool fail,invalid;
+    bool nested,in_nested;
+    unsigned nested_calls;
+    WoodStopFace nested_out[16];
+    size_t nested_count;
 } Fixture;
 static bool box_describe(void *user,const GeoSourceRef *ref,GeoSourceDescriptor *out)
 {
@@ -56,6 +63,12 @@ static bool facts_callback(void *user,GeoEvalContext *graph,const WoodContactSou
        value.kind!=GEO_SOURCE_BOX||f->fail)return false;
     /* A canonical callback DTO deliberately stays identical when the member
      * pointer's pointee id/placed changes. This isolates the alias safeguard. */
+    if(f->nested&&!f->in_nested){
+        WoodContactSourceRequest inner=*request;inner.along_v=!request->along_v;
+        f->in_nested=true;++f->nested_calls;
+        bool ok=wood_contact_sources_collect(f->contacts,&inner,f->nested_out,16,&f->nested_count);
+        f->in_nested=false;if(!ok)return false;
+    }
     memcpy(out,f->facts,sizeof *out);
     if(f->invalid)out->member_count=WOOD_CONTACT_MEMBER_CAPACITY+1;
     return true;
@@ -210,6 +223,76 @@ static int feature_case(void)
     for(size_t i=0;i<n;++i)CHECK("result-memo-feature-result-is-consumed",out[i].fixed==old[i].fixed+1000&&out[i].lo==old[i].lo+2000&&out[i].hi==old[i].hi+2000);
     dispose(&f,true);return 0;
 }
+/* Re-enter the actual source handle from its facts callback. The inner query
+ * has the opposite axis and replaces the one-entry hint before outer returns.
+ * A pre-callback key decision must not be applied to the new hint's bytes. */
+static int nested_case(void)
+{
+    Fixture a,b;CHECK("setup-a",setup(&a)==0);CHECK("setup-b",setup(&b)==0);
+    WoodContactSourceRequest r={7,false,NULL};WoodStopFace initial[16],av[16],bv[16];size_t initial_n=0,an=0,bn=0;
+    CHECK("result-memo-nested-prime",collect(&a,&r,initial,16,&initial_n)&&initial_n==6);
+    a.nested=true;
+    CHECK("result-memo-nested-outer-query",collect(&a,&r,av,16,&an));a.nested=false;
+    CHECK("result-memo-nested-outer-result-matches-reference",an==initial_n&&!memcmp(initial,av,an*sizeof *av));
+    CHECK("result-memo-nested-callback-really-ran",a.nested_calls==1&&a.facts_calls==3&&a.nested_count==6);
+    CHECK("result-memo-nested-inner-and-outer-are-distinct",memcmp(a.nested_out,av,an*sizeof *av)!=0);
+    CHECK("result-memo-nested-outer-rechecks-current-hint",collector_calls==3);
+    contact_test_disable_memo=true;
+    CHECK("result-memo-nested-reference-prime",collect(&b,&r,bv,16,&bn));b.nested=true;
+    CHECK("result-memo-nested-reference-query",collect(&b,&r,bv,16,&bn));b.nested=false;
+    CHECK("result-memo-nested-exact-ordered-graph",equal_graphs(a.graph,b.graph)&&an==bn&&!memcmp(av,bv,an*sizeof *av)&&
+        a.nested_count==b.nested_count&&!memcmp(a.nested_out,b.nested_out,a.nested_count*sizeof *a.nested_out));
+    dispose(&a,true);dispose(&b,false);return 0;
+}
+/* Fail the real W FEATURE provider, after a successful pure collection hint.
+ * This does not mock the adapter return. New query IDs must evaluate FEATURE
+ * again; the failed call remains atomic and cannot become a cached success. */
+static int feature_failure_case(void)
+{
+    Fixture f;CHECK("setup",setup(&f)==0);WoodContactSourceRequest r={7,false,NULL};
+    WoodStopFace initial[16],out[16],saved[16];size_t initial_n=0,n=999;
+    CHECK("result-memo-feature-failure-prime",collect(&f,&r,initial,16,&initial_n)&&initial_n==6&&feature_evaluations==6);
+    memset(out,0x5a,sizeof out);memcpy(saved,out,sizeof saved);feature_fail_remaining=1;
+    CHECK("result-memo-feature-failure-keeps-output",!collect(&f,&r,out,16,&n)&&n==999&&!memcmp(out,saved,sizeof out));
+    CHECK("result-memo-feature-failure-hit-still-evaluates",feature_evaluations==7&&feature_fail_remaining==0&&collector_calls==1&&f.facts_calls==2);
+    CHECK("result-memo-feature-failure-next-query-recovers",collect(&f,&r,out,16,&n)&&n==initial_n&&!memcmp(out,initial,n*sizeof *out));
+    CHECK("result-memo-feature-failure-next-query-rechecks-all",feature_evaluations==13&&f.facts_calls==3&&collector_calls==1);
+    dispose(&f,true);return 0;
+}
+/* A hit-only ownership check is insufficient: replace the memo twice and
+ * keep borrowed definitions plus one FEATURE metadata pointer from before
+ * the first miss alive throughout. No stale pointer is dereferenced after
+ * destruction; all owners remain alive until the last comparison. */
+static int borrowed_miss_case(void)
+{
+    Fixture f;CHECK("setup",setup(&f)==0);WoodContactSourceRequest r={7,false,NULL};WoodStopFace out[16];size_t n=0;
+    CHECK("result-memo-miss-prime",collect(&f,&r,out,16,&n)&&n==6);
+    GeoSourceValue first,second,third,feature;
+    CHECK("result-memo-miss-first-value",collection(&f,1,&first));
+    WoodContactSourceKey key;
+    CHECK("result-memo-miss-borrowed-feature",geo_eval_source(f.graph,
+        wood_contact_source_ref(CONTACT_TOKEN,WOOD_CONTACT_SOURCE_FEATURE,1,2,&key),
+        GEO_DEPENDENCY_VALUE_REQUIRED,&feature)==GEO_SOURCE_OK&&feature.kind==GEO_SOURCE_FEATURE);
+    unsigned char first_bytes[8+16*48],second_bytes[8+16*48],feature_bytes[24];
+    size_t first_size=first.as.definition.content_size;memcpy(first_bytes,first.as.definition.content,first_size);
+    CHECK("result-memo-miss-feature-size",feature.as.feature.key_size==sizeof feature_bytes);
+    memcpy(feature_bytes,feature.as.feature.key,sizeof feature_bytes);GeoSegment3 segment=feature.as.feature.segment;
+    f.members[0].id=141;
+    CHECK("result-memo-miss-second-query",collect(&f,&r,out,16,&n)&&n==6&&collection(&f,2,&second));
+    CHECK("result-memo-miss-keeps-prior-borrowed-value",first.as.definition.content_size==first_size&&
+        !memcmp(first_bytes,first.as.definition.content,first_size)&&!memcmp(feature_bytes,feature.as.feature.key,sizeof feature_bytes)&&
+        !memcmp(&segment,&feature.as.feature.segment,sizeof segment));
+    size_t second_size=second.as.definition.content_size;memcpy(second_bytes,second.as.definition.content,second_size);
+    CHECK("result-memo-miss-second-value-owned-and-changed",first.as.definition.content!=second.as.definition.content&&
+        first_size==second_size&&memcmp(first_bytes,second_bytes,first_size)!=0&&collector_calls==2);
+    f.members[0].id=241;
+    CHECK("result-memo-miss-third-query",collect(&f,&r,out,16,&n)&&n==6&&collection(&f,3,&third));
+    CHECK("result-memo-miss-keeps-both-prior-values",!memcmp(first_bytes,first.as.definition.content,first_size)&&
+        !memcmp(second_bytes,second.as.definition.content,second_size)&&!memcmp(feature_bytes,feature.as.feature.key,sizeof feature_bytes)&&
+        third.as.definition.content!=second.as.definition.content&&collector_calls==3);
+    dispose(&f,false);return 0;
+}
+
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;int result;
@@ -218,6 +301,9 @@ int main(int argc,char **argv)
     else if(!strncmp(argv[1],"failure-",8))result=failure_case(argv[1]+8);
     else if(!strcmp(argv[1],"optional"))result=optional_case();
     else if(!strcmp(argv[1],"feature"))result=feature_case();
+    else if(!strcmp(argv[1],"nested"))result=nested_case();
+    else if(!strcmp(argv[1],"feature-failure"))result=feature_failure_case();
+    else if(!strcmp(argv[1],"borrowed-miss"))result=borrowed_miss_case();
     else return 2;
     if(!result)printf("PASS %s\n",argv[1]);return result;
 }

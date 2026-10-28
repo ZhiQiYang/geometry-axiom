@@ -26,6 +26,7 @@ void *contact_test_malloc(const char *,size_t);
 void *contact_test_calloc(const char *,size_t,size_t);
 size_t contact_test_collect(const WoodContactWorld *,bool,const WoodMember *,WoodStopFace *,size_t);
 void contact_test_transform_feature(GeoSegment3 *);
+bool contact_test_reject_feature(void);
 '''
 FEATURE_RETURN = "out->kind=GEO_SOURCE_FEATURE;out->as.feature=(GeoFeatureValue){record,WOOD_CONTACT_SOURCE_METADATA_SIZE,segment};return true;"
 HOOKS = (
@@ -35,7 +36,7 @@ HOOKS = (
     ("unsigned char *bytes=malloc(size)", 'unsigned char *bytes=contact_test_malloc("collection",size)'),
     ("memo=malloc(sizeof *memo)", 'memo=contact_test_malloc("memo",sizeof *memo)'),
     ("wood_contact_collect_stops(&world,q->request.along_v,q->request.exclude,faces,q->cap)", "contact_test_collect(&world,q->request.along_v,q->request.exclude,faces,q->cap)"),
-    (FEATURE_RETURN, "contact_test_transform_feature(&segment);" + FEATURE_RETURN),
+    (FEATURE_RETURN, "if(contact_test_reject_feature())return false;contact_test_transform_feature(&segment);" + FEATURE_RETURN),
 )
 CONTROLS = (
     ("withdraw", "repeat", "result-memo-repeat-computes-once",
@@ -50,6 +51,27 @@ CONTROLS = (
      "if(!s->facts(s->user,s->graph,&q->request,facts)||!wood_contact_source_facts_valid(facts)){",
      "if(s->result_memo)memcpy(facts,&s->result_memo->facts,sizeof *facts);\n"
      "        if((!s->result_memo&&!s->facts(s->user,s->graph,&q->request,facts))||!wood_contact_source_facts_valid(facts)){"),
+)
+
+# Separate additional failure modes; the original five controls are unchanged.
+EXTRA_CONTROLS = (
+    ("nested-premature-match", "nested", "result-memo-nested-outer-result-matches-reference", (
+        ("        if(!s->facts(s->user,s->graph,&q->request,facts)||!wood_contact_source_facts_valid(facts)){",
+         "        bool premature_match=s->result_memo&&s->result_memo->request.placement_id==q->request.placement_id&&"
+         "s->result_memo->request.along_v==q->request.along_v&&s->result_memo->request.exclude==q->request.exclude;\n"
+         "        if(!s->facts(s->user,s->graph,&q->request,facts)||!wood_contact_source_facts_valid(facts)){"),
+        ("bool reused=wood_contact_result_matches(s->result_memo,q,facts);",
+         "bool reused=premature_match||wood_contact_result_matches(s->result_memo,q,facts);"),
+    )),
+    ("feature-failure-success", "feature-failure", "result-memo-feature-failure-keeps-output", (
+        ("            free(result);return false;", "            free(result);return true;"),
+    )),
+    ("overwrite-borrowed-on-miss", "borrowed-miss", "result-memo-miss-keeps-prior-borrowed-value", (
+        ("    memo->collection=q->collection;memo->collection_size=q->collection_size;",
+         "    if(s->result_memo&&memo->collection&&memo->collection_size==q->collection_size)"
+         "memcpy((unsigned char *)memo->collection,q->collection,q->collection_size);\n"
+         "    memo->collection=q->collection;memo->collection_size=q->collection_size;"),
+    )),
 )
 
 
@@ -135,6 +157,28 @@ class ContactResultMemo(unittest.TestCase):
             with self.subTest(control=name):
                 self.pass_case(case, phase="baseline", control=name)
                 changed = once(self.source, before, after)
+                exe = self.build_provider(name, changed)
+                result = self.run_case(case, exe=exe, phase="mutant", control=name, marker=marker)
+                self.assertEqual((1, "", "ASSERT:" + marker + "\n"),
+                                 (result.returncode, result.stdout, result.stderr))
+                self.pass_case(case, phase="restored", control=name)
+
+    def test_nested_facts_callback_memo_update_keeps_outer_values_and_ordered_graph(self):
+        self.pass_case("nested")
+
+    def test_feature_failure_is_atomic_and_a_later_query_rechecks_every_feature(self):
+        self.pass_case("feature-failure")
+
+    def test_two_memo_misses_preserve_prior_borrowed_collection_and_feature_bytes(self):
+        self.pass_case("borrowed-miss")
+
+    def test_nested_feature_failure_and_borrowed_miss_controls_fail_distinct_assertions(self):
+        for name, case, marker, replacements in EXTRA_CONTROLS:
+            with self.subTest(control=name):
+                self.pass_case(case, phase="baseline", control=name)
+                changed = self.source
+                for before, after in replacements:
+                    changed = once(changed, before, after)
                 exe = self.build_provider(name, changed)
                 result = self.run_case(case, exe=exe, phase="mutant", control=name, marker=marker)
                 self.assertEqual((1, "", "ASSERT:" + marker + "\n"),
