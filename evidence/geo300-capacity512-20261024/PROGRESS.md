@@ -18,6 +18,10 @@ f5806c60c6067a64776f979f77981e4aba087df3 的172場景×2新程序全過，23:24:
 
 正文同步：GH API本輪可用，23:25:37Z已PATCH並GET逐byte核對，實際正文已從舊2de/ac1更新為dbdf/F2/C；新evidence head發布後再同步。REST PR物件base.sha仍2e8a6ed20325aa4842dcd0f89eacd598662be598，但同一API git/ref及Git ls-remote均8bb0359331365c6f3a96872620427cf7847fcb50，應分開記snapshot與目前分支，不誤稱新上游修鏈。#347最新審查仍B1/B2未閉合。
 
+## 作用域索引候選檢查點（未採入）
+
+3949deb9e565a9e5aeca5bc475ec646e77cc6546 已推獨立候選。原 allocation 紅保留並修復；K48、W/bridge52及補充scope17均實跑綠，逐execution見 scope-candidate-3949deb9。一次N128僅12.5%改善，不冒H7全綠；下一步真正512與剩餘查找成本。實際PR正文已於23:35:26Z同步E e4d00c43ed204aa3f07606a86cd625c59dce2184並GET逐byte核對，舊2de/ac1/ENOSPC正文已解除。來源鏈仍阻擋。
+
 ## 歷史檢查點（不取代上方current state）
 
 # #348 current state：512各批已在600秒內完成；I8a history與整套時限仍紅
