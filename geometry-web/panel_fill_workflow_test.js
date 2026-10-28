@@ -95,6 +95,15 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectN
   check('UI01 單一面設定與單一確認列',await read(`document.querySelectorAll('[data-pf-workspace="8"]').length===1&&document.querySelectorAll('[data-pf-action="confirm"]').length===1&&!document.querySelector('#faceInspectorTabs [data-fi-tab="panel-fill"]')`));
   check('UI02 未放置來源與空白框架不偷設',await read(`!feSurf(8)&&[...document.querySelectorAll('[data-pf-field^="origin."],[data-pf-field="U"],[data-pf-field="V"],[data-pf-field="N"],[data-pf-field="side"]')].every(e=>e.value==='')`));
   check('UI12 開啟後焦點在本片',await read(`!!document.activeElement?.closest('[data-pf-workspace]')`));
+  // Hold the real source read after the visible proposal click; another real
+  // face navigation must retire the old preparation before it allocates a draft.
+  await ctl(field('fill'));
+  await read(`(()=>{const fetchBefore=window.fetch,createBefore=ParameterUI.create,race=window.__pfPreparationRace={held:false,done:false};window.fetch=async(...args)=>{const req=new Request(...args),body=req.method==='POST'?await req.clone().json().catch(()=>null):null,response=await fetchBefore(...args);if(body?.cmd==='engineering-read'&&!race.held){window.fetch=fetchBefore;const json=response.json.bind(response);response.json=async()=>{const value=await json();race.held=true;await new Promise(resolve=>race.release=resolve);return value;};}return response;};ParameterUI.create=async(...args)=>{try{return await createBefore(...args);}finally{ParameterUI.create=createBefore;race.done=true;}};})()`);
+  await ctl(action('propose-threshold'));await wait(`window.__pfPreparationRace.held`);
+  await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(9);
+  await read(`window.__pfPreparationRace.release();void 0`);await wait(`window.__pfPreparationRace.done`);
+  check('UI05_D44_PREPARATION_OWNER 來源read晚回覆不得退出新面或開啟舊草稿',await read(`oc.focus?.t==='face'&&oc.focus.id===9&&!oc.parameterCreating&&!ParameterUI.pending&&!document.querySelector('#parameterEditor')`));
+  await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(8);await openPF();
   let proposedThreshold;
   // D44 source preparation is a separate, visible native transaction. It is
   // exercised through the existing parameter editor, never via adapter calls.
