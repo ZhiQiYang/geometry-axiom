@@ -2,6 +2,7 @@
 
 產品／execution F2：`b595e55952d5d66de95024432e1b29bec7525e9b`。本節為唯一 current state，以下舊段落只保留歷史。維持 Draft，未達合併條件。
 
+- I8a測試修復已採入：真token確認；原delete成功／無preview及全部history斷言保留。7支真橋接0/1/0已跑，撤回命中placed-delete-confirm-must-commit。512修後尚待執行；詳history-protocol-20261028。產品四leaf未再變動。
 - 原兩個 H7 慢方法已真正結束：exit **1**，2 tests／1 failure／0 error／0 skip，2511.530170054秒。第一個方法通過；第二個不是通過。
 - **512 placed load 482.595614208秒、canonical replay 500.587198156秒與529.473388700秒**，三批真exit0，原幾何／ID／definition／fresh協定逐byte斷言通過。wait4 RSS依序251460／256668／256564KiB。
 - 第二方法的load492.981413560秒與sequential/history子程序496.086327713秒均exit0、未timeout；但test_geo261_timber_capacity_host.py:279期待delete直接ok:true，實際回I8a valid:true預覽、零violations。只刪除512，另511支幾何未變；未確認World逐byte不變，後續Undo因此不是撤銷刪除。**這是既有I8a流程的測試缺漏，將補真正token確認，不能繞過產品I8a或放寬原斷言。**

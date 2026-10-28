@@ -8,6 +8,9 @@ import json
 import shutil
 import subprocess
 import sys
+import tempfile
+import threading
+import time
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -23,6 +26,83 @@ GRAMMAR_ERROR="欄位數不對"
 # append after its capacity guard is withdrawn. Never send a valid 513th
 # append to the withdrawn fixed-size storage.
 INCOMPLETE_DECLARATION="timber 513 27 33"
+
+
+def run_placed_dialogue(commands, *, bridge, timeout=600):
+    """One fresh child and one deadline, including the dynamic confirmation.
+
+    A command may be a callback receiving the preceding parsed replies.  Raw
+    streams remain byte-for-byte in the CompletedProcess (also on exceptions).
+    External receipt observers can wrap this function; no product I/O is mocked.
+    """
+    executable = _bridge._checked_explicit(bridge)
+    started = time.monotonic()
+    deadline = started + timeout
+    sent, output, responses = [], [], {}
+    expired = threading.Event()
+    error = None
+    with tempfile.TemporaryFile(mode="w+b") as stderr:
+        process = subprocess.Popen([executable], stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE, stderr=stderr)
+        def expire():
+            if process.returncode is None:
+                expired.set()
+                try: process.kill()
+                except ProcessLookupError: pass
+        watchdog = threading.Timer(max(0, deadline-time.monotonic()), expire)
+        watchdog.daemon = True
+        watchdog.start()
+        try:
+            for name, command in commands:
+                if name in responses:
+                    raise AssertionError("placed-dialogue-unique-command-names")
+                text = command(responses) if callable(command) else command
+                if not isinstance(text, str) or "\n" in text or "\r" in text:
+                    raise AssertionError("placed-dialogue-one-command-per-line")
+                payload = (text + "\n").encode("utf-8")
+                sent.append(payload)
+                process.stdin.write(payload)
+                process.stdin.flush()
+                reply = process.stdout.readline()
+                output.append(reply)
+                if not reply:
+                    raise _bridge.BridgeClosed("placed dialogue ended before " + name)
+                responses[name] = json.loads(reply)
+        except BaseException as exc:
+            error = exc
+        finally:
+            try: process.stdin.close()
+            except OSError: pass
+            # EOF and process exit are inside the same original deadline.  The
+            # stderr file avoids deadlock when the I8a preview is large.
+            output.append(process.stdout.read())
+            process.stdout.close()
+            try: process.wait(timeout=max(0, deadline-time.monotonic()))
+            except subprocess.TimeoutExpired:
+                expired.set()
+                process.kill()
+                process.wait()
+            watchdog.cancel()
+            watchdog.join()
+        stderr.seek(0)
+        result = subprocess.CompletedProcess([executable], process.returncode,
+                                             b"".join(output), stderr.read())
+    result.stdin_bytes = b"".join(sent)
+    result.reply_names = list(responses)
+    result.elapsed_seconds = time.monotonic()-started
+    result.timeout_seconds = timeout
+    if expired.is_set() or result.elapsed_seconds > timeout:
+        error = subprocess.TimeoutExpired([executable], timeout,
+                                           output=result.stdout, stderr=result.stderr)
+    elif result.returncode != 0 and error is None:
+        error = _bridge.BridgeClosed("placed dialogue child exited nonzero",
+                                     result.returncode, completed=result)
+    if error is not None:
+        error.completed = result
+        if isinstance(error, _bridge.BridgeClosed):
+            error.returncode = result.returncode
+        raise error
+    return result
 
 
 class TimberCapacityHost(unittest.TestCase):
@@ -150,6 +230,29 @@ class TimberCapacityHost(unittest.TestCase):
         self.assertEqual(len(commands),len({name for name,_ in commands}),label)
         return dict(zip((name for name,_ in commands),rows)),result.stdout
 
+    def placed_history_batch(self,commands,label):
+        result=run_placed_dialogue(commands,bridge=self.bridge,timeout=600)
+        self.assertEqual(0,result.returncode,result.stderr)
+        rows=[json.loads(line) for line in result.stdout.splitlines()]
+        self.assertEqual(len(commands),len(rows),label)
+        self.assertEqual([name for name,_ in commands],result.reply_names,label)
+        self.assertEqual(len(commands),len({name for name,_ in commands}),label)
+        return dict(zip((name for name,_ in commands),rows)),result.stdout
+
+    def placed_delete_confirmation(self,rows,command):
+        reply=rows["delete-preview"]
+        self.assertFalse(reply["ok"],"placed-delete-requires-preview")
+        self.assertIn("I8a: impact preview required",reply["error"])
+        preview=reply["preview"]
+        self.assertTrue(preview["valid"],"placed-delete-preview-must-be-valid")
+        self.assertEqual(command,preview["command"],"placed-delete-candidate-identity")
+        self.assertEqual([],preview["violations"],"placed-delete-preview-has-no-violations")
+        token=preview["token"]
+        self.assertIs(type(token),int,"placed-delete-real-integer-token")
+        self.assertGreater(token,0,"placed-delete-positive-token")
+        self.assertEqual(rows["dump"],rows["before-confirm"],"placed-delete-preview-must-not-publish")
+        return "line confirm "+str(token)
+
     def assert_placed_geometry(self,count,text,dumped,objects,references):
         for response in (dumped,objects,references):self.assertTrue(response["ok"],response)
         wanted=list(range(1,count+1))
@@ -263,16 +366,22 @@ class TimberCapacityHost(unittest.TestCase):
             ("reject-513","line timber 513 27 33 role primary"),("after-513","dump"),
             ("reject-incomplete","line "+INCOMPLETE_DECLARATION),("after-incomplete","dump"),
             ("reject-missing","line timber"),("after-missing","dump"),
-            ("delete","line "+meta["leaf"]["delete"]),("deleted","dump"),
+            ("delete-preview","line "+meta["leaf"]["delete"]),("before-confirm","dump"),
+            ("delete",lambda rows:self.placed_delete_confirmation(rows,meta["leaf"]["delete"])),
+            ("deleted","dump"),
             ("undo","line undo"),("undone","dump"),
             ("reject-pending-redo","line timber 513 27 33 role primary"),("after-pending-redo","dump"),
             ("redo","line redo"),("redone","dump"),("final-undo","line undo"),("final-dump","dump"),
             ("final-objects","objects"),("final-references","references")]
-        rows,_=self.placed_batch(commands,"placed-512-sequential-history")
+        rows,_=self.placed_history_batch(commands,"placed-512-sequential-history")
         refused={"reject-513":CAPACITY_ERROR,"reject-incomplete":CAPACITY_ERROR,
             "reject-missing":GRAMMAR_ERROR,"reject-pending-redo":CAPACITY_ERROR}
         for name,_ in commands:
-            if name in refused:
+            if name=="delete-preview":
+                # The callback already checked the valid, unchanged candidate
+                # before sending its actual token.  Confirm is checked below.
+                self.assertFalse(rows[name]["ok"],"placed-delete-requires-preview")
+            elif name in refused:
                 self.assertFalse(rows[name]["ok"],{name:rows[name]});self.assertIn(refused[name],rows[name]["error"])
                 if name=="reject-missing":self.assertNotIn(CAPACITY_ERROR,rows[name]["error"])
             else:
@@ -288,13 +397,47 @@ class TimberCapacityHost(unittest.TestCase):
         leaf_comment=f"# R18 角材 {leaf}:"
         self.assertEqual(1,sum(line.startswith(leaf_comment) for line in canonical_lines))
         remaining="".join(line for line in canonical_lines if not (line.startswith(("timber ","place ")) and int(line.split()[1])==leaf) and not line.startswith(leaf_comment))
-        self.assertEqual(remaining,rows["deleted"]["text"])
+        self.assertEqual(remaining,rows["deleted"]["text"],"placed-delete-confirm-must-commit")
         self.assertEqual(rows["dump"]["text"],rows["undone"]["text"])
         self.assertEqual(rows["undone"],rows["after-pending-redo"])
         self.assertEqual(rows["deleted"]["text"],rows["redone"]["text"])
         self.assertEqual(rows["dump"]["text"],rows["final-dump"]["text"])
         self.assertEqual(rows["references"],rows["final-references"])
         self.assert_placed_geometry(512,text,rows["final-dump"],rows["final-objects"],rows["final-references"])
+
+    def test_placed_history_uses_current_preview_token_and_one_undo(self):
+        scene,_,meta=self.placed_fixture(7)
+        command=meta["leaf"]["delete"]
+        commands=[("load","loadfile "+str(scene)),("dump","dump"),
+            ("cancelled-preview","line "+command),("cancel","line cancel-preview"),
+            ("after-cancel","dump"),("delete-preview","line "+command),
+            ("before-confirm","dump"),
+            ("delete",lambda rows:self.placed_delete_confirmation(rows,command)),
+            ("deleted","dump"),("undo","line undo"),("undone","dump"),
+            ("redo","line redo"),("redone","dump"),
+            ("final-undo","line undo"),("final-dump","dump")]
+        rows,_=self.placed_history_batch(commands,"placed-history-current-token")
+        for name,_ in commands:
+            if name in ("cancelled-preview","delete-preview"):
+                self.assertFalse(rows[name]["ok"],name)
+                self.assertTrue(rows[name]["preview"]["valid"],name)
+            else:
+                self.assertTrue(rows[name]["ok"],name)
+                self.assertNotIn("preview",rows[name],name)
+        self.assertNotEqual(rows["cancelled-preview"]["preview"]["token"],
+            rows["delete-preview"]["preview"]["token"],"placed-history-cannot-hardcode-token")
+        self.assertEqual(rows["dump"],rows["after-cancel"],"placed-history-cancel-is-zero-change")
+        leaf=meta["leaf"]["id"]
+        lines=rows["dump"]["text"].splitlines(keepends=True)
+        remaining="".join(line for line in lines if not
+            (line.startswith(("timber ","place ")) and int(line.split()[1])==leaf)
+            and not line.startswith(f"# R18 角材 {leaf}:"))
+        self.assertEqual(remaining,rows["deleted"]["text"],"placed-delete-confirm-must-commit")
+        self.assertEqual(rows["dump"]["revision"]+1,rows["deleted"]["revision"],
+            "placed-history-confirm-is-one-revision")
+        self.assertEqual(rows["dump"]["text"],rows["undone"]["text"],"placed-history-one-undo")
+        self.assertEqual(rows["deleted"]["text"],rows["redone"]["text"],"placed-history-one-redo")
+        self.assertEqual(rows["dump"]["text"],rows["final-dump"]["text"])
 
     def capacity_first_sentinel(self,exe):
         with _bridge.BridgeSession(exe) as bridge:
