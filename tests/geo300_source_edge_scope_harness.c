@@ -6,12 +6,18 @@ static unsigned scope_undo_failures;
 #include "geo261_source_index_harness.c"
 #undef main
 
-enum { S_FANOUT=1,S_NESTED,S_RETRY,S_REQUIRED,S_CONTROL };
+enum { S_FANOUT=1,S_NESTED,S_RETRY,S_REQUIRED,S_CONTROL,S_HEAP_REALLOC,S_INVALID_CHILD,S_DEEP_512 };
 static int scope_mode,scope_manual_ancestor,scope_callback_error;
 static size_t scope_fanout,scope_kinds;
 static unsigned scope_root_evaluations,scope_descriptions,scope_evaluations;
 static GeoSourceStatus scope_required_status,scope_cycle_status;
 static GeoEvalContext *scope_callback_context;
+static bool scope_heap_eight,scope_heap_prefix_preserved,scope_invalid_output_unchanged;
+static GeoSourceStatus scope_invalid_child_status;
+static unsigned scope_deep_depth,scope_deep_max,scope_deep_unwinds;
+static int scope_deep_restored;
+/* The requested 512-world scale is a test depth, not a product limit. */
+enum { SCOPE_TEST_DEPTH=512,SCOPE_DEEP_FIRST=100 };
 
 static int scope_is_ref(const GeoSourceRef *ref,size_t i)
 {return ref->provider==refs[i].provider&&ref->key_size==refs[i].key_size&&
@@ -33,9 +39,77 @@ static bool scope_describe(void *state,const GeoSourceRef *ref,GeoSourceDescript
        scope_depend(scope_callback_context,100,2,GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK){scope_callback_error=1;return false;}
     return true;
 }
+static bool scope_heap_realloc_evaluate(GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)
+{
+    if(scope_is_ref(ref,100)){
+        if(scope_depend(ctx,100,0,0)!=GEO_SOURCE_OK||scope_depend(ctx,100,1,1)!=GEO_SOURCE_OK)return false;
+        size_t parent=linear_node(refs[100]),child=linear_node(refs[101]);GeoSourceValue value;
+        linear_edge(parent,child,GEO_DEPENDENCY_VALUE_REQUIRED);
+        if(geo_eval_source(ctx,refs[101],GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK)return false;
+        if(scope_depend(ctx,100,0,0)!=GEO_SOURCE_OK||scope_depend(ctx,100,1,1)!=GEO_SOURCE_OK||
+           scope_depend(ctx,100,0,2)!=GEO_SOURCE_OK)return false;
+    }else{
+        for(size_t i=0;i<12;++i)for(int kind=0;kind<3;++kind)for(int repeat=0;repeat<2;++repeat){
+            bool fail_here=i==8&&kind==0&&repeat==0;
+            GeoSourceEdgeScope *scope=ctx->edge_scope;GeoSourceEdgeUndo *saved=scope->undo;
+            if(fail_here){
+                scope_heap_eight=scope->count==8&&scope->capacity==8&&scope->undo!=scope->inline_undo;
+                scope_undo_fail=1;
+            }
+            GeoSourceStatus status=scope_depend(ctx,101,i,kind);
+            if(fail_here){
+                scope_undo_fail=0;
+                scope_heap_prefix_preserved=scope->undo==saved&&scope->count==8&&scope->capacity==8&&!scope->complete;
+            }
+            if(status!=GEO_SOURCE_OK)return false;
+        }
+    }
+    *out=(GeoSourceValue){0};out->kind=GEO_SOURCE_QUANTITY;out->as.quantity=(GeoQuantity){7,1,GEO_UNIT_SCALAR};return true;
+}
+static bool scope_invalid_child_evaluate(GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)
+{
+    if(scope_is_ref(ref,100)){
+        if(scope_depend(ctx,100,0,0)!=GEO_SOURCE_OK)return false;
+        size_t parent=linear_node(refs[100]),child=linear_node(refs[101]);GeoSourceValue value,saved;
+        memset(&value,0x5a,sizeof value);memcpy(&saved,&value,sizeof saved);
+        linear_edge(parent,child,GEO_DEPENDENCY_VALUE_REQUIRED);
+        scope_invalid_child_status=geo_eval_source(ctx,refs[101],GEO_DEPENDENCY_VALUE_REQUIRED,&value);
+        scope_invalid_output_unchanged=!memcmp(&value,&saved,sizeof value);
+        if(scope_invalid_child_status!=GEO_SOURCE_INVALID||!scope_invalid_output_unchanged)return false;
+        if(scope_depend(ctx,100,0,0)!=GEO_SOURCE_OK||scope_depend(ctx,100,0,1)!=GEO_SOURCE_OK)return false;
+    }else{
+        if(scope_depend(ctx,101,0,0)!=GEO_SOURCE_OK||scope_depend(ctx,101,1,2)!=GEO_SOURCE_OK)return false;
+        *out=(GeoSourceValue){0};out->kind=GEO_SOURCE_QUANTITY;
+        out->as.quantity=(GeoQuantity){7,0,GEO_UNIT_SCALAR};return true;
+    }
+    *out=(GeoSourceValue){0};out->kind=GEO_SOURCE_QUANTITY;out->as.quantity=(GeoQuantity){7,1,GEO_UNIT_SCALAR};return true;
+}
+static bool scope_deep_evaluate(GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)
+{
+    size_t owner=SCOPE_DEEP_FIRST;
+    while(owner<SCOPE_DEEP_FIRST+SCOPE_TEST_DEPTH&&!scope_is_ref(ref,owner))++owner;
+    if(owner==SCOPE_DEEP_FIRST+SCOPE_TEST_DEPTH)return false;
+    ++scope_deep_depth;if(scope_deep_depth>scope_deep_max)scope_deep_max=scope_deep_depth;
+    if(scope_depend(ctx,owner,0,0)!=GEO_SOURCE_OK){--scope_deep_depth;return false;}
+    if(owner+1<SCOPE_DEEP_FIRST+SCOPE_TEST_DEPTH){
+        size_t parent=linear_node(refs[owner]),child=linear_node(refs[owner+1]);GeoSourceValue value;
+        linear_edge(parent,child,GEO_DEPENDENCY_VALUE_REQUIRED);
+        if(geo_eval_source(ctx,refs[owner+1],GEO_DEPENDENCY_VALUE_REQUIRED,&value)!=GEO_SOURCE_OK){--scope_deep_depth;return false;}
+    }
+    size_t before=geo_eval_edge_count(ctx);
+    if(scope_depend(ctx,owner,0,0)!=GEO_SOURCE_OK){--scope_deep_depth;return false;}
+    if(geo_eval_edge_count(ctx)!=before)scope_deep_restored=0;
+    if(scope_depend(ctx,owner,0,1)!=GEO_SOURCE_OK){--scope_deep_depth;return false;}
+    ++scope_deep_unwinds;--scope_deep_depth;
+    *out=(GeoSourceValue){0};out->kind=GEO_SOURCE_QUANTITY;out->as.quantity=(GeoQuantity){7,1,GEO_UNIT_SCALAR};return true;
+}
+
 static bool scope_evaluate(void *state,GeoEvalContext *ctx,const GeoSourceRef *ref,GeoSourceValue *out)
 {
     (void)state;++scope_evaluations;
+    if(scope_mode==S_HEAP_REALLOC)return scope_heap_realloc_evaluate(ctx,ref,out);
+    if(scope_mode==S_INVALID_CHILD)return scope_invalid_child_evaluate(ctx,ref,out);
+    if(scope_mode==S_DEEP_512)return scope_deep_evaluate(ctx,ref,out);
     size_t owner=scope_is_ref(ref,100)?100:scope_is_ref(ref,101)?101:102;
     if(scope_mode==S_FANOUT){
         for(size_t i=0;i<scope_fanout;++i)for(size_t k=0;k<scope_kinds;++k)for(int repeat=0;repeat<3;++repeat)
@@ -208,13 +282,57 @@ static int scope_control(void)
     REQUIRE("scope-reset-original-order",!graph_equal(ctx));if(scope_marks_clear(ctx))return 1;
     geo_eval_destroy(ctx);REQUIRE("scope-reset-no-leak",!live_allocations);return 0;
 }
+static int scope_heap_realloc_failure(void)
+{
+    scope_mode=S_HEAP_REALLOC;scope_undo_fail=0;scope_undo_failures=0;
+    scope_heap_eight=scope_heap_prefix_preserved=false;
+    GeoEvalContext *ctx=scope_context();GeoSourceValue value;REQUIRE("scope-heap-realloc-context",ctx);
+    REQUIRE("scope-heap-realloc-evaluates",scope_top(ctx,100,&value)==GEO_SOURCE_OK&&!scope_callback_error);
+    REQUIRE("scope-heap-realloc-fallback-keeps-edges-once",geo_eval_edge_count(ctx)==oracle_edge_count&&oracle_edge_count==40);
+    REQUIRE("scope-heap-realloc-really-after-eight-heap-records",scope_heap_eight&&scope_undo_failures==1);
+    REQUIRE("scope-heap-realloc-failed-growth-keeps-undo-prefix",scope_heap_prefix_preserved);
+    REQUIRE("scope-heap-realloc-original-ordered-graph",!graph_equal(ctx));
+    REQUIRE("scope-heap-realloc-provider-count",scope_descriptions==2&&scope_evaluations==2);
+    if(scope_marks_clear(ctx))return 1;geo_eval_destroy(ctx);REQUIRE("scope-heap-realloc-no-leak",!live_allocations);return 0;
+}
+static int scope_invalid_child(void)
+{
+    scope_mode=S_INVALID_CHILD;scope_invalid_output_unchanged=false;scope_invalid_child_status=GEO_SOURCE_OK;
+    GeoEvalContext *ctx=scope_context();GeoSourceValue value;REQUIRE("scope-invalid-child-context",ctx);
+    REQUIRE("scope-invalid-child-parent-succeeds",scope_top(ctx,100,&value)==GEO_SOURCE_OK&&!scope_callback_error);
+    REQUIRE("scope-invalid-child-exact-status-and-output",scope_invalid_child_status==GEO_SOURCE_INVALID&&scope_invalid_output_unchanged);
+    REQUIRE("scope-invalid-child-parent-marks-restored",geo_eval_edge_count(ctx)==oracle_edge_count&&oracle_edge_count==5);
+    REQUIRE("scope-invalid-child-parent-value",value.kind==GEO_SOURCE_QUANTITY&&value.as.quantity.num==7&&value.as.quantity.den==1);
+    GeoSourceNodeView child;size_t index=linear_node(refs[101]);
+    REQUIRE("scope-invalid-child-stored-failed-status",geo_eval_node_at(ctx,index,&child)&&child.state==GEO_NODE_FAILED&&child.status==GEO_SOURCE_INVALID&&!child.value);
+    REQUIRE("scope-invalid-child-original-ordered-graph",!graph_equal(ctx));
+    REQUIRE("scope-invalid-child-provider-count",scope_descriptions==2&&scope_evaluations==2);
+    if(scope_marks_clear(ctx))return 1;geo_eval_destroy(ctx);REQUIRE("scope-invalid-child-no-leak",!live_allocations);return 0;
+}
+static int scope_deep_512(void)
+{
+    scope_mode=S_DEEP_512;scope_deep_depth=scope_deep_max=scope_deep_unwinds=0;scope_deep_restored=1;
+    GeoEvalContext *ctx=scope_context();GeoSourceValue value;REQUIRE("scope-deep-context",ctx);
+    REQUIRE("scope-deep-evaluates",scope_top(ctx,SCOPE_DEEP_FIRST,&value)==GEO_SOURCE_OK&&!scope_callback_error);
+    REQUIRE("scope-deep-exact-depth-and-unwind",scope_deep_max==SCOPE_TEST_DEPTH&&!scope_deep_depth&&scope_deep_unwinds==SCOPE_TEST_DEPTH);
+    REQUIRE("scope-deep-every-parent-restored",scope_deep_restored&&geo_eval_edge_count(ctx)==oracle_edge_count&&oracle_edge_count==3*SCOPE_TEST_DEPTH-1);
+    REQUIRE("scope-deep-exact-node-count",geo_eval_node_count(ctx)==SCOPE_TEST_DEPTH+1);
+    REQUIRE("scope-deep-provider-calls",scope_descriptions==SCOPE_TEST_DEPTH&&scope_evaluations==SCOPE_TEST_DEPTH);
+    REQUIRE("scope-deep-original-ordered-graph",!graph_equal(ctx));
+    for(size_t i=SCOPE_DEEP_FIRST;i<SCOPE_DEEP_FIRST+SCOPE_TEST_DEPTH;++i){GeoSourceNodeView node;
+        REQUIRE("scope-deep-values-survive-growth",geo_eval_node_at(ctx,linear_node(refs[i]),&node)&&node.state==GEO_NODE_VALID&&node.status==GEO_SOURCE_OK&&node.value&&
+            node.value->kind==GEO_SOURCE_QUANTITY&&node.value->as.quantity.num==7&&node.value->as.quantity.den==1);}
+    if(scope_marks_clear(ctx))return 1;geo_eval_destroy(ctx);REQUIRE("scope-deep-no-leak",!live_allocations);return 0;
+}
+
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;
     int (*run)(void)=!strcmp(argv[1],"scope-work")?scope_work:!strcmp(argv[1],"scope-nested")?scope_nested:
         !strcmp(argv[1],"scope-retry")?scope_retry:!strcmp(argv[1],"scope-optional")?scope_optional_failure:
         !strcmp(argv[1],"scope-required")?scope_required_failure:!strcmp(argv[1],"scope-dirty")?scope_dirty_fallback:
-        !strcmp(argv[1],"scope-control")?scope_control:NULL;
+        !strcmp(argv[1],"scope-control")?scope_control:!strcmp(argv[1],"scope-heap-realloc")?scope_heap_realloc_failure:
+        !strcmp(argv[1],"scope-invalid-child")?scope_invalid_child:!strcmp(argv[1],"scope-deep-512")?scope_deep_512:NULL;
     if(!run)return original_source_index_main(argc,argv);
     if(prepare_refs())return 1;int result=run();if(!result)printf("PASS %s\n",argv[1]);return result;
 }

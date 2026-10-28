@@ -136,5 +136,20 @@ class SourceEdgeScope(unittest.TestCase):
                   "if(scoped)geo_source_scope_record(ctx,scope,source,kind_bit);\n    "+anchor,
                   "scope-required-retry-keeps-edge")
 
+    def test_heap_undo_realloc_failure_preserves_prefix_and_parent_marks(self):
+        self.passes("scope-heap-realloc")
+
+    def test_invalid_child_value_restores_parent_and_preserves_caller_output(self):
+        self.passes("scope-invalid-child")
+
+    def test_512_nested_frames_restore_each_parent_shared_source_marks(self):
+        self.passes("scope-deep-512")
+
+    def test_optional_realloc_failure_without_invalidation_reports_duplicate_edge(self):
+        self.kill("realloc-keeps-complete","scope-heap-realloc",
+                  "if(!geo_source_scope_reserve(scope)){scope->complete=false;return;}",
+                  "if(!geo_source_scope_reserve(scope)){return;}",
+                  "scope-heap-realloc-fallback-keeps-edges-once")
+
 
 if __name__=="__main__":unittest.main(verbosity=2)
