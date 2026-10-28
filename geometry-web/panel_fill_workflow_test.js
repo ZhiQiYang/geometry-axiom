@@ -176,7 +176,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   // entered below through the actual face menu and form.
   await read(`(async()=>{for(const line of ['placement 9 on boundary 9 origin 0 0 0 u +x v +y','boundary 10 outline 100,0 103,0 103,100 100,100','boundary 11 outline 99,0 100,0 100,100 99,100','boundary 12 outline 0,0 99999999,0 99999999,99999999 0,99999999']){const r=await apiRequest('line '+line);if(!r.ok)throw Error('PF extended fixture '+JSON.stringify(r));}const revision=(await apiRequest('engineering-read')).revision;const p=await(await fetch('/engineering/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'engineering-transaction/1',expectedRevision:revision,operations:[{op:'publish-material',value:{id:'pf-large',version:1,name:'精確面積測試板',kind:'panel',width:100000000,length:100000000,thickness:'9'}}]})})).json();if(!p.ok||!p.preview.valid)throw Error(JSON.stringify(p));const result=await apiRequest('engineering-confirm '+p.preview.token);if(!result.ok)throw Error(JSON.stringify(result));await renderObjects();})()`);
   await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(9);
-  await ctl('[data-face-settings="9"]');await ctl('[data-fp-edit="9"]');await wait(`document.querySelector('#fpDialog')?.open===true`);
+  await ctl('[data-face-settings="9"]');await ctl('#faceInspectorContent [data-fp-edit="9"]');await wait(`document.querySelector('#fpDialog')?.open===true`);
   await choose('#fpPurpose','space-boundary-plan');await choose('#fpView','top');await ctl('#fpInterior');await ctl('#fpApply');await wait(`!document.querySelector('#fpDialog').open`);
   const projectionBefore=await read(`ReferenceWorkspace.getFaceProjections(9)`);
   check('UI01 原投影入口仍可正式設定',projectionBefore.length===1&&projectionBefore[0].projection.kind==='space-boundary-plan',projectionBefore);
@@ -186,8 +186,8 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
     staggerFill.derived.seamLines.some(s=>s.band!==undefined&&BigInt(s.band)<0n),staggerFill.derived);
   await commit();await ctl(action('close'));
   check('UI01 PF確認與原投影共存互不改寫',same(await read(`ReferenceWorkspace.getFaceProjections(9)`),projectionBefore));
-  check('UI01 原空間建立入口仍可命中',await read(`(()=>{const e=document.querySelector('[data-fp-build="9"]');e?.scrollIntoView({block:'center'});const r=e?.getBoundingClientRect();return !!e&&!e.disabled&&r.width>0&&r.height>0&&e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})()`));
-  await ctl('[data-fp-build="9"]');await wait(`document.querySelector('#smWorkspace')?.open===true`);await ctl('#smClose');
+  check('UI01 原空間建立入口仍可命中',await read(`(()=>{const e=document.querySelector('#faceInspectorContent [data-fp-build="9"]');e?.scrollIntoView({block:'center'});const r=e?.getBoundingClientRect();return !!e&&!e.disabled&&r.width>0&&r.height>0&&e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})()`));
+  await ctl('#faceInspectorContent [data-fp-build="9"]');await wait(`document.querySelector('#smWorkspace')?.open===true`);await ctl('#smClose');
   check('UI01 空間工作區實際開關不改兩種定義',same(await read(`ReferenceWorkspace.getFaceProjections(9)`),projectionBefore)&&(await official()).state.panelFills.length===2);
 
   for(const spec of [{bid:10,name:'合法零片',panel:'pf-board',count:0},{bid:11,name:'一毫米裁片',panel:'pf-board',count:1},{bid:12,name:'大面積精確值',panel:'pf-large',count:1}]){
@@ -206,7 +206,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(9);await openPF(9);await fill(field('name'),'內層錯誤前');await preview();
   check('UI04 內層錯誤控制前確有成功圖',await read(`!!document.querySelector('.pf-layout')`));
   await fill(field('name'),'內層錯誤後');
-  await read(`(()=>{const previous=window.fetch;window.fetch=async(...args)=>{const response=await previous(...args);if(new URL(new Request(...args).url).pathname==='/panel-fill/preview'){window.fetch=previous;const json=response.json.bind(response);response.json=async()=>{const r=await json(),c=r.preview.uiContract;const f=c.after.finishSurfaces.find(x=>x.boundaryId===9),p=c.after.panelFills.find(x=>x.definition.finishSurfaceId===f.id);p.derived={error:'UI04 injected incomplete derived result'};c.completeForScope=false;c.errors=[{code:'DERIVED_ERROR',record:'panel-fill',id:p.definition.id,message:p.derived.error}];return r;};}return response;};})()`);
+  await read(`(()=>{const previous=window.fetch;window.fetch=async(...args)=>{const response=await previous(...args);if(new URL(new Request(...args).url).pathname==='/panel-fill/preview'){window.fetch=previous;const json=response.json.bind(response);response.json=async()=>{const r=await json(),c=r.preview.uiContract;const f=c.after.finishSurfaces.find(x=>x.boundaryId===9),p=c.after.panelFills.find(x=>x.definition.finishSurfaceId===f.id);p.derived={error:'UI04 injected incomplete derived result'};c.completeForScope=false;c.errors=[{recordType:'panel-fill',stage:'after',id:p.definition.id,code:'DERIVED_ERROR',clause:'R42',expected:'complete native record view',actual:p.derived.error,missing:['DERIVED_ERROR'],message:p.derived.error}];return r;};}return response;};})()`);
   await ctl(action('preview'));await wait(phase('invalid'));
   check('UI04 外層ok但內層error不得保留舊成功圖',await read(`document.querySelector('[data-pf-action="confirm"]').disabled&&!document.querySelector('.pf-layout')&&document.querySelector('[data-pf-workspace]').textContent.includes('UI04 injected incomplete derived result')`));
   await ctl(action('cancel'));await openPF(9);await fill(field('name'),'切面必失效');await preview();
