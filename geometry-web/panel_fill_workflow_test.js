@@ -199,7 +199,23 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
 
   await saveAndFreshOpen({send,read,ctl,wait,check,official});
   check('UI13 沒有新增瀏覽器未處理例外',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
-  console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:['UI01 entry/reduction','UI02 unplaced explicit frame','UI03 square axis/ParameterRef/fractional thickness rejection','UI04 native 9/4/5 and insufficient text','UI05 cancel/late preview/dropped confirm receipt','UI06 no-op/source identity/one history','UI11 downloaded package/fresh browser storage','UI12 390/720/1280/focus/Escape/CDP composition','UI13 three named wiring assertions','UI14 capabilities'],unrun:['UI01 projection coexistence/build-space regression (separate space suite)','UI02 obstacle selection combinations','UI03 unsafe64-bit area and negative stagger','UI04 PF05/PF23/PF24/zero/1mm/inner-error combinations','UI05 all history/incarnation/project switch cases','UI11 corrupt/unknown/missing closure packages (separate save suite)','UI12 physical IME/touch/assistive technology','UI15 final #343→#346→#347 closure']}));
+  console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:[
+    'UI01 entry/reduction/projection coexistence/build-space entry',
+    'UI02 unplaced explicit frame and PF-H without hidden ordinary placement',
+    'UI03 square axis/ParameterRef/17:2 wire/negative stagger/unsafe64 area/fractional thickness rejection',
+    'UI04 native 9:4:5 and insufficient text/zero/1mm/inner-error clears old result',
+    'UI05 cancel/late preview/dropped confirm receipt/same-dump undo-redo/face switch',
+    'UI06 no-op/source identity/one history and definition event per confirmation',
+    'UI11 real download/fresh browser storage/exact state/unknown capability/missing source/tampering',
+    'UI12 390/720/1280/focus/Escape/CDP composition',
+    'UI13 three named wiring assertions','UI14 capabilities'],unrun:[
+    'UI02 obstacle selection combinations',
+    'UI03 every invalid gap/stagger combination',
+    'UI04 PF05/PF23/PF24 support segmentation variants',
+    'UI05 source delete/recreate incarnation and all project-switch races',
+    'UI11 older no-PF package regression (separate save suite)',
+    'UI12 physical IME/touch/assistive technology',
+    'UI15 final #343→#346→#347 closure']}));
 };
 
 async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
