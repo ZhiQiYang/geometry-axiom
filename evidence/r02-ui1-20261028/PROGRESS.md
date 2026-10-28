@@ -39,3 +39,13 @@ Chrome 156.0.8078.73、Node v24.19.0。改用既有雲端執行器與獨立可�
 目前處理：既有 host 編輯的 I8a 下游前後影響揭露；候選 frame／材料改動須顯示角材舊／新中線、長度、host、world pose。精確 X 已在較新表單呈現，新增真 DOM 斷言待跑。原生來源已固定，整份突變帳本重產中；不是完成結果。
 
 下一步：收齊擴充案例與修復，完成三項必要 UI13 撤線及新增產品修復反證；最終架構三原裁判／完整 canvas 尚未跑。UI15 仍受來源鏈未閉合限制，不能把前述 partial 專項或跨 SHA 原件宣稱完整整合綠燈。
+
+## 2026-10-28 UTC：真 UI 主流程與支撐見證
+
+受驗來源 `2a2ded3d534a7632bbf292d89bce7efecf50101e`：`python3 /tmp/r02-browser-run.py pf`（原 CDP、Chrome156 原沙箱）154.619 秒，307 pass／0 fail／0 skip，exit 0。確認前既有宿主與角材前後影響、畫面 X=17/2、PF05/23/24、保存 fresh BrowserContext 重開均實跑；不是完整 canvas，也不是 OS 對話框／實體 IME 驗收。
+
+基準7/8的測試前置失敗原件保留：背景重複 projection selector、相互重疊的獨立柱 fixture。已限定真 face inspector 並整組平移世界框架／障礙，原面內幾何與所有期望不變。表單／保存38單元 exit0。
+
+全帳本首輪1851.084秒 exit2：core60已完成（52 killed／1 crashed／4 equivalent／3 retired）；bridge18在clone前置受阻，未冒稱已跑。已以相同HEAD的獨立clean worktree核完整source closure，原裁判不改，僅接續這18項。
+
+下一步：補UI05三項明列生命周期與UI11已建角材完整保存比較；六組具名撤線、架構三裁判、完整 native／canvas。UI15仍未達合併條件。收據差額封包見 receipts-round-2.json；已完成原件不重跑或覆寫。
