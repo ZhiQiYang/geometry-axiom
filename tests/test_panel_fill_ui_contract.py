@@ -63,6 +63,8 @@ class PanelFillUiContract(unittest.TestCase):
             self.assertIsInstance(part["left"], str)
             self.assertIsInstance(part["right"], str)
             self.assertTrue(all(isinstance(v, str) for v in part["range"]))
+        self.assertEqual({"num": "8", "den": "1"}, exact["derived"]["threshold"])
+        self.assertNotIn("threshold", old["derived"], "UI_WIRE_LEGACY_FIELDS_UNCHANGED")
 
     def test_preview_scope_includes_deleted_and_created_records(self):
         self.seed()
@@ -139,6 +141,24 @@ if (Number.isSafeInteger(r.state.panelFills[0].derived.tiles[0].fragments[0].are
         self.assertEqual("30", host["derived"]["h"])
         self.assertEqual(["0", "0", "9"], host["derived"]["frame"]["origin"])
         self.assertTrue(all(e["key"] is not None for c in host["derived"]["components"] for e in c["edges"]))
+
+    def test_fractional_threshold_is_the_native_effective_value(self):
+        self.seed()
+        self.apply([pf2.fill()])
+        request = self.directory / "threshold.json"
+        request.write_text(json.dumps({"schema": "engineering-transaction/1", "expectedRevision": self.read()["revision"],
+            "operations": [{"op": "put-parameter", "value": {"id": 90, "name": "門檻",
+                "fields": [{"id": 1, "name": "X", "type": "dimension", "input": "17/2"}]}}]}), encoding="utf-8")
+        reply = self.command("engineering-preview " + str(request))
+        self.assertTrue(reply["ok"] and reply["preview"]["valid"], reply)
+        self.assertTrue(self.command("engineering-confirm %d" % reply["preview"]["token"])["ok"])
+        value = self.contract(self.read())["state"]["panelFills"][0]
+        self.assertEqual({"parameterId": 90, "fieldId": 1}, value["definition"]["threshold"])
+        self.assertEqual({"num": "17", "den": "2"}, value["derived"]["threshold"], "UI_WIRE_X_NOT_ROUNDED")
+        candidate = self.preview([pf2.fill(origin=[1, 0])])
+        ui = self.contract(candidate)
+        for stage in ["before", "after"]:
+            self.assertEqual({"num": "17", "den": "2"}, ui[stage]["panelFills"][0]["derived"]["threshold"])
 
     def test_native_allocators_skip_occupied_ids_and_wrap_without_zero(self):
         self.seed()
