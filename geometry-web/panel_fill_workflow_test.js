@@ -147,6 +147,17 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   await wait(phase('invalid'));
   check('UI03 非整數厚度由原生拒絕且不可確認',await read(`document.querySelector('[data-pf-action="confirm"]').disabled`)&&same(await snapshot(),cancelBefore));
   await ctl(action('cancel'));
+  for(const invalid of ['negative-gap','stagger-equals-period']){
+    await openPF();
+    if(invalid==='negative-gap'){await choose(field('gap.kind'),'literal');await fill(field('gap.value'),'-1');}
+    else{await choose(field('pattern'),'stagger');await choose(field('staggerAxis'),'u');await fill(field('stagger.value'),'103');}
+    const posts=(await wire()).filter(r=>r.url==='/panel-fill/preview').length;
+    await ctl(action('preview'));await wait(phase('invalid'));
+    const requests=(await wire()).filter(r=>r.url==='/panel-fill/preview'),p=requests.at(-1)?.reply?.preview;
+    check('UI03 '+invalid+'由真HTTP原生拒絕且零正式變更',requests.length===posts+1&&p?.valid===false&&p.violations?.some(v=>v.clause==='I52')&&
+      await read(`document.querySelector('[data-pf-action="confirm"]').disabled`)&&same(await snapshot(),cancelBefore),p);
+    await ctl(action('cancel'));
+  }
 
   // History identity is stronger than dump equality. Both actions use the
   // shipping undo/redo controls; the old candidate must stay retired.
@@ -246,17 +257,15 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   check('UI13 沒有新增瀏覽器未處理例外',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
   console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:[
     'UI01 entry/reduction/projection coexistence/build-space entry',
-    'UI02 unplaced explicit frame and PF-H without hidden ordinary placement',
-    'UI03 square axis/ParameterRef/17:2 wire/negative stagger/unsafe64 area/fractional thickness rejection',
-    'UI04 native 9:4:5 and insufficient text/zero/1mm/inner-error clears old result',
+    'UI02 unplaced explicit frame/PF-H/native allocated IDs/explicit column selection',
+    'UI03 square axis/ParameterRef/17:2 wire and DOM/negative stagger/unsafe64 area/invalid thickness-gap-stagger',
+    'UI04 native 9:4:5/zero/1mm/inner-error/PF05/PF23/PF24 widths and X-only changes',
     'UI05 cancel/late preview/dropped confirm receipt/same-dump undo-redo/face switch',
     'UI06 no-op/source identity/one history and definition event per confirmation',
     'UI11 real download/fresh browser storage/exact state/unknown capability/missing source/tampering',
     'UI12 390/720/1280/focus/Escape/CDP composition',
     'UI13 three named wiring assertions','UI14 capabilities'],unrun:[
-    'UI02 obstacle selection combinations',
-    'UI03 every invalid gap/stagger combination',
-    'UI04 PF05/PF23/PF24 support segmentation variants',
+    'UI02 beam and multi-obstacle selection combinations',
     'UI05 source delete/recreate incarnation and all project-switch races',
     'UI11 older no-PF package regression (separate save suite)',
     'UI12 physical IME/touch/assistive technology',
