@@ -82,6 +82,8 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
       !!request.body.session&&(!drop||records.some(r=>r.body?.receipt===request.body.requestId))&&await history.single(pin)&&after.revision===before.revision+1,
       {committed,requests:requests.slice(requestsBefore),receipts:records.filter(r=>r.body?.receipt),beforeRevision:before.revision,afterRevision:after.revision});
     check('UI06 共用定義通知與正式重讀',await read(`window.__pfTestWire.changed===${eventsBefore+1}&&ReferenceWorkspace.context().dirty===true`)&&after.state.panelFills.length>0);
+    const hostIds=after.state.derivedPlacements.map(h=>h.definition.id),sceneHostIds=await read(`oc.surfs.map(s=>s.id)`);
+    check('UI05_HOST_SCENE_SYNC 確認回執後既有D4現場快取已含所有宿主',hostIds.every(id=>sceneHostIds.includes(id)),{hostIds,sceneHostIds});
     return after;
   }
   console.log('=== P128. R02 UI-1 完成面與鋪排真實入口 ===');
