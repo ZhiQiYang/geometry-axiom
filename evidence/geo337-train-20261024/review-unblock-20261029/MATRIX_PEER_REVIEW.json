@@ -1,0 +1,10 @@
+{
+  "reviewer": "/root/acceptance_plan_audit",
+  "review_kind": "read-only consistency check against fixed source records",
+  "finding": "P52, source identity, B1 pins, existing formal matrix consistent",
+  "correctionsApplied": [
+    "Explicitly separated original failed R8 audit from successful independent F9 audit.",
+    "PR_BODY publication converts evidence-relative links to fixed full commit URLs."
+  ],
+  "productReruns": false
+}

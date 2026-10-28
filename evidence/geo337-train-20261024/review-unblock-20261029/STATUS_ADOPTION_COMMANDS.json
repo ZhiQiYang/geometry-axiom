@@ -1,0 +1,168 @@
+{
+  "observedUtc": "2026-10-28T19:00:21.086206+00:00",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "show",
+        "a08a036db335e88608ead761539d3e60b75e8e5d:evidence/geo337-p52-20261027/capture/RESULT.json"
+      ],
+      "exit": 0,
+      "stdoutBytes": 6363,
+      "stdoutSha256": "8fa65f83d2e764cee21ba1deee813ae24fe0195686c75a29dfbd2c03cec98b92",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "rev-parse",
+        "a08a036db335e88608ead761539d3e60b75e8e5d:evidence/geo337-p52-20261027/capture/RESULT.json"
+      ],
+      "exit": 0,
+      "stdoutBytes": 41,
+      "stdoutSha256": "c505dc6a61f474597a1592c5ba148f2c4230ae41d73bce385bede5b60740d996",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "show",
+        "a08a036db335e88608ead761539d3e60b75e8e5d:evidence/geo337-p52-20261027/capture/VERIFICATION.json"
+      ],
+      "exit": 0,
+      "stdoutBytes": 1825,
+      "stdoutSha256": "8b83892738f53fa1f014ef5c30669f3607a0f481e3208fef68f768e411c982fb",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "rev-parse",
+        "a08a036db335e88608ead761539d3e60b75e8e5d:evidence/geo337-p52-20261027/capture/VERIFICATION.json"
+      ],
+      "exit": 0,
+      "stdoutBytes": 41,
+      "stdoutSha256": "b588d5a879776d93f5950585eaca43aaf3b343706b4f179ef9083e054d890cba",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "show",
+        "a08a036db335e88608ead761539d3e60b75e8e5d:evidence/geo337-p52-20261027/README.md"
+      ],
+      "exit": 0,
+      "stdoutBytes": 3484,
+      "stdoutSha256": "0473a04e39e809f30e5d63c46f50861d70d9d48b2197e9f9d22bcad875b0a42f",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "rev-parse",
+        "a08a036db335e88608ead761539d3e60b75e8e5d:evidence/geo337-p52-20261027/README.md"
+      ],
+      "exit": 0,
+      "stdoutBytes": 41,
+      "stdoutSha256": "31b55bb8ee6b621aa9bfe76ea22244a6f8dc1bfdc98eb870c044e1305a423ff0",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "diff",
+        "--name-only",
+        "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "0ae1728c2309e1d670369289a6b8da059fa63a50",
+        "--",
+        ".",
+        ":!evidence"
+      ],
+      "exit": 0,
+      "stdoutBytes": 0,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "show",
+        "cbf8df4facf87b40db0fe46581c0b20131afada2:evidence/geo337-followup-scope-20261027/whole-memo/STATUS.json"
+      ],
+      "exit": 0,
+      "stdoutBytes": 2968,
+      "stdoutSha256": "eb79dd714c4e609182d5964b080622cf92ef138ebdc260690bd9de92bbb17756",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "rev-parse",
+        "cbf8df4facf87b40db0fe46581c0b20131afada2:evidence/geo337-followup-scope-20261027/whole-memo/STATUS.json"
+      ],
+      "exit": 0,
+      "stdoutBytes": 41,
+      "stdoutSha256": "30483be17f2acd0a83465ce74bdf102254072c67df184548ea69e45f8467c304",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "rev-parse",
+        "origin/handoff"
+      ],
+      "exit": 0,
+      "stdoutBytes": 41,
+      "stdoutSha256": "7feed6c689f582cb6c1f8429930f97763f87e6d3ee8afa808ffa67fec228a63e",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "rev-parse",
+        "cbf0fb621888596aa14ad5f2349b503e23b1b72d^{tree}"
+      ],
+      "exit": 0,
+      "stdoutBytes": 41,
+      "stdoutSha256": "9207038bc17122f92446db2bffee9d5ed162e8193c82b439d07e050b8016821f",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/pr338-unblock",
+        "rev-parse",
+        "0ae1728c2309e1d670369289a6b8da059fa63a50^{tree}"
+      ],
+      "exit": 0,
+      "stdoutBytes": 41,
+      "stdoutSha256": "e0ebcce8167d62e62b6af9ac1893551a4b9bc932078604bd0eb8418a0e10375c",
+      "stderr": ""
+    }
+  ],
+  "exit": 0,
+  "kind": "read-only status/identity audit, not a product test"
+}
