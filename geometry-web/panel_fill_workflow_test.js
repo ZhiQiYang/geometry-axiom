@@ -51,14 +51,14 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
     check('UI13_ENTRY_HANDLER 真面設定讀取並開啟完成面表單',opened&&await read(`!!document.querySelector('[data-pf-workspace="${bid}"]')`) &&
       (await wire()).filter(r=>r.body?.cmd==='panel-fill-read').length>before,{opened,records:await wire()});
   }
-  async function createDefinition({name='UI-1 完成面',panel='pf-board',host=true,stagger=false}={}){
+  async function createDefinition({name='UI-1 完成面',panel='pf-board',host=true,stagger=false,origin=[0,0],gap=3,threshold='90:1'}={}){
     await fill(field('name'),name);
     for(let i=0;i<3;i++)await fill(field('origin.'+i),'0');
     for(const [axis,value] of [['U','+X'],['V','+Y'],['N','+Z'],['side','1']])await choose(field(axis),value);
     await ctl(field('fill'));await choose(field('panel'),JSON.stringify([panel,1]));
     await choose(field('lengthAlong'),'v');
-    for(let i=0;i<2;i++)await fill(field('fillOrigin.'+i),'0');
-    await choose(field('pattern'),stagger?'stagger':'straight');await choose(field('threshold'),'90:1');await fill(field('gap.value'),'3');
+    for(let i=0;i<2;i++)await fill(field('fillOrigin.'+i),origin[i]);
+    await choose(field('pattern'),stagger?'stagger':'straight');await choose(field('threshold'),threshold);await fill(field('gap.value'),gap);
     if(stagger){await choose(field('staggerAxis'),'u');await fill(field('stagger.value'),'20');}
     if(host){await ctl(field('host'));await fill(field('h.value'),'30');}
   }
@@ -96,6 +96,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   await createDefinition();const candidate=await preview(),fillResult=candidate.uiContract.after.panelFills[0];
   check('UI03 正方形仍保存明選軸與參數欄位',fillResult.definition.lengthAlong==='v'&&same(fillResult.definition.threshold,{parameterId:90,fieldId:1}));
   check('UI03 C到HTTP到JS保留17/2精確門檻',same(fillResult.derived.threshold,{num:'17',den:'2'}),fillResult.derived.threshold);
+  check('UI03 畫面逐字呈現17/2有效值與ParameterRef身分',await read(`document.querySelector('.pf-results').textContent.includes('17/2')&&document.querySelector('.pf-results').textContent.includes('參數 90／欄位 1')`));
   check('UI04 原生九片四整五裁及左右承接文字',fillResult.derived.tileCount===9&&fillResult.derived.wholeCount===4&&fillResult.derived.cutCount===5&&
     await read(`document.querySelector('.pf-results').textContent.includes('左側實寬')&&document.querySelector('.pf-results').textContent.includes('支撐不足（可保存）')`));
   check('UI14 分片能力不改全域complete',(await official()).complete===false&&same(candidate.uiContract.supportedActions,['read','edit-definitions','read-layout','read-support'])&&await read(`document.querySelector('.pf-source-preparation').textContent.includes('PF-6')&&document.querySelector('.pf-source-preparation').textContent.includes('PF-4')&&document.querySelector('.pf-source-preparation').textContent.includes('PF-5')&&!document.querySelector('[data-pf-action="suggest-timbers"],[data-pf-action="from-fill-grid"]')`));
@@ -150,10 +151,12 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   // History identity is stronger than dump equality. Both actions use the
   // shipping undo/redo controls; the old candidate must stay retired.
   await openPF();await fill(field('name'),'歷史往返候選');await preview();
-  const historyDump=(await snapshot()).text;
+  const historyBefore=await snapshot(),historyDump=historyBefore.text;
   await ctl('#faceUndoButton');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
+  const historyUndo=await snapshot();
   await ctl('#faceRedoButton');await wait(`!oc.busy&&!ReferenceWorkspace.busy`);
-  check('UI05 同dump Undo/Redo不復活舊候選',await read(`!document.querySelector('[data-pf-action="confirm"]')||document.querySelector('[data-pf-action="confirm"]').disabled`) && (await snapshot()).text===historyDump);
+  const historyAfter=await snapshot(),historyUI=await read(`({confirmDisabled:!document.querySelector('[data-pf-action="confirm"]')||document.querySelector('[data-pf-action="confirm"]').disabled,phase:document.querySelector('[data-pf-status]')?.dataset.pfStatus,status:document.querySelector('[data-pf-status]')?.textContent,appStatus:document.querySelector('#status')?.textContent})`);
+  check('UI05 同dump Undo/Redo不復活舊候選',historyUI.confirmDisabled&&historyAfter.text===historyDump,{confirmDisabled:historyUI.confirmDisabled,dumpEqual:historyAfter.text===historyDump,historyUI,before:historyBefore,afterUndo:historyUndo,afterRedo:historyAfter});
   if(await read(`!!document.querySelector('[data-pf-action="cancel"]')`))await ctl(action('cancel'));
 
   // Additional faces/material are fixture setup only. Every PF definition is
@@ -196,6 +199,48 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   await ctl(action('cancel'));await openPF(9);await fill(field('name'),'切面必失效');await preview();
   const switchBefore=await snapshot(),switchHistory=await history.capture();await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(8);
   check('UI05 真返回並切面不帶舊候選',await read(`!document.querySelector('[data-pf-workspace]')&&!document.querySelector('[data-pf-action="confirm"]')`)&&same(await snapshot(),switchBefore)&&await history.unchanged(switchHistory));
+
+  // Public native PF05/PF23/PF24 witnesses, now viewed and previewed through
+  // the actual face UI. D7 placement is fixture preparation for PF-3; this
+  // does not claim the future PF-6 suggested-timber workflow is implemented.
+  const supportCases=[
+    {bid:13,name:'PF23 E1',obstacle:'c201',A:30,center:105,expected:[[0,27,100,900,true],[27,50,10,20,true],[50,100,10,5,false],[100,273,10,20,true],[273,300,100,900,true]]},
+    {bid:14,name:'PF24 E2',obstacle:'c202',A:30,center:105,expected:[[0,27,100,900,true],[27,273,10,20,true],[273,300,100,900,true]]},
+    {bid:15,name:'PF24 E3',obstacle:'c203',A:30,center:105,expected:[[0,27,100,900,true],[27,273,10,20,true],[273,300,100,900,true]]},
+    {bid:16,name:'PF05 8/8',A:16,center:100,expected:[[0,27,100,900,true],[27,273,8,8,true],[273,300,100,900,true]]},
+    {bid:17,name:'PF05 7/9',A:16,center:101,expected:[[0,27,100,900,true],[27,273,7,9,false],[273,300,100,900,true]]},
+  ];
+  await read(`(async()=>{for(const bid of [13,14,15,16,17]){const r=await apiRequest('line boundary '+bid+' outline 0,0 1000,0 1000,300 0,300');if(!r.ok)throw Error(JSON.stringify(r));}for(const [id,x] of [[201,105],[202,125],[203,120]]){const r=await apiRequest('line column '+id+' at '+x+' 50 size '+(200-x)+' 50 z -2400 9');if(!r.ok)throw Error(JSON.stringify(r));}const revision=(await apiRequest('engineering-read')).revision,operations=[{op:'publish-material',value:{id:'pf-wide',version:1,name:'PF支撐見證板',kind:'panel',width:915,length:1830,thickness:'9'}},{op:'put-parameter',value:{id:90,name:'UI-1來源',fields:[{id:1,name:'X精確',type:'dimension',input:'17/2'},{id:2,name:'gap',type:'dimension',input:'3'},{id:3,name:'X8',type:'dimension',input:'8'},{id:4,name:'X9',type:'dimension',input:'9'},{id:5,name:'X5',type:'dimension',input:'5'}]}}];const p=await(await fetch('/engineering/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'engineering-transaction/1',expectedRevision:revision,operations})})).json();if(!p.ok||!p.preview.valid)throw Error(JSON.stringify(p));const done=await apiRequest('engineering-confirm '+p.preview.token);if(!done.ok)throw Error(JSON.stringify(done));await renderObjects();})()`);
+  const supportWidths=d=>{const seams=new Set(d.effectiveSeams.flatMap((s,i)=>s.axis==='u'&&s.coordinate==='100'?[i]:[]));return d.support.filter(p=>seams.has(p.seam)).map(p=>[...p.range,p.left,p.right,p.supported]);};
+  for(const spec of supportCases){
+    await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(spec.bid);await openPF(spec.bid);
+    await createDefinition({name:spec.name,panel:'pf-wide',origin:[-815,-100],gap:0,threshold:'90:3'});
+    if(spec.obstacle)await ctl(`[data-pf-obstacle="${spec.obstacle}"]`);
+    const proposal=await preview(),finish=proposal.uiContract.after.finishSurfaces.find(f=>f.boundaryId===spec.bid),selected=spec.obstacle?[spec.obstacle]:[];
+    check('UI02 '+spec.name+'僅明選障礙參與',same(finish.obstacles,selected)&&await read(`[...document.querySelectorAll('[data-pf-obstacle]:checked')].map(e=>e.dataset.pfObstacle).join(',')===${JSON.stringify(selected.join(','))}`),finish.obstacles);
+    const published=await commit(),host=published.state.derivedPlacements.find(h=>h.definition.fillId===proposal.uiContract.after.panelFills.find(f=>f.definition.finishSurfaceId===finish.id).definition.id),hostId=host.definition.id;
+    await ctl(action('close'));
+    const ids=await read(`(async()=>{const timbers=[];for(const [A,role] of [[27,'boundary'],[27,'boundary'],[${spec.A},'primary']]){const allocation=await apiRequest('newid');if(!allocation.ok||!Number.isSafeInteger(allocation.timber))throw Error(JSON.stringify(allocation));const r=await apiRequest('line timber '+allocation.timber+' '+A+' 30 role '+role);if(!r.ok)throw Error(JSON.stringify(r));timbers.push(allocation.timber);}return {timbers,guide:(await apiRequest('newid')).guide};})()`);
+    check('UI04 '+spec.name+'使用原生配發的D7夾具身分',Array.isArray(ids.timbers)&&ids.timbers.length===3&&new Set(ids.timbers).size===3&&Number.isSafeInteger(ids.guide),ids);
+    const [lower,upper,primary]=ids.timbers,keyHex=value=>Buffer.from(JSON.stringify(value)).toString('hex');
+    const lines=[`place ${lower} on ${hostId} at-face key-hex:${keyHex([['e0',0,1]])} +u +n`,`place ${upper} on ${hostId} at-face key-hex:${keyHex([['e2',0,1]])} +u +n`,
+      `spec pfsupport${spec.bid} ${spec.center}`,`guide ${ids.guide} ${hostId} v spec:pfsupport${spec.bid}`,
+      `place ${primary} on ${hostId} at-line guide ${ids.guide} between t${lower} t${upper} +v +n`];
+    await read(`(async()=>{for(const line of ${JSON.stringify(lines)}){const r=await apiRequest('line '+line);if(!r.ok)throw Error('PF support D7 fixture '+line+' '+JSON.stringify(r));}await renderObjects();})()`);
+    await openPF(spec.bid);await fill(field('name'),spec.name+' 可見結果');const p=await preview(),d=p.uiContract.after.panelFills.find(f=>f.definition.finishSurfaceId===finish.id).derived;
+    const expected=spec.expected.map(row=>row.map(v=>typeof v==='number'?String(v):v));
+    check('UI04 '+spec.name+'左右實寬與極大子段符合獨立見證',same(supportWidths(d),expected),{expected,actual:supportWidths(d)});
+    const tableRows=await read(`[...document.querySelectorAll('[data-pf-fill-result] tbody tr')].filter(r=>r.children.length===6).map(r=>[...r.children].map(c=>c.textContent))`);
+    check('UI04 '+spec.name+'畫面保留全部左右實寬與文字判定',expected.every(e=>tableRows.some(row=>row[1]===JSON.stringify(e.slice(0,2))&&row[2]===e[2]&&row[3]===e[3]&&row[4]==='8/1'&&row[5]===(e[4]?'支撐足夠':'支撐不足（可保存）'))),tableRows);
+    check('UI04 '+spec.name+'非板縫不冒作不足',await read(`document.querySelector('.pf-results').textContent.includes('非板縫（不是支撐不足）')`)&&d.support.every(part=>Number.isInteger(part.seam)&&!!d.effectiveSeams[part.seam]));
+    if(spec.bid===13||spec.bid===16){
+      await choose(field('threshold'),spec.bid===13?'90:5':'90:4');const changed=await preview(),after=changed.uiContract.after.panelFills.find(f=>f.definition.finishSurfaceId===finish.id).derived;
+      check('UI04 '+spec.name+'只改X不偽造幾何移動',same(after.tiles,d.tiles)&&same(after.effectiveSeams,d.effectiveSeams)&&same(supportWidths(after).map(r=>r.slice(0,4)),expected.map(r=>r.slice(0,4))));
+      check('UI04 '+spec.name+'X變更只重判承接且合法可確認',spec.bid===13?supportWidths(after).every(r=>r[4]===true):supportWidths(after).some(r=>r[2]==='8'&&r[3]==='8'&&r[4]===false));
+    }
+    await commit();await ctl(action('close'));
+  }
+  await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(8);
 
   await saveAndFreshOpen({send,read,ctl,wait,check,official});
   check('UI13 沒有新增瀏覽器未處理例外',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
