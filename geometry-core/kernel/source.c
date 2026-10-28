@@ -329,6 +329,9 @@ static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDepe
      * 無索引、擴表及配置失敗的降級仍由原路徑處理。 */
     ctx->nodes[ctx->active]->outgoing_seen=true;
     if(scoped){
+        if(!ctx->edge_index_dirty){
+            free(ctx->edge_index);ctx->edge_index=NULL;ctx->edge_index_capacity=0;
+        }
         ctx->edge_index_dirty=true;
         geo_source_scope_record(ctx,scope,source,kind_bit);
     }else{
