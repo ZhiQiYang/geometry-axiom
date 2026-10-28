@@ -1,5 +1,18 @@
 # R02 UI-1 進度
 
+## 目前狀態：2026-10-28 16:00 UTC
+
+產品／本片 UI 測試仍與六撤線固定來源 `fdd94809e9e2bce05a7be5c1f6dbef6eae2bf92f` 同一內容。較新受驗來源 `79049d7e0c4a60f7a5e2ff4c7023cd713f0c387f` 只再更新 census、兩個 archive 錨點、過時未知格式測試與其架構登記；沒有新增產品行為。
+
+- 真 UI 基準349／0／0；六組必要／修復撤線均具名0／1／0。archive另六組原指定反證亦0／1／0。
+- 完整 native census `ffa22ad9…`：1942.533秒，226 suites，5221pass／4fail／1個原允許GDI skip，**原exit1保留**。三個失敗suite分別為容器zombie、archive錨點漂移、舊測試拒絕已採用/19；修後只重跑這三個suite，763pass／0fail／0skip，128.444秒、exit0。這不是第二次完整native通過。
+- 獨立數量核收exit0：原224→226套、Node737→748、新Python9／Node21；其餘count／mode不變。原生成檔與首次核收失敗亦保留。
+- grid：356／0／0、exit0，441.562秒；space：242／0、exit0，183.846秒。兩者 execution SHA均`ffa22ad9245021c17c0a827847270bc5882cbb69`。
+- 最終帳本check exit0、0stale（70killed／1crashed／4equivalent／3retired）；架構三原裁判exit0（604檔、0diagnostics；205／18 tests），Linux產物已重封。
+- **完整canvas尚待本輪獨占執行；UI15未跑／未達合併條件**。#343→#346→#347仍未閉合；不借用它們的舊來源收據。不宣稱本機WSL已跑。
+
+最新原件差額見 `receipts-round-5.tar.gz` 與逐檔manifest；先前四包完整保留。以下為歷史紀錄，早期紅燈與「執行中」不代表目前終態。
+
 基底：`405f8c5e1a637a16cbe47470faf5ae1fa02b8676`。
 工作分支：`codex/r02-ui1-panel-fill-20261028`。
 唯一實作 owner 為本 Codex 任務；不修改 #352、#353、#354 分支。
