@@ -61,6 +61,7 @@ PY_NEEDS = {
     'test_panel_fill_layout': ['bridge'],
     'test_panel_fill_host': ['bridge'],
     'test_panel_fill_support': ['bridge', 'pf3-algorithm'],
+    'test_panel_fill_ui_contract': ['bridge'],
     'test_section_profile_modeling': ['bridge', 'model-base'],
     'test_section_profile_mutation_check': [],
     'test_assembly_generation': ['bridge'],
@@ -267,6 +268,7 @@ NODE_TEST_FILES = [
     'tests/test_model_snapshot_navigation.js',
     'tests/test_model_update.js',
     'tests/test_parameters_project_store.js',
+    'tests/test_panel_fill_project_store.js',
     'tests/test_card_reference_project_store.js',
     'tests/test_project_store.js',
     'tests/test_shared_format17.js',
@@ -297,6 +299,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:panel_fill_ui_contract': 'tests/test_panel_fill_ui_contract.js',
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
     'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',

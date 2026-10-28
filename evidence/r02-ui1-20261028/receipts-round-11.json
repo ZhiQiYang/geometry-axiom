@@ -1,0 +1,64 @@
+{
+  "schema": "r02-ui1-receipt-package/1",
+  "archive": "receipts-round-11.tar.gz",
+  "bytes": 118291,
+  "sha256": "a1aab58b7a8636671f91cca915313d0bbf2cea0f2ebf13d472de6c3c6b067d0a",
+  "scope": "Final-source ordinary full canvas, strict golden; no product mutation; original 35 minute limit. UI15 remains unrun.",
+  "files": [
+    {
+      "path": "owner-final-canvas-recovery/result.json",
+      "bytes": 930,
+      "sha256": "fd2fa8a497c751a20e7f0c19a78f056d664cb26cf1127a8c4ba78e17fbdb2750"
+    },
+    {
+      "path": "owner-final-canvas-recovery/stderr.gz",
+      "bytes": 27,
+      "sha256": "97ebd9985b9dfe3ceb28232890759988c4fa0d1388dced50906b51046ea9b6f1"
+    },
+    {
+      "path": "owner-final-canvas-recovery/stdout.gz",
+      "bytes": 104484,
+      "sha256": "823059289574290721c00c2f41c3643c9e3ff937c514002131e3d709686548a1"
+    },
+    {
+      "path": "owner-final-canvas-recovery-support/1793211373-server.log.gz",
+      "bytes": 28613,
+      "sha256": "2430223a84aa4e32f2ecc910c1ebdec708c2af3fe5eec44fa693b9bde8d45968"
+    },
+    {
+      "path": "owner-final-canvas-recovery-support/packages/download-SFqr7D/missing-parameter-source.gcanvas",
+      "bytes": 10355,
+      "sha256": "482d056d9c34ec7ca48fc081e7e65bcc9bafe8d0447ed62bb5d1358ebfd9b6b3"
+    },
+    {
+      "path": "owner-final-canvas-recovery-support/packages/download-SFqr7D/tampered-scene.gcanvas",
+      "bytes": 11559,
+      "sha256": "81744826536b04fed0a11bbfbb8394b1ad4bf8e61dc023d0fc7a9fbeb1bbb570"
+    },
+    {
+      "path": "owner-final-canvas-recovery-support/packages/download-SFqr7D/unknown-capability.gcanvas",
+      "bytes": 11566,
+      "sha256": "ce8f206f1b3db7038519f4841ffc34d705e27db5557472834ff6d1f1c13dae68"
+    },
+    {
+      "path": "owner-final-canvas-recovery-support/packages/download-SFqr7D/未命名專案.gcanvas",
+      "bytes": 11537,
+      "sha256": "1ee7cdd3379aade00fb0daeb22e8cf4d44f3caed9ea0f34d614a94b4441f8540"
+    },
+    {
+      "path": "owner-final-canvas-recovery-support/wait-trace-receipt.json",
+      "bytes": 376,
+      "sha256": "5f1015ebf7620a10d9946ba4bbd333771182abc171068eecf3f60acc6f3578ea"
+    },
+    {
+      "path": "owner-final-canvas-recovery-launch.log",
+      "bytes": 4861,
+      "sha256": "7e5974403afbe5b212da62dc10efe2fe38abcda6575ab43a64bf24405aac4b0f"
+    },
+    {
+      "path": "tools/r02-canvas-recover-launch.py",
+      "bytes": 2934,
+      "sha256": "d515cb70c9ac04cf37796397fa7c85248b531f23f542ba0e1ccf697a0632fbfb"
+    }
+  ]
+}

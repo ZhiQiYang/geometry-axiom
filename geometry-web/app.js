@@ -26,7 +26,10 @@ window.FaceProjection = (() => {
       `<p>${s ? `圖面 z＝${escape(s.origin[2])} mm${valid ? "" : " · 目前為立面"}` : "尚未放置"}。牆底標高與牆高另設。</p>` +
       (!valid ? `<p class="fp-warning">${s ? "平面投影需要水平放置，請先修改放置。" : "請先放置這片面，再指定平面投影。"}</p>` : "") +
       (all.length > 1 ? `<p>此面有 ${all.length} 個放置；目前顯示放置 #${s.id}。可在設定中切換，各自保存定義。</p>` : "") +
-      `<button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>` +
+      (faceWorkspace ? `<button type="button" class="btn wide" data-face-settings="${bid}" aria-expanded="false" aria-controls="faceSettingsChoices">面設定…</button>` +
+        `<div id="faceSettingsChoices" hidden><button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>` +
+        `<button type="button" class="btn wide" data-panel-fill-open="${bid}">完成面與鋪排…</button></div>` :
+        `<button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>`) +
       (def && valid ? `<button type="button" class="primary-button" data-fp-build="${bid}" ${attrs}>依此平面建立空間</button>` :
         /* GEO-219: the face toolbar entries moved into this inspector. Every
            placed face keeps a build door here — undefined plans confirm the
@@ -174,11 +177,30 @@ window.FaceProjection = (() => {
     input?.scrollIntoView({block:"center"}); input?.focus();
   }
   document.addEventListener("click", event => {
+    const settings=event.target.closest("[data-face-settings]"), fill=event.target.closest("[data-panel-fill-open]");
+    if (settings) {
+      const choices=settings.parentElement.querySelector("#faceSettingsChoices");
+      if (!choices) return;
+      choices.hidden=!choices.hidden;settings.setAttribute("aria-expanded",String(!choices.hidden));
+      if (!choices.hidden) choices.querySelector("button")?.focus();
+      return;
+    }
+    if (fill) {
+      window.PanelFillWorkspace?.open(Number(fill.dataset.panelFillOpen),fill);
+      return;
+    }
     const edit=event.target.closest("[data-fp-edit]"), build=event.target.closest("[data-fp-build]");
     if (edit) open(Number(edit.dataset.fpEdit),edit.dataset.fpPlacement === "" ? undefined : Number(edit.dataset.fpPlacement));
     else if (build) window.SpaceModelWorkspace?.openCurrentFace(Number(build.dataset.fpPlacement));
   });
   document.addEventListener("keydown", event => {
+    const choices=event.target.closest("#faceSettingsChoices");
+    if (choices && event.key === "Escape" && !event.isComposing && event.keyCode !== 229) {
+      choices.hidden=true;
+      const entry=choices.parentElement.querySelector("[data-face-settings]");
+      entry?.setAttribute("aria-expanded","false");entry?.focus();
+      event.preventDefault();event.stopImmediatePropagation();return;
+    }
     if (dialog?.open && (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
       event.preventDefault();event.stopImmediatePropagation();
       message("請先按「套用定義」，再保存專案。這個視窗內尚未套用的修改不會存入專案。",true);
@@ -529,6 +551,11 @@ async function recoverApiResults() {
     }
     pendingApiResults.delete(requestId); acknowledgedApiResults.add(requestId);
     if (stamp) { ReferenceWorkspace.finishAssemblyConfirmation(stamp); pendingAssemblyConfirmations.delete(requestId); }
+    if (current && cmd.startsWith("panel-fill-confirm ")) {
+      window.PanelFillWorkspace?.reconcileReceipt(result,cmd);
+      if (result.ok && result.history_changed !== false)
+        window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
+    }
     if (current && result.ok && cmd.startsWith("loadfile ")) {
       resetSceneFocus();curScene={path:cmd.slice(9),name:cmd.slice(9).split(/[\\/]/).pop()};
       $("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);markSceneItem();
@@ -563,6 +590,7 @@ function showConnectionState() {
 }
 function connectionFailed(message) {
   connection.phase = "error"; connection.error = message;
+  window.PanelFillWorkspace?.invalidate("連線已中斷；舊預覽失效。若正在確認，保留原回執，禁止重送。");
   showConnectionState();
 }
 async function recoverConnection() {
@@ -614,7 +642,7 @@ document.addEventListener("keydown", e => {
 }, true);
 async function apiRequest(cmd, roomLease = null) {
   const rollback = cmd === "line history-abort";
-  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd)) {
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(cmd)) {
     try { if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
     catch (error) { return {ok:false,error:error.message}; }
   }
@@ -628,7 +656,7 @@ async function apiRequest(cmd, roomLease = null) {
   const releaseNativeOperation = ReferenceWorkspace.beginNativeOperation?.(cmd);
   try {
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
   const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
@@ -637,8 +665,8 @@ async function apiRequest(cmd, roomLease = null) {
     try{confirmation=ReferenceWorkspace.beginFeatureConfirmation(featureToken);}catch(error){return {ok:false,error:error.message};}
     if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
   }
-  if (/^(assembly-confirm|section-profile-confirm) /.test(cmd)) {
-    if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
+  if (/^(assembly-confirm|section-profile-confirm|panel-fill-confirm) /.test(cmd)) {
+    if (!requestId) return {ok:false,error:"請先確認服務連線，再確認變更。"};
     try { confirmation = ReferenceWorkspace.beginAssemblyConfirmation(); }
     catch (error) { return {ok:false,error:error.message}; }
     // Keep this lease through an unknown response, including workspace closure.
@@ -690,7 +718,7 @@ async function apiRequest(cmd, roomLease = null) {
   if (current) ReferenceWorkspace.observe(cmd, res);
   if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
   if (current && res.ok && !res.preview && res.history_changed !== false &&
-      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) &&
+      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
@@ -1844,6 +1872,7 @@ function markSceneItem() {
 }
 /* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
 function resetSceneFocus() {
+  window.PanelFillWorkspace?.retireContext();
   ++oc.navigationSequence;
   hoverPickScheduler.cancel();
   clearCanvasSelections();
@@ -2716,6 +2745,7 @@ function drawCrumb() {
 async function enterFocus(t, id, options = {}) {
   if (window.RoomCollectionWorkspace?.hasWork && oc.focus && (oc.focus.t !== t || oc.focus.id !== id)) throw new Error("請先完成或取消目前房間草稿。");
   if (!window.DraftGate.ask()) return;
+  if (window.PanelFillWorkspace?.close() === false) return;
   const navigation = ++oc.navigationSequence;
   const matchesTarget = oc.sel?.kind === (t === "space" ? "space" : "boundary") && oc.sel.id === id;
   clearCanvasSelections({keepSingleObject:matchesTarget});
@@ -2759,6 +2789,7 @@ async function enterFocus(t, id, options = {}) {
 }
 
 async function leaveFocus() {
+  if (window.PanelFillWorkspace?.close() === false) return null;
   if (window.RoomCollectionWorkspace?.hasWork && (RoomCollectionWorkspace.busy || RoomCollectionWorkspace.dialogOpen)) {
     toast("請先確認、取消或恢復目前房間交易，再返回。"); return null;
   }
@@ -2789,6 +2820,7 @@ async function leaveFocus() {
 /* Shared normal navigation lifecycle: presentation exits preserve boundary
  * loops and authored face features. Only a project replacement resets them. */
 function finishFocusExit(next) {
+  window.PanelFillWorkspace?.close();
   window.RoomOutlineWorkspace?.reset();
   clearCanvasSelections({keepSingleObject:true});
   GridEditor.clear();
@@ -3044,6 +3076,7 @@ const ReferenceVisibility = (() => {
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
 function fiShowTab(name) {
+  if (name !== "prop" && window.PanelFillWorkspace?.close() === false) return;
   const leavingUnderlay = fe.fiTab === "underlay" && name !== "underlay";
   // Grid rulers and cell picking belong to the grid section. Leaving it must
   // restore ordinary canvas selection without clearing the inspector draft.
@@ -8421,8 +8454,14 @@ function renderFaceInspector() {
   const e = oc.edit;
   const pane = $("faceInspectorContent");
   if (!e || !pane) return;
-  disarmEdgeInputs(pane);
   if (e.contextId !== ReferenceWorkspace.context().id) { resetSceneFocus(); return; }
+  if (window.PanelFillWorkspace?.activeFor(e.bid)) {
+    GridEditor.clear();
+    pane.querySelector('.face-placement-flow')?.setAttribute('hidden','');
+    window.PanelFillWorkspace.render(pane,e.bid);
+    return;
+  }
+  disarmEdgeInputs(pane);
   const projectionDraft = feProjectionDraft();
   if (fe.timberSelection.size > 1) {
     GridEditor.clear();
@@ -8463,8 +8502,7 @@ function renderFaceInspector() {
   let html = `<div class="face-placement-flow" data-complete="${spaces.length > 0}"${fe.fiTab === "prop" && !spaces.length ? "" : " hidden"}>${placeFlowHTML(bid)}</div>` +
     `<div data-fi-pane="prop"${fe.fiTab === "prop" || !fe.fiTab ? "" : " hidden"}>` +
     `<div class="inspector-block face-property-common"><div class="ib-title">面 ${bid}` +
-    `<span class="tag">${surf ? "已放置" : "未放置"}</span></div>` +
-    `<div class="kv"><span>用途</span><b>${surf ? FaceProjection.summary(bid, surf.id, true) : "用途未指定"}</b></div>`;
+    `<span class="tag">${surf ? "已放置" : "未放置"}</span></div>`;
   if (bb) html +=
     `<div class="kv"><span>外框尺寸</span><b>${bb[2] - bb[0]} × ${bb[3] - bb[1]} mm</b></div>`;
   html += `<div class="draft-metrics-note">以下尺寸與面積為原面；草稿完成後更新。</div>` +

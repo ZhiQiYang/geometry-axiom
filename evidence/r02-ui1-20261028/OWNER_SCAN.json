@@ -1,0 +1,667 @@
+{
+  "observedUtc": "2026-10-28T13:39:24.557702+00:00",
+  "scope": "All fetched codex/*, grok/*, feat/* branch heads; production root geometry-web JavaScript, tests excluded. Native PF branches are dependencies, not evidence of a UI owner.",
+  "branchCount": 130,
+  "distinctBlobs": 209,
+  "branches": [
+    {
+      "ref": "refs/remotes/scan/codex/adopted-ui-single-room-closeout-20261009",
+      "sha": "72a3cbf44814d86606531e6fcbd811aeab11548f",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/cloud-takeover-closeout-20261009",
+      "sha": "37c217e323b737424b6acf0c27cae0a58d2c29c5",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/final-release-closeout-20261008",
+      "sha": "a7bff8f4c7a0d61a3133b6e42d0d513dfe96367e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo198-reader-sync-20261012",
+      "sha": "14afc2b6d0c6df6ee68e1128744fb2d4eb81a469",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo260-ac23-proof-20261024",
+      "sha": "df230da57619e437c30527dbede8c67fd0ec6b50",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo260-ac23-proof-20261024-prbody",
+      "sha": "be1f69dc5ca7f9cdc2f00d22a1940d877f6002bb",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-closeout-20261021",
+      "sha": "5373fc088acc8a16a5c8ed931d0d866379da5fa2",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-final-prbody-20261022",
+      "sha": "09a58c69bbaa40a1d7ccb91648289f19e77ef8fe",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-final-prbody-20261023",
+      "sha": "e008dc52510d8cdb34fe07c796835f2667e0ebaa",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-assembly-g07-20261018",
+      "sha": "eb74dbce4ff42830a47a0da02f898b18e939f69a",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-assembly-guide-regression-20261018",
+      "sha": "ee24a30679b83ca5eed850f3756570c8e8de763f",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-engineering-unplaced-oracle-20261018",
+      "sha": "2ba07fa77cab15896643e5a8b0769d44dd14346e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-finish-fractional-oracle-20261018",
+      "sha": "e831d5ed7c81bbccbb5038e7e59c380613e4cb3e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-grid-child-fixture-20261018",
+      "sha": "0a4ab081fb402246aedc0d69ec8bfcc9ae4fe199",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-gridrule-tail-20261018",
+      "sha": "74c2d2c67d92f673d13545b4bd98fe1d37ec6b75",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-m11-live-anchor-20261018",
+      "sha": "35fa4d1ac333f75c1a11cc5c83d242cfaceeabda",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-member-dimensions-adapter-20261018",
+      "sha": "4a2484d3c913bdb77d5dc13ae4881d9663b18cf4",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-native-fallback-closure-20261018",
+      "sha": "254ea25d8fea3a14bdc8d54be92eb209d7c7fdd3",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-perf-candidate-sha-20261018",
+      "sha": "875235e2227d93336b798d9b4548e2c2fa67c3fe",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-perf-default-replay-20261018",
+      "sha": "be381603c8ecdd513dbab58625a1f0ba60900281",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-perf-owned-replay-20261018",
+      "sha": "a7d8a94fe1d95fb595812f1fe06f8b13a3222aea",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-perf-suite-diagnostic-20261018",
+      "sha": "7055e3f14427428c382b00e74e004801c311aff4",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-placement-source-contract-20261018",
+      "sha": "33a99624e5b27b06766798a89342d9c20692420b",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-policy-exception-protocol-20261018",
+      "sha": "b0e5dfef4f121cc281c25d3db26de3b04742c256",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-root-catalog-20261018",
+      "sha": "4e0def58cc495a238bc68dc5b68d32a0bea8e0e5",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-scenario-bounds-20261018",
+      "sha": "8128c4852cdcc0a4d0d819fb5d9afa32f2a4c9f4",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-fix-validation-report-20261018",
+      "sha": "d5423381bcdfa7c67366bedca92eb47a06209879",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-host-authority-anchor-fix-20261021",
+      "sha": "19401ca5448e162ee6140fed37b64b83b31ddec8",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-load-residual-20261020",
+      "sha": "4ea6c50796711ed1e79bae89c93d07037d317837",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-load-residual-20261020-prbody",
+      "sha": "aed9c627053132fcd501dc187b8c950e117fcb95",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-p189-footprint-revert-control-20261021",
+      "sha": "4bd19f91c434417f1c4431128c55285f4b11d3c3",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-source-index-20261020",
+      "sha": "9f21280d0481c751f246b0c2105d50eea75b7ba9",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo261-source-index-20261020-prbody",
+      "sha": "4375abf1beb56cd90c70b53e8836d53cb27db193",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-oracle-final-20261023",
+      "sha": "c4ce17a3c80e20024614bb055dd47f0bfd2aba5a",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-oracle-final-20261023-prbody",
+      "sha": "89f96d2ece05c63bc0fe68d185bb84b52e53c353",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-p73-final-20261023",
+      "sha": "77d1e3438d7e952230ce501bf3dddbd9a4e18580",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-p73-final-20261023-prbody",
+      "sha": "1addc7930576e45444cb6399b05fef2ca0b3c532",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-p88-final-grid-20261023",
+      "sha": "b12172860c59fe091c0e490630b548281b2eb53a",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-p88-final-grid-20261023-prbody",
+      "sha": "c587249d45f40f6ead97196b0b192605ab942bbc",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-p88-final-native-20261023",
+      "sha": "c7214307d5ffc6a867089c8d832fef4bc94ae27c",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-p88-final-native-20261023-prbody",
+      "sha": "9329e1105a4f5bec3383e2bb5405a3cbbc7bd692",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-p88-stable-click-20261023",
+      "sha": "6418593fd0bcf802ceff2787c467d5f7d7b12d5f",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo288-p88-stable-click-20261023-prbody",
+      "sha": "03b61ca1e2ab3d6d6c0df782a575f43a948a979f",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo299-316-combined-20261022",
+      "sha": "ebbd6d19ddf64ac64fd3c902eec6e40f4484582d",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo299-316-combined-20261022-prbody",
+      "sha": "92b3cdb38d73bc75faab3c14ac90b90edf2a52f0",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo300-capacity512-20261024",
+      "sha": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo300-capacity512-20261024-prbody",
+      "sha": "dcc1022de2ce03d79ee65fd90cade1966f25759c",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo300-contact-index-20261024",
+      "sha": "a934a554ae58f16f124f1b264523947f170b3f0b",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo300-contact-index-20261024-prbody",
+      "sha": "9d3931a70c442c640bba155c1735362f69f76a61",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo300-cut-list-storage-20261024",
+      "sha": "eaf15e239324a6464a04740647afccce3a3c17c7",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo300-cut-list-storage-20261024-prbody",
+      "sha": "4e6a42e908f66ef4475704e0ce97a068e65a8ff6",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo300-prerequisites-20261024",
+      "sha": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo300-prerequisites-20261024-prbody",
+      "sha": "ea1a153b2da2203c3c0aac7a1f631d9caa1bf67b",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo314-one-axis-stagger-20261022",
+      "sha": "f426be38fdf297d66296fb527309a7b8912ab034",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo314-one-axis-stagger-20261022-prbody",
+      "sha": "f5669af88dcc62066aa2e5be3f16a2c3a82a81d3",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo324-faces-20261024",
+      "sha": "8f39025be6708bd9d58e576ed5b349b7ef628624",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/geo324-faces-20261024-prbody",
+      "sha": "283d1e245f724e13644a1379cba5cd34f3dae9d9",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/integration-closeout-20261008-r2",
+      "sha": "9029a8f6bc00a9ff8de1d2b0deb844f331e032e3",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue116-context-menu-b",
+      "sha": "5a82f4435443872b9cb66ede3da456dad75e4424",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue118-browser-build-20261006",
+      "sha": "d497096f495a26e766aa3f8b92e6f0346082fc83",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue118-cost-evidence-20261006",
+      "sha": "e3d448fb6635fbf4f891a4543cf866f6b5f9dfe5",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue118-guide-ownership-20261006",
+      "sha": "2a7d9cba8d199a33f703e721553034400c0c5764",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue118-parent-result-counts-20261006",
+      "sha": "2c3ba8faf907737e33e4c1432e22525da284a75e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue118-pdf-resources-20261006",
+      "sha": "83769b9baef0ba23d3fd41f1058de90cf1f360ac",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue118-selection-20261006",
+      "sha": "35a9fa20087d49eefd4e2ac11a17c12a2b5fa678",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue123-f6-font-20261005",
+      "sha": "aa91cd25c62a67e2587e7ddd0cb0a6f96dd55d21",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue123-g3-contrast-20261005",
+      "sha": "fb321eb1a998db47a9cd808b6df9ee36f68b3d15",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue123-library-history-20261006",
+      "sha": "e3ddd74e5a17b55b97c164cf7f69b6f0aeedab41",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue123-s5-short-height-20261006",
+      "sha": "abe74e611b6dc14e55729932c63c45c3706acf12",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue128-empty-panel-rows-20261024",
+      "sha": "8bb0359331365c6f3a96872620427cf7847fcb50",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue128-empty-panel-rows-20261024-prbody",
+      "sha": "066bc6606503f29b57b6ff54d07e1a0d13f1617a",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue134-browser-followup-20261007",
+      "sha": "2228da155b49d349a616b1e2737074f299e1d57d",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue159-browser-followup-20261007",
+      "sha": "92ded635e01aa42ea8a999e70da41b736c8b5a92",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue214-http-fixture-20261024",
+      "sha": "99646d418bc5e886a92bfdabe33e68780e88fe3b",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue214-http-fixture-20261024-prbody",
+      "sha": "c5515c14ac9cb59d147563f3dd75dbde5b75ca4e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue318-reading-a-20261023",
+      "sha": "9c534879b05058d2d62d8082be76038605ef0268",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue318-reading-a-20261023-prbody",
+      "sha": "4e4e4f59cea41dbec018dd8779f2db190d320bd9",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue320-connection-recovery-20261024",
+      "sha": "df39d1933402c76b2f8b35ca013412daf16ed4c9",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue320-connection-recovery-20261024-prbody",
+      "sha": "cbb1aa30b83d1b368ce1cb27885a39003bc58fed",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue320-connection-recovery-withdrawal-20261024",
+      "sha": "082feb0662fea32131f3f7fb8ca451679ab6421d",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue46-adoption-integration-20261005",
+      "sha": "38975775cf42e9dc454aab2e25fc186d9fbd759d",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue48-evidence-integration-20261005",
+      "sha": "8f8955554e7af6bdc50d4735b6a09210feb08078",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue49-data-reader-preparation-20261005",
+      "sha": "d0c5671c5cb009e2549c0c4829dd4ca2a5a21369",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue49-rule-case-workbench-20261005",
+      "sha": "823fc91754bd3dbb7cb9fd2b27c045a739d3b14f",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue54-room-outline-closeout",
+      "sha": "349e2a590f98ab783b7d3eeb952e95151db8e39e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue54-room-outline-enter",
+      "sha": "f1e020cba5051a331dd150d567698060bf1642b1",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue61-rule-editor-slice1-20261005",
+      "sha": "e2f851d30b8033756475155b7d40a19b0ee1cb86",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/issue61-rule-line-display-20261005",
+      "sha": "b88545e00c13ccf5e238d4caec1c7b0d78cdc639",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/kernel-without-woodworking-20261023",
+      "sha": "04959e04c334ceaf03f865514f76b1cac8ee91f2",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/kernel-without-woodworking-20261023-prbody",
+      "sha": "db8bf2289f8ad931c00924193e238e621f970e05",
+      "productionRootJavascriptMatches": [],
+      "geometryWebAbsent": true
+    },
+    {
+      "ref": "refs/remotes/scan/codex/p67-wait-complete-state-20261017",
+      "sha": "9d0aa6161fecfd713ab237287725b3ffe216c80d",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/release-readiness-20261007",
+      "sha": "8b9b6f80078c17238286e43da54b751e8d3b5b23",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/safe-resume-closeout-20261009",
+      "sha": "4a57b1213ddaa57d29d43c31b7cefd34b8f6c4ed",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/section-profile-core-20261008",
+      "sha": "fb6ef45cf651235250523aa88a7fa89d0e6acb34",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/t4-reference-display-retention-20261005",
+      "sha": "6ae8e11d74b12f21fc4294e3bd068fbbc539a209",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train-20261016-19",
+      "sha": "945ae87ccd6f49dbfc22d439b3f9c28fed4ac40c",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train-337-continue-20261024",
+      "sha": "0ae1728c2309e1d670369289a6b8da059fa63a50",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train-337-continue-20261024-prbody",
+      "sha": "e83d478a9e9fe7060a976a92bc10935e4f7dfd91",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train18-p157-20261017",
+      "sha": "e8eb1da51f3b21df15869338a7e36e76e584ff9e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-edge-probe-20261024",
+      "sha": "9b41d395fb2c5d6c971de4b13d4d2ac6701ff22c",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-edge-probe-20261024-prbody",
+      "sha": "853a7a294b9201236da01d3a34ba397e62e29ecd",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-monotonic-sort-20261024",
+      "sha": "39eaf977d76204f1506830e63beeaa645cfa6431",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-monotonic-sort-20261024-prbody",
+      "sha": "9c0dcc3876a783121c04b7701bfa42b1cfc71487",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-native-validation-20261027",
+      "sha": "2ef9062284849ec9a46517f1137abd3e4d0a03c8",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-node-hint-diagnostic-20261024",
+      "sha": "c650099273f502d2161240f977f68e4d9f546ef6",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-node-hint-diagnostic-20261024-prbody",
+      "sha": "60ba3e4d00041c0512c2e729e7c4aef946d41266",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-plane-ranges-20261024",
+      "sha": "e7f6dbc907106fb5312875183212656d113d0a11",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-plane-ranges-20261024-prbody",
+      "sha": "f90491e22ed7c3c03eb7a0e000775093eaf1602f",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-provider-hint-20261024",
+      "sha": "4d3ac4bf42f431c23833c8841e4a7a597d275dbd",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-provider-hint-20261024-prbody",
+      "sha": "ae5e9431bfb8feb3b8b8aa9ecce523af3135a5ea",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-recovered-evidence-20261026",
+      "sha": "c5c6c81ad270136d7ff22826bfbea60e0d05be3e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-recovered-evidence-20261026-prbody",
+      "sha": "e386f0063e50b1e96597671f9339a908fa2f66fe",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-reference-local-init-20261024",
+      "sha": "74a0a289b48f21f0211c4906808c79138b22b741",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/codex/train337-reference-local-init-20261024-prbody",
+      "sha": "11a93b5b82a5c630b307da0d49bf79349149f58e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/116-object-canvas-menu-20261027",
+      "sha": "c8eae279efe1d14ddfdd654165c790522a577471",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/assembly-generation-minimal-20261002",
+      "sha": "869e4228e716922a2e3144442a75c71a37167560",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/card-reference-core-20261015",
+      "sha": "e180a2688ae06c36a32d4d0097fcb808d1dcd449",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/framing-core-probe-20261017",
+      "sha": "bc3fb622131a55c6f3e5135caab6d4c39e4b2b4c",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/framing-oracle-20261015",
+      "sha": "3d858c31e84e025d34c62b0c6be6a9b73ce55a8d",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/k1a-cutting-native-20261011",
+      "sha": "ba428b29c025e060a34f542a457a49523e292c14",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/k1b-cutting-frontend-20261011",
+      "sha": "e35c52384519fae77e6067e7a3305f860b9d3a12",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/lan-test-mode-20261011",
+      "sha": "a3304b11a157dc3ae8877d5b4b45299f2f2d4a8c",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/r01-grid-card-entry-20261027",
+      "sha": "037a28267f07503d5b85f6632f57f6e1ea50475e",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/feat/sketchup-framing-plugin-20261013",
+      "sha": "4ec65e263a85f1f5570ec980b0a07b0ca0959f36",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/grok/axiom-layering-draft-20261022",
+      "sha": "02086a3689d27d41fbfac470f707e4d6b17b7e70",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/grok/backlog-reconcile-20261022",
+      "sha": "c16f9255383823fa3ce7610c69262905b64c1ff9",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/grok/geo261-faces-keyerror-322",
+      "sha": "4e176e830b691269cc72d021ce7e1bc0b167d621",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/grok/r05-k1-recovery-20261028",
+      "sha": "b5b33ed1e55d3187108af7cddbca71d2a256c5d2",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/grok/woodworking-field-rules-20261023",
+      "sha": "7eaa359063b04a9f02aa72a05aeeca41ab17675a",
+      "productionRootJavascriptMatches": []
+    },
+    {
+      "ref": "refs/remotes/scan/grok/woodworking-field-rules-20261023-prbody",
+      "sha": "a6a2aed6a6d9b326a92c73835970b834bb40e5a7",
+      "productionRootJavascriptMatches": []
+    }
+  ]
+}

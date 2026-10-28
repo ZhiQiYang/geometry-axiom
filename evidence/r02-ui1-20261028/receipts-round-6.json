@@ -1,0 +1,49 @@
+{
+  "schema": "r02-ui1-receipt-package/1",
+  "archive": "receipts-round-6.tar.gz",
+  "sha256": "2336ee0efd34b91a489dd5e4c689f98af81dc874d56faaa69b89cc381325cb49",
+  "bytes": 112356,
+  "scope": "Original complete canvas at 82257ab8b76e4eb36a9c26539125c83649485487: exit0, 2616/0/0, strict 86-section golden matched, 1906.993488s. Before pending D44 corrections.",
+  "files": [
+    {
+      "path": "browser-canvas-final/result.json",
+      "bytes": 920,
+      "sha256": "fd0870de167e6e9e3299cfbe5a63606e687c15df7ad8a048e9c4c0204b5f6791"
+    },
+    {
+      "path": "browser-canvas-final/stderr.gz",
+      "bytes": 27,
+      "sha256": "76da3be4078ce160fac746e89c2cdc94e508cd16cab3560921392177882e656b"
+    },
+    {
+      "path": "browser-canvas-final/stdout.gz",
+      "bytes": 103980,
+      "sha256": "f898dcc1d7304b7241541a0c155cd3d4ccc0658ae005392e130c39646c0b41a3"
+    },
+    {
+      "path": "canvas-support/1793203243-server.log.gz",
+      "bytes": 25839,
+      "sha256": "db5378d45ecd9c8658202b8972d67155e7eba9e6b85e82a6a2bc386b37849e51"
+    },
+    {
+      "path": "canvas-support/packages/download-gKduYP/missing-parameter-source.gcanvas",
+      "bytes": 10321,
+      "sha256": "e283ab8a73747ee009153b2ef34894d72bff205b7bdd592806447901817cabe7"
+    },
+    {
+      "path": "canvas-support/packages/download-gKduYP/tampered-scene.gcanvas",
+      "bytes": 11274,
+      "sha256": "32931f18a936350f5680d65bff71d41ef605423ea63e57f09f72079647d60f1d"
+    },
+    {
+      "path": "canvas-support/packages/download-gKduYP/unknown-capability.gcanvas",
+      "bytes": 11281,
+      "sha256": "efff9691539bec81c75a2db36c9905283369b8466951c59c4a200182d91a9ed5"
+    },
+    {
+      "path": "canvas-support/packages/download-gKduYP/未命名專案.gcanvas",
+      "bytes": 11252,
+      "sha256": "f75e34e9af72393a8cb04c089db6789b75e07765de9598c1601d703b1777218a"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "r02-ui1-receipt-package/1",
+  "archive": "receipts-round-10.tar.gz",
+  "bytes": 93383,
+  "sha256": "8bb70b3580808c35bd0c4b978b69180810a2509ea4b1dcba4a8a1da7f6e61606",
+  "scope": "Incomplete F2 canvas original streams preserved byte-for-byte. Execution session disappeared; no exit/CDP_RESULT and truncated gzip. Not a product pass or inferred timeout. New independent-process recovery has started, no terminal yet.",
+  "files": [
+    {
+      "path": "owner-final-canvas/INTERRUPTION.json",
+      "bytes": 1104,
+      "sha256": "bca9c13638b933ffaaa23c98a10b709d5539eb5333f5c50de517494f13b7ed4a"
+    },
+    {
+      "path": "owner-final-canvas/result.json",
+      "bytes": 638,
+      "sha256": "75c722f622a3d737313cb790e9cd525714e26caf2312bc2a5fa8795a1e2ad230"
+    },
+    {
+      "path": "owner-final-canvas/stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "owner-final-canvas/stdout.gz",
+      "bytes": 83616,
+      "sha256": "55bdf7009e7ba7cde72d11ef50b359dea93435deaa115876e2f7e99be85f39d8"
+    },
+    {
+      "path": "owner-final-canvas-support/1793209647-server.log.gz",
+      "bytes": 38321,
+      "sha256": "c19c1eab752002d1b73b45af8ce38ec54e70e4789c24442c5b8cd16e2a62da44"
+    },
+    {
+      "path": "owner-final-canvas-recovery-launch.json",
+      "bytes": 619,
+      "sha256": "c0cdce9f9984c8edc411c2cc1852452e957b7a4a588b7b05469f9a168f99665c"
+    }
+  ]
+}

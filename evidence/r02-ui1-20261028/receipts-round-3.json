@@ -1,0 +1,154 @@
+{
+  "schema": "r02-ui1-receipt-package/1",
+  "archive": "receipts-round-3.tar.gz",
+  "sha256": "0de47b3fa0ed0132a4e95b8f8f189d5de474ba398d194427194685d28270c24c",
+  "bytes": 97612,
+  "files": [
+    {
+      "path": "architecture-contract-final/result.json",
+      "bytes": 856,
+      "sha256": "b7fcb16003f73e91d3da9a853d9f39d68db24f76d96abe50ab53adde9628128e"
+    },
+    {
+      "path": "architecture-contract-final/stderr.gz",
+      "bytes": 6728,
+      "sha256": "cb948c114b05b46cf761a6190cc6417092538be29397b889f5954b972c31ccce"
+    },
+    {
+      "path": "architecture-contract-final/stdout.gz",
+      "bytes": 27,
+      "sha256": "5ee2acfb93055c4feaa0655fcabb9543ab6f3ea042450d7855bff01cf36df6e1"
+    },
+    {
+      "path": "architecture-product-final/result.json",
+      "bytes": 853,
+      "sha256": "acf4ce413155e3ee28a536053eae34a044d828bcca1dc3b3b86fdc8a7cd03826"
+    },
+    {
+      "path": "architecture-product-final/stderr.gz",
+      "bytes": 197,
+      "sha256": "6a04c9067db48cfe0d3dcc2d9c7af6f956c5175b8e3fd4a29841a8b150e66519"
+    },
+    {
+      "path": "architecture-product-final/stdout.gz",
+      "bytes": 27,
+      "sha256": "d22975b00964348d1c08516f1c27e00a60c459b142f7b43537393eba1ff5ce96"
+    },
+    {
+      "path": "architecture-scan-final/result.json",
+      "bytes": 956,
+      "sha256": "dba732ebaa2ae241430066e33176f643a1c9c7606698a2419a49d09dc9e3f7c2"
+    },
+    {
+      "path": "architecture-scan-final/stderr.gz",
+      "bytes": 27,
+      "sha256": "136f8e1ff0d18ffe83be27ee1abaa456182622bf52c14e499b3b983d9274392c"
+    },
+    {
+      "path": "architecture-scan-final/stdout.gz",
+      "bytes": 8489,
+      "sha256": "8348968847cf0c69dec4f13db1ab9aa586346b29cc129d81a7256bb229cd0f4e"
+    },
+    {
+      "path": "bridge-final-preparation.json",
+      "bytes": 1659,
+      "sha256": "94645e405fedd1b47b4da053111fd313d2cd57fc4cf257f03c85d89bb046798d"
+    },
+    {
+      "path": "bridge-freshcache-preparation.json",
+      "bytes": 1531,
+      "sha256": "369d9d5dc7340342eafd3dd48800427bb71c31dcdec99fe81d992b88cfc6a970"
+    },
+    {
+      "path": "golden-extension.json",
+      "bytes": 424,
+      "sha256": "55b818678ed3ba25f132ca81c0d4011bf5544d851803548ff1148c191fa8b435"
+    },
+    {
+      "path": "ledger-bridge-final/interruption.json",
+      "bytes": 988,
+      "sha256": "06b183aedd4154f6409141ac5d54471d3b8bcde92cf7c801446593703948904b"
+    },
+    {
+      "path": "ledger-bridge-final/result.json",
+      "bytes": 1035,
+      "sha256": "107221c40290e6c91b998fd68f26061273dd5cd7195ee4347e98acd74fe29aa3"
+    },
+    {
+      "path": "ledger-bridge-final/stderr.gz",
+      "bytes": 945,
+      "sha256": "73a38c753939144af4f57bcdb07c8fd66992ea9e23180f72609c04560d206f98"
+    },
+    {
+      "path": "ledger-bridge-final/stdout.gz",
+      "bytes": 417,
+      "sha256": "d8193960cdc1ab5765724e2e3cd25865de4d7238d5505e2d58523a1ad1396a52"
+    },
+    {
+      "path": "ledger-bridge-recovery-1/interruption.json",
+      "bytes": 371,
+      "sha256": "63ea70f379c40c4927f1ea075f014b80d14b167ab9d9df8cd2753c86b9e315c8"
+    },
+    {
+      "path": "ledger-bridge-recovery-1/result.json",
+      "bytes": 1063,
+      "sha256": "e7d4d77c19fb03b9a8d0b6cf3cee16c94c1ab962bbda2af5ef5330325c1f6072"
+    },
+    {
+      "path": "ledger-bridge-recovery-1/source.patch.gz",
+      "bytes": 25489,
+      "sha256": "4d68580f1ce2d7e2925df79c52ca598cc55509eb34ad238ecc00b72a8b273fa1"
+    },
+    {
+      "path": "ledger-bridge-recovery-1/stderr.gz",
+      "bytes": 964,
+      "sha256": "5b413e9996310e6440f9d92eb7a462dd7cc7d1b85fec7a062dfc11f1ad281022"
+    },
+    {
+      "path": "ledger-bridge-recovery-1/stdout.gz",
+      "bytes": 422,
+      "sha256": "4e598016a7582f99798795e23b24370ab87ba70ac4cc1ba93281fba71c152647"
+    },
+    {
+      "path": "tools/architecture-MANIFEST.json",
+      "bytes": 273,
+      "sha256": "2357a2684920930dd966d7ed03f6b1d28cb0fca0581d06db330b9a8c1c244c2c"
+    },
+    {
+      "path": "tools/architecture-README.md",
+      "bytes": 2285,
+      "sha256": "ea3c3cdd76b840da76ed6ac951489bac27f83c90a1db0d9d655117f1548c4317"
+    },
+    {
+      "path": "tools/architecture-prepare.py",
+      "bytes": 10800,
+      "sha256": "c046e5ef82751d5c4f45b7fc5e4309e8d44dbb7e79fddf033d5a37c7df60b0e4"
+    },
+    {
+      "path": "tools/r02-browser-run-v2.py",
+      "bytes": 4017,
+      "sha256": "ac57b29852f86b2a5dc7ac16fc23717143d7a739a9fa3b1dd212385d7e34ff05"
+    },
+    {
+      "path": "ui-pf-baseline-10/result.json",
+      "bytes": 872,
+      "sha256": "bd6f1916fc986a466a5fa997611613ad332f0efcf8dcc58bfa6a71e4eaac7540"
+    },
+    {
+      "path": "ui-pf-baseline-10/source.patch.gz",
+      "bytes": 34695,
+      "sha256": "86893115f8830a7f176916eb29bb4e547cc55e3c4a63f5ca9bf8142de6a34480"
+    },
+    {
+      "path": "ui-pf-baseline-10/stderr.gz",
+      "bytes": 27,
+      "sha256": "d809d1e24dc7224d06a78791ebb1b9c4213b244e5df1f85c3ad0c775ccd6b797"
+    },
+    {
+      "path": "ui-pf-baseline-10/stdout.gz",
+      "bytes": 9242,
+      "sha256": "7f853c42da71cd5fd78aef3a8ce15aeda1ba4a3f191217c144ecb6f2b91ab27a"
+    }
+  ],
+  "scope": "UI349 and three architecture gates complete; preserves both interrupted bridge attempts. Active fresh-cache ledger and UI mutations are excluded."
+}
