@@ -178,7 +178,7 @@ if (Number.isSafeInteger(r.state.panelFills[0].derived.tiles[0].fragments[0].are
         original_capabilities = ["engineering-spec/1", "parameters/1", "assembly-rule-authoring/1",
                                  "assembly-timber-generation/1", "grid-subdivision-rules/1",
                                  "section-profile/1", "grid-card-reference/1"]
-        for response in [self.read(), self.command("engineering-read"), candidate]:
+        for response in [self.read(), self.command("engineering-read")["state"], candidate]:
             self.assertEqual(original_capabilities, response["capabilities"], "UI_READER_NO_FULL_PF_CLAIM")
             self.assertEqual(expected_reader, response["panel_fill_reader"], "UI_READER_RECORD_CLOSURE")
             self.assertIn("panel-fill/1", response["required_capabilities"])
