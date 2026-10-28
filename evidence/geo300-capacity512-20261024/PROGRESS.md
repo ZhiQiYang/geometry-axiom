@@ -8,6 +8,10 @@ execution C `75481194f3b85a6b07e11896403633d7d0fa0d6f`，產品仍F2 `b595e55952
 - **未達合併條件**：完整H7原1200秒預算仍不符、native35分鐘／全census expected／全帳本／架構／browser未完成；上游#343→346→347未閉合。當前直接#347 8bb0359331365c6f3a96872620427cf7847fcb50，原review behind2、C fresh behind3/ahead22，來源鏈修復後才一般merge精確head及受影響重驗。
 - 本次原件在history-complete-75481194/RAW.tar.gz與manifest／STATUS／ENVIRONMENT；正文以實際新evidence head更新。下一輪純計算memo仍僅私有候選，未採入、未證實加速。
 
+## 最新獨立候選（尚未採入 PR348 產品）
+
+2026-10-28 23:13Z：隔離分支 codex/geo300-hotpath-candidate-20261028 固定 f5806c60c6067a64776f979f77981e4aba087df3 已推。K空槽/W有序快路徑/memo 的原控制與新反證已實跑，原編譯前置紅和duplicate控制存活均保留並補正。詳細逐execution在 hotpath-candidate-f5806c60/README.md。單次N128 6.691758→6.037951秒，stdout/stderr相同；只~9.8%，不足解除full1200。新有序圖比對尚未完成。原F2/C 512正式收據不變、不重跑、不移標。
+
 ## 歷史檢查點（不取代上方current state）
 
 # #348 current state：512各批已在600秒內完成；I8a history與整套時限仍紅
