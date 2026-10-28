@@ -30,12 +30,13 @@ function installProbe() {
   const p = window.__p352 = {requests:[], events:[], pending:0, gate:null, busy:null};
   const observe = event => {
     const card = event.target?.closest?.('.ocard');
-    p.events.push({type:event.type, trusted:event.isTrusted, key:event.key,
+    p.events.push({type:event.type, trusted:event.isTrusted, key:event.key, code:event.code,
+      shift:event.shiftKey, ctrl:event.ctrlKey, alt:event.altKey, meta:event.metaKey,
       button:event.button, composing:event.isComposing, x:event.clientX, y:event.clientY,
       target:event.target?.id || event.target?.tagName,
       card:card ? card.dataset.kind + ':' + card.dataset.id : null});
   };
-  for (const type of ['contextmenu','keydown','pointerdown']) document.addEventListener(type, observe, true);
+  for (const type of ['contextmenu','keydown','keyup','pointerdown']) document.addEventListener(type, observe, true);
   p.arm = cmd => {
     if (p.gate) throw Error('P352 gate already armed');
     let release;
@@ -73,7 +74,7 @@ function installProbe() {
   p.cleanup = () => {
     p.gate?.release();
     if (window.fetch === wrapped) window.fetch=original;
-    for (const type of ['contextmenu','keydown','pointerdown']) document.removeEventListener(type, observe, true);
+    for (const type of ['contextmenu','keydown','keyup','pointerdown']) document.removeEventListener(type, observe, true);
     delete window.__p352;
   };
 }
@@ -81,7 +82,18 @@ function installProbe() {
 module.exports = async function canvasContextMenu(deps) {
   const {send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount} = deps;
   console.log('=== P352. 物件畫布右鍵選單：真入口、原生與失效 ===');
-  const read=cdp.makeRead(eval_), key=cdp.makeKey({send,sleep});
+  const read=cdp.makeRead(eval_), ordinaryKey=cdp.makeKey({send,sleep});
+  async function key(name,code,vk,modifiers=0) {
+    // Chromium's system-menu default action runs on rawKeyDown. keyDown still
+    // reports a trusted DOM key but omits its native contextmenu default action.
+    // Keep the existing trusted-contextmenu assertions; correct only the input.
+    if(name==='ContextMenu'||(name==='F10'&&(modifiers&8))) {
+      for(const type of ['rawKeyDown','keyUp'])
+        await send('Input.dispatchKeyEvent',{type,key:name,code,windowsVirtualKeyCode:vk,modifiers});
+      return;
+    }
+    return ordinaryKey(name,code,vk,modifiers);
+  }
   const baseCheck=cdp.makeCheck({prefix:'P352 ',throwOnFail:true});
   const history=cdp.makeHistoryOracle(read,'P352'), pins=new Set();
   let active=null, offline=false, inCleanup=false;
@@ -89,12 +101,16 @@ module.exports = async function canvasContextMenu(deps) {
   const filter=process.env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES;
   const currentFlag=process.env.GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY;
   const currentOnly=currentFlag==='1';
+  const busyFlag=process.env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY;
+  const busyOnly=busyFlag==='1';
   const chosen=filter === undefined ? IDS : filter.split(',');
   if ((filter !== undefined && process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY !== '1') ||
       !chosen.length || new Set(chosen).size!==chosen.length || chosen.some(id=>!IDS.includes(id)))
     throw Error('P352 CASES requires ONLY=1 and unique comma-separated C01..C16 IDs');
   if(currentFlag!==undefined&&(currentFlag!=='1'||process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||filter!=='C11'))
     throw Error('P352 CURRENT_ONLY=1 requires ONLY=1 and CASES=C11 exactly');
+  if(busyFlag!==undefined&&(busyFlag!=='1'||process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||filter!=='C05'))
+    throw Error('P352 BUSY_ONLY=1 requires ONLY=1 and CASES=C05 exactly');
 
   function check(name,value,detail,kind='assertion') {
     if (!active) throw Error('P352 assertion outside a case');
@@ -165,9 +181,9 @@ module.exports = async function canvasContextMenu(deps) {
   const commands=async m=>(await rows(m)).map(r=>r.cmd);
   async function right(p,name='MENU_VISIBLE',expectedCard=null) {
     const m=await mark();await rawRight(p);
-    await wait(name,`!$('canvasCtxMenu').hidden && $('canvasCtxMenu').getBoundingClientRect().width>0`);
     const e=await events(m);
     check('TRUSTED_CONTEXTMENU',e.some(r=>r.type==='contextmenu'&&r.trusted&&(!expectedCard||r.card===expectedCard)),{expectedCard,events:e});
+    await wait(name,`!$('canvasCtxMenu').hidden && $('canvasCtxMenu').getBoundingClientRect().width>0`);
     return m;
   }
   async function rightCard(id,name='MENU_VISIBLE') { return right(await point(card(id)),name,'boundary:'+id); }
@@ -325,7 +341,7 @@ module.exports = async function canvasContextMenu(deps) {
   }
   async function invokeOld() {console.log('P352_FAULT '+active.case+' detached/stale node callback');await read('__p352Old.click();void 0');await settle();}
 
-  const api={...deps,currentOnly,read,key,check,pre,wait,visible,point,ctl,fill,card,act,search,frames,settle,
+  const api={...deps,currentOnly,busyOnly,read,key,check,pre,wait,visible,point,ctl,fill,card,act,search,frames,settle,
     rawRight,right,rightCard,blank,mark,rows,events,commands,query,dump,checkpoint,noWrites,unchanged,
     fixtureCommands,fixture,viewport,selectCard,setCamera,beginBusy,releaseBusy,disconnect,online,focus,
     createEntry,openParameter,settleParameterDraft,facePoint,hostCount,backToCanvas,objectLines,cardsVisible,saveOld,invokeOld,history,same,state};
@@ -334,7 +350,7 @@ module.exports = async function canvasContextMenu(deps) {
   await read('('+installProbe.toString()+')()');
   try {
     for(const test of cases.filter(c=>chosen.includes(c.id))) {
-      active={schema:'geometry-canvas-context-menu-case/1',case:test.id,subcase:currentOnly?'current-connected-node-only':'all',status:'passed',
+      active={schema:'geometry-canvas-context-menu-case/1',case:test.id,subcase:currentOnly?'current-connected-node-only':busyOnly?'busy-view-entry-only':'all',status:'passed',
         assertions:{passed:0,failed:0},failures:[],oracle:{checkpoints:[],latestNative:{}}};
       const start=Date.now(),exceptions=exceptionCount();
       try {await test.run();check('NO_UNCAUGHT_BROWSER_EXCEPTION',exceptionCount()===exceptions,{before:exceptions,after:exceptionCount()});}

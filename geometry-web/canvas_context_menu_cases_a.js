@@ -50,6 +50,31 @@ module.exports = s => {
       await key('Home','Home',36);await key('Enter','Enter',13);
       await wait('KEYBOARD_OPEN_41',faceReady(41));await settle();await unchanged(before);
 
+      await fixture();const shiftBefore=await checkpoint(),shiftMark=await mark();
+      await focus(card(42)+' .card-enter[tabindex="0"]');await key('F10','F10',121,8);
+      await wait('SHIFT_F10_MENU_VISIBLE',`!$('canvasCtxMenu').hidden`);
+      const shiftTrace=await events(shiftMark);
+      check('TRUSTED_SHIFT_F10',shiftTrace.some(e=>e.type==='keydown'&&e.trusted&&e.key==='F10'&&e.shift===true),shiftTrace);
+      check('SHIFT_F10_TARGET_42',same(await selection(),['boundary:42'])&&await read(`$('canvasCtxMenu').querySelector('.fcm-heading strong').textContent.includes('42')`));
+      await unchanged(shiftBefore);await key('Escape','Escape',27);
+
+      await fixture();const releaseBefore=await checkpoint(),releaseMark=await mark();
+      await focus(card(42)+' .card-enter[tabindex="0"]');
+      await send('Input.dispatchKeyEvent',{type:'rawKeyDown',key:'Shift',code:'ShiftLeft',windowsVirtualKeyCode:16,modifiers:8});
+      await send('Input.dispatchKeyEvent',{type:'rawKeyDown',key:'F10',code:'F10',windowsVirtualKeyCode:121,modifiers:8});
+      // A real chord may release Shift first: F10 keyup no longer has shiftKey.
+      // This must retire the keyboard invocation before the next pointer entry.
+      await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Shift',code:'ShiftLeft',windowsVirtualKeyCode:16,modifiers:0});
+      await send('Input.dispatchKeyEvent',{type:'keyUp',key:'F10',code:'F10',windowsVirtualKeyCode:121,modifiers:0});
+      await wait('SHIFT_RELEASE_ORDER_MENU_VISIBLE',`!$('canvasCtxMenu').hidden`);
+      const releaseTrace=await events(releaseMark),released=releaseTrace.filter(e=>e.type==='keyup');
+      check('TRUSTED_SHIFT_RELEASE_ORDER',released.length===2&&released[0].key==='Shift'&&released[1].key==='F10'&&
+        released.every(e=>e.trusted&&e.shift===false),releaseTrace);
+      check('SHIFT_RELEASE_ORDER_TARGET_42',same(await selection(),['boundary:42'])&&await read(`$('canvasCtxMenu').querySelector('.fcm-heading strong').textContent.includes('42')`));
+      await key('Escape','Escape',27);await rightCard(41,'POINTER_MENU_AFTER_SHIFT_RELEASE_ORDER');
+      check('POINTER_TARGET_AFTER_SHIFT_RELEASE_ORDER',same(await selection(),['boundary:41'])&&await read(`$('canvasCtxMenu').querySelector('.fcm-heading strong').textContent.includes('41')`));
+      await unchanged(releaseBefore);await key('Escape','Escape',27);
+
       await fixture();const emptyBefore=await checkpoint();await focus('#canvasViewport');
       await key('ContextMenu','ContextMenu',93);await wait('KEYBOARD_BLANK_MENU',`!$('canvasCtxMenu').hidden`);
       check('KEYBOARD_HOME_AVAILABLE',await visible(act('home'))&&await read(`document.querySelector(${JSON.stringify(act('home'))}).getAttribute('aria-disabled')==='false'`));
@@ -107,6 +132,7 @@ module.exports = s => {
         check('BUSY_HOME_EXACT_TRANSFORM',await cameraHome());await unchanged(beforeBusy);
       } finally {await releaseBusy();}
       await settle();
+      if(s.busyOnly)return; // M7's control excludes the deliberately offline subcase.
 
       await fixture();await setCamera(137,-91,.65);const offlinePoint=await blank(),beforeOffline=await checkpoint();
       try {

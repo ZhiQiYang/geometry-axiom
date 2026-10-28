@@ -64,6 +64,7 @@
     {
       "id": "M3-remove-final-current",
       "case": "C11",
+      "reviewItems": ["B1"],
       "assertions": [
         "STALE_ACTION_ZERO_WRITES",
         "WORLD_UNCHANGED"
@@ -71,16 +72,73 @@
       "changes": [
         {
           "file": "geometry-web/context-menu-shell.js",
-          "before": "async function run(a, node) {\n      if (!isCurrent()) { hide(); return; }",
-          "after": "async function run(a, node) {\n      /* mutation: final current recheck intentionally removed */"
+          "before": "async function run(a, node, generation) {\n      if (!ownsOpening(generation)) return;\n      if (!isCurrent()) { hide(); return; }",
+          "after": "async function run(a, node, generation) {\n      if (!ownsOpening(generation)) return;\n      /* mutation: final current recheck intentionally removed */"
         }
       ],
       "env": {
         "GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY": "1"
       }
+    },
+    {
+      "id": "M4-reuse-opening-generation",
+      "case": "C12",
+      "reviewItems": ["B2"],
+      "assertions": ["OLD_NODE_ZERO_WRITES"],
+      "changes": [{
+        "file": "geometry-web/context-menu-shell.js",
+        "before": "const ownsOpening = generation => !!state && active === inst && generation === openingGeneration;",
+        "after": "const ownsOpening = generation => !!state && active === inst;"
+      }]
+    },
+    {
+      "id": "M5-create-at-viewport-center",
+      "case": "C06",
+      "reviewItems": ["C2"],
+      "assertions": ["NATIVE_CANVAS_POSITION_AT_CURRENT_TRANSFORM"],
+      "changes": [{
+        "file": "geometry-web/app.js",
+        "before": "  const point = ocToCanvas(anchor);",
+        "after": "  const r = ocv.getBoundingClientRect(); const point = ocToCanvas({clientX:r.left+r.width/2,clientY:r.top+r.height/2});"
+      }]
+    },
+    {
+      "id": "M6-ignore-selection-refusal",
+      "case": "C13",
+      "reviewItems": ["B3"],
+      "assertions": ["CANCEL_RETAINS_DRAFT_AND_NO_MENU"],
+      "changes": [{
+        "file": "geometry-web/canvas-context-menu.js",
+        "before": "        if (!selectTarget(target)) return null;",
+        "after": "        selectTarget(target); // mutation: ignore the selection acceptance result"
+      }]
+    },
+    {
+      "id": "M7-block-view-entry-while-busy",
+      "case": "C05",
+      "reviewItems": ["C1"],
+      "assertions": ["HOME_REACHABLE_WHILE_WORLD_BLOCKED"],
+      "changes": [{
+        "file": "geometry-web/canvas-context-menu.js",
+        "before": "      if (!oc.on || oc.focus || view3 || oc.card || oc.pan || canvasMarquee) return null;",
+        "after": "      if (!oc.on || oc.focus || view3 || oc.busy || oc.card || oc.pan || canvasMarquee) return null;"
+      }],
+      "env": {"GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY": "1"}
+    },
+    {
+      "id": "M8-run-shortcuts-during-ime",
+      "case": "C15",
+      "reviewItems": ["C3"],
+      "assertions": ["IME_KEYS_LEAVE_MENU_AND_FOCUS"],
+      "changes": [{
+        "file": "geometry-web/context-menu-shell.js",
+        "before": "      if (!state || event.isComposing || event.keyCode === 229 || state.composing) return;",
+        "after": "      if (!state) return;"
+      }]
     }
   ],
   "subcaseVariables": [
-    "GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY"
+    "GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY",
+    "GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY"
   ]
 }

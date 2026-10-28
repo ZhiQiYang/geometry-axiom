@@ -193,6 +193,11 @@ module.exports = s => {
       const afterScene=await dump();check('IME_PRESERVES_EXISTING_OBJECTS',[41,42,43].every(id=>same(objectLines(before.scene,id),objectLines(afterScene,id))));
 
       await fixture();await openParameter();await fill('#paramName','文字編輯右鍵');await settleParameterDraft();
+      // The legacy number input lives inside a closed <details>. A layout rect
+      // alone does not make that descendant focusable; expose the real control
+      // before collecting it, rather than dropping it from the assertions.
+      await ctl('#paramExchange > summary');await frames();
+      pre('TEXT_EXCHANGE_OPEN',await read(`$('paramExchange').open===true`));
       const textBefore=await checkpoint(),controls=await read(`(() => {const root=$('parameterEditor');if(!root)return [];
         return [...root.querySelectorAll('input:not([type="hidden"]),textarea,[contenteditable="true"],[contenteditable=""]')]
           .filter(e=>!e.disabled&&e.getClientRects().length>0).map((e,i)=>{e.dataset.p352Text=String(i);return {selector:'[data-p352-text="'+i+'"]',tag:e.tagName,editable:e.isContentEditable,value:e.value??e.textContent};});})()`);

@@ -32,6 +32,9 @@ function runConfiguration(env = process.env) {
   if(env.GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY!==undefined&&
       (env.GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!=='C11'))
     throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY=1 requires ONLY=1 and CASES=C11 exactly');
+  if(env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY!==undefined&&
+      (env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!=='C05'))
+    throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY=1 requires ONLY=1 and CASES=C05 exactly');
   return {mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 // Legacy checks log a verdict as a separate argument. Never scan arbitrary
