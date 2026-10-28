@@ -42,7 +42,9 @@ def replace_once(source: bytes, old: bytes, new: bytes) -> bytes:
 def variants(root: Path):
     app = root / "geometry-web/app.js"
     adapter = root / "geometry-web/panel-fill-adapter.js"
+    workspace = root / "geometry-web/panel-fill-workspace.js"
     app_bytes, adapter_bytes = app.read_bytes(), adapter.read_bytes()
+    workspace_bytes = workspace.read_bytes()
     entry = b"if (fill) { window.PanelFillWorkspace?.open(Number(fill.dataset.panelFillOpen),fill); return; }"
     request_line = re.findall(rb"^  const requestId = connection\.session[^\n]+", app_bytes, re.MULTILINE)
     if len(request_line) != 1 or request_line[0].count(b"panel-fill-confirm ") != 1:
@@ -55,6 +57,9 @@ def variants(root: Path):
                       b"((...args)=>Promise.reject(new Error('UI13 removed preview HTTP')))('/panel-fill/preview',")),
         ("confirm-receipt", "UI13_CONFIRM_RECEIPT", app, app_bytes,
          replace_once(app_bytes, request_line[0], request_line[0].replace(b"panel-fill-confirm ", b"", 1))),
+        ("preview-focus", "UI12_PREVIEW_FOCUS", workspace, workspace_bytes,
+         replace_once(workspace_bytes, b"focus=region.querySelector('#pfTitle'); // PF_UI12_DISABLED_FOCUS_FALLBACK",
+                      b"focus=null; // PF_UI12_DISABLED_FOCUS_FALLBACK")),
     ]
 
 
@@ -69,6 +74,7 @@ def execute(root: Path, out: Path, label: str, command: list[str], timeout: int,
                    if k.startswith("GEOMETRY_") and not any(s in k for s in ("TOKEN", "SECRET", "PASSWORD"))},
                "sourceFiles": {str(p.relative_to(root)): sha(p.read_bytes()) for p in (
                    root / "geometry-web/app.js", root / "geometry-web/panel-fill-adapter.js",
+                   root / "geometry-web/panel-fill-workspace.js",
                    root / "geometry-web/panel_fill_workflow_test.js", root / "geometry-web/cdp_test.js")}}
     (directory / "started.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+"\n")
     child = subprocess.Popen(command, cwd=root, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
