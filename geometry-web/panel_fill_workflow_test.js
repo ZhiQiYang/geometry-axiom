@@ -51,9 +51,9 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
     check('UI13_ENTRY_HANDLER 真面設定讀取並開啟完成面表單',opened&&await read(`!!document.querySelector('[data-pf-workspace="${bid}"]')`) &&
       (await wire()).filter(r=>r.body?.cmd==='panel-fill-read').length>before,{opened,records:await wire()});
   }
-  async function createDefinition({name='UI-1 完成面',panel='pf-board',host=true,stagger=false,origin=[0,0],gap=3,threshold='90:1'}={}){
+  async function createDefinition({name='UI-1 完成面',panel='pf-board',host=true,stagger=false,origin=[0,0],frameOrigin=[0,0,0],gap=3,threshold='90:1'}={}){
     await fill(field('name'),name);
-    for(let i=0;i<3;i++)await fill(field('origin.'+i),'0');
+    for(let i=0;i<3;i++)await fill(field('origin.'+i),frameOrigin[i]);
     for(const [axis,value] of [['U','+X'],['V','+Y'],['N','+Z'],['side','1']])await choose(field(axis),value);
     await ctl(field('fill'));await choose(field('panel'),JSON.stringify([panel,1]));
     await choose(field('lengthAlong'),'v');
@@ -216,18 +216,21 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   // Public native PF05/PF23/PF24 witnesses, now viewed and previewed through
   // the actual face UI. D7 placement is fixture preparation for PF-3; this
   // does not claim the future PF-6 suggested-timber workflow is implemented.
+  // Separate native witnesses share one saved world: translate each frame and
+  // its selected column together, preserving every local UV/width assertion.
+  // Overlapping columns from separate witnesses must not be co-declared.
   const supportCases=[
-    {bid:13,name:'PF23 E1',obstacle:'c201',A:30,center:105,expected:[[0,27,100,900,true],[27,50,10,20,true],[50,100,10,5,false],[100,273,10,20,true],[273,300,100,900,true]]},
-    {bid:14,name:'PF24 E2',obstacle:'c202',A:30,center:105,expected:[[0,27,100,900,true],[27,273,10,20,true],[273,300,100,900,true]]},
-    {bid:15,name:'PF24 E3',obstacle:'c203',A:30,center:105,expected:[[0,27,100,900,true],[27,273,10,20,true],[273,300,100,900,true]]},
-    {bid:16,name:'PF05 8/8',A:16,center:100,expected:[[0,27,100,900,true],[27,273,8,8,true],[273,300,100,900,true]]},
-    {bid:17,name:'PF05 7/9',A:16,center:101,expected:[[0,27,100,900,true],[27,273,7,9,false],[273,300,100,900,true]]},
+    {bid:13,offset:0,name:'PF23 E1',obstacle:'c201',A:30,center:105,expected:[[0,27,100,900,true],[27,50,10,20,true],[50,100,10,5,false],[100,273,10,20,true],[273,300,100,900,true]]},
+    {bid:14,offset:2000,name:'PF24 E2',obstacle:'c202',A:30,center:105,expected:[[0,27,100,900,true],[27,273,10,20,true],[273,300,100,900,true]]},
+    {bid:15,offset:4000,name:'PF24 E3',obstacle:'c203',A:30,center:105,expected:[[0,27,100,900,true],[27,273,10,20,true],[273,300,100,900,true]]},
+    {bid:16,offset:6000,name:'PF05 8/8',A:16,center:100,expected:[[0,27,100,900,true],[27,273,8,8,true],[273,300,100,900,true]]},
+    {bid:17,offset:8000,name:'PF05 7/9',A:16,center:101,expected:[[0,27,100,900,true],[27,273,7,9,false],[273,300,100,900,true]]},
   ];
-  await read(`(async()=>{for(const bid of [13,14,15,16,17]){const r=await apiRequest('line boundary '+bid+' outline 0,0 1000,0 1000,300 0,300');if(!r.ok)throw Error(JSON.stringify(r));}for(const [id,x] of [[201,105],[202,125],[203,120]]){const r=await apiRequest('line column '+id+' at '+x+' 50 size '+(200-x)+' 50 z -2400 9');if(!r.ok)throw Error(JSON.stringify(r));}const revision=(await apiRequest('engineering-read')).revision,operations=[{op:'publish-material',value:{id:'pf-wide',version:1,name:'PF支撐見證板',kind:'panel',width:915,length:1830,thickness:'9'}},{op:'put-parameter',value:{id:90,name:'UI-1來源',fields:[{id:1,name:'X精確',type:'dimension',input:'17/2'},{id:2,name:'gap',type:'dimension',input:'3'},{id:3,name:'X8',type:'dimension',input:'8'},{id:4,name:'X9',type:'dimension',input:'9'},{id:5,name:'X5',type:'dimension',input:'5'}]}}];const p=await(await fetch('/engineering/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'engineering-transaction/1',expectedRevision:revision,operations})})).json();if(!p.ok||!p.preview.valid)throw Error(JSON.stringify(p));const done=await apiRequest('engineering-confirm '+p.preview.token);if(!done.ok)throw Error(JSON.stringify(done));await renderObjects();})()`);
+  await read(`(async()=>{for(const bid of [13,14,15,16,17]){const r=await apiRequest('line boundary '+bid+' outline 0,0 1000,0 1000,300 0,300');if(!r.ok)throw Error(JSON.stringify(r));}for(const [id,x,width] of [[201,105,95],[202,2125,75],[203,4120,80]]){const r=await apiRequest('line column '+id+' at '+x+' 50 size '+width+' 50 z -2400 9');if(!r.ok)throw Error(JSON.stringify(r));}const revision=(await apiRequest('engineering-read')).revision,operations=[{op:'publish-material',value:{id:'pf-wide',version:1,name:'PF支撐見證板',kind:'panel',width:915,length:1830,thickness:'9'}},{op:'put-parameter',value:{id:90,name:'UI-1來源',fields:[{id:1,name:'X精確',type:'dimension',input:'17/2'},{id:2,name:'gap',type:'dimension',input:'3'},{id:3,name:'X8',type:'dimension',input:'8'},{id:4,name:'X9',type:'dimension',input:'9'},{id:5,name:'X5',type:'dimension',input:'5'}]}}];const p=await(await fetch('/engineering/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'engineering-transaction/1',expectedRevision:revision,operations})})).json();if(!p.ok||!p.preview.valid)throw Error(JSON.stringify(p));const done=await apiRequest('engineering-confirm '+p.preview.token);if(!done.ok)throw Error(JSON.stringify(done));await renderObjects();})()`);
   const supportWidths=d=>{const seams=new Set(d.effectiveSeams.flatMap((s,i)=>s.axis==='u'&&s.coordinate==='100'?[i]:[]));return d.support.filter(p=>seams.has(p.seam)).map(p=>[...p.range,p.left,p.right,p.supported]);};
   for(const spec of supportCases){
     await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(spec.bid);await openPF(spec.bid);
-    await createDefinition({name:spec.name,panel:'pf-wide',origin:[-815,-100],gap:0,threshold:'90:3'});
+    await createDefinition({name:spec.name,panel:'pf-wide',origin:[-815,-100],frameOrigin:[spec.offset,0,0],gap:0,threshold:'90:3'});
     if(spec.obstacle)await ctl(`[data-pf-obstacle="${spec.obstacle}"]`);
     const proposal=await preview(),finish=proposal.uiContract.after.finishSurfaces.find(f=>f.boundaryId===spec.bid),selected=spec.obstacle?[spec.obstacle]:[];
     check('UI02 '+spec.name+'僅明選障礙參與',same(finish.obstacles,selected)&&await read(`[...document.querySelectorAll('[data-pf-obstacle]:checked')].map(e=>e.dataset.pfObstacle).join(',')===${JSON.stringify(selected.join(','))}`),finish.obstacles);
