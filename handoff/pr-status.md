@@ -15,4 +15,4 @@
 | issue320-connection-recovery.json | `codex/issue320-connection-recovery-20261024` | #344 | up to date (body cbb1aa30) |
 | kernel-without-woodworking-20261024.json | `codex/kernel-without-woodworking-20261023` | #340 | up to date (body db8bf228) |
 | r02-ui1.json | `codex/r02-ui1-panel-fill-20261028` | #355 | up to date (body 34fbb81b) |
-| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | body -> 41b65b02 |
+| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | up to date (body 41b65b02) |
