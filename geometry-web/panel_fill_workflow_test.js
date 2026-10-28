@@ -82,6 +82,8 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
       !!request.body.session&&(!drop||records.some(r=>r.body?.receipt===request.body.requestId))&&await history.single(pin)&&after.revision===before.revision+1,
       {committed,requests:requests.slice(requestsBefore),receipts:records.filter(r=>r.body?.receipt),beforeRevision:before.revision,afterRevision:after.revision});
     check('UI06 共用定義通知與正式重讀',await read(`window.__pfTestWire.changed===${eventsBefore+1}&&ReferenceWorkspace.context().dirty===true`)&&after.state.panelFills.length>0);
+    const hostIds=after.state.derivedPlacements.map(h=>h.definition.id),sceneHostIds=await read(`oc.surfs.map(s=>s.id)`);
+    check('UI05_HOST_SCENE_SYNC 確認回執後既有D4現場快取已含所有宿主',hostIds.every(id=>sceneHostIds.includes(id)),{hostIds,sceneHostIds});
     return after;
   }
   console.log('=== P128. R02 UI-1 完成面與鋪排真實入口 ===');
@@ -147,6 +149,17 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   await wait(phase('invalid'));
   check('UI03 非整數厚度由原生拒絕且不可確認',await read(`document.querySelector('[data-pf-action="confirm"]').disabled`)&&same(await snapshot(),cancelBefore));
   await ctl(action('cancel'));
+  for(const invalid of ['negative-gap','stagger-equals-period']){
+    await openPF();
+    if(invalid==='negative-gap'){await choose(field('gap.kind'),'literal');await fill(field('gap.value'),'-1');}
+    else{await choose(field('pattern'),'stagger');await choose(field('staggerAxis'),'u');await fill(field('stagger.value'),'103');}
+    const posts=(await wire()).filter(r=>r.url==='/panel-fill/preview').length;
+    await ctl(action('preview'));await wait(phase('invalid'));
+    const requests=(await wire()).filter(r=>r.url==='/panel-fill/preview'),p=requests.at(-1)?.reply?.preview;
+    check('UI03 '+invalid+'由真HTTP原生拒絕且零正式變更',requests.length===posts+1&&p?.valid===false&&p.violations?.some(v=>v.clause==='I52')&&
+      await read(`document.querySelector('[data-pf-action="confirm"]').disabled`)&&same(await snapshot(),cancelBefore),p);
+    await ctl(action('cancel'));
+  }
 
   // History identity is stronger than dump equality. Both actions use the
   // shipping undo/redo controls; the old candidate must stay retired.
@@ -239,6 +252,21 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
       check('UI04 '+spec.name+'X變更只重判承接且合法可確認',spec.bid===13?supportWidths(after).every(r=>r[4]===true):supportWidths(after).some(r=>r[2]==='8'&&r[3]==='8'&&r[4]===false));
     }
     await commit();await ctl(action('close'));
+    if(spec.bid===13){
+      const beforeImpact=await snapshot(),impactHistory=await history.capture();
+      await openPF(spec.bid);await fill(field('origin.2'),'1');const impact=await preview();
+      const beforeHost=impact.uiContract.before.derivedPlacements.find(h=>h.definition.id===hostId),afterHost=impact.uiContract.after.derivedPlacements.find(h=>h.definition.id===hostId);
+      const beforeTimbers=impact.dependencies?.before?.geometry?.timbers||[],afterTimbers=impact.dependencies?.after?.geometry?.timbers||[];
+      const visible=await read(`(()=>{const box=document.querySelector('[data-pf-impact]'),deps=box?.querySelector('[data-pf-dependency-impact]'),tables=deps?.querySelectorAll('table');return {present:!!box&&!!deps&&!!box.querySelector('[data-pf-native-changes]'),hostRows:[...(tables?.[0]?.querySelectorAll('tbody tr')||[])].map(r=>r.cells[0].textContent),timberRows:[...(tables?.[1]?.querySelectorAll('tbody tr')||[])].map(r=>r.cells[0].textContent)};})()`);
+      check('UI04_NATIVE_DOWNSTREAM_IMPACT 既有宿主與三支角材的前後影響可見',visible.present&&visible.hostRows.includes('#'+hostId)&&ids.timbers.every(id=>visible.timberRows.includes('#'+id))&&
+        beforeHost?.derived.frame.origin[2]==='9'&&afterHost?.derived.frame.origin[2]==='10'&&ids.timbers.every(id=>{
+          const a=beforeTimbers.find(t=>t.id===id),b=afterTimbers.find(t=>t.id===id);return !!a&&!!b&&!same(a.geometry,b.geometry);
+        }),{visible,beforeHost,afterHost,beforeTimbers,afterTimbers});
+      await ctl('[data-pf-impact-full] > summary');
+      const shown=await read(`Object.fromEntries(['impact-before','impact-after','impact-changes','dependencies-before','dependencies-after'].map(key=>[key,JSON.parse(document.querySelector('[data-pf-'+key+']').textContent)]))`);
+      check('UI04 完整before/after/changes/dependencies由原生逐欄呈現',same(shown['impact-before'],impact.uiContract.before)&&same(shown['impact-after'],impact.uiContract.after)&&same(shown['impact-changes'],impact.changes)&&same(shown['dependencies-before'],impact.dependencies.before)&&same(shown['dependencies-after'],impact.dependencies.after));
+      await ctl(action('cancel'));check('UI05 取消宿主與角材移動零正式變更',same(await snapshot(),beforeImpact)&&await history.unchanged(impactHistory));
+    }
   }
   await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(8);
 
@@ -246,17 +274,15 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   check('UI13 沒有新增瀏覽器未處理例外',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
   console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:[
     'UI01 entry/reduction/projection coexistence/build-space entry',
-    'UI02 unplaced explicit frame and PF-H without hidden ordinary placement',
-    'UI03 square axis/ParameterRef/17:2 wire/negative stagger/unsafe64 area/fractional thickness rejection',
-    'UI04 native 9:4:5 and insufficient text/zero/1mm/inner-error clears old result',
+    'UI02 unplaced explicit frame/PF-H/native allocated IDs/explicit column selection',
+    'UI03 square axis/ParameterRef/17:2 wire and DOM/negative stagger/unsafe64 area/invalid thickness-gap-stagger',
+    'UI04 native 9:4:5/zero/1mm/inner-error/PF05/PF23/PF24 widths/X-only changes/native downstream impact',
     'UI05 cancel/late preview/dropped confirm receipt/same-dump undo-redo/face switch',
     'UI06 no-op/source identity/one history and definition event per confirmation',
     'UI11 real download/fresh browser storage/exact state/unknown capability/missing source/tampering',
     'UI12 390/720/1280/focus/Escape/CDP composition',
     'UI13 three named wiring assertions','UI14 capabilities'],unrun:[
-    'UI02 obstacle selection combinations',
-    'UI03 every invalid gap/stagger combination',
-    'UI04 PF05/PF23/PF24 support segmentation variants',
+    'UI02 beam and multi-obstacle selection combinations',
     'UI05 source delete/recreate incarnation and all project-switch races',
     'UI11 older no-PF package regression (separate save suite)',
     'UI12 physical IME/touch/assistive technology',
