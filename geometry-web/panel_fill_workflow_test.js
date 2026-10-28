@@ -8,7 +8,7 @@
 const H=require('./cdp_helpers.js');
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os');
 const {isDeepStrictEqual:same}=require('node:util');
-module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,exceptionCount})=>{
+module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,expectNativeDialog,exceptionCount})=>{
   const read=H.makeRead(evaluate),check=H.makeCheck({prefix:'P128 ',throwOnFail:true});
   const wait=expression=>waitForUI(expression,15000),key=H.makeKey({send,sleep});
   const history=H.makeHistoryOracle(read,'r02-ui1'),initialExceptions=exceptionCount();
@@ -273,6 +273,60 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   }
   await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(8);
 
+  // Two real previews in one open inspector: a late A reply must retire only
+  // token A, while the newer B remains confirmable and commits once.
+  await openPF(8);await fill(field('name'),'generation A 待退役');
+  const generationBefore=await snapshot(),generationHistory=await history.capture();
+  await read('window.__pfTestWire.held=false;window.__pfTestWire.release=null;window.__pfTestWire.holdPreview=true;void 0');
+  await ctl(action('preview'));await wait('window.__pfTestWire.held===true');
+  const tokenA=(await wire()).filter(r=>r.url==='/panel-fill/preview').at(-1).reply.preview.token;
+  await fill(field('name'),'generation B 正式版本');const newer=await preview(),tokenB=newer.token;
+  await read('window.__pfTestWire.release();void 0');
+  await wait(`window.__pfTestWire.records.some(r=>r.body?.cmd==='panel-fill-cancel ${tokenA}')`);
+  check('UI05 晚A只取消A而B仍是目前可確認候選',tokenA!==tokenB&&await read(`${phase('confirmable')}&&document.querySelector('[data-pf-field="name"]').value==='generation B 正式版本'&&!document.querySelector('[data-pf-action="confirm"]').disabled`)&&
+    !(await wire()).some(r=>r.body?.cmd==='panel-fill-cancel '+tokenB)&&same(await snapshot(),generationBefore)&&await history.unchanged(generationHistory),{tokenA,tokenB});
+  const confirmBefore=(await wire()).filter(r=>r.body?.cmd?.startsWith('panel-fill-confirm ')).length;
+  const generationCommitted=await commit();
+  const confirms=(await wire()).filter(r=>r.body?.cmd?.startsWith('panel-fill-confirm ')).slice(confirmBefore);
+  check('UI05 新B只送B一次且舊A不寫入正式定義',confirms.length===1&&confirms[0].body.cmd==='panel-fill-confirm '+tokenB&&
+    generationCommitted.state.finishSurfaces.find(f=>f.boundaryId===8)?.name==='generation B 正式版本'&&await history.single(generationHistory),{tokenA,tokenB,confirms});
+  await ctl(action('close'));
+
+  // Successful source deletion/recreation enters through the real API observer;
+  // it must replace incarnation even when the same id and outline return.
+  const rebornLine='boundary 18 outline 0,0 250,0 250,250 0,250';
+  await read(`(async()=>{const r=await apiRequest('line '+${JSON.stringify(rebornLine)});if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();})()`);
+  await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(18);await openPF(18);
+  await createDefinition({name:'來源同號重建前',host:false});const retiredSource=await preview(),sourceBefore=await official();
+  const oldIncarnation=await read(`ReferenceWorkspace.history.frame.ids.get(18)`);
+  await read(`(async()=>{for(const command of ['line delete boundary 18','line '+${JSON.stringify(rebornLine)}]){const r=await apiRequest(command);if(!r.ok)throw Error('Source incarnation fixture '+JSON.stringify(r));}})()`);
+  const newIncarnation=await read(`ReferenceWorkspace.history.frame.ids.get(18)`);
+  check('UI05 同id同輪廓重建仍退役原incarnation與候選',typeof oldIncarnation==='string'&&typeof newIncarnation==='string'&&oldIncarnation!==newIncarnation&&
+    await read(`${phase('invalid')}&&document.querySelector('[data-pf-action="confirm"]').disabled`)&&same((await official()).state,sourceBefore.state)&&
+    !(await wire()).some(r=>r.body?.cmd==='panel-fill-confirm '+retiredSource.token),{oldIncarnation,newIncarnation,token:retiredSource.token});
+  await ctl(action('cancel'));await read('renderObjects()');await openPF(18);
+  await createDefinition({name:'明確重開新來源',host:false});const rebornPreview=await preview();
+  check('UI05 明確重開後才可為新來源產生候選',rebornPreview.token!==retiredSource.token&&same((await official()).state,sourceBefore.state),{oldToken:retiredSource.token,newToken:rebornPreview.token});
+  await ctl(action('cancel'));await ctl('#workspaceBackButton');await wait(`!oc.focus`);await enterFace(8);
+
+  // New Project has a real native confirmation and a real undo step. Neither
+  // the context switch nor restoring the previous project may revive a token.
+  await openPF(8);await fill(field('name'),'切專案前候選');const projectCandidate=await preview(),projectBefore=await snapshot();
+  const oldProjectId=await read('ReferenceWorkspace.context().id'),wasDirty=await read('ReferenceWorkspace.context().dirty');
+  await ctl('#fileMenuBtn');
+  await expectNativeDialog(()=>ctl('#btnNewProject'),{message:'建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(wasDirty?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？',accept:true});
+  await wait(`!oc.busy&&!ReferenceWorkspace.busy&&ReferenceWorkspace.context().id!==${JSON.stringify(oldProjectId)}&&!oc.focus`);
+  const newProjectState=await official();
+  check('UI05 真新專案切換退役舊表單與候選',await read(`!document.querySelector('[data-pf-workspace]')&&!document.querySelector('[data-pf-action="confirm"]')`)&&
+    newProjectState.state.finishSurfaces.length===0&&newProjectState.state.panelFills.length===0&&newProjectState.state.derivedPlacements.length===0&&
+    !(await wire()).some(r=>r.body?.cmd==='panel-fill-confirm '+projectCandidate.token));
+  await ctl('#btnUndo');await wait(`!oc.busy&&!ReferenceWorkspace.busy&&ReferenceWorkspace.context().id===${JSON.stringify(oldProjectId)}`);
+  const restoredProject=await snapshot();
+  check('UI05 真Undo回原專案不復活舊候選且原正式定義不變',restoredProject.text===projectBefore.text&&same(restoredProject.state,projectBefore.state)&&
+    await read(`!document.querySelector('[data-pf-workspace]')&&!document.querySelector('[data-pf-action="confirm"]')`)&&
+    !(await wire()).some(r=>r.body?.cmd==='panel-fill-confirm '+projectCandidate.token),{dumpEqual:restoredProject.text===projectBefore.text,oldProjectId});
+  await enterFace(8);
+
   await saveAndFreshOpen({send,read,ctl,wait,check,official});
   check('UI13 沒有新增瀏覽器未處理例外',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
   console.log('PF_UI_SCOPE '+JSON.stringify({schema:'panel-fill-ui-acceptance/1',executed:[
@@ -280,13 +334,13 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
     'UI02 unplaced explicit frame/PF-H/native allocated IDs/explicit column selection',
     'UI03 square axis/ParameterRef/17:2 wire and DOM/negative stagger/unsafe64 area/invalid thickness-gap-stagger',
     'UI04 native 9:4:5/zero/1mm/inner-error/PF05/PF23/PF24 widths/X-only changes/native downstream impact',
-    'UI05 cancel/late preview/dropped confirm receipt/same-dump undo-redo/face switch',
+    'UI05 cancel/late preview and generation/dropped confirm receipt/same-dump undo-redo/face and project switch/source delete-recreate incarnation',
     'UI06 no-op/source identity/one history and definition event per confirmation',
     'UI11 real download/fresh browser storage/exact state/unknown capability/missing source/tampering',
     'UI12 390/720/1280/focus/Escape/CDP composition',
     'UI13 three named wiring assertions','UI14 capabilities'],unrun:[
     'UI02 beam and multi-obstacle selection combinations',
-    'UI05 source delete/recreate incarnation and all project-switch races',
+    'UI05 arbitrary concurrent project-switch/unknown-receipt fault combinations beyond the executed witnesses',
     'UI11 older no-PF package regression (separate save suite)',
     'UI12 physical IME/touch/assistive technology',
     'UI15 final #343→#346→#347 closure']}));
@@ -294,6 +348,7 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
 
 async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
   const before=await official(),projection=await read(`[8,9].map(id=>({id,definitions:ReferenceWorkspace.getFaceProjections(id)}))`),originalSession=await read('connection.session');
+  const originalWorld=await read(`(async()=>({dump:(await apiRequest('dump')).text,references:await apiRequest('references')}))()`);
   const out=process.env.GEOMETRY_PANEL_FILL_ARTIFACT_DIR||path.join(os.tmpdir(),'geometry-tests','panel-fill-ui');
   fs.mkdirSync(out,{recursive:true});const downloadDir=fs.mkdtempSync(path.join(out,'download-'));
   await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:downloadDir,eventsEnabled:true});
@@ -332,6 +387,9 @@ async function saveAndFreshOpen({send,read,ctl,wait,check,official}){
     await rpc('DOM.setFileInputFiles',{nodeId,files:[file]},session);
     await until(`!ReferenceWorkspace.busy&&ReferenceWorkspace.context().provenance?.kind==='file'`);
     const after=await evaluate(`apiRequest('panel-fill-read')`);
+    const reopenedWorld=await evaluate(`(async()=>({dump:(await apiRequest('dump')).text,references:await apiRequest('references')}))()`);
+    check('UI11 fresh profile原生dump逐byte相同',reopenedWorld.dump===originalWorld.dump,{before:originalWorld.dump,after:reopenedWorld.dump});
+    check('UI11 fresh profile既建角材與完整幾何鍵references逐欄相同',same(reopenedWorld.references,originalWorld.references),{before:originalWorld.references,after:reopenedWorld.references});
     check('UI11 fresh profile正式重開定義與完整原生派生逐欄相同',same(after.state,before.state),{before:before.state,after:after.state});
     check('UI11 fresh profile exact wire逐欄相同',same(after.uiContract.state,before.uiContract.state),{before:before.uiContract.state,after:after.uiContract.state});
     check('UI11 fresh profile全域complete仍false且能力不擴張',after.complete===false&&same(after.uiContract.supportedActions,before.uiContract.supportedActions));
