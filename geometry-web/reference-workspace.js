@@ -34,7 +34,7 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -199,7 +199,7 @@ const ReferenceWorkspace = (() => {
     if(scenarioContext())return;
     if(recoveryWriting){recoveryAgain=true;return;}
     if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation || sceneTransaction){scheduleRecovery();return;}
-    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.WorkspaceShell?.saveState().blocked){
+    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.PanelFillWorkspace?.pending || window.WorkspaceShell?.saveState().blocked){
       recoveryMessage("draft","本次外環、校準或工作區草稿尚未套用；恢復資料只保留上次完成的工作內容。");return;
     }
     recoveryWriting=true;
@@ -358,7 +358,7 @@ const ReferenceWorkspace = (() => {
     const short = busy ? busyShort : contextConflict || editorLease==="readonly" || editorLease==="unavailable" ? "唯讀" : fe.draft?.pts?.length || fe.ulCalib?.pts?.length ? "有草稿" : c.downloaded ? "已下載" : c.dirty || !c.saved ? "未保存" : "已保存";
     document.querySelectorAll("[data-project-name]").forEach(el => { const name = c.name + ".gcanvas"; if (el.textContent !== name) { el.textContent = name; el.title = name; } });
     document.querySelectorAll("[data-project-status]").forEach(el => { if (el.textContent !== state) el.textContent = state; el.dataset.statusShort = short; el.title = state; el.setAttribute("aria-label", state); });
-    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!window.WorkspaceShell?.saveState().blocked; });
+    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!window.PanelFillWorkspace?.pending || !!window.WorkspaceShell?.saveState().blocked; });
     const p = oc.edit && active(oc.edit.bid), source = p && c.sources.get(p.sourceId);
     const summary = document.getElementById("faceReferenceSummary");
     if (summary) {
@@ -430,8 +430,8 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && !(cmd.startsWith("panel-fill-confirm ") && result.history_changed === false))notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -1346,6 +1346,7 @@ const ReferenceWorkspace = (() => {
     if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
+    if(window.PanelFillWorkspace?.pending)throw new Error("完成面與鋪排草稿尚未確認。請先確認或取消，再保存專案。");
     if(window.SectionProfileWorkspace?.hasWork)throw new Error("斷面修改尚未套用。請先確認或取消，再保存專案。");
     assertEditable(transactionOwner);
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
@@ -1774,6 +1775,7 @@ const ReferenceWorkspace = (() => {
   }
   async function openProject(readBytes,name="匯入專案",onOpened=null,options={}) {
     assertWritableLease(); assertRoomDraftIdle();
+    if(window.PanelFillWorkspace?.pending)throw new Error("請先確認或取消完成面與鋪排草稿，再開啟專案。");
     if (busy || oc.busy || history.group || pendingLoad) throw new Error("請先完成目前的操作再開啟專案。");
     const stamp={context:context(),frame:history.frame,revision:revision(context())};
     const assertCurrent=()=>{
@@ -1939,6 +1941,7 @@ const ReferenceWorkspace = (() => {
         if(policy.canonicalScene&&typeof candidate.final_scene!=="string")
           throw new Error("服務未提供原生候選場景，未變更目前專案。");
         const finalScene=policy.canonicalScene?candidate.final_scene:text;
+        if(manifest.requiredCapabilities?.includes(P.PANEL_FILL_CAPABILITY))P.assertPanelFillDefinitions(text,finalScene);
         if (manifest.featureAttachments && P.Features.evidenceLinks(manifest.featureAttachments)) {
           const response = await fetch("/sources/snapshot",{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:finalScene,signal:AbortSignal.timeout(30000)}); assertCurrent();
           if (!response.ok) throw new Error("無法驗證候選參數證據，未變更目前專案。");
@@ -2056,6 +2059,7 @@ const ReferenceWorkspace = (() => {
     pendingLoad=null;finishSceneTransaction(load.transaction);await releaseDetachedPDFContext(load.context);sync();return true;
   }
   function mayLeave() {
+    if (window.PanelFillWorkspace?.pending) {toast("請先確認或取消完成面與鋪排草稿，再切換專案。"); return false;}
     if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}
     if (window.RoomCollectionWorkspace?.hasUnacceptedCandidates && !window.confirm("未接受的房間候選只留在本分頁，離開後無法恢復。要離開嗎？")) return false;
     if (window.SectionProfileWorkspace?.hasWork) {toast("請先確認或取消斷面修改，再切換專案。"); return false;}
