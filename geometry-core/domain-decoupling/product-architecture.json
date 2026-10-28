@@ -2035,6 +2035,18 @@
       "layer": "H",
       "language": "python",
       "purpose": "Runtime-imported native binary provenance registry/package; also used by tests, but real rule_cases runtime depends on it"
+    },
+    {
+      "path": "geometry-web/panel-fill-adapter.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "UI-1 native wire and candidate lifecycle host adapter; delegates geometry to the native engine"
+    },
+    {
+      "path": "geometry-web/panel-fill-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "UI-1 existing face inspector definitions form and native result presentation host"
     }
   ],
   "exclusions": [
@@ -2641,7 +2653,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "sha256": "4dc8318421c6c77b0384af03951d6b4ed3dba23c536655e62281e038a30cd5b3",
       "hashMode": "lf"
     },
     {
@@ -3343,7 +3355,7 @@
     {
       "path": "geometry-web/room_outline_test.js",
       "reason": "Dedicated acceptance/test driver room_outline_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "a388f9a976b3c8af0fc217274c340b0ffe0d9bf2fccedd1533acf984196aba3a",
+      "sha256": "212b14a5ffaf05a256e090c0d3e9faa2f7d4aaf05d96133b2eae4e88d987a27a",
       "hashMode": "lf"
     },
     {
@@ -3379,7 +3391,7 @@
     {
       "path": "geometry-web/space_model_test.js",
       "reason": "Dedicated acceptance/test driver space_model_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "f1a0129baddedfe8aa56f0e5e1d8d960e5d6ee77c117acfd8740390cd832cfad",
+      "sha256": "0ab10984837d323084364b0be4d9ad9512c285e93170627e4b50a5eb237be13c",
       "hashMode": "lf"
     },
     {
@@ -3644,6 +3656,12 @@
       "path": "geometry-core/framing-template/oracle/selftest.py",
       "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
       "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/panel_fill_workflow_test.js",
+      "reason": "Dedicated UI-1 CDP acceptance driver; invoked by cdp_test.js, never by a product runtime entry point.",
+      "sha256": "4615ad879ac62f02e386724fcc8ff59caa976cf256e5141fcee41cd8053d735b",
       "hashMode": "lf"
     }
   ],
