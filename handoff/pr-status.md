@@ -8,11 +8,11 @@
 | geo300-capacity512-20261024.json | `codex/geo300-capacity512-20261024` | #348 | up to date (body dcc1022d) |
 | geo300-contact-index-20261024.json | `codex/geo300-contact-index-20261024` | #343 | up to date (body 9d3931a7) |
 | geo300-cut-list-storage-20261024.json | `codex/geo300-cut-list-storage-20261024` | #346 | up to date (body 4e6a42e9) |
-| geo300-prerequisites-20261024.json | `` | - | ERROR: gh api repos/ZhiQiYang/geometry-axiom/commits/codex%2Fgeo300-prerequisites-20261024-prbody exit 1: Get "https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/codex%2Fgeo300-prerequisites-20261024-prbody": read tcp 192.168.1.110:62061->20.27.177.116:443: wsarecv: An existing connection was forcibly closed by the remote host. |
+| geo300-prerequisites-20261024.json | `codex/geo300-prerequisites-20261024` | #341 | up to date (body ea1a153b) |
 | geo324-faces-20261024.json | `codex/geo324-faces-20261024` | #339 | up to date (body 283d1e24) |
 | issue128-empty-panel-rows-20261024.json | `codex/issue128-empty-panel-rows-20261024` | #347 | up to date (body 066bc660) |
 | issue214-http-fixture-20261024.json | `codex/issue214-http-fixture-20261024` | #345 | up to date (body c5515c14) |
 | issue320-connection-recovery.json | `codex/issue320-connection-recovery-20261024` | #344 | up to date (body cbb1aa30) |
 | kernel-without-woodworking-20261024.json | `codex/kernel-without-woodworking-20261023` | #340 | up to date (body db8bf228) |
-| r02-ui1.json | `codex/r02-ui1-panel-fill-20261028` | #355 | body -> 34fbb81b |
-| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | up to date (body e386f006) |
+| r02-ui1.json | `codex/r02-ui1-panel-fill-20261028` | #355 | up to date (body 34fbb81b) |
+| train-337-continue-20261024.json | `codex/train-337-continue-20261024` | #338 | body -> 41b65b02 |
