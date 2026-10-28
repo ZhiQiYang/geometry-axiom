@@ -45,13 +45,13 @@ def variants(root: Path):
     workspace = root / "geometry-web/panel-fill-workspace.js"
     app_bytes, adapter_bytes = app.read_bytes(), adapter.read_bytes()
     workspace_bytes = workspace.read_bytes()
-    entry = b"if (fill) { window.PanelFillWorkspace?.open(Number(fill.dataset.panelFillOpen),fill); return; }"
+    entry = b"window.PanelFillWorkspace?.open(Number(fill.dataset.panelFillOpen),fill);"
     request_line = re.findall(rb"^  const requestId = connection\.session[^\n]+", app_bytes, re.MULTILINE)
     if len(request_line) != 1 or request_line[0].count(b"panel-fill-confirm ") != 1:
         raise ValueError("Expected one exact requestId declaration including panel-fill-confirm")
     return [
         ("entry-handler", "UI13_ENTRY_HANDLER", app, app_bytes,
-         replace_once(app_bytes, entry, b"if (fill) { return; }")),
+         replace_once(app_bytes, entry, b"void fill;")),
         ("preview-http", "UI13_PREVIEW_HTTP", adapter, adapter_bytes,
          replace_once(adapter_bytes, b"fetch('/panel-fill/preview',",
                       b"((...args)=>Promise.reject(new Error('UI13 removed preview HTTP')))('/panel-fill/preview',")),
@@ -62,6 +62,8 @@ def variants(root: Path):
                       b"focus=null; // PF_UI12_DISABLED_FOCUS_FALLBACK")),
         ("downstream-impact", "UI04_NATIVE_DOWNSTREAM_IMPACT", workspace, workspace_bytes,
          replace_once(workspace_bytes, b"      ${s.candidate?impact(s.candidate):''}", b"")),
+        ("confirm-scene-sync", "UI05_HOST_SCENE_SYNC", adapter, adapter_bytes,
+         replace_once(adapter_bytes, b"        await this.refreshPresentation(); // PF_UI05_CONFIRM_SCENE_SYNC", b"")),
     ]
 
 
