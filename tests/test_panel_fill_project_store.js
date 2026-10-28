@@ -119,7 +119,7 @@ test('PF_SAVE_ATOMIC_REJECTION keeps World/context/dirty/history before native c
     {ok:false,error:'missing material version'},
     {ok:false,error:'missing parameter field'},
     {ok:false,error:'tampered fill reference'},
-    {ok:true,token:7,capabilities:capabilities.filter(c=>c!==P.PANEL_FILL_CAPABILITY),required_capabilities:capabilities,final_objects:{boundaries:[],placements:[]},final_scene:scene},
+    {ok:true,token:7,capabilities:nativeCapabilities.filter(c=>c!==P.ENGINEERING_CAPABILITY),required_capabilities:capabilities,final_objects:{boundaries:[],placements:[]},final_scene:scene},
     {ok:true,token:7,capabilities,required_capabilities:capabilities,final_objects:{boundaries:[],placements:[]},final_scene:scene.replace(definitions[1],'')},
     {ok:true,token:7,capabilities,required_capabilities:['engineering-spec/1'],final_objects:{boundaries:[],placements:[]},final_scene:scene}
   ]){
