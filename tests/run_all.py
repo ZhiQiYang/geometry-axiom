@@ -311,6 +311,7 @@ NODE_PURE_TEST_FILES = {
     'node:space_test_floor': 'tests/test_space_test_floor.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:identity_ledger': 'tests/test_identity_ledger.js',
+    'node:model_source_identity': 'tests/test_model_source_identity.js',
     'node:context_operations': 'tests/test_context_operations.js',
     'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',
     'node:cdp_settle': 'tests/test_cdp_settle.js',

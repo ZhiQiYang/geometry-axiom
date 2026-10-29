@@ -483,9 +483,14 @@
     if (present.size !== ids.size || result.summary.timber_count !== ids.size || result.summary.timber_volume_mm3 !== volume.toString())
       fail("角材支數或材料體積與模型不一致。");
   }
+  function modelIdentity() {
+    if (typeof IdentityLedger !== "undefined" && IdentityLedger && typeof IdentityLedger.validateSourceIdentity === "function") return IdentityLedger;
+    if (typeof module === "object" && module.exports) return require("./identity-ledger.js");
+    fail("模型來源身分能力尚未載入。");
+  }
   function validateSpaceModel(record) {
     jsonData(record);
-    if (!keys(record, ["id", "name", "created_at", "source", "input", "result"]) || !id(record.id) || !str(record.name, 200) || !record.name.trim() ||
+    if (!keys(record, ["id", "name", "created_at", "source", "input", "result"], ["sourceIdentity"]) || !id(record.id) || !str(record.name, 200) || !record.name.trim() ||
         !str(record.created_at, 100) || !Number.isFinite(Date.parse(record.created_at))) fail("空間模型紀錄不合法。");
     const s = record.source, i = record.input, r = record.result;
     if (!keys(s, ["kind", "placement_id", "boundary_id", "scene_hash"], ["projection"]) || !["scene", "example"].includes(s.kind) ||
@@ -494,6 +499,8 @@
     if (!keys(i, ["mode", "base_scene", "obstacles"], ["placement_id", "settings", "uses", "timbers"]) || !["plan", "faces"].includes(i.mode) ||
         !str(i.base_scene, MAX_MANIFEST) || !Array.isArray(i.obstacles) || i.obstacles.length > 512 ||
         !i.obstacles.every(o => keys(o, ["kind", "id"]) && ["column", "beam"].includes(o.kind) && uint(o.id))) fail("空間模型輸入不合法。");
+    const normalizedBase = String(i.base_scene).replace(/\r\n/g, "\n");
+    if (modelIdentity().deidentifiedBase(normalizedBase) !== normalizedBase) fail("模型基準必須是去身分場景。");
     if (sceneCapabilities(i.base_scene).includes(SUBDIVISION_CAPABILITY)) fail("模型 adapter 尚未支援來源子規則能力，未變更目前專案。");
     const use = u => keys(u, ["placement_id", "orientation", "purpose"]) && uint(u.placement_id) && [1, -1].includes(u.orientation) && ["boundary", "calculation-cap"].includes(u.purpose);
     if (i.mode === "plan") {
@@ -531,6 +538,10 @@
     }
     for (const key of ["volume", "clearance"]) if (r[key] && r[key].manifest.source_sha256 !== r.space.manifest.source_sha256) fail("空間與體積模型的來源不一致。");
     if (withTimbers) validateTimberModel(record);
+    if (Object.hasOwn(record, "sourceIdentity")) {
+      try { modelIdentity().validateSourceIdentity(record.sourceIdentity, {...i, boundary_id: s.boundary_id}); }
+      catch (error) { fail(error && error.message ? error.message : "模型來源身分不合法。"); }
+    }
     return record;
   }
   async function sha(bytes) {
