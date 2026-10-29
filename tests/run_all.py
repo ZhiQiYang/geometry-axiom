@@ -221,6 +221,7 @@ PY_NEEDS = {
     'test_release_gate': [],
     'test_local_launcher': ['core', 'bridge', 'model-base'],
     'test_rule_case_workbench_http': ['bridge'],
+    'test_k1_mutation_runners': [],
     'test_rule_case_host': ['bridge'],
     'test_rule_case_catalog': ['bridge'],
     'test_rule_case_definition': [],
@@ -271,6 +272,7 @@ NODE_TEST_FILES = [
     'tests/test_card_reference_project_store.js',
     'tests/test_project_store.js',
     'tests/test_shared_format17.js',
+    'tests/test_cutting_summary.js',
     'tests/test_subdivision_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
@@ -298,13 +300,15 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:cutting_layering': 'tests/test_cutting_layering.js',
     'node:cutting_owner': 'tests/test_cutting_owner.js',
     'node:cutting_plan': 'tests/test_cutting_plan.js',
     'node:cutting_project_store': 'tests/test_cutting_project_store.js',
     'node:cutting_session': 'tests/test_cutting_session.js',
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
-    'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',    'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
+    'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',
+    'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
     'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',
     'node:face_projection_lifecycle': 'tests/test_face_projection_lifecycle.js',
@@ -327,6 +331,8 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/cutting_legacy_cases.js': 'Fixed inputs for the independently pinned pre-layering cutting oracle; no tests registered',
+    'tests/generate_cutting_legacy_fixture.js': 'Explicit regeneration/check of fixed cd4bc880 Git blobs in an isolated VM; never reads current product sources',
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
     'tests/k2a_browser_receipt.cjs': 'Shared browser receipt/identity helper; registers no tests',
     'tests/k2a_rule_repin_browser.cjs': 'Required actual source-rule raw preservation and two-way repin comparison gate',

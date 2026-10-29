@@ -273,10 +273,12 @@ static bool wood_source_application(void *opaque,const EngApplication *a)
         strlen(canonical)==value.as.definition.content_size&&!memcmp(canonical,value.as.definition.content,value.as.definition.content_size);
     geo_json_free(&json);return ok&&valid!=0;
 }
+static const EngTerminal *wood_source_last_terminal(void *s)
+{return wood_engineering_sources_last_terminal(s);}
 void wood_engineering_sources_bind(WoodEngineeringSources *s,WoodEngineeringContext *context)
 {
     if(!s||!context)return;
-    context->sources=s;context->resolve_source=wood_source_resolve;context->resolve_binding=wood_source_binding;
+    context->sources=s;context->resolve_source=wood_source_resolve;context->resolve_binding=wood_source_binding;context->last_terminal=wood_source_last_terminal;
     context->source_named=wood_source_named;context->source_parameter=wood_source_parameter;
     context->depend_definition=wood_source_definition;context->validate_application=wood_source_application;
     context->source_version_field=s->tokens.version?wood_source_version_field:NULL;

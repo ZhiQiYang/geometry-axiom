@@ -1,1 +1,441 @@
-{"references":{"ok":true,"sourceFingerprint":"183bafdc9e1e3aaf0387e9d956719f41349cd85e22efe65711110e65d3780c51","guides":[],"grids":[{"id":1,"surface":1,"bindingId":null,"indexSpace":"ordinal","sourceSystem":null,"origin":[0,0],"kind":"main","parentId":null,"cell":null,"divisions":null,"bounds":{"u":[0,4000],"v":[0,3000]},"mainAlong":"u","geometryMode":"exact","geometryExact":true,"u":[916,1834,2752,3670],"uDefinition":{"source":"panel","panel":915,"gap":3,"anchor":0,"anchorExplicit":true},"v":[1831],"vDefinition":{"source":"panel","panel":1830,"gap":3,"anchor":0,"anchorExplicit":true},"lines":[{"axis":"u","index":0,"coordinate":916,"role":"secondary","priority":3,"segments":[[[916,0],[916,3000]]]},{"axis":"u","index":1,"coordinate":1834,"role":"secondary","priority":3,"segments":[[[1834,0],[1834,3000]]]},{"axis":"u","index":2,"coordinate":2752,"role":"secondary","priority":3,"segments":[[[2752,0],[2752,3000]]]},{"axis":"u","index":3,"coordinate":3670,"role":"secondary","priority":3,"segments":[[[3670,0],[3670,3000]]]},{"axis":"v","index":0,"coordinate":1831,"role":"primary","priority":2,"segments":[[[0,1831],[4000,1831]]]}],"dependencies":{"children":[],"guides":[],"timbers":[]}}],"timbers":[],"timberSupports":{"schema":"native-timber-supports/1","sourceFingerprint":"183bafdc9e1e3aaf0387e9d956719f41349cd85e22efe65711110e65d3780c51","entries":[]},"specs":[],"datums":[],"engineeringSources":[{"target":{"axis":"u","field":"panel","id":1,"kind":"grid"},"source":{"field":"u.panel","id":"application-a","kind":"application"},"override":null,"effective":915,"path":"application:application-a -> method:method-a@1 -> material:panel-a@1.width"},{"target":{"axis":"u","field":"gap","id":1,"kind":"grid"},"source":{"field":"u.gap","id":"application-a","kind":"application"},"override":null,"effective":3,"path":"application:application-a -> method:method-a@1 -> explicit integer mm"},{"target":{"axis":"v","field":"panel","id":1,"kind":"grid"},"source":{"field":"v.panel","id":"application-a","kind":"application"},"override":null,"effective":1830,"path":"application:application-a -> method:method-a@1 -> material:panel-a@1.length"},{"target":{"axis":"v","field":"gap","id":1,"kind":"grid"},"source":{"field":"v.gap","id":"application-a","kind":"application"},"override":null,"effective":3,"path":"application:application-a -> method:method-a@1 -> explicit integer mm"}],"assembly":{"capabilities":["assembly-rule-authoring/1","assembly-timber-generation/1"],"rules":[],"bindings":[],"instances":[]}},"engineering-read":{"ok":true,"revision":13,"definition_sha256":"183bafdc9e1e3aaf0387e9d956719f41349cd85e22efe65711110e65d3780c51","state":{"capabilities":["engineering-spec/1","parameters/1","assembly-rule-authoring/1","assembly-timber-generation/1","grid-subdivision-rules/1","section-profile/1"],"required_capabilities":["engineering-spec/1"],"native_capabilities":["section-profile-native/1"],"specs":[],"materials":[{"id":"panel-a","kind":"panel","length":1830,"name":"面材","notes":null,"thickness":"6.50","version":1,"width":915,"fingerprint":"59f0223d8b38d35a8c585f0bd6f0f7138bb9873883ef9e6c1b2ca2b056ce56a6","archived":false}],"methods":[{"gap":3,"id":"method-a","longAxis":"v","mainAlong":"u","name":"做法","panel":{"id":"panel-a","version":1},"version":1,"fingerprint":"fa087d573273638dbbc6897d3dcb2ae08b93dff49d4ba45f282232ec80e2ad05","archived":false}],"applications":[{"anchorOptions":{"u":{"kind":"coordinate","value":0},"v":{"kind":"coordinate","value":0}},"id":"application-a","method":{"id":"method-a","version":1},"overrides":{},"placement_id":1,"bindings":[{"axis":"u","field":"panel","id":1,"kind":"grid"},{"axis":"u","field":"gap","id":1,"kind":"grid"},{"axis":"v","field":"panel","id":1,"kind":"grid"},{"axis":"v","field":"gap","id":1,"kind":"grid"}]}],"sources":[{"target":{"axis":"u","field":"panel","id":1,"kind":"grid"},"source":{"field":"u.panel","id":"application-a","kind":"application"},"override":null,"effective":915,"path":"application:application-a -> method:method-a@1 -> material:panel-a@1.width"},{"target":{"axis":"u","field":"gap","id":1,"kind":"grid"},"source":{"field":"u.gap","id":"application-a","kind":"application"},"override":null,"effective":3,"path":"application:application-a -> method:method-a@1 -> explicit integer mm"},{"target":{"axis":"v","field":"panel","id":1,"kind":"grid"},"source":{"field":"v.panel","id":"application-a","kind":"application"},"override":null,"effective":1830,"path":"application:application-a -> method:method-a@1 -> material:panel-a@1.length"},{"target":{"axis":"v","field":"gap","id":1,"kind":"grid"},"source":{"field":"v.gap","id":"application-a","kind":"application"},"override":null,"effective":3,"path":"application:application-a -> method:method-a@1 -> explicit integer mm"}],"parameters":[],"assembly":{"capabilities":["assembly-rule-authoring/1","assembly-timber-generation/1"],"rules":[],"bindings":[],"instances":[]},"sectionProfiles":{"profiles":[],"members":[],"runs":[]}}},"assembly-read":{"ok":true,"revision":13,"definition_sha256":"183bafdc9e1e3aaf0387e9d956719f41349cd85e22efe65711110e65d3780c51","state":{"capabilities":["assembly-rule-authoring/1","assembly-timber-generation/1"],"rules":[],"bindings":[],"instances":[]}}}
+{
+  "references": {
+    "ok": true,
+    "sourceFingerprint": "183bafdc9e1e3aaf0387e9d956719f41349cd85e22efe65711110e65d3780c51",
+    "guides": [],
+    "grids": [
+      {
+        "id": 1,
+        "surface": 1,
+        "bindingId": null,
+        "indexSpace": "ordinal",
+        "sourceSystem": null,
+        "origin": [
+          0,
+          0
+        ],
+        "kind": "main",
+        "parentId": null,
+        "cell": null,
+        "divisions": null,
+        "bounds": {
+          "u": [
+            0,
+            4000
+          ],
+          "v": [
+            0,
+            3000
+          ]
+        },
+        "mainAlong": "u",
+        "geometryMode": "exact",
+        "geometryExact": true,
+        "u": [
+          916,
+          1834,
+          2752,
+          3670
+        ],
+        "uDefinition": {
+          "source": "panel",
+          "panel": 915,
+          "gap": 3,
+          "anchor": 0,
+          "anchorExplicit": true
+        },
+        "v": [
+          1831
+        ],
+        "vDefinition": {
+          "source": "panel",
+          "panel": 1830,
+          "gap": 3,
+          "anchor": 0,
+          "anchorExplicit": true
+        },
+        "lines": [
+          {
+            "axis": "u",
+            "index": 0,
+            "coordinate": 916,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  916,
+                  0
+                ],
+                [
+                  916,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "u",
+            "index": 1,
+            "coordinate": 1834,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  1834,
+                  0
+                ],
+                [
+                  1834,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "u",
+            "index": 2,
+            "coordinate": 2752,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  2752,
+                  0
+                ],
+                [
+                  2752,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "u",
+            "index": 3,
+            "coordinate": 3670,
+            "role": "secondary",
+            "priority": 3,
+            "segments": [
+              [
+                [
+                  3670,
+                  0
+                ],
+                [
+                  3670,
+                  3000
+                ]
+              ]
+            ]
+          },
+          {
+            "axis": "v",
+            "index": 0,
+            "coordinate": 1831,
+            "role": "primary",
+            "priority": 2,
+            "segments": [
+              [
+                [
+                  0,
+                  1831
+                ],
+                [
+                  4000,
+                  1831
+                ]
+              ]
+            ]
+          }
+        ],
+        "dependencies": {
+          "children": [],
+          "guides": [],
+          "timbers": []
+        }
+      }
+    ],
+    "timbers": [],
+    "timberSupports": {
+      "schema": "native-timber-supports/1",
+      "sourceFingerprint": "183bafdc9e1e3aaf0387e9d956719f41349cd85e22efe65711110e65d3780c51",
+      "entries": []
+    },
+    "specs": [],
+    "datums": [],
+    "engineeringSources": [
+      {
+        "target": {
+          "axis": "u",
+          "field": "panel",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.panel",
+          "id": "application-a",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 915,
+        "path": "application:application-a -> method:method-a@1 -> material:panel-a@1.width"
+      },
+      {
+        "target": {
+          "axis": "u",
+          "field": "gap",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "u.gap",
+          "id": "application-a",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 3,
+        "path": "application:application-a -> method:method-a@1 -> explicit integer mm"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "panel",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.panel",
+          "id": "application-a",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 1830,
+        "path": "application:application-a -> method:method-a@1 -> material:panel-a@1.length"
+      },
+      {
+        "target": {
+          "axis": "v",
+          "field": "gap",
+          "id": 1,
+          "kind": "grid"
+        },
+        "source": {
+          "field": "v.gap",
+          "id": "application-a",
+          "kind": "application"
+        },
+        "override": null,
+        "effective": 3,
+        "path": "application:application-a -> method:method-a@1 -> explicit integer mm"
+      }
+    ],
+    "assembly": {
+      "capabilities": [
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1"
+      ],
+      "rules": [],
+      "bindings": [],
+      "instances": []
+    }
+  },
+  "engineering-read": {
+    "ok": true,
+    "revision": 13,
+    "definition_sha256": "183bafdc9e1e3aaf0387e9d956719f41349cd85e22efe65711110e65d3780c51",
+    "state": {
+      "capabilities": [
+        "engineering-spec/1",
+        "parameters/1",
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1",
+        "grid-subdivision-rules/1",
+        "section-profile/1",
+        "grid-card-reference/1"
+      ],
+      "required_capabilities": [
+        "engineering-spec/1"
+      ],
+      "native_capabilities": [
+        "section-profile-native/1",
+        "panel-fill-native/1"
+      ],
+      "specs": [],
+      "materials": [
+        {
+          "id": "panel-a",
+          "kind": "panel",
+          "length": 1830,
+          "name": "面材",
+          "notes": null,
+          "thickness": "6.50",
+          "version": 1,
+          "width": 915,
+          "fingerprint": "59f0223d8b38d35a8c585f0bd6f0f7138bb9873883ef9e6c1b2ca2b056ce56a6",
+          "archived": false
+        }
+      ],
+      "methods": [
+        {
+          "gap": 3,
+          "id": "method-a",
+          "longAxis": "v",
+          "mainAlong": "u",
+          "name": "做法",
+          "panel": {
+            "id": "panel-a",
+            "version": 1
+          },
+          "version": 1,
+          "fingerprint": "fa087d573273638dbbc6897d3dcb2ae08b93dff49d4ba45f282232ec80e2ad05",
+          "archived": false
+        }
+      ],
+      "applications": [
+        {
+          "anchorOptions": {
+            "u": {
+              "kind": "coordinate",
+              "value": 0
+            },
+            "v": {
+              "kind": "coordinate",
+              "value": 0
+            }
+          },
+          "id": "application-a",
+          "method": {
+            "id": "method-a",
+            "version": 1
+          },
+          "overrides": {},
+          "placement_id": 1,
+          "bindings": [
+            {
+              "axis": "u",
+              "field": "panel",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "u",
+              "field": "gap",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "panel",
+              "id": 1,
+              "kind": "grid"
+            },
+            {
+              "axis": "v",
+              "field": "gap",
+              "id": 1,
+              "kind": "grid"
+            }
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "target": {
+            "axis": "u",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.panel",
+            "id": "application-a",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 915,
+          "path": "application:application-a -> method:method-a@1 -> material:panel-a@1.width"
+        },
+        {
+          "target": {
+            "axis": "u",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "u.gap",
+            "id": "application-a",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-a -> method:method-a@1 -> explicit integer mm"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "panel",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.panel",
+            "id": "application-a",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 1830,
+          "path": "application:application-a -> method:method-a@1 -> material:panel-a@1.length"
+        },
+        {
+          "target": {
+            "axis": "v",
+            "field": "gap",
+            "id": 1,
+            "kind": "grid"
+          },
+          "source": {
+            "field": "v.gap",
+            "id": "application-a",
+            "kind": "application"
+          },
+          "override": null,
+          "effective": 3,
+          "path": "application:application-a -> method:method-a@1 -> explicit integer mm"
+        }
+      ],
+      "parameters": [],
+      "assembly": {
+        "capabilities": [
+          "assembly-rule-authoring/1",
+          "assembly-timber-generation/1"
+        ],
+        "rules": [],
+        "bindings": [],
+        "instances": []
+      },
+      "sectionProfiles": {
+        "profiles": [],
+        "members": [],
+        "runs": []
+      }
+    }
+  },
+  "assembly-read": {
+    "ok": true,
+    "revision": 13,
+    "definition_sha256": "183bafdc9e1e3aaf0387e9d956719f41349cd85e22efe65711110e65d3780c51",
+    "state": {
+      "capabilities": [
+        "assembly-rule-authoring/1",
+        "assembly-timber-generation/1"
+      ],
+      "rules": [],
+      "bindings": [],
+      "instances": []
+    }
+  }
+}

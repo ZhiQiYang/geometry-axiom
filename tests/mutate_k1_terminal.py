@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -26,14 +27,14 @@ CASES = [
     ("omit-slot-field", "geometry-web/assembly_bridge.inc",
      'fputs(",\\\"terminal\\\":",stdout);json_eng_terminal(&terminal);', '',
      "test_n4_owned_slot_effective_material_leaf"),
-    ("wrong-application-leaf", "geometry-core/engineering.inc",
-     'if (terminal && s->kind!=ENG_APPLICATION)', 'if (terminal)',
+    ("wrong-application-leaf", "geometry-templates/woodworking/native/engineering.c",
+     'if(terminal&&s->kind!=ENG_APPLICATION)', 'if(terminal)',
      "test_n2_application_material_and_gap_literal"),
-    ("wrong-material-fingerprint", "geometry-core/engineering.inc",
+    ("wrong-material-fingerprint", "geometry-templates/woodworking/native/engineering.c",
      'snprintf(terminal->fingerprint,sizeof terminal->fingerprint,"%s",m->fingerprint);',
      'memset(terminal->fingerprint,\'0\',64);terminal->fingerprint[64]=0;',
      "test_n1_literal_spec_parameter_and_material_leaves"),
-    ("wrong-override-leaf", "geometry-core/engineering.inc",
+    ("wrong-override-leaf", "geometry-templates/woodworking/native/engineering.c",
      'b->has_override?&b->override_value:&b->source,&b->target,pid,role,value,path,cap,terminal',
      '&b->source,&b->target,pid,role,value,path,cap,terminal',
      "test_n3_face_and_object_overrides_replace_the_terminal"),
@@ -41,6 +42,14 @@ CASES = [
      'json_eng_terminal(resolved?&terminal:NULL)', 'if(resolved)json_eng_terminal(&terminal);else fputs("{\\\"kind\\\":\\\"literal\\\"}",stdout)',
      "test_n5_invalid_preview_returns_null_without_mutating_world"),
 ]
+
+
+def killed_by_named_assertion(code, log, method):
+    return (code == 1 and "AssertionError" in log and
+            re.search(r"^FAIL: " + re.escape(method) + r"\s", log, re.M) is not None and
+            "errors=" not in log and "skipped" not in log and
+            "AddressSanitizer" not in log and "runtime error:" not in log and
+            "BridgeClosed" not in log and "Segmentation fault" not in log)
 
 
 def main():
@@ -54,13 +63,15 @@ def main():
     results = []
     with tempfile.TemporaryDirectory(prefix="k1-terminal-mutations-") as directory:
         source = Path(directory)
-        for parent in (ROOT, ROOT / "geometry-core", ROOT / "geometry-web"):
+        source_hashes = {}
+        for parent in (ROOT, ROOT / "geometry-core", ROOT / "geometry-web", ROOT / "geometry-app", ROOT / "geometry-templates"):
             paths = parent.iterdir() if parent == ROOT else parent.rglob("*")
             for path in paths:
                 if path.is_file() and path.suffix in (".c", ".h", ".inc") and "vendor" not in path.parts:
                     target = source / path.relative_to(ROOT)
                     target.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(path, target)
+                    source_hashes[path.relative_to(ROOT).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
         binaries.ROOT = source
         for name, filename, before, after, method in [("baseline", "", "", "", ""), *CASES]:
             target = source / filename if filename else None
@@ -90,13 +101,18 @@ def main():
                 if name == "baseline":
                     verdict = "passed" if run.returncode == 0 and "skipped" not in log else "failed"
                 else:
-                    verdict = "killed" if run.returncode == 1 and "AssertionError" in log and "errors=" not in log and "skipped" not in log else "not-killed"
+                    verdict = "killed" if killed_by_named_assertion(run.returncode, log, method) else "not-killed"
             log_path = args.out.with_name(args.out.stem + "-" + name + ".log")
             log_path.write_text(log, encoding="utf-8")
             results.append({"case": name, "verdict": verdict, "test": method,
+                            "source": filename or None,
+                            "mutation_sha256": hashlib.sha256((before + '\0' + after).encode()).hexdigest() if target else None,
                             "binary_sha256": hashlib.sha256(binary.path.read_bytes()).hexdigest() if binary.path.exists() else None,
                             "log": str(log_path)})
-            args.out.write_text(json.dumps({"schema": "k1-terminal-mutations/1", "results": results}, indent=2), encoding="utf-8")
+            judges = [ROOT / "tests" / name for name in ("test_engineering_terminal.py", "binaries.py", "fixtures/k1_terminal_legacy_replies.json")]
+            args.out.write_text(json.dumps({"schema": "k1-terminal-mutations/1", "sources": source_hashes,
+                "judges": {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None for p in judges},
+                "results": results}, indent=2) + '\n', encoding="utf-8")
             print(name + ": " + verdict, flush=True)
             if target:
                 target.write_bytes(original)

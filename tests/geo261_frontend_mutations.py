@@ -17,7 +17,9 @@ import sys
 import tempfile
 
 FILES = (
+    'geometry-core/interval-allocation.js',
     'geometry-app/application.js',
+    'geometry-templates/woodworking/cutting.js',
     'geometry-templates/woodworking/frontend.js',
     'geometry-web/app.js',
     'geometry-web/engineering-workspace.js',
@@ -29,6 +31,7 @@ FILES = (
     'geometry-web/vendor/fflate/umd/index.js',
     'geometry-web/grid-system-workspace.js',
     'geometry-web/feature-attachments.js',
+    'geometry-web/cutting-settings.js',
     'geometry-web/source-plane.js',
     'geometry-web/reference-display.js',
     'geometry-web/evidence-links.js',

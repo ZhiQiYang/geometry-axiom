@@ -116,6 +116,8 @@ typedef struct {
     void *sources;
     bool (*resolve_source)(void *,const EngDimensionSource *,const EngTarget *,uint32_t,int,GeoCoord *,char *,size_t);
     bool (*resolve_binding)(void *,const EngBinding *,GeoCoord *,char *,size_t);
+    /* D49: leaf reached by the last resolve_source/resolve_binding call. */
+    const struct EngTerminal *(*last_terminal)(void *);
     bool (*source_named)(void *,const char *,GeoCoord *);
     bool (*source_parameter)(void *,GeoParameterRef,GeoCoord *,char *,size_t);
     bool (*depend_definition)(void *,int,const char *,uint32_t);
@@ -173,7 +175,7 @@ bool wood_eng_target_context(const WoodEngineeringContext *w,const EngTarget *t,
 /* D49: read-only leaf reached by the existing resolver. A NULL terminal
  * leaves every existing caller unchanged. Application and override publish
  * the leaf, not their own kind. */
-typedef struct {
+typedef struct EngTerminal {
     bool valid;
     EngSourceKind kind;
     EngVersionRef material;
