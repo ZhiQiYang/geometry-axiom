@@ -16,7 +16,10 @@ const CASE_IDS = Object.freeze([
   'pin_shared_consumers', 'lost_card_existing_pins', 'lost_card_same_id_rebuild',
   'card_render_repeat_repeat', 'card_render_repeat_panel', 'card_render_panel_panel',
   'inspector_repeat_repeat', 'inspector_repeat_panel', 'inspector_panel_panel',
-  'inspector_direct_control', 'inspector_parameter_control'
+  'inspector_direct_control', 'inspector_parameter_control',
+  'compat_raw_capability', 'compat_legacy_unchanged', 'compat_raw_rule_roundtrip',
+  'compat_mixed_roundtrip', 'compat_reader_rejection_atomic',
+  'compat_historical_pins', 'compat_geo219_reduction'
 ]);
 function selectCases(value) {
   if (value === undefined) return [...CASE_IDS];
@@ -359,6 +362,56 @@ module.exports = async function gridCardEntryTests({
   const fromArchive = loaded => {
     const record = loaded.manifest.featureAttachments?.records.find(item => item.kind === 'grid-draft');
     return P.Features.gridDrafts(record ? record.value : null);
+  };
+  const writeArchive = async (saved, name, manifest, writer = P) => {
+    const file = path.join(saved.directory, name + '.gcanvas');
+    fs.writeFileSync(file, await writer.pack(saved.loaded.scene, manifest, saved.loaded.sources, zip));
+    return file;
+  };
+  const rejectFileWithoutReplacement = async (file, code) => {
+    await leave();
+    const before = {world:await dump(), drafts:await allRaw(), metadata:await page(() => ReferenceWorkspace.manifest()),
+      state:await page(() => ReferenceWorkspace.getProjectState()),
+      nativeRevision:(await query('engineering-read')).revision};
+    const hp = await pinHistory();
+    const cursor = await page(() => window.__p353ApiTrace.calls.length);
+    await send('Page.setInterceptFileChooserDialog', {enabled:true});
+    try {
+      await page(() => {
+        window.__p353RejectedFileChange = false;
+        document.getElementById('projectFile').addEventListener('change', () => {
+          window.__p353RejectedFileChange = true;
+        }, {once:true, capture:true});
+      });
+      await ctl('#fileMenuBtn');
+      const dirty = await page(() => ReferenceWorkspace.context().dirty);
+      if (dirty) await expectNativeDialog(() => ctl('#btnOpenProject'), {
+        message:'目前專案有尚未保存的變更。要離開目前專案嗎？', accept:true
+      });
+      else await ctl('#btnOpenProject');
+      const document = await send('DOM.getDocument', {depth:0});
+      const input = await send('DOM.querySelector', {nodeId:document.result.root.nodeId, selector:'#projectFile'});
+      need('COMPAT_FILE_INPUT', input.result.nodeId > 0);
+      await send('DOM.setFileInputFiles', {nodeId:input.result.nodeId, files:[file]});
+      await waitProduct(code + '_FINISHED', "window.__p353RejectedFileChange===true&&!ReferenceWorkspace.busy&&document.getElementById('projectFile').value===''");
+      const observed = await page(start => ({
+        calls:window.__p353ApiTrace.calls.slice(start),
+        message:[...document.querySelectorAll('#toastRegion .toast')].map(node => node.textContent).join('\n'),
+        state:ReferenceWorkspace.getProjectState()
+      }), cursor);
+      check(code + '_REJECTED', /能力/.test(observed.message), observed);
+      // Background recovery may read dump after the rejected import finishes.
+      // Its read is allowed; every other command (including any mutation) fails.
+      check(code + '_NO_NATIVE_WRITE', observed.calls.every(row => row.command === 'dump' && row.result?.ok === true), observed.calls);
+      check(code + '_PROJECT_UNCHANGED', same(observed.state,before.state) &&
+        (await dump()) === before.world && (await query('engineering-read')).revision === before.nativeRevision &&
+        same(await allRaw(),before.drafts) && same(await page(() => ReferenceWorkspace.manifest()),before.metadata) &&
+        await history.unchanged(hp), observed.state);
+    } finally {
+      await send('Page.setInterceptFileChooserDialog', {enabled:false});
+      await page(() => {delete window.__p353RejectedFileChange;});
+      await releasePin(hp);
+    }
   };
   const operationsPreview = async operations => {
     const p = await page(async ops => {
@@ -1005,6 +1058,145 @@ module.exports = async function gridCardEntryTests({
       check('INSPECTOR_DIRECT_EDIT_COMMITTED', after.name === 'R353 direct edited' && !after.cardReference &&
         after.uDefinition.step === 650 && after.uDefinition.phase === before.uDefinition.phase &&
         same(after.vDefinition,before.vDefinition), after);
+    },
+    async compat_raw_capability() {
+      await fixture();
+      await newCardGrid('R353 raw capability');
+      await fill('#igUPhase',' - ');
+      const draft = await raw(), world = await dump(), saved = await saveFile();
+      check('COMPAT_RAW_CAPABILITY_DECLARED', saved.loaded.manifest.requiredCapabilities.includes('grid-card-draft/1'), saved.loaded.manifest);
+      check('COMPAT_RAW_ONLY_MATRIX', saved.loaded.manifest.format === P.FEATURE_FORMAT &&
+        !saved.loaded.manifest.requiredCapabilities.includes('grid-card-reference/1') &&
+        !saved.loaded.scene.includes('requires grid-card-draft/1') && same(fromArchive(saved.loaded).drafts,[draft]));
+      for (const [name, values] of [['empty',['','','']],['unknown',['10','999','8']]]) {
+        const manifest = structuredClone(saved.loaded.manifest);
+        const record = manifest.featureAttachments.records.find(item => item.kind === 'grid-draft');
+        const value = record.value.schema === P.Features.GRID_DRAFTS_SCHEMA ? record.value.drafts[0] : record.value;
+        ['igCard','igCardU','igCardV'].forEach((field,index) => {value.rawForm[field] = values[index];});
+        const file = await writeArchive(saved,'raw-' + name,manifest);
+        const loaded = await P.unpack(new Uint8Array(fs.readFileSync(file)),zip);
+        check('COMPAT_RAW_PROPERTY_PRESENCE_' + name.toUpperCase(), loaded.manifest.requiredCapabilities.includes('grid-card-draft/1'));
+        await openFile(file,manifest.projectId);
+        check('COMPAT_RAW_PORTABLE_' + name.toUpperCase(), same((await allRaw()).drafts,[value]) && (await dump()) === world);
+      }
+    },
+    async compat_legacy_unchanged() {
+      let legacy;
+      try {legacy = require('../tests/pr353_legacy_reader.js').loadLegacyReader();}
+      catch (error) {throw failure('precondition','COMPAT_LEGACY_READER_SOURCE',error.message);}
+      for (const rules of [false,true]) {
+        if (rules) await cleanup();
+        await fixture();
+        if (rules) {
+          await applyFixture([{op:'put-grid-system',value:{id:4,name:'R353 legacy direct',mainAlong:'none',u:'repeat -5 12',v:'repeat 7 30'}}]);
+          await openSource(4);
+          // Create the /2 editing session before any /1 draft exists. This
+          // compatibility test does not silently replace an existing base pin.
+          await ctl('#igRuleAdd');
+          await wait("!document.getElementById('igRuleEditor').hidden");
+        } else await openNew('  R353 legacy raw  ');
+        await choose('#igUStepSource','10:3');
+        if (rules) {
+          await fill('#igRuleName','  legacy rule  ');
+          await fill('#igRuleU',' - ');
+        } else await fill('#igVPhase',' - ');
+        const draft = await raw(), world = await dump(), saved = await saveFile();
+        check('COMPAT_LEGACY_CARDLESS_' + rules, !['igCard','igCardU','igCardV'].some(field => Object.hasOwn(draft.rawForm,field)) &&
+          !saved.loaded.manifest.requiredCapabilities.includes('grid-card-draft/1') &&
+          draft.schema === (rules ? 'grid-editor-draft/2' : 'grid-editor-draft/1'),draft);
+        const oldFile = await writeArchive(saved,rules ? 'legacy-v2' : 'legacy-v1',saved.loaded.manifest,legacy);
+        const oldLoaded = await legacy.unpack(new Uint8Array(fs.readFileSync(oldFile)),zip);
+        check('COMPAT_LEGACY_REAL_WRITER_' + rules, same(fromArchive(oldLoaded).drafts,[draft]) && oldLoaded.scene === world);
+        await openFile(oldFile,oldLoaded.manifest.projectId);
+        check('COMPAT_LEGACY_OPEN_EXACT_' + rules, same((await allRaw()).drafts,[draft]) && (await dump()) === world);
+        await openDraft(draft.draftId);
+        check('COMPAT_LEGACY_RESTORE_EXACT_' + rules, same(await raw(),draft),await raw());
+      }
+    },
+    async compat_raw_rule_roundtrip() {
+      await fixture();
+      await applyFixture([{op:'put-grid-system',value:{id:4,name:'R353 raw-only rule base',mainAlong:'none',u:'repeat -5 12',v:'repeat 7 30'}}]);
+      await openSource(4);
+      await ctl('#igRuleAdd');
+      await wait("!document.getElementById('igRuleEditor').hidden");
+      await map(10,3,8);
+      await fill('#igRuleName','  R353 raw rule <&>  ');
+      await fill('#igRuleU',' - ');
+      const draft = await raw(), world = await dump();
+      check('COMPAT_RULE_RAW_CAPTURE', draft.schema === 'grid-editor-draft/2' &&
+        draft.ruleDraft?.rawForm.name === '  R353 raw rule <&>  ' && draft.ruleDraft.rawForm.divisionsU === ' - ' &&
+        draft.rawForm.igCard === '10' && draft.rawForm.igCardU === '3' && draft.rawForm.igCardV === '8',draft);
+      const saved = await saveFile();
+      check('COMPAT_RULE_RAW_MATRIX', saved.loaded.manifest.format === P.GRID_RULE_FORMAT &&
+        ['grid-editor-draft/2','grid-card-draft/1'].every(cap => saved.loaded.manifest.requiredCapabilities.includes(cap)) &&
+        !saved.loaded.manifest.requiredCapabilities.includes('grid-card-reference/1') && same(fromArchive(saved.loaded).drafts,[draft]));
+      await openFile(saved.file,saved.loaded.manifest.projectId);
+      await openDraft(draft.draftId);
+      check('COMPAT_RULE_RAW_REOPEN_EXACT', same(await raw(),draft) && (await dump()) === world && await page(() =>
+        document.getElementById('igRuleU').value === ' - ' && document.getElementById('igRuleName').value === '  R353 raw rule <&>  '));
+    },
+    async compat_mixed_roundtrip() {
+      await fixture({source:true});
+      const original = await source(4);
+      await newCardGrid('R353 mixed raw');
+      await fill('#igUPhase',' - ');
+      const draft = await raw(), world = await dump(), saved = await saveFile();
+      check('COMPAT_MIXED_MATRIX', saved.loaded.manifest.format === P.CARD_FORMAT &&
+        ['parameters/1','grid-card-reference/1','grid-card-draft/1'].every(cap => saved.loaded.manifest.requiredCapabilities.includes(cap)) &&
+        saved.loaded.scene.includes('requires grid-card-reference/1') && !saved.loaded.scene.includes('requires grid-card-draft/1'),saved.loaded.manifest);
+      await openFile(saved.file,saved.loaded.manifest.projectId);
+      check('COMPAT_MIXED_FORMAL_REOPEN', (await dump()) === world && same((await source(4)).cardReference,original.cardReference) &&
+        same((await allRaw()).drafts,[draft]));
+      await openDraft(draft.draftId);
+      check('COMPAT_MIXED_RAW_RESTORE', same(await raw(),draft),await raw());
+    },
+    async compat_reader_rejection_atomic() {
+      await fixture();
+      await newCardGrid('R353 incompatible raw');
+      const saved = await saveFile();
+      const entries = zip.unzipSync(saved.bytes);
+      const manifest = JSON.parse(new TextDecoder().decode(entries['manifest.json']));
+      // Corrupt only the declaration, keeping the real file's scene/hash/raw.
+      // This exercises the current app's formal Open staging path. The fixed
+      // 405f8c5 reader itself is tested separately with its verified originals.
+      manifest.requiredCapabilities = manifest.requiredCapabilities.filter(cap => cap !== 'grid-card-draft/1');
+      entries['manifest.json'] = new TextEncoder().encode(JSON.stringify(manifest));
+      const file = path.join(saved.directory,'undeclared-card-raw.gcanvas');
+      fs.writeFileSync(file,zip.zipSync(entries,{level:0}));
+      await rejectFileWithoutReplacement(file,'COMPAT_UNDECLARED_RAW');
+    },
+    async compat_historical_pins() {
+      await fixture();
+      await newCardGrid('R353 historical source evidence');
+      const draft = await raw();
+      await leave();
+      await applyFixture([parameter(10,12,60)]);
+      const actual = await actualFieldPin(10,8);
+      need('COMPAT_HISTORICAL_FIXTURE_STALE', fieldPin(draft,10,8).fingerprint !== actual.fingerprint);
+      const world = await dump(), saved = await saveFile();
+      check('COMPAT_HISTORICAL_ARCHIVE_EXACT', same(fromArchive(saved.loaded).drafts,[draft]));
+      await openFile(saved.file,saved.loaded.manifest.projectId);
+      check('COMPAT_HISTORICAL_OPEN_EXACT', same((await allRaw()).drafts,[draft]) && (await dump()) === world);
+      await openDraft(draft.draftId);
+      check('COMPAT_HISTORICAL_PINS_NOT_RECOMPUTED', same(await raw(),draft) &&
+        fieldPin(await raw(),10,8).fingerprint !== actual.fingerprint,await raw());
+      const hp = await pinHistory();
+      await rejectedAttempt('COMPAT_HISTORICAL_STALE');
+      check('COMPAT_HISTORICAL_PREVIEW_REJECTED', !await visible('.reference-impact[open]') &&
+        same(await raw(),draft) && (await dump()) === world && await history.unchanged(hp));
+      await releasePin(hp);
+    },
+    async compat_geo219_reduction() {
+      await fixture();
+      await newCardGrid('R353 merged help');
+      check('COMPAT_GEO219_ONE_HELP_BLOCK', await page(() => {
+        const note = document.getElementById('igViewNote');
+        return document.querySelectorAll('#infiniteGridWorkspace .ig-def-hint').length === 0 &&
+          document.querySelectorAll('#igViewNote').length === 1 &&
+          /拖曳平移/.test(note?.textContent || '') && /卡片標題/.test(note?.textContent || '');
+      }));
+      check('COMPAT_GEO219_ENTRY_RETAINED', await visible('#igCardRef') && await visible('#igDefinition') &&
+        same(await mapping(),{card:'10',u:'3',v:'8'}));
     },
     async inspector_parameter_control() {
       await effectiveWorld('repeat_repeat'); await openInspector(6);
