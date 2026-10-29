@@ -71,9 +71,54 @@
     guard(current);
     return {scene:pin.scene,revision:pin.revision};
   }
+  function withDecisions(roots) {
+    return (roots || []).map(root => {
+      const key = root.kind + ':' + root.id;
+      const remove = dialog.querySelector(`[data-mu-remove="${key}"]`)?.checked;
+      const retarget = dialog.querySelector(`[data-mu-retarget="${key}"]`)?.checked;
+      return {...root, decision: remove ? 'remove' : retarget ? 'retarget' : undefined};
+    });
+  }
+  function identityBlocksPreview(current) {
+    return !!(current?.judged && globalThis.IdentityLedger && !IdentityLedger.previewAllowed(withDecisions(current.judged)));
+  }
+  async function readIdentityGraph() {
+    const response = await api('source-inspect');
+    if (response?.ok !== true) throw Error(response?.error || '無法讀取現行來源身分。');
+    return SourceInspector.index(response);
+  }
   function createController(current) {
+    const identityHooks = current.ledgerActive && globalThis.IdentityLedger ? {
+      async inspectIdentity(next) {
+        const graph = await readIdentityGraph();
+        if (current.before?.sourceIdentity) {
+          current.judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, graph.nodes);
+          if (!IdentityLedger.previewAllowed(withDecisions(current.judged))) throw Error('有來源已不存在、已重建或衝突。請明確移除或改指後再預覽。');
+        } else current.judged = null;
+        current.builtIdentity = IdentityLedger.buildSourceIdentity({...next.input, boundary_id:next.source?.boundary_id}, graph.nodes);
+        const roots = (current.judged || []).map(root => ({role:root.role, kind:root.kind, id:root.id, before:root.incarnation, current:root.incarnation, status:root.status}));
+        return {schema:'geometry-model-update-candidate/2', identity:{ledger:'identity-ledger/1', roots}};
+      },
+      async confirmIdentity(_review, next) {
+        const graph = await readIdentityGraph();
+        if (current.before?.sourceIdentity) {
+          const again = IdentityLedger.judgeRoots(current.before.sourceIdentity, graph.nodes);
+          const verdict = IdentityLedger.confirmIdentity(current.judged, again);
+          if (!verdict.ok) return verdict;
+        }
+        const identity = IdentityLedger.buildSourceIdentity({...next.input, boundary_id:next.source?.boundary_id}, graph.nodes);
+        const stamp = (current.builtIdentity?.roots || []).map(root => ({id:root.id, incarnation:root.incarnation, status:'stored'}));
+        const now = identity.roots.map(root => ({id:root.id, incarnation:root.incarnation, status:'stored'}));
+        const verdict = IdentityLedger.confirmIdentity(stamp, now);
+        if (!verdict.ok) return verdict;
+        const normalized = String(next.input.base_scene).replace(/\r\n/g, '\n');
+        if (IdentityLedger.deidentifiedBase(normalized) !== normalized) return {ok:false, code:'STALE'};
+        return {ok:true, sourceIdentity:identity};
+      }
+    } : {};
     return ModelUpdate.create({getState:hostState,getRecord:record,
       readSource:options => readPinnedSource(current, options),
+      ...identityHooks,
       async produce(data, {signal}) {
         const response = await fetch('/model/update-preview', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),signal});
         const result = await response.json();
@@ -88,7 +133,7 @@
     dialog = document.createElement('dialog'); dialog.id = 'muDialog'; dialog.className = 'mu-dialog';
     dialog.setAttribute('aria-labelledby', 'muTitle');
     dialog.innerHTML = `<header class="mu-header"><div><h2 id="muTitle">採用現行來源</h2><p id="muName"></p></div><button id="muClose" class="mu-button" type="button">取消更新</button></header>
-      <div class="mu-body"><p class="mu-warning" id="muIdentity">來源身分連續性未知（unknown）。請明選現行來源；相同名稱或編號不代表同一物件。</p>
+      <div class="mu-body"><p class="mu-warning" id="muIdentity">來源身分連續性未知（unknown）。請明選現行來源；相同名稱或編號不代表同一物件。</p><button id="muActivate" class="mu-button" type="button" hidden>啟用物件身分追蹤</button>
       <section aria-labelledby="muSourceTitle"><h3 id="muSourceTitle">1. 明選現行來源</h3><label class="mu-field">現行放置面<select id="muPlacement" disabled><option value="">請選擇現行放置面</option></select></label><p id="muSourceInfo" class="mu-note">正在讀取目前專案…</p>
         <fieldset id="muChoices" disabled hidden><legend>本次明選內容</legend><p id="muProjection" class="mu-note"></p><div id="muOutline" class="mu-outline"></div><h4>形成空間邊界的外環邊</h4><p class="mu-note">逐邊勾選；邊編號只屬於這次現行輪廓。</p><div id="muEdges" class="mu-choices"></div>
           <details class="mu-details" open><summary>角材 <span id="muTimberCount"></span></summary><div id="muTimbers" class="mu-choices"></div></details>
@@ -106,6 +151,7 @@
     $('muConfirmed').addEventListener('change', actions);
     $('muPreview').addEventListener('click', preview);
     $('muApply').addEventListener('click', confirm);
+    $('muActivate').addEventListener('click', activateLedger);
     dialog.addEventListener('keydown', event => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
         event.preventDefault(); event.stopPropagation(); message('本次候選尚未更新。請先確認更新，或取消後保存原專案。', 'warning');
@@ -135,10 +181,73 @@
       ['牆厚',settings.wall_thickness === null ? '不建立材料牆' : `${settings.wall_thickness} mm`]];
     $('muSavedSettings').innerHTML = rows.map(([label,text]) => `<div><dt>${esc(label)}</dt><dd>${esc(text)}</dd></div>`).join('');
   }
+  function showIdentity(current) {
+    const button = $('muActivate');
+    if (!button) return;
+    const offer = current?.ledgerKnown === true && current.ledgerActive !== true;
+    button.hidden = !offer;
+    if (offer) $('muIdentity').textContent = '啟用物件身分追蹤後，日後可證明來源延續';
+  }
+  function prefilledPlacement(current) {
+    if (!current?.ledgerActive || !current.before?.sourceIdentity || !globalThis.IdentityLedger || !current.graph) return null;
+    const judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, current.graph.nodes);
+    const placement = IdentityLedger.prefillRoots(judged).find(root => root.role === 'placement');
+    if (!placement || !current.surfaces.some(surface => surface.id === placement.id)) return null;
+    current.judged = judged;
+    return placement.id;
+  }
+  function applyIdentityChoice(current) {
+    dialog.querySelector('#muDecisions')?.remove();
+    if (!current?.ledgerActive || !current.before?.sourceIdentity || !globalThis.IdentityLedger) return;
+    const judged = IdentityLedger.judgeRoots(current.before.sourceIdentity, current.graph.nodes);
+    current.judged = judged;
+    const picked = new Set(IdentityLedger.prefillRoots(judged).map(root => root.kind + ':' + root.id));
+    const sameSurface = current.before.input?.placement_id === current.surface.id;
+    for (const input of dialog.querySelectorAll('[data-mu-timber]')) {
+      input.checked = sameSurface && picked.has('timber:' + input.dataset.muTimber);
+    }
+    for (const input of dialog.querySelectorAll('[data-mu-obstacle]')) {
+      input.checked = picked.has(input.dataset.muObstacle + ':' + input.value);
+    }
+    for (const input of dialog.querySelectorAll('[data-mu-proof]')) input.hidden = !picked.has(input.dataset.muProof);
+    const boundary = judged.find(root => root.role === 'boundary' && root.id === current.surface.boundary);
+    const live = current.graph.nodes.get('boundary:' + current.surface.boundary);
+    const pinsEqual = !!(boundary && live && boundary.previousDefinitionPin && boundary.previousDefinitionPin === live.definitionFingerprint);
+    const edges = sameSurface ? IdentityLedger.edgesPrefill(boundary?.status, pinsEqual, current.before.input?.settings?.edges) : [];
+    const allow = new Set(edges);
+    for (const input of dialog.querySelectorAll('[data-mu-edge]')) input.checked = allow.has(Number(input.dataset.muEdge));
+    const blocked = judged.filter(root => ['absent', 'replaced', 'conflict'].includes(root.status));
+    if (blocked.length) {
+      const box = document.createElement('div');
+      box.id = 'muDecisions';
+      box.innerHTML = blocked.map(root => `<label class="mu-choice"><input type="checkbox" data-mu-remove="${root.kind}:${root.id}"><span>${esc(root.kind)} #${root.id} 須明確移除，不會自動改指。</span></label><label class="mu-choice"><input type="checkbox" data-mu-retarget="${root.kind}:${root.id}"><span>${esc(root.kind)} #${root.id} 改指到這次勾選的現行物件</span></label>`).join('');
+      $('muChoices').append(box);
+    }
+    const summary = IdentityLedger.continuitySummary({roots:judged});
+    $('muIdentity').textContent = summary.text + (summary.listed?.length ? '：' + summary.listed.join('、') : '');
+    $('muName').textContent = current.before.name + ' · ' + summary.text;
+    $('muConfirmed').checked = false;
+    counts();
+  }
+  async function activateLedger() {
+    const current = session;
+    if (!current || current.invalid) return;
+    try {
+      guard(current);
+      const line = await api('line identity-ledger activate');
+      if (!line || line.ok !== true) {
+        message(line?.error || '未能啟用物件身分追蹤。', 'error');
+        return;
+      }
+      invalidate(current, Error('已啟用物件身分追蹤。這次預覽已過期，請重新開啟並再預覽。'));
+    } catch (error) {
+      if (session === current && !current.invalid) message(error.message || String(error), 'error');
+    }
+  }
   async function open(id) {
     ensureDialog(); close();
     const current = {id,stamp:hostState(),abort:new AbortController(),sequence:++serial,recordSignature:json(record(id)),
-      invalid:false,busy:true,committing:false,review:null,surface:null,sourcePin:null,projection:null,returnFocus:document.activeElement};
+      invalid:false,busy:true,committing:false,review:null,surface:null,sourcePin:null,projection:null,ledgerKnown:false,ledgerActive:false,judged:null,builtIdentity:null,returnFocus:document.activeElement};
     session = current;
     $('muPlacement').innerHTML = '<option value="">請選擇現行放置面</option>'; $('muPlacement').value = '';
     $('muChoices').hidden = true; $('muChoices').disabled = true; $('muReview').hidden = true; $('muConfirmed').checked = false;
@@ -148,6 +257,11 @@
     window.WorkspaceShell?.attach(dialog, {saveBlocked:() => true,saveReason:() => '請先確認或取消來源更新，再保存專案。',describedBy:'muStatus'});
     timer = setInterval(checkSession, 300); actions(); message('正在讀取現行來源與完整場景…');
     try {
+      const identityRead = await api('identity-read');
+      if (session !== current) return;
+      current.ledgerKnown = identityRead?.ok === true;
+      current.ledgerActive = identityRead?.ok === true && identityRead.active === true;
+      showIdentity(current);
       current.controller = createController(current); current.before = current.controller.begin(id);
       $('muName').textContent = current.before.name + ' · 來源身分連續性 unknown'; savedSettings(current.before);
       const sequence = current.sequence, graph = await read('source-inspect', current, sequence), dump = await read('dump-deidentified', current, sequence);
@@ -162,6 +276,8 @@
       $('muPlacement').innerHTML += current.surfaces.map(surface => `<option value="${surface.id}">放置 #${surface.id} · ${surface.boundary === 0 ? '內含矩形' : `輪廓 #${surface.boundary}`} · z ${esc(surface.origin?.[2])} mm</option>`).join('');
       $('muSourceInfo').textContent = current.surfaces.length ? '請指定本次要採用的放置面，再逐邊選取。角材與柱樑可保留空清單。' : '目前沒有可選的水平放置面。';
       current.busy = false; actions(); message(current.surfaces.length ? '尚未選擇現行來源。' : '請取消更新，先在畫布建立水平放置面。', current.surfaces.length ? '' : 'warning');
+      const placement = prefilledPlacement(current);
+      if (placement != null) {$('muPlacement').value = String(placement); await choosePlacement();}
     } catch (error) {if (session === current) invalidate(current,error);}
   }
   function clearReview(current) {
@@ -215,9 +331,9 @@
       const fixed = current.loops[0].fixity?.[index], fixity = fixed === 0 || fixed === false || fixed === 'FREE' ? 'FREE' : fixed === 1 || fixed === true || fixed === 'FIXED' ? 'FIXED' : '未提供 fixity';
       return `<label class="mu-choice"><input type="checkbox" data-mu-edge="${index}"><span>邊 ${index+1}<small>(${point.join(', ')}) → (${end.join(', ')}) · ${length} mm · ${fixity}</small></span></label>`;
     }).join('');
-    $('muTimbers').innerHTML = surface.boundary <= 0 ? `<p class="mu-note">${embeddedTimberWarning}</p>` : current.timbers.length ? current.timbers.map(item => `<label class="mu-choice"><input type="checkbox" data-mu-timber="${item.id}"><span>角材 #${item.id}<small>${esc(item.role || '未指定角色')} · 放置 #${surface.id} · ${esc(item.geometry.length)} × ${esc(item.geometry.A)} × ${esc(item.geometry.B)} mm</small></span></label>`).join('') : '<p class="mu-note">此放置面没有可選角材；本次清單為空。</p>';
+    $('muTimbers').innerHTML = surface.boundary <= 0 ? `<p class="mu-note">${embeddedTimberWarning}</p>` : current.timbers.length ? current.timbers.map(item => `<label class="mu-choice"><input type="checkbox" data-mu-timber="${item.id}"><span>角材 #${item.id}<small>${esc(item.role || '未指定角色')} · 放置 #${surface.id} · ${esc(item.geometry.length)} × ${esc(item.geometry.A)} × ${esc(item.geometry.B)} mm</small></span></label><span data-mu-proof="timber:${item.id}" hidden>身分延續已證明（可改選）</span>`).join('') : '<p class="mu-note">此放置面没有可選角材；本次清單為空。</p>';
     $('muObstacles').innerHTML = current.obstacles.length ? current.obstacles.map(item => `<label class="mu-choice"><input type="checkbox" data-mu-obstacle="${esc(item.kind)}" value="${item.id}"><span>${item.kind === 'column' ? '柱' : '樑'} #${item.id}<small>世界範圍 ${esc(json(item.box))} mm</small></span></label>`).join('') : '<p class="mu-note">目前沒有可選柱樑；本次清單為空。</p>';
-    counts(); renderOutline(current);
+    counts(); renderOutline(current); applyIdentityChoice(current);
   }
   function renderOutline(current) {
     const hasProjection = validProjection(current.projection);
@@ -257,7 +373,8 @@
     $('muPlacement').disabled = !ready || !current?.surfaces?.length;
     $('muChoices').disabled = !ready;
     $('muPreview').disabled = !ready || !current?.surface || !dialog.querySelector('[data-mu-edge]:checked') ||
-      (!!current?.before?.source.projection && !validProjection(current?.projection));
+      (!!current?.before?.source.projection && !validProjection(current?.projection)) || identityBlocksPreview(current);
+    if ($('muActivate')) $('muActivate').disabled = !current || current.invalid;
     $('muApply').disabled = !ready || !current?.review || !$('muConfirmed').checked;
     $('muClose').textContent = current?.busy ? '取消本次處理' : '取消更新';
     $('muPreview').textContent = current?.busy && !current.committing ? '正在產生隔離候選…' : '預覽新舊差異';
@@ -301,7 +418,7 @@
     $('muDiff').innerHTML = table('來源與本次明選', [...jsonRows(before.source,after.source),['外環邊（從 1 起算）',json(before.input.settings.edges.map(n=>n+1)),json(after.input.settings.edges.map(n=>n+1))],
       ['角材',json(before.input.timbers || []),json(after.input.timbers || [])],['柱樑',json(before.input.obstacles),json(after.input.obstacles)]]) +
       table('原設定與候選設定',jsonRows(before.input.settings,after.input.settings)) + table('完整結果摘要',jsonRows(before.result.summary,after.result.summary)) +
-      table('實際角材幾何（各自列出，身分延續性未知）',[['各交換包的完整角材',timberGeometry(before.result),timberGeometry(after.result)]]) +
+      table('實際角材幾何（各自列出，' + (session?.judged && globalThis.IdentityLedger ? IdentityLedger.continuitySummary({roots:session.judged}).text : '身分延續性未知') + '）',[['各交換包的完整角材',timberGeometry(before.result),timberGeometry(after.result)]]) +
       table('所有模型交換包',packages.map(kind => {
         const pin = review.diff.packages.find(item => item.kind === kind);
         const text = value => value ? `${value.derived?.status || '已建立'} · ${value.derived?.objects?.length || 0} 個物件` : '未建立';
