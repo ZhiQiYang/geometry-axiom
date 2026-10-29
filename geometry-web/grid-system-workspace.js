@@ -62,6 +62,8 @@
     return form;
   }
   const parameterSelections=form=>Object.entries(form).filter(([id,value])=>value&&id.endsWith('Source')&&!['igUSource','igVSource'].includes(id)).map(([id,value])=>[id,'parameter-field:'+value]);
+  const cardSelections=form=>form.igCard?['igCardU','igCardV'].filter(id=>form[id]).map(id=>[id,`parameter-field:${form.igCard}:${form[id]}`]):[];
+  const parameterUseKeys=form=>new Set([...parameterSelections(form),...cardSelections(form)].map(([,key])=>key));
   function approveInputReplacement(before,next) {
     if(before?.lost&&!next){status('曾缺失來源只准改指另一個物件，不能改用空來源。',true);return false;}
     if(!before || !next || samePin(before,next))return true;
@@ -94,10 +96,11 @@
   function selectParameterPin(s,node){
     if(!canEdit(s)||!node.id.endsWith('Source')||['igUSource','igVSource'].includes(node.id))return;
     const before=s.referenceSelections.get(node.id),form=rawForm(s),key=node.value?'parameter-field:'+node.value:null;
-    if(!approveInputReplacement(s.inputPins.get(before),key?s.pins.get(key):null)){node.value=before?.replace('parameter-field:','')||'';return false;}
+    const next=key?s.pins.get(key):null,shared=key?s.inputPins.get(key):null;
+    if(!approveInputReplacement(s.inputPins.get(before),next)||shared&&key!==before&&!approveInputReplacement(shared,next)){node.value=before?.replace('parameter-field:','')||'';return false;}
     s.referenceSelections.set(node.id,key);
-    if(before&&!parameterSelections(form).some(([,selected])=>selected===before))s.inputPins.delete(before);
-    if(key){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));else s.inputPins.delete(key);}
+    if(before&&!parameterUseKeys(form).has(before))s.inputPins.delete(before);
+    if(key&&next)s.inputPins.set(key,copy(next));
   }
   function rawValue(s){
     // Serialization preserves owned selection evidence. Merely opening or
@@ -497,15 +500,25 @@
     };
     for (const node of dialog.querySelectorAll('#igSourceForm input,#igSourceForm select')) node.addEventListener('input', () => { syncFields(); drawGrid(s); syncDefinition(s); });
     if ($('igCard')) {
-      let lastCard = $('igCard').value;
       $('igCard').addEventListener('change', event => {
-        const next = $('igCard').value, lost = new Set([...s.inputPins.values()].filter(r => r.kind === 'parameter-field' && r.lost).map(r => String(r.parameterId)));
-        if (next && lost.has(next)) { $('igCard').value = lastCard; status('此參數卡曾經缺失，不能重新取得同一張卡；請選另一張。', true); event.stopImmediatePropagation(); return; }
-        $('igCardU').value = ''; $('igCardV').value = ''; lastCard = next; // D64: no inherited or ordered mapping
+        const owned=ReferenceWorkspace.readGridDrafts().drafts.find(d=>d.draftId===s.draftId);
+        const next = $('igCard').value, lost = new Set([...s.inputPins.values(),...(owned?.inputRefs||[])].filter(r => r.kind === 'parameter-field' && r.lost).map(r => String(r.parameterId)));
+        if (next && lost.has(next)) { $('igCard').value = s.cardSelectionRaw.igCard; status('此參數卡曾經缺失，不能重新取得同一張卡；請選另一張。', true); event.stopImmediatePropagation(); return; }
+        if(next!==s.cardSelectionRaw.igCard){$('igCardU').value = ''; $('igCardV').value = '';} // D64: no inherited or ordered mapping
       });
-      const onCard = () => { syncCard(s, null, true); cardPins(s); syncFields(); drawGrid(s); syncDefinition(s); };
+      const onCard = event => {
+        const before=s.cardSelectionRaw,selected=['igCardU','igCardV'].filter(id=>event.target.id===id||before.igCard!==$('igCard').value||before[id]!==$(id).value);
+        if(!cardPins(s,selected)){
+          for(const id of CARD_IDS)$(id).value=before[id];
+          syncCard(s,{u:before.igCardU,v:before.igCardV});syncFields();drawGrid(s);syncDefinition(s);
+          event.stopImmediatePropagation();return;
+        }
+        syncCard(s,null,selected.map(id=>id==='igCardU'?'u':'v'));
+        s.cardSelectionRaw=Object.fromEntries(CARD_IDS.map(id=>[id,$(id).value]));
+        syncFields();drawGrid(s);syncDefinition(s);
+      };
       for (const id of CARD_IDS) $(id).addEventListener('change', onCard);
-      for (const a of axes) for (const r of dialog.querySelectorAll(`input[name=ig${a.toUpperCase()}Source]`)) r.addEventListener('change', () => syncCard(s, null, true));
+      for (const a of axes) for (const r of dialog.querySelectorAll(`input[name=ig${a.toUpperCase()}Source]`)) r.addEventListener('change', () => syncCard(s, null, [a]));
       $('igCardSwap').onclick = () => { if (!canEdit(s)) return; const u = $('igCardU').value; $('igCardU').value = $('igCardV').value; $('igCardV').value = u; $('igCardU').dispatchEvent(new Event('change', {bubbles: true})); };
       const cr = source.cardReference; syncCard(s, cr ? {u: cr.uFieldId, v: cr.vFieldId} : null);
     }
@@ -547,10 +560,16 @@
     const selectBeforeTarget=event=>{if(current(s)&&selectParameterPin(s,event.target)===false){event.preventDefault();event.stopImmediatePropagation();}};
     dialog.addEventListener('input',selectBeforeTarget,{capture:true,signal:s.selectionAbort.signal});
     dialog.addEventListener('change',selectBeforeTarget,{capture:true,signal:s.selectionAbort.signal});
-    dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);syncDraftState(s,event.target.id==='igSystem');};
+    dialog.oninput = dialog.onchange = event => {
+      // A select emits input before change. Card changes must first approve
+      // any re-acquisition, so cancellation cannot leave an earlier raw write.
+      if(event.type==='input'&&CARD_IDS.includes(event.target.id))return;
+      s.rawOverrides.delete(event.target.id);syncDraftState(s,event.target.id==='igSystem');
+    };
     s.normalizedRaw=rawForm(s);s.initialRaw=JSON.stringify(s.normalizedRaw);
     if(s.restored)restoreRaw(s,s.restored.rawForm);
     if(s.restored&&$('igCard')){const f=s.restored.rawForm;if(f.igCard!=null)syncCard(s,{u:f.igCardU,v:f.igCardV});else{$('igCard').value='';syncCard(s);}restoreCardPins(s);}
+    s.cardSelectionRaw=Object.fromEntries(CARD_IDS.map(id=>[id,$(id)?.value??'']));
     s.referenceSelections=new Map(parameterSelections(rawForm(s)));
     if(!s.restored){
       for(const [,key] of s.referenceSelections){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));}
@@ -600,7 +619,7 @@
         const id = p + FIELD[k][0], input = $(id), ref = $(id + 'Source'), locked = on && k === key;
         if (!input) continue;
         input.readOnly = locked; input.closest('[data-ig-field]')?.classList.toggle('ig-card-locked', locked);
-        if (locked && fromUser) {
+        if (locked && (fromUser===true||Array.isArray(fromUser)&&fromUser.includes(a))) {
           const value = cardLength(a); if (value !== '' && input.value !== value) { input.value = value; s?.rawOverrides?.delete(id); }
           if (ref?.value) { ref.value = ''; ref.dispatchEvent(new Event('change', {bubbles: true})); }
         }
@@ -624,16 +643,20 @@
   const cardKey = id => `parameter-field:${$('igCard').value}:${$(id).value}`;
   // The two card fields are draft inputs like any per-field reference: pin them. A previously
   // lost card may only be replaced by a different card (same rule as approveInputReplacement).
-  function cardPins(s) {
-    const used = new Set([...(s.referenceSelections?.values() || [])].filter(Boolean));
-    for (const key of s.cardPinKeys || []) if (!used.has(key)) s.inputPins.delete(key);
-    s.cardPinKeys = [];
-    if (!cardOn()) return;
-    for (const id of ['igCardU', 'igCardV']) {
-      if (!$(id).value) continue;
-      const key = cardKey(id), pin = s.pins?.get(key);
-      if (pin) { s.inputPins.set(key, copy(pin)); s.cardPinKeys.push(key); }
+  function cardPins(s, selectedIds = []) {
+    const form=rawForm(s),selections=cardSelections(form),used=parameterUseKeys(form),nextPins=new Map(s.inputPins);
+    for (const key of s.cardPinKeys || []) if (!used.has(key)) nextPins.delete(key);
+    for (const [id,key] of selections) {
+      const before=s.inputPins.get(key),pin=s.pins?.get(key);
+      // Reusing a field must retain its saved evidence. Only an explicit
+      // selection may re-acquire changed content, after showing both pins.
+      if(before&&!selectedIds.includes(id))continue;
+      if(before&&!approveInputReplacement(before,pin))return false;
+      if(pin)nextPins.set(key,copy(pin));
     }
+    s.inputPins=nextPins;
+    s.cardPinKeys=selections.map(([,key])=>key).filter(key=>s.inputPins.has(key));
+    return true;
   }
   // Restored drafts: recover which saved pins the card owns (no re-acquisition of today's content).
   function restoreCardPins(s) {
