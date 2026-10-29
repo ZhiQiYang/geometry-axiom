@@ -2,11 +2,14 @@
 
 | 唯一 current-state 矩陣 | 固定身分／實際結果 |
 |---|---|
-| 完整PR head／evidence E | `825a13ac6691017a6a2603ff517537086a77b0e5`；新測試／history execution C=`75481194f3b85a6b07e11896403633d7d0fa0d6f`。E只追加原件，execution不移標 |
+| 完整PR head／evidence E | `bdbaa594b886becf281cf82dc414dd75a8a3b33e`；新測試／history execution C=`75481194f3b85a6b07e11896403633d7d0fa0d6f`。E只追加原件，execution不移標 |
 | 產品／已完成正式execution F2 | `b595e55952d5d66de95024432e1b29bec7525e9b`；完整原件evidence E=`b872264006f400d600c801fe8c096d5679ad9013`，不移標execution |
 | 原B | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
-| 直接base／阻擋1 | #347 分支current ref（Git及API git/ref同值）=`8bb0359331365c6f3a96872620427cf7847fcb50`；相對新E **behind3／ahead29**。REST PR物件base.sha另回歷史快照`2e8a6ed20325aa4842dcd0f89eacd598662be598`，相對它**behind2／ahead29**；兩種身分分開，原審查behind2保留。#343→#346→#347仍未修鏈，一般merge及逐leaf重審待鏈閉合 |
-| 最新隔離候選（尚未採入產品） | `codex/geo300-consumer-scope-20261028` @ `8b128aa7bf53b41b493dd3a0bee49f0d53391254`；K有序scope／完整hash重用、H未使用raw facts延後。9ac來源120項119過1個新測試定位錯誤，8b只修唯一anchor後新7全過、三項具名撤回0/1/0；H9與其餘產品/測試不變。172完整有序圖已exit0。原新fixture/anchor紅均保留，未說一次完整120綠 |
+| 直接base／阻擋1 | #347 分支current ref（Git及API git/ref同值）=`8bb0359331365c6f3a96872620427cf7847fcb50`；相對新E **behind3／ahead31**。REST PR物件base.sha另回歷史快照`2e8a6ed20325aa4842dcd0f89eacd598662be598`，相對它**behind2／ahead31**；兩種身分分開，原審查behind2保留。#343→#346→#347仍未修鏈，一般merge及逐leaf重審待鏈閉合 |
+| 已測H7的固定隔離來源（未採入） | `8b128aa7bf53b41b493dd3a0bee49f0d53391254`；K有序scope／完整hash重用、H未使用raw facts延後。9ac來源120項119過1個新測試定位錯誤，8b只修唯一anchor後新7全過、三項具名撤回0/1/0；H9與其餘產品/測試不變。172完整有序圖已exit0。原新fixture/anchor紅均保留，未說一次完整120綠 |
+| 後續hash-tag實驗 | `2ac7126205f0079feda8a282663996a75ea12d87`，原K/slot/scope+hint62與172圖已exit0；一次N256 34.701295→34.902487秒，未證加速，**不採入**，每ctx+2048bytes成本不掩藏 |
+| 後續有序run實驗 | 產品`cff51164fe0293c8046aa66d86016cd0be333a08`原53/172圖exit0；只加tests/catalog的`b05288e2be691dd5229937ab6c9a1f555b3f64e2`新8與3個不同具名0/1/0過。N256 34.299473秒，沿原8b34.701295秒/流，僅約1.2%差，不稱正式512/H7綠；未採入 |
+| 真512 profile終態 | 固定8b、同原分離O0加-pg、600秒；371.171276565秒、exit0、wait4 RSS222660KiB；stdout/stderr與8b正式512全等。原shell-group signal9中斷留原件，獨立session以同ELF恢復；不將插裝時間當正式性能樣本 |
 | 候選3949真512 load | `3949deb9e565a9e5aeca5bc475ec646e77cc6546`，261.840563475秒、exit0、RSS222088KiB、原placed_geometry過；stdout與舊F2/C全等。只有單個load，不冒8b或完整H7結果 |
 | 候選8b完整H7 | **未通過，原1200秒逾時**；00:12:43–00:32:43Z，固定`8b128aa7bf53b41b493dd3a0bee49f0d53391254`，1200.016299009秒、timed_out=true、child exit=null／外層1。7方法印ok，第8方法的第二512 canonical未完成；沒有完整unittest總結。不以各batch600內當整套綠 |
 | 候選8b已完成512批次 | load256.109964／251.966908、sequential＋I8a真確認/history273.936417、第一次canonical285.428571秒均exit0；第二canonical受原aggregate期限中止，不移標、不丟棄原紅 |
@@ -58,3 +61,7 @@ TMPDIR=/dev/shm/pr348-run-temp python3 -B /dev/shm/pr348-run-formal-v4.py --root
 [3949真512載入原件](https://github.com/ZhiQiYang/geometry-axiom/tree/a6e20eb481cf8a5822ce225e68f73cb6f994ac95/evidence/geo300-capacity512-20261024/scope-load-3949deb9)：RAW 1,066,380bytes，SHA256 `e6908d2924052c8ce397d8cae07f61bb3445d00e7c5591613008df66cbff9a23`；261.840563秒的原600限制沒有變。現在workspace233472B不足原400KiB文字規劃，所以完成batch改推獨立receipts branch並GitHub blob實bytes讀回；v5工具前置紅、v6小history smoke綠皆保留。真/tmp64MiB、發布64MiB reserve、mount/quota不變，未刪未知快取。這是持久化安排，不是降低產品驗收。
 
 [完整H7原逾時與一次診斷原件](https://github.com/ZhiQiYang/geometry-axiom/tree/825a13ac6691017a6a2603ff517537086a77b0e5/evidence/geo300-capacity512-20261024/h7-timeout-8b128aa7)：624檔、RAW 1,817,365bytes，SHA256 `2f90abe520fb146525e16516c46573fc02fbba503300044afd7193d6fd62a268`。含原ELF、完整已取得流、pending008與outer1200終態；沒有原件的退出碼明列unknown。逐batch遠端checkpoint末head `fde57aa157f4bc7ce9087bdeff19e71bedc01c6d`。本候選仍未採入；後續僅用真512 profile定位產品成本，原600/1200/35分鐘、I33與全斷言不變。
+
+[真512 profile與未採hash-tag原件](https://github.com/ZhiQiYang/geometry-axiom/tree/1e3d771a077cc5ac9015369b1e1e6e8e80385c7b/evidence/geo300-capacity512-20261024/profile-and-tag-2ac71262)：3563檔、RAW 5,016,730bytes、SHA256 `fa23bd3283267be40e5972d3fab2e2621d47801fd62f1e6c478f8aecf364986c`。
+
+[有序run原53＋新8＋三撤回＋172圖及N256原件](https://github.com/ZhiQiYang/geometry-axiom/tree/bdbaa594b886becf281cf82dc414dd75a8a3b33e/evidence/geo300-capacity512-20261024/face-runs-b05288e2)：4172檔、RAW 3,923,748bytes、SHA256 `ede89295729965303cc4b1db185a60db41f1e7af227cd42d8a98c6eea99cd915`。各REQUEST/RESULT保留指令、execution、完整原流與建置；下一步針對已觀測約90%node-hint miss，驗證單一較大generic cache，尚未實跑不得稱綠。原600/1200/35分鐘、容量及公理不變。
