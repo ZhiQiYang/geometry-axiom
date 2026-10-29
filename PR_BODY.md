@@ -4,7 +4,7 @@
 
 - 正式產品 **M=`7a0e6dd81c54066995981393925fa46a815de2f8`**。
 - H7／35項接線測試 execution **T=`256747c5c8f8f8934eeb08ae404dee1f67591508`**；T→M 非 evidence 差異為零，沿用原 execution，不改標 M。
-- 完整 PR head／已公開證據 **E=`06b81e452c9d80c210cbf10fe2f5da8eebfc31e5`**。產品、執行與證據提交分列。
+- 完整 PR head／已公開證據 **E=`6061fd2b9d930b1cd233f2aabb669b943913ee3d`**。產品、執行與證據提交分列。
 
 ## 唯一現況矩陣
 
@@ -35,3 +35,5 @@
 - M profile：`python3 -B /tmp/pr348-runs/profile_capacity.py --root /dev/shm/pr348-final-source-7a0e6dd8 --out /dev/shm/pr348-profile-m7a0e-n128 --count 128`；完整實際呼叫以固定 REQUEST 為準。
 
 容量超過512仍回 `CAPACITY`、不截斷。索引記憶體成本保留：generic hint 4096 slots每context增加30,720B，H兩ordinal增加8192B，definition ordinal再4096B。CI最新狀態本輪未重新核實，不援引舊runner0或其他來源結果。
+
+[H7 可讀原件](https://github.com/ZhiQiYang/geometry-axiom/tree/6061fd2b9d930b1cd233f2aabb669b943913ee3d/evidence/geo300-capacity512-20261024/placed-h7-256747c5/readable-originals)：直接抽出原 E06 封包中的 inner／wrapper REQUEST、RESULT、原 unittest.log／outer.log；EXTRACTION.json 列原封包member及逐檔SHA256，八份公開檔均已從遠端讀回核同。沒有重新執行或改標H7。
