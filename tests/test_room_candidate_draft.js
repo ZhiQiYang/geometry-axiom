@@ -79,6 +79,43 @@ test("未接受的列不配房間編號，接受後才保留", () => {
   assert.throws(() => D.validate({...draft(), rows: [{...draft().rows[0], roomId: "room-1"}]}), /不得預先配號/);
 });
 
+test("真 UI 的候選列可以暫停，序號從 1 起且不保存執行期狀態", () => {
+  const live = [{
+    id: "8b6e1c0a-4f2d-4c3b-9a10-6d5e4f3a2b1c:0,0,100,0,100,80,0,80",
+    sourcePoints: [[12.5, 40], [180.25, 40], [180.25, 90], [12.5, 90]],
+    points: [[0, 0], [4000, 0], [4000, 2400], [0, 2400]],
+    deviation: 0.4,
+    method: "image-lines",
+    warnings: ["此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。"],
+    dimensions: [],
+    rawInputs: {refRoomVertices: "0,0\n4000,0\n4000,2400\n0,2400", refRoomLength: "", refRoomEdge: "0"},
+    reviewed: false, revision: 0, status: "pending", existing: false,
+    previewToken: 7, lease: {contextToken: "runtime"}
+  }, {
+    id: "8b6e1c0a-4f2d-4c3b-9a10-6d5e4f3a2b1c:duplicate",
+    sourcePoints: [[0, 0], [10, 0], [10, 10], [0, 10]],
+    points: [[0, 0], [1000, 0], [1000, 1000], [0, 1000]],
+    deviation: 0, method: "pdf-vector", warnings: [], dimensions: [],
+    rawInputs: {refRoomVertices: "0,0\n1000,0\n1000,1000\n0,1000", refRoomLength: "", refRoomEdge: "0"},
+    reviewed: false, revision: 0, status: "accepted", existing: true
+  }];
+  const value = draft();
+  value.analysis.total = 2;
+  value.rows = D.rowsFromLive(live);
+  const parked = D.persistValue(value);
+  assert.equal(parked.rows.length, 2);
+  assert.deepEqual(parked.rows.map(row => row.ordinal), [1, 2]);
+  assert.equal(parked.rows[0].status, "pending");
+  assert.equal(parked.rows[1].status, "existing");
+  for (const row of parked.rows) {
+    assert.equal(Object.hasOwn(row, "reviewed"), false);
+    assert.equal(Object.hasOwn(row, "existing"), false);
+    assert.equal(Object.hasOwn(row, "previewToken"), false);
+    assert.equal(Object.hasOwn(row, "lease"), false);
+    assert.equal(Object.hasOwn(row, "roomId"), false);
+  }
+});
+
 test("拒收超長原字、斜邊與多餘欄位", () => {
   const raw = draft(); raw.rows[0].rawInputs.refRoomVertices = "x".repeat(20001);
   assert.throws(() => D.validate(raw), /原字串/);

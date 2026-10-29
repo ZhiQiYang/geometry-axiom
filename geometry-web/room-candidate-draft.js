@@ -167,11 +167,24 @@
     validate(draft);
     if (!report.fresh) fail("過期草稿不可選取、預覽或接受。");
   }
+  function rowFromLive(row, ordinal) {
+    const status = row.status === "accepted" && row.roomId ? "accepted" : row.status === "accepted" && row.existing ? "existing" : row.status === "excluded" ? "excluded" : "pending";
+    const raw = row.rawInputs || {};
+    const out = {rowKey: String(row.id), ordinal, method: row.method, sourcePoints: row.sourcePoints, warnings: row.warnings || [], deviation: row.deviation,
+      pointsMm: row.points, dimensions: row.dimensions || [],
+      rawInputs: {refRoomVertices: raw.refRoomVertices || "", refRoomLength: raw.refRoomLength || "", refRoomEdge: raw.refRoomEdge || "0"},
+      draftRevision: row.revision || 0, status};
+    if (status === "accepted") out.roomId = row.roomId;
+    return out;
+  }
+  function rowsFromLive(candidates) {
+    return (Array.isArray(candidates) ? candidates : []).map((row, index) => rowFromLive(row, index + 1));
+  }
   function persistValue(draft) {
     if (draft === null) return null;
     validate(draft);
     return draft.rows.some(row => row.status === "pending" || row.status === "excluded") ? copy(draft) : null;
   }
   return {SCHEMA, CAPABILITY, KIND, ANALYZER_REVISION, MAX_ROWS, MAX_RAW, MAX_BYTES, sha256Hex, canonical, pin, pageFields, pagePin, planePin, roomsPin,
-    orthogonal, validate, freshness, assertSelectable, persistValue};
+    orthogonal, validate, freshness, assertSelectable, rowFromLive, rowsFromLive, persistValue};
 });

@@ -183,19 +183,11 @@ const RoomCollectionWorkspace = (() => {
     return {...base, kind: "page", bid, pageId: page.id, pagePin: D.pagePin(page), hostBoundaryId: bid,
       geometry: structuredClone([[bid, integration.readIncarnation(bid, token()), oc.bmap[bid]]])};
   }
-  function draftRow(row, ordinal) {
-    const status = row.status === "accepted" && row.roomId ? "accepted" : row.status === "accepted" && row.existing ? "existing" : row.status === "excluded" ? "excluded" : "pending";
-    const out = {rowKey: String(row.id), ordinal, method: row.method, sourcePoints: row.sourcePoints, warnings: row.warnings || [], deviation: row.deviation,
-      pointsMm: row.points, dimensions: row.dimensions || [], rawInputs: {refRoomVertices: row.rawInputs?.refRoomVertices || "", refRoomLength: row.rawInputs?.refRoomLength || "", refRoomEdge: row.rawInputs?.refRoomEdge || "0"},
-      draftRevision: row.revision || 0, status};
-    if (status === "accepted") out.roomId = row.roomId;
-    return out;
-  }
   function draftFromSession(s) {
     const anchor = s.stamp.kind === "page"
       ? {kind: "page", boundaryId: s.stamp.hostBoundaryId, pageId: s.stamp.pageId, pagePin: s.stamp.pagePin}
       : {kind: "collection", collectionId: s.stamp.collectionId, planeId: s.stamp.plane.id, planePin: s.stamp.planePin, roomsPin: s.stamp.roomsPin};
-    return {schema: Drafts().SCHEMA, draftId: s.draftId, anchor, analysis: s.analysis, rows: s.candidates.map(draftRow)};
+    return {schema: Drafts().SCHEMA, draftId: s.draftId, anchor, analysis: s.analysis, rows: Drafts().rowsFromLive(s.candidates)};
   }
   function writeSavedCandidates(s, options) {
     const value = Drafts().persistValue(draftFromSession(s));
