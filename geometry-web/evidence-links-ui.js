@@ -3,9 +3,10 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.EvidenceLinksUI=api;})(globalThis,()=>{
   'use strict';
   const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-  const statusText={unchecked:'尚未核對','confirmed-content':'已核對內容','needs-reassociation':'物件身分需重新指定','source-missing':'原 PDF 缺失','source-changed':'原 PDF 已換版，需重新核對','target-missing':'參數欄位缺失'};
+  const statusText={unchecked:'尚未核對','confirmed-content':'已核對內容','needs-reassociation':'物件身分需重新指定','source-missing':'原 PDF 缺失','source-changed':'原 PDF 已換版，需重新核對','target-missing':'目標已不存在','target-replaced':'目標已刪除重建','target-changed':'目標內容已變'};
   const valueText=v=>v?`${v.num}${v.den==='1'?'':'/'+v.den}${v.unit==='mm'?' mm':''}`:'無現行正式值';
-  const typed=t=>`${t.parameterId}:${t.fieldId}`;
+  const typed=t=>t.kind==='boundary'||t.kind==='timber'?`${t.kind}:${t.id}`:`${t.parameterId}:${t.fieldId}`;
+  const targetTitle=t=>t.kind==='boundary'?`邊界 #${t.id}`:t.kind==='timber'?`角材 #${t.id}`:`參數 #${t.parameterId} · 欄位 #${t.fieldId}`;
   function mount(host,{controller,readSelection,getStamp,canvas,filter=()=>true,locateTarget=null,initialInput=null}){
     if(!host||!controller||typeof readSelection!=='function'||typeof getStamp!=='function')throw Error('證據介面接線不完整。');
     const doc=host.ownerDocument,section=doc.createElement('section');section.dataset.evidenceLinks='';
@@ -63,7 +64,7 @@
       for(const link of view.links.filter(filter)){
         const article=element('article',null,{'data-evidence-id':link.evidenceId});article.style.cssText='min-width:0;border-top:1px solid #ccc;padding:10px 0';
         const current=selection.targets.find(t=>t.target.projectScope===link.target.projectScope&&typed(t.target)===typed(link.target));
-        article.append(element('strong',current?.label||`參數 #${link.target.parameterId} · 欄位 #${link.target.fieldId}`));
+        article.append(element('strong',current?.label||targetTitle(link.target)));
         article.append(element('p',statusText[link.status]||'需重新核對',{'data-evidence-status':link.status}));
         const values=element('dl',null);values.style.cssText='margin:8px 0;min-width:0';
         for(const [title,text,key]of [['圖面標值',observationText(link.observations.drawing),'drawing'],['現場量測',observationText(link.observations.measurement),'measurement'],['正式模型值',valueText(link.modelValue),'model']]){
@@ -75,6 +76,13 @@
         const reviewedLabel=element('label',null);reviewedLabel.style.cssText='display:block;margin:10px 0';
         const reviewed=element('input',null,{type:'checkbox','data-evidence-reviewed':link.evidenceId});reviewed.checked=link.status==='confirmed-content';reviewed.disabled=!link.canConfirm;reviewed.dataset.canConfirm=String(link.canConfirm);
         reviewed.addEventListener('change',()=>act(()=>controller.setReviewed(link.evidenceId,reviewed.checked),()=>{reviewed.checked=link.status==='confirmed-content';reviewed.disabled=true;},true));reviewedLabel.append(reviewed,doc.createTextNode(' 已核對圖面與欄位'));article.append(reviewedLabel);
+        if(link.identityBasis==='ledger'&&link.target.kind==='parameter-field'&&link.canConfirm){
+          const adopt=element('button','採用',{type:'button','data-evidence-adopt':link.evidenceId});adopt.className='btn';
+          adopt.addEventListener('click',()=>act(async()=>{
+            if(typeof globalThis.EvidenceLinksApp?.prefillAdoption!=='function')throw Error('請到既有參數卡試算後確認。採用不會直接改幾何。');
+            await globalThis.EvidenceLinksApp.prefillAdoption(link);
+          }));article.append(adopt);
+        }
         if(!link.canConfirm){
           const select=element('select',null,{'aria-label':'重新指定參數欄位','data-evidence-rebind-target':link.evidenceId});select.style.cssText='display:block;max-width:100%;width:100%;margin:8px 0';targetOptions(select);article.append(select);
           const rebind=element('button','明選欄位重新關聯',{type:'button','data-evidence-rebind':link.evidenceId});rebind.className='btn';

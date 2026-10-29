@@ -19,9 +19,14 @@
   const modelValue=(read,t)=>read.state.parameters.find(p=>p.id===t.parameterId)?.fields.find(f=>f.id===t.fieldId)?.value??null;
   async function readCurrent(document,target) {
     const initial=stamp(),{graph,read}=await readNative(initial);
-    const node=graph.nodes.get(S.key('parameter-field',target.parameterId,0,target.fieldId));
-    return {document:R.readEvidenceDocument(document),target:node?E.targetFromNode(initial.projectScope,node):null,
-      modelValue:modelValue(read,target),nativeRevision:read.revision};
+    const key=target.kind==='parameter-field'?S.key('parameter-field',target.parameterId,0,target.fieldId):S.key(target.kind,target.id);
+    const node=graph.nodes.get(key);
+    const identityStatus=!node?'absent':node.incarnation&&node.incarnation===target.incarnation?'continuous':node.incarnation?'replaced':'unknown';
+    if(!Object.hasOwn(target,'valuePin'))return {document:R.readEvidenceDocument(document),target:node&&target.kind==='parameter-field'?E.targetFromNode(initial.projectScope,node):null,
+      modelValue:target.kind==='parameter-field'?modelValue(read,target):null,nativeRevision:read.revision,identityStatus};
+    const live=node?{projectScope:initial.projectScope,kind:target.kind,definitionPin:node.definitionFingerprint,valuePin:node.valueFingerprint,incarnation:node.incarnation,
+      ...(target.kind==='parameter-field'?{parameterId:target.parameterId,fieldId:target.fieldId}:{id:target.id})}:null;
+    return {document:R.readEvidenceDocument(document),target:live,modelValue:target.kind==='parameter-field'?modelValue(read,target):null,nativeRevision:read.revision,identityStatus};
   }
   async function readSelection() {
     const initial=stamp(),identity=pageIdentity(),{graph,read}=await readNative(initial),p=page();
@@ -37,7 +42,25 @@
     const state=stamp(),identity=state.contextToken+':'+state.session;
     if(owner!==identity){controller?.cancel();owner=identity;located=null;
       controller=E.createController({getStamp:stamp,getNavigationStamp:R.getEvidenceNavigationStamp,readCurrent,readFeatureAttachment:R.readFeatureAttachment,setFeatureAttachment:R.setFeatureAttachment,
-        locateDocument:E.createLocator({getSourceStamp:R.getReferenceNavigationStamp,prepare:(...args)=>R.prepareReferencePage(...args),commit:(...args)=>R.commitPreparedReferencePage(...args)})});
+        locateDocument:E.createLocator({getSourceStamp:R.getReferenceNavigationStamp,prepare:(...args)=>R.prepareReferencePage(...args),commit:(...args)=>R.commitPreparedReferencePage(...args)}),
+        ledger:{
+          async ensureActive(){
+            /* 有預覽仍啟用 */
+            const read=await apiRequest('identity-read');
+            if(!read.ok)throw Error(read.error||'無法讀取身分帳。');
+            if(read.active)return;
+            const line=await apiRequest('line identity-ledger activate');
+            if(!line.ok)throw Error(line.error||'未能啟用物件身分。');
+          },
+          async readTarget(target){
+            const graph=S.index(await apiRequest('source-inspect'));
+            const key=target.kind==='parameter-field'?S.key('parameter-field',target.parameterId,0,target.fieldId):S.key(target.kind,target.id);
+            const node=graph.nodes.get(key);
+            if(!node)throw Error('目標不存在。');
+            if(target.kind==='timber'&&node.incarnation==null)throw Object.assign(new Error('組構所有角材首版不支援。'),{code:'EVIDENCE_ASSEMBLY'});
+            if(typeof node.incarnation!=='string')throw Error('目標沒有存在期記號。');
+            return {definitionPin:node.definitionFingerprint,valuePin:node.valueFingerprint,incarnation:node.incarnation,assemblyOwned:false};
+          }}});
     }
     return controller;
   }
@@ -85,7 +108,7 @@
       const view=await getController().readView();
       if(request!==parameterSequence||!host.isConnected||!current(initial)||id!==oc.sel?.id)return;
       host.replaceChildren();
-      const links=view.links.filter(l=>l.target.projectScope===initial.projectScope&&l.target.parameterId===id);
+      const links=E.linksFor(view.links,{projectScope:initial.projectScope,kind:'parameter-field',parameterId:id});
       for(const link of links){
         const article=document.createElement('article');article.dataset.parameterEvidence=link.evidenceId;
         const text=document.createElement('p');text.textContent=`欄位 #${link.target.fieldId} · ${EvidenceLinksUI.statusText[link.status]} · 正式值 ${EvidenceLinksUI.valueText(link.modelValue)}`;
@@ -116,5 +139,15 @@
   for(const name of ['project-local-history','geometry-definition-changed','evidence-links-changed','space-models-changed'])window.addEventListener(name,()=>{
     if(name!=='evidence-links-changed'){referenceUI?.cancel();refreshReference=true;}parameterHost=null;queue();
   });
-  window.EvidenceLinksApp={sync,queue,redraw,showRegion,locateTarget,getController,readSelection,getStamp:stamp,get ui(){return referenceUI;}};queue();
+  async function prefillAdoption(link){
+    const observation=link.observations.drawing?.rawValue?link.observations.drawing:link.observations.measurement;
+    const input=document.querySelector(`[data-param-field="${link.target.fieldId}"] [data-input]`);
+    const plan=E.planAdoption(link,{document:link.document,target:link.target,identityStatus:'continuous'},{type:'dimension',formula:/^[=＝]/.test(input?.value||''),rawValue:observation?.rawValue||'',unit:observation?.unit||null});
+    if(plan.writesGeometry||!plan.requiresPreview)throw Error('採用不能直接改幾何。');
+    if(!input)throw Error('請先打開這張參數卡。採用只填進既有欄位，仍要按重新試算與確認套用。');
+    input.value=plan.literal;input.dispatchEvent(new Event('input',{bubbles:true}));
+    toast('已填入欄位。請用既有的重新試算與確認套用；採用不會直接改幾何。');
+    return plan;
+  }
+  window.EvidenceLinksApp={sync,queue,redraw,showRegion,locateTarget,getController,readSelection,prefillAdoption,getStamp:stamp,get ui(){return referenceUI;}};queue();
 })();

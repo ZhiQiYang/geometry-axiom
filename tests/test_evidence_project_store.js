@@ -18,6 +18,18 @@ test('formal evidence-only ZIP keeps original PDF, exact observations and editor
   assert.ok(P.readerCapabilities([]).includes(E.SCHEMA));
   assert.throws(()=>P.validateProjectCapabilities([E.SCHEMA]));
 });
+test('ledger evidence package keeps format 12 and the v2 capability',async()=>{
+  const f=await make();
+  const pin='b'.repeat(64),valuePin='c'.repeat(64),mark='0123456789abcdef0123456789abcdef:1';
+  const value={schema:E.SCHEMA_V2,links:[{evidenceId:'evidence-0',document:f.evidence.links[0].document,region:[10,20,80,40],target:{projectScope:'project-a',kind:'boundary',id:1,definitionPin:pin,valuePin,incarnation:mark},observations:f.evidence.links[0].observations,humanConfirmation:null,identityBasis:'ledger',adoption:null}]};
+  f.manifest.featureAttachments.records[0]={kind:E.KIND,schema:E.SCHEMA_V2,value};
+  const loaded=await P.unpack(await P.pack('reset\n',f.manifest,f.sources,zip),zip);
+  assert.equal(loaded.manifest.format,'geometry-canvas/12');
+  assert.deepEqual(loaded.manifest.requiredCapabilities,[E.SCHEMA_V2]);
+  assert.equal(loaded.manifest.featureAttachments.records[0].value.schema,E.SCHEMA_V2);
+  assert.equal(loaded.manifest.featureAttachments.records[0].value.links[0].target.kind,'boundary');
+  assert.ok(P.readerCapabilities([]).includes(E.SCHEMA_V2));
+});
 test('evidence requires original PDF metadata, project scope and strict registered shape',async()=>{
   for(const change of [m=>m.sources=[],m=>m.sources[0].type='image/png',m=>m.featureAttachments.records[0].value.links[0].target.projectScope='other',m=>m.featureAttachments.records[0].value.schema='geometry-evidence-links/999',m=>m.featureAttachments.records[0].value.links[0].region=[290,0,80,40],m=>m.featureAttachments.records[0].value.links.push(...Array(256).fill(m.featureAttachments.records[0].value.links[0]))]){
     const f=await make();change(f.manifest);await assert.rejects(P.pack('reset\n',f.manifest,f.sources,zip));
