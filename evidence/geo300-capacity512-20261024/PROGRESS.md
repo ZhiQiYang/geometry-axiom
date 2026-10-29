@@ -1,3 +1,7 @@
+## 2026-10-29：H7 原件可讀公開（產品／裁判不變）
+
+已將原E06封包中的 H7 inner REQUEST/RESULT、unittest.log、wrapper REQUEST/RESULT/outer.log 原bytes抽至 `placed-h7-256747c5/readable-originals/`，逐檔SHA256與封包member對照見其中EXTRACTION.json；未重新產生測試。產品M7a與executionT256不變，完整123帳本自03:00:41UTC仍在跑，未提前宣告通過。
+
 # #348 current state：512完整H7與來源祖先缺口已解除；整合驗收仍待
 
 - 採入產品M=`7a0e6dd81c54066995981393925fa46a815de2f8`已一般merge並正常push，包含目前#343 a934a554ae58f16f124f1b264523947f170b3f0b、#346 eaf15e239324a6464a04740647afccce3a3c17c7、#347 8bb0359331365c6f3a96872620427cf7847fcb50；相對目前#347 behind0。原review behind2只保歷史。
