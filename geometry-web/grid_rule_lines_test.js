@@ -275,7 +275,11 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     await fresh();await fixture('surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000');
     await fixture('spec middle 2000');
     for(let id=2;id<18;id++)await fixture(`guide ${id} 1 v spec:middle`);
-    await ctl('#objectList .object-row[data-kind="boundary"][data-id="1"]');await ctl('#inspEnter');await wait('oc.edit?.bid===1');
+    await ctl('#objectList .object-row[data-kind="boundary"][data-id="1"]');await ctl('#inspEnter');
+    // enterFocus publishes oc.edit before awaiting feLoadGuides. The component
+    // switch is rendered only after that read; use the same wait deadline for
+    // this fresh face's actual inspector, then retain the real click/hit checks.
+    await wait(`(()=>{const pane=$('faceInspectorContent');return oc.focus?.t==='face'&&oc.focus.id===1&&oc.edit?.bid===1&&oc.edit.contextId===ReferenceWorkspace.context().id&&!$('objectWorkspace').hidden&&pane.dataset.bid==='1'&&!!pane.querySelector('[data-component-tab="guide"]');})()`);
     await ctl('#faceInspectorTabs [data-fi-tab="components"]');await ctl('[data-component-tab="guide"]');
     await choose('#refGuideMode','advanced');
     await read(`$('refGuideExpr').scrollIntoView({block:'center',inline:'nearest'});new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))`);

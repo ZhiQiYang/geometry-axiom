@@ -42,6 +42,13 @@
 .connection-notice p { margin: 6px 0 0; line-height: 1.6; font-size: 13px; }
 .connection-notice button { flex-shrink: 0; min-height: 44px; }
 .connection-blocked #app, .connection-blocked #objectWorkspace { opacity: .55; }
+/* Keep existing floating inspectors above the detached SVG. Dimming #app
+   itself would trap all its z-index layers below the body-level view host. */
+.connection-canvas-mounted #app { opacity: 1; }
+.connection-canvas-mounted #app > :not(.workspace),
+.connection-canvas-mounted #app .workspace > :not(#canvasViewport) > *,
+.connection-canvas-mounted #canvasViewport > :not(#ocv) { opacity: .55; }
+.connection-canvas-view { position: fixed; z-index: 1; overflow: hidden; opacity: .55; outline: none; }
 .face-draft-notice { grid-column: 2; grid-row: 1; padding: 10px 14px; display: grid; gap: 6px; background: var(--panel); border-bottom: 1px solid var(--border-strong); font-size: 12px; line-height: 1.5; cursor: default; }
 .drawing-outer #faceWorkspaceLayout { grid-template-rows: auto minmax(0, 1fr); }
 .drawing-outer #faceEditorViewport { grid-row: 2; }

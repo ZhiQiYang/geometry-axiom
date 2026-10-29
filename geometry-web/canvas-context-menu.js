@@ -7,7 +7,9 @@
   'use strict';
   const menu = document.getElementById('canvasCtxMenu');
   const vp = document.getElementById('canvasViewport');
-  if (!menu || !vp || !window.ContextMenuShell) return;
+  const offlineVp = document.getElementById('canvasOfflineView');
+  if (!menu || !vp || !offlineVp || !window.ContextMenuShell) return;
+  const entryViewport = () => connectionCanvasView() && !offlineVp.hidden ? offlineVp : vp;
   document.body.append(menu);
   const KIND_NAMES = {boundary:'面', placement:'自帶矩形面', space:'空間', column:'柱', beam:'樑',
     'grid-system':'網格系統', 'grid-binding':'網格配置', parameter:'參數'};
@@ -159,7 +161,7 @@
       }
       return {x, y, ...target};
     },
-    restoreFocus:() => vp.focus?.({preventScroll:true}),
+    restoreFocus:() => entryViewport().focus?.({preventScroll:true}),
     execute, onError:error => toast(error.message),
   });
 
@@ -171,13 +173,13 @@
     const card = element.closest?.('#ocv .ocard');
     let x = clientX, y = clientY;
     if (invocation === 'keyboard') {
-      const r = (card || vp).getBoundingClientRect();
+      const r = (card || entryViewport()).getBoundingClientRect();
       x = r.left + Math.min(r.width / 2, 48); y = r.top + Math.min(r.height / 2, 48);
     }
     return shell.open(x, y, {...(card ? {kind:card.dataset.kind, id:Number(card.dataset.id)} : {}),
       invocation, clientX:invocation === 'pointer' ? clientX : null, clientY:invocation === 'pointer' ? clientY : null});
   }
-  vp.addEventListener('contextmenu', event => {
+  for (const entry of [vp, offlineVp]) entry.addEventListener('contextmenu', event => {
     if (event.button === 2) keyboardEntry = null;
     if (!availableEntry(event)) return;
     event.preventDefault();
@@ -189,7 +191,7 @@
   });
   // Preserve native contextmenu synthesis (and its trusted target). Engines that
   // only deliver the key pair take the same path on keyup, without opening twice.
-  vp.addEventListener('keydown', event => {
+  for (const entry of [vp, offlineVp]) entry.addEventListener('keydown', event => {
     if (!menuKey(event) || event.isComposing || event.repeat || !availableEntry(event)) return;
     keyboardEntry = {key:event.key, target:event.target, handled:false};
   });
@@ -202,7 +204,7 @@
     setTimeout(() => {
       if (keyboardEntry !== pending) return;
       keyboardEntry = null;
-      if (!pending.handled && pending.target.isConnected !== false && vp.contains(pending.target) &&
+      if (!pending.handled && pending.target.isConnected !== false && entryViewport().contains(pending.target) &&
           availableEntry({target:pending.target})) openEntry(pending.target, 'keyboard');
     }, 0);
   });

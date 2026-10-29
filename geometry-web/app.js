@@ -544,28 +544,52 @@ async function recoverApiResults() {
   }
   if (recoveringRoom) await window.RoomCollectionWorkspace.settleRecoveredTransaction();
 }
-// 離線只保留物件畫布右鍵的檢視入口；其餘 UI 仍維持原 inert 保護。
-const connectionViewInert = new Map();
+// 離線只保留物件畫布右鍵的檢視入口；主工作區始終維持原 inert 保護。
+// 暫移原 SVG（不複製快取或事件）到工作區外；恢復時放回原佔位點。
+let connectionCanvasMount = null;
 function connectionCanvasView() {
   return connection.phase !== "ready" && connection.known && oc.on && !oc.focus && !view3;
 }
+function syncConnectionCanvasView(focused = document.activeElement) {
+  const host = $("canvasOfflineView"), viewport = $("canvasViewport"), canvas = $("ocv");
+  const mounted = connectionCanvasView();
+  document.body.classList.toggle("connection-canvas-mounted", mounted);
+  if (mounted) {
+    const r = viewport.getBoundingClientRect();
+    Object.assign(host.style, {left:r.left+"px", top:r.top+"px", width:r.width+"px", height:r.height+"px"});
+    host.hidden = false;
+    if (!connectionCanvasMount) {
+      const marker = document.createComment("object canvas home");
+      canvas.before(marker);
+      connectionCanvasMount = {marker, canvas};
+      host.append(canvas);
+      if (focused === viewport) host.focus({preventScroll:true});
+      else if (canvas.contains(focused)) focused.focus({preventScroll:true});
+    }
+  } else {
+    if (connectionCanvasMount) {
+      const {marker, canvas} = connectionCanvasMount;
+      marker.replaceWith(canvas);
+      connectionCanvasMount = null;
+      if (focused === host) viewport.focus({preventScroll:true});
+      else if (canvas.contains(focused)) focused.focus({preventScroll:true});
+    }
+    host.hidden = true;
+  }
+}
+const connectionCanvasResize = new ResizeObserver(() => {
+  if (connectionCanvasMount) syncConnectionCanvasView();
+});
+connectionCanvasResize.observe($("canvasViewport"));
+for (const type of ["resize", "scroll"]) window.addEventListener(type, () => {
+  if (connectionCanvasMount) syncConnectionCanvasView();
+}, {capture:true, passive:true});
 function showConnectionState() {
   const blocked = connection.phase !== "ready";
   $("connectionNotice").hidden = !blocked;
-  for (const [element, inert] of connectionViewInert) element.inert = inert;
-  connectionViewInert.clear();
-  const canvasView = connectionCanvasView();
-  $("app").inert = blocked && !canvasView;
-  $("objectWorkspace").inert = blocked;
-  if (canvasView) {
-    // 只讓 viewport / 卡片接收右鍵與系統選單鍵；工具列、表單與其它工作區不解鎖。
-    for (let node = $("ocv"); node && node !== $("app"); node = node.parentElement) {
-      for (const sibling of node.parentElement.children) if (sibling !== node) {
-        connectionViewInert.set(sibling, sibling.inert);
-        sibling.inert = true;
-      }
-    }
-  }
+  const focused = document.activeElement;
+  for (const id of ["app", "objectWorkspace"]) $(id).inert = blocked;
+  syncConnectionCanvasView(focused);
   window.CanvasContextMenu?.connectionChanged();
   document.body.classList.toggle("connection-blocked", blocked);
   $("connectionTitle").textContent = connection.phase === "error" ? "無法連線，編輯已暫停" : "正在讀取場景";
@@ -624,10 +648,14 @@ $("connectionRetry").addEventListener("click", recoverConnection);
 /* 只開放右鍵選單自己的檢視互動；一般畫布點擊／拖曳仍不能借離線豁免寫入。 */
 for (const type of ["pointerdown", "pointermove", "pointerup", "mousedown", "mouseup", "click", "dblclick", "auxclick", "wheel"]) {
   document.addEventListener(type, e => {
-    if (!connectionCanvasView() || !e.target.closest?.("#canvasViewport")) return;
-    if (["pointerdown", "pointerup", "mousedown", "mouseup"].includes(type) && e.button === 2) return;
+    if (!connectionCanvasView() || !e.target.closest?.("#canvasViewport,#canvasOfflineView")) return;
+    if (["pointerdown", "pointerup", "mousedown", "mouseup"].includes(type) && e.button === 2) {
+      // Preserve the browser's native contextmenu default action, but do not
+      // let a right release finish a canvas drag/draw that lost its connection.
+      e.stopImmediatePropagation(); return;
+    }
     if (type === "pointerdown" && window.CanvasContextMenu?.open) {
-      CanvasContextMenu.hide(); $("canvasViewport").focus();
+      CanvasContextMenu.hide(); $("canvasOfflineView").focus();
     }
     e.preventDefault(); e.stopImmediatePropagation();
   }, {capture:true, passive:false});
@@ -638,7 +666,7 @@ document.addEventListener("keydown", e => {
     if (connectionCanvasView()) {
       const menuKey = e.key === "ContextMenu" || (e.key === "F10" && e.shiftKey);
       if ((window.CanvasContextMenu?.open && e.target.closest?.("#canvasCtxMenu")) ||
-          (e.target.closest?.("#canvasViewport") && (menuKey || e.key === "Tab"))) return;
+          (e.target.closest?.("#canvasViewport,#canvasOfflineView") && (menuKey || e.key === "Tab"))) return;
     }
     e.stopImmediatePropagation();
     if (e.key === "Escape" && window.AssemblyWorkspace?.canCloseForRecovery) {

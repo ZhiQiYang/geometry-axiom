@@ -935,6 +935,11 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
   `#connectionRetry` 重新讀取場景；不重送失敗操作。載入與錯誤期間主工作區
   使用 `inert`，文件快捷鍵也停用。未讀到場景的計數顯示 `—`，不顯示建立第一物件的空狀態。
   已讀到過則保留最後完整快取，明示可能過期。HTTP 403 不放寬來源驗證。
+- `#canvasOfflineView`：只有已知快取的物件畫布在離線時使用，位於 `#app` 外，
+  暫放原 `#ocv` 提供既有右鍵／系統選單鍵的純檢視動作；`#app` 與 `#objectWorkspace`
+  仍維持 `inert`。一般點擊、拖曳、滾輪及編輯快捷鍵不放行；右鍵保留原生選單事件，
+  不傳入一般畫布手勢處理器。恢復連線後同一 SVG 回原位置，不複製資料或重綁事件。
+  只讀容器依原 viewport 的尺寸與位置更新，浮動右欄保持在畫布上方。
 - `#faceDraftNotice`：重畫外環時在畫布上方占獨立列，不能遮住落點。
   `#faceDraftTitle` 顯示草稿頂點數，`#faceDraftMessage` 說明原輪廓、面積與返回保留。
   `#faceDraftFinish` 走既有閉合驗證；`#faceDraftCancel` 只清草稿，不刪面。
