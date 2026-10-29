@@ -135,10 +135,10 @@ static bool geo_source_ref_equal(GeoSourceRef a,GeoSourceRef b)
 }
 static bool geo_source_edge_equal(GeoSourceEdge a,GeoSourceEdge b)
 {return a.consumer==b.consumer&&a.source==b.source&&a.kind==b.kind;}
-static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source,size_t *empty_slot)
+static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source,size_t *empty_slot,uint64_t hash)
 {
     if(ctx->node_index_capacity){
-        size_t mask=ctx->node_index_capacity-1,slot=(size_t)geo_source_node_hash(source)&mask;
+        size_t mask=ctx->node_index_capacity-1,slot=(size_t)hash&mask;
         while(ctx->node_index[slot]){
             size_t i=ctx->node_index[slot]-1;
             if(geo_source_ref_equal(ctx->nodes[i]->source,source))return i;
@@ -275,16 +275,16 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
 {
     if(!ctx||!index||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
     ctx->started=true;
-    /* 只快取既有身分的插入序號；碰撞仍完整比對 K 持有的鍵。 */
-    size_t slot=(size_t)source.provider^source.key_size;
-    if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}
-    slot&=255;
+    /* 僅以完整 hash 選既有提示槽；命中仍比對 provider、大小與全部鍵。
+     * 同次 miss 將 hash 傳入原查找，不再重算；不跨呼叫借用 caller key。 */
+    uint64_t hash=geo_source_node_hash(source);
+    size_t slot=(size_t)hash&255;
     size_t hint=ctx->node_hint[slot];
     if(hint&&hint<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){
         *index=hint-1;return GEO_SOURCE_OK;
     }
     size_t empty_slot=SIZE_MAX;
-    size_t found=geo_source_find_node(ctx,source,&empty_slot);
+    size_t found=geo_source_find_node(ctx,source,&empty_slot,hash);
     if(found!=SIZE_MAX){ctx->node_hint[slot]=found+1;*index=found;return GEO_SOURCE_OK;}
     size_t provider=0;while(provider<ctx->provider_count&&ctx->providers[provider].token!=source.provider)++provider;
     if(provider==ctx->provider_count)return GEO_SOURCE_MISSING;
@@ -376,7 +376,7 @@ GeoSourceStatus geo_eval_describe(GeoEvalContext *ctx,GeoSourceRef source,GeoSou
     if(!ctx||!out||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
     size_t index=0;
     if(ctx->sealed){
-        index=geo_source_find_node(ctx,source,NULL);
+        index=geo_source_find_node(ctx,source,NULL,geo_source_node_hash(source));
         if(index==SIZE_MAX||!ctx->nodes[index]->described)return GEO_SOURCE_INVALID;
     }else{
         GeoSourceStatus status=geo_source_node(ctx,source,&index);
@@ -405,7 +405,7 @@ GeoSourceStatus geo_eval_source(GeoEvalContext *ctx,GeoSourceRef source,GeoDepen
     if(!out)return GEO_SOURCE_INVALID;
     if(ctx&&ctx->sealed){
         if((source.key_size&&!source.key)||kind<GEO_DEPENDENCY_VALUE_REQUIRED||kind>GEO_DEPENDENCY_EVALUATE_BEFORE)return GEO_SOURCE_INVALID;
-        size_t i=geo_source_find_node(ctx,source,NULL);
+        size_t i=geo_source_find_node(ctx,source,NULL,geo_source_node_hash(source));
         if(i==SIZE_MAX||ctx->nodes[i]->state!=GEO_NODE_VALID)return GEO_SOURCE_INVALID;
         *out=ctx->nodes[i]->value;return GEO_SOURCE_OK;
     }
