@@ -1,10 +1,10 @@
-# #348：H7、F1 原生探針與架構已通過，整合驗收續跑
+# #348：H7、帳本、F1 原生探針與架構已通過，整合驗收續跑
 
-**Draft／NOT READY。** 已完成 512 已放置完整 H7；完整帳本、native、census 及 browser 尚未全數閉合，不宣告可合併。
+**Draft／NOT READY。** 已完成 512 已放置完整 H7；native、census 及 browser 尚未全數閉合，不宣告可合併。
 
 - 正式產品 **M=`7a0e6dd81c54066995981393925fa46a815de2f8`**。
 - H7／35項接線測試 execution **T=`256747c5c8f8f8934eeb08ae404dee1f67591508`**；T→M 非 evidence 差異為零，沿用原 execution，不改標 M。
-- 完整 PR head／已公開證據 **E=`2be7e5aa058bf5e7b14e2e33fbbf40261fe9dbc3`**。產品、執行與證據提交分列。
+- 完整 PR head／已公開證據 **E=`b72578441e69df5be7da290ffca606a458ebc3ae`**。產品、執行與證據提交分列。
 
 ## 唯一現況矩陣
 
@@ -15,7 +15,7 @@
 | 新接線與既有反證 | **T 35項 exit0**＝新7＋原H13／W15。三個不同具名撤回各真0／1／0，hash工作差為2／2／4；原值、kind、有序依賴及舊負控保留，single-equivalent0不改稱kill。 |
 | 凍結場景圖比較 | 真 execution **`622b665423a55b4042a638589d2cd1efff427c7e`**，172場景原0；plain／trace完整輸出、有序圖及五guards相同。185個實際build葉及172個輸入到T、再到M閉包相同；保留622b execution，這份診斷不替代H7。 |
 | N128 profile | **M 原0／gprof0，5.982724714秒**；固定原B=`9a8584f57be7935604c3bad4c2481945a6ec3d9f` 的14.914534721秒不重抽。input.scene／stdout／stderr逐byte相同；literal stdin的loadfile路徑不同，不宣稱其bytes相同。這是 separate `-O0 -pg` 單點診斷，不是正式效能裁判。 |
-| 完整123帳本 | **M 於03:00:41 UTC真啟動，仍進行**。原precheck exit1／stale保留；scratch真53個bridge judge hash及完整source closure相同。尚無full-ledger／checkafter正式終態，不預填通過。 |
+| 完整123帳本 | **M 原 full=0／checkafter=0**，123筆：114 killed／1 crashed（M20）／5 equivalent／3 retired；零 stale／blocked／survived／unrun。原 precheck=1 保留。全份採入 `7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5`，採入後原 `python3 -B tests/mutate.py --check` 亦0；execution仍M，不改標採入或證據SHA。 |
 | 完整 native／strict census | **未完成**；定向35項及H7不能代替完整native。 |
 | 架構四份產物／原三裁判 | **M 真0／0／0**，generic205＋product18，0skip；604 inputs／798 edges／0 diagnostics。四檔採入純稽核提交 `d8550079d640347fade3124087464ce3bc4a6ce4`；receipt execution仍M，原manifest/policy/SSOT不改。 |
 | #297 原生探針 | **M 真exit0**，64場景／2936支全接受，L／原點／A0全符，0容量拒絕／規則拒絕／錯誤／幾何不符。F1八排95／97／96／98／108／110／109／111支，共824；每場第65支以後共312支亦全接受。不外推未測116或其他512情境。 |
@@ -42,3 +42,5 @@
 [#297／架構本輪原件與可讀輸出](https://github.com/ZhiQiYang/geometry-axiom/tree/2be7e5aa058bf5e7b14e2e33fbbf40261fe9dbc3/evidence/geo300-capacity512-20261024/probe-architecture-7a0e6dd8)：488檔，RAW 6,984,698 B，SHA256 `8669fe290da4b155cc21d3fce903e892b5f5b4ac2a2002128b96e7126f40de20`；實際遠端blob原bytes已核同。
 
 #297沿原registry O2 core、16MiBstack及每次原120秒，使用原支援CORE_BIN：`CORE_BIN=/dev/shm/pr348-probe297-7a0e6dd8/build/core TMPDIR=/dev/shm/pr348-probe297-7a0e6dd8/tmp bash geometry-core/framing-template/core-probe/run_probe.sh /dev/shm/pr348-probe297-7a0e6dd8/run`。build0 15.145188秒／probe0 62.550101秒，全部原始場景無省略。CORE_BIN未列入capture安全環境欄，原build.log／executor／ELF與sidecar另核實，不掩蓋此收據限制，也不為它重跑。架構原三命令、205／18原日誌與舊新四檔在同包；同伴已逐原件核收，未另跑產品。
+
+[完整帳本原件與核收](https://github.com/ZhiQiYang/geometry-axiom/tree/b72578441e69df5be7da290ffca606a458ebc3ae/evidence/geo300-capacity512-20261024/full-ledger-7a0e6dd8)：887檔含697份已保全原文字與175支原ELF；RAW 92,888,014 bytes，SHA256 `82d8535da2c13472c82d05ce1d95e5e9cfe35fe5c17a3f4f34e799db4b727a08`，實際遠端blob逐byte核同。執行區間2026-10-29T03:00:41Z–04:31:23Z，原命令 `python3 tests/mutate.py` 完整執行，不是只改帳本計數。獨立peer及原前後檢查在同目錄。
