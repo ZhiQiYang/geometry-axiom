@@ -140,11 +140,123 @@ static int typed_fallback(void)
     fail_indexes=0;
     REQUIRE("node-hint-reset",geo_eval_reset(ctx));
     REQUIRE("node-hint-reset-erases-hints",!ctx->node_count&&!ctx->provider_count&&live_allocations==1);
-    for(size_t i=0;i<256;++i)REQUIRE("node-hint-reset-clears-every-slot",!ctx->node_hint[i]);
+    for(size_t i=0;i<sizeof ctx->node_hint/sizeof *ctx->node_hint;++i)REQUIRE("node-hint-reset-clears-every-slot",!ctx->node_hint[i]);
     geo_eval_destroy(ctx);REQUIRE("node-hint-fallback-no-leak",!live_allocations);
     ctx=hint_context(ids,2);REQUIRE("node-hint-new-context",ctx);
     for(size_t i=0;i<2;++i)if(hint_read(ctx,i))return 1;
     return hint_finish(ctx);
+}
+/* Two unequal 16-byte keys with the same actual full hash.  The second word
+ * compensates the different state after the first word; the real production
+ * hash verifies the construction before any identity assertion is exercised.
+ * This is a collision fixture, not a replacement identity/evaluation oracle. */
+static int hint_full_collision(void)
+{
+    unsigned char pair[2][16];uint64_t first[2]={0,1},second[2]={0,0};
+    uint64_t seed=geo_source_hash_size(geo_source_hash_size(UINT64_C(14695981039346656037),17),sizeof pair[0]);
+    uint64_t state[2];
+    for(size_t i=0;i<2;++i){state[i]=(seed^first[i])*UINT64_C(11400714785074694791);state[i]^=state[i]>>32;}
+    second[1]=state[0]^state[1];
+    for(size_t i=0;i<2;++i){memcpy(pair[i],&first[i],sizeof first[i]);memcpy(pair[i]+sizeof first[i],&second[i],sizeof second[i]);}
+    GeoSourceRef ref[2]={{17,pair[0],sizeof pair[0]},{17,pair[1],sizeof pair[1]}};
+    REQUIRE("node-hint-full-collision-unequal-bytes",memcmp(pair[0],pair[1],sizeof pair[0])!=0);
+    REQUIRE("node-hint-full-collision-real-hash",geo_source_node_hash(ref[0])==geo_source_node_hash(ref[1]));
+    oracle_node_count=oracle_edge_count=0;descriptions=evaluations=0;
+    GeoEvalContext *ctx=context();REQUIRE("node-hint-full-collision-context",ctx);
+    for(size_t n=0;n<8;++n)for(size_t i=0;i<2;++i){
+        GeoSourceValue value;linear_node(ref[i]);
+        REQUIRE("node-hint-full-collision-source-status",geo_eval_source(ctx,ref[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+        REQUIRE("node-hint-collision-retains-full-identity",geo_eval_node_count(ctx)==oracle_node_count);
+        REQUIRE("node-hint-full-collision-value",value.kind==GEO_SOURCE_QUANTITY&&value.as.quantity.num==7&&value.as.quantity.den==1);
+        REQUIRE("node-hint-full-collision-ordered-identity",!graph_equal(ctx));
+    }
+    REQUIRE("node-hint-full-collision-provider-once",descriptions==2&&evaluations==2);
+    REQUIRE("node-hint-full-collision-seal",geo_eval_seal(ctx));
+    for(size_t i=0;i<2;++i){GeoSourceValue value;
+        REQUIRE("node-hint-full-collision-sealed-read",geo_eval_source(ctx,ref[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);}
+    REQUIRE("node-hint-full-collision-sealed-no-callback",descriptions==2&&evaluations==2);
+    REQUIRE("node-hint-full-collision-sealed-depend-refused",geo_eval_depend(ctx,ref[0],GEO_DEPENDENCY_VALUE_REQUIRED)==GEO_SOURCE_INVALID);
+    REQUIRE("node-hint-full-collision-sealed-reset-refused",!geo_eval_reset(ctx));
+    REQUIRE("node-hint-full-collision-final-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("node-hint-full-collision-no-leak",!live_allocations);return 0;
+}
+/* One fixed 4096-slot layout; select actual K placement keys with distinct
+ * full slots.  The same key bytes are used by the 4096 and old-256 candidates.
+ * 65536 is a bounded fixture corpus, not a runtime/performance acceptance limit. */
+enum { CAPACITY_KEYS=1024, CAPACITY_SLOTS=4096, CAPACITY_CORPUS=65536, CAPACITY_ROUNDS=4 };
+static GeoPlacementSourceKey capacity_keys[CAPACITY_KEYS];
+static GeoSourceRef capacity_refs[CAPACITY_KEYS];
+static uint32_t capacity_ids[CAPACITY_KEYS];
+static int capacity_prepare(size_t wanted)
+{
+    unsigned char occupied[CAPACITY_SLOTS]={0};size_t count=0;
+    REQUIRE("node-hint-capacity-fixture-count",wanted==512||wanted==1024);
+    for(uint32_t id=1;id<=CAPACITY_CORPUS&&count<wanted;++id){
+        GeoPlacementSourceKey key;GeoSourceRef ref=geo_placement_source_ref(HINT_TOKEN,GEO_PLACEMENT_SOURCE_FRAME,id,&key);
+        size_t slot=(size_t)geo_source_node_hash(ref)&(CAPACITY_SLOTS-1);
+        if(occupied[slot])continue;
+        capacity_keys[count]=key;capacity_ids[count]=id;
+        capacity_refs[count]=geo_placement_source_ref(HINT_TOKEN,GEO_PLACEMENT_SOURCE_FRAME,id,&capacity_keys[count]);
+        GeoPlacementSourceKind kind;uint32_t decoded;
+        REQUIRE("node-hint-capacity-actual-key",geo_placement_source_decode(&capacity_refs[count],&kind,&decoded)&&
+            kind==GEO_PLACEMENT_SOURCE_FRAME&&decoded==id);
+        REQUIRE("node-hint-capacity-real-slot",((size_t)geo_source_node_hash(capacity_refs[count])&(CAPACITY_SLOTS-1))==slot);
+        occupied[slot]=1;++count;
+    }
+    REQUIRE("node-hint-capacity-distinct-slots-precondition",count==wanted);
+    return 0;
+}
+static GeoEvalContext *capacity_context(void)
+{
+    oracle_node_count=oracle_edge_count=0;hint_descriptions=hint_evaluations=0;
+    GeoEvalContext *ctx=geo_eval_create(348,1);
+    GeoSourceProvider provider={HINT_TOKEN,"test.node-hint.capacity-frame","test/1",NULL,hint_describe,hint_evaluate};
+    if(ctx&&!geo_eval_register(ctx,&provider)){geo_eval_destroy(ctx);return NULL;}return ctx;
+}
+static int capacity_read(GeoEvalContext *ctx,size_t i)
+{
+    GeoSourceValue value;linear_node(capacity_refs[i]);
+    REQUIRE("node-hint-capacity-source-status",geo_eval_source(ctx,capacity_refs[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+    REQUIRE("node-hint-capacity-node-identity",geo_eval_node_count(ctx)==oracle_node_count);
+    REQUIRE("node-hint-capacity-exact-frame",value.kind==GEO_SOURCE_FRAME&&hint_same_frame(value.as.frame,hint_frame(capacity_ids[i])));
+    return 0;
+}
+static int capacity_work(size_t count,bool observe)
+{
+    if(capacity_prepare(count))return 1;
+    GeoEvalContext *ctx=capacity_context();REQUIRE("node-hint-capacity-context",ctx);
+    for(size_t i=0;i<count;++i)if(capacity_read(ctx,i))return 1;
+    node_hash_calls=node_probe_steps=node_find_calls=0;
+    for(size_t n=0;n<CAPACITY_ROUNDS;++n)for(size_t i=0;i<count;++i)if(capacity_read(ctx,i))return 1;
+    size_t hashes=node_hash_calls,probes=node_probe_steps,finds=node_find_calls;
+    REQUIRE("node-hint-capacity-hot-set-avoids-finder",finds==0&&probes==0);
+    REQUIRE("node-hint-capacity-one-hash-per-read",hashes==count*CAPACITY_ROUNDS);
+    REQUIRE("node-hint-capacity-provider-once",hint_descriptions==count&&hint_evaluations==count);
+    REQUIRE("node-hint-capacity-ordered-graph",!graph_equal(ctx));
+    REQUIRE("node-hint-capacity-seal",geo_eval_seal(ctx));
+    for(size_t i=0;i<count;++i)if(capacity_read(ctx,i))return 1;
+    REQUIRE("node-hint-capacity-sealed-no-callback",hint_descriptions==count&&hint_evaluations==count);
+    REQUIRE("node-hint-capacity-sealed-depend-refused",geo_eval_depend(ctx,capacity_refs[0],GEO_DEPENDENCY_VALUE_REQUIRED)==GEO_SOURCE_INVALID);
+    REQUIRE("node-hint-capacity-sealed-reset-refused",!geo_eval_reset(ctx));
+    REQUIRE("node-hint-capacity-sealed-order",!graph_equal(ctx));
+    size_t slots=sizeof ctx->node_hint/sizeof *ctx->node_hint;
+    geo_eval_destroy(ctx);REQUIRE("node-hint-capacity-no-leak",!live_allocations);
+    if(observe)printf("{\"keys\":%zu,\"slots\":%zu,\"requests\":%zu,\"hashes\":%zu,\"finds\":%zu,\"probes\":%zu}\n",
+        count,slots,count*CAPACITY_ROUNDS,hashes,finds,probes);
+    return 0;
+}
+static int capacity_reset(void)
+{
+    if(capacity_prepare(512))return 1;
+    GeoEvalContext *ctx=capacity_context();REQUIRE("node-hint-capacity-reset-context",ctx);
+    for(size_t i=0;i<512;++i)if(capacity_read(ctx,i))return 1;
+    size_t higher=0;for(size_t i=256;i<sizeof ctx->node_hint/sizeof *ctx->node_hint;++i)higher+=ctx->node_hint[i]!=0;
+    REQUIRE("node-hint-capacity-reset-higher-slots-warmed",higher>0);
+    REQUIRE("node-hint-capacity-reset",geo_eval_reset(ctx));
+    for(size_t i=0;i<sizeof ctx->node_hint/sizeof *ctx->node_hint;++i)
+        REQUIRE("node-hint-reset-clears-every-slot",!ctx->node_hint[i]);
+    REQUIRE("node-hint-capacity-reset-release",!ctx->node_count&&!ctx->provider_count&&live_allocations==1);
+    geo_eval_destroy(ctx);REQUIRE("node-hint-capacity-reset-no-leak",!live_allocations);return 0;
 }
 int main(int argc,char **argv)
 {
@@ -152,6 +264,12 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"typed-hint")||!strcmp(argv[1],"typed-probe")||!strcmp(argv[1],"typed-observe"))result=typed_work(argv[1]);
     else if(!strcmp(argv[1],"typed-collision"))result=typed_collision();
     else if(!strcmp(argv[1],"typed-fallback"))result=typed_fallback();
+    else if(!strcmp(argv[1],"hint-full-collision"))result=hint_full_collision();
+    else if(!strcmp(argv[1],"capacity-512"))result=capacity_work(512,false);
+    else if(!strcmp(argv[1],"capacity-1024"))result=capacity_work(1024,false);
+    else if(!strcmp(argv[1],"capacity-observe-512"))result=capacity_work(512,true);
+    else if(!strcmp(argv[1],"capacity-observe-1024"))result=capacity_work(1024,true);
+    else if(!strcmp(argv[1],"capacity-reset"))result=capacity_reset();
     else return original_source_index_main(argc,argv);
     if(!result)printf("PASS %s\n",argv[1]);return result;
 }

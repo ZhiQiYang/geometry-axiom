@@ -27,7 +27,7 @@ struct GeoEvalContext {
     size_t node_count, node_capacity;
     uint32_t *node_index;
     size_t node_index_capacity;
-    size_t node_hint[256];
+    size_t node_hint[4096];
     GeoSourceEdge *edges;
     size_t edge_count, edge_capacity;
     uint32_t *edge_index;
@@ -278,7 +278,7 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
     /* 僅以完整 hash 選既有提示槽；命中仍比對 provider、大小與全部鍵。
      * 同次 miss 將 hash 傳入原查找，不再重算；不跨呼叫借用 caller key。 */
     uint64_t hash=geo_source_node_hash(source);
-    size_t slot=(size_t)hash&255;
+    size_t slot=(size_t)hash&(sizeof ctx->node_hint/sizeof *ctx->node_hint-1);
     size_t hint=ctx->node_hint[slot];
     if(hint&&hint<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){
         *index=hint-1;return GEO_SOURCE_OK;

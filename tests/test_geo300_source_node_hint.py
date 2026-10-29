@@ -1,7 +1,8 @@
 """Full identity hint hashing: actual typed keys, exact work, original graph.
 
 This supplements the original source-index/node-slot/scope suites unchanged.
-No elapsed-time assertion or extra cache capacity is introduced.
+The fixed hint capacity is measured with real keys and exact lookup work;
+there is no elapsed-time assertion or capacity tuning sweep.
 """
 from pathlib import Path
 import json
@@ -17,7 +18,7 @@ if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from tests.test_geo261_native_kernel import NativeBuild
 from tests.test_geo300_source_node_slot import instrument_node_work
 
-HINT_SLOT="    size_t slot=(size_t)hash&255;"
+HINT_SLOT="    size_t slot=(size_t)hash&(sizeof ctx->node_hint/sizeof *ctx->node_hint-1);"
 OLD_SLOT="""    size_t slot=(size_t)source.provider^source.key_size;
     if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}
     slot&=255;"""
@@ -93,6 +94,25 @@ class SourceNodeHint(unittest.TestCase):
     def test_optional_index_failure_reset_and_sealed_reads_preserve_state(self):
         self.passes("typed-fallback")
 
+    def test_actual_512_and_1024_keys_reuse_warmed_hints(self):
+        for count in (512,1024):
+            name="capacity-observe-"+str(count)
+            r=self.case(name)
+            self.assertEqual((0,""),(r.returncode,r.stderr),r.stdout+r.stderr)
+            lines=r.stdout.splitlines()
+            self.assertEqual(2,len(lines))
+            self.assertEqual("PASS "+name,lines[-1])
+            observed=json.loads(lines[0])
+            self.assertEqual({"keys":count,"slots":4096,"requests":count*4,
+                              "hashes":count*4,"finds":0,"probes":0},observed)
+            print("hint-capacity-observed",json.dumps(observed,sort_keys=True),flush=True)
+
+    def test_reset_clears_warmed_hint_entries_above_255(self):
+        self.passes("capacity-reset")
+
+    def test_equal_full_hash_still_compares_every_key_byte(self):
+        self.passes("hint-full-collision")
+
     def assert_killed(self,exe,case,marker):
         self.passes(case,phase="baseline")
         r=self.case(case,exe,phase="mutant")
@@ -117,7 +137,13 @@ class SourceNodeHint(unittest.TestCase):
             "if(hint&&hint<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){",
             "if(hint&&hint<=ctx->node_count){")
         exe=self.make_executable("identity-ignored",changed)
-        self.assert_killed(exe,"typed-collision","node-hint-collision-retains-full-identity")
+        self.assert_killed(exe,"hint-full-collision","node-hint-collision-retains-full-identity")
+
+    def test_withdrawn_hint_capacity_fails_named_repeated_lookup_work(self):
+        changed=once(self.original,"    size_t node_hint[4096];","    size_t node_hint[256];")
+        exe=self.make_executable("old-256-capacity",changed)
+        for count in (512,1024):
+            self.assert_killed(exe,"capacity-"+str(count),"node-hint-capacity-hot-set-avoids-finder")
 
 
 if __name__=="__main__":unittest.main(verbosity=2)
