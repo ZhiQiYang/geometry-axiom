@@ -1,0 +1,293 @@
+{
+  "observed_utc": "2026-10-29T16:19:51.176110+00:00",
+  "execution_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+  "original_started_utc": "2026-10-29T03:00:41.343947+00:00",
+  "original_ended_utc": "2026-10-29T04:31:23.469447+00:00",
+  "original_wrapper_exit": 0,
+  "source_before": {
+    "head": "7a0e6dd81c54066995981393925fa46a815de2f8",
+    "status": ""
+  },
+  "source_after": {
+    "head": "7a0e6dd81c54066995981393925fa46a815de2f8",
+    "status": ""
+  },
+  "ledger_sha256": "812956bf480e74eda9e838e29f40f83a9cdd1f317e16e0432aaf539f33fcc569",
+  "counts": {
+    "killed": 114,
+    "equivalent": 5,
+    "crashed": 1,
+    "retired": 3
+  },
+  "coverage": 123,
+  "special_ids": {
+    "crashed": [
+      "M20"
+    ],
+    "equivalent": [
+      "M09",
+      "M110",
+      "M23",
+      "M36",
+      "M56"
+    ],
+    "retired": [
+      "M35",
+      "M51",
+      "M55"
+    ]
+  },
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000001/stdout.bin",
+        "stderr": "subcommands/000001/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000002/stdout.bin",
+        "stderr": "subcommands/000002/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "--version"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000003/stdout.bin",
+        "stderr": "subcommands/000003/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "gcc",
+        "--version"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000004/stdout.bin",
+        "stderr": "subcommands/000004/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "--version"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000005/stdout.bin",
+        "stderr": "subcommands/000005/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "exit": 1,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000006/stdout.bin",
+        "stderr": "subcommands/000006/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "clone",
+        "--shared",
+        "--no-checkout",
+        "/dev/shm/pr348-final-source-7a0e6dd8",
+        "/dev/shm/pr348-ledger-7a0e6dd8/tmp/geometry-tests/mutants/_bridge-work/7a0e6dd81c54066995981393925fa46a815de2f8/repo"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000007/stdout.bin",
+        "stderr": "subcommands/000007/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "sparse-checkout",
+        "set",
+        "--no-cone",
+        "/*",
+        "!/evidence/",
+        "!/tests/evidence/",
+        "!/tests/release-evidence/"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000008/stdout.bin",
+        "stderr": "subcommands/000008/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "-c",
+        "core.autocrlf=false",
+        "checkout",
+        "--detach",
+        "7a0e6dd81c54066995981393925fa46a815de2f8"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000009/stdout.bin",
+        "stderr": "subcommands/000009/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000010/stdout.bin",
+        "stderr": "subcommands/000010/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--name-only",
+        "HEAD"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000011/stdout.bin",
+        "stderr": "subcommands/000011/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000012/stdout.bin",
+        "stderr": "subcommands/000012/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "-c",
+        "import json,pathlib,sys;sys.path.insert(0,\"tests\");import mutate as mt,mutation_bridge as mb;source=pathlib.Path(sys.argv[1]).resolve();work=pathlib.Path(sys.argv[2]).resolve();cache=pathlib.Path(sys.argv[3]).resolve();assert mt.MUT_ROOT.resolve()==cache;left=mt.Sources(source);right=mt.Sources(work);assert left.closure==right.closure;judges=[m for m in mt.MUTANTS if m.get(\"binary\")==\"bridge\"];assert all(mb.oracle_hash(m,source)==mb.oracle_hash(m,work) for m in judges);assert all(not (work/p).exists() for p in (\"evidence\",\"tests/evidence\",\"tests/release-evidence\"));print(json.dumps({\"source_sha\":sys.argv[4],\"cache\":str(cache),\"source_closure\":left.closure,\"closure_files\":len(left.hashes),\"bridge_judges_equal\":len(judges),\"no_product_execution\":True},sort_keys=True))",
+        "/dev/shm/pr348-final-source-7a0e6dd8",
+        "/dev/shm/pr348-ledger-7a0e6dd8/tmp/geometry-tests/mutants/_bridge-work/7a0e6dd81c54066995981393925fa46a815de2f8/repo",
+        "/dev/shm/pr348-ledger-7a0e6dd8/tmp/geometry-tests/mutants",
+        "7a0e6dd81c54066995981393925fa46a815de2f8"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000013/stdout.bin",
+        "stderr": "subcommands/000013/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tests/mutate.py"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000014/stdout.bin",
+        "stderr": "subcommands/000014/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000015/stdout.bin",
+        "stderr": "subcommands/000015/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000016/stdout.bin",
+        "stderr": "subcommands/000016/stderr.bin"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit": 0,
+      "timeout": false,
+      "streams": {
+        "stdout": "subcommands/000017/stdout.bin",
+        "stderr": "subcommands/000017/stderr.bin"
+      }
+    }
+  ],
+  "copied_files": 697,
+  "copied_bytes": 14330005,
+  "binary_originals": 175,
+  "binary_original_bytes": 182733328,
+  "binary_sidecars_all_match": true,
+  "bridge_stream_references_verified": 318,
+  "no_product_execution": true,
+  "no_git_write": true,
+  "not_published": true,
+  "limitations": [
+    "Core per-attempt result records and stdout/stderr hashes exist in ledger; the original mutator does not persist those individual raw streams.",
+    "175 original ELF files remain in the original cache, hash-verified but not copied within this 30 MiB recovery budget.",
+    "This recovery is not a new mutation run and does not change any execution SHA."
+  ]
+}

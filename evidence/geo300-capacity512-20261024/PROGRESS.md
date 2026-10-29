@@ -1,3 +1,13 @@
+# #348 唯一 current state（全帳本已核收）
+
+- 產品／全帳本 execution：`7a0e6dd81c54066995981393925fa46a815de2f8`；全帳本採入提交：`7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5`。其後沒有改寫 execution 身分。
+- 完整123筆：114 killed／1 crashed（M20）／5 equivalent／3 retired，stale／blocked／survived／unrun皆0。原 precheck=1 保留；原 full=0／checkafter=0，採入後原 `mutate.py --check`=0。
+- 原697份文字與175支ELF皆封存於 `full-ledger-7a0e6dd8/RAW.tar.gz`，SHA256 `82d8535da2c13472c82d05ce1d95e5e9cfe35fe5c17a3f4f34e799db4b727a08`；獨立核收見同目錄 PEER.md。
+- H7：真T256747c5執行8／0／0／0、1142.271674秒<1200，所有批次<600；T→M非evidence無差異。#297真M64場景2936支全接受；架構三原裁判0／0／0。原失敗與來源閉包均保留既有資料夾。
+- 精確#343／#346／#347祖先已納入，與目前#347 behind0。完整census／35分鐘native／六browser仍未完成，**Draft／NOT READY**。
+
+## 歷史紀錄（以下不是 current state）
+
 # #348 唯一 current state（2026-10-29 04:00 UTC）
 
 - 產品M=`7a0e6dd81c54066995981393925fa46a815de2f8`；來源鏈含精確#343 a934a554ae58f16f124f1b264523947f170b3f0b、#346 eaf15e239324a6464a04740647afccce3a3c17c7、#347 8bb0359331365c6f3a96872620427cf7847fcb50，behind0。原behind2及全部紅保留歷史。
