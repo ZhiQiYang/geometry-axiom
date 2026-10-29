@@ -120,7 +120,7 @@ class RuntimeVersionTests(unittest.TestCase):
             path.write_bytes(b'private bytes')
         snapshot = runtime_version.RuntimeSnapshot(self.root)
         self.assertEqual({route for route in snapshot.static if route.startswith('/templates/')},
-                         {'/templates/woodworking.js'})
+                         {'/templates/woodworking.js', '/templates/woodworking-cutting.js'})
         for relative in paths:
             self.assertNotIn('/' + relative, snapshot.static)
         self.assertNotIn('/templates/private.js', snapshot.static)

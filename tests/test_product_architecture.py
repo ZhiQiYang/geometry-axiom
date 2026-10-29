@@ -118,6 +118,32 @@ class ProductArchitecture(unittest.TestCase):
                          ["geometry-core/geometry_kernel/evaluate.py", path,
                           "geometry-app/geometry_app/__init__.py"])
 
+    def test_actual_interval_core_woodworking_policy_tokens_are_rejected(self):
+        path = "geometry-core/interval-allocation.js"
+        for token in (b"GeometryWoodworkingCutting", b"materialKey", b"stockIdentity", b"sectionKey",
+                      b"kerf", b"minRemnant", b"allowance", b"TIMBER_ROLE_PRIMARY"):
+            with self.subTest(token=token), self.change(path, lambda raw: raw + b"\nvoid " + token + b";\n"):
+                self.rejects(self.focused(path), "FORBIDDEN_IDENTIFIER", path)
+
+    def test_actual_interval_core_fixed_template_identity_is_rejected(self):
+        path = "geometry-core/interval-allocation.js"
+        with self.change(path, lambda raw: raw + b'\nvoid "woodworking/1";\n'):
+            self.rejects(self.focused(path), "FORBIDDEN_STRING", path)
+
+    def test_actual_interval_core_template_dependency_is_rejected(self):
+        path = "geometry-core/interval-allocation.js"
+        target = "geometry-templates/woodworking/cutting.js"
+        with self.change(path, lambda raw: raw + b'\nrequire("../geometry-templates/woodworking/cutting.js");\n'):
+            self.rejects(self.focused(path), "LAYER_DIRECTION", path, [path, target])
+
+    def test_actual_woodworking_cutting_host_dependencies_are_rejected(self):
+        path = "geometry-templates/woodworking/cutting.js"
+        for target in ("geometry-web/cutting-settings.js", "geometry-web/timber-schedule.js",
+                       "geometry-app/application.js"):
+            with self.subTest(target=target), self.change(
+                    path, lambda raw: raw + ('\nrequire("../../' + target + '");\n').encode("utf-8")):
+                self.rejects(self.focused(path), "LAYER_DIRECTION", path, [path, target])
+
     def test_unlisted_product_file_is_rejected(self):
         path = self.root / "geometry-core/kernel/architecture_probe.c"
         try:
@@ -156,12 +182,14 @@ class ProductArchitecture(unittest.TestCase):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(self.root / entry["path"], path)
             config = deepcopy(self.manifest)
-            config.update(sourceRoots=["geometry-core/kernel", "geometry-core/geometry_kernel"],
+            config.update(sourceRoots=["geometry-core"],
                           sourceFiles=[], sources=sources, exclusions=[], htmlScriptRoutes=[],
                           javascriptImportRoutes=[], htmlEmbedRoutes=[], trustedVendorBundles=[],
-                          searchRoots={"c": [".", "geometry-core/kernel"], "python": ["geometry-core"], "javascript": []})
+                          searchRoots={"c": [".", "geometry-core/kernel"], "python": ["geometry-core"],
+                                       "javascript": ["geometry-core"]})
             self.assertFalse((target / "geometry-templates").exists())
             self.assertFalse((target / "geometry-app").exists())
+            self.assertFalse((target / "geometry-web").exists())
             result = scan(target, config)
             self.assertTrue(result.ok, [item.__dict__ for item in result.diagnostics])
             self.assertEqual(set(result.sources), {entry["path"] for entry in sources})

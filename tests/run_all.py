@@ -300,6 +300,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:cutting_layering': 'tests/test_cutting_layering.js',
     'node:cutting_owner': 'tests/test_cutting_owner.js',
     'node:cutting_plan': 'tests/test_cutting_plan.js',
     'node:cutting_project_store': 'tests/test_cutting_project_store.js',
@@ -330,6 +331,8 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/cutting_legacy_cases.js': 'Fixed inputs for the independently pinned pre-layering cutting oracle; no tests registered',
+    'tests/generate_cutting_legacy_fixture.js': 'Explicit regeneration/check of fixed cd4bc880 Git blobs in an isolated VM; never reads current product sources',
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
     'tests/k2a_browser_receipt.cjs': 'Shared browser receipt/identity helper; registers no tests',
     'tests/k2a_rule_repin_browser.cjs': 'Required actual source-rule raw preservation and two-way repin comparison gate',
