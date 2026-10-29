@@ -7,6 +7,7 @@
   else root.GeometryFeatureAttachments = api;
 })(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms, Evidence, Cases) {
   "use strict";
+  const RoomCandidates = typeof module === "object" && module.exports ? require("./room-candidate-draft.js") : root.GeometryRoomCandidateDraft;
   const SCHEMA = "geometry-feature-attachments/1";
   const CASE_KIND=Cases.KIND, CASE_SCHEMA=Cases.SCHEMA;
   const GRID_SCHEMA = "grid-editor-draft/1", GRID_RULE_SCHEMA = "grid-editor-draft/2", GRID_KIND = "grid-draft";
@@ -14,7 +15,8 @@
   const ROOM_KIND = "source-rooms", ROOM_SCHEMA = "source-rooms/1", ROOM_CAPABILITY = "source-room-collection/1";
   const ROOM_HISTORY_SCHEMA = "source-rooms/2", ROOM_HISTORY_CAPABILITY = "source-room-history/1";
   const ROOM_DISPLAY_SCHEMA = "source-rooms/3", ROOM_DISPLAY_CAPABILITY = "source-room-display/1";
-  const MAX_BYTES = 128 * 1024, MAX_STRING = 4096;
+  const ROOM_CANDIDATE_KIND = RoomCandidates.KIND, ROOM_CANDIDATE_SCHEMA = RoomCandidates.SCHEMA, ROOM_CANDIDATE_CAPABILITY = RoomCandidates.CAPABILITY;
+  const MAX_BYTES = 128 * 1024, MAX_STRING = 4096, MAX_ATTACHMENT_RECORDS = 5;
   const MAX_ROOM_BYTES = 8 * 1024 * 1024;
   const sourceFields = ["igName", "igMainAlong", ...["U", "V"].flatMap(axis => [
     "Source", ...["Step", "Phase", "Panel", "Gap", "Anchor", "Stagger"].flatMap(field => [field, field + "Source"])
@@ -122,7 +124,19 @@
       if (item === null) {charge(4);return;}
       if (typeof item === "boolean") {charge(item ? 4 : 5);return;}
       if (typeof item === "number" && Number.isFinite(item)) {charge(JSON.stringify(item).length);return;}
-      if (typeof item === "string" && item.length <= (legacyGeometry(path) ? 100000 : MAX_STRING)) {stringBytes(item);return;}
+      const roomCandidateRaw = () => {
+        if (!roomEnvelope) return false;
+        const at = base => {
+          const tail = path.slice(base);
+          return tail[0] === "rows" && Number.isInteger(tail[1]) && (tail.length === 3 && tail[2] === "rowKey" ||
+            tail.length === 4 && tail[2] === "rawInputs" && ["refRoomVertices", "refRoomLength", "refRoomEdge"].includes(tail[3]));
+        };
+        if (path[0] === "value" && ownValue(value, "kind") === ROOM_CANDIDATE_KIND) return at(1);
+        if (path[0] === "records" && Number.isInteger(path[1]) && path[2] === "value" &&
+            ownValue(ownValue(ownValue(value, "records"), path[1]), "kind") === ROOM_CANDIDATE_KIND) return at(3);
+        return false;
+      };
+      if (typeof item === "string" && item.length <= (legacyGeometry(path) ? 100000 : roomCandidateRaw() ? RoomCandidates.MAX_RAW : MAX_STRING)) {stringBytes(item);return;}
       if (Array.isArray(item)) {
         const proto = Object.getPrototypeOf(item);
         if (!nativePrototype(proto, "Array") ||
@@ -302,12 +316,16 @@
       Cases.validate(record.value);
     } else if (record.kind === Evidence.KIND && record.schema === Evidence.SCHEMA) {
       Evidence.validate(record.value);
+    } else if (record.kind === ROOM_CANDIDATE_KIND && record.schema === ROOM_CANDIDATE_SCHEMA) {
+      if (!RoomCandidates || RoomCandidates.SCHEMA !== ROOM_CANDIDATE_SCHEMA) fail("房間候選驗證器尚未就緒。");
+      if (record.value?.schema !== record.schema) fail("房間候選附件版本不一致。");
+      RoomCandidates.validate(record.value);
     } else fail("功能附件種類或版本不支援。");
     return record;
   }
   function validate(envelope, stored = false) {
     const bytes = boundedJSON(envelope, true,stored?MAX_GRID_DRAFTS*(20*12+103)+256:0);
-    if (!keys(envelope, ["schema", "records"]) || envelope.schema !== SCHEMA || !Array.isArray(envelope.records) || envelope.records.length > 4)
+    if (!keys(envelope, ["schema", "records"]) || envelope.schema !== SCHEMA || !Array.isArray(envelope.records) || envelope.records.length > MAX_ATTACHMENT_RECORDS)
       fail("功能附件版本或清單不支援。");
     const kinds = new Set();
     for (const record of envelope.records) {
@@ -320,7 +338,7 @@
       fail("功能附件未保留房間狀態更新所需容量。");
     return envelope;
   }
-  function assertKind(kind) { if (![GRID_KIND, ROOM_KIND, Evidence.KIND, CASE_KIND].includes(kind)) fail("功能附件種類不支援。"); }
+  function assertKind(kind) { if (![GRID_KIND, ROOM_KIND, ROOM_CANDIDATE_KIND, Evidence.KIND, CASE_KIND].includes(kind)) fail("功能附件種類不支援。"); }
   function record(kind, value, stored = false) {
     assertKind(kind);
     const schema = value !== null && typeof value === "object" ? Object.getOwnPropertyDescriptor(value,"schema")?.value : undefined;
@@ -329,6 +347,7 @@
   function capabilities(envelope) { validate(envelope,true); return [...new Set(envelope.records.flatMap(record => record.kind === GRID_KIND ?
     (record.schema === GRID_DRAFTS_SCHEMA ? [GRID_DRAFTS_SCHEMA,...record.value.drafts.map(d=>d.schema)] : [record.schema]) :
     record.kind === Evidence.KIND ? [Evidence.SCHEMA] : record.kind === CASE_KIND ? [CASE_SCHEMA] :
+    record.kind === ROOM_CANDIDATE_KIND ? [ROOM_CANDIDATE_CAPABILITY] :
     [ROOM_CAPABILITY,...(record.schema===ROOM_DISPLAY_SCHEMA?[ROOM_DISPLAY_CAPABILITY]:[]),
       ...((record.schema===ROOM_HISTORY_SCHEMA||record.value.legacyHistory?.length)?[ROOM_HISTORY_CAPABILITY]:[])]))].sort(); }
   function evidenceLinks(envelope, sources, projectScope) {
@@ -365,7 +384,7 @@
   function changedRoomBoundary(value, id) { return Rooms.boundaryChanged(validateRecord(record(ROOM_KIND, value)).value, id); }
   function unknownRoomHistory(value) { return Rooms.unknownHistory(validateRecord(record(ROOM_KIND, value)).value); }
   function references(value) { validateGridDraft(value); return JSON.parse(JSON.stringify([...(value.baseRef === null ? [] : [value.baseRef]), ...value.inputRefs])); }
-  return {ReferenceDisplay:Rooms.Display,Evidence,Cases,CASE_KIND,CASE_SCHEMA, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, ROOM_DISPLAY_SCHEMA, ROOM_DISPLAY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
+  return {ReferenceDisplay:Rooms.Display,Evidence,Cases,RoomCandidates,CASE_KIND,CASE_SCHEMA, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, ROOM_DISPLAY_SCHEMA, ROOM_DISPLAY_CAPABILITY, ROOM_CANDIDATE_KIND, ROOM_CANDIDATE_SCHEMA, ROOM_CANDIDATE_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields), ruleFields:Object.freeze(ruleFields),
     gridSourceDefinition, gridSourceKey, ruleAwareSource,

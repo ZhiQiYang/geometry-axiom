@@ -57,7 +57,7 @@ async function main() {
       await ReferenceWorkspace.preparePage(underlay,source);ReferenceWorkspace.addPage(1,underlay);
       await enterFocus('face',1);fiShowTab('underlay');
     },pdf);
-    await page.locator('#roomSourceCreate').click();await page.waitForSelector('#roomNew');
+    await page.locator('#roomNew').click();await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms.length===1);
     const baseline=await state(page);
     for (const pointCount of [0,4]) for (const exit of ['Back','Escape','v']) {
       await page.evaluate(async () => {while(oc.focus)await leaveFocus();await enterFocus('face',1);fiShowTab('underlay');});

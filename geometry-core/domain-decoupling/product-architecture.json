@@ -1701,6 +1701,12 @@
       "purpose": "Application/runtime/protocol or workspace host reference bridge; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/room-candidate-draft.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host room-candidate draft; project attachment, not a scene capability"
+    },
+    {
       "path": "geometry-web/room-collection-workspace.js",
       "layer": "H",
       "language": "javascript",
@@ -2641,7 +2647,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "sha256": "6ee6edf53c4a6af1328b0f248e7e3d1b7805a73abf11b1bc06ebcc5d497ddbd3",
       "hashMode": "lf"
     },
     {
@@ -3037,7 +3043,7 @@
     {
       "path": "geometry-web/evidence_links_integration_test.js",
       "reason": "Dedicated acceptance/test driver evidence_links_integration_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "244d6b583d77fb481d250cfc1ca5ded9e88d9819f0833743667ab64f9e9a2d00",
+      "sha256": "a55deb928812dd21a0d90b13b93321cb32bae03e11856b3f20abfd2a92a904a9",
       "hashMode": "lf"
     },
     {
@@ -3338,6 +3344,12 @@
       "path": "geometry-web/prototypes/engineering-spec/worker/index.js",
       "reason": "Separate engineering-spec UI prototype index.js; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
       "sha256": "2dd0615a445143933d88d4271f54f5d63ee951421fcd08c5a7617bb09c564389",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/room_candidate_browser_test.js",
+      "reason": "Dedicated acceptance/test driver room_candidate_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "47654b3b83521ca9f7df9698d1037a9821b5fbfebeadb2af34af2e885fff8c75",
       "hashMode": "lf"
     },
     {

@@ -43,7 +43,7 @@ async function main(){
       window.issue77OldRemoveButton=document.getElementById('ulRemove'); // Retain the real bound legacy button across adoption.
       return saved;
     },{shared:fixture.toString('base64'),legacy:[changedPDF('Note X').toString('base64'),changedPDF('Note Y').toString('base64')]});
-    await page.locator('#roomSourceCreate').click();await page.waitForSelector('#roomNew');
+    await page.locator('#roomNew').click();await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms.length===1);
     const before=await snapshot(page);
     check(before.pages.map(page=>({id:page.id,records:page.records,sourceId:page.sourceId})),retained,'explicit adoption preserves both unrelated legacy pages and records');
     check(before.attachment.rooms.length,1,'selected PDF is adopted as one room');

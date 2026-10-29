@@ -33,7 +33,7 @@ async function setup(page) {
     await ReferenceWorkspace.preparePage(reference,source);ReferenceWorkspace.addPage(1,reference);
     await enterFocus("face",1);fiShowTab("underlay");
   }, PDF);
-  await page.locator("#roomSourceCreate").click(); await page.waitForSelector("#roomNew");
+  await page.locator("#roomNew").click(); await page.waitForFunction(() => RoomCollectionWorkspace.controller.state().rooms.length === 1);
 }
 async function draw(page) {
   await page.evaluate(() => {$("faceSnapToggle").checked=false;feFit([0,0,12000,8000]);});

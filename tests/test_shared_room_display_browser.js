@@ -49,7 +49,7 @@ async function run(){
         records:[{id:'original-record',label:'原圖梁底',location:'repo-authored A',datum:'FFL',unit:'mm',value:200,supplier:{raw:'保持原樣'}}]};
       await ReferenceWorkspace.preparePage(p,source);ReferenceWorkspace.addPage(1,p);
     },Array.from(PDF));await focus(page,1);const before=await snapshot(page);
-    prompts.push('房間 A');await page.locator('#roomSourceCreate').click();await page.waitForSelector('#roomNew');
+    prompts.push('房間 A');await page.locator('#roomNew').click();await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms.length===1);
     let after=await snapshot(page);check(after.views[0],{...original,x:50},width+' adoption preserves original cropped view');
     check(after.scene,before.scene,width+' adoption does not change native');check(after.history,before.history+1,width+' adoption is one history');
     check(after.attachment.legacyHistory[0].records[0].supplier,{raw:'保持原樣'},width+' original historical extensions kept');
