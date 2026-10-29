@@ -113,7 +113,7 @@ module.exports = async ({send, eval_, sleep, click, waitForUI, exceptionCount}) 
   await ctl('#definitionImportBindings input[data-di-binding="1"]');
   await ctl('#definitionImportPreview');
   await wait(`$('definitionImportStatus').textContent.includes('IMPORT_RENAME_REQUIRED') && !!document.querySelector('#definitionImportNames [data-di-row="柱寬"]')`);
-  check('未選擇撞名處理時不發確認權杖', await read(`$('definitionImportConfirm').disabled && (await __diDump())===${JSON.stringify(before)}`));
+  check('未選擇撞名處理時不發確認權杖', await read(`(async()=> $('definitionImportConfirm').disabled && (await __diDump())===${JSON.stringify(before)})()`));
   await ctl('#definitionImportNames input[data-di-mode="rename"]');
   await fill('#definitionImportNames input[data-di-rename="柱寬"]', '柱寬匯入');
   await ctl('#definitionImportPreview');
