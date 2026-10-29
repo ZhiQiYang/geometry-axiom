@@ -1,0 +1,80 @@
+{
+  "schema": "geo300-three-suite-top-launch/1",
+  "source": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo261-environment/reap_children.py",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo300-member-sort-three-suite-tools/run_three_suites.py"
+  ],
+  "cwd": "/workspace/geo300-contact-index-work",
+  "timeout": null,
+  "tools": {
+    "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+    "/workspace/geo261-environment/reap_children.py": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+    "/workspace/geo300-member-sort-three-suite-tools/run_three_suites.py": "73c0f49b99eef645fa79d94b40fac64b06c6cef1c40114706924eb390d89f418",
+    "/tmp/free-end-retain-original-suite.py": "875213bbe26941626cadb844ad3ac4ff35f5540a317045435d7782d3c4ed9762"
+  },
+  "reaper_log": "/workspace/geo300-member-sort-three-suites-launch/reaper.jsonl",
+  "scope": "root granted secondary correctness slot; fixed GEO300 candidate, no R3 lock attempt, no ledger or performance",
+  "environment": {
+    "PYTHONOPTIMIZE": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GEO261_REAPER_LOG": "/workspace/geo300-member-sort-three-suites-launch/reaper.jsonl",
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "TMPDIR": null
+  },
+  "reaper_process_exit": 1,
+  "primary_returncode": 1,
+  "reaper_complete_events": 1,
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo300-member-sort-three-suite-tools/run_three_suites.py"
+      ],
+      "cwd": "/workspace/geo300-contact-index-work",
+      "acceptance_sha": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
+      "source_sha": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
+      "source_variant": null,
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792795646.3284097,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 1,
+      "timeout_expired": false,
+      "directory": "/workspace/geo300-member-sort-three-suites-launch/subcommands/000001",
+      "ended_epoch": 1792795668.7702007,
+      "stdout_sha256": "fc4a8b5c011306c96c2406b8e53619f1199a29d8a92c36191754d73d99542933",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 211,
+      "stderr_bytes": 0
+    }
+  ],
+  "metadata_problems": [],
+  "launcher_exit": 1
+}
