@@ -8,6 +8,10 @@
 - 一次N128插裝診斷exit0：24548個exclude不同但其餘key完整相同；只證明可命中，不是新效能收據。生命週期靜態審查排除刪必要World重驗。下一步單次真512profile找剩餘產品成本。
 - 上游#347目前 `8bb0359331365c6f3a96872620427cf7847fcb50`，343→346→347未閉合。原review相對base behind2、目前ref比較behind3；新evidence提交只改ahead。全ledger/census/architecture/native/browser未完成，不合PR/main、不放寬守門。
 
+## 真512 profile完成；hash-tag候選不採入
+
+8b原ELF的512-pg診斷371.171277秒exit0，stdout/stderr與正式512全等。2ac7126205f0079feda8a282663996a75ea12d87的62控制與172有序圖綠，但一次N256 34.701295→34.902487秒未證收益，故不帶入下一候選。原件profile-and-tag-2ac71262。下一步從8b的獨立ordered-runs分支省去W已排序區段的重複比較；H7原紅與上游狀態維持。
+
 ## 歷史檢查點（以下current-state字樣均為原當時紀錄）
 
 # #348 current state：512三路徑各批已綠；整套時限與上游鏈仍阻擋
