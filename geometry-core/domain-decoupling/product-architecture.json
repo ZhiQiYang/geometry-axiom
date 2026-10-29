@@ -2641,7 +2641,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "sha256": "9326f83a1fdf7feea67097fe64301c433537ba4e15f30ebc1b5f88915dd18ff3",
       "hashMode": "lf"
     },
     {
@@ -3644,6 +3644,18 @@
       "path": "geometry-core/framing-template/oracle/selftest.py",
       "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
       "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/grid_card_entry_test.js",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "31639687991d2f6dc9bd687601728f78981ef06287e5e40a1431e7ee88cab41e",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/browser_mutation_check.py",
+      "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
+      "sha256": "7ad42d2ef3ad9e3b35dd463dbf0e963a6afc961c583cc4d7faca419b110015db",
       "hashMode": "lf"
     }
   ],

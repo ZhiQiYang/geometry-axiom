@@ -1,0 +1,101 @@
+{
+  "schema": "geometry-browser-mutations/1",
+  "suite": "grid-card-entry-353",
+  "scope": "GEOMETRY_GRID_CARD_ENTRY_ONLY",
+  "caseFilter": "GEOMETRY_GRID_CARD_ENTRY_CASE",
+  "resultPrefix": "P353_CASE_RESULT ",
+  "cases": [
+    "entry",
+    "explicit_mapping",
+    "commit_cancel",
+    "swap",
+    "equal_swap",
+    "reopen",
+    "native_rejection",
+    "raw_roundtrip",
+    "archive_roundtrip",
+    "history",
+    "lost_source",
+    "stale_preview",
+    "binding_effective"
+  ],
+  "inputs": [
+    "geometry-web/cdp_test.js",
+    "geometry-web/grid_card_entry_test.js",
+    "geometry-web/browser_mutation_check.py",
+    "geometry-web/grid_card_entry_mutations.json"
+  ],
+  "mutations": [
+    {
+      "id": "p353_hide_entry",
+      "case": "entry",
+      "assertions": [
+        "ENTRY_CARD_VISIBLE"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "<div class=\"ig-card-ref\" id=\"igCardRef\">",
+          "after": "<div class=\"ig-card-ref\" id=\"igCardRef\" style=\"display:none\">"
+        }
+      ]
+    },
+    {
+      "id": "p353_swap_noop",
+      "case": "swap",
+      "assertions": [
+        "SWAP_MAPPING_ONLY"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "const u = $('igCardU').value; $('igCardU').value = $('igCardV').value; $('igCardV').value = u;",
+          "after": "const u = $('igCardU').value; $('igCardU').value = u; $('igCardV').value = $('igCardV').value;"
+        }
+      ]
+    },
+    {
+      "id": "p353_flatten_card_token",
+      "case": "commit_cancel",
+      "assertions": [
+        "CREATE_NATIVE_PREVIEW",
+        "CREATE_PREVIEW_VALID"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(v.cardLength&&key===(v.source==='repeat'?'step':'panel'))return 'card';",
+          "after": "if(v.cardLength&&key===(v.source==='repeat'?'step':'panel'))return v[key];"
+        }
+      ]
+    },
+    {
+      "id": "p353_drop_raw_mapping",
+      "case": "raw_roundtrip",
+      "assertions": [
+        "RAW_SOURCE_MAPPING"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if(s.mode==='source'&&cardOn())for(const id of CARD_IDS)form[id]=$(id)?.value??'';",
+          "after": "if(false&&s.mode==='source'&&cardOn())for(const id of CARD_IDS)form[id]=$(id)?.value??'';"
+        }
+      ]
+    },
+    {
+      "id": "p353_drop_card_pins",
+      "case": "raw_roundtrip",
+      "assertions": [
+        "RAW_TYPED_PINS"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "if (pin) { s.inputPins.set(key, copy(pin)); s.cardPinKeys.push(key); }",
+          "after": "if (pin) { s.cardPinKeys.push(key); }"
+        }
+      ]
+    }
+  ]
+}
