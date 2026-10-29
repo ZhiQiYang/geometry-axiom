@@ -210,6 +210,7 @@ PY_NEEDS = {
     'test_geo300_source_node_hint': [],
     'test_geo300_contact_facts_zero': [],
     'test_geo300_host_depend_hint': [],
+    'test_geo300_depend_hint': [],
     'test_geo261_wood_world_validation': [],
     'test_grid_system_contract': ['bridge'],
     'test_grid_card_reference': ['bridge', 'model-base'],
