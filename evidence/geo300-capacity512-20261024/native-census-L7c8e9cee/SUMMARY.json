@@ -1,0 +1,72 @@
+{
+  "source_sha": "7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5",
+  "census_completed": false,
+  "formal_native_pass_claimed": false,
+  "original_command": [
+    "python3",
+    "tests/run_all.py",
+    "--build",
+    "--update-expected"
+  ],
+  "guard_exit": 124,
+  "actual_process_returncode": -9,
+  "timed_out": true,
+  "primary_seconds": 2100.075953891006,
+  "with_cleanup_seconds": 2100.1173441489955,
+  "cleanup_complete": true,
+  "source_after": {
+    "head": "7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5",
+    "status_z": ""
+  },
+  "ledger_unchanged": true,
+  "expected_changed": false,
+  "expected_sha256": "e88f97a2c13e4ab561c071855ebf68f58bef5cec5d05ba20f453d58a23cf4209",
+  "last_started_suite_index": 107,
+  "registered_suites": 243,
+  "last_started_suite": "py:test_geo261_timber_capacity_host",
+  "subsequent_suites_not_started": 136,
+  "h7_unittest_partial_log": ".......",
+  "h7_complete_json_exists": false,
+  "fresh_python_results": 102,
+  "fresh_python_passed": 1523,
+  "fresh_python_failed": 0,
+  "fresh_python_skipped": 1,
+  "python_skip_details": [
+    {
+      "file": "py_test_gdi_contract.json",
+      "sha256": "1bf722c95cac58742b4f334ff9dc89c98f8f0881f44131135deba4eb9095b70b",
+      "result": {
+        "file": "tests/test_gdi_contract.py",
+        "total": 1,
+        "run": 1,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 1,
+        "explicit_skipped": 1,
+        "unrun_skipped": 0,
+        "blocked_by_error": 0,
+        "expected_failed": 0,
+        "expected_failures": [],
+        "failures": [],
+        "skip_reasons": {
+          "requires compiled Windows GDI contract harness": 1
+        },
+        "skip_items": [
+          {
+            "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+            "reason": "requires compiled Windows GDI contract harness",
+            "scope": "test",
+            "count": 1,
+            "parent_test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources"
+          }
+        ],
+        "import_error": null,
+        "extra_errors": 0,
+        "seconds": 0.14
+      }
+    }
+  ],
+  "not_aggregate_final_count": "102 complete Python JSON records only; excludes four non-Python suites and interrupted H7. The original whole-run result was never produced.",
+  "scheduling_note": "SCHEDULING-NOTE.json",
+  "raw_mirror_exact": true
+}

@@ -1,3 +1,15 @@
+# #348 唯一 current state（2026-10-29 17:30 UTC）
+
+- 正式產品／全帳本 execution M=`7a0e6dd81c54066995981393925fa46a815de2f8`；帳本採入及本次 census execution L=`7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5`。本次僅收證據及修正覆蓋範圍文案，產品／測試／帳本未變。
+- 完整123帳本：114 killed／1 crashed／5 equivalent／3 retired，stale／blocked／survived／unrun皆0；M full=0／checkafter=0、L check=0，原 precheck=1 保留。原件仍在 full-ledger-7a0e6dd8。
+- 原完整 census `ulimit -s 16384; python3 tests/run_all.py --build --update-expected` **真 exit124**，16:54:59.491547–17:29:59.567513 UTC，2100.075954秒。停[107/243] H7第8方法，後136套未起；expected前後逐byte不變，沒有可採更新。已完成102份Python JSON為1523／0／1原GDI skip，僅是部分小計，不是全registry總數。原命令、環境、完整stdout/stderr及兩份原archive見 native-census-L7c8e9cee。
+- 本次H7前已耗1103.06秒，剩996.94秒；其間有10.199秒R07局部browser重疊，已保留排程限制，不冒獨占效能樣本，也不將全部超時歸咎此重疊。下一步須修整輪實際成本，原35分鐘／1200秒／600秒守門不變。
+- 原獨立H7仍是 T=`256747c5c8f8f8934eeb08ae404dee1f67591508`：8／0／0／0、1142.271674秒<1200，各批<600。512 load／canonical／順序建立及確認／history／513 CAPACITY與**7支取消／新token**分列；沒有512取消測試的聲稱。T→M非evidence差異為零，execution不移標。
+- 精確#343／#346／#347祖先已納入，#347 behind0；#297 M64場景2936支全接受，架構M三原裁判0／0／0。這不替代上游未驗項。
+- **Draft／NOT READY**：完整census及原35分鐘native未過；六browser尚未完成。既有所有紅燈與未跑項保留。
+
+## 歷史紀錄（以下不是 current state）
+
 # #348 唯一 current state（全帳本已核收）
 
 - 產品／全帳本 execution：`7a0e6dd81c54066995981393925fa46a815de2f8`；全帳本採入提交：`7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5`。其後沒有改寫 execution 身分。

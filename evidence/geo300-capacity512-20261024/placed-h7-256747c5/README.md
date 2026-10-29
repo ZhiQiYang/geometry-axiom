@@ -5,10 +5,12 @@
 | 路徑 | 原結果 |
 |---|---|
 | 512 load對照 | 199.063163259秒，exit0，wait4 RSS222136KiB |
-| 512順序建立＋真token確認＋取消／history／513 CAPACITY | 214.230525873秒，exit0，RSS401948KiB |
+| 512順序建立＋真token確認／history／513 CAPACITY | 214.230525873秒，exit0，RSS401948KiB |
 | 512 load | 193.231267293秒，exit0，RSS222204KiB |
 | 512 canonical fresh1 | 216.363949650秒，exit0，RSS227488KiB |
 | 512 canonical fresh2 | 216.621138544秒，exit0，RSS227400KiB |
+
+取消／新 token 的真案例是 **7 支已放置**的 `test_placed_history_uses_current_preview_token_and_one_undo`，不是 512 支情境。上表 512 路徑證明 load、canonical、順序確認、history 與 513 CAPACITY；取消的覆蓋範圍與此分列，8 方法全過的原終態不變。
 
 64三批、小history、原容量／compile-contract反證也在同八方法內完成；每批都保stdin/fixture、stdout/stderr、ELF hash、時間／記憶體與命令。這是完整H7綠，不是全native／browser已綠。
 
