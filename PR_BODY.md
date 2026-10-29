@@ -4,7 +4,7 @@
 
 - 正式產品 **M=`7a0e6dd81c54066995981393925fa46a815de2f8`**。
 - H7／35項接線測試 execution **T=`256747c5c8f8f8934eeb08ae404dee1f67591508`**；T→M 非 evidence 差異為零，沿用原 execution，不改標 M。
-- 完整 PR head／已公開證據 **E=`75464e8cda864ebea6717f95853f724fb9278583`**。產品、執行與證據提交分列。
+- 完整 PR head／已公開證據 **E=`86c8f0bbe68275e2948d3b1959207aba4225e0c7`**。產品、執行與證據提交分列；本次只新增原件唯讀成本分析及進度，沒有改產品／測試／帳本或重跑效能。
 - 本次完整 census execution **L=`7c8e9cee4ed5b3706ee919e2831a1dac0aa55ea5`**；產品／測試仍與M一致，本次證據提交沒有改產品。
 
 ## 唯一現況矩陣
@@ -21,6 +21,7 @@
 | 架構四份產物／原三裁判 | **M 真0／0／0**，generic205＋product18，0skip；604 inputs／798 edges／0 diagnostics。四檔採入純稽核提交 `d8550079d640347fade3124087464ce3bc4a6ce4`；receipt execution仍M，原manifest/policy/SSOT不改。 |
 | #297 原生探針 | **M 真exit0**，64場景／2936支全接受，L／原點／A0全符，0容量拒絕／規則拒絕／錯誤／幾何不符。F1八排95／97／96／98／108／110／109／111支，共824；每場第65支以後共312支亦全接受。不外推未測116或其他512情境。 |
 | 六個 browser jobs | **未完成**；不把其他SHA的歷史綠項改標目前來源。 |
+| 原 L 成本拆分（唯讀） | 102份原Python JSON秒數合計855.05，reader165.56、load-residual71.90、bridge-integrity37.58；H7前另約248秒無法細分，不能全歸編譯。後136項耗時unknown。L prefix加獨立T H7只作規劃估算，不合成同輪實測；未取得新加速或整套通過證據。 |
 
 ## 固定原件
 
@@ -54,3 +55,5 @@
 [本次完整原件、可讀結果及獨立核收](https://github.com/ZhiQiYang/geometry-axiom/tree/75464e8cda864ebea6717f95853f724fb9278583/evidence/geo300-capacity512-20261024/native-census-L7c8e9cee)：21份原manifest檔案6,326,503 bytes，另附原MANIFEST與PEER；兩份tar為原bytes複本，沒有重封。23個公開檔均已從遠端逐byte讀回。expected SHA256 `e88f97a2c13e4ab561c071855ebf68f58bef5cec5d05ba20f453d58a23cf4209` 前後相同；帳本同樣不變。
 
 [H7覆蓋範圍更正](https://github.com/ZhiQiYang/geometry-axiom/blob/75464e8cda864ebea6717f95853f724fb9278583/evidence/geo300-capacity512-20261024/placed-h7-256747c5/README.md)：只更正文案，原T執行身分與archive不變。六browser仍未完成，維持Draft／NOT READY。
+
+[原 L 成本核對及獨立審查](https://github.com/ZhiQiYang/geometry-axiom/tree/86c8f0bbe68275e2948d3b1959207aba4225e0c7/evidence/geo300-capacity512-20261024/native-timing-L7c8e9cee)：保留102列原JSON／unittest秒數及原member/hash、未知項、跨輪次限制。N128 O0 profile只支持接續檢查contact/member重複依賴與source lifecycle；不把7.42% sampled sort self換算成512 wall收益。六份分析／採入文字與PROGRESS共7個公開檔已逐byte遠端讀回，無新測試、編譯或profile。
