@@ -492,8 +492,8 @@ static bool reference_member_definition_read(ReferenceEval *ctx,size_t i,uint32_
         return wood_definition_sources_member(ctx->definition_sources,id,out);
     if(ctx->member_reads[i].definition_valid&&ctx->member_reads[i].definition.id==id){
         WoodDefinitionKey key;
-        if(geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&key),
-            GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+        if(geo_eval_depend_hint(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&key),
+            GEO_DEPENDENCY_DEFINITION_REQUIRED,&ctx->member_reads[i].definition_node_hint)!=GEO_SOURCE_OK)return false;
         *out=ctx->member_reads[i].definition;return true;
     }
     if(!wood_definition_sources_member(ctx->definition_sources,id,out))return false;
@@ -892,7 +892,7 @@ static bool reference_eval_timber_relation(ReferenceEval *ctx,size_t i,GeoDepend
     Timber *t=&ctx->world->wood.timbers[i];uint32_t id=t->id;GeoSourceValue value;
     GeoSourceRef ref={APP_SOURCE_MEMBER_POSE,&id,sizeof id};GeoSourceStatus status;
     if(ctx->member_reads[i].pose_valid&&ctx->member_reads[i].pose_id==id&&!geo_eval_is_sealed(ctx->sources)){
-        status=geo_eval_depend(ctx->sources,ref,relation);
+        status=geo_eval_depend_hint(ctx->sources,ref,relation,&ctx->member_reads[i].footprint_node_hint);
         value=(GeoSourceValue){.kind=GEO_SOURCE_BOX,.as.box=ctx->member_reads[i].pose};
     }else{
         status=geo_eval_source(ctx->sources,ref,relation,&value);

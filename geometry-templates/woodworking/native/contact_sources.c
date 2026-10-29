@@ -187,7 +187,8 @@ static bool wood_contact_source_evaluate(void *user,GeoEvalContext *graph,const 
         !memcmp(node.source.key,collection_ref.key,collection_ref.key_size)&&node.state==GEO_NODE_VALID&&node.value){
         /* 成功的集合由本查詢持有且不再變動。每個 feature 使用其位元組前，
          * 仍依原順序記錄自己的依賴；失敗或尚未求值的集合走原路徑。 */
-        if(geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;
+        size_t collection_hint=q->collection_node_hint==SIZE_MAX?0:q->collection_node_hint+1;
+        if(geo_eval_depend_hint(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED,&collection_hint)!=GEO_SOURCE_OK)return false;
         collection=*node.value;
     }else if(geo_eval_source(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED,&collection)!=GEO_SOURCE_OK)return false;
     const unsigned char *bytes;size_t count;
