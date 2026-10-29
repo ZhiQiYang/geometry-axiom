@@ -300,7 +300,8 @@
       if (bytes + lifecycleReserve(record.value) > MAX_ROOM_BYTES) fail("功能附件未保留房間狀態更新所需容量。");
     } else if (record.kind === CASE_KIND && record.schema === CASE_SCHEMA) {
       Cases.validate(record.value);
-    } else if (record.kind === Evidence.KIND && record.schema === Evidence.SCHEMA) {
+    } else if (record.kind === Evidence.KIND && (record.schema === Evidence.SCHEMA || record.schema === Evidence.SCHEMA_V2)) {
+      if (record.value?.schema !== record.schema) fail("證據附件版本不一致。");
       Evidence.validate(record.value);
     } else fail("功能附件種類或版本不支援。");
     return record;
@@ -328,7 +329,7 @@
   }
   function capabilities(envelope) { validate(envelope,true); return [...new Set(envelope.records.flatMap(record => record.kind === GRID_KIND ?
     (record.schema === GRID_DRAFTS_SCHEMA ? [GRID_DRAFTS_SCHEMA,...record.value.drafts.map(d=>d.schema)] : [record.schema]) :
-    record.kind === Evidence.KIND ? [Evidence.SCHEMA] : record.kind === CASE_KIND ? [CASE_SCHEMA] :
+    record.kind === Evidence.KIND ? [record.schema] : record.kind === CASE_KIND ? [CASE_SCHEMA] :
     [ROOM_CAPABILITY,...(record.schema===ROOM_DISPLAY_SCHEMA?[ROOM_DISPLAY_CAPABILITY]:[]),
       ...((record.schema===ROOM_HISTORY_SCHEMA||record.value.legacyHistory?.length)?[ROOM_HISTORY_CAPABILITY]:[])]))].sort(); }
   function evidenceLinks(envelope, sources, projectScope) {
