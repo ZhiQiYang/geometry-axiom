@@ -1,0 +1,75 @@
+{
+  "execution_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+  "architecture_artifact_commit": "d8550079d640347fade3124087464ce3bc4a6ce4",
+  "probe": {
+    "original_exit": 0,
+    "scenes": 64,
+    "timbers": 2936,
+    "statuses": {
+      "接受": 2936
+    },
+    "f1": [
+      {
+        "scene": "f1-00",
+        "count": 95,
+        "accepted_after_64": 31
+      },
+      {
+        "scene": "f1-01",
+        "count": 97,
+        "accepted_after_64": 33
+      },
+      {
+        "scene": "f1-02",
+        "count": 96,
+        "accepted_after_64": 32
+      },
+      {
+        "scene": "f1-03",
+        "count": 98,
+        "accepted_after_64": 34
+      },
+      {
+        "scene": "f1-04",
+        "count": 108,
+        "accepted_after_64": 44
+      },
+      {
+        "scene": "f1-05",
+        "count": 110,
+        "accepted_after_64": 46
+      },
+      {
+        "scene": "f1-06",
+        "count": 109,
+        "accepted_after_64": 45
+      },
+      {
+        "scene": "f1-07",
+        "count": 111,
+        "accepted_after_64": 47
+      }
+    ],
+    "original_command_seconds": 62.55010104179382,
+    "original_per_core_timeout": 120
+  },
+  "architecture": {
+    "original_exits": [
+      0,
+      0,
+      0
+    ],
+    "generic_tests": 205,
+    "product_tests": 18,
+    "skipped": 0,
+    "closure": "0c738c2c8b39b8cc4904bd39121f8ec9412f072cb2be6351b55e5b9f49f6fad0",
+    "inputs": 604,
+    "edges": 798,
+    "diagnostics": 0
+  },
+  "archive_bytes": 6984698,
+  "archive_sha256": "8669fe290da4b155cc21d3fce903e892b5f5b4ac2a2002128b96e7126f40de20",
+  "files": 488,
+  "all_members_verified": true,
+  "ledger_native_browser_not_claimed": true
+}

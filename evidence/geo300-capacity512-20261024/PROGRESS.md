@@ -1,3 +1,13 @@
+# #348 唯一 current state（2026-10-29 04:00 UTC）
+
+- 產品M=`7a0e6dd81c54066995981393925fa46a815de2f8`；來源鏈含精確#343 a934a554ae58f16f124f1b264523947f170b3f0b、#346 eaf15e239324a6464a04740647afccce3a3c17c7、#347 8bb0359331365c6f3a96872620427cf7847fcb50，behind0。原behind2及全部紅保留歷史。
+- H7真executionT256747c5c8f8f8934eeb08ae404dee1f67591508：8／0／0／0，1142.271674<1200，各批<600；與M非evidence差異0。原件／可讀原件在placed-h7-256747c5。
+- #297真M：64場景2936支全接受，F1共824支、原第65以後312支亦全接受，原probe0。詳probe-architecture-7a0e6dd8。
+- 架構真M三裁判0／0／0，205＋18 tests零skip；四檔純稽核採入 `d8550079d640347fade3124087464ce3bc4a6ce4`。不改公理／決策／policy。
+- 新35具名反證、172圖、N128前後profile與原紅保留。完整123帳本03:00:41原輪仍進行；完整census、原35分鐘native與六browser尚未完成，**Draft／NOT READY**。
+
+## 歷史紀錄（以下不是 current state）
+
 ## 2026-10-29：H7 原件可讀公開（產品／裁判不變）
 
 已將原E06封包中的 H7 inner REQUEST/RESULT、unittest.log、wrapper REQUEST/RESULT/outer.log 原bytes抽至 `placed-h7-256747c5/readable-originals/`，逐檔SHA256與封包member對照見其中EXTRACTION.json；未重新產生測試。產品M7a與executionT256不變，完整123帳本自03:00:41UTC仍在跑，未提前宣告通過。
