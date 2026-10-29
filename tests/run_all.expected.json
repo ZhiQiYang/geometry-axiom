@@ -116,6 +116,11 @@
       "count": 4,
       "unit": "node test"
     },
+    "node:identity_ledger": {
+      "mode": "count",
+      "count": 13,
+      "unit": "node test"
+    },
     "node:hover_pick_scheduler": {
       "mode": "count",
       "count": 19,
@@ -857,6 +862,11 @@
       "count": 1,
       "unit": "test"
     },
+    "py:test_identity_ledger": {
+      "mode": "count",
+      "count": 12,
+      "unit": "test"
+    },
     "py:test_infinite_grid_contract": {
       "mode": "count",
       "count": 25,
@@ -1055,7 +1065,7 @@
     "py:test_serve": {
       "mode": "count",
       "unit": "test",
-      "count": 51
+      "count": 53
     },
     "py:test_source_closure_memo": {
       "mode": "count",

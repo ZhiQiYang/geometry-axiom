@@ -573,7 +573,7 @@ async function recoverConnection() {
     await recoverApiResults();
     if (!(await ReferenceWorkspace.recoverLoad())) { connectionFailed("仍無法確認場景載入結果，請重試。"); return; }
     if (!connection.session) {
-      const handshake = await api('dump');
+      const handshake = await api('dump-deidentified');
       if (!handshake.ok) { connectionFailed(handshake.error || '無法確認目前服務工作階段。'); return; }
     }
     await ReferenceWorkspace.restoreSession();
@@ -621,7 +621,7 @@ async function apiRequest(cmd, roomLease = null) {
   if (rollback && pendingApiResults.size) return { ok: false, transport: true, error: "操作結果尚未確認，重新連線後再回復。" };
   const recoveredRoomCancel = roomLease && cmd === "line cancel-preview" && connection.phase === "loading" && pendingApiResults.size === 0;
   if (!rollback && !recoveredRoomCancel && (connection.phase === "error" || (connection.phase === "loading" &&
-      !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump)(\s|$)/.test(cmd))))
+      !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump-deidentified|identity-read|dump)(\s|$)/.test(cmd))))
     return { ok: false, transport: true, error: connection.error || "場景尚未讀取完成" };
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);
   if (localHistory) return localHistory;
@@ -1617,7 +1617,7 @@ $("v3ToolbarSurf").addEventListener("change", () => {
   $("workSurf").dispatchEvent(new Event("change"));
 });
 $("btnExport").onclick = async () => {
-  const r = await api("dump");
+  const r = await api("dump-deidentified");
   if (!r.ok) { setStatus("✗ " + (r.error || "")); return; }
   const blob = new Blob([r.text], { type: "text/plain;charset=utf-8" });
   const a = document.createElement("a");

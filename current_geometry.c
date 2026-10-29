@@ -7548,6 +7548,9 @@ static bool apply_span_auto_line(const char *p, int n, char **t, int c, World *w
 static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 { return apply_reference_move(p, n, t, c, w); }
 
+static void identity_note_key(uint8_t kind, uint32_t id, uint32_t field_id);
+static bool identity_accept_requires(const char *path, int line_no, World *world);
+
 #include "geometry-core/parameters.inc"
 #include "geometry-core/references.inc"
 #include "geometry-app/native/enclosure_sources.inc"
@@ -7564,6 +7567,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/panel_fill_layout.inc"
 #include "geometry-core/derived_placements.inc"
 #include "geometry-core/panel_fill_support.inc"
+#include "geometry-app/native/identity_ledger.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -9211,6 +9215,7 @@ static bool apply_delete_line(
             scene_error(path,line_no,"I37: boundary is still referenced by a grid-binding");return false;
         }
         (void)geo_region_keys_remove(&world->geo.region_data,id);
+        identity_note_key(APP_IDENTITY_BOUNDARY, id, 0);
         if(!app_boundary_remove(world,id)){*world=backup;return false;}
         /* 空間成員是參照：剔除後用剩下的成員重建空間。 */
         for(size_t index=0;index<geo_enclosures_count(&world->geo.enclosures);++index){
@@ -9275,6 +9280,7 @@ static bool apply_delete_line(
                 return false;
             }
         }
+        identity_note_key(APP_IDENTITY_PLACEMENT, id, 0);
         if(!app_placement_remove(world,id)){*world=backup;return false;}
         world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
     } else if (strcmp(kind, "datum") == 0) {
@@ -9323,6 +9329,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這支角材不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_TIMBER, id, 0);
         memmove(&world->wood.timbers[ti], &world->wood.timbers[ti + 1],
                 (world->wood.timber_count - ti - 1) * sizeof world->wood.timbers[0]);
         memmove(&world->wood.anchors[ti], &world->wood.anchors[ti + 1],
@@ -9356,6 +9363,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這根柱不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_COLUMN, id, 0);
         memmove(&world->wood.columns[ci], &world->wood.columns[ci + 1],
                 (world->wood.column_count - ci - 1) * sizeof world->wood.columns[0]);
         --world->wood.column_count;
@@ -9370,6 +9378,7 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這根樑不存在");
             return false;
         }
+        identity_note_key(APP_IDENTITY_BEAM, id, 0);
         memmove(&world->wood.beams[bi], &world->wood.beams[bi + 1],
                 (world->wood.beam_count - bi - 1) * sizeof world->wood.beams[0]);
         --world->wood.beam_count;
@@ -9483,7 +9492,10 @@ static bool apply_reset_line(
     (void)tokens;
 
     *world = (World){ 0 };
-    if(g_parsing_scene_file)memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
+    if(g_parsing_scene_file){
+        memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
+        g_identity_requires_seen=false;
+    }
     return true;
 }
 
@@ -9677,6 +9689,7 @@ static void world_dump_dsl(const World *world, FILE *out)
     engineering_dump_applications(world,out);
     if(!world->wood.finish_surfaces.host_count) world_dump_grids(world,out);
     if(world->wood.assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
+    identity_dump_requires(world,out);
     if(!world->wood.finish_surfaces.host_count) reference_dump(world, out);
 
     for (size_t i = 0; i < geo_enclosures_count(&world->geo.enclosures); ++i) {
@@ -9747,6 +9760,7 @@ static void world_dump_dsl(const World *world, FILE *out)
                 p->kind == CANVAS_POS_ASSEMBLY_RULE ? "assembly-rule" : p->kind == CANVAS_POS_ASSEMBLY_BINDING ? "assembly-binding" : p->kind == CANVAS_POS_PARAMETER ? "parameter" : p->kind == CANVAS_POS_GRID_BINDING ? "grid-binding" : p->kind == CANVAS_POS_GRID_SYSTEM ? "grid-system" : "beam",
                 (unsigned)p->id, (long long)p->x, (long long)p->y);
     }
+    identity_dump_lines(world,out);
 }
 
 /*
@@ -9964,6 +9978,8 @@ static const struct {
         "canvas-pos boundary|placement|space|column|beam id x y",
         apply_canvaspos_line
     },
+    { "identity-ledger", 2, 2, false, "identity-ledger activate", apply_identity_ledger_line },
+    { "identity", 4, 5, false, "identity boundary|placement|column|beam|timber|parameter id mark | identity parameter-field id field mark", apply_identity_line },
     { NULL, 0, 0, false, NULL, NULL }
 };
 
@@ -10023,6 +10039,8 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     g_parsing_scene_file = true;
+    g_identity_requires_seen = false;
+    identity_explicit_reset();
     memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
     g_rule_scene_required=false;
     sp_scene_required=false;
@@ -10140,6 +10158,7 @@ static bool parse_scene_file(const char *path, World *out_world)
                 : "場景收尾重驗失敗");
         ok = false;
     }
+    if (ok && !identity_finish_load(path, line_no, out_world)) ok = false;
 
     g_parsing_scene_file = false;
     g_parameter_scene_loading = false;

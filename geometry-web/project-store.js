@@ -35,6 +35,8 @@
     return FORMAT_POLICIES[format];
   }
   const ENGINEERING_CAPABILITY = "engineering-spec/1", DRAFT_SCHEMA = "engineering-drafts/1", MAX_ENGINEERING_DRAFTS = 256;
+  const IDENTITY_CAPABILITY = "identity-ledger/1";
+  const SCENE_CAPABILITIES = [ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY, IDENTITY_CAPABILITY];
   const MAX_MANIFEST = 8 * 1024 * 1024, MAX_MODELS = 64;
   const MAX_PACKAGE = 256 * 1024 * 1024, MAX_EXPANDED = 512 * 1024 * 1024;
   const TYPES = new Set(["application/pdf", "image/png", "image/jpeg", "image/webp", "image/gif"]);
@@ -157,7 +159,7 @@
       if (/^assembly(?:\s|$)/.test(line)) result.add(ASSEMBLY_CAPABILITY);
       const requires = line.match(/^requires\s+(.+)$/);
       if (requires) {
-        if (![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY].includes(requires[1])) fail("場景需要尚未支援的工程能力。");
+        if (!SCENE_CAPABILITIES.includes(requires[1])) fail("場景需要尚未支援的工程能力。");
         result.add(requires[1]);
         declared.add(requires[1]);
       }
@@ -167,10 +169,13 @@
     if (usesSubdivision && !declared.has(SUBDIVISION_CAPABILITY)) fail("來源子規則場景缺少 grid-subdivision-rules/1 能力宣告。");
     return [...result].sort();
   }
+  function engineeringSceneCapabilities(scene) {
+    return sceneCapabilities(scene).filter(capability => capability !== IDENTITY_CAPABILITY);
+  }
   function modelRequiresEngineering(model) {
-    return sceneCapabilities(model.input?.base_scene || "").length || Object.values(model.result || {}).some(pkg =>
+    return engineeringSceneCapabilities(model.input?.base_scene || "").length || Object.values(model.result || {}).some(pkg =>
       pkg?.manifest?.capabilities?.includes(ENGINEERING_CAPABILITY) ||
-      (typeof pkg?.definitions?.base_scene === "string" && sceneCapabilities(pkg.definitions.base_scene).length));
+      (typeof pkg?.definitions?.base_scene === "string" && engineeringSceneCapabilities(pkg.definitions.base_scene).length));
   }
   const hasCaseData = m => !!m.featureAttachments?.records?.some(r=>r.kind===Features.CASE_KIND) || !!m.scenarioCatalog?.scenarios.some(s=>hasCaseData(s.snapshot.projectManifest));
   function projectFormat(manifest, scene = "") {
@@ -187,8 +192,8 @@
     if (projectCapabilities(manifest, scene).includes(GENERATION_CAPABILITY)) return GENERATION_FORMAT;
     if (projectCapabilities(manifest, scene).includes(ASSEMBLY_CAPABILITY)) return ASSEMBLY_FORMAT;
     if (projectCapabilities(manifest, scene).includes(PARAMETER_CAPABILITY)) return PARAMETER_FORMAT;
-    if (manifest.requiredCapabilities?.length || manifest.engineeringDrafts?.records?.length ||
-        sceneCapabilities(scene).length || manifest.models?.some(modelRequiresEngineering)) return ENGINEERING_FORMAT;
+    if ((manifest.requiredCapabilities || []).some(capability => capability !== IDENTITY_CAPABILITY) || manifest.engineeringDrafts?.records?.length ||
+        engineeringSceneCapabilities(scene).length || manifest.models?.some(modelRequiresEngineering)) return ENGINEERING_FORMAT;
     if (manifest.models?.some(model => Object.hasOwn(model.input || {}, "timbers") || model.result?.schema === "geometry-space-preview/2")) return TIMBER_FORMAT;
     return manifest.faceProjections?.length || manifest.models?.some(model => Object.hasOwn(model.source, "projection"))
       ? PROJECTION_FORMAT : manifest.models?.length ? MODEL_FORMAT : FORMAT;
@@ -264,8 +269,8 @@
     return drafts;
   }
   function validateProjectCapabilities(capabilities) {
-    if (!Array.isArray(capabilities) || capabilities.length > 7 || new Set(capabilities).size !== capabilities.length ||
-        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY].includes(capability))) fail("專案需要尚未支援的工程能力。");
+    if (!Array.isArray(capabilities) || capabilities.length > SCENE_CAPABILITIES.length || new Set(capabilities).size !== capabilities.length ||
+        capabilities.some(capability => !SCENE_CAPABILITIES.includes(capability))) fail("專案需要尚未支援的工程能力。");
     return capabilities;
   }
   function nativeReaderCapabilities(available) {
@@ -274,7 +279,7 @@
     // pass their separate finite validation and must be present in the subset.
     if(!Array.isArray(available)||available.length>42||new Set(available).size!==available.length||
        available.some(capability=>!str(capability,100)||!capability.length))fail('服務可用能力清單不合法。');
-    const supported=available.filter(capability=>[ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY,SUBDIVISION_CAPABILITY,SECTION_CAPABILITY,CARD_CAPABILITY].includes(capability));
+    const supported=available.filter(capability=>SCENE_CAPABILITIES.includes(capability));
     return validateProjectCapabilities(supported);
   }
   function assertProjectCapabilities(manifest, available) {
@@ -285,7 +290,7 @@
   }
   // Editor capabilities are checked by this reader, never advertised as native
   // scene or model-producer capabilities.
-  const manifestCapabilities = [...new Set([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY])];
+  const manifestCapabilities = [...new Set([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY, IDENTITY_CAPABILITY])];
   function validateManifestCapabilities(capabilities) {
     // /1 and /2 share one active grid-draft kind; capacity follows the finite registry.
     if (!Array.isArray(capabilities) || capabilities.length > manifestCapabilities.length || new Set(capabilities).size !== capabilities.length ||
@@ -392,7 +397,7 @@
         !Array.isArray(p.definitions.extensions) || p.definitions.extensions.length > 512 || !p.definitions.extensions.every(object)) fail("空間模型定義不合法。");
     if (m.capabilities.includes(SUBDIVISION_CAPABILITY) || sceneCapabilities(p.definitions.base_scene).includes(SUBDIVISION_CAPABILITY))
       fail("模型 adapter 尚未支援來源子規則能力，未變更目前專案。");
-    if (sceneCapabilities(p.definitions.base_scene).some(c => !m.capabilities.includes(c)))
+    if (sceneCapabilities(p.definitions.base_scene).some(c => c !== IDENTITY_CAPABILITY && !m.capabilities.includes(c)))
       fail("空間模型缺少工程來源能力宣告。");
     const req = p.request;
     if (!keys(req, ["roots", "role", "target"], ["allow_partial"]) || !Array.isArray(req.roots) || !req.roots.length || req.roots.length > 512 ||

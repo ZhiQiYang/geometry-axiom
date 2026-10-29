@@ -43,7 +43,7 @@ NATIVE_CAPABILITIES = frozenset(("engineering-spec/1", "parameters/1",
                                "assembly-rule-authoring/1", "assembly-timber-generation/1", "section-profile/1", "grid-card-reference/1"))
 # Scene capture follows the current portable reader. Model producer input
 # retains its own narrower capability contract below.
-BRIDGE_CAPABILITIES = NATIVE_CAPABILITIES | {"grid-subdivision-rules/1"}
+BRIDGE_CAPABILITIES = NATIVE_CAPABILITIES | {"grid-subdivision-rules/1", "identity-ledger/1"}
 OBJECT_KINDS = frozenset(("boundary", "placement", "space", "column", "beam", "spec", "parameter",
                           "datum", "guide", "grid-system", "grid-binding", "grid", "material", "method",
                           "application", "timber", "assembly-rule", "assembly-binding", "assembly-instance",

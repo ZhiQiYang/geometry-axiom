@@ -189,6 +189,12 @@
       "purpose": "Application/runtime/protocol or workspace host history unity; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-app/native/identity_ledger.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Application/runtime/protocol or workspace host identity ledger; composes explicit K/W providers where needed"
+    },
+    {
       "path": "geometry-app/native/kernel_storage.h",
       "layer": "H",
       "language": "c",
@@ -1587,6 +1593,12 @@
       "purpose": "Application/runtime/protocol or workspace host grid system bridge; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/identity-ledger.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application/runtime/protocol or workspace host identity ledger; composes explicit K/W providers where needed"
+    },
+    {
       "path": "geometry-web/index.html",
       "layer": "H",
       "language": "html",
@@ -2641,7 +2653,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "sha256": "c91c43ab35e63e2b2b56061f526892c1251b7b2ce4e5f4884efbeadc1151665e",
       "hashMode": "lf"
     },
     {
@@ -3104,6 +3116,12 @@
       "path": "geometry-web/grid_workspace_draft_test.js",
       "reason": "Dedicated acceptance/test driver grid_workspace_draft_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "7d7f831cbf1a9a3c6353cdf1028b7701c56628681b24eebe5f0ad1e36b733822",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/identity_ledger_browser_test.js",
+      "reason": "Dedicated acceptance/test driver identity_ledger_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "6e7de9bfca1c62e2fcd6c701334706da19ab24d1bacd6a6a247d040b4dae579d",
       "hashMode": "lf"
     },
     {
@@ -4815,7 +4833,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "0cc26da01c7dd6fcc5dff84f8fd2b615b5a04b434df085d01644b984d4c6f828",
+      "routerSha256": "be2f92a0f5e6720adcfbdf84dd0f9476dc14cad14bcf192a73608d006c3c13af",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",
