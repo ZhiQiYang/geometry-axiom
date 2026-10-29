@@ -381,7 +381,7 @@ module.exports = async function gridCardEntryTests({
     ref.kind === 'parameter-field' && ref.parameterId === parameterId && ref.fieldId === fieldId);
   const threeFieldParameter = (b, a = 12) => {
     const operation = parameter(10, a, b);
-    operation.value.fields.push({id:9, name:'third dimension', type:'dimension', input:'45'});
+    operation.value.fields.push({id:14, name:'third dimension', type:'dimension', input:'45'});
     return operation;
   };
   const staleCardDraft = async () => {
@@ -889,11 +889,11 @@ module.exports = async function gridCardEntryTests({
     },
     async pin_preserve_untouched() {
       const before = await staleCardDraft(), scene = await dump();
-      await choose('#igCardU',9);
+      await choose('#igCardU',14);
       const after = await raw();
       check('UNTOUCHED_AXIS_PIN_RETAINED', same(fieldPin(after,10,8),fieldPin(before,10,8)) &&
         after.rawForm.igVStep === before.rawForm.igVStep && after.rawForm.igCardV === '8' &&
-        after.rawForm.igCardU === '9', {before,after});
+        after.rawForm.igCardU === '14', {before,after});
       const pin = await pinHistory();
       await rejectedAttempt('UNTOUCHED_STALE');
       check('UNTOUCHED_STALE_PREVIEW_REJECTED', !await visible('.reference-impact[open]') &&
@@ -911,12 +911,12 @@ module.exports = async function gridCardEntryTests({
       const before = await staleCardDraft(), actual = await reacquireStale(before,true);
       check('REACQUIRE_CONFIRM_NEW_EVIDENCE', same(fieldPin(await raw(),10,8),actual) &&
         same(await mapping(),{card:'10',u:'8',v:'8'}), await raw());
-      await choose('#igCardU',9);
-      check('REACQUIRE_EXPLICIT_FINAL_MAPPING', same(await mapping(),{card:'10',u:'9',v:'8'}) &&
+      await choose('#igCardU',14);
+      check('REACQUIRE_EXPLICIT_FINAL_MAPPING', same(await mapping(),{card:'10',u:'14',v:'8'}) &&
         same(fieldPin(await raw(),10,8),actual));
       await preview('REACQUIRED'); await confirm();
       const saved = await addedSource('R353 stale other axis');
-      const g = await assertIdentity('REACQUIRED_COMMITTED_CARD',saved.id,10,9,8);
+      const g = await assertIdentity('REACQUIRED_COMMITTED_CARD',saved.id,10,14,8);
       check('REACQUIRED_EFFECTIVE_LENGTHS', g.uDefinition.effectiveStep === 45 && g.vDefinition.effectiveStep === 60, g);
     },
     async pin_shared_consumers() {
@@ -932,16 +932,16 @@ module.exports = async function gridCardEntryTests({
       const phaseLeft = await raw();
       check('SHARED_CARD_PIN_SURVIVES_PHASE_RELEASE', same(fieldPin(phaseLeft,10,3),fieldPin(stale,10,3)) &&
         phaseLeft.rawForm.igUPhaseSource === '' && phaseLeft.rawForm.igCardU === '3', {stale,phaseLeft});
-      await choose('#igCardU',9);
+      await choose('#igCardU',14);
       check('SHARED_LAST_CARD_USER_RELEASES_PIN', !fieldPin(await raw(),10,3), await raw());
       // The opposite order must count the per-field user too. Fresh selection
       // is explicit here, after the old pin's final user has already left.
       await choose('#igUPhaseSource','10:3'); await choose('#igCardU',3);
       const fresh = await raw();
-      await choose('#igCardU',9);
+      await choose('#igCardU',14);
       const cardLeft = await raw();
       check('SHARED_PHASE_PIN_SURVIVES_CARD_RELEASE', same(fieldPin(cardLeft,10,3),fieldPin(fresh,10,3)) &&
-        cardLeft.rawForm.igUPhaseSource === '10:3' && cardLeft.rawForm.igCardU === '9', cardLeft);
+        cardLeft.rawForm.igUPhaseSource === '10:3' && cardLeft.rawForm.igCardU === '14', cardLeft);
       await choose('#igUPhaseSource','');
       check('SHARED_LAST_PHASE_USER_RELEASES_PIN', !fieldPin(await raw(),10,3), await raw());
       await preview('SHARED_PIN_RELEASE'); await cancel();
@@ -969,8 +969,8 @@ module.exports = async function gridCardEntryTests({
       await preview('REPOINT_SHARED'); await confirm();
       const saved = await addedSource('R353 lost A to shared B');
       const after = await assertIdentity('REPOINT_SHARED_NATIVE_IDENTITY',saved.id,20,3,8);
-      check('REPOINT_SHARED_PHASE_SOURCES', same(after.uDefinition.parameterRefs.phase,{parameterId:20,fieldId:3}) &&
-        same(after.vDefinition.parameterRefs.phase,{parameterId:20,fieldId:8}), after);
+      check('REPOINT_SHARED_PHASE_SOURCES', same(after.uDefinition.parameterRefs.phase,{kind:'parameter',parameterId:20,fieldId:3}) &&
+        same(after.vDefinition.parameterRefs.phase,{kind:'parameter',parameterId:20,fieldId:8}), after);
     },
     async lost_card_same_id_rebuild() {
       await fixture(); await newCardGrid('R353 same id remains lost');
@@ -1025,7 +1025,7 @@ module.exports = async function gridCardEntryTests({
         !document.getElementById('giVStep').readOnly));
       await fill('#giVStep','1300'); await preview('INSPECTOR_PARAMETER_DIRECT_EDIT',{button:'#giPreview'}); await confirm();
       const edited = await source(7);
-      check('INSPECTOR_PARAMETER_WITH_DIRECT_EDIT', same(edited.uDefinition.parameterRefs.step,{parameterId:10,fieldId:3}) &&
+      check('INSPECTOR_PARAMETER_WITH_DIRECT_EDIT', same(edited.uDefinition.parameterRefs.step,{kind:'parameter',parameterId:10,fieldId:3}) &&
         edited.uDefinition.step === 600 && edited.vDefinition.step === 1300 && !edited.cardReference, edited);
     }
   };
