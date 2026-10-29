@@ -124,6 +124,13 @@ static void contact_face_index_build(ContactFaceIndex *index,const WoodStopFace 
         for(size_t left=0;left<count;){
             size_t middle=left+contact_min_size(width,count-left);
             size_t end=middle+contact_min_size(width,count-middle),a=left,b=middle,at=left;
+            /* Adjacent sorted runs already concatenate in stable order.
+             * A missing right run needs no comparison; equal keys keep the
+             * left run first, exactly as the ordinary merge below. */
+            if(middle==end||contact_face_index_before(out,index->sorted[middle-1],index->sorted[middle])){
+                memcpy(index->scratch+left,index->sorted+left,(end-left)*sizeof *index->scratch);
+                left=end;continue;
+            }
             while(a<middle&&b<end)index->scratch[at++]=contact_face_index_before(out,index->sorted[a],index->sorted[b])?index->sorted[a++]:index->sorted[b++];
             while(a<middle)index->scratch[at++]=index->sorted[a++];
             while(b<end)index->scratch[at++]=index->sorted[b++];
