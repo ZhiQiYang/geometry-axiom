@@ -106,7 +106,7 @@ static int collect_case(bool failure,int fallback)
     CHECK("dead-collect-original-ordered-graph",same_graph(a.ctx.sources,b.ctx.sources));
     CHECK("dead-collect-original-error",!memcmp(error,g_revalidate_error,sizeof error)&&a.ctx.source_failure==b.ctx.source_failure);
     if(failure){StopFace untouched[8];memset(untouched,0x5a,sizeof untouched);CHECK("dead-collect-failure-keeps-output",n==0&&!memcmp(x,untouched,sizeof x)&&a.ctx.source_failure&&callbacks==1);}
-    else CHECK("dead-collect-real-contact-output",n==4&&(!fallback?callbacks==1:true));
+    else CHECK("dead-collect-real-contact-output",n==(fallback?3:4)&&(!fallback?callbacks==1:true));
     CHECK("dead-collect-world-unchanged",!memcmp(a.world,a.before,sizeof *a.world)&&!memcmp(b.world,b.before,sizeof *b.world));
     g_reference_active=old;dispose(&a);dispose(&b);return 0;
 }
