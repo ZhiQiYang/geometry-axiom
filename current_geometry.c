@@ -5773,6 +5773,18 @@ typedef struct {
     /* 0：不待補；1：補矩形及有效性；2：只補矩形，保留後續的 false。 */
     unsigned char pending;
 } AppContactRawSnapshot;
+/* Before the source resolver runs, W reads only this domain for its span
+ * extension guard. The resolver supplies the actual member facts at the
+ * original callback point; do not compute raw footprints that it replaces. */
+static void app_contact_domain_only(const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,AppContactFacts *facts)
+{
+    memset(&facts->world,0,sizeof facts->world);facts->world.placement_id=placement->id;
+    const SpaceBoundarySurface *effective=placement_effective_boundary(placement,boundary,&facts->effective);
+    facts->world.role_boundary=effective;
+    facts->world.region_count=placement->derived_fill_id?placement->component_count:1;
+    for(size_t c=0;c<facts->world.region_count;++c)facts->world.regions[c]=placement->derived_fill_id?&placement->components[c]:effective;
+}
 static void app_contact_facts_prepare(const World *world,const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,AppContactFacts *facts,AppContactRawSnapshot *raw)
 {
@@ -5878,8 +5890,13 @@ static size_t stop_ref_candidates(
 static size_t collect_stop_faces(const World *world,const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,bool along_v,const Timber *exclude,StopFace out[],size_t out_cap)
 {
+    size_t count=0;bool handled=false;
+    bool source_ok=app_contact_sources_collect(world,placement->id,along_v,exclude,out,out_cap,&handled,&count);
+    if(handled)return source_ok?count:0;
+    /* An unhandled lookup only reads the context. Keep the original raw
+     * fallback and resolver; a handled failure must never enter this path. */
     AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
-    AppContactResolve context={world,&facts.world};size_t count=0;
+    AppContactResolve context={world,&facts.world};
     return app_contact_resolve_stops(&context,along_v,exclude,out,out_cap,&count)?count:0;
 }
 

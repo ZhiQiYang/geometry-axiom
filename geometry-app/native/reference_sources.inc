@@ -746,7 +746,7 @@ static bool app_reference_end_faces(const World *world,const PlacementSurface *p
     ReferenceEval *ctx=app_reference_sources_for_world(world);
     if(!ctx||ctx->use_current_values)return timber_end_face_check(world,placement,boundary,member,along_v,
         span_lo,span_hi,cross_lo,cross_hi,error,capacity);
-    AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
+    AppContactFacts facts;app_contact_domain_only(placement,boundary,&facts);
     AppReferenceContactResolve source={.world=world,.evaluation=ctx,.target=&facts.world};
     /* W calls the resolver after its span-extension check. Refresh member
      * facts there so source failures do not replace an earlier policy error. */
