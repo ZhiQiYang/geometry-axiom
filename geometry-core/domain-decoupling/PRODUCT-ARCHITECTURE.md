@@ -16,7 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-The current inventory contains 601 executable files: 333 owned sources and 268
+The current inventory contains 605 executable files: 336 owned sources and 269
 individually named exclusions. The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
@@ -28,10 +28,10 @@ New executable files anywhere under these roots fail until accounted for.
 |---|---:|---|
 | K | 69 | Public neutral C stores/evaluators/source/transaction APIs and the Python geometry kernel, including their private implementation headers |
 | W | 67 | Woodworking policy, material/recipe interpretation, construction, layout, support and presentation; rectangular-grid second-template witness |
-| H | 191 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
+| H | 194 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
 | vendor | 6 | Individually digest-locked browser PDF and ZIP dependencies, accessible only from H |
 
-The 333 sources contain 190 C/header/include files, 75 Python files, 64 JavaScript
+The 336 sources contain 190 C/header/include files, 75 Python files, 67 JavaScript
 files, and 4 HTML files. The canonical self-contained axiom reader and its
 generator are included. The separate work-manager is included as H tooling,
 although its own instructions distinguish it from the Geometry product UI.
@@ -46,7 +46,7 @@ of misplaced domain policy. It must not be cited as that stronger result.
 
 All exclusions have an exact path, individual reason, and SHA-256 using explicitly
 declared CRLF-to-LF normalization. There are 120 historical evidence programs,
-57 other documentation/reproduction/snapshot/GEO-262/framing-template tooling programs, 66 dedicated test drivers,
+57 other documentation/reproduction/snapshot/GEO-262/framing-template tooling programs, 67 dedicated test drivers,
 and 25 engineering-spec prototype files. The prototype's `AGENTS.md` explicitly
 states it is not the production application. The manifest has no directory
 exemption. An owned dependency on any excluded file fails. Historical evidence
@@ -549,3 +549,14 @@ new files or changed sources.
 - `python -B tests/test_product_architecture.py`：原退出0，18 tests／18 passed／0 failed／0 skipped；完整原命令、cwd、stdout／stderr另存。
 
 本輪只證靜態架構契約；不代表native、帳本、瀏覽器、P52、Q38、§7或P-189已重跑。舊Windows supplemental未執行；既有歷史來源與結果保持原角色。四檔為衍生產物，receipt不雜湊自身。
+
+## 【dot】R354-01：裁切來源登記與完整靜態重驗
+
+基底 `b5b33ed1e55d3187108af7cddbca71d2a256c5d2` 加本次 P/T 補丁；不是遠端新 head。來源按 Git blob SHA 驗證後材料化，衍生收據以完整 inputs 雜湊綁定實測來源。
+
+- `cutting-settings.js` 登記為 H：裁切專案附件 schema、保存高水位與 canonical codec 宿主邊界；含現有設定驗證，不宣稱已抽出獨立 W 政策。
+- `cutting-plan.js` 登記為 H：消費既有 H `timber-schedule.js` 的原生導出，編排求值與 CSV，不冒稱中立 K。
+- `cutting-workspace.js` 登記為 H：DOM、專案附件與 session 宿主。
+- `cutting_plan_test.js` 為具名 CDP 測試排除；與 `cdp_test.js` 均重算精確 LF digest。未縮 sourceRoots、未放寬來源及依賴斷言。
+
+原 scanner 完整掃描通過；generic 架構測試 205/205，product 架構測試 18/18。原始命令、退出碼、輸出雜湊見本輪 receipt。此為有限靜態依賴證據，不代表 native、瀏覽器或完整產品驗收。前述歷史區段仍是各自歷史來源的記錄。

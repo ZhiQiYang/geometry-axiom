@@ -2035,6 +2035,24 @@
       "layer": "H",
       "language": "python",
       "purpose": "Runtime-imported native binary provenance registry/package; also used by tests, but real rule_cases runtime depends on it"
+    },
+    {
+      "path": "geometry-web/cutting-plan.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "R47–R50 原生角材料單輸入的唯讀求值編排、配料與 CSV 輸出；依賴既有 H timber-schedule 導出"
+    },
+    {
+      "path": "geometry-web/cutting-settings.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "裁切專案附件 schema、保存與 key 高水位、正規化 codec 及指紋的宿主邊界；含現有設定驗證，不宣稱已抽出獨立 W 政策"
+    },
+    {
+      "path": "geometry-web/cutting-workspace.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "裁切工作區 DOM、專案附件設定、需求範圍與匯出新鮮度宿主編排"
     }
   ],
   "exclusions": [
@@ -2641,7 +2659,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "sha256": "ca005f7608fcba9dbf751533119d2bdee4f728ca72866c6bbd1aae2c778fd059",
       "hashMode": "lf"
     },
     {
@@ -3644,6 +3662,12 @@
       "path": "geometry-core/framing-template/oracle/selftest.py",
       "reason": "Framing-template oracle self-test selftest.py: mutation, golden-comparison, hand-computed-control and room-sweep suite for framing_oracle, run by tests/run_all.py as the oracle:framing-selftest suite; imports framing_oracle, make_golden, quote_check and the standard library; dedicated test driver, not a product-loaded module or current product entry point.",
       "sha256": "23e9b1ae0e54ae8337069a467f9e30fc074dd66a1de3a673d207fac9fcc1c93f",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cutting_plan_test.js",
+      "reason": "P89 真瀏覽器裁切驗收外掛，由 cdp_test.js 載入；不是產品 runtime 模組。",
+      "sha256": "a648eb206e8e4a80775f6cbdd6fae97ed7e277bcbb00431b0a543a161be2b833",
       "hashMode": "lf"
     }
   ],
