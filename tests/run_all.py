@@ -201,6 +201,7 @@ PY_NEEDS = {
     'test_grid_trial_contract': ['bridge'],
     'test_guide_panels': [],
     'test_identity_ledger': ['bridge'],
+    'test_identity_host_gate_shape': [],
     'test_infinite_grid_contract': ['bridge'],
     'test_modeling_degenerate': ['model-base'],
     'test_modeling_runtime': ['model-base'],

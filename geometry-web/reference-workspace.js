@@ -298,8 +298,8 @@ const ReferenceWorkspace = (() => {
         if(record?.finishReceipt!==pin.packageHash){record=saved;finishPin=pin;}
       }
       if(!record){recoveryReady=true;recoveryMessage("empty","本分頁尚無恢復資料。服務上的既有幾何來源未知，不能據此推定已保存專案。");return {...recovery};}
-      const session=typeof connection!=="undefined"?connection.session:null,dump=await api("dump");assertInitial();
-      if(record.version!==1 || !session || record.session!==session || !dump.ok || record.sceneHash!==await sceneFingerprint(dump.text)){
+      const session=typeof connection!=="undefined"?connection.session:null;
+      if(record.version!==1 || !session || record.session!==session){
         recoveryMessage("mismatch","先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。");return {...recovery};
       }
       const stage=label=>{busyLabel=label;present();};
@@ -308,17 +308,29 @@ const ReferenceWorkspace = (() => {
       if(await sceneFingerprint(loaded.scene)!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
       if(finishPin&&(loaded.manifest.projectId!==finishPin.projectId||!loaded.manifest.scenarioCatalog?.scenarios.some(s=>s.scenarioId===ticket.scenarioId)))
         throw new Error("試改完成收據與原方案身份不符，資料已保留。");
-      const verify=await api("dump");assertInitial();
-      if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==record.sceneHash)throw new Error("恢復期間服務場景已變更，未恢復專案。");
+      const probe=await sceneFingerprint(P.stripIdentityLedger(loaded.scene));
+      const probed=await api("dump-deidentified");assertInitial();
+      if(!probed.ok || await sceneFingerprint(probed.text)!==probe){
+        recoveryMessage("mismatch","先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。");return {...recovery};
+      }
+      const verify=await api("dump-deidentified");assertInitial();
+      if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==probe)throw new Error("恢復期間服務場景已變更，未恢復專案。");
       assertInitial();
+      const full=await api("dump");assertInitial();
       const p=record.project;
       if(!p || typeof p.provenance?.kind!=="string" || typeof p.provenance?.label!=="string")throw new Error("本機專案來源記錄不完整。");
-      Object.assign(c,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason || ""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
+      const disposition=P.restoreAfterProbe(p, full.ok===true, full.ok?await sceneFingerprint(full.text):null, record.sceneHash);
+      Object.assign(c,{dirty:disposition.dirty,dirtyReason:disposition.dirtyReason,saved:disposition.saved,downloaded:disposition.downloaded,provenance:{...p.provenance}});
       history.frame={context:c,ids:new Map(ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
       if(record.finishReceipt&&/^[a-f0-9]{64}$/.test(record.finishReceipt))recoveryFinishReceipt={session,key:recoveryKey,hash:record.finishReceipt};
       detachedPDFContexts.delete(c);
       recoveryReady=true;sync();
-      recoveryMessage("restored","已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。");
+      const restoredNote=disposition.dirtyReason==="身分帳不完整，須先復原上一步才能保存"
+        ?"已核對去身分場景，恢復附件與草稿。身分帳不完整，須先復原上一步才能保存。"
+        :(disposition.saved===false&&p.saved)
+        ?"已核對去身分場景，恢復附件與草稿。完整場景與恢復紀錄不同，尚未保存。"
+        :"已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。";
+      recoveryMessage("restored",restoredNote);
       return {...recovery};
     } catch(error) {
       if(editorLease!=="owned")editorLease="unavailable";

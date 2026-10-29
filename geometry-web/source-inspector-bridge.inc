@@ -191,11 +191,33 @@ static SiIndex *si_build(const World *w)
     si_profile_sources(s,w);
     return s;
 }
+static void si_incarnation(const World *w, const SiNode *n)
+{
+    fputs(",\"incarnation\":", stdout);
+    uint8_t kind = 0;
+    if (!strcmp(n->kind, "boundary")) kind = APP_IDENTITY_BOUNDARY;
+    else if (!strcmp(n->kind, "placement")) kind = APP_IDENTITY_PLACEMENT;
+    else if (!strcmp(n->kind, "column")) kind = APP_IDENTITY_COLUMN;
+    else if (!strcmp(n->kind, "beam")) kind = APP_IDENTITY_BEAM;
+    else if (!strcmp(n->kind, "timber")) kind = APP_IDENTITY_TIMBER;
+    else if (!strcmp(n->kind, "parameter")) kind = APP_IDENTITY_PARAMETER;
+    else if (!strcmp(n->kind, "parameter-field")) kind = APP_IDENTITY_FIELD;
+    uint32_t id = 0;
+    char mark[80];
+    if (!kind || !w || !parse_u32(n->id, &id) ||
+        (kind == APP_IDENTITY_TIMBER && assembly_owned(w, id)) ||
+        !identity_lookup_mark(w, kind, id, kind == APP_IDENTITY_FIELD ? n->field : 0, mark, sizeof mark)) {
+        fputs("null", stdout);
+        return;
+    }
+    js_string(mark);
+}
 static void si_json(SiIndex *s,const World *w,bool live)
 {
     char fingerprint[65];if(!eng_definition_hash(w,fingerprint)){eng_bridge_error("SOURCE_UNCHECKED","Cannot fingerprint readonly source World");return;}
-    printf("{\"ok\":true,\"schema\":\"source-inspector/1\",\"revision\":%llu,\"live\":%s,\"complete\":%s,\"limits\":{\"nodes\":%d,\"edges\":%d},\"identityContinuity\":\"unknown\",\"supportStatus\":\"unknown\",\"nodes\":[",(unsigned long long)g_definition_revision,live?"true":"false",s->complete?"true":"false",SI_NODE_MAX,SI_EDGE_MAX);
+    printf("{\"ok\":true,\"schema\":\"source-inspector/1\",\"revision\":%llu,\"live\":%s,\"complete\":%s,\"limits\":{\"nodes\":%d,\"edges\":%d},\"identityLedger\":{\"schema\":\"identity-ledger/1\",\"active\":%s},\"identityContinuity\":\"unknown\",\"supportStatus\":\"unknown\",\"nodes\":[",(unsigned long long)g_definition_revision,live?"true":"false",s->complete?"true":"false",SI_NODE_MAX,SI_EDGE_MAX,w->app.identity_active?"true":"false");
     for(size_t i=0;i<s->nn;++i){SiNode *n=&s->nodes[i];if(i)putchar(',');fputs("{\"key\":",stdout);js_string(n->key);fputs(",\"kind\":",stdout);js_string(n->kind);fputs(",\"id\":",stdout);js_string(n->id);fputs(",\"label\":",stdout);js_string(n->label);printf(",\"version\":%u,\"fieldId\":%u,\"definitionFingerprint\":\"%s\",\"valueFingerprint\":\"%s\"",n->version,n->field,n->definition,n->value);
+        si_incarnation(w,n);
         if(!strcmp(n->kind,"timber")){uint32_t id=0;int at=parse_u32(n->id,&id)?reference_timber_index(w,id):-1;if(at>=0){const Timber *t=&w->wood.timbers[at];const TimberAnchor *a=&w->wood.anchors[at];bool along_v=a->length_direction==SURFACE_DIRECTION_POS_V||a->length_direction==SURFACE_DIRECTION_NEG_V;printf(",\"placed\":%s,\"surface\":%u,\"lengthAxis\":\"%c\",\"nativeOwner\":",t->placed?"true":"false",a->placement_id,along_v?'v':'u');json_schedule_support_owner(w,id);}}putchar('}');}
     fputs("],\"edges\":[",stdout);for(size_t i=0;i<s->ne;++i){SiEdge *e=&s->edges[i];if(i)putchar(',');fputs("{\"from\":",stdout);js_string(e->from);fputs(",\"to\":",stdout);js_string(e->to);fputs(",\"relation\":",stdout);js_string(e->relation);fputs(",\"field\":",stdout);js_string(e->field);printf(",\"active\":%s}",e->active?"true":"false");}printf("],\"sourceFingerprint\":\"%s\",\"timberSupports\":",fingerprint);json_timber_supports(w,fingerprint);
     if(!live){fputs(",\"timberReferences\":",stdout);json_references_world(w,fingerprint);}fputs("}\n",stdout);

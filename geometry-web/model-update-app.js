@@ -61,7 +61,7 @@
     guard(current);
     const sequence = current.sequence;
     if (signal.aborted) throw new DOMException('已取消', 'AbortError');
-    const graph = await read('source-inspect', current, sequence), dump = await read('dump', current, sequence);
+    const graph = await read('source-inspect', current, sequence), dump = await read('dump-deidentified', current, sequence);
     const checked = await read('source-inspect', current, sequence), pin = sourcePin(graph, dump);
     if (signal.aborted) throw new DOMException('已取消', 'AbortError');
     if (!same(pin, sourcePin(checked, dump)) || !same(pin, current.sourcePin)) throw Error('現行來源已變更，請關閉後重新明選來源。');
@@ -150,9 +150,9 @@
     try {
       current.controller = createController(current); current.before = current.controller.begin(id);
       $('muName').textContent = current.before.name + ' · 來源身分連續性 unknown'; savedSettings(current.before);
-      const sequence = current.sequence, graph = await read('source-inspect', current, sequence), dump = await read('dump', current, sequence);
+      const sequence = current.sequence, graph = await read('source-inspect', current, sequence), dump = await read('dump-deidentified', current, sequence);
       const surfaces = await read('surfaces', current, sequence), objects = await read('objects', current, sequence);
-      const checkedDump = await read('dump', current, sequence), checkedGraph = await read('source-inspect', current, sequence);
+      const checkedDump = await read('dump-deidentified', current, sequence), checkedGraph = await read('source-inspect', current, sequence);
       if (!same(sourcePin(graph,dump), sourcePin(checkedGraph,checkedDump))) throw Error('讀取期間來源已改變。請重新開啟並明選現行來源。');
       current.graph = SourceInspector.index(graph); current.sourcePin = sourcePin(graph,dump); current.objects = objects;
       if (!Array.isArray(surfaces.surfaces)) throw Error('目前服務沒有提供完整放置面清單。');
@@ -188,7 +188,7 @@
         if (!Array.isArray(rectangle) || rectangle.length !== 4 || !rectangle.every(Number.isSafeInteger)) throw Error('現行內含矩形缺少原生輪廓資料。');
         const [u0,v0,u1,v1] = rectangle; loops = [{verts:[[u0,v0],[u1,v0],[u1,v1],[u0,v1]],fixity:['FIXED','FIXED','FIXED','FIXED']}];
       } else loops = (await read('boundary ' + surface.boundary, current, sequence)).loops;
-      const references = await read('references', current, sequence), graph = await read('source-inspect', current, sequence), dump = await read('dump', current, sequence);
+      const references = await read('references', current, sequence), graph = await read('source-inspect', current, sequence), dump = await read('dump-deidentified', current, sequence);
       if (!same(sourcePin(graph,dump),current.sourcePin)) throw Error('來源已變更，請重新開啟並明選現行來源。');
       if (!Array.isArray(loops) || !loops.length || loops.some(loop => !Array.isArray(loop.verts) || loop.verts.length < 3 || loop.verts.some(p => !Array.isArray(p) || p.length !== 2 || !p.every(Number.isSafeInteger)))) throw Error('現行輪廓資料不完整。');
       if (!Array.isArray(references.timbers) || references.sourceFingerprint !== current.sourcePin.fingerprint) throw Error('角材與來源版本不一致，請重新選擇。');

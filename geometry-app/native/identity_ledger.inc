@@ -111,6 +111,16 @@ static bool identity_format_mark(const AppIdentityMark *mark, char *out, size_t 
     sprintf(out + 32, ":%llu", (unsigned long long)mark->serial);
     return mark->serial >= 1;
 }
+static bool identity_lookup_mark(const World *world, uint8_t kind, uint32_t id, uint32_t field_id, char *out, size_t cap)
+{
+    if (!world || !world->app.identity_active || !out) return false;
+    for (uint32_t i = 0; i < world->app.identity_mark_count; ++i) {
+        const AppIdentityMark *mark = &world->app.identity_marks[i];
+        if (mark->kind == kind && mark->id == id && mark->field_id == field_id)
+            return identity_format_mark(mark, out, cap);
+    }
+    return false;
+}
 static int identity_key_cmp(uint8_t ak, uint32_t aid, uint32_t af, uint8_t bk, uint32_t bid, uint32_t bf)
 {
     if (ak != bk) return ak < bk ? -1 : 1;

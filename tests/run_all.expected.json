@@ -118,7 +118,7 @@
     },
     "node:identity_ledger": {
       "mode": "count",
-      "count": 13,
+      "count": 10,
       "unit": "node test"
     },
     "node:hover_pick_scheduler": {
@@ -860,6 +860,11 @@
     "py:test_guide_panels": {
       "mode": "count",
       "count": 1,
+      "unit": "test"
+    },
+    "py:test_identity_host_gate_shape": {
+      "mode": "count",
+      "count": 5,
       "unit": "test"
     },
     "py:test_identity_ledger": {

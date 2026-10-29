@@ -3042,6 +3042,20 @@ static bool history_redo(World *w)
 static void history_group_rollback(World *world)
 {app_history_group_abort(&g_history,world);}
 
+/* Host mode is process state. Only gdi_show_three_views assigns desktop.
+ * Web, CLI, and core tests leave it unset and never read it. */
+static int g_host_mode;
+
+static bool host_gate_rejects(int mode, const World *world, char *tokens[], int count, char *message, size_t cap)
+{
+    if (message && cap) message[0] = '\0';
+    if (mode != 1 || !world || !world->app.identity_active) return false;
+    if (count == 1 && tokens && tokens[0] &&
+        (!strcmp(tokens[0], "undo") || !strcmp(tokens[0], "redo"))) return false;
+    if (message && cap) snprintf(message, cap, "%s", "桌面版尚不支援身分帳，唯讀開啟");
+    return true;
+}
+
 /* 互動入口共用：undo/redo・歷史群組攔截 + 變更前記快照（失敗自動取消）。
  * 回傳值同 apply_scene_line。 */
 static bool apply_interactive_tokens(
@@ -3892,6 +3906,12 @@ static void interactive_apply_line(GdiApp *app, HWND window, const char *text)
         return;
     }
 
+    char gate_message[160];
+    if (host_gate_rejects(g_host_mode, app->world, tokens, count, gate_message, sizeof gate_message)) {
+        gdi_set_status(app, gate_message);
+        return;
+    }
+
     ++app->input_line_no;
 
     if (apply_interactive_tokens("<輸入>", app->input_line_no, tokens, count, app->world)) {
@@ -4681,7 +4701,10 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                                         path, sizeof path, NULL, NULL) > 1) {
                     FILE *f = fopen(path, "wb");
                     if (f != NULL) {
+                        bool saved_marks = g_identity_include_marks;
+                        g_identity_include_marks = false;
                         world_dump_dsl(app->world, f);
+                        g_identity_include_marks = saved_marks;
                         fclose(f);
                         gdi_set_status(app, "✓ 已匯出 .scene");
                     } else {
@@ -5053,6 +5076,7 @@ static bool gdi_show_three_views(World *world)
 
     MSG msg;
 
+    g_host_mode = 1;
     while (GetMessageW(&msg, NULL, 0, 0) > 0) {
         if (!TranslateAcceleratorW(window, haccel, &msg)) {
             TranslateMessage(&msg);

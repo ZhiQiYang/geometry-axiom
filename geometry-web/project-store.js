@@ -36,6 +36,29 @@
   }
   const ENGINEERING_CAPABILITY = "engineering-spec/1", DRAFT_SCHEMA = "engineering-drafts/1", MAX_ENGINEERING_DRAFTS = 256;
   const IDENTITY_CAPABILITY = "identity-ledger/1";
+  function stripIdentityLedger(text) {
+    const normalized = String(text == null ? "" : text).replace(/\r\n/g, "\n");
+    const trailing = normalized.endsWith("\n");
+    const body = trailing ? normalized.slice(0, -1) : normalized;
+    const kept = body.split("\n").filter(line => {
+      const code = line.split("#")[0].trim();
+      if (code === "requires identity-ledger/1" || code === "identity-ledger activate") return false;
+      if (code.startsWith("identity ")) return false;
+      return true;
+    });
+    if (!kept.length) return "";
+    const joined = kept.join("\n");
+    return trailing ? joined + "\n" : joined;
+  }
+  function restoreAfterProbe(recordProject, fullOk, fullHash, recordHash) {
+    const project = recordProject && typeof recordProject === "object" ? recordProject : {};
+    if (fullOk === true && fullHash === recordHash) {
+      return {dirty:!!project.dirty, dirtyReason:String(project.dirtyReason || ""), saved:!!project.saved, downloaded:!!project.downloaded};
+    }
+    /* 不得沿用已保存：帳不完整 */
+    if (fullOk !== true) return {dirty:true, dirtyReason:"身分帳不完整，須先復原上一步才能保存", saved:false, downloaded:false};
+    return {dirty:true, dirtyReason:String(project.dirtyReason || "") || "有未保存的變更", saved:false, downloaded:false};
+  }
   const SCENE_CAPABILITIES = [ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY, IDENTITY_CAPABILITY];
   const MAX_MANIFEST = 8 * 1024 * 1024, MAX_MODELS = 64;
   const MAX_PACKAGE = 256 * 1024 * 1024, MAX_EXPANDED = 512 * 1024 * 1024;
@@ -966,6 +989,6 @@
   }
   return { Features, CARD_FORMAT, CARD_CAPABILITY, GRID_DRAFTS_FORMAT, ScenarioCatalog, SECTION_FORMAT, SECTION_CAPABILITY, CASE_FORMAT, CASE_CAPABILITY, validateCaseHashes, SCENARIO_FORMAT, SCENARIO_CAPABILITY, formatPolicy, GRID_RULE_FORMAT, EVIDENCE_FORMAT, EVIDENCE_CAPABILITY, SUBDIVISION_FORMAT, SUBDIVISION_CAPABILITY, FEATURE_FORMAT, readerCapabilities, validateManifestCapabilities, OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage, assertManifestCapacity,
-    validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities,
+    validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities, stripIdentityLedger, restoreAfterProbe,
     validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, validateEvidenceTargets, supportedFormats, projectFormat, reference, pack, unpack, ContextHistory };
 });

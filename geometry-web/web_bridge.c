@@ -1054,6 +1054,38 @@ static void cmd_identity_read(void)
     fputs("]}\n", stdout);
 }
 
+/* Read-only seam for the desktop host gate. It does not execute the line. */
+static void cmd_host_gate_check(const char *arg)
+{
+    while (*arg == ' ' || *arg == '\t') ++arg;
+    int mode = -1;
+    if (strncmp(arg, "desktop", 7) == 0 && (arg[7] == ' ' || arg[7] == '\t' || arg[7] == '\0')) {
+        mode = 1;
+        arg += 7;
+    } else if (strncmp(arg, "none", 4) == 0 && (arg[4] == ' ' || arg[4] == '\t' || arg[4] == '\0')) {
+        mode = 0;
+        arg += 4;
+    }
+    if (mode < 0) {
+        fputs("{\"ok\":false,\"error\":\"host-gate-check 用法：desktop|none 一行互動指令\"}\n", stdout);
+        return;
+    }
+    while (*arg == ' ' || *arg == '\t') ++arg;
+    char line[SCENE_MAX_LINE];
+    snprintf(line, sizeof line, "%s", arg);
+    char *hash = strchr(line, '#');
+    if (hash != NULL) *hash = '\0';
+    char *tokens[SCENE_MAX_TOKENS];
+    int count = split_tokens(line, tokens, SCENE_MAX_TOKENS);
+    char message[160];
+    bool rejected = host_gate_rejects(mode, &g_world, tokens, count, message, sizeof message);
+    fputs("{\"ok\":true,\"rejected\":", stdout);
+    fputs(rejected ? "true" : "false", stdout);
+    fputs(",\"message\":", stdout);
+    js_string(message);
+    fputs("}\n", stdout);
+}
+
 #include "engineering_bridge.inc"
 #include "section_profile_bridge.inc"
 #include "panel_fill_bridge.inc"
@@ -1235,6 +1267,8 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_identity_epoch(arg);
         } else if (strcmp(line, "identity-read") == 0 && !arg) {
             cmd_identity_read();
+        } else if (strcmp(line, "host-gate-check") == 0 && arg) {
+            cmd_host_gate_check(arg);
         } else {
             fputs("{\"ok\":false,\"error\":\"不認得的橋接指令\"}\n", stdout);
         }

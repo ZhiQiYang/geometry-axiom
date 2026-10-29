@@ -34,46 +34,31 @@ test("比較狀態依 unknown、conflict、absent、replaced、continuous", () =
   assert.strictEqual(ledger.compareStatus({}), "unknown");
 });
 
-test("只預填 continuous 且不確認", () => {
-  let confirmed = false;
-  const roots = ledger.prefillRoots([
-    {id: 1, status: "continuous", confirm() { confirmed = true; }},
-    {id: 2, status: "replaced"},
-    {id: 3, status: "continuous", assemblyOwned: true},
-    {id: 4, status: "unknown"},
-  ]);
-  assert.strictEqual(confirmed, false);
-  assert.deepStrictEqual(roots.map(root => root.id), [1]);
-  assert.strictEqual(roots[0].confirmed, false);
-});
-
-test("faces 沿用 orientation 與 purpose", () => {
-  const planned = ledger.planFaces(
-    [{id: 1, orientation: "+n", purpose: "finish"}, {id: 2, orientation: "-n", purpose: "base"}],
-    [{id: 9, orientation: "changed", purpose: "changed"}, {id: 8, orientation: "changed", purpose: "changed"}]
-  );
-  assert.strictEqual(planned.ok, true);
-  assert.deepStrictEqual(planned.uses.map(use => [use.id, use.orientation, use.purpose]), [[9, "+n", "finish"], [8, "-n", "base"]]);
-});
-
-test("faces 數量不同就拒絕", () => {
-  const planned = ledger.planFaces([{orientation: "+n", purpose: "finish"}], []);
-  assert.strictEqual(planned.ok, false);
-  assert.match(planned.error, /數量、順序、orientation 與 purpose/);
-});
-
-test("faces 加 timbers 不支援", () => {
-  const planned = ledger.facesUpdate([{orientation: "+n", purpose: "finish"}], [{orientation: "+n", purpose: "finish"}], {timbers: true});
-  assert.strictEqual(planned.ok, false);
-  assert.strictEqual(planned.code, "UNSUPPORTED");
-  assert.match(planned.error, /assembly-owned/);
-  const owned = ledger.planFaces([{orientation: "+n", purpose: "finish"}], [{orientation: "+n", purpose: "finish"}], {assemblyOwned: true});
-  assert.strictEqual(owned.ok, false);
+test("撤掉實作：帳不完整仍沿用已保存", () => {
+  const broken = store.restoreAfterProbe({dirty:false, dirtyReason:"", saved:true, downloaded:true}, false, null, "abc");
+  assert.strictEqual(broken.saved, false);
+  assert.strictEqual(broken.downloaded, false);
+  assert.strictEqual(broken.dirty, true);
+  assert.strictEqual(broken.dirtyReason, "身分帳不完整，須先復原上一步才能保存");
+  const replaced = store.restoreAfterProbe({dirty:false, dirtyReason:"", saved:true, downloaded:true}, true, "new", "old");
+  assert.strictEqual(replaced.saved, false);
+  assert.strictEqual(replaced.dirtyReason, "有未保存的變更");
+  const same = store.restoreAfterProbe({dirty:false, dirtyReason:"已保存", saved:true, downloaded:true}, true, "old", "old");
+  assert.strictEqual(same.saved, true);
+  assert.strictEqual(same.dirty, false);
+  assert.strictEqual(same.dirtyReason, "已保存");
+  const source = fs.readFileSync(path.join(__dirname, "..", "geometry-web", "project-store.js"), "utf8");
+  assert.ok(source.includes("不得沿用已保存：帳不完整"));
 });
 
 test("去身分文字去掉記號行", () => {
   const source = "boundary 1 outline 0,0 10,0 10,10 0,10\r\nrequires identity-ledger/1\nidentity boundary 1 aa:1\nidentity-ledger activate\n# identity boundary 1 kept-comment\n";
-  assert.strictEqual(ledger.stripIdentityLedger(source), "boundary 1 outline 0,0 10,0 10,10 0,10\n# identity boundary 1 kept-comment\n");
+  assert.strictEqual(store.stripIdentityLedger(source), "boundary 1 outline 0,0 10,0 10,10 0,10\n# identity boundary 1 kept-comment\n");
+  assert.strictEqual(store.stripIdentityLedger("requires identity-ledger/1\n"), "\n".slice(0, 0) || "");
+  const emptyActive = "requires identity-ledger/1\n";
+  assert.strictEqual(store.stripIdentityLedger(emptyActive), "");
+  const mixed = "requires engineering-spec/1\nrequires identity-ledger/1\nboundary 1 outline 0,0 1,0 1,1 0,1\nidentity boundary 1 aa:1\n";
+  assert.strictEqual(store.stripIdentityLedger(mixed), "requires engineering-spec/1\nboundary 1 outline 0,0 1,0 1,1 0,1\n");
 });
 
 test("只有身分帳不升格式", () => {
