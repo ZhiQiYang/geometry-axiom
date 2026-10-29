@@ -26,6 +26,10 @@ f5806c60c6067a64776f979f77981e4aba087df3 的172場景×2新程序全過，23:24:
 
 3949deb9e565a9e5aeca5bc475ec646e77cc6546 的單一真512 load於23:59:33Z完成：261.840563秒、exit0、原placed_geometry過、RSS222088KiB，stdout與舊F2/C相同。原件scope-load-3949deb9。沒有聲稱canonical/history或H7已過；目前繼續H兩處未使用raw facts與K hint省工，待新來源完整驗證。
 
+## H/K最小省工候選（待原H7）
+
+8b128aa7bf53b41b493dd3a0bee49f0d53391254：172完整圖全過；9ac120項中的119項已綠，唯一新增withdrawal定位前置修復後8b新7全過，產品未變。H新fixture紅、hashanchor紅均封存 hk-candidate-8b128aa7。下一步原H7整套1200秒與各batch600，未稱全綠；原F2/C與上游鏈狀態不變。
+
 ## 歷史檢查點（不取代上方current state）
 
 # #348 current state：512各批已在600秒內完成；I8a history與整套時限仍紅
