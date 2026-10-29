@@ -1,3 +1,13 @@
+# #348 current state：512完整H7與來源祖先缺口已解除；整合驗收仍待
+
+- 採入產品M=`7a0e6dd81c54066995981393925fa46a815de2f8`已一般merge並正常push，包含目前#343 a934a554ae58f16f124f1b264523947f170b3f0b、#346 eaf15e239324a6464a04740647afccce3a3c17c7、#347 8bb0359331365c6f3a96872620427cf7847fcb50；相對目前#347 behind0。原review behind2只保歷史。
+- 真H7 execution256747c5c8f8f8934eeb08ae404dee1f67591508：8/0/0/0、exit0，1142.271674秒低於原1200；全部512 load/canonical/sequential/history/513CAPACITY完整。與M非evidence差異0，保真execution不改標。原件`placed-h7-256747c5/`。
+- 新35與三具名0/1/0、622b真172圖及185leaf/172input閉包均已收件；M修後N128profile5.982724714秒對原B14.914534721、流全等，不重抽原版。
+- 原S完整1200紅、原legacy98紅及所有舊失敗仍保；本地收件v7沒有單獨initial request archive的限制已明記，這次完整包保原REQUEST/OBSERVER/outer/11archives。
+- 完整123帳本於03:00:41UTC固定M啟動，precheck真exit1/stale，尚未收終態。其後仍須架構、完整census、正式native與browser；**NOT READY，仍draft**。不得把本H7綠誤稱全部驗收完成。
+
+## 歷史紀錄（以下不是目前狀態）
+
 # #348 current state：S796 有實際加速；完整 H7 仍紅
 
 目前正式產品 F2=`b595e55952d5d66de95024432e1b29bec7525e9b`，history測試來源C=`75481194f3b85a6b07e11896403633d7d0fa0d6f`；本提交只發布證據，沒有把隔離候選冒成已採入產品。
