@@ -16,7 +16,7 @@ runtime import blocking, mutation receipts, browser acceptance, or SSOT checks.
 
 ## Complete inventory and responsibilities
 
-The current inventory contains 605 executable files: 336 owned sources and 269
+The current inventory contains 607 executable files: 338 owned sources and 269
 individually named exclusions. The five complete roots are `geometry-core`,
 `geometry-app`, `geometry-templates`, `geometry-web`, and `geometry-guide`.
 `current_geometry.c` is an additional standalone source. The real
@@ -26,12 +26,12 @@ New executable files anywhere under these roots fail until accounted for.
 
 | Layer | Files | Actual responsibility |
 |---|---:|---|
-| K | 69 | Public neutral C stores/evaluators/source/transaction APIs and the Python geometry kernel, including their private implementation headers |
-| W | 67 | Woodworking policy, material/recipe interpretation, construction, layout, support and presentation; rectangular-grid second-template witness |
+| K | 70 | Public neutral C stores/evaluators/source/transaction APIs, the Python geometry kernel, and explicit integer one-dimensional allocation conservation, including private implementation headers |
+| W | 68 | Woodworking policy, material/recipe interpretation, construction, layout, support, cutting allocation/loss policies and presentation; rectangular-grid second-template witness |
 | H | 194 | Native World/scene/command/transaction adapters and composition, Python application and compatibility facades, browser/server UI, guide authoring, and workspace tooling |
 | vendor | 6 | Individually digest-locked browser PDF and ZIP dependencies, accessible only from H |
 
-The 336 sources contain 190 C/header/include files, 75 Python files, 67 JavaScript
+The 338 sources contain 190 C/header/include files, 75 Python files, 69 JavaScript
 files, and 4 HTML files. The canonical self-contained axiom reader and its
 generator are included. The separate work-manager is included as H tooling,
 although its own instructions distinguish it from the Geometry product UI.
@@ -62,7 +62,11 @@ import `ctypes` receive external-module allowances.
 ## Audited host routes
 
 The ordinary browser module routes explicitly map `templates/woodworking.js` to
-the W frontend and `application.js` to H composition. The work-manager's root
+the W frontend, `kernel/interval-allocation.js` to the K conservation checker,
+`templates/woodworking-cutting.js` to the fixed W cutting provider, and
+`application.js` to H composition. `runtime_version.py` owns these exact HTTP
+asset mappings; the index loads K and both W providers before composition.
+The work-manager's root
 `/app.js` resolves to its own static app. The two literal PDF module imports map
 to the pinned PDF vendor source. These mappings create normal graph edges.
 
@@ -560,3 +564,18 @@ new files or changed sources.
 - `cutting_plan_test.js` 為具名 CDP 測試排除；與 `cdp_test.js` 均重算精確 LF digest。未縮 sourceRoots、未放寬來源及依賴斷言。
 
 原 scanner 完整掃描通過；generic 架構測試 205/205，product 架構測試 18/18。原始命令、退出碼、輸出雜湊見本輪 receipt。此為有限靜態依賴證據，不代表 native、瀏覽器或完整產品驗收。前述歷史區段仍是各自歷史來源的記錄。
+
+## 【dot】R357-01：裁切責任與固定模板邊界
+
+本輪基底為 `cd4bc8803016943e6ec7bf98f0c90bc0312cfa06` 加工作樹差異，尚不是新的遠端 head。來源閉包及實際驗證命令由本輪 receipt 綁定；歷史 R354-01 區段只代表當時的來源與有限靜態結果。
+
+- K `geometry-core/interval-allocation.js` 只驗明示的整數區間、具型別需求身分、消耗及末餘。需求身分完整正規化後恰出現一次；配置必須在可用區間內，正長度區間不能重疊，總和以 BigInt 精確相加等於輸入全長。K 不決定木工材料、角色、鋸縫、端修或留用門檻。
+- W `geometry-templates/woodworking/cutting.js` 實際承接 D46–D50、I58/I59/I61、R47–R49 的材料/無序截面配對、設定數值與宣告限制、原材在用保護、餘料優先、FFD 排列、末刀、端修、剩料分類與耗損彙總。切序先轉成明示配置及消耗區間，共用守恆只呼叫 K。它不引用 H 設定、料單、專案儲存或畫面。
+- H `cutting-plan.js` 保留原生快照及既有 `timber-schedule.js` 的需求轉接、公開結果包裝與 CSV；`cutting-settings.js` 保留附件 schema、key 高水位、歷史保存及 canonical fingerprint，領域政策固定委派 W。H 不再持有 FFD、材料配對或耗損分類實作。
+- H `geometry-app/application.js` 無條件組裝 frozen `woodworking/1` 裁切 provider；缺少固定 W 就拒絕啟動，沒有選擇器、停用入口或任意插件註冊。公開呼叫、附件格式、requires 與 CSV 契約不因此分層新增版本。
+
+原 920 個 forbidden identifier 與全部既有字串政策保持，另加入實際 W 的 `GeometryWoodworkingCutting`、`materialKey`、`stockIdentity`、`sectionKey`、`kerf`、`minRemnant`、`allowance` 七個具名識別字；不是以移除 guard 接受新 K。原 scanner 的未知計算式 property key、dynamic global 及依賴方向限制保持原樣。
+
+`test_product_architecture.py` 新增四個實際來源負向方法：K 摻入木工政策識別字、K 讀取固定模板字串、K 引用 W，以及 W 引用 H 設定/料單/組裝。原無模板測試擴大到整個 `geometry-core`，實際涵蓋第一支 K JavaScript，並保持全部原斷言。這些靜態控制仍不代替裁切數值差分、mutation 或真瀏覽器驗收。
+
+本輪實跑原 `architecture_contract.py`：退出 0，607 executable inputs、338 owned、269 exclusions、810 edges、0 diagnostics；原 generic suite 205/205，product suite 22/22（含新增四個邊界控制），均退出 0。完整命令、時間及 stdout/stderr SHA-256 列於 receipt；LF source closure 為 `695b1cdf7d1ed965587f5672e4dd81da4f9bc661ff3291c6bf7a435a53e1e566`。這三條命令未執行 native、K1 mutation、瀏覽器、完整 run_all 或實體裝置驗收。

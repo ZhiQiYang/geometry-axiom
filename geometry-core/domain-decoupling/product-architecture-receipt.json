@@ -1,8 +1,8 @@
 {
   "schema": "geometry-product-architecture-receipt/1",
-  "createdUtc": "2026-10-29T13:00:54.245962+00:00",
-  "sourceBaseHead": "b5b33ed1e55d3187108af7cddbca71d2a256c5d2",
-  "headBinding": "固定基底加本次補丁，非遠端新 head；完整實測來源以 inputs 及 inputClosureSha256 綁定。",
+  "createdUtc": "2026-10-29T17:05:18.844003+00:00",
+  "sourceBaseHead": "cd4bc8803016943e6ec7bf98f0c90bc0312cfa06",
+  "headBinding": "固定 cd4bc880 基底加本輪工作樹差異，非新的遠端 head；完整實測來源由 inputs 與 inputClosureSha256 綁定。",
   "hashMode": "sha256 after CRLF-to-LF normalization",
   "inputClosureHashSerialization": "SHA-256 of UTF-8 JSON for path-sorted inputs; ensure_ascii=false, separators=(comma,colon), no trailing newline.",
   "inputClosureExcludes": [
@@ -11,35 +11,35 @@
     "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
     "geometry-core/domain-decoupling/product-architecture-receipt.json"
   ],
-  "manifestSha256": "efbcd1b54fd858b774368775ad600455655f127786b83e60835bd1fa5fad547c",
+  "manifestSha256": "6f671bc26a8a07682869d0800eeffc249ad5f0211182f15c108cb9426d6e2e2b",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
-  "scanSha256": "4c3d52f9299249976b88ed7eec29747048e89f23ca7ec29896166470769b2c21",
-  "reportSha256": "698ad1ee0b7caa7d3da0838e2280fa25cf76082547566c28eb5c4a3765fbc575",
-  "inputClosureSha256": "ac7912511025811ebed79112dc51a370d46afa0f9996c034a44a514d8a7102b6",
+  "scanSha256": "45ea3fd8fb075a86f53df458b4ab47571d9c4c1d669139309959fed9dc3d45ac",
+  "reportSha256": "6ffcaa483e152deea51eed3873d431b19f450072b937aed0fd0ae024caa0688d",
+  "inputClosureSha256": "695b1cdf7d1ed965587f5672e4dd81da4f9bc661ff3291c6bf7a435a53e1e566",
   "counts": {
-    "executableFiles": 605,
-    "ownedSources": 336,
+    "executableFiles": 607,
+    "ownedSources": 338,
     "exclusions": 269,
-    "edges": 804,
+    "edges": 810,
     "diagnostics": 0,
     "layers": {
       "H": 194,
-      "K": 69,
-      "W": 67,
+      "K": 70,
+      "W": 68,
       "vendor": 6
     },
     "languages": {
       "c": 190,
-      "javascript": 67,
-      "python": 75,
-      "html": 4
+      "html": 4,
+      "javascript": 69,
+      "python": 75
     }
   },
   "scanPassed": true,
   "validation": [
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "python3",
         "-B",
         "tests/architecture_contract.py",
         "--root",
@@ -47,38 +47,38 @@
         "--manifest",
         "geometry-core/domain-decoupling/product-architecture.json"
       ],
-      "cwd": "/workspace/shared/dot-r354-20261029/repo/../repo",
-      "startedUtc": "2026-10-29T13:00:24.443114+00:00",
-      "finishedUtc": "2026-10-29T13:00:33.950493+00:00",
+      "cwd": "/workspace/implement357-layering",
+      "startedUtc": "2026-10-29T17:04:32.984779+00:00",
+      "finishedUtc": "2026-10-29T17:04:44.246136+00:00",
       "exitCode": 0,
-      "stdoutSha256": "4c3d52f9299249976b88ed7eec29747048e89f23ca7ec29896166470769b2c21",
+      "stdoutSha256": "45ea3fd8fb075a86f53df458b4ab47571d9c4c1d669139309959fed9dc3d45ac",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "python3",
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "/workspace/shared/dot-r354-20261029/repo/../repo",
-      "startedUtc": "2026-10-29T13:00:33.950935+00:00",
-      "finishedUtc": "2026-10-29T13:00:34.703045+00:00",
+      "cwd": "/workspace/implement357-layering",
+      "startedUtc": "2026-10-29T17:04:44.247907+00:00",
+      "finishedUtc": "2026-10-29T17:04:45.749450+00:00",
       "exitCode": 0,
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "7a103c3aefdb5ceeb96aa7972cf72071cc5c8fbd679a0d07774e405dc2f6c4aa"
+      "stderrSha256": "489790610a03c5d19ba9a55dcd597c8e7e043009052be89ab4db2a4f45b56d28"
     },
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "python3",
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "/workspace/shared/dot-r354-20261029/repo/../repo",
-      "startedUtc": "2026-10-29T13:00:34.703310+00:00",
-      "finishedUtc": "2026-10-29T13:00:54.155253+00:00",
+      "cwd": "/workspace/implement357-layering",
+      "startedUtc": "2026-10-29T17:04:45.751546+00:00",
+      "finishedUtc": "2026-10-29T17:05:18.708212+00:00",
       "exitCode": 0,
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "6656c41108f79f43968451a8599cc7d5ff15dd312fc98278b16b3fedd0e5f444"
+      "stderrSha256": "9eb5ff92df584595eeb8d18a2e1b3bf624fc444c79eeee416fd7f7af4446284a"
     }
   ],
   "inputs": [
@@ -88,7 +88,7 @@
     },
     {
       "path": "geometry-app/application.js",
-      "sha256": "4f18b28ebd28dbea0632926095c03d75df04176d09d9d4e239299f7f490627a0"
+      "sha256": "43013b93a1b560a8c9d273c1dc86063a89226e4c782c7ec173f39e5752f3a211"
     },
     {
       "path": "geometry-app/geometry_app/__init__.py",
@@ -779,6 +779,10 @@
       "sha256": "8e58c73c52351dd35ee79603885b1215ff86f0f6af00d2d05824fee25770d61a"
     },
     {
+      "path": "geometry-core/interval-allocation.js",
+      "sha256": "cdf3d6b67d5271aabb7829a97008fc2d3c628c7898d7d4d79f38e41b224ccf93"
+    },
+    {
       "path": "geometry-core/kernel/candidate.c",
       "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77"
     },
@@ -1199,6 +1203,10 @@
       "sha256": "50cd5762d0b69d415af8747aca5844948f24316861a069f4cee040c328aaf870"
     },
     {
+      "path": "geometry-templates/woodworking/cutting.js",
+      "sha256": "b2d032b7340c68ebf272c8f08dd476a0097aaa63427eb80757b337df963e187a"
+    },
+    {
       "path": "geometry-templates/woodworking/frontend.js",
       "sha256": "fe6c93eeafae0496d16bf74620681251347227997bcc33fbbb8ce774a54033f3"
     },
@@ -1544,11 +1552,11 @@
     },
     {
       "path": "geometry-web/cutting-plan.js",
-      "sha256": "d160c37d1c4b4b283082aa86d86df7c431f806f4104d2c6f3da96f42c6a51bf5"
+      "sha256": "54b57e2e515b7baeaeb08e08d797f3541d5ba561ee21fb8f754f29a211b65c89"
     },
     {
       "path": "geometry-web/cutting-settings.js",
-      "sha256": "23f44ae9717405bbc5bf95ca32f0cda47af0e25104972d0d984ed5b85d94e265"
+      "sha256": "e04ea4d5b4f3242d80dfe04bab7f2f4c5a30ac2901428aa84a95a6886d1f7c92"
     },
     {
       "path": "geometry-web/cutting-workspace.js",
@@ -1972,7 +1980,7 @@
     },
     {
       "path": "geometry-web/index.html",
-      "sha256": "decb505f23736064d88c9b40dee8fc16e318bb53a16946290cc071d5e95a596e"
+      "sha256": "171cab2de4eb29c2d38f8979fc5889897f9271f84c549266d8b10f44d19ca7e8"
     },
     {
       "path": "geometry-web/infinite_grid_face_test.js",
@@ -2252,7 +2260,7 @@
     },
     {
       "path": "geometry-web/runtime_version.py",
-      "sha256": "1cafc0868554e9f4028de3c6851d12cb8d9716fec18a6fe379afbbd2e3b14274"
+      "sha256": "920e3c3eda235f0a9d8e91610cd3f40f438cf165d47938b50ecef1980d255307"
     },
     {
       "path": "geometry-web/save_reopen_synthetic_test.js",
@@ -2503,11 +2511,22 @@
       "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "previousReceiptSha256": "2db66c879b81a236c789a55b77b83cc301b6d28d3b5d2d6400c4cd3887141005",
+  "previousReceiptSha256": "fa24c1f08a916179405b7bfdeaef615627c67aeefd9598121619dd7c8a459f56",
+  "judgeInputs": [
+    {
+      "path": "tests/test_architecture_contract.py",
+      "sha256": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3"
+    },
+    {
+      "path": "tests/test_product_architecture.py",
+      "sha256": "7eeb122bd5511e4f78dff761f9e66310cfe2eeaf1dd1faace07a262de5eb9016"
+    }
+  ],
   "notClaimed": [
     "native 編譯或執行",
     "瀏覽器驗收",
     "完整 run_all",
+    "K1 mutations",
     "vendor internals",
     "實體手機與 Windows 操作"
   ]
