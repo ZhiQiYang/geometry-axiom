@@ -71,9 +71,12 @@ class LoadResidual(unittest.TestCase):
         world_path = ROOT / "geometry-app/native/world_validation.inc"
         world = includes(world_path.read_text(encoding="utf-8"), world_path)
         if not invalidate:
-            anchor = "memset(memo->valid,0,sizeof memo->valid);"
+            anchor = ("static void app_footprint_memo_begin(AppFootprintMemo *memo,const World *world)\n"
+                      "{\n    memo->world=world;\n    memset(memo->valid,0,sizeof memo->valid);\n}")
             assert world.count(anchor) == 1
-            world = world.replace(anchor, "/* 負控制：保留同一快取儲存的舊值。 */")
+            world = world.replace(anchor, anchor.replace(
+                "memset(memo->valid,0,sizeof memo->valid);",
+                "/* 負控制：保留同一快取儲存的舊值。 */"))
         world_copy = build.work / (name + "-world.inc")
         world_copy.write_text(world, encoding="utf-8")
         sources_path = ROOT / "geometry-app/native/reference_sources.inc"
