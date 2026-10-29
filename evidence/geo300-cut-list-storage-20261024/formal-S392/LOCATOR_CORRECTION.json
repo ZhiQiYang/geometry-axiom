@@ -1,0 +1,24 @@
+{
+  "schema": "geo346-append-only-locator-correction/1",
+  "product_sha": "39273bc0229fbbb16565134e1f8fad3a0d598c31",
+  "original_receipts_unchanged": {
+    "/workspace/geo300-cut-list-storage-39273bc0-formal/receipt.json": "871c842c7f6e90a27ee7db495fc5dd2c950cffc0850831dbcc44bf68b4beadc1",
+    "/workspace/geo300-cut-list-storage-39273bc0-formal/wood-report/receipt.json": "c69f1cf7bf7f10c584a2056d2a0128b50566e20121eecfa19e6eda0686086523"
+  },
+  "configured_but_unmaterialized_locator": "/workspace/geo300-cut-list-storage-39273bc0-formal/wood-report/native-executions.jsonl",
+  "cause": "The original driver configured GEO299316_EXECUTION_LOG and GEO261_CONTACT_SOURCES_EXECUTION_LOG, which the report-policy suite and NativeBuild do not read. No such JSONL was produced.",
+  "actual_complete_runtime_record": {
+    "receipt": "/workspace/geo300-cut-list-storage-39273bc0-formal/wood-report/observed/receipt.json",
+    "commands": "/workspace/geo300-cut-list-storage-39273bc0-formal/wood-report/observed/commands",
+    "semantics": "Passive subprocess.run capture preserves arguments, actual exits and original captured streams. Text streams are original decoded text retained as UTF-8, not pre-decode pipe bytes."
+  },
+  "separate_native_build_cleanup_audit": {
+    "enabled": true,
+    "retention_index": "/workspace/geo300-cut-list-storage-39273bc0-formal/wood-report/compile-retention/retention.json",
+    "records": 1,
+    "build_log_bytes": 117235,
+    "build_log_sha256": "244aa0356d420b7d53b30d8a099acf00b1f67dea76a0d1461fabe047aaee98f0",
+    "scope": "Actual Python shutil.rmtree audit hook retained original NativeBuild build-log.json and compiled source copies. This is distinct from the absent configured execution JSONL."
+  },
+  "independent_peer": "2279 checks, exit 0; metadata locator caveat preserved; no subject rerun or receipt rewrite"
+}

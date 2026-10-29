@@ -1,20 +1,31 @@
 # GEO-300 cut-list storage progress
 
-產品 SHA：39273bc0229fbbb16565134e1f8fad3a0d598c31。基底 #343 Sccfaf057088a80c7aad4049f1c67e5eedfc2fdec；獨立 branch codex/geo300-cut-list-storage-20261024。
+PR #346；product SHA：39273bc0229fbbb16565134e1f8fad3a0d598c31。原基底 #343，分支 codex/geo300-cut-list-storage-20261024。容量仍 64；本片只把群內 ID 改為單一自有池，保持按值 copy、自有資料與原排序，分群／排序時間仍 O(N²)。
 
-已完成：五leaf線性 ID 儲存候選＋原全部讀取者、保64容量/原報表排序/群內宣告順序與按值copy自含；原分群/排序時間仍O(N²)。新source5fa已正常推，之後單leaf登記report suite8→11為本S392，其他expected JSON逐值不變。新3方法/5控制，加原8/4，共11/9。
+## 唯一 current-state
 
-| 項目 | 本S結果 |
+| 項目 | 結果／界線 |
 |---|---|
-| 候選 source 靜審 | 66 checks/0，非C實證 |
-| 固定Git source＋expected窄peer | 22/0，非C實證 |
-| 原 report-policy suite 11方法/9控制 | UNRUN |
-| 新五控制真0/1/0、原CLI逐bytes、16MiB | UNRUN |
-| full native/browser/全帳本/架構 | UNRUN |
-| 效能、容量512 | UNMEASURED／UNRUN；產品仍64 |
+| 實際執行 HEAD／tree | 39273bc0229fbbb16565134e1f8fad3a0d598c31／01fbacdde254c2b12d7de74e7f9d78dd4243b052 |
+| 準備前 checkout | a5f1806fb3cad2dada1a56e79e01d54f9f86700f；driver 切回真正 S392 執行，結束仍 S392 clean |
+| 原完整 report-policy suite | exit 0；11 方法、0 skip，原 16 MiB stack 與 timeout 不變 |
+| 原四＋新五反證 | 9 組均正常 assertion 0/1/0；完整 argv／stdout／stderr 見 formal-S392 原件 |
+| 編譯／連結 | 83 條均 exit 0；storage mutant 的 client 與 cut 共用同一 header bytes |
+| 原 CLI 報表與還原 | 原測試逐 bytes 比較通過，包含在上述 11 方法 |
+| 獨立實跑／封包審查 | 2279 checks／0；603 封存原件逐 bytes/hash 核對 |
+| 完整 native、browser、效能、帳本、架構 | UNRUN；不借其他 SHA 的收據，不標 READY |
+| 512 容量 | 後續獨立分支；本 S 仍 64 |
 
-原git add allowlist1、sparse restore1原streams全保；之後精確五tracked force-add與原expected單檔ignore-skip還原成功，不是forcepush。兩次正常push與ls-remote均0，本S公開可解析。全ledger僅root執行，不改SSOT/決策/K/原timeout或數值門檻。
+正式入口：`env -u PYTHONOPTIMIZE PYTHONDONTWRITEBYTECODE=1 python3 -B /tmp/geo300-cut-list-storage-20261024/formal-tools/launch_report_suite.py`。launcher SHA-256：7a15af7d663b307abc128695ffc1205afb42eed6ca31154d394bb4d551498e13。正式時間 2026-10-24T01:04:27.713901+00:00 ～ 01:04:33.962775+00:00；outer、reaper、原 suite 均 0。環境、指令、來源 SHA、結束碼及原完整 streams 全存 formal-S392。
 
-下一步：原11方法入口的c387/reaper/secondary lock/100MiB/16MiB runner與被動原child stream觀測綁定，異代理審過、root授槽才正式跑。原report case未持久化原C child streams，故先備已受審observed_run＋原NativeBuild audit機械組合；本包該工具仍peer-pending，不能當已允許/已執行。所有本S結果保持未跑，不把#343舊34/64收據貼過來。
+原 receipt 的 native_execution_log 是「已配置但未產生」的 JSONL locator；真正完整執行流在 `wood-report/observed/receipt.json` 與 `observed/commands/`。另外 cleanup audit 確實留下原 NativeBuild build-log.json 及編譯來源。兩者分開說明於 LOCATOR_CORRECTION.json；原 receipt 與原封包不回寫。
 
-完整靜態原件與出版錯誤歷史320檔封於STATIC_PREPARATION_ORIGINALS.tar.gz（321 regular members含index），每檔回讀原bytes/hash。原件和fixture不刪。NOT READY。
+環境準備 R1：舊 Git 不支援 `sparse-checkout add --no-cone`，退出 129，沒有修改 fixture／產品。R2 依既有 non-cone 模式 `git sparse-checkout add /room_a.scene` 成功；370 bytes fixture 與 S392 Git 原件逐 bytes 相同，舊 sparse patterns 全留。R1、R2 原指令與輸出皆封存，不把準備錯誤當產品失敗。
+
+完整正式原件 archive：`formal-S392/original-report-suite-fixture-and-control-streams.tar.gz`，603 members、3,455,626 bytes、SHA-256 a6c35f31f6c1da542d04e2f2ffed849c20aabde1d1e7d829ccb79349c2df67a2。原靜態準備 archive、fixture 與 private TMP runtime payload 全保留。
+
+下一步：依列車最終來源由主代理安排受影響整合、帳本與架構；後續順序 #343 → #346 → #128 P2 → 512。NOT READY。
+
+## 歷史
+
+Ea5 及更早版本的靜態準備、UNRUN 矩陣見 Git 歷史與 STATIC_PREPARATION_ORIGINALS.tar.gz；它們不再是 current-state。
