@@ -204,6 +204,7 @@ PY_NEEDS = {
     'test_geo300_validation_memo': [],
     'test_geo300_contact_result_memo': [],
     'test_geo300_contact_order_fast': [],
+    'test_geo300_contact_face_runs': [],
     'test_geo300_source_node_slot': [],
     'test_geo300_source_edge_scope': [],
     'test_geo300_dead_contact_facts': [],
