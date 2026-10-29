@@ -1,0 +1,47 @@
+{
+  "schema": "geo340-339-source-convergence-state/1",
+  "source340": "175cee44c56c89871803d955c0c525236727ba65",
+  "source339": "616ce7538d23fbe7f3bbefae7f2a04e25ebd75a4",
+  "incomingL": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "ordinaryMergesAndPushesExit": 0,
+  "originalEnvironmentR1Exit": 1,
+  "new340SelectedAggregate": {
+    "executionSHA": "175cee44c56c89871803d955c0c525236727ba65",
+    "argv": [
+      "python3",
+      "-B",
+      "tests/run_all.py",
+      "--only",
+      "test_rectangular_template"
+    ],
+    "originalExit": 0,
+    "tests": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "strictExpected": 13,
+    "notFullAggregate": true
+  },
+  "new339Formal11": "ALL UNRUN at F616; old F38da142 and predicate proofs retain old execution SHA",
+  "historicalKernelSevenPhase": "original bfb source, not newly executed; 11 original sources and expected registry exact old/new Git entries",
+  "ledger": "exact incoming L blob only; no check or regeneration in this publication",
+  "architectureAndFullNativeSixBrowsers": "UNRUN at these merged source SHAs",
+  "latestHandoffRead": "d2ed8e6efe2760ca562ab7d28f4a2ac09a404fd5",
+  "latest340Review": "2026-10-24T02:38:33Z / head4d3a17c",
+  "latest339Review": "2026-10-24T00:39:36Z / heade9ee6d0",
+  "readyToMerge": false,
+  "limitations": [
+    "Only L product closure merged; subsequent base evidence commits not claimed included.",
+    "No CI repair, full required check acceptance, or blanket B2/C1/C2 resolution claimed.",
+    "Original native cleanup and text stream representation retained; no recreated OS pipes."
+  ],
+  "originalFacesEvidenceAtSameExecutableClosure": {
+    "executionSHA": "38da31bcac91db631e6325e40b228f8604810e82",
+    "currentSHA": "616ce7538d23fbe7f3bbefae7f2a04e25ebd75a4",
+    "exactEqualEntries": 498,
+    "original142AndThreeProofsRemainValid": true,
+    "notNewF616Execution": true,
+    "noRerunForPureLedgerMerge": true,
+    "closurePackageSha256": "95ba193c6b8290573d8baf54c115296975adf8710f9fff78397aa5c97bac7b60"
+  }
+}
