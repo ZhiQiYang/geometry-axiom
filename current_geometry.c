@@ -5788,7 +5788,8 @@ static void app_contact_domain_only(const PlacementSurface *placement,
 static void app_contact_facts_prepare(const World *world,const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,AppContactFacts *facts,AppContactRawSnapshot *raw)
 {
-    memset(facts,0,sizeof *facts);facts->world.placement_id=placement->id;
+    memset(&facts->world,0,sizeof facts->world);
+    memset(facts->members,0,world->wood.timber_count*sizeof *facts->members);facts->world.placement_id=placement->id;
     const SpaceBoundarySurface *effective=placement_effective_boundary(placement,boundary,&facts->effective);
     facts->world.role_boundary=effective;
     facts->world.region_count=placement->derived_fill_id?placement->component_count:1;

@@ -208,6 +208,7 @@ PY_NEEDS = {
     'test_geo300_source_edge_scope': [],
     'test_geo300_dead_contact_facts': [],
     'test_geo300_source_node_hint': [],
+    'test_geo300_contact_facts_zero': [],
     'test_geo261_wood_world_validation': [],
     'test_grid_system_contract': ['bridge'],
     'test_grid_card_reference': ['bridge', 'model-base'],
