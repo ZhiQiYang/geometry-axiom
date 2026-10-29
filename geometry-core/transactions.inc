@@ -1,7 +1,7 @@
 /* I8/I8a: one atomic entry point shared by file parser, CLI, GDI and bridge. */
 typedef struct {
     bool ready, valid;
-    bool engineering_batch, assembly_batch, profile_batch, finish_batch;
+    bool engineering_batch, assembly_batch, profile_batch, finish_batch, timber_batch;
     AsmDiagnostic assembly_diagnostic;
     uint64_t revision;
     uint32_t token;
@@ -486,7 +486,7 @@ static void reference_stage(AppWorldCandidate *transaction,char **tokens,int cou
     g_preview.transaction=transaction;
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
     g_preview.assembly_diagnostic=(AsmDiagnostic){0};
-    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.revision=g_definition_revision;
+    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.timber_batch=false; g_preview.revision=g_definition_revision;
     g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
@@ -570,6 +570,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if (!count) return true;
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
+        if(g_preview.ready&&g_preview.timber_batch){scene_error(path,line_no,"Timber cancellation requires its own token");return false;}
         g_preview.ready=false;
         if(g_preview.transaction)app_candidate_discard(g_preview.transaction->control);
         return true;

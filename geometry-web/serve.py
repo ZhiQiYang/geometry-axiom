@@ -52,6 +52,8 @@ POST_MAX_BYTES = {
     "/section-profile/hosts": 16 * 1024 * 1024,
     "/assembly/generate-preview": 1024 * 1024,
     "/engineering/preview": 1024 * 1024,
+    "/timber-edit/read": 1024 * 1024,
+    "/timber-edit/preview": 1024 * 1024,
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
     "/sources/snapshot": 1024 * 1024,
@@ -127,7 +129,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "timber-edit-read ", "timber-edit-preview "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -646,6 +648,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(err_json(str(exc)))
             except ModelError as exc:
                 self._send(canonical_bytes(exc.as_dict()))
+            return
+        if self.path in {"/timber-edit/read", "/timber-edit/preview"}:
+            from timber_edit_transport import file_request
+            try:
+                self._send(file_request(body, ask_bridge, read=self.path.endswith('/read')))
+            except OSError:
+                self._send(err_json('無法建立角材資料暫存檔，專案未變更。'))
             return
         if self.path in {"/section-profile/preview", "/panel-fill/preview", "/assembly/preview", "/assembly/generate-preview", "/engineering/preview", "/engineering/validate-project"}:
             from engineering_transport import file_request

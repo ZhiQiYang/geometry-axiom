@@ -18,6 +18,7 @@
  * 幾何本體在 current_geometry.c；本檔只做 stdin/JSON 橋。
  */
 #define _CRT_SECURE_NO_WARNINGS
+#define _CRT_RAND_S
 #ifdef _WIN32
 #include <fcntl.h>
 #include <io.h>
@@ -1008,6 +1009,7 @@ static void cmd_dump(void)
 #include "scene-import-bridge.inc"
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
+#include "timber_edit_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -1088,6 +1090,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_source_inspect();
         } else if (strcmp(line,"source-inspect-file")==0 && arg) {
             cmd_source_inspect_file(arg);
+        } else if (strcmp(line,"timber-edit-read")==0 && arg) {
+            cmd_timber_edit_read(arg);
+        } else if (strcmp(line,"timber-edit-preview")==0 && arg) {
+            cmd_timber_edit_preview(arg);
+        } else if (strcmp(line,"timber-edit-confirm")==0) {
+            cmd_timber_edit_confirm(arg);
+        } else if (strcmp(line,"timber-edit-cancel")==0) {
+            cmd_timber_edit_cancel(arg);
         } else if (strcmp(line,"engineering-read")==0 && !arg) {
             cmd_engineering_read();
         } else if (strcmp(line,"engineering-preview")==0 && arg) {
