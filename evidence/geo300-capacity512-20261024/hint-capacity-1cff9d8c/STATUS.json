@@ -1,0 +1,62 @@
+{
+  "execution_sha": "1cff9d8c3deab815d5ae6562f3163c95e6f82ac9",
+  "adopted_into_pr348": false,
+  "core63_exit": 0,
+  "graph172_exit": 0,
+  "timing_diagnostic": {
+    "candidate": {
+      "source_sha": "1cff9d8c3deab815d5ae6562f3163c95e6f82ac9",
+      "command": [
+        "/dev/shm/pr348-hint-capacity-feasibility/candidate-bridge"
+      ],
+      "binary_sha256": "b648140bc540c1bef36ed76110983551b4c4932de66f60f5393ad84f3515b662",
+      "exit": 0,
+      "timeout_triggered": false,
+      "seconds": 33.345950931994594,
+      "usage": {
+        "maxrss_kib": 110588,
+        "user_seconds": 33.12863,
+        "system_seconds": 0.195819
+      },
+      "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_placed_geometry_assertions_exit": 0
+    },
+    "baseline_reused": {
+      "variant": "baseline",
+      "source_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+      "command": [
+        "/dev/shm/pr348-tag-pair-256/baseline-bridge"
+      ],
+      "binary_sha256": "1f7b698e288b8b9fcb6f8eb0565c9cb00614753a1992341cf95cf1a169e24f10",
+      "exit": 0,
+      "timeout_triggered": false,
+      "seconds": 34.70129515200097,
+      "usage": {
+        "maxrss_kib": 122108,
+        "user_seconds": 34.399613,
+        "system_seconds": 0.287568
+      },
+      "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_placed_geometry_assertions_exit": 0
+    },
+    "streams_identical": true,
+    "not_formal_512_acceptance": true,
+    "exit": 0
+  },
+  "static_profile": {
+    "source_sha": "1cff9d8c3deab815d5ae6562f3163c95e6f82ac9",
+    "measure_exit": 0,
+    "source_unchanged": true,
+    "comparison_exits": [
+      0,
+      0
+    ],
+    "diagnostic_only": true
+  },
+  "formal_h7_completed_on_this_source": false,
+  "archive_bytes": 6146664,
+  "archive_sha256": "aeee32a14e24d6d42e14d54505dcd5cf4da6f28c64e90d9fa8f27d4d1abfcd9a",
+  "files": 3805
+}
