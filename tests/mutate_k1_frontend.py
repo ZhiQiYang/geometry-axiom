@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -48,8 +49,8 @@ CASES = [
  ('key-reuse','cutting-settings.js','row.key<old[counter]','false','key allocation'),
  ('stock-capacity','cutting-settings.js','v.stockTypes.length>32','false','T18 settings'),
  ('undo-highwater','project-store.js','cutting=Features.Cutting.preserveHighwater(cutting,highwater)','cutting=cutting||Features.Cutting.empty()','P-047'),
- ('new-capability','project-store.js','...(cutting?[CUTTING_CAPABILITY]:[])','...[]','T17 archive'),
- ('old-format','project-store.js','manifest.format!==CUTTING_FORMAT','false','T17b'),
+ ('new-capability','project-store.js','capability!==CUTTING_CAPABILITY||cutting','capability!==CUTTING_CAPABILITY','T17 archive'),
+ ('old-format','project-store.js','![GRID_DRAFTS_FORMAT,CARD_FORMAT].includes(manifest.format)','false','T17b'),
  ('export-state','cutting-workspace.js','function guard(before){','function guard(before){return;','T16'),
  ('export-world','cutting-workspace.js','latest.sourceFingerprint!==candidate.worldFingerprint','false','T16 world'),
  ('export-reentry','cutting-workspace.js','if(exporting)return false;','if(false)return false;','T16 late'),
@@ -58,6 +59,13 @@ CASES = [
  ('owner-stock-lock','reference-workspace.js','if(kind===P.Features.Cutting.KIND)P.Features.Cutting.transition(previous,value);','', 'actual owner rejects'),
  ('owner-history-kind','reference-workspace.js','kind === P.Features.Cutting.KIND ? "裁切設定" :','', 'actual owner P-047'),
 ]
+
+def classify_failure(code, log, pattern):
+ failures=re.findall(r'^not ok \d+ - (.+)$',log,re.M)
+ cause='assertion' if 'AssertionError' in log else 'invariant' if 'CONSERVATION' in log or 'DEMAND_IDENTITY' in log else None
+ blocked=any(word in log for word in ('SyntaxError','MODULE_NOT_FOUND','ReferenceError','TypeError','uncaughtException','unhandledRejection'))
+ named=any(re.search(pattern,name) for name in failures)
+ return cause if code==1 and cause and named and not blocked else None
 
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--out',type=Path,required=True);args=parser.parse_args();args.out.parent.mkdir(parents=True,exist_ok=True)
@@ -74,16 +82,16 @@ def main():
   if baseline.returncode:print('baseline failed');return 2
   rows=[]
   for name,file,old,new,pattern in CASES:
-   path=work/'geometry-web'/file;original=path.read_text(encoding='utf-8');assert original.count(old)>=1,(name,'missing mutation anchor')
+   path=work/'geometry-web'/file;original=path.read_text(encoding='utf-8');assert original.count(old)==1,(name,'mutation anchor missing or nonunique')
    path.write_text(original.replace(old,new,1),encoding='utf-8')
    try:result=run(pattern)
    finally:path.write_text(original,encoding='utf-8')
    log=result.stdout+result.stderr;(args.out.parent/(name+'.log')).write_text(log,encoding='utf-8')
-   cause='assertion' if 'AssertionError' in log else 'invariant' if 'CONSERVATION' in log or 'DEMAND_IDENTITY' in log else None
-   killed=result.returncode==1 and cause is not None and 'SyntaxError' not in log and 'MODULE_NOT_FOUND' not in log
+   cause=classify_failure(result.returncode,log,pattern)
+   killed=cause is not None
    rows.append({'id':name,'status':'killed' if killed else 'not-killed','detectedBy':cause,'testPattern':pattern,'exitCode':result.returncode,'sourceHash':hashlib.sha256(original.encode()).hexdigest(),'mutationHash':hashlib.sha256((old+'\0'+new).encode()).hexdigest()})
    print(name+': '+rows[-1]['status'],flush=True)
-  report={'schema':'k1-frontend-mutations/1','tests':{f:hashlib.sha256((ROOT/'tests'/f).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for f in FILES},'baseline':'passed','results':rows}
+  report={'schema':'k1-frontend-mutations/1','sources':{p.relative_to(work).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((work/'geometry-web').rglob('*.js'))},'tests':{f:hashlib.sha256((ROOT/'tests'/f).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for f in FILES},'baseline':'passed','results':rows}
   args.out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
   return 0 if all(r['status']=='killed' for r in rows) else 1
 

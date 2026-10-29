@@ -16,7 +16,7 @@ test('P-054 shared /17 accepts each registered feature alone and both without di
 });
 test('P-054 unsupported other-owner capability and stripped capability reject whole /17 archive',async()=>{
  const got=await roundtrip([cutting()]),files=zip.unzipSync(await P.pack(got.scene,got.manifest,got.sources,zip));
- await assert.rejects(require('../geometry-web/project-store.js').unpack(zip.zipSync(files),zip),/尚未支援|不支援/);
+ {const other={...files},m=JSON.parse(new TextDecoder().decode(files['manifest.json']));m.requiredCapabilities=[...m.requiredCapabilities,'other-owner/1'];other['manifest.json']=new TextEncoder().encode(JSON.stringify(m));await assert.rejects(require('../geometry-web/project-store.js').unpack(zip.zipSync(other),zip),/尚未支援|不支援/);}
  const m=JSON.parse(new TextDecoder().decode(files['manifest.json']));m.requiredCapabilities=[];files['manifest.json']=new TextEncoder().encode(JSON.stringify(m));await assert.rejects(P.unpack(zip.zipSync(files),zip));
  const downgraded=JSON.parse(JSON.stringify(got.manifest));downgraded.format='geometry-canvas/10';files['manifest.json']=new TextEncoder().encode(JSON.stringify(downgraded));await assert.rejects(P.unpack(zip.zipSync(files),zip),'P-054 other-owner attachment cannot downgrade');
 });
