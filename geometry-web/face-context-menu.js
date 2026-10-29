@@ -36,7 +36,7 @@
   }
   // View-level items (zoom / grid / snap / open the right panel) never change the world, so the
   // shell exempts them from the write guard; every other item is world-level (DP-33).
-  const VIEW_ACTS = ['fit','z100','grid','snap','props'];
+  const VIEW_ACTS = ['fit','z100','grid','snap','props','reuse','timber-copy'];
   const item = (act, label, iconName, reason = '', extra = {}) => ({act,label,iconName,reason,...(VIEW_ACTS.includes(act)?{level:'view'}:{}),...extra});
   const guidePrerequisite = () => !feSid(oc.edit?.bid) ? '游離面不能放參考線（先在檢視器「放置」）' : '';
   function model(target) {
@@ -46,7 +46,9 @@
     let title = '畫布', meta = `面外 · u ${target.point.x} · v ${target.point.y}`, chip = '', typeIcon = 'fit';
     let tiles = [], groups = [];
     const acts = feActionsFor(sel).map(a => item(a.act, a.label, a.iconName, blocked));
-    const unavailable = [item('copy','複製',null,'目前未提供面內物件複製'), item('paste','貼上',null,'目前未提供面內物件貼上')];
+    const reuseState = window.TimberEdit?.menuItems() || {copy:'角材服務尚未載入',paste:'角材服務尚未載入',repeat:'角材服務尚未載入',batch:'角材服務尚未載入'};
+    const unavailable = [item('reuse','重用角材','timber','',{sub:true})];
+    const reuse = [item('timber-copy','複製定義',null,reuseState.copy),item('timber-paste','貼上…',null,reuseState.paste),item('timber-repeat','重複建立…',null,reuseState.repeat)];
     const create = item('create','在此建立','plus','',{sub:true});
     const view = item('view','檢視','fit','',{sub:true});
     const props = item('props','在右欄編輯','inspect');
@@ -83,7 +85,7 @@
       const timber = fe.timbers.find(t => t.id === sel?.id);
       title = multi ? `已選 ${fe.timberSelection.size} 支角材` : `角材 ${sel.id}`; typeIcon = 'timber';
       meta = multi ? `角材 ${[...fe.timberSelection].join('、')}` : `${timber?.A ?? '—'} × ${timber?.B ?? '—'} · 長 ${timber?.L ?? '—'}`;
-      tiles = [item('edit','編輯','edit',multi?'編輯要先單選一支角材':blocked), item('fit','顯示全部','fit'), item('delete','刪除','trash',multi?'刪除要先單選一支角材':blocked,{danger:true})];
+      tiles = [item(multi?'timber-batch':'edit',multi?'批改欄位':'編輯','edit',reuseState.batch), item('fit','顯示全部','fit'), item('delete','刪除','trash',multi?'刪除要先單選一支角材':blocked,{danger:true})];
       groups = [unavailable, [props]];
     } else if (sel?.kind === 'point') {
       title = '面內一點'; meta = `u ${sel.x} · v ${sel.y}`; typeIcon = 'plus';
@@ -96,7 +98,7 @@
     const creations = [item('guide-u','u 線（水平）','guide',guideBlocked),item('guide-v','v 線（垂直）','guide',guideBlocked),
       item('op:hole','在此開口…','hole',blocked || (sel?.kind === 'point'?'':'開口要點在面內'))];
     const views = [item('fit','顯示全部','fit'),item('z100','回到 100%',null),item('grid','顯示格點','grid','',{checked:$('faceGridToggle').checked}),item('snap','吸附格點',null,'',{checked:$('faceSnapToggle').checked})];
-    return {title,meta,chip,typeIcon,tiles,groups,submenus:{create:creations,view:views}};
+    return {title,meta,chip,typeIcon,tiles,groups,submenus:{create:creations,view:views,reuse}};
   }
   // The effect of one item. The shell has already re-checked that the menu is still current,
   // applied the level guard and the guide prerequisite before calling this.
@@ -108,7 +110,10 @@
     }
     const target = state.target;
     shell.hide();
-    if (a.act==='fit') $('feZoomFit').click();
+    if (a.act==='timber-copy') await TimberEdit.copy();
+    else if (a.act==='timber-paste' || a.act==='timber-repeat') TimberEdit.openCreate(a.act==='timber-repeat'?'repeat':'paste');
+    else if (a.act==='timber-batch') await TimberEdit.openBatch();
+    else if (a.act==='fit') $('feZoomFit').click();
     else if (a.act==='z100') $('feZoomLevel').click();
     else if (a.act==='grid' || a.act==='snap') {
       const control = $(a.act==='grid'?'faceGridToggle':'faceSnapToggle'); control.checked=!control.checked; control.dispatchEvent(new Event('change'));
@@ -174,16 +179,28 @@
     prerequisite:a=>['guide-u','guide-v'].includes(a.act) && guidePrerequisite(),
     isOn:a=>!!fe.op && a.act === 'op:'+fe.op.type,
     begin(x,y,target){
-      if(!oc.edit || fe.tool!=='select' || oc.busy || fe.drag || writable())return null;
+      if(!oc.edit || fe.tool!=='select' || oc.busy || fe.drag || connection.phase!=='ready')return null;
       openPoint=feSnap(fePoint({clientX:x,clientY:y}));
       return {x,y,point:{x:Math.round(openPoint.x),y:Math.round(openPoint.y)},...target};
     },
     beforeShow(){document.body.append(panel);vp.classList.add('fcm-active');},
-    afterShow(){const p=cxFeSceneToVp(openPoint.x,openPoint.y);anchor.style.left=p.x+'px';anchor.style.top=p.y+'px';anchor.style.display='block';},
+    afterShow(){const p=cxFeSceneToVp(openPoint.x,openPoint.y);anchor.style.left=p.x+'px';anchor.style.top=p.y+'px';anchor.style.display='block';window.TimberEdit?.prepareMenu();},
     onSync(){if(menu.hidden && !fe.op)menu.hidden=false;decoratePanel();},
     onEscape(){if(fe.op){cancelForm();return true;}return false;},
     related:node=>panel.contains(node),
     layout, onHide, execute, onError:error=>toast(error.message),
   });
-  window.FaceContextMenu={show(x,y,target){shell.open(x,y,target);},hide:shell.hide,sync:shell.sync,position:shell.position,current,stamp,get open(){return shell.isOpen;}};
+  function refreshEligibility() {
+    if (!shell.state || !current(shell.state.stamp)) {shell.sync();return;}
+    if(shell.state.composing){menu.querySelector('input')?.addEventListener('compositionend',refreshEligibility,{once:true});return;}
+    const focused=document.activeElement,act=focused?.getAttribute('data-fe-act'),search=menu.querySelector('input'),query=search?.value || '';
+    const searchFocused=focused===search,submenu=menu.querySelector('[aria-expanded="true"]')?.getAttribute('data-fe-act');
+    shell.render();
+    if(query){const next=menu.querySelector('input');next.value=query;next.dispatchEvent(new Event('input'));}
+    if(submenu)menu.querySelector(`[data-fe-act="${CSS.escape(submenu)}"][aria-haspopup="menu"]`)?.click();
+    if(searchFocused)menu.querySelector('input')?.focus({preventScroll:true});
+    else if(act)menu.querySelector(`[data-fe-act="${CSS.escape(act)}"]`)?.focus({preventScroll:true});
+    shell.position();
+  }
+  window.FaceContextMenu={show(x,y,target){shell.open(x,y,target);},hide:shell.hide,sync:shell.sync,refreshEligibility,position:shell.position,current,stamp,get open(){return shell.isOpen;}};
 })();

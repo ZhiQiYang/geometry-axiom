@@ -1905,6 +1905,12 @@
       "purpose": "Application/runtime/protocol or workspace host start local; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/timber-edit.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "H-116-TIMBER/1 same-face ordinary D7 reuse and explicit field-edit workspace; delegates typed definitions, eligibility, candidate evaluation and publication to the native host"
+    },
+    {
       "path": "geometry-web/timber-schedule.js",
       "layer": "H",
       "language": "javascript",
@@ -1915,6 +1921,18 @@
       "layer": "H",
       "language": "javascript",
       "purpose": "Application/runtime/protocol or workspace host timber supports; composes explicit K/W providers where needed"
+    },
+    {
+      "path": "geometry-web/timber_edit_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "H-116-TIMBER/1 bounded native host for typed D7 recipes and one atomic in-place candidate over existing W definitions and shared application transaction APIs"
+    },
+    {
+      "path": "geometry-web/timber_edit_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "H-116-TIMBER/1 bounded UTF-8 JSON transport; service-owned temporary input files and native-authoritative read/preview operations"
     },
     {
       "path": "geometry-web/timber_support_projection.inc",
@@ -2647,7 +2665,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "f9c86b95acdd025175ec12cfe6b381b967dd46864cc382a62095b7bd3ce3ddb7",
+      "sha256": "5a777b3879d292487f8a784b6f3610e062e209a9cdc084605dad507cb0dc4ccf",
       "hashMode": "lf"
     },
     {
@@ -3674,6 +3692,12 @@
       "path": "geometry-web/browser_mutation_check.py",
       "reason": "Dedicated browser acceptance/mutation test driver; invoked by the test harness, not by product runtime or served application entry points.",
       "sha256": "7ad42d2ef3ad9e3b35dd463dbf0e963a6afc961c583cc4d7faca419b110015db",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/timber_reuse_test.js",
+      "reason": "Dedicated R11 second-slice browser acceptance driver; loaded only by cdp_test.js, never by product runtime or served application entry points.",
+      "sha256": "c3d6d6799630c06498ea96c5cdbb8919134b2844e53652551e685703a6818a98",
       "hashMode": "lf"
     }
   ],
@@ -4845,7 +4869,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "0cc26da01c7dd6fcc5dff84f8fd2b615b5a04b434df085d01644b984d4c6f828",
+      "routerSha256": "3d82765b683bae25dd88a8d0002da1df721606a672e0d9c0bc525e3b3f2c6f63",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",
