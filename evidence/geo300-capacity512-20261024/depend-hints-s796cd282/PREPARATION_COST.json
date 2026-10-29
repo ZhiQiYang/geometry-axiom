@@ -1,0 +1,497 @@
+{
+  "schema": "pr348-s796-preparation-cost/1",
+  "checked_utc": "2026-10-29T02:33:29.283002+00:00",
+  "source_sha": "796cd282693736af61c1b0d6c8ff91f03437a175",
+  "mode": "metadata-only; no archive built, no Git or product execution",
+  "entries": [
+    {
+      "label": "k15-tests",
+      "path": "/dev/shm/pr348-depend-core-tests",
+      "files": 364,
+      "bytes": 170537,
+      "largest_file_bytes": 55944
+    },
+    {
+      "label": "k15-wrapper",
+      "path": "/dev/shm/pr348-depend-core-background",
+      "files": 3,
+      "bytes": 4637,
+      "largest_file_bytes": 3834
+    },
+    {
+      "label": "h18-tests",
+      "path": "/dev/shm/pr348-depend-host-tests",
+      "files": 700,
+      "bytes": 411880,
+      "largest_file_bytes": 98123
+    },
+    {
+      "label": "h18-wrapper",
+      "path": "/dev/shm/pr348-depend-host-background",
+      "files": 3,
+      "bytes": 10292,
+      "largest_file_bytes": 9400
+    },
+    {
+      "label": "legacy98-red-tests",
+      "path": "/dev/shm/pr348-depend-legacy-tests",
+      "files": 1974,
+      "bytes": 1163533,
+      "largest_file_bytes": 353990
+    },
+    {
+      "label": "legacy98-red-wrapper",
+      "path": "/dev/shm/pr348-depend-legacy-background",
+      "files": 3,
+      "bytes": 37753,
+      "largest_file_bytes": 36518
+    },
+    {
+      "label": "depend-draft-and-review",
+      "path": "/dev/shm/pr348-depend-hint-draft",
+      "files": 11,
+      "bytes": 93469,
+      "largest_file_bytes": 24825
+    },
+    {
+      "label": "graph-build-original",
+      "path": "/dev/shm/pr348-graph-fix-4b17edac",
+      "files": 195,
+      "bytes": 4878615,
+      "largest_file_bytes": 1323776
+    },
+    {
+      "label": "graph172-original",
+      "path": "/dev/shm/pr348-graph-result-4b17edac",
+      "files": 2240,
+      "bytes": 3699009,
+      "largest_file_bytes": 791102
+    },
+    {
+      "label": "graph-wrapper",
+      "path": "/dev/shm/pr348-graph-4b17edac-background",
+      "files": 5,
+      "bytes": 11678,
+      "largest_file_bytes": 8006
+    },
+    {
+      "label": "graph-reuse-metadata",
+      "path": "/dev/shm/pr348-reuse-graph-4b17edac",
+      "files": 2,
+      "bytes": 1157969,
+      "largest_file_bytes": 1144213
+    },
+    {
+      "label": "n256-original",
+      "path": "/dev/shm/pr348-depend-hint-feasibility",
+      "files": 10,
+      "bytes": 1710988,
+      "largest_file_bytes": 1321128
+    },
+    {
+      "label": "source-input-binding",
+      "path": "/dev/shm/pr348-depend-binding",
+      "files": 2,
+      "bytes": 517067,
+      "largest_file_bytes": 514214
+    },
+    {
+      "label": "anchor123-preflight",
+      "path": "/dev/shm/pr348-mutant-preflight-796cd282",
+      "files": 2,
+      "bytes": 161902,
+      "largest_file_bytes": 159738
+    },
+    {
+      "label": "s796-merge-original",
+      "path": "/dev/shm/pr348-candidate-chain-merge",
+      "files": 35,
+      "bytes": 5553760,
+      "largest_file_bytes": 5519294
+    },
+    {
+      "label": "h7-timeout-original",
+      "path": "/dev/shm/pr348-h7-796cd282",
+      "files": 589,
+      "bytes": 8606045,
+      "largest_file_bytes": 2041222
+    },
+    {
+      "label": "h7-timeout-wrapper",
+      "path": "/dev/shm/pr348-h7-796cd282-background",
+      "files": 3,
+      "bytes": 38906,
+      "largest_file_bytes": 36481
+    },
+    {
+      "label": "h7-preserved-temp",
+      "path": "/dev/shm/pr348-h7-796cd282-temp",
+      "files": 393,
+      "bytes": 18918164,
+      "largest_file_bytes": 1321208
+    },
+    {
+      "label": "s796-profile128-original",
+      "path": "/dev/shm/pr348-profile-s796-n128",
+      "files": 12,
+      "bytes": 2506586,
+      "largest_file_bytes": 1333912
+    },
+    {
+      "label": "s796-profile128-wrapper",
+      "path": "/dev/shm/pr348-profile-s796-n128-wrapper",
+      "files": 4,
+      "bytes": 2509,
+      "largest_file_bytes": 1055
+    },
+    {
+      "label": "s796-h7-time-audit",
+      "path": "/dev/shm/pr348-h7-s796-time-audit",
+      "files": 2,
+      "bytes": 148763,
+      "largest_file_bytes": 145135
+    },
+    {
+      "label": "local-observer-old-smoke",
+      "path": "/dev/shm/pr348-local-observer-smoke",
+      "files": 206,
+      "bytes": 1520152,
+      "largest_file_bytes": 1321128
+    },
+    {
+      "label": "local-observer-old-smoke-wrapper",
+      "path": "/dev/shm/pr348-local-observer-smoke-wrapper",
+      "files": 3,
+      "bytes": 3834,
+      "largest_file_bytes": 2611
+    },
+    {
+      "label": "local-observer-old-smoke-checkpoints",
+      "path": "/tmp/pr348-local-observer-smoke-checkpoints",
+      "files": 6,
+      "bytes": 17486,
+      "largest_file_bytes": 11968
+    },
+    {
+      "label": "new-checkpoint-fsync-control",
+      "path": "/dev/shm/pr348-local-checkpoint-fsync-control",
+      "files": 3,
+      "bytes": 541,
+      "largest_file_bytes": 310
+    },
+    {
+      "label": "new-checkpoint-fsync-persistent-originals",
+      "path": "/tmp/pr348-local-fsync-control",
+      "files": 2,
+      "bytes": 428,
+      "largest_file_bytes": 222
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-depend-core-background.py",
+      "files": 1,
+      "bytes": 1209,
+      "largest_file_bytes": 1209
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-depend-host-background.py",
+      "files": 1,
+      "bytes": 1331,
+      "largest_file_bytes": 1331
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-depend-legacy-background.py",
+      "files": 1,
+      "bytes": 1584,
+      "largest_file_bytes": 1584
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-depend-hint-feasibility.py",
+      "files": 1,
+      "bytes": 3732,
+      "largest_file_bytes": 3732
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-graph-4b17edac-background.py",
+      "files": 1,
+      "bytes": 1365,
+      "largest_file_bytes": 1365
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-h7-796cd282-background.py",
+      "files": 1,
+      "bytes": 2872,
+      "largest_file_bytes": 2872
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-profile-s796-launch.py",
+      "files": 1,
+      "bytes": 1638,
+      "largest_file_bytes": 1638
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-run-formal-remote-v6.py",
+      "files": 1,
+      "bytes": 11979,
+      "largest_file_bytes": 11979
+    },
+    {
+      "label": "executor",
+      "path": "/tmp/pr348-runs/run_formal_v2.py",
+      "files": 1,
+      "bytes": 5483,
+      "largest_file_bytes": 5483
+    },
+    {
+      "label": "executor",
+      "path": "/tmp/pr348-runs/profile_capacity.py",
+      "files": 1,
+      "bytes": 2954,
+      "largest_file_bytes": 2954
+    },
+    {
+      "label": "executor",
+      "path": "/tmp/pr348-graph-audit/compare_graphs.py",
+      "files": 1,
+      "bytes": 17784,
+      "largest_file_bytes": 17784
+    },
+    {
+      "label": "executor",
+      "path": "/tmp/pr348-graph-audit/ORIGINAL_TRACE.c.txt",
+      "files": 1,
+      "bytes": 3816,
+      "largest_file_bytes": 3816
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-run-formal-local-v7.py",
+      "files": 1,
+      "bytes": 11306,
+      "largest_file_bytes": 11306
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-prepare-local-observer.py",
+      "files": 1,
+      "bytes": 2262,
+      "largest_file_bytes": 2262
+    },
+    {
+      "label": "executor",
+      "path": "/dev/shm/pr348-local-observer-smoke.py",
+      "files": 1,
+      "bytes": 1549,
+      "largest_file_bytes": 1549
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-depend-core-launch.stdout",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-depend-core-launch.stderr",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-depend-host-launch.stdout",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-depend-host-launch.stderr",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-depend-legacy-launch.stdout",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-depend-legacy-launch.stderr",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-graph-4b17edac-launch.log",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-h7-796cd282-launch.stdout",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-h7-796cd282-launch.stderr",
+      "files": 1,
+      "bytes": 126,
+      "largest_file_bytes": 126
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-profile-s796-launch.stdout",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-profile-s796-launch.stderr",
+      "files": 1,
+      "bytes": 126,
+      "largest_file_bytes": 126
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-local-observer-smoke-launch.stdout",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "launch",
+      "path": "/dev/shm/pr348-local-observer-smoke-launch.stderr",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "tool-metadata",
+      "path": "/dev/shm/pr348-local-observer-diff.json",
+      "files": 1,
+      "bytes": 502,
+      "largest_file_bytes": 502
+    },
+    {
+      "label": "old-profile-reference-only",
+      "path": "/tmp/pr348-runs/baseline-profile-128/REQUEST.json",
+      "files": 1,
+      "bytes": 453,
+      "largest_file_bytes": 453
+    },
+    {
+      "label": "old-profile-reference-only",
+      "path": "/tmp/pr348-runs/baseline-profile-128/RESULT.json",
+      "files": 1,
+      "bytes": 1149,
+      "largest_file_bytes": 1149
+    },
+    {
+      "label": "old-profile-reference-only",
+      "path": "/tmp/pr348-runs/baseline-profile-128/input.scene",
+      "files": 1,
+      "bytes": 11199,
+      "largest_file_bytes": 11199
+    },
+    {
+      "label": "old-profile-reference-only",
+      "path": "/tmp/pr348-runs/baseline-profile-128/stdin.bin",
+      "files": 1,
+      "bytes": 82,
+      "largest_file_bytes": 82
+    },
+    {
+      "label": "old-profile-reference-only",
+      "path": "/tmp/pr348-runs/baseline-profile-128/stdout.bin",
+      "files": 1,
+      "bytes": 146252,
+      "largest_file_bytes": 146252
+    },
+    {
+      "label": "old-profile-reference-only",
+      "path": "/tmp/pr348-runs/baseline-profile-128/stderr.bin",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    },
+    {
+      "label": "old-profile-reference-only",
+      "path": "/tmp/pr348-runs/baseline-profile-128/scene-meta.json",
+      "files": 1,
+      "bytes": 752,
+      "largest_file_bytes": 752
+    },
+    {
+      "label": "old-N256-reference-only",
+      "path": "/dev/shm/pr348-tag-pair-256/baseline.json",
+      "files": 1,
+      "bytes": 649,
+      "largest_file_bytes": 649
+    },
+    {
+      "label": "old-N256-reference-only",
+      "path": "/dev/shm/pr348-tag-pair-256/input.scene",
+      "files": 1,
+      "bytes": 22471,
+      "largest_file_bytes": 22471
+    },
+    {
+      "label": "old-N256-reference-only",
+      "path": "/dev/shm/pr348-tag-pair-256/stdin.bin",
+      "files": 1,
+      "bytes": 73,
+      "largest_file_bytes": 73
+    },
+    {
+      "label": "old-N256-reference-only",
+      "path": "/dev/shm/pr348-tag-pair-256/scene-meta.json",
+      "files": 1,
+      "bytes": 809,
+      "largest_file_bytes": 809
+    },
+    {
+      "label": "old-N256-reference-only",
+      "path": "/dev/shm/pr348-tag-pair-256/baseline.stdout",
+      "files": 1,
+      "bytes": 290397,
+      "largest_file_bytes": 290397
+    },
+    {
+      "label": "old-N256-reference-only",
+      "path": "/dev/shm/pr348-tag-pair-256/baseline.stderr",
+      "files": 1,
+      "bytes": 0,
+      "largest_file_bytes": 0
+    }
+  ],
+  "selected_existing_files": 6814,
+  "selected_existing_bytes": 51892407,
+  "additional_collection_files": "four small metadata/tools/readme files at runtime; includes actual preparation byte comparison; COST/STATIC are copied outside RAW",
+  "rough_tar_padding_and_pax_allowance": 13955072,
+  "rough_uncompressed_tar_bytes": 65857719,
+  "runtime_archive_budget_bytes": 108761271,
+  "original_64MiB_reserve_in_addition_to_archive_budget": true,
+  "compressed_bytes": null,
+  "compression_not_executed": true,
+  "missing": [],
+  "symlinks": [],
+  "shm_free_bytes": 14698958848,
+  "workspace_writes": false
+}

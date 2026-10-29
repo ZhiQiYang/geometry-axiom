@@ -1,0 +1,294 @@
+#!/usr/bin/env python3
+"""一次封存 S796 新證據至全新 repo 外目錄；不操作 checkout、Git 或遠端。"""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import shutil
+import stat
+import tarfile
+
+
+PREP = Path('/dev/shm/pr348-s796-delivery-prep')
+S = '796cd282693736af61c1b0d6c8ff91f03437a175'
+CORE = 'edc57cd4a8f7e4eb5813d51435c4732b7d75b793'
+HOST = '057884a4388e72312067385b9cf738431d8d69e3'
+GRAPH = '4b17edac67648fb5f6048b05114a66e99eb1846a'
+BASE = '9a8584f57be7935604c3bad4c2481945a6ec3d9f'
+RESERVE = 64 * 1024 * 1024
+ARCHIVE_LIMIT = 95 * 1024 * 1024
+
+# 只選本輪新資料；不整包舊 facts-zero/H28、原 B graph archive 或其他歷史 gate。
+DIRECTORIES = {
+    'k15-tests': '/dev/shm/pr348-depend-core-tests',
+    'k15-wrapper': '/dev/shm/pr348-depend-core-background',
+    'h18-tests': '/dev/shm/pr348-depend-host-tests',
+    'h18-wrapper': '/dev/shm/pr348-depend-host-background',
+    'legacy98-red-tests': '/dev/shm/pr348-depend-legacy-tests',
+    'legacy98-red-wrapper': '/dev/shm/pr348-depend-legacy-background',
+    'depend-draft-and-review': '/dev/shm/pr348-depend-hint-draft',
+    'graph-build-original': '/dev/shm/pr348-graph-fix-4b17edac',
+    'graph172-original': '/dev/shm/pr348-graph-result-4b17edac',
+    'graph-wrapper': '/dev/shm/pr348-graph-4b17edac-background',
+    'graph-reuse-metadata': '/dev/shm/pr348-reuse-graph-4b17edac',
+    'n256-original': '/dev/shm/pr348-depend-hint-feasibility',
+    'source-input-binding': '/dev/shm/pr348-depend-binding',
+    'anchor123-preflight': '/dev/shm/pr348-mutant-preflight-796cd282',
+    's796-merge-original': '/dev/shm/pr348-candidate-chain-merge',
+    'h7-timeout-original': '/dev/shm/pr348-h7-796cd282',
+    'h7-timeout-wrapper': '/dev/shm/pr348-h7-796cd282-background',
+    'h7-preserved-temp': '/dev/shm/pr348-h7-796cd282-temp',
+    's796-profile128-original': '/dev/shm/pr348-profile-s796-n128',
+    's796-profile128-wrapper': '/dev/shm/pr348-profile-s796-n128-wrapper',
+    's796-h7-time-audit': '/dev/shm/pr348-h7-s796-time-audit',
+    'local-observer-old-smoke': '/dev/shm/pr348-local-observer-smoke',
+    'local-observer-old-smoke-wrapper': '/dev/shm/pr348-local-observer-smoke-wrapper',
+    'local-observer-old-smoke-checkpoints': '/tmp/pr348-local-observer-smoke-checkpoints',
+    'new-checkpoint-fsync-control': '/dev/shm/pr348-local-checkpoint-fsync-control',
+    'new-checkpoint-fsync-persistent-originals': '/tmp/pr348-local-fsync-control',
+}
+EXECUTORS = [
+    '/dev/shm/pr348-depend-core-background.py',
+    '/dev/shm/pr348-depend-host-background.py',
+    '/dev/shm/pr348-depend-legacy-background.py',
+    '/dev/shm/pr348-depend-hint-feasibility.py',
+    '/dev/shm/pr348-graph-4b17edac-background.py',
+    '/dev/shm/pr348-h7-796cd282-background.py',
+    '/dev/shm/pr348-profile-s796-launch.py',
+    '/dev/shm/pr348-run-formal-remote-v6.py',
+    '/tmp/pr348-runs/run_formal_v2.py',
+    '/tmp/pr348-runs/profile_capacity.py',
+    '/tmp/pr348-graph-audit/compare_graphs.py',
+    '/tmp/pr348-graph-audit/ORIGINAL_TRACE.c.txt',
+    '/dev/shm/pr348-run-formal-local-v7.py',
+    '/dev/shm/pr348-prepare-local-observer.py',
+    '/dev/shm/pr348-local-observer-smoke.py',
+]
+LAUNCH_STREAMS = [
+    '/dev/shm/pr348-depend-core-launch.stdout', '/dev/shm/pr348-depend-core-launch.stderr',
+    '/dev/shm/pr348-depend-host-launch.stdout', '/dev/shm/pr348-depend-host-launch.stderr',
+    '/dev/shm/pr348-depend-legacy-launch.stdout', '/dev/shm/pr348-depend-legacy-launch.stderr',
+    '/dev/shm/pr348-graph-4b17edac-launch.log',
+    '/dev/shm/pr348-h7-796cd282-launch.stdout', '/dev/shm/pr348-h7-796cd282-launch.stderr',
+    '/dev/shm/pr348-profile-s796-launch.stdout', '/dev/shm/pr348-profile-s796-launch.stderr',
+    '/dev/shm/pr348-local-observer-smoke-launch.stdout',
+    '/dev/shm/pr348-local-observer-smoke-launch.stderr',
+]
+TOOL_METADATA = ['/dev/shm/pr348-local-observer-diff.json']
+# 舊 baseline 只保存本次逐 bytes 比對所需小原件，避免重封整個舊 gate。
+BASE_PROFILE_FILES = ['REQUEST.json', 'RESULT.json', 'input.scene', 'stdin.bin', 'stdout.bin', 'stderr.bin', 'scene-meta.json']
+BASE_N256_FILES = ['baseline.json', 'input.scene', 'stdin.bin', 'scene-meta.json', 'baseline.stdout', 'baseline.stderr']
+
+
+def stamp():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def sha_file(path):
+    value = hashlib.sha256()
+    with path.open('rb') as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+            value.update(chunk)
+    return value.hexdigest()
+
+
+def save(path, value):
+    with path.open('x', encoding='utf-8') as handle:
+        handle.write(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+
+def load(path):
+    return json.loads(Path(path).read_bytes())
+
+
+def checked_result(path, source, count, code, failures=0):
+    result = load(path)
+    assert result['source_sha'] == source and result['exit'] == code
+    assert result['tests_run'] == count and result['failures'] == failures
+    assert result['errors'] == 0 and result['skipped'] == 0
+    assert result['tracked_dirty'] == result['tracked_dirty_after'] == ''
+    return result
+
+
+def comparisons():
+    candidate = Path('/dev/shm/pr348-profile-s796-n128')
+    baseline = Path('/tmp/pr348-runs/baseline-profile-128')
+    result = []
+    for name in ('input.scene', 'stdout.bin', 'stderr.bin'):
+        first, second = (candidate / name).read_bytes(), (baseline / name).read_bytes()
+        assert first == second, name
+        result.append({'name': name, 'candidate_path': str(candidate / name), 'baseline_path': str(baseline / name),
+                       'bytes': len(first), 'sha256': hashlib.sha256(first).hexdigest(), 'bytes_equal': True})
+    return {'candidate_source': S, 'baseline_source': BASE, 'checked_utc': stamp(),
+            'comparisons': result, 'stdin_claimed_equal': False,
+            'stdin_note': '原 stdin 的 loadfile 本地路徑不同，未宣稱 stdin bytes 相同；實際 scene bytes 全同。'}
+
+
+def gather():
+    rows, names = [], set()
+
+    def add(path, member):
+        path = Path(path)
+        assert path.is_file() and not path.is_symlink(), ('不是原普通檔', str(path))
+        assert '.git' not in path.parts, str(path)
+        name = PurePosixPath(member)
+        assert not name.is_absolute() and '..' not in name.parts and str(name) not in names
+        names.add(str(name))
+        rows.append((path, str(name)))
+
+    for label, folder in DIRECTORIES.items():
+        root = Path(folder)
+        assert root.is_dir() and not root.is_symlink(), folder
+        for path in sorted(root.rglob('*')):
+            assert not path.is_symlink(), ('原資料有 symlink，須由主代理明確處理', str(path))
+            if path.is_file():
+                add(path, label + '/' + path.relative_to(root).as_posix())
+    for path in EXECUTORS:
+        add(path, 'executors/' + Path(path).name)
+    for path in LAUNCH_STREAMS:
+        add(path, 'launch-originals/' + Path(path).name)
+    for path in TOOL_METADATA:
+        add(path, 'local-observer-tool-metadata/' + Path(path).name)
+    for name in BASE_PROFILE_FILES:
+        add(Path('/tmp/pr348-runs/baseline-profile-128') / name, 'baseline-profile128-reference/' + name)
+    for name in BASE_N256_FILES:
+        add(Path('/dev/shm/pr348-tag-pair-256') / name, 'baseline-n256-reference/' + name)
+    return rows
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--expected-official-head', required=True,
+                        help='由主代理獨立核對的完整 cfbde095... 官方 evidence HEAD；本工具不呼叫 Git')
+    parser.add_argument('--out', type=Path, default=PREP / 'PACKAGE')
+    args = parser.parse_args()
+    assert re.fullmatch(r'cfbde095[0-9a-f]{32}', args.expected_official_head)
+    out = args.out.resolve()
+    assert out.is_relative_to(PREP) and out != PREP and not os.path.lexists(args.out)
+    assert not out.exists()
+    assert shutil.disk_usage(PREP).free > RESERVE
+    inputs = gather()
+    # 只為封存空間估價：每檔額外保守留 PAX/header 成本，不變動產品門檻。
+    original_bytes = sum(path.stat().st_size for path, _ in inputs)
+    archive_budget = original_bytes + len(inputs) * 8192 + 1024 * 1024
+    assert shutil.disk_usage(PREP).free >= RESERVE + archive_budget
+    core = checked_result('/dev/shm/pr348-depend-core-tests/RESULT.json', CORE, 15, 0)
+    host = checked_result('/dev/shm/pr348-depend-host-tests/RESULT.json', HOST, 18, 0)
+    legacy = checked_result('/dev/shm/pr348-depend-legacy-tests/RESULT.json', GRAPH, 98, 1, 1)
+    graph = load('/dev/shm/pr348-graph-result-4b17edac/SUMMARY.json')
+    assert graph['fix_execution_sha'] == GRAPH and graph['base_execution_sha'] == BASE
+    assert graph['exit'] == 0 and graph['completed'] == graph['planned'] == 172 and not graph['failures']
+    h7 = load('/dev/shm/pr348-h7-796cd282-background/RESULT.json')
+    assert h7['source_sha'] == S and h7['timed_out'] is True and h7['exit'] is None
+    assert h7['suite_timeout_seconds'] == 1200 and h7['per_batch_timeout_seconds'] == 600
+    assert h7['seconds'] == 1200.1063482761383
+    incomplete = Path('/dev/shm/pr348-h7-796cd282/batch-008')
+    assert incomplete.is_dir() and not (incomplete / 'RESULT.json').exists()
+    log = Path('/dev/shm/pr348-h7-796cd282/unittest.log').read_text()
+    assert sum(line.endswith(' ... ok') for line in log.splitlines()) == 7
+    assert 'test_real_placed_64_and_512_load_dump_and_canonical_replay' in log
+    profile = load('/dev/shm/pr348-profile-s796-n128/RESULT.json')
+    baseline = load('/tmp/pr348-runs/baseline-profile-128/RESULT.json')
+    assert profile['source_sha'] == S and baseline['source_sha'] == BASE
+    assert profile['actual_exit'] == profile['gprof_exit'] == 0 and profile['timeout'] is False
+    assert baseline['actual_exit'] == baseline['gprof_exit'] == 0 and baseline['timeout'] is False
+    binding = load('/dev/shm/pr348-depend-binding/REPORT.json')
+    assert binding['target_sha'] == S and binding['actual_dependency_count'] == 185
+    assert binding['actual_dependency_mode_oid_all_equal'] is True
+    assert binding['frozen_scene_count'] == 172 and binding['original_98_exit_retained'] == 1
+    preflight = load('/dev/shm/pr348-mutant-preflight-796cd282/PREFLIGHT.json')
+    assert preflight['summary']['source_sha'] == S and len(preflight['mutants']) == 123
+    merge = load('/dev/shm/pr348-candidate-chain-merge/RESULT.json')
+    assert merge['source_after'] == S and merge['non_evidence_diff_exit'] == merge['exit'] == 0
+    n256 = load('/dev/shm/pr348-depend-hint-feasibility/RESULT.json')
+    assert n256['candidate']['source_sha'] == HOST and n256['exit'] == 0 and n256['streams_identical'] is True
+    audit = load('/dev/shm/pr348-h7-s796-time-audit/REPORT.json')
+    assert audit['source_sha'] == S and audit['no_new_test_compile_benchmark_or_publication_executed'] is True
+    old_tool_sha = '87fdcecc5f4db5c15f55e66debece1dee5633220c97bbd24c2cbf61572d76cb6'
+    new_tool_sha = '417eca03461d3189ac0b786fd8fe0e3839dc2a777256cea501bc0820b240499d'
+    assert sha_file(Path('/dev/shm/pr348-local-observer-smoke/OBSERVER.py')) == old_tool_sha
+    assert sha_file(Path('/dev/shm/pr348-run-formal-local-v7.py')) == new_tool_sha
+    smoke = checked_result('/dev/shm/pr348-local-observer-smoke/RESULT.json', S, 1, 0)
+    smoke_outer = load('/dev/shm/pr348-local-observer-smoke-wrapper/RESULT.json')
+    assert smoke_outer['source_sha'] == S and smoke_outer['exit'] == 0
+    fsync = load('/dev/shm/pr348-local-checkpoint-fsync-control/RESULT.json')
+    assert fsync['exit'] == 0 and fsync['observer_sha256'] == new_tool_sha
+    assert fsync['test_suite_rerun'] is False and fsync['remote_published'] is False
+    compare = comparisons()
+    out.mkdir()
+    save(out / 'PROFILE_BYTE_COMPARISON.json', compare)
+    shutil.copy2(PREP / 'PACKAGE_README.md', out / 'README.md')
+    shutil.copy2(Path(__file__), out / 'package_s796.py.txt')
+    shutil.copy2(PREP / 'PREPARATION_COST.json', out / 'PREPARATION_COST.json')
+    shutil.copy2(PREP / 'STATIC_REVIEW.md', out / 'STATIC_REVIEW.md')
+    inputs += [(out / 'PROFILE_BYTE_COMPARISON.json', 'collection/PROFILE_BYTE_COMPARISON.json'),
+               (out / 'README.md', 'collection/README.md'),
+               (out / 'package_s796.py.txt', 'collection/package_s796.py.txt'),
+               (PREP / 'PROFILE_PREPARATION_COMPARISON.json', 'collection/PROFILE_PREPARATION_COMPARISON.json')]
+    manifest = []
+    archive = out / 'RAW.tar.gz'
+    with archive.open('xb') as stream:
+        with tarfile.open(fileobj=stream, mode='w:gz', compresslevel=6, dereference=True) as handle:
+            for path, name in inputs:
+                before = path.stat()
+                assert shutil.disk_usage(out).free >= RESERVE + before.st_size + 8192
+                row = {'path': name, 'original_path': str(path), 'bytes': before.st_size,
+                       'mode': stat.S_IMODE(before.st_mode), 'original_st_mode': before.st_mode,
+                       'mtime_ns': before.st_mtime_ns, 'sha256': sha_file(path)}
+                handle.add(path, arcname=name, recursive=False)
+                after = path.stat()
+                assert (after.st_size, after.st_mode, after.st_mtime_ns) == (before.st_size, before.st_mode, before.st_mtime_ns)
+                manifest.append(row)
+    assert archive.stat().st_size < ARCHIVE_LIMIT, '保留超限包供主代理另處理，不自動刪除／推送'
+    assert shutil.disk_usage(out).free >= RESERVE
+    expected = {row['path']: row for row in manifest}
+    with tarfile.open(archive, 'r:gz') as handle:
+        for member in handle:
+            assert member.isfile() and member.name in expected
+            row = expected.pop(member.name)
+            assert member.size == row['bytes'] and stat.S_IMODE(member.mode) == row['mode']
+            value = hashlib.sha256()
+            size = 0
+            with handle.extractfile(member) as payload:
+                for chunk in iter(lambda: payload.read(1024 * 1024), b''):
+                    value.update(chunk)
+                    size += len(chunk)
+            assert size == row['bytes'] and value.hexdigest() == row['sha256']
+    assert not expected
+    save(out / 'MANIFEST.json', manifest)
+    status = {
+        'schema': 'pr348-s796-evidence-collection/1', 'collected_utc': stamp(),
+        'official_head_declared_by_root': args.expected_official_head,
+        'official_head_verified_by_this_script': False,
+        'source_sha': S, 'product_adopted_into_official_branch': False,
+        'tests': {'k15': core, 'h18': host, 'legacy98_red': legacy},
+        'graph': {'execution_sha': GRAPH, 'base_execution_sha': BASE, 'planned': 172, 'completed': 172,
+                  'exit': 0, 'relabelled_as_execution_at_S': False, 'binding_target': S},
+        'h7': h7, 'h7_incomplete_batch': 'batch-008', 'h7_full_suite_passed': False,
+        'anchor_preflight_is_ledger_execution': False,
+        'n256_original_execution': n256, 'profile128_original': profile, 'profile128_baseline_reference': baseline,
+        'profile_bytes_comparison': compare, 'source_merge': merge,
+        'tool_repair': {'time_audit_source': S, 'old_smoke_observer_sha256': old_tool_sha,
+                        'old_smoke_original': smoke, 'old_smoke_wrapper_original': smoke_outer,
+                        'new_observer_sha256': new_tool_sha, 'new_exact_checkpoint_control_original': fsync,
+                        'new_full_h7_rerun_claimed': False},
+        'archive': {'path': archive.name, 'bytes': archive.stat().st_size, 'sha256': sha_file(archive),
+                    'members': len(manifest), 'uncompressed_original_bytes': sum(row['bytes'] for row in manifest),
+                    'preparation_archive_budget_bytes': archive_budget,
+                    'every_member_path_bytes_mode_sha256_verified': True},
+        'progress_current_summary': '待主代理定稿；本工具不改 PROGRESS.md 或 PR 正文',
+        'performed': '一次封存／逐 member 核驗；沒有測試、編譯、Git、checkout 修改或 push',
+    }
+    save(out / 'STATUS.json', status)
+    with (out / 'SHA256SUMS').open('x', encoding='utf-8') as handle:
+        for path in sorted(out.iterdir()):
+            if path.is_file() and path.name != 'SHA256SUMS':
+                handle.write(sha_file(path) + '  ' + path.name + '\n')
+    print(json.dumps({'out': str(out), 'archive': status['archive'], 'source_sha': S}, ensure_ascii=False))
+
+
+if __name__ == '__main__':
+    main()

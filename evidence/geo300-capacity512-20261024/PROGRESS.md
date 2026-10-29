@@ -1,3 +1,17 @@
+# #348 current state：S796 有實際加速；完整 H7 仍紅
+
+目前正式產品 F2=`b595e55952d5d66de95024432e1b29bec7525e9b`，history測試來源C=`75481194f3b85a6b07e11896403633d7d0fa0d6f`；本提交只發布證據，沒有把隔離候選冒成已採入產品。
+
+- 候選S=`796cd282693736af61c1b0d6c8ff91f03437a175`完整原H7在01:53:42–02:13:42UTC實跑，1200.106348秒由原守門終止；exit=null、timed_out=true，前7方法ok，最後batch008未完。原600／1200／35分鐘皆不變，**NOT READY**。
+- 已完成512 load196.159859／195.964秒、sequential＋真I8a確認/history224.795秒、第一canonical228.876秒均exit0；不得把第二canonical未完算通過。完整原件`depend-hints-s796cd282/`保真execution、原98測試紅與所有後續綠項的閉包界線。
+- S N128修後profile6.484310795秒，原B=`9a8584f57be7935604c3bad4c2481945a6ec3d9f`14.914534721秒不重抽，scene/stdout/stderr逐byte等。這是同法profile，不冒512正式效能。
+- 收件工具同步Git/API確切20.641385秒算入舊1200，但不能宣稱唯一超時原因。新版每批先/tmp持久fsync，整套終態後另publish；原測試與時計不變。舊單方法smoke1/0/0與新metadata-fsync函式控制分開保留。
+- 後續三處接線產品`622b665423a55b4042a638589d2cd1efff427c7e`已於隔離branch正常push：172個凍結場景plain/trace/有序圖精確比較exit0；測試來源`256747c5c8f8f8934eeb08ae404dee1f67591508`正在跑新7＋原H13/W15，未在本提交宣告其完整終態。未採入正式產品。
+- S已一般merge私有M347=`291511caf4860638d6286b3b5b0cd17335c3b921`，包含目前#343/#346/#347三個精確head；只補evidence祖先，非evidence差異0。原#346/#347分支未改、其正式gates仍不得冒綠。正式348尚未採S，review原base behind2／目前#347ref behind3仍保留，待採候選後重算。
+- 新K15/H18與172圖保各原execution與185leaf/172input閉包；123項只是anchor preflight，不是正式ledger。全ledger/census/架構/native/browser仍待，原/tmp快取已另保全，尚未進行nativebuild。
+
+## 歷史紀錄（以下內容保留當時來源與結果，不是另一個 current-state 矩陣）
+
 # #348 current state：8b候選各批600內；完整H7原1200逾時
 
 正式產品仍F2 `b595e55952d5d66de95024432e1b29bec7525e9b`／測試C `75481194f3b85a6b07e11896403633d7d0fa0d6f`。獨立候選 `8b128aa7bf53b41b493dd3a0bee49f0d53391254` 尚未採入。
