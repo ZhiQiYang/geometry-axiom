@@ -1,0 +1,25 @@
+{
+  "scope": "contact-sources placement-order control anchor maintenance only",
+  "source": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
+  "patch_sha256": "1dec787f8a10604166b7ea420226d27da6cd84dce58dd1bfb17b717d8d3a5c06",
+  "checks": 15,
+  "exit_code": 0,
+  "findings": [],
+  "limits": [
+    "Static Git/AST/literal only, no C/subject execution.",
+    "Original cc2 three-suite exit1 retained; actual new-S re-run and real normal assertion still required.",
+    "No product, case, assertion, timeout, test count or other control edits. Whole-fastpath semantic withdrawal is separate."
+  ],
+  "control_sets": {
+    "original_regular": 8,
+    "original_collection_cache": 3,
+    "total": 11
+  },
+  "reviewer_correction": {
+    "initial_report": "GEO300_CONTACT_SOURCES_ANCHOR_INITIAL_COUNT_ASSUMPTION.json",
+    "actual_host_chunk": "7f7be4",
+    "initial_helper_exit": 0,
+    "initial_report_exit": 1,
+    "reason": "Reviewer counted only CONTROLS rather than eight plus COLLECTION_CACHE_CONTROLS three. Corrected count/schema only; all original source bytes unchanged."
+  }
+}
