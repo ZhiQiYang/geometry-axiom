@@ -22,6 +22,10 @@ f5806c60c6067a64776f979f77981e4aba087df3 的172場景×2新程序全過，23:24:
 
 3949deb9e565a9e5aeca5bc475ec646e77cc6546 已推獨立候選。原 allocation 紅保留並修復；K48、W/bridge52及補充scope17均實跑綠，逐execution見 scope-candidate-3949deb9。一次N128僅12.5%改善，不冒H7全綠；下一步真正512與剩餘查找成本。實際PR正文已於23:35:26Z同步E e4d00c43ed204aa3f07606a86cd625c59dce2184並GET逐byte核對，舊2de/ac1/ENOSPC正文已解除。來源鏈仍阻擋。
 
+## 512候選載入真終態
+
+3949deb9e565a9e5aeca5bc475ec646e77cc6546 的單一真512 load於23:59:33Z完成：261.840563秒、exit0、原placed_geometry過、RSS222088KiB，stdout與舊F2/C相同。原件scope-load-3949deb9。沒有聲稱canonical/history或H7已過；目前繼續H兩處未使用raw facts與K hint省工，待新來源完整驗證。
+
 ## 歷史檢查點（不取代上方current state）
 
 # #348 current state：512各批已在600秒內完成；I8a history與整套時限仍紅
