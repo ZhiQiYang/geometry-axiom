@@ -30,6 +30,14 @@ def once(source,anchor,replacement):
 
 def instrument_hint_work(source):
     source=instrument_node_work(source)
+    source=once(source,"static bool geo_source_ref_equal(GeoSourceRef a,GeoSourceRef b)\n{",
+                "static bool geo_source_ref_equal(GeoSourceRef a,GeoSourceRef b)\n{\n    ++node_ref_reads;")
+    # Count actual full-identity calls in the indexed and linear finder paths.
+    # Total minus finder reads is the hint's real node/key identity read, even
+    # in the identity-withdrawn candidate (which has no hint comparison).
+    comparison="geo_source_ref_equal(ctx->nodes[i]->source,source)"
+    if source.count(comparison)!=2:raise AssertionError("node-hint-finder-comparison-anchors")
+    source=source.replace(comparison,"(++node_index_ref_reads,"+comparison+")")
     marker="geo_source_find_node("
     at=source.index("{",source.index(marker))+1
     return source[:at]+"\n    ++node_find_calls;"+source[at:]
@@ -93,6 +101,12 @@ class SourceNodeHint(unittest.TestCase):
     def test_optional_index_failure_reset_and_sealed_reads_preserve_state(self):
         self.passes("typed-fallback")
 
+    def test_same_slot_different_full_hash_skips_wrong_hint_identity_read(self):
+        self.passes("hint-hash-work")
+
+    def test_equal_full_hash_still_compares_every_key_byte(self):
+        self.passes("hint-full-collision")
+
     def assert_killed(self,exe,case,marker):
         self.passes(case,phase="baseline")
         r=self.case(case,exe,phase="mutant")
@@ -114,10 +128,15 @@ class SourceNodeHint(unittest.TestCase):
 
     def test_ignored_hint_identity_fails_named_typed_collision(self):
         changed=once(self.original,
-            "if(hint&&hint<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){",
-            "if(hint&&hint<=ctx->node_count){")
+            "if(hint&&hint<=ctx->node_count&&ctx->node_hint_hash[slot]==hash&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){",
+            "if(hint&&hint<=ctx->node_count&&ctx->node_hint_hash[slot]==hash){")
         exe=self.make_executable("identity-ignored",changed)
-        self.assert_killed(exe,"typed-collision","node-hint-collision-retains-full-identity")
+        self.assert_killed(exe,"hint-full-collision","node-hint-collision-retains-full-identity")
+
+    def test_withdrawn_hash_guard_fails_named_wrong_hint_read_work(self):
+        changed=once(self.original,"&&ctx->node_hint_hash[slot]==hash&&","&&")
+        exe=self.make_executable("hash-guard-removed",changed)
+        self.assert_killed(exe,"hint-hash-work","node-hint-wrong-full-hash-skips-ref-read")
 
 
 if __name__=="__main__":unittest.main(verbosity=2)

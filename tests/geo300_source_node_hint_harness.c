@@ -1,6 +1,7 @@
 /* Actual K typed placement keys and original ordered identity/edge oracle. */
 #include <stddef.h>
 static size_t node_hash_calls,node_probe_steps,node_find_calls;
+static size_t node_ref_reads,node_index_ref_reads;
 #define main original_source_index_main
 #include "geo261_source_index_harness.c"
 #undef main
@@ -146,12 +147,63 @@ static int typed_fallback(void)
     for(size_t i=0;i<2;++i)if(hint_read(ctx,i))return 1;
     return hint_finish(ctx);
 }
+/* Real same-low-eight keys, but different full hashes. Count identity reads,
+ * not elapsed time; main-index comparisons remain allowed and are measured. */
+static int hint_hash_work(void)
+{
+    const uint32_t ids[2]={223,256};GeoEvalContext *ctx=hint_context(ids,2);REQUIRE("node-hint-hash-work-context",ctx);
+    uint64_t a=geo_source_node_hash(hint_refs[0]),b=geo_source_node_hash(hint_refs[1]);
+    REQUIRE("node-hint-hash-work-real-same-slot",(a&255)==(b&255)&&a!=b);
+    for(size_t i=0;i<2;++i)if(hint_read(ctx,i))return 1;
+    node_ref_reads=node_index_ref_reads=node_find_calls=node_hash_calls=0;
+    for(size_t n=0;n<8;++n)for(size_t i=0;i<2;++i)if(hint_read(ctx,i))return 1;
+    REQUIRE("node-hint-hash-work-keeps-full-finder",node_find_calls==16&&node_index_ref_reads>=16);
+    REQUIRE("node-hint-wrong-full-hash-skips-ref-read",node_ref_reads==node_index_ref_reads);
+    REQUIRE("node-hint-hash-work-no-extra-hash",node_hash_calls==16);
+    return hint_finish(ctx);
+}
+/* Two unequal 16-byte keys with the same actual full hash.  The second word
+ * compensates the different state after the first word; the real production
+ * hash verifies the construction before any identity assertion is exercised.
+ * This is a collision fixture, not a replacement identity/evaluation oracle. */
+static int hint_full_collision(void)
+{
+    unsigned char pair[2][16];uint64_t first[2]={0,1},second[2]={0,0};
+    uint64_t seed=geo_source_hash_size(geo_source_hash_size(UINT64_C(14695981039346656037),17),sizeof pair[0]);
+    uint64_t state[2];
+    for(size_t i=0;i<2;++i){state[i]=(seed^first[i])*UINT64_C(11400714785074694791);state[i]^=state[i]>>32;}
+    second[1]=state[0]^state[1];
+    for(size_t i=0;i<2;++i){memcpy(pair[i],&first[i],sizeof first[i]);memcpy(pair[i]+sizeof first[i],&second[i],sizeof second[i]);}
+    GeoSourceRef ref[2]={{17,pair[0],sizeof pair[0]},{17,pair[1],sizeof pair[1]}};
+    REQUIRE("node-hint-full-collision-unequal-bytes",memcmp(pair[0],pair[1],sizeof pair[0])!=0);
+    REQUIRE("node-hint-full-collision-real-hash",geo_source_node_hash(ref[0])==geo_source_node_hash(ref[1]));
+    oracle_node_count=oracle_edge_count=0;descriptions=evaluations=0;
+    GeoEvalContext *ctx=context();REQUIRE("node-hint-full-collision-context",ctx);
+    for(size_t n=0;n<8;++n)for(size_t i=0;i<2;++i){
+        GeoSourceValue value;linear_node(ref[i]);
+        REQUIRE("node-hint-full-collision-source-status",geo_eval_source(ctx,ref[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);
+        REQUIRE("node-hint-collision-retains-full-identity",geo_eval_node_count(ctx)==oracle_node_count);
+        REQUIRE("node-hint-full-collision-value",value.kind==GEO_SOURCE_QUANTITY&&value.as.quantity.num==7&&value.as.quantity.den==1);
+        REQUIRE("node-hint-full-collision-ordered-identity",!graph_equal(ctx));
+    }
+    REQUIRE("node-hint-full-collision-provider-once",descriptions==2&&evaluations==2);
+    REQUIRE("node-hint-full-collision-seal",geo_eval_seal(ctx));
+    for(size_t i=0;i<2;++i){GeoSourceValue value;
+        REQUIRE("node-hint-full-collision-sealed-read",geo_eval_source(ctx,ref[i],GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK);}
+    REQUIRE("node-hint-full-collision-sealed-no-callback",descriptions==2&&evaluations==2);
+    REQUIRE("node-hint-full-collision-sealed-depend-refused",geo_eval_depend(ctx,ref[0],GEO_DEPENDENCY_VALUE_REQUIRED)==GEO_SOURCE_INVALID);
+    REQUIRE("node-hint-full-collision-sealed-reset-refused",!geo_eval_reset(ctx));
+    REQUIRE("node-hint-full-collision-final-order",!graph_equal(ctx));
+    geo_eval_destroy(ctx);REQUIRE("node-hint-full-collision-no-leak",!live_allocations);return 0;
+}
 int main(int argc,char **argv)
 {
     if(argc!=2)return 2;int result;
     if(!strcmp(argv[1],"typed-hint")||!strcmp(argv[1],"typed-probe")||!strcmp(argv[1],"typed-observe"))result=typed_work(argv[1]);
     else if(!strcmp(argv[1],"typed-collision"))result=typed_collision();
     else if(!strcmp(argv[1],"typed-fallback"))result=typed_fallback();
+    else if(!strcmp(argv[1],"hint-hash-work"))result=hint_hash_work();
+    else if(!strcmp(argv[1],"hint-full-collision"))result=hint_full_collision();
     else return original_source_index_main(argc,argv);
     if(!result)printf("PASS %s\n",argv[1]);return result;
 }

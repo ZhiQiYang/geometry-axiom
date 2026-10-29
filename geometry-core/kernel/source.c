@@ -28,6 +28,7 @@ struct GeoEvalContext {
     uint32_t *node_index;
     size_t node_index_capacity;
     size_t node_hint[256];
+    uint64_t node_hint_hash[256];
     GeoSourceEdge *edges;
     size_t edge_count, edge_capacity;
     uint32_t *edge_index;
@@ -280,12 +281,13 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
     uint64_t hash=geo_source_node_hash(source);
     size_t slot=(size_t)hash&255;
     size_t hint=ctx->node_hint[slot];
-    if(hint&&hint<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){
+    /* Hash mismatch rejects only this optional hint; equal hashes still require full identity. */
+    if(hint&&hint<=ctx->node_count&&ctx->node_hint_hash[slot]==hash&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){
         *index=hint-1;return GEO_SOURCE_OK;
     }
     size_t empty_slot=SIZE_MAX;
     size_t found=geo_source_find_node(ctx,source,&empty_slot,hash);
-    if(found!=SIZE_MAX){ctx->node_hint[slot]=found+1;*index=found;return GEO_SOURCE_OK;}
+    if(found!=SIZE_MAX){ctx->node_hint_hash[slot]=hash;ctx->node_hint[slot]=found+1;*index=found;return GEO_SOURCE_OK;}
     size_t provider=0;while(provider<ctx->provider_count&&ctx->providers[provider].token!=source.provider)++provider;
     if(provider==ctx->provider_count)return GEO_SOURCE_MISSING;
     if(ctx->node_count==SIZE_MAX/sizeof *ctx->nodes)return GEO_SOURCE_MEMORY;
@@ -297,7 +299,7 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
     if(!next){free((void *)source.key);free(node);return GEO_SOURCE_MEMORY;}
     ctx->nodes=next;node->source=source;node->provider=provider;node->status=GEO_SOURCE_OK;
     *index=ctx->node_count;next[ctx->node_count++]=node;
-    geo_source_index_append_at(ctx,true,empty_slot);ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
+    geo_source_index_append_at(ctx,true,empty_slot);ctx->node_hint_hash[slot]=hash;ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
 }
 static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDependencyKind kind)
 {
