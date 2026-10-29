@@ -9,6 +9,9 @@ typedef struct {
     char command[SCENE_MAX_LINE];
     ReferenceIssue issues[REFERENCE_MAX_ISSUES];
     size_t issue_count;
+    AppIdentityKey identity_explicit[APP_IDENTITY_MARK_CAPACITY];
+    size_t identity_explicit_count;
+    bool identity_explicit_overflow;
 } ReferencePreview;
 static ReferencePreview g_preview;
 static uint32_t g_preview_serial;
@@ -501,6 +504,7 @@ static void reference_stage(AppWorldCandidate *transaction,char **tokens,int cou
         if (n<0 || (size_t)n>=sizeof g_preview.command-used) { g_preview.valid=false; break; }
         used+=(size_t)n;
     }
+    identity_explicit_capture(g_preview.identity_explicit,APP_IDENTITY_MARK_CAPACITY,&g_preview.identity_explicit_count,&g_preview.identity_explicit_overflow);
 }
 static void reference_preview_text(void)
 {
@@ -559,6 +563,7 @@ typedef struct {
 static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;AppSceneCandidateCall *call=opaque;World *candidate=after;
+    identity_explicit_reset();
     g_reference_trial=*candidate;g_reference_capturing=true;
     const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;
     bool ok=apply_scene_line_unchecked(call->path,call->line_no,call->tokens,call->count,candidate);
@@ -587,11 +592,22 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         if(!app_world_candidate_revalidate(g_preview.transaction,world)){
             g_preview.ready=false;scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
         }
-        bool changed=!world_definitions_equal(world,&g_preview.transaction->after);
+        char identity_error[512];
+        if(!identity_prepare(&g_preview.transaction->before,&g_preview.transaction->after,g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow)){
+            snprintf(identity_error,sizeof identity_error,"%s",g_scene_last_error);
+            identity_drop_serials();
+            scene_error(path,line_no,identity_error);
+            return false;
+        }
+        bool issued=g_identity_pending_count!=0;
+        bool changed=!world_definitions_equal(world,&g_preview.transaction->after)||issued;
         if(!app_world_candidate_publish(g_preview.transaction,world,true)){
+            identity_drop_serials();
             g_preview.ready=false;scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;
         }
-        g_preview.ready=false;if(changed&&!g_parsing_scene_file)++g_definition_revision;
+        g_preview.ready=false;
+        if((changed||issued)&&!g_parsing_scene_file){identity_commit_serials();++g_definition_revision;}
+        else identity_drop_serials();
         return true;
     }
     bool explicit_preview=!strcmp(tokens[0],"preview");
@@ -602,7 +618,10 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if(!app_scene_direct_dimensions_allowed(path,line_no,tokens,count,world))return false;
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
     AppSceneCandidateCall call={path,line_no,tokens,count,world};
+    bool saved_identity_preview=g_identity_explicit_preview;
+    if(explicit_preview)g_identity_explicit_preview=true;
     bool ok=app_world_candidate_evaluate(transaction,app_scene_candidate_apply,&call)==GEO_CANDIDATE_OK;
+    g_identity_explicit_preview=saved_identity_preview;
     bool affects=reference_may_affect(world,tokens,count);
     const World *impact_candidate=ok?candidate:&g_reference_trial;
     bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->wood.engineering,&candidate->wood.engineering,sizeof world->wood.engineering) || memcmp(&world->wood.assembly,&candidate->wood.assembly,sizeof world->wood.assembly) || memcmp(&world->wood.section_profiles,&impact_candidate->wood.section_profiles,sizeof world->wood.section_profiles));
@@ -634,11 +653,23 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         if (!g_scene_last_error[0]) scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
         return false;
     }
-    bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&!world_definitions_equal(world,candidate);
+    bool skip_identity=g_parsing_scene_file||!strcmp(tokens[0],"canvas-pos");
+    char identity_error[512];
+    if(!skip_identity&&!identity_prepare_scratch(world,candidate)){
+        snprintf(identity_error,sizeof identity_error,"%s",g_scene_last_error);
+        identity_drop_serials();
+        scene_error(path,line_no,identity_error);
+        return false;
+    }
+    bool issued=!skip_identity&&g_identity_pending_count!=0;
+    bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&(!world_definitions_equal(world,candidate)||issued);
     if(!app_world_candidate_seal(transaction)||!app_world_candidate_publish(transaction,world,false)){
+        identity_drop_serials();
         scene_error(path,line_no,"I8: candidate seal failed; World unchanged");return false;
     }
-    if(changed)++g_definition_revision;return true;
+    if((changed||issued)&&!g_parsing_scene_file){identity_commit_serials();++g_definition_revision;}
+    else identity_drop_serials();
+    return true;
 }
 
 /* Only app_scene_load_evaluate opts into this private file replay frame.

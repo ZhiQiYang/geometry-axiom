@@ -7,7 +7,8 @@ static bool eng_definition_hash(const World *w,char hash[65])
 {
     World *copy=malloc(sizeof *copy);FILE *file=tmpfile();
     if(!copy||!file){free(copy);if(file)fclose(file);return false;}
-    *copy=*w;copy->app.canvas_pos_count=0;world_dump_dsl(copy,file);free(copy);
+    *copy=*w;copy->app.canvas_pos_count=0;
+    bool saved_marks=g_identity_include_marks;g_identity_include_marks=false;world_dump_dsl(copy,file);g_identity_include_marks=saved_marks;free(copy);
     if(ferror(file)||fflush(file)||fseek(file,0,SEEK_END)){fclose(file);return false;}
     long n=ftell(file);if(n<0||n>ENG_INPUT_MAX||fseek(file,0,SEEK_SET)){fclose(file);return false;}
     char *text=malloc((size_t)n+1);if(!text){fclose(file);return false;}
@@ -21,8 +22,8 @@ static void json_engineering_capabilities(const World *w)
      * whole capability.  panel-fill-native/1 + panel-fill-read report the supported subset. */
     bool fs=fs_used(w),eng=engineering_used(w)||fs,par=geo_parameters_card_count(&w->geo.parameters)||fs,first=true;
     const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
-        {w->wood.assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY},{grid_card_used(w),GRID_CARD_CAPABILITY}};
-    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[",stdout);
+        {w->wood.assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY},{grid_card_used(w),GRID_CARD_CAPABILITY},{w->app.identity_active,"identity-ledger/1"}};
+    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\",\"identity-ledger/1\"],\"required_capabilities\":[",stdout);
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
     fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
@@ -137,6 +138,7 @@ typedef struct {
 static bool app_batch_candidate_apply(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;AppBatchCandidateCall *call=opaque;World *candidate=after;bool ok=true;
+    identity_explicit_reset();
     /* I38/P-062: candidate-order scratch lives beside this exact candidate. */
     ParameterCandidateScope scope;
     if(!parameters_begin_candidate(candidate,&scope))ok=eng_fail(g_parameter_error);
@@ -200,12 +202,21 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
     if(!app_world_candidate_revalidate(g_preview.transaction,&g_world)){
         g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;
     }
-    bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after);uint64_t before=g_definition_revision;
+    char identity_error[512];
+    if(!identity_prepare(&g_preview.transaction->before,&g_preview.transaction->after,g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow)){
+        snprintf(identity_error,sizeof identity_error,"%s",g_scene_last_error);
+        identity_drop_serials();
+        eng_bridge_error("INVALID",identity_error);
+        return;
+    }
+    bool issued=g_identity_pending_count!=0;
+    bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after)||issued;uint64_t before=g_definition_revision;
     if(changed)history_record(&g_world);
     if(!app_world_candidate_publish(g_preview.transaction,&g_world,true)){
-        if(changed)history_unrecord();g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;
+        if(changed)history_unrecord();identity_drop_serials();g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;
     }
-    if(changed)++g_definition_revision;
+    if(changed){identity_commit_serials();++g_definition_revision;}
+    else identity_drop_serials();
     g_preview.ready=false;char hash[65];bool hashed=eng_definition_hash(&g_world,hash);
     printf("{\"ok\":true,\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu,\"transaction_id\":%u",changed?"true":"false",(unsigned long long)g_definition_revision,(unsigned long long)before,token);
     if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);json_deleted_objects(&g_preview.transaction->before,false);fputs("}\n",stdout);

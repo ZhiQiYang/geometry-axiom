@@ -442,7 +442,7 @@ window.SpaceModelWorkspace = (() => {
       const bid=oc.edit?.bid??(oc.sel?.kind==="face"?oc.sel.id:null);
       const selectedSurface=placementId!=null?oc.surfs.find(s=>s.id===Number(placementId)):bid!=null?feSurf(bid):oc.surfs.length===1?oc.surfs[0]:null;
       if(!selectedSurface) throw new Error("請先返回畫布，開啟要使用的面並完成放置，再由屬性欄建立空間。");
-      const dump=await api("dump");
+      const dump=await api("dump-deidentified");
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("讀取期間專案已切換。請在目前專案重新選取來源面。");
       if(!dump.ok||typeof dump.text!=="string")throw new Error(dump.error||"無法讀取來源場景。");
@@ -458,7 +458,7 @@ window.SpaceModelWorkspace = (() => {
       const references=await api("references");
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("讀取角材期間專案已切換，請重新選取來源面。");
-      const timbers=sourceTimbers(references,surface.id),checkedDump=await api("dump");
+      const timbers=sourceTimbers(references,surface.id),checkedDump=await api("dump-deidentified");
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("讀取角材期間專案已切換，請重新選取來源面。");
       if(!checkedDump.ok||checkedDump.text!==dump.text||!sameSourceHistory(historyToken))throw new Error("讀取期間來源面或角材已改變，請重新「使用目前面」，以免混用不同版本的資料。");
@@ -498,11 +498,11 @@ window.SpaceModelWorkspace = (() => {
     state.projectionPending=true;updateActions();message('正在核對來源面與放置，確認後保留目前高度及材料設定…');
     const active=()=>serial===state.projectionSequence&&seq===state.sequence&&state.source===source&&dialog.open&&$('smProjectionView').value===view;
     try {
-      const dump=await api('dump');if(!active())return;
+      const dump=await api('dump-deidentified');if(!active())return;
       if(source.context_id!==contextId()||source.face_key!==faceKey(source.boundary_id)||!sameSourceHistory(source.history_token)||!dump.ok||dump.text!==source.base_scene)throw new Error('來源或專案已變更。請重新「使用目前面」，核對後再確認用途。');
       const placements=await api('surfaces');if(!active())return;
       const surface=placements.ok&&placements.surfaces?.find(s=>s.id===source.placement_id&&s.boundary===source.boundary_id);
-      const checked=await api('dump');if(!active())return;
+      const checked=await api('dump-deidentified');if(!active())return;
       if(source.context_id!==contextId()||source.face_key!==faceKey(source.boundary_id)||!sameSourceHistory(source.history_token)||!checked.ok||checked.text!==source.base_scene||!surface||JSON.stringify({origin:surface.origin,u:surface.u,v:surface.v})!==JSON.stringify(source.frame)||JSON.stringify(currentProjection(source))!==original)throw new Error('核對期間來源面、放置或定義已變更。請重新「使用目前面」再設定。');
       if(surface.u?.[2]!==0||surface.v?.[2]!==0||Math.abs(surface.u[0]*surface.v[1]-surface.u[1]*surface.v[0])!==1||!['top','bottom'].includes(view))throw new Error('平面投影需要水平放置與明確觀看方向。');
       if(validProjection(source.projection)&&source.projection.view===view&&needsDrawingAlignment(source,view)) {
@@ -514,7 +514,7 @@ window.SpaceModelWorkspace = (() => {
         if(!await mutate([line])) {if(active())message('方向對齊未套用；原放置保持不變。','warning');return;}
         if(!active()||source.context_id!==contextId()||source.face_key!==faceKey(source.boundary_id))return;
         await renderObjects();if(!active())return;
-        const token=sourceHistoryToken(),updated=await api('surfaces'),references=await api('references'),nextDump=await api('dump');
+        const token=sourceHistoryToken(),updated=await api('surfaces'),references=await api('references'),nextDump=await api('dump-deidentified');
         if(!active())return;
         const placed=updated.ok&&updated.surfaces?.find(s=>s.id===source.placement_id&&s.boundary===source.boundary_id);
         if(!sameSourceHistory(token)||!nextDump.ok||!placed||JSON.stringify({origin:placed.origin,u:placed.u,v:placed.v})!==JSON.stringify(candidate))throw new Error('對齊後來源又有變更，請重新「使用目前面」核對。');
@@ -614,7 +614,7 @@ window.SpaceModelWorkspace = (() => {
       if(sourceContextId!==contextId())throw new Error("目前專案已切換，請重新選取來源。");
       assertSourceHistory();
       if(!state.editing&&source.kind==="scene") {
-        const dump=await api("dump");
+        const dump=await api("dump-deidentified");
         if(seq!==state.sequence)return;
         if(sourceContextId!==contextId()||!dump.ok||dump.text!==source.base_scene)throw new Error("來源面或角材已變更。請重新「使用目前面」取得最新來源，再更新預覽。");
       }
@@ -622,7 +622,7 @@ window.SpaceModelWorkspace = (() => {
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("目前專案已切換，請重新選取來源。");
       if(!state.editing&&source.kind==="scene") {
-        const dump=await api("dump");
+        const dump=await api("dump-deidentified");
         if(seq!==state.sequence)return;
         if(sourceContextId!==contextId()||!dump.ok||dump.text!==source.base_scene)throw new Error("預覽期間來源面或角材已變更。請重新「使用目前面」，這次過期預覽不能建立。");
       }
@@ -653,7 +653,7 @@ window.SpaceModelWorkspace = (() => {
         message(`「${record.name}」牆高已更新為 ${record.input.settings.height} mm。可復原這次修改；請保存專案。`,"success");
         return;
       }
-      if(state.source.kind==="scene") {const dump=await api("dump");if(!dump.ok||dump.text!==state.source.base_scene)throw new Error("來源場景已修改。請重新「使用目前面」並更新預覽，避免保存過期幾何。");}
+      if(state.source.kind==="scene") {const dump=await api("dump-deidentified");if(!dump.ok||dump.text!==state.source.base_scene)throw new Error("來源場景已修改。請重新「使用目前面」並更新預覽，避免保存過期幾何。");}
       if(seq!==state.sequence||revision!==state.revision)throw new Error("設定已改變，請更新預覽後再建立。");
       assertSourceHistory();
       if(state.source.context_id!==contextId())throw new Error("目前專案已切換，請重新選取來源並更新預覽。");

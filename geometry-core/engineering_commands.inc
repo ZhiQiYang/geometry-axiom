@@ -110,6 +110,7 @@ static bool grid_card_scene_required;
 static bool fs_scene_required, fs_scene_engineering, fs_scene_parameters;
 static bool apply_requires_line(const char *path,int line_no,char **tokens,int count,World *w)
 {
+    if(!strcmp(tokens[1],"identity-ledger/1"))return identity_accept_requires(path,line_no,w);
     if(!strcmp(tokens[1],GRID_CARD_CAPABILITY)){grid_card_scene_required=true;return true;}
     if(!strcmp(tokens[1],SP_CAPABILITY)){sp_scene_required=true;return true;}
     if(!strcmp(tokens[1],FS_CAPABILITY)){fs_scene_required=true;return true;}

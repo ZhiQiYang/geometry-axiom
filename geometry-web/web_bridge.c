@@ -969,15 +969,26 @@ static void cmd_objects(void)
 }
 
 /* dump：World → 可重放 DSL 文本（存檔/匯出）。 */
-static void cmd_dump(void)
+static void emit_dump_text(bool deidentified)
 {
+    char problem[192];
+    bool complete = identity_dump_ok(&g_world, problem, sizeof problem);
+    if (!deidentified && !complete) {
+        fputs("{\"ok\":false,\"error\":", stdout);
+        js_string(problem);
+        fputs("}\n", stdout);
+        return;
+    }
     FILE *tmp = tmpfile();
 
     if (tmp == NULL) {
         fputs("{\"ok\":false,\"error\":\"暫存檔失敗\"}\n", stdout);
         return;
     }
+    bool saved_marks = g_identity_include_marks;
+    if (deidentified) g_identity_include_marks = false;
     world_dump_dsl(&g_world, tmp);
+    g_identity_include_marks = saved_marks;
     fflush(tmp);
     rewind(tmp);
 
@@ -998,8 +1009,81 @@ static void cmd_dump(void)
     fputs("\",",stdout);json_engineering_capabilities(&g_world);
     printf(",\"revision\":%llu",(unsigned long long)g_definition_revision);
     char hash[65];if(eng_definition_hash(&g_world,hash))printf(",\"definition_sha256\":\"%s\"",hash);
+    if (deidentified && !complete) {
+        fputs(",\"diagnostic\":", stdout);
+        js_string("身分帳不完整，此輸出不能還原記號");
+    }
     fputs("}\n", stdout);
     fclose(tmp);
+}
+static void cmd_dump(void) { emit_dump_text(false); }
+static void cmd_dump_deidentified(void) { emit_dump_text(true); }
+static void cmd_identity_epoch(const char *hex)
+{
+    char err[160];
+    if (!identity_set_epoch(hex, err, sizeof err)) {
+        fputs("{\"ok\":false,\"error\":", stdout);
+        js_string(err);
+        fputs("}\n", stdout);
+        return;
+    }
+    fputs("{\"ok\":true}\n", stdout);
+}
+static void cmd_identity_read(void)
+{
+    fputs("{\"ok\":true,\"active\":", stdout);
+    fputs(g_world.app.identity_active ? "true" : "false", stdout);
+    fputs(",\"epochSet\":", stdout);
+    fputs(g_identity_epoch_set ? "true" : "false", stdout);
+    printf(",\"nextSerial\":%llu,\"marks\":[", (unsigned long long)g_identity_next_serial);
+    bool first = true;
+    for (uint32_t i = 0; i < g_world.app.identity_mark_count; ++i) {
+        const AppIdentityMark *mark = &g_world.app.identity_marks[i];
+        char text[64];
+        if (!identity_format_mark(mark, text, sizeof text)) continue;
+        if (!first) putchar(',');
+        first = false;
+        fputs("{\"kind\":", stdout);
+        js_string(identity_kind_name(mark->kind) ? identity_kind_name(mark->kind) : "unknown");
+        printf(",\"id\":%u", mark->id);
+        if (mark->kind == APP_IDENTITY_FIELD) printf(",\"fieldId\":%u", mark->field_id);
+        fputs(",\"mark\":", stdout);
+        js_string(text);
+        putchar('}');
+    }
+    fputs("]}\n", stdout);
+}
+
+/* Read-only seam for the desktop host gate. It does not execute the line. */
+static void cmd_host_gate_check(const char *arg)
+{
+    while (*arg == ' ' || *arg == '\t') ++arg;
+    int mode = -1;
+    if (strncmp(arg, "desktop", 7) == 0 && (arg[7] == ' ' || arg[7] == '\t' || arg[7] == '\0')) {
+        mode = 1;
+        arg += 7;
+    } else if (strncmp(arg, "none", 4) == 0 && (arg[4] == ' ' || arg[4] == '\t' || arg[4] == '\0')) {
+        mode = 0;
+        arg += 4;
+    }
+    if (mode < 0) {
+        fputs("{\"ok\":false,\"error\":\"host-gate-check 用法：desktop|none 一行互動指令\"}\n", stdout);
+        return;
+    }
+    while (*arg == ' ' || *arg == '\t') ++arg;
+    char line[SCENE_MAX_LINE];
+    snprintf(line, sizeof line, "%s", arg);
+    char *hash = strchr(line, '#');
+    if (hash != NULL) *hash = '\0';
+    char *tokens[SCENE_MAX_TOKENS];
+    int count = split_tokens(line, tokens, SCENE_MAX_TOKENS);
+    char message[160];
+    bool rejected = host_gate_rejects(mode, &g_world, tokens, count, message, sizeof message);
+    fputs("{\"ok\":true,\"rejected\":", stdout);
+    fputs(rejected ? "true" : "false", stdout);
+    fputs(",\"message\":", stdout);
+    js_string(message);
+    fputs("}\n", stdout);
 }
 
 #include "engineering_bridge.inc"
@@ -1177,6 +1261,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_objects();
         } else if (strcmp(line, "dump") == 0) {
             cmd_dump();
+        } else if (strcmp(line, "dump-deidentified") == 0 && !arg) {
+            cmd_dump_deidentified();
+        } else if (strcmp(line, "identity-epoch") == 0 && arg) {
+            cmd_identity_epoch(arg);
+        } else if (strcmp(line, "identity-read") == 0 && !arg) {
+            cmd_identity_read();
+        } else if (strcmp(line, "host-gate-check") == 0 && arg) {
+            cmd_host_gate_check(arg);
         } else {
             fputs("{\"ok\":false,\"error\":\"不認得的橋接指令\"}\n", stdout);
         }

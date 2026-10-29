@@ -343,6 +343,7 @@ static unsigned parameter_field_generation(const World *w,uint32_t id,uint32_t f
 }
 static bool parameter_retire_field(World *w,uint32_t id,uint32_t field)
 {
+    identity_note_key(APP_IDENTITY_FIELD,id,field);
     ParameterCandidateLedger *p=parameter_ledger(w);if(!p)return true;
     if(p->field_retirement_count==PARAM_FIELD_RETIREMENT_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: candidate field deletions");
     p->field_retirements[p->field_retirement_count++]=(ParameterFieldRetirement){id,field,++p->candidate_order};return true;
@@ -726,6 +727,7 @@ static bool parameter_remove(World *w,uint32_t id)
 {
     const ParameterSet *removed=parameter_find(w,id);
     if(!removed)return parameter_fail("I38 MISSING: parameter %u",id);
+    identity_note_key(APP_IDENTITY_PARAMETER,id,0);
     if(!parameter_capture_deleted_values(w,id))return false;
     for(size_t i=0;i<removed->count;++i)if(!parameter_retire_field(w,id,removed->fields[i]))return false;
     GeoParameterError issue;if(!geo_parameters_remove(&w->geo.parameters,id,&issue))return parameter_kernel_error(w,&issue);
