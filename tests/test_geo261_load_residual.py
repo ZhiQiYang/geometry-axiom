@@ -13,12 +13,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tests.test_geo261_native_kernel import NativeBuild
 
-DEFINITION_DEPEND = ('geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&key),\n'
-                     '            GEO_DEPENDENCY_DEFINITION_REQUIRED)')
+DEFINITION_DEPEND = ('geo_eval_depend_hint(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&key),\n'
+                     '            GEO_DEPENDENCY_DEFINITION_REQUIRED,&ctx->member_reads[i].definition_node_hint)')
 ANCHOR_DEPEND = ('geo_eval_depend_hint(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),\n'
                  '            GEO_DEPENDENCY_DEFINITION_REQUIRED,&ctx->member_reads[i].placement_node_hint)')
 FOOTPRINT_DEPEND = 'geo_eval_depend_hint(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&ctx->member_reads[i].footprint_node_hint)'
-POSE_DEPEND = 'geo_eval_depend(ctx->sources,ref,relation)'
+POSE_DEPEND = 'geo_eval_depend_hint(ctx->sources,ref,relation,&ctx->member_reads[i].footprint_node_hint)'
 EARLY_DEFINITION = '        if(!reference_sources_ensure(ctx)||!reference_placement_frame(ctx,id,&actual.frame)||'
 CONTACT_HIT = '    if(ctx->member_reads[i].contact_valid&&ctx->member_reads[i].contact_id==id){'
 H_CACHE_CONTROLS = (
@@ -46,7 +46,7 @@ H_CACHE_CONTROLS = (
     ('pose-edge', 'cache-pose', 'pose-cache-second-consumer-edge-and-order', POSE_DEPEND,
      '(residual_second_consumer?GEO_SOURCE_OK:' + POSE_DEPEND + ')'),
     ('pose-kind', 'cache-pose-kind', 'pose-cache-preserves-requested-dependency-kind', POSE_DEPEND,
-     POSE_DEPEND.replace(',relation)', ',(residual_second_consumer?GEO_DEPENDENCY_VALUE_REQUIRED:relation))')),
+     POSE_DEPEND.replace(',relation,', ',(residual_second_consumer?GEO_DEPENDENCY_VALUE_REQUIRED:relation),')),
 )
 ANCHOR_ID_KEY = "&&ctx->member_reads[i].id==id"
 CONTACT_ID_KEY = "&&ctx->member_reads[i].contact_id==id"
@@ -84,7 +84,7 @@ class LoadResidual(unittest.TestCase):
         if not dependencies:
             anchor = "if(geo_eval_depend(ctx->sources,"
             hint_anchor = "if(geo_eval_depend_hint(ctx->sources,"
-            assert sources.count(anchor) == 1 and sources.count(hint_anchor) == 2
+            assert sources.count(anchor) == 0 and sources.count(hint_anchor) == 3
             sources = sources.replace(anchor, "if(false&&geo_eval_depend(ctx->sources,")
             sources = sources.replace(hint_anchor, "if(false&&geo_eval_depend_hint(ctx->sources,")
         if not placement_dependency:
