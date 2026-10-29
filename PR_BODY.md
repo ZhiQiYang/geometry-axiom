@@ -2,13 +2,14 @@
 
 | 唯一 current-state 矩陣 | 固定身分／實際結果 |
 |---|---|
-| 完整PR head／evidence E | `2b9b9086470b5abb30383f7617cc51c737c123ec`；新測試／history execution C=`75481194f3b85a6b07e11896403633d7d0fa0d6f`。E只追加原件，execution不移標 |
+| 完整PR head／evidence E | `825a13ac6691017a6a2603ff517537086a77b0e5`；新測試／history execution C=`75481194f3b85a6b07e11896403633d7d0fa0d6f`。E只追加原件，execution不移標 |
 | 產品／已完成正式execution F2 | `b595e55952d5d66de95024432e1b29bec7525e9b`；完整原件evidence E=`b872264006f400d600c801fe8c096d5679ad9013`，不移標execution |
 | 原B | `9a8584f57be7935604c3bad4c2481945a6ec3d9f` |
-| 直接base／阻擋1 | #347 分支current ref（Git及API git/ref同值）=`8bb0359331365c6f3a96872620427cf7847fcb50`；相對新E **behind3／ahead28**。REST PR物件base.sha另回歷史快照`2e8a6ed20325aa4842dcd0f89eacd598662be598`，相對它**behind2／ahead28**；兩種身分分開，原審查behind2保留。#343→#346→#347仍未修鏈，一般merge及逐leaf重審待鏈閉合 |
+| 直接base／阻擋1 | #347 分支current ref（Git及API git/ref同值）=`8bb0359331365c6f3a96872620427cf7847fcb50`；相對新E **behind3／ahead29**。REST PR物件base.sha另回歷史快照`2e8a6ed20325aa4842dcd0f89eacd598662be598`，相對它**behind2／ahead29**；兩種身分分開，原審查behind2保留。#343→#346→#347仍未修鏈，一般merge及逐leaf重審待鏈閉合 |
 | 最新隔離候選（尚未採入產品） | `codex/geo300-consumer-scope-20261028` @ `8b128aa7bf53b41b493dd3a0bee49f0d53391254`；K有序scope／完整hash重用、H未使用raw facts延後。9ac來源120項119過1個新測試定位錯誤，8b只修唯一anchor後新7全過、三項具名撤回0/1/0；H9與其餘產品/測試不變。172完整有序圖已exit0。原新fixture/anchor紅均保留，未說一次完整120綠 |
 | 候選3949真512 load | `3949deb9e565a9e5aeca5bc475ec646e77cc6546`，261.840563475秒、exit0、RSS222088KiB、原placed_geometry過；stdout與舊F2/C全等。只有單個load，不冒8b或完整H7結果 |
-| 候選8b完整H7 | **正在實跑，尚無終態**；00:12:43Z起，固定`8b128aa7bf53b41b493dd3a0bee49f0d53391254`，原八項整suite1200秒/每batch600/stack16MiB。原run_all.run_process及kill_tree控制整套時限，遠端checkpoint時間也計入；不延長或取最好樣本 |
+| 候選8b完整H7 | **未通過，原1200秒逾時**；00:12:43–00:32:43Z，固定`8b128aa7bf53b41b493dd3a0bee49f0d53391254`，1200.016299009秒、timed_out=true、child exit=null／外層1。7方法印ok，第8方法的第二512 canonical未完成；沒有完整unittest總結。不以各batch600內當整套綠 |
+| 候選8b已完成512批次 | load256.109964／251.966908、sequential＋I8a真確認/history273.936417、第一次canonical285.428571秒均exit0；第二canonical受原aggregate期限中止，不移標、不丟棄原紅 |
 | 原B 512 placed load | 真timeout600.013933527秒、exit-9、wait4 RSS279492KiB；兩份歷史timeout也都在initial load，不冒稱replay/history各自已執行逾時 |
 | F2正式512 load | **已實跑**482.595614208秒、exit0、wait4 RSS251460KiB；原幾何/ID/definition hash/reference斷言通過 |
 | F2 canonical replay | **已實跑**500.587198156秒及529.473388700秒、均exit0，RSS256668／256564KiB；原第一方法全數斷言通過 |
@@ -55,3 +56,5 @@ TMPDIR=/dev/shm/pr348-run-temp python3 -B /dev/shm/pr348-run-formal-v4.py --root
 [最新候選原件](https://github.com/ZhiQiYang/geometry-axiom/tree/2b9b9086470b5abb30383f7617cc51c737c123ec/evidence/geo300-capacity512-20261024/hk-candidate-8b128aa7)：6671檔，RAW 5,298,656bytes，SHA256 `b9c259b159cf98b98450edef410b6369d4bb8a4e0ad613af6dae2ea459fe6818`。一次N128配對3949 5.134406→8b 4.933180秒，原流相同；只診斷，不外推正式512。原f580圖／各效能樣本保持歷史execution。
 
 [3949真512載入原件](https://github.com/ZhiQiYang/geometry-axiom/tree/a6e20eb481cf8a5822ce225e68f73cb6f994ac95/evidence/geo300-capacity512-20261024/scope-load-3949deb9)：RAW 1,066,380bytes，SHA256 `e6908d2924052c8ce397d8cae07f61bb3445d00e7c5591613008df66cbff9a23`；261.840563秒的原600限制沒有變。現在workspace233472B不足原400KiB文字規劃，所以完成batch改推獨立receipts branch並GitHub blob實bytes讀回；v5工具前置紅、v6小history smoke綠皆保留。真/tmp64MiB、發布64MiB reserve、mount/quota不變，未刪未知快取。這是持久化安排，不是降低產品驗收。
+
+[完整H7原逾時與一次診斷原件](https://github.com/ZhiQiYang/geometry-axiom/tree/825a13ac6691017a6a2603ff517537086a77b0e5/evidence/geo300-capacity512-20261024/h7-timeout-8b128aa7)：624檔、RAW 1,817,365bytes，SHA256 `2f90abe520fb146525e16516c46573fc02fbba503300044afd7193d6fd62a268`。含原ELF、完整已取得流、pending008與outer1200終態；沒有原件的退出碼明列unknown。逐batch遠端checkpoint末head `fde57aa157f4bc7ce9087bdeff19e71bedc01c6d`。本候選仍未採入；後續僅用真512 profile定位產品成本，原600/1200/35分鐘、I33與全斷言不變。
