@@ -125,6 +125,8 @@ typedef struct {
         uint32_t id,pose_id,placement;
         /* Contact keeps only its successful three-field decode; its key is independent of the full anchor. */
         bool contact_valid;uint32_t contact_id;
+        /* Optional graph ordinals, revalidated against complete source keys. */
+        size_t placement_node_hint,footprint_node_hint,definition_node_hint;
         WoodMemberPlacementContact contact;
         WoodMemberPlacement anchor;
         WoodMemberDefinition definition;

@@ -1,0 +1,32 @@
+{
+  "schema": "independent-issue128-p2-actual-peer/1",
+  "source_sha": "324034812bb6effca68e0413bc0468595337b317",
+  "checks_total": 621,
+  "failed_checks": 0,
+  "findings": [],
+  "suite_methods": 13,
+  "suite_skip": 0,
+  "compiler_count": 93,
+  "original_controls": {
+    "count": 10,
+    "actual_scope": "baseline0 and normal named assertion1; per-control restoration not claimed"
+  },
+  "new_controls": {
+    "count": 4,
+    "actual_exits": [
+      0,
+      1,
+      0
+    ]
+  },
+  "whole_optimization_withdrawal": "Exact entire original pre-P2 product bytes compiled; restored exact candidate bytes independently recompiled.",
+  "configured_native_jsonl_missing": true,
+  "metadata_notes": [
+    "Configured native_execution_log did not materialize; publish actual observer paths and distinguish real cleanup build-log."
+  ],
+  "limitations": [
+    "No subject rerun, global ledger, architecture, full native/browser or wall-clock performance verification.",
+    "Original captured text is UTF-8 retained text, not hidden pre-decode pipe bytes.",
+    "The pending archive publication needs its own roundtrip review."
+  ]
+}

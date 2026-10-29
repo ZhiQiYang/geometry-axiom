@@ -1,0 +1,2696 @@
+{
+  "evidence_sha": "6d9d46e8d16af75351924c6d47a078d3eb647cc0",
+  "body_sha": "ca0784cc9f374164bfaf08f22d6bdcfd7489628c",
+  "product_sha": "324034812bb6effca68e0413bc0468595337b317",
+  "checks_total": 658,
+  "failed_checks": 0,
+  "checks": [
+    {
+      "name": "source-binding",
+      "passed": true
+    },
+    {
+      "name": "archive-pin",
+      "passed": true
+    },
+    {
+      "name": "archive-public-bytes",
+      "passed": true
+    },
+    {
+      "name": "322-members",
+      "passed": true
+    },
+    {
+      "name": "member-set",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/DRAFT.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/DRAFT.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/INDEX.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/INDEX.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/PRODUCT_ONLY.patch",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/PRODUCT_ONLY.patch",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/R10-original-comment.md",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/R10-original-comment.md",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/TEST_PLAN.md",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/TEST_PLAN.md",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/after/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/after/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/apply-check/geometry-templates/woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/apply-check/geometry-templates/woodworking/native/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/before/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/before/panel_layout.c",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/capture/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/capture/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/formula-execution/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/formula-execution/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/formula-execution/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/formula-execution/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/formula-execution/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/formula-execution/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/formula-execution/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/formula-execution/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/formula-execution/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/formula-execution/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/formula-execution/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/formula-execution/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/formula-execution/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/formula-execution/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/formula_probe.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/formula_probe.py",
+      "passed": true
+    },
+    {
+      "name": "regular:product-draft/prepare_draft.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-draft/prepare_draft.py",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/COMPANION.patch",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/COMPANION.patch",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/MANIFEST.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/MANIFEST.json",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/README.md",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/README.md",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/before/tests/geo261_panel_harness.c",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/before/tests/geo261_panel_harness.c",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/before/tests/test_geo261_panel_native.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/before/tests/test_geo261_panel_native.py",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/candidate/tests/geo261_panel_harness.c",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/candidate/tests/geo261_panel_harness.c",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/candidate/tests/test_geo261_panel_native.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/candidate/tests/test_geo261_panel_native.py",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/history-v1/COMPANION.patch",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/history-v1/COMPANION.patch",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/history-v1/MANIFEST.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/history-v1/MANIFEST.json",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/history-v1/README.md",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/history-v1/README.md",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/history-v1/candidate/tests/geo261_panel_harness.c",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/history-v1/candidate/tests/geo261_panel_harness.c",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/history-v1/candidate/tests/test_geo261_panel_native.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/history-v1/candidate/tests/test_geo261_panel_native.py",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/history-v1/prepare_companion.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/history-v1/prepare_companion.py",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-draft/prepare_companion.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-draft/prepare_companion.py",
+      "passed": true
+    },
+    {
+      "name": "regular:product-peer/REVIEW.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-peer/REVIEW.json",
+      "passed": true
+    },
+    {
+      "name": "regular:product-peer/review.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:product-peer/review.py",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-peer/REVIEW.before-print-pattern-correction.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-peer/REVIEW.before-print-pattern-correction.json",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-peer/REVIEW.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-peer/REVIEW.json",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-peer/review.before-print-pattern-correction.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-peer/review.before-print-pattern-correction.py",
+      "passed": true
+    },
+    {
+      "name": "regular:companion-peer/review.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:companion-peer/review.py",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:private-checkout/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:private-checkout/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:initial-source-publication/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:initial-source-publication/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "regular:source-publication/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original-pin:source-publication/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "regular:publication-tools/create_checkout.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:publication-tools/create_checkout.py",
+      "passed": true
+    },
+    {
+      "name": "regular:publication-tools/commit_source.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:publication-tools/commit_source.py",
+      "passed": true
+    },
+    {
+      "name": "regular:publication-tools/finish_source_commit.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:publication-tools/finish_source_commit.py",
+      "passed": true
+    },
+    {
+      "name": "regular:publication-tools/package_evidence.py",
+      "passed": true
+    },
+    {
+      "name": "original-pin:publication-tools/package_evidence.py",
+      "passed": true
+    },
+    {
+      "name": "E-source-parent",
+      "passed": true
+    },
+    {
+      "name": "E-evidence-only",
+      "passed": true
+    },
+    {
+      "name": "public-body-pin",
+      "passed": true
+    },
+    {
+      "name": "request-exact-fivefields",
+      "passed": true
+    },
+    {
+      "name": "request-own-head-base",
+      "passed": true
+    },
+    {
+      "name": "request-body-ref",
+      "passed": true
+    },
+    {
+      "name": "unique-current-state",
+      "passed": true
+    },
+    {
+      "name": "explicit-unrun-native-controls-ledger-architecture",
+      "passed": true
+    },
+    {
+      "name": "preserved-preparation-failure",
+      "passed": true
+    }
+  ],
+  "git_reads": [
+    {
+      "argv": [
+        "show",
+        "6d9d46e8d16af75351924c6d47a078d3eb647cc0:evidence/issue128-empty-panel-rows-20261024/RAW_INDEX.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "3980f41717f09f71dcd112cd88a9a7d01d4f676205dcec835e3f152f03fe7a76",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "show",
+        "6d9d46e8d16af75351924c6d47a078d3eb647cc0:evidence/issue128-empty-panel-rows-20261024/original-draft-formula-review-and-source-publication.tar.gz"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e1149775a43e15da5b7de1f887d6491248b12c0d3af5ba084c35346b38609cc1",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "rev-parse",
+        "6d9d46e8d16af75351924c6d47a078d3eb647cc0^"
+      ],
+      "exit": 0,
+      "stdout_sha256": "3587bc091e216991102bbbca6fdebe1b965ea9ecae145d4f11cc41ec5bd0b74e",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "diff-tree",
+        "--no-commit-id",
+        "--name-only",
+        "-r",
+        "6d9d46e8d16af75351924c6d47a078d3eb647cc0"
+      ],
+      "exit": 0,
+      "stdout_sha256": "076e7b8a52928bb3922c753f0472fbf30197d8fb7ff434cea36ce54dd0b2714b",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "show",
+        "ca0784cc9f374164bfaf08f22d6bdcfd7489628c:PR_BODY.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "375a7747bc06267bd90d4b73dea2aca3340bab2a67fdedea4ca58f362dcc7cf5",
+      "stderr": ""
+    }
+  ],
+  "scope": "Read-only static publication review; no source edits, C, unittest or formal runtime.",
+  "limitations": [
+    "Archive roundtrip and assertions in documentation are checked; pending C/performance results are not inferred."
+  ],
+  "created_utc": "2026-10-24T01:12:18.993216+00:00"
+}

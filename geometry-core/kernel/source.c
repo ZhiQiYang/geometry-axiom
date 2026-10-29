@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct GeoSourceEdgeScope GeoSourceEdgeScope;
 typedef struct {
     GeoSourceRef source;
     GeoSourceDescriptor descriptor;
@@ -12,6 +13,11 @@ typedef struct {
     size_t edge_consumer;
     unsigned edge_kinds;
     bool described;
+    /* Candidate-local provider call frames may prove their own membership;
+     * no mark survives the frame that borrowed it. */
+    GeoSourceEdgeScope *edge_scope;
+    unsigned edge_scope_kinds;
+    bool outgoing_seen;
 } GeoSourceNode;
 struct GeoEvalContext {
     uint64_t candidate_id,base_revision;
@@ -21,14 +27,78 @@ struct GeoEvalContext {
     size_t node_count, node_capacity;
     uint32_t *node_index;
     size_t node_index_capacity;
-    size_t node_hint[256];
+    size_t node_hint[4096];
     GeoSourceEdge *edges;
     size_t edge_count, edge_capacity;
     uint32_t *edge_index;
     size_t edge_index_capacity;
     size_t active;
+    GeoSourceEdgeScope *edge_scope;
+    bool edge_index_dirty;
     bool started, sealed;
 };
+typedef struct {
+    size_t source;
+    GeoSourceEdgeScope *previous;
+    unsigned kinds;
+} GeoSourceEdgeUndo;
+struct GeoSourceEdgeScope {
+    GeoSourceEdgeScope *previous;
+    size_t consumer,count,capacity;
+    GeoSourceEdgeUndo *undo;
+    GeoSourceEdgeUndo inline_undo[4];
+    bool complete;
+};
+/* Only a consumer with no previous outgoing edges starts with an empty set.
+ * Nested calls borrow source-node marks and restore them on every return.
+ * Retry failures keep their prior public edges and use the complete index. */
+static void geo_source_scope_begin(GeoEvalContext *ctx,GeoSourceEdgeScope *scope,size_t consumer)
+{
+    scope->previous=ctx->edge_scope;scope->consumer=consumer;
+    scope->count=0;scope->capacity=sizeof scope->inline_undo/sizeof *scope->inline_undo;
+    scope->undo=scope->inline_undo;scope->complete=!ctx->nodes[consumer]->outgoing_seen;
+    ctx->edge_scope=scope;
+}
+static bool geo_source_scope_reserve(GeoSourceEdgeScope *scope)
+{
+    if(scope->count<scope->capacity)return true;
+    if(scope->capacity>SIZE_MAX/2)return false;
+    size_t next=scope->capacity*2;
+    if(next>SIZE_MAX/sizeof *scope->undo)return false;
+    GeoSourceEdgeUndo *grown;
+    if(scope->undo==scope->inline_undo){
+        grown=malloc(next*sizeof *grown);
+        if(grown)memcpy(grown,scope->undo,scope->count*sizeof *grown);
+    }else grown=realloc(scope->undo,next*sizeof *grown);
+    if(!grown)return false;
+    scope->undo=grown;scope->capacity=next;return true;
+}
+static void geo_source_scope_record(GeoEvalContext *ctx,GeoSourceEdgeScope *scope,size_t source,unsigned kind)
+{
+    GeoSourceNode *node=ctx->nodes[source];
+    if(node->edge_scope==scope){node->edge_scope_kinds|=kind;return;}
+    /* Optional storage failure disables this hint, never the successful edge.
+     * Unrecorded marks must not be published: unwind still owns its prefix. */
+    if(!geo_source_scope_reserve(scope)){scope->complete=false;return;}
+    scope->undo[scope->count++]=(GeoSourceEdgeUndo){source,node->edge_scope,node->edge_scope_kinds};
+    node->edge_scope=scope;node->edge_scope_kinds=kind;
+}
+static void geo_source_scope_end(GeoEvalContext *ctx,GeoSourceEdgeScope *scope)
+{
+    while(scope->count){
+        GeoSourceEdgeUndo old=scope->undo[--scope->count];GeoSourceNode *node=ctx->nodes[old.source];
+        node->edge_scope=old.previous;node->edge_scope_kinds=old.kinds;
+    }
+    if(scope->undo!=scope->inline_undo)free(scope->undo);
+    ctx->edge_scope=scope->previous;
+}
+static void geo_source_scope_invalidate(GeoEvalContext *ctx,size_t consumer)
+{
+    /* Conservative for an out-of-scope write into any live consumer; a
+     * partially disabled child must not leave a parent's proof stale. */
+    for(GeoSourceEdgeScope *scope=ctx->edge_scope;scope;scope=scope->previous)
+        if(scope->consumer==consumer)scope->complete=false;
+}
 /* 索引只保存插入序號加一，零為空槽；陣列仍是唯一的列舉順序。
  * 可選槽用 32 位序號；超出可表示範圍或配置失敗時退回線性查找，
  * ordered 陣列及其 size_t 身分不變，不新增 CAPACITY/MEMORY 結果。 */
@@ -65,15 +135,16 @@ static bool geo_source_ref_equal(GeoSourceRef a,GeoSourceRef b)
 }
 static bool geo_source_edge_equal(GeoSourceEdge a,GeoSourceEdge b)
 {return a.consumer==b.consumer&&a.source==b.source&&a.kind==b.kind;}
-static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source)
+static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source,size_t *empty_slot,uint64_t hash)
 {
     if(ctx->node_index_capacity){
-        size_t mask=ctx->node_index_capacity-1,slot=(size_t)geo_source_node_hash(source)&mask;
+        size_t mask=ctx->node_index_capacity-1,slot=(size_t)hash&mask;
         while(ctx->node_index[slot]){
             size_t i=ctx->node_index[slot]-1;
             if(geo_source_ref_equal(ctx->nodes[i]->source,source))return i;
             slot=(slot+1)&mask;
         }
+        if(empty_slot)*empty_slot=slot;
     }else for(size_t i=0;i<ctx->node_count;++i)
         if(geo_source_ref_equal(ctx->nodes[i]->source,source))return i;
     return SIZE_MAX;
@@ -92,7 +163,7 @@ static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge,si
     return false;
 }
 /* 負載最多一半；新表建好才換入。失敗後舊表不完整，須改走線性搜尋。 */
-static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
+static void geo_source_index_append_at(GeoEvalContext *ctx,bool nodes,size_t empty_slot)
 {
     uint32_t **table=nodes?&ctx->node_index:&ctx->edge_index;
     size_t *capacity=nodes?&ctx->node_index_capacity:&ctx->edge_index_capacity;
@@ -105,6 +176,10 @@ static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
         uint32_t *fresh=calloc(next,sizeof *fresh);
         if(!fresh)goto fallback;
         free(*table);*table=fresh;*capacity=next;first=0;
+    }else if(empty_slot!=SIZE_MAX&&empty_slot<*capacity){
+        /* 身分查找已走到這個空槽；期間僅有必要的 node/key/array 配置，
+         * 沒有 provider 回呼或索引改動。原序號守門先跑，擴表仍重建全表。 */
+        (*table)[empty_slot]=(uint32_t)count;return;
     }
     for(size_t i=first;i<count;++i){
         uint64_t hash=nodes?geo_source_node_hash(ctx->nodes[i]->source):geo_source_edge_hash(ctx->edges[i]);
@@ -115,6 +190,18 @@ static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
     return;
 fallback:
     free(*table);*table=NULL;*capacity=0;
+}
+/* 保留一般追加入口；沒有已驗空槽的邊及測試仍走原探測／降級。 */
+static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
+{geo_source_index_append_at(ctx,nodes,SIZE_MAX);}
+/* Scoped appends leave the public array authoritative. Rebuild the optional
+ * table only when a general lookup/insertion needs its complete prefix. */
+static void geo_source_edge_index_complete(GeoEvalContext *ctx)
+{
+    if(!ctx->edge_index_dirty)return;
+    free(ctx->edge_index);ctx->edge_index=NULL;ctx->edge_index_capacity=0;
+    if(ctx->edge_count)geo_source_index_append(ctx,false);
+    ctx->edge_index_dirty=false;
 }
 static void *geo_source_grow(void *data,size_t count,size_t *capacity,size_t item_size)
 {
@@ -152,6 +239,7 @@ static void geo_eval_clear(GeoEvalContext *ctx)
     ctx->provider_count=ctx->node_count=ctx->edge_count=0;
     ctx->node_capacity=ctx->edge_capacity=ctx->node_index_capacity=ctx->edge_index_capacity=0;
     ctx->active=SIZE_MAX;ctx->started=false;ctx->sealed=false;
+    ctx->edge_scope=NULL;ctx->edge_index_dirty=false;
 }
 void geo_eval_destroy(GeoEvalContext *ctx)
 {if(ctx){geo_eval_clear(ctx);free(ctx);}}
@@ -187,15 +275,16 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
 {
     if(!ctx||!index||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
     ctx->started=true;
-    /* 只快取既有身分的插入序號；碰撞仍完整比對 K 持有的鍵。 */
-    size_t slot=(size_t)source.provider^source.key_size;
-    if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}
-    slot&=255;
+    /* 僅以完整 hash 選既有提示槽；命中仍比對 provider、大小與全部鍵。
+     * 同次 miss 將 hash 傳入原查找，不再重算；不跨呼叫借用 caller key。 */
+    uint64_t hash=geo_source_node_hash(source);
+    size_t slot=(size_t)hash&(sizeof ctx->node_hint/sizeof *ctx->node_hint-1);
     size_t hint=ctx->node_hint[slot];
     if(hint&&hint<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[hint-1]->source,source)){
         *index=hint-1;return GEO_SOURCE_OK;
     }
-    size_t found=geo_source_find_node(ctx,source);
+    size_t empty_slot=SIZE_MAX;
+    size_t found=geo_source_find_node(ctx,source,&empty_slot,hash);
     if(found!=SIZE_MAX){ctx->node_hint[slot]=found+1;*index=found;return GEO_SOURCE_OK;}
     size_t provider=0;while(provider<ctx->provider_count&&ctx->providers[provider].token!=source.provider)++provider;
     if(provider==ctx->provider_count)return GEO_SOURCE_MISSING;
@@ -208,7 +297,7 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
     if(!next){free((void *)source.key);free(node);return GEO_SOURCE_MEMORY;}
     ctx->nodes=next;node->source=source;node->provider=provider;node->status=GEO_SOURCE_OK;
     *index=ctx->node_count;next[ctx->node_count++]=node;
-    geo_source_index_append(ctx,true);ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
+    geo_source_index_append_at(ctx,true,empty_slot);ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
 }
 static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDependencyKind kind)
 {
@@ -218,13 +307,19 @@ static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDepe
     GeoSourceNode *node=ctx->nodes[source];
     unsigned kind_bit=1u<<(unsigned)kind;
     size_t empty_slot=SIZE_MAX;
+    GeoSourceEdgeScope *scope=ctx->edge_scope;
+    bool scoped=scope&&scope->consumer==ctx->active&&scope->complete;
+    if(scoped&&node->edge_scope==scope&&(node->edge_scope_kinds&kind_bit))return GEO_SOURCE_OK;
     /* 每個 source 只記已成功追加的最大 consumer 及其 kind。
      * 更大的 consumer 尚無邊；同一個 consumer 可直接判斷 kind；
      * 巢狀回呼返回較早 consumer 時仍由完整索引判斷，不省略任何邊。 */
-    if(node->edge_kinds&&ctx->active<node->edge_consumer){
-        if(geo_source_find_edge(ctx,edge,&empty_slot))return GEO_SOURCE_OK;
-    }else if(node->edge_kinds&&ctx->active==node->edge_consumer&&
-             (node->edge_kinds&kind_bit))return GEO_SOURCE_OK;
+    if(!scoped){
+        if(node->edge_kinds&&ctx->active<node->edge_consumer){
+            geo_source_edge_index_complete(ctx);
+            if(geo_source_find_edge(ctx,edge,&empty_slot))return GEO_SOURCE_OK;
+        }else if(node->edge_kinds&&ctx->active==node->edge_consumer&&
+                 (node->edge_kinds&kind_bit))return GEO_SOURCE_OK;
+    }
     if(ctx->edge_count==SIZE_MAX/sizeof *ctx->edges)return GEO_SOURCE_MEMORY;
     GeoSourceEdge *next=geo_source_grow(ctx->edges,ctx->edge_count,&ctx->edge_capacity,sizeof *next);
     if(!next)return GEO_SOURCE_MEMORY;
@@ -232,9 +327,20 @@ static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDepe
     /* 查找已取得空槽；兩步間只有 edges 配置，不會改動索引或呼叫 provider。
      * 不需擴表時直接寫入同槽，避免對新邊再雜湊與探測一次。
      * 無索引、擴表及配置失敗的降級仍由原路徑處理。 */
-    if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)
-        ctx->edge_index[empty_slot]=(uint32_t)ctx->edge_count;
-    else geo_source_index_append(ctx,false);
+    ctx->nodes[ctx->active]->outgoing_seen=true;
+    if(scoped){
+        if(!ctx->edge_index_dirty){
+            free(ctx->edge_index);ctx->edge_index=NULL;ctx->edge_index_capacity=0;
+        }
+        ctx->edge_index_dirty=true;
+        geo_source_scope_record(ctx,scope,source,kind_bit);
+    }else{
+        geo_source_scope_invalidate(ctx,ctx->active);
+        if(ctx->edge_index_dirty)geo_source_edge_index_complete(ctx);
+        else if(empty_slot!=SIZE_MAX&&ctx->edge_count<=UINT32_MAX&&ctx->edge_count<=ctx->edge_index_capacity/2)
+            ctx->edge_index[empty_slot]=(uint32_t)ctx->edge_count;
+        else geo_source_index_append(ctx,false);
+    }
     /* 必須晚於必要的 edges 配置／追加；MEMORY 不能留下不存在的邊提示。 */
     if(!node->edge_kinds||ctx->active>node->edge_consumer){
         node->edge_consumer=ctx->active;node->edge_kinds=kind_bit;
@@ -270,7 +376,7 @@ GeoSourceStatus geo_eval_describe(GeoEvalContext *ctx,GeoSourceRef source,GeoSou
     if(!ctx||!out||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
     size_t index=0;
     if(ctx->sealed){
-        index=geo_source_find_node(ctx,source);
+        index=geo_source_find_node(ctx,source,NULL,geo_source_node_hash(source));
         if(index==SIZE_MAX||!ctx->nodes[index]->described)return GEO_SOURCE_INVALID;
     }else{
         GeoSourceStatus status=geo_source_node(ctx,source,&index);
@@ -294,12 +400,25 @@ GeoSourceStatus geo_eval_depend(GeoEvalContext *ctx,GeoSourceRef source,GeoDepen
     if(result!=GEO_SOURCE_OK)return result;
     return geo_source_edge(ctx,index,kind);
 }
+GeoSourceStatus geo_eval_depend_hint(GeoEvalContext *ctx,GeoSourceRef source,GeoDependencyKind kind,size_t *hint)
+{
+    if(!hint)return geo_eval_depend(ctx,source,kind);
+    if(!ctx||ctx->sealed||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
+    size_t index=*hint;
+    if(index&&index<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[index-1]->source,source))
+        return geo_source_edge(ctx,index-1,kind);
+    GeoSourceStatus result=geo_source_node(ctx,source,&index);
+    if(result!=GEO_SOURCE_OK)return result;
+    result=geo_source_edge(ctx,index,kind);
+    if(result==GEO_SOURCE_OK)*hint=index+1;
+    return result;
+}
 GeoSourceStatus geo_eval_source(GeoEvalContext *ctx,GeoSourceRef source,GeoDependencyKind kind,GeoSourceValue *out)
 {
     if(!out)return GEO_SOURCE_INVALID;
     if(ctx&&ctx->sealed){
         if((source.key_size&&!source.key)||kind<GEO_DEPENDENCY_VALUE_REQUIRED||kind>GEO_DEPENDENCY_EVALUATE_BEFORE)return GEO_SOURCE_INVALID;
-        size_t i=geo_source_find_node(ctx,source);
+        size_t i=geo_source_find_node(ctx,source,NULL,geo_source_node_hash(source));
         if(i==SIZE_MAX||ctx->nodes[i]->state!=GEO_NODE_VALID)return GEO_SOURCE_INVALID;
         *out=ctx->nodes[i]->value;return GEO_SOURCE_OK;
     }
@@ -318,7 +437,9 @@ GeoSourceStatus geo_eval_source(GeoEvalContext *ctx,GeoSourceRef source,GeoDepen
     }
     if(!geo_source_descriptor_valid(&node->descriptor))return GEO_SOURCE_INVALID;
     size_t previous=ctx->active;ctx->active=index;node->state=GEO_NODE_ACTIVE;
+    GeoSourceEdgeScope scope;geo_source_scope_begin(ctx,&scope,index);
     GeoSourceValue value={0};bool ok=provider->evaluate(provider->candidate_state,ctx,&node->source,&value);
+    geo_source_scope_end(ctx,&scope);
     ctx->active=previous;node->state=GEO_NODE_FAILED;node->status=GEO_SOURCE_FAILED;
     if(!ok)return node->status;
     if(!geo_source_value_matches(&node->descriptor,&value)){node->status=GEO_SOURCE_INVALID;return node->status;}

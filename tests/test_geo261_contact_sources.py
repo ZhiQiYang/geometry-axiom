@@ -37,8 +37,8 @@ CONTROLS = (
     ("policy-bypass", "contact_sources", "graph", "contact-collection-runs-real-facts-and-policy",
      "size_t count=wood_contact_collect_stops(&world,q->request.along_v,q->request.exclude,faces,q->cap);", "size_t count=0;"),
     ("feature-edge", "contact_sources", "graph", "contact-feature-requires-collection-value",
-     "geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)",
-     "geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_EVALUATE_BEFORE)"),
+     "geo_eval_depend_hint(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED,&collection_hint)",
+     "geo_eval_depend_hint(graph,collection_ref,GEO_DEPENDENCY_EVALUATE_BEFORE,&collection_hint)"),
     ("query-reuse", "contact_sources", "evolving", "contact-evolving-placed-subset-is-fresh",
      "q->id=++s->sequence;", "q->id=1;++s->sequence;"),
     ("hidden-coordinates", "contact_sources", "feature-values", "contact-returned-feature-segment-consumed",
@@ -63,10 +63,10 @@ CONTROLS = (
 # valid collection. Reversing evaluation preserves the output array indices,
 # but must still change the observable dependency insertion sequence.
 COLLECTION_CACHE_CONTROLS = (
-    ("second-feature-edge", "if(geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;",
-     "if(index!=1&&geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK)return false;"),
-    ("second-feature-kind", "geo_eval_depend(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED)",
-     "geo_eval_depend(graph,collection_ref,index==1?GEO_DEPENDENCY_EVALUATE_BEFORE:GEO_DEPENDENCY_VALUE_REQUIRED)"),
+    ("second-feature-edge", "if(geo_eval_depend_hint(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED,&collection_hint)!=GEO_SOURCE_OK)return false;",
+     "if(index!=1&&geo_eval_depend_hint(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED,&collection_hint)!=GEO_SOURCE_OK)return false;"),
+    ("second-feature-kind", "geo_eval_depend_hint(graph,collection_ref,GEO_DEPENDENCY_VALUE_REQUIRED,&collection_hint)",
+     "geo_eval_depend_hint(graph,collection_ref,index==1?GEO_DEPENDENCY_EVALUATE_BEFORE:GEO_DEPENDENCY_VALUE_REQUIRED,&collection_hint)"),
     ("feature-evaluation-order", "for(size_t i=0;i<n;++i){GeoSourceValue value;",
      "for(size_t i=n;i-- > 0;){GeoSourceValue value;"),
 )
