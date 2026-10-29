@@ -1,3 +1,15 @@
+# #348 current state：8b候選各批600內；完整H7原1200逾時
+
+正式產品仍F2 `b595e55952d5d66de95024432e1b29bec7525e9b`／測試C `75481194f3b85a6b07e11896403633d7d0fa0d6f`。獨立候選 `8b128aa7bf53b41b493dd3a0bee49f0d53391254` 尚未採入。
+
+- 00:12:43–00:32:43Z原8方法H7實跑，1200.016299009秒超時，outer1；7方法印ok，最後canonical方法未完，**不是READY-TO-MERGE**。
+- 新512load256.109964／251.966908秒、sequential＋I8a確認/history273.936417秒、第一canonical285.428571秒皆0且原斷言過；第二canonical被aggregate期限中止，不能算通過。
+- 完整原件 `h7-timeout-8b128aa7/`，含待完008與原ELF，原600失敗/F2/C/前候選歷史不移標。172有序圖等價和先前具名撤回保持原execution。
+- 一次N128插裝診斷exit0：24548個exclude不同但其餘key完整相同；只證明可命中，不是新效能收據。生命週期靜態審查排除刪必要World重驗。下一步單次真512profile找剩餘產品成本。
+- 上游#347目前 `8bb0359331365c6f3a96872620427cf7847fcb50`，343→346→347未閉合。原review相對base behind2、目前ref比較behind3；新evidence提交只改ahead。全ledger/census/architecture/native/browser未完成，不合PR/main、不放寬守門。
+
+## 歷史檢查點（以下current-state字樣均為原當時紀錄）
+
 # #348 current state：512三路徑各批已綠；整套時限與上游鏈仍阻擋
 
 execution C `75481194f3b85a6b07e11896403633d7d0fa0d6f`，產品仍F2 `b595e55952d5d66de95024432e1b29bec7525e9b`；以下舊段落只保留歷史。

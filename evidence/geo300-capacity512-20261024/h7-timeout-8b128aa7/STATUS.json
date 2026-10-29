@@ -1,0 +1,175 @@
+{
+  "candidate_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+  "adopted_into_pr348": false,
+  "whole_h7": {
+    "command": [
+      "python3",
+      "-B",
+      "/dev/shm/pr348-run-formal-remote-v6.py",
+      "--root",
+      "/dev/shm/pr348-diagnostic-c754",
+      "--out",
+      "/dev/shm/pr348-h7-8b128aa7",
+      "--durable",
+      "/dev/shm/pr348-scope-h7-receipts/evidence/geo300-capacity512-20261024/scope-h7-3949deb9/final-8b128aa7",
+      "tests.test_geo261_timber_capacity_host"
+    ],
+    "source_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+    "started_utc": "2026-10-29T00:12:43Z",
+    "pid": 275034,
+    "suite_timeout_seconds": 1200,
+    "per_batch_timeout_seconds": 600,
+    "stack_bytes": 16777216,
+    "guards": "Original run_all.run_process and kill_tree; receipt publication time is included, no deadline extension",
+    "capacity_before": {
+      "/workspace": {
+        "total": 33770192896,
+        "used": 32035196928,
+        "free": 233472
+      },
+      "/tmp": {
+        "total": 17871880192,
+        "used": 17565110272,
+        "free": 306769920
+      },
+      "/dev/shm": {
+        "total": 17871880192,
+        "used": 2878488576,
+        "free": 14993391616
+      }
+    },
+    "memory_before": {
+      "current": 24190279680,
+      "max": 34359738368
+    },
+    "exit": null,
+    "timed_out": true,
+    "seconds": 1200.0162990093231,
+    "reap_note": "已終止整棵行程樹（killpg SIGKILL）",
+    "finished_utc": "2026-10-29T00:32:43Z"
+  },
+  "outer_script_exit_by_code": 1,
+  "batches": [
+    {
+      "batch": "batch-000",
+      "seconds": 0.1522844270002679,
+      "exit": 0,
+      "memory": {
+        "maxrss_kib": 101132,
+        "user_seconds": 0.09691699999999999,
+        "system_seconds": 0.052901
+      },
+      "complete": true,
+      "stdout_sha256": "7bbe36de5a4789869e344367c9b71da44cedc6157b1153e98bcce09114fc1107",
+      "stderr_sha256": "5808879521575b194b054c15aa8e090cb5c6b392aa29cfdb68921cfe615f9e49"
+    },
+    {
+      "batch": "batch-001",
+      "seconds": 256.1099637630032,
+      "exit": 0,
+      "memory": {
+        "maxrss_kib": 222152,
+        "user_seconds": 250.916806,
+        "system_seconds": 5.153953
+      },
+      "complete": true,
+      "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "batch": "batch-002",
+      "seconds": 273.9364173120048,
+      "exit": 0,
+      "memory": {
+        "maxrss_kib": 426388,
+        "user_seconds": 268.722897,
+        "system_seconds": 4.965032
+      },
+      "complete": true,
+      "stdout_sha256": "cd4de854071f7a76cb87e87dc844ef66b7b2d254a0b7f98de9fcf1f8d5a0b56a",
+      "stderr_sha256": "7f6d90b39fd5b9e25e2601fd558ffa7ee3668fd944bab24299137ef6f6457721"
+    },
+    {
+      "batch": "batch-003",
+      "seconds": 0.9470091219991446,
+      "exit": 0,
+      "memory": {
+        "maxrss_kib": 72484,
+        "user_seconds": 0.8832479999999999,
+        "system_seconds": 0.062511
+      },
+      "complete": true,
+      "stdout_sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "batch": "batch-004",
+      "seconds": 1.044994427000347,
+      "exit": 0,
+      "memory": {
+        "maxrss_kib": 77060,
+        "user_seconds": 0.995338,
+        "system_seconds": 0.048438999999999996
+      },
+      "complete": true,
+      "stdout_sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "batch": "batch-005",
+      "seconds": 1.0153680079965852,
+      "exit": 0,
+      "memory": {
+        "maxrss_kib": 76984,
+        "user_seconds": 0.9588519999999999,
+        "system_seconds": 0.05479
+      },
+      "complete": true,
+      "stdout_sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "batch": "batch-006",
+      "seconds": 251.96690809400025,
+      "exit": 0,
+      "memory": {
+        "maxrss_kib": 222000,
+        "user_seconds": 246.996853,
+        "system_seconds": 4.924077
+      },
+      "complete": true,
+      "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "batch": "batch-007",
+      "seconds": 285.4285711459961,
+      "exit": 0,
+      "memory": {
+        "maxrss_kib": 227564,
+        "user_seconds": 279.661704,
+        "system_seconds": 5.675531
+      },
+      "complete": true,
+      "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "batch": "batch-008",
+      "seconds": null,
+      "exit": null,
+      "memory": null,
+      "complete": false,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    }
+  ],
+  "passed_methods_observed": 7,
+  "total_methods": 8,
+  "final_unittest_summary_present": false,
+  "last_batch_status": "008 interrupted by original aggregate1200; no per-batch600 verdict",
+  "remote_checkpoint_head": "fde57aa157f4bc7ce9087bdeff19e71bedc01c6d",
+  "archive_bytes": 1817365,
+  "archive_sha256": "2f90abe520fb146525e16516c46573fc02fbba503300044afd7193d6fd62a268",
+  "files": 624
+}
