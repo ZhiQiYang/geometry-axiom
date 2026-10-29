@@ -1,10 +1,11 @@
 'use strict';
 /* Fixed real pre-PR353 archive reader. Never fall back to today's implementation.
- * The optional root supplies original files when this checkout is shallow/offline.
+ * The fixture travels with the runner snapshot; Git history and inherited env
+ * are not needed. An explicit optional root must pass the same immutable checks.
  * Every source is checked against the immutable Git blob before execution.
  */
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const {createHash}=require('node:crypto'),{execFileSync}=require('node:child_process');
+const {createHash}=require('node:crypto'),{brotliDecompressSync}=require('node:zlib');
 const Module=require('node:module');
 const LEGACY_COMMIT='405f8c5e1a637a16cbe47470faf5ae1fa02b8676';
 const LEGACY_BLOBS=Object.freeze({
@@ -16,13 +17,31 @@ const LEGACY_BLOBS=Object.freeze({
   "geometry-web/evidence-links.js": "c2ce6a6c6fdcab2ffbdd7aa495282f72fb28b728",
   "geometry-web/reference-display.js": "8210d4428e44a9b8edf0dd4c4073ba6667076f0e"
 });
+function readLegacyFixture(){
+  const file=path.join(__dirname,'fixtures/pr353-legacy-reader-405f8c5e.json');
+  try{
+    const fixture=JSON.parse(fs.readFileSync(file,'utf8'));
+    if(fixture?.schema!=='pr353-legacy-reader-fixture/1'||fixture.commit!==LEGACY_COMMIT||
+       fixture.encoding!=='brotli+base64'||!Array.isArray(fixture.payload)||!fixture.payload.length||
+       !fixture.payload.every(part=>typeof part==='string'&&part.length))throw Error('invalid fixture header');
+    const encoded=fixture.payload.join(''),packed=Buffer.from(encoded,'base64');
+    if(packed.toString('base64')!==encoded)throw Error('invalid fixture base64');
+    const sources=JSON.parse(brotliDecompressSync(packed,{maxOutputLength:2*1024*1024}).toString('utf8'));
+    if(!sources||typeof sources!=='object'||Array.isArray(sources)||
+       Object.keys(sources).length!==Object.keys(LEGACY_BLOBS).length||
+       !Object.keys(LEGACY_BLOBS).every(name=>Object.hasOwn(sources,name)&&typeof sources[name]==='string')){
+      throw Error('fixture must contain exactly the seven fixed source blobs');
+    }
+    return sources;
+  }catch(error){throw Error('PR353 legacy reader precondition: fixed fixture unavailable or invalid: '+file+'. '+error.message);}
+}
 function readLegacySources() {
-  const checkout=path.resolve(__dirname,'..'),provided=process.env.GEOMETRY_PR353_LEGACY_ROOT;
+  const provided=process.env.GEOMETRY_PR353_LEGACY_ROOT,fixture=provided?null:readLegacyFixture();
   const sources={};
   for(const [file,expected]of Object.entries(LEGACY_BLOBS)){
     let bytes;
-    try { bytes=provided?fs.readFileSync(path.join(provided,file)):execFileSync('git',['show',LEGACY_COMMIT+':'+file],{cwd:checkout,maxBuffer:2*1024*1024,stdio:['ignore','pipe','pipe']}); }
-    catch(error){throw Error('PR353 legacy reader precondition: exact '+LEGACY_COMMIT+' source unavailable: '+file+'. Supply GEOMETRY_PR353_LEGACY_ROOT or fetch the fixed commit. '+error.message);}
+    try { bytes=provided?fs.readFileSync(path.join(provided,file)):Buffer.from(fixture[file],'utf8'); }
+    catch(error){throw Error('PR353 legacy reader precondition: exact '+LEGACY_COMMIT+' source unavailable: '+file+'. '+error.message);}
     const actual=createHash('sha1').update(Buffer.from('blob '+bytes.length+String.fromCharCode(0))).update(bytes).digest('hex');
     if(actual!==expected)throw Error('PR353 legacy reader precondition: Git blob mismatch for '+file+': '+actual+' != '+expected);
     sources[file]=bytes.toString('utf8');

@@ -47,7 +47,8 @@
     "geometry-web/grid_card_entry_mutations.json",
     "tests/test_pr353_pin_regressions.js",
     "tests/test_pr353_display_regressions.js",
-    "tests/pr353_legacy_reader.js"
+    "tests/pr353_legacy_reader.js",
+    "tests/fixtures/pr353-legacy-reader-405f8c5e.json"
   ],
   "mutations": [
     {
@@ -294,7 +295,7 @@
       "id": "p353_compat_drop_mixed_editor_capability",
       "case": "compat_mixed_roundtrip",
       "assertions": [
-        "COMPAT_MIXED_MATRIX"
+        "FORMAL_SAVE_FILE"
       ],
       "changes": [
         {
