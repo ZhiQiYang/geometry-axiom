@@ -304,6 +304,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
     'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',
+    'node:feature_attachments_vm': 'tests/test_feature_attachments_vm.js',
     'node:face_projection_lifecycle': 'tests/test_face_projection_lifecycle.js',
     'node:workspace_shell_history': 'tests/test_workspace_shell_history.js',
     'node:feedback_events': 'tests/test_feedback_events.js',

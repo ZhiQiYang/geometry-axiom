@@ -2,12 +2,12 @@
 (function (root, factory) {
   const api = factory(typeof module === "object" && module.exports ? require("./source-plane.js") : root.GeometrySourcePlane,
     typeof module === "object" && module.exports ? require("./evidence-links.js") : root.EvidenceLinks,
-    typeof module === "object" && module.exports ? require("./rule-case-data.js") : root.GeometryRuleCaseData);
+    typeof module === "object" && module.exports ? require("./rule-case-data.js") : root.GeometryRuleCaseData,
+    typeof module === "object" && module.exports ? require("./room-candidate-draft.js") : root.GeometryRoomCandidateDraft);
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.GeometryFeatureAttachments = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms, Evidence, Cases) {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms, Evidence, Cases, RoomCandidates) {
   "use strict";
-  const RoomCandidates = typeof module === "object" && module.exports ? require("./room-candidate-draft.js") : root.GeometryRoomCandidateDraft;
   const SCHEMA = "geometry-feature-attachments/1";
   const CASE_KIND=Cases.KIND, CASE_SCHEMA=Cases.SCHEMA;
   const GRID_SCHEMA = "grid-editor-draft/1", GRID_RULE_SCHEMA = "grid-editor-draft/2", GRID_KIND = "grid-draft";
