@@ -2738,7 +2738,7 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_PLACEMENTS  16
 #define WORLD_MAX_GUIDES      16
 #define WORLD_MAX_GRIDS       16
-#define WORLD_MAX_TIMBERS     64
+#define WORLD_MAX_TIMBERS     WOOD_MEMBER_CAPACITY
 #define WORLD_MAX_SPACES      GEO_ENCLOSURE_CAPACITY
 #define WORLD_MAX_RC          32
 #define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2 + WORLD_MAX_GRID_SYSTEMS + WORLD_MAX_GRID_BINDINGS + PARAM_CARD_MAX)
@@ -5773,10 +5773,23 @@ typedef struct {
     /* 0：不待補；1：補矩形及有效性；2：只補矩形，保留後續的 false。 */
     unsigned char pending;
 } AppContactRawSnapshot;
+/* Before the source resolver runs, W reads only this domain for its span
+ * extension guard. The resolver supplies the actual member facts at the
+ * original callback point; do not compute raw footprints that it replaces. */
+static void app_contact_domain_only(const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,AppContactFacts *facts)
+{
+    memset(&facts->world,0,sizeof facts->world);facts->world.placement_id=placement->id;
+    const SpaceBoundarySurface *effective=placement_effective_boundary(placement,boundary,&facts->effective);
+    facts->world.role_boundary=effective;
+    facts->world.region_count=placement->derived_fill_id?placement->component_count:1;
+    for(size_t c=0;c<facts->world.region_count;++c)facts->world.regions[c]=placement->derived_fill_id?&placement->components[c]:effective;
+}
 static void app_contact_facts_prepare(const World *world,const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,AppContactFacts *facts,AppContactRawSnapshot *raw)
 {
-    memset(facts,0,sizeof *facts);facts->world.placement_id=placement->id;
+    memset(&facts->world,0,sizeof facts->world);
+    memset(facts->members,0,world->wood.timber_count*sizeof *facts->members);facts->world.placement_id=placement->id;
     const SpaceBoundarySurface *effective=placement_effective_boundary(placement,boundary,&facts->effective);
     facts->world.role_boundary=effective;
     facts->world.region_count=placement->derived_fill_id?placement->component_count:1;
@@ -5878,8 +5891,13 @@ static size_t stop_ref_candidates(
 static size_t collect_stop_faces(const World *world,const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,bool along_v,const Timber *exclude,StopFace out[],size_t out_cap)
 {
+    size_t count=0;bool handled=false;
+    bool source_ok=app_contact_sources_collect(world,placement->id,along_v,exclude,out,out_cap,&handled,&count);
+    if(handled)return source_ok?count:0;
+    /* An unhandled lookup only reads the context. Keep the original raw
+     * fallback and resolver; a handled failure must never enter this path. */
     AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);
-    AppContactResolve context={world,&facts.world};size_t count=0;
+    AppContactResolve context={world,&facts.world};
     return app_contact_resolve_stops(&context,along_v,exclude,out,out_cap,&count)?count:0;
 }
 
@@ -6038,6 +6056,15 @@ typedef GeoInterval SpanInterval;
  * C11 _Static_assert: the Windows MSVC builds compile in its default C mode. */
 typedef char app_span_status_abi_check[(int)SPAN_BETWEEN_AMBIGUOUS==(int)WOOD_SPAN_BETWEEN_AMBIGUOUS?1:-1];
 typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAPACITY?1:-1];
+
+/* Bind the host admission bound to real W storage and scratch. */
+typedef char app_timber_capacity_world_check[WORLD_MAX_TIMBERS==WOOD_MEMBER_CAPACITY?1:-1];
+typedef char app_timber_capacity_timbers_check[sizeof(((World *)0)->wood.timbers)/sizeof(((World *)0)->wood.timbers[0])==WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_anchors_check[sizeof(((World *)0)->wood.anchors)/sizeof(((World *)0)->wood.anchors[0])==WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_contact_check[WOOD_CONTACT_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_cut_list_check[WOOD_CUT_LIST_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_span_check[WOOD_MEMBER_SPAN_MEMBER_CAPACITY>=WORLD_MAX_TIMBERS?1:-1];
+typedef char app_timber_capacity_stop_face_check[STOP_FACE_MAX==WOOD_CONTACT_FACE_CAPACITY?1:-1];
 
 /*
  * 解析 auto 跨距。

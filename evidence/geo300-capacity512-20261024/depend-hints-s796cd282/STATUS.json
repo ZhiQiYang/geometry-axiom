@@ -1,0 +1,585 @@
+{
+  "schema": "pr348-s796-evidence-collection/1",
+  "collected_utc": "2026-10-29T02:35:12.319754+00:00",
+  "official_head_declared_by_root": "cfbde0954c01cf43beb059eab76b41897fbebf2d",
+  "official_head_verified_by_this_script": false,
+  "source_sha": "796cd282693736af61c1b0d6c8ff91f03437a175",
+  "product_adopted_into_official_branch": false,
+  "tests": {
+    "k15": {
+      "command": [
+        "/tmp/pr348-runs/run_formal_v2.py",
+        "--root",
+        "/dev/shm/pr348-diagnostic-c754",
+        "--out",
+        "/dev/shm/pr348-depend-core-tests",
+        "tests.test_geo300_depend_hint"
+      ],
+      "cwd": "/dev/shm/pr348-diagnostic-c754",
+      "source_sha": "edc57cd4a8f7e4eb5813d51435c4732b7d75b793",
+      "tracked_dirty": "",
+      "tests": [
+        "tests.test_geo300_depend_hint"
+      ],
+      "started_utc": "2026-10-29T01:47:23Z",
+      "stack_bytes": 16777216,
+      "measurement": "Popen original control flow; wait4 collects original child rusage; original unittest methods/assertions/timeouts unchanged",
+      "exit": 0,
+      "tests_run": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.729628793000302,
+      "batches": [],
+      "tracked_dirty_after": ""
+    },
+    "h18": {
+      "command": [
+        "/tmp/pr348-runs/run_formal_v2.py",
+        "--root",
+        "/dev/shm/pr348-diagnostic-c754",
+        "--out",
+        "/dev/shm/pr348-depend-host-tests",
+        "tests.test_geo300_host_depend_hint",
+        "tests.test_geo261_load_residual"
+      ],
+      "cwd": "/dev/shm/pr348-diagnostic-c754",
+      "source_sha": "057884a4388e72312067385b9cf738431d8d69e3",
+      "tracked_dirty": "",
+      "tests": [
+        "tests.test_geo300_host_depend_hint",
+        "tests.test_geo261_load_residual"
+      ],
+      "started_utc": "2026-10-29T01:43:34Z",
+      "stack_bytes": 16777216,
+      "measurement": "Popen original control flow; wait4 collects original child rusage; original unittest methods/assertions/timeouts unchanged",
+      "exit": 0,
+      "tests_run": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 74.96586416000355,
+      "batches": [],
+      "tracked_dirty_after": ""
+    },
+    "legacy98_red": {
+      "command": [
+        "/tmp/pr348-runs/run_formal_v2.py",
+        "--root",
+        "/dev/shm/pr348-diagnostic-c754",
+        "--out",
+        "/dev/shm/pr348-depend-legacy-tests",
+        "tests.test_geo300_source_node_hint",
+        "tests.test_geo261_source_index",
+        "tests.test_geo300_source_node_slot",
+        "tests.test_geo300_source_edge_scope",
+        "tests.test_geo261_load_residual",
+        "tests.test_geo261_host_facts_authority"
+      ],
+      "cwd": "/dev/shm/pr348-diagnostic-c754",
+      "source_sha": "4b17edac67648fb5f6048b05114a66e99eb1846a",
+      "tracked_dirty": "",
+      "tests": [
+        "tests.test_geo300_source_node_hint",
+        "tests.test_geo261_source_index",
+        "tests.test_geo300_source_node_slot",
+        "tests.test_geo300_source_edge_scope",
+        "tests.test_geo261_load_residual",
+        "tests.test_geo261_host_facts_authority"
+      ],
+      "started_utc": "2026-10-29T01:39:13Z",
+      "stack_bytes": 16777216,
+      "measurement": "Popen original control flow; wait4 collects original child rusage; original unittest methods/assertions/timeouts unchanged",
+      "exit": 1,
+      "tests_run": 98,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 114.33093062600528,
+      "batches": [],
+      "tracked_dirty_after": ""
+    }
+  },
+  "graph": {
+    "execution_sha": "4b17edac67648fb5f6048b05114a66e99eb1846a",
+    "base_execution_sha": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+    "planned": 172,
+    "completed": 172,
+    "exit": 0,
+    "relabelled_as_execution_at_S": false,
+    "binding_target": "796cd282693736af61c1b0d6c8ff91f03437a175"
+  },
+  "h7": {
+    "command": [
+      "python3",
+      "-B",
+      "/dev/shm/pr348-run-formal-remote-v6.py",
+      "--root",
+      "/dev/shm/pr348-diagnostic-c754",
+      "--out",
+      "/dev/shm/pr348-h7-796cd282",
+      "--durable",
+      "/dev/shm/pr348-scope-h7-receipts/evidence/geo300-capacity512-20261024/scope-h7-3949deb9/final-796cd282",
+      "tests.test_geo261_timber_capacity_host"
+    ],
+    "source_sha": "796cd282693736af61c1b0d6c8ff91f03437a175",
+    "started_utc": "2026-10-29T01:53:42Z",
+    "pid": 297404,
+    "suite_timeout_seconds": 1200,
+    "per_batch_timeout_seconds": 600,
+    "stack_bytes": 16777216,
+    "guards": "Original run_all.run_process and kill_tree; receipt publication time is included, no deadline extension",
+    "capacity_before": {
+      "/workspace": {
+        "total": 33770192896,
+        "used": 32035201024,
+        "free": 229376
+      },
+      "/tmp": {
+        "total": 17871880192,
+        "used": 17565118464,
+        "free": 306761728
+      },
+      "/dev/shm": {
+        "total": 17871880192,
+        "used": 3119599616,
+        "free": 14752280576
+      }
+    },
+    "memory_before": {
+      "current": 24478265344,
+      "max": 34359738368
+    },
+    "exit": null,
+    "timed_out": true,
+    "seconds": 1200.1063482761383,
+    "reap_note": "已終止整棵行程樹（killpg SIGKILL）",
+    "finished_utc": "2026-10-29T02:13:42Z"
+  },
+  "h7_incomplete_batch": "batch-008",
+  "h7_full_suite_passed": false,
+  "anchor_preflight_is_ledger_execution": false,
+  "n256_original_execution": {
+    "candidate": {
+      "source_sha": "057884a4388e72312067385b9cf738431d8d69e3",
+      "command": [
+        "/dev/shm/pr348-depend-hint-feasibility/candidate-bridge"
+      ],
+      "binary_sha256": "9472b5218f96323c099ce78b35800e766c2eea08923414c6d983e306a43c1bf7",
+      "exit": 0,
+      "timeout_triggered": false,
+      "seconds": 27.764076694002142,
+      "usage": {
+        "maxrss_kib": 113488,
+        "user_seconds": 27.482817,
+        "system_seconds": 0.23124699999999998
+      },
+      "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_placed_geometry_assertions_exit": 0
+    },
+    "baseline_reused": {
+      "variant": "baseline",
+      "source_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+      "command": [
+        "/dev/shm/pr348-tag-pair-256/baseline-bridge"
+      ],
+      "binary_sha256": "1f7b698e288b8b9fcb6f8eb0565c9cb00614753a1992341cf95cf1a169e24f10",
+      "exit": 0,
+      "timeout_triggered": false,
+      "seconds": 34.70129515200097,
+      "usage": {
+        "maxrss_kib": 122108,
+        "user_seconds": 34.399613,
+        "system_seconds": 0.287568
+      },
+      "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_placed_geometry_assertions_exit": 0
+    },
+    "streams_identical": true,
+    "not_formal_512_acceptance": true,
+    "exit": 0
+  },
+  "profile128_original": {
+    "source_sha": "796cd282693736af61c1b0d6c8ff91f03437a175",
+    "command": [
+      "./bridge-pg"
+    ],
+    "cwd": "/dev/shm/pr348-profile-s796-n128",
+    "timeout_seconds": 600,
+    "count": 128,
+    "build_seconds": 4.661844264999672,
+    "purpose": "O0 separately compiled gprof diagnostic; does not replace original formal tests",
+    "binary_sha256": "bab4c7d9aa45af3dd662904a384066cb3dd550a9d47a38776e50db20c8b52158",
+    "started_utc": "2026-10-29T02:20:52Z",
+    "actual_exit": 0,
+    "timeout": false,
+    "seconds": 6.484310795000056,
+    "child_maxrss_kib": 121500,
+    "child_user_seconds": 6.394583999999999,
+    "child_system_seconds": 0.07024400000000008,
+    "gprof_exit": 0,
+    "stdout.bin": {
+      "bytes": 146252,
+      "sha256": "a14ede9bef3dc03c850145a45a51f7b079fea958a5f0df6e4c7928fe3ae25b6a"
+    },
+    "stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "gmon.out": {
+      "bytes": 545304,
+      "sha256": "6067ad4ca576139dde9dba6a1744d1be935480d966e93a2950f5bd4a130d50a6"
+    },
+    "gprof.txt": {
+      "bytes": 395754,
+      "sha256": "9b3e3f3076fbe03770479d06c13939f38007756e089aaafcca326f0660ec7225"
+    }
+  },
+  "profile128_baseline_reference": {
+    "source_sha": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+    "command": [
+      "./bridge-pg"
+    ],
+    "cwd": "/tmp/pr348-runs/baseline-profile-128",
+    "timeout_seconds": 600,
+    "count": 128,
+    "build_seconds": 5.252490729002602,
+    "purpose": "O0 separately compiled gprof diagnostic; does not replace original formal tests",
+    "binary_sha256": "e1ab7d5b0d19ab30c7b7a512f7f0c82b1d5796e07d31231faff24f6e58477ee8",
+    "started_utc": "2026-10-28T19:26:53Z",
+    "actual_exit": 0,
+    "timeout": false,
+    "seconds": 14.914534721003292,
+    "child_maxrss_kib": 121368,
+    "child_user_seconds": 14.799732,
+    "child_system_seconds": 0.06437700000000002,
+    "gprof_exit": 0,
+    "stdout.bin": {
+      "bytes": 146252,
+      "sha256": "a14ede9bef3dc03c850145a45a51f7b079fea958a5f0df6e4c7928fe3ae25b6a"
+    },
+    "stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "gmon.out": {
+      "bytes": 543286,
+      "sha256": "7d91f8ae9b09cf7758344e8dbf8ca55d551a5bb698eeb5bcdf6e36b1c100d7a8"
+    },
+    "gprof.txt": {
+      "bytes": 393272,
+      "sha256": "63e37f1484b2538d1cf7b501c8b3410c773218e61a1fead771c9c36948fc8b2c"
+    }
+  },
+  "profile_bytes_comparison": {
+    "candidate_source": "796cd282693736af61c1b0d6c8ff91f03437a175",
+    "baseline_source": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+    "checked_utc": "2026-10-29T02:35:09.071755+00:00",
+    "comparisons": [
+      {
+        "name": "input.scene",
+        "candidate_path": "/dev/shm/pr348-profile-s796-n128/input.scene",
+        "baseline_path": "/tmp/pr348-runs/baseline-profile-128/input.scene",
+        "bytes": 11199,
+        "sha256": "594198d1de504a4e9df7ca57d7dc9a6220f9bc041ef7f8a7e886586da07729c5",
+        "bytes_equal": true
+      },
+      {
+        "name": "stdout.bin",
+        "candidate_path": "/dev/shm/pr348-profile-s796-n128/stdout.bin",
+        "baseline_path": "/tmp/pr348-runs/baseline-profile-128/stdout.bin",
+        "bytes": 146252,
+        "sha256": "a14ede9bef3dc03c850145a45a51f7b079fea958a5f0df6e4c7928fe3ae25b6a",
+        "bytes_equal": true
+      },
+      {
+        "name": "stderr.bin",
+        "candidate_path": "/dev/shm/pr348-profile-s796-n128/stderr.bin",
+        "baseline_path": "/tmp/pr348-runs/baseline-profile-128/stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes_equal": true
+      }
+    ],
+    "stdin_claimed_equal": false,
+    "stdin_note": "原 stdin 的 loadfile 本地路徑不同，未宣稱 stdin bytes 相同；實際 scene bytes 全同。"
+  },
+  "source_merge": {
+    "source_before": "edc57cd4a8f7e4eb5813d51435c4732b7d75b793",
+    "source_after": "796cd282693736af61c1b0d6c8ff91f03437a175",
+    "upstream_merge": "291511caf4860638d6286b3b5b0cd17335c3b921",
+    "non_evidence_diff_exit": 0,
+    "evidence_leaf_delta": [
+      ":100644 100644 2e37872550528174616779f121100ea93e8b9a60 23fd25d5e774d4d142fd0e547f5ea72ae82ed9b6 M\tevidence/geo300-contact-index-20261024/BINDING.json",
+      ":000000 100644 0000000000000000000000000000000000000000 ac9f6a99921f3fe23e15cdb8d79f6ba5c2425fae A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_LEAF_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 65ce45c4f14750e0c5b06db7f0b32fc3325b6b1c A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_MANIFEST.json",
+      ":000000 100644 0000000000000000000000000000000000000000 2db08af144276190a5b22c6d4d84bb28e63e5621 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_ONLY.patch",
+      ":000000 100644 0000000000000000000000000000000000000000 ba9aac6a704ed5f3d4042c13e4ec213b7adb07fb A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_PUBLICATION.json",
+      ":000000 100644 0000000000000000000000000000000000000000 a245a39b19b4a8411d953930cb5bebb93e4d7dd8 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ORIGINAL_RED_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 d416f5e22ce5cb92ec8ed3076c804d3de348564d A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_TUPLE_ACTUAL_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 3050c52c101d08eeab1afd9ab1a038d536e66e08 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_TUPLE_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 5fe53499bb5a429d56c3e3d5ad562fcfafe13ba4 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 ada21922c305ce4896e09e3366813123db2dc233 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_ORIGINALS_AND_PEER.tar.gz",
+      ":000000 100644 0000000000000000000000000000000000000000 5c3fa56970112e7ede8e7cbeda94fbc7554309af A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_PACKAGE.json",
+      ":000000 100644 0000000000000000000000000000000000000000 26c4f5c6f35306b8f2fe9063992ca59ebd23515b A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 2194c7c07e6234d9be6b00284315c0b04f431cf5 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_CONTACT_SOURCES.stderr.txt",
+      ":000000 100644 0000000000000000000000000000000000000000 c3f15308417c90ed0ca727087a6d08e74c12c6ee A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_RECEIPT.json",
+      ":000000 100644 0000000000000000000000000000000000000000 8d1a7ea3f209de9f6ac78302f27e59b82510dc41 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_TOP_RECEIPT.json",
+      ":000000 100644 0000000000000000000000000000000000000000 59d288bb40896e7888fa70897a530b7770fd1cce A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R2_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 f89a959ad1a45ca2356d5740675760dca001235c A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_THREE_SUITES_ACTUAL_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 06df9f5bc7b7416d4304539568d05bb7dae5fb07 A\tevidence/geo300-contact-index-20261024/PRETRIAL_ANCHOR_BODY_PEER.json",
+      ":100644 100644 ef2658648f77b851ecfe4f787911bd0fd1ad4afa b0b5ccedebd663983845753e49b102628e227681 M\tevidence/geo300-contact-index-20261024/PROGRESS.md",
+      ":100644 100644 957744fa47ae14e8b40ba0ff314980373b696a57 3214a66f3ed740d477211648bf3b9c00c3683ea0 M\tevidence/geo300-contact-index-20261024/SHA256SUMS",
+      ":000000 100644 0000000000000000000000000000000000000000 507421868289afb244ba799255654f6eb1143de4 A\tevidence/issue128-empty-panel-rows-20261024/FORMAL_LOCATORS.json",
+      ":000000 100644 0000000000000000000000000000000000000000 a3d17a6478daf753f959d39ac77d6d9802506ab0 A\tevidence/issue128-empty-panel-rows-20261024/FORMAL_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 925b51f34af9382194205fa73fa4639d250e0c4b A\tevidence/issue128-empty-panel-rows-20261024/FORMAL_RESULT.json",
+      ":000000 100644 0000000000000000000000000000000000000000 0de60a9296912aceb57fad0a6d547c7d6629ae0a A\tevidence/issue128-empty-panel-rows-20261024/FORMAL_SUMMARY.json",
+      ":000000 100644 0000000000000000000000000000000000000000 fa016f39da83354b5a095b9f36166a2d73dd59b5 A\tevidence/issue128-empty-panel-rows-20261024/FORMAL_WRAPPER_REVIEW.json",
+      ":000000 100644 0000000000000000000000000000000000000000 778b2e810ccd285ed9e8f3b2a5f602a0e532bb32 A\tevidence/issue128-empty-panel-rows-20261024/PRIOR_PUBLICATION_REVIEW.json",
+      ":100644 100644 fa422a3578e24f65ce7e3e2451730a67b29c9954 ecc7e9fc2a0da1f70f76947514b6a9df7b4875ff M\tevidence/issue128-empty-panel-rows-20261024/PROGRESS.md",
+      ":000000 100644 0000000000000000000000000000000000000000 c21019d022b5a79d0db1f0d8466d803ecfbc0adf A\tevidence/issue128-empty-panel-rows-20261024/formal-independent-peer/CHECKS.json",
+      ":000000 100644 0000000000000000000000000000000000000000 92b7bc17843f4ff9baa597eaec78ac449770aae0 A\tevidence/issue128-empty-panel-rows-20261024/formal-independent-peer/PACKAGE_CHECKS.json",
+      ":000000 100644 0000000000000000000000000000000000000000 576d77f2e1c239aba398a77a3bdd01ee15894f11 A\tevidence/issue128-empty-panel-rows-20261024/formal-independent-peer/PACKAGE_REVIEW.json",
+      ":000000 100644 0000000000000000000000000000000000000000 84060c4e9c3260962586a658127a174756631ed0 A\tevidence/issue128-empty-panel-rows-20261024/formal-independent-peer/PACKAGE_REVIEW_PREPARATION_ERROR.txt",
+      ":000000 100644 0000000000000000000000000000000000000000 9500c4a47b3f8ab8882bc733d07aa56c909a3f0f A\tevidence/issue128-empty-panel-rows-20261024/formal-independent-peer/REVIEW.json",
+      ":000000 100644 0000000000000000000000000000000000000000 17291716be60deaa4169bec93967088e98097e59 A\tevidence/issue128-empty-panel-rows-20261024/formal-independent-peer/review.py",
+      ":000000 100644 0000000000000000000000000000000000000000 5394452b01e8dc0222e6a2b399095dde9f1bfa00 A\tevidence/issue128-empty-panel-rows-20261024/formal-independent-peer/review_package.before-local-key.py.txt",
+      ":000000 100644 0000000000000000000000000000000000000000 93e93a16f96fa739cfcdef8f1e84f625fd651653 A\tevidence/issue128-empty-panel-rows-20261024/formal-independent-peer/review_package.py",
+      ":000000 100644 0000000000000000000000000000000000000000 7f9baa98470937d19263b30b1afde47063511481 A\tevidence/issue128-empty-panel-rows-20261024/formal-panel-native-originals.tar.gz"
+    ],
+    "final_commands": [
+      {
+        "command": [
+          "git",
+          "diff",
+          "--exit-code",
+          "edc57cd4a8f7e4eb5813d51435c4732b7d75b793",
+          "796cd282693736af61c1b0d6c8ff91f03437a175",
+          "--",
+          ".",
+          ":(exclude)evidence"
+        ],
+        "exit": 0
+      },
+      {
+        "command": [
+          "git",
+          "diff",
+          "--raw",
+          "--no-abbrev",
+          "edc57cd4a8f7e4eb5813d51435c4732b7d75b793",
+          "796cd282693736af61c1b0d6c8ff91f03437a175"
+        ],
+        "exit": 0
+      },
+      {
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "a934a554ae58f16f124f1b264523947f170b3f0b",
+          "796cd282693736af61c1b0d6c8ff91f03437a175"
+        ],
+        "exit": 0
+      },
+      {
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "eaf15e239324a6464a04740647afccce3a3c17c7",
+          "796cd282693736af61c1b0d6c8ff91f03437a175"
+        ],
+        "exit": 0
+      },
+      {
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "8bb0359331365c6f3a96872620427cf7847fcb50",
+          "796cd282693736af61c1b0d6c8ff91f03437a175"
+        ],
+        "exit": 0
+      },
+      {
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "edc57cd4a8f7e4eb5813d51435c4732b7d75b793",
+          "796cd282693736af61c1b0d6c8ff91f03437a175"
+        ],
+        "exit": 0
+      },
+      {
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "291511caf4860638d6286b3b5b0cd17335c3b921",
+          "796cd282693736af61c1b0d6c8ff91f03437a175"
+        ],
+        "exit": 0
+      },
+      {
+        "command": [
+          "git",
+          "-c",
+          "pack.window=0",
+          "-c",
+          "pack.depth=0",
+          "push",
+          "--no-thin",
+          "origin",
+          "HEAD:refs/heads/codex/geo300-dependency-hints-20261029"
+        ],
+        "exit": 0
+      },
+      {
+        "command": [
+          "git",
+          "ls-remote",
+          "origin",
+          "refs/heads/codex/geo300-dependency-hints-20261029"
+        ],
+        "exit": 0
+      }
+    ],
+    "initial_merge_exit": 128,
+    "recovery": "Retained failed index; added read-only existing object store to private publication alternates; reset only own staged index to previously clean HEAD and reran standard merge successfully",
+    "exit": 0,
+    "finished_utc": "2026-10-29T01:53:11Z"
+  },
+  "tool_repair": {
+    "time_audit_source": "796cd282693736af61c1b0d6c8ff91f03437a175",
+    "old_smoke_observer_sha256": "87fdcecc5f4db5c15f55e66debece1dee5633220c97bbd24c2cbf61572d76cb6",
+    "old_smoke_original": {
+      "command": [
+        "/dev/shm/pr348-run-formal-local-v7.py",
+        "--root",
+        "/dev/shm/pr348-diagnostic-c754",
+        "--out",
+        "/dev/shm/pr348-local-observer-smoke",
+        "--durable",
+        "/tmp/pr348-local-observer-smoke-checkpoints",
+        "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_placed_history_uses_current_preview_token_and_one_undo"
+      ],
+      "cwd": "/dev/shm/pr348-diagnostic-c754",
+      "source_sha": "796cd282693736af61c1b0d6c8ff91f03437a175",
+      "tracked_dirty": "",
+      "tests": [
+        "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_placed_history_uses_current_preview_token_and_one_undo"
+      ],
+      "started_utc": "2026-10-29T02:27:41Z",
+      "stack_bytes": 16777216,
+      "temporary_directory": "/dev/shm/pr348-local-observer-smoke-tmp",
+      "measurement": "Original unittest methods, assertions and 600-second per-batch timeout; Popen wait4 child usage; lossless durable checkpoint after each completed batch",
+      "capacity_before": {
+        "/dev/shm/pr348-local-observer-smoke": {
+          "total": 17871880192,
+          "used": 3153653760,
+          "free": 14718226432
+        },
+        "/tmp/pr348-local-observer-smoke-checkpoints": {
+          "total": 17871880192,
+          "used": 17565130752,
+          "free": 306749440
+        }
+      },
+      "exit": 0,
+      "tests_run": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 6.592473266995512,
+      "batches": [
+        {
+          "source_sha": "796cd282693736af61c1b0d6c8ff91f03437a175",
+          "binary": {
+            "path": "/dev/shm/pr348-local-observer-smoke-tmp/geometry-tests/geo261-n1a-tv8un10w/product-bridge",
+            "bytes": 1321128,
+            "mode": 33216,
+            "sha256": "9472b5218f96323c099ce78b35800e766c2eea08923414c6d983e306a43c1bf7"
+          },
+          "timeout_seconds": 600,
+          "seconds": 0.28422382099961396,
+          "actual_exit": 0,
+          "memory": {
+            "maxrss_kib": 101188,
+            "user_seconds": 0.079319,
+            "system_seconds": 0.202085
+          },
+          "exception": null,
+          "command": [
+            "/dev/shm/pr348-local-observer-smoke-tmp/geometry-tests/geo261-n1a-tv8un10w/product-bridge"
+          ],
+          "protocol": "dynamic actual-token confirmation",
+          "stdin_sha256": "7ff91070f27cc5df40cdc522e84c66b29c58a4d547ddd3766f80588628efb2a8",
+          "stdout_sha256": "7bbe36de5a4789869e344367c9b71da44cedc6157b1153e98bcce09114fc1107",
+          "stderr_sha256": "5808879521575b194b054c15aa8e090cb5c6b392aa29cfdb68921cfe615f9e49",
+          "reply_names": [
+            "load",
+            "dump",
+            "cancelled-preview",
+            "cancel",
+            "after-cancel",
+            "delete-preview",
+            "before-confirm",
+            "delete",
+            "deleted",
+            "undo",
+            "undone",
+            "redo",
+            "redone",
+            "final-undo",
+            "final-dump"
+          ]
+        }
+      ],
+      "tracked_dirty_after": ""
+    },
+    "old_smoke_wrapper_original": {
+      "command": [
+        "python3",
+        "-B",
+        "/dev/shm/pr348-run-formal-local-v7.py",
+        "--root",
+        "/dev/shm/pr348-diagnostic-c754",
+        "--out",
+        "/dev/shm/pr348-local-observer-smoke",
+        "--durable",
+        "/tmp/pr348-local-observer-smoke-checkpoints",
+        "tests.test_geo261_timber_capacity_host.TimberCapacityHost.test_placed_history_uses_current_preview_token_and_one_undo"
+      ],
+      "source_sha": "796cd282693736af61c1b0d6c8ff91f03437a175",
+      "purpose": "New persistent local checkpoint adapter smoke, not full H7",
+      "started_utc": "2026-10-29T02:27:41Z",
+      "exit": 0,
+      "seconds": 6.761294204996375,
+      "finished_utc": "2026-10-29T02:27:48Z"
+    },
+    "new_observer_sha256": "417eca03461d3189ac0b786fd8fe0e3839dc2a777256cea501bc0820b240499d",
+    "new_exact_checkpoint_control_original": {
+      "exit": 0,
+      "command": "Execute exact checkpoint function from v7 using binary fixture, real fsync file/metadata/directory; reopen archive and byte-compare",
+      "observer_sha256": "417eca03461d3189ac0b786fd8fe0e3839dc2a777256cea501bc0820b240499d",
+      "remote_published": false,
+      "test_suite_rerun": false
+    },
+    "new_full_h7_rerun_claimed": false
+  },
+  "archive": {
+    "path": "RAW.tar.gz",
+    "bytes": 12935646,
+    "sha256": "53301a3b89478646a27e1fad1c80284d7a558f06d09c0720bb9023e02e54eb15",
+    "members": 6818,
+    "uncompressed_original_bytes": 51920868,
+    "preparation_archive_budget_bytes": 108761271,
+    "every_member_path_bytes_mode_sha256_verified": true
+  },
+  "progress_current_summary": "待主代理定稿；本工具不改 PROGRESS.md 或 PR 正文",
+  "performed": "一次封存／逐 member 核驗；沒有測試、編譯、Git、checkout 修改或 push"
+}

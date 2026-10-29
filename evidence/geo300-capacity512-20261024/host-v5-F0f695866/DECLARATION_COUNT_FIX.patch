@@ -1,0 +1,20 @@
+--- a/tests/test_geo261_timber_capacity_host.py
++++ b/tests/test_geo261_timber_capacity_host.py
+@@ -31,7 +31,16 @@ class TimberCapacityHost(unittest.TestCase):
+ 
+     def assert_count(self,bridge,count):
+         response=bridge.command("objects")
+-        self.assertEqual(list(range(1,count+1)),[item["id"] for item in response["timbers"]])
++        self.assertTrue(response["ok"],response)
++        # objects intentionally lists placed timbers only. These fixtures are
++        # declarations; the canonical dump preserves every declared member.
++        self.assertEqual([],response["timbers"],"capacity-fixture-must-remain-unplaced")
++        dumped=bridge.command("dump")
++        self.assertTrue(dumped["ok"],dumped)
++        lines=dumped["text"].splitlines()
++        identifiers=[int(line.split()[1]) for line in lines if line.startswith("timber ")]
++        self.assertEqual(list(range(1,count+1)),identifiers,"capacity-declaration-ids-order-and-uniqueness")
++        self.assertFalse(any(line.startswith("place ") for line in lines),"capacity-fixture-has-no-placement")
+ 
+     def load_full(self,bridge):
+         response=bridge.command("loadfile "+str(self.scene))

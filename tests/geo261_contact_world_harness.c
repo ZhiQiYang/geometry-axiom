@@ -54,7 +54,7 @@ static int regions_and_capacity(void)
     memset(out,0x5a,sizeof out);untouched=out[2];n=wood_contact_collect_stops(&w,false,NULL,out,3);
     CHECK("member-capacity-pair-atomic",n==2&&!memcmp(&out[2],&untouched,sizeof untouched));
     CHECK("capacity-before-placement-order",out[0].timber_id==11&&out[1].timber_id==11);
-    CHECK("face-capacity-contract",WOOD_CONTACT_FACE_CAPACITY==2432&&WOOD_CONTACT_COMPONENT_CAPACITY==8&&WOOD_CONTACT_MEMBER_CAPACITY==64);
+    CHECK("face-capacity-contract",WOOD_CONTACT_FACE_CAPACITY==3328&&WOOD_CONTACT_COMPONENT_CAPACITY==8&&WOOD_CONTACT_MEMBER_CAPACITY==512);
     WoodBoundaryRegion many[8];WoodMember members[64];WoodContactMemberFact facts[64];WoodStopFace full[WOOD_CONTACT_FACE_CAPACITY+1];
     for(size_t c=0;c<8;++c){many[c]=square((uint32_t)(80+c),(GeoCoord)c*1000,0,100);many[c].hole_count=8;for(size_t h=0;h<8;++h){WoodBoundaryRegion cut=square(0,(GeoCoord)c*1000+10+(GeoCoord)h*10,20,4);many[c].holes[h]=cut.outline;}w.regions[c]=&many[c];}
     for(size_t i=0;i<64;++i){members[i]=member((uint32_t)(100+i),WOOD_MEMBER_ROLE_PRIMARY,2);facts[i]=fact(&members[i],64-i,false,(GeoRect2){10000+(GeoCoord)i*10,200,10002+(GeoCoord)i*10,210});}
@@ -128,6 +128,15 @@ static int indexed_dedup(void)
     m[2].id=m[0].id;f[0]=fact(&m[0],1,false,(GeoRect2){0,0,100,27});f[1]=fact(&m[1],2,false,(GeoRect2){0,0,100,27});f[2]=fact(&m[2],3,false,(GeoRect2){0,0,100,27});w.member_count=3;
     m[2].placed=false;n=wood_contact_collect_stops(&w,false,NULL,out,8);
     CHECK("indexed-filtered-duplicate-order",n==2&&face(&out[0],WOOD_STOP_MEMBER_SIDE,0,51,-1,0,WOOD_STOP_FIXED,0,0,27)&&face(&out[1],WOOD_STOP_MEMBER_SIDE,0,51,-1,1,WOOD_STOP_FIXED,100,0,27));
+    /* The same filtered duplicate also needs the legacy last/minimum-order
+     * rule when declaration facts are not monotonic. After sorting, the
+     * indexed prefix still cannot replace the duplicate-ID live-set rule. */
+    {
+        WoodContactMemberFact inverted[3]={f[0],f[2],f[1]};
+        w.members=inverted;n=wood_contact_collect_stops(&w,false,NULL,out,8);
+        CHECK("indexed-filtered-duplicate-order",n==2&&face(&out[0],WOOD_STOP_MEMBER_SIDE,0,51,-1,0,WOOD_STOP_FIXED,0,0,27)&&face(&out[1],WOOD_STOP_MEMBER_SIDE,0,51,-1,1,WOOD_STOP_FIXED,100,0,27));
+        w.members=f;
+    }
     m[2].placed=true;f[2].placement_id=8;n=wood_contact_collect_stops(&w,false,NULL,out,8);
     CHECK("indexed-other-placement-duplicate-fallback",n==2&&sides(out,n,51)==2&&sides(out,n,52)==0);f[2].placement_id=7;
     f[2].footprint_valid=false;n=wood_contact_collect_stops(&w,false,NULL,out,8);

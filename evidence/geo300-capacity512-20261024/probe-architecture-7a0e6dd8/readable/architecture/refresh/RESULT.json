@@ -1,0 +1,177 @@
+{
+  "schema": "geo323-linux-architecture-refresh/1",
+  "source_sha": "7a0e6dd81c54066995981393925fa46a815de2f8",
+  "startedUtc": "2026-10-29T03:50:27.587524+00:00",
+  "finishedUtc": "2026-10-29T03:50:48.831782+00:00",
+  "passed": true,
+  "scan_exit_code": 0,
+  "validation_exit_codes": [
+    0,
+    0
+  ],
+  "counts": {
+    "executableFiles": 604,
+    "ownedSources": 334,
+    "exclusions": 270,
+    "edges": 798,
+    "diagnostics": 0,
+    "layers": {
+      "H": 192,
+      "K": 69,
+      "W": 67,
+      "vendor": 6
+    },
+    "languages": {
+      "c": 191,
+      "html": 4,
+      "javascript": 64,
+      "python": 75
+    },
+    "forbiddenIdentifiers": 928,
+    "forbiddenStrings": 55
+  },
+  "changedPreviouslySealedInputs": [
+    {
+      "path": "current_geometry.c",
+      "previousSha256": "7d28ec7c8fce3632d5bcc9d04e95e24b8cb289804a1114e368b2e9dae0878d70",
+      "sha256": "cb5a4148159cfb105c50b122f2e700f2e52c3676ff4525e24401a2d848be3f77"
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "previousSha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "sha256": "0b92b8136d33d34b77fd038f78033d45787b6854ac2de63809a69019a8ea58c5"
+    },
+    {
+      "path": "geometry-app/native/world_validation.inc",
+      "previousSha256": "4a6f085dd1d983a4a3d43787054dbd96aeb2a6bbe6e48e336faabe10430c9d8b",
+      "sha256": "25fbbb47e30aaf182b94c1ef74cf366fc0971da1fd795cbf68327aeaae8d46b2"
+    },
+    {
+      "path": "geometry-core/kernel/source.c",
+      "previousSha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a",
+      "sha256": "b379f2f8d74e8ce4a435732876c84b142b3b61dd0a0505d5f7c5c691515d83cd"
+    },
+    {
+      "path": "geometry-core/kernel/source.h",
+      "previousSha256": "aa00bd5078495bc3c4165c81a58129a4216c6b40c87da91700f7b0c3bf9820a1",
+      "sha256": "001ed24b9b161e7a605d3f6d5a7e43ea7ed6c75a6e5e43edcf628ee2bc1dc010"
+    },
+    {
+      "path": "geometry-core/references.inc",
+      "previousSha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751",
+      "sha256": "e452ee2e4b6c7568f53ad988aab787bba6d6b7e9083bc6767a381dac191bbc10"
+    },
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "previousSha256": "e04d5a3029aabf0e4eb1e00928137461989b0bba67e40ec10043de2a3cabc8ed",
+      "sha256": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "previousSha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839",
+      "sha256": "76b43ffb52ac4663d1f303dbe34950de32ba8bbf8f4bd85652eb29fe0bf55058"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "previousSha256": "fbc88b0aac9ab33dedbb1e27ab3aec8f10b7caeb525ffad9e6b8d6baa88dabfb",
+      "sha256": "098e507656cbdc33db4e8b1be840e97c6145418f5740c7b798f95f89f9e7cf59"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.h",
+      "previousSha256": "03bf7a5f0cdd844d74c220e51c4b6ad34336fe338d47e80192898c9fab4a026d",
+      "sha256": "d29036b9e128246daa8f5c3995353e0894bd27cdc0be802beca465e4e467a0a9"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/cut_list.c",
+      "previousSha256": "d17d5ef413f662374b0bc621ed0f451bd61b29c54c6502317f6b0ee62ae06d4f",
+      "sha256": "60696f1ac37bcc62dc6ff5657db284d08397701f824c5c69260d570a00126c9e"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/cut_list.h",
+      "previousSha256": "86be5c1322fb704a36ac8a17ef3ff630b730715b0308244c63cea29b661abdda",
+      "sha256": "e266973f001c3465c4da1401b4c045b9b1088859f33a5e729585e85c12b8ebfd"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/document.h",
+      "previousSha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d",
+      "sha256": "8f0416a16489e6d26941f653bed8d6ecf6980fc73cb8868b53d3c4f42847db56"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/member_reference.h",
+      "previousSha256": "ad7d61d9cb72bb0c4ce9c44493b2cb7caca1fa91cf8b6d0b93bf72b1bf3934a8",
+      "sha256": "8822025f9e4dc8f37fec92fc01d758aeec6b23936fd5c094e212541b426465c4"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/members.h",
+      "previousSha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7",
+      "sha256": "e6bfa28bb86a10cfbec42f52aad1bad1620ce7bcc3aed27f5c9fb52df2237aeb"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/panel_layout.c",
+      "previousSha256": "51a2fa38dbc08a56ad5713631a1eea938d175b39c9ae0e09bee1abbb26d33638",
+      "sha256": "c673557af4f543c7550643b3aeb142f1aa9c0e2ef15670759da712522631a9da"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/world_validation.c",
+      "previousSha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096",
+      "sha256": "6b3e5125ceecb6bc563cb842df15ed840878c71698ac264c2a065a08623abea0"
+    }
+  ],
+  "inputClosureSha256": "0c738c2c8b39b8cc4904bd39121f8ec9412f072cb2be6351b55e5b9f49f6fad0",
+  "allRawAndLfInputsUnchanged": true,
+  "manifest_byte_unchanged": true,
+  "previous_outputs": {
+    "product-architecture.json": {
+      "path": "/dev/shm/pr348-architecture-7a0e6dd8/refresh/previous/product-architecture.json",
+      "bytes": 221591,
+      "rawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
+      "lfSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
+    },
+    "product-architecture-scan.json": {
+      "path": "/dev/shm/pr348-architecture-7a0e6dd8/refresh/previous/product-architecture-scan.json",
+      "bytes": 132559,
+      "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "path": "/dev/shm/pr348-architecture-7a0e6dd8/refresh/previous/PRODUCT-ARCHITECTURE.md",
+      "bytes": 41881,
+      "rawSha256": "c1de6a1ac6a4a3f5fc14f885e18a6807941fb9e7e085c477bca2cc01fecf52e2",
+      "lfSha256": "c1de6a1ac6a4a3f5fc14f885e18a6807941fb9e7e085c477bca2cc01fecf52e2"
+    },
+    "product-architecture-receipt.json": {
+      "path": "/dev/shm/pr348-architecture-7a0e6dd8/refresh/previous/product-architecture-receipt.json",
+      "bytes": 115624,
+      "rawSha256": "2c75ea1a05f85bcf39e2c718aefa3fb17690d4f301f21e6dcfedc080e6480a33",
+      "lfSha256": "2c75ea1a05f85bcf39e2c718aefa3fb17690d4f301f21e6dcfedc080e6480a33"
+    }
+  },
+  "outputs": {
+    "product-architecture.json": {
+      "path": "/dev/shm/pr348-architecture-7a0e6dd8/refresh/new/product-architecture.json",
+      "bytes": 221591,
+      "rawSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525",
+      "lfSha256": "80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525"
+    },
+    "product-architecture-scan.json": {
+      "path": "/dev/shm/pr348-architecture-7a0e6dd8/refresh/new/product-architecture-scan.json",
+      "bytes": 132560,
+      "rawSha256": "94981f75c95517a76f1a619972b433e8e644c6efc81cf38b48a628faa38ebdc0",
+      "lfSha256": "94981f75c95517a76f1a619972b433e8e644c6efc81cf38b48a628faa38ebdc0"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "path": "/dev/shm/pr348-architecture-7a0e6dd8/refresh/new/PRODUCT-ARCHITECTURE.md",
+      "bytes": 44196,
+      "rawSha256": "2c26464a718e21a944d78c9845bee7a8f4e4e14bb35261885071fe8f73d13a4f",
+      "lfSha256": "2c26464a718e21a944d78c9845bee7a8f4e4e14bb35261885071fe8f73d13a4f"
+    },
+    "product-architecture-receipt.json": {
+      "path": "/dev/shm/pr348-architecture-7a0e6dd8/refresh/new/product-architecture-receipt.json",
+      "bytes": 134264,
+      "rawSha256": "1ea699d3f6d1b5a56ae1297d3a47ae36cbbcd8c1154fa1bb1696c565e4da45d0",
+      "lfSha256": "1ea699d3f6d1b5a56ae1297d3a47ae36cbbcd8c1154fa1bb1696c565e4da45d0"
+    }
+  },
+  "checkout_modified": false,
+  "note": "僅四檔重產與原架構三裁判的有限收據；不表示其他最終驗收完成。"
+}

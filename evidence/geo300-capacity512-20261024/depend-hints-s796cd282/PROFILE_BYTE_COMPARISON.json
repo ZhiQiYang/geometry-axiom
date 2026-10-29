@@ -1,0 +1,33 @@
+{
+  "candidate_source": "796cd282693736af61c1b0d6c8ff91f03437a175",
+  "baseline_source": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+  "checked_utc": "2026-10-29T02:35:09.071755+00:00",
+  "comparisons": [
+    {
+      "name": "input.scene",
+      "candidate_path": "/dev/shm/pr348-profile-s796-n128/input.scene",
+      "baseline_path": "/tmp/pr348-runs/baseline-profile-128/input.scene",
+      "bytes": 11199,
+      "sha256": "594198d1de504a4e9df7ca57d7dc9a6220f9bc041ef7f8a7e886586da07729c5",
+      "bytes_equal": true
+    },
+    {
+      "name": "stdout.bin",
+      "candidate_path": "/dev/shm/pr348-profile-s796-n128/stdout.bin",
+      "baseline_path": "/tmp/pr348-runs/baseline-profile-128/stdout.bin",
+      "bytes": 146252,
+      "sha256": "a14ede9bef3dc03c850145a45a51f7b079fea958a5f0df6e4c7928fe3ae25b6a",
+      "bytes_equal": true
+    },
+    {
+      "name": "stderr.bin",
+      "candidate_path": "/dev/shm/pr348-profile-s796-n128/stderr.bin",
+      "baseline_path": "/tmp/pr348-runs/baseline-profile-128/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes_equal": true
+    }
+  ],
+  "stdin_claimed_equal": false,
+  "stdin_note": "原 stdin 的 loadfile 本地路徑不同，未宣稱 stdin bytes 相同；實際 scene bytes 全同。"
+}

@@ -1,0 +1,3478 @@
+{
+  "product_sha": "400a6d0ca50f3aca104fb569c77c8ef753c93355",
+  "archive": "original-capacity512-drafts-and-static-reviews.tar.gz",
+  "archive_bytes": 751021,
+  "archive_sha256": "0b6ea82d93952e40dc199483828c3e595401720f4e36da755022e9e8fe016542",
+  "member_count": 578,
+  "files": [
+    {
+      "member": "H-companion/HOST_COMPANION.patch",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/HOST_COMPANION.patch",
+      "bytes": 11219,
+      "sha256": "4bc379898588428579170a4776a12efe90c172a5855f41997a31e1ce4d8ca115"
+    },
+    {
+      "member": "H-companion/MANIFEST.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/MANIFEST.json",
+      "bytes": 4403,
+      "sha256": "d1fbacdaa71d5ea94285dade91fca73e0211a6df2fa8eda25f8ea78a160b7690"
+    },
+    {
+      "member": "H-companion/README.md",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/README.md",
+      "bytes": 2244,
+      "sha256": "a9ef952258e81c55d279b11aaff49ceba7c37aedaebcf304b3860cfb1beebed0"
+    },
+    {
+      "member": "H-companion/REGISTRY_PLAN.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/REGISTRY_PLAN.json",
+      "bytes": 1495,
+      "sha256": "1a055c17df7cbb27a731e416ff06ec72d4c96b39ef393d914fe37a0a87eb6df0"
+    },
+    {
+      "member": "H-companion/candidate/tests/geo261_timber_capacity_host_harness.c",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/candidate/tests/geo261_timber_capacity_host_harness.c",
+      "bytes": 1072,
+      "sha256": "a9da30635249fd11188b3f9275c8867aa63739ac674d2a876a9a31491a342411"
+    },
+    {
+      "member": "H-companion/candidate/tests/test_geo261_timber_capacity_host.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/candidate/tests/test_geo261_timber_capacity_host.py",
+      "bytes": 9810,
+      "sha256": "7d844dcf0c9214fb72d1857a05a8202a86c141e853f7648c1e2b8c495b9373dd"
+    },
+    {
+      "member": "H-companion/history-v1/HOST_COMPANION.patch",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/HOST_COMPANION.patch",
+      "bytes": 11116,
+      "sha256": "0214da773d540f72de7a58808dee225a205c60742b59db54d0bb93c21b9ac256"
+    },
+    {
+      "member": "H-companion/history-v1/MANIFEST.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/MANIFEST.json",
+      "bytes": 4403,
+      "sha256": "2dc3d1038e218c6b2fbbb85eafecd34e90dc9db2147529bf29a1104c5ad3a768"
+    },
+    {
+      "member": "H-companion/history-v1/README.md",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/README.md",
+      "bytes": 2159,
+      "sha256": "59c248572a8e7c1bb8a4641b5b93cc51228ae92a4666be17e5eb5ab30d78db23"
+    },
+    {
+      "member": "H-companion/history-v1/candidate/tests/geo261_timber_capacity_host_harness.c",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/candidate/tests/geo261_timber_capacity_host_harness.c",
+      "bytes": 1072,
+      "sha256": "a9da30635249fd11188b3f9275c8867aa63739ac674d2a876a9a31491a342411"
+    },
+    {
+      "member": "H-companion/history-v1/candidate/tests/test_geo261_timber_capacity_host.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/candidate/tests/test_geo261_timber_capacity_host.py",
+      "bytes": 9708,
+      "sha256": "a50035b3b1de5357c7b370efce3aa54b2910a0dac518c5bcbb2a172f138ebda1"
+    },
+    {
+      "member": "H-companion/history-v1/prepare_registry_plan.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/prepare_registry_plan.py",
+      "bytes": 3338,
+      "sha256": "a5386b3ac753d791078118f34973a0d6667c408a227b463a2fe0afb6d56d3681"
+    },
+    {
+      "member": "H-companion/history-v1/registry-plan/MANIFEST.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/registry-plan/MANIFEST.json",
+      "bytes": 1733,
+      "sha256": "8ddf596d50f3ddebb9a7021fcbb3c43b1e2744bf52d248d6ab6b73c134e0519f"
+    },
+    {
+      "member": "H-companion/history-v1/registry-plan/REGISTRY_ONLY.patch",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/registry-plan/REGISTRY_ONLY.patch",
+      "bytes": 2821,
+      "sha256": "bb40a1377fd5b70cecfc510cae4f6a0870b10f103bf2283e18df3c195e8a8780"
+    },
+    {
+      "member": "H-companion/history-v1/registry-plan/before/tests/run_all.expected.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/registry-plan/before/tests/run_all.expected.json",
+      "bytes": 25286,
+      "sha256": "700f4533bed81f0782dc771117472e0dd2fafe57f9831b83022cc18d0506c835"
+    },
+    {
+      "member": "H-companion/history-v1/registry-plan/before/tests/run_all.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/registry-plan/before/tests/run_all.py",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "member": "H-companion/history-v1/registry-plan/candidate/tests/run_all.expected.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/registry-plan/candidate/tests/run_all.expected.json",
+      "bytes": 25509,
+      "sha256": "3d1464ac1215e5bec2fee8a948bc33804c9552f70f3049c18bf92ca16f2505b1"
+    },
+    {
+      "member": "H-companion/history-v1/registry-plan/candidate/tests/run_all.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/history-v1/registry-plan/candidate/tests/run_all.py",
+      "bytes": 66006,
+      "sha256": "e34a85fea0a5fb7670f833cfd4ef29d896f9fdd3e6d9acdd19801a3aef830be3"
+    },
+    {
+      "member": "H-companion/prepare.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/prepare.py",
+      "bytes": 4433,
+      "sha256": "fe173e1488f1b63d825bf972b0eea48029c6e186abdffb5909840836339f802e"
+    },
+    {
+      "member": "H-companion/prepare_registry_plan.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/prepare_registry_plan.py",
+      "bytes": 3449,
+      "sha256": "1339e4827399c3a9ee64037dc65e64453f6e2717c1f7eef93d0db009b99d16d7"
+    },
+    {
+      "member": "H-companion/registry-plan/MANIFEST.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/registry-plan/MANIFEST.json",
+      "bytes": 1733,
+      "sha256": "5bfe8f9580393476ff6ffa382a80a1e7733afc7cdd1e9c2744396f686c896b0f"
+    },
+    {
+      "member": "H-companion/registry-plan/REGISTRY_ONLY.patch",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/registry-plan/REGISTRY_ONLY.patch",
+      "bytes": 847,
+      "sha256": "125109ffaf67c1a7cb16fbc2316e0a102968027f88bf9588a6e73620f0e7551c"
+    },
+    {
+      "member": "H-companion/registry-plan/before/tests/run_all.expected.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/registry-plan/before/tests/run_all.expected.json",
+      "bytes": 25286,
+      "sha256": "700f4533bed81f0782dc771117472e0dd2fafe57f9831b83022cc18d0506c835"
+    },
+    {
+      "member": "H-companion/registry-plan/before/tests/run_all.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/registry-plan/before/tests/run_all.py",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "member": "H-companion/registry-plan/candidate/tests/run_all.expected.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/registry-plan/candidate/tests/run_all.expected.json",
+      "bytes": 25509,
+      "sha256": "9f9e337914872507dcb238f32de9ef2f8ba678ce0fa1a11d7e5492d85defdc2d"
+    },
+    {
+      "member": "H-companion/registry-plan/candidate/tests/run_all.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/registry-plan/candidate/tests/run_all.py",
+      "bytes": 66006,
+      "sha256": "e34a85fea0a5fb7670f833cfd4ef29d896f9fdd3e6d9acdd19801a3aef830be3"
+    },
+    {
+      "member": "H-companion/sources/tests/_bridge.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/sources/tests/_bridge.py",
+      "bytes": 12285,
+      "sha256": "dddeaec72eaed7e6255bb6c37013180b68364dc65f2f5aa4edd6f9fab6456423"
+    },
+    {
+      "member": "H-companion/sources/tests/run_all.expected.json",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/sources/tests/run_all.expected.json",
+      "bytes": 25286,
+      "sha256": "f56fad4d30bd0540c00532bd0329061eb95b327f65a5a4f7583071c345f10bce"
+    },
+    {
+      "member": "H-companion/sources/tests/run_all.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/sources/tests/run_all.py",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "member": "H-companion/sources/tests/test_geo261_native_kernel.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/sources/tests/test_geo261_native_kernel.py",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    {
+      "member": "H-companion/sources/tests/test_geo261_wood_world_validation.py",
+      "source": "/workspace/geo300-capacity512-host-draft-20261024/sources/tests/test_geo261_wood_world_validation.py",
+      "bytes": 10724,
+      "sha256": "985648dce1f170bf151874a21deccb4a2bf6e60b2780f77257fde4b120240941"
+    },
+    {
+      "member": "H-peer/REVIEW.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/REVIEW.json",
+      "bytes": 42699,
+      "sha256": "3e640b0879da99846ab918a347732041eb3a942b306f9b046a7724b7e93f0dac"
+    },
+    {
+      "member": "H-peer/review.py",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/review.py",
+      "bytes": 10901,
+      "sha256": "a356ad4655e8e7a3058d83ada2930ace620365b388f8ca1ee8992c8f99ea0ca3"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands.json",
+      "bytes": 13436,
+      "sha256": "bd54dfe5918f409f4c63103d2aee0a889fd8ec65eada07d5987ebee7c40e2d5b"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000001/request.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000001/request.json",
+      "bytes": 1575,
+      "sha256": "cdf1928558d7bc80da3e74805046fcb6d7cb8700cfcd24b2f3495732bc07ba8f"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000001/result.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000001/result.json",
+      "bytes": 1829,
+      "sha256": "2b3405f255302f67e2917a77614162e37612c1af1f2a3032b01a30996b21c04f"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000001/stderr.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000001/stdin.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000001/stdout.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000001/stdout.bin",
+      "bytes": 12285,
+      "sha256": "dddeaec72eaed7e6255bb6c37013180b68364dc65f2f5aa4edd6f9fab6456423"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000002/request.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000002/request.json",
+      "bytes": 1601,
+      "sha256": "0154ad1135a14977922addce4be4e5b3a9bff3afbace245a4f69bf485733831c"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000002/result.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000002/result.json",
+      "bytes": 1854,
+      "sha256": "19bd6ce7760471dd67d192bf088e3247ae0e5d99e4da44aed6022f31b74f1c07"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000002/stderr.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000002/stdin.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000002/stdout.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000002/stdout.bin",
+      "bytes": 10724,
+      "sha256": "985648dce1f170bf151874a21deccb4a2bf6e60b2780f77257fde4b120240941"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000003/request.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000003/request.json",
+      "bytes": 1592,
+      "sha256": "00c0165961f9cf243f4e8f6531ea365156901bb699d8288092ba7d85672647d1"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000003/result.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000003/result.json",
+      "bytes": 1845,
+      "sha256": "b39d3535da4496df659eaad8c0aed32a806d42174cd35f5dbd5d1519783397a3"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000003/stderr.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000003/stdin.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000003/stdout.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000003/stdout.bin",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000004/request.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000004/request.json",
+      "bytes": 1574,
+      "sha256": "e4dc2c798c5a94c3e5efe0257e96d9beeadc97585069d1203f7a438e6700c845"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000004/result.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000004/result.json",
+      "bytes": 1828,
+      "sha256": "0770f2e03d4ece1b35315fe4379f46b4b84ec102a924281d879b999a373673ea"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000004/stderr.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000004/stdin.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000004/stdout.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000004/stdout.bin",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000005/request.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000005/request.json",
+      "bytes": 1586,
+      "sha256": "f8523d5ff12f827e9c89b1f918cea6c68f41d5ee201dd719c86944e72cfab078"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000005/result.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000005/result.json",
+      "bytes": 1840,
+      "sha256": "2f353d721ee4fc108254dee4153d5c35c6b0a6c4e523a444863a34279b7b4659"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000005/stderr.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000005/stdin.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000005/stdout.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000005/stdout.bin",
+      "bytes": 25286,
+      "sha256": "f56fad4d30bd0540c00532bd0329061eb95b327f65a5a4f7583071c345f10bce"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000006/request.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000006/request.json",
+      "bytes": 1564,
+      "sha256": "48d824c9eba1054ee21504d985274721d56961b022b58a70e2f925256f40c029"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000006/result.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000006/result.json",
+      "bytes": 1817,
+      "sha256": "93eb402afbe880948155e80253441f8da105f9f366b23455bd9c550c59d75c21"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000006/stderr.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000006/stdin.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000006/stdout.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000006/stdout.bin",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000007/request.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000007/request.json",
+      "bytes": 1575,
+      "sha256": "5efd590201e2b66cdc67da396219701c8c29a725fdea7f6e544af6b182a7a9ed"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000007/result.json",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000007/result.json",
+      "bytes": 1829,
+      "sha256": "94df9176183e501ae48349e2fa5bd16e43100ff1041020023715f047646a8176"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000007/stderr.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000007/stdin.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "H-peer/source-capture/subcommands/000007/stdout.bin",
+      "source": "/workspace/geo300-capacity512-host-static-peer-20261024/source-capture/subcommands/000007/stdout.bin",
+      "bytes": 25286,
+      "sha256": "700f4533bed81f0782dc771117472e0dd2fafe57f9831b83022cc18d0506c835"
+    },
+    {
+      "member": "W-companion/COMPANION_PARTIAL.patch",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/COMPANION_PARTIAL.patch",
+      "bytes": 16258,
+      "sha256": "722796a9a215eecf36553d9e5405dcb122e0db408536c3be1d305209a49cf7f8"
+    },
+    {
+      "member": "W-companion/DELIVERY.md",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/DELIVERY.md",
+      "bytes": 1834,
+      "sha256": "87482165154c689c72a854feb729ab63503fc59c96ba53758576343039ade457"
+    },
+    {
+      "member": "W-companion/MANIFEST.json",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/MANIFEST.json",
+      "bytes": 4581,
+      "sha256": "3b2ace55b55e5ff1417bd089806121af0b6869e0500f02d15fd5d76a4b5584c6"
+    },
+    {
+      "member": "W-companion/README.md",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/README.md",
+      "bytes": 1695,
+      "sha256": "d7b87054df19a7a28266c5069f47c2bce157f67fdfcb2320893c49e26ba1e2ec"
+    },
+    {
+      "member": "W-companion/SOURCE_SPARSE_PATTERNS.original.txt",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/SOURCE_SPARSE_PATTERNS.original.txt",
+      "bytes": 37614,
+      "sha256": "9c7a71ff9ed6a66238d8efec19e57b6471cc3445435dd3a2fccd6f93dd684f35"
+    },
+    {
+      "member": "W-companion/before/tests/geo261_contact_world_harness.c",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/before/tests/geo261_contact_world_harness.c",
+      "bytes": 26679,
+      "sha256": "92fb32e8cb113f96c77de53c9d14fb26deaaa0e321aab4a2650f6a385bb144f5"
+    },
+    {
+      "member": "W-companion/before/tests/geo261_report_policy_harness.c",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/before/tests/geo261_report_policy_harness.c",
+      "bytes": 6391,
+      "sha256": "e3acfe8adc816889bbcbda1662a9c4052f2b8ac52f1baa81e31e23f3da3d6d87"
+    },
+    {
+      "member": "W-companion/candidate/tests/geo261_contact_world_harness.c",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/candidate/tests/geo261_contact_world_harness.c",
+      "bytes": 26680,
+      "sha256": "d6ac77d5a92ba9cfca1d6eef58200dd924d3fccf52b828c721b98ca6b22be4be"
+    },
+    {
+      "member": "W-companion/candidate/tests/geo261_report_policy_harness.c",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/candidate/tests/geo261_report_policy_harness.c",
+      "bytes": 6519,
+      "sha256": "5c90207d89f84fb32f67db242c2886a35a6af25bcfe5ab769cd527921bf8282c"
+    },
+    {
+      "member": "W-companion/candidate/tests/geo261_timber_capacity_harness.c",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/candidate/tests/geo261_timber_capacity_harness.c",
+      "bytes": 8561,
+      "sha256": "93bf4f927359ce1bdc5d98b683828ed2fb21db0b3ffc3fc457a3894b405e2137"
+    },
+    {
+      "member": "W-companion/candidate/tests/test_geo261_timber_capacity.py",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/candidate/tests/test_geo261_timber_capacity.py",
+      "bytes": 4341,
+      "sha256": "96567f09ccbd20c9483dc675b8db4a122af00f4af73e179a3578c09d40b88861"
+    },
+    {
+      "member": "W-companion/prepare.py",
+      "source": "/workspace/geo300-capacity512-companion-draft-20261024/prepare.py",
+      "bytes": 5794,
+      "sha256": "562dc01f92baa8faf75f6d61d7082d0735a92a89e1b29e8c548f4110dcbc54c9"
+    },
+    {
+      "member": "W-peer/REVIEW.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/REVIEW.json",
+      "bytes": 7176,
+      "sha256": "0d4cc0c656aa354b575a11cfc61bd75e5298f2ff560bf4ece0307ef96a18c087"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands.json",
+      "bytes": 15691,
+      "sha256": "6d87ccdf02d7855c79b2a51e75d81d6780b9137ab9f05c23deacd3ef2d8a1ddb"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000001/request.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000001/request.json",
+      "bytes": 1605,
+      "sha256": "a002b0b3221c7d909b12feb7d7fda1ceadaf2ff1364f8a3876d9776e8a3151c7"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000001/result.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000001/result.json",
+      "bytes": 1858,
+      "sha256": "f072f48f74dcea491a603fffe64a29763688ac13cb822e3901d3d623ad92d28a"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000001/stderr.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000001/stdin.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000001/stdout.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000001/stdout.bin",
+      "bytes": 26679,
+      "sha256": "92fb32e8cb113f96c77de53c9d14fb26deaaa0e321aab4a2650f6a385bb144f5"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000002/request.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000002/request.json",
+      "bytes": 1604,
+      "sha256": "e47bfe60efe1311e626f3be465c54ee06c9d99a6358ee0b8878bf84868c88ba6"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000002/result.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000002/result.json",
+      "bytes": 1857,
+      "sha256": "5f3703431141e8eabd04cc984b444a3a0ccd3828c44eda4f6dc5d5b794cdcd4f"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000002/stderr.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000002/stdin.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000002/stdout.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000002/stdout.bin",
+      "bytes": 6391,
+      "sha256": "e3acfe8adc816889bbcbda1662a9c4052f2b8ac52f1baa81e31e23f3da3d6d87"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000003/request.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000003/request.json",
+      "bytes": 1628,
+      "sha256": "1fff1dc71eadd5f1ac6d9a633d814e11be58514d3f3338357df3754f6654060d"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000003/result.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000003/result.json",
+      "bytes": 1881,
+      "sha256": "c41b96ca08bbf2538461cf810ae8d106be0e468b08f70d0106c275ab5219c480"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000003/stderr.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000003/stdin.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000003/stdout.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000003/stdout.bin",
+      "bytes": 2308,
+      "sha256": "60696f1ac37bcc62dc6ff5657db284d08397701f824c5c69260d570a00126c9e"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000004/request.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000004/request.json",
+      "bytes": 1633,
+      "sha256": "c3d9772d911a9ffc848912449c4d9f1a6d0119b2a46ddd5325996f3ce672daf8"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000004/result.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000004/result.json",
+      "bytes": 1887,
+      "sha256": "92ab67192b24e1d51776b17f8de075b002626e85e5496ec2a2396479810e2f18"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000004/stderr.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000004/stdin.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000004/stdout.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000004/stdout.bin",
+      "bytes": 26113,
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000005/request.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000005/request.json",
+      "bytes": 1635,
+      "sha256": "b93feb436ebb89e611d6e91c1d97fae15e12cd5e40fba545c62f276116a8f33a"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000005/result.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000005/result.json",
+      "bytes": 1888,
+      "sha256": "622aef512d18b69be728e32c0ef7bf38d8891d00c5f5e0b908fd38139b1a1f4c"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000005/stderr.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000005/stdin.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000005/stdout.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000005/stdout.bin",
+      "bytes": 2335,
+      "sha256": "3c29df14421c350cdb1cf8c4ec08b3c15c60010aa2baab48b354d5854ba8175b"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000006/request.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000006/request.json",
+      "bytes": 1636,
+      "sha256": "f4019120b9c0697c1015c461c4b548dc857d4a81b3bf26c88477b72a02b6a27d"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000006/result.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000006/result.json",
+      "bytes": 1889,
+      "sha256": "1eaa84b7658756490b76e6416e01dc8e38488102dd1b1f566e681db7e2f0a7ba"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000006/stderr.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000006/stdin.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000006/stdout.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000006/stdout.bin",
+      "bytes": 8084,
+      "sha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000007/request.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000007/request.json",
+      "bytes": 1627,
+      "sha256": "425158ae83706deba8a12987ceae36c4efcfa509da3818246a4d8ce47cb99d5c"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000007/result.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000007/result.json",
+      "bytes": 1880,
+      "sha256": "feb85c9c58d854c591eb2d24d50329a4d2c26d29448aedc8267549d49ab5f045"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000007/stderr.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000007/stdin.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000007/stdout.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000007/stdout.bin",
+      "bytes": 3533,
+      "sha256": "a2542898865479475f74552ce2832e88b1f72f752728ee07b61cb762b2ceab3d"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000008/request.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000008/request.json",
+      "bytes": 1614,
+      "sha256": "9d6f15c538594ce5ea4e74c2467749c072d4c326fa5632a4c76dc99628d77d69"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000008/result.json",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000008/result.json",
+      "bytes": 1868,
+      "sha256": "3b8dc8152c464aacc74b2c7799d4f32d10bc3011bd16b47b8f623b29f63fa766"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000008/stderr.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000008/stdin.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "W-peer/original-source-capture/subcommands/000008/stdout.bin",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/original-source-capture/subcommands/000008/stdout.bin",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    {
+      "member": "W-peer/review.py",
+      "source": "/workspace/geo300-capacity512-companion-static-peer-20261024/review.py",
+      "bytes": 7938,
+      "sha256": "daba517c8d9da265feebd2ea563c6a00597ac3940ed8c3592fd884339f2f8f9e"
+    },
+    {
+      "member": "applied-peer/REVIEW.initial-matcher.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/REVIEW.initial-matcher.json",
+      "bytes": 10947,
+      "sha256": "2698f6de7398e52252bb45dddc454838fefa4a9fa4e934368cc4888852fe42be"
+    },
+    {
+      "member": "applied-peer/REVIEW.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/REVIEW.json",
+      "bytes": 10946,
+      "sha256": "92940968f878ca9f30475c397f9bbbf61f537e135e6cb60486d2e728ee20698b"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands.json",
+      "bytes": 32531,
+      "sha256": "c8b894d6f10359b4495c83c7b6fe567caa5789781fe3a5a0c986051b152ef012"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000001/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000001/request.json",
+      "bytes": 1560,
+      "sha256": "fc08ec8dfd7e197e8af935619ae9c4cfa1b012cbfc027ddebd54f2362ca66676"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000001/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000001/result.json",
+      "bytes": 1811,
+      "sha256": "2079cada8d00454b4336c51f1623bfe09e8c2d3ded5f2b6b2f33b711fbe1cf3a"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000001/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000001/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000001/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000001/stdout.bin",
+      "bytes": 123,
+      "sha256": "b889ba4e21c5a10945c3c19c3278acd49ec5143a224d2db6517786ef7791530b"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000002/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000002/request.json",
+      "bytes": 1540,
+      "sha256": "95cfd563c3eae2ab03ad80a11ac9d8ca093ceef444c25dd26ad8ff63af4efa71"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000002/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000002/result.json",
+      "bytes": 1791,
+      "sha256": "214ff43883ee5487bac09f1040b063d8d43c87ab9ccb135f98154f37966f86b6"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000002/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000002/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000002/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000002/stdout.bin",
+      "bytes": 34,
+      "sha256": "4d8373b75a54700d59dc7b601b854881150b45b134478ca9afb7245c4f5b66a6"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000003/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000003/request.json",
+      "bytes": 1631,
+      "sha256": "8bd9bae4c23dad6da4d9a21219d82b0247eb378f56c736096a4e77e3f3a4238d"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000003/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000003/result.json",
+      "bytes": 1883,
+      "sha256": "f9f28531f3e5d5c18c768eeb4d1e683ac4d5ea0f9fc4b0565bc94fe6b66b878b"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000003/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000003/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000003/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000003/stdout.bin",
+      "bytes": 1117,
+      "sha256": "75f76128367d4721ff73dac24b949eba371f63279c8dec4e508a0a5adb9ea4fb"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000004/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000004/request.json",
+      "bytes": 1535,
+      "sha256": "ca6db3425dc2b3f388fd8b6ffd9e0bf7086fcd36558e39b4ccd22900021bceaa"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000004/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000004/result.json",
+      "bytes": 1787,
+      "sha256": "9bd72106d90a36de50b08a3d2e544e9cb781734af12f4622030a54093578972c"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000004/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000004/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000004/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000004/stdout.bin",
+      "bytes": 452,
+      "sha256": "151f8dcd82df668c01c2b074f144a0b56ac4b5386078cf7c31202a3aedd59e29"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000005/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000005/request.json",
+      "bytes": 1562,
+      "sha256": "6db1229329a46d8c2b5927a8cf72d61c0d391188ed1c82e0e6be574672711b4d"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000005/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000005/result.json",
+      "bytes": 1814,
+      "sha256": "d29f6b8036c269f883f32336c1f0bfaf2cb5d59db86d2085d5c6afc99ad635d9"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000005/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000005/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000005/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000005/stdout.bin",
+      "bytes": 162,
+      "sha256": "195ae6b3e98c5e2be3cfa7d4d61cf42f5d59a2499bd20376df0926208268d426"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000006/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000006/request.json",
+      "bytes": 1550,
+      "sha256": "12cc0410fe03cf477371f57119ffa13a4bc32f13c5b16aceae9ec645d1f6d534"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000006/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000006/result.json",
+      "bytes": 1799,
+      "sha256": "e969034a887fe2e8468fe2e1e33149aab95b3704765ed6fed55cc2b534c98351"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000006/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000006/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000006/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000007/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000007/request.json",
+      "bytes": 1530,
+      "sha256": "a4e01f1ead5dbb5ca16b4d10e80d2e586ee317a90c59aba0f84ef179daea4fe2"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000007/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000007/result.json",
+      "bytes": 1780,
+      "sha256": "4d86ab522e5adb75671f024c9e474cc39003cd28c4fa9228b49a2fcf70024479"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000007/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000007/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000007/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000008/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000008/request.json",
+      "bytes": 1616,
+      "sha256": "c10b088c72ec655c40c27ddf736b9747523a799dca0c83961adf7560132b41e0"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000008/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000008/result.json",
+      "bytes": 1869,
+      "sha256": "ddb01591f97aaf8d06488f0da8022bc5ae7cd8c0c3a03dfa00e1ca8839e8676d"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000008/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000008/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000008/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000008/stdout.bin",
+      "bytes": 6045,
+      "sha256": "c673557af4f543c7550643b3aeb142f1aa9c0e2ef15670759da712522631a9da"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000009/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000009/request.json",
+      "bytes": 1617,
+      "sha256": "e0336a35e828ae1613aa6c405d66debc96f02bc37b8070b85b01fae694b13e95"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000009/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000009/result.json",
+      "bytes": 1868,
+      "sha256": "63d0bd0d0ddacb68a56d8f9e07238b631bfd635a1bcd14609f55d9ba80de063b"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000009/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000009/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000009/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000009/stdout.bin",
+      "bytes": 6045,
+      "sha256": "c673557af4f543c7550643b3aeb142f1aa9c0e2ef15670759da712522631a9da"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000010/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000010/request.json",
+      "bytes": 1593,
+      "sha256": "78ad9d7a2fc6fbe855860881b3ef059ac042474f7455466280581e7e82eed57a"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000010/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000010/result.json",
+      "bytes": 1847,
+      "sha256": "b8079fd9cda061375e2e8bd7beb48036f3b74e023bdd08506defd11354da7c32"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000010/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000010/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000010/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000010/stdout.bin",
+      "bytes": 17466,
+      "sha256": "003fbfe9254c2434ad90e4adaed7df431228e1e1d3d4f5b8540fdd2e2703eaf1"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000011/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000011/request.json",
+      "bytes": 1593,
+      "sha256": "250c0fe0d40a61d6a41234e374ea6a3b57d93370ba13724909a0d440a71c4433"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000011/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000011/result.json",
+      "bytes": 1847,
+      "sha256": "1570cebbf83205d75bcf4f8d8c375013a86a06250be518799e561bec11e5a74c"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000011/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000011/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000011/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000011/stdout.bin",
+      "bytes": 17466,
+      "sha256": "003fbfe9254c2434ad90e4adaed7df431228e1e1d3d4f5b8540fdd2e2703eaf1"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000012/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000012/request.json",
+      "bytes": 1598,
+      "sha256": "4f13b6db3ee4849c21ff83585d02bd47774d3076bf06b9056656583a95476ffa"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000012/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000012/result.json",
+      "bytes": 1852,
+      "sha256": "e07a3faf711102b43861ed3c1a8ec074e12b1fd907d20b580f3e1fd89d72bbc6"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000012/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000012/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000012/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000012/stdout.bin",
+      "bytes": 18759,
+      "sha256": "3ce788669e83971d98d278856df44f6c7473c49d52422b0ebc1f5ee2a8fdfb16"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000013/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000013/request.json",
+      "bytes": 1597,
+      "sha256": "9f4fd13fa04003e6c07ad36b725721161f16776321a45a6e61e48f3dc9d25b87"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000013/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000013/result.json",
+      "bytes": 1851,
+      "sha256": "3db6fc8b5d45b1281f4fbeb4fa023d564d414459c3c64d44ddd11b1a46fef7dd"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000013/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000013/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000013/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000013/stdout.bin",
+      "bytes": 18759,
+      "sha256": "3ce788669e83971d98d278856df44f6c7473c49d52422b0ebc1f5ee2a8fdfb16"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000014/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000014/request.json",
+      "bytes": 1592,
+      "sha256": "6c6c4d46bc7698a568c04b22d4d05bf09d8ccb4a4966d0b093d6647c0fe2aff5"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000014/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000014/result.json",
+      "bytes": 1843,
+      "sha256": "4a740d0b0abeee1175d3c3818c37321299e2d5ed1d8638cda95ced84e0174037"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000014/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000014/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000014/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000014/stdout.bin",
+      "bytes": 25286,
+      "sha256": "700f4533bed81f0782dc771117472e0dd2fafe57f9831b83022cc18d0506c835"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000015/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000015/request.json",
+      "bytes": 1568,
+      "sha256": "fa853adcfb1566c03f222d9cf784615af617812caac631ecb309c6e6a0fd01a4"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000015/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000015/result.json",
+      "bytes": 1818,
+      "sha256": "e1371c9f7158bba6755862259c76a29aeeb9845201162be01257163420942932"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000015/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000015/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000015/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000015/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000016/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000016/request.json",
+      "bytes": 1573,
+      "sha256": "2fee7331200277b6341ecea8a2cc9f6e9681316e04964b11a8b6bdf7cba4d730"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000016/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000016/result.json",
+      "bytes": 1822,
+      "sha256": "76cf14c842782350fbdc6b3bf71f032d22c6f45eb322ab4912fc82958bbfe155"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000016/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000016/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000016/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000016/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000017/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000017/request.json",
+      "bytes": 1567,
+      "sha256": "d9f9b209d857595d46e5e5e34946cdcb784d039da422a17ca8d322cc607cd736"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000017/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000017/result.json",
+      "bytes": 1817,
+      "sha256": "f6fd4ae44c4c0e89f92d9a4582fa642276065fd98737cf6d125b0e805776342b"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000017/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000017/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git-r2/subcommands/000017/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git-r2/subcommands/000017/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands.json",
+      "bytes": 32490,
+      "sha256": "d86612f4b508b139b51600f48465d6951ff33e1196b2b35ce7785d9b1a26b9e9"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000001/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000001/request.json",
+      "bytes": 1557,
+      "sha256": "2f3503f791366fe0119b549ed1b7b1125c357765d16b0fd03189e4b85f7be52e"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000001/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000001/result.json",
+      "bytes": 1809,
+      "sha256": "f10e97079f5062dabee2805b9167f820643b3c4ad8fe59a60ee82ac87856fe84"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000001/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000001/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000001/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000001/stdout.bin",
+      "bytes": 123,
+      "sha256": "b889ba4e21c5a10945c3c19c3278acd49ec5143a224d2db6517786ef7791530b"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000002/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000002/request.json",
+      "bytes": 1537,
+      "sha256": "b5aa84f6df68206efdc1cd1fce04947fc8cda38cbae0467f420304ccb93989c5"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000002/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000002/result.json",
+      "bytes": 1788,
+      "sha256": "bfe6e58ba5b3684337f368ea6e37a3253146150cc9dfa1592b724fcd43a9bb38"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000002/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000002/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000002/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000002/stdout.bin",
+      "bytes": 34,
+      "sha256": "4d8373b75a54700d59dc7b601b854881150b45b134478ca9afb7245c4f5b66a6"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000003/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000003/request.json",
+      "bytes": 1628,
+      "sha256": "635e2b191e52452d2e16b174fc23c6078eac4fe2e255970f93780df727c28d68"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000003/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000003/result.json",
+      "bytes": 1880,
+      "sha256": "df197aded4c3612c9665fe8c61abd22a0357582cee4ffe46bf973ce0c123cce7"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000003/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000003/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000003/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000003/stdout.bin",
+      "bytes": 1117,
+      "sha256": "75f76128367d4721ff73dac24b949eba371f63279c8dec4e508a0a5adb9ea4fb"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000004/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000004/request.json",
+      "bytes": 1532,
+      "sha256": "9996519c10395d5908a9aeb56b75ab844c4676263277ee7baae71fb601485842"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000004/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000004/result.json",
+      "bytes": 1784,
+      "sha256": "c87e13b42a115116e01b1bc3fe3f46c6970305f0713f6b2749ef55e10b0c5a71"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000004/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000004/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000004/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000004/stdout.bin",
+      "bytes": 452,
+      "sha256": "151f8dcd82df668c01c2b074f144a0b56ac4b5386078cf7c31202a3aedd59e29"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000005/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000005/request.json",
+      "bytes": 1559,
+      "sha256": "20a3c0eb86e44915554c89acc3435cca28a144ba2d344c417121550870672cb7"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000005/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000005/result.json",
+      "bytes": 1811,
+      "sha256": "562bd0a94e294ad2dd95bf5916f4a87cdeea679ae2f811d3952dfff1a735ee56"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000005/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000005/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000005/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000005/stdout.bin",
+      "bytes": 162,
+      "sha256": "195ae6b3e98c5e2be3cfa7d4d61cf42f5d59a2499bd20376df0926208268d426"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000006/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000006/request.json",
+      "bytes": 1548,
+      "sha256": "51973e93d1c8c51adb193b196b56f2a6c74b600bba08a058276c3a1b1fed3d23"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000006/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000006/result.json",
+      "bytes": 1798,
+      "sha256": "deb51aeae5d5977ffed5fd07da5f4cdf382ec2e36f26daa99072231769bfa002"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000006/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000006/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000006/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000007/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000007/request.json",
+      "bytes": 1528,
+      "sha256": "c3f755dbdbdc24f90e9fc5baf20adf8eb5e1f713e7dc8ae5fd49b89983645de0"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000007/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000007/result.json",
+      "bytes": 1777,
+      "sha256": "63cb9296aab2920cfd8628c6d6af94c0112e7c455eb3abba194dda9ebfab4977"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000007/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000007/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000007/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000008/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000008/request.json",
+      "bytes": 1614,
+      "sha256": "eeb959801bc2be7effc22e871c91b40ed54ce64d0160653e4f91c10b99788cfd"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000008/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000008/result.json",
+      "bytes": 1867,
+      "sha256": "c27d62e6b0191c0df4d6495296ac0f45c6914e80e649417747f29233d644af80"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000008/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000008/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000008/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000008/stdout.bin",
+      "bytes": 6045,
+      "sha256": "c673557af4f543c7550643b3aeb142f1aa9c0e2ef15670759da712522631a9da"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000009/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000009/request.json",
+      "bytes": 1614,
+      "sha256": "5eb76b2fa7ecb0de7070958c7b87766002dffb93cbf7d0861f323eb4a7f0ceb7"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000009/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000009/result.json",
+      "bytes": 1867,
+      "sha256": "2763b5e9a7d3c00c3a29464259a7181b3e427c66c0c6d46951143e8caebd22f7"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000009/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000009/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000009/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000009/stdout.bin",
+      "bytes": 6045,
+      "sha256": "c673557af4f543c7550643b3aeb142f1aa9c0e2ef15670759da712522631a9da"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000010/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000010/request.json",
+      "bytes": 1590,
+      "sha256": "b9dc787420c7e0b97b0ecd635df4b3f8d9822f048e6a944036d3d19c78f7cd25"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000010/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000010/result.json",
+      "bytes": 1844,
+      "sha256": "b4d5f00e619d993795b1c217e814cabf7cb0554eae87de97e29cf195d5038104"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000010/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000010/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000010/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000010/stdout.bin",
+      "bytes": 17466,
+      "sha256": "003fbfe9254c2434ad90e4adaed7df431228e1e1d3d4f5b8540fdd2e2703eaf1"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000011/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000011/request.json",
+      "bytes": 1590,
+      "sha256": "a142bccbf3eed6c7300f926d43d032f97a70ebbe0fe106afc0c8a5d5064eae88"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000011/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000011/result.json",
+      "bytes": 1844,
+      "sha256": "5557ac55efc082825dcb005d98d0ca9e52d941bd6acf887c24b5e451be04c1f4"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000011/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000011/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000011/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000011/stdout.bin",
+      "bytes": 17466,
+      "sha256": "003fbfe9254c2434ad90e4adaed7df431228e1e1d3d4f5b8540fdd2e2703eaf1"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000012/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000012/request.json",
+      "bytes": 1595,
+      "sha256": "1e12260f3d3500a4cbf3d97cca671f0643b5c3b3743e88d6c93483ab9ff5707d"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000012/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000012/result.json",
+      "bytes": 1848,
+      "sha256": "4f95821508ca34e0d4b39481912a66b272f5a62b65139c6b1a723b9da5217c4b"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000012/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000012/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000012/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000012/stdout.bin",
+      "bytes": 18759,
+      "sha256": "3ce788669e83971d98d278856df44f6c7473c49d52422b0ebc1f5ee2a8fdfb16"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000013/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000013/request.json",
+      "bytes": 1595,
+      "sha256": "1bd41b88df47e221e64c2114957af78bf570b3bcb41033ac52beabe70545e60d"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000013/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000013/result.json",
+      "bytes": 1849,
+      "sha256": "9e91b99bb7b8187b6f646c49a565efda2214bee8e0eaef40fd0adaf0cbf436ae"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000013/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000013/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000013/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000013/stdout.bin",
+      "bytes": 18759,
+      "sha256": "3ce788669e83971d98d278856df44f6c7473c49d52422b0ebc1f5ee2a8fdfb16"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000014/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000014/request.json",
+      "bytes": 1589,
+      "sha256": "06c4bbaed18e838b9db571dc9c7af196ae0ce75ebcbe61ae4ad55c54306dc21f"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000014/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000014/result.json",
+      "bytes": 1843,
+      "sha256": "8cf41a3db29c1df1c3bb00f9ba830a9f482098d4ecdf9e1ca16d00ea4099af89"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000014/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000014/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000014/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000014/stdout.bin",
+      "bytes": 25286,
+      "sha256": "700f4533bed81f0782dc771117472e0dd2fafe57f9831b83022cc18d0506c835"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000015/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000015/request.json",
+      "bytes": 1565,
+      "sha256": "3a98fc92875ce20819839af28457c65b625880219721225bde304abf7135b04c"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000015/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000015/result.json",
+      "bytes": 1814,
+      "sha256": "5120a87007d3166bc4cba163b5493178f9b09afcacbcc4ab76e1795674874369"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000015/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000015/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000015/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000015/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000016/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000016/request.json",
+      "bytes": 1570,
+      "sha256": "61fd940258f65844ba5063ff155e2dc6ca6342aa2b020fe172ef26aaeae47c00"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000016/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000016/result.json",
+      "bytes": 1820,
+      "sha256": "e94df830a597058c2ee59a8de07b3f746f662d119f70c9256cb0531d27602ec4"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000016/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000016/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000016/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000016/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000017/request.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000017/request.json",
+      "bytes": 1565,
+      "sha256": "e6d38eaa9ba06b88a482bf3cf04319a286b83f39d4cb1d00f6d2c03c309b2259"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000017/result.json",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000017/result.json",
+      "bytes": 1815,
+      "sha256": "ac24b6c6f99109adf69dc4bf9e66e6d1f499463c66760af31ac24d6691e42da2"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000017/stderr.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000017/stdin.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/original-git/subcommands/000017/stdout.bin",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/original-git/subcommands/000017/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "applied-peer/review.initial-matcher.py.txt",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/review.initial-matcher.py.txt",
+      "bytes": 5335,
+      "sha256": "97a01f79304d7f54ccbbbd19bd6fb0947479ec23d34a3bd433a69a3e2a5cb221"
+    },
+    {
+      "member": "applied-peer/review.py",
+      "source": "/workspace/geo300-capacity512-applied-source-peer-20261024/review.py",
+      "bytes": 5431,
+      "sha256": "d3bb7d497fdeb9e5de15536408ebf43e8a37ad8849cfd9e33c10f096bb928660"
+    },
+    {
+      "member": "producers/commit_source.py",
+      "source": "/workspace/geo300-capacity512-publication-20261024/commit_source.py",
+      "bytes": 2815,
+      "sha256": "12e5c78c519b498f162b61566a61197d2c75998f215338c2eedb0fcc5f8d26ad"
+    },
+    {
+      "member": "producers/create_source.py",
+      "source": "/workspace/geo300-capacity512-publication-20261024/create_source.py",
+      "bytes": 5497,
+      "sha256": "cd7c4e4269ecf91ffdd07a60901da6face58a10bf737ef8225c1318f1018bb45"
+    },
+    {
+      "member": "producers/package_draft.py",
+      "source": "/workspace/geo300-capacity512-publication-20261024/package_draft.py",
+      "bytes": 6361,
+      "sha256": "acffe0f43cb7598f43d3cc028eb749a20c88553c6dbcc744c876c09e9272423e"
+    },
+    {
+      "member": "product-draft-peer/CHECKS.initial-v1.json",
+      "source": "/tmp/geo300-capacity512-product-draft-peer/CHECKS.initial-v1.json",
+      "bytes": 5642,
+      "sha256": "cb7300103efa938f8a734d8c3bab33d11d655a7ffbe414beea452ccdbaa48e9f"
+    },
+    {
+      "member": "product-draft-peer/CHECKS.v2.json",
+      "source": "/tmp/geo300-capacity512-product-draft-peer/CHECKS.v2.json",
+      "bytes": 1312,
+      "sha256": "fe2c63146ae57677cbdeb6261ea66b4dc23af56ff237ca7bc876a6cc798279e6"
+    },
+    {
+      "member": "product-draft-peer/TEST_PLAN_V1_TO_V2.diff",
+      "source": "/tmp/geo300-capacity512-product-draft-peer/TEST_PLAN_V1_TO_V2.diff",
+      "bytes": 2836,
+      "sha256": "5e1fef942812eb7d27bdfff7279e58ac1a47731ac87eef2a1a734d6a1395a797"
+    },
+    {
+      "member": "product-draft-peer/review.py",
+      "source": "/tmp/geo300-capacity512-product-draft-peer/review.py",
+      "bytes": 4635,
+      "sha256": "7046e67cf09dc1e3029030e6a4c43f9f4320156369ffdbc5ee8f6e334cf1fa37"
+    },
+    {
+      "member": "product-draft/APPLY_CHECK.json",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/APPLY_CHECK.json",
+      "bytes": 451,
+      "sha256": "57c9d08221085731366645a49eecb0cc578feb4b516da5acc8091cf9b475469f"
+    },
+    {
+      "member": "product-draft/DRAFT_STATIC_CHECKS.json",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/DRAFT_STATIC_CHECKS.json",
+      "bytes": 1865,
+      "sha256": "a19d4732cc2e97d73aebe80db50aea1ed62efc2486cf7ff56f8cc09ae98ceaf7"
+    },
+    {
+      "member": "product-draft/MANIFEST.json",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/MANIFEST.json",
+      "bytes": 9401,
+      "sha256": "98dad06f64d7b826eb7851cf6eff717d9805a90318e598ae4eb5d74aa00ebac2"
+    },
+    {
+      "member": "product-draft/PRODUCT_ONLY.patch",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/PRODUCT_ONLY.patch",
+      "bytes": 6028,
+      "sha256": "f2d8202f035e334ec0033192793d0751db75ef1fa320110a903b3495b84230ae"
+    },
+    {
+      "member": "product-draft/TEST_PLAN.md",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/TEST_PLAN.md",
+      "bytes": 7832,
+      "sha256": "5a58a0da4d8b7f4a63cdf2799d3bcd67e75aff838db2c8f9785dfaa4e24f3507"
+    },
+    {
+      "member": "product-draft/TEST_PLAN.v2.md",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/TEST_PLAN.v2.md",
+      "bytes": 8826,
+      "sha256": "530edec7f1b19efca53dfd1c6d518d862163d400c77fff560b9492b9c2216376"
+    },
+    {
+      "member": "product-draft/TEST_PLAN_V2_BINDING.json",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/TEST_PLAN_V2_BINDING.json",
+      "bytes": 531,
+      "sha256": "27a75bb7a123ca8cc8639bfb01d63ad5eff87153976574f20ddcda061811cce8"
+    },
+    {
+      "member": "product-draft/apply-check.stderr",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/apply-check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/apply-check.stdout",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/apply-check.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/before/current_geometry.c",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/before/current_geometry.c",
+      "bytes": 401668,
+      "sha256": "375afa56e0246fdb8700224231613ad8d54ced4c6b4078ad0092eceb70731361"
+    },
+    {
+      "member": "product-draft/before/geometry-templates/woodworking/native/contact_world.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/before/geometry-templates/woodworking/native/contact_world.h",
+      "bytes": 4185,
+      "sha256": "03bf7a5f0cdd844d74c220e51c4b6ad34336fe338d47e80192898c9fab4a026d"
+    },
+    {
+      "member": "product-draft/before/geometry-templates/woodworking/native/cut_list.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/before/geometry-templates/woodworking/native/cut_list.h",
+      "bytes": 769,
+      "sha256": "1c5d28d45e208daf0127e6554c0cd60877b1ccf976e03e7f85c27615c3727123"
+    },
+    {
+      "member": "product-draft/before/geometry-templates/woodworking/native/document.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/before/geometry-templates/woodworking/native/document.h",
+      "bytes": 1413,
+      "sha256": "00ed05fa26a97938de8d2cb8de35caa3ea79460566c355c7c23c7d4d3d49f03d"
+    },
+    {
+      "member": "product-draft/before/geometry-templates/woodworking/native/member_reference.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/before/geometry-templates/woodworking/native/member_reference.h",
+      "bytes": 6909,
+      "sha256": "ad7d61d9cb72bb0c4ce9c44493b2cb7caca1fa91cf8b6d0b93bf72b1bf3934a8"
+    },
+    {
+      "member": "product-draft/before/geometry-templates/woodworking/native/members.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/before/geometry-templates/woodworking/native/members.h",
+      "bytes": 2131,
+      "sha256": "217ecee81c0f9fb151edccaa233e0c01d3b401b3ecdc1945a1492c8676fb08f7"
+    },
+    {
+      "member": "product-draft/before/geometry-templates/woodworking/native/world_validation.c",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/before/geometry-templates/woodworking/native/world_validation.c",
+      "bytes": 8084,
+      "sha256": "ea62a9fcc8f6ef5ccf9faa1f419617118b8904f25a4f743440c2f6132ccf4096"
+    },
+    {
+      "member": "product-draft/candidate/current_geometry.c",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/candidate/current_geometry.c",
+      "bytes": 402554,
+      "sha256": "15cfa1f0bd4aa58ebc2482f78d7a0c19cb9da27ec6cf27179473c1808ea00bc9"
+    },
+    {
+      "member": "product-draft/candidate/geometry-templates/woodworking/native/contact_world.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/candidate/geometry-templates/woodworking/native/contact_world.h",
+      "bytes": 4203,
+      "sha256": "d29036b9e128246daa8f5c3995353e0894bd27cdc0be802beca465e4e467a0a9"
+    },
+    {
+      "member": "product-draft/candidate/geometry-templates/woodworking/native/cut_list.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/candidate/geometry-templates/woodworking/native/cut_list.h",
+      "bytes": 787,
+      "sha256": "e266973f001c3465c4da1401b4c045b9b1088859f33a5e729585e85c12b8ebfd"
+    },
+    {
+      "member": "product-draft/candidate/geometry-templates/woodworking/native/document.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/candidate/geometry-templates/woodworking/native/document.h",
+      "bytes": 1439,
+      "sha256": "8f0416a16489e6d26941f653bed8d6ecf6980fc73cb8868b53d3c4f42847db56"
+    },
+    {
+      "member": "product-draft/candidate/geometry-templates/woodworking/native/member_reference.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/candidate/geometry-templates/woodworking/native/member_reference.h",
+      "bytes": 6927,
+      "sha256": "8822025f9e4dc8f37fec92fc01d758aeec6b23936fd5c094e212541b426465c4"
+    },
+    {
+      "member": "product-draft/candidate/geometry-templates/woodworking/native/members.h",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/candidate/geometry-templates/woodworking/native/members.h",
+      "bytes": 2232,
+      "sha256": "e6bfa28bb86a10cfbec42f52aad1bad1620ce7bcc3aed27f5c9fb52df2237aeb"
+    },
+    {
+      "member": "product-draft/candidate/geometry-templates/woodworking/native/world_validation.c",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/candidate/geometry-templates/woodworking/native/world_validation.c",
+      "bytes": 8251,
+      "sha256": "6b3e5125ceecb6bc563cb842df15ed840878c71698ac264c2a065a08623abea0"
+    },
+    {
+      "member": "product-draft/git-diff.stderr",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/git-diff.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "product-draft/git-diff.stdout",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/git-diff.stdout",
+      "bytes": 6266,
+      "sha256": "bdb9567dfaea664cdccef7c4ba3518d3965fc2c8b1899d19692d8f2daecef2e8"
+    },
+    {
+      "member": "product-draft/prepare_product.py",
+      "source": "/tmp/geo300-capacity512-draft-v1-20261024/prepare_product.py",
+      "bytes": 6990,
+      "sha256": "ec0b2859b212dd84c888fcc6ad5b03f10c0e7e1065e9c69432265af297ca583e"
+    },
+    {
+      "member": "source-preparation/CANDIDATE_TRACKED.diff",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/CANDIDATE_TRACKED.diff",
+      "bytes": 10400,
+      "sha256": "a2dd9b71b5a9fb9b781d5c84cc1853b554ef7f8c6a5900364cb84e8e32f7b340"
+    },
+    {
+      "member": "source-preparation/RESULT.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/RESULT.json",
+      "bytes": 49919,
+      "sha256": "22175c55fa99e27bbee6062212e9b1a5b9fa3c5c05a07bdbf43f95bc644c0a29"
+    },
+    {
+      "member": "source-preparation/subcommands.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands.json",
+      "bytes": 44158,
+      "sha256": "60107ed26e5849d3b244a482d67249c1118fcc7f45187e425a2ff487e1c0edfa"
+    },
+    {
+      "member": "source-preparation/subcommands/000001/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000001/request.json",
+      "bytes": 1542,
+      "sha256": "6e4cc30310705b3c8e6562ba20305770833d16e7be1e627dec8e91d45dad4eb3"
+    },
+    {
+      "member": "source-preparation/subcommands/000001/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000001/result.json",
+      "bytes": 1795,
+      "sha256": "49f65e8af723251a8380d0e8168f21755508e9c9133ba196bbc9164f18b9e17e"
+    },
+    {
+      "member": "source-preparation/subcommands/000001/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000001/stderr.bin",
+      "bytes": 586,
+      "sha256": "3e70934f1909b0f5a846d62237fcc1509d733b9fb0321187024723dfc67176d3"
+    },
+    {
+      "member": "source-preparation/subcommands/000001/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000001/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000001/stdout.bin",
+      "bytes": 86,
+      "sha256": "f3945f49b32f11c4e4bf4786c413ec072e9a9d9aa845404a1e0d3cb73d07a080"
+    },
+    {
+      "member": "source-preparation/subcommands/000002/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000002/request.json",
+      "bytes": 1548,
+      "sha256": "c3fda250833b001bab28b29913a44eaf5c7796cc13a046164263b31e18d1421e"
+    },
+    {
+      "member": "source-preparation/subcommands/000002/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000002/result.json",
+      "bytes": 1798,
+      "sha256": "d1f29b6bb12f554601c78e3aaf58bef7a0e597bd16ade4ea0ef71fe1c8638934"
+    },
+    {
+      "member": "source-preparation/subcommands/000002/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000002/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000002/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000003/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000003/request.json",
+      "bytes": 1561,
+      "sha256": "11de01a01b6db592667e075c200a4521b10081be35b3d555d4df0139bd1c0091"
+    },
+    {
+      "member": "source-preparation/subcommands/000003/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000003/result.json",
+      "bytes": 1810,
+      "sha256": "34f9ad7fd91f7d5468f2c233ae0177867de06d8adc2438447d01bc66103becd0"
+    },
+    {
+      "member": "source-preparation/subcommands/000003/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000003/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000003/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000004/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000004/request.json",
+      "bytes": 1556,
+      "sha256": "df9ef0cac50bec10360b312d9b9c5d990a0eb290c2f6d389d6b79a357cc8cc1b"
+    },
+    {
+      "member": "source-preparation/subcommands/000004/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000004/result.json",
+      "bytes": 1806,
+      "sha256": "b78534fa252e4bd84fa47db31a9e32fc43a0081837d234b1b250aff616a3e8ce"
+    },
+    {
+      "member": "source-preparation/subcommands/000004/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000004/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000004/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000005/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000005/request.json",
+      "bytes": 1568,
+      "sha256": "534eb64158e30b2b20c2949c503567c8826e8f556e7a16479fdc84efbfc0500f"
+    },
+    {
+      "member": "source-preparation/subcommands/000005/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000005/result.json",
+      "bytes": 1817,
+      "sha256": "9b7700ef5b390989c0daee9e7c6d21bb22fe6d42d50b4a67500aca9084e1dee3"
+    },
+    {
+      "member": "source-preparation/subcommands/000005/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000005/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000005/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000006/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000006/request.json",
+      "bytes": 1565,
+      "sha256": "904e8fdc3169069570679d43ffe2917e458a8fd5573d075cce835622af8703b0"
+    },
+    {
+      "member": "source-preparation/subcommands/000006/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000006/result.json",
+      "bytes": 1815,
+      "sha256": "6e5447ba61d51631aadda6cf3a11e4e9f8dddcd0919f6b99baf9555105a29238"
+    },
+    {
+      "member": "source-preparation/subcommands/000006/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000006/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000006/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000007/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000007/request.json",
+      "bytes": 1570,
+      "sha256": "e7413d91e2b35aff1dddc6980478a365ce3f151e95614af6412ba5857d33691c"
+    },
+    {
+      "member": "source-preparation/subcommands/000007/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000007/result.json",
+      "bytes": 1820,
+      "sha256": "df9e963eecf8d6317b8990951353941e017a54306538d87f54f5150ffa195516"
+    },
+    {
+      "member": "source-preparation/subcommands/000007/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000007/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000007/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000008/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000008/request.json",
+      "bytes": 1606,
+      "sha256": "e0fa6916b04017841b007241e94113d044d7423707e82622d96b37453a427a1e"
+    },
+    {
+      "member": "source-preparation/subcommands/000008/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000008/result.json",
+      "bytes": 1856,
+      "sha256": "20a23de71cdafd295066e3dd8d28e0b4e6333314e1a91144e55fec75b0585e4a"
+    },
+    {
+      "member": "source-preparation/subcommands/000008/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000008/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000008/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000009/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000009/request.json",
+      "bytes": 1627,
+      "sha256": "294200db0a20733b775e23f258ca5d57ccffb8ac0bd29041865e9972aad26b7b"
+    },
+    {
+      "member": "source-preparation/subcommands/000009/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000009/result.json",
+      "bytes": 1877,
+      "sha256": "dd6a0885fdd2c7bfdf67b37e0fe83df0388304fba361349622e0b0b21520bdda"
+    },
+    {
+      "member": "source-preparation/subcommands/000009/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000009/stderr.bin",
+      "bytes": 61,
+      "sha256": "5a2741e4cf7b5d89afddcdeeb21784d79291321261a714c975f58092d74e93e3"
+    },
+    {
+      "member": "source-preparation/subcommands/000009/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000009/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000010/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000010/request.json",
+      "bytes": 1605,
+      "sha256": "54621da75a6bf61812b226eadde67882033f72d95e076e620ea3927ad017824c"
+    },
+    {
+      "member": "source-preparation/subcommands/000010/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000010/result.json",
+      "bytes": 1856,
+      "sha256": "c87ef8b9b8f9d3bdb1565d48da9434620f415df94342aaaf6157ec33977ce922"
+    },
+    {
+      "member": "source-preparation/subcommands/000010/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000010/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000010/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000010/stdout.bin",
+      "bytes": 2329,
+      "sha256": "433a52de3badfccaa6ee2590749c91bea0b8edb2df7cbe29ad85a8af6eeb7f5f"
+    },
+    {
+      "member": "source-preparation/subcommands/000011/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000011/request.json",
+      "bytes": 1540,
+      "sha256": "0a39ab39f700d9160f580308587d71eb4ead29b36c9fa20996469d68e3e11215"
+    },
+    {
+      "member": "source-preparation/subcommands/000011/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000011/result.json",
+      "bytes": 1791,
+      "sha256": "5aeab31f5106bd2e591ca9c62db12803910356a2c038fb6bfdb1019da33de3bc"
+    },
+    {
+      "member": "source-preparation/subcommands/000011/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000011/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000011/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000011/stdout.bin",
+      "bytes": 41,
+      "sha256": "224b19df5b20a31f1414b2c58765f085ca3b6f31dfe64a7f953c859b223700e5"
+    },
+    {
+      "member": "source-preparation/subcommands/000012/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000012/request.json",
+      "bytes": 1639,
+      "sha256": "c405117cbbb1cb9cf06ca6351fd5b6ed2f969636588c6b552a1ca993de61179c"
+    },
+    {
+      "member": "source-preparation/subcommands/000012/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000012/result.json",
+      "bytes": 1892,
+      "sha256": "0daeb88050a05e08a411e42d4b72b89e6641a9a0fce1dbff7c19295dc55146cf"
+    },
+    {
+      "member": "source-preparation/subcommands/000012/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000012/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000012/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000012/stdout.bin",
+      "bytes": 1117,
+      "sha256": "75f76128367d4721ff73dac24b949eba371f63279c8dec4e508a0a5adb9ea4fb"
+    },
+    {
+      "member": "source-preparation/subcommands/000013/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000013/request.json",
+      "bytes": 1545,
+      "sha256": "1297080031a9376c9e6728b4a810254703c8cb93a93c35da02d588a43eead0a3"
+    },
+    {
+      "member": "source-preparation/subcommands/000013/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000013/result.json",
+      "bytes": 1794,
+      "sha256": "55ca28f9a398105845a744228aadc04e9d025f851ff890e4bd22e5159452cd3c"
+    },
+    {
+      "member": "source-preparation/subcommands/000013/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000013/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000013/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000013/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000014/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000014/request.json",
+      "bytes": 1607,
+      "sha256": "89208540c4184d6bb245d5482add68bf6876bf5d80c0120a1b61a8edcc9b0b9d"
+    },
+    {
+      "member": "source-preparation/subcommands/000014/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000014/result.json",
+      "bytes": 1857,
+      "sha256": "2ef55b97024aa380d6e8c4dc33824f550a195be7f78d63f57e45d12390d46841"
+    },
+    {
+      "member": "source-preparation/subcommands/000014/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000014/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000014/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000014/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000015/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000015/request.json",
+      "bytes": 1592,
+      "sha256": "ec6389001038e33e605404937f3cdbcd8baaeb48790831b9780d7974f9610514"
+    },
+    {
+      "member": "source-preparation/subcommands/000015/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000015/result.json",
+      "bytes": 1842,
+      "sha256": "d5dec4b8413c5f7ff5cbf6568b9bb3b5c95c12899c654f84135b92b270e74f14"
+    },
+    {
+      "member": "source-preparation/subcommands/000015/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000015/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000015/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000015/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000016/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000016/request.json",
+      "bytes": 1626,
+      "sha256": "e15386d320a9b5596c4c3eab82dcdf5a7a4367af8f4f2dc114219c7e750d7c59"
+    },
+    {
+      "member": "source-preparation/subcommands/000016/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000016/result.json",
+      "bytes": 1876,
+      "sha256": "3347a4fcbd90c2f2edcabbd963e158bcdb8052e89f75aaa97c1a7946e622fcad"
+    },
+    {
+      "member": "source-preparation/subcommands/000016/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000016/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000016/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000016/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000017/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000017/request.json",
+      "bytes": 1611,
+      "sha256": "bbd42b76973343d716d16e52da4c9ec4a6433038f3bd4ead3576d520ed2eb12a"
+    },
+    {
+      "member": "source-preparation/subcommands/000017/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000017/result.json",
+      "bytes": 1861,
+      "sha256": "0ac05d030d4691326025c8df8cbd09faa1f7bc89d32d4caf3b17e57f483bd5a8"
+    },
+    {
+      "member": "source-preparation/subcommands/000017/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000017/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000017/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000017/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000018/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000018/request.json",
+      "bytes": 1618,
+      "sha256": "204fe31d9893b992c25bb992f94d8e5c575d165393ec367b854782c4de720fa2"
+    },
+    {
+      "member": "source-preparation/subcommands/000018/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000018/result.json",
+      "bytes": 1868,
+      "sha256": "bdec15c7cdc762441e81319289929f6f0eaa97d9b9ddd3e273e6ab2ff4d99a0d"
+    },
+    {
+      "member": "source-preparation/subcommands/000018/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000018/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000018/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000018/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000019/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000019/request.json",
+      "bytes": 1603,
+      "sha256": "aabc6af53042751330f7ff0ed11c90dd8a7e634c9ce06875dc2de9393fd43733"
+    },
+    {
+      "member": "source-preparation/subcommands/000019/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000019/result.json",
+      "bytes": 1852,
+      "sha256": "269000d0150aec1dc33fd1c64499a4c3d185ac9319e814eb2e88879153ae8ff4"
+    },
+    {
+      "member": "source-preparation/subcommands/000019/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000019/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000019/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000019/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000020/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000020/request.json",
+      "bytes": 1630,
+      "sha256": "a50852ccd95da189df1211c1fef563f004e2ae44a69e15cc3ff93308f3a6b137"
+    },
+    {
+      "member": "source-preparation/subcommands/000020/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000020/result.json",
+      "bytes": 1880,
+      "sha256": "793eecc3b28d7725d1484a0ef54354ce39885a1cc17a41bb3a70f738fe8d7a02"
+    },
+    {
+      "member": "source-preparation/subcommands/000020/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000020/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000020/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000020/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000021/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000021/request.json",
+      "bytes": 1616,
+      "sha256": "84ecbda4beac383421c746ea62afe5786fa5cb454da2a25c34509eab312de383"
+    },
+    {
+      "member": "source-preparation/subcommands/000021/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000021/result.json",
+      "bytes": 1864,
+      "sha256": "5d070f0d011e01310f7186892a9c753358192aa6da7761e0ca1ccd492112df20"
+    },
+    {
+      "member": "source-preparation/subcommands/000021/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000021/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000021/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000021/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000022/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000022/request.json",
+      "bytes": 1539,
+      "sha256": "6a91c08f62d018bef20b34b0281913023445153e5a0eb2bce4e123c70090731e"
+    },
+    {
+      "member": "source-preparation/subcommands/000022/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000022/result.json",
+      "bytes": 1789,
+      "sha256": "5067e0a657d0a6f7ee6f4403c766b124f2d2d61d991f9350ef5db5c70097b29d"
+    },
+    {
+      "member": "source-preparation/subcommands/000022/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000022/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000022/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000022/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000023/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000023/request.json",
+      "bytes": 1540,
+      "sha256": "e4a0b16f33b0bd6bc474707f50c5beafadf06a7bc6f217ffb9b8be4ebb8c5987"
+    },
+    {
+      "member": "source-preparation/subcommands/000023/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000023/result.json",
+      "bytes": 1794,
+      "sha256": "a3d3e30b0144df987fb9e3ccbc4c6d37b27f60e9d3787033f0c0ff833165c311"
+    },
+    {
+      "member": "source-preparation/subcommands/000023/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000023/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000023/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-preparation/subcommands/000023/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-preparation/subcommands/000023/stdout.bin",
+      "bytes": 10400,
+      "sha256": "a2dd9b71b5a9fb9b781d5c84cc1853b554ef7f8c6a5900364cb84e8e32f7b340"
+    },
+    {
+      "member": "source-publication/RESULT.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/RESULT.json",
+      "bytes": 51419,
+      "sha256": "514c5ac37fb99f1d33a3f2e2d0f41cfa0c8d79b915f33d52cf4e598efeb55fcb"
+    },
+    {
+      "member": "source-publication/subcommands.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands.json",
+      "bytes": 48871,
+      "sha256": "7e2edc5c17551145e50e55968fcced678c56c1ddedd3257d61e383d7bd81579f"
+    },
+    {
+      "member": "source-publication/subcommands/000001/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000001/request.json",
+      "bytes": 1532,
+      "sha256": "bdf91a0802b8bfa4c3a97f42181ab93550f6e930dda03f31fbc71454d1ec2ec1"
+    },
+    {
+      "member": "source-publication/subcommands/000001/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000001/result.json",
+      "bytes": 1783,
+      "sha256": "5226b265ca5f58fe0d9bdab373bdec02a171d8ce845701329118121a0971cb94"
+    },
+    {
+      "member": "source-publication/subcommands/000001/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000001/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000001/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "224b19df5b20a31f1414b2c58765f085ca3b6f31dfe64a7f953c859b223700e5"
+    },
+    {
+      "member": "source-publication/subcommands/000002/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000002/request.json",
+      "bytes": 1601,
+      "sha256": "2b61f30fee780b59636f7f5ded23da4f244926095bab6782210917a9bce93e83"
+    },
+    {
+      "member": "source-publication/subcommands/000002/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000002/result.json",
+      "bytes": 1851,
+      "sha256": "c5e22d31d7a17ac51cea331f7e1cebffe9190836e915ac54c8cd9f3e1cbfd27c"
+    },
+    {
+      "member": "source-publication/subcommands/000002/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000002/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000002/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000003/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000003/request.json",
+      "bytes": 2252,
+      "sha256": "0942a5303d7f23e9fffb0f15d6515ad5f3c194269e4e4823749478f0e0df663e"
+    },
+    {
+      "member": "source-publication/subcommands/000003/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000003/result.json",
+      "bytes": 2501,
+      "sha256": "df2d4aa0aee8d30185bee4432576fa61103f4edb1db0e6666534ec65b8660ec6"
+    },
+    {
+      "member": "source-publication/subcommands/000003/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000003/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000003/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000004/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000004/request.json",
+      "bytes": 1560,
+      "sha256": "76ee1a7e18f754e73c9b9063161df24b45372858ab09adabe0bbd52ca6e2e2ce"
+    },
+    {
+      "member": "source-publication/subcommands/000004/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000004/result.json",
+      "bytes": 1812,
+      "sha256": "43690a5d886774bcaf7f636f0d8090fd18c78fbd0464577a25dd7b7a65f00d10"
+    },
+    {
+      "member": "source-publication/subcommands/000004/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000004/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000004/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000004/stdout.bin",
+      "bytes": 614,
+      "sha256": "7678809628b15cd6160b573d5549bc062268e8122b476e6cde9668506f710557"
+    },
+    {
+      "member": "source-publication/subcommands/000005/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000005/request.json",
+      "bytes": 1545,
+      "sha256": "f54fea1c4d47de626d5b9053aec6bb1375e9067be498c30fba7c3f16f57af3e7"
+    },
+    {
+      "member": "source-publication/subcommands/000005/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000005/result.json",
+      "bytes": 1794,
+      "sha256": "f8f4b4e4d75e98ee9773963dbf33e835aa9a6387d96120eb723cdec7bf7bc65d"
+    },
+    {
+      "member": "source-publication/subcommands/000005/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000005/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000005/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000006/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000006/request.json",
+      "bytes": 1602,
+      "sha256": "7833b3c1fa39e5b0e171ffb40af1756947544d6a3081c47760695ec2c5a59e50"
+    },
+    {
+      "member": "source-publication/subcommands/000006/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000006/result.json",
+      "bytes": 1854,
+      "sha256": "95cea220f5ee54a150f50a4620577372fa032d7eef00e437a98024001a59251a"
+    },
+    {
+      "member": "source-publication/subcommands/000006/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000006/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000006/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000006/stdout.bin",
+      "bytes": 409,
+      "sha256": "b2f5cf6477813ef3ab2fb38fc80f6220e4480ec4065a196a43964e252ff6ddac"
+    },
+    {
+      "member": "source-publication/subcommands/000007/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000007/request.json",
+      "bytes": 1532,
+      "sha256": "e2524b69c51abbfd1028afcf0adc24940cb7f9fee907baefae1ffc3ecf3d81dd"
+    },
+    {
+      "member": "source-publication/subcommands/000007/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000007/result.json",
+      "bytes": 1782,
+      "sha256": "fcc497e348bc43d48b30b92c526e48ce0161dc7f25f0284b0bdc6855d3752cac"
+    },
+    {
+      "member": "source-publication/subcommands/000007/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000007/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000007/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000007/stdout.bin",
+      "bytes": 41,
+      "sha256": "c6224b42065fa00165e641c89d99ea5233f701047addd3b828525aefad916757"
+    },
+    {
+      "member": "source-publication/subcommands/000008/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000008/request.json",
+      "bytes": 1582,
+      "sha256": "615868ccdcaf270f3aa1d12abef30ac23a81634f618a0bcc3a7d228599d45586"
+    },
+    {
+      "member": "source-publication/subcommands/000008/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000008/result.json",
+      "bytes": 1837,
+      "sha256": "9232e0aefe02a37fa9b086268c7ecafdca6041f80a646a35613cbb27c09d9adc"
+    },
+    {
+      "member": "source-publication/subcommands/000008/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000008/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000008/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000008/stdout.bin",
+      "bytes": 402554,
+      "sha256": "15cfa1f0bd4aa58ebc2482f78d7a0c19cb9da27ec6cf27179473c1808ea00bc9"
+    },
+    {
+      "member": "source-publication/subcommands/000009/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000009/request.json",
+      "bytes": 1617,
+      "sha256": "9d9a1db3801481b330ae5c0539eb94e55a494550ab860e93afc7d71afcf813b6"
+    },
+    {
+      "member": "source-publication/subcommands/000009/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000009/result.json",
+      "bytes": 1870,
+      "sha256": "c721f162e220f335ca38d3a1a7e75d84a37d67d6366733ea69835ad1335ed723"
+    },
+    {
+      "member": "source-publication/subcommands/000009/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000009/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000009/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000009/stdout.bin",
+      "bytes": 4203,
+      "sha256": "d29036b9e128246daa8f5c3995353e0894bd27cdc0be802beca465e4e467a0a9"
+    },
+    {
+      "member": "source-publication/subcommands/000010/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000010/request.json",
+      "bytes": 1612,
+      "sha256": "b4d4d8e31f61d6f5084b93548eb06d025f73e8e315e87859403173e2395de499"
+    },
+    {
+      "member": "source-publication/subcommands/000010/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000010/result.json",
+      "bytes": 1863,
+      "sha256": "b8fa86f29de481dc887c61c5da8377718544597bbbf74a23941eb97289d8a396"
+    },
+    {
+      "member": "source-publication/subcommands/000010/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000010/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000010/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000010/stdout.bin",
+      "bytes": 787,
+      "sha256": "e266973f001c3465c4da1401b4c045b9b1088859f33a5e729585e85c12b8ebfd"
+    },
+    {
+      "member": "source-publication/subcommands/000011/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000011/request.json",
+      "bytes": 1612,
+      "sha256": "fd49eee6ef80d749c1543b434a4892ada7b1ebd315a4f572e557107e09942fcc"
+    },
+    {
+      "member": "source-publication/subcommands/000011/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000011/result.json",
+      "bytes": 1865,
+      "sha256": "6a2a9a1c1ceec2f5fb83f3f0e2ce32ff6951a31b2a9dcdadc7fc4ae23662c296"
+    },
+    {
+      "member": "source-publication/subcommands/000011/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000011/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000011/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000011/stdout.bin",
+      "bytes": 1439,
+      "sha256": "8f0416a16489e6d26941f653bed8d6ecf6980fc73cb8868b53d3c4f42847db56"
+    },
+    {
+      "member": "source-publication/subcommands/000012/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000012/request.json",
+      "bytes": 1620,
+      "sha256": "abe7cc05c1a13acce425d6e93fc8c139bdd7f23dc6c317393adac3ff97645791"
+    },
+    {
+      "member": "source-publication/subcommands/000012/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000012/result.json",
+      "bytes": 1873,
+      "sha256": "ee9b286a7835d429af7d8536e27682b39e3e8832494d87c43ff15d0755c51a07"
+    },
+    {
+      "member": "source-publication/subcommands/000012/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000012/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000012/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000012/stdout.bin",
+      "bytes": 6927,
+      "sha256": "8822025f9e4dc8f37fec92fc01d758aeec6b23936fd5c094e212541b426465c4"
+    },
+    {
+      "member": "source-publication/subcommands/000013/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000013/request.json",
+      "bytes": 1611,
+      "sha256": "1fb24fb4a65172c72652918ecd4bd9b145860b0adbba2c6939658562f73bba94"
+    },
+    {
+      "member": "source-publication/subcommands/000013/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000013/result.json",
+      "bytes": 1864,
+      "sha256": "a781e1366db432b69a2d0d3110d5a11d6e93809f773a75fdc4038ba1a59d2847"
+    },
+    {
+      "member": "source-publication/subcommands/000013/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000013/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000013/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000013/stdout.bin",
+      "bytes": 2232,
+      "sha256": "e6bfa28bb86a10cfbec42f52aad1bad1620ce7bcc3aed27f5c9fb52df2237aeb"
+    },
+    {
+      "member": "source-publication/subcommands/000014/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000014/request.json",
+      "bytes": 1620,
+      "sha256": "91e64f6a890054900e0acbb0af77fd1e0460e1da93f81ccdd3dd1bfdf3bc4358"
+    },
+    {
+      "member": "source-publication/subcommands/000014/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000014/result.json",
+      "bytes": 1873,
+      "sha256": "ccf5b2cb031485d33fabf1f68d742cddc7398849217436fe5312000fcec9f351"
+    },
+    {
+      "member": "source-publication/subcommands/000014/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000014/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000014/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000014/stdout.bin",
+      "bytes": 8251,
+      "sha256": "6b3e5125ceecb6bc563cb842df15ed840878c71698ac264c2a065a08623abea0"
+    },
+    {
+      "member": "source-publication/subcommands/000015/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000015/request.json",
+      "bytes": 1600,
+      "sha256": "2161718e7fe591e311109d66134747d24b170138ef3115a830025fd6c5e91125"
+    },
+    {
+      "member": "source-publication/subcommands/000015/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000015/result.json",
+      "bytes": 1854,
+      "sha256": "37fe1cc29e30bb02ee067b2faa98f02cb5fa1cdbd6549408e0962a7269c74e22"
+    },
+    {
+      "member": "source-publication/subcommands/000015/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000015/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000015/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000015/stdout.bin",
+      "bytes": 26680,
+      "sha256": "d6ac77d5a92ba9cfca1d6eef58200dd924d3fccf52b828c721b98ca6b22be4be"
+    },
+    {
+      "member": "source-publication/subcommands/000016/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000016/request.json",
+      "bytes": 1599,
+      "sha256": "5b946b30b7f284ca31a206e3c4fd8d667d7668009b45efee2e2c94c4dc738399"
+    },
+    {
+      "member": "source-publication/subcommands/000016/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000016/result.json",
+      "bytes": 1852,
+      "sha256": "888a1e71936d1d1c67ddfeeff11142c6af0beaf979457b0ecfe16cc4af93d2a2"
+    },
+    {
+      "member": "source-publication/subcommands/000016/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000016/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000016/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000016/stdout.bin",
+      "bytes": 6519,
+      "sha256": "5c90207d89f84fb32f67db242c2886a35a6af25bcfe5ab769cd527921bf8282c"
+    },
+    {
+      "member": "source-publication/subcommands/000017/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000017/request.json",
+      "bytes": 1602,
+      "sha256": "a378135e5802e97309da1876d8e25d3ed4ea281bd74ccfebd5e23ca95f4a6664"
+    },
+    {
+      "member": "source-publication/subcommands/000017/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000017/result.json",
+      "bytes": 1855,
+      "sha256": "75a1515719f92055c00e4a3437de30040713b3ef75b15b749df59fd4f2b8e8d6"
+    },
+    {
+      "member": "source-publication/subcommands/000017/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000017/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000017/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000017/stdout.bin",
+      "bytes": 8561,
+      "sha256": "93bf4f927359ce1bdc5d98b683828ed2fb21db0b3ffc3fc457a3894b405e2137"
+    },
+    {
+      "member": "source-publication/subcommands/000018/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000018/request.json",
+      "bytes": 1600,
+      "sha256": "6a6456f528c4e61165cf12d91ed56d050b884ab731b134caad6482a03086f26c"
+    },
+    {
+      "member": "source-publication/subcommands/000018/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000018/result.json",
+      "bytes": 1852,
+      "sha256": "32b1fa472fb24968e38221cb76117139f6e25605dc15764a5fd7ee79cbbb5f18"
+    },
+    {
+      "member": "source-publication/subcommands/000018/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000018/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000018/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000018/stdout.bin",
+      "bytes": 4341,
+      "sha256": "96567f09ccbd20c9483dc675b8db4a122af00f4af73e179a3578c09d40b88861"
+    },
+    {
+      "member": "source-publication/subcommands/000019/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000019/request.json",
+      "bytes": 1607,
+      "sha256": "6e1b404834744ea9eb57eadfe7a80d6502aeb962e07f224843b5722ee05f1939"
+    },
+    {
+      "member": "source-publication/subcommands/000019/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000019/result.json",
+      "bytes": 1859,
+      "sha256": "6817e32c5063177ec583f61e45449302ea149ca47d79c76ebaad1a8e49e6008c"
+    },
+    {
+      "member": "source-publication/subcommands/000019/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000019/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000019/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000019/stdout.bin",
+      "bytes": 1072,
+      "sha256": "a9da30635249fd11188b3f9275c8867aa63739ac674d2a876a9a31491a342411"
+    },
+    {
+      "member": "source-publication/subcommands/000020/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000020/request.json",
+      "bytes": 1603,
+      "sha256": "368ae7bdc74397d00d08b9cd73bf9152d201ad435960b1a009f36b12410bf343"
+    },
+    {
+      "member": "source-publication/subcommands/000020/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000020/result.json",
+      "bytes": 1856,
+      "sha256": "5a28940cae6baf27b785c060adbe66c2804a248f58f739b62282986a4f1305a6"
+    },
+    {
+      "member": "source-publication/subcommands/000020/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000020/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000020/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000020/stdout.bin",
+      "bytes": 9810,
+      "sha256": "7d844dcf0c9214fb72d1857a05a8202a86c141e853f7648c1e2b8c495b9373dd"
+    },
+    {
+      "member": "source-publication/subcommands/000021/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000021/request.json",
+      "bytes": 1580,
+      "sha256": "98bd2850c53c8d87bb32911d70de44da5eaba06504612ccd6e0cdfb212ee8af7"
+    },
+    {
+      "member": "source-publication/subcommands/000021/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000021/result.json",
+      "bytes": 1834,
+      "sha256": "b2d255ac7d678d63ed13c0fcca99f2c61ab6be7f6d2e16ec1d4e55f921c05607"
+    },
+    {
+      "member": "source-publication/subcommands/000021/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000021/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000021/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000021/stdout.bin",
+      "bytes": 66006,
+      "sha256": "e34a85fea0a5fb7670f833cfd4ef29d896f9fdd3e6d9acdd19801a3aef830be3"
+    },
+    {
+      "member": "source-publication/subcommands/000022/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000022/request.json",
+      "bytes": 1591,
+      "sha256": "3c225dba9b3dee9ff2f19a2f124e5135a7a4d107ac9157a10306c82ef2ac08f9"
+    },
+    {
+      "member": "source-publication/subcommands/000022/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000022/result.json",
+      "bytes": 1844,
+      "sha256": "2928978e311656773458d53919b7272311ad6d799ca56948719469a11eefeaef"
+    },
+    {
+      "member": "source-publication/subcommands/000022/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000022/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000022/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000022/stdout.bin",
+      "bytes": 25509,
+      "sha256": "9f9e337914872507dcb238f32de9ef2f8ba678ce0fa1a11d7e5492d85defdc2d"
+    },
+    {
+      "member": "source-publication/subcommands/000023/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000023/request.json",
+      "bytes": 1626,
+      "sha256": "1966ca824eb7fd6ada3f929cf9fc50ccadb6a68db57841d741abd226d88e5d1e"
+    },
+    {
+      "member": "source-publication/subcommands/000023/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000023/result.json",
+      "bytes": 1877,
+      "sha256": "88ebf962bdee337e7e3b6eabed0beaa0c9a8839a7058f8d82f4a3e62df8578fb"
+    },
+    {
+      "member": "source-publication/subcommands/000023/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000023/stderr.bin",
+      "bytes": 374,
+      "sha256": "cd09d104d281265f6e8ec758ccd9de8f494202d7d80fce799022d3547ff5cc4c"
+    },
+    {
+      "member": "source-publication/subcommands/000023/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000023/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000023/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000024/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000024/request.json",
+      "bytes": 1601,
+      "sha256": "311914ba4fc1a9f35cb1cd8193835a12457b1c24191775687b8d9d6aaaf898d2"
+    },
+    {
+      "member": "source-publication/subcommands/000024/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000024/result.json",
+      "bytes": 1852,
+      "sha256": "8495ad6e55ab7759beefa8e6c4bab0f6b304b066ec06f5341f9e9ab882633e5c"
+    },
+    {
+      "member": "source-publication/subcommands/000024/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000024/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000024/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000024/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000024/stdout.bin",
+      "bytes": 86,
+      "sha256": "6fb5f0657d161f64b46f40175d5de6c3ae97d9256c6a4be488efaeb97aee7cf0"
+    },
+    {
+      "member": "source-publication/subcommands/000025/request.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000025/request.json",
+      "bytes": 1536,
+      "sha256": "8f1fca4c03bd0768633afd52bf4810476655b2331f47770eddcbfcf15d0cf911"
+    },
+    {
+      "member": "source-publication/subcommands/000025/result.json",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000025/result.json",
+      "bytes": 1786,
+      "sha256": "7b765fbf2e395d00ca861278b909758e2b44668f1997f11382e00ec3a93f90f4"
+    },
+    {
+      "member": "source-publication/subcommands/000025/stderr.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000025/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000025/stdin.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "source-publication/subcommands/000025/stdout.bin",
+      "source": "/workspace/geo300-capacity512-publication-20261024/source-publication/subcommands/000025/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "Static source preparation and peer originals only. No compiler, suite, bridge, ledger or architecture execution."
+}

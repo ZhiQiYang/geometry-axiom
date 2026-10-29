@@ -1,0 +1,151 @@
+{
+  "source_sha": "03e427510c8795e34890d731a10dd4e3f84d59c9",
+  "tests": {
+    "command": [
+      "/tmp/pr348-runs/run_formal_v2.py",
+      "--root",
+      "/dev/shm/pr348-diagnostic-c754",
+      "--out",
+      "/dev/shm/pr348-facts-zero-tests",
+      "tests.test_geo300_contact_facts_zero",
+      "tests.test_geo261_host_facts_authority"
+    ],
+    "cwd": "/dev/shm/pr348-diagnostic-c754",
+    "source_sha": "03e427510c8795e34890d731a10dd4e3f84d59c9",
+    "tracked_dirty": "",
+    "tests": [
+      "tests.test_geo300_contact_facts_zero",
+      "tests.test_geo261_host_facts_authority"
+    ],
+    "started_utc": "2026-10-29T01:33:22Z",
+    "stack_bytes": 16777216,
+    "measurement": "Popen original control flow; wait4 collects original child rusage; original unittest methods/assertions/timeouts unchanged",
+    "exit": 0,
+    "tests_run": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 36.78159694500209,
+    "batches": [],
+    "tracked_dirty_after": ""
+  },
+  "feasibility": {
+    "candidate": {
+      "source_sha": "03e427510c8795e34890d731a10dd4e3f84d59c9",
+      "command": [
+        "/dev/shm/pr348-facts-zero-feasibility/candidate-bridge"
+      ],
+      "binary_sha256": "177cdade1ef5b715e8a8dc65f15d96ed882d2459af54cc18d0996f6b98a29777",
+      "exit": 0,
+      "timeout_triggered": false,
+      "seconds": 32.141760735998105,
+      "usage": {
+        "maxrss_kib": 110572,
+        "user_seconds": 31.918526,
+        "system_seconds": 0.215784
+      },
+      "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_placed_geometry_assertions_exit": 0
+    },
+    "baseline_reused": {
+      "variant": "baseline",
+      "source_sha": "8b128aa7bf53b41b493dd3a0bee49f0d53391254",
+      "command": [
+        "/dev/shm/pr348-tag-pair-256/baseline-bridge"
+      ],
+      "binary_sha256": "1f7b698e288b8b9fcb6f8eb0565c9cb00614753a1992341cf95cf1a169e24f10",
+      "exit": 0,
+      "timeout_triggered": false,
+      "seconds": 34.70129515200097,
+      "usage": {
+        "maxrss_kib": 122108,
+        "user_seconds": 34.399613,
+        "system_seconds": 0.287568
+      },
+      "stdout_sha256": "734401e302ef283ca5f34a0f33f01e57b07ba9018c58cefd536ad511a45a0dbc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_placed_geometry_assertions_exit": 0
+    },
+    "streams_identical": true,
+    "not_formal_512_acceptance": true,
+    "exit": 0
+  },
+  "chain_merge": {
+    "m346": "4c9f5031edb7940f80975fb45363b40b6aaed95f",
+    "m347": "291511caf4860638d6286b3b5b0cd17335c3b921",
+    "original_heads": {
+      "codex/geo300-contact-index-20261024": "a934a554ae58f16f124f1b264523947f170b3f0b",
+      "codex/geo300-cut-list-storage-20261024": "eaf15e239324a6464a04740647afccce3a3c17c7",
+      "codex/issue128-empty-panel-rows-20261024": "8bb0359331365c6f3a96872620427cf7847fcb50"
+    },
+    "delta346": [
+      ":100644 100644 2e37872550528174616779f121100ea93e8b9a60 23fd25d5e774d4d142fd0e547f5ea72ae82ed9b6 M\tevidence/geo300-contact-index-20261024/BINDING.json",
+      ":000000 100644 0000000000000000000000000000000000000000 ac9f6a99921f3fe23e15cdb8d79f6ba5c2425fae A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_LEAF_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 65ce45c4f14750e0c5b06db7f0b32fc3325b6b1c A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_MANIFEST.json",
+      ":000000 100644 0000000000000000000000000000000000000000 2db08af144276190a5b22c6d4d84bb28e63e5621 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_ONLY.patch",
+      ":000000 100644 0000000000000000000000000000000000000000 ba9aac6a704ed5f3d4042c13e4ec213b7adb07fb A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_PUBLICATION.json",
+      ":000000 100644 0000000000000000000000000000000000000000 a245a39b19b4a8411d953930cb5bebb93e4d7dd8 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ORIGINAL_RED_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 d416f5e22ce5cb92ec8ed3076c804d3de348564d A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_TUPLE_ACTUAL_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 3050c52c101d08eeab1afd9ab1a038d536e66e08 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_TUPLE_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 5fe53499bb5a429d56c3e3d5ad562fcfafe13ba4 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 ada21922c305ce4896e09e3366813123db2dc233 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_ORIGINALS_AND_PEER.tar.gz",
+      ":000000 100644 0000000000000000000000000000000000000000 5c3fa56970112e7ede8e7cbeda94fbc7554309af A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_PACKAGE.json",
+      ":000000 100644 0000000000000000000000000000000000000000 26c4f5c6f35306b8f2fe9063992ca59ebd23515b A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 2194c7c07e6234d9be6b00284315c0b04f431cf5 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_CONTACT_SOURCES.stderr.txt",
+      ":000000 100644 0000000000000000000000000000000000000000 c3f15308417c90ed0ca727087a6d08e74c12c6ee A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_RECEIPT.json",
+      ":000000 100644 0000000000000000000000000000000000000000 8d1a7ea3f209de9f6ac78302f27e59b82510dc41 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_TOP_RECEIPT.json",
+      ":000000 100644 0000000000000000000000000000000000000000 59d288bb40896e7888fa70897a530b7770fd1cce A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R2_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 f89a959ad1a45ca2356d5740675760dca001235c A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_THREE_SUITES_ACTUAL_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 06df9f5bc7b7416d4304539568d05bb7dae5fb07 A\tevidence/geo300-contact-index-20261024/PRETRIAL_ANCHOR_BODY_PEER.json",
+      ":100644 100644 ef2658648f77b851ecfe4f787911bd0fd1ad4afa b0b5ccedebd663983845753e49b102628e227681 M\tevidence/geo300-contact-index-20261024/PROGRESS.md",
+      ":100644 100644 957744fa47ae14e8b40ba0ff314980373b696a57 3214a66f3ed740d477211648bf3b9c00c3683ea0 M\tevidence/geo300-contact-index-20261024/SHA256SUMS"
+    ],
+    "delta347": [
+      ":100644 100644 2e37872550528174616779f121100ea93e8b9a60 23fd25d5e774d4d142fd0e547f5ea72ae82ed9b6 M\tevidence/geo300-contact-index-20261024/BINDING.json",
+      ":000000 100644 0000000000000000000000000000000000000000 ac9f6a99921f3fe23e15cdb8d79f6ba5c2425fae A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_LEAF_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 65ce45c4f14750e0c5b06db7f0b32fc3325b6b1c A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_MANIFEST.json",
+      ":000000 100644 0000000000000000000000000000000000000000 2db08af144276190a5b22c6d4d84bb28e63e5621 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_ONLY.patch",
+      ":000000 100644 0000000000000000000000000000000000000000 ba9aac6a704ed5f3d4042c13e4ec213b7adb07fb A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ANCHOR_PUBLICATION.json",
+      ":000000 100644 0000000000000000000000000000000000000000 a245a39b19b4a8411d953930cb5bebb93e4d7dd8 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_ORIGINAL_RED_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 d416f5e22ce5cb92ec8ed3076c804d3de348564d A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_TUPLE_ACTUAL_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 3050c52c101d08eeab1afd9ab1a038d536e66e08 A\tevidence/geo300-contact-index-20261024/CONTACT_SOURCE_TUPLE_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 5fe53499bb5a429d56c3e3d5ad562fcfafe13ba4 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 ada21922c305ce4896e09e3366813123db2dc233 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_ORIGINALS_AND_PEER.tar.gz",
+      ":000000 100644 0000000000000000000000000000000000000000 5c3fa56970112e7ede8e7cbeda94fbc7554309af A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_ACCEPTANCE_PACKAGE.json",
+      ":000000 100644 0000000000000000000000000000000000000000 26c4f5c6f35306b8f2fe9063992ca59ebd23515b A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 2194c7c07e6234d9be6b00284315c0b04f431cf5 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_CONTACT_SOURCES.stderr.txt",
+      ":000000 100644 0000000000000000000000000000000000000000 c3f15308417c90ed0ca727087a6d08e74c12c6ee A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_RECEIPT.json",
+      ":000000 100644 0000000000000000000000000000000000000000 8d1a7ea3f209de9f6ac78302f27e59b82510dc41 A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R1_RED_TOP_RECEIPT.json",
+      ":000000 100644 0000000000000000000000000000000000000000 59d288bb40896e7888fa70897a530b7770fd1cce A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_R2_RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 f89a959ad1a45ca2356d5740675760dca001235c A\tevidence/geo300-contact-index-20261024/MEMBER_SORT_THREE_SUITES_ACTUAL_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 06df9f5bc7b7416d4304539568d05bb7dae5fb07 A\tevidence/geo300-contact-index-20261024/PRETRIAL_ANCHOR_BODY_PEER.json",
+      ":100644 100644 ef2658648f77b851ecfe4f787911bd0fd1ad4afa b0b5ccedebd663983845753e49b102628e227681 M\tevidence/geo300-contact-index-20261024/PROGRESS.md",
+      ":100644 100644 957744fa47ae14e8b40ba0ff314980373b696a57 3214a66f3ed740d477211648bf3b9c00c3683ea0 M\tevidence/geo300-contact-index-20261024/SHA256SUMS",
+      ":100644 100644 9d8e26a7a8174c8c306354bf3daacc1fd1891f7d 4d64e9813e4411807c780c52402cde991471b4cf M\tevidence/geo300-cut-list-storage-20261024/PROGRESS.md",
+      ":000000 100644 0000000000000000000000000000000000000000 b0874dc2d0449d1bcb5e98716bafe1d45453fea2 A\tevidence/geo300-cut-list-storage-20261024/formal-S392/LOCATOR_CORRECTION.json",
+      ":000000 100644 0000000000000000000000000000000000000000 f4c829b009bd1345bca95e837399d7417a7d252b A\tevidence/geo300-cut-list-storage-20261024/formal-S392/RAW_INDEX.json",
+      ":000000 100644 0000000000000000000000000000000000000000 f12440c5ec0e9c1b2cd3f78a21251ff0e5f390df A\tevidence/geo300-cut-list-storage-20261024/formal-S392/RESULT.json",
+      ":000000 100644 0000000000000000000000000000000000000000 15a0308b007d4c33e961564f0f9d78dfa46cf69d A\tevidence/geo300-cut-list-storage-20261024/formal-S392/original-report-suite-fixture-and-control-streams.tar.gz",
+      ":000000 100644 0000000000000000000000000000000000000000 7657d8ebe3aafb5e7df83a8a92da21df6036c09d A\tevidence/geo300-cut-list-storage-20261024/formal-S392/peer/CHECKS.json",
+      ":000000 100644 0000000000000000000000000000000000000000 fa11bc3a4998aa56c8deffcb1fb56ed8c24655fb A\tevidence/geo300-cut-list-storage-20261024/formal-S392/peer/CHECKS.json.v1",
+      ":000000 100644 0000000000000000000000000000000000000000 e4192a457ceed9f763827b8f0d8281626c7bad91 A\tevidence/geo300-cut-list-storage-20261024/formal-S392/peer/LOCATOR_CORRECTION_PEER.json",
+      ":000000 100644 0000000000000000000000000000000000000000 b7891c100491df73aefccb78cb0952baf9e295d1 A\tevidence/geo300-cut-list-storage-20261024/formal-S392/peer/REVIEW.json",
+      ":000000 100644 0000000000000000000000000000000000000000 7b36bb967f7dca1286dda4223743159ec1d40ffc A\tevidence/geo300-cut-list-storage-20261024/formal-S392/peer/REVIEW.json.v1",
+      ":000000 100644 0000000000000000000000000000000000000000 c7bd961ed7a5bcadb755301ab354924ffb898b45 A\tevidence/geo300-cut-list-storage-20261024/formal-S392/peer/review_original_package.py",
+      ":000000 100644 0000000000000000000000000000000000000000 8b8cbce9de796c53b40273cf65d3ccdcacc5164e A\tevidence/geo300-cut-list-storage-20261024/formal-S392/peer/review_original_package.py.v1",
+      ":000000 100644 0000000000000000000000000000000000000000 59adb3e0b17cf0bc16a7fe90ef8efaa6b455ff2b A\tevidence/geo300-cut-list-storage-20261024/formal-S392/producers/package_geo346_formal_20261024.py.txt",
+      ":000000 100644 0000000000000000000000000000000000000000 51176020ffca167adddf00ee9f85ca4d5606e1f8 A\tevidence/geo300-cut-list-storage-20261024/formal-S392/producers/prepare_docs.py.txt"
+    ],
+    "non_evidence_diff_exit": 0,
+    "private_only": true,
+    "upstream_refs_modified": false,
+    "exit": 0,
+    "finished_utc": "2026-10-29T01:33:54Z"
+  },
+  "adopted_into_formal_product": false,
+  "formal_h7_unrun_on_source": true,
+  "archive_bytes": 740210,
+  "archive_sha256": "ee685adb92afaca3beb7361a6b9b331d706a8e689d705a7277d1ab46a51f820d",
+  "files": 832
+}

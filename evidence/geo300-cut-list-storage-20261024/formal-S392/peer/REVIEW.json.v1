@@ -1,0 +1,21 @@
+{
+  "schema": "independent-geo346-original-package-peer/1",
+  "sourceSHA": "39273bc0229fbbb16565134e1f8fad3a0d598c31",
+  "checks": 2230,
+  "findings": [],
+  "exitCode": 0,
+  "metadataNotes": [
+    "The original receipt native_execution_log is a configured-but-unmaterialized pathname. Actual complete streams are the passive observer commands; do not claim a NativeBuild JSONL audit was archived."
+  ],
+  "configuredNativeExecutionLogMissing": true,
+  "archiveSHA256": "a6c35f31f6c1da542d04e2f2ffed849c20aabde1d1e7d829ccb79349c2df67a2",
+  "actualMethods": 11,
+  "actualControls": 9,
+  "compilerCommands": 83,
+  "currentPayloadRetirementOrRerunPerformed": false,
+  "limitations": [
+    "Partial cut-list suite only; not full native/browser/performance/ledger/architecture.",
+    "Text-mode subprocess streams retain the original returned text encoded as UTF-8, not claimed raw bytes from a hidden pre-decoding pipe.",
+    "NativeBuild audit locator note requires visible publication clarification; original receipt remains unchanged."
+  ]
+}

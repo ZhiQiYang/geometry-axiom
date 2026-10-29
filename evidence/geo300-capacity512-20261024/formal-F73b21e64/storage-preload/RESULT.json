@@ -1,0 +1,44 @@
+{
+  "root_head": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "core_sha256": "d4c9f40e41aac7e210a038f466f89945b8c21b68ffff9b6f44c2c6fed244d940",
+  "archives": [
+    {
+      "label": "historical-F0f",
+      "path": "/workspace/geo348-F0f695866-formal-package/ORIGINAL_W7_H7_AND_HELPER_TRIPLES.tar.gz",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 12616070,
+      "sha256": "dbe988b880024aee708d85d3b0364adf5ab61c9587f861271d8e2170755b37a7"
+    },
+    {
+      "label": "targeted-F73",
+      "path": "/workspace/geo348-F73b21e64-formal-with-resume-package-r2/ORIGINAL_AFFECTED_H3_HELPERS_AND_ENVIRONMENT_RESUME.tar.gz",
+      "source_sha": "73b21e64dce72f0d16ca29e18559c51815b9724d",
+      "bytes": 13842178,
+      "sha256": "72eb29033c8d7d6bed80fd045ba302846313815ca0953a8aa5148abbbf0c3b23"
+    }
+  ],
+  "ordinary_reader": "/workspace/geo300-capacity512-work-20261024",
+  "permanent_store": "/tmp/geo337-published-archive-git-objects-20261024",
+  "permanent_lease_sha256": "556c513142d9559c9497bb118d12da5487ee61b80953ee27095e49269d7c0104",
+  "root_alternate_sha256": "e4003887d478e946abfb1c76daa861b688d1c37d936f510a73fd833fbf48b7be",
+  "cleared_child_git_variable_names": [
+    "GIT_PAGER"
+  ],
+  "refs_index_products_changed": false,
+  "exit": 0,
+  "phases": [
+    {
+      "label": "historical-F0f",
+      "actual_exit": 0,
+      "directory": "/tmp/geo348-original-archives-preload-20261024/outer/subcommands/000001",
+      "tool_result": "/tmp/geo348-original-archives-preload-20261024/historical-F0f/RESULT.json"
+    },
+    {
+      "label": "targeted-F73",
+      "actual_exit": 0,
+      "directory": "/tmp/geo348-original-archives-preload-20261024/outer/subcommands/000002",
+      "tool_result": "/tmp/geo348-original-archives-preload-20261024/targeted-F73/RESULT.json"
+    }
+  ],
+  "parent_environment_unchanged": true
+}

@@ -1,0 +1,50 @@
+{
+  "uname": {
+    "command": [
+      "uname",
+      "-a"
+    ],
+    "exit": 0,
+    "stdout": "Linux 0a503cde95cd 6.18.55 #1 SMP Wed Oct 14 19:45:18 UTC 2026 x86_64 GNU/Linux\n",
+    "stderr": ""
+  },
+  "cc": {
+    "command": [
+      "cc",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "stderr": ""
+  },
+  "python": {
+    "command": [
+      "python3",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "Python 3.12.14\n",
+    "stderr": ""
+  },
+  "git": {
+    "command": [
+      "git",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "git version 2.52.0\n",
+    "stderr": ""
+  },
+  "mounts": {
+    "command": [
+      "df",
+      "-B1",
+      "/workspace",
+      "/tmp",
+      "/dev/shm"
+    ],
+    "exit": 0,
+    "stdout": "Filesystem       1B-blocks        Used   Available Use% Mounted on\noverlay        33770192896 32035196928      233472 100% /\nnone           17871880192 17565110272   306769920  99% /tmp\nshm            17871880192  2837938176 15033942016  16% /dev/shm\n",
+    "stderr": ""
+  }
+}

@@ -1,0 +1,30 @@
+from pathlib import Path
+import hashlib,json
+BASE=Path('/workspace/geo300-capacity512-publication-20261024');OUT=Path(__file__).parent
+def sha(b):return hashlib.sha256(b).hexdigest()
+body=(BASE/'PR_BODY.template.md').read_bytes();text=body.decode();old=(BASE/'PR_BODY.template.before-assertion-wording.md').read_text();request=(BASE/'PR_REQUEST.json').read_bytes();r=json.loads(request)
+checks=[]
+def check(name,value):checks.append({'name':name,'passed':bool(value)})
+check('final-template-exact-pin',sha(body)=='6e9e2d007a72d9a675c44e9f0399fdefd9b5a61f8ae044b53990d08db43a2af0')
+check('old-wording-preserved',sha(old.encode())=='7a3fa72b016fd600395fe92f868a3330633905a7a0899cacbd62a4370e94ad1b')
+check('request-exact-pin',sha(request)=='12018e50c9fb75b1da038360d3ff1689024720287202abbe3eebcd717032b819')
+check('exact-five-request-fields',set(r)=={'head','base','title','body_ref','body_path'})
+check('own-branches-and-P2-base',r['head']=='codex/geo300-capacity512-20261024'and r['base']=='codex/issue128-empty-panel-rows-20261024'and r['body_ref']==r['head']+'-prbody'and r['body_path']=='PR_BODY.md')
+check('one-current-state',text.count('唯一 current-state')==1)
+check('one-unpublished-E-placeholder',text.count('EVIDENCE_HEAD_PLACEHOLDER')==1)
+check('public-product-correct','400a6d0ca50f3aca104fb569c77c8ef753c93355'in text)
+check('formal-not-executed',all(x in text for x in ('**UNRUN**','尚未 runtime discovery 或編譯','所有正式反證目前均未跑','不能宣稱 0 skip','**NOT READY**')))
+check('no-old-S-green-borrowed','**UNRUN at this S**'in text and '不挪用舊 SHA 的綠燈'in text)
+check('static-peer-not-runtime','1780/0'in text and '非 C 執行'in text)
+check('512-unplaced-not-placed','不能替代 512 個已放置角材'in text)
+check('safe-withdrawal-no-overrun','不將有效第 513 成員送入已撤保護的固定陣列'in text)
+check('ABI-compile-not-unsafe-execution','不執行混用容量的 ABI 物件'in text)
+check('capacity-assertions-honestly-updated','容量契約斷言依授權同步 512／513 與 3328'in text and '既有 64 witnesses 保留'in text)
+check('scope-no-policy-expansion','未改公理、決策佇列、K'in text)
+check('real-archive-pin','0b6ea82d93952e40dc199483828c3e595401720f4e36da755022e9e8fe016542'in text)
+result={'schema':'independent-capacity512-body-template-peer/1','checks':checks,'passed':sum(x['passed']for x in checks),'failed':sum(not x['passed']for x in checks),'findings':[],
+ 'resolved_finding':'Initial body incorrectly said assertions were unchanged. Final text explicitly states authorized 512/513 and 3328 capacity contract updates while retaining legacy64 witnesses.',
+ 'template_sha256':sha(body),'request_sha256':sha(request),'limits':['Unpublished template only; E placeholder must be replaced with actual pushed evidence SHA before publishing.','No product/compiler/runtime test run; C and final gates remain UNRUN.']}
+(OUT/'BODY_REVIEW.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'passed':result['passed'],'failed':result['failed'],'review_sha256':sha((OUT/'BODY_REVIEW.json').read_bytes())}))
+raise SystemExit(bool(result['failed']))

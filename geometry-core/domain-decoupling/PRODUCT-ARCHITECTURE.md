@@ -1,5 +1,24 @@
 # Product architecture — Linux 固定來源重產
 
+本輪真受驗來源 `7a0e6dd81c54066995981393925fa46a815de2f8`；上一份receipt產物提交 `9a05ae785846446ce8982379b4cb66f4ffde6e5c`。本輪只使用指定來源的原scanner、generic與product裁判。
+
+完整五roots加三standalone：604 executable inputs，owned 334、excluded 270、edges 798、diagnostics 0。LF closure `0c738c2c8b39b8cc4904bd39121f8ec9412f072cb2be6351b55e5b9f49f6fad0`。
+
+manifest輸出逐bytes等指定P已登記版本；政策、roots、routes、vendor trust及既有source分類未自動修改。
+
+相對上份sealed manifest：新增owned 0、新增逐檔exclusion 0、既有exclusion digest更新 0。逐項原/新內容見本輪manifest-delta.json；未登錄檔不會被自動排除。
+
+變更既有input：`current_geometry.c`、`geometry-app/native/reference_sources.inc`、`geometry-app/native/world_validation.inc`、`geometry-core/kernel/source.c`、`geometry-core/kernel/source.h`、`geometry-core/references.inc`、`geometry-templates/woodworking/geometry_woodworking/model_sources.py`、`geometry-templates/woodworking/native/contact_sources.c`、`geometry-templates/woodworking/native/contact_world.c`、`geometry-templates/woodworking/native/contact_world.h`、`geometry-templates/woodworking/native/cut_list.c`、`geometry-templates/woodworking/native/cut_list.h`、`geometry-templates/woodworking/native/document.h`、`geometry-templates/woodworking/native/member_reference.h`、`geometry-templates/woodworking/native/members.h`、`geometry-templates/woodworking/native/panel_layout.c`、`geometry-templates/woodworking/native/world_validation.c`。
+
+- `python -B tests/test_architecture_contract.py`：真退出0，205 tests／205 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
+- `python -B tests/test_product_architecture.py`：真退出0，18 tests／18 passed／0 failed／0 skipped；原argv/cwd/env/stdout/stderr另完整保存。
+
+四檔衍生產物不進executable closure，receipt不hash自己。SSOT另按指定P綁定並核前後不變；不冒稱closure自然涵蓋SSOT。未跑native、ledger、browser、專項或歷史額外policy probes；不把先前Windows或#288結果重標成本輪結果。
+
+## 上一份歷史報告（原文保留，非本輪判決）
+
+# Product architecture — Linux 固定來源重產
+
 本輪真原三裁判在乾淨 Git HEAD `ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0` 執行，退出0/0/0；generic205與product18方法，無skip。manifest分類與全部政策逐bytes不變，928/55原政策保留。完整604inputs、334owned／270excluded；原scanner記798edges、0diagnostics，完整stdout與P17相同。LF closure `6e1a994abaddec0ee851b96184a173548ac81b54ea37f7f7725e3066c7a6f338` 與P17完全相同。
 
 本次兩個test葉 tests/test_geo261_mutation_migration.py 與 tests/test_geo261_wood_contact_world.py 均在架構inventory之外；架構三條綠不代表這兩個語意測試已驗。604範圍是五sourceRoots加current_geometry.c、tests/__init__.py、tests/binaries.py，不是全部tests。帳本--check在ec8原exit1另留，不以本架構收據沖銷。

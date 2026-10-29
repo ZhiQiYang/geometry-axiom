@@ -164,7 +164,7 @@ CONTROLS = (
     ('indexed-plane-offset', 'size_t value=index->maximum[begin+at-1];', 'size_t value=index->maximum[at-1];', 'indexed-dedup', 'indexed-full-coordinate-plane'),
     ('indexed-single-witness', 'return witness&&contact_prefix_hi(out[witness-1].hi,face);', 'return witness!=0;', 'indexed-dedup', 'indexed-two-halves-not-one-cover'),
     ('indexed-survivor-count', 'active[i]=false;--*remaining;', 'active[i]=false;', 'ordering', 'earlier-full-cover-deduplicates'),
-    ('indexed-reversed-skip', 'size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'if(face->hi<face->lo)return false;size_t begin,end;contact_face_plane_range(index,out,count,face->fixed,&begin,&end);', 'indexed-dedup', 'indexed-enclosed-reversed-span'),
+    ('indexed-reversed-skip', 'size_t begin,end;contact_face_plane_range(index,out,count,(size_t)(face-out),&begin,&end);', 'if(face->hi<face->lo)return false;size_t begin,end;contact_face_plane_range(index,out,count,(size_t)(face-out),&begin,&end);', 'indexed-dedup', 'indexed-enclosed-reversed-span'),
     ('legacy-partial-shadow', 'if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;', 'if(earlier)duplicate=true;', 'indexed-dedup', 'indexed-duplicate-fallback-keeps-partial-shadow'),
     ('legacy-placement-order', 'if(previous<=order)break;', 'if(true)break;', 'indexed-sort', 'sort-legacy-last-order'),
     ('legacy-stable-ties', 'if(previous<=order)break;', 'if(previous<order)break;', 'indexed-sort', 'sort-legacy-stable-fields'),
@@ -296,6 +296,136 @@ class WoodContactWorld(unittest.TestCase):
             *[changed if item == build.wood_contact_world_object else item for item in objects]])
         self.assertTrue(self.extension_transaction(bridge))
         self.assertFalse(self.extension_transaction(baseline))
+
+
+# The bounds below count work, not elapsed time. For F admitted faces, order is
+# read once before sorting and once during dedup (2F). A bottom-up merge takes
+# at most F*ceil(log2 F) plane comparisons; grouping takes at most F-1 more.
+# Reverting either optimization must violate its own named bound while still
+# preserving every public face field. No product timeout is changed.
+CONTACT_WORK_CLIENT = r"""
+#include "contact_world.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+extern void geo348_contact_work_reset(void);
+extern uint64_t geo348_contact_order_reads(void);
+extern uint64_t geo348_contact_plane_comparisons(void);
+#define REQUIRE(name,condition) do {if(!(condition)){fprintf(stderr,"ASSERT:%s\n",name);return 1;}} while(0)
+int main(int argc,char **argv)
+{
+    REQUIRE("contact-work-mode",argc==2&&(!strcmp(argv[1],"order")||!strcmp(argv[1],"plane")));
+    enum { MEMBERS=64,FACES=MEMBERS*2 };
+    WoodMember members[MEMBERS]={0};WoodContactMemberFact facts[MEMBERS]={0};
+    WoodStopFace out[WOOD_CONTACT_FACE_CAPACITY];WoodContactWorld world={0};
+    world.placement_id=7;world.members=facts;world.member_count=MEMBERS;
+    for(size_t i=0;i<MEMBERS;++i){
+        members[i].id=(uint32_t)(i+1);members[i].placed=true;
+        facts[i]=(WoodContactMemberFact){&members[i],7,UINT64_MAX-i,false,true,
+            {(GeoCoord)(2*i),0,(GeoCoord)(2*i+1),100}};
+    }
+    for(int along=0;along<2;++along){
+        geo348_contact_work_reset();
+        size_t count=wood_contact_collect_stops(&world,along!=0,NULL,out,WOOD_CONTACT_FACE_CAPACITY);
+        uint64_t orders=geo348_contact_order_reads(),planes=geo348_contact_plane_comparisons();
+        size_t levels=0;for(size_t width=1;width<FACES;width*=2)++levels;
+        printf("axis=%d faces=%zu order_reads=%llu order_bound=%u plane_compares=%llu plane_bound=%zu\n",
+            along,count,(unsigned long long)orders,2*FACES,(unsigned long long)planes,FACES*(levels+1));
+        REQUIRE("contact-work-complete-face-count",count==FACES);
+        for(size_t j=0;j<count;++j){
+            size_t member=MEMBERS-1-j/2,side=j%2;const WoodStopFace *f=&out[j];
+            REQUIRE("contact-work-exact-public-face-sequence",
+                f->kind==WOOD_STOP_MEMBER_SIDE&&f->boundary_id==0&&f->timber_id==member+1&&
+                f->hole_index==-1&&f->edge_index==(int)side&&f->fixity==WOOD_STOP_FIXED&&
+                f->fixed==(along?(GeoCoord)(side*100):(GeoCoord)(member*2+side))&&
+                f->lo==(along?(GeoCoord)(member*2):0)&&f->hi==(along?(GeoCoord)(member*2+1):100));
+        }
+        if(!strcmp(argv[1],"order"))REQUIRE("sort-order-lookups-linear",orders<=2*FACES);
+        else REQUIRE("plane-range-lookups-grouped-once",planes<=FACES*(levels+1));
+    }
+    return 0;
+}
+"""
+
+
+class WoodContactWorkBounds(unittest.TestCase):
+    @staticmethod
+    def instrument(source):
+        source += """
+void geo348_contact_work_reset(void){geo348_order_reads=geo348_plane_compares=0;}
+uint64_t geo348_contact_order_reads(void){return geo348_order_reads;}
+uint64_t geo348_contact_plane_comparisons(void){return geo348_plane_compares;}
+"""
+        source = source.replace('#include <string.h>', '#include <string.h>\nstatic uint64_t geo348_order_reads,geo348_plane_compares;', 1)
+        for name, counter in (("contact_order", "geo348_order_reads"),
+                              ("contact_face_plane_compare", "geo348_plane_compares")):
+            match = re.search(r"\b" + name + r"\([^;]*?\)\s*\{", source)
+            if match is None:
+                raise AssertionError("Missing actual work counter site: " + name)
+            at = match.end()
+            source = source[:at] + "\n    ++" + counter + ";" + source[at:]
+        return source
+
+    @classmethod
+    def setUpClass(cls):
+        build = native()
+        cls.source = (build.woodworking / "contact_world.c").read_text(encoding="utf-8")
+        client = build.woodworking / "contact-work-client.c"
+        client.write_text(CONTACT_WORK_CLIENT, encoding="utf-8")
+        cls.client = build.compile(client, "contact-work-client")
+        cls.baseline = cls.executable(cls.source, "baseline")
+
+    @classmethod
+    def executable(cls, source, phase):
+        build = native()
+        path = build.woodworking / ("contact-work-" + phase + ".c")
+        path.write_text(cls.instrument(source), encoding="utf-8")
+        changed = build.compile(path, "contact-work-" + phase)
+        return build.link("contact-work-" + phase, [cls.client, changed,
+            build.wood_contacts_object, build.wood_supports_object, *build.kernel_objects()])
+
+    def replace_one(self, source, before, after):
+        self.assertEqual(1, source.count(before), "Withdrawal must change one actual site")
+        return source.replace(before, after)
+
+    def case(self, executable, mode, phase, assertion):
+        command = [str(executable), mode]
+        result = subprocess.run(command, capture_output=True, text=True,
+                                encoding="utf-8", timeout=20)
+        record_native_execution(self.id(), command, result, case=mode, phase=phase,
+                                control="withdraw-" + mode, assertion=assertion)
+        return result
+
+    def withdrawal(self, source, mode, assertion):
+        baseline = self.case(self.baseline, mode, "baseline", assertion)
+        self.assertEqual(0, baseline.returncode, baseline.stderr)
+        mutant = self.executable(source, "withdraw-" + mode)
+        result = self.case(mutant, mode, "mutant", assertion)
+        self.assertEqual(1, result.returncode, "Withdrawal survived: " + mode)
+        self.assertIn("ASSERT:" + assertion, result.stderr)
+        restored = self.case(self.baseline, mode, "restored", assertion)
+        self.assertEqual(0, restored.returncode, restored.stderr)
+
+    def test_sort_order_prefetch_has_linear_reads_and_withdrawal_is_red(self):
+        source = self.replace_one(self.source,
+            "static bool contact_member_index_before(const uint64_t *order,size_t a,size_t b)\n{\n    uint64_t left=order[a],right=order[b];",
+            "static bool contact_member_index_before(const WoodContactWorld *world,const ContactOrderIndex *orders,\n    const WoodStopFace *out,size_t a,size_t b)\n{\n    uint64_t left=contact_order(world,orders,out[a].timber_id),right=contact_order(world,orders,out[b].timber_id);")
+        source = self.replace_one(source,
+            "    /* The immutable face suffix needs one full-width order lookup per face,\n     * not two hash lookups at every merge comparison. */\n    uint64_t order[WOOD_CONTACT_FACE_CAPACITY];\n    for(size_t i=first;i<count;++i){index->sorted[i]=i;order[i]=contact_order(world,orders,out[i].timber_id);}",
+            "    for(size_t i=first;i<count;++i)index->sorted[i]=i;")
+        source = self.replace_one(source,
+            "contact_member_index_before(order,index->sorted[a],index->sorted[b])",
+            "contact_member_index_before(world,orders,out,index->sorted[a],index->sorted[b])")
+        self.withdrawal(source, "order", "sort-order-lookups-linear")
+
+    def test_plane_ranges_are_grouped_once_and_withdrawal_is_red(self):
+        source = self.replace_one(self.source,
+            "    /* Sorting is finished: scratch now holds the plane start of each rank.\n     * Every query concerns one of these same immutable faces. */\n    for(size_t begin=0;begin<count;){\n        size_t end=begin+1;\n        while(end<count&&contact_face_plane_compare(out[index->sorted[begin]].fixed,out[index->sorted[end]].fixed)==0)++end;\n        for(size_t i=begin;i<end;++i){\n            index->rank[index->sorted[i]]=i;index->scratch[i]=begin;index->plane_end[i]=end;\n        }\n        begin=end;\n    }",
+            "    for(size_t i=0;i<count;++i)index->rank[index->sorted[i]]=i;")
+        source = self.replace_one(source,
+            "    (void)out;(void)count;\n    size_t rank=index->rank[face];\n    *begin=index->scratch[rank];*end=index->plane_end[rank];",
+            "    GeoCoord fixed=out[face].fixed;size_t lo=0,hi=count;\n    while(lo<hi){size_t mid=lo+(hi-lo)/2;\n        if(contact_face_plane_compare(out[index->sorted[mid]].fixed,fixed)<0)lo=mid+1;else hi=mid;\n    }\n    *begin=lo;hi=count;\n    while(lo<hi){size_t mid=lo+(hi-lo)/2;\n        if(contact_face_plane_compare(out[index->sorted[mid]].fixed,fixed)<=0)lo=mid+1;else hi=mid;\n    }\n    *end=lo;")
+        self.withdrawal(source, "plane", "plane-range-lookups-grouped-once")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,26 @@
+{
+  "command": [
+    "python3",
+    "tests/run_all.py",
+    "--build",
+    "--update-expected"
+  ],
+  "cwd": "/dev/shm/pr348-probe-source-7a0e6dd8",
+  "limit_seconds": 2100,
+  "started_utc": "2026-10-29T16:54:59.491547+00:00",
+  "stack_bytes": 16777216,
+  "subreaper": 1,
+  "timed_out": true,
+  "orphan_cleanup_required": false,
+  "cleanup_complete": true,
+  "actual_process_returncode": -9,
+  "errors": [],
+  "primary_pid": 373845,
+  "primary_ended_utc": "2026-10-29T17:29:59.567513+00:00",
+  "primary_elapsed_seconds": 2100.075953891006,
+  "ended_utc": "2026-10-29T17:29:59.608900+00:00",
+  "elapsed_with_cleanup_seconds": 2100.1173441489955,
+  "stdout_sha256": "88529535ca19409ef7057b12af7058e7c10e649e34fea4cb0785053333a06f34",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "exit_code": 124
+}

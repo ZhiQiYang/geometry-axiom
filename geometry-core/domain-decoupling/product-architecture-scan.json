@@ -358,7 +358,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/enclosure_sources.inc",
-      "line": 7544
+      "line": 7571
     },
     {
       "source": "current_geometry.c",
@@ -368,7 +368,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/grid_context.inc",
-      "line": 6202
+      "line": 6229
     },
     {
       "source": "current_geometry.c",
@@ -383,7 +383,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/stagger_facts.inc",
-      "line": 7542
+      "line": 7569
     },
     {
       "source": "current_geometry.c",
@@ -398,17 +398,17 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/world_validation.inc",
-      "line": 6205
+      "line": 6232
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/assembly.inc",
-      "line": 7551
+      "line": 7578
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/assembly_generation.inc",
-      "line": 7552
+      "line": 7579
     },
     {
       "source": "current_geometry.c",
@@ -418,22 +418,22 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/boundary_vertex_keys.inc",
-      "line": 7546
+      "line": 7573
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/derived_placements.inc",
-      "line": 7556
+      "line": 7583
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/engineering.inc",
-      "line": 7545
+      "line": 7572
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/engineering_commands.inc",
-      "line": 7550
+      "line": 7577
     },
     {
       "source": "current_geometry.c",
@@ -448,12 +448,12 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/finish_surfaces.inc",
-      "line": 7554
+      "line": 7581
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_bindings.inc",
-      "line": 7547
+      "line": 7574
     },
     {
       "source": "current_geometry.c",
@@ -463,17 +463,17 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_subdivision.inc",
-      "line": 7548
+      "line": 7575
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_subdivision_query.inc",
-      "line": 7549
+      "line": 7576
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_systems.inc",
-      "line": 7216
+      "line": 7243
     },
     {
       "source": "current_geometry.c",
@@ -488,12 +488,12 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/panel_fill_layout.inc",
-      "line": 7555
+      "line": 7582
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/panel_fill_support.inc",
-      "line": 7557
+      "line": 7584
     },
     {
       "source": "current_geometry.c",
@@ -508,7 +508,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/parameters.inc",
-      "line": 7541
+      "line": 7568
     },
     {
       "source": "current_geometry.c",
@@ -518,7 +518,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/references.inc",
-      "line": 7543
+      "line": 7570
     },
     {
       "source": "current_geometry.c",
@@ -528,22 +528,22 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/section_profiles.inc",
-      "line": 7553
+      "line": 7580
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_commands.inc",
-      "line": 7526
+      "line": 7553
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_rebind.inc",
-      "line": 8562
+      "line": 8589
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_world.inc",
-      "line": 6203
+      "line": 6230
     },
     {
       "source": "current_geometry.c",
@@ -553,7 +553,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/transactions.inc",
-      "line": 9998
+      "line": 10025
     },
     {
       "source": "current_geometry.c",
@@ -563,7 +563,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/cut_list.h",
-      "line": 10151
+      "line": 10178
     },
     {
       "source": "current_geometry.c",
@@ -578,7 +578,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/member_declaration.h",
-      "line": 7082
+      "line": 7109
     },
     {
       "source": "geometry-app/application.js",
@@ -2683,12 +2683,12 @@
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-app/native/reference_sources.inc",
-      "line": 638
+      "line": 640
     },
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-templates/woodworking/native/member_reference.h",
-      "line": 471
+      "line": 473
     },
     {
       "source": "geometry-core/rule_cases/__init__.py",
@@ -3428,7 +3428,7 @@
     {
       "source": "geometry-templates/woodworking/native/members.h",
       "target": "geometry-core/kernel/geometry.h",
-      "line": 7
+      "line": 9
     },
     {
       "source": "geometry-templates/woodworking/native/obstacles.h",

@@ -1,0 +1,32 @@
+{
+  "source_sha": "ac1d8017038ee9563f0cbd8596ea61c8b2577b19",
+  "partial": true,
+  "load512": {
+    "source_sha": "ac1d8017038ee9563f0cbd8596ea61c8b2577b19",
+    "timeout_seconds": 600,
+    "seconds": 546.1184807650025,
+    "actual_exit": 0,
+    "memory": {
+      "maxrss_kib": 293292,
+      "user_seconds": 530.895233,
+      "system_seconds": 15.128411
+    },
+    "exception": null,
+    "command": [
+      "/tmp/geometry-tests/geo261-n1a-avi44y9o/product-bridge"
+    ],
+    "stdout_sha256": "47da66d3264fbe943e01e9085d26e73f4ad7317de7e1b41d48d64fd6f4b6c784",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "assertion_evidence": "Original test reached batch-004 canonical replay after all assert_placed_geometry calls returned; complete method still running.",
+  "first_attempt": {
+    "outer_exit": 1,
+    "classification": "ENOSPC caused observer loss; product terminal unavailable, second method never started",
+    "raw_preserved": true
+  },
+  "outstanding": [
+    "canonical replay twice",
+    "sequential history",
+    "complete two-method unittest terminal"
+  ]
+}
