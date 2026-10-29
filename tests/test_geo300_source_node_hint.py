@@ -106,7 +106,9 @@ class SourceNodeHint(unittest.TestCase):
         self.assert_killed(self.old_slot,"typed-hint","node-hint-middle-bytes-avoid-full-lookup")
 
     def test_recomputed_lookup_hash_fails_named_single_hash_work(self):
-        changed=once(self.original,"slot=(size_t)hash&mask;","slot=(size_t)geo_source_node_hash(source)&mask;")
+        changed=once(self.original,
+            "size_t mask=ctx->node_index_capacity-1,slot=(size_t)hash&mask;",
+            "size_t mask=ctx->node_index_capacity-1,slot=(size_t)geo_source_node_hash(source)&mask;")
         exe=self.make_executable("recomputed-hash",changed)
         self.assert_killed(exe,"typed-probe","node-hint-miss-hash-reused-once")
 
