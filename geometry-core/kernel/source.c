@@ -400,6 +400,19 @@ GeoSourceStatus geo_eval_depend(GeoEvalContext *ctx,GeoSourceRef source,GeoDepen
     if(result!=GEO_SOURCE_OK)return result;
     return geo_source_edge(ctx,index,kind);
 }
+GeoSourceStatus geo_eval_depend_hint(GeoEvalContext *ctx,GeoSourceRef source,GeoDependencyKind kind,size_t *hint)
+{
+    if(!hint)return geo_eval_depend(ctx,source,kind);
+    if(!ctx||ctx->sealed||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
+    size_t index=*hint;
+    if(index&&index<=ctx->node_count&&geo_source_ref_equal(ctx->nodes[index-1]->source,source))
+        return geo_source_edge(ctx,index-1,kind);
+    GeoSourceStatus result=geo_source_node(ctx,source,&index);
+    if(result!=GEO_SOURCE_OK)return result;
+    result=geo_source_edge(ctx,index,kind);
+    if(result==GEO_SOURCE_OK)*hint=index+1;
+    return result;
+}
 GeoSourceStatus geo_eval_source(GeoEvalContext *ctx,GeoSourceRef source,GeoDependencyKind kind,GeoSourceValue *out)
 {
     if(!out)return GEO_SOURCE_INVALID;

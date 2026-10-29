@@ -499,11 +499,11 @@ static bool reference_member_definition_read(ReferenceEval *ctx,size_t i,uint32_
     if(!wood_definition_sources_member(ctx->definition_sources,id,out))return false;
     ctx->member_reads[i].definition=*out;ctx->member_reads[i].definition_valid=true;return true;
 }
-static bool reference_member_placement_depend(ReferenceEval *ctx,uint32_t id)
+static bool reference_member_placement_depend(ReferenceEval *ctx,size_t i,uint32_t id)
 {
     WoodDefinitionKey key;
-    if(geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),
-            GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;
+    if(geo_eval_depend_hint(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),
+            GEO_DEPENDENCY_DEFINITION_REQUIRED,&ctx->member_reads[i].placement_node_hint)!=GEO_SOURCE_OK)return false;
     return true;
 }
 static bool reference_member_contact_read(ReferenceEval *ctx,size_t i,uint32_t id,WoodMemberPlacementContact *out)
@@ -512,7 +512,7 @@ static bool reference_member_contact_read(ReferenceEval *ctx,size_t i,uint32_t i
         return wood_definition_sources_placement_contact(ctx->definition_sources,id,out);
     if(ctx->member_reads[i].contact_valid&&ctx->member_reads[i].contact_id==id){
         /* Use the original shared edge site for every current consumer. */
-        if(!reference_member_placement_depend(ctx,id))return false;
+        if(!reference_member_placement_depend(ctx,i,id))return false;
         *out=ctx->member_reads[i].contact;return true;
     }
     if(!wood_definition_sources_placement_contact(ctx->definition_sources,id,out))return false;
@@ -528,7 +528,7 @@ static bool reference_member_anchor_read(ReferenceEval *ctx,size_t i,uint32_t id
     if(i>=WORLD_MAX_TIMBERS||geo_eval_is_sealed(ctx->sources))
         return wood_definition_sources_placement(ctx->definition_sources,id,out);
     if(ctx->member_reads[i].anchor_valid&&ctx->member_reads[i].id==id){
-        if(!reference_member_placement_depend(ctx,id))return false;
+        if(!reference_member_placement_depend(ctx,i,id))return false;
         *out=ctx->member_reads[i].anchor;return true;
     }
     if(!wood_definition_sources_placement(ctx->definition_sources,id,out))return false;
@@ -649,7 +649,7 @@ static bool reference_contact_facts(void *opaque,GeoEvalContext *evaluation,
         if(deferred&&ctx->use_current_values)app_contact_raw_restore(&placement,&raw[i],fact);
         if(ctx->use_current_values&&!fact->footprint_valid)continue;
         if(!ctx->use_current_values&&!geo_eval_is_sealed(ctx->sources)&&ctx->member_reads[i].footprint_valid&&ctx->member_reads[i].placement==request->placement_id){
-            if(geo_eval_depend(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED)!=GEO_SOURCE_OK){
+            if(geo_eval_depend_hint(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&ctx->member_reads[i].footprint_node_hint)!=GEO_SOURCE_OK){
                 if(deferred)app_contact_raw_complete(&placement,raw,out->members,visited);return false;
             }
             fact->footprint_valid=ctx->member_reads[i].footprint_ok;

@@ -15,9 +15,9 @@ from tests.test_geo261_native_kernel import NativeBuild
 
 DEFINITION_DEPEND = ('geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_MEMBER,id,&key),\n'
                      '            GEO_DEPENDENCY_DEFINITION_REQUIRED)')
-ANCHOR_DEPEND = ('geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),\n'
-                 '            GEO_DEPENDENCY_DEFINITION_REQUIRED)')
-FOOTPRINT_DEPEND = 'geo_eval_depend(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED)'
+ANCHOR_DEPEND = ('geo_eval_depend_hint(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),\n'
+                 '            GEO_DEPENDENCY_DEFINITION_REQUIRED,&ctx->member_reads[i].placement_node_hint)')
+FOOTPRINT_DEPEND = 'geo_eval_depend_hint(ctx->sources,(GeoSourceRef){APP_SOURCE_MEMBER_POSE,&id,sizeof id},GEO_DEPENDENCY_VALUE_REQUIRED,&ctx->member_reads[i].footprint_node_hint)'
 POSE_DEPEND = 'geo_eval_depend(ctx->sources,ref,relation)'
 EARLY_DEFINITION = '        if(!reference_sources_ensure(ctx)||!reference_placement_frame(ctx,id,&actual.frame)||'
 CONTACT_HIT = '    if(ctx->member_reads[i].contact_valid&&ctx->member_reads[i].contact_id==id){'
@@ -80,8 +80,10 @@ class LoadResidual(unittest.TestCase):
         sources = includes(sources_path.read_text(encoding="utf-8"), sources_path)
         if not dependencies:
             anchor = "if(geo_eval_depend(ctx->sources,"
-            assert sources.count(anchor) == 3
+            hint_anchor = "if(geo_eval_depend_hint(ctx->sources,"
+            assert sources.count(anchor) == 1 and sources.count(hint_anchor) == 2
             sources = sources.replace(anchor, "if(false&&geo_eval_depend(ctx->sources,")
+            sources = sources.replace(hint_anchor, "if(false&&geo_eval_depend_hint(ctx->sources,")
         if not placement_dependency:
             assert sources.count(ANCHOR_DEPEND) == 1, "Placement hit boundary must hit exactly once"
             sources = sources.replace(ANCHOR_DEPEND,
