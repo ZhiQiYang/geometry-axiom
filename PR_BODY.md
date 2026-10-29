@@ -1,10 +1,10 @@
-# #348：完整 H7 通過，後續驗收仍進行
+# #348：H7、F1 原生探針與架構已通過，整合驗收續跑
 
-**Draft／NOT READY。** 已完成 512 已放置完整 H7；完整帳本、native、census、架構及 browser 尚未全數閉合，不宣告可合併。
+**Draft／NOT READY。** 已完成 512 已放置完整 H7；完整帳本、native、census 及 browser 尚未全數閉合，不宣告可合併。
 
 - 正式產品 **M=`7a0e6dd81c54066995981393925fa46a815de2f8`**。
 - H7／35項接線測試 execution **T=`256747c5c8f8f8934eeb08ae404dee1f67591508`**；T→M 非 evidence 差異為零，沿用原 execution，不改標 M。
-- 完整 PR head／已公開證據 **E=`6061fd2b9d930b1cd233f2aabb669b943913ee3d`**。產品、執行與證據提交分列。
+- 完整 PR head／已公開證據 **E=`2be7e5aa058bf5e7b14e2e33fbbf40261fe9dbc3`**。產品、執行與證據提交分列。
 
 ## 唯一現況矩陣
 
@@ -17,7 +17,8 @@
 | N128 profile | **M 原0／gprof0，5.982724714秒**；固定原B=`9a8584f57be7935604c3bad4c2481945a6ec3d9f` 的14.914534721秒不重抽。input.scene／stdout／stderr逐byte相同；literal stdin的loadfile路徑不同，不宣稱其bytes相同。這是 separate `-O0 -pg` 單點診斷，不是正式效能裁判。 |
 | 完整123帳本 | **M 於03:00:41 UTC真啟動，仍進行**。原precheck exit1／stale保留；scratch真53個bridge judge hash及完整source closure相同。尚無full-ledger／checkafter正式終態，不預填通過。 |
 | 完整 native／strict census | **未完成**；定向35項及H7不能代替完整native。 |
-| 架構四份產物／原三裁判 | **未完成**；待正式產物與原裁判收據閉合。 |
+| 架構四份產物／原三裁判 | **M 真0／0／0**，generic205＋product18，0skip；604 inputs／798 edges／0 diagnostics。四檔採入純稽核提交 `d8550079d640347fade3124087464ce3bc4a6ce4`；receipt execution仍M，原manifest/policy/SSOT不改。 |
+| #297 原生探針 | **M 真exit0**，64場景／2936支全接受，L／原點／A0全符，0容量拒絕／規則拒絕／錯誤／幾何不符。F1八排95／97／96／98／108／110／109／111支，共824；每場第65支以後共312支亦全接受。不外推未測116或其他512情境。 |
 | 六個 browser jobs | **未完成**；不把其他SHA的歷史綠項改標目前來源。 |
 
 ## 固定原件
@@ -37,3 +38,7 @@
 容量超過512仍回 `CAPACITY`、不截斷。索引記憶體成本保留：generic hint 4096 slots每context增加30,720B，H兩ordinal增加8192B，definition ordinal再4096B。CI最新狀態本輪未重新核實，不援引舊runner0或其他來源結果。
 
 [H7 可讀原件](https://github.com/ZhiQiYang/geometry-axiom/tree/6061fd2b9d930b1cd233f2aabb669b943913ee3d/evidence/geo300-capacity512-20261024/placed-h7-256747c5/readable-originals)：直接抽出原 E06 封包中的 inner／wrapper REQUEST、RESULT、原 unittest.log／outer.log；EXTRACTION.json 列原封包member及逐檔SHA256，八份公開檔均已從遠端讀回核同。沒有重新執行或改標H7。
+
+[#297／架構本輪原件與可讀輸出](https://github.com/ZhiQiYang/geometry-axiom/tree/2be7e5aa058bf5e7b14e2e33fbbf40261fe9dbc3/evidence/geo300-capacity512-20261024/probe-architecture-7a0e6dd8)：488檔，RAW 6,984,698 B，SHA256 `8669fe290da4b155cc21d3fce903e892b5f5b4ac2a2002128b96e7126f40de20`；實際遠端blob原bytes已核同。
+
+#297沿原registry O2 core、16MiBstack及每次原120秒，使用原支援CORE_BIN：`CORE_BIN=/dev/shm/pr348-probe297-7a0e6dd8/build/core TMPDIR=/dev/shm/pr348-probe297-7a0e6dd8/tmp bash geometry-core/framing-template/core-probe/run_probe.sh /dev/shm/pr348-probe297-7a0e6dd8/run`。build0 15.145188秒／probe0 62.550101秒，全部原始場景無省略。CORE_BIN未列入capture安全環境欄，原build.log／executor／ELF與sidecar另核實，不掩蓋此收據限制，也不為它重跑。架構原三命令、205／18原日誌與舊新四檔在同包；同伴已逐原件核收，未另跑產品。
