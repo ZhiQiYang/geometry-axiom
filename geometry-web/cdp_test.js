@@ -8,7 +8,7 @@ const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const {createTransportFailureTrace,installClientTransportTrace} = require('./transport_failure_trace.js');
 let transportFailureTrace;
-const SCOPE_FLAGS = ['GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_CANVAS_CONTEXT_MENU_ONLY','GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
@@ -24,6 +24,17 @@ function runConfiguration(env = process.env) {
   if(filters.length>1)throw Error('Choose only one CDP scope flag; combined filters can silently omit every suite');
   if(modifiers.length>1)throw Error('Choose only one engineering workflow modifier');
   if(modifiers.length && env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY!=='1')throw Error('Engineering modifiers require GEOMETRY_ENGINEERING_WORKFLOW_ONLY=1');
+  if(env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!==undefined){
+    const cases=env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES.split(',');
+    if(env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||!cases.length||new Set(cases).size!==cases.length||cases.some(id=>!/^C(?:0[1-9]|1[0-6])$/.test(id)))
+      throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_CASES requires ONLY=1 and unique comma-separated C01..C16 IDs');
+  }
+  if(env.GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY!==undefined&&
+      (env.GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!=='C11'))
+    throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_CURRENT_ONLY=1 requires ONLY=1 and CASES=C11 exactly');
+  if(env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY!==undefined&&
+      (env.GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY!=='1'||env.GEOMETRY_CANVAS_CONTEXT_MENU_CASES!=='C05'))
+    throw Error('GEOMETRY_CANVAS_CONTEXT_MENU_BUSY_ONLY=1 requires ONLY=1 and CASES=C05 exactly');
   return {mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 // Legacy checks log a verdict as a separate argument. Never scan arbitrary
@@ -395,6 +406,10 @@ async function main() {
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
+  const runCanvasContextMenu=()=>require('./canvas_context_menu_test.js')({send,eval_,sleep,click,drag,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
+  if(process.env.GEOMETRY_CANVAS_CONTEXT_MENU_ONLY){
+    await runCanvasContextMenu();
+  } else {
   if (!process.env.GEOMETRY_ROOM_OUTLINE_ONLY) {
   if (!process.env.GEOMETRY_PARAMETERS_ONLY && !process.env.GEOMETRY_ASSEMBLY_ONLY && !process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY) {
   if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
@@ -7156,6 +7171,8 @@ async function main() {
   if(scope.mode==='full'||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
   if(scope.mode==='full')await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(scope.mode==='full')await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(scope.mode==='full')await runCanvasContextMenu();
+  }
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
   const goldenCompare=evaluateSections();

@@ -31,6 +31,7 @@
   <div><strong id="connectionTitle">正在讀取場景</strong><p id="connectionMessage">連線完成後即可編輯。</p></div>
   <button id="connectionRetry" type="button" class="secondary-button" hidden>重新連線</button>
 </section>
+<div id="canvasOfflineView" class="connection-canvas-view" tabindex="0" role="region" aria-label="最後讀取的物件畫布，僅供檢視" hidden></div>
 <div id="app" class="app-shell" inert>
   <header class="topbar">
     <div class="brand" aria-label="構形 Canvas">
@@ -278,7 +279,6 @@
         <button id="zoomInButton" class="icon-button" type="button" title="放大" aria-label="放大"><span data-icon="plus"></span></button>
         <span class="toolbar-separator vertical"></span>
         <button id="btnZoom" class="icon-button" type="button" title="顯示全部 (F)" aria-label="顯示全部"><span data-icon="fit"></span></button>
-        <button id="homeButton" class="icon-button" type="button" title="回到原點" aria-label="回到原點"><span data-icon="home"></span></button>
         <span class="toolbar-separator vertical"></span>
         <button id="snapToggle" class="mini-toggle on" type="button" aria-pressed="true" title="格點吸附">吸附</button>
         <button id="gridToggle" class="mini-toggle on" type="button" aria-pressed="true" title="顯示背景格點">格點</button>
@@ -443,6 +443,7 @@
           <div id="feOpPanel" class="fe-op-panel" role="dialog" aria-label="形狀操作參數" hidden></div>
           <!-- GEO-192:右鍵選單,內容與 #feActionBar 同一份資料來源(feActionsFor) -->
           <div id="feCtxMenu" class="fe-ctx-menu" role="menu" hidden></div>
+          <div id="canvasCtxMenu" class="fe-ctx-menu" role="menu" hidden></div>
           <div class="face-canvas-controls" aria-label="面內縮放控制">
             <button id="feZoomOut" class="icon-button" type="button" title="縮小"><span data-icon="minus"></span></button>
             <button id="feZoomLevel" class="zoom-level" type="button" title="回到 100%">100%</button>
@@ -698,6 +699,7 @@
 <script src="face-menu-icons.js"></script>
 <script src="context-menu-shell.js"></script>
 <script src="face-context-menu.js"></script>
+<script src="canvas-context-menu.js"></script>
 <script src="grid-trial.js"></script>
 <script src="grid-anchor-positions.js"></script>
 <script src="grid-system-workspace.js"></script>

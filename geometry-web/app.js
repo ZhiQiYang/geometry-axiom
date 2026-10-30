@@ -544,10 +544,53 @@ async function recoverApiResults() {
   }
   if (recoveringRoom) await window.RoomCollectionWorkspace.settleRecoveredTransaction();
 }
+// 離線只保留物件畫布右鍵的檢視入口；主工作區始終維持原 inert 保護。
+// 暫移原 SVG（不複製快取或事件）到工作區外；恢復時放回原佔位點。
+let connectionCanvasMount = null;
+function connectionCanvasView() {
+  return connection.phase !== "ready" && connection.known && oc.on && !oc.focus && !view3;
+}
+function syncConnectionCanvasView(focused = document.activeElement) {
+  const host = $("canvasOfflineView"), viewport = $("canvasViewport"), canvas = $("ocv");
+  const mounted = connectionCanvasView();
+  document.body.classList.toggle("connection-canvas-mounted", mounted);
+  if (mounted) {
+    const r = viewport.getBoundingClientRect();
+    Object.assign(host.style, {left:r.left+"px", top:r.top+"px", width:r.width+"px", height:r.height+"px"});
+    host.hidden = false;
+    if (!connectionCanvasMount) {
+      const marker = document.createComment("object canvas home");
+      canvas.before(marker);
+      connectionCanvasMount = {marker, canvas};
+      host.append(canvas);
+      if (focused === viewport) host.focus({preventScroll:true});
+      else if (canvas.contains(focused)) focused.focus({preventScroll:true});
+    }
+  } else {
+    if (connectionCanvasMount) {
+      const {marker, canvas} = connectionCanvasMount;
+      marker.replaceWith(canvas);
+      connectionCanvasMount = null;
+      if (focused === host) viewport.focus({preventScroll:true});
+      else if (canvas.contains(focused)) focused.focus({preventScroll:true});
+    }
+    host.hidden = true;
+  }
+}
+const connectionCanvasResize = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
+  if (connectionCanvasMount) syncConnectionCanvasView();
+}) : null;
+connectionCanvasResize?.observe($("canvasViewport"));
+for (const type of ["resize", "scroll"]) window.addEventListener(type, () => {
+  if (connectionCanvasMount) syncConnectionCanvasView();
+}, {capture:true, passive:true});
 function showConnectionState() {
   const blocked = connection.phase !== "ready";
   $("connectionNotice").hidden = !blocked;
+  const focused = document.activeElement;
   for (const id of ["app", "objectWorkspace"]) $(id).inert = blocked;
+  syncConnectionCanvasView(focused);
+  window.CanvasContextMenu?.connectionChanged();
   document.body.classList.toggle("connection-blocked", blocked);
   $("connectionTitle").textContent = connection.phase === "error" ? "無法連線，編輯已暫停" : "正在讀取場景";
   $("connectionMessage").textContent = connection.phase === "error"
@@ -602,9 +645,29 @@ async function recoverConnection() {
   }
 }
 $("connectionRetry").addEventListener("click", recoverConnection);
-/* inert 擋滑鼠與焦點；文件層的快捷鍵也必須停止，保留重試按鈕的鍵盤操作。 */
+/* 只開放右鍵選單自己的檢視互動；一般畫布點擊／拖曳仍不能借離線豁免寫入。 */
+for (const type of ["pointerdown", "pointermove", "pointerup", "mousedown", "mouseup", "click", "dblclick", "auxclick", "wheel"]) {
+  document.addEventListener(type, e => {
+    if (!connectionCanvasView() || !e.target.closest?.("#canvasViewport,#canvasOfflineView")) return;
+    if (["pointerdown", "pointerup", "mousedown", "mouseup"].includes(type) && e.button === 2) {
+      // Preserve the browser's native contextmenu default action, but do not
+      // let a right release finish a canvas drag/draw that lost its connection.
+      e.stopImmediatePropagation(); return;
+    }
+    if (type === "pointerdown" && window.CanvasContextMenu?.open) {
+      CanvasContextMenu.hide(); $("canvasOfflineView").focus();
+    }
+    e.preventDefault(); e.stopImmediatePropagation();
+  }, {capture:true, passive:false});
+}
+/* 文件層快捷鍵仍停止；選單鍵、選單內鍵盤操作與重試按鈕有精確豁免。 */
 document.addEventListener("keydown", e => {
   if (connection.phase !== "ready") {
+    if (connectionCanvasView()) {
+      const menuKey = e.key === "ContextMenu" || (e.key === "F10" && e.shiftKey);
+      if ((window.CanvasContextMenu?.open && e.target.closest?.("#canvasCtxMenu")) ||
+          (e.target.closest?.("#canvasViewport,#canvasOfflineView") && (menuKey || e.key === "Tab"))) return;
+    }
     e.stopImmediatePropagation();
     if (e.key === "Escape" && window.AssemblyWorkspace?.canCloseForRecovery) {
       e.preventDefault();AssemblyWorkspace.close();$("connectionRetry").focus();return;
@@ -9089,7 +9152,7 @@ function renderCanvasModeHint() {
    卡片,還被放在很遠的 bbox 左上角(GEO-187 的「找不到卡片」根因)。
    P 改成一次性動作:建一張預設外環的面卡 → 自動進入該面的工作區、啟用「重畫外環」
    (面內視野由 feFit 對齊面的大小,1 單位=1mm 的繪圖在面內進行)→ 畫完 Esc 返回畫布。 */
-async function objNewPolyFace({beforeCreate} = {}) {
+async function objNewPolyFace({beforeCreate, canvasPosition} = {}) {
   const ids = await api("newid");
   if (!ids.ok) { setStatus("✗ " + (ids.error || "取不到新編號")); toast(ids.error || "取不到新編號"); return; }
   const bid = ids.boundary;
@@ -9097,11 +9160,11 @@ async function objNewPolyFace({beforeCreate} = {}) {
   /* 預設外環只是佔位,進面內後被 redraw 整份取代;取常見房間大小讓 feFit 給出合適視野 */
   const r = await api(`line boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`);
   if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }
-  /* 卡片落在目前視野中心(canvas-pos 是展示中繼資料,不進歷史;搶在 renderObjects()
-     的 homeless 自動排格之前送出) */
+  /* 選單帶入動作當下的畫布位置；其他入口維持視野中心。
+     canvas-pos 是展示中繼資料,不另加歷史；在 homeless 自動排格之前送出。 */
   const vr = ocv.getBoundingClientRect();
-  const cx = Math.round((vr.width / 2 - oc.panX) / oc.zoom - OC_W / 2);
-  const cy = Math.round((vr.height / 2 - oc.panY) / oc.zoom - OC_H / 2);
+  const cx = canvasPosition?.cx ?? Math.round((vr.width / 2 - oc.panX) / oc.zoom - OC_W / 2);
+  const cy = canvasPosition?.cy ?? Math.round((vr.height / 2 - oc.panY) / oc.zoom - OC_H / 2);
   await api(`line canvas-pos boundary ${bid} ${cx} ${cy}`);
   setStatus(`✓ 面 ${bid} 已建立 · Ctrl+Z 復原`);
   await renderObjects();
@@ -10038,21 +10101,22 @@ function ocZoomAt(f, px, py) {
 }
 $("zoomInButton").addEventListener("click", () => ocZoomAt(1.25));
 $("zoomOutButton").addEventListener("click", () => ocZoomAt(0.8));
-$("homeButton").addEventListener("click", () => {
-  oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
-});
+/* #116 K4 PR-c:回到原點是純檢視動作，由物件畫布選單呼叫。 */
+function ocHome() { oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply(); }
 /* GEO-187:回到 100% 以畫面中心為準;舊版直接改 zoom 不調 pan,從 2% 回 100% 時畫面中心的卡片會飛出畫面 */
 $("zoomLevelButton").addEventListener("click", () => ocZoomAt(1 / oc.zoom));
 /* 吸附 / 格線(aria-pressed 按鈕,A3) */
+function ocToggleCanvasView(id) {
+  if (!["snapToggle", "gridToggle"].includes(id)) return false;
+  const b = $(id), on = !b.classList.contains("on");
+  b.classList.toggle("on", on);
+  b.setAttribute("aria-pressed", on ? "true" : "false");
+  if (id === "gridToggle") $("canvasViewport").classList.toggle("show-grid", on);
+  ocGridApply();
+  return true;
+}
 for (const id of ["snapToggle", "gridToggle"]) {
-  $(id).addEventListener("click", () => {
-    const b = $(id), on = !b.classList.contains("on");
-    b.classList.toggle("on", on);
-    b.setAttribute("aria-pressed", on ? "true" : "false");
-    if (id === "gridToggle")
-      $("canvasViewport").classList.toggle("show-grid", on);
-    ocGridApply();
-  });
+  $(id).addEventListener("click", () => ocToggleCanvasView(id));
 }
 /* 篩選 chips(A3:aria-pressed + 計數徽章) */
 function applyFilterChips() {
@@ -10620,6 +10684,28 @@ $("btnObj").addEventListener("pointerdown", e => {
 $("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnModelLibraryMenu").addEventListener("click", () => { closeMenus(); $("btnSpaceModels").click(); });
 $("btnBack").addEventListener("click", leaveFocus);
+/* Context-menu display coordinates are not a World point. Convert only a real
+   pointer anchor, synchronously at action time, before a panel/layout or await. */
+function ocMenuCanvasPosition(anchor, kind = "boundary") {
+  if (anchor?.invocation !== "pointer" || !Number.isFinite(anchor.clientX) || !Number.isFinite(anchor.clientY))
+    throw new Error("請先在畫布指定建立位置");
+  const point = ocToCanvas(anchor);
+  const width = kind === "space" ? SP_W : OC_W, height = kind === "space" ? SP_H : OC_H;
+  return {cx:Math.round(point.x - width / 2), cy:Math.round(point.y - height / 2)};
+}
+async function ocCreateFromMenu(id, anchor) {
+  const canvasPosition = ocMenuCanvasPosition(anchor, id === "btnNewSpace" ? "space" : "boundary");
+  closeMenus(); closePanels();
+  if (id === "btnCreatePoly") return objNewPolyFace({canvasPosition});
+  if (id === "btnNewSpace") return objNewSpace({canvasPosition});
+  if (id === "btnCreateRect") return setOcTool("rect");
+  if (id === "btnNewParameter") return window.ParameterUI.create({canvasPosition});
+  // These entries start the existing candidate/editor/dialog. They do not
+  // turn canvas coordinates into geometry or submit an unconfirmed definition.
+  if (["btnQuickGrid","btnNewAssembly","btnNewSectionProfile","btnNewColumn","btnNewBeam","btnBox6"].includes(id))
+    return $(id).click();
+  throw new Error("未知的建立入口：" + id);
+}
 $("btnNewRect").addEventListener("click", () => setOcTool("rect"));
 $("btnNewPoly").addEventListener("click", () => objNewPolyFace());
 $("btnNewGridSystem").addEventListener("click", async () => {
@@ -10639,14 +10725,21 @@ $("btnCollapseLibrary")?.addEventListener("click", () => {
   $("btnCollapseLibrary").setAttribute("aria-label",collapsed ? "展開物件庫" : "收合物件庫");
   closeMenus(); ocApply();
 });
-$("btnNewSpace").addEventListener("click", async () => {
+async function objNewSpace({canvasPosition} = {}) {
   closePanels();
   const ids = await api("newid");
-  if (await emitLine(`space ${ids.space}`)) {
+  if (!ids.ok) { toast(ids.error || "取不到新編號"); return false; }
+  const made = canvasPosition
+    ? await mutate([`space ${ids.space}`, `canvas-pos space ${ids.space} ${canvasPosition.cx} ${canvasPosition.cy}`],
+        {afterSettlement:committed => committed ? renderObjects() : undefined})
+    : await emitLine(`space ${ids.space}`);
+  if (made) {
     selectObject("space", ids.space); centerOnNode("space", ids.space);
     setStatus(`✓ 空間 ${ids.space}（空容器）已建立，點進去管理成員`);
   }
-});
+  return made;
+}
+$("btnNewSpace").addEventListener("click", () => objNewSpace());
 
 for (const [id, side] of [["toggleLeft","left"],["toggleRight","right"],["workspaceToggleLeft","left"],["workspaceToggleRight","right"]])
   $(id).addEventListener("click", e => togglePanel(side, e.currentTarget));
