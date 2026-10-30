@@ -213,6 +213,7 @@ PY_NEEDS = {
     'test_parameters_unbind_scope': ['bridge'],
     'test_parameters_deleted_unbind': ['bridge'],
     'test_parameters_upstream_unbind': ['bridge'],
+    'test_pr353_legacy_snapshot': [],  # Real snapshot/fixture checks need Node and Git, not a native bridge.
     'test_parameters_candidate_value_history': ['bridge'],
     'test_reference_contract': ['bridge'],
     'test_rectangular_template': [],
@@ -291,12 +292,15 @@ NODE_TEST_FILES = [
 ]
 NODE_SCRIPT_FILE = 'tests/test_model_viewer.cjs'
 NODE_DOCUMENT_SCRIPT_FILES = {
+    'node:pr353_display_regressions': 'tests/test_pr353_display_regressions.js',
     'node:document_format': 'tests/test_document_format.js',
     'node:document_cases': 'tests/test_document_cases.js',
     'node:cdp_navigation': 'tests/test_cdp_navigation.js',
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:pr353_compatibility': 'tests/test_pr353_compatibility.js',
+    'node:pr353_pin_regressions': 'tests/test_pr353_pin_regressions.js',
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
     'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',
@@ -323,6 +327,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/pr353_legacy_reader.js': 'Immutable legacy-reader fixture/materialization helper; registers no tests; exercised by the PR353 compatibility and snapshot suites',
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
     'tests/k2a_browser_receipt.cjs': 'Shared browser receipt/identity helper; registers no tests',
     'tests/k2a_rule_repin_browser.cjs': 'Required actual source-rule raw preservation and two-way repin comparison gate',
@@ -519,7 +524,7 @@ def build_suites():
         f = HERE / (stem + '.py')
         if f.is_file():
             suites.append(Suite('py:' + stem, 'unittest', [py, str(RUNNER), str(f)], PY_NEEDS[stem], 1200,
-                                needs_node=(stem == 'test_evidence_link_native'), label='tests/%s' % f.name))
+                                needs_node=(stem in ('test_evidence_link_native', 'test_pr353_legacy_snapshot')), label='tests/%s' % f.name))
     js = [rel for rel in sorted(NODE_TEST_FILES) if (ROOT / rel).is_file()]
     suites += [
         Suite('node:tests-js', 'node-test', ['--test', '--test-reporter=spec', *js], ['bridge', 'model-base'], 900,

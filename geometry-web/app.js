@@ -8126,6 +8126,9 @@ const GridEditor = (() => {
    All creates, updates and applications use a validated candidate + token. */
 const GridSystemEditor = (() => {
   const axes = ["u", "v"], esc = ReferenceWorkspace.escape;
+  // Display only this native row's evaluated length; keep its source definition intact.
+  const axisLength = (d,key) => d?.[key+'Source']==='card' ? d?.[key==='step'?'effectiveStep':'effectivePanel'] : d?.[key];
+  const lengthSource = (d,key) => d?.[key+'Source']==='card' ? '（整張參數卡）' : d?.parameterRefs?.[key] ? '（參數引用）' : '';
   const modes = [["none","不設"],["explicit","明寫座標"],["series","等差"],["panel","面材＋縫"]];
   const prefix = a => "gs" + a.toUpperCase();
   let active = null;
@@ -8138,17 +8141,17 @@ const GridSystemEditor = (() => {
   const get = (s,id) => s.root.querySelector("#"+id);
   function summary(d) {
     if (!d || d.source === "none") return "未設定";
-    if (d.source === "repeat") return `無限重複 · 間距 ${d.step} mm，基準 ${d.phase} mm`;
-    if (d.source === "repeat-panel") return `無限面材 ${d.panel}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
+    if (d.source === "repeat") return `無限重複 · 間距 ${axisLength(d,'step')} mm${lengthSource(d,'step')}，基準 ${d.phase} mm`;
+    if (d.source === "repeat-panel") return `無限面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm${lengthSource(d,'panel')}，從 ${d.anchor} mm 起算`;
     if (d.source === "explicit") return `座標 ${(d.coordinates || []).join("、")} mm`;
-    if (d.source === "series") return `從 ${d.start} mm，每 ${d.step} mm，共 ${d.count} 條`;
-    return `面材 ${d.panel}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
+    if (d.source === "series") return `從 ${d.start} mm，每 ${axisLength(d,'step')} mm，共 ${d.count} 條`;
+    return `面材 ${axisLength(d,'panel')}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
   }
   function sketch(parent, o, x, y, w, h) {
     el("rect",{x,y,width:w,height:h,rx:6,fill:"#f3f7fb",stroke:"#dce5ef"},parent);
     if (o.mode === "infinite") {
-      const definition = d => d.source === "repeat" ? {phase:d.phase,pitch:d.step} : d.source === "repeat-panel" ?
-        {phase:d.anchor+d.panel+Math.floor(d.gap/2),pitch:d.panel+d.gap} : null;
+      const definition = d => d?.source === "repeat" ? {phase:d.phase,pitch:axisLength(d,'step')} : d?.source === "repeat-panel" ?
+        {phase:d.anchor+axisLength(d,'panel')+Math.floor(d.gap/2),pitch:axisLength(d,'panel')+d.gap} : null;
       const defs=axes.map(a=>definition(o[a+"Definition"]));
       const scale=Math.min(...defs.map((d,i)=>d ? (i===0?w:h)/(d.pitch*4) : Infinity));
       const center=[x+w/2,y+h/2];
@@ -8189,10 +8192,11 @@ const GridSystemEditor = (() => {
     el("circle",{cx:17,cy:22,r:5,fill:"#467fb0"},g);
     const name=Array.from(o.name);el("text",{x:31,y:25,"font-size":15,"font-weight":700,fill:"#1d2634"},g).textContent=name.length>17 ? name.slice(0,16).join("")+"…" : o.name;
     el("text",{x:31,y:42,"font-size":12,fill:"#6d8197"},g).textContent=o.mode === "infinite" ? "網格來源 · 無限延伸" : `舊版有限網格 ${o.id} · ${o.applications.length} 個套用`;
-    el("title",{},g).textContent=`${o.name}\nu：${summary(o.uDefinition)}\nv：${summary(o.vDefinition)}\n卡片僅示意排法，沒有幾何範圍。`;
+    const cardSource=o.cardReference ? `\n整張參數卡 #${o.cardReference.parameterId}：u ← 欄位 #${o.cardReference.uFieldId}，v ← 欄位 #${o.cardReference.vFieldId}` : '';
+    el("title",{},g).textContent=`${o.name}${cardSource}\nu：${summary(o.uDefinition)}\nv：${summary(o.vDefinition)}\n卡片僅示意排法，沒有幾何範圍。`;
     el("line",{x1:0,y1:50,x2:OC_W,y2:50,stroke:"#e2eaf1"},g);
     const body=el("g",{class:"ocard-body"},g);sketch(body,o,14,58,OC_W-28,OC_H-109);
-    const pitch=d=>d.source === "repeat" ? `${d.step}` : d.source === "repeat-panel" ? `${d.panel+d.gap}` : "—";
+    const pitch=d=>d?.source === "repeat" ? `${axisLength(d,'step')}` : d?.source === "repeat-panel" ? `${axisLength(d,'panel')+d.gap}` : "—";
     el("text",{x:14,y:OC_H-30,"font-size":12.5,fill:"#6d8197"},body).textContent=o.mode === "infinite" ? `X 間距 ${pitch(o.uDefinition)} · Y 間距 ${pitch(o.vDefinition)} mm` : "舊版有限排法 · 保留原義";
     el("text",{x:14,y:OC_H-11,"font-size":12,fill:"#687487"},body).textContent=o.mode === "infinite" ? "格線向兩端無限延伸" : o.mainAlong ? `主支沿 ${o.mainAlong} · 可重複套用` : "角色未設定 · 可重複套用";
     return g;

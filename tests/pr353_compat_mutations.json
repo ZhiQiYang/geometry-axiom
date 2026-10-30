@@ -1,0 +1,115 @@
+{
+  "schema": "pr353-node-mutations/1",
+  "mutations": [
+    {
+      "id": "p353_raw_capability_removed",
+      "case": "R35307_RAW_CAPABILITY",
+      "changes": [
+        {
+          "file": "geometry-web/feature-attachments.js",
+          "before": "const gridCardDraft = draft => draft.kind === \"source\" && sourceCardFields.some(field => Object.hasOwn(draft.rawForm,field));",
+          "after": "const gridCardDraft = draft => false && draft.kind === \"source\" && sourceCardFields.some(field => Object.hasOwn(draft.rawForm,field));"
+        }
+      ]
+    },
+    {
+      "id": "p353_legacy_raw_normalized",
+      "case": "R35307_LEGACY_EXACT",
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "    const m = copy(normalizedManifest(manifest,scene));",
+          "after": "    const m = copy(normalizedManifest(manifest,scene)); for(const record of m.featureAttachments?.records||[])if(record.kind===Features.GRID_KIND)for(const draft of (record.schema===Features.GRID_DRAFTS_SCHEMA?record.value.drafts:[record.value]))if(!Object.hasOwn(draft.rawForm,\"igCard\"))draft.rawForm.igName=draft.rawForm.igName.trim();"
+        }
+      ]
+    },
+    {
+      "id": "p353_new_raw_mapping_rewritten",
+      "case": "R35307_NEW_RAW_ROUNDTRIP",
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "    const m = copy(normalizedManifest(manifest,scene));",
+          "after": "    const m = copy(normalizedManifest(manifest,scene)); for(const record of m.featureAttachments?.records||[])if(record.kind===Features.GRID_KIND)for(const draft of (record.schema===Features.GRID_DRAFTS_SCHEMA?record.value.drafts:[record.value]))if(Object.hasOwn(draft.rawForm,\"igCard\"))draft.rawForm.igCardU=\"999\";"
+        }
+      ]
+    },
+    {
+      "id": "p353_missing_raw_declaration_admitted",
+      "case": "R35307_DECLARATION_REJECTION",
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "    const needed = projectCapabilities({...manifest, requiredCapabilities: []}, scene ?? \"\");",
+          "after": "    const needed = projectCapabilities({...manifest, requiredCapabilities: []}, scene ?? \"\").filter(cap=>cap!==Features.GRID_CARD_CAPABILITY||manifest.requiredCapabilities?.includes(cap));"
+        }
+      ]
+    },
+    {
+      "id": "p353_raw_claims_native_parameter",
+      "case": "R35307_MATRIX",
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "    const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);",
+          "after": "    const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]); if(manifest.featureAttachments?.records.some(record=>record.kind===Features.GRID_KIND))required.add(PARAMETER_CAPABILITY);"
+        }
+      ]
+    },
+    {
+      "id": "p353_nested_raw_capability_removed",
+      "case": "R35307_NESTED_RAW",
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "    if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(Features.GRID_CARD_CAPABILITY)))required.add(Features.GRID_CARD_CAPABILITY);",
+          "after": "    if(false&&manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(Features.GRID_CARD_CAPABILITY)))required.add(Features.GRID_CARD_CAPABILITY);"
+        }
+      ]
+    },
+    {
+      "id": "p353_raw_downgraded_for_old_reader",
+      "case": "R35307_OLD_READER_ATOMIC_REJECT",
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "    const m = copy(normalizedManifest(manifest,scene));",
+          "after": "    const m = copy(normalizedManifest(manifest,scene)); for(const record of m.featureAttachments?.records||[])if(record.kind===Features.GRID_KIND)for(const draft of (record.schema===Features.GRID_DRAFTS_SCHEMA?record.value.drafts:[record.value])){delete draft.rawForm.igCard;delete draft.rawForm.igCardU;delete draft.rawForm.igCardV;} if(m.requiredCapabilities)m.requiredCapabilities=m.requiredCapabilities.filter(cap=>cap!==Features.GRID_CARD_CAPABILITY);"
+        }
+      ]
+    },
+    {
+      "id": "p353_old_reader_writes_before_rejection",
+      "case": "R35307_OLD_READER_ATOMIC_REJECT",
+      "changes": [
+        {
+          "file": "geometry-web/reference-workspace.js",
+          "before": "    const loaded=await P.unpack(bytes,fflate); assertCurrent();",
+          "after": "    context().name=\"mutated before archive admission\"; const loaded=await P.unpack(bytes,fflate); assertCurrent();"
+        }
+      ]
+    },
+    {
+      "id": "p353_historical_pin_recomputed",
+      "case": "R35307_HISTORICAL_PINS",
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "    const m = copy(normalizedManifest(manifest,scene));",
+          "after": "    const m = copy(normalizedManifest(manifest,scene)); for(const record of m.featureAttachments?.records||[])if(record.kind===Features.GRID_KIND)for(const draft of (record.schema===Features.GRID_DRAFTS_SCHEMA?record.value.drafts:[record.value]))for(const ref of draft.inputRefs)ref.fingerprint=\"0\".repeat(64);"
+        }
+      ]
+    },
+    {
+      "id": "p353_geo219_duplicate_paragraph_restored",
+      "case": "R35309_GEO219_SOURCE_REDUCTION",
+      "changes": [
+        {
+          "file": "geometry-web/grid-system-workspace.js",
+          "before": "<div id=\"igDefStage\" class=\"ig-def-stage\"></div>",
+          "after": "<div id=\"igDefStage\" class=\"ig-def-stage\"></div><p class=\"ig-def-hint\">點圖上的尺寸或卡片標題，對應的軸與欄位會反白。</p>"
+        }
+      ]
+    }
+  ]
+}

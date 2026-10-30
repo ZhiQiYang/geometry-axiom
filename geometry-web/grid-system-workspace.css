@@ -233,3 +233,12 @@
 .ig-rule-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 /* Existing rule list is also the destination of typed line provenance. */
 .ig-rule-row.is-focus { outline:2px solid #8654b2;outline-offset:3px;border-radius:4px; }
+
+/* R01: whole parameter card as the length source of both axes. */
+.ig-settings .ig-card-ref { margin: 10px 0 0; display: grid; gap: 6px; }
+.ig-settings .ig-card-ref label { display: grid; gap: 3px; margin: 0; font-size: 12px; }
+.ig-settings .ig-card-ref select { width: 100%; min-width: 0; }
+.ig-settings .ig-card-map { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 6px; align-items: end; }
+.ig-settings .ig-card-note { margin: 0; font-size: 12px; line-height: 1.5; }
+.ig-settings .ig-card-note[data-tone=error] { color: var(--danger, #b42318); }
+.ig-settings .ig-card-locked input { background: var(--panel-muted, #f2f4f7); }

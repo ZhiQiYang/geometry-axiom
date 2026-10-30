@@ -480,11 +480,16 @@ const ReferenceWorkspace = (() => {
       const replacements=new Set();
       for(const ref of old?.inputRefs || [])if(ref.lost&&!value.inputRefs.some(next=>P.Features.referenceKey(next)===P.Features.referenceKey(ref))){
         const fields=ref.kind==='parameter-field'?P.Features.sourceFields.filter(field=>field.endsWith('Source')&&!['igUSource','igVSource'].includes(field)&&old.rawForm[field]===`${ref.parameterId}:${ref.fieldId}`):[];
-        if(fields.length){
-          if(!fields.every(field=>value.inputRefs.some(next=>next.kind==='parameter-field'&&!next.lost&&next.parameterId!==ref.parameterId&&value.rawForm[field]===`${next.parameterId}:${next.fieldId}`)))
-            throw new Error("曾缺失來源只准逐欄改指另一個物件，不得純移除。");
-          continue;
-        }
+        const card=ref.kind==='parameter-field'&&old.kind==='source'&&old.rawForm.igCard===String(ref.parameterId)&&
+          ['igCardU','igCardV'].some(field=>old.rawForm[field]===String(ref.fieldId));
+        if(fields.length&&!fields.every(field=>value.inputRefs.some(next=>next.kind==='parameter-field'&&!next.lost&&next.parameterId!==ref.parameterId&&value.rawForm[field]===`${next.parameterId}:${next.fieldId}`)))
+          throw new Error("曾缺失來源只准逐欄改指另一個物件，不得純移除。");
+        if(card&&!(value.kind==='source'&&value.rawForm.igCard&&value.rawForm.igCard!==old.rawForm.igCard&&
+          value.rawForm.igCardU&&value.rawForm.igCardV&&value.rawForm.igCardU!==value.rawForm.igCardV&&
+          ['igCardU','igCardV'].every(field=>value.inputRefs.some(next=>next.kind==='parameter-field'&&!next.lost&&
+            String(next.parameterId)===value.rawForm.igCard&&String(next.fieldId)===value.rawForm[field]))))
+          throw new Error("曾缺失整卡來源只准以另一張卡的完整雙欄映射替換，不得純移除。");
+        if(fields.length||card)continue;
         const next=value.inputRefs.find(next=>!next.lost&&next.kind===ref.kind&&!replacements.has(P.Features.referenceKey(next))&&
           !old.inputRefs.some(existing=>P.Features.referenceKey(existing)===P.Features.referenceKey(next))&&
           (ref.kind!=='parameter-field'||next.parameterId!==ref.parameterId));
