@@ -45,8 +45,8 @@ async function main() {
       await ReferenceWorkspace.preparePage(page,source); ReferenceWorkspace.addPage(1,page);
       await enterFocus("face",1); fiShowTab("underlay");
     }, PDF);
-    prompts.push("房間 A"); await page.locator("#roomSourceCreate").click();
-    await page.waitForSelector("#roomNew");
+    prompts.push("房間 A"); await page.locator("#roomNew").click();
+    await page.waitForFunction(() => RoomCollectionWorkspace.controller.state().rooms.length === 1);
     let data = await page.evaluate(() => RoomCollectionWorkspace.controller.state());
     check(data.planes.length, 1, "one shared source plane"); check(data.rooms[0].name,"房間 A","existing boundary is explicitly named and associated");
     const initialA=await native(page,1), beforeCancel=await snapshot(page);

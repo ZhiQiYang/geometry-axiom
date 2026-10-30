@@ -572,7 +572,7 @@ const ReferenceWorkspace = (() => {
   function setFeatureAttachment(kind, value, expectedContextToken, options = {}) {
     P.Features.assertKind(kind);
     if(kind===P.Features.CASE_KIND && options.caseAdmission!==caseCommitKey)throw new Error("規則案例必須先完成隔離資料驗證，再原子保留。");
-    const groupedRoom = kind === P.Features.ROOM_KIND && options.recordHistory === false;
+    const groupedRoom = (kind === P.Features.ROOM_KIND || kind === P.Features.ROOM_CANDIDATE_KIND) && options.recordHistory === false;
     if (groupedRoom) {
       assertRoomTransaction(options.roomLease);
       if (!roomTransaction.group || history.group !== roomTransaction.group || !history.group.dirty)
@@ -591,7 +591,7 @@ const ReferenceWorkspace = (() => {
     const proposal = featureProposal(kind,value,kind===P.Features.GRID_KIND&&options.gridWrite===gridDraftWrite&&options.storedGrid===true), previous = readFeatureAttachment(kind);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -1375,7 +1375,11 @@ const ReferenceWorkspace = (() => {
     const bytes=await P.pack(r.text,m,data,fflate); assertCurrent();assertSnapshot(stamp,transactionOwner);
     return {bytes,stamp,scene:r.text,nativeRevision:r.revision??null};
   }
-  async function exportBytes() { return (await exportSnapshot()).bytes; }
+  function flushRoomCandidates() {
+    try { window.RoomCollectionWorkspace?.flushCandidates?.(); }
+    catch (error) { setStatus("房間候選草稿未能寫入；檔案仍保留先前的草稿或沒有草稿。"); }
+  }
+  async function exportBytes() { flushRoomCandidates(); return (await exportSnapshot()).bytes; }
   async function readScenarioProject(assertCurrent=()=>{},afterFlush=()=>{}) {
     const {bytes,stamp}=await exportSnapshot(context(),false,assertCurrent,afterFlush);assertCurrent();
     const project=await P.unpack(bytes,fflate);assertCurrent();assertSnapshot(stamp);
@@ -1635,6 +1639,7 @@ const ReferenceWorkspace = (() => {
   }
   async function freezeScenarioProject() {
     if(!scenarioContext()||scenarioFreeze)throw new Error("試改尚未就緒或已在保全中。");
+    flushRoomCandidates();
     window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertSaveReady();
     const owner=beginSceneTransaction(),session=connection.session,token=uuid();busy=true;busyLabel="正在凍結完整試改資料…";present();
     try{
@@ -1659,6 +1664,7 @@ const ReferenceWorkspace = (() => {
   }
   async function finishScenarioEditor(catalog,sources,expected,assertCurrent=()=>{}) {
     assertScenarioJournalReady();assertCurrent();
+    flushRoomCandidates();
     window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertCurrent.afterFlush?.();assertCurrent();assertSaveReady();
     const ticket=validateScenarioTicket(expected);
     if(ticket?.phase!=="active")throw new Error("試改尚未完整開啟，不能完成。");
@@ -1711,6 +1717,7 @@ const ReferenceWorkspace = (() => {
   }
   async function save() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
+    flushRoomCandidates();
     window.AssemblyWorkspace?.flush();
     window.InfiniteGridWorkspace?.flush();
     const shellState=window.WorkspaceShell?.saveState();

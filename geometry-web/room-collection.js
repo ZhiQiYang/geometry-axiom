@@ -72,11 +72,26 @@
       return copy(this.intent);
     }
     beginNew(collectionId) { return this.begin(collectionId); }
+    beginNewStaged({plane, collectionId, display, host}) {
+      this.requireIdle();
+      const state = this.state();
+      S.validatePlane(plane);
+      if (plane.basisRevision !== 1 || !plane.calibration) fail("首房必須使用已校準圖頁的第一版基準。");
+      if (!host || !Number.isInteger(host.boundaryId) || host.boundaryId < 1 || typeof host.pageId !== "string") fail("首房需要宿主邊界與圖頁。");
+      if (state.planes.some(item => item.sourceId === plane.sourceId && item.page === plane.page)) fail("此來源頁已有共享來源，請從該集合新增房間。");
+      if (state.planes.length >= S.MAX_PLANES || state.collections.length >= S.MAX_PLANES || state.rooms.length >= S.MAX_ROOMS) fail("共享來源容量已滿。");
+      if (state.collections.some(item => item.id === collectionId) || state.planes.some(item => item.id === plane.id)) fail("來源集合識別已存在。");
+      this.intent = {generation: ++this.generation, collectionId, roomId: null, room: null, plane: copy(plane), state,
+        stamp: this.a.readProjectStamp(), incarnation: null, staged: {plane: copy(plane), collectionId, display: copy(display), host: copy(host)}};
+      this.a.assertHost?.(this.intent.staged.host);
+      return copy(this.intent);
+    }
     beginEdit(collectionId, roomId) { return this.begin(collectionId, roomId); }
     assertCurrent(intent = this.intent) {
       this.a.assertEditable();
       if (!intent || this.intent !== intent || intent.generation !== this.generation || !same(intent.stamp, this.a.readProjectStamp()) ||
           !same(intent.state, this.a.readAttachment()) || (intent.room && this.a.boundaryIncarnation(intent.room.boundaryRef.id) !== intent.incarnation)) fail("專案、房間或來源基準已變更，請取消草稿後重新操作。");
+      if (intent.staged) this.a.assertHost(intent.staged.host);
     }
     async prepare(pts, name) {
       this.assertCurrent(); if (this.busy) fail("房間預覽處理中。");
@@ -119,6 +134,15 @@
       try {
         const roomId = intent.roomId || this.a.uuid();
         const attachmentForPin = pin => {
+          if (intent.staged) {
+            const next = S.upgradeDisplay(intent.state.planes.length || intent.state.schema === S.DISPLAY_SCHEMA ? copy(intent.state) : S.empty());
+            const room = {id:roomId,name:preview.name,boundaryRef:{kind:"boundary",id:preview.id,associationPin:pin},
+              acceptedBasisRevision:1,reviewState:"confirmed",display:copy(intent.staged.display)};
+            next.planes.push(copy(intent.staged.plane));
+            next.collections.push({id:intent.collectionId,planeId:intent.staged.plane.id,roomIds:[roomId]});
+            next.rooms.push(room);
+            return S.validate(next);
+          }
           const next = copy(intent.state), collection = next.collections.find(c => c.id === intent.collectionId),
             room = {id:roomId,name:preview.name,boundaryRef:{kind:"boundary",id:preview.id,associationPin:pin},
               acceptedBasisRevision:intent.plane.basisRevision,reviewState:"confirmed",
@@ -131,7 +155,8 @@
         // requires the committed native definition to match that exact pin.
         const result = await this.a.commitWithMetadata({token: preview.token, boundaryId: preview.id,
           proposeAttachment:() => attachmentForPin(preview.candidatePin),
-          label: intent.room ? "編輯房間「" + preview.name + "」" : "新增房間「" + preview.name + "」",
+          label: intent.staged ? "建立共享來源與第一個房間「" + preview.name + "」" : intent.room ? "編輯房間「" + preview.name + "」" : "新增房間「" + preview.name + "」",
+          afterGroupedRooms: payload => this.a.afterGroupedRooms?.({...payload, roomId, collectionId: intent.collectionId, staged: !!intent.staged}),
           assertCurrent: () => this.assertCurrent(intent), makeAttachment: async loops => {
             const pin = await boundaryPin(loops);
             // Complete native definitions retain their typed candidate pin;

@@ -238,6 +238,7 @@ PY_NEEDS = {
     'test_unittest_runner': [],
     'test_witness_diagnostics': [],
     'test_witness_marks': [],
+    'test_zero_room_native': ['bridge'],
 }
 # Every tests/*.js|*.cjs|*.mjs MUST be in exactly one of these three (run by `node --test`, run as a script, or a
 # reasoned exclusion).  Unlisted files make run_all fail and name them.
@@ -303,6 +304,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_lesson_control_ownership': 'tests/test_grid_lesson_control_ownership.js',
     'node:parameter_confirmation_settlement': 'tests/test_parameter_confirmation_settlement.js',
     'node:face_reference_settlement': 'tests/test_face_reference_settlement.js',
+    'node:feature_attachments_vm': 'tests/test_feature_attachments_vm.js',
     'node:face_projection_lifecycle': 'tests/test_face_projection_lifecycle.js',
     'node:workspace_shell_history': 'tests/test_workspace_shell_history.js',
     'node:feedback_events': 'tests/test_feedback_events.js',
@@ -316,6 +318,7 @@ NODE_PURE_TEST_FILES = {
     'node:anchor_band_clip': 'tests/test_anchor_band_clip.js',
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
+    'node:room_candidate_draft': 'tests/test_room_candidate_draft.js',
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
     'node:room_outline_closeout': 'tests/test_room_outline_closeout.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
