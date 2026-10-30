@@ -134,6 +134,19 @@
       "count": 75,
       "unit": "node test"
     },
+    "node:pr353_compatibility": {
+      "mode": "count",
+      "count": 10,
+      "unit": "node test"
+    },
+    "node:pr353_display_regressions": {
+      "mode": "exit-code-only"
+    },
+    "node:pr353_pin_regressions": {
+      "mode": "count",
+      "count": 14,
+      "unit": "node test"
+    },
     "node:room_outline_closeout": {
       "mode": "count",
       "count": 24,
@@ -960,6 +973,11 @@
     "py:test_product_architecture": {
       "mode": "count",
       "count": 18,
+      "unit": "test"
+    },
+    "py:test_pr353_legacy_snapshot": {
+      "mode": "count",
+      "count": 7,
       "unit": "test"
     },
     "py:test_recorded_api_receipts": {

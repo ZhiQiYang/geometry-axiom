@@ -26,7 +26,7 @@
 
 ## 執行與突變
 
-有完整 Git 歷史時，可直接執行：
+固定 reader 的 fixture 隨來源一起交付，可直接執行（不要求 Git 歷史）：
 
 ```sh
 node --test-reporter=tap tests/test_pr353_compatibility.js
@@ -35,15 +35,17 @@ python3 tests/run_pr353_compat_mutations.py --out /tmp/pr353-compat-mutations
 
 輸出目錄須不存在或為空。runner 先驗正常基線，再為每個具名突變驗「同名控制綠→具名斷言紅→還原綠」，最後重跑完整正常基線。逾時、環境例外、缺固定 reader、少跑案例或還原失敗都不計 killed。
 
-在 mutation runner 的無 Git 複本或淺層 checkout 執行 CDP 前，先在有固定 commit 的 repo 匯出原件：
+正常 Node／CDP 與正式 browser mutation runner 都從版本化的 `tests/fixtures/pr353-legacy-reader-405f8c5e.json` 讀取固定 reader；該 fixture 已列入 mutation manifest 的 `inputs`，會隨無 `.git` 的隔離複本一起帶入。因此正常入口不需要 Git 歷史，也不需要設定 `GEOMETRY_PR353_LEGACY_ROOT`。正式 runner 會清除該覆寫變數；缺失或損壞的 fixture 會明確失敗，不會回退到新版 reader 或環境中的 Git 歷史。
+
+`--materialize` 僅供明示的診斷用途：需要單獨檢視固定 reader 的七份原件，或測試明示目錄的完整性拒絕時，才執行以下命令。這不是正常驗收的前置步驟，亦不應把輸出目錄當成正式 runner 的依賴：
 
 ```sh
 compat_legacy=$(mktemp -d)
 node tests/pr353_legacy_reader.js --materialize "$compat_legacy"
-export GEOMETRY_PR353_LEGACY_ROOT="$compat_legacy"
+GEOMETRY_PR353_LEGACY_ROOT="$compat_legacy" node --test-reporter=tap tests/test_pr353_compatibility.js
 ```
 
-此目錄只含測試固定原件；每次載入仍驗原始 Git blob。CLI 回報每檔 byte 數、SHA-256 與 Git blob，不宣告原生或瀏覽器已通過。
+此目錄只含測試固定原件；明示目錄與內建 fixture 每次載入都先核對完整七份原始 Git blob，再執行 reader。明示目錄損壞同樣拒絕，不以內建 fixture 掩蓋。CLI 回報每檔 byte 數、SHA-256 與 Git blob，不宣告原生或瀏覽器已通過。`test_pr353_legacy_snapshot.py` 自身另需可執行的 Node 與 Git，用來驗證真正的 snapshot 流程；這不表示固定 reader 的正常載入依賴 Git 歷史。
 
 ## GEO-219 減項
 
