@@ -55,6 +55,11 @@
       "count": 12,
       "unit": "node test"
     },
+    "node:definition_import": {
+      "mode": "count",
+      "count": 7,
+      "unit": "node test"
+    },
     "node:document_cases": {
       "mode": "exit-code-only"
     },
@@ -230,6 +235,16 @@
     "py:test_datum_contract": {
       "mode": "count",
       "count": 9,
+      "unit": "test"
+    },
+    "py:test_definition_import": {
+      "mode": "count",
+      "count": 13,
+      "unit": "test"
+    },
+    "py:test_definition_import_transport": {
+      "mode": "count",
+      "count": 6,
       "unit": "test"
     },
     "py:test_domain_decoupling_adoption": {

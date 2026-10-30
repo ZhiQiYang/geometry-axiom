@@ -1003,6 +1003,7 @@ static void cmd_dump(void)
 }
 
 #include "engineering_bridge.inc"
+#include "definition_import_bridge.inc"
 #include "section_profile_bridge.inc"
 #include "panel_fill_bridge.inc"
 #include "scene-import-bridge.inc"
@@ -1098,6 +1099,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_engineering_cancel(arg);
         } else if (strcmp(line,"engineering-validate")==0 && arg) {
             cmd_engineering_validate(arg);
+        } else if (strcmp(line,"definition-import-read")==0 && arg) {
+            cmd_definition_import_read(arg);
+        } else if (strcmp(line,"definition-import-preview")==0 && arg) {
+            cmd_definition_import_preview(arg);
+        } else if (strcmp(line,"definition-import-confirm")==0) {
+            cmd_definition_import_confirm(arg);
+        } else if (strcmp(line,"definition-import-cancel")==0) {
+            cmd_definition_import_cancel(arg);
         } else if (strcmp(line, "grid-preview") == 0 && arg != NULL) {
             cmd_grid_preview(arg);
         } else if (strcmp(line, "grid-rule-query") == 0) {

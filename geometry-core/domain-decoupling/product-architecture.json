@@ -1443,6 +1443,24 @@
       "purpose": "Application/runtime/protocol or workspace host cursor v2; composes explicit K/W providers where needed"
     },
     {
+      "path": "geometry-web/definition-import.js",
+      "layer": "H",
+      "language": "javascript",
+      "purpose": "Application host for definition-import/1 preview, confirm, and canvas placement; composes the bridge and project reader"
+    },
+    {
+      "path": "geometry-web/definition_import_bridge.inc",
+      "layer": "H",
+      "language": "c",
+      "purpose": "Bridge host for definition-import/1 read, preview, confirm, and cancel; composes parameter, spec, material, and assembly operations"
+    },
+    {
+      "path": "geometry-web/definition_import_transport.py",
+      "layer": "H",
+      "language": "python",
+      "purpose": "Server-owned file transport for definition-import/1; keeps the source scene off the bridge command line"
+    },
+    {
       "path": "geometry-web/document-cases.js",
       "layer": "H",
       "language": "javascript",
@@ -2641,13 +2659,19 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "sha256": "674d0d56cbbe2d64c400a4a608f33140557b16ef0caaca24e96f2c3d68cc879d",
       "hashMode": "lf"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
       "reason": "Dedicated acceptance/test driver composition_canvas_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
       "sha256": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea",
+      "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/definition_import_browser_test.js",
+      "reason": "Dedicated acceptance/test driver definition_import_browser_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "sha256": "fc1fe527b901913f00da44a5f2953499d21d1c297e1c6c6420aedccf21104e1b",
       "hashMode": "lf"
     },
     {
@@ -4815,7 +4839,7 @@
       "driver": "geometry-web/scenario-workspace.js",
       "driverSha256": "1d391a00526d752487337e17c1d5aebf27f726595683cd2b64fa2b90326c8d47",
       "router": "geometry-web/serve.py",
-      "routerSha256": "0cc26da01c7dd6fcc5dff84f8fd2b615b5a04b434df085d01644b984d4c6f828",
+      "routerSha256": "ab6f240f3c85a638c9bfb2533943ee6f17302485a34f32dde7dc903167d97298",
       "receiver": "owner.frame",
       "queryValue": "context",
       "srcPrefix": "/?scenario=",

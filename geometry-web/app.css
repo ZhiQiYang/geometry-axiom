@@ -1821,6 +1821,11 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
 .fe-ctx-menu button:hover { background: var(--panel-muted); }
 .fe-ctx-menu button svg { width: 14px; height: 14px; }
 /* GEO-198: local reference selection and provenance. */
+.definition-import-dialog { width:min(720px,calc(100vw - 32px)); max-height:calc(100dvh - 32px); padding:20px; border:1px solid #dbe2ee; border-radius:16px; color:var(--text,#17233b); background:white; box-shadow:0 24px 80px #12213b33; overflow:auto; }
+.definition-import-dialog[open] { display:flex; flex-direction:column; gap:12px; }
+.definition-import-dialog header,.definition-import-dialog footer { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.definition-import-dialog h2,.definition-import-dialog p { margin:0; }
+.definition-import-dialog label { display:flex; gap:8px; align-items:center; }
 .reference-dialog { width:min(1100px,calc(100vw - 32px)); height:min(900px,calc(100dvh - 32px)); max-width:none; max-height:none; padding:20px; border:1px solid #dbe2ee; border-radius:16px; color:var(--text,#17233b); background:white; box-shadow:0 24px 80px #12213b33; }
 .reference-dialog[open] { display:flex; flex-direction:column; gap:12px; }
 .reference-dialog::backdrop { background:#11213f66; }

@@ -753,6 +753,10 @@
     // after all reset/delete/redeclaration commands, before its atomic commit.
     return { manifest: m, scene, sources };
   }
+  async function readForImport(bytes, zip) {
+    const opened = await unpack(bytes, zip);
+    return { manifest: opened.manifest, scene: opened.scene, sources: opened.sources };
+  }
   // Core entries mirror bridge transactions; local entries change saved metadata.
   // Sources stay shared (PDF runtime objects cannot be cloned), saved values are snapshots.
   class ContextHistory {
@@ -873,7 +877,7 @@
         this.pruneFaceProjections((bid, pid) => result.surfaces.some(s => s.id === pid && s.boundary === bid && s.u?.[2] === 0 && s.v?.[2] === 0));
         return;
       }
-      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return;
+      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return;
       const op = command.startsWith("line ") ? command.slice(5).trim().split(/\s+/)[0] : command.split(/\s+/)[0];
       if (result.preview) {
         // Candidate geometry remains native. Keep only the affected typed IDs
@@ -893,7 +897,7 @@
         }
         return;
       }
-      if (["engineering-confirm", "assembly-confirm", "section-profile-confirm"].includes(op) && result.history_changed === false) return;
+      if (["engineering-confirm", "assembly-confirm", "section-profile-confirm", "definition-import-confirm"].includes(op) && result.history_changed === false) return;
       if (op === "cancel-preview") {this.boundaryPreview = null; return;}
       if (op === "canvas-pos" || op === "preview") return;
       if (op === "history-begin") { this.group = { base: this.snapshot(), dirty: false }; return; }
@@ -962,5 +966,5 @@
   return { Features, CARD_FORMAT, CARD_CAPABILITY, GRID_DRAFTS_FORMAT, ScenarioCatalog, SECTION_FORMAT, SECTION_CAPABILITY, CASE_FORMAT, CASE_CAPABILITY, validateCaseHashes, SCENARIO_FORMAT, SCENARIO_CAPABILITY, formatPolicy, GRID_RULE_FORMAT, EVIDENCE_FORMAT, EVIDENCE_CAPABILITY, SUBDIVISION_FORMAT, SUBDIVISION_CAPABILITY, FEATURE_FORMAT, readerCapabilities, validateManifestCapabilities, OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage, assertManifestCapacity,
     validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities,
-    validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, validateEvidenceTargets, supportedFormats, projectFormat, reference, pack, unpack, ContextHistory };
+    validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, validateEvidenceTargets, supportedFormats, projectFormat, reference, pack, unpack, readForImport, ContextHistory };
 });
