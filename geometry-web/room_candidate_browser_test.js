@@ -60,7 +60,7 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     await until(`!!$('roomNew') && !!$('roomNewMethod')`);
   }
   async function saveProject() {
-    await read(`window.__roomSave=null;window.__roomSavePicker=Object.getOwnPropertyDescriptor(window,'showSaveFilePicker')||null;Object.defineProperty(window,'showSaveFilePicker',{configurable:true,value:async()=>({createWritable:async()=>({write:async data=>{const bytes=data instanceof Blob?new Uint8Array(await data.arrayBuffer()):new Uint8Array(data);let text='';for(let i=0;i<bytes.length;i++)text+=String.fromCharCode(bytes[i]);window.__roomSave=btoa(text);},close:async(){},abort:async()=>{}})})});0`);
+    await read(`window.__roomSave=null;window.__roomSavePicker=Object.getOwnPropertyDescriptor(window,'showSaveFilePicker')||null;Object.defineProperty(window,'showSaveFilePicker',{configurable:true,value:async()=>({createWritable:async()=>({write:async data=>{const bytes=data instanceof Blob?new Uint8Array(await data.arrayBuffer()):new Uint8Array(data);let text='';for(let i=0;i<bytes.length;i++)text+=String.fromCharCode(bytes[i]);window.__roomSave=btoa(text);},close:async()=>{},abort:async()=>{}})})});0`);
     try {
       await ctl('#projectBar [data-project-action="save"]');
       await until(`typeof window.__roomSave==='string' && !ReferenceWorkspace.busy`);
