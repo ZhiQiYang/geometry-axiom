@@ -12,7 +12,7 @@ const path = require('path');
 
 module.exports = async function roomCandidateBrowser({send, eval_, sleep, click, waitForUI, expectNativeDialog, exceptionCount}) {
   const H = require('./cdp_helpers.js');
-  const check = H.makeCheck({prefix: 'P-R07 ', throwOnFail: true});
+  const check = H.makeCheck({prefix: 'P90 ', throwOnFail: true});
   const read = H.makeRead(eval_);
   const key = H.makeKey({send, sleep});
   const initialExceptions = exceptionCount();
@@ -98,7 +98,7 @@ module.exports = async function roomCandidateBrowser({send, eval_, sleep, click,
     for (const point of [[400, 400], [1600, 400], [1600, 1200], [400, 1200]]) await facePoint(...point);
   }
 
-  console.log('=== P-R07. 零房起步與房間候選跨次保存 ===');
+  console.log('=== P90. 零房起步與房間候選跨次保存 ===');
   await setup();
   const before = await sceneText();
   check('場景拒絕把房間候選草稿當成場景能力', await read(`(async()=>{const r=await api('line requires room-candidate-drafts/1');return r.ok===false && (await api('dump')).text===${JSON.stringify(before)};})()`));
