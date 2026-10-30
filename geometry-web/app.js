@@ -577,10 +577,10 @@ function syncConnectionCanvasView(focused = document.activeElement) {
     host.hidden = true;
   }
 }
-const connectionCanvasResize = new ResizeObserver(() => {
+const connectionCanvasResize = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
   if (connectionCanvasMount) syncConnectionCanvasView();
-});
-connectionCanvasResize.observe($("canvasViewport"));
+}) : null;
+connectionCanvasResize?.observe($("canvasViewport"));
 for (const type of ["resize", "scroll"]) window.addEventListener(type, () => {
   if (connectionCanvasMount) syncConnectionCanvasView();
 }, {capture:true, passive:true});
