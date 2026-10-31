@@ -873,7 +873,7 @@
         this.pruneFaceProjections((bid, pid) => result.surfaces.some(s => s.id === pid && s.boundary === bid && s.u?.[2] === 0 && s.v?.[2] === 0));
         return;
       }
-      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return;
+      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |timber-edit-confirm )/.test(command)) return;
       const op = command.startsWith("line ") ? command.slice(5).trim().split(/\s+/)[0] : command.split(/\s+/)[0];
       if (result.preview) {
         // Candidate geometry remains native. Keep only the affected typed IDs
@@ -893,7 +893,7 @@
         }
         return;
       }
-      if (["engineering-confirm", "assembly-confirm", "section-profile-confirm"].includes(op) && result.history_changed === false) return;
+      if (["engineering-confirm", "assembly-confirm", "section-profile-confirm", "timber-edit-confirm"].includes(op) && result.history_changed === false) return;
       if (op === "cancel-preview") {this.boundaryPreview = null; return;}
       if (op === "canvas-pos" || op === "preview") return;
       if (op === "history-begin") { this.group = { base: this.snapshot(), dirty: false }; return; }

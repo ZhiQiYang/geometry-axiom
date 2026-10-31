@@ -1,0 +1,336 @@
+{
+  "schema": "geometry-browser-mutations/1",
+  "suite": "timber-reuse-116",
+  "scope": "GEOMETRY_TIMBER_REUSE_ONLY",
+  "caseFilter": "GEOMETRY_TIMBER_REUSE_CASE",
+  "resultPrefix": "R116_CASE_RESULT ",
+  "cases": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11",
+    "C12"
+  ],
+  "inputs": [
+    "geometry-web/cdp_test.js",
+    "geometry-web/timber_reuse_test.js",
+    "geometry-web/timber_reuse_mutations.json",
+    "geometry-web/browser_mutation_check.py",
+    "geometry-web/timber-edit.js",
+    "geometry-web/timber_edit_bridge.inc",
+    "geometry-web/timber_edit_transport.py"
+  ],
+  "mutations": [
+    {
+      "id": "J01-unwire-copy-entry",
+      "case": "C01",
+      "assertions": [
+        "REUSE_ACTION_READY"
+      ],
+      "requirements": [
+        "C01",
+        "C11"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/face-context-menu.js",
+          "before": "if (a.act==='timber-copy') await TimberEdit.copy();",
+          "after": "if (a.act==='timber-copy') toast('mutation: entry disconnected');"
+        }
+      ]
+    },
+    {
+      "id": "J02-unwire-eligibility-refresh",
+      "case": "C02",
+      "assertions": [
+        "SINGLE_EDIT_READY"
+      ],
+      "requirements": [
+        "C02",
+        "C11"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "menuRead = {ids,stamp,result}; FaceContextMenu.refreshEligibility();",
+          "after": "menuRead = {ids,stamp,result}; FaceContextMenu.sync();"
+        }
+      ]
+    },
+    {
+      "id": "J03-bake-recipe-source-display",
+      "case": "C02",
+      "assertions": [
+        "C02_RECIPE_SHOWS_EXACT_TYPED_FIELDS"
+      ],
+      "requirements": [
+        "C01",
+        "C02"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "const cloneRecipe = value => ({...value,definition:clone(value.definition),effective:clone(value.effective)});",
+          "after": "const cloneRecipe = value => ({...value,definition:{...clone(value.definition),A:{mode:'direct',value:value.effective.A},B:{mode:'direct',value:value.effective.B}},effective:clone(value.effective)});"
+        }
+      ]
+    },
+    {
+      "id": "J04-collapse-equal-effective-sources",
+      "case": "C02",
+      "assertions": [
+        "C02_EQUAL_NUMBERS_DIFFERENT_SOURCE_MARKED_MIXED"
+      ],
+      "requirements": [
+        "C02",
+        "C03"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "    const definitions = value.read.timbers.map(row => field === 'direction' ? row.definition.placement.direction : field === 'priority' ? priorityText(row.definition) : row.definition[field]);",
+          "after": "    const definitions = value.read.timbers.map(row => field === 'direction' ? row.definition.placement.direction : field === 'priority' ? priorityText(row.definition) : ['A','B'].includes(field) ? row.effective[field] : row.definition[field]);"
+        }
+      ]
+    },
+    {
+      "id": "J05-default-all-fields-to-change",
+      "case": "C03",
+      "assertions": [
+        "C03_KEEP_EACH_ORIGINAL_DEFAULT"
+      ],
+      "requirements": [
+        "C03",
+        "C04"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "<input type=\"checkbox\" data-timber-patch=\"${field}\">",
+          "after": "<input type=\"checkbox\" data-timber-patch=\"${field}\" checked>"
+        }
+      ]
+    },
+    {
+      "id": "J06-filter-selection-to-first",
+      "case": "C04",
+      "assertions": [
+        "C04_FINAL_PAIR_PREVIEW_RESPONSE",
+        "C04_ALL_EXPLICIT_PATCHES_ONE_CANDIDATE"
+      ],
+      "requirements": [
+        "C04",
+        "C10"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "return value.ids.map(id=>({op:'update-timber-fields',id,fields:clone(fields)}));",
+          "after": "return value.ids.slice(0,1).map(id=>({op:'update-timber-fields',id,fields:clone(fields)}));"
+        }
+      ]
+    },
+    {
+      "id": "J07-trust-unknown-groups",
+      "case": "C05",
+      "assertions": [
+        "C05_UNKNOWN_WHOLE_SELECTION_DISABLED"
+      ],
+      "requirements": [
+        "C05"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "row.owner !== null || row.groupsKnown !== true ||",
+          "after": "row.owner !== null ||"
+        }
+      ]
+    },
+    {
+      "id": "J08-ignore-group-membership",
+      "case": "C05",
+      "assertions": [
+        "C05_GROUP_WHOLE_SELECTION_DISABLED"
+      ],
+      "requirements": [
+        "C05"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "!Array.isArray(row.groups) || row.groups.length || row.placed !== true",
+          "after": "!Array.isArray(row.groups) || row.placed !== true"
+        }
+      ]
+    },
+    {
+      "id": "J09-ignore-owner-row",
+      "case": "C05",
+      "assertions": [
+        "C05_OWNER_WHOLE_SELECTION_DISABLED"
+      ],
+      "requirements": [
+        "C05"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "row.eligible !== true || row.owner !== null || row.groupsKnown !== true",
+          "after": "row.eligible !== true || row.groupsKnown !== true"
+        }
+      ]
+    },
+    {
+      "id": "J10-ignore-selection-order",
+      "case": "C06",
+      "assertions": [
+        "C06_LATE_REPLY_CANNOT_REOPEN_CONFIRM"
+      ],
+      "requirements": [
+        "C06",
+        "C09"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "const selectionCurrent = stamp => stamp.selection === JSON.stringify(selectedIds()) && stamp.selected === JSON.stringify(fe.sel) && stamp.tool === fe.tool;",
+          "after": "const selectionCurrent = stamp => stamp.selected === JSON.stringify(fe.sel) && stamp.tool === fe.tool;"
+        }
+      ]
+    },
+    {
+      "id": "J11-remove-final-visible-input-check",
+      "case": "C09",
+      "assertions": [
+        "C09_FINAL_RAW_FORM_GUARD"
+      ],
+      "requirements": [
+        "C06",
+        "C09"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "if (value.previewInput !== rawForm()) {changed(value);throw Error('輸入已變更，請重新預覽。');}",
+          "after": "/* mutation: final visible-input check removed */"
+        }
+      ]
+    },
+    {
+      "id": "J12-dispatch-shortcuts-during-composition",
+      "case": "C08",
+      "assertions": [
+        "C08_COMPOSING_ESCAPE_LEAVES_FORM"
+      ],
+      "requirements": [
+        "C08"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "if(event.isComposing || composing || event.keyCode===229){",
+          "after": "if(false){ // mutation: composition guard removed"
+        }
+      ]
+    },
+    {
+      "id": "J13-unwire-context-history",
+      "case": "C10",
+      "assertions": [
+        "C10_ONE_HISTORY"
+      ],
+      "requirements": [
+        "C04",
+        "C10"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |timber-edit-confirm )/.test(command)) return;",
+          "after": "      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return;"
+        }
+      ]
+    },
+    {
+      "id": "J14-unwire-confirm-receipt-id",
+      "case": "C11",
+      "assertions": [
+        "C11_PASTE_ONE_CONFIRM",
+        "C11_PASTE_REQUEST_RECEIPT"
+      ],
+      "requirements": [
+        "C11",
+        "C12"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/app.js",
+          "before": "  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |timber-edit-confirm )/.test(cmd) ? crypto.randomUUID() : null;",
+          "after": "  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) ? crypto.randomUUID() : null;"
+        }
+      ]
+    },
+    {
+      "id": "J15-restore-two-disabled-placeholders",
+      "case": "C11",
+      "assertions": [
+        "C11_REDUNDANT_PLACEHOLDERS_ABSENT"
+      ],
+      "requirements": [
+        "GEO-219",
+        "C11"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/face-context-menu.js",
+          "before": "const unavailable = [item('reuse','重用角材','timber','',{sub:true})];",
+          "after": "const unavailable = [item('copy','複製',null,'目前未提供面內物件複製'),item('paste','貼上',null,'目前未提供面內物件貼上'),item('reuse','重用角材','timber','',{sub:true})];"
+        }
+      ]
+    },
+    {
+      "id": "J16-repeat-a-modification",
+      "case": "C11",
+      "assertions": [
+        "C11_MODIFICATION_IS_NOT_REPEATABLE_CREATE"
+      ],
+      "requirements": [
+        "C01",
+        "C11"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "if (created && Number.isSafeInteger(created.id)) await recordCreated(created.id,value.stamp.boundaryId);",
+          "after": "if (created && Number.isSafeInteger(created.id)) await recordCreated(created.id,value.stamp.boundaryId); else if(result.changedIds?.length) await recordCreated(result.changedIds[0],value.stamp.boundaryId);"
+        }
+      ]
+    },
+    {
+      "id": "J17-round-priority-through-number",
+      "case": "C10",
+      "assertions": [
+        "C10_EXACT_PRIORITY_PREVIEW_RESPONSE",
+        "C10_PRIORITY_WIRE_IS_EXACT_STRING"
+      ],
+      "requirements": [
+        "C10"
+      ],
+      "changes": [
+        {
+          "file": "geometry-web/timber-edit.js",
+          "before": "fields.priority = priorityText({priorityText:$('timberEditPriority').value.trim()});",
+          "after": "fields.priority = Number(priorityText({priorityText:$('timberEditPriority').value.trim()}));"
+        }
+      ]
+    }
+  ]
+}

@@ -349,32 +349,36 @@ static void reference_face_text(char *out,size_t size,const ReferenceFace *r)
     else snprintf(out,size,"e%d",r->edge);
 }
 /* Return stored I13 references; derived uv is never used to reconstruct an anchor. */
-static void json_reference_timber_definition(const Timber *t,const TimberAnchor *a)
+static void reference_timber_placement_text(const TimberAnchor *a,char *anchor,size_t anchor_size,char *selector,size_t selector_size)
 {
-    char anchor[1100],selector[2200]="",face[1040];
-    if (a->anchor_kind==ANCHOR_AT_LINE) snprintf(anchor,sizeof anchor,"at-line guide %u",a->ref_guide);
+    char face[1040];selector[0]=0;
+    if (a->anchor_kind==ANCHOR_AT_LINE) snprintf(anchor,anchor_size,"at-line guide %u",a->ref_guide);
     else if (a->anchor_kind==ANCHOR_AT_GRID) {
         if (a->ref_grid_has_band)
-            snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld band %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index,(long long)a->ref_grid_band);
+            snprintf(anchor,anchor_size,"at-line grid %u %c %lld band %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index,(long long)a->ref_grid_band);
         else
-            snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
+            snprintf(anchor,anchor_size,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
     }
     else if(a->anchor_kind==ANCHOR_AT_RULE){
         const GridRuleLineRef *r=&a->ref_rule;
-        snprintf(anchor,sizeof anchor,"at-line rule %u %u %u %lld %lld %c %u",r->grid_id,r->system_id,r->rule_key,
+        snprintf(anchor,anchor_size,"at-line rule %u %u %u %lld %lld %c %u",r->grid_id,r->system_id,r->rule_key,
             (long long)r->cell[0],(long long)r->cell[1],r->axis?'v':'u',r->inner_index);
     }
     else {
         ReferenceFace ref={a->ref_derived_key[0]?2:a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber,{0}};
         snprintf(ref.key,sizeof ref.key,"%s",a->ref_derived_key);
-        reference_face_text(face,sizeof face,&ref); snprintf(anchor,sizeof anchor,"at-face %s",face);
+        reference_face_text(face,sizeof face,&ref); snprintf(anchor,anchor_size,"at-face %s",face);
     }
-    if (a->has_through) snprintf(selector,sizeof selector,"through %lld",(long long)a->through);
+    if (a->has_through) snprintf(selector,selector_size,"through %lld",(long long)a->through);
     else if (a->has_between) {
         char other[1040]; reference_face_text(face,sizeof face,&a->between[0]);
         reference_face_text(other,sizeof other,&a->between[1]);
-        snprintf(selector,sizeof selector,"between %s %s",face,other);
+        snprintf(selector,selector_size,"between %s %s",face,other);
     }
+}
+static void json_reference_timber_definition(const Timber *t,const TimberAnchor *a)
+{
+    char anchor[1100],selector[2200];reference_timber_placement_text(a,anchor,sizeof anchor,selector,sizeof selector);
     fputs("{\"anchor\":",stdout); js_string(anchor);
     fputs(",\"selector\":",stdout); js_string(selector);
     printf(",\"priority\":%lld}",(long long)t->cut_priority);

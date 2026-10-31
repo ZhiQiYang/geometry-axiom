@@ -189,7 +189,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
 }
 static bool batch_token_kind(int kind)
 {
-    return g_preview.engineering_batch && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
+    return g_preview.engineering_batch && !g_preview.timber_batch && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
 }
 static void batch_confirm(const char *arg,int kind,const char *token_message,const char *stale_message)
 {

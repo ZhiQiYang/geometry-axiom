@@ -234,6 +234,7 @@ PY_NEEDS = {
     'test_wait_trace': [],
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
+    'test_timber_edit': ['bridge'],
     'test_timber_support_projection': [],
     'test_unittest_runner': [],
     'test_witness_diagnostics': [],
@@ -321,6 +322,7 @@ NODE_PURE_TEST_FILES = {
     'node:evidence_links': 'tests/test_evidence_links.js',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
+    'node:timber_edit_ui': 'tests/test_timber_edit_ui.js',
 }
 NODE_EXCLUDED = {
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',

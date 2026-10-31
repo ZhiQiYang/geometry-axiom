@@ -12,6 +12,7 @@ const ReferenceWorkspace = (() => {
   let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
   let importRenderingContext = null;
   let assemblyConfirmation = null, preparingSceneLoad = false, sceneTransaction = null;
+  let timberPreview = null;
   let roomTransaction = null;
   const featureConfirmations=new Map();
   let presentedModelContext = null, presentedModels = null;
@@ -34,7 +35,7 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |timber-edit-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -60,9 +61,9 @@ const ReferenceWorkspace = (() => {
   };
   function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
   function assertConfirmationIdle(){
-    if(assemblyConfirmation)throw new Error((assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
+    if(assemblyConfirmation)throw new Error((assemblyConfirmation.timberCommand?'角材':assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
   }
-  function assertAssemblyIdle(){assertConfirmationIdle();if(roomTransaction)throw new Error("房間操作尚未確認，請先確認、取消或恢復結果。");}
+  function assertAssemblyIdle(){assertConfirmationIdle();if(timberPreview)throw new Error("角材候選尚未結束，請先確認或取消。");if(roomTransaction)throw new Error("房間操作尚未確認，請先確認、取消或恢復結果。");}
   function assertEditorLease(){
     if(editorLease==="readonly" || editorLease==="unavailable")throw new Error("另一個分頁正在編輯這份工作，或瀏覽器無法確認編輯權限。本分頁僅供查看；請關閉原編輯分頁，再從專案資訊重新連接。");
     if(editorLeaseSession && connection.session!==editorLeaseSession)throw new Error("服務工作階段已變更，請重新連接後再編輯。");
@@ -82,6 +83,28 @@ const ReferenceWorkspace = (() => {
     assemblyConfirmation={context:context(),frame:history.frame};schedulePresentation();return assemblyConfirmation;
   }
   function assemblyConfirmationCurrent(stamp){return context()===stamp.context && history.frame===stamp.frame;}
+  function beginTimberPreview(){
+    assertEditable();
+    if(busy||oc.busy||history.group)throw new Error('請先完成目前操作，再預覽角材變更。');
+    timberPreview={context:context(),frame:history.frame,session:connection.session,revision:revision(context()),token:null};
+    return timberPreview;
+  }
+  function assertTimberPreview(owner,token=null){
+    assertConfirmationIdle();assertEditorLease();
+    if(!owner||timberPreview!==owner||!assemblyConfirmationCurrent(owner)||owner.session!==connection.session||
+       owner.revision!==revision(context())||roomTransaction||sceneTransaction||preparingSceneLoad||pendingLoad||busy||oc.busy||history.group||
+       token!==null&&owner.token!==featureTokenKey(token))throw new Error('角材候選或工作世代已失效，請重新預覽。');
+  }
+  function bindTimberPreview(owner,token){
+    assertTimberPreview(owner);const key=featureTokenKey(token);if(key===null)throw new Error('角材候選識別不完整。');owner.token=key;
+  }
+  function assertTimberPreviewToken(token){assertTimberPreview(timberPreview,token);}
+  function beginTimberConfirmation(token){
+    assertTimberPreviewToken(token);
+    assemblyConfirmation={...timberPreview,timberCommand:'timber-edit-confirm '+featureTokenKey(token)};
+    timberPreview=null;schedulePresentation();return assemblyConfirmation;
+  }
+  function finishTimberPreview(owner){if(owner&&timberPreview===owner){timberPreview=null;schedulePresentation();}}
   function featureTokenKey(token){
     // Native preview emits a uint32 number; the confirm command carries its
     // decimal text. Both representations must name the same prepared lease.
@@ -430,8 +453,8 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && result.history_changed !== false)notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -2122,6 +2145,7 @@ const ReferenceWorkspace = (() => {
     readFeatureAttachment,setFeatureAttachment,prepareFeatureAttachment,commitPreparedFeatureAttachment,validateRuleCaseClosure,getRoomIntegration:()=>roomIntegration,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
+    beginTimberPreview,assertTimberPreview,bindTimberPreview,assertTimberPreviewToken,beginTimberConfirmation,finishTimberPreview,
     readGridDrafts,setGridDraft,repinGridDraft,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
     featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
