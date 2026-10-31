@@ -25,6 +25,26 @@ I24_IMPLEMENTATION_HEAD = "32f42e3d991c7d2d916d21bfe8ac5d3dd0f9b131"
 # 81b6c388f8b73e9aaf885b1d948e5f306b77bafd: generic provider hint bucket.
 GENERIC_SOURCE_INDEX_KERNEL_HEAD = "81b6c388f8b73e9aaf885b1d948e5f306b77bafd"
 
+
+def _ensure_pinned_commits(*shas):
+    """Make pinned history commits available in shallow CI checkouts.
+
+    actions/checkout defaults to fetch-depth 1, so the fixed base commits are
+    absent.  Fetch only those exact commits (depth 1 is enough for tree diffs)
+    instead of deepening every job's checkout; fail clearly if unreachable.
+    """
+    missing = [sha for sha in shas if subprocess.run(
+        ["git", "cat-file", "-e", sha + "^{commit}"], cwd=ROOT,
+        capture_output=True).returncode != 0]
+    if not missing:
+        return
+    fetched = subprocess.run(
+        ["git", "fetch", "--no-tags", "--no-write-fetch-head", "--depth=1", "origin", *missing],
+        cwd=ROOT, capture_output=True, text=True)
+    if fetched.returncode != 0:
+        raise AssertionError("pinned commits unavailable in this checkout and could not be fetched: "
+                             + " ".join(missing) + "\n" + fetched.stderr)
+
 # Common scene/validation helpers serve both interactive submissions and file
 # replay.  Their classification therefore explicitly retains both contexts;
 # the H baseline/replay guard below distinguishes them at runtime.
@@ -261,6 +281,7 @@ class Geo314CommitPaths(unittest.TestCase):
                          "I24 rule belongs to W; host context and submission classification remain in H")
 
     def test_kernel_has_no_changes_against_the_fixed_integration_base(self):
+        _ensure_pinned_commits(INTEGRATION_BASE, I24_IMPLEMENTATION_HEAD, GENERIC_SOURCE_INDEX_KERNEL_HEAD)
         introduced = subprocess.run(
             ["git", "diff", "--name-only", "--no-renames", INTEGRATION_BASE,
              I24_IMPLEMENTATION_HEAD, "--", "geometry-core/kernel"],
