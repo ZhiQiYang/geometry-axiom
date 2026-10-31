@@ -1,0 +1,216 @@
+{
+  "schema": "geo300-independent-local-byte-audit/1",
+  "exit_code": 0,
+  "formal_tests_executed": false,
+  "git_or_api_executed": false,
+  "source_or_original_evidence_written": false,
+  "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "capacity_head": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+  "manifest_sha256": "9b505c7ffb7dc2750dec503c78160b8b1bc894c2e0897cbeafc1018c3d8a7172",
+  "manifest_files_checked": 112,
+  "capture_stream_pairs_checked": 33,
+  "reversals": [
+    {
+      "path": "geometry-core/kernel/source.c",
+      "F": {
+        "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "bytes": 17442,
+        "sha256": "64c7a6223be0e824232bc0ec0139a3728606fb9666a991a951b5aa9357cf3e09"
+      },
+      "capacity": {
+        "sha": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+        "bytes": 16890,
+        "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a"
+      },
+      "all_reverse_steps": [
+        {
+          "before_sha256": "64c7a6223be0e824232bc0ec0139a3728606fb9666a991a951b5aa9357cf3e09",
+          "after_sha256": "b5e6c4825c7c729c489a1bcd34a03c0b4b5a085de2c209ad7572e1b0849a6ddf",
+          "removed_bytes": 222,
+          "inserted_bytes": 56,
+          "offset": 9060
+        },
+        {
+          "before_sha256": "b5e6c4825c7c729c489a1bcd34a03c0b4b5a085de2c209ad7572e1b0849a6ddf",
+          "after_sha256": "48c1a8b291223c5331239ad94b4265cb6231e92f1c9662ab535ea1e8dae3b1f2",
+          "removed_bytes": 67,
+          "inserted_bytes": 56,
+          "offset": 11206
+        },
+        {
+          "before_sha256": "48c1a8b291223c5331239ad94b4265cb6231e92f1c9662ab535ea1e8dae3b1f2",
+          "after_sha256": "b5ae24d4a0adc0f5ae52087fed603cbcd9c8f9b6cfc44073887723acf192a93c",
+          "removed_bytes": 103,
+          "inserted_bytes": 59,
+          "offset": 10829
+        },
+        {
+          "before_sha256": "b5ae24d4a0adc0f5ae52087fed603cbcd9c8f9b6cfc44073887723acf192a93c",
+          "after_sha256": "14dfdfa8521b3724dbb99c7c3409ef82eacd7795984f3b71a72c3fc142eb8785",
+          "removed_bytes": 73,
+          "inserted_bytes": 64,
+          "offset": 10426
+        },
+        {
+          "before_sha256": "14dfdfa8521b3724dbb99c7c3409ef82eacd7795984f3b71a72c3fc142eb8785",
+          "after_sha256": "aee7d84791c695a71d8b1dc0c18de8b5bc78457074742e1ed17edaa7f70a1ee9",
+          "removed_bytes": 324,
+          "inserted_bytes": 85,
+          "offset": 4212
+        },
+        {
+          "before_sha256": "aee7d84791c695a71d8b1dc0c18de8b5bc78457074742e1ed17edaa7f70a1ee9",
+          "after_sha256": "757afc4682d82efe8a672c3df3a650e19e6283a178e833bfe602c176f43a3432",
+          "removed_bytes": 69,
+          "inserted_bytes": 49,
+          "offset": 4136
+        },
+        {
+          "before_sha256": "757afc4682d82efe8a672c3df3a650e19e6283a178e833bfe602c176f43a3432",
+          "after_sha256": "fc1d950b6b194412d18fb9e510c33b454372321af8f3d3ba0f640fc030505561",
+          "removed_bytes": 85,
+          "inserted_bytes": 67,
+          "offset": 3550
+        },
+        {
+          "before_sha256": "fc1d950b6b194412d18fb9e510c33b454372321af8f3d3ba0f640fc030505561",
+          "after_sha256": "160161b24930679f71e00edba831916c8ac9d0413f5c4b25b4b2fcaa3f8fc366",
+          "removed_bytes": 115,
+          "inserted_bytes": 89,
+          "offset": 3245
+        },
+        {
+          "before_sha256": "160161b24930679f71e00edba831916c8ac9d0413f5c4b25b4b2fcaa3f8fc366",
+          "after_sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a",
+          "removed_bytes": 97,
+          "inserted_bytes": 78,
+          "offset": 2888
+        }
+      ],
+      "complete_reverse_is_byte_equal": true,
+      "independent_group_necessity_controls": [
+        {
+          "group_not_reversed": "EDGE_PROBE_REUSE_EDITS",
+          "equals_capacity": false,
+          "sha256": "b5e6c4825c7c729c489a1bcd34a03c0b4b5a085de2c209ad7572e1b0849a6ddf"
+        },
+        {
+          "group_not_reversed": "PROVIDER_HINT_EDIT",
+          "equals_capacity": false,
+          "sha256": "a4a569a4e1137de77aa4e989a322408b370f5ff626efa88f491454fd7408279e"
+        }
+      ],
+      "formal_runtime": false
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "F": {
+        "sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+        "bytes": 26976,
+        "sha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b"
+      },
+      "capacity": {
+        "sha": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+        "bytes": 26113,
+        "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a"
+      },
+      "all_reverse_steps": [
+        {
+          "removed_monotonic_bytes": 473,
+          "offset": 4238,
+          "after_sha256": "564884b44f7036cf4ee0cfd9a73faebec35166a20b2d76df4b3ae153d2db52e8"
+        },
+        {
+          "before_sha256": "564884b44f7036cf4ee0cfd9a73faebec35166a20b2d76df4b3ae153d2db52e8",
+          "after_sha256": "352d4b6131f8b4d621b116b47b1565058d350fc49cff04c238bced5776342975",
+          "removed_bytes": 46,
+          "inserted_bytes": 52,
+          "offset": 9223
+        },
+        {
+          "before_sha256": "352d4b6131f8b4d621b116b47b1565058d350fc49cff04c238bced5776342975",
+          "after_sha256": "4d4cac2b96849214b76c8a3a0b6df8bf372081540adfdcb07038a1be5d3f17e9",
+          "removed_bytes": 259,
+          "inserted_bytes": 226,
+          "offset": 7806
+        },
+        {
+          "before_sha256": "4d4cac2b96849214b76c8a3a0b6df8bf372081540adfdcb07038a1be5d3f17e9",
+          "after_sha256": "0c24fc362eb7d83cfecbdd935ffe27d6dd746c4a3c34a5534bf3056afb25ab2f",
+          "removed_bytes": 83,
+          "inserted_bytes": 91,
+          "offset": 7461
+        },
+        {
+          "before_sha256": "0c24fc362eb7d83cfecbdd935ffe27d6dd746c4a3c34a5534bf3056afb25ab2f",
+          "after_sha256": "ef773c9a0ce4289b5047fffdb2724d5a751091ba29b06e76bbb5fa6894e8a042",
+          "removed_bytes": 243,
+          "inserted_bytes": 513,
+          "offset": 7104
+        },
+        {
+          "before_sha256": "ef773c9a0ce4289b5047fffdb2724d5a751091ba29b06e76bbb5fa6894e8a042",
+          "after_sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+          "removed_bytes": 706,
+          "inserted_bytes": 65,
+          "offset": 6397
+        }
+      ],
+      "complete_reverse_is_byte_equal": true,
+      "independent_group_necessity_controls": [
+        {
+          "group_not_reversed": "MONOTONIC_SORT_BLOCK",
+          "equals_capacity": false,
+          "sha256": "02473416994421585fbb05288af78c7bb598e23e8e3a768391af3720dfad9859"
+        },
+        {
+          "group_not_reversed": "PLANE_RANGE_EDITS",
+          "equals_capacity": false,
+          "sha256": "564884b44f7036cf4ee0cfd9a73faebec35166a20b2d76df4b3ae153d2db52e8"
+        }
+      ],
+      "formal_runtime": false
+    }
+  ],
+  "history_captures": {
+    "edge-reuse-history": {
+      "sha": "9430bae568feb98805072930c92f9a03a1250d4e",
+      "capture_sha256": "7942d140d310db58750674ddebb2b080def9e4ee46916b16c6bc9f072ccd2c5d",
+      "claim_limit": "fixed-F git log -S snapshot; not a complete commit diff or whole branch containment proof"
+    },
+    "hint-history": {
+      "sha": "81b6c388f8b73e9aaf885b1d948e5f306b77bafd",
+      "capture_sha256": "1fb3e37fb51a1c91d7461cc4408340ab3c4e1138397d02d63ed2310826502ce8",
+      "claim_limit": "fixed-F git log -S snapshot; not a complete commit diff or whole branch containment proof"
+    },
+    "monotonic-history": {
+      "sha": "aa16e73d6e1f2965e0a911581e2a545aaaf66870",
+      "capture_sha256": "fedfc843dabc407fcc4edd0dbe695c786e8d28fe50eb60d76bf637bf74925cf7",
+      "claim_limit": "fixed-F git log -S snapshot; not a complete commit diff or whole branch containment proof"
+    },
+    "plane-range-history": {
+      "sha": "7c4a40a71fe46242c302efaa85f1a4d13df0c19a",
+      "capture_sha256": "1daf086fcb8177cfffe4291aba297d35c2c7e8681b91a10efe509bb601692d14",
+      "claim_limit": "fixed-F git log -S snapshot; not a complete commit diff or whole branch containment proof"
+    }
+  },
+  "source_inputs": {
+    "REPORT.md": {
+      "bytes": 7962,
+      "sha256": "023edfe7880a4d4efc86d5c349c11ed4801cce3f9a87e9ff22601efaf7cd40d1"
+    },
+    "ANALYSIS.json": {
+      "bytes": 5888,
+      "sha256": "78cebe39dbe33146a6b8e99893b02bb5c45ab03d98239b9581a3f4b2443c80de"
+    },
+    "ANALYSIS_EXEC_FINAL.json": {
+      "bytes": 6613,
+      "sha256": "766d05c839599329c848bfbc5517b9d7e8bc0ec6be671c37465281159feb656e"
+    }
+  },
+  "limitations": [
+    "exact byte equality covers only the two named C files and the four explicitly reversed groups",
+    "No C compilation, test runtime, fixture generator runtime, capacity performance, or causal timeout diagnosis",
+    "git log -S provides captured full origin SHAs, not unrecorded full commit deltas"
+  ]
+}

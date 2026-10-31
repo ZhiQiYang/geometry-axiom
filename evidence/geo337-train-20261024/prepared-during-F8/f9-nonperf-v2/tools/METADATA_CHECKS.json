@@ -1,0 +1,55 @@
+{
+  "formal_executed": false,
+  "checks": [
+    {
+      "label": "current",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/check_metadata.py",
+        "--registry",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/metadata/current-registry.json",
+        "--q38",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/metadata/q38-original.py.txt"
+      ],
+      "actual_exit": 0,
+      "expected_metadata_exit": 0,
+      "stdout_sha256": "71d7a079906962be96752263c40db5b5c1908d14009807e354b4edb14c4093fe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "withdraw-binding-to-obsolete",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/check_metadata.py",
+        "--registry",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/metadata/obsolete-registry.json",
+        "--q38",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/metadata/q38-original.py.txt"
+      ],
+      "actual_exit": 1,
+      "expected_metadata_exit": 1,
+      "stdout_sha256": "43a0d99508af6337c44c90e0ff4b3cab51198500bff3824ccb2a92904ba89c96",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "restored-current",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/check_metadata.py",
+        "--registry",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/metadata/current-registry.json",
+        "--q38",
+        "/tmp/geo337-F9-nonperf-original-tools-20261025/metadata/q38-original.py.txt"
+      ],
+      "actual_exit": 0,
+      "expected_metadata_exit": 0,
+      "stdout_sha256": "71d7a079906962be96752263c40db5b5c1908d14009807e354b4edb14c4093fe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "exit_code": 0,
+  "scope": "pure count/unit and static Q38 identifiers only; no import of original judge, subprocess compiler, formal tests, or ledger generation"
+}

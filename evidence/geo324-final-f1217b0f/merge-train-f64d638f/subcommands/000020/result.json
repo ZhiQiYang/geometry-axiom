@@ -1,0 +1,43 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--name-only",
+    "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+    "HEAD"
+  ],
+  "cwd": "/tmp/geo324-faces-work-20261024",
+  "acceptance_sha": "07615668c110684826390990cd2d6134eb6025fd",
+  "source_sha": "f1217b0fa5e933e14906833bf4981dad97061b04",
+  "source_variant": "source-merge-not-product-test",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1792779710.0377164,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": 0,
+  "timeout_expired": false,
+  "directory": "/tmp/geo324-owner-20261024/merge-train-f64d638f/subcommands/000020",
+  "ended_epoch": 1792779710.0418885,
+  "stdout_sha256": "d816e45fb30b79fec3e289e80f6f32b2d442256b8d590809ca9dc9d2e895d555",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 34261,
+  "stderr_bytes": 0
+}

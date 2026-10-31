@@ -1,0 +1,75 @@
+{
+  "schema": "recovery-evidence-publisher-static-peer/2",
+  "reviewed_utc": "2026-10-26T09:15:45.504639+00:00",
+  "subject_sha256": "b2037b477e115afcc061d5e673318f8864f0941216cba298b6583244a8d6c005",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 24,
+  "passed_checks": 24,
+  "environment_counterproof": [
+    {
+      "case": "fixed",
+      "exit_code": 0,
+      "retained_git_keys": [
+        "GIT_OPTIONAL_LOCKS"
+      ],
+      "managed_non_git_values_preserved": true
+    },
+    {
+      "case": "withdrawn",
+      "exit_code": 1,
+      "retained_git_keys": [
+        "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+        "GIT_COMMON_DIR",
+        "GIT_CONFIG_COUNT",
+        "GIT_CONFIG_KEY_0",
+        "GIT_CONFIG_VALUE_0",
+        "GIT_DIR",
+        "GIT_INDEX_FILE",
+        "GIT_OBJECT_DIRECTORY",
+        "GIT_OPTIONAL_LOCKS",
+        "GIT_WORK_TREE"
+      ],
+      "managed_non_git_values_preserved": true
+    },
+    {
+      "case": "restored",
+      "exit_code": 0,
+      "retained_git_keys": [
+        "GIT_OPTIONAL_LOCKS"
+      ],
+      "managed_non_git_values_preserved": true
+    }
+  ],
+  "initial_review_preserved": "REVIEW.initial.json",
+  "subject_delta": [
+    "--- ",
+    "+++ ",
+    "@@ -29,7 +29,7 @@",
+    "  need(shutil.disk_usage(OWN).free>budget,'actual mount capacity')",
+    "  spec=importlib.util.spec_from_file_location('capture',CAP);cap=importlib.util.module_from_spec(spec);spec.loader.exec_module(cap)",
+    "  a.out.mkdir();(a.out/'EXECUTOR.py').write_bytes(Path(__file__).read_bytes());(a.out/'MANIFEST.json').write_bytes(raw)",
+    "- env=dict(os.environ);env['GIT_OPTIONAL_LOCKS']='0';env['PYTHONDONTWRITEBYTECODE']='1'",
+    "+ env={k:v for k,v in os.environ.items() if not k.startswith('GIT_')};env['GIT_OPTIONAL_LOCKS']='0';env['PYTHONDONTWRITEBYTECODE']='1'",
+    "  rec=cap.Recorder(a.out,env,BASE)",
+    "  result={'exit_code':None,'base_sha':BASE,'branch':BRANCH,'source_execution_sha':'82c922a3941525d3a094ac0158bdc7dea57ea360','published':False,'delivered':False,'product_modified':False,'train_ref_modified':False,'capacity':{'used':used,'additional_bound':budget}}",
+    "  def run(cmd,data=None):"
+  ],
+  "progress_questions": {
+    "PROGRESS": {
+      "sha256": "04a2d64d3f2fb109193891da60df3382186ad31f57e311256ad34c2796869ad4",
+      "bytes": 4453
+    },
+    "QUESTIONS": {
+      "sha256": "63d802a6786b86ecc028c6416142ff10fc6d96363686cb0d0b69eeba95e73766",
+      "bytes": 850
+    }
+  },
+  "non_competing_write_scope": "Only the new recovery ref may be created; existing HEAD/index/train ref stays unchanged.",
+  "limits": [
+    "Static review plus pure in-memory environment counterproof; no real Git mutation, network, formal test or large fixture.",
+    "Root must bind and check final manifest, actual remaining capacity, and execution/remote verification outcomes.",
+    "PROGRESS external API/environment/branch ancestry claims rely on root actual intake; this peer confirms they are not presented as final-product green.",
+    "This review does not authorize simultaneous writers or infer Claude has stopped."
+  ]
+}

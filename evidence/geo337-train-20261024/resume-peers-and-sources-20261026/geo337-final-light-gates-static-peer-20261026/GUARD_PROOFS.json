@@ -1,0 +1,38 @@
+{
+  "pure_metadata_only": true,
+  "source_or_filesystem_admission_performed": false,
+  "cases": [
+    {
+      "case": "fixed",
+      "observed_guard_exit": 0
+    },
+    {
+      "case": "old-execution-sha",
+      "observed_guard_exit": 1
+    },
+    {
+      "case": "prepared-relabeled-F",
+      "observed_guard_exit": 1
+    },
+    {
+      "case": "lease-false",
+      "observed_guard_exit": 1
+    },
+    {
+      "case": "restored",
+      "observed_guard_exit": 0
+    },
+    {
+      "case": "at-original-bound",
+      "observed_guard_exit": 0
+    },
+    {
+      "case": "one-byte-over",
+      "observed_guard_exit": 1
+    },
+    {
+      "case": "restored",
+      "observed_guard_exit": 0
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "cold128-original-collector-static-peer-v1",
+  "checks": 24,
+  "exit_code": 0,
+  "findings": [],
+  "collector_sha256": "ecf974c68609a926c57d52da43e3d1fa12dd0366a12b6cd0d45a119feab5a153",
+  "original_collector_sha256": "e4b0056a2dc08a5b1900f26abbeb7644726464a5a75d77b8a0fb226051a0c1b5",
+  "scope": "128 completed maintenance groups only, exact original small metadata/streams; includes root sequential JSON, all original tools/peers, net plan and metadata census.",
+  "limits": [
+    "No collector run, no large payload hash or subject execution by reviewer. Root authorized collection must still finish real roundtrip before package pass.",
+    "423 is total reserved cold groups, not a claim this batch revalidated all423. Cardref2 groups are separate, already published, and not recollected.",
+    "384 preserved receipt bodies excluded. Historical full Git-tree payload referenced via pinned prior package rather than duplicated.",
+    "No independent c387 outer exists for original selector; its transcript provenance states that limitation."
+  ]
+}

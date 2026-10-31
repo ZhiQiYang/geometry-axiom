@@ -1,0 +1,161 @@
+{
+  "exit_code": 0,
+  "started_utc": "2026-10-25T07:08:06.119771+00:00",
+  "archive_source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "expected_root_head": "0687f3bd67c150de4856585dae1cbaeded460bc6",
+  "product_tests_run": false,
+  "environment_scope": "GIT_OBJECT_DIRECTORY only in one env->git hash-object child",
+  "original_objects_moved_or_deleted": false,
+  "refs_or_index_adopted": false,
+  "alternate_connected": true,
+  "store": "/tmp/geo337-published-archive-git-objects-20261024",
+  "object_oid": "0aaa8e61ddbffbec5e1771a1960b3d5d1e5238aa",
+  "object_format": "sha1",
+  "original_objects": "/workspace/geometry-axiom/.git/objects",
+  "common_dir": "/workspace/geometry-axiom/.git",
+  "before": {
+    "head": "0687f3bd67c150de4856585dae1cbaeded460bc6",
+    "refs_bytes": 5325,
+    "refs_sha256": "d253dfb74c22dfc2f53df0e0d052e6cdea99306950a98139a9c9c59b4806c8c9",
+    "index": {
+      "exists": true,
+      "bytes": 6259975,
+      "sha256": "6b847b9b89602b8dc676f3d338dd8b03ab5910f3879374a53a318c98e0ff7372",
+      "device": 27,
+      "inode": 1131141,
+      "mode": 33152,
+      "mtime_ns": 1792911841932879620
+    },
+    "head_file": {
+      "exists": true,
+      "bytes": 50,
+      "sha256": "e57e906455eec1fe969db11f2748bcad7416d10516ecf27490773f2ee79189a4",
+      "device": 27,
+      "inode": 1065054,
+      "mode": 33152,
+      "mtime_ns": 1792778881948891467
+    }
+  },
+  "prior_alternates_identity": "e4003887d478e946abfb1c76daa861b688d1c37d936f510a73fd833fbf48b7be",
+  "archive_identity": {
+    "exists": true,
+    "bytes": 31362296,
+    "sha256": "4503955cefc6fb1a6491ad2a146c259e59a2185401d0fbebc09908a47e3bf9d0",
+    "device": 34,
+    "inode": 3429990,
+    "mode": 33152,
+    "mtime_ns": 1792911524425920331
+  },
+  "planned_reader_graphs": {
+    "/workspace/geometry-axiom": [
+      {
+        "path": "/workspace/geometry-axiom/.git/objects",
+        "depth": 0
+      },
+      {
+        "path": "/tmp/geo337-published-archive-git-objects-20261024",
+        "depth": 1
+      }
+    ],
+    "/workspace/geo300-capacity512-work-20261024": [
+      {
+        "path": "/workspace/geo300-capacity512-work-20261024/.git/objects",
+        "depth": 0
+      },
+      {
+        "path": "/workspace/issue128-empty-panel-rows-work-20261024/.git/objects",
+        "depth": 1
+      },
+      {
+        "path": "/workspace/geo300-contact-index-work/.git/objects",
+        "depth": 2
+      },
+      {
+        "path": "/workspace/geo318-reading-a-prep/meta.git/objects",
+        "depth": 3
+      },
+      {
+        "path": "/workspace/geometry-axiom/.git/objects",
+        "depth": 4
+      },
+      {
+        "path": "/tmp/geo337-published-archive-git-objects-20261024",
+        "depth": 5
+      }
+    ],
+    "/tmp/geo323-final-r8-source-20261024": [
+      {
+        "path": "/tmp/geo323-final-r8-source-20261024/.git/objects",
+        "depth": 0
+      },
+      {
+        "path": "/workspace/geometry-axiom/.git/objects",
+        "depth": 1
+      },
+      {
+        "path": "/tmp/geo337-published-archive-git-objects-20261024",
+        "depth": 2
+      }
+    ],
+    "/tmp/train337-323-f64d638f-source": [
+      {
+        "path": "/tmp/train337-323-f64d638f-source/.git/objects",
+        "depth": 0
+      },
+      {
+        "path": "/workspace/geometry-axiom/.git/objects",
+        "depth": 1
+      },
+      {
+        "path": "/tmp/geo337-published-archive-git-objects-20261024",
+        "depth": 2
+      }
+    ]
+  },
+  "permanent_lease": {
+    "path": "/tmp/geo337-published-archive-git-objects-20261024/info/CODEX_PERMANENT_OBJECTS.json",
+    "sha256": "556c513142d9559c9497bb118d12da5487ee61b80953ee27095e49269d7c0104"
+  },
+  "status": "new protected blob readable; refs/index untouched",
+  "ordinary_readers": [
+    "/workspace/geometry-axiom",
+    "/workspace/geo300-capacity512-work-20261024",
+    "/tmp/geo323-final-r8-source-20261024",
+    "/tmp/train337-323-f64d638f-source"
+  ],
+  "new_object_identity": {
+    "exists": true,
+    "bytes": 30909800,
+    "sha256": "a6f04300ec506a4dc651522be44bcec354dad9ae4bddde69f901fdf76b901c58",
+    "device": 34,
+    "inode": 3434829,
+    "mode": 33024,
+    "mtime_ns": 1792912086982244243
+  },
+  "final_alternates_sha256": "e4003887d478e946abfb1c76daa861b688d1c37d936f510a73fd833fbf48b7be",
+  "after": {
+    "head": "0687f3bd67c150de4856585dae1cbaeded460bc6",
+    "refs_bytes": 5325,
+    "refs_sha256": "d253dfb74c22dfc2f53df0e0d052e6cdea99306950a98139a9c9c59b4806c8c9",
+    "index": {
+      "exists": true,
+      "bytes": 6259975,
+      "sha256": "6b847b9b89602b8dc676f3d338dd8b03ab5910f3879374a53a318c98e0ff7372",
+      "device": 27,
+      "inode": 1131141,
+      "mode": 33152,
+      "mtime_ns": 1792911841932879620
+    },
+    "head_file": {
+      "exists": true,
+      "bytes": 50,
+      "sha256": "e57e906455eec1fe969db11f2748bcad7416d10516ecf27490773f2ee79189a4",
+      "device": 27,
+      "inode": 1065054,
+      "mode": 33152,
+      "mtime_ns": 1792778881948891467
+    }
+  },
+  "ended_utc": "2026-10-25T07:08:07.178990+00:00",
+  "global_git_environment_unchanged": true
+}

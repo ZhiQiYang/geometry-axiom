@@ -1,0 +1,17 @@
+{
+  "scope": "AST/JSON/hash/byte-comparison only; not formal acceptance",
+  "source_sha_before": "2039b477a9669a9e3fcaad740283605b8de8a8f4",
+  "assertions": {
+    "make_golden.py AST": true,
+    "selftest.py AST": true,
+    "golden params rooms suffix original bytes": true
+  },
+  "files": {
+    "small-observation-2039b477/observation.json": "c10e9e1279c8dcbf37b91a4c7c8d2b15db3342ce52f7f04667c5d40e3dad8a2e",
+    "small-observation-2039b477/GOLDEN_MIGRATION.md": "ad42db4757d8c7f9a209a6830a97ccb66a5bcd4ff4c25817fa875e1a99aac823",
+    "small-observation-2039b477/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "small-observation-2039b477/stdout.txt": "c51bb09fa4ef605092369cc71d9c315ff6b92b1c05f4af07e12777a5400306f8",
+    "small-observation-2039b477/GOLDEN_MIGRATION_REVIEW.json": "164cc82ce56c06cd27d7bfcf50b8bfb3ce876f0781f9edd5ed9d398f9a82900c",
+    "small-observation-2039b477/receipt.json": "6c328ee1cd4b1be6e86dfe9a6868d7d912e577f725ef45e83832e660c14c8bd0"
+  }
+}

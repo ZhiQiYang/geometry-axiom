@@ -1,0 +1,32 @@
+--- v2/collector
++++ v3/collector
+@@ -97,7 +97,15 @@
+    roots += [(f'sourceplan/{job}',plan,True),(f'source-materialization/{job}',OWN/'host'/(job+'-materialize'),False),(f'source-plan-generation/{job}',OWN/'host'/(job+'-plan'),False)]
+    for phase in ['plan','materialize']:
+     p=safe(f'/workspace/geo337-F9-{job}-SHM-{phase}-EXEC_FINAL-20261025.json')
+-    need(digest(p)==pins[phase+'_final_sha256'] and J(p)['exit_code']==0,'original preparation host terminal')
++    need(digest(p)==pins[phase+'_final_sha256'],'original preparation host terminal exact pin')
++    terminal=J(p)
++    if 'actual_tool_result' in terminal:
++     need(set(terminal)=={'session_id','actual_tool_result'} and type(terminal['session_id']) is int,'actual yielded host wrapper identity')
++     actual=terminal['actual_tool_result']
++    else: actual=terminal
++    need(type(actual['exit_code']) is int and actual['exit_code']==0,'original preparation actual host exit zero')
++    original=json.loads(actual['output'])
++    need(original['job']==job and original['phase']==phase and type(original['original_exit']) is int and original['original_exit']==0 and original['result']==str(OWN/'host'/(job+'-'+phase)/'RESULT.json'),'original preparation output identity')
+     extras[f'source-preparation/{job}/{phase}-EXEC_FINAL.json']=p
+   sampler = Path('/workspace/geo337-F9-browser-sampler-preparation-20261025/sample_original_browser_v2.py')
+   need(digest(sampler) == '919eafb54f20454ee44a27754ce04f6f63f05f6e1c9b32a5b51652058735af30', 'original sampler source'); captured_tools[str(sampler)] = digest(sampler)
+--- v2/launcher
++++ v3/launcher
+@@ -3,8 +3,8 @@
+ import argparse, hashlib, importlib.util, json, os, sys
+ ROOT=Path('/dev/shm/geometry-axiom-geo337-20261025')
+ F='4f8a794f4167c3562eb182045102e86e9e37cca9'
+-TOOL=Path('/workspace/geo337-remaining-browser-terminal-preparation-20261025/collect_four_browser_terminal_v2.py')
+-TOOL_PIN='7675c2af1de19a193195267245f57b10192a4a684cfd54654dd1d4cf3539da25'
++TOOL=Path('/workspace/geo337-remaining-browser-terminal-preparation-20261025/collect_four_browser_terminal_v3.py')
++TOOL_PIN='813a770b414c6b57f4ffde568e6242614ed3bf28287a3e487ed9811f1113d741'
+ CAP=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
+ CAP_PIN='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+ JOBS=('documents','grid','space','timber')

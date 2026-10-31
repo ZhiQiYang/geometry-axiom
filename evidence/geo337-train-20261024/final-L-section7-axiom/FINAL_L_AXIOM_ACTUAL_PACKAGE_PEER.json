@@ -1,0 +1,23 @@
+{
+  "scope": "Original full axiom-version section7 at L plus selected complete OUT/OUTER package, no subject rerun",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "checks": 937,
+  "findings": [],
+  "exit_code": 0,
+  "original_exit": 0,
+  "baseline": {
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "mutants": 5,
+  "restored_full_suite_per_mutant": 44,
+  "archive_members": 188,
+  "archive_sha256": "c4110ebca24746b9434c49d4bc8e43b7a3b914a25c07aa5307368c9a83574778",
+  "limits": [
+    "Only OUT/OUTER selected scope has zero ELF files; this is not a claim about all internal caches or cleanup.",
+    "Original exposed stdout/stderr retained, hidden pipes not invented.",
+    "Current shared ROOT not consulted; immutable L source and closed source/index/refs captures bind past execution."
+  ]
+}

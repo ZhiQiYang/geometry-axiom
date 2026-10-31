@@ -1,0 +1,14 @@
+{
+  "schema": "R7-preload-existing-reviewed-tool-parameter-static-peer/1",
+  "checks": 20,
+  "exit_code": 0,
+  "findings": [],
+  "wrapper": "/tmp/preload_geo337_R7_archive_20261024.py",
+  "wrapper_sha256": "bf7a40c372df75d5c0678ea80089ddc691d42aff6c884aee6ced0f9228d43207",
+  "actual_package_peer_sha256": "ee4e24f943991e6b29606ed53339bdd719d6bf243be6cc049941570669187548",
+  "limits": [
+    "Static wrapper/arguments and original reviewed-tool pin only; no archive hash or objectstore writes by reviewer.",
+    "Executor must freshly verify expectedEbd5, archive identity, oldalternates/lease and three reader refs/index. Existing permanent TMP store is Gitobjects and cannot be cleaned up after push.",
+    "No product threshold/source or gate changes. Secondary nonblocking lease retained around entire underlying operation."
+  ]
+}

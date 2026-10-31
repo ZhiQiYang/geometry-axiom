@@ -1,0 +1,1004 @@
+{
+  "prepared_utc": "2026-10-25T07:49:42.649712+00:00",
+  "formal_executed": false,
+  "fixed_product_F8": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "future_F9": null,
+  "command_count": 37,
+  "commands": [
+    {
+      "name": "native",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/native-final-executable-preparation/run_full_native_workflow_v2.py",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_NATIVE_OUT>",
+        "--resource-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--root-cache-quiescent"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "original_argv": [
+        "bash",
+        "-c",
+        "ulimit -s 16384; python3 tests/run_all.py --build"
+      ],
+      "ci_timeout_minutes": 35,
+      "collection_watchdog_factor": 3,
+      "requires": "ROOT atF9; cache/ROOT consumer quiescence; full fixtures; original35min deadline still binding"
+    },
+    {
+      "name": "browser-canvas",
+      "argv": [
+        "python3",
+        "-B",
+        "<F9_BROWSER_LAUNCHER_PARAMETER_REBIND>",
+        "--job",
+        "canvas",
+        "--resource-lock",
+        "heavy"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "original_driver_argv": [
+        "python3",
+        "-B",
+        "<F9_POOL>/workflow-driver-browser-workspace.py",
+        "--repo",
+        "<F9_POOL>/layout/jobs/canvas/source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--job",
+        "canvas",
+        "--out-root",
+        "<PRIVATE_JOB_STORAGE>/original"
+      ],
+      "original_node_argv": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "case_environment": {},
+      "http_cdp_ports": [
+        19081,
+        9333
+      ],
+      "ci_timeout_minutes": 35,
+      "exclusive": true,
+      "requires": "Fresh full browser seed and job private Git metadata; original wrapper parameter-only rebind/peer still required; do not run oldL launcher"
+    },
+    {
+      "name": "browser-assembly",
+      "argv": [
+        "python3",
+        "-B",
+        "<F9_BROWSER_LAUNCHER_PARAMETER_REBIND>",
+        "--job",
+        "assembly",
+        "--resource-lock",
+        "heavy"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "original_driver_argv": [
+        "python3",
+        "-B",
+        "<F9_POOL>/workflow-driver-browser-workspace.py",
+        "--repo",
+        "<F9_POOL>/layout/jobs/assembly/source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--job",
+        "assembly",
+        "--out-root",
+        "<PRIVATE_JOB_STORAGE>/original"
+      ],
+      "original_node_argv": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "case_environment": {
+        "GEOMETRY_CDP_PORT": "9367",
+        "GEOMETRY_ASSEMBLY_ONLY": "1"
+      },
+      "http_cdp_ports": [
+        19082,
+        9367
+      ],
+      "ci_timeout_minutes": 15,
+      "exclusive": false,
+      "requires": "Fresh full browser seed and job private Git metadata; original wrapper parameter-only rebind/peer still required; do not run oldL launcher"
+    },
+    {
+      "name": "browser-documents",
+      "argv": [
+        "python3",
+        "-B",
+        "<F9_BROWSER_LAUNCHER_PARAMETER_REBIND>",
+        "--job",
+        "documents",
+        "--resource-lock",
+        "heavy"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "original_driver_argv": [
+        "python3",
+        "-B",
+        "<F9_POOL>/workflow-driver-browser-workspace.py",
+        "--repo",
+        "<F9_POOL>/layout/jobs/documents/source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--job",
+        "documents",
+        "--out-root",
+        "<PRIVATE_JOB_STORAGE>/original"
+      ],
+      "original_node_argv": [
+        "node",
+        "geometry-web/documents_browser_test.js"
+      ],
+      "case_environment": {
+        "GEOMETRY_CDP_PORT": "9366"
+      },
+      "http_cdp_ports": [
+        19083,
+        9366
+      ],
+      "ci_timeout_minutes": 10,
+      "exclusive": false,
+      "requires": "Fresh full browser seed and job private Git metadata; original wrapper parameter-only rebind/peer still required; do not run oldL launcher"
+    },
+    {
+      "name": "browser-grid",
+      "argv": [
+        "python3",
+        "-B",
+        "<F9_BROWSER_LAUNCHER_PARAMETER_REBIND>",
+        "--job",
+        "grid",
+        "--resource-lock",
+        "heavy"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "original_driver_argv": [
+        "python3",
+        "-B",
+        "<F9_POOL>/workflow-driver-browser-workspace.py",
+        "--repo",
+        "<F9_POOL>/layout/jobs/grid/source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--job",
+        "grid",
+        "--out-root",
+        "<PRIVATE_JOB_STORAGE>/original"
+      ],
+      "original_node_argv": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "case_environment": {
+        "GEOMETRY_CDP_PORT": "9334",
+        "GEOMETRY_GRID_SYSTEM_ONLY": "1"
+      },
+      "http_cdp_ports": [
+        19084,
+        9334
+      ],
+      "ci_timeout_minutes": 15,
+      "exclusive": false,
+      "requires": "Fresh full browser seed and job private Git metadata; original wrapper parameter-only rebind/peer still required; do not run oldL launcher"
+    },
+    {
+      "name": "browser-space",
+      "argv": [
+        "python3",
+        "-B",
+        "<F9_BROWSER_LAUNCHER_PARAMETER_REBIND>",
+        "--job",
+        "space",
+        "--resource-lock",
+        "heavy"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "original_driver_argv": [
+        "python3",
+        "-B",
+        "<F9_POOL>/workflow-driver-browser-workspace.py",
+        "--repo",
+        "<F9_POOL>/layout/jobs/space/source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--job",
+        "space",
+        "--out-root",
+        "<PRIVATE_JOB_STORAGE>/original"
+      ],
+      "original_node_argv": [
+        "node",
+        "geometry-web/space_model_test.js"
+      ],
+      "case_environment": {
+        "GEOMETRY_CDP_PORT": "9347"
+      },
+      "http_cdp_ports": [
+        19085,
+        9347
+      ],
+      "ci_timeout_minutes": 15,
+      "exclusive": false,
+      "requires": "Fresh full browser seed and job private Git metadata; original wrapper parameter-only rebind/peer still required; do not run oldL launcher"
+    },
+    {
+      "name": "browser-timber",
+      "argv": [
+        "python3",
+        "-B",
+        "<F9_BROWSER_LAUNCHER_PARAMETER_REBIND>",
+        "--job",
+        "timber",
+        "--resource-lock",
+        "heavy"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "original_driver_argv": [
+        "python3",
+        "-B",
+        "<F9_POOL>/workflow-driver-browser-workspace.py",
+        "--repo",
+        "<F9_POOL>/layout/jobs/timber/source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--job",
+        "timber",
+        "--out-root",
+        "<PRIVATE_JOB_STORAGE>/original"
+      ],
+      "original_node_argv": [
+        "node",
+        "geometry-web/space_model_test.js"
+      ],
+      "case_environment": {
+        "GEOMETRY_CDP_PORT": "9348",
+        "GEOMETRY_TIMBER_ONLY": "1"
+      },
+      "http_cdp_ports": [
+        19086,
+        9348
+      ],
+      "ci_timeout_minutes": 20,
+      "exclusive": false,
+      "requires": "Fresh full browser seed and job private Git metadata; original wrapper parameter-only rebind/peer still required; do not run oldL launcher"
+    },
+    {
+      "name": "q38",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_Q38_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--preparation-sha256",
+        "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+        "--gate",
+        "q38"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "New F9 descendant ofF8 with only ledger/evidence delta; reviewed external nonperf draft; original judge pins; root source lease"
+    },
+    {
+      "name": "cardref",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_CARDREF_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--preparation-sha256",
+        "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+        "--gate",
+        "cardref"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "New F9 descendant ofF8 with only ledger/evidence delta; reviewed external nonperf draft; original judge pins; root source lease"
+    },
+    {
+      "name": "axiom",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_AXIOM_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--preparation-sha256",
+        "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+        "--gate",
+        "axiom"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "New F9 descendant ofF8 with only ledger/evidence delta; reviewed external nonperf draft; original judge pins; root source lease"
+    },
+    {
+      "name": "required-eight",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_REQUIRED_EIGHT_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--preparation-sha256",
+        "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+        "--gate",
+        "required-eight"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "New F9 descendant ofF8 with only ledger/evidence delta; reviewed external nonperf draft; original judge pins; root source lease"
+    },
+    {
+      "name": "pf3",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_PF3_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--preparation-sha256",
+        "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+        "--gate",
+        "pf3"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "New F9 descendant ofF8 with only ledger/evidence delta; reviewed external nonperf draft; original judge pins; root source lease"
+    },
+    {
+      "name": "p52",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/train337-final-p52-p189-prep/run_special.py",
+        "--gate",
+        "p52",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_P52_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--preparation-sha256",
+        "254accbf8562210e339509c6bff0ab80f1ba625965bb70852ee428671f1a0805",
+        "--main-repo",
+        "/workspace/geo288-main-merge-20261023/reference/main"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "exclusive": true,
+      "requires": "Original preparation/tool pins and per-filesystem admission; no performance overlap; timing-only permitted only if samefull stopped on original dumpassert and originaltiming neverstarted"
+    },
+    {
+      "name": "p189",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/train337-final-p52-p189-prep/run_special.py",
+        "--gate",
+        "p189",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_P189_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--preparation-sha256",
+        "254accbf8562210e339509c6bff0ab80f1ba625965bb70852ee428671f1a0805"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "exclusive": true,
+      "requires": "Original preparation/tool pins and per-filesystem admission; no performance overlap; timing-only permitted only if samefull stopped on original dumpassert and originaltiming neverstarted"
+    },
+    {
+      "name": "p189-timing",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/train337-final-p52-p189-prep/run_special.py",
+        "--gate",
+        "p189-timing",
+        "--repo",
+        "/tmp/train337-323-f64d638f-source",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--out",
+        "<FRESH_P189_TIMING_OUT>",
+        "--heavy-lock",
+        "/tmp/g261r3/heavy.lock",
+        "--preparation-sha256",
+        "254accbf8562210e339509c6bff0ab80f1ba625965bb70852ee428671f1a0805",
+        "--p189-full-out",
+        "<SAME_F9_P189_FULL_OUT>"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "exclusive": true,
+      "requires": "Original preparation/tool pins and per-filesystem admission; no performance overlap; timing-only permitted only if samefull stopped on original dumpassert and originaltiming neverstarted"
+    },
+    {
+      "name": "readingA-reader-generate",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/reader-generate",
+        "--stage",
+        "reader-generate",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-reader-check",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/reader-check",
+        "--stage",
+        "reader-check",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-reader-unit",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/reader-unit",
+        "--stage",
+        "reader-unit",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-native-7",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/native-7",
+        "--stage",
+        "native-7",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-oracle-13",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/oracle-13",
+        "--stage",
+        "oracle-13",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-golden-source-proof",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/golden-source-proof",
+        "--stage",
+        "golden-source-proof",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-golden-generate",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/golden-generate",
+        "--stage",
+        "golden-generate",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-golden-compare",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/golden-compare",
+        "--stage",
+        "golden-compare",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-oracle-mutants",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/oracle-mutants",
+        "--stage",
+        "oracle-mutants",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-oracle-quick",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/oracle-quick",
+        "--stage",
+        "oracle-quick",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-cli-build",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/cli-build",
+        "--stage",
+        "cli-build",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-cli-order",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/cli-order",
+        "--stage",
+        "cli-order",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "cli-order diagnostic only, never authorization for unapproved #335 new construction policy"
+    },
+    {
+      "name": "readingA-architecture-contract",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/architecture-contract",
+        "--stage",
+        "architecture-contract",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-architecture-unit",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/architecture-unit",
+        "--stage",
+        "architecture-unit",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "readingA-product-architecture",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--output",
+        "<FRESH_READING_A_OUT>/product-architecture",
+        "--stage",
+        "product-architecture",
+        "--scheduler-slot",
+        "1"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Clean independent F9 closure; exact imports/rooms/test/evidence tools materialized; original stage/reaper capture; no oldL two-stage launcher unchanged",
+      "scope": "original stage"
+    },
+    {
+      "name": "RC-builder-whole-face-baseline",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/tmp/train337-reading-a-sweep-plan/run_original_rc_method.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--source",
+        "<PRIVATE_F9_READING_A_SOURCE>/geometry-core/framing-template/oracle/framing_oracle.py",
+        "--control",
+        "baseline"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "expected_primary_exit": 0,
+      "requires": "OriginalRC template exact one-anchor source variant; original named method unchanged; GITHUB_SHA/workspace set; original complete c387/reaper retained"
+    },
+    {
+      "name": "RC-builder-whole-face-withdrawn",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/tmp/train337-reading-a-sweep-plan/run_original_rc_method.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--source",
+        "<EXACT_ONE_ANCHOR_PRIVATE_VARIANT>",
+        "--control",
+        "builder-whole-face"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "expected_primary_exit": 1,
+      "requires": "OriginalRC template exact one-anchor source variant; original named method unchanged; GITHUB_SHA/workspace set; original complete c387/reaper retained"
+    },
+    {
+      "name": "RC-builder-whole-face-restored",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/tmp/train337-reading-a-sweep-plan/run_original_rc_method.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--source",
+        "<PRIVATE_F9_READING_A_SOURCE>/geometry-core/framing-template/oracle/framing_oracle.py",
+        "--control",
+        "baseline"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "expected_primary_exit": 0,
+      "requires": "OriginalRC template exact one-anchor source variant; original named method unchanged; GITHUB_SHA/workspace set; original complete c387/reaper retained"
+    },
+    {
+      "name": "RC-checker-whole-face-baseline",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/tmp/train337-reading-a-sweep-plan/run_original_rc_method.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--source",
+        "<PRIVATE_F9_READING_A_SOURCE>/geometry-core/framing-template/oracle/framing_oracle.py",
+        "--control",
+        "baseline"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "expected_primary_exit": 0,
+      "requires": "OriginalRC template exact one-anchor source variant; original named method unchanged; GITHUB_SHA/workspace set; original complete c387/reaper retained"
+    },
+    {
+      "name": "RC-checker-whole-face-withdrawn",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/tmp/train337-reading-a-sweep-plan/run_original_rc_method.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--source",
+        "<EXACT_ONE_ANCHOR_PRIVATE_VARIANT>",
+        "--control",
+        "checker-whole-face"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "expected_primary_exit": 1,
+      "requires": "OriginalRC template exact one-anchor source variant; original named method unchanged; GITHUB_SHA/workspace set; original complete c387/reaper retained"
+    },
+    {
+      "name": "RC-checker-whole-face-restored",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "python3",
+        "-B",
+        "/tmp/train337-reading-a-sweep-plan/run_original_rc_method.py",
+        "--root",
+        "<PRIVATE_F9_READING_A_SOURCE>",
+        "--sha",
+        "<F9_FULL40_UNBOUND>",
+        "--source",
+        "<PRIVATE_F9_READING_A_SOURCE>/geometry-core/framing-template/oracle/framing_oracle.py",
+        "--control",
+        "baseline"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "expected_primary_exit": 0,
+      "requires": "OriginalRC template exact one-anchor source variant; original named method unchanged; GITHUB_SHA/workspace set; original complete c387/reaper retained"
+    },
+    {
+      "name": "314-node-inspector",
+      "argv": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_grid_inspector_stagger.cjs"
+      ],
+      "formal_executed": false,
+      "source_sha": "<F9_FULL40_UNBOUND>",
+      "requires": "Original bridge compiled atF9; GEOMETRY_TEST_BRIDGE=<F9_BIN>/bridge; GEOMETRY_263_TRANSCRIPT=<FRESH>/inspector-transcript.jsonl; original900s; retain native6 strict rows in fullnative"
+    }
+  ],
+  "not_scheduled": [
+    "R8 F8 five stages already valid: never rerun or relabelF9",
+    "M121 already included in full123 atF8: preserve exact2methods and0/1/0; do not duplicate targetedledger unless new actual concern",
+    "memo proof still UNRUN; do not passF9 with formalF8 R8 due originalsameSHA guard"
+  ]
+}

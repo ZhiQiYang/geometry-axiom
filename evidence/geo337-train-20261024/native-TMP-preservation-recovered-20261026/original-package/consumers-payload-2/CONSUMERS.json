@@ -1,0 +1,36 @@
+{
+  "hits": [],
+  "unreadable": [
+    [
+      "208",
+      "cwd",
+      "PermissionError"
+    ],
+    [
+      "208",
+      "exe",
+      "PermissionError"
+    ],
+    [
+      "208",
+      "fd",
+      "PermissionError"
+    ],
+    [
+      "260",
+      "cwd",
+      "PermissionError"
+    ],
+    [
+      "260",
+      "exe",
+      "PermissionError"
+    ],
+    [
+      "260",
+      "fd",
+      "PermissionError"
+    ]
+  ],
+  "limitation": "Only accessible cwd/exe/cmdline/fd can be inspected; inaccessible OS processes are not claimed inspected."
+}

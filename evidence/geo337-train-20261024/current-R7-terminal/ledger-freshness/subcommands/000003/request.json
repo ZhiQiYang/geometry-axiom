@@ -1,0 +1,41 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--name-only",
+    "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+    "51e36b94b327c7bc1142c82b59e26ce9ab983d69",
+    "--",
+    ".",
+    ":(exclude)evidence"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "acceptance_sha": "51e36b94b327c7bc1142c82b59e26ce9ab983d69",
+  "source_sha": "51e36b94b327c7bc1142c82b59e26ce9ab983d69",
+  "source_variant": "new R7 product source 6df0264f75e84f03adb70746b6ac3db07a9910fc at execution head 51e36b94b327c7bc1142c82b59e26ce9ab983d69; exact non-evidence tree equality guarded",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1792823647.1987393,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": null,
+  "timeout_expired": false,
+  "directory": "/tmp/geo337-6df-at-51e-ledger-freshness-20261024/subcommands/000003"
+}

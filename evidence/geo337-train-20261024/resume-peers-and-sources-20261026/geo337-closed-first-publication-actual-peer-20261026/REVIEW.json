@@ -1,0 +1,393 @@
+{
+  "schema": "closed-first-publication-independent-actual-peer/1",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "reviewed_utc": "2026-10-26T10:53:56.801089+00:00",
+  "checked_count": 126989,
+  "evidence_head": "f90db245f228b7a95a800cab176c3f9ca497133f",
+  "product_anchor_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "branch": "codex/train337-recovered-evidence-20261026",
+  "publication_execution_source_sha": null,
+  "source_identity_rule": "Each archived original retains its S10/a6/F/synthetic identity. Publication parent is never an execution-source relabel.",
+  "files": 27,
+  "distinct_remote_blobs": 25,
+  "total_publication_file_bytes": 69209823,
+  "total_unique_remote_bytes": 69209168,
+  "raw_original_commands_checked": 107,
+  "actual_outer_exit": 0,
+  "actual_inner_exit": 0,
+  "expected_parent_CAS": {
+    "old": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "new": "f90db245f228b7a95a800cab176c3f9ca497133f",
+    "ref": "refs/heads/codex/train337-recovered-evidence-20261026",
+    "ordinary_push": true,
+    "exact_one_ref_update": true
+  },
+  "scope": {
+    "manifest_sha256": "f19882de783c8c03bd1bcee417b5d19fbe71e444b7587b034589c16211a4454d",
+    "recursive_tree_delta_exactly_27_evidence_paths": true,
+    "existing_evidence_overwrites": [
+      "evidence/geo337-train-20261024/resume-20261026/PROGRESS.md"
+    ],
+    "old_progress_blob": "62b8439952a9293969f8059145fd08c04d7822ec",
+    "product_modified": false,
+    "train_ref_modified": false
+  },
+  "writer_preservation": {
+    "historical_HEAD": "3e4f2560aa11ed2a626db98ba5ed6f129e791052",
+    "historical_branch": "codex/train-337-continue-20261024",
+    "three_HEAD_branch_status_snapshots_match": true,
+    "index_runtime_pre_post_hash_equality_guard_executed": true,
+    "index_independent_archived_pre_post_values_available": false,
+    "limitation": "The exact pinned executor compares raw index SHA256 before push and after all remote reads. Actual exit0 proves those comparisons passed; the individual index hash values were not emitted as separate artifacts, so no independently archived before/after index bytes are claimed."
+  },
+  "remote_archive": {
+    "destination": "evidence/geo337-train-20261024/resume-closed-originals-20261026/resume-closed-original-package-20261026/CLOSED_ORIGINALS.tar.gz",
+    "bytes": 62087411,
+    "sha256": "ac08de092c1ceefd01e01cec3091c69183aa834d31ac197c05b0b535f4694ce6",
+    "blob_oid": "06bd36517a6c21c8cd7a0f6fa61889922fe6a6b2",
+    "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000078/stdout.bin",
+    "original_started_epoch": 1793011531.3240016,
+    "original_ended_epoch": 1793011538.1367626,
+    "index_destination": "evidence/geo337-train-20261024/resume-closed-originals-20261026/resume-closed-original-package-20261026/INDEX.json",
+    "index_sha256": "4fde9f8413bb9dfae8866e332391cb52ddcc41c116dc0d5ccf3eb8a04558375f",
+    "index_bytes": 6992981,
+    "root_count": 17,
+    "member_count": 32871,
+    "file_count": 24966,
+    "directory_count": 7905,
+    "logical_bytes": 189987205,
+    "tar_exact_bytes": 223508480,
+    "all_members_exact_once": true,
+    "every_file_sha256_from_remote_archive_checked": true,
+    "complete_remote_gzip_crc_checked": true,
+    "terminal_identity_fields": {
+      "a6-architecture-source-original-20261026": {
+        "sha256": "2c8542df06b79b21a2a94ef5ce382d07a697a562e035ea86613dfb4a135274c4",
+        "identity_fields": {
+          "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77"
+        }
+      },
+      "a6-source-root-original-20261026": {
+        "sha256": "b48feb90a20f9d929a08bfaf51ea6d626d7eb977a03aa172a47421d842949b23",
+        "identity_fields": {
+          "product_tests_executed": false
+        }
+      },
+      "a6-architecture-gates-original-20261026": {
+        "sha256": "1dd78c0ef53d715316da892886bdb20d475a2a03e3dccf8a84c3f060e26b6f25",
+        "identity_fields": {
+          "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+          "full_native_executed": false,
+          "full123_executed": false
+        }
+      },
+      "a6-gates-root-original-20261026": {
+        "sha256": "eb7b45821fd8454b3ccda5903b66f95612683e17d2ad9efa383fdb9e78c4d007",
+        "identity_fields": {
+          "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77"
+        }
+      },
+      "a6-architecture-four-original-20261026": {
+        "sha256": "a532b83a67e19b37e2cf724fb4d9ec86753b3a090de554093646b2e2c3d1b2df",
+        "identity_fields": {
+          "sourceSHA": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77"
+        }
+      },
+      "a6-assembly-root-original-20261026": {
+        "sha256": "eb7b45821fd8454b3ccda5903b66f95612683e17d2ad9efa383fdb9e78c4d007",
+        "identity_fields": {
+          "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77"
+        }
+      },
+      "candidate-three-leaf-adoption-original-20261026": {
+        "sha256": "51dc88fae03dfca5dc08ba20aadd8c7beea42cbcb5e9dc292e77d9f8c1019558",
+        "identity_fields": {
+          "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+          "final_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "ledger_execution_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+          "architecture_execution_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77"
+        }
+      },
+      "candidate-adoption-root-original-20261026": {
+        "sha256": "a151e7dfcf319cb8ce53606638a3e3bed66217b22c1c1ebcf950789f3e20769d",
+        "identity_fields": {}
+      },
+      "recovery-publication-original-20261026": {
+        "sha256": "49bb55af970e75edaf3ca81c905cbee0c8c5b1546be9b5a8d8aef689e4ce3ee0",
+        "identity_fields": {
+          "evidence_head": "9a57aea2128a7bc3985064932c24e2229fd8fcb8"
+        }
+      },
+      "recovery-prbody-root-original-20261026": {
+        "sha256": "261fb5b169565a1e82db38378b44bc3623eae5416854ae5e5e9d7e96f048e029",
+        "identity_fields": {}
+      },
+      "recovery-prbody-publication-20261026": {
+        "sha256": "314fd88e1f310cd7196971e115171a7aa80e78014cc04fc4443813a0fbca85a2",
+        "identity_fields": {}
+      },
+      "geo337-candidate-adopter-tiny-20261026": {
+        "sha256": "00150f01d1c29fae10bad159b393e242bd090e21eaf598eb3c2d7df82fa2f402",
+        "identity_fields": {
+          "formal_adoption_executed": false
+        }
+      },
+      "candidate-tiny-root-original-20261026": {
+        "sha256": "1b51b05ae4b25d7bc21dfa88459ae140126982965035a4043c6bc0e8fd9b82c9",
+        "identity_fields": {
+          "formal_adoption_executed": false
+        }
+      },
+      "geo337-native-final-focused-20261026": {
+        "sha256": "e1ebff2ed14569abcdc1f5b634cae027e3d69daa5b1db20830990728325a59ec",
+        "identity_fields": {
+          "product_tests_executed": false
+        }
+      },
+      "native-focused-root-original-20261026": {
+        "sha256": "be763ce7e04c60f366bbb3f553e77f97820d9ba3ea42328c61693362f5cc3274",
+        "identity_fields": {}
+      },
+      "final-light-root-original-20261026": {
+        "sha256": "bd1a28beab01ba0e03dec0f96c62a869596271d196d9560000f0583f5590f463",
+        "identity_fields": {
+          "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "prepared_source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77"
+        }
+      },
+      "F-final-light-gates-original-20261026": {
+        "sha256": "4ef99c7b38f0ab5f451e508d6fffd4e78e30d52a6df133f9a9fd7f9210359784",
+        "identity_fields": {
+          "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+          "prepared_source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+          "full_native_executed": false,
+          "full123_executed": false
+        }
+      }
+    }
+  },
+  "original_receipts": {
+    "inner_result_sha256": "0be10a7fca568758574505050cc8c222ccb6d6b4b4fb2daf575ddf07e10b6f64",
+    "outer_result_sha256": "65bbf478d48aaf4d83e092d4352116b9b064f8a69e3457b9623856d5c7218bd4",
+    "inner_subcommands_sha256": "92be97412ab22b7d79c9a85d223cc53e04e98fbccfdea5a104641774ac37106f",
+    "outer_subcommands_sha256": "0bdd5bbf0cab935764e9021852c072de4d49c5c7ef915a14e99d1d458fc32c49",
+    "executor_sha256": "988a3b851db4417d41c073d02e8d3e440ea7dd22c10c53421490da79174cb720",
+    "remote_blobs_metadata_sha256": "df9db4061edd832bf46cc93f423339371f3ffb5aef5028de9307f1933bc9ead3"
+  },
+  "remote_readback_details": [
+    {
+      "bytes": 319,
+      "sha256": "f48ec0af8e145df22bb0db6bb10765bae4c5e3aed2e26a5af13781058a3b37d8",
+      "blob_oid": "af0d0bd49ba287eaa192e50ee6c55830b086bf66",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000077/stdout.bin",
+      "original_started_epoch": 1793011530.901392,
+      "original_ended_epoch": 1793011531.321888
+    },
+    {
+      "bytes": 62087411,
+      "sha256": "ac08de092c1ceefd01e01cec3091c69183aa834d31ac197c05b0b535f4694ce6",
+      "blob_oid": "06bd36517a6c21c8cd7a0f6fa61889922fe6a6b2",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000078/stdout.bin",
+      "original_started_epoch": 1793011531.3240016,
+      "original_ended_epoch": 1793011538.1367626
+    },
+    {
+      "bytes": 12498,
+      "sha256": "e3c516027d8868dda1c501631eb1d870e38269b78cf5856cdb6a470ba920eb7f",
+      "blob_oid": "dc23dc1132120d4c8072f6e7531518094f124ce6",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000079/stdout.bin",
+      "original_started_epoch": 1793011538.3860064,
+      "original_ended_epoch": 1793011538.8224697
+    },
+    {
+      "bytes": 4648,
+      "sha256": "c8212bdf6fa20eb46fdc8b0bd0e360d69afb7d5cc4ec92bdb0d1afd1cc5b1110",
+      "blob_oid": "7bb9e16193c56811bb990d059f08d60d93dfa5f5",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000080/stdout.bin",
+      "original_started_epoch": 1793011538.8289013,
+      "original_ended_epoch": 1793011539.1460235
+    },
+    {
+      "bytes": 6992981,
+      "sha256": "4fde9f8413bb9dfae8866e332391cb52ddcc41c116dc0d5ccf3eb8a04558375f",
+      "blob_oid": "6c8e438423c77e6c00b17ff53b1063caa12f3e8a",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000081/stdout.bin",
+      "original_started_epoch": 1793011539.1487215,
+      "original_ended_epoch": 1793011539.8351328
+    },
+    {
+      "bytes": 9208,
+      "sha256": "3e91e87b2ba26ec42c6a4351af59ab0c873d7b269d8280ddcd93158ff9e97986",
+      "blob_oid": "753b8f3907b0d5abeef5ed29061dbeaa67b6487d",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000082/stdout.bin",
+      "original_started_epoch": 1793011539.8557627,
+      "original_ended_epoch": 1793011540.26285
+    },
+    {
+      "bytes": 655,
+      "sha256": "fbb7572b3c4febd0f893f34c6847ae79c9332109e04d545d8b30ff27e8106a12",
+      "blob_oid": "714fd1130792961569caf52d1af319b8c7623e01",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000083/stdout.bin",
+      "original_started_epoch": 1793011540.2656393,
+      "original_ended_epoch": 1793011540.6641762
+    },
+    {
+      "bytes": 1598,
+      "sha256": "669dec81d62ad553ba3bc2886507c16e8f05fc9d5a9afdb9b4f9a25e35cc269a",
+      "blob_oid": "3502c24dcc2bad335c42ef6d545715e5fa060584",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000084/stdout.bin",
+      "original_started_epoch": 1793011540.6663659,
+      "original_ended_epoch": 1793011541.1071775
+    },
+    {
+      "bytes": 1961,
+      "sha256": "a3df70c9c57a900b20a0f7f38200317fb6af05fb94ba749787c077eebedf194c",
+      "blob_oid": "9a9db11e6f0e85889bf6314a78df77574af58c0f",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000085/stdout.bin",
+      "original_started_epoch": 1793011541.109332,
+      "original_ended_epoch": 1793011541.4106882
+    },
+    {
+      "bytes": 104,
+      "sha256": "8950832a7e70e532532750c5864480cd47daa5c5eaeebfd921515e67c62e0a4d",
+      "blob_oid": "b897d8e824b079f7cacc59e5234d47574aeb7f6c",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000086/stdout.bin",
+      "original_started_epoch": 1793011541.4127662,
+      "original_ended_epoch": 1793011541.8192697
+    },
+    {
+      "bytes": 1856,
+      "sha256": "b1aa27906a856eb8cc1e70e3d7c363efebd8341f12e9d391061d197bd6c760f3",
+      "blob_oid": "809e30a74dcf6bda63d7a2b76369c88127e3d633",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000087/stdout.bin",
+      "original_started_epoch": 1793011541.821577,
+      "original_ended_epoch": 1793011542.2062955
+    },
+    {
+      "bytes": 2109,
+      "sha256": "089542e87bf79f586ace0c0fa4716f18f066b0c93325803eb01d860cd630d67d",
+      "blob_oid": "57df29090040ab64f2797eed377a6d3c228a9d92",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000088/stdout.bin",
+      "original_started_epoch": 1793011542.2086961,
+      "original_ended_epoch": 1793011542.5252993
+    },
+    {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000089/stdout.bin",
+      "original_started_epoch": 1793011542.527608,
+      "original_ended_epoch": 1793011542.9693177
+    },
+    {
+      "bytes": 1478,
+      "sha256": "40587c7875e117cd20134617bc499e1bc14119d2a6fce28e914414c88b4cf7ca",
+      "blob_oid": "11b8a97948982cacabeab8585313a7d160fdebf6",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000090/stdout.bin",
+      "original_started_epoch": 1793011542.9714544,
+      "original_ended_epoch": 1793011543.3522751
+    },
+    {
+      "bytes": 2205,
+      "sha256": "c34742831dd63ac98c857b440dba18d39d58435c6000b6b3844de2f9ff6ef8ac",
+      "blob_oid": "632dab92b915572b5a02dec7a14e148a5a434371",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000091/stdout.bin",
+      "original_started_epoch": 1793011543.3546653,
+      "original_ended_epoch": 1793011543.757836
+    },
+    {
+      "bytes": 5314,
+      "sha256": "c8d1e6e136263b5cd31c5256d4ce116adb9070023f75831c964f300a8db1d085",
+      "blob_oid": "a7af4575b419763b5b48e459a9c9e2dfca33e772",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000092/stdout.bin",
+      "original_started_epoch": 1793011543.760214,
+      "original_ended_epoch": 1793011544.1588702
+    },
+    {
+      "bytes": 3715,
+      "sha256": "b702f8e76f2581b06850b815220d5dbd11c1500468592950cdd8f5e0f2a895ed",
+      "blob_oid": "6d172771da3b92c0688a1208b35d6f338fa8b2c7",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000093/stdout.bin",
+      "original_started_epoch": 1793011544.1615207,
+      "original_ended_epoch": 1793011544.4568796
+    },
+    {
+      "bytes": 1941,
+      "sha256": "15a07d9a36b7c2bacbed89544b5273096b61470e54db887e9b963de05b0cbdbd",
+      "blob_oid": "6cabb1bac7471b63d90271901c32e647c9bc4cfd",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000094/stdout.bin",
+      "original_started_epoch": 1793011544.4589996,
+      "original_ended_epoch": 1793011544.9029944
+    },
+    {
+      "bytes": 4478,
+      "sha256": "ed892f4897699a0795b060459b8c12e1133bd80d0491f02d5a6e327eb9643868",
+      "blob_oid": "ad639c4d8e47d763d7f543430a556456c5c666f5",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000095/stdout.bin",
+      "original_started_epoch": 1793011544.9054852,
+      "original_ended_epoch": 1793011545.2965505
+    },
+    {
+      "bytes": 41715,
+      "sha256": "e68e692921f4b235d1dd48e03c36ed49d7860aec2229404dcacf9567662355c2",
+      "blob_oid": "a44efc92fedf8886a39818dda031c958ae63d3c8",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000096/stdout.bin",
+      "original_started_epoch": 1793011545.2989745,
+      "original_ended_epoch": 1793011545.594277
+    },
+    {
+      "bytes": 1093,
+      "sha256": "577af8a1f0aaee612df9f4dcd57665ff24e7e7628f8c2a7b231d650c1f20eb2c",
+      "blob_oid": "52ada1026932d6129d0d939e24e17294143c3bc5",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000097/stdout.bin",
+      "original_started_epoch": 1793011545.5967283,
+      "original_ended_epoch": 1793011545.8742564
+    },
+    {
+      "bytes": 10348,
+      "sha256": "4ef99c7b38f0ab5f451e508d6fffd4e78e30d52a6df133f9a9fd7f9210359784",
+      "blob_oid": "4c298c8389ad51ab300667ed52ac55fc21deb0c0",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000098/stdout.bin",
+      "original_started_epoch": 1793011545.8766544,
+      "original_ended_epoch": 1793011546.3054197
+    },
+    {
+      "bytes": 8124,
+      "sha256": "2d1576d20796f86ed99c948e3222c3dc39d37bb648db052994c1a6190bebeb1c",
+      "blob_oid": "0c10bdcdc6907182682151047e9b752de2ac2f7c",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000099/stdout.bin",
+      "original_started_epoch": 1793011546.3077483,
+      "original_ended_epoch": 1793011546.599333
+    },
+    {
+      "bytes": 4262,
+      "sha256": "819f0d2f9f2db05eb3ec6ae7e70d8a98fff7463203e92143de7f33ede58b0eb6",
+      "blob_oid": "ddaa8b6d59a49c5462a77cb029a2ebe646673e4c",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000100/stdout.bin",
+      "original_started_epoch": 1793011546.601887,
+      "original_ended_epoch": 1793011546.9079142
+    },
+    {
+      "bytes": 9147,
+      "sha256": "5e65ce7844bad60adfeb574aa714d5c699493e4a56221ae3a8e5097e1c344dda",
+      "blob_oid": "85132d6faf8bef7daba1507b12b9ed253e310c63",
+      "captured_stdout": "/dev/shm/geometry-axiom-geo337-20261025/closed-first-publication-original-20261026/subcommands/000101/stdout.bin",
+      "original_started_epoch": 1793011546.9101622,
+      "original_ended_epoch": 1793011547.3461986
+    }
+  ],
+  "persistent_delivery_scope": "Only these 27 files, including the complete fixed 17-root original archive plus INDEX. Remote raw GitHub bytes were recorded after ordinary push and independently re-read here.",
+  "limits": [
+    "This is historical E1 remote publication evidence at the recorded capture times, not a new live API observation.",
+    "Other peer full drafts, #300 originals, and subsequent API identity work are outside this first batch.",
+    "No native/browser/full123 product verdict is added by publication or this review.",
+    "The publisher and Git/API commands were not rerun. No originals, fixtures, Git objects or cache were deleted or modified.",
+    "No duplicate large INDEX or archive was written; all verification streamed existing original/captured files."
+  ],
+  "audit_git_or_network_executed": false,
+  "audit_product_tests_rerun": false,
+  "audit_SHM_mutation": false,
+  "originals_removed": false,
+  "durable_delivery_verified": true
+}

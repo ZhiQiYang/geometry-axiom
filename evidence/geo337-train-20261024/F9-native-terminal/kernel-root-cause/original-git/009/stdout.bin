@@ -1,0 +1,32 @@
+commit 32f42e3d991c7d2d916d21bfe8ac5d3dd0f9b131
+Author:     Chih-Chi Yang <b10102230@gmail.com>
+AuthorDate: Thu Oct 22 22:56:00 2026 +0000
+Commit:     Chih-Chi Yang <b10102230@gmail.com>
+CommitDate: Thu Oct 22 22:56:00 2026 +0000
+
+    Implement ordered one-axis stagger submission policy
+
+ current_geometry.c                                 |   4 +
+ geometry-app/native/stagger_facts.inc              |  85 ++++
+ geometry-app/native/world_candidate.inc            |  38 +-
+ geometry-core/subgrid_world.inc                    |  12 +
+ geometry-core/transactions.inc                     |  10 +-
+ .../woodworking/native/grid_application.c          |  66 +++
+ .../woodworking/native/grid_application.h          |  18 +
+ geometry-web/engineering_bridge.inc                |  16 +-
+ geometry-web/grid_inspector_rename_test.js         |  20 +-
+ tests/geo261_grid_application_harness.c            | 136 ++++-
+ tests/geo314_stagger_facts_harness.c               | 202 ++++++++
+ tests/mutate.py                                    |  95 ++++
+ tests/mutation_bridge.py                           |  25 +-
+ tests/run_all.expected.json                        |  21 +-
+ tests/run_all.py                                   |   3 +
+ tests/test_geo261_mutation_migration.py            |  16 +-
+ tests/test_geo261_native_grid_product.py           |  13 +-
+ tests/test_geo261_wood_grid_application.py         |  72 +++
+ tests/test_geo314_commit_paths.py                  | 349 +++++++++++++
+ tests/test_geo314_ordered_facts.py                 | 212 ++++++++
+ tests/test_geo314_stagger_commit.py                | 548 +++++++++++++++++++++
+ tests/test_grid_inspector_contract.py              |  28 +-
+ tests/test_mutation_freshness.py                   |  84 ++++
+ 23 files changed, 2045 insertions(+), 28 deletions(-)

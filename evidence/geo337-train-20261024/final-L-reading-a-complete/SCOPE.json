@@ -1,0 +1,44 @@
+{
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "source": "/workspace/train337-L-reading-a-source",
+  "originalCLIExits": [
+    0,
+    0
+  ],
+  "outerToolAPISession": 19147,
+  "outerToolAPIActualExit": 0,
+  "outerCompleteResult": true,
+  "startedUTC": "2026-10-23T22:39:03.991303+00:00",
+  "endedUTC": "2026-10-23T22:45:53.451047+00:00",
+  "sameBeforeAfter22InputBytesHEADFullStageAndIndex": true,
+  "scope": "Original mutants-only followed by complete --quick; exact original flags/goldens/assertions/childlimits; no native/browser/performance or #335 CLI claim",
+  "quickPrintedCounter": 39850,
+  "printedCounterNotAllInternalBuilds": true,
+  "rectangle1D": 9402,
+  "rectangle2D": 14208,
+  "reflexRooms": 579,
+  "reflexLayouts": 8,
+  "stepRooms": 410,
+  "stepMirrorRooms": 820,
+  "stepLayouts": 8,
+  "oddGapRuns": 1872,
+  "t10ExtraMirrorRuns": 392,
+  "requiredPositive": {
+    "step": 528,
+    "stepMirror": 1056,
+    "missing": 0,
+    "nonBuildable": 0
+  },
+  "originalKnownDefects": "Original t4-family prints C11_MAIN_NOT_BUTTED6 as known separately tracked defects; preserved original verdict, not fixed or newly exempted by this run.",
+  "outerHostLimitation": "Exec/write_stdin tool API reported launcher0, without separate predecode host OS pipes. All original phase c387/reaper/CLI streams are retained.",
+  "r1EnvironmentFailureNotOverwritten": {
+    "archive": "R1_ENVIRONMENT_AND_SAME_L_REPAIR.tar.gz",
+    "sha256": "c4f5610173079d9b86a8f099901e47b19419691de1b20995efcfd8a2f3bed43b",
+    "originalCLIExits": [
+      1,
+      1
+    ],
+    "sourceRepairGitInputFullBytes": "same-L22 Gitshow original streams retained in that archive; this package binds same22 source hashes before/after"
+  },
+  "createdUTC": "2026-10-23T22:51:26.521416+00:00"
+}

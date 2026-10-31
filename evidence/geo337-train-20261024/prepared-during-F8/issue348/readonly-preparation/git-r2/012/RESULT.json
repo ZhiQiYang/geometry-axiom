@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "-C",
+    "/workspace/geo348-F0f695866-source",
+    "show",
+    "0f695866c0ba12d2c70dfd7d40628d0fda0f905f:current_geometry.c"
+  ],
+  "exit": 0,
+  "stdout_sha256": "15cfa1f0bd4aa58ebc2482f78d7a0c19cb9da27ec6cf27179473c1808ea00bc9",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

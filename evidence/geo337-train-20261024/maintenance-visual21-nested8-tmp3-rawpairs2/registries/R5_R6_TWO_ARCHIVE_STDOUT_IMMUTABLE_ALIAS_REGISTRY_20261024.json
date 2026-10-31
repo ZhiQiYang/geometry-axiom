@@ -1,0 +1,96 @@
+{
+  "schema": "immutable-receipt-preserving-alias-registry/1",
+  "additive_only": true,
+  "groups": [
+    {
+      "role": "base",
+      "sha256": "56529caed7cd0f2a6dfd3f89eb99fc9a6890553077346b6fe229ff07034e90f0",
+      "all_paths_preserved": true,
+      "final_metadata": [
+        {
+          "path": "/workspace/g337323R5/invocations/2026-10-24T044849.8365920000/commands/000184/stdout.bin",
+          "dev": 27,
+          "inode": 2016158,
+          "mode": 33152,
+          "size": 16506880,
+          "mtime_ns": 1792817331548383500,
+          "atime_ns": 1792822429265293266,
+          "uid": 1000,
+          "gid": 1000,
+          "nlink": 2,
+          "allocated_bytes": 16506880
+        },
+        {
+          "path": "/workspace/g337323R6/invocations/2026-10-24T053506.8251540000/commands/000184/stdout.bin",
+          "dev": 27,
+          "inode": 2016158,
+          "mode": 33152,
+          "size": 16506880,
+          "mtime_ns": 1792817331548383500,
+          "atime_ns": 1792822429265293266,
+          "uid": 1000,
+          "gid": 1000,
+          "nlink": 2,
+          "allocated_bytes": 16506880
+        }
+      ]
+    },
+    {
+      "role": "main",
+      "sha256": "e23b5eb07856ec5729b62e881dba7e009d84ab923c76556bd7b5c83e2584f020",
+      "all_paths_preserved": true,
+      "final_metadata": [
+        {
+          "path": "/workspace/g337323R5/invocations/2026-10-24T044849.8365920000/commands/000186/stdout.bin",
+          "dev": 27,
+          "inode": 1783095,
+          "mode": 33152,
+          "size": 14745600,
+          "mtime_ns": 1792817331895698704,
+          "atime_ns": 1792822429425140533,
+          "uid": 1000,
+          "gid": 1000,
+          "nlink": 2,
+          "allocated_bytes": 14745600
+        },
+        {
+          "path": "/workspace/g337323R6/invocations/2026-10-24T053506.8251540000/commands/000186/stdout.bin",
+          "dev": 27,
+          "inode": 1783095,
+          "mode": 33152,
+          "size": 14745600,
+          "mtime_ns": 1792817331895698704,
+          "atime_ns": 1792822429425140533,
+          "uid": 1000,
+          "gid": 1000,
+          "nlink": 2,
+          "allocated_bytes": 14745600
+        }
+      ]
+    }
+  ],
+  "group_count": 2,
+  "alias_count": 4,
+  "original_product_failures_preserved": true,
+  "all_original_paths_and_bytes_retained": true,
+  "rule": "Read-only access allowed. No append, truncate, overwrite, checkout, clean, reset, or producer reuse of these four leaves. Before any write independently delink every alias while preserving all original bytes. Existing registries unchanged.",
+  "plan": {
+    "path": "/workspace/r5-r6-two-archive-stdout-pairs-preparation-20261024/PLAN.json",
+    "sha256": "2fdaa5bd109917692a0913ddab97cdd4e82d17047e56e5c912465dba022f3ca9"
+  },
+  "actual_result": {
+    "path": "/workspace/r5-r6-two-archive-stdout-pairs-preserving-links-execution-20261024/RESULT.json",
+    "sha256": "d121b193eb5ac165eceebd7e7ed0ec0def1d4fb51c9a4175748393d7067cc9d9"
+  },
+  "allocated_saving": 31252480,
+  "free_observation": {
+    "before": {
+      "/workspace": 30609408,
+      "/tmp": 575164416
+    },
+    "after": {
+      "/workspace": 61829120,
+      "/tmp": 575164416
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "geo348-protocol-only-command/1",
+  "name": "045-guard-restored",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "/tmp/geo348-synthetic-c-protocol-20261025/guard.py",
+    "--run",
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored",
+    "--completed"
+  ],
+  "cwd": "/tmp/geo348-synthetic-c-protocol-20261025",
+  "timeout_seconds": 10,
+  "synthetic_protocol_only": true,
+  "product_process": false,
+  "input": null,
+  "selected_environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "STUB_PID_PATH": null,
+    "STUB_FIXTURE": null,
+    "GEO348_DIAG_EVENT_FD": null,
+    "GEO348_DIAG_STATUS_FD": null
+  },
+  "completed_process_returned": true,
+  "returncode": 0,
+  "exception": null,
+  "stdout": {
+    "captured": true,
+    "bytes": 2396,
+    "sha256": "fcd391e94632e589ad4384158861e4e3cca09bd91604f29f1d6efb2bc6355ad7"
+  },
+  "stderr": {
+    "captured": true,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "required_H_ancestor": "2c4635577a8fcb11e88b346547f7bb1c7b739fb7",
+  "executed": false,
+  "formal_subject_reexecuted": false,
+  "active_raw_out_read": false,
+  "original_tool_hashes": {
+    "summarize_terminal.py": "2c8d4cf7397491b0312de9146e7bc557c977d0e6614ef00923f9084a27a75db7",
+    "collect.template.py": "aab84118de09b9bb394fb6a11eeb51bef3babecd9937b1c9c633caf4a046e211",
+    "launch.template.py": "930f203eaaf6c7d428d7516491d883e613f75675673df522d96b36af9ff13bab",
+    "freeze_terminal_plan.py": "1181d312815b3bb48c3029cc5da62b0eb5749667f2c65e1f65e4c4ecdcf00069"
+  },
+  "draft_hashes": {
+    "summarize_terminal.py": "7a9d89c5c0ef901e6b52dffe0385329d9837959a4cebd7872d18dbf624ef3e1e",
+    "collect.template.py": "dffac4dfea4c954f15ef738b4a778e9d752c4da041b8ec27ec0eeb27a6ed4f5e",
+    "launch.template.py": "22e37f8e2eb8b8a012a45de5db275e6a0a4cf875658b5abe64806b947216e665",
+    "freeze_terminal_plan.py": "f49ac614c307b0ac2c350dcd30af99bf4e510c5e809383a72b5245669237cda6",
+    "prepare_plan.py": "f49ac614c307b0ac2c350dcd30af99bf4e510c5e809383a72b5245669237cda6"
+  },
+  "changes": [
+    "F8/source/output paths and round labels",
+    "actual R8 API session62076 with original initial+available polls+exactly one terminal required, no API reconstruction or invented intermediate responses",
+    "R7 historical collector provenance retained as historical R7",
+    "old F7/E51 ledger and old R7 peer attachments omitted from current R8 package; current R8 ledger is UNRUN and no R8 source peer is claimed",
+    "known R8 tool static peer included"
+  ],
+  "unexecuted_outputs": [
+    "R8 summary",
+    "frozen membership PLAN",
+    "bound collector and launcher",
+    "archive",
+    "publication"
+  ],
+  "limitations": [
+    "No new test mirror added; original terminal guards and resource limits retained.",
+    "Seven ELF bodies remain at original paths and are hash-only in archive, unchanged original policy.",
+    "Original 175 scenes/350 comparisons/36 samples/4 profiles and own-stage versus cumulative CLI outcomes stay original.",
+    "ABC_result presence and original acceptance fields copied without filling missing verdicts."
+  ]
+}

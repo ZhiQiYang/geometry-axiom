@@ -1,0 +1,84 @@
+{
+  "schema": "geo338-original-approval-readonly-audit/1",
+  "observed_utc": "2026-10-26T10:18:36.269445+00:00",
+  "scope": "唯讀 GitHub API。未執行 Git、修改來源/ref/PR、跑測試、檢查本機 Claude 程序或輪詢。",
+  "authenticated_user": {
+    "login": "ZhiQiYang",
+    "id": 59477728,
+    "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+    "html_url": "https://github.com/ZhiQiYang",
+    "type": "User"
+  },
+  "api_status": "全部所列請求 HTTP 200，gh exit 0；未列出 token。",
+  "comment_coverage": {
+    "count": 13,
+    "page": 1,
+    "per_page": 100,
+    "all_authors_equal_get_user": true,
+    "formal_reviews_count": 0,
+    "last_comment_id": 6409950139
+  },
+  "current_pr": {
+    "head": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+    "ref": "codex/train-337-continue-20261024",
+    "state": "open",
+    "draft": true,
+    "mergeable": true,
+    "mergeable_state": "unstable"
+  },
+  "handoff": {
+    "sha": "6e0d142fe1afa8f325d927ac3c5afb1ac3e2902c",
+    "review_blob": "947e96de719f7e8614dab449f98a4be5a87e20eb",
+    "status_blob": "04cf25d2701c5e15e4c790bd625463e28ce26f6b",
+    "prbody_marker": "e83d478a"
+  },
+  "latest_review": {
+    "permalink": "https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6409950139",
+    "author": "ZhiQiYang",
+    "author_id": 59477728,
+    "created_at": "2026-10-26T06:43:48Z",
+    "body": "【ChatGPT 審查】PR #338 head a6f4013\n\n## 阻擋\n- **B1｜S10 帳本與架構正式終態仍未固定。** `evidence/geo337-train-20261024/PROGRESS.md:15,32-33,56-58` 仍記 final F 未定、全123帳本 RUNNING、架構四檔／當次收據未完成。最小修正：取得帳本真終態並逐 byte 採入，固定 final F 後重產架構四檔與收據；任何紅燈先修復。\n- **B2｜新裁決明列的必跑項仍未完成。** `決策佇列.md:911-913` 雖核可輸入閉包不含兩變更葉的專項沿用 F9/F8，但明定完整 native、六 browser、閱讀 A oracle 須在 final 來源重跑；`PROGRESS.md:23-29,39-40` 仍是 UNRUN／替代條件未成立，current head Actions 七個 job 亦全 failure。最小修正：依裁決逐項附閉包證明，並在 final F 跑完上述必跑項及原門檻／原流。\n\n## 須改\n- **C1｜正文 current-state 落後 head。** PR 正文仍把 evidence E 寫成 `3e4f256`，但 current head 是 `a6f4013`，且新增 `決策佇列.md:900-913` 已改變 P-189 白名單與沿用邊界；`PROGRESS.md:10-12` 也仍停在舊 checkpoint。最小修正：同步唯一身分矩陣，分開 product S10、最新已交付 E、current evidence head、final F，並按新裁決重列 RUN/UNRUN/沿用來源。\n\n## 記錄\n- 本 head 相對上次審查 `3e4f256` 只有 `決策佇列.md` 新增 22 行，未改產品、公理、測試或門檻；新裁決可縮小待辦，但不能替代其明列的必跑項。\n- 上輪 main 衝突仍已解除，GitHub 現回報可乾淨合併；這不解除 B1/B2。\n\n**結論：不建議合併；維持 draft。**"
+  },
+  "new_approval_verification": {
+    "status": "UNVERIFIED_ORIGINAL_USER_APPROVAL",
+    "found_original_comment": false,
+    "facts": [
+      "a6 決策檔 900–920 行自稱由 Claude session f46787ac 收集兩個選項。",
+      "原文兩選項為「套用同一份白名單 (Recommended)」「輸入沒變的沿用 F9 結果 (Recommended)」。",
+      "題意與詳細適用範圍明標「協調 agent 整理，非原話」。",
+      "最新 ChatGPT 審查由同一 API 帳戶發出，引用此決策；它不是兩選項的原始使用者批准。",
+      "commit API author 同 id 只能識別 GitHub 關聯帳戶，不能用 commit 作者認證原始對話。"
+    ],
+    "original_source_link": "https://github.com/ZhiQiYang/geometry-axiom/blob/a6f4013364e21bcb7239b5dcc25caac0f6d61f77/%E6%B1%BA%E7%AD%96%E4%BD%87%E5%88%97.md#L900",
+    "decision_blob": "9eee202d4214dd189e77438626a51f68c62f078e",
+    "unverified_scope": [
+      "P-189 main adbaebf9 比對僅三個定位邊診斷精確白名單，其他 bytes 與四個 N 的 fix/main ≤ 2 不變。",
+      "F9/F8 專項只在輸入閉包排除 tests/test_geo314_commit_paths.py 與決策佇列.md 時沿用。",
+      "完整 native、六 browser、閱讀 A oracle 仍須重跑。"
+    ],
+    "action": "保留原裁判，不擴張 P-189 或將跨 SHA 沿用標成已批准；繼續不依賴此裁決的驗收。"
+  },
+  "older_approval": {
+    "permalink": "https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6396611849",
+    "author": "ZhiQiYang",
+    "author_id": 59477728,
+    "created_at": "2026-10-25T10:39:52Z",
+    "body": "【使用者裁決】Q-323-ABC 與 B3 的答案已寫入決策佇列(#349,合併提交 `405f8c5e`)\n\n使用者 2026-10-25 選擇(選項原文):\n\n> 讓 Codex 繼續做到審查通過\n\n> A 接受這 3 筆 (Recommended)\n\n> 延伸到所有 PR (Recommended)\n\n> 先合併，帳本留下次 (Recommended)\n\n對本 PR 的意思(本機 Claude 整理，非原話;全文見 `決策佇列.md`「2026-10-25 #338 列車」一節):\n- **B2(#323 跨版本逐字比對)**:只放行 `_role_priority_mutant.scene`、`_s1_p8_l_room_primary_through_reflex_extension.scene`、`_s1_p8b_l_room_primary_through_reflex_extension_hi.scene` 三個場景錯誤輸出中多出的那一段 #299 定位邊文字(決策佇列逐字列出);比較器實作成精確白名單，其餘 bytes／返回碼／有序圖／五 guards 仍須相同，多一筆或文字不同仍紅。效能門檻不在此裁決內，仍照原門檻。\n- **B3(required CI)**:Actions 帳單停用期間，同一最終 SHA 上 7 項加專項全綠並保存指令、退出碼、完整輸出、環境與 SHA,即可代替 required CI;本機 WSL 或雲端 Codex 皆可。適用之後所有 PR。\n- **突變帳本**:合併時若唯一紅燈是 `mutation:check` 因來源變動回報 stale,可以合併，說明寫明過期筆數，下一輪第一件事重產全帳本;survived／invalid／blocked 仍擋。\n- 本機 Claude 不自行收尾合併，由 Codex 修到審查判可合併後再處理。\n\n另:本機試併時發現 #344 改了 `geometry-web/cdp_test.js` 卻沒更新 `product-architecture.json` 的排除項 LF 雜湊(應為 `1f3e2e36283ed7bb…`),合入列車後架構裁判報 `EXCLUSION_DIGEST`。詳見 #344 留言。\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "classification": "API 確認是連接帳戶原始 issue comment；內容自稱使用者裁決，並區分選項原話與 Claude 整理。可核實發文帳戶，不證明每句由人手打。其 #323 限縮範圍不自動延伸 P-189。"
+  },
+  "claude_execution": {
+    "status": "NOT_PROVEN",
+    "observed": [
+      "a6 決策檔 917 行宣稱本機 Claude 接手最終驗收。",
+      "目前 PR head 仍 a6；a6 相對 3e4f256 只新增決策 22 行。",
+      "最新 comments 與 handoff review/status 沒有後續正式命令、開始時間、退出碼或原始流。"
+    ],
+    "limit": "無法由本次唯讀遠端紀錄判定 Claude 當下是否正在執行或占用本機工作樹；不將缺少公開收據推定沒有執行。"
+  },
+  "open_review_items": [
+    "B1：S10 全帳本真終態採入、固定 F、架構四檔與當次收據。root 本輪回收可能已進展，此處只記 API 最新審查。",
+    "B2：final native、六 browser、閱讀 A oracle 真終態與原流；其他專項不可因尚未核實的轉錄自動移標。",
+    "C1：唯一 current-state 分開 S10、最新交付 E、current evidence head、F，逐 gate exit/UNRUN/沿用依據。"
+  ],
+  "no_readiness_claim": "未宣告 READY-TO-MERGE、全綠或 Claude 已執行。"
+}

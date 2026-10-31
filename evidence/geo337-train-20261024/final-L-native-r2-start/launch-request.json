@@ -1,0 +1,24 @@
+{
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "argv": [
+    "python3",
+    "-B",
+    "/tmp/native-final-executable-preparation/run_full_native_workflow_v2.py",
+    "--repo",
+    "/tmp/train337-323-f64d638f-source",
+    "--sha",
+    "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "--out",
+    "/tmp/train337-full-native-L-7af8c5d8-r2",
+    "--resource-lock",
+    "/tmp/g261r3/heavy.lock",
+    "--root-cache-quiescent"
+  ],
+  "driver_sha256": "763a6e8064be212a020522a43a80bdb6cd353d329997c83479f469c2359f4d21",
+  "native_scope": "Original full workflow, no selectors, exact 35 minute CI gate retained",
+  "root_and_shared_cache_exclusively_leased": true,
+  "free_before": {
+    "/tmp": 135024640,
+    "/workspace": 100028416
+  }
+}

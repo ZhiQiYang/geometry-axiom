@@ -1,0 +1,37 @@
+{
+  "command": [
+    "git",
+    "push",
+    "origin",
+    "HEAD:refs/heads/codex/geo260-ac23-proof-20261024"
+  ],
+  "cwd": "/tmp/geo260-ac23-source-5b0ce47d",
+  "acceptance_sha": "eb846c345881cc6fc73a53c457a291175365b88c",
+  "source_sha": "eb846c345881cc6fc73a53c457a291175365b88c",
+  "source_variant": null,
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONIOENCODING": null,
+    "PYTHONDONTWRITEBYTECODE": null,
+    "PYTHONOPTIMIZE": null,
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "C_INCLUDE_PATH": null,
+    "CPATH": null,
+    "LIBRARY_PATH": null,
+    "LD_LIBRARY_PATH": null,
+    "GCC_EXEC_PREFIX": null,
+    "COMPILER_PATH": null
+  },
+  "started_epoch": 1792789817.7957098,
+  "stdin_provided": false,
+  "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_process_returncode": null,
+  "timeout_expired": false,
+  "directory": "/tmp/geo260-ac23-publication/full44-evidence-publication/subcommands/000007"
+}

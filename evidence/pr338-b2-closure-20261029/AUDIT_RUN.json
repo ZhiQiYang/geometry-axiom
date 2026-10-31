@@ -1,0 +1,32 @@
+{
+  "schema": "pr338-b2-audit-run/1",
+  "argv": [
+    "/tmp/pr338-b2-closure/audit_b2.py",
+    "--git",
+    "/tmp/r02-ui1",
+    "--archives",
+    "/tmp/pr338-b2-closure",
+    "--out",
+    "/tmp/pr338-b2-closure/B2_CLOSURE.json"
+  ],
+  "cwd": "/workspace",
+  "actual_exit": 0,
+  "completion_utc": "2026-10-28T19:05:59.388274+00:00",
+  "start_utc": "not separately captured; no duration claim",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "git": "git version 2.52.0",
+  "environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": null,
+    "PYTHONOPTIMIZE": null
+  },
+  "read_only_git": "/tmp/r02-ui1",
+  "pinned_product_sha": "0ae1728c2309e1d670369289a6b8da059fa63a50",
+  "script_sha256": "57f9004866774cc246d3160142ab638a3eebd7a9aa331b98eda7459389dc193a",
+  "closure_json_sha256": "97fadc10b56ac9b50192d822a92a20605b97b4d6c70182dd8049c8104d2b23e5",
+  "execution_kind": "read_only_original_artifact_and_source_closure_verification_no_product_execution",
+  "product_tests_rerun": false,
+  "performance_samples_added": 0
+}

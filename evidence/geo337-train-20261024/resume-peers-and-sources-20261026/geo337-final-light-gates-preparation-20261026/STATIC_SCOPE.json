@@ -1,0 +1,28 @@
+{
+  "formal_executed": false,
+  "runner_sha256": "dde595446f259dac13a81e39ec43d64c8df9f28831b2c542ec631acc99b9b4f4",
+  "unchanged_top_level_helpers": [
+    "pinned"
+  ],
+  "changed_top_level_functions": [
+    "main"
+  ],
+  "selected_checkout": 3763,
+  "native_claimed": false,
+  "snapshot_budget_bytes": {
+    "combined_existing": 1741426688,
+    "ceiling": 2147483648,
+    "headroom": 406056960,
+    "four_gate_reserve": 67108864,
+    "browser_launch_reserve": 436207616,
+    "browser_shortfall_before_thin_seed": 30150656,
+    "whole_six_increment_excluding_thin_seed": 1677721600,
+    "whole_six_shortfall_before_thin_seed": 1271664640
+  },
+  "source_or_ref_written": false,
+  "note": "單次唯讀容量快照；並非後續准入。主代理處理實際安全資源，這裡不清理。",
+  "protected_metadata_roots": [
+    "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+    "/workspace/geometry-axiom"
+  ]
+}

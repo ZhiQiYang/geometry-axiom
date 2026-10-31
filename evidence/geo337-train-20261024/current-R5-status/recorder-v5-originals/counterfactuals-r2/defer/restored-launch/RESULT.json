@@ -1,0 +1,22 @@
+{
+  "phase": "restored",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tests/test_recorder_contract.py",
+    "--tools",
+    "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer/tools",
+    "--out",
+    "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer/restored-result",
+    "--only",
+    "defer"
+  ],
+  "cwd": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer",
+  "started_epoch": 1792816619.1740987,
+  "ended_epoch": 1792816619.2776554,
+  "actual_exit": 0,
+  "expected_exit": 0,
+  "modified_leaf": "run.py",
+  "leaf_sha256": "881d618cd06b3edddf10a6676504923bbd982c8901c632410db434cfd480e849",
+  "scope": "Synthetic external collector contract, not product mutation or performance qualification"
+}

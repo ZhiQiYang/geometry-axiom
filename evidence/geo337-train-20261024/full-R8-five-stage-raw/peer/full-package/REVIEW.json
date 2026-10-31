@@ -1,0 +1,55 @@
+{
+  "schema": "geo323-r8-full-package-actual-peer/1",
+  "utc": "2026-10-25T07:01:47.359624+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "archive_sha256": "4503955cefc6fb1a6491ad2a146c259e59a2185401d0fbebc09908a47e3bf9d0",
+  "archive_bytes": 31362296,
+  "members": 9057,
+  "original_bytes_verified": 111407792,
+  "all_selected_members_and_originals_match": true,
+  "elf_payloads_retained_and_hash_only": 7,
+  "product_execution_exit": 1,
+  "compare_execution_exit": 1,
+  "performance_targets_all_met": true,
+  "original_stage_exits": [
+    0,
+    0,
+    1,
+    0,
+    0
+  ],
+  "original_cli_exits": [
+    0,
+    0,
+    1,
+    1,
+    1
+  ],
+  "ABC_result_present": false,
+  "all_required_stages_completed": false,
+  "full_acceptance_passed": null,
+  "collection_exits": [
+    0,
+    0
+  ],
+  "collection_tool_exit": 0,
+  "product_reruns": 0,
+  "published": false,
+  "bindings": {
+    "/tmp/geo323-r8-full-package-20261025/PACKAGE.json": "823ed195eb27a0dd5a4e96994fd01f0e37482f38c73cd03aad134dd6eee5dbbc",
+    "/tmp/geo323-r8-full-package-20261025/RAW_INVENTORY.json": "1136cfce6ec822b18bec2e782ca67eb24b5d02c25e4620a9f833453efe8e2c57",
+    "/tmp/geo323-r8-collection-preparation-20261025/PLAN.json": "8c7758c125b3dc83ff10ae57dbeef85e3641f9d4648cd66f956c6bd46a290742",
+    "/tmp/geo323-r8-collection-preparation-20261025/COLLECTOR_PINS.json": "827be6338ea342392999cb0fa9641a81030937895bc1bf74eb102f60aa06f684",
+    "/tmp/geo323-r8-collection-preparation-20261025/collection-outer/RESULT.json": "292b2f76904c9aaadefa9971d34bc1eadbe5e5139bdab8d63e894802bed72a46",
+    "/tmp/geo323-r8-collection-preparation-20261025/COLLECTION_TOOL_INITIAL.json": "74b43ce984d9d2e339b46edc5cf211d2e81032fa9e897bcf1bcb5e2a985c2f27",
+    "/tmp/geo323-r8-collection-preparation-20261025/COLLECTION_TOOL_FINAL.json": "b8b1dc7069aa3b8310e9f3983ed3bc05f2c282d6d76ce9425c5d59028590ddf4",
+    "/tmp/geo323-r8-full-package-actual-peer-20261025/review.py": "2a82bec45a5d79086c0871670465544aa45affde13f253cdb93e34d5ab56aa39"
+  },
+  "limits": [
+    "Archive preservation success does not resolve exact comparison or required CI blockers.",
+    "Historical preparation README/PROVENANCE intentionally retain original unexecuted state; actual results establish completion separately.",
+    "No subject rerun, Git write, source/receipt deletion or threshold change."
+  ]
+}

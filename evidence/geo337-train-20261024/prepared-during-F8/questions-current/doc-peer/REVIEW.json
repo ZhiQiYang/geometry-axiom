@@ -1,0 +1,101 @@
+{
+  "schema": "geo337-small-document-diff-peer-v1",
+  "utc": "2026-10-25T08:25:53.373134+00:00",
+  "subject": "/tmp/geo337-R8-questions-current-20261025.md",
+  "sha256": "7b2261f8353f16b7912231b5f8fb3a1719ffc2a34ed5b6e7e5c09260005029fc",
+  "baseline_commit": "996aeded246090de87efc631a29cb7e4b5585d30",
+  "passed": true,
+  "exit": 0,
+  "checks": [
+    {
+      "check": "subject_sha",
+      "passed": true
+    },
+    {
+      "check": "original_git_read_exit0",
+      "passed": true
+    },
+    {
+      "check": "original_title_exact_retained_once",
+      "passed": true
+    },
+    {
+      "check": "historical_body_byte_exact",
+      "passed": true
+    },
+    {
+      "check": "fixed_F8",
+      "passed": true
+    },
+    {
+      "check": "N16_original_value",
+      "passed": true
+    },
+    {
+      "check": "N32_original_value",
+      "passed": true
+    },
+    {
+      "check": "N48_original_value",
+      "passed": true
+    },
+    {
+      "check": "N64_original_value",
+      "passed": true
+    },
+    {
+      "check": "sourcecalls_original_value",
+      "passed": true
+    },
+    {
+      "check": "compare_remains_1",
+      "passed": true
+    },
+    {
+      "check": "ABC_absent_null_not_pass",
+      "passed": true
+    },
+    {
+      "check": "three_exact_differences",
+      "passed": true
+    },
+    {
+      "check": "scope_B′",
+      "passed": true
+    },
+    {
+      "check": "scope_C具名三pair政策均未批准、未實作",
+      "passed": true
+    },
+    {
+      "check": "scope_不能把Q-323的任何裁決自動套用",
+      "passed": true
+    },
+    {
+      "check": "scope_required CI未解除",
+      "passed": true
+    },
+    {
+      "check": "scope_後續證據head的CI未讀",
+      "passed": true
+    },
+    {
+      "check": "scope_本次不更改公理或決策",
+      "passed": true
+    },
+    {
+      "check": "scope_不宣稱這些工作已完成",
+      "passed": true
+    },
+    {
+      "check": "scope_219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6",
+      "passed": true
+    }
+  ],
+  "scope": "只審新增現況段及舊正文完整位元組保留；原標題仍在檔首。未重測或改裁判，CI沿用已審NEXT/正文之歷史分類，不宣稱較新CI已讀。",
+  "source_summary_sha256": "23c0b08133a48285bb7fd75192a9b05a2fb190fa04ca5dc5cadfb28e28a4e5dd",
+  "limitations": [
+    "不是產品驗收或核可B′/C/P189政策",
+    "未修改任何Git分支/index/ref，未推送"
+  ]
+}

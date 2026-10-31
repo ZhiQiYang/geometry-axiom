@@ -1,0 +1,334 @@
+{
+  "schema": "geo337-four-browser-collector-static-peer/1",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 78,
+  "collector_sha256": "7675c2af1de19a193195267245f57b10192a4a684cfd54654dd1d4cf3539da25",
+  "launcher_sha256": "c7bcd2e95400aa6a18babfdaca7f68ad67f1cf8537ac58a57802cac8b1ae42d7",
+  "pins_sha256": "8473aa1a11bfb4188c9d080d8648d0a51d569df1101b4b665ea8ee8c8a1c111f",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "reviewed_utc": "2026-10-25T14:07:03.475428+00:00",
+  "checked": [
+    {
+      "check": "frozen subject manifest",
+      "pass": true
+    },
+    {
+      "check": "exact subject ASSEMBLY_TO_FOUR_JOB.diff",
+      "pass": true
+    },
+    {
+      "check": "exact subject DELTA_PREPARATION.json",
+      "pass": true
+    },
+    {
+      "check": "exact subject FOUR_JOB_V1_TO_V2.diff",
+      "pass": true
+    },
+    {
+      "check": "exact subject README.md",
+      "pass": true
+    },
+    {
+      "check": "exact subject SCOPE.pending-final.json",
+      "pass": true
+    },
+    {
+      "check": "exact subject V2_PREPARATION.json",
+      "pass": true
+    },
+    {
+      "check": "exact subject collect_four_browser_terminal.py",
+      "pass": true
+    },
+    {
+      "check": "exact subject collect_four_browser_terminal_v2.py",
+      "pass": true
+    },
+    {
+      "check": "exact subject launch_four_job_collection.py",
+      "pass": true
+    },
+    {
+      "check": "exact subject prepare_failure_preserving_delta.py",
+      "pass": true
+    },
+    {
+      "check": "exact subject prepare_four_job_delta.py",
+      "pass": true
+    },
+    {
+      "check": "accepted original assembly collector",
+      "pass": true
+    },
+    {
+      "check": "original static/actual peer geo337-assembly-terminal-static-peer-20261025",
+      "pass": true
+    },
+    {
+      "check": "original static/actual peer geo337-assembly-terminal-package-actual-peer-20261025",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper need",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper sha",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper digest",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper J",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper write",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper safe",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper state",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper overhead",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper verify",
+      "pass": true
+    },
+    {
+      "check": "unchanged original helper add_file",
+      "pass": true
+    },
+    {
+      "check": "unchanged source/root/resource/pin F",
+      "pass": true
+    },
+    {
+      "check": "unchanged source/root/resource/pin OWN",
+      "pass": true
+    },
+    {
+      "check": "unchanged source/root/resource/pin SHM",
+      "pass": true
+    },
+    {
+      "check": "unchanged source/root/resource/pin POLICY",
+      "pass": true
+    },
+    {
+      "check": "unchanged source/root/resource/pin TARGET",
+      "pass": true
+    },
+    {
+      "check": "unchanged source/root/resource/pin RESERVE",
+      "pass": true
+    },
+    {
+      "check": "unchanged source/root/resource/pin CAP",
+      "pass": true
+    },
+    {
+      "check": "unchanged source/root/resource/pin CAP_PIN",
+      "pass": true
+    },
+    {
+      "check": "four exact jobs/short roots/original CI limits",
+      "pass": true
+    },
+    {
+      "check": "four original2MiB metadata allowances;64MiB reserve intact",
+      "pass": true
+    },
+    {
+      "check": "complete original grouping/tar/header/gzip/roundtrip/closure/reserve tail unchanged",
+      "pass": true
+    },
+    {
+      "check": "complete actual diff ASSEMBLY_TO_FOUR_JOB.diff",
+      "pass": true
+    },
+    {
+      "check": "complete actual diff FOUR_JOB_V1_TO_V2.diff",
+      "pass": true
+    },
+    {
+      "check": "all four terminal keys required",
+      "pass": true
+    },
+    {
+      "check": "unexpected retry not silently omitted",
+      "pass": true
+    },
+    {
+      "check": "actual host/sampler/launcher terminal chain",
+      "pass": true
+    },
+    {
+      "check": "workflow real integer exit independently retained",
+      "pass": true
+    },
+    {
+      "check": "CI original10/15/15/20 andwatchdog3 unchanged",
+      "pass": true
+    },
+    {
+      "check": "actual CI red retained not replaced0",
+      "pass": true
+    },
+    {
+      "check": "checkout equality recorded without suppressing red",
+      "pass": true
+    },
+    {
+      "check": "sampling false preserved",
+      "pass": true
+    },
+    {
+      "check": "source guard terminal true code retained",
+      "pass": true
+    },
+    {
+      "check": "unique last reaper terminal",
+      "pass": true
+    },
+    {
+      "check": "reaper binds original workflow notwrapper",
+      "pass": true
+    },
+    {
+      "check": "original capture actual code linked",
+      "pass": true
+    },
+    {
+      "check": "perjob plan pinned",
+      "pass": true
+    },
+    {
+      "check": "perjob materialize originalzero",
+      "pass": true
+    },
+    {
+      "check": "perjob plan/materialize host pins",
+      "pass": true
+    },
+    {
+      "check": "full launch root",
+      "pass": true
+    },
+    {
+      "check": "full storage root",
+      "pass": true
+    },
+    {
+      "check": "full sampler root",
+      "pass": true
+    },
+    {
+      "check": "four source plans",
+      "pass": true
+    },
+    {
+      "check": "four original materialization roots",
+      "pass": true
+    },
+    {
+      "check": "four original planning roots",
+      "pass": true
+    },
+    {
+      "check": "original only source Git/latest exclusion",
+      "pass": true
+    },
+    {
+      "check": "socket limitation explicit",
+      "pass": true
+    },
+    {
+      "check": "no deliveryclaim",
+      "pass": true
+    },
+    {
+      "check": "archive success not productacceptance",
+      "pass": true
+    },
+    {
+      "check": "product actual peers remain publicationrequirement",
+      "pass": true
+    },
+    {
+      "check": "launcher exactcollector pin",
+      "pass": true
+    },
+    {
+      "check": "launcher selfpeer binding",
+      "pass": true
+    },
+    {
+      "check": "exactfour terminal bindings",
+      "pass": true
+    },
+    {
+      "check": "exactthree pins each job",
+      "pass": true
+    },
+    {
+      "check": "each real fixedhost file pin",
+      "pass": true
+    },
+    {
+      "check": "freshoriginal/package",
+      "pass": true
+    },
+    {
+      "check": "root closed-source lease in explicit request",
+      "pass": true
+    },
+    {
+      "check": "originalcapture retained",
+      "pass": true
+    },
+    {
+      "check": "actual nonzero collector captured",
+      "pass": true
+    },
+    {
+      "check": "outerdoesnotclaimdelivery",
+      "pass": true
+    },
+    {
+      "check": "snapshot remains allunbound",
+      "pass": true
+    },
+    {
+      "check": "noactualcollection claimed",
+      "pass": true
+    },
+    {
+      "check": "pre-workflow failure needs newexplicit scope",
+      "pass": true
+    },
+    {
+      "check": "oldobservedvalues not finalproof",
+      "pass": true
+    }
+  ],
+  "scope": "Static existing-tool AST/diff/pin review only. No collector/main import or execution, no actual SHM or active payload read, no tests or archive creation.",
+  "terminal_inputs": "UNBOUND. This peer approves logic only; root must bind all 4x3 actual host finals and hold closed/no-more-guard-writes lease after all four jobs end.",
+  "limitations": [
+    "No actual documents/grid/space/timber raw or host schema verified here; actual binds and package roundtrip are later steps.",
+    "An early aborted run lacking workflow/reaper/sourceguard records fails closed, requiring explicitly reviewed scope rather than omission.",
+    "Additional retry request filenames fail before payload enumeration; no choosing only a green attempt.",
+    "Product actual peers must be attached separately during publication; collection0 never turns original workflow/CI/guard red green.",
+    "All originals/Git objects retained. SHM archives are volatile and not delivered until normal push and complete remote bytes/hash/OID verification."
+  ]
+}

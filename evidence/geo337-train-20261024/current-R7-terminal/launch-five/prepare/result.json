@@ -1,0 +1,44 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py",
+    "--repo",
+    "/tmp/geo323-final-r7-source-20261024",
+    "--sha",
+    "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+    "--base",
+    "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+    "--main",
+    "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "--out",
+    "/tmp/g337323R7",
+    "--heavy-lock",
+    "/tmp/g337323R7/stage.lock",
+    "--stage",
+    "prepare"
+  ],
+  "cwd": "/tmp/geo323-final-r7-source-20261024",
+  "source_sha": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "stage": "prepare",
+  "started_utc": "2026-10-24T06:36:52.713307+00:00",
+  "actual_process_exit": 0,
+  "stdout_sha256": "2d2a10d6275bb8affb8902d0aed990a57fcf93b81bce41354757fae815d038d7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "original_stage": {
+    "started_utc": "2026-10-24T06:36:52.843403+00:00",
+    "execution_exit": 0,
+    "source_before": {
+      "head": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+      "status": ""
+    },
+    "source_after": {
+      "head": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+      "status": ""
+    },
+    "errors": [],
+    "ended_utc": "2026-10-24T06:36:54.468198+00:00"
+  },
+  "original_quantitative_targets": {},
+  "original_full_acceptance_passed": null
+}

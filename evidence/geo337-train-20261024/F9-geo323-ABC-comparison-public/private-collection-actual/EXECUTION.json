@@ -1,0 +1,24 @@
+{
+  "command": "python3 -B /workspace/geo323-F9-SHM-collection-actual-20261025/check_roundtrip.py > /workspace/geo323-F9-SHM-collection-actual-20261025/check.stdout 2> /workspace/geo323-F9-SHM-collection-actual-20261025/check.stderr",
+  "cwd": "/workspace",
+  "sandbox_permissions": "require_escalated",
+  "original_exec_tool_result": {
+    "chunk_id": "cddf74",
+    "wall_time_seconds": 0.325170446,
+    "exit_code": 0,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "checker_sha256": "663708b87f402660e41d948d18f01ec137bc6a60bb093f415038d3005bc74fbc",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "stdout": {
+    "bytes": 135,
+    "sha256": "3e74f96755ccf76a1451b3200ea727805b47a62f76aca6835dab1bb62c84ec2b"
+  },
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "SHM_writes": false,
+  "product_execution": false
+}

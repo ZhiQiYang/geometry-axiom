@@ -73,7 +73,7 @@ static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source
         if(geo_source_ref_equal(ctx->nodes[i]->source,source))return i;
     return SIZE_MAX;
 }
-static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge)
+static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge,size_t *empty_slot)
 {
     if(ctx->edge_index_capacity){
         size_t mask=ctx->edge_index_capacity-1,slot=(size_t)geo_source_edge_hash(edge)&mask;
@@ -81,12 +81,13 @@ static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge)
             if(geo_source_edge_equal(ctx->edges[ctx->edge_index[slot]-1],edge))return true;
             slot=(slot+1)&mask;
         }
+        *empty_slot=slot;
     }else for(size_t i=0;i<ctx->edge_count;++i)
         if(geo_source_edge_equal(ctx->edges[i],edge))return true;
     return false;
 }
 /* 負載最多一半；新表建好才換入。失敗後舊表不完整，須改走線性搜尋。 */
-static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
+static void geo_source_index_append(GeoEvalContext *ctx,bool nodes,size_t empty_slot)
 {
     size_t **table=nodes?&ctx->node_index:&ctx->edge_index;
     size_t *capacity=nodes?&ctx->node_index_capacity:&ctx->edge_index_capacity;
@@ -97,8 +98,11 @@ static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
         if(next>SIZE_MAX/sizeof **table)goto fallback;
         size_t *fresh=calloc(next,sizeof *fresh);
         if(!fresh)goto fallback;
-        free(*table);*table=fresh;*capacity=next;first=0;
+        free(*table);*table=fresh;*capacity=next;first=0;empty_slot=SIZE_MAX;
     }
+    /* A missing edge already probed this unchanged index to an empty slot.
+     * Rebuilding discards that slot; allocation fallback stays linear. */
+    if(empty_slot<*capacity&&!(*table)[empty_slot]){(*table)[empty_slot]=count;return;}
     for(size_t i=first;i<count;++i){
         uint64_t hash=nodes?geo_source_node_hash(ctx->nodes[i]->source):geo_source_edge_hash(ctx->edges[i]);
         size_t mask=*capacity-1,slot=(size_t)hash&mask;
@@ -181,7 +185,9 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
     if(!ctx||!index||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
     ctx->started=true;
     /* 只快取既有身分的插入序號；碰撞仍完整比對 K 持有的鍵。 */
-    size_t slot=(size_t)source.provider^source.key_size;
+    /* Mix only the provider bucket; collisions still require exact key equality. */
+    uint32_t provider_hint=(uint32_t)(source.provider*UINT32_C(2654435761));
+    size_t slot=(size_t)(provider_hint>>24)^source.key_size;
     if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}
     slot&=255;
     size_t hint=ctx->node_hint[slot];
@@ -201,19 +207,20 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
     if(!next){free((void *)source.key);free(node);return GEO_SOURCE_MEMORY;}
     ctx->nodes=next;node->source=source;node->provider=provider;node->status=GEO_SOURCE_OK;
     *index=ctx->node_count;next[ctx->node_count++]=node;
-    geo_source_index_append(ctx,true);ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
+    geo_source_index_append(ctx,true,SIZE_MAX);ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
 }
 static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDependencyKind kind)
 {
     if(kind<GEO_DEPENDENCY_VALUE_REQUIRED||kind>GEO_DEPENDENCY_EVALUATE_BEFORE)return GEO_SOURCE_INVALID;
     if(ctx->active==SIZE_MAX)return GEO_SOURCE_OK;
     GeoSourceEdge edge={ctx->active,source,kind};
-    if(geo_source_find_edge(ctx,edge))return GEO_SOURCE_OK;
+    size_t empty_slot=SIZE_MAX;
+    if(geo_source_find_edge(ctx,edge,&empty_slot))return GEO_SOURCE_OK;
     if(ctx->edge_count==SIZE_MAX/sizeof *ctx->edges)return GEO_SOURCE_MEMORY;
     GeoSourceEdge *next=geo_source_grow(ctx->edges,ctx->edge_count,&ctx->edge_capacity,sizeof *next);
     if(!next)return GEO_SOURCE_MEMORY;
     ctx->edges=next;next[ctx->edge_count++]=edge;
-    geo_source_index_append(ctx,false);return GEO_SOURCE_OK;
+    geo_source_index_append(ctx,false,empty_slot);return GEO_SOURCE_OK;
 }
 static bool geo_source_descriptor_valid(const GeoSourceDescriptor *d)
 {

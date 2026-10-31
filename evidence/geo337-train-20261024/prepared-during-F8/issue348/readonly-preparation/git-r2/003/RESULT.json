@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "-C",
+    "/workspace/geo348-F0f695866-source",
+    "show",
+    "0f695866c0ba12d2c70dfd7d40628d0fda0f905f:tests/geo300_scene_generator.py"
+  ],
+  "exit": 0,
+  "stdout_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

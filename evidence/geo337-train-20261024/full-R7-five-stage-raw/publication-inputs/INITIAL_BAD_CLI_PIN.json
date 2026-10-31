@@ -1,0 +1,11 @@
+{
+  "classification": "publisher invocation parameter error; blocked before output directory creation or any Git command",
+  "provided_manifest_sha256": "8c0378a884b7792f274ff378ad3973b4e630ad453c04582f07ebc283c567ca37",
+  "actual_manifest_sha256": "53ceef8b0b3c22b434ac64c093b132f1026b55724dd35655d467e89e3926994e",
+  "observed_exit_code": 1,
+  "observed_chunk_id": "7dea85",
+  "observed_stdout": "",
+  "observed_combined_output": "Traceback (most recent call last):\n  File \"/tmp/publish_geo337_evidence_tree_20261024.py\", line 178, in <module>\n    main()\n  File \"/tmp/publish_geo337_evidence_tree_20261024.py\", line 39, in main\n    require(sha(raw) == args.manifest_sha256, 'manifest pin changed')\n  File \"/tmp/publish_geo337_evidence_tree_20261024.py\", line 25, in require\n    raise RuntimeError(message)\nRuntimeError: manifest pin changed\n",
+  "product_or_original_test_receipts_modified": false,
+  "recovery": "Use the actual printed final manifest SHA256. Keep the guard and original manifest bytes unchanged."
+}

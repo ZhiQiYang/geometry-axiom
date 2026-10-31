@@ -1,0 +1,28 @@
+{
+  "schema": "geo337-r8-three-exact-triage-independent-peer/1",
+  "utc": "2026-10-25T07:11:40.384029+00:00",
+  "reviewer": "/root/r8_terminal_peer",
+  "checks": 423,
+  "exit": 1,
+  "findings": [
+    "full introducing patch bytes"
+  ],
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "fixed_base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "introduced_commit": "6366304eb787b2a50282e4132f45e51eb7d21290",
+  "introduced_parent": "4b665fae21ab63aaffb7d84f6a32d5a469ba1675",
+  "files": 150,
+  "original_compare_exit": 1,
+  "new_policy_accepted": false,
+  "report_sha256": "aa32072079aef244e04c098916ca3bcf063c709ddac0c08c112d007ea8ce426c",
+  "facts_sha256": "bbb66b1f5f19ede946a10ce40987569cda71c75578e597e7557fd5d0b5b00849",
+  "final_inventory_sha256": "5e65d556c20e8e591aa0929c97a31695ae295b812e0b86753014e41d5f5da0b2",
+  "questions_sha256": "647026430081a6b04e6f8f5561c7dd44e91a4d985976734f201a60dc3ff240e0",
+  "independent_git_reads": 21,
+  "limits": [
+    "Read-only evidence and contract review; no C, mutation, performance or P189 execution.",
+    "Per-scene guard values verified against original equivalence report, not independently reconstructed from unavailable historical guard file payloads.",
+    "No lawful product-only repair identified under unchanged full old-base bytes plus explicit current diagnostic assertions; this is scoped to current documented contracts, not a proof about every conceivable future design.",
+    "Initial report ambiguity between maintained option A and unadopted B/C corrected before final review; source facts and original collector receipts unchanged."
+  ]
+}

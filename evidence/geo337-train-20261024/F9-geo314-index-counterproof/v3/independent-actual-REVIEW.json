@@ -1,0 +1,330 @@
+{
+  "schema": "geo314-v3-independent-actual-peer/1",
+  "created_utc": "2026-10-25T14:49:50.946462+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "executor_sha256": "74651aa907fc3f280592ac7a1f63f8d9d912f1adaa31ffc2ffe8c428d6fee568",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "source_variant": "F9 plus temporary reviewed test patch/named K probes, private indexes; final restored F9",
+  "checks": [
+    {
+      "check": "all originalSHM reads formally approved0",
+      "passed": true
+    },
+    {
+      "check": "independent349 rawchecks0",
+      "passed": true
+    },
+    {
+      "check": "original host49876 terminal0",
+      "passed": true
+    },
+    {
+      "check": "original hostsummary agrees",
+      "passed": true
+    },
+    {
+      "check": "exact alreadyreviewed executor/currentbytes",
+      "passed": true
+    },
+    {
+      "check": "focused pass no nativepass claim",
+      "passed": true
+    },
+    {
+      "check": "head/tree/status/refs and sharedindex guards",
+      "passed": true
+    },
+    {
+      "check": "actual38 commands76streams counts corrected",
+      "passed": true
+    },
+    {
+      "check": "oldv2 original red retained",
+      "passed": true
+    }
+  ],
+  "approved_raw_checks": 349,
+  "approved_raw_check_failures": [],
+  "host_original_exit": 0,
+  "counterproof_original_exit": 0,
+  "counterproof_passed": true,
+  "formal_F9_pass": false,
+  "formal_F9_native_original_exit_unchanged": 1,
+  "full11_and_four_K_phase_actuals": [
+    {
+      "name": "fixed-full11",
+      "actual_exit": 0,
+      "counts": {
+        "total": 11,
+        "run": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0,
+        "blocked_by_error": 0,
+        "extra_errors": 0
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "withdrawn-original-full11",
+      "actual_exit": 1,
+      "counts": {
+        "total": 11,
+        "run": 11,
+        "passed": 10,
+        "failed": 1,
+        "skipped": 0,
+        "blocked_by_error": 0,
+        "extra_errors": 0
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "f4f4fed9677b093bf0d16be185717a1e1959e5f1e887470523eb4c8333ee85cc"
+    },
+    {
+      "name": "restored-full11",
+      "actual_exit": 0,
+      "counts": {
+        "total": 11,
+        "run": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0,
+        "blocked_by_error": 0,
+        "extra_errors": 0
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "negative-existing-K-0",
+      "actual_exit": 1,
+      "counts": {
+        "total": 1,
+        "expected_exit": 1
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "restored-existing-K-0",
+      "actual_exit": 0,
+      "counts": {
+        "total": 1,
+        "expected_exit": 0
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "negative-existing-K-1",
+      "actual_exit": 1,
+      "counts": {
+        "total": 1,
+        "expected_exit": 1
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "restored-existing-K-1",
+      "actual_exit": 0,
+      "counts": {
+        "total": 1,
+        "expected_exit": 0
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "negative-new-K-0",
+      "actual_exit": 1,
+      "counts": {
+        "total": 1,
+        "expected_exit": 1
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/staged-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "restored-new-K-0",
+      "actual_exit": 0,
+      "counts": {
+        "total": 1,
+        "expected_exit": 0
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "negative-new-K-1",
+      "actual_exit": 1,
+      "counts": {
+        "total": 1,
+        "expected_exit": 1
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    },
+    {
+      "name": "restored-new-K-1",
+      "actual_exit": 0,
+      "counts": {
+        "total": 1,
+        "expected_exit": 0
+      },
+      "private_index": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/phase-index",
+      "test_sha256": "3ace33248d6ce39b869bf09319315544610311c2ddb8434ad8a57d6a90a9f032"
+    }
+  ],
+  "actual_command_count": 38,
+  "actual_original_stdout_stderr_streams": 76,
+  "actual_command_returncode_distribution": {
+    "0": 31,
+    "1": 7
+  },
+  "nonzero_classification": {
+    "named_test_expected_ones": 5,
+    "check_ignore_expected_not_ignored_ones": 2,
+    "unexpected_red_commands": 0
+  },
+  "original_raw_stream_manifest_sha256": "a567c40eeb1c5ad3a941b85ecb88a3b35b75a1c3029d261d3ed01b013726bde1",
+  "Git_environment_manifest_sha256": "a2460bf39a87cfe04a716687aa715f514c100ab869cfc0b99e59e588da40fee9",
+  "original_source_before_after": {
+    "before": {
+      "head": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "tree": "7e937217cc1d40e2caa77b7e2fe7f3524b52fa8d",
+      "status": "",
+      "refs_sha256": "c38d0dc878a174bebd555582c921eb61334f9b58f2d19d9a2870932c9a3efa09"
+    },
+    "after": {
+      "head": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "tree": "7e937217cc1d40e2caa77b7e2fe7f3524b52fa8d",
+      "status": "",
+      "refs_sha256": "c38d0dc878a174bebd555582c921eb61334f9b58f2d19d9a2870932c9a3efa09"
+    },
+    "equal": true
+  },
+  "original_index_expected": {
+    "path": "/tmp/train337-323-f64d638f-source/.git/index",
+    "sha256": "ad03de61dae2e621503443050fb230baf80e2192bd84662140c9e73d597163c2",
+    "metadata": {
+      "dev": 34,
+      "inode": 3692797,
+      "mode": 33152,
+      "uid": 1000,
+      "gid": 1000,
+      "nlink": 1,
+      "size": 6575523,
+      "mtime_ns": 1792937487519429135,
+      "atime_ns": 1792937487528157009
+    }
+  },
+  "original_index_snapshot": {
+    "path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/ORIGINAL_INDEX.bin",
+    "bytes": 6575523,
+    "sha256": "ad03de61dae2e621503443050fb230baf80e2192bd84662140c9e73d597163c2"
+  },
+  "source_backups_equal_original_captured_F9_Git_blobs": [
+    {
+      "path": "tests/test_geo314_commit_paths.py",
+      "sha256": "f4f4fed9677b093bf0d16be185717a1e1959e5f1e887470523eb4c8333ee85cc",
+      "bytes": 21890
+    },
+    {
+      "path": "geometry-core/kernel/source.c",
+      "sha256": "64c7a6223be0e824232bc0ec0139a3728606fb9666a991a951b5aa9357cf3e09",
+      "bytes": 17442
+    },
+    {
+      "path": "geometry-core/kernel/candidate.c",
+      "sha256": "f8dd422f016d5cd12cda5bbfcddc0c09864676cc211134697b245b30b470cc77",
+      "bytes": 12611
+    }
+  ],
+  "per_command_real_index_guard": {
+    "operational_commands": 38,
+    "all_runtime_guards_passed": true,
+    "definition": "exact7465executor cmd() after every original process compares real index rawbytes and read_owned dev/inode/mode/uid/gid/nlink/size/mtime/atime to initial; full original0 and errors[] establish all assertions reached/passed",
+    "separate_per_command_real_index_snapshot_saved": false,
+    "current_NATIVE_read_by_reviewer": false
+  },
+  "restoration": {
+    "restoration_errors": [],
+    "diagnostic_errors": [],
+    "shared_index_unchanged": true,
+    "temporary_three_owned_leaves_restored_by_runtime_checks": true,
+    "new_probe_paths_absent_by_final_runtime_check": true,
+    "ctime_restored_claim": false,
+    "product_or_test_commit_created": false
+  },
+  "historical_v2": {
+    "scope": "僅讀原v2歷史SHM收據，不讀當前NATIVE",
+    "path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v2-20261025/RESULT.json",
+    "bytes": 36387,
+    "sha256": "92917bb2e49003e9ef65353fc94bb20a6225c87037a769632dd4df72ed8d9b04",
+    "exit_code": 1,
+    "counterproof_passed": true,
+    "formal_F9_pass": false,
+    "restoration_error_count": 1,
+    "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9"
+  },
+  "historical_writer_root_cause": "NOT_FULLY_ESTABLISHED; new run proves current isolation and restoration only",
+  "read_only_scope": "Only formally approved SHM receipts/full38 CLI streams/env/reapers/3backup leaves and originalindexsnapshot; no current NATIVE or Git commands, no test rerun.",
+  "limits": [
+    "38 is actual originalcommand count, correcting assignment shorthand35. All38 request/result/stdin/fullstdoutstderr/hash and GIT_ENVIRONMENT were independently read;76streams preserved.",
+    "Real index physical history is checked by pinned executor runtime assertions after each command, not by stored38 individual snapshots. Reviewer did not access now-active NATIVE or reconstruct nonexistent snapshots.",
+    "Source physical restoration derives exact runtime recover_saved guards/errors[] and final private-index Gitstatus/head/tree/refs; preserved backups independently match recorded F9 Gitshow outputs. ctime cannot be restored and is not claimed.",
+    "These are temporary-patch focused proofs: full11 fixed0/withdraw old exactsource.c1/restored0 plus4K named1→0, not a rerun of whole native suite or clean fixed finalSHA.",
+    "OriginalF9 native1, oldv2outer1 and historical writer uncertainty remain. Root may adopt reviewed patch in its batch; new finalSHA must receive affected formal acceptance.",
+    "No commit/merge/checkout/reset/clean/update-ref in captured commands; no branch changes by reviewer. Historical I24 separate tiny negative remains outside this execution."
+  ],
+  "pins": [
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/RESULT.json",
+      "bytes": 37355,
+      "sha256": "a9b355c1e4836c684390a160568684ec6c7c075badf2729d92f3b27416dca83a"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/commands/subcommands.json",
+      "bytes": 81359,
+      "sha256": "55d2f30a65b82af7c6290491e745c464c52defc6389a47f5d322005893ab885f"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/RECOVERY.json",
+      "bytes": 1880,
+      "sha256": "ac4d0aa443cb1aecf63d603fe6ede2d4ceb1ac5f281abb1f36a5b2a0799bc53b"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-root-request-20261025.json",
+      "bytes": 1099,
+      "sha256": "f3239211d8d9b60fe536bf4a00c6481cf7a5bdeccaa3422f8de96fdf773ce527"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo314-counterproof-v3-20261025/ORIGINAL_INDEX.bin",
+      "bytes": 6575523,
+      "sha256": "ad03de61dae2e621503443050fb230baf80e2192bd84662140c9e73d597163c2"
+    },
+    {
+      "path": "/workspace/geo314-F9-all-private-counterproof-EXEC_FINAL-20261025.json",
+      "bytes": 653,
+      "sha256": "0bda0853c90c04d98e7fc304a822fef24940be7ac3639da5c6e148344390f26e"
+    },
+    {
+      "path": "/workspace/geo314-F9-counterproof-all-private-index-preparation-20261025/run_counterproof_v3.py",
+      "bytes": 24828,
+      "sha256": "74651aa907fc3f280592ac7a1f63f8d9d912f1adaa31ffc2ffe8c428d6fee568"
+    },
+    {
+      "path": "/workspace/geo314-all-private-index-v3-static-peer-edr2n3g4/REVIEW.json",
+      "bytes": 8996,
+      "sha256": "ab398c2e2a357ea202f64bb1d39b2d64e5ba8385a96e97f91c6ff97295caf932"
+    },
+    {
+      "path": "/workspace/geo314-v3-independent-actual-peer-13jjxihs/APPROVED_READ_ORIGINAL.json",
+      "bytes": 15609,
+      "sha256": "2964433ce59becb538031fb53045d81a6df3aef6d2ed3863be1d2a2732cf0436"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "scope": "F8 legacy fallback only; does not discharge historical whole-341 B1",
+  "variants": [
+    "fixed",
+    "withdrawn",
+    "restored"
+  ],
+  "positive_cases": [
+    "ordering",
+    "regions",
+    "active-dedup",
+    "intervals",
+    "extensions",
+    "ends",
+    "indexed-dedup",
+    "indexed-sort"
+  ],
+  "cases": [
+    [
+      "none",
+      8
+    ],
+    [
+      "none",
+      32
+    ],
+    [
+      "none",
+      64
+    ],
+    [
+      "few",
+      8
+    ],
+    [
+      "few",
+      32
+    ],
+    [
+      "few",
+      64
+    ],
+    [
+      "dense",
+      8
+    ],
+    [
+      "dense",
+      32
+    ],
+    [
+      "dense",
+      64
+    ],
+    [
+      "fallback-none",
+      1217
+    ],
+    [
+      "fallback-dense",
+      1217
+    ],
+    [
+      "unique-none",
+      64
+    ],
+    [
+      "unique-few",
+      64
+    ],
+    [
+      "unique-dense",
+      64
+    ]
+  ],
+  "warmup_triplets": 1,
+  "scored_triplets": 7,
+  "alternating_order": true,
+  "collects_per_sample": 1,
+  "compile_timeout": 300,
+  "run_timeout": 20,
+  "compiler_flags": [
+    "-std=c11",
+    "-O2",
+    "-Werror=implicit-function-declaration"
+  ],
+  "timing_scope": "uninstrumented O2 full collect; fixture creation and output outside timers",
+  "performance_thresholds_added": false,
+  "Sc493_whole_withdrawal_executed": false
+}

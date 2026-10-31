@@ -1,0 +1,178 @@
+{
+  "schema": "F8-ledger-adoption-final-v4-static-peer/1",
+  "utc": "2026-10-25T09:27:09.785947+00:00",
+  "subject": "/tmp/adopt_geo337_F8_ledger_F9_v4_20261025.py",
+  "subject_sha256": "eb752a431c90ded1997fa5ceb7883527515392d294ac3836913a5bd42177f987",
+  "helper": "/tmp/geo337_git_blob_identity_20261025.py",
+  "helper_sha256": "0e1576af5fafe7a5a6c5aa3adae458ed07de9dabc5882e329d89a679d0a40dd7",
+  "passed": true,
+  "exit_code": 0,
+  "checks_performed": 38,
+  "checks": [
+    {
+      "check": "v4_pin",
+      "passed": true
+    },
+    {
+      "check": "helper_pin",
+      "passed": true
+    },
+    {
+      "check": "prior_draft_preserved:/tmp/adopt_geo337_F8_ledger_F9_20261025.py",
+      "passed": true
+    },
+    {
+      "check": "prior_draft_preserved:/tmp/adopt_geo337_F8_ledger_F9_v2_20261025.py",
+      "passed": true
+    },
+    {
+      "check": "prior_draft_preserved:/tmp/adopt_geo337_F8_ledger_F9_v3_20261025.py",
+      "passed": true
+    },
+    {
+      "check": "valid_python_syntax",
+      "passed": true
+    },
+    {
+      "check": "guard:need(set(peers)=={'actual_peer','package_peer'}",
+      "passed": true
+    },
+    {
+      "check": "guard:type(peer[item['exit_field']]) is int",
+      "passed": true
+    },
+    {
+      "check": "guard:need(peer['source_sha']==F8",
+      "passed": true
+    },
+    {
+      "check": "guard:need(peer['ledger_sha256']==LEDGER_HASH",
+      "passed": true
+    },
+    {
+      "check": "guard:need(set(bindings)=={'archive','index','actual_peer','package_peer'}",
+      "passed": true
+    },
+    {
+      "check": "guard:len({x['git_path'] for x in bindings.values()})==4",
+      "passed": true
+    },
+    {
+      "check": "guard:item['sha256']==peers[role]['sha256']",
+      "passed": true
+    },
+    {
+      "check": "guard:package_peer['ledger_sha256']==LEDGER_HASH",
+      "passed": true
+    },
+    {
+      "check": "guard:package_peer['archive_sha256']==bindings['archive']['sha256']",
+      "passed": true
+    },
+    {
+      "check": "guard:package_peer['index_sha256']==bindings['index']['sha256']",
+      "passed": true
+    },
+    {
+      "check": "guard:index['terminal']['formal_accepted'] is True",
+      "passed": true
+    },
+    {
+      "check": "guard:index['terminal']['terminal_files']['ledger']['sha256']==LEDGER_HASH",
+      "passed": true
+    },
+    {
+      "check": "guard:git('merge-base','--is-ancestor',F8,before)",
+      "passed": true
+    },
+    {
+      "check": "guard:git('show','-s','--format=%P',final)",
+      "passed": true
+    },
+    {
+      "check": "guard:blob_identity(final+':tests/mutants_results.json',sha=final)['sha256']==LEDGER_HASH",
+      "passed": true
+    },
+    {
+      "check": "guard:git('show',final+':'+PROGRESS,sha=final)[1]==new_progress",
+      "passed": true
+    },
+    {
+      "check": "guard:blob_identity(':tests/mutants_results.json')['sha256']==LEDGER_HASH",
+      "passed": true
+    },
+    {
+      "check": "guard:git('diff','--no-renames','--name-only','-z',F8,final",
+      "passed": true
+    },
+    {
+      "check": "guard:new_progress.startswith(old_progress)",
+      "passed": true
+    },
+    {
+      "check": "guard:not k.startswith(('GIT_','MUTATE_'))",
+      "passed": true
+    },
+    {
+      "check": "guard:[sys.executable,'-B','tests/mutate.py','--check']",
+      "passed": true
+    },
+    {
+      "check": "guard:git('push','origin','HEAD:refs/heads/'+BRANCH",
+      "passed": true
+    },
+    {
+      "check": "guard:need(h(item['original_path'])==item['sha256']",
+      "passed": true
+    },
+    {
+      "check": "guard:need(h(helper)=='0e1576af5fafe7a5a6c5aa3adae458ed07de9dabc5882e329d89a679d0a40dd7'",
+      "passed": true
+    },
+    {
+      "check": "no_force_rebase_reset",
+      "passed": true
+    },
+    {
+      "check": "final_blob_guard_precedes_push",
+      "passed": true
+    },
+    {
+      "check": "helper_complete_read",
+      "passed": true
+    },
+    {
+      "check": "helper_return_errors_nonzero",
+      "passed": true
+    },
+    {
+      "check": "helper_oid_real_NUL",
+      "passed": true
+    },
+    {
+      "check": "helper_discloses_internalpipe_not_receipt",
+      "passed": true
+    },
+    {
+      "check": "actual_schema_no_rewrite_needed",
+      "passed": true
+    },
+    {
+      "check": "package_schema_exact_roles",
+      "passed": true
+    }
+  ],
+  "resolved_initial_findings": [
+    "A1 exact named original/package peers plus four distinct published roles, true int0, exactsource/ledger/archive/index hashes.",
+    "A2 F8 ancestry, exact expected single parent, final committed ledger and PROGRESS bytes verified before normal push."
+  ],
+  "scope": "靜態完整閱讀v4及helper，前版bytes與既有peer schema核對；未執行採用工具、Git寫入、合成鏡像測試或產品測試。",
+  "resource_change": "7次大型Git blob仍讀完整bytes並在原c387記錄helper argv/UTC/env/exit/sha/size/OID，避免重複正文payload。原payload已在公開原件中，未冒內部pipe另存原收據。",
+  "launch_conditions": [
+    "root先完成exact archive/index/兩peer普通出版並綁新expected_parent；request與progress bytes須另核且不得為空/舊head。",
+    "root保持單一train owner與source凍結，明確新OUT/fresh容量；此工具不自行獲取跨工作線lease。",
+    "原F8 execution.head不改標；F9真trackedcheck及新公開SHA結果再由peer核，不預先宣告通過。"
+  ],
+  "adoption_executed": false,
+  "formal_test_executed": false
+}

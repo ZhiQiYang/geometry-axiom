@@ -1,0 +1,22 @@
+{
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "execute": true,
+  "root_execution_lease": true,
+  "collector_sha256": "65a25be44032bff390584123e86740c78e4ff0a5e7709b317b8f9e3fc785f820",
+  "inventory_sha256": "faf6d572986bea6efbb1d073fe602b0800f3970ddf039970ecc99a27e29b6ec9",
+  "parts_sha256": "2468a237d4c617eccec200fc1b7c3929b843f06490bfdd990efdbb76eaa6fd40",
+  "independent_peer": {
+    "path": "/workspace/geo337-F9-q38-collector-static-peer-20261025/REVIEW.json",
+    "sha256": "c969fa0574940e8628b4a76b6dd1401536a3e40ae8a28c490cf1c40225b54314"
+  },
+  "out": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-q38-terminal-package-20261025",
+  "root_admission": {
+    "shared_allocated_before_bytes": 650424320,
+    "incremental_planning_bytes": 85315157,
+    "shared_planning_ceiling_bytes": 2147483648,
+    "fresh_out_device_free_bytes": 17221455872,
+    "sampler_sha256": "919eafb54f20454ee44a27754ce04f6f63f05f6e1c9b32a5b51652058735af30",
+    "fresh_shared_plus_increment_within_ceiling": true,
+    "actual_collection_admitted": true
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "observed_utc": "2026-10-23 20:48 UTC",
+  "source_sha": "4f4a24d76e816274bfae06868b4dbf31f0860299",
+  "gate": "original full mutation ledger still running",
+  "id": "M118",
+  "original_verdict": "blocked",
+  "classification": "environment-storage",
+  "precise_failure": "  bridge：建置（找不到 /workspace/train337-ledger-cache-4f4a24d7/M118/bridge-restored/bridge）…\nbridge     編譯失敗           編得出來但無法啟動：[Errno 28] No space left on device: '/workspace/train337-ledger-cache-4f4a24d7/M118/bridge-restored/smoke' (winerror=None)\n",
+  "restored_phase_completed": false,
+  "product_assertion_failure_established": false,
+  "full_cli_exit": null,
+  "original_files": [
+    {
+      "source": "/workspace/train337-ledger-cache-4f4a24d7/M118/mutant-build.stdout",
+      "file": "mutant-build.stdout",
+      "bytes": 236,
+      "sha256": "9ed4519eac9e3ebd0fad8e697aa03604eedbf18de6c17529a08b3195519b14f4"
+    },
+    {
+      "source": "/workspace/train337-ledger-cache-4f4a24d7/M118/mutant.stdout",
+      "file": "mutant.stdout",
+      "bytes": 8814,
+      "sha256": "09cfb06efd6ecbb3ae1c4861f2dac8d693567b5fdee620e6e8cacc5bee9968de"
+    },
+    {
+      "source": "/workspace/train337-ledger-cache-4f4a24d7/M118/restored-build.stdout",
+      "file": "restored-build.stdout",
+      "bytes": 293,
+      "sha256": "a9d491449792d5f41571f6416a1588e06d9c81a8cd4c0ef2e5bce3d42c2dd254"
+    },
+    {
+      "source": "/workspace/train337-ledger-cache-4f4a24d7/M118/mutant-build.stderr",
+      "file": "mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/train337-ledger-cache-4f4a24d7/M118/mutant.stderr",
+      "file": "mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/train337-ledger-cache-4f4a24d7/M118/restored-build.stderr",
+      "file": "restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/tmp/train337-ledger-4f4a24d7-r2/full-launch-request.json",
+      "file": "full-launch-request.json",
+      "bytes": 7338,
+      "sha256": "f263afa786f4dbacb5cee975780cbe4bb0513db579d11b99856a7deaf8b5704c"
+    }
+  ],
+  "next": "Preserve this failed original run. Collect remaining IDs; rerun all 123 on the corrected published source with sufficient storage, retaining original limits and verdict policy."
+}

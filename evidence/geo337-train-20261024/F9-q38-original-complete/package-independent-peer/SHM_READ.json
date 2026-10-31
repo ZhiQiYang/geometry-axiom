@@ -1,0 +1,107 @@
+{
+  "schema": "Q38-package-independent-small-read/1",
+  "exit_code": 0,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "read_method": "formal require_escalated; only closed package/root-CLI metadata and entire compressed archive SHA",
+  "metadata_pins": [
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-q38-terminal-package-20261025/RESULT.json",
+      "bytes": 1838,
+      "sha256": "2839caadb95dd0fecdff7628687b735c19a73173151aa6739a571d5e1b7bc3ae"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-q38-terminal-package-20261025/ORIGINAL_INVENTORY.json",
+      "bytes": 60952,
+      "sha256": "faf6d572986bea6efbb1d073fe602b0800f3970ddf039970ecc99a27e29b6ec9"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-q38-terminal-package-20261025/ORIGINAL_PARTS.json",
+      "bytes": 16112,
+      "sha256": "2468a237d4c617eccec200fc1b7c3929b843f06490bfdd990efdbb76eaa6fd40"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-q38-terminal-package-20261025/PART1_BUDGET.json",
+      "bytes": 496,
+      "sha256": "40182028ca52144ca138a3930a0175d038c908190c1cf4791485fa8677085f63"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-q38-terminal-package-20261025/BOUND_REQUEST.json",
+      "bytes": 1066,
+      "sha256": "0a29c8ab4d46273665287c926b69c13be079199ff6e6d601a0408170d7e3f803"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/q38-collection-root-original-20261025/RESULT.json",
+      "bytes": 2324,
+      "sha256": "b92bf4ddcfe325bbd54a878ece40b8470699d5f92c58592adc7ac77c175b5c7c"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/q38-collection-root-original-20261025/ROOT_REQUEST.json",
+      "bytes": 1066,
+      "sha256": "0a29c8ab4d46273665287c926b69c13be079199ff6e6d601a0408170d7e3f803"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/q38-collection-root-original-20261025/subcommands/000001/request.json",
+      "bytes": 1767,
+      "sha256": "b878c88acafc827c1a675929a4dce32fe5cf175075f7aca548ea89250bcfed5a"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/q38-collection-root-original-20261025/subcommands/000001/result.json",
+      "bytes": 2019,
+      "sha256": "0c9e23cda97a6073b26cfd2f2c2ca71784f94ec65ed8e984b67c830fff4822a8"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/q38-collection-root-original-20261025/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/q38-collection-root-original-20261025/subcommands/000001/stdout.bin",
+      "bytes": 2232,
+      "sha256": "d0f377fcb41ebed1544a585d2ac97bd82a39aa849f3aa0659d8c45ca7db46577"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/q38-collection-root-original-20261025/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "archive": {
+    "path": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-q38-terminal-package-20261025/ORIGINAL_Q38_PART1.tar.gz",
+    "bytes": 3194792,
+    "sha256": "6f75122f2588795696b4fb15cb25fa51af031f194b544a095a798dc7752564cf",
+    "stable_during_read": true,
+    "decompressed_or_untarred": false
+  },
+  "selection": {
+    "known_source_mapping_preserved": 345,
+    "pending_added_only": "/dev/shm/geometry-axiom-geo337-20261025/q38-root-admission-20261025.json",
+    "pending_bytes": 502,
+    "pending_sha256": "3d9aee200e26446310de5fee635ec15f79573c19c907ed61e87f84dec4450c75",
+    "total_members": 346,
+    "logical_bytes": 14674721,
+    "original_raw_files": 300,
+    "original_raw_bytes": 14309477,
+    "source_files_rehashed": false
+  },
+  "space": {
+    "tar_upper": 16103201,
+    "gzip_upper": 16109141,
+    "required_free": 85315157,
+    "root_original_shared_allocated": 650424320,
+    "shared_plus_increment": 735739477,
+    "shared_ceiling": 2147483648,
+    "within_ceiling": true,
+    "original_admission_confirmed_not_new_allocation": true
+  },
+  "collector_original_CLI": {
+    "exit": 0,
+    "full_stream_hashes_confirmed": true,
+    "stdout_result_exact": true,
+    "bound_request_exact": true
+  },
+  "limits": [
+    "No original source tree/file rehash, tar/gzip CRC/member replay,2051 case checker or product execution.",
+    "Member bytes/mode/mtime/CRC and source poststat rely on existing original2476/0 verifier, whose source and execution receipt are reviewed separately.",
+    "Package remains volatile; publication/remote hash/delivery false."
+  ]
+}

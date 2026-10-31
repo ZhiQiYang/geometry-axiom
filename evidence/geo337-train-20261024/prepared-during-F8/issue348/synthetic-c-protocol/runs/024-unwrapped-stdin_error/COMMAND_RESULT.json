@@ -1,0 +1,47 @@
+{
+  "schema": "geo348-protocol-only-command/1",
+  "name": "024-unwrapped-stdin_error",
+  "argv": [
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/unwrapped/stub",
+    "stdin_error"
+  ],
+  "cwd": "/tmp/geo348-synthetic-c-protocol-20261025",
+  "timeout_seconds": 10,
+  "synthetic_protocol_only": true,
+  "product_process": false,
+  "input": {
+    "bytes": 87,
+    "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+  },
+  "selected_environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "STUB_PID_PATH": "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/pid.txt",
+    "STUB_FIXTURE": "/tmp/geo348-synthetic-c-protocol-20261025/fixture.txt",
+    "GEO348_DIAG_EVENT_FD": null,
+    "GEO348_DIAG_STATUS_FD": null
+  },
+  "completed_process_returned": true,
+  "returncode": 23,
+  "exception": null,
+  "stdout": {
+    "captured": true,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "captured": true,
+    "bytes": 211,
+    "sha256": "0ec684b165636db2a7d5c8b25b26edfd109835fa6f6dc2f0dae9180d932df472"
+  },
+  "child_after_run": {
+    "pid_file_present": true,
+    "pid": 1896760,
+    "already_reaped": true,
+    "process_absent": true,
+    "no_child": true,
+    "waitpid_errno": 10,
+    "waitpid_error": "ChildProcessError"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "geo299316-sparse-publication-environment-repair/1",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only",
+        "-z"
+      ],
+      "cwd": "/tmp/g261-next299316",
+      "actual_process_returncode": 0,
+      "stdout_sha256": "33f27ca370adc81d6e90822d31de7cdf8567cc7bbbdaf39160ed08a38ac6c202",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "restore",
+        "--staged",
+        "--",
+        ".gitignore",
+        "tests/mutants_results.json"
+      ],
+      "cwd": "/tmp/g261-next299316",
+      "actual_process_returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only",
+        "-z"
+      ],
+      "cwd": "/tmp/g261-next299316",
+      "actual_process_returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "owned_entries_only_unstaged": [
+    ".gitignore",
+    "tests/mutants_results.json"
+  ],
+  "worktree_bytes_unchanged": true,
+  "reason": "git add declined evidence outside sparse definition; subsequent explicit staging uses git add --sparse, without --force or ignore changes",
+  "product_tests_or_assertions_changed": false
+}

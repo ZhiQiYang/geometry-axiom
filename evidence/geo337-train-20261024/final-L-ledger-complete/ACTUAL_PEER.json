@@ -1,0 +1,41 @@
+{
+  "schema": "full-ledger-final-L-original-actual-peer/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "check_count": 35760,
+  "findings": [],
+  "exit_code": 0,
+  "ledger_sha256": "66895ec4be133bdfca13cd38733dd024d5005a39ec9fa3bd157122610a5916a6",
+  "coverage": {
+    "definitions": 123,
+    "records": 123,
+    "execution_heads": {
+      "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db": 120
+    },
+    "verdicts": {
+      "killed": 114,
+      "equivalent": 5,
+      "crashed": 1,
+      "retired": 3
+    },
+    "core_mapped": 67,
+    "bridge": 53,
+    "bridge_streams": 636,
+    "restored_methods": 43,
+    "closure_files": 185,
+    "closure_sha256": "2091c9ebf7da4135d5a5257fe697eeb6d5032c9c795dd807a0c9755207aca2dc",
+    "original_phases": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "limits": [
+    "本輪是固定L原full123重驗：trackedcheck/fullCLI/rawmapping/externalcheck四phase皆0，120筆execution.head自然為L；tracked JSON仍保原b6生成史，不回寫新外部ledger。",
+    "123原AST定義逐一核對；固定Git全部來源/closure/oracle/sidecar變異bytes核對，沒有import或重跑原裁判。",
+    "M20原政策允許3次同fixture SIGSEGV，列crashed非斷言killed；3retired無execution；5equivalent仍具原執行證據。",
+    "完整core/bridge原流hash與structured JSON核對；core是原text UTF8，非OS predecode bytes。",
+    "此報告只核最終L原full123，不冒完整native、browser、P189或B2跨版本exact通過。",
+    "ELF可重建cache不另重封；本次審核來源sidecar/原execution binary identities，不假稱所有ELF payload入Git。"
+  ]
+}

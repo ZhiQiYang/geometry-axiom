@@ -1,0 +1,31 @@
+{
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "files": [
+    {
+      "name": "outer-RESULT.json",
+      "source_path": "/workspace/train337-L-p52-original-launch-20261024/RESULT.json",
+      "bytes": 2448,
+      "sha256": "6a307cc6be2757711f1aa2dc8a89b60485667b6c987422535820e213fd6cced0"
+    },
+    {
+      "name": "driver-receipt.json",
+      "source_path": "/tmp/g337p52L/receipt.json",
+      "bytes": 27672,
+      "sha256": "7b0bbffa800f87d93e58f44148d6059e318ccfd3f4d9c4c6468ef309e17f08dd"
+    },
+    {
+      "name": "formal-execution-receipt.json",
+      "source_path": "/tmp/g337p52L/formal/execution-receipt.json",
+      "bytes": 251266,
+      "sha256": "7c309dbdb67a21645f632a153832dae2052bfecb83bce6b5e066c2ecd37db77b"
+    },
+    {
+      "name": "original-protocol-receipt.json",
+      "source_path": "/tmp/g337p52L/formal/receipt.json",
+      "bytes": 201273,
+      "sha256": "1dfbc870c615be56106038a00949ea5baa0fee1cd7faaf52b21f31bef7cf6d33"
+    }
+  ],
+  "full_raw_package_published": false,
+  "limitation": "Original terminal receipts only; complete streams and independent package verification remain pending. Initial collector failed on a terminal Chrome SingletonCookie symlink; subject formal/verifier remain original exit0."
+}

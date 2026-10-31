@@ -1,0 +1,95 @@
+{
+  "schema": "F9-assembly-two-attempt-terminal-package-actual-peer/1",
+  "utc": "2026-10-25T13:55:34.692448+00:00",
+  "exit_code": 0,
+  "checks": 6741,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "package_result_sha256": "58d68eb5f3af3b1011a0f3e4fd20dceed10edb0ca857d87b8a8b0af41b05b49f",
+  "inventory_sha256": "b9ef283cec84a7ecf19c3b0997040e1e20b63b1e74487ee7043bf70b1563b245",
+  "outer_result_sha256": "99525155659b9f36c573e5960133c6c003ff09ac060140cc7b60f9a4d264de89",
+  "host_final_sha256": "32427937e1912cfdc3496d9366dd05e3cceb0744d5b924cc4ff6f22eb68a8043",
+  "original_formal_exits": [
+    1,
+    0
+  ],
+  "original15minute_gate_exits": [
+    0,
+    0
+  ],
+  "regular_files": 828,
+  "symlinks": 5,
+  "logical_regular_bytes": 35366094,
+  "archive_bytes": 8121472,
+  "archive_parts": [
+    {
+      "part": 1,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/ORIGINAL_ASSEMBLY_PART1.tar.gz",
+      "archive_sha256": "816f48c9edd395b1a193f3d02ec4e06708248a5630b5d9340be8519122bd07db",
+      "archive_bytes": 5068936,
+      "members": 570,
+      "logical_regular_bytes": 16776798,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17558769664
+    },
+    {
+      "part": 2,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/ORIGINAL_ASSEMBLY_PART2.tar.gz",
+      "archive_sha256": "7f950048fd8e2dbb5fb6777e6293b622d530ead92e0ff848e40430afc302495b",
+      "archive_bytes": 2637583,
+      "members": 142,
+      "logical_regular_bytes": 14883676,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17556127744
+    },
+    {
+      "part": 3,
+      "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/ORIGINAL_ASSEMBLY_PART3.tar.gz",
+      "archive_sha256": "98619162eb7beec74c02fcab54932fe042b725d38c907a658a8bb724db92bbf9",
+      "archive_bytes": 414953,
+      "members": 121,
+      "logical_regular_bytes": 3705620,
+      "roundtrip_complete": true,
+      "fresh_free_after": 17555701760
+    }
+  ],
+  "blocking_findings": [],
+  "metadata_copies": {
+    "PACKAGE_RESULT.json": {
+      "source": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/RESULT.json",
+      "bytes": 3332,
+      "sha256": "58d68eb5f3af3b1011a0f3e4fd20dceed10edb0ca857d87b8a8b0af41b05b49f"
+    },
+    "INVENTORY.json": {
+      "source": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/INVENTORY.json",
+      "bytes": 563007,
+      "sha256": "b9ef283cec84a7ecf19c3b0997040e1e20b63b1e74487ee7043bf70b1563b245"
+    },
+    "PARTS.json": {
+      "source": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-package-20261025/PARTS.json",
+      "bytes": 79817,
+      "sha256": "c37b207359afcd323c27df57b2e44259e30e4c78d0807d92b255f3f225c14ff4"
+    },
+    "OUTER_RESULT.json": {
+      "source": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-collection-original-20261025/RESULT.json",
+      "bytes": 2913,
+      "sha256": "99525155659b9f36c573e5960133c6c003ff09ac060140cc7b60f9a4d264de89"
+    },
+    "ROOT_REQUEST.json": {
+      "source": "/dev/shm/geometry-axiom-geo337-20261025/assembly-terminal-collection-original-20261025/ROOT_REQUEST.json",
+      "bytes": 519,
+      "sha256": "23be7e8412a74a44f726b8d78681bb911aa615c1d8443f34a7a5899ec271a9d8"
+    },
+    "EXEC_FINAL.json": {
+      "source": "/workspace/geo337-F9-assembly-terminal-collection-EXEC_FINAL-20261025.json",
+      "bytes": 3001,
+      "sha256": "32427937e1912cfdc3496d9366dd05e3cceb0744d5b924cc4ff6f22eb68a8043"
+    }
+  },
+  "limits": [
+    "Formal require_escalated read only of completed assembly originals/package; no test rerun, Git mutation, SHM writes or active grid payload access.",
+    "Package complete bytes/type/mode/mtime/linktarget and source states verified. Original first environment exit1 retained; original second exit0 not rejudged as a new product sample.",
+    "Five sourceplan Gitdir/latest files are hash-only; one Unix socket metadata-only. Seeds/source payload and Git objects excluded and retained.",
+    "r2 accepted original assertion peer belongs as a separate publication leaf; this review does not replace its150-assertion validation.",
+    "SHM remains volatile; publication and remote full blob delivery are subsequent separate actions."
+  ]
+}

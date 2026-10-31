@@ -1,0 +1,23 @@
+{
+  "schema": "geo348-protocol-only-command/1",
+  "name": "007-nm-fixed",
+  "argv": [
+    "/usr/bin/nm",
+    "-a",
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/fixed/stub"
+  ],
+  "cwd": "/tmp/geo348-synthetic-c-protocol-20261025",
+  "timeout_seconds": 10,
+  "synthetic_protocol_only": true,
+  "product_process": false,
+  "input": null,
+  "selected_environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "STUB_PID_PATH": null,
+    "STUB_FIXTURE": null,
+    "GEO348_DIAG_EVENT_FD": null,
+    "GEO348_DIAG_STATUS_FD": null
+  }
+}

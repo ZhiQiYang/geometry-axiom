@@ -1,0 +1,10 @@
+{
+  "actualCheckerProcessExit": 1,
+  "findings": 3,
+  "cause": "metadata checker compared normalized native source fingerprints to raw CRLF pool hashes; current_geometry.c is normalized by original tests/binaries.py:183/297",
+  "subjectNotRerun": true,
+  "originalReceiptNotChanged": true,
+  "rawToolOutputObservedInThread": true,
+  "independentRawHostCapture": false,
+  "additionalReadonlyRgAttempt": "first exec transport disconnected; retry returned rg2 only because a guessed second path did not exist, original tests/binaries.py read was available"
+}

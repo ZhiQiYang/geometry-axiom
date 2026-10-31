@@ -1,0 +1,28 @@
+{
+  "schema": "R7-fixed-source-preparation-actual-peer-v1",
+  "checks": 3354,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "binding_exit": 0,
+  "preparation_exit": 0,
+  "original_commands": 386,
+  "source_files": 447,
+  "source_bytes": 4291399,
+  "formal_run": false,
+  "request_sha256": "07b1f4fb7dd4d722c0cc853232bb06b527c5ce8542365317c7c47d7556821df2",
+  "not_rehashed_original_streams": [
+    {
+      "path": "/tmp/geo323-final-r7-stage-tools-20261024/preparation/commands/006/stdout",
+      "bytes": 5348814,
+      "original_sha256": "0b4388735b8e1c66c698d4926798905f8eff48173ac3ed325fe10c25de53a29a"
+    }
+  ],
+  "limits": [
+    "No C/acceptance/performance executed; reviewed actual original binding/preparation and4.3MB private selected source only.",
+    "Whole-repository5.35MB original ls-tree stdout not rehashed; its original capture hash retained, individual selected Gitblob identity independently recomputed from materialized bytes.",
+    "34 quoted include-dir relative names are not unresolved compiler verdict; all C/H/inc selected, formal build still required.",
+    "Original new TMP admission138MiB round plus128MiB native reserve checked before materialization; fresh final launch admission and exclusive locks remain necessary.",
+    "Session6587/chunk610b00 is a truthful observed completion annotation, not a reconstructed full API tool object; original386 subprocess commands/streams are retained."
+  ]
+}

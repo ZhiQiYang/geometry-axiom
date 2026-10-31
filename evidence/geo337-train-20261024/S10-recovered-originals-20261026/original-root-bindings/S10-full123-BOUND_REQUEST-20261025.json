@@ -1,0 +1,34 @@
+{
+  "schema": "S10-full123-original-terminal-binding/1",
+  "binding_status": "BOUND_AFTER_REAL_TERMINAL",
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "terminal_bindings": {
+    "job_receipt": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/receipt.json",
+      "sha256": "c7d00f3e144a94a7d486c8419a253ae3bd94549c080662854e9081094a008b28"
+    },
+    "outer_result": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-launch/RESULT.json",
+      "sha256": "dd2888b614c7769a0879c59a1f67628ae04fdb155ef8c8a48304d3f1a2cacc02"
+    },
+    "original_tool_final": {
+      "path": "/tmp/geo337-S10-full123-host-results-20261025/FINAL.json",
+      "sha256": "7eff1e024a6c6f06ca92fd5b537d6f6c4dff9c5f1595241db0b487a92ff02c86"
+    }
+  },
+  "additional_originals": {
+    "root_admission": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-root-admission-20261025.json",
+      "sha256": "6d9ddffda7791f2d4d41c832edc09d361f20a39a24d12e74809acdb627cd755a"
+    },
+    "filesystem_admission": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-filesystem-admission-20261025.json",
+      "sha256": "d76ac62b52b17d615952d418a3b209d072dc04608de796cdf51f7b045eb65ddf"
+    },
+    "source_preparation_result": {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/F10-source-preparation-reserve-anchor/RESULT.json",
+      "sha256": "f1e689eb26653609943e7e899aaf6d6e8430b9d0b2291d8e1ee94ebb7c14fdf9"
+    }
+  },
+  "root_rule": "Only root binds actual original terminal files after true exec termination. If host FINAL schema differs, retain raw and peer exact adapter before execution; never manufacture success fields."
+}

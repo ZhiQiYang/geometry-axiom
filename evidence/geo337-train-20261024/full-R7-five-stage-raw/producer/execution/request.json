@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/geo323-r7-full-collection-20261024/collect.py"
+  ],
+  "cwd": "/tmp/geo323-r7-full-collection-20261024",
+  "heavy_slot": "/tmp/g261r3/heavy.lock",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": null,
+    "PYTHONPATH": null,
+    "PYTHONOPTIMIZE": null
+  },
+  "source_sha": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "started_utc": "2026-10-24T06:50:06.475131+00:00",
+  "subject_executed": false
+}

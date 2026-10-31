@@ -1,0 +1,33 @@
+{
+  "scope": "external tool preparation only; no product gates run",
+  "files": {
+    "refresh_architecture_zero_delta.py": {
+      "sha256": "c83dc3c006df535927e7e96cecacffc53c2dc1597e8816d7feb33c5567d46b12",
+      "bytes": 16754
+    },
+    "original.py.txt": {
+      "sha256": "61aa806e619baa5f0b141d2a5026fe8146691e12406b112cb4b7f765e9db37b0",
+      "bytes": 13668
+    },
+    "MINIMAL_TOOL_DIFF.patch": {
+      "sha256": "f992232eb5263347db1a0f14ff86fd37db88216aad3394781579e7f0020de200",
+      "bytes": 19104
+    },
+    "prepare.py": {
+      "sha256": "9476b9471d336ef3e0ad87655eff61a013077b6e490823fbdc2c0b56e355b60f",
+      "bytes": 9553
+    },
+    "selftest_contracts.py": {
+      "sha256": "c9115cf6385b5199506d588f86e9c4d7b7cfd53806c99fbe380c8e49cd4942c0",
+      "bytes": 4939
+    },
+    "SELFTEST_RESULTS.json": {
+      "sha256": "e4828ab2e89445c7223a66b00dc4c3cb23acc71f886c982267a196ad88e557d2",
+      "bytes": 1838
+    },
+    "README.md": {
+      "sha256": "8a44f2099b1fc71010026d8e7df0981549b980187d8e983eb0bacdcd19d1c932",
+      "bytes": 2503
+    }
+  }
+}

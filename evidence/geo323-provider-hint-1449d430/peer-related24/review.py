@@ -1,0 +1,76 @@
+from pathlib import Path
+import ast,hashlib,json
+B=Path('/tmp/geo323-provider-related-tools-20261024');OLD=Path('/workspace/geo343-monotonic-formal-tools-20261024/observer');R=Path('/tmp/geo323-provider-related-formal-20261024');P=Path('/tmp/geo323-provider-related-preparation-20261024');OUT=Path(__file__).parent;S='1449d430d1c4734bb1bc3a9f91f3851c845cc0f3';checks=[];counts={}
+def h(b):return hashlib.sha256(b).hexdigest()
+def j(p):return json.loads(p.read_bytes())
+def ck(v,l):checks.append({'check':l,'passed':bool(v)})
+try:
+ d=(B/'run_related.py').read_text();ast.parse(d);ck(True,'runner parses');pins=j(B/'observer/TOOL_PINS.json');ck(h((B/'observer/TOOL_PINS.json').read_bytes())=='217886aeee4107c7a55c8ff9a44546d00db662b2c15e4df195cae99d0203cf01','observer manifest frozen')
+ for x in pins['tools']:
+  name=x['name'];new=(B/'observer'/name).read_bytes();old=(OLD/name).read_bytes();ck(h(new)==x['bound_sha256'],'observer pin '+name)
+  if name=='run_observed_original.py':old=old.replace(b"'tests/test_geo261_wood_contact_world.py','tests/test_geo261_contact_sources.py','tests/test_geo318_reading_a_native.py'",b"'tests/test_geo261_native_sources.py','tests/test_geo261_source_describe.py','tests/test_geo261_source_context.py'")
+  ck(old==new,'observer exact prior except suite binding '+name)
+ for token in [S,"shutil.disk_usage('/tmp').free>=100*1024*1024",'16*1024*1024',"'/tmp/g261r3/secondary.lock'",'fcntl.LOCK_EX|fcntl.LOCK_NB','timeout=None,check=False',"entry['observer_complete'] is True and observation['observer_complete'] is True","detail['total']==detail['run']==detail['passed']==count","guard();report['source_clean_after']=True"]:ck(token in d,'retained runtime guard '+token)
+ manifest=j(P/'SOURCE_MANIFEST.json');ck(manifest['source_sha']==S and len(manifest['files'])==213,'source manifest exact source and count');ck(h((P/'SOURCE_MANIFEST.json').read_bytes())=='3807a3fa4e148646d2c56c9a0eb978fa4524b3a9d4b89e6c233f41be4178d09e','actual manifest frozen for review');ck(j(R/'SOURCE_MANIFEST.json')==manifest,'executed full manifest equals preparation')
+ def c387(base):
+  rows=[]
+  for p in sorted((base/'subcommands').glob('*/result.json')):
+   row=j(p);folder=p.parent;request=j(folder/'request.json');ck(row['command']==request['command'] and row['source_sha']==S,'original request/S '+str(folder));ck(row['actual_process_returncode']==0 and row['timeout_expired'] is False,'actual original normal0 '+str(folder))
+   for stream in ['stdin','stdout','stderr']:
+    raw=(folder/(stream+'.bin')).read_bytes();ck(h(raw)==row[stream+'_sha256'] and (stream=='stdin' or len(raw)==row[stream+'_bytes']),'original stream '+str(folder)+'/'+stream)
+   rows.append((row,folder))
+  return rows
+ prep=c387(P);formal=c387(R);counts['preparation_commands']=len(prep);counts['formal_commands']=len(formal)
+ shows={row['command'][-1].split(':',1)[1]:folder for row,folder in prep if 'show' in row['command'] and row['command'][-1].startswith(S+':')};ck(set(shows)==set(manifest['files']),'every executed source has fixed-S original Git show')
+ for name,pin in manifest['files'].items():ck(h((shows[name]/'stdout.bin').read_bytes())==pin,'fixed Git original hash '+name)
+ result=j(R/'RESULT.json');ck(result['exit']==0 and result['errors']==[] and result['source_clean_after'] is True,'original terminal0 clean');ck(result['source_sha']==S and result['full_native'] is False and result['ledger_regenerated'] is False and result['performance'] is False,'honest execution scope');ck(j(R/'EXEC_COMPLETION.json')['exit_code']==0,'true tool completion transcription0')
+ expected=[('native-sources','tests/test_geo261_native_sources.py',9),('describe','tests/test_geo261_source_describe.py',7),('context','tests/test_geo261_source_context.py',8)];ck([(x['label'],x['target'],x['expected_methods'])for x in result['suites']]==expected,'exact three original suites')
+ totals={'observed_commands':0,'compile_commands':0,'native_commands':0,'sessions':0,'compiler_input_snapshots':0,'cleanup_snapshots':0}
+ for suite,(label,target,num) in zip(result['suites'],expected):
+  q=R/label;obs=q/'observed';entry=j(obs/'ORIGINAL_ENTRY.json');observation=j(obs/'OBSERVATION.json');runner=j(q/'runner.json');request=j(obs/'REQUEST.json')
+  ck(suite['runner']==runner and suite['entry']==entry and suite['observation']==observation,'original embedded reports '+label);ck(suite['actual_exit']==0 and suite['observation_complete'] and suite['passed'],'original suite completed '+label);ck(request['original_argv']==['tests/_unittest_runner.py',target,'--json-out',str(q/'runner.json'),'--log',str(q/'unittest.log')],'unmodified original argv '+label)
+  ck(runner['total']==runner['run']==runner['passed']==num and all(runner[k]==0 for k in ['failed','skipped','explicit_skipped','unrun_skipped','blocked_by_error','expected_failed','extra_errors'])and runner['import_error'] is None,'strict original result '+label)
+  ck(entry['source_files_before']==entry['source_files_after']==manifest['files'] and entry['source_sha']==S and entry['original_exit']==0 and entry['original_completed'] and entry['observer_complete'],'dual source/exit/observer '+label)
+  ck(entry['postflight_head']['exit']==0 and bytes.fromhex(entry['postflight_head']['stdout_hex'])==(S+'\n').encode() and entry['postflight_status']['exit']==0 and entry['postflight_status']['stdout_hex']=='','original postflight clean '+label)
+  ck(observation['source_sha']==S and observation['observer_complete'] and not observation['incomplete_sessions'] and not observation['observation_errors'],'complete unaltered observation '+label)
+  source=(shows[target]/'stdout.bin').read_bytes();tree=ast.parse(source);ck(sum(isinstance(x,ast.FunctionDef)and x.name.startswith('test_')for x in ast.walk(tree))==num,'original AST exact methods '+label)
+  for cp in sorted(obs.glob('command-*/receipt.json')):
+   row=j(cp);cmd=row['args'][0];totals['observed_commands']+=1;compiler=cmd[0]=='/usr/bin/cc';totals['compile_commands' if compiler else 'native_commands']+=1
+   negative={('native-sources','source-mutant-client'):('position',b'line 114: geo_eval_source(ctx,ref(&id),GEO_DEPENDENCY_VALUE_REQUIRED,&value)==GEO_SOURCE_OK&&value.as.position.coordinate==40\n'),('context','source-context-control-axis-only'):('kind',b'ASSERT:context-flag-is-axis-only\n'),('context','source-context-control-axis-range'):('rejection',b'ASSERT:context-rejects-invalid-derived-axis\n'),('context','source-context-control-strict-context'):('strict',b'ASSERT:context-strict-provider-still-rejects-mismatch\n'),('context','source-context-control-publish-context'):('metadata',b'ASSERT:context-finalizes-exact-returned-context\n'),('context','source-context-control-publish-flag'):('metadata',b'ASSERT:context-clears-unresolved-flag\n'),('context','source-context-control-provider-failure'):('failed',b'ASSERT:context-failed-provider-does-not-publish\n')}.get((label,Path(cmd[0]).name))
+   ck(row['completed_process_returned'] is True and row['returncode']==(1 if negative else 0) and row['exception'] is None,'actual observed exact normal exit '+str(cp))
+   if negative:ck(cmd[1:]==[negative[0]] and (cp.parent/'stdout.bin').read_bytes()==b'' and (cp.parent/'stderr.bin').read_bytes()==negative[1],'original deliberate exact assertion '+str(cp))
+   if compiler:ck(row['kwargs'].get('timeout')==300,'original compile300 '+str(cp))
+   for stream in ['input','stdout','stderr']:
+    info=row[stream]
+    if info.get('captured'):
+     raw=(cp.parent/({'input':'stdin'}.get(stream,stream)+'.bin')).read_bytes();ck(len(raw)==info['bytes'] and h(raw)==info['sha256'],'complete observer bytes '+str(cp)+'/'+stream)
+  for sp in sorted(obs.glob('session-*/receipt.json')):
+   row=j(sp);totals['sessions']+=1;ck(row['complete'] and row['actual_returncode']==0 and row['stdout_eof'] and row['stderr_retained'] and not row['kill_events'] and not row['original_exceptions'],'normal bridge session '+str(sp))
+   for stream,pin in row['streams'].items():raw=Path(pin['path']).read_bytes();ck(len(raw)==pin['bytes'] and h(raw)==pin['sha256'],'predecode fullpipe '+str(sp)+'/'+stream)
+  comp=j(obs/'native-inputs/compiler-input-snapshots.json');clean=j(obs/'native-inputs/cleanup-retention.json');ck(len(comp)==entry['compiler_snapshots'] and len(clean)==entry['cleanup_snapshots'],'original retention counts '+label);totals['compiler_input_snapshots']+=len(comp);totals['cleanup_snapshots']+=len(clean)
+  retained=[]
+  for row in comp:retained+=row['inputs']
+  for row in clean:retained+=[row['build_log']]+row['compiled_sources']
+  unique={x['retained']:x for x in retained}
+  for path,pin in unique.items():raw=Path(path).read_bytes();ck(len(raw)==pin['bytes'] and h(raw)==pin['sha256'],'retained real compile input '+path)
+ counts.update(totals)
+ native_rows=[]
+ for label,_,_ in expected:
+  local=[]
+  for cp in sorted((R/label/'observed').glob('command-*/receipt.json')):
+   row=j(cp);cmd=row['args'][0]
+   if cmd[0]!='/usr/bin/cc':local.append((row,cp))
+  native_rows+=local
+  for ix,(row,cp) in enumerate(local):
+   cmd=row['args'][0]
+   if row['returncode']==1:
+    if label=='context':
+     ck(0<ix<len(local)-1 and all(Path(local[k][0]['args'][0][0]).name=='source-context-client' and local[k][0]['args'][0][1:]==cmd[1:] and local[k][0]['returncode']==0 for k in [ix-1,ix+1]),'original adjacent same-case baseline/control/restore '+str(cp))
+    else:
+     ck(any(x['args'][0][1:]==['position']and Path(x['args'][0][0]).name=='sources-client' and x['returncode']==0 for x,_ in local[:ix])and any(x['args'][0][1:]==['position']and Path(x['args'][0][0]).name=='sources-client'and x['returncode']==0 for x,_ in local[ix+1:]),'original position baseline and restore around mutant')
+    ck(row['kwargs']['timeout']==(20 if label=='context'else 10),'original negative native time limit')
+ counts['native_normal_zero']=sum(row['returncode']==0 for row,_ in native_rows);counts['native_deliberate_normal_one']=sum(row['returncode']==1 for row,_ in native_rows);ck(counts['native_normal_zero']==33 and counts['native_deliberate_normal_one']==7,'all native exits exactly33zero+7deliberate1')
+except BaseException:
+ import traceback
+ ck(False,traceback.format_exc())
+report={'reviewer_initial_failure':'Initial reader assumed all native child exits zero, but seven original specified negative controls correctly returned normal1; initial reader/report preserved, subject unchanged.', 'scope':'Independent static delta and actual original 24-method related-suite review; no C/Node/Git/network or source writes','source_sha':S,'runner_sha256':h((B/'run_related.py').read_bytes()),'manifest_sha256':h((P/'SOURCE_MANIFEST.json').read_bytes()),'counts':counts,'passed':sum(x['passed']for x in checks),'failed':sum(not x['passed']for x in checks),'checks':checks,'limitations':['Runtime launcher pins manifest count rather than entire manifest bytes; actual independently binds all 213 entries to captured fixed-S Git show and the same full before/after manifest.','No native-only timing verdict, whole native/browser/ledger/architecture result or new mutation verdict claimed.','Original tool completion is combined-output post-completion transcription; original child streams independently verified.','No executable payload rehash; stored compile inputs and original pipe/command bytes reviewed.']};report['exit']=int(report['failed']>0);(OUT/'REVIEW.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:report[k]for k in ['passed','failed','exit','counts']}));print(h((OUT/'REVIEW.json').read_bytes()));raise SystemExit(report['exit'])

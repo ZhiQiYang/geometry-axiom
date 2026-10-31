@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""Metadata-only original comparison inventory. Never archives or runs products."""
+from pathlib import Path, PurePosixPath
+import argparse, hashlib, json, os, shutil, stat, sys, tarfile, time
+
+HERE=Path(__file__).resolve().parent
+RAW=Path('/workspace/geo323-F9-owner-compare-once-20261025-r1')
+ACTUAL=Path('/workspace/geo323-F9-owner-comparison-actual-20261025')
+STATIC=Path('/workspace/geo323-owner-audit-r2-static-peer-d6l7gana')
+F='4f8a794f4167c3562eb182045102e86e9e37cca9'
+RESERVE=64*1024*1024;META=2*1024*1024
+FIELDS=['root','relative','type','bytes','sha256','state','target']
+
+def digest(path):
+    h=hashlib.sha256()
+    with Path(path).open('rb') as f:
+        for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
+    return h.hexdigest()
+
+def state(p):
+    s=p.lstat();return [s.st_dev,s.st_ino,s.st_mode,s.st_size,s.st_mtime_ns,s.st_nlink]
+
+def load(p):return json.loads(Path(p).read_bytes())
+def write(p,x):p.write_text(json.dumps(x,ensure_ascii=False,separators=(',',':'))+'\n')
+def need(x,msg):
+    if not x:raise RuntimeError(msg)
+def overhead(n):return (n+4095)//4096+(n+16383)//16384+(n+33554431)//33554432+1024
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--actual-peer',type=Path,required=True)
+    parser.add_argument('--actual-peer-sha256',required=True)
+    a=parser.parse_args()
+    need(not sys.flags.optimize,'Optimized Python forbidden')
+    need(not (HERE/'INVENTORY.json').exists(),'Never overwrite inventory')
+    need(digest(ACTUAL/'RESULT.json')=='3bca7c57c0bf54af2592d6e13c44bec6d1bdd5aabb42a0c1529c92e432ebb576','Actual result pin changed')
+    need(load(ACTUAL/'RESULT.json')['exit']==0,'Actual review failed')
+    peer=load(a.actual_peer)
+    need(digest(a.actual_peer)==a.actual_peer_sha256,'Actual independent peer pin changed')
+    need(peer.get('exit_code')==0 or peer.get('blocking_findings')==[], 'Actual peer not accepted')
+    receipt=load(RAW/'receipt.json');control=load(RAW/'control/receipt.json')
+    need(receipt['source_sha']==F and receipt['wrapper_exit']==control['outer_actual_exit']==0,'Wrong original new comparison terminal')
+    need(set(receipt['stages'])=={'compare'} and receipt['stages']['compare']['execution_exit']==0,'Unexpected stage scope')
+    need(receipt['full_acceptance_passed'] is None,'Whole acceptance claim invalid')
+    summary=Path('/tmp/geo323-r8-terminal-summary-20261025/SUMMARY.json')
+    need(digest(summary)=='23c0b08133a48285bb7fd75192a9b05a2fb190fa04ca5dc5cadfb28e28a4e5dd','Original R8 summary changed')
+    old=load(summary)
+    for row in old['original_file_bindings'].values():
+        need(digest(row['path'])==row['sha256'] and Path(row['path']).stat().st_size==row['bytes'],'Original R8 identity changed')
+    need(load('/tmp/g337323R8/receipt.json')['wrapper_exit']==1,'Original R8 red rewritten')
+    roots=[];records=[];members=set()
+    def add(prefix,root,selected=None):
+        root=Path(root).resolve();root_id=len(roots)
+        roots.append({'prefix':prefix,'source_root':str(root),'selection':'whole-tree' if selected is None else 'exact-files','exact_files':selected})
+        paths=[]
+        if selected is None:
+            for parent,dirs,files in os.walk(root,followlinks=False):
+                for n in sorted(dirs+files):
+                    p=Path(parent)/n
+                    if not stat.S_ISDIR(p.lstat().st_mode):paths.append(p)
+        else:paths=[root/n for n in selected]
+        for p in sorted(paths):
+            rel=p.relative_to(root).as_posix();member=prefix+'/'+rel;s=state(p)
+            need(member not in members and not PurePosixPath(member).is_absolute() and '..' not in PurePosixPath(member).parts,'Unsafe/duplicate member')
+            members.add(member)
+            if stat.S_ISREG(s[2]):kind='regular';size=s[3];target=None;h=digest(p)
+            elif stat.S_ISLNK(s[2]):
+                kind='symlink';target=os.readlink(p);body=os.fsencode(target);size=len(body);h=hashlib.sha256(body).hexdigest()
+            else:raise RuntimeError('Unexpected nonregular original node; no silent omission: '+str(p))
+            need(state(p)==s,'Original source changed during inventory')
+            info=tarfile.TarInfo(member);info.mode=s[2]&0o777;info.mtime=s[4]//1000000000
+            if kind=='symlink':info.type=tarfile.SYMTYPE;info.linkname=target;info.size=0
+            else:info.size=size
+            need(len(info.tobuf(tarfile.PAX_FORMAT))+511<=4096,'Actual member exceeds fixed header/padding bound')
+            records.append([root_id,rel,kind,size,h,s,target])
+    add('comparison',RAW)
+    need(sum(r[2]=='regular' for r in records)==4645 and sum(r[2]=='symlink' for r in records)==4,'Original full raw leaf scope changed')
+    add('actual-review',ACTUAL)
+    add('actual-independent-peer',a.actual_peer.parent)
+    add('preparation-independent-peer',STATIC)
+    add('root-host','/workspace',['geo323-F9-owner-compare-once-EXEC_FINAL-20261025.json'])
+    add('historical-R8','/tmp/g337323R8',['receipt.json','evidence/performance.json','evidence/profile-counts.json','evidence/equivalence.json'])
+    add('historical-R8-summary',summary.parent,[summary.name])
+    add('historical-launcher','/tmp/geo323-final-r8-stage-tools-20261024/launch-five',['RESULT.json'])
+    add('historical-outer','/tmp/geo323-final-r8-stage-tools-20261024/outer-five',['RESULT.json'])
+    # The frozen actual toolkit already contains the complete authority sources and conditional guard.
+    inv={'schema':'geo323-complete-comparison-compact-inventory/1','source_sha':F,'roots':roots,
+         'record_fields':FIELDS,'state_fields':['device','inode','mode','bytes','mtime_ns','nlink'],
+         'records':records,'original_raw_regular_files':4645,'original_raw_symlinks':4,
+         'selection':'All original comparison regular bytes and four literal ELF symlink targets; exact actual/static peers, host and historical R8 metadata. No ELF dereference, source checkout or git objects copied.',
+         'original_R8_outer_exit':1,'new_comparison_outer_exit':0,'new_comparison_stage_only':True,
+         'actual_peer':{'path':str(a.actual_peer),'sha256':a.actual_peer_sha256},
+         'source_and_authority_bindings_included':['comparison/REUSE_BEFORE.json','comparison/REUSE_AFTER.json','comparison/tools-frozen/VERIFIED_AUTHORITY.json','comparison/tools-frozen/authority/'],
+         'archive_created':False,'subject_rerun':False}
+    # Greedy packing counts every member's worst header/padding, not only file payload.
+    costs=[(r[3] if r[2]=='regular' else 0)+4096 for r in records]
+    total=sum(costs);target=max(max(costs),(total+3)//4)
+    groups=[];group=[];cost=0
+    for row,c in zip(records,costs):
+        if group and cost+c>target:groups.append(group);group=[];cost=0
+        group.append(row);cost+=c
+    if group:groups.append(group)
+    need(4<=len(groups)<=6,'Greedy bound requires a separately reviewed part count')
+    parts=[]
+    for i,group in enumerate(groups,1):
+        names=[roots[r[0]]['prefix']+'/'+r[1] for r in group]
+        logical=sum(r[3] for r in group if r[2]=='regular');n=logical+4096*len(group)+11264
+        gz=n+overhead(n)
+        parts.append({'part':i,'members':len(group),'logical_regular_bytes':logical,
+                      'header_padding_bound':4096*len(group),'tar_end_alignment_bound':11264,
+                      'tar_upper_bytes':n,'gzip_worst_case_overhead':overhead(n),'gzip_upper_bytes':gz,
+                      'metadata_bytes':META,'reserve_bytes':RESERVE,'required_fresh_bytes':gz+META+RESERVE,
+                      'members_exact':names})
+    write(HERE/'INVENTORY.json',inv);write(HERE/'PARTS.json',parts)
+    metadata_input_bytes=(HERE/'INVENTORY.json').stat().st_size+(HERE/'PARTS.json').stat().st_size
+    need(metadata_input_bytes+128*1024<META,'Compact inventory/parts leave insufficient 2MiB metadata budget')
+    observed=shutil.disk_usage('/tmp').free
+    result={'schema':'geo323-comparison-inventory-preparation/1','inventory_exit':0,'source_sha':F,
+            'inventory_sha256':digest(HERE/'INVENTORY.json'),'parts_sha256':digest(HERE/'PARTS.json'),
+            'inventory_regular_files':sum(r[2]=='regular' for r in records),'inventory_symlinks':sum(r[2]=='symlink' for r in records),
+            'inventory_regular_bytes':sum(r[3] for r in records if r[2]=='regular'),'part_count':len(parts),
+            'greedy_member_cost_target':target,'metadata_input_bytes':metadata_input_bytes,
+            'maximum_required_fresh_bytes':max(p['required_fresh_bytes'] for p in parts),
+            'temporary_free_observed':observed,'all_parts_individually_fit_observed_free':all(p['required_fresh_bytes']<=observed for p in parts),
+            'all_parts_completion_predicted':False,'compression_ratio_assumed':False,
+            'archive_created':False,'subject_rerun':False,'prepare_sha256':digest(__file__),'epoch':time.time()}
+    write(HERE/'RESULT.json',result)
+    print(json.dumps(result,ensure_ascii=False))
+
+if __name__=='__main__':main()

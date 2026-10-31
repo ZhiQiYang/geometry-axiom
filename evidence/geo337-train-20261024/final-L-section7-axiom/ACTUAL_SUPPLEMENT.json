@@ -1,0 +1,190 @@
+{
+  "scope": "Producer-only supplemental closed original checks; no subject run/current ROOT read/independent acceptance",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "baseline_tests": 44,
+  "original_mutant_count": 5,
+  "phases": 11,
+  "checks": [
+    {
+      "name": "L",
+      "passed": true
+    },
+    {
+      "name": "assertion-red:V01-remove-gate",
+      "passed": true
+    },
+    {
+      "name": "restored-full44:V01-remove-gate",
+      "passed": true
+    },
+    {
+      "name": "assertion-red:V02-ignore-manifest",
+      "passed": true
+    },
+    {
+      "name": "restored-full44:V02-ignore-manifest",
+      "passed": true
+    },
+    {
+      "name": "assertion-red:V03-ignore-source",
+      "passed": true
+    },
+    {
+      "name": "restored-full44:V03-ignore-source",
+      "passed": true
+    },
+    {
+      "name": "assertion-red:V04-exempt-latest-pre-adoption",
+      "passed": true
+    },
+    {
+      "name": "restored-full44:V04-exempt-latest-pre-adoption",
+      "passed": true
+    },
+    {
+      "name": "assertion-red:V05-card-adoption-treated-as-pre",
+      "passed": true
+    },
+    {
+      "name": "restored-full44:V05-card-adoption-treated-as-pre",
+      "passed": true
+    },
+    {
+      "name": "baseline-full44",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:baseline",
+      "passed": true
+    },
+    {
+      "name": "innerstream:baselinestdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:baselinestderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V01-remove-gate/red",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V01-remove-gate/redstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V01-remove-gate/redstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V01-remove-gate/restored",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V01-remove-gate/restoredstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V01-remove-gate/restoredstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V02-ignore-manifest/red",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V02-ignore-manifest/redstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V02-ignore-manifest/redstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V02-ignore-manifest/restored",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V02-ignore-manifest/restoredstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V02-ignore-manifest/restoredstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V03-ignore-source/red",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V03-ignore-source/redstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V03-ignore-source/redstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V03-ignore-source/restored",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V03-ignore-source/restoredstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V03-ignore-source/restoredstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V04-exempt-latest-pre-adoption/red",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V04-exempt-latest-pre-adoption/redstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V04-exempt-latest-pre-adoption/redstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V04-exempt-latest-pre-adoption/restored",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V04-exempt-latest-pre-adoption/restoredstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V04-exempt-latest-pre-adoption/restoredstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V05-card-adoption-treated-as-pre/red",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V05-card-adoption-treated-as-pre/redstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V05-card-adoption-treated-as-pre/redstderr",
+      "passed": true
+    },
+    {
+      "name": "innerreceipt:V05-card-adoption-treated-as-pre/restored",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V05-card-adoption-treated-as-pre/restoredstdout",
+      "passed": true
+    },
+    {
+      "name": "innerstream:V05-card-adoption-treated-as-pre/restoredstderr",
+      "passed": true
+    }
+  ],
+  "findings": []
+}

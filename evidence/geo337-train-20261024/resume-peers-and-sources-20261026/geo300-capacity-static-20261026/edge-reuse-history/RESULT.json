@@ -1,0 +1,19 @@
+{
+  "command": [
+    "git",
+    "log",
+    "-3",
+    "--format=%H %s",
+    "-Sempty_slot",
+    "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "--",
+    "geometry-core/kernel/source.c"
+  ],
+  "cwd": "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+  "exit_code": 0,
+  "timestamp_utc": "2026-10-26T10:25:37.353794+00:00",
+  "stdout_sha256": "7942d140d310db58750674ddebb2b080def9e4ee46916b16c6bc9f072ccd2c5d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 99,
+  "stderr_bytes": 0
+}

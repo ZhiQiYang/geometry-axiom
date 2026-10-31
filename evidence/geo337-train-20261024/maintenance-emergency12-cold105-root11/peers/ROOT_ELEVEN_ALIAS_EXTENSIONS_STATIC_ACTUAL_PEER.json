@@ -1,0 +1,33 @@
+{
+  "schema": "root-eleven-alias-extension-static-actual-peer-v1",
+  "checks": 3136,
+  "exit_code": 0,
+  "findings": [],
+  "plan_sha256": "14d1725cd02e9c0d2eacb720f02f439f5592cf556909f805435b65a27191f6b1",
+  "actual_result_sha256": "c4114fce395cfd3157fb33e00fd6a5717f50c7215ec93bfcbe124a89967f5769",
+  "outer_sha256": "b686a73579309fb0268df05d470a12381892fd2a555457405eb65b9f6e4fbb09",
+  "executor_sha256": "6f54cc3cde975bdae9fd0fbe490123c1a8c092c3b7e5f5f659b9aaac0ea19e24",
+  "core_sha256": "f8a86ab62d37d9c0699846fd6fbdd0d2c2be9a7875701b7c1c1b3b511e6eac47",
+  "groups": 11,
+  "retained_paths": 88,
+  "original_alias_paths": 77,
+  "new_root_replacements": 11,
+  "original_git_commands": 564,
+  "consumer_checks": 12,
+  "expected_allocated_saving": 134045696,
+  "free_before": {
+    "/workspace": 78934016,
+    "/tmp": 177446912
+  },
+  "free_after": {
+    "/workspace": 202317824,
+    "/tmp": 177446912
+  },
+  "limits": [
+    "No second archive payload hash; actual original full-byte executor, all small Git streams/journals/anchors, and fresh metadata independently checked.",
+    "Root explicitly authorized self-reviewed execution with parallel independent peer; this report is after execution.",
+    "Only11 exact immutable root leaves join existing groups; all88 aliases must be de-linked before any applicable write/reuse.",
+    "Root other docs/publications remain outside frozen leaf scope; historical product failures unchanged.",
+    "Configured allocated saving is not df net change; original consumer visibility limitation remains."
+  ]
+}

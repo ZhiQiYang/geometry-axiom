@@ -1,0 +1,55 @@
+{
+  "schema": "geo337-F9-canvas-terminal-collector-independent-static-peer/1",
+  "exit_code": 0,
+  "checks": 3364,
+  "failed_checks": [],
+  "collector_sha256": "7cb6431cc75fa89da473669c75782ccbdaac1035740f1ddaf1d06c171b50d130",
+  "inventory_sha256": "9608b89734fa688bfd9c40c5b0377a6e80cb117caaf389336f11cef27415986d",
+  "parts_sha256": "aca3014a5cfb4dab89d128dc4cbe2bf654724a5f94df3a228dae6b51d143de60",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "verdict": "STATIC_PREPARATION_ACCEPTED_PENDING_ROOT_LEASE_AND_FRESH_SPACE",
+  "collection_executed": false,
+  "archive_execution_authorized_by_this_review": false,
+  "selected_regular_files": 656,
+  "selected_symlinks": 4,
+  "selected_regular_bytes": 45780854,
+  "hash_only_sourceplan_files": 5,
+  "nonregular_metadata_nodes": 1,
+  "parts": [
+    {
+      "part": 1,
+      "members": 184,
+      "logical_regular_bytes": 15331604,
+      "required_fresh_bytes": 85307462
+    },
+    {
+      "part": 2,
+      "members": 357,
+      "logical_regular_bytes": 13173737,
+      "required_fresh_bytes": 83857760
+    },
+    {
+      "part": 3,
+      "members": 42,
+      "logical_regular_bytes": 13672717,
+      "required_fresh_bytes": 83066259
+    },
+    {
+      "part": 4,
+      "members": 77,
+      "logical_regular_bytes": 3602796,
+      "required_fresh_bytes": 73136669
+    }
+  ],
+  "original_canvas_terminal_exit": 0,
+  "original_35minute_gate_exit": 0,
+  "limits": [
+    "Static source/AST and fixed inventory metadata only; no collector/Chrome/C/product execution or large payload reads.",
+    "Root must separately bind true execution lease and this exact peer SHA, then each fresh per-part budget must pass; recorded WS67530752B is insufficient for max85307462B.",
+    "Only four terminal small originals and original inventory capture were checked. Full canvas assertions/golden remain responsibility of independent formal actual review; this packaging peer does not replace it.",
+    "All selected regular/link sources are verified before/during/after archive by tool. Five hash-only sourceplan entries and Unixsocket metadata are checked before collection only, and are not claimed to have postarchive identity checks.",
+    "Original Gitdir/LATEST payload deliberately hash-only; all launch/storage regular bytes including ELF/cache/profile/diagnostic retained; no unknown ELF exclusion.",
+    "No extraction of tar symlinks to filesystem; exact targets are preserved as original metadata.",
+    "Formal0 fields are specific to the frozen terminal source receipts verified here; collection0 itself never grants acceptance or removes other red/UNRUN gates."
+  ]
+}

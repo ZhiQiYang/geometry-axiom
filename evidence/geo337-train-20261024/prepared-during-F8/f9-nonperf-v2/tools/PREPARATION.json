@@ -1,0 +1,138 @@
+{
+  "schema": "train337-final-original-nonperf-specials-preparation/1",
+  "prepared_utc": "2026-10-25T07:45:54.297304+00:00",
+  "subject_executed": false,
+  "source_sha": null,
+  "judge_source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "root_launch_only": true,
+  "original_judges_sha256": {
+    "tests/section_profile_mutation_check.py": "313545d9ecc4be29da244791a70d96098b1dea90c74f0c1bca0b4ebc65d0528b",
+    "tests/section_profile_mutation_runner.py": "5e831ac5aec6b92b5491e190bb8d954069fbacd30bdee2631bd0e3635e5f3e9d",
+    "geometry-core/card-reference/run_mutations.py": "d3282011a7648ef0eb8704517cd49c51a76ae75155f1870e0273f023e189165e",
+    "geometry-core/card-reference/run_axiom_mutations.py": "73475426a1060389972bc41e25da97026f717c5c9f7d3cdb40d538a8fcada10e",
+    "geometry-core/card-reference/mutations.py": "790d69c3a67ea1ad762f1ef943193433d08215c0a9f426138a9540d3d1a99b41",
+    "geometry-core/card-reference/confirmation_probe.c": "79d3732f79936f31f872fb3188902b1c001b26ef269f1c3c19f69dc525a30c47",
+    "tests/test_grid_card_reference.py": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f",
+    "tests/test_engineering_model_compatibility.py": "975322b3cf96747fd5318625f571642a20e9ee5130e022ddcbca3ffb824b39f4",
+    "tests/pf3_mutation_check.py": "73b622fb59033b0ebe8672fe024c3c46645c9a3e863a60545c486223e44b5692",
+    "tests/test_panel_fill_support.py": "fc4183f20270cb19c3207cec17b41f42825525c0a629be0d094ea467b5d90136",
+    "tests/binaries.py": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651",
+    "tests/run_all.py": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9",
+    "tests/run_all.expected.json": "dc8361a39edefc9b6060de2596ea68b4d7e900d15385425cf8ed006f5d66e7b1"
+  },
+  "required_eight_expected": {
+    "py:test_geo261_source_index": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_candidate_cache": {
+      "mode": "count",
+      "count": 18,
+      "unit": "test"
+    },
+    "py:test_geo261_graph_product": {
+      "mode": "count",
+      "count": 5,
+      "unit": "test"
+    },
+    "py:test_geo261_assembly_graph_product": {
+      "mode": "count",
+      "count": 4,
+      "unit": "test"
+    },
+    "py:test_bridge_integrity": {
+      "mode": "count",
+      "count": 24,
+      "unit": "test"
+    },
+    "c:integrity": {
+      "mode": "count",
+      "count": 432,
+      "unit": "C 檢查點"
+    },
+    "core:run_tests": {
+      "mode": "count",
+      "count": 166,
+      "unit": "場景"
+    },
+    "py:test_geo261_load_residual": {
+      "mode": "count",
+      "count": 14,
+      "unit": "test"
+    }
+  },
+  "external_tools": [
+    {
+      "path": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "path": "/workspace/geo261-environment/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/geo323_record.py",
+      "bytes": 10675,
+      "sha256": "c997611f5ba14298d0a06759528c192adb0619a9587cb0cab4fd051d95126810"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/mini_gen.py",
+      "bytes": 1560,
+      "sha256": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/profile_linux.py",
+      "bytes": 1630,
+      "sha256": "0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py",
+      "bytes": 25764,
+      "sha256": "881d618cd06b3edddf10a6676504923bbd982c8901c632410db434cfd480e849"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/verify_linux.py",
+      "bytes": 11459,
+      "sha256": "c3db1834c49365a08ef5720d38156253a355e9f5d5db0239486013871d0e2cac"
+    }
+  ],
+  "files": [
+    {
+      "path": "run_original_specials.py",
+      "bytes": 13374,
+      "sha256": "993ee0102107e13e3391e31ffbc84ae88e6c6979673ebc1c42ca794ef6c1b8e9"
+    },
+    {
+      "path": "binding_guards.py",
+      "bytes": 2673,
+      "sha256": "1b7556db553c17265407adf77023c63e6b6166da9297b5461d3c1eeaab17eeb3"
+    },
+    {
+      "path": "REQUESTS.json",
+      "bytes": 8316,
+      "sha256": "2ace7266ff4ed5ee002e318f69c0a90918c08a4b323f397e1936207e543aa515"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2397,
+      "sha256": "4093a67b61d03323c2c2324c4c47c9a3fa84850fde2b6709495fbeea72774b3a"
+    }
+  ],
+  "binding_policy": {
+    "product_F8": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+    "source_F9": null,
+    "allowed_non_evidence_changes": [
+      "tests/mutants_results.json"
+    ],
+    "F8_R8_rerun": false,
+    "formal_executed": false
+  }
+}

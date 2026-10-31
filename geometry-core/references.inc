@@ -118,6 +118,19 @@ typedef struct {
     WoodFinishSourceKey placement_binding_key;
     bool use_current_values,source_failure;
     bool wanted[WORLD_MAX_TIMBERS];
+    /* 每次候選驗證均重建整份求值狀態。成功的定義／幾何解碼可共用，
+     * 每個 consumer 的依賴登記仍須逐筆執行。 */
+    struct {
+        bool anchor_valid,definition_valid,pose_valid,footprint_valid,footprint_ok;
+        uint32_t id,pose_id,placement;
+        /* Contact keeps only its successful three-field decode; its key is independent of the full anchor. */
+        bool contact_valid;uint32_t contact_id;
+        WoodMemberPlacementContact contact;
+        WoodMemberPlacement anchor;
+        WoodMemberDefinition definition;
+        GeoBox3 pose;
+        GeoRect2 footprint;
+    } member_reads[WORLD_MAX_TIMBERS];
 } ReferenceEval;
 static ReferenceEval *g_reference_active;
 static bool reference_eval_guide(ReferenceEval *, size_t);
@@ -134,6 +147,8 @@ static bool reference_host_read(ReferenceEval *,uint32_t,PlacementSurface *,Spac
 static bool reference_member_dimension(ReferenceEval *,uint32_t,bool,Coord *);
 static bool reference_member_owned(ReferenceEval *,uint32_t,bool *);
 static bool reference_member_footprint(ReferenceEval *,size_t,uint32_t,GeoRect2 *);
+static bool reference_member_anchor_read(ReferenceEval *,size_t,uint32_t,WoodMemberPlacement *);
+static bool reference_member_definition_read(ReferenceEval *,size_t,uint32_t,WoodMemberDefinition *);
 static bool reference_grid_definition(ReferenceEval *,uint32_t,WoodGridApplication *);
 static bool reference_derived_resolve(ReferenceEval *,const PlacementSurface *,const char *,int *,int *);
 static void reference_sources_dispose(ReferenceEval *ctx)
@@ -153,6 +168,7 @@ static void reference_sources_dispose(ReferenceEval *ctx)
     wood_contact_sources_destroy(ctx->contact_sources);ctx->contact_sources=NULL;
     wood_assembly_sources_destroy(ctx->assembly_sources);ctx->assembly_sources=NULL;
     ctx->parameter_sources=NULL;ctx->parameter_snapshot=NULL;ctx->sources=NULL;ctx->sources_registered=false;
+    memset(ctx->member_reads,0,sizeof ctx->member_reads);
 }
 static bool reference_quantity(ReferenceEval *,const GuideLine *,const char *,Coord *);
 static bool reference_parameter_quantity(ReferenceEval *,ParameterRef,GeoQuantity *);
@@ -467,8 +483,8 @@ static bool app_member_reference_at(void *user,size_t i,WoodMemberReferenceFact 
     AppMemberReferenceContext *c=user;World *w=c->world;if(i>=w->wood.timber_count)return false;
     const TimberAnchor *a=&w->wood.anchors[i];TimberAnchor authored;out->member=w->wood.timbers[i];out->wanted=c->evaluation&&c->evaluation->wanted[i];
     if(c->evaluation&&!c->evaluation->use_current_values){WoodMemberDefinition definition;
-        if(!wood_definition_sources_member(c->evaluation->definition_sources,out->member.id,&definition)||
-           !wood_definition_sources_placement(c->evaluation->definition_sources,out->member.id,&authored))return false;
+        if(!reference_member_definition_read(c->evaluation,i,out->member.id,&definition)||
+           !reference_member_anchor_read(c->evaluation,i,out->member.id,&authored))return false;
         out->member.role=definition.role;out->member.cut_priority=definition.priority;out->member.auto_length=definition.auto_length;a=&authored;
     }
     out->anchor=(WoodMemberReference){.placement_id=a->placement_id,.anchor_kind=a->anchor_kind,.length_direction=a->length_direction,.depth_side=a->depth_side,
@@ -548,7 +564,7 @@ static bool app_member_reference_evaluate_guide(void *user,size_t i)
 static bool app_member_reference_span(void *user,uint32_t pid,const WoodMemberSpanRequest *r,Coord *start,Coord *end,char *err,size_t cap)
 {
     AppMemberReferenceContext *c=user;(void)pid;return resolve_auto_span(c->world,&c->geometry->placement,c->geometry->boundary_view,r->along_v,r->cross_lo,r->cross_hi,
-        r->contact,r->contact_lo,r->contact_hi,r->through,r->through_at,r->between?r->stops:NULL,r->scoped?&r->scope:NULL,start,end,err,cap)==SPAN_OK;
+        r->contact,r->contact_lo,r->contact_hi,r->through,r->through_at,r->between?r->stops:NULL,r->scoped?&r->scope:NULL,start,end,err,cap,r->self)==SPAN_OK;
 }
 static bool app_member_reference_primary(void *user,uint32_t pid,const WoodMember *member,bool along,char *err,size_t cap)
 {AppMemberReferenceContext *c=user;return surface_primary_axis_check(c->world,pid,member,along,err,cap);}
@@ -624,13 +640,14 @@ static bool reference_compute_timber(ReferenceEval *ctx,size_t i)
 /* I8a: report independent failures across the whole reconstructed world. */
 static bool reference_check_all(const World *w)
 {
+    AppFootprintMemo footprints={0};app_footprint_memo_begin(&footprints,w);
     bool ok=true;
     for (size_t i=0;i<w->wood.timber_count;++i) {
         const Timber *t=&w->wood.timbers[i];TimberAnchor actual_anchor;const TimberAnchor *a=&actual_anchor;
         if (!t->placed) continue;
         PlacementSurface placement;SpaceBoundarySurface boundary;const SpaceBoundarySurface *host_boundary;SurfaceRegion2 f;
         if(!app_reference_member_anchor(w,i,&actual_anchor)||!app_reference_host_read(w,a->placement_id,&placement,&boundary,&host_boundary)||
-           !app_reference_member_footprint(w,i,a->placement_id,&f)) { ok=reference_issue(t->id,"I5","valid footprint on existing surface","missing footprint"); continue; }
+           !app_footprint_memo_read(&footprints,i,a->placement_id,&f)) { ok=reference_issue(t->id,"I5","valid footprint on existing surface","missing footprint"); continue; }
         const PlacementSurface *p=&placement;
         const SpaceBoundarySurface *b=placement_boundary_for_rect(p,host_boundary,&f);
         bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
@@ -639,9 +656,14 @@ static bool reference_check_all(const World *w)
         StopFace faces[STOP_FACE_MAX]; size_t nf=collect_stop_faces(w,p,b,along,t,faces,STOP_FACE_MAX);
         for (int k=0;k<2;++k) {
             size_t hits=count_legal_stops(faces,nf,ends[k],lo,hi);
-            if (!hits || (!a->has_between && hits!=1)) {
-                char actual[180]; snprintf(actual,sizeof actual,"end %d at %lld mm, cross [%lld,%lld], legal stops=%u",k,(long long)ends[k],(long long)lo,(long long)hi,(unsigned)hits);
-                reference_issue(t->id,"R6(d)/I6","one full-width FIXED stop at each end (or explicit between)",actual); ok=false;
+            WoodBoundaryEndAdmission admission=WOOD_BOUNDARY_END_ORDINARY;
+            if(!app_reference_boundary_end_policy(w,p,b,t,along,ends[0],ends[1],lo,hi,k,faces,nf,NULL,&admission)){
+                reference_issue(t->id,"I8","ordered endpoint source facts","boundary endpoint facts unavailable");ok=false;continue;
+            }
+            char detail[256]="";
+            if(!wood_contact_end_support_check(admission,hits,a->has_between,detail,sizeof detail)){
+                char actual[512];snprintf(actual,sizeof actual,"end %d at %lld mm, cross [%lld,%lld], legal stops=%u; %s",k,(long long)ends[k],(long long)lo,(long long)hi,(unsigned)hits,detail);
+                reference_issue(t->id,"R6(d)/I6","full-width FIXED stop or approved boundary fixed-end exception",actual);ok=false;
             }
         }
         char err[256];
@@ -652,7 +674,7 @@ static bool reference_check_all(const World *w)
             if(!w->wood.timbers[j].placed)continue;
             if(!app_reference_member_anchor(w,j,&other_anchor)){ok=false;continue;}
             if(other_anchor.placement_id!=a->placement_id)continue;
-            if(!app_reference_member_footprint(w,j,a->placement_id,&other)){ok=false;continue;}
+            if(!app_footprint_memo_read(&footprints,j,a->placement_id,&other)){ok=false;continue;}
             if (uv_rects_overlap(f.min_u,f.min_v,f.max_u,f.max_v,other.min_u,other.min_v,other.max_u,other.max_v)) {
                 char actual[180]; snprintf(actual,sizeof actual,"positive-area intersection with timber %u",w->wood.timbers[j].id);
                 reference_issue(t->id,"I11","zero positive-area overlap",actual); ok=false;
@@ -692,11 +714,13 @@ static bool reference_parameters_rebuild(World *w,char *error,size_t cap)
 }
 static bool reference_rebuild(World *w)
 {
-    ReferenceEval local={0},*ctx=&local;bool persistent=false;
+    ReferenceEval local,*ctx;bool persistent=false;
     if(g_active_app_candidate&&w==&g_active_app_candidate->after){
         ctx=app_candidate_evaluation_state(g_active_app_candidate->control);
         if(!ctx||ctx->world!=w)ctx=reference_sources_begin_candidate(w);
         if(!ctx)return false;persistent=true;
+    }else{
+        local=(ReferenceEval){0};ctx=&local;
     }
     ctx->world=w;bool ok=true;
     geo_guides_reset_resolved(&w->geo.guide_lines);

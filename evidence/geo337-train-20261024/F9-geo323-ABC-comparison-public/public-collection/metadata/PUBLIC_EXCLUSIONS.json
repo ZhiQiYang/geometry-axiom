@@ -1,0 +1,28 @@
+{
+  "schema": "geo323-public-auxiliary-profile-exclusions/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "private_inventory_sha256": "1ab22f16962fb861204932c4c46ff379c9c1e6144d9b7006999ded216a0f416f",
+  "exclusions": [
+    {
+      "private_inventory_index": 4627,
+      "member": "comparison/tools-frozen/authority/connected-user/subcommands/000001/stdout.bin",
+      "source_path": "/workspace/geo323-F9-owner-compare-once-20261025-r1/tools-frozen/authority/connected-user/subcommands/000001/stdout.bin",
+      "bytes": 2795,
+      "sha256": "b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29",
+      "detections": [
+        "complete-decoded-profile-object",
+        "complete-http-raw",
+        "complete-json-body-raw",
+        "decoded-string:complete-http-raw",
+        "decoded-string:complete-json-body-raw"
+      ],
+      "reason": "Unrelated full GET /user profile response is auxiliary account authentication data; retain cloud-only under E70 scope.",
+      "private_archive_part": 4,
+      "private_archive_root": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-owner-comparison-terminal-package-shm-v2-20261025",
+      "private_original_retained": true
+    }
+  ],
+  "private_complete_archives_retained": true,
+  "no_formal_product_command_stream_excluded": true,
+  "disclosure": "All formal comparison observations and command streams remain public candidates. Full unrelated GET /user response is cloud-only; do not claim every API raw payload is public."
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "geo337.native-r2-terminal-collector-preparation/1",
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "originalTool": "/workspace/train337-native-terminal-collection/collect_terminal_native.py",
+  "originalToolSHA256": "2fd1a66776df41bc1848619aa49b95bc5cf62da48a8ad35c1ce320120b61f70a",
+  "tool": "/workspace/train337-native-r2-terminal-collection/collect_terminal_native.py",
+  "toolSHA256": "a320b22c40a17ad4191e02fd397bf3cd3094889cfdb6df0cadfae41da42ad002",
+  "exactLiteralReplacements": [
+    [
+      "/tmp/train337-full-native-L-7af8c5d8",
+      "/tmp/train337-full-native-L-7af8c5d8-r2"
+    ],
+    [
+      "/workspace/train337-native-L-7af8c5d8-launch",
+      "/workspace/train337-native-L-7af8c5d8-r2-launch"
+    ],
+    [
+      "/workspace/train337-native-terminal-collection/completed",
+      "/workspace/train337-native-r2-terminal-collection/completed"
+    ],
+    [
+      "/workspace/launch_geo337_L_native.py",
+      "/workspace/launch_geo337_L_native_r2.py"
+    ]
+  ],
+  "executed": false,
+  "onlyASTParsed": true,
+  "argv": [
+    "python3",
+    "-B",
+    "/workspace/train337-native-r2-terminal-collection/collect_terminal_native.py"
+  ],
+  "terminalPreconditions": "Original r2 OUTER receipt.json and OUT RECEIPT.json must both exist with source L and non-null actual exits. No live OUT, ROOT or cache was read to prepare this tool.",
+  "rootAndCacheLease": "After the whole native process exits, root must keep ROOT/global cache reserved through collector and actual raw/sidecar peer; no new cache writer may start during collection.",
+  "scope": "Original collector unchanged except four exact output/wrapper paths. All r2 OUT except exact preserved old cache, all r2 OUTER, all terminal new cache non-ordinary-ELF and sidecars. Ordinary registry ELF payload excluded with original hash; unknown/counterfactual ELF included. No previous r1 artifact overwritten.",
+  "resultInterpretation": "Neither preparation nor successful packaging is a native pass. Original full230 rows, CI35 gate, ENOENT outcome and allowed skip require true original terminal result and independent package peer.",
+  "subjectExecuted": false,
+  "sourceWrites": false,
+  "cacheWrites": false
+}

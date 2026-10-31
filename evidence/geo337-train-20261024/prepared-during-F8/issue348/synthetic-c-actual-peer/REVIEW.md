@@ -1,0 +1,1 @@
+最小真 C protocol actual 獨審：355核對／exit 0。原61checks、26CLI一致；4個stub編譯與nm原流、13事件、非匹配FILE/NULL及errno、256KiB stderr／5段stdout、真0.25s TimeoutExpired partial／reap、eventFD失敗均核對。C撤回flush-return讓原guard在input-command-identity紅，恢復綠，原輸出不變。僅stub協定通過，產品ELF／N512未驗。首輪缺env/disk preflight不補稱已記，r2只有準備且UNRUN；ELF hash為獨審時現存artifact，不偽稱每次原執行前已取hash。

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/check_public_actual.py", line 95, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/check_public_actual.py", line 86, in main
+    host=J(a.host_final);bind(a.host_final);check(host['exit_code']==0,'True host final0')
+                                                  ~~~~^^^^^^^^^^^^^
+KeyError: 'exit_code'

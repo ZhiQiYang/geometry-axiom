@@ -1,0 +1,367 @@
+{
+  "schema": "geo323-formal-publication/1",
+  "source_sha": "f43e8d8b876f587c11778fa74a80b205b51396b6",
+  "archive_count": 2,
+  "archives": [
+    {
+      "path": "archives/formal-f43e8d8b-01.tar.gz",
+      "bytes": 14255413,
+      "sha256": "6e531c5c0a36b14b040aa4b4fbb040a9613438b5c8e1b1039b7ec3910ce61702",
+      "members": 7057,
+      "inventory": "inventories/formal-f43e8d8b-01.tar.gz.members.json"
+    },
+    {
+      "path": "archives/formal-f43e8d8b-02.tar.gz",
+      "bytes": 13328385,
+      "sha256": "fe408ae3e287ef789f92c1ea064851762fc16c8b634640e549cbcdfc16722d2d",
+      "members": 4032,
+      "inventory": "inventories/formal-f43e8d8b-02.tar.gz.members.json"
+    }
+  ],
+  "member_count": 11089,
+  "raw_bytes": 106672856,
+  "product_commands_rerun": false,
+  "product_judgments_modified": false,
+  "original_wrapper_exit": 1,
+  "original_full_acceptance_passed": false,
+  "measured_original_targets": {
+    "N64_fix_main": {
+      "actual": 1.7457212386369296,
+      "target": "<=1.3",
+      "target_met": false,
+      "method": "原36樣本，N16/32/48/64，每輪base→fix→main，共3輪；中位數"
+    },
+    "small_N_no_regression": {
+      "reference": "原固定base的變更前載入時間；不得變慢",
+      "points": {
+        "16": {
+          "fix_base": 0.9873384859536899,
+          "target_met": true
+        },
+        "32": {
+          "fix_base": 0.8331570113170761,
+          "target_met": true
+        },
+        "48": {
+          "fix_base": 0.7329361402138524,
+          "target_met": true
+        }
+      }
+    },
+    "geo_eval_source_64_32": {
+      "N32_calls": 80273,
+      "N64_calls": 358854,
+      "actual": 4.470419692798326,
+      "target": "<=4.5",
+      "target_met": true,
+      "method": "原-O1 -fno-inline -pg；base/fix各N32/N64一次；無main profile；原profile無timeout"
+    }
+  },
+  "excluded_elf": [
+    {
+      "path": "evidence/pf3/band-range/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/band-range/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "a824ddcaf25d2b7b00b7865631a7248b4f0fbaece9c0dbf9cd435dde7100069f",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/band-range/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/band-range/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "5cbd23eb605d561663412623a5713ff4138573b0c00bc1294794ec8be18e56ff",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/baseline/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/baseline/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "aa0482e97a3ee4210df253bad3213b3097c8ef30b22f0b7c859dfd8177019b40",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/baseline/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/baseline/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "c1768f668e0cc47c0318c417d5724c4d8557c3c91d3d1a437337e7a99448e8b9",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/board-vertices/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/board-vertices/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "9ef33816e32ae38aebbe8c5b8358ef8772ffbdc22bc481e22e1d93428e27c916",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/board-vertices/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/board-vertices/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "2d83737f012ba53a1eb40e653a9b1df1ace5620ff30301cea9b3eb75e5340d51",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/capacity-early/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/capacity-early/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "b86b078748dc473c98f62c5459798956fb64d03221249b8a7e6577907ca5198f",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/capacity-early/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/capacity-early/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "98b5ffd885bcee71ee119b05988ff69cffe830779f9aff68c382e7c4b1be5cdb",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/capacity-truncate/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/capacity-truncate/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "ec775036ed22fc7b25bc47cad67c72ae0c0e7cf2bfc78f8c0b5e3221b2534096",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/capacity-truncate/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/capacity-truncate/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "46be7eea64903bc47f4f0a1ad8fc02a88d6f4c158b8ef561d7e77d5070dffc20",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/continuous-width/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/continuous-width/binaries/bridge",
+      "bytes": 1104576,
+      "sha256": "1643ed0208d32d8fc638eac2917807c779ebbdd0bd4c60b13e1a04f4c7bc7c26",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/continuous-width/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/continuous-width/binaries/pf3-algorithm",
+      "bytes": 890824,
+      "sha256": "b722ccb73b62b4926ab7189949ba7c05e5708c6b7900b9a9c369c8bad87ec437",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/effective-merge/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/effective-merge/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "f9bdc92595b563c51224c53a8416338883c685f063249b3cb64b9b11175d306b",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/effective-merge/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/effective-merge/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "db14c53f6f8c5cacfd699103b4127d53366d7d0f6bccdb07a5c125bd528760e7",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/finish-reflection/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/finish-reflection/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "825e50b170ea25c1087fd633bcf695aa9ebe93abc090ab2fb9d5d7aca3a2ebe2",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/finish-reflection/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/finish-reflection/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "4c40f18c7c8e60e566bded3ddc27b4858cd601fee7084471117f6cc1d009fa4b",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/footprint-union/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/footprint-union/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "37deb7aa07aa7cfdcc497be74b102aec407a0006ebbbace080608ab179a74fbb",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/footprint-union/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/footprint-union/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "ede19663384a06682075d51b4de1f2f3660313ac8899cc0371ecbfb714fabacc",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/footprint-vertices/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/footprint-vertices/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "4b591048d9cfcea420d142e3d615d8906063eeb96b52790d06da11e78e47c9a3",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/footprint-vertices/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/footprint-vertices/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "8dbc08c62dc081d028e6e250df8fd0b7379ad8d380c11f1c8ee0ab513c4f17c8",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/hidden-threshold/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/hidden-threshold/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "e6167f27712746acf415032dd02537ce93d5e5dc11047a383a90bf40401a10dc",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/hidden-threshold/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/hidden-threshold/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "8556242b39767318646969fbd6ff30a794f76c339214301da9ec1757bb977faa",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/host-identity/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/host-identity/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "8863b053587180409844ce5f7229b2121be87a7ed2357a6c817f04372cfc5ae6",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/host-identity/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/host-identity/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "63728659e6c348e75ff138332b0b2a971986248c7cc83bcae12cac9ec25202a3",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/maximal-merge/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/maximal-merge/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "0720e8589e5887ea688cc2738f9650408dba154698731d9467a480647b66b3c7",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/maximal-merge/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/maximal-merge/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "8159b745ca9baa4b06ae1c82f7bf4d604f97da21466a518c531d6a2f51f02d5c",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/merge-colours/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/merge-colours/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "a4e7ca5eea767a6f1da239a5b5767fe687f4fec928dd09eacfb8106b6dec2f6e",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/merge-colours/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/merge-colours/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "8dfa04da8c2066b387c05e3d153beabe9a97574bd229248d5a477b91f354b7ee",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/odd-gap-edges/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/odd-gap-edges/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "fde2c314b33a0e27bfe3cf1ee00e64452936efa870434bc320e3123ed84008e8",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/odd-gap-edges/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/odd-gap-edges/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "f8ac65d5dd4b28ac415b95a615a3214b6b843b6d223b00319466c41c65689d3d",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/open-sample/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/open-sample/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "6f08c99f1caf593cb72612e862998f6f36efe4c8b898f52e8921feccf2c95e60",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/open-sample/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/open-sample/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "70a1febecc4d2bdde6685e099249b332a337fbcf11a6d455b6684ebf462dd795",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/overflow-comparison/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/overflow-comparison/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "fb0a149f1b29d434a80a4596b0ed60bab25296ea21fd47e20c4154f513fd418d",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/overflow-comparison/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/overflow-comparison/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "08ca8b2120a41d78b225560bb73fc881374ed8a02bc720e8523671be829869ac",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/restored/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/restored/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "ed5096273b5dad89b21e8bac380db684a83381f16936bc8637918e3be323cf35",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/restored/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/restored/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "453d157144ac5068aac032c955cf60317a9e2f561603fbdbf7a73dde4561b9df",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/rounded-threshold/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/rounded-threshold/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "40486dd149209df1e1e82dbf0d0b8aeb7875906e122ee04ac0fe9198ddf85b64",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/rounded-threshold/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/rounded-threshold/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "985e48e227d395e7db78df6fea12649f220f037d18a19661aa7afeb1e858acf0",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/two-sides/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/two-sides/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "d0caad5be94be23f12fdce0ef5b7e5ac26d0049807702a1444277f490d215346",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/two-sides/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/two-sides/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "fed312ee206bb4f6f1ad2485e9394074dee1c32fbee4666e07e10bb1e2868c67",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/unplaced/binaries/bridge",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/unplaced/binaries/bridge",
+      "bytes": 1104616,
+      "sha256": "556fe7baecd01c276ab28d8ad92a939a07177f8c940c36f7d265291ba1a36a59",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    },
+    {
+      "path": "evidence/pf3/unplaced/binaries/pf3-algorithm",
+      "absolute": "/workspace/geo323-final-f43e8d8b-r1/evidence/pf3/unplaced/binaries/pf3-algorithm",
+      "bytes": 890864,
+      "sha256": "8e9ae4c50c9418356f142fa5184c928a3d7b63a9a8435a14cd2423637ef0f7ce",
+      "reason": "ELF只存hash；完整命令、輸出與來源證據仍封存"
+    }
+  ],
+  "excluded_rebuildable_working_trees": [
+    "work/source-base/**",
+    "work/source-main/**",
+    "work/*-trace/source/**",
+    "work/*/bridge",
+    "work/*-pg/bridge"
+  ],
+  "ledger_original_limitations": [
+    "Original core per-compile/per-attempt stdout/stderr were not persisted by tests/mutate.py; exact full-ledger command stdout/stderr and ledger structured outcomes/original stream hashes are preserved. No streams were inferred from hashes.",
+    "All 75 generated mutant C files here are reconstructed-not-captured and hash-matched to original build fingerprints/sidecars; original tool deletes/restores temporary C after builds."
+  ]
+}

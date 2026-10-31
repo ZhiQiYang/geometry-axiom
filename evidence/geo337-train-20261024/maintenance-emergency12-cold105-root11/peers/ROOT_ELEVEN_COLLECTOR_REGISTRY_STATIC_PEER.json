@@ -1,0 +1,13 @@
+{
+  "schema": "root-eleven-collector-registry-static-peer-v1",
+  "checks": 123,
+  "exit_code": 0,
+  "findings": [],
+  "collector_sha256": "6cd5ada3cb64b637aa9f391c6c792a69cc6a644d14c599b784982f11ea068ffe",
+  "registry_sha256": "ab8631e0e8df22d89f8ed863e30ecc6b527a379323747ccb23cb1bb09a295fa3",
+  "limits": [
+    "Static review only; collector not executed by reviewer. Original body/metadata actual3136/0 is separate.",
+    "No88archive payload read; exact registry projection from originalplan/actual report only.",
+    "11existing groups extended, not11new groups; unrelated root docs may change, exact alias leaves remain write frozen."
+  ]
+}

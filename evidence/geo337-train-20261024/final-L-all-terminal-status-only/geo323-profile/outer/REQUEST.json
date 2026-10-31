@@ -1,0 +1,35 @@
+{
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate": "geo323-profile",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding/run.py",
+    "--repo",
+    "/tmp/train337-323-f64d638f-source",
+    "--sha",
+    "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "--base",
+    "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+    "--main",
+    "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "--out",
+    "/workspace/g337323L",
+    "--heavy-lock",
+    "/tmp/g261r3/heavy.lock",
+    "--stage",
+    "profile"
+  ],
+  "exact_original_argv_manifest": "/workspace/final-L-performance-exact-argv-20261024.json",
+  "root_exclusive_slot_granted": true,
+  "entry_sha256": {
+    "/tmp/train337-final-p52-p189-prep/run_special.py": "cbafab25c3a9ebe3d4cc07d5f14d8cf36fd38cf9b22bd28af21515c136315e42",
+    "/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding/run.py": "d4a38b7b60ac698eba4a274c5d26c83684cd1c665b8399f5e47546befae1f70e",
+    "/tmp/geo323-train337-lineage-20261024/memo-proof-tools/run.py": "d60cfb09f9f70f196e8b6f27e0fb74bdb557d653eae3289501278682ad2b5378"
+  },
+  "free_before": {
+    "/workspace": 121991168,
+    "/tmp": 29134848
+  },
+  "original_assertions_thresholds_and_timeouts_unchanged": true
+}

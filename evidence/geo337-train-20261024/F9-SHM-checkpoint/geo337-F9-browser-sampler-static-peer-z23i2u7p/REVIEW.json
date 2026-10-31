@@ -1,0 +1,125 @@
+{
+  "schema": "geo337-F9-browser-sampler-static-peer/1",
+  "created_utc": "2026-10-25T13:22:15.476855+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "executor_sha256": "919eafb54f20454ee44a27754ce04f6f63f05f6e1c9b32a5b51652058735af30",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "checks": [
+    {
+      "check": "sampler exact pin",
+      "passed": true
+    },
+    {
+      "check": "request exact pin",
+      "passed": true
+    },
+    {
+      "check": "both unbound leases false",
+      "passed": true
+    },
+    {
+      "check": "pinned unchanged launcher",
+      "passed": true
+    },
+    {
+      "check": "original c387",
+      "passed": true
+    },
+    {
+      "check": "1sec sample no traversal/payload hashing",
+      "passed": true
+    },
+    {
+      "check": "original environment argv and no new timeout",
+      "passed": true
+    },
+    {
+      "check": "endpoint only inventory and approved416MiB startup",
+      "passed": true
+    },
+    {
+      "check": "synthetic proof pin and scope",
+      "passed": true
+    },
+    {
+      "check": "proof no changes and all described checks pass",
+      "passed": true
+    },
+    {
+      "check": "two synthetic expression0/1/0 sequences",
+      "passed": true
+    }
+  ],
+  "scope": "僅WS sampler/固定launcher/既有synthetic metadata靜態讀碼；未執main/launcher/c387/SHM/browser或任何產品測試。",
+  "static_findings": [
+    "q兩lease與原launchrequest SHA/identity先核；僅接受固定7元素原argv與固定launcher/c387 pins，out新OWN且與subject output/storage/plan/layout/seed互斥。",
+    "傳入原argv、完整dict(os.environ)、cwd原/workspace、c387 timeout=None/check=False；沒有改PATH/TMPDIR/port/CI/golden/裁判。原launcher內部env清理與CI/watchdog保持原版。",
+    "inventory前後各一次，lstat+全域(dev,inode)去重、symlink不follow、無payload讀取；每秒只statvfs三掛載與cgroup current/events，未遍歷來源。",
+    "startup兩OWN unique allocated+root核可416MiB<=2GiB；416=64runtime+32archive+32Git+32remote+256transient，不重加source64或runtime64reserve，無runtimekill/新增timeout。",
+    "original_process_returncode是捕捉到的原launcher process碼；original_primary_exit另連結browser真碼，wrapper2保留原process碼，不能混成同層結果。CI超時細節仍須循原launcher receipt檢視。",
+    "sampling thread的讀/寫失敗獨立sampling_errors和sampling_complete=false；原process/原receipt身份錯誤標wrapper2，單純telemetry不足不改原process結果。stdout/stderr由c387完整留原件。",
+    "summarize明列整個mount/cgroup共享取樣值、max gap、continuous_true_peak_known=false與noR8/P189 inference；沒有把共享峰值算成單job或連續真峰值。",
+    "unbound request兩租約false；所有後續SHM讀寫依README必須root require_escalated正式auto_review，未以此peer省略。"
+  ],
+  "synthetic_existing_proof": {
+    "exit_code": 0,
+    "record_count": 32,
+    "inode_dedup_expression_sequence": [
+      0,
+      1,
+      0
+    ],
+    "symlink_no_follow_expression_sequence": [
+      0,
+      1,
+      0
+    ],
+    "full_process_exit_proof": false,
+    "scope": "Pure function AST extracts and tiny owned filesystem fixture only; sampler main/launcher/c387/SHM not executed."
+  },
+  "limits": [
+    "既有synthetic只抽AST helpers與tinyWS fixtures，expression_gate_exit是純helper表達式判讀，並非正式進程/瀏覽器/c387之0/1/0。沒有重新執synthetic。",
+    "此稿未實跑sampler/main；沒有觀測任何SHM free/OWN allocated或cgroup runtime峰值，不能預填actual。",
+    "sampler報告未自行綁executor hash；root執行/封存時應沿已知919e…與此peer原hash記錄實際script身份，原launcher/c387 pins已有內部檢查。此為收據定位建議，不新增judge。",
+    "volatile交付界線保留：原完整收件、正常push、遠端完整archive size/hash核實仍必要。"
+  ],
+  "actual_execution": {
+    "sampler_executed": false,
+    "SHM_read_or_written": false,
+    "launcher_or_product_executed": false,
+    "observed_runtime_metrics": null
+  },
+  "pins": [
+    {
+      "path": "/workspace/geo337-F9-browser-sampler-preparation-20261025/sample_original_browser_v2.py",
+      "bytes": 9510,
+      "sha256": "919eafb54f20454ee44a27754ce04f6f63f05f6e1c9b32a5b51652058735af30"
+    },
+    {
+      "path": "/workspace/geo337-F9-browser-sampler-preparation-20261025/ROOT_REQUEST.unbound.json",
+      "bytes": 741,
+      "sha256": "c62cb0897ec1be369084e28aed18e3ee4dcc554a12c4fe7a802ad8ce884c6f51"
+    },
+    {
+      "path": "/workspace/geo337-F9-browser-sampler-preparation-20261025/README.md",
+      "bytes": 1550,
+      "sha256": "f5c790c5b8bdfb8c72802fc8d8d62968047c70776557f9835ef72d2d08a07874"
+    },
+    {
+      "path": "/workspace/geo337-F9-browser-sampler-preparation-20261025/synthetic-proof/RESULT.json",
+      "bytes": 3514,
+      "sha256": "f4615e14b82ed70143c7d1517c4a982bc08ae3462c9e0e1665079c4aba03b646"
+    },
+    {
+      "path": "/workspace/geo337-F9-five-browser-shm-preparation-20261025/launch_F9_browser_shm_v2.py",
+      "bytes": 12648,
+      "sha256": "58106e23496c9ee67c7c2162817283464e7af011e758658283139060b797fc3b"
+    },
+    {
+      "path": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    }
+  ]
+}

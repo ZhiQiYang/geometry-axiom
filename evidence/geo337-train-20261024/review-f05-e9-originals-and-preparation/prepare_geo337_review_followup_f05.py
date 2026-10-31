@@ -1,0 +1,111 @@
+from pathlib import Path
+import datetime, difflib, hashlib, importlib.util, json, os
+
+L = '7af8c5d80d34cb4f49d01ba67deb78a3a6d725db'
+H = 'e3934fbdee70c4dbd226eb19137fb4a5ecf885d6'
+E = '935dc904c933a2c54e89848bc99436073e84fcd8'
+R = Path('/workspace/geometry-axiom')
+O = Path('/workspace/geo337-review-followup-f05-preparation-20261024')
+resume = O.exists()
+if not resume:
+    O.mkdir()
+cap_path = Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
+h = lambda b: hashlib.sha256(b).hexdigest()
+assert h(cap_path.read_bytes()) == 'c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+spec = importlib.util.spec_from_file_location('cap', cap_path)
+cap = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(cap)
+env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', GIT_OPTIONAL_LOCKS='0')
+env.pop('PYTHONOPTIMIZE', None)
+rec = None if resume else cap.Recorder(O / 'source-capture', env, L)
+old_rows = json.loads((O / 'source-capture/subcommands.json').read_text()) if resume else []
+if resume:
+    assert len(old_rows) == 4
+sources = {}
+for revision, filename, local in [
+    (H, 'handoff/pr-reviews/338.md', '338-all-original.md'),
+    (H, 'handoff/pr-reviews/339.md', '339-all-original.md'),
+    (H, 'handoff/NEXT.md', 'NEXT.original.md'),
+    (E, 'evidence/geo337-train-20261024/PROGRESS.md', 'PROGRESS.original.md'),
+]:
+    argv = ['git', 'show', revision + ':' + filename]
+    if resume:
+        matched = [x for x in old_rows if x['command'] == argv]
+        assert len(matched) == 1
+        row = matched[0]
+        command_dir = Path(row['directory'])
+        out = (command_dir / 'stdout.bin').read_bytes()
+        err = (command_dir / 'stderr.bin').read_bytes()
+        assert h(out) == row['stdout_sha256'] and h(err) == row['stderr_sha256']
+        assert (O / local).read_bytes() == out
+    else:
+        row, out, err = rec.run(argv, cwd=R, timeout=None, check=False,
+                                source_sha=revision,
+                                source_variant='original-review-and-progress-snapshot')
+    assert row['actual_process_returncode'] == 0
+    if not resume:
+        (O / local).write_bytes(out)
+    sources[local] = dict(commit=revision, path=filename, bytes=len(out), sha256=h(out), command=row)
+
+for number, marker in [(338, '### 2026-10-24T00:39:37Z ZhiQiYang'),
+                       (339, '### 2026-10-24T00:39:36Z ZhiQiYang')]:
+    raw = (O / f'{number}-all-original.md').read_bytes()
+    pos = raw.rfind(marker.encode())
+    assert pos >= 0 and b'### 2026-' not in raw[pos + len(marker.encode()):]
+    (O / f'{number}-latest-review-excerpt.md').write_bytes(raw[pos:])
+
+progress_original = (O / 'PROGRESS.original.md').read_text()
+progress = progress_original
+old = '| 本次B3：Actions 40034196788 required jobs | head c6c0b0d | 七項failure；已確認帳戶環境阻擋 | 七個GitHub原annotation明列付款失敗或支出上限，jobs未派runner/steps；分類原件已入庫，雲端同L補跑尚未完成，B3未解除 |'
+new = '| 最新B3：Actions 40043471807 required jobs | head f05e7cf | 最新審查記七項failure；新run原始分類收集中 | 2026-10-24 00:39:37 UTC審查要求同head CI真啟動終態或正式替代流程；舊c6／40034196788分類只作歷史，不能解除新head B3 |'
+assert progress.count(old) == 1
+progress = progress.replace(old, new, 1)
+old = '最新fetch handoff1bffddde，#338最新審查2026-10-23 22:39:41 UTC/headc6c0b0d：B1完整同L驗收、B2原exact、這次B3 Actions紅均未解除；前次B3原件入庫與M1改善獲確認。正文C1須與同L真終態一致。沒有可合併結論，不等待審查或使用者；重測最多2，canvas／性能獨占。L帳本完成後續跑其他原正式項與獨立工作。'
+new = '最新已讀handoff e3934fbdee70c4dbd226eb19137fb4a5ecf885d6 的#338審查為2026-10-24 00:39:37 UTC/head f05e7cf；#339為00:39:36/head e9ee6d0。#338 B1確認帳本、五browser、reader/RC、Reading A、§7已有終態；評論當時canvas與native r2尚未終態，現在canvas真0已封、r2仍RUNNING。B2原exact及版本／comparator裁決仍未解除。B3須對新run40043471807保存原件，不以舊c6分類代替。依最新C1，正文D5bc暫不再發布中間版本，待native真終態後與已完成canvas一併重寫唯一矩陣；沒有可合併結論，不等審查而繼續獨立工作。'
+assert progress.count(old) == 1
+progress = progress.replace(old, new, 1)
+progress += ('\n## 最新審查對照補正（2026-10-24 00:39 UTC評論；文件準備稿）\n\n'
+             '#338 head f05e7cf最新B3對應Actions40043471807；#339 head e9ee6d0最新B2對應Actions40040764499。這兩個run的原始API／annotation分類正在收集，未以舊run40034196788／40032957675的付款或支出限制證據移標新head，也未宣稱新CI有runner、已啟動或已通過。新審查原全文及來源commit保留；最新評論仍判不可合併。\n\n'
+             '#339原11列仍3PASS／1RED／7UNRUN，新F38da的142 importer／三個predicate反證與aggregate native仍待正式驗收；準備／source pin不算通過。C1要求可見PR狀態正式接替#324；C2仍取決於draft#340接受與最終組合驗收，不因文件更新解除。這次僅修審查來源和Actions對照，不發布另一份中間PR正文，也不改產品、測試、公理或任何判準。\n')
+(O / 'PROGRESS.draft.md').write_text(progress)
+(O / 'PROGRESS.review-only.diff').write_text(''.join(difflib.unified_diff(
+    progress_original.splitlines(True), progress.splitlines(True),
+    fromfile='E935dc904:PROGRESS.md', tofile='PROGRESS.draft.md')))
+
+next_original = (O / 'NEXT.original.md').read_text()
+next_text = next_original
+old = '- 最近讀到 handoff `85e51142`。#338 最新 ChatGPT 審查仍 2026-10-23 22:39:41 UTC／head c6c0b0d；#339 仍 22:39:42／head47fd。每輪 explicit fetch 再讀，不等待新審查才做事。'
+new = '- 最新已讀 handoff `e3934fbdee70c4dbd226eb19137fb4a5ecf885d6`。#338最新 ChatGPT 審查為2026-10-24 00:39:37 UTC／head f05e7cf；#339為00:39:36／head e9ee6d0。兩者仍判不可合併。每輪 explicit fetch 再讀，不等新審查才做事；D5bc正文暫不重發中間矩陣，待native真終態後和canvas一併更新。'
+assert next_text.count(old) == 1
+next_text = next_text.replace(old, new, 1)
+old = 'B3：Actions40034196788七required jobs未獲runner/steps，原annotation是付款失敗 **或** 支出上限，不能猜其中一種。原API與分類已公開；沒有改帳戶設定，也不能冒CI綠。B1尚未完整、B2仍阻擋，未標READY-TO-MERGE。'
+new = '最新B3：#338 head f05e7cf的Actions40043471807；#339 head e9ee6d0的B2對應Actions40040764499。最新審查各指七required failure、runner空與steps=[]，兩run原始API／annotation分類正在收集；未直接把舊run40034196788／40032957675的環境分類移標。舊c6分類已公開但只作歷史，不解除新head required checks。B1尚未完整、B2原exact／版本裁決仍阻擋，沒有READY-TO-MERGE；新原件到後再同批補分類，不冒CI綠。'
+assert next_text.count(old) == 1
+next_text = next_text.replace(old, new, 1)
+old = 'native結束後原required-eight/PF3可用ROOT'
+new = 'native真終態且原sidecars／完整streams收包與actual peer完成後，才可交原required-eight/PF3使用ROOT'
+assert next_text.count(old) == 1
+next_text = next_text.replace(old, new, 1)
+old = '   - 獨占ROOT `/tmp/train337-323-f64d638f-source` 與 `/tmp/geometry-tests`，不可其他測試或cache writer碰它們。'
+new = old + '\n   - R2 collector已備：`/workspace/train337-native-r2-terminal-collection/collect_terminal_native.py`，SHA `a320b22c40a17ad4191e02fd397bf3cd3094889cfdb6df0cadfae41da42ad002`；原R1僅四路徑變更、靜審16/0。只有outer/receipt.json與OUT/RECEIPT.json雙真終態後才收；收包／原sidecar核對完成前不得釋放ROOT/globalcache給下一位writer。'
+assert next_text.count(old) == 1
+next_text = next_text.replace(old, new, 1)
+next_text += ('\n最新審查補記：#338 f05評論已承認完整帳本、五browser、reader/RC、Reading A與§7終態；當時canvas/R2尚未終態，現canvas真0已公開而R2仍RUNNING。C1要求等canvas/native終態後一次重寫唯一矩陣，本輪只改審查與新Actions對照。#339 e9評論仍要求新F142／三反證／aggregate、正式接替#324及#340基底接受；不能拿準備工具代替實測。\n')
+(O / 'NEXT.draft.md').write_text(next_text)
+(O / 'NEXT.review-only.diff').write_text(''.join(difflib.unified_diff(
+    next_original.splitlines(True), next_text.splitlines(True),
+    fromfile='handoff-e3934fbd:NEXT.md', tofile='NEXT.draft.md')))
+
+summary = dict(schema='latest-review-f05-e9-followup-preparation/1',
+               preparedUTC=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+               handoffSHA=H, evidenceBase=E, sourceSHA=L, sourceCapture=sources,
+               latestReview338=dict(timestamp='2026-10-24T00:39:37Z', head='f05e7cf', actionsRun='40043471807'),
+               latestReview339=dict(timestamp='2026-10-24T00:39:36Z', head='e9ee6d0', actionsRun='40040764499'),
+               oldCIClassificationNotTransferred=True, newActionsClassification='collecting; no inferred environment diagnosis',
+               prbodyPublication='hold current D5bc; update once native terminal can join completed canvas',
+               nativeR2='RUNNING; not read or packaged by this preparation',
+               productOrTestsChanged=False, branchWrites=False,
+               refreshBeforeApplying='If original native/Q38 terminal or new Actions evidence arrives, revise only those current-state claims; do not overwrite newer root progress.',
+               outputs={p.name:dict(bytes=p.stat().st_size,sha256=h(p.read_bytes())) for p in O.iterdir() if p.is_file()})
+cap.dump(O / 'PREPARATION.json', summary)
+print(json.dumps({'directory':str(O),'preparationSHA256':h((O/'PREPARATION.json').read_bytes()),'branchWrites':False},ensure_ascii=False))

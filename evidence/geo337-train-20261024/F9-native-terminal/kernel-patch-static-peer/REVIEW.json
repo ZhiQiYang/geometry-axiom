@@ -1,0 +1,160 @@
+{
+  "schema": "geo314-kernel-scope-proposal-readonly-peer/1",
+  "reviewed_utc": "2026-10-25T10:42:38.843440+00:00",
+  "status": "完成唯讀草案審查；尚未施作或執行反證",
+  "proposal_source": "/tmp/geo314-F9-kernel-scope-rootcause-20261025",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "result_pin": "11f46449df220388c12159712f9958cd759bc801dd9866b9beb34ac40d8b9762",
+  "patch_pin": "233de5a153ad7d27d8caad56575c1545488987a6766d8075d7cf5f34216e78af",
+  "blocking_findings": [],
+  "conclusion": "草案保留歷史I24 K零差、將現在全部K嚴格固定於已審generic樹；未見I24/K語意白名單化或額外K差異漏放。可以作為未施作最小候選，不代表產品或測試已通過。",
+  "evidence": {
+    "original_source_pin_matches": true,
+    "proposed_source_pin_matches": true,
+    "recorded_git_commands": 17,
+    "raw_checks": [
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/001",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/002",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/003",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/004",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/005",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/006",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/007",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/008",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/009",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/010",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/011",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/012",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/013",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/014",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/015",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/016",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      },
+      {
+        "directory": "/tmp/geo314-F9-kernel-scope-rootcause-20261025/original-git/017",
+        "recorded_exit": 0,
+        "stdout_sha256_equal": true,
+        "stderr_sha256_equal": true
+      }
+    ],
+    "generic_K_ls_tree_exactly_equal_to_F9": true,
+    "original_I24_and_user_head_K_diff_empty": true,
+    "I24_and_generic_and_first_generic_ancestor_recorded_exit_zero": true,
+    "test_method_count_original": 11,
+    "test_method_count_proposed": 11,
+    "changed_test_methods": [
+      "test_kernel_has_no_changes_against_the_fixed_integration_base"
+    ],
+    "other_ten_methods_AST_equal": true
+  },
+  "mechanism_review": {
+    "historical_guard": "原INTEGRATION_BASE至固定32f42 I24原實作之K diff仍須空。",
+    "current_guard": "git diff固定81b6至現行index/working tree，涵蓋全部K tracked內容與mode/新增/刪除；無source.c排除，亦非HEAD/main浮動基準。",
+    "untracked_guard": "原ls-files --others --exclude-standard拒絕保留；沿原Git ignore範圍，不宣稱涵蓋ignored檔。",
+    "available_objects": "原diff/merge-base/ls-tree全部0且完整SHA為F9 ancestors；未依賴浮動遠端。後續隔離來源仍須包含原BASE及兩個新增pin的Git物件，缺物件不可當有效撤回紅。",
+    "domain_boundary": "已讀ACTUAL_F9_KERNEL_DELTA只有generic edge空槽重用與provider hint bucket，未引入I24／W資料或判定；本審查不重新驗證其效能/完整語意。"
+  },
+  "planned_not_executed": {
+    "same_product_fixed_withdrawn_restored_expected": [
+      0,
+      1,
+      0
+    ],
+    "withdrawal_required_cause": "還原F9舊測試後，原assert必須指名source.c差異，非Git/compile/timeout錯誤。",
+    "current_guard_negatives": [
+      "source.c額外改動",
+      "另一K檔改動",
+      "staged新增K檔",
+      "nonignored untracked K檔"
+    ],
+    "each_expected": "原具名assert正常1，恢復同相K樹後原方法0。",
+    "historical_guard_negative": "tiny Git fixture只令I24專屬提交有K差；現行樹仍完全等generic固定樹，確保先在historical assertion紅而非後段遮蔽。",
+    "followup": "新修正來源完整11方法、受影響帳本/架構/正式native按root既有規則執行；F9已完成收據不改標。"
+  },
+  "activity": {
+    "products_or_tests_executed": false,
+    "git_commands_executed_by_this_peer": false,
+    "source_branch_native_canvas_or_locks_modified": false,
+    "new_agents_spawned": false,
+    "files_written": "僅此新tmp的REVIEW.json與REVIEW.md"
+  }
+}

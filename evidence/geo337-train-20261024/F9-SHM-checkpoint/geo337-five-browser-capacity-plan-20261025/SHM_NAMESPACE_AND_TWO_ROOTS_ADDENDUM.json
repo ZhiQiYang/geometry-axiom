@@ -1,0 +1,22 @@
+{
+  "schema": "geo337-SHM-namespace-and-two-roots-addendum/1",
+  "utc": "2026-10-25T13:01:56.490623+00:00",
+  "plan_path": "/workspace/geo337-five-browser-capacity-plan-20261025/PLAN.v2.json",
+  "plan_sha256": "cae41bfdbe8571d98f137f6542e2ea9af29d468af822aece2c5ceca9c7fc5d75",
+  "placement_pins_unchanged": true,
+  "new_browser_root": "/dev/shm/geo337-F9-browsers-20261025",
+  "existing_comparison_archive_root": "/dev/shm/geometry-axiom-geo337-20261025",
+  "shared_combined_budget_bytes": 2147483648,
+  "browser_planning_estimate_bytes": 1778384896,
+  "remaining_ceiling_for_other_root_and_unallocated_contingency_bytes": 369098752,
+  "other_root_actual_allocated_bytes": null,
+  "combined_admission_proven": false,
+  "namespace_rule": "Root observed escalated SHM collector write success but normal sandbox lookup of its exact RESULT returned FileNotFound. All SHM reads/writes use explicit require_escalated auto-review; no symlink, namespace or permission workaround. Ordinary sandbox statvfs/mount views are not proof that escalated task artifacts are absent.",
+  "fresh_admission": "Before bootstrap/root each launch observe both exact OWN roots in the same approved namespace and compute deduplicated allocated use for the shared ceiling. Count existing comparison archives/metadata plus new browser allocation and additional peaks; 352 MiB is unallocated estimate, not automatically free.",
+  "Git_publication": "Proposed isolated SHM publication gitdir may read retained original objects through read-only alternates; no original repo/WS/TMP alternate changes adding an invisible SHM store. Exact tool/consumer/ref/normal-push/remote verification flow remains to be reviewed.",
+  "volatile_delivery_rule": "Keep raw, archives and Git objects protected. A job is delivered only after full collection/roundtrip, normal push, remotely resolvable SHA and full archive download size/SHA256 match. SHM retention is volatile, with remote reconstruction path in handoff.",
+  "changes_executed": [],
+  "original_64MiB_reserve_unchanged": true,
+  "original_CI_assertions_golden_unchanged": true,
+  "limitation": "Small metadata addendum; no SHM inspection or source/test execution in this command."
+}

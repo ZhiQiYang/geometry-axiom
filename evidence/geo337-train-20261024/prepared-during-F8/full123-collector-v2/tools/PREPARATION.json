@@ -1,0 +1,185 @@
+{
+  "schema": "F8-full123-terminal-tools-preparation/1",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "prepared_only": true,
+  "formal_executed": false,
+  "collection_executed": false,
+  "adoption_executed": false,
+  "active_payload_enumerated_or_hashed": false,
+  "files": [
+    {
+      "path": "ADOPTION_PLAN.md",
+      "bytes": 1938,
+      "sha256": "ccd6fbf86323799a19fddbd943b5b54007f18b9d81a3d711bafb72304e14c39e"
+    },
+    {
+      "path": "METADATA_CHECKS.json",
+      "bytes": 7366,
+      "sha256": "7e493c94ca95e5b2456f7a5d6a91b62b6e97482d7b858cf6efa79be1ed9c4419"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3661,
+      "sha256": "a2cbd3e17a09d79201fffe45e54d3a66a04db337446314e6ff33010066ee3270"
+    },
+    {
+      "path": "REQUEST.unbound.json",
+      "bytes": 618,
+      "sha256": "9c469ebefec821b9aca91c6bdf61383e78fb758e14756a53dd3432aefed2f8ff"
+    },
+    {
+      "path": "SCOPE.json",
+      "bytes": 966,
+      "sha256": "bb556a1d384ef5bd265e6ccd0eff2e6a1826a64f55fb85296682d183b09c29f8"
+    },
+    {
+      "path": "check_terminal_metadata.py",
+      "bytes": 2854,
+      "sha256": "d707535029f53caab0e79a0b92d1b182400519d320b78db8b52197f8c6795e22"
+    },
+    {
+      "path": "collect_terminal.py",
+      "bytes": 6771,
+      "sha256": "4d322f77889d1f54dc7e1b57fa604089907ba70470e151bb27b61fcca8d906ae"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000001/request.json",
+      "bytes": 1706,
+      "sha256": "88bb822697a462d0a96f005119d98e33d6296feff9dfdee8da91501c19c2088d"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000001/result.json",
+      "bytes": 1958,
+      "sha256": "41f1e1c41a4897258ab8e03bce189a57e6e6f6c3a905437464dcbbf4b33019a1"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000001/stdout.bin",
+      "bytes": 357,
+      "sha256": "bfdda40e8e32e211168299011e2d12514c4685f1180241f567b19bf68d899829"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000002/request.json",
+      "bytes": 1710,
+      "sha256": "d4825520e5c150f4eb928427b26ef7919116aec15e44d51c00c3236bcc777a37"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000002/result.json",
+      "bytes": 1964,
+      "sha256": "120343f808ab9a3da94519c23507bb91abbf41bd37992bc26d7ddef5c85658f1"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000002/stderr.bin",
+      "bytes": 337,
+      "sha256": "bf2b7bcac708be5b4909ddee6381abf839bfc17038970f507fd17f03a65c75c1"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000002/stdout.bin",
+      "bytes": 172,
+      "sha256": "6a69c15cff32910dbdb5697a74a3ac2c61aee9604d049da5d6e7be64a4da6dc6"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000003/request.json",
+      "bytes": 1709,
+      "sha256": "7ab7d7b2e1a40395e368b0b1eff1ea7967f75888398dc22971b894c09afd51e7"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000003/result.json",
+      "bytes": 1961,
+      "sha256": "d028d538fc2d9f05f2d79c26dde91c512711d07be03df3b04789a8a61a2616c1"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata-original-capture/subcommands/000003/stdout.bin",
+      "bytes": 360,
+      "sha256": "f741b563d04f1695ffcd299aff3370fe19076aae7d7001c087a11977bd4eb5e5"
+    },
+    {
+      "path": "metadata-original-capture/subcommands.json",
+      "bytes": 6147,
+      "sha256": "52365fd5ea9283f19a2601cce60805d7541397e38494cee150c870cbf29e3c88"
+    },
+    {
+      "path": "prepare_metadata.py",
+      "bytes": 4827,
+      "sha256": "39ecaf62e6192cce41cc7844f2a258ae3ebbff1fb8f669e59529c93d5742b0ff"
+    },
+    {
+      "path": "terminal_guard.py",
+      "bytes": 9522,
+      "sha256": "4f29b666cc7f3eb3cde140cad1c1260fb22f266e69c80691a7ada02b34396465"
+    },
+    {
+      "path": "verify_terminal.py",
+      "bytes": 1471,
+      "sha256": "29defec811f771c74d9eb9c845afc0700a6576377be2f29280d4fa23c860775f"
+    }
+  ],
+  "original_tools": [
+    {
+      "path": "/tmp/geo337-full123-F7-admission-draft-20261024/run_full_ledger.py",
+      "archive_name": "run_full_ledger.py",
+      "bytes": 11680,
+      "sha256": "7b6c57008921d7622ee6e47a987d7225a9318a7e53b582d3c1b9a1a5dd177eb1"
+    },
+    {
+      "path": "/tmp/geo337-full123-F7-admission-draft-20261024/launch_full_ledger.py",
+      "archive_name": "launch_full_ledger.py",
+      "bytes": 2521,
+      "sha256": "80997e749f2dcf27911780fa65a3a2c7f723e6c33d21c15ba2163a278b570c4d"
+    },
+    {
+      "path": "/tmp/geo337-full123-F7-admission-draft-20261024/resource_admission.py",
+      "archive_name": "resource_admission.py",
+      "bytes": 3792,
+      "sha256": "bc93c7e37c29ed0ef3c93819e6e67ae0674f4b054ac7ab7df48a25ee718ba121"
+    },
+    {
+      "path": "/tmp/geo337-full123-F7-admission-draft-20261024/retain_mutation_streams.py",
+      "archive_name": "retain_mutation_streams.py",
+      "bytes": 11262,
+      "sha256": "67af8f6768232aa8439a0815a490a8b1076560afd0e40656f6de7edaa009e895"
+    },
+    {
+      "path": "/tmp/geo337-full123-F7-admission-draft-20261024/verify_observed_core_raw.py",
+      "archive_name": "verify_observed_core_raw.py",
+      "bytes": 7532,
+      "sha256": "12aa2060d03078b96d81ee6b4d28facdb4d3727fb6ff7d0b4c41271f550ac46b"
+    },
+    {
+      "path": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+      "archive_name": "capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    {
+      "path": "/workspace/geo261-environment/reap_children.py",
+      "archive_name": "reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    }
+  ]
+}

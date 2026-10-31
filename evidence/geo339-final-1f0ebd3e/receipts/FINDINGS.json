@@ -1,0 +1,42 @@
+{
+  "role": "Metadata interpretation of actual original gate outputs; no gate override",
+  "executionSHA": "1f0ebd3e2108d6a4af6b436b5dd3f604df4b8599",
+  "architectureOriginalExitCodes": [
+    0,
+    0,
+    0
+  ],
+  "genericMethods": 205,
+  "productMethods": 18,
+  "architectureInputCount": 604,
+  "priorReceiptSourceBaseHead": "ec8e0d7e18aefa9b6b6b0cd26206ba720ea735f0",
+  "priorReceiptSha256": "2c75ea1a05f85bcf39e2c718aefa3fb17690d4f301f21e6dcfedc080e6480a33",
+  "inputPathSetUnchanged": true,
+  "changedReceiptInputs": [
+    {
+      "path": "geometry-templates/woodworking/geometry_woodworking/model_sources.py",
+      "receiptLFHash": "e04d5a3029aabf0e4eb1e00928137461989b0bba67e40ec10043de2a3cabc8ed",
+      "actualMLFHash": "20229be3f62525bb3db79766d6801cd9384fa3f0084d58751ae66d0ca122ef73"
+    }
+  ],
+  "actualScanEqualsTrackedPriorScan": true,
+  "actualScanCounts": {
+    "ok": true,
+    "trustedSourcesNotParsed": [
+      "geometry-web/vendor/fflate/umd/index.js",
+      "geometry-web/vendor/pdfjs-dist/build/pdf.mjs",
+      "geometry-web/vendor/pdfjs-dist/build/pdf.worker.mjs",
+      "geometry-web/vendor/pdfjs-dist/wasm/jbig2_nowasm_fallback.js",
+      "geometry-web/vendor/pdfjs-dist/wasm/openjpeg_nowasm_fallback.js",
+      "geometry-web/vendor/pdfjs-dist/wasm/quickjs-eval.js"
+    ]
+  },
+  "actualScanEdgeCount": 798,
+  "actualScanDiagnosticCount": 0,
+  "ledgerOriginalExit": 1,
+  "ledgerClassification": "tracked record freshness/unrun, not environment or product runtime failure",
+  "ledgerOriginalSummary": "table123,records110,killed0,crashed0,survived0,equivalent0,invalid0,stale107,blocked0,retired3,unrun13",
+  "ledgerRegenerated": false,
+  "architectureReceiptNeedsOriginalSchemaRefresh": true,
+  "limits": "All raw original failures remain. Three architecture judges do not make the old receipt bind this changed W leaf. Full native and six browser remain UNRUN."
+}

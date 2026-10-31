@@ -1,0 +1,72 @@
+{
+  "capacity": [
+    {
+      "shared": 1840019847,
+      "free": 307463801,
+      "admitted": true,
+      "expected": true
+    },
+    {
+      "shared": 1840019848,
+      "free": 307463801,
+      "admitted": false,
+      "expected": false
+    },
+    {
+      "shared": 0,
+      "free": 307463800,
+      "admitted": false,
+      "expected": false
+    }
+  ],
+  "symlink_guard_withdraw_restore": [
+    {
+      "exit_code": 0,
+      "output": "refuse symlink/special member: <memory-symlink>"
+    },
+    {
+      "exit_code": 1,
+      "output": "SYMLINK_MEMBER_NOT_REJECTED"
+    },
+    {
+      "exit_code": 0,
+      "output": "refuse symlink/special member: <memory-symlink>"
+    }
+  ],
+  "exact_archive_readback": [
+    {
+      "case": "valid",
+      "exit_code": 0,
+      "expected": 0,
+      "output": "exact original readback and full gzip CRC passed",
+      "archive_bytes": 232,
+      "archive_sha256": "bb5f92718273d78db464137b4022295fd9f6434586b1d402a8de9b4433b2f173"
+    },
+    {
+      "case": "wrong_member_bytes",
+      "exit_code": 1,
+      "expected": 1,
+      "output": "RuntimeError: member full-byte SHA mismatch",
+      "archive_bytes": 233,
+      "archive_sha256": "204a7b95caf11465e0fc118b60161d38d9e47672da60870920ac7bbf35142d30"
+    },
+    {
+      "case": "truncated_gzip_footer",
+      "exit_code": 1,
+      "expected": 1,
+      "output": "EOFError: Compressed file ended before the end-of-stream marker was reached",
+      "archive_bytes": 226,
+      "archive_sha256": "68b47d52fea01518956870d50819f631ec300f295dd7ee57d8ad205a952f2905"
+    }
+  ],
+  "default": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "/tmp/geo337-closed-originals-collection-preparation-20261026/collect_closed.py"
+    ],
+    "exit_code": 0,
+    "stdout": "PLAN_ONLY: fixed closed evidence roots; no archive, Git, network, tests or cleanup\n",
+    "stderr": ""
+  }
+}

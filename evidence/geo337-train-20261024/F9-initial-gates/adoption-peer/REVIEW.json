@@ -1,0 +1,3726 @@
+{
+  "schema": "F8-full-package-publication-and-F9-adoption-independent-actual-peer/1",
+  "utc": "2026-10-25T09:31:46.901980+00:00",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "final_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "evidence_head": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd",
+  "ledger_sha256": "0123548b29bf8adbaf3cf896bfffb212134452f2574eaf8ae1d1b663104ead1b",
+  "exit_code": 0,
+  "passed": true,
+  "checks_performed": 924,
+  "checks": [
+    {
+      "check": "publication_manifest_pin",
+      "passed": true
+    },
+    {
+      "check": "66_blobs_11197975B",
+      "passed": true
+    },
+    {
+      "check": "public_original_true0",
+      "passed": true
+    },
+    {
+      "check": "adopt_original_true0",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025_count",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/1/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/1/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/1/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/1/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/1/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/2/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/2/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/2/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/2/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/2/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/3/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/3/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/3/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/3/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/3/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/4/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/4/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/4/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/4/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/4/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/5/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/5/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/5/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/5/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/5/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/6/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/6/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/6/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/6/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/6/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/7/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/7/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/7/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/7/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/7/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/8/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/8/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/8/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/8/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/8/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/9/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/9/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/9/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/9/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/9/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/10/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/10/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/10/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/10/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/10/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/11/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/11/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/11/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/11/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/11/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/12/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/12/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/12/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/12/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/12/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/13/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/13/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/13/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/13/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/13/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/14/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/14/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/14/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/14/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/14/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/15/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/15/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/15/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/15/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/15/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/16/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/16/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/16/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/16/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/16/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/17/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/17/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/17/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/17/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/17/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/18/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/18/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/18/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/18/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/18/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/19/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/19/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/19/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/19/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/19/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/20/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/20/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/20/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/20/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/20/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/21/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/21/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/21/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/21/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/21/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/22/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/22/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/22/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/22/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/22/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/23/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/23/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/23/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/23/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/23/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/24/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/24/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/24/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/24/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/24/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/25/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/25/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/25/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/25/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/25/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/26/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/26/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/26/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/26/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/26/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/27/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/27/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/27/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/27/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/27/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/28/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/28/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/28/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/28/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/28/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/29/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/29/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/29/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/29/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/29/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/30/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/30/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/30/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/30/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/30/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/31/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/31/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/31/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/31/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/31/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/32/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/32/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/32/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/32/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/32/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/33/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/33/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/33/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/33/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/33/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/34/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/34/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/34/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/34/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/34/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/35/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/35/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/35/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/35/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/35/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/36/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/36/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/36/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/36/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/36/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/37/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/37/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/37/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/37/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/37/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/38/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/38/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/38/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/38/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/38/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/39/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/39/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/39/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/39/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/39/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/40/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/40/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/40/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/40/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/40/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/41/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/41/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/41/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/41/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/41/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/42/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/42/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/42/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/42/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/42/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/43/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/43/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/43/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/43/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/43/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/44/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/44/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/44/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/44/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/44/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/45/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/45/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/45/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/45/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/45/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/46/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/46/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/46/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/46/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/46/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/47/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/47/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/47/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/47/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/47/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/48/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/48/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/48/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/48/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/48/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/49/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/49/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/49/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/49/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/49/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/50/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/50/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/50/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/50/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/50/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/51/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/51/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/51/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/51/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/51/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/52/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/52/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/52/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/52/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/52/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/53/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/53/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/53/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/53/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/53/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/54/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/54/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/54/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/54/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/54/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/55/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/55/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/55/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/55/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/55/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/56/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/56/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/56/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/56/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/56/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/57/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/57/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/57/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/57/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/57/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/58/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/58/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/58/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/58/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/58/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/59/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/59/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/59/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/59/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/59/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/60/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/60/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/60/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/60/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/60/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/61/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/61/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/61/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/61/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/61/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/62/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/62/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/62/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/62/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/62/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/63/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/63/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/63/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/63/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/63/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/64/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/64/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/64/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/64/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/64/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/65/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/65/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/65/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/65/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/65/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/66/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/66/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/66/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/66/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/66/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/67/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/67/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/67/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/67/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/67/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/68/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/68/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/68/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/68/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/68/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/69/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/69/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/69/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/69/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/69/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/70/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/70/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/70/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/70/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/70/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/71/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/71/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/71/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/71/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/71/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/72/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/72/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/72/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/72/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/72/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/73/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/73/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/73/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/73/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/73/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/74/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/74/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/74/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/74/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/74/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/75/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/75/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/75/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/75/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/75/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/76/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/76/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/76/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/76/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/76/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/77/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/77/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/77/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/77/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/77/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/78/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/78/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/78/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/78/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/78/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/79/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/79/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/79/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/79/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/79/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/80/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/80/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/80/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/80/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/80/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/81/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/81/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/81/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/81/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/81/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/82/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/82/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/82/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/82/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/82/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/83/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/83/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/83/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/83/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/83/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/84/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/84/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/84/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/84/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/84/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/85/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/85/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/85/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/85/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/85/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/86/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/86/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/86/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/86/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/86/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/87/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/87/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/87/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/87/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/87/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/88/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/88/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/88/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/88/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/88/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/89/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/89/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/89/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/89/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/89/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/90/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/90/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/90/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/90/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/90/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/91/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/91/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/91/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/91/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/91/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/92/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/92/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/92/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/92/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/92/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/93/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/93/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/93/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/93/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/93/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/94/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/94/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/94/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/94/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/94/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/95/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/95/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/95/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/95/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/95/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/96/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/96/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/96/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/96/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/96/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/97/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/97/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/97/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/97/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/97/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/98/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/98/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/98/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/98/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/98/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/99/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/99/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/99/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/99/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/99/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/100/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/100/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/100/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/100/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/100/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/101/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/101/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/101/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/101/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/101/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/102/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/102/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/102/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/102/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/102/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/103/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/103/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/103/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/103/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/103/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/104/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/104/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/104/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/104/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/104/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/105/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/105/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/105/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/105/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/105/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/106/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/106/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/106/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/106/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/106/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/107/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/107/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/107/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/107/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/107/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/108/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/108/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/108/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/108/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/108/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/109/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/109/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/109/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/109/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/109/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/110/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/110/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/110/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/110/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/110/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/111/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/111/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/111/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/111/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/111/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/112/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/112/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/112/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/112/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/112/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/113/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/113/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/113/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/113/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/113/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/114/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/114/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/114/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/114/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/114/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/115/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/115/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/115/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/115/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/115/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/116/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/116/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/116/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/116/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/116/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/117/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/117/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/117/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/117/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/117/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/118/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/118/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/118/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/118/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/118/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/119/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/119/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/119/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/119/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/119/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/120/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/120/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/120/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/120/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/120/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/121/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/121/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/121/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/121/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/121/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/122/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/122/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/122/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/122/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/122/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/123/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/123/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/123/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/123/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/123/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/124/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/124/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/124/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/124/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/124/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/125/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/125/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/125/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/125/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F8-ledger-complete-publication-20261025/125/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025_count",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/1/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/1/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/1/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/1/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/1/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/2/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/2/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/2/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/2/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/2/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/3/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/3/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/3/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/3/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/3/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/4/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/4/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/4/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/4/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/4/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/5/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/5/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/5/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/5/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/5/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/6/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/6/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/6/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/6/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/6/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/7/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/7/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/7/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/7/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/7/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/8/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/8/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/8/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/8/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/8/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/9/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/9/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/9/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/9/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/9/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/10/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/10/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/10/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/10/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/10/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/11/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/11/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/11/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/11/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/11/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/12/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/12/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/12/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/12/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/12/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/13/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/13/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/13/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/13/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/13/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/14/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/14/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/14/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/14/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/14/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/15/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/15/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/15/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/15/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/15/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/16/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/16/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/16/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/16/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/16/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/17/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/17/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/17/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/17/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/17/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/18/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/18/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/18/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/18/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/18/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/19/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/19/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/19/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/19/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/19/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/20/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/20/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/20/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/20/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/20/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/21/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/21/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/21/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/21/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/21/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/22/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/22/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/22/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/22/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/22/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/23/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/23/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/23/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/23/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/23/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/24/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/24/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/24/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/24/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/24/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/25/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/25/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/25/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/25/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/25/no_force",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/26/exit",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/26/time",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/26/stdout",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/26/stderr",
+      "passed": true
+    },
+    {
+      "check": "geo337-F9-byte-adoption-20261025/26/no_force",
+      "passed": true
+    },
+    {
+      "check": "captured_E_remote",
+      "passed": true
+    },
+    {
+      "check": "captured_F9_remote",
+      "passed": true
+    },
+    {
+      "check": "captured_F9_parent",
+      "passed": true
+    },
+    {
+      "check": "captured_final_clean",
+      "passed": true
+    },
+    {
+      "check": "actual_original_tracked_command",
+      "passed": true
+    },
+    {
+      "check": "tracked_clear_mutate_source_guard",
+      "passed": true
+    },
+    {
+      "check": "tracked123stale0",
+      "passed": true
+    },
+    {
+      "check": "tracked_no_fake_killed",
+      "passed": true
+    },
+    {
+      "check": "no_execution_heads_rewritten",
+      "passed": true
+    },
+    {
+      "check": "local_batch_exit0",
+      "passed": true
+    },
+    {
+      "check": "blob0/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob0/exact",
+      "passed": true
+    },
+    {
+      "check": "blob1/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob1/exact",
+      "passed": true
+    },
+    {
+      "check": "blob2/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob2/exact",
+      "passed": true
+    },
+    {
+      "check": "blob3/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob3/exact",
+      "passed": true
+    },
+    {
+      "check": "blob4/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob4/exact",
+      "passed": true
+    },
+    {
+      "check": "blob5/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob5/exact",
+      "passed": true
+    },
+    {
+      "check": "blob6/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob6/exact",
+      "passed": true
+    },
+    {
+      "check": "blob7/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob7/exact",
+      "passed": true
+    },
+    {
+      "check": "blob8/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob8/exact",
+      "passed": true
+    },
+    {
+      "check": "blob9/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob9/exact",
+      "passed": true
+    },
+    {
+      "check": "blob10/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob10/exact",
+      "passed": true
+    },
+    {
+      "check": "blob11/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob11/exact",
+      "passed": true
+    },
+    {
+      "check": "blob12/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob12/exact",
+      "passed": true
+    },
+    {
+      "check": "blob13/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob13/exact",
+      "passed": true
+    },
+    {
+      "check": "blob14/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob14/exact",
+      "passed": true
+    },
+    {
+      "check": "blob15/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob15/exact",
+      "passed": true
+    },
+    {
+      "check": "blob16/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob16/exact",
+      "passed": true
+    },
+    {
+      "check": "blob17/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob17/exact",
+      "passed": true
+    },
+    {
+      "check": "blob18/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob18/exact",
+      "passed": true
+    },
+    {
+      "check": "blob19/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob19/exact",
+      "passed": true
+    },
+    {
+      "check": "blob20/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob20/exact",
+      "passed": true
+    },
+    {
+      "check": "blob21/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob21/exact",
+      "passed": true
+    },
+    {
+      "check": "blob22/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob22/exact",
+      "passed": true
+    },
+    {
+      "check": "blob23/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob23/exact",
+      "passed": true
+    },
+    {
+      "check": "blob24/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob24/exact",
+      "passed": true
+    },
+    {
+      "check": "blob25/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob25/exact",
+      "passed": true
+    },
+    {
+      "check": "blob26/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob26/exact",
+      "passed": true
+    },
+    {
+      "check": "blob27/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob27/exact",
+      "passed": true
+    },
+    {
+      "check": "blob28/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob28/exact",
+      "passed": true
+    },
+    {
+      "check": "blob29/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob29/exact",
+      "passed": true
+    },
+    {
+      "check": "blob30/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob30/exact",
+      "passed": true
+    },
+    {
+      "check": "blob31/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob31/exact",
+      "passed": true
+    },
+    {
+      "check": "blob32/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob32/exact",
+      "passed": true
+    },
+    {
+      "check": "blob33/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob33/exact",
+      "passed": true
+    },
+    {
+      "check": "blob34/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob34/exact",
+      "passed": true
+    },
+    {
+      "check": "blob35/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob35/exact",
+      "passed": true
+    },
+    {
+      "check": "blob36/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob36/exact",
+      "passed": true
+    },
+    {
+      "check": "blob37/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob37/exact",
+      "passed": true
+    },
+    {
+      "check": "blob38/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob38/exact",
+      "passed": true
+    },
+    {
+      "check": "blob39/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob39/exact",
+      "passed": true
+    },
+    {
+      "check": "blob40/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob40/exact",
+      "passed": true
+    },
+    {
+      "check": "blob41/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob41/exact",
+      "passed": true
+    },
+    {
+      "check": "blob42/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob42/exact",
+      "passed": true
+    },
+    {
+      "check": "blob43/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob43/exact",
+      "passed": true
+    },
+    {
+      "check": "blob44/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob44/exact",
+      "passed": true
+    },
+    {
+      "check": "blob45/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob45/exact",
+      "passed": true
+    },
+    {
+      "check": "blob46/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob46/exact",
+      "passed": true
+    },
+    {
+      "check": "blob47/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob47/exact",
+      "passed": true
+    },
+    {
+      "check": "blob48/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob48/exact",
+      "passed": true
+    },
+    {
+      "check": "blob49/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob49/exact",
+      "passed": true
+    },
+    {
+      "check": "blob50/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob50/exact",
+      "passed": true
+    },
+    {
+      "check": "blob51/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob51/exact",
+      "passed": true
+    },
+    {
+      "check": "blob52/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob52/exact",
+      "passed": true
+    },
+    {
+      "check": "blob53/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob53/exact",
+      "passed": true
+    },
+    {
+      "check": "blob54/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob54/exact",
+      "passed": true
+    },
+    {
+      "check": "blob55/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob55/exact",
+      "passed": true
+    },
+    {
+      "check": "blob56/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob56/exact",
+      "passed": true
+    },
+    {
+      "check": "blob57/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob57/exact",
+      "passed": true
+    },
+    {
+      "check": "blob58/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob58/exact",
+      "passed": true
+    },
+    {
+      "check": "blob59/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob59/exact",
+      "passed": true
+    },
+    {
+      "check": "blob60/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob60/exact",
+      "passed": true
+    },
+    {
+      "check": "blob61/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob61/exact",
+      "passed": true
+    },
+    {
+      "check": "blob62/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob62/exact",
+      "passed": true
+    },
+    {
+      "check": "blob63/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob63/exact",
+      "passed": true
+    },
+    {
+      "check": "blob64/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob64/exact",
+      "passed": true
+    },
+    {
+      "check": "blob65/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob65/exact",
+      "passed": true
+    },
+    {
+      "check": "blob66/terminator",
+      "passed": true
+    },
+    {
+      "check": "blob66/exact",
+      "passed": true
+    },
+    {
+      "check": "batch_complete_consumed",
+      "passed": true
+    },
+    {
+      "check": "small_git_exit:0",
+      "passed": true
+    },
+    {
+      "check": "E_parent",
+      "passed": true
+    },
+    {
+      "check": "small_git_exit:1",
+      "passed": true
+    },
+    {
+      "check": "F9_single_parent",
+      "passed": true
+    },
+    {
+      "check": "small_git_exit:2",
+      "passed": true
+    },
+    {
+      "check": "E_exact66_paths",
+      "passed": true
+    },
+    {
+      "check": "small_git_exit:3",
+      "passed": true
+    },
+    {
+      "check": "F9_only_ledger_progress",
+      "passed": true
+    },
+    {
+      "check": "small_git_exit:4",
+      "passed": true
+    },
+    {
+      "check": "E_non_evidence_F8",
+      "passed": true
+    },
+    {
+      "check": "small_git_exit:5",
+      "passed": true
+    },
+    {
+      "check": "F9_non_evidence_only_ledger",
+      "passed": true
+    },
+    {
+      "check": "small_git_exit:6",
+      "passed": true
+    },
+    {
+      "check": "request_original_pin",
+      "passed": true
+    },
+    {
+      "check": "v4_tool_pin",
+      "passed": true
+    },
+    {
+      "check": "helper_original_pin",
+      "passed": true
+    },
+    {
+      "check": "request_peer:actual_peer",
+      "passed": true
+    },
+    {
+      "check": "request_peer:package_peer",
+      "passed": true
+    }
+  ],
+  "published_blob_count": 66,
+  "published_blob_bytes": 11197975,
+  "publication_original_commands": 125,
+  "adoption_original_commands": 26,
+  "tracked_check_exit": 0,
+  "adoption_request_sha256": "4b8e6f145b6fa4cfd65f4b45d70e24813fdd109f5dea016bed4077517b754517",
+  "publication_manifest_sha256": "93ef2e20409fd0e3539ea7d48d8db5d962c51d4cf3e727e92517eba87f329bb9",
+  "git_blob_identity_receipt_sha256": "5ca40c2db1618b07cbdd26eeed2f0faac5bb5531e4c0df66d081131fe46416fa",
+  "scope": "核公開Git66blob與最終ledger完整bytes身份、151原命令流、真F9 trackedcheck、parent/祖先/唯ledgerclosure；沒有重解tar或重做123列語意驗收。",
+  "limits": [
+    "原120 execution.head保F8；帳本exactbyte移入F9，不把R8或full123重標F9執行。",
+    "原tracked check歷史1與M20crashed仍保；F9新trackedcheck才是0。",
+    "這不等於fullnative/六browser/專項已跑，也不解除exact三差或requiredCI。",
+    "本peer只本機唯讀Git，remote證據來自原正常push後ls-remote；未重新網路查詢、未寫任何分支。"
+  ],
+  "new_product_tests_executed": false,
+  "git_write": false
+}

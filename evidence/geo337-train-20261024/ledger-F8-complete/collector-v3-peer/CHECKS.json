@@ -1,0 +1,1574 @@
+[
+  {
+    "check": "fixed preparation pin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf ADOPTION_PLAN.md",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf INITIAL_SYNTHETIC_ISOLATION_CORRECTION.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf METADATA_CHECKS.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf PREPARATION.v2-original.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf PROCESS_SCOPE_PROOF.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf README.md",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf README.v2-original.md",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf REQUEST.unbound.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf SCOPE.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf V2_FAILURE_BINDINGS.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf V2_TO_V3_PROCESS_SCOPE_ONLY.diff",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf check_process_scope.initial-fakepath.py.txt",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf check_process_scope.py",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf check_terminal_metadata.py",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf collect_terminal.py",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000001/request.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000001/result.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000001/stderr.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000001/stdin.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000001/stdout.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000002/request.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000002/result.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000002/stderr.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000002/stdin.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000002/stdout.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000003/request.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000003/result.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000003/stderr.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000003/stdin.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands/000003/stdout.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf metadata-original-capture/subcommands.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf prepare_metadata.v2-historical.py.txt",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf prepare_v3.py",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf prepare_v3_r2.py",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/RESULT.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/duplicate-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/duplicate-uid-blocked/proc/90107/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/duplicate-uid-blocked/proc/90107/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/duplicate-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-argv-hit-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-argv-hit-blocked/proc/90109/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-argv-hit-blocked/proc/90109/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-argv-hit-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-cmdline-denial-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-cmdline-denial-blocked/proc/90113/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-cmdline-denial-blocked/proc/90113/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-cmdline-denial-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-denied-recorded/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-denied-recorded/proc/90101/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-denied-recorded/proc/90101/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-denied-recorded/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-readable-consumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-readable-consumer/proc/90112/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-readable-consumer/proc/90112/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/foreign-readable-consumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/malformed-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/malformed-uid-blocked/proc/90105/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/malformed-uid-blocked/proc/90105/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/malformed-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/missing-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/missing-uid-blocked/proc/90104/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/missing-uid-blocked/proc/90104/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/missing-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/mixed-task-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/mixed-task-uid-blocked/proc/90103/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/mixed-task-uid-blocked/proc/90103/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/mixed-task-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/same-uid-readable-consumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/same-uid-readable-consumer/proc/90111/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/same-uid-readable-consumer/proc/90111/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/same-uid-readable-consumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/same-uid-readable-nonconsumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/same-uid-readable-nonconsumer/proc/90110/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/same-uid-readable-nonconsumer/proc/90110/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/same-uid-readable-nonconsumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/short-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/short-uid-blocked/proc/90106/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/short-uid-blocked/proc/90106/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/short-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/task-denied-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/task-denied-blocked/proc/90102/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/task-denied-blocked/proc/90102/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/task-denied-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/wrong-pid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/wrong-pid-blocked/proc/90108/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/wrong-pid-blocked/proc/90108/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures/fixed/wrong-pid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/RESULT.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/duplicate-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/duplicate-uid-blocked/proc/90107/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/duplicate-uid-blocked/proc/90107/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/duplicate-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-argv-hit-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-argv-hit-blocked/proc/90109/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-argv-hit-blocked/proc/90109/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-argv-hit-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-cmdline-denial-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-cmdline-denial-blocked/proc/90113/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-cmdline-denial-blocked/proc/90113/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-cmdline-denial-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-denied-recorded/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-denied-recorded/proc/90101/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-denied-recorded/proc/90101/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-denied-recorded/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-readable-consumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-readable-consumer/proc/90112/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-readable-consumer/proc/90112/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/foreign-readable-consumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/malformed-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/malformed-uid-blocked/proc/90105/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/malformed-uid-blocked/proc/90105/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/malformed-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/missing-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/missing-uid-blocked/proc/90104/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/missing-uid-blocked/proc/90104/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/missing-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/mixed-task-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/mixed-task-uid-blocked/proc/90103/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/mixed-task-uid-blocked/proc/90103/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/mixed-task-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/same-uid-readable-consumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/same-uid-readable-consumer/proc/90111/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/same-uid-readable-consumer/proc/90111/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/same-uid-readable-consumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/same-uid-readable-nonconsumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/same-uid-readable-nonconsumer/proc/90110/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/same-uid-readable-nonconsumer/proc/90110/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/same-uid-readable-nonconsumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/short-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/short-uid-blocked/proc/90106/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/short-uid-blocked/proc/90106/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/short-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/task-denied-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/task-denied-blocked/proc/90102/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/task-denied-blocked/proc/90102/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/task-denied-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/wrong-pid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/wrong-pid-blocked/proc/90108/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/wrong-pid-blocked/proc/90108/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/fixed/wrong-pid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/RESULT.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/duplicate-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/duplicate-uid-blocked/proc/90107/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/duplicate-uid-blocked/proc/90107/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/duplicate-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-argv-hit-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-argv-hit-blocked/proc/90109/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-argv-hit-blocked/proc/90109/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-argv-hit-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-cmdline-denial-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-cmdline-denial-blocked/proc/90113/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-cmdline-denial-blocked/proc/90113/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-cmdline-denial-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-denied-recorded/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-denied-recorded/proc/90101/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-denied-recorded/proc/90101/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-denied-recorded/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-readable-consumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-readable-consumer/proc/90112/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-readable-consumer/proc/90112/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/foreign-readable-consumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/malformed-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/malformed-uid-blocked/proc/90105/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/malformed-uid-blocked/proc/90105/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/malformed-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/missing-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/missing-uid-blocked/proc/90104/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/missing-uid-blocked/proc/90104/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/missing-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/mixed-task-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/mixed-task-uid-blocked/proc/90103/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/mixed-task-uid-blocked/proc/90103/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/mixed-task-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/same-uid-readable-consumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/same-uid-readable-consumer/proc/90111/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/same-uid-readable-consumer/proc/90111/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/same-uid-readable-consumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/same-uid-readable-nonconsumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/same-uid-readable-nonconsumer/proc/90110/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/same-uid-readable-nonconsumer/proc/90110/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/same-uid-readable-nonconsumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/short-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/short-uid-blocked/proc/90106/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/short-uid-blocked/proc/90106/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/short-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/task-denied-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/task-denied-blocked/proc/90102/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/task-denied-blocked/proc/90102/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/task-denied-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/wrong-pid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/wrong-pid-blocked/proc/90108/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/wrong-pid-blocked/proc/90108/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/restored/wrong-pid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/RESULT.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/duplicate-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/duplicate-uid-blocked/proc/90107/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/duplicate-uid-blocked/proc/90107/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/duplicate-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-argv-hit-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-argv-hit-blocked/proc/90109/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-argv-hit-blocked/proc/90109/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-argv-hit-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-cmdline-denial-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-cmdline-denial-blocked/proc/90113/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-cmdline-denial-blocked/proc/90113/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-cmdline-denial-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-denied-recorded/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-denied-recorded/proc/90101/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-denied-recorded/proc/90101/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-denied-recorded/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-readable-consumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-readable-consumer/proc/90112/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-readable-consumer/proc/90112/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/foreign-readable-consumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/malformed-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/malformed-uid-blocked/proc/90105/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/malformed-uid-blocked/proc/90105/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/malformed-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/missing-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/missing-uid-blocked/proc/90104/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/missing-uid-blocked/proc/90104/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/missing-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/mixed-task-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/mixed-task-uid-blocked/proc/90103/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/mixed-task-uid-blocked/proc/90103/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/mixed-task-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/same-uid-readable-consumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/same-uid-readable-consumer/proc/90111/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/same-uid-readable-consumer/proc/90111/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/same-uid-readable-consumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/same-uid-readable-nonconsumer/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/same-uid-readable-nonconsumer/proc/90110/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/same-uid-readable-nonconsumer/proc/90110/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/same-uid-readable-nonconsumer/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/short-uid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/short-uid-blocked/proc/90106/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/short-uid-blocked/proc/90106/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/short-uid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/task-denied-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/task-denied-blocked/proc/90102/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/task-denied-blocked/proc/90102/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/task-denied-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/wrong-pid-blocked/heavy.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/wrong-pid-blocked/proc/90108/cmdline",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/wrong-pid-blocked/proc/90108/status",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-fixtures-r2/withdrawn/wrong-pid-blocked/secondary.lock",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture/subcommands/000001/request.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture/subcommands/000001/result.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture/subcommands/000001/stderr.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture/subcommands/000001/stdin.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture/subcommands/000001/stdout.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture/subcommands.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000001/request.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000001/result.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000001/stderr.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000001/stdin.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000001/stdout.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000002/request.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000002/result.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000002/stderr.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000002/stdin.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000002/stdout.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000003/request.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000003/result.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000003/stderr.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000003/stdin.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands/000003/stdout.bin",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf process-scope-original-capture-r2/subcommands.json",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf terminal_guard.py",
+    "passed": true
+  },
+  {
+    "check": "frozen leaf verify_terminal.py",
+    "passed": true
+  },
+  {
+    "check": "full270 frozen leaf scope",
+    "passed": true
+  },
+  {
+    "check": "v2 unchanged preparation",
+    "passed": true
+  },
+  {
+    "check": "only one new process classifier",
+    "passed": true
+  },
+  {
+    "check": "original function unchanged parse_optional_terminal",
+    "passed": true
+  },
+  {
+    "check": "original function unchanged verify_preparation",
+    "passed": true
+  },
+  {
+    "check": "original function unchanged need",
+    "passed": true
+  },
+  {
+    "check": "original function unchanged read_regular",
+    "passed": true
+  },
+  {
+    "check": "original function unchanged digest",
+    "passed": true
+  },
+  {
+    "check": "original function unchanged classify",
+    "passed": true
+  },
+  {
+    "check": "original function unchanged bound_terminal",
+    "passed": true
+  },
+  {
+    "check": "original function unchanged strict_json",
+    "passed": true
+  },
+  {
+    "check": "two original nonblocking leases retained",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard os.getresuid()==(task_uid,task_uid,task_uid)",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard target.stat().st_uid==task_uid",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard need(key not in fields",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard fields.get('Pid')==[str(pid)]",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard len(uid_fields)==4",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard task_uid not in uids",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard need(not hit",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard except PermissionError as error:",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard status_sha256",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard 'cwd_status':'permission-denied-not-inspected'",
+    "passed": true
+  },
+  {
+    "check": "narrow process scope guard 'all_system_cwds_inspected':not foreign_denied",
+    "passed": true
+  },
+  {
+    "check": "complete three-file diff exact",
+    "passed": true
+  },
+  {
+    "check": "original scope/metadata/adoption unchanged SCOPE.json",
+    "passed": true
+  },
+  {
+    "check": "original scope/metadata/adoption unchanged REQUEST.unbound.json",
+    "passed": true
+  },
+  {
+    "check": "original scope/metadata/adoption unchanged check_terminal_metadata.py",
+    "passed": true
+  },
+  {
+    "check": "original scope/metadata/adoption unchanged ADOPTION_PLAN.md",
+    "passed": true
+  },
+  {
+    "check": "collector whole-byte equality after only scope metadata attachments",
+    "passed": true
+  },
+  {
+    "check": "synthetic true013 exits",
+    "passed": true
+  },
+  {
+    "check": "proof exact binding",
+    "passed": true
+  },
+  {
+    "check": "original c387 command catalog 0",
+    "passed": true
+  },
+  {
+    "check": "original result0",
+    "passed": true
+  },
+  {
+    "check": "raw 0stdout",
+    "passed": true
+  },
+  {
+    "check": "raw 0stderr",
+    "passed": true
+  },
+  {
+    "check": "stdin0",
+    "passed": true
+  },
+  {
+    "check": "actual exit 0",
+    "passed": true
+  },
+  {
+    "check": "complete original stdout equal fixture RESULT fixed",
+    "passed": true
+  },
+  {
+    "check": "all13 original vectors fixed",
+    "passed": true
+  },
+  {
+    "check": "private proof scope fixed",
+    "passed": true
+  },
+  {
+    "check": "actual original v2/v3 subject pin fixed",
+    "passed": true
+  },
+  {
+    "check": "exact negative control cause fixed",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedforeign-denied-recorded",
+    "passed": true
+  },
+  {
+    "check": "unknown foreign remains explicit fixed",
+    "passed": true
+  },
+  {
+    "check": "no fabricated cwd fixed",
+    "passed": true
+  },
+  {
+    "check": "original synthetic status pin fixed",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedtask-denied-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedmixed-task-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedmissing-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedmalformed-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedshort-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedduplicate-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedwrong-pid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedforeign-argv-hit-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedsame-uid-readable-nonconsumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedsame-uid-readable-consumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedforeign-readable-consumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case fixedforeign-cmdline-denial-blocked",
+    "passed": true
+  },
+  {
+    "check": "original c387 command catalog 1",
+    "passed": true
+  },
+  {
+    "check": "original result1",
+    "passed": true
+  },
+  {
+    "check": "raw 1stdout",
+    "passed": true
+  },
+  {
+    "check": "raw 1stderr",
+    "passed": true
+  },
+  {
+    "check": "stdin1",
+    "passed": true
+  },
+  {
+    "check": "actual exit 1",
+    "passed": true
+  },
+  {
+    "check": "complete original stdout equal fixture RESULT withdrawn",
+    "passed": true
+  },
+  {
+    "check": "all13 original vectors withdrawn",
+    "passed": true
+  },
+  {
+    "check": "private proof scope withdrawn",
+    "passed": true
+  },
+  {
+    "check": "actual original v2/v3 subject pin withdrawn",
+    "passed": true
+  },
+  {
+    "check": "exact negative control cause withdrawn",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnforeign-denied-recorded",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawntask-denied-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnmixed-task-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnmissing-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnmalformed-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnshort-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnduplicate-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnwrong-pid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnforeign-argv-hit-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnsame-uid-readable-nonconsumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnsame-uid-readable-consumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnforeign-readable-consumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case withdrawnforeign-cmdline-denial-blocked",
+    "passed": true
+  },
+  {
+    "check": "original c387 command catalog 2",
+    "passed": true
+  },
+  {
+    "check": "original result2",
+    "passed": true
+  },
+  {
+    "check": "raw 2stdout",
+    "passed": true
+  },
+  {
+    "check": "raw 2stderr",
+    "passed": true
+  },
+  {
+    "check": "stdin2",
+    "passed": true
+  },
+  {
+    "check": "actual exit 2",
+    "passed": true
+  },
+  {
+    "check": "complete original stdout equal fixture RESULT restored",
+    "passed": true
+  },
+  {
+    "check": "all13 original vectors restored",
+    "passed": true
+  },
+  {
+    "check": "private proof scope restored",
+    "passed": true
+  },
+  {
+    "check": "actual original v2/v3 subject pin restored",
+    "passed": true
+  },
+  {
+    "check": "exact negative control cause restored",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredforeign-denied-recorded",
+    "passed": true
+  },
+  {
+    "check": "unknown foreign remains explicit restored",
+    "passed": true
+  },
+  {
+    "check": "no fabricated cwd restored",
+    "passed": true
+  },
+  {
+    "check": "original synthetic status pin restored",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredtask-denied-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredmixed-task-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredmissing-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredmalformed-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredshort-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredduplicate-uid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredwrong-pid-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredforeign-argv-hit-blocked",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredsame-uid-readable-nonconsumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredsame-uid-readable-consumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredforeign-readable-consumer",
+    "passed": true
+  },
+  {
+    "check": "actual allowed case restoredforeign-cmdline-denial-blocked",
+    "passed": true
+  },
+  {
+    "check": "r2 fake proc exact mapped before context call",
+    "passed": true
+  },
+  {
+    "check": "initial erroneous proc claim explicitly corrected",
+    "passed": true
+  },
+  {
+    "check": "both true v2 failures retained",
+    "passed": true
+  },
+  {
+    "check": "v2 failure original binding /tmp/geo337-F8-full123-terminal-collection-launch-20261025/RESULT.json",
+    "passed": true
+  },
+  {
+    "check": "v2 original failure not relabelled",
+    "passed": true
+  },
+  {
+    "check": "v2 original stream /tmp/geo337-F8-full123-terminal-collection-launch-20261025/RESULT.jsonstdout",
+    "passed": true
+  },
+  {
+    "check": "v2 original stream /tmp/geo337-F8-full123-terminal-collection-launch-20261025/RESULT.jsonstderr",
+    "passed": true
+  },
+  {
+    "check": "v2 actual permission cause",
+    "passed": true
+  },
+  {
+    "check": "v2 failure original binding /tmp/geo337-F8-full123-terminal-collection-authorized-launch-20261025/RESULT.json",
+    "passed": true
+  },
+  {
+    "check": "v2 original failure not relabelled",
+    "passed": true
+  },
+  {
+    "check": "v2 original stream /tmp/geo337-F8-full123-terminal-collection-authorized-launch-20261025/RESULT.jsonstdout",
+    "passed": true
+  },
+  {
+    "check": "v2 original stream /tmp/geo337-F8-full123-terminal-collection-authorized-launch-20261025/RESULT.jsonstderr",
+    "passed": true
+  },
+  {
+    "check": "v2 actual permission cause",
+    "passed": true
+  }
+]

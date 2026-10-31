@@ -1,0 +1,882 @@
+{
+  "scene_source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "count": 175,
+  "scenes": [
+    {
+      "name": "s16.scene",
+      "bytes": 1596,
+      "sha256": "7aa685aaec7842852b7ca6ef31d1d145e34c67c1ca863833cc012fc062681298"
+    },
+    {
+      "name": "s32.scene",
+      "bytes": 2951,
+      "sha256": "f452bcda419f519d84071932de776694a1d7a967077a2662f16186d8cb6827b1"
+    },
+    {
+      "name": "s48.scene",
+      "bytes": 4319,
+      "sha256": "3e3de79e0c1efdcbf05f620f0afab148adfd87716262fbf6ea3217acd9a655ce"
+    },
+    {
+      "name": "s64.scene",
+      "bytes": 5676,
+      "sha256": "ae61c7eb565efc3997402b124592c1201d9e3c6027f4945a735387ef4327416d"
+    },
+    {
+      "name": "_ax_d12_i14_canvas.scene",
+      "bytes": 509,
+      "sha256": "b857a1740d59303f7bf1bb8c64f2407337e1e439615f27ca07cd02042db15c68"
+    },
+    {
+      "name": "_ax_i12_auto_with_at.scene",
+      "bytes": 398,
+      "sha256": "254d8e1abec9a4ed472de847c38116820a7d8770ccdacd2f4d1b579b8ec52691"
+    },
+    {
+      "name": "_ax_i12_explicit_with_atgrid.scene",
+      "bytes": 404,
+      "sha256": "344465b0dcd3e0887041f40fb74ea5b5a233b66905a44618bc1b3e3ca4d4d602"
+    },
+    {
+      "name": "_ax_i14_canvas_missing.scene",
+      "bytes": 466,
+      "sha256": "57d7215181befb181e00c285921996063f691584dce227373c7f59ab2884e5ec"
+    },
+    {
+      "name": "_ax_i16_beam_outside.scene",
+      "bytes": 888,
+      "sha256": "0c2b0a5f3a5b9f9b699188f3b21feaf07415c63a43c81f402668424cf5748d8c"
+    },
+    {
+      "name": "_ax_i17_delete_space.scene",
+      "bytes": 1154,
+      "sha256": "7a49231ab2fa2ba39691e2110afd358b8fca5f2f5b48ec946c72b1a224ba4f77"
+    },
+    {
+      "name": "_ax_i18_nopriority.scene",
+      "bytes": 232,
+      "sha256": "a780442b9eb240f6b531398a09bdef61eed21f48299275070ef57d46f23bf809"
+    },
+    {
+      "name": "_ax_i18_norole.scene",
+      "bytes": 243,
+      "sha256": "b5c0d2eb0a322c8d17f9bc713116f1cf750ab83f3665b1477a834c3fb7b4a10b"
+    },
+    {
+      "name": "_ax_i18_priority_misuse.scene",
+      "bytes": 269,
+      "sha256": "9231e2503f1aae47f70d4533632883825482608db43fb5913fa47435c0a2f8b6"
+    },
+    {
+      "name": "_ax_i1_frame_degenerate.scene",
+      "bytes": 368,
+      "sha256": "8abb30d28303f3b35f2522ed13c43882762b1dca7d8fbc88baa4f8b8bb2e177b"
+    },
+    {
+      "name": "_ax_i4_duplicate_boundary.scene",
+      "bytes": 235,
+      "sha256": "e0a5b4519448eb174d7839deb948f5a4bafdc1011976c1b1b5a0b3dda74ee738"
+    },
+    {
+      "name": "_ax_i4_empty_space.scene",
+      "bytes": 404,
+      "sha256": "1825b2b29f1ee132b73641e32c3508649fe18e976dc5b04f006a9ff7a2e9ae20"
+    },
+    {
+      "name": "_ax_i4_missing_boundary.scene",
+      "bytes": 239,
+      "sha256": "3fa468aed900a69d2556da8589f444afb3488aef338d3522c05cf1c73c7df6a2"
+    },
+    {
+      "name": "_ax_i4_no_carrier.scene",
+      "bytes": 337,
+      "sha256": "5548eaa4ad692b8e19e89ef6b32f6fc10d6f4e04a3b21cdccf9e5421eefe67be"
+    },
+    {
+      "name": "_ax_i5_collinear_vertex_rect_corner.scene",
+      "bytes": 476,
+      "sha256": "5fe5dcc2d4e4dd1569ff40753b64cf767883ebd9666374b5ede719cd5454439d"
+    },
+    {
+      "name": "_ax_i5_hole_vertex_touches_rect_edge.scene",
+      "bytes": 942,
+      "sha256": "c93cf7b7c8a61151a43a46d7104f794366bdf910cc20f457f7c1b887321b3de2"
+    },
+    {
+      "name": "_ax_i5_notch_cell_corners_on_ring.scene",
+      "bytes": 760,
+      "sha256": "02541e5837a200967f997142f28da4efa84051e85809020bde7b0f1408ff72de"
+    },
+    {
+      "name": "_ax_i5_notch_edge_cuts_interior.scene",
+      "bytes": 930,
+      "sha256": "4abf4d2dffdaaff54af5a724cd5ccc73b9199d43a3c6dc903a01689055f08867"
+    },
+    {
+      "name": "_ax_i5_notch_floor_flush_inside.scene",
+      "bytes": 507,
+      "sha256": "5a46b5137ddbfa3b4bc73066b902b8b429d82a14507b3660edbf50feec137acb"
+    },
+    {
+      "name": "_ax_i5_notch_wall_flush_inside.scene",
+      "bytes": 427,
+      "sha256": "6f912d96b1877fcb94ac16939249978a5b74287f455d7916d45c0ab74a51351c"
+    },
+    {
+      "name": "_ax_i7_guide_out_of_range.scene",
+      "bytes": 208,
+      "sha256": "8e2bfc0254902088bcafa22ce5d443d928ee35301fc54bc1b7b0b2a3a86c1d2a"
+    },
+    {
+      "name": "_ax_i9_forward_ref.scene",
+      "bytes": 427,
+      "sha256": "8de866c4cf9b40a123177917017ab8fa74c678f7e69209e39d04995aaa4c83ad"
+    },
+    {
+      "name": "_ax_i9_orphan_timber.scene",
+      "bytes": 396,
+      "sha256": "56cef13e347f5d23fa1864e662a85a00b831e8e7bbe1cbd77a8110d83881c7ff"
+    },
+    {
+      "name": "_ax_r08_snapshot.scene",
+      "bytes": 993,
+      "sha256": "7ba38d9770b6aa0fb80d4dc6f0898212ed7da90ea2f897dcb4d5cbf32a79722f"
+    },
+    {
+      "name": "_ax_r09_unplaced.scene",
+      "bytes": 904,
+      "sha256": "609479436c5b918124d595becd75ea4ae72c513fa8964d63161f9bd98bcf9c2a"
+    },
+    {
+      "name": "_ax_r10_hole_follows_piece.scene",
+      "bytes": 848,
+      "sha256": "1f305f8e8b0410d38fbaed18e787e9f293311732a4652361af9ac11b33a799aa"
+    },
+    {
+      "name": "_ax_r10_hole_straddles_cut.scene",
+      "bytes": 1030,
+      "sha256": "304274f7e6cb575ee414164dec073ed1fcfdbee1620cfdab5b9290d313639ce0"
+    },
+    {
+      "name": "_ax_r12_prefix_beam.scene",
+      "bytes": 958,
+      "sha256": "170aac126622d926a8d3f1134ea41fbd8489d93f247cd524ff32fdb80f1520e3"
+    },
+    {
+      "name": "_ax_r12_prefix_col.scene",
+      "bytes": 880,
+      "sha256": "92435e5cd20f2d1989888510ebb193f0379ac1b73d8c7be65565910e86330120"
+    },
+    {
+      "name": "_ax_r12_uncut_complex_strip.scene",
+      "bytes": 255,
+      "sha256": "2b48890a3b8ca49043e0b010452398f02b7b04480362df9bf4c4b8df0cc56823"
+    },
+    {
+      "name": "_ax_r13_anchor_follows.scene",
+      "bytes": 679,
+      "sha256": "1e0b69ec9d8b341054fda7b1d5e61dd0e2ffc7e61f348149043e495e03bbbdcb"
+    },
+    {
+      "name": "_ax_r13_anchor_lost.scene",
+      "bytes": 680,
+      "sha256": "3f412fcdb2d48cb8edb731cbdaaa0fb8ea9de13f625152e2b8ad736d90107058"
+    },
+    {
+      "name": "_ax_r14_straddles_cut.scene",
+      "bytes": 937,
+      "sha256": "3551ef7eef9337fa5ea71c9b0be2767bb3d97f9a9eaa18789f3a40b11c2cb810"
+    },
+    {
+      "name": "_ax_r14_uncut_strip_multiple_pieces.scene",
+      "bytes": 284,
+      "sha256": "18237ac803e0abe6321ed6510e16d92bd51895217228a63b8e4723c5c1b1ddd4"
+    },
+    {
+      "name": "_ax_r15_missing_item.scene",
+      "bytes": 810,
+      "sha256": "116a9ac937e438c6c3017b57220550f57cc695fc42a1fe6468da462017f1e7a5"
+    },
+    {
+      "name": "_ax_r15_uncut_strip_missing_item.scene",
+      "bytes": 250,
+      "sha256": "b3ed458077afd5cdb884015d1f61d97d3dba6938798742a5d03e23fc3899c013"
+    },
+    {
+      "name": "_ax_r16_not_full_span.scene",
+      "bytes": 880,
+      "sha256": "683f09e3807b8ceb6949acd01efe0dd283ad5bc241d5aedd0eae70ceda92f936"
+    },
+    {
+      "name": "_ax_r16_top_drop.scene",
+      "bytes": 973,
+      "sha256": "3ce59478cd3f6c67b7919f1e53089007c6e0f95ab6beab6b8c82a82059d62ec8"
+    },
+    {
+      "name": "_ax_r17_wall_column_face.scene",
+      "bytes": 1091,
+      "sha256": "6445806989a507d1c06ce966de8a93098003542807ab9f76c6b246f3d8b99ef8"
+    },
+    {
+      "name": "_ax_r20_delete_cascade.scene",
+      "bytes": 328,
+      "sha256": "ff36550df578ae9bfddfc7c745441e24e161f9eaaec2e0d5aec965670702c02c"
+    },
+    {
+      "name": "_ax_r7_notch_disconnected.scene",
+      "bytes": 222,
+      "sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952"
+    },
+    {
+      "name": "_ax_r7_point_tangent.scene",
+      "bytes": 195,
+      "sha256": "a66b0f47002fcaeba8037c37bb9fc9d5ad629af25ddd410a47c72df69acbd396"
+    },
+    {
+      "name": "_ax_r7_rectangle_plus_line.scene",
+      "bytes": 266,
+      "sha256": "94d17c040fff12a96bc13f42f8407a52400d62b418e0d11448d9d2044b704dab"
+    },
+    {
+      "name": "_ax_r7_rectangle_plus_point.scene",
+      "bytes": 239,
+      "sha256": "8179f343fed7d635cc9308a36994aa233a4881d7b5df27dcd7a773fcda8b790f"
+    },
+    {
+      "name": "_ax_r7_remote_flush_corner.scene",
+      "bytes": 162,
+      "sha256": "829a90f1d33bf371eb1b5f5e557343a722c684de448920d2d6407c193d7ea74e"
+    },
+    {
+      "name": "_ax_r7_remote_flush_strip.scene",
+      "bytes": 231,
+      "sha256": "4d08d19fd3c80019235e35c2e81b5e7c2aace3b41b84f369774ba58c93a7f256"
+    },
+    {
+      "name": "_ax_r7_ridge_crossing.scene",
+      "bytes": 220,
+      "sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7"
+    },
+    {
+      "name": "_ax_r7_ridge_strip.scene",
+      "bytes": 251,
+      "sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f"
+    },
+    {
+      "name": "_ax_r7_strip_plus_line.scene",
+      "bytes": 257,
+      "sha256": "785a4f7fd1abcb90484f6555378137b29c8c422ef69248deed04e64643a9ca57"
+    },
+    {
+      "name": "_ax_r8_three_residual_components.scene",
+      "bytes": 254,
+      "sha256": "b67fb71ad58278e656b400b97ea1efe82830e656b1703952141a5732c634ad9c"
+    },
+    {
+      "name": "_ax_r8_three_residual_strip.scene",
+      "bytes": 320,
+      "sha256": "bc068546e72d4b4a57490f9e66c362b74e3b166d788f99beda3d996c53f78a39"
+    },
+    {
+      "name": "_demo_ceiling.scene",
+      "bytes": 1640,
+      "sha256": "4c3d54ff1c58300b75fa7ca37d7aa1927ebea172f9253a8e5fd3e2c84c354d35"
+    },
+    {
+      "name": "_edge_axis_violation.scene",
+      "bytes": 311,
+      "sha256": "8ded0c4859646b2f6c9f218a7c477650c596e6bb126c568f4693180e1e51b2d2"
+    },
+    {
+      "name": "_edge_between_badref.scene",
+      "bytes": 530,
+      "sha256": "ab94e8d8c972dd267a13585d16cf079eb1992356d13522f5dc206ba518566936"
+    },
+    {
+      "name": "_edge_between_blocked.scene",
+      "bytes": 545,
+      "sha256": "febb9a463ec89ec1531f99ed2141c6d12d16e974a095f0285d43aac0f44007eb"
+    },
+    {
+      "name": "_edge_between_conflict.scene",
+      "bytes": 540,
+      "sha256": "d27dfd133692916751c6037e37f7c6d4d9f5c438a7a52ca543b384422f0ed912"
+    },
+    {
+      "name": "_edge_between_free.scene",
+      "bytes": 382,
+      "sha256": "735b221fdf0102fa9bf6ac06b8c8f53c9934e35e46306f240ebe6239b4db0c80"
+    },
+    {
+      "name": "_edge_concave.scene",
+      "bytes": 529,
+      "sha256": "cf98a31d315bd9ad270ea45fdc27227b5365ccd2b17320f8efaceef0cf20b38e"
+    },
+    {
+      "name": "_edge_dir_violation.scene",
+      "bytes": 278,
+      "sha256": "a64ae237278b06ff722514f607db9c67c2f15a9bcec272faad63337c4601d579"
+    },
+    {
+      "name": "_edge_face_touch_only.scene",
+      "bytes": 1060,
+      "sha256": "9313d951d42ab73df7b5338091eac4330da7d665c6824df739f59b4ba3b4356b"
+    },
+    {
+      "name": "_edge_free.scene",
+      "bytes": 413,
+      "sha256": "d4e856a095a67c78a1baccc1b540a8837c6323edc92687d1c14c76623dec2e52"
+    },
+    {
+      "name": "_edge_freeze.scene",
+      "bytes": 419,
+      "sha256": "72084341055c609a25326625aae80356e097557eaf1ec074533c435f37078543"
+    },
+    {
+      "name": "_edge_grid_at_border.scene",
+      "bytes": 242,
+      "sha256": "6ff06f98bef74ce07d90e796325cae2e0004f0a4e2011d0b63f4f50746f9c94d"
+    },
+    {
+      "name": "_edge_grid_locked.scene",
+      "bytes": 440,
+      "sha256": "d3f8f26e0bf99ab982950393dbcc3cca6ad612bb8920f272b04637603700294e"
+    },
+    {
+      "name": "_edge_grid_locked_other_axis.scene",
+      "bytes": 404,
+      "sha256": "33bc13416308d93febeee3144aa4037c7aae8805c9bfeab6227019eb191bef19"
+    },
+    {
+      "name": "_edge_grid_locked_shrink.scene",
+      "bytes": 439,
+      "sha256": "6ff610623172aaaabab6030cfadd103a236e462205b676eb484047cca00c6a47"
+    },
+    {
+      "name": "_edge_grid_overflow.scene",
+      "bytes": 563,
+      "sha256": "5ccd0d0ea17cd1533ccea139e0099ded47addad7cb96f5b4aa2d81623fef2e46"
+    },
+    {
+      "name": "_edge_grid_panel_empty.scene",
+      "bytes": 287,
+      "sha256": "52bc67c7f9cc6c683fe07ce444ab5fbddbf23c776a6b2c74e064b2013a7cd834"
+    },
+    {
+      "name": "_edge_grid_panel_empty_place.scene",
+      "bytes": 262,
+      "sha256": "afdd6ebd56f8246095d5dca99d5757fc48470b00da59c2d7b1b006f632856854"
+    },
+    {
+      "name": "_edge_grid_panel_from.scene",
+      "bytes": 512,
+      "sha256": "5a75f877053db804c94a90abefaf267fb14cca8a558ea7c07304642cd98c9e5e"
+    },
+    {
+      "name": "_edge_grid_panel_index8.scene",
+      "bytes": 268,
+      "sha256": "528cc109435882c422f8ad9e5ffaef19f934af563971e69a6e8fd306a59c21f4"
+    },
+    {
+      "name": "_edge_grid_panel_odd_gap.scene",
+      "bytes": 195,
+      "sha256": "d94e977879d8e39d4a4ce87c76f364c583846a02415488f6d4874f9ad3c705df"
+    },
+    {
+      "name": "_edge_grid_panel_overflow.scene",
+      "bytes": 242,
+      "sha256": "5bb8db11bcf2e794ed01f19540f0f46b2130aabaf8d599a19f0f6b7298c1c7d8"
+    },
+    {
+      "name": "_edge_grid_panel_shrink.scene",
+      "bytes": 891,
+      "sha256": "49068026f4a35b8eecad6aacf818303e916c1cdca623b84d0f2abec9e576928d"
+    },
+    {
+      "name": "_edge_grid_series_count0.scene",
+      "bytes": 159,
+      "sha256": "ec71458ab7d6f66309ce30bb2fc00db4dc582bea75e2b5aa006b95bb442fd118"
+    },
+    {
+      "name": "_edge_grid_series_out.scene",
+      "bytes": 307,
+      "sha256": "2766e8992f49218f6b6e2ab3ffef2a6039831ebcae9cc6851b1d2fdea2734fac"
+    },
+    {
+      "name": "_edge_grid_series_step0.scene",
+      "bytes": 192,
+      "sha256": "581c478e122ab231374abcc706e27a40af583b92471128bee3fdc5249195c050"
+    },
+    {
+      "name": "_edge_grid_twoline.scene",
+      "bytes": 637,
+      "sha256": "ebb4ae36d7f67818b8cdf4766684971dc89bc577344c117a596fa1316e103cd3"
+    },
+    {
+      "name": "_edge_gridref_midline.scene",
+      "bytes": 353,
+      "sha256": "10a7e405e89f9fc1872649a43d2231b31a951c89ca93f92e50189f26fb3b00a3"
+    },
+    {
+      "name": "_edge_gridref_no_support.scene",
+      "bytes": 157,
+      "sha256": "de12a838de7aa421f309495ee1f175808aacc49a431074d9338e3a0adecb822b"
+    },
+    {
+      "name": "_edge_gridref_wrong_axis.scene",
+      "bytes": 396,
+      "sha256": "237ffc34b1c15f47c628e4dd35cce2814dcf7f8fda2a579ffc2203791ea6fc7c"
+    },
+    {
+      "name": "_edge_gridref_wrong_face.scene",
+      "bytes": 448,
+      "sha256": "d5a218c93ce116634ace19f8eb9518db1c42304fd1b1921a2d14d0d7f1c2b520"
+    },
+    {
+      "name": "_edge_hole_anchor.scene",
+      "bytes": 800,
+      "sha256": "d009109ac7c69e37194b57f15491da74bb866f58d5d8f21537292bdffaa5903d"
+    },
+    {
+      "name": "_edge_hole_bottom.scene",
+      "bytes": 548,
+      "sha256": "ef8468c8e02c28acfb3e673c9f3d53f702dd6d6a9d21da5272d328b80613d601"
+    },
+    {
+      "name": "_edge_i19_place_order.scene",
+      "bytes": 694,
+      "sha256": "736783856b43d8a52a5f18b8af57a0583ebb807e1c02a65c33403a82cc195331"
+    },
+    {
+      "name": "_edge_i8a_confirm.scene",
+      "bytes": 636,
+      "sha256": "1d5b9649d622322f2b8cb93b7c40b233535c666ed822fbb164932138ead7f427"
+    },
+    {
+      "name": "_edge_place_through_short.scene",
+      "bytes": 431,
+      "sha256": "db2d4860f14af5768866f5d65a07516a0cc1b76e8f6e86dc6bcd4557006a8c42"
+    },
+    {
+      "name": "_edge_rect_only.scene",
+      "bytes": 189,
+      "sha256": "ff3536626dac1377b17e8adaf2f60a0537fb775ae1d21cda9615a3c7b510d2e8"
+    },
+    {
+      "name": "_edge_rect_stops.scene",
+      "bytes": 564,
+      "sha256": "9359ddabd5ddbc35cd4b0f7cc879a54ad579c887cd8306e1b729df280d6b42f4"
+    },
+    {
+      "name": "_edge_stop_ambiguous.scene",
+      "bytes": 526,
+      "sha256": "c92ea7d2f3bb7966f3668dc6e2fcd3b934b2adc6171fac0e4fb6eefff9d3ed63"
+    },
+    {
+      "name": "_edge_straddle.scene",
+      "bytes": 448,
+      "sha256": "f17db191ac568f4cbac4528b48c3e9fe58c002c6b04e52f084f9c2e8b3a33465"
+    },
+    {
+      "name": "_edge_straddle_hi.scene",
+      "bytes": 890,
+      "sha256": "42b7cf826acdb21fdde7e1a4b2585fd26ccdb0fb89e220af7370f6ed714c45bf"
+    },
+    {
+      "name": "_edge_two_holes.scene",
+      "bytes": 578,
+      "sha256": "98f2841d805b26a90273f88714b8aa54de35e10482e0b6f914e14b0567546366"
+    },
+    {
+      "name": "_edge_upper_seg.scene",
+      "bytes": 473,
+      "sha256": "c88c10fdf3bfc484ed05bd2d4435ed467fe1ec5235047cd34e1c388114df6918"
+    },
+    {
+      "name": "_mut_beam_diag.scene",
+      "bytes": 309,
+      "sha256": "72613c9438e3832d290499b1e4a0e853a2d970474e6db9eb1dae8c677ac765cb"
+    },
+    {
+      "name": "_mut_col_noz.scene",
+      "bytes": 166,
+      "sha256": "8163de2ac035dd53d1b02e013c3e4db61aed569039581f744867f099ac5ad555"
+    },
+    {
+      "name": "_mut_col_outside.scene",
+      "bytes": 315,
+      "sha256": "6e2cc9c740b9602383e2878d93cea249b4be032ca1dfc2dbff1817e691ece873"
+    },
+    {
+      "name": "_mut_col_overlap.scene",
+      "bytes": 377,
+      "sha256": "2b49d165d8eb420cfaac8b1f7ade97ece65ccbfcc63f5b1012fbdb6859449e7b"
+    },
+    {
+      "name": "_mut_edge_touch_only.scene",
+      "bytes": 553,
+      "sha256": "0106f0d39b4c0c5926f00e127ec8cffda5b9eb7d5d3add1dde9213ec97f37c95"
+    },
+    {
+      "name": "_mut_free_hole_end.scene",
+      "bytes": 564,
+      "sha256": "a85ba0dc5efc0dfca4ad12c56b30439224b94b965c4f620fd82dc4a92283a64c"
+    },
+    {
+      "name": "_mut_grid_dup.scene",
+      "bytes": 244,
+      "sha256": "1c97ce5d32bf2d2b3f30d5ae6c3212ea37292d31b637dcff7b707936b98445e5"
+    },
+    {
+      "name": "_mut_grid_panel_edge.scene",
+      "bytes": 411,
+      "sha256": "fff3f85af3c3b7b4051139d39fcd3cca17a12040a4804b42d329e0d2c9999b05"
+    },
+    {
+      "name": "_mut_neg_hole_ref.scene",
+      "bytes": 276,
+      "sha256": "91a94047ea265bfc0c2a61aa89a0b88a14c2e14c3192cc4e64ce5ae2f3f88aa1"
+    },
+    {
+      "name": "_mut_notch_straddle.scene",
+      "bytes": 232,
+      "sha256": "b79d4a49e6112bd3de6cd2795fff6e34134722510903f268b9dd40a7a4678bcc"
+    },
+    {
+      "name": "_mut_reval_free_hole.scene",
+      "bytes": 706,
+      "sha256": "622e04b485d8653256a7f22b0111d3ebd99cd45efd879758d2ac3c02a632a6fe"
+    },
+    {
+      "name": "_mut_through_boundary.scene",
+      "bytes": 533,
+      "sha256": "e3fb0dac85090b89f860f719922b5f47e3df02355bd0aff3a837ebf7589856c9"
+    },
+    {
+      "name": "_mut_zero_len.scene",
+      "bytes": 99,
+      "sha256": "d072ac1a60fa7c4dc5d79459cba2f7c0d9010ca96c29d24e2ca980e9dbf06e86"
+    },
+    {
+      "name": "_p2_source_navigation.scene",
+      "bytes": 216,
+      "sha256": "46a46bfc683b9f3488c7f0f6aacc4a93ae6ab7ab636e3e1996ff17962b2fe357"
+    },
+    {
+      "name": "_rc_beam_cross.scene",
+      "bytes": 635,
+      "sha256": "eee03426b5e70a833bddc68f91f98d6f1b5c286fc5babc554aad7d80ce2acc9d"
+    },
+    {
+      "name": "_rc_beam_edge.scene",
+      "bytes": 620,
+      "sha256": "fb7d5f032d83063e406e232cba9ccd782c035f79f82ddb9d28a431683b154338"
+    },
+    {
+      "name": "_rc_col_corner.scene",
+      "bytes": 607,
+      "sha256": "b02dd13bf6d77229709e2a48e34b07866a9e1fa8dc30ec84d29f6e07b7b1b4ef"
+    },
+    {
+      "name": "_rc_col_free.scene",
+      "bytes": 745,
+      "sha256": "99b6635ba4f16e48ff75f3f1c0a2a752c5e5b747b4dbe2adde31a1351b8fff3e"
+    },
+    {
+      "name": "_rc_col_wall.scene",
+      "bytes": 600,
+      "sha256": "3fd24267049fc73d2e3e75f023e3ad1a01b2a8fd28c20afc48289836fe44effa"
+    },
+    {
+      "name": "_role_axis_boundary_first.scene",
+      "bytes": 442,
+      "sha256": "6e0f07d51981fd1b8a96a912b7757f78149b17c8b32710b18a72fce622260013"
+    },
+    {
+      "name": "_role_axis_fallback.scene",
+      "bytes": 442,
+      "sha256": "6e0f07d51981fd1b8a96a912b7757f78149b17c8b32710b18a72fce622260013"
+    },
+    {
+      "name": "_role_axis_second_primary.scene",
+      "bytes": 442,
+      "sha256": "6e0f07d51981fd1b8a96a912b7757f78149b17c8b32710b18a72fce622260013"
+    },
+    {
+      "name": "_role_between_priority.scene",
+      "bytes": 535,
+      "sha256": "d14ff34cee2aaabcb3fa506a0c7ab3e7951e93e7ce579d0bce75c09fcc9831ea"
+    },
+    {
+      "name": "_role_cover_short.scene",
+      "bytes": 176,
+      "sha256": "6b672a48aa2c0994b4cca9d232cdc0f84adf80a72ec69d9b8154602758711b38"
+    },
+    {
+      "name": "_role_ext_stop_primary.scene",
+      "bytes": 1368,
+      "sha256": "5e8f1810d828cddae6f0a8b692890e1746039aa38f73e368b0576609c47c774a"
+    },
+    {
+      "name": "_role_priority_convex.scene",
+      "bytes": 186,
+      "sha256": "1caaaff2a86f3cc71ecb20120b1cd5dbaac77fb0d3961bffd6e5b4af8c044905"
+    },
+    {
+      "name": "_role_priority_ext_custom.scene",
+      "bytes": 1631,
+      "sha256": "7e9b2b079ef2c1c7811e28d4f6637ea45fb65785864ad3b1f9995b128e041e9a"
+    },
+    {
+      "name": "_role_priority_ext_primary.scene",
+      "bytes": 975,
+      "sha256": "332af6b70ae074adc66fd6d634ee8a861f61e11fa9cb5e06f591b47da1e56998"
+    },
+    {
+      "name": "_role_priority_mutant.scene",
+      "bytes": 434,
+      "sha256": "19e539a5b4bd43b30f19895802d3eb96725cbc503bd22ad2629aceb303bbb84f"
+    },
+    {
+      "name": "_role_priority_primary_rc.scene",
+      "bytes": 439,
+      "sha256": "0b84b900ac8dc42b1984b623f3352c9ef96f1c3ece7464fc75c0e557173128d9"
+    },
+    {
+      "name": "_role_priority_primary_secondary.scene",
+      "bytes": 694,
+      "sha256": "736783856b43d8a52a5f18b8af57a0583ebb807e1c02a65c33403a82cc195331"
+    },
+    {
+      "name": "_role_priority_secondary_rc.scene",
+      "bytes": 425,
+      "sha256": "f35d3433b54fe2fa5cd7e054a6f1d8804b1f84ac59a21ca46912bf3108a525b7"
+    },
+    {
+      "name": "_role_rc_boundary_ok.scene",
+      "bytes": 459,
+      "sha256": "13693a6da3f0c226ef8cdb5edc021fb04b62aa9dae93e94b0ee2e8219ea85f51"
+    },
+    {
+      "name": "_role_rc_custom_reject.scene",
+      "bytes": 480,
+      "sha256": "1322d92f4bc40d3bd153f27787160133fc55b5a74654787fe15f9f4f851d1b68"
+    },
+    {
+      "name": "_s1_p3_alcove_side_boundary_extension_accept.scene",
+      "bytes": 1336,
+      "sha256": "9fc16c90f31acaaeef9011c687fcc4b2a177885497ae2697557397c91e204172"
+    },
+    {
+      "name": "_s1_p4_alcove_wall_primary_cut_priority.scene",
+      "bytes": 1210,
+      "sha256": "7b7db44debd166821cfca49b7d23e8930dcbf56ca480fcd978393cdfbace9999"
+    },
+    {
+      "name": "_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "bytes": 1056,
+      "sha256": "27172d9fdcc41c8733f67eae3ba345454b5afde873b24703564a71bfa02c36e7"
+    },
+    {
+      "name": "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "bytes": 858,
+      "sha256": "ade4518a8eafa4ee112df88d9a03d4ed813616e05b77b8484560b9b429943fb8"
+    },
+    {
+      "name": "_s1_p9_l_room_custom_inner_wall_accept.scene",
+      "bytes": 1409,
+      "sha256": "21aadbcbc2085f0e9e28e857bceb43b31e9deac07ae83a6d8413507a1f9a5d2a"
+    },
+    {
+      "name": "_s7a_flush_inside_accept.scene",
+      "bytes": 1247,
+      "sha256": "bec6e8fd82f5af245e527bf2af62884b5c92d92faa9fc47496703ea6138f587c"
+    },
+    {
+      "name": "_s7b_poke_out_1mm_i5_reject.scene",
+      "bytes": 1092,
+      "sha256": "432e4931083ce5df75170812fc97e8a3f4a826f689e6debbdf16d1e4eec64cd8"
+    },
+    {
+      "name": "_s7c_non_boundary_end_on_outline_cut_priority.scene",
+      "bytes": 880,
+      "sha256": "84249d6aca4059713e3ab3dce25398d51feb3bbd6915a923b279f886f748167a"
+    },
+    {
+      "name": "_test_ambiguous.scene",
+      "bytes": 348,
+      "sha256": "0c5d26c77e2b425b469762c7ea70a781a6704c4d43c55633fcc466dbb83d9c8c"
+    },
+    {
+      "name": "_test_between.scene",
+      "bytes": 778,
+      "sha256": "f4d9ed79b7de07f0da4e2e080106d34a566e14e39de540b6b14e87cd75be52bc"
+    },
+    {
+      "name": "_test_collide.scene",
+      "bytes": 428,
+      "sha256": "1891273911d8d50f760f2c171cd4fbe3493d1a2805e1442ae9f4e4b5e7c354aa"
+    },
+    {
+      "name": "_test_fixed.scene",
+      "bytes": 541,
+      "sha256": "dcc03f313ba99720b53df612ea954b1cde9439ad1d6d023ce988c4acd45bdc71"
+    },
+    {
+      "name": "_test_free.scene",
+      "bytes": 475,
+      "sha256": "f3e84564d14edce3c16636a13fccb5316ef736fed6184e3dcd085e631802b6c2"
+    },
+    {
+      "name": "_test_grid.scene",
+      "bytes": 544,
+      "sha256": "1dad78ddf872bf5f87d76defd6962dc6a56c6e777b2e4a3f7cb939e0bdb8e750"
+    },
+    {
+      "name": "_test_grid_panel.scene",
+      "bytes": 645,
+      "sha256": "a22f42b568658f27bbc409a79d2196a991398a9f550877f643c065b6b7421b4a"
+    },
+    {
+      "name": "_test_grid_redeclare.scene",
+      "bytes": 591,
+      "sha256": "c18c54df42531065d71b4c37228b97b1d28cd72541ccc71a0a1ce0b374b7f040"
+    },
+    {
+      "name": "_test_grid_redeclare_series.scene",
+      "bytes": 406,
+      "sha256": "f6b46f23ff2683b963ce9327e0a248883866c99ccdfdf92b5e453cead382c473"
+    },
+    {
+      "name": "_test_grid_series.scene",
+      "bytes": 689,
+      "sha256": "395e744263c390bbcc1ac150c50a805ceb7c2670478bdecf12ab602401510aff"
+    },
+    {
+      "name": "_test_hole.scene",
+      "bytes": 812,
+      "sha256": "d4d91ad76c726ca97aed98d4dbd705e145cad0ae162104c35a1bcd292b96c4aa"
+    },
+    {
+      "name": "_test_hole_auto.scene",
+      "bytes": 733,
+      "sha256": "c86d07860b078268fd6881a4f6d3d992766798817d8267ceefd6a726135f59da"
+    },
+    {
+      "name": "_test_lshape.scene",
+      "bytes": 635,
+      "sha256": "dd2d9eec10cc40faddfe45d0b10ced8e05ab159617f8f9519b066ba9cd12706f"
+    },
+    {
+      "name": "_test_tx.scene",
+      "bytes": 395,
+      "sha256": "8ecbaaa173c29de393cac0877d21a7064424e990db5cb448174dc61f889bd0b7"
+    },
+    {
+      "name": "_test_tx2.scene",
+      "bytes": 403,
+      "sha256": "692684e6e4d3e44f0094d986eb955937253569e02295f99b6e5b237122efefcd"
+    },
+    {
+      "name": "_wit_d19_subgrid_cell.scene",
+      "bytes": 761,
+      "sha256": "e5d5a6c0a9118512e0cd26e5fe4b9d93abdd9b43f4dd818fc9869d7526642703"
+    },
+    {
+      "name": "_wit_d28_engineering_sources.scene",
+      "bytes": 2100,
+      "sha256": "1e01d2dbaf58369d2bdeb61e63f300b8dcb1052a5eb56962e657e3e520b3a9d8"
+    },
+    {
+      "name": "_wit_d29_grid_system.scene",
+      "bytes": 627,
+      "sha256": "611bf2091f18b1dc06906caea8ce8b4723b13208b2b30cf28410ba6914f66222"
+    },
+    {
+      "name": "_wit_d2_wall_frame.scene",
+      "bytes": 797,
+      "sha256": "710c0bd0fabaf619e3352da5d4d2458c9ce0859df7bbae47dc1e4d16263a29b1"
+    },
+    {
+      "name": "_wit_d30_infinite_grid_binding.scene",
+      "bytes": 804,
+      "sha256": "1d19531b866538e674c1580df811591d87e328486f6cf7a608e833acc4e56d30"
+    },
+    {
+      "name": "_wit_d31_parameters.scene",
+      "bytes": 1622,
+      "sha256": "5a565ad431484e83c64b0e1728836328f5b300885638dd18ab672fa8777d45f6"
+    },
+    {
+      "name": "_wit_d6_guide_segments.scene",
+      "bytes": 636,
+      "sha256": "082a69db55c3005a96a413a491dba0f868d477b7c1590526d4073a6ea1410f88"
+    },
+    {
+      "name": "_wit_d6c_datum_shared.scene",
+      "bytes": 1025,
+      "sha256": "6da8dfbc68699be4893538ab09f77e0483ce5f5d3e024c7ce82eb73e770556a3"
+    },
+    {
+      "name": "_wit_i13_odd_width.scene",
+      "bytes": 608,
+      "sha256": "de283ebbda6e392cc72bdbf1e05c2420080b147eaeddd4088f709786d0b8d518"
+    },
+    {
+      "name": "_wit_i35_engineering_zero_panel.scene",
+      "bytes": 2180,
+      "sha256": "3faa26d29a3c886089cfa81432e8c82a40ea17444d579edbec6d8cc0393fbc84"
+    },
+    {
+      "name": "_wit_i37_grid_system_missing.scene",
+      "bytes": 183,
+      "sha256": "f4b836ddde1a713ab026ad1da65bfe366959f05db46549e857ebb144781cdeb4"
+    },
+    {
+      "name": "_wit_i38_fractional_geometry.scene",
+      "bytes": 1735,
+      "sha256": "478446ef598c57742e6bc09eebbb2ec2bd4dbaa23a1d5457223746149f39ad5c"
+    },
+    {
+      "name": "_wit_r19_edge_primary_2560.scene",
+      "bytes": 720,
+      "sha256": "d559e6c866236cb116b208826e9469235b82fb86b865f6d6efc1ee841f6fbc55"
+    },
+    {
+      "name": "_wit_r6_span_cells.scene",
+      "bytes": 1068,
+      "sha256": "3a008261429e44977c6034151f5fd9c4af7e03c0486858ebf8736169fd9e0042"
+    },
+    {
+      "name": "ceiling-a.scene",
+      "bytes": 370,
+      "sha256": "c3c0ba589285ef5ecd835b89a38174ebe050c85c4b8814510e139f72550f1f7c"
+    },
+    {
+      "name": "demo-two-timbers.scene",
+      "bytes": 563,
+      "sha256": "788bc27ea509739412d733cf9f73681997a34ddf573d1619d411d4c2ce5b2a25"
+    },
+    {
+      "name": "room_a.scene",
+      "bytes": 370,
+      "sha256": "c3c0ba589285ef5ecd835b89a38174ebe050c85c4b8814510e139f72550f1f7c"
+    },
+    {
+      "name": "room_box.scene",
+      "bytes": 466,
+      "sha256": "2eb8b6422ab6c0e45cdebd937d50ac14a14142499714c8ce6479f2542266fd2d"
+    },
+    {
+      "name": "room_full.scene",
+      "bytes": 982,
+      "sha256": "f2b3f94935080bc7586784c0019bad0532bee1abd5a18f8a2d9714593341dd38"
+    },
+    {
+      "name": "subgrid-local.scene",
+      "bytes": 852,
+      "sha256": "ea5c5bd3632a4d3784b6254558653d4b9e50358e3abc2042be5d126d043cc1ea"
+    }
+  ]
+}

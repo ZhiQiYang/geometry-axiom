@@ -1,0 +1,288 @@
+{
+  "schema": "geo323-F9-SHM-collection-actual-adversarial-peer/1",
+  "created_utc": "2026-10-25T13:13:13.170000+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "collector_sha256": "9a1a6d673b7ade12bbe49480e8e646cd7d919619015749b34ab30ebc4401aae9",
+  "inventory_sha256": "1ab22f16962fb861204932c4c46ff379c9c1e6144d9b7006999ded216a0f416f",
+  "parts_sha256": "14f6ddb9cb1358f93125d86f3dc8b716400fa16e2a62e9d6b9007d5e35745143",
+  "checks": [
+    {
+      "check": "producer actual result pin",
+      "passed": true
+    },
+    {
+      "check": "actual checker pin",
+      "passed": true
+    },
+    {
+      "check": "producer seal pin",
+      "passed": true
+    },
+    {
+      "check": "producer completed full roundtrip",
+      "passed": true
+    },
+    {
+      "check": "producer formally approved original exec0",
+      "passed": true
+    },
+    {
+      "check": "producer original stdout",
+      "passed": true
+    },
+    {
+      "check": "producer original stderr",
+      "passed": true
+    },
+    {
+      "check": "producer original terminal stream",
+      "passed": true
+    },
+    {
+      "check": "independent approved SHM readonly actual0",
+      "passed": true
+    },
+    {
+      "check": "independent24 original checks",
+      "passed": true
+    },
+    {
+      "check": "not publication claim",
+      "passed": true
+    },
+    {
+      "check": "scope complete totals",
+      "passed": true
+    },
+    {
+      "check": "all original exits0",
+      "passed": true
+    },
+    {
+      "check": "old red and nonrerun scope",
+      "passed": true
+    },
+    {
+      "check": "all part aggregate counts",
+      "passed": true
+    },
+    {
+      "check": "original fresh space and metadata retained",
+      "passed": true
+    },
+    {
+      "check": "independent host original0 and notpublished",
+      "passed": true
+    }
+  ],
+  "independent_approved_SHM_checks": [
+    {
+      "check": "原collector/launch終態0",
+      "passed": true
+    },
+    {
+      "check": "同F9來源",
+      "passed": true
+    },
+    {
+      "check": "volatile尚未出版",
+      "passed": true
+    },
+    {
+      "check": "原小metadatahash RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "原小metadatahash BOUND_REQUEST.json",
+      "passed": true
+    },
+    {
+      "check": "原小metadatahash COLLECTOR.py.txt",
+      "passed": true
+    },
+    {
+      "check": "原小metadatahash INDEPENDENT_STATIC_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "原CLI終態",
+      "passed": true
+    },
+    {
+      "check": "原啟動request→終態欄位",
+      "passed": true
+    },
+    {
+      "check": "原完整CLI stdout",
+      "passed": true
+    },
+    {
+      "check": "原完整CLI stderr",
+      "passed": true
+    },
+    {
+      "check": "原stderr空",
+      "passed": true
+    },
+    {
+      "check": "原五包events順序及final原result",
+      "passed": true
+    },
+    {
+      "check": "原完整archivehash包1",
+      "passed": true
+    },
+    {
+      "check": "對應完整roundtrip核對器包1",
+      "passed": true
+    },
+    {
+      "check": "原完整archivehash包2",
+      "passed": true
+    },
+    {
+      "check": "對應完整roundtrip核對器包2",
+      "passed": true
+    },
+    {
+      "check": "原完整archivehash包3",
+      "passed": true
+    },
+    {
+      "check": "對應完整roundtrip核對器包3",
+      "passed": true
+    },
+    {
+      "check": "原完整archivehash包4",
+      "passed": true
+    },
+    {
+      "check": "對應完整roundtrip核對器包4",
+      "passed": true
+    },
+    {
+      "check": "原完整archivehash包5",
+      "passed": true
+    },
+    {
+      "check": "對應完整roundtrip核對器包5",
+      "passed": true
+    },
+    {
+      "check": "五archive總bytes",
+      "passed": true
+    }
+  ],
+  "actual_host_exit": 0,
+  "actual_launch_exit": 0,
+  "actual_collection_exit": 0,
+  "producer_full_roundtrip_checks": 32744,
+  "producer_full_roundtrip_exit": 0,
+  "regular_files": 4663,
+  "symlinks": 4,
+  "members": 4667,
+  "logical_regular_bytes": 19845851,
+  "total_archive_bytes": 2758452,
+  "archive_pins_independently_re_read": [
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-owner-comparison-terminal-package-shm-v2-20261025/ORIGINAL_COMPARISON_PART1.tar.gz",
+      "bytes": 1503146,
+      "sha256": "5b7163e98eb6332f1cf41fdefe98e176415bce68dc4157547a200ee332cdf7fa"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-owner-comparison-terminal-package-shm-v2-20261025/ORIGINAL_COMPARISON_PART2.tar.gz",
+      "bytes": 245546,
+      "sha256": "e3ec07cb0d84e291929db1dc5915ca4c81cd17e4c6517465a2113036b31ba630"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-owner-comparison-terminal-package-shm-v2-20261025/ORIGINAL_COMPARISON_PART3.tar.gz",
+      "bytes": 229384,
+      "sha256": "9e199cd1c73ecbcc0447d0d4d8f67b7fa0ad13d994d32c6ffda687a85df640de"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-owner-comparison-terminal-package-shm-v2-20261025/ORIGINAL_COMPARISON_PART4.tar.gz",
+      "bytes": 468244,
+      "sha256": "e1e01993677fb8248dccaea359f19bec727a8bca4282d72766af4da07d0328c4"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-owner-comparison-terminal-package-shm-v2-20261025/ORIGINAL_COMPARISON_PART5.tar.gz",
+      "bytes": 312132,
+      "sha256": "3dbf2a5e558339521893c445abe6b08407e1ffec25fa1a7c61065cafa072096d"
+    }
+  ],
+  "original_comparison_regular_files": 4645,
+  "original_comparison_symlinks": 4,
+  "original_R8_outer_exit_unchanged": 1,
+  "storage_is_volatile": true,
+  "published": false,
+  "remote_hash_verified": false,
+  "delivered": false,
+  "original_final_free": 17867935744,
+  "metadata_upper_bytes": 1186343,
+  "reviewed_static_logic": [
+    "核對器先核collector/request/peer固定pin與原c387 request(result前rc null)/result/完整streams；五budget/completion events及最後result與原檔同。",
+    "先完整消耗每gzip驗CRC/trailer，再以tarfile逐member精確順序/type/mode/mtime/bytes/hash；沒有extract寫檔，也不dereference四個ELF links。",
+    "4667 inventory與五包members exactonce，全原4645 comparison regular與4links保留；所有原來源完整lstat/hash亦由producer checker重讀。",
+    "完整tar/gzip上界加64MiBreserve+2MiBmetadata的原budget與原free門檻保留；不是以實際壓縮率倒推admission。",
+    "本peer獨立通過正式require_escalated讀原SHM終態/CLI streams/metadata，並重讀全部五archive完整hash與size，與producer fullroundtrip結果同。"
+  ],
+  "limits": [
+    "本peer沒有第二次解壓全部tar或重hash19.8MB原來源；完整CRC/member/source驗證由已靜態核程式的producer32744/0承擔，五個archive完整rawhash已獨立重讀。",
+    "所有SHM存取皆正式require_escalated批准exec，只讀；沒有使用ordinary sandbox或symlink避開權限。",
+    "未重收、未解包落盤、未改SHM或來源，未跑C/產品/性能/P189/Git。",
+    "本報告只證已完成volatile本地收件，正常push與遠端下載hash尚未執行；不得冒充出版／交付。",
+    "本輪comparison與收件0不改寫原R8 outer1，不代表整列車或性能通過。"
+  ],
+  "new_product_execution": false,
+  "SHM_written_by_reviewer": false,
+  "archive_recollected": false,
+  "pins": [
+    {
+      "path": "/workspace/geo323-F9-SHM-collection-actual-20261025/RESULT.json",
+      "bytes": 9978,
+      "sha256": "276a34627e63e2664e6ae504d7c516ac0992241aae6ad0306452d400a9af5e56"
+    },
+    {
+      "path": "/workspace/geo323-F9-SHM-collection-actual-20261025/check_roundtrip.py",
+      "bytes": 14256,
+      "sha256": "663708b87f402660e41d948d18f01ec137bc6a60bb093f415038d3005bc74fbc"
+    },
+    {
+      "path": "/workspace/geo323-F9-SHM-collection-actual-20261025/EXECUTION.json",
+      "bytes": 910,
+      "sha256": "a6cceddbf2ccc0025114e5eba67d06ba8079561900815c658d80964a016c5035"
+    },
+    {
+      "path": "/workspace/geo323-F9-SHM-collection-actual-20261025/REPORT.md",
+      "bytes": 2334,
+      "sha256": "fbfd79dd640478eda2b62930bafc39b19a13c61c88f78afbfa089e060aba0077"
+    },
+    {
+      "path": "/workspace/geo323-F9-SHM-collection-actual-20261025/FINAL_INVENTORY.json",
+      "bytes": 1030,
+      "sha256": "7c42bf8c0eb451e28256ec7169c2d800c1c621b7d9455495e823394fdbd080e0"
+    },
+    {
+      "path": "/workspace/geo323-F9-SHM-collection-actual-20261025/check.stdout",
+      "bytes": 135,
+      "sha256": "3e74f96755ccf76a1451b3200ea727805b47a62f76aca6835dab1bb62c84ec2b"
+    },
+    {
+      "path": "/workspace/geo323-F9-SHM-collection-actual-20261025/check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-F9-SHM-collection-actual-peer-xv28ou_f/APPROVED_READ_ORIGINAL.json",
+      "bytes": 14620,
+      "sha256": "2ca7ee414d4c5a94e325ded90214c528177555a4deeee66eced0185810b8ca13"
+    },
+    {
+      "path": "/workspace/geo323-F9-comparison-SHM-collection-EXEC_FINAL-20261025.json",
+      "bytes": 310,
+      "sha256": "964148b3dcbfc2b2dd199aefd5bc488fa6b7195e12959bba9110b0eea1d729e3"
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "schema": "geo288-space-original-receipt-peer-review/1",
+  "execution_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "review_kind": "read-only original receipts; no rerun",
+  "receipt": {
+    "path": "/tmp/g288s7/workflow/space/receipt.json",
+    "bytes": 28208,
+    "sha256": "75efde7d77e533585db54f6093d589f85e1fb0912ee3fd9cd7dfec052a189cf0"
+  },
+  "stdout": {
+    "path": "/tmp/g288s7/workflow/space/steps/03.stdout",
+    "bytes": 26355,
+    "sha256": "f67fc93e4a8767fdf41a2a0cfe5ec834195da189a0242cc2831f0f829022e476",
+    "SPACE_RESULT_line": 262
+  },
+  "status": "完成",
+  "exit_code": 0,
+  "seconds": 207.72606348400586,
+  "ci_timeout_minutes": 15,
+  "over_ci_timeout": false,
+  "checkout_before": {
+    "head": "13d02c1db7022145a52ee063286a558e595eb212",
+    "root": "/tmp/g288f-13d02c1d",
+    "status": ""
+  },
+  "checkout_after": {
+    "head": "13d02c1db7022145a52ee063286a558e595eb212",
+    "root": "/tmp/g288f-13d02c1d",
+    "status": ""
+  },
+  "result": {
+    "schema": "geometry-space-result/1",
+    "scope": {
+      "mode": "full-space-suite",
+      "filters": [],
+      "included": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "font-layout",
+        "space-flow",
+        "projection-close"
+      ],
+      "omitted": [
+        "timber-material",
+        "timber-source-guards"
+      ],
+      "url": "http://127.0.0.1:19085/",
+      "feedbackDirectory": "/tmp/g288s7/tmp/workflow/space/geometry-integration-feedback"
+    },
+    "completed": true,
+    "groups": {
+      "setup": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      },
+      "space-height-library": {
+        "expected": 112,
+        "passed": 112,
+        "failed": 0,
+        "completed": true
+      },
+      "projection-lifecycle": {
+        "expected": 18,
+        "passed": 18,
+        "failed": 0,
+        "completed": true
+      },
+      "projection-placement": {
+        "expected": 36,
+        "passed": 36,
+        "failed": 0,
+        "completed": true
+      },
+      "font-layout": {
+        "expected": 19,
+        "passed": 19,
+        "failed": 0,
+        "completed": true
+      },
+      "space-flow": {
+        "expected": 39,
+        "passed": 39,
+        "failed": 0,
+        "completed": true
+      },
+      "projection-close": {
+        "expected": 14,
+        "passed": 14,
+        "failed": 0,
+        "completed": true
+      },
+      "browser-health": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      }
+    },
+    "completenessProblems": [],
+    "passed": 242,
+    "failed": 0,
+    "exceptions": [],
+    "consoleErrors": []
+  },
+  "version_command_exits": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "workflow_steps": [
+    {
+      "index": 0,
+      "name": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "outcome": "以現有乾淨固定 SHA checkout 取代，未執行 GitHub action",
+      "executed_exit": null,
+      "package_check_exits": []
+    },
+    {
+      "index": 1,
+      "name": "Build current native executables",
+      "outcome": "成功",
+      "executed_exit": 0,
+      "package_check_exits": []
+    },
+    {
+      "index": 2,
+      "name": "Install Chinese fonts for visual verification",
+      "outcome": "必要套件已安裝；未重複執行原 apt 指令",
+      "executed_exit": null,
+      "package_check_exits": [
+        0
+      ]
+    },
+    {
+      "index": 3,
+      "name": "Run actual browser regression group",
+      "outcome": "成功",
+      "executed_exit": 0,
+      "package_check_exits": []
+    },
+    {
+      "index": 4,
+      "name": "Preserve canvas wait trace",
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "executed_exit": null,
+      "package_check_exits": []
+    },
+    {
+      "index": 5,
+      "name": "Preserve assembly authoring screenshots",
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "executed_exit": null,
+      "package_check_exits": []
+    },
+    {
+      "index": 6,
+      "name": "Preserve grid trial screenshots",
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "executed_exit": null,
+      "package_check_exits": []
+    },
+    {
+      "index": 7,
+      "name": "Preserve document reader screenshots",
+      "outcome": "未上傳至 GitHub；改為本機保存原產物",
+      "executed_exit": null,
+      "package_check_exits": []
+    }
+  ],
+  "not_verified": [
+    "all archived file members and hashes",
+    "timber-material",
+    "timber-source-guards",
+    "standalone canvas P73 or any other workflow"
+  ]
+}

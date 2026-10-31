@@ -1,0 +1,15 @@
+3: ## 2026-10-19 帳本續補（本輪 GitHub 來源快照）
+5: - 基底 main `a63e1999b5ebdc29ee30f25db6b319d6469bdac3`。依 `gh pr list --state merged --search "merged:>=2026-10-15" --limit 200 --json number,title,mergedAt,mergeCommit,body` 回讀 **24 張**。上一節表格裡的 PR 編號都不在這 24 張裡。下表在這 24 張之外補上 #246，共 25 列。日期把 GitHub `mergedAt` 換算成 Asia/Taipei。八碼是該 PR 的 merge commit，不是受測 head。這是帳本查核，沒有重跑那些 PR 的測試。各列 merge commit（含補上的 #246）都用 `git merge-base --is-ancestor <merge commit> origin/main` 核對，當時 origin/main 是 `a63e1999`。只有 #289 的 `00428c5b` 不是祖先。
+7: - 下表各列只記該 PR 正文寫明的事。正文沒寫的測試、產品完成度與因果，不補。列車展開到正文點名的來源 PR。來源 PR 若 GitHub `mergedAt` 為 null，只記在下方「列車內的非 merged PR 與仍待落地項」，不另造合併日或 merge commit。
+8: - 2026-10-19 以 `gh pr view 312 --json state,mergedAt` 回得 state=OPEN、mergedAt=null。#312 還沒合併，所以不把它的來源展開成已合併列。
+9: - 本次只新增。上一節、各工單舊文，以及既有鎖定行，都沒改。GitHub Actions 計費阻擋照各 PR 正文保留，不把 GitHub CI 寫成已綠。
+19: | [#262](https://github.com/ZhiQiYang/geometry-axiom/pull/262) | 2026-10-16／`a898ad6e` | GEO-255／GEO-262／#209 | 第 17 班，展開為 #226（正文標 PF-3，內含 #227）、#237、#256。WSL 七項綠，收據 `6a0f5386-train17-claude`。Windows 原生與實機不在本次範圍。#226 自己沒有 merge commit，見下方 |
+21: | [#237](https://github.com/ZhiQiYang/geometry-axiom/pull/237) | 2026-10-16／`2445e1af` | #209 | 等待追蹤預設關閉，設 `GEOMETRY_WAIT_TRACE=1` 才開啟；B1 要求四個計數為非負 JSON 整數。正文寫該 PR head 的正式 WSL 七項未跑；雲端 native 2852 過／0 敗／1 skip 在 `3642e67d`。組合樹的七項見 #262 |
+25: | [#291](https://github.com/ZhiQiYang/geometry-axiom/pull/291) | 2026-10-17／`772b97f5` | GEO-258／GEO-246／#198／閱讀器 | 第 18 班，展開為 #193、#196、#202、#207、#258、#290。R2 七項綠，受測 head `e8eb1da5`。canvas 的 uncaughtBrowserExceptions 原值 1；native 具名平台 skip 1。不含 #251、#254 或 GEO-261 架構堆疊。R1 的 P76 根因未定案。#193、#196、#202、#207 沒有各自的 merge commit，見下方 |
+44: - **第 18 班裡的 #193、#196、#202、#207**（四張都是 CLOSED，`mergedAt` 為 null；2026-10-19 的 `gh pr view`）。[#291](https://github.com/ZhiQiYang/geometry-axiom/pull/291) 正文寫核心鏈是 #193 head `cb6e2c43`，並另合入 #196、#202、#207。標題分別是參數刪除後同鍵重建（GEO-258）、GEO-246 的網格拒絕訊息、#198 的凹口與尖脊矩形接觸、GEO-198 來源的正典閱讀器同步。內容是否入 main，只依 #291 這句話；四張都沒有自己的 merge commit。
+46: - **GEO-261 整合仍在 #288**。2026-10-19 `gh pr view 288`：state=OPEN、isDraft=true、mergedAt=null，還沒進 main。同日 #279（原生分層與候選來源圖）也是 OPEN draft。#289 已合併進 GEO-261 整合分支(#288 的 head 分支，也就是 #289 的 base),尚未進 main。它的正文寫明仍依賴這兩張，不把 #289 當成整合已完成。工單處另有 2026-10-19 註記。
+442: ### GEO-265 — 角材容量由 64 放大到 512（2026-10-19 開單，未開始）
+444: - **狀態**：未開始。
+445: - **來源**：[issue #300](https://github.com/ZhiQiYang/geometry-axiom/issues/300)（2026-10-19 查為 OPEN）。正文寫：一個 World 最多 64 支角材（`WORLD_MAX_TIMBERS`）。#297 探針實跑時，F1 客廳要 108–116 支，第 65 支起被拒；五房整套要 266–310 支。條文沒有規定這個數字（I33 只規定容量不足要回 CAPACITY）。
+446: - **排程依賴**（照 issue 正文）：只在 GEO-261 合入後的 main 上做一次，避免和檔案搬移衝突。2026-10-19 #288 仍是 OPEN，這個條件還沒成立。
+447: - **issue 裡已經寫出的做法**：正文標成 Claude 代決、可以推翻。放大到 512。GEO-261 整合分支有五處各自寫死 64，要收斂成單一來源，以模板的 `WOOD_MEMBER_CAPACITY` 為準，並加上 `_Static_assert`。一併修 `print_cut_list` 隨 N 平方成長的堆疊陣列，補第 N 支接受、第 N+1 支拒絕的邊界測試與突變，重跑突變帳本，放大後重跑 #297。參考線上限、空間上限與載入時間另開單。這段是 issue 裡的代決，不是本帳本新記的使用者拍板。

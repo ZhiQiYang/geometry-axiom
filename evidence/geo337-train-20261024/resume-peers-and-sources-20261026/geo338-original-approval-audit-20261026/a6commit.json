@@ -1,0 +1,101 @@
+{
+  "sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "node_id": "C_kwDOUfdcjNoAKGE2ZjQwMTMzNjRlMjFiY2I3MjM5YjVkY2MyNWNhYWMwZjZkNjFmNzc",
+  "commit": {
+    "author": {
+      "name": "Yang",
+      "email": "b10102230@gmail.com",
+      "date": "2026-10-26T01:01:32Z"
+    },
+    "committer": {
+      "name": "Yang",
+      "email": "b10102230@gmail.com",
+      "date": "2026-10-26T01:01:32Z"
+    },
+    "message": "docs(decisions): extend the three-scenario whitelist to P-189 and inherit unchanged gates (locked)\n\nRecord the user's 2026-10-26 answers: P-189's byte comparison against main\nadbaebf9 allows only the same three named #299 locating-edge additions as\nQ-323-ABC, with every other byte and the fix/main <= 2 thresholds unchanged;\nand gates whose input closure excludes tests/test_geo314_commit_paths.py and\n決策佇列.md keep their F9 (or originally F8) cloud results, while full\nnative, the six browser jobs and the reading A oracle rerun. Additions only.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "tree": {
+      "sha": "1fee37a0dc6c3f28fce09dd813f5c9865962962e",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/trees/1fee37a0dc6c3f28fce09dd813f5c9865962962e"
+    },
+    "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+    "comment_count": 0,
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "html_url": "https://github.com/ZhiQiYang/geometry-axiom/commit/a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "comments_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/a6f4013364e21bcb7239b5dcc25caac0f6d61f77/comments",
+  "author": {
+    "login": "ZhiQiYang",
+    "id": 59477728,
+    "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/59477728?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/ZhiQiYang",
+    "html_url": "https://github.com/ZhiQiYang",
+    "followers_url": "https://api.github.com/users/ZhiQiYang/followers",
+    "following_url": "https://api.github.com/users/ZhiQiYang/following{/other_user}",
+    "gists_url": "https://api.github.com/users/ZhiQiYang/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/ZhiQiYang/subscriptions",
+    "organizations_url": "https://api.github.com/users/ZhiQiYang/orgs",
+    "repos_url": "https://api.github.com/users/ZhiQiYang/repos",
+    "events_url": "https://api.github.com/users/ZhiQiYang/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/ZhiQiYang/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "ZhiQiYang",
+    "id": 59477728,
+    "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/59477728?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/ZhiQiYang",
+    "html_url": "https://github.com/ZhiQiYang",
+    "followers_url": "https://api.github.com/users/ZhiQiYang/followers",
+    "following_url": "https://api.github.com/users/ZhiQiYang/following{/other_user}",
+    "gists_url": "https://api.github.com/users/ZhiQiYang/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/ZhiQiYang/subscriptions",
+    "organizations_url": "https://api.github.com/users/ZhiQiYang/orgs",
+    "repos_url": "https://api.github.com/users/ZhiQiYang/repos",
+    "events_url": "https://api.github.com/users/ZhiQiYang/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/ZhiQiYang/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "3e4f2560aa11ed2a626db98ba5ed6f129e791052",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/3e4f2560aa11ed2a626db98ba5ed6f129e791052",
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/commit/3e4f2560aa11ed2a626db98ba5ed6f129e791052"
+    }
+  ],
+  "stats": {
+    "total": 22,
+    "additions": 22,
+    "deletions": 0
+  },
+  "files": [
+    {
+      "sha": "9eee202d4214dd189e77438626a51f68c62f078e",
+      "filename": "決策佇列.md",
+      "status": "modified",
+      "additions": 22,
+      "deletions": 0,
+      "changes": 22,
+      "blob_url": "https://github.com/ZhiQiYang/geometry-axiom/blob/a6f4013364e21bcb7239b5dcc25caac0f6d61f77/%E6%B1%BA%E7%AD%96%E4%BD%87%E5%88%97.md",
+      "raw_url": "https://github.com/ZhiQiYang/geometry-axiom/raw/a6f4013364e21bcb7239b5dcc25caac0f6d61f77/%E6%B1%BA%E7%AD%96%E4%BD%87%E5%88%97.md",
+      "contents_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/%E6%B1%BA%E7%AD%96%E4%BD%87%E5%88%97.md?ref=a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+      "patch": "@@ -897,6 +897,28 @@\n - 效能門檻(N64/main ≤1.3、N16/base ≤1 等)不在本節裁決範圍內，仍照原門檻。\n - 如何推翻：使用者另行指示;或 GitHub Actions 帳單恢復後改回官方 CI。\n \n+### 2026-10-26 #338 列車:P-189 套用同一份三場景白名單、輸入未變的專項沿用 F9／F8 結果 🔒\n+\n+協調 agent(本機 Claude,session `f46787ac`)以選擇題提出兩題，使用者(台北 2026-10-26 上午)選擇的選項原文如下:\n+\n+> 套用同一份白名單 (Recommended)\n+\n+> 輸入沒變的沿用 F9 結果 (Recommended)\n+\n+題意與適用範圍(協調 agent 整理，非原話;選項說明是協調 agent 當時寫在選項下的文字):\n+\n+1. **P-189 套用同一份白名單**:P-189 的 dump 逐 byte 比較(列車對比較源 main `adbaebf9c73ea6801d7b4d5214e4b846b132923b`,該 main 尚無 #299)只放行「2026-10-25 #338 列車」一節第 2 項同一份白名單：三個具名場景、逐字相同的那段 #299 定位邊新增文字。其餘 bytes 與 N16／32／48／64 的 fix/main ≤ 2 效能門檻不變;多一筆差異、文字或位置不同仍判紅燈。選項說明為「只放行那 3 個具名場景、逐字相同的 #299 新增文字;其他 bytes 與效能門檻(fix/main ≤ 2)不變，多一筆或文字不同仍紅」。\n+2. **輸入未變的專項沿用 F9／F8 結果**:列車最終來源與已在雲端完整跑過的 F9(`4f8a794f4167c3562eb182045102e86e9e37cca9`)之間，非 evidence 差異只有 `tests/test_geo314_commit_paths.py` 與 `決策佇列.md`(2026-10-25 與本節兩段新增)。\n+   - 輸入閉包不含這兩個檔的專項(例如 P52、P-189 計時、#323 效能與跨版本比較、PF3、Q38、§7)沿用 F9 在雲端的原始結果;原紀錄本來就綁 F8(`75a1e93811a52b69385cbdaf6a09d773ed9052ad`)的，沿用 F8。每項要附「輸入閉包不含這兩個檔」的證明。\n+   - 會讀到這兩個檔的項目在最終來源上重跑：完整 native(含 #314 嚴格測試、`test_domain_decoupling_adoption`、`fuzz_scene`)與 #318 閱讀 A oracle(其引文核對讀決策佇列)。六項 browser 也在最終來源或只差決策佇列的來源上重跑。\n+   - 選項說明為「只重跑會讀到那兩個檔的項目(完整 native、6 項 browser、閱讀 A oracle 等，約 2 小時);其餘逐項列出輸入沒變的證明。#288 時審查接受過這種做法」。\n+\n+背景(協調 agent 整理，非原話):\n+- 雲端 Codex 於 2026-10-26 凌晨停止(額度);使用者指示「你繼續推進好了」,由本機 Claude 接手 #338 的最終驗收。\n+- 雲端的 P52、P-189、#323 memo／恢復等工具釘死雲端編出的 ELF 雜湊、寫死 `/workspace/...` 路徑與工具版本(Debian gcc 14.2、Node 24.19、Chrome 156),在本機 WSL 重跑時雜湊與效能數值必然不同;這是第 2 項的理由。\n+- 本節寫在列車分支，與「2026-10-25 #338 列車」一節相鄰;列車合入 main 時一併帶入。\n+- 如何推翻：使用者另行指示。\n+\n ### 2026-10-10 PF-0 依授權 L 的暫定裁決（寫入公理層時併入）\n \n PF-0 r2 寫入 `公理層.md` 時一併併入本節（來源：協調 agent 2026-10-09 的暫定裁決表 r2）。下列每列是協調 agent 依 2026-10-09 授權 L 所作的裁決，或撰寫條文時為推出唯一行為而補的細節，**不是使用者新決定**；每列記：題目｜採用｜理由要點。B／C／L 來自 2026-10-09 PF-0 對抗審查的發現，PR1–PR5 是 PF-0 §7 其餘五條精確化（r1 稱 S1–S5），P1–P17 是 r1／r2 撰寫時補上的細節；各項均經兩輪獨立對抗審查（opus，2026-10-09）。狀態標「暫定（依 2026-10-09 授權 L）」者使用者可事後推翻：在本節該列註明推翻，另開 axiom PR 改對應條文並同步白話、閱讀器與相容雜湊。偏離 🔒Q45／Q46 字面的 P10、P11 已由使用者 2026-10-10 確認（見上方「PF-0 角材建議流程偏離 Q45／Q46 字面」）。條文以 `公理層.md` D41–D45／I52–I57／R41–R46 為準；逐條 diff、已知限制 K1–K11 與驗收 PF01–PF22 見寫入 PR 正文。"
+    }
+  ]
+}

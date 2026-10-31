@@ -1,0 +1,30 @@
+--- R6-launch
++++ R7-terminal-bound-launch
+@@ -5,12 +5,13 @@
+ def need(value,message):
+     if not value:raise RuntimeError(message)
+ def main():
+-    need(digest(ROOT/'collect.py')=='2601305276977f1a3850f7cf9f35497210013ec816ac63df0767841dd9ecc7ce','frozen collector')
+-    need(digest(ROOT/'PLAN.json')=='ede91bc92d702d4d3f386ab2c7622658ef5fc5ffdba1c8e5e53fd6201d510209','frozen membership plan')
+-    terminal=Path('/tmp/geo323-shadow-hint-F-observation-20261024/execution/RESULT.json')
+-    need(digest(terminal)=='5ef9f5d6f00268f1e069fe08180b76807239b23665931397eccba3a27baef5e1','original K shadow terminal pin')
++    need(digest(ROOT/'collect.py')=='__FROZEN_COLLECTOR_SHA256__','frozen collector')
++    need(digest(ROOT/'PLAN.json')=='__FROZEN_TERMINAL_PLAN_SHA256__','frozen membership plan')
++    plan=json.loads((ROOT/'PLAN.json').read_bytes())
++    pin=plan['terminal_bindings']['outer'];terminal=Path(pin['path'])
++    need(digest(terminal)==pin['sha256'] and terminal.stat().st_size==pin['bytes'],'original R7 terminal pin')
+     k=json.loads(terminal.read_bytes())
+-    need(k['source_sha']=='2bbe54f19b2d19e8a816530f0c4edca950629a34' and k['exit']==0 and k['ended_utc'] and k['source_clean_after'] is True,'K shadow original terminal before heavy collection')
++    need(k['source_sha']=='6df0264f75e84f03adb70746b6ac3db07a9910fc' and type(k['exit']) is int and k['exit']==plan['expected_terminal']['outer_exit'],'actual R7 terminal before heavy collection')
+     held=None;slot=None
+     for name in ['/tmp/g261r3/heavy.lock','/tmp/g261r3/secondary.lock']:
+         handle=open(name,'a+b')
+@@ -21,7 +22,7 @@
+     try:
+         out=ROOT/'execution';out.mkdir(exist_ok=False)
+         command=[sys.executable,'-B',str(ROOT/'collect.py')]
+-        request={'command':command,'cwd':str(ROOT),'heavy_slot':slot,'environment':{n:os.environ.get(n) for n in ['PATH','LANG','LC_ALL','TMPDIR','PYTHONPATH','PYTHONOPTIMIZE']},'source_sha':'2bbe54f19b2d19e8a816530f0c4edca950629a34','started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'subject_executed':False}
++        request={'command':command,'cwd':str(ROOT),'heavy_slot':slot,'environment':{n:os.environ.get(n) for n in ['PATH','LANG','LC_ALL','TMPDIR','PYTHONPATH','PYTHONOPTIMIZE']},'source_sha':'6df0264f75e84f03adb70746b6ac3db07a9910fc','started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'subject_executed':False}
+         (out/'request.json').write_text(json.dumps(request,ensure_ascii=False,indent=2)+'\n')
+         with (out/'stdout').open('wb') as stdout,(out/'stderr').open('wb') as stderr:
+             result=subprocess.run(command,cwd=ROOT,stdout=stdout,stderr=stderr)

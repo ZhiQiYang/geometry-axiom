@@ -1,0 +1,144 @@
+[
+  {
+    "argv": [
+      "git",
+      "-c",
+      "gc.auto=0",
+      "-c",
+      "maintenance.auto=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "-s",
+      "--format=%P",
+      "f0f7888213a8cc5b54f0a4303fb0577fe812cefd"
+    ],
+    "actual_exit": 0,
+    "stdout_sha256": "6d65119644144c3bfcccaf73945dd8640297d349334c6d438881693170c12df5",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "gc.auto=0",
+      "-c",
+      "maintenance.auto=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "show",
+      "-s",
+      "--format=%P",
+      "4f8a794f4167c3562eb182045102e86e9e37cca9"
+    ],
+    "actual_exit": 0,
+    "stdout_sha256": "ec62c202ed467dee874de5ab953f61e680d419bf0f57382e277c14fb115faaef",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "gc.auto=0",
+      "-c",
+      "maintenance.auto=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "diff-tree",
+      "--no-commit-id",
+      "--no-renames",
+      "--name-only",
+      "-r",
+      "-z",
+      "f0f7888213a8cc5b54f0a4303fb0577fe812cefd"
+    ],
+    "actual_exit": 0,
+    "stdout_sha256": "2f1f36966179648e9c6d41076e61e2953a4fe197c77d9b1345b25357d0e247f3",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "gc.auto=0",
+      "-c",
+      "maintenance.auto=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "diff-tree",
+      "--no-commit-id",
+      "--no-renames",
+      "--name-only",
+      "-r",
+      "-z",
+      "4f8a794f4167c3562eb182045102e86e9e37cca9"
+    ],
+    "actual_exit": 0,
+    "stdout_sha256": "226b9afb83eedad18e8ec87c896b4b4da2666fef2105231b6925b07a6471d3a5",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "gc.auto=0",
+      "-c",
+      "maintenance.auto=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "diff",
+      "--no-renames",
+      "--name-only",
+      "-z",
+      "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+      "f0f7888213a8cc5b54f0a4303fb0577fe812cefd",
+      "--",
+      ".",
+      ":(exclude)evidence"
+    ],
+    "actual_exit": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "gc.auto=0",
+      "-c",
+      "maintenance.auto=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "diff",
+      "--no-renames",
+      "--name-only",
+      "-z",
+      "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+      "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "--",
+      ".",
+      ":(exclude)evidence"
+    ],
+    "actual_exit": 0,
+    "stdout_sha256": "3b84a9474320f0911e02de26c35099f508d10e18b725730e4ef0c3b18069989c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "argv": [
+      "git",
+      "-c",
+      "gc.auto=0",
+      "-c",
+      "maintenance.auto=false",
+      "-C",
+      "/workspace/geometry-axiom",
+      "merge-base",
+      "--is-ancestor",
+      "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+      "4f8a794f4167c3562eb182045102e86e9e37cca9"
+    ],
+    "actual_exit": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "reviewer": "/root/r02_final_scope_audit",
+  "review_kind": "independent read-only original-stream review; not product rerun",
+  "executionSha": "0ae1728c2309e1d670369289a6b8da059fa63a50",
+  "finding": "no blocking findings",
+  "checks": {
+    "scenes": 175,
+    "rawBridgeCommands": 525,
+    "baselineNegativeRestored": [
+      3,
+      27,
+      3
+    ],
+    "expectedExits": [
+      0,
+      1,
+      0
+    ],
+    "timingSamples": 36,
+    "fixMainRatios": [
+      0.8928012519561815,
+      1.118816930137685,
+      1.0710556844547565,
+      1.4289458902827186
+    ],
+    "sourceFiles": 185,
+    "preprocessedBytes": 4207012,
+    "donorPrivatePreprocessingIdentical": true,
+    "firstArchiveErrorPreserved": "rc128 / outer1 ENOSPC, zero product executions or samples"
+  },
+  "scope": "Read files and recomputed recorded hashes/medians; did not run product, compiler, or new timing samples."
+}

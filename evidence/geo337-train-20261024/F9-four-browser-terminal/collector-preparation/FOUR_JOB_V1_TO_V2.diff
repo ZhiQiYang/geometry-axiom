@@ -1,0 +1,47 @@
+--- /workspace/geo337-remaining-browser-terminal-preparation-20261025/collect_four_browser_terminal.py
++++ /workspace/geo337-remaining-browser-terminal-preparation-20261025/collect_four_browser_terminal_v2.py
+@@ -57,6 +57,11 @@
+   # Establish real host/process/workflow termination before walking any runtime payload.
+   extras = {}; roots = []; captured_tools = {str(CAP):CAP_PIN}; requests = []
+   terminal_inputs=q['terminal_inputs']; need(set(terminal_inputs)==set(JOBS),'all four named terminal inputs')
++  # Refuse an incomplete attempt list rather than silently omit a later environment retry.
++  for job in JOBS:
++   expected={job+'.json',job+'-sampled.json'}
++   actual={p.name for p in (OWN/'requests').iterdir() if p.name.startswith(job) and p.suffix=='.json'}
++   need(actual==expected,'unexpected additional attempt requires explicit reviewed scope: '+job)
+   for attempt, (short, minutes) in JOBS.items():
+    pins=terminal_inputs[attempt]; finalpin=pins['final_sha256']; finalpath=f'/workspace/geo337-F9-{attempt}-SHM-EXEC_FINAL-20261025.json'; storage_rel='r/'+short
+    finalp = safe(finalpath); need(digest(finalp) == finalpin, 'true host final pin'); final = J(finalp); host = final['actual_tool_result']; hostout = json.loads(host['output'])
+@@ -66,24 +71,25 @@
+    wr = J(launch/'receipt.json'); sr = J(sampled/'RESULT.json'); wfpath = storage/'original'/attempt/'receipt.json'; wf = J(wfpath)
+    need(final['source_sha'] == hostout['source_sha'] == req['source_sha'] == srq['source_sha'] == wr['source_sha'] == sr['source_sha'] == wf['sha'] == F, 'all terminal source SHA identities')
+    need(hostout['job'] == req['job'] == srq['job'] == wr['job'] == sr['job'] == wf['job'] == attempt, 'all terminal job identities')
+-   need(host['exit_code'] == hostout['wrapper_exit'] == hostout['original_process_returncode'] == sr['wrapper_exit'] == sr['original_process_returncode'] == wr['wrapper_exit'] == wr['original_primary_exit'] == wf['exit_code'] == code, 'true terminal exit chain')
+-   need(sr['sampling_complete'] is True and hostout['sampling_complete'] is True and sr['original_receipt_sha256'] == digest(launch/'receipt.json') and wr['original_receipt_sha256'] == digest(wfpath), 'closed sampler and workflow receipt bindings')
++   need(host['exit_code'] == hostout['wrapper_exit'] == hostout['original_process_returncode'] == sr['wrapper_exit'] == sr['original_process_returncode'] == wr['wrapper_exit'] == code, 'true host/sampler/launcher exit chain')
++   primary=wf['exit_code']; need(type(primary) is int and wr['original_primary_exit']==primary, 'true original workflow exit preserved independently')
++   need(type(sr['sampling_complete']) is bool and hostout['sampling_complete']==sr['sampling_complete'] and sr['original_receipt_sha256'] == digest(launch/'receipt.json') and wr['original_receipt_sha256'] == digest(wfpath), 'closed sampler and workflow receipt bindings; sampling failures preserved')
+    need(req['out'] == str(launch) and req['storage'] == str(storage) and srq['out'] == str(sampled), 'exact original output roots')
+    need(req['plan_dir'] == str(OWN/'plans'/attempt) and req['source_layout'] == str(OWN/'sources'/attempt), 'exact isolated source plan')
+    need(digest(rq) == wr['request_sha256'] == srq['launch_request']['sha256'] and srq['launch_request']['path'] == str(rq) and digest(sq) == sr['request_sha256'], 'request identity chain')
+-   need(wf['ci_timeout_minutes'] == minutes and wf['watchdog_factor'] == 3 and wf['over_ci_timeout'] is False and wf['checkout_before'] == wf['checkout_after'], 'unchanged original timing and checkout guards')
++   need(wf['ci_timeout_minutes'] == minutes and wf['watchdog_factor'] == 3 and type(wf['over_ci_timeout']) is bool, 'unchanged original time definitions; actual gate result preserved')
+    for phase in ['before_guard', 'after_guard']:
+-    need(wr[phase]['actual_process_returncode'] == 0 and wr[phase]['timeout_expired'] is False, 'closed original source guard')
++    need(type(wr[phase]['actual_process_returncode']) is int and type(wr[phase]['timeout_expired']) is bool, 'closed original source guard; original red preserved')
+    events = [json.loads(line) for line in (launch/'reaper.jsonl').read_text().splitlines()]; done = [e for e in events if e.get('event') == '完成']
+-   need(len(done) == 1 and events[-1] == done[0] and done[0]['primary_returncode'] == code, 'true reaper terminal')
+-   need(wr['original_command']['actual_process_returncode'] == code, 'original captured command terminal')
++   need(len(done) == 1 and events[-1] == done[0] and done[0]['primary_returncode'] == primary, 'true reaper terminal')
++   need(wr['original_command']['actual_process_returncode'] == primary, 'original captured command terminal')
+    for path, h in wr['driver_pins'].items():
+     need(digest(safe(path)) == h, 'executed driver pin'); captured_tools[path] = h
+    launcher = Path(srq['launch_argv'][2]); need(digest(launcher) == sr['launcher_sha256'], 'executed launcher pin'); captured_tools[str(launcher)] = sr['launcher_sha256']
+    for p in [rq, sq, finalp, Path('/workspace/launch_geo337_F9_next_browser_root_20261025.py')]: extras[f'attempts/{attempt}/inputs/{p.name}'] = safe(p)
+    roots += [(f'attempts/{attempt}/launch', launch, False), (f'attempts/{attempt}/storage', storage, False), (f'attempts/{attempt}/sampler', sampled, False)]
+    requests.append(req)
+-   result['attempts'].append(dict(name=attempt, source_sha=F, original_formal_exit=code, original_wrapper_exit=wr['wrapper_exit'], original_ci_timeout_minutes=minutes, original_ci_gate_exit=0, original_elapsed_seconds=wf['seconds'], original_receipt_sha256=digest(wfpath), host_final_sha256=finalpin, passed=wr['passed'], historical_environment_failure=False))
++   result['attempts'].append(dict(name=attempt, source_sha=F, original_formal_exit=primary, original_wrapper_exit=wr['wrapper_exit'], original_ci_timeout_minutes=minutes, original_ci_gate_exit=1 if wf['over_ci_timeout'] else 0, original_elapsed_seconds=wf['seconds'], original_receipt_sha256=digest(wfpath), host_final_sha256=finalpin, passed=wr['passed'], failure_classification='not inferred by collector', sampling_complete=sr['sampling_complete'], checkout_before_after_equal=wf['checkout_before']==wf['checkout_after'], guard_exits={phase:wr[phase]['actual_process_returncode'] for phase in ['before_guard','after_guard']}))
+   for req in requests:
+    job=req['job']; pins=terminal_inputs[job]; plan=OWN/'plans'/job
+    need(req['plan_sha256']==digest(plan/'PLAN.json'),'original single-job plan identity')

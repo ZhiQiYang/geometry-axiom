@@ -1,0 +1,16 @@
+{
+  "recorded_tool_result": {
+    "chunk_id": "5fea83",
+    "wall_time_seconds": 0.11834951,
+    "exit_code": 0,
+    "original_token_count": 377
+  },
+  "actual_argv": [
+    "python3",
+    "-B",
+    "/tmp/geo337-recovery-evidence-append-peer-20261026/audit.py"
+  ],
+  "actual_stdout_final_line": "{\"exit_code\": 0, \"checks\": 36, \"subject_sha256\": \"988a3b851db4417d41c073d02e8d3e440ea7dd22c10c53421490da79174cb720\", \"review_sha256\": \"125a0dee72a2d3d09fdd6af901aefdfe7693dbf1d43cbe0141c280d008da3917\", \"counterproof_exits\": [0, 1, 0]}",
+  "actual_stderr": "",
+  "command_note": "The same shell tool invocation first printed the initial-to-fixed two-line source diff. This receipt records the audit command outcome and its complete JSON stdout, with no formal publication execution."
+}

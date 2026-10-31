@@ -1,0 +1,37 @@
+{
+  "reason": "Credential query values in signed log-download errors. Original complete streams retained in cloud and not modified.",
+  "items": [
+    {
+      "private_original": "/workspace/pr338-pr339-current-actions-environment-20261024/original-metadata/subcommands/000008/stderr.bin",
+      "original_sha256": "65272bae30c310c82042e765f8a2d733f590eece7f8b5fae540b400df0e5520f",
+      "original_bytes": 264,
+      "public_member": "audit/original-metadata/subcommands/000008/stderr.bin.redacted",
+      "public_sha256": "dc49e7729db57aa22e883c000d782dbc7af2c014ac488d6ddf54b2a5eb33bbba",
+      "public_bytes": 216,
+      "ranges": [
+        {
+          "start_byte": 176,
+          "end_byte_exclusive": 251,
+          "field": "signature",
+          "redacted_value_sha256": "2280d2028d74dc172c32d18fc2f753fb16282dd94efc2bbcc81bc4522e9a5f0e"
+        }
+      ]
+    },
+    {
+      "private_original": "/workspace/pr338-pr339-current-actions-environment-20261024/original-metadata/subcommands/000027/stderr.bin",
+      "original_sha256": "c850b3ff041a4977a3a92a9c5f8dcf45555c632fa5d813f3a6cad76c341048a7",
+      "original_bytes": 264,
+      "public_member": "audit/original-metadata/subcommands/000027/stderr.bin.redacted",
+      "public_sha256": "6a27e4d8f4e36f5e2edf2a577d1bc2231f3e43c2b20b3e9239cd91fa6451bad1",
+      "public_bytes": 216,
+      "ranges": [
+        {
+          "start_byte": 176,
+          "end_byte_exclusive": 251,
+          "field": "signature",
+          "redacted_value_sha256": "5493320fa9cb064f56d561c76912d21b9b85a390436491c79fead5673912aef7"
+        }
+      ]
+    }
+  ]
+}

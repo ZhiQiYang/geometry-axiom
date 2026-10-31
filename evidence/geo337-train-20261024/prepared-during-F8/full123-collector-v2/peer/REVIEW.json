@@ -1,0 +1,26 @@
+{
+  "schema": "full123-terminal-tool-static-peer/1",
+  "utc": "2026-10-25T08:07:14.425961+00:00",
+  "exit_code": 1,
+  "preparation_sha256": "a711f6d4cf5404c8dbc7885d0c1b0d39b3917970fb3b971e8932ec53ff283840",
+  "pinned_small_files_checked": 33,
+  "formal_or_collector_executed": false,
+  "active_payload_read": false,
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "path": "terminal_guard.py: bound_terminal optional child parsing",
+      "trigger": "Original job/outer/tool have true terminal but an optional observer/mapping/bridge/ledger file is truncated, duplicate-key JSON or a non-object after failure/ENOSPC.",
+      "actual_code_behavior": "strict_json/read classify exception escapes before scope collection, so even failed original raw cannot be archived.",
+      "required_change": "Keep mandatory job/outer/tool true-terminal rejection. Retain optional child raw/hash, record parse/type errors and use empty-object classification; force formal/adoption false while allowing collection. Add pure metadata malformed/duplicate/non-object vectors. Never invent a completed original result."
+    }
+  ],
+  "accepted_static_scope": [
+    "Original full123/120 natural F8/3retired and CLI/map/newcheck source-before/after conditions preserved.",
+    "Original JOB+outer full scope and M*/_baseline/_bridge-baseline stdout/stderr/json retained, no new payload deletion or source/Git writes.",
+    "Collection0 versus formal0 and unbound adoption separated.",
+    "Both existing NB locks and process argv/cwd consumer checks precede terminal scope capture.",
+    "Fresh nonoverlapping OUT, same-output-filesystem uncompressed/header/index/reserve budget, per-leaf state/hash and tar roundtrip checks."
+  ],
+  "limits": "Read-only small scripts/preparation pins; no true terminal verification or live JOB/cache scope enumeration. Initial preparation remains historical, not approved to launch until B1 fixed."
+}

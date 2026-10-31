@@ -1,0 +1,21 @@
+{
+  "runId": 40040764499,
+  "runSourceSHA": "e9ee6d088b0cad4e3984aa2842a50acc311c2351",
+  "classification": "All seven required jobs were not scheduled: payment failure OR spending limit; exact account cause is not distinguished.",
+  "ciRepairClaim": false,
+  "ciRerunClaim": false,
+  "B2Resolved": false,
+  "actionsProductExecution": false,
+  "allowedSkip": false,
+  "readExits": {
+    "0": 63,
+    "1": 2
+  },
+  "signedDownloadFailures": 2,
+  "publicRedactions": 2,
+  "privateOriginalsNotPublished": true,
+  "completeOriginalReadsCapturedWith": "c387 capture.py",
+  "packager": "Direct exec_command true exit 0; no separate c387 packager outer streams exist.",
+  "originalRuntimeSHAUnchanged": "38da31bcac91db631e6325e40b228f8604810e82",
+  "sourceTreeEqualityIsNotExecutionEvidence": true
+}

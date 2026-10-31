@@ -1,0 +1,104 @@
+{
+  "schema": "root-frozen-resume1758-package-inputs/1",
+  "template_only_not_executable": false,
+  "product_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "expected_evidence_parent": "dea5d12a88c0a2ed93141014524dce5d104f8b1f",
+  "external_raw_commit": "9a57aea2128a7bc3985064932c24e2229fd8fcb8",
+  "roots": [
+    {
+      "alias": "preflight",
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/retirement-preflight-175947-20261026"
+    },
+    {
+      "alias": "remote",
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/retirement-remote-fresh-175947-20261026"
+    },
+    {
+      "alias": "retirement-root",
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/approved-retirement-root-175947-20261026"
+    },
+    {
+      "alias": "retirement",
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/native-TMP-retirement-20261025"
+    },
+    {
+      "alias": "reader",
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/reader-F-175947-20261026"
+    },
+    {
+      "alias": "geo-resume1758-root-20261026",
+      "path": "/tmp/geo-resume1758-root-20261026"
+    },
+    {
+      "alias": "geo-resume1758-management-20261026",
+      "path": "/tmp/geo-resume1758-management-20261026"
+    },
+    {
+      "alias": "geo-resume1758-management-peer-20261026",
+      "path": "/tmp/geo-resume1758-management-peer-20261026"
+    },
+    {
+      "alias": "geo-resume1758-retirement-peer-20261026",
+      "path": "/tmp/geo-resume1758-retirement-peer-20261026"
+    },
+    {
+      "alias": "geo-resume1758-reader-plan-20261026",
+      "path": "/tmp/geo-resume1758-reader-plan-20261026"
+    },
+    {
+      "alias": "geo-resume1758-reader-executor-20261026",
+      "path": "/tmp/geo-resume1758-reader-executor-20261026"
+    },
+    {
+      "alias": "geo-resume1758-reader-executor-peer-20261026",
+      "path": "/tmp/geo-resume1758-reader-executor-peer-20261026"
+    },
+    {
+      "alias": "geo-resume1758-delivery-plan-20261026",
+      "path": "/tmp/geo-resume1758-delivery-plan-20261026"
+    },
+    {
+      "alias": "geo-resume1758-reader-actual-peer-20261026",
+      "path": "/tmp/geo-resume1758-reader-actual-peer-20261026"
+    },
+    {
+      "alias": "geo-resume1758-delivery-plan-peer-20261026",
+      "path": "/tmp/geo-resume1758-delivery-plan-peer-20261026"
+    }
+  ],
+  "terminal_results": [
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/retirement-preflight-175947-20261026/RESULT.json",
+      "sha256": "040bf15ca7e5b2cb9270a0754b0583fc657213b7ba486f7e912a582775ffb283",
+      "exit_code": 1,
+      "end_key": "ended_utc"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/retirement-remote-fresh-175947-20261026/RESULT.json",
+      "sha256": "cb81d42bf76485e2fe1413cda4b7d78b6740bbc7230a26b4cc4a5b63fab3366b",
+      "exit_code": 0,
+      "end_key": "ended_utc"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/approved-retirement-root-175947-20261026/RESULT.json",
+      "sha256": "dba05a85a7896a1e326a243d3d80c865f9b074f170ec2804df5b1110ea9ea84c",
+      "exit_code": 0,
+      "end_key": null
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/native-TMP-retirement-20261025/RESULT.json",
+      "sha256": "075534e2c72f827b30fbe3d5d7da65398a371183fa263df12180ae5d8949aa4e",
+      "exit_code": 0,
+      "end_key": "ended_utc"
+    },
+    {
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/reader-F-175947-20261026/RESULT.json",
+      "sha256": "c4f253756cdb03d0f753c60b8a33b824104caa9cbd383f8e93f057a67a2fd94c",
+      "exit_code": 0,
+      "end_key": "ended_utc"
+    }
+  ],
+  "progress_path": "/tmp/geo-resume1758-root-20261026/PROGRESS-175947-final.md",
+  "progress_sha256": "65bc4fe930487a2ce96d913e5382ac1f209bb77bfa0d96139bc1ced4dc861c06",
+  "root_instruction": "另存凍結config；補reader真終態pin與退出碼、其actual peer根及本package peer根、所有本輪獨有原件；不要改寫此template當已執行證據。"
+}

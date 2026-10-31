@@ -66,19 +66,49 @@ RESTORED = [
     ]],
 ]
 
+# #314: baseline/restoration must run these exact judges before a verdict.
+RESTORED += [
+    "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_fact_bytes_order_count_revision_and_provider_tampering_are_rejected",
+    "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_failed_preview_clears_evidence_and_keeps_definition_and_revision",
+    "tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route",
+    "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources",
+    *["tests.test_geo314_stagger_commit.StaggerCommit." + name for name in [
+        "test_C1_new_direct_and_repeat_panel_dual_axes_reject_M1",
+        "test_C3_archive_new_and_existing_second_axes_reject_M1",
+        "test_C4_batch_new_and_added_second_axes_reject_M1",
+        "test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically",
+        "test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation",
+        "test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order",
+        "test_Q3_same_final_reference_cannot_exempt_value_changing_rebind",
+    ]],
+]
+
+# #318: exact typed-fact witnesses are baseline/restored judges. They do not
+# claim a CLI construction path; that separate acceptance remains explicit.
+RESTORED += [
+    'tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles',
+    'tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces',
+    'tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure',
+    'tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision',
+]
+
+RESTORED += ['tests.test_geo318_reading_a_native.ReadingANative.test_actual_host_collector_partial_and_i11_wiring_on_explicit_world']
+
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
 def oracle_hash(m, root):
-    """Conservative judge closure: all flat Python tests and root scene fixtures.
+    """Conservative bridge judge closure: tests/*.py, tests/*.c,
+    tests/fixtures/**/*.scene and root *.scene files, with LF-normalized bytes.
 
-    This intentionally invalidates these bridge records when any shared Python
-    harness changes. The result ledger itself is excluded to avoid self-hashing.
+    This intentionally invalidates bridge records when any included judge or
+    fixture changes. The result ledger is excluded to avoid self-hashing.
     """
     root = Path(root)
-    files = sorted([*root.glob("tests/*.py"), *root.glob("*.scene")])
+    files = sorted([*root.glob("tests/*.py"), *root.glob("tests/*.c"),
+                    *root.glob("tests/fixtures/**/*.scene"), *root.glob("*.scene")])
     rows = [(p.relative_to(root).as_posix(), sha(p.read_bytes().replace(b"\r\n", b"\n"))) for p in files]
     return sha(json.dumps([m["tests"], RESTORED, rows], ensure_ascii=False, separators=(",", ":")).encode())
 
@@ -397,7 +427,9 @@ def execution_problems(mt, m, rec, verdict, src):
         if len({t.get("stdout_sha256") for t in trials}) != len(trials):
             raise ValueError("bridge mutant runs repeat one recorded output")
         actual, _, killers, crashed_on = judge_trials(mt, trials, m["tests"])
-        if actual != verdict or verdict not in ("killed", "crashed", "survived"):
+        equivalent_survived = (verdict == "equivalent" and actual == "survived"
+                              and mt.definition_kind(m, src)[0] == "equivalent")
+        if (actual != verdict and not equivalent_survived) or verdict not in ("killed", "crashed", "survived", "equivalent"):
             raise ValueError("bridge verdict contradicts actual unittest results")
         if verdict == "killed" and rec.get("killed_by") != killers[:mt.KILLED_BY_MAX]:
             raise ValueError("bridge killed_by contradicts raw assertion results")
@@ -460,7 +492,7 @@ def run_pass(mt, mutants, root, results_path, today=None):
     for m in mutants:
         judge = oracle_hash(m, root); folder = cache / m["id"]; folder.mkdir(parents=True, exist_ok=True)
         kind, why = mt.definition_kind(m, src)
-        if kind != "run":
+        if kind not in ("run", "equivalent"):
             records[m["id"]] = mt.make_record(m, src, "invalid", why or "bridge mutants must be executable", today, judge)
             mt.save_records(results_path, records); continue
         path = work / m["file"]; fixed = path.read_bytes(); old, new = m["old"].encode(), m["new"].encode()
@@ -500,10 +532,14 @@ def run_pass(mt, mutants, root, results_path, today=None):
                 raise RuntimeError("restored bridge/judge did not match baseline")
         except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
             verdict, reason = "blocked", str(exc)
+        if kind == "equivalent" and verdict == "survived":
+            verdict, reason = "equivalent", why
+        elif kind == "equivalent" and verdict != "blocked":
+            verdict, reason = "invalid", "current execution contradicts equivalence proof: " + reason
         killers = judged_killers[:mt.KILLED_BY_MAX] if verdict == "killed" else None
         crashed_on = judged_crashed_on if verdict == "crashed" else None
         rec = mt.make_record(m, src, verdict, reason, today, judge, killed_by=killers, crashed_on=crashed_on, execution=evidence)
-        if verdict in ("killed", "crashed", "survived") and execution_problems(mt, m, rec, verdict, src):
+        if verdict in ("killed", "crashed", "survived", "equivalent") and execution_problems(mt, m, rec, verdict, src):
             rec = mt.make_record(m, src, "blocked", ";".join(execution_problems(mt, m, rec, verdict, src)), today, judge, execution=evidence)
         records[m["id"]] = rec; mt.save_records(results_path, records)
         print(m["id"], rec["verdict"].upper(), m["desc"], flush=True)

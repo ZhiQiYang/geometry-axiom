@@ -1,0 +1,32 @@
+HTTP/2.0 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning
+Cache-Control: private, max-age=60, s-maxage=60
+Content-Security-Policy: default-src 'none'
+Content-Type: application/json; charset=utf-8
+Date: Mon, 26 Oct 2026 10:16:14 GMT
+Etag: W/"5e5b8730e3849e13ef7ce48108fd42f3def6c16b875b59cd7846f70058dc76d3"
+Github-Authentication-Token-Expiration: 2026-10-26 17:12:18 UTC
+Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+Server: envoy
+Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+Vary: Accept, Authorization, Cookie, X-GitHub-OTP,Accept-Encoding, Accept, X-Requested-With
+X-Accepted-Github-Permissions: contents=read
+X-Accepted-Oauth-Scopes: 
+X-Content-Type-Options: nosniff
+X-Envoy-Upstream-Service-Time: 309
+X-Frame-Options: deny
+X-Github-Api-Version-Selected: 2022-11-28
+X-Github-Edge-Region: iad
+X-Github-Media-Type: github.v3; format=json
+X-Github-Request-Id: B065:2D53CD:45CEFF1:E3C94DE:6ADF286E
+X-Oauth-Client-Id: Iv23liVemv8A9if9v0F2
+X-Oauth-Scopes: 
+X-Ratelimit-Limit: 15000
+X-Ratelimit-Remaining: 14307
+X-Ratelimit-Reset: 1793011081
+X-Ratelimit-Resource: core
+X-Ratelimit-Used: 693
+X-Xss-Protection: 0
+
+{"name":"handoff/codex-takeover-20261021","commit":{"sha":"6e0d142fe1afa8f325d927ac3c5afb1ac3e2902c","node_id":"C_kwDOUfdcjNoAKDZlMGQxNDJmZTFhZmE4ZjMyNWQ5MjdhYzNjNWFmYjFhYzNlMjkwMmM","commit":{"author":{"name":"Yang","email":"b10102230@gmail.com","date":"2026-10-26T09:00:26Z"},"committer":{"name":"Yang","email":"b10102230@gmail.com","date":"2026-10-26T09:00:26Z"},"message":"handoff: sync PR/issue comments and PR requests for cloud Codex (10-26 17:00)\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>","tree":{"sha":"7aabb0863787337b08d1d6cd02183777641411e0","url":"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/trees/7aabb0863787337b08d1d6cd02183777641411e0"},"url":"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/6e0d142fe1afa8f325d927ac3c5afb1ac3e2902c","comment_count":0,"verification":{"verified":false,"reason":"unsigned","signature":null,"payload":null,"verified_at":null}},"url":"https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/6e0d142fe1afa8f325d927ac3c5afb1ac3e2902c","html_url":"https://github.com/ZhiQiYang/geometry-axiom/commit/6e0d142fe1afa8f325d927ac3c5afb1ac3e2902c","comments_url":"https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/6e0d142fe1afa8f325d927ac3c5afb1ac3e2902c/comments","author":{"login":"ZhiQiYang","id":59477728,"node_id":"MDQ6VXNlcjU5NDc3NzI4","avatar_url":"https://avatars.githubusercontent.com/u/59477728?v=4","gravatar_id":"","url":"https://api.github.com/users/ZhiQiYang","html_url":"https://github.com/ZhiQiYang","followers_url":"https://api.github.com/users/ZhiQiYang/followers","following_url":"https://api.github.com/users/ZhiQiYang/following{/other_user}","gists_url":"https://api.github.com/users/ZhiQiYang/gists{/gist_id}","starred_url":"https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/ZhiQiYang/subscriptions","organizations_url":"https://api.github.com/users/ZhiQiYang/orgs","repos_url":"https://api.github.com/users/ZhiQiYang/repos","events_url":"https://api.github.com/users/ZhiQiYang/events{/privacy}","received_events_url":"https://api.github.com/users/ZhiQiYang/received_events","type":"User","user_view_type":"public","site_admin":false},"committer":{"login":"ZhiQiYang","id":59477728,"node_id":"MDQ6VXNlcjU5NDc3NzI4","avatar_url":"https://avatars.githubusercontent.com/u/59477728?v=4","gravatar_id":"","url":"https://api.github.com/users/ZhiQiYang","html_url":"https://github.com/ZhiQiYang","followers_url":"https://api.github.com/users/ZhiQiYang/followers","following_url":"https://api.github.com/users/ZhiQiYang/following{/other_user}","gists_url":"https://api.github.com/users/ZhiQiYang/gists{/gist_id}","starred_url":"https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/ZhiQiYang/subscriptions","organizations_url":"https://api.github.com/users/ZhiQiYang/orgs","repos_url":"https://api.github.com/users/ZhiQiYang/repos","events_url":"https://api.github.com/users/ZhiQiYang/events{/privacy}","received_events_url":"https://api.github.com/users/ZhiQiYang/received_events","type":"User","user_view_type":"public","site_admin":false},"parents":[{"sha":"cecddeabd175f803e7e5485645d2129c3cca563f","url":"https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits/cecddeabd175f803e7e5485645d2129c3cca563f","html_url":"https://github.com/ZhiQiYang/geometry-axiom/commit/cecddeabd175f803e7e5485645d2129c3cca563f"}]},"_links":{"self":"https://api.github.com/repos/ZhiQiYang/geometry-axiom/branches/handoff/codex-takeover-20261021","html":"https://github.com/ZhiQiYang/geometry-axiom/tree/handoff/codex-takeover-20261021"},"protected":false,"protection":{"enabled":false,"required_status_checks":{"enforcement_level":"off","contexts":[],"checks":[]}},"protection_url":"https://api.github.com/repos/ZhiQiYang/geometry-axiom/branches/handoff/codex-takeover-20261021/protection"}

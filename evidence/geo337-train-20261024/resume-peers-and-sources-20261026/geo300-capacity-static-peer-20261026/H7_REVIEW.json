@@ -1,0 +1,254 @@
+{
+  "schema": "geo300-h7-timeout-originals-readonly-peer/1",
+  "reviewed_utc": "2026-10-26T10:39:59.632976+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "state": "H7_ORIGINAL_BOUNDARY_ACCEPTED_WITH_REPORT_CLARIFICATIONS",
+  "formal_runtime": "NOT_RERUN",
+  "review_scope": "只核H7 79/83原始capture、固定RAW_INDEX、原host/observer/unittest等支援原件與當前report的版本界線。來源四項反向bytes另由parent審。不執Git/API/測試/generator/fixture生成，不讀tar重跑既有封包審核。",
+  "full_source_shas": {
+    "historical_H7": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+    "current_capacity_head": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+    "candidate_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "handoff_snapshot_from_parent_capture": "6e0d142fe1afa8f325d927ac3c5afb1ac3e2902c"
+  },
+  "reviewed_document_pins": {
+    "/tmp/geo300-capacity-static-20261026/REPORT.md": {
+      "bytes": 8856,
+      "sha256": "c3c9bc8d57a6558f618a1001045fd9d4a83480af321f512139a3d78841059a74"
+    },
+    "/tmp/geo300-capacity-static-20261026/ANALYSIS.json": {
+      "bytes": 5888,
+      "sha256": "78cebe39dbe33146a6b8e99893b02bb5c45ab03d98239b9581a3f4b2443c80de"
+    },
+    "/tmp/geo300-capacity-static-20261026/original-timeout-boundary/BOUNDARY.json": {
+      "bytes": 1610,
+      "sha256": "5a34de97b176fd55b9d1edbb3449a2d630eeb7b29a5f9296e0316844a5d71259"
+    },
+    "/tmp/geo300-capacity-static-20261026/pr348-historical-index/RESULT.json": {
+      "bytes": 676,
+      "sha256": "68644e789785eab0ae5bd7eb8ad527ea93cbd467764437ac54fad791904e96f9"
+    },
+    "/tmp/geo300-capacity-static-20261026/pr348-historical-summary/stdout.bin": {
+      "bytes": 3208,
+      "sha256": "4cd2033be0f7f149f1d3b604d84d000f68fd41bf9dc3f8b9cf9d9ac62219c15d"
+    },
+    "/tmp/geo300-capacity-static-20261026/pr348-test_geo261_timber_capacity_host.py/stdout.bin": {
+      "bytes": 24733,
+      "sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740"
+    },
+    "/tmp/geo300-capacity-static-20261026/pr348-test_geo261_timber_capacity_host.py/RESULT.json": {
+      "bytes": 587,
+      "sha256": "4dbd52097604f395f690631b2b662cb16a8f2841fe5846338c5262a3c046d738"
+    }
+  },
+  "fixed_index": {
+    "local_path": "/tmp/geo300-capacity-static-20261026/pr348-historical-index/stdout.bin",
+    "bytes": 2028659,
+    "sha256": "c120a959ee708c0061f4e36bb9c50d530aac412804f482911cdc7c66d5b2c81f",
+    "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+    "indexed_members": 6369,
+    "retrieval_receipt_exit_code": 0,
+    "remote_snapshot_path": "9a8584f57be7935604c3bad4c2481945a6ec3d9f:evidence/geo300-capacity512-20261024/formal-F73b21e64/historical-F0f/RAW_INDEX.json",
+    "limit": "本審查只核本地已捕捉的固定API結果，不聲稱本回合再次查遠端或遍歷tar6369項。"
+  },
+  "exact_four_originals": [
+    {
+      "member": "formal/H7/observed/command-000079/input.bin",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/command-000079/input.bin",
+      "bytes": 140,
+      "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff",
+      "analysis_copy_byte_equal": true,
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "formal/H7/observed/command-000079/receipt.json",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/command-000079/receipt.json",
+      "bytes": 2031,
+      "sha256": "cee88cc07759310ef6c3966dc2d4dffc347c838381edfa8ef402fe486f5b18f3",
+      "analysis_copy_byte_equal": true,
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "formal/H7/observed/command-000083/input.bin",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/command-000083/input.bin",
+      "bytes": 140,
+      "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff",
+      "analysis_copy_byte_equal": true,
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "formal/H7/observed/command-000083/receipt.json",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/command-000083/receipt.json",
+      "bytes": 2031,
+      "sha256": "03082d156084c43a03aecc6dfb4f9daa0239addb0b75f39b3781b81d52ed6ff6",
+      "analysis_copy_byte_equal": true,
+      "verified_local_size_hash": true
+    }
+  ],
+  "support_originals": [
+    {
+      "member": "formal/H7/RESULT.json",
+      "source": "/workspace/geo348-F0f695866-formal/H7/RESULT.json",
+      "bytes": 52616,
+      "sha256": "4de0f292636817d447789c8d5b2def3f69d7a6eb21c95c9af1539b556fff385f",
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "formal/H7/host-source.py",
+      "source": "/workspace/geo348-F0f695866-formal/H7/host-source.py",
+      "bytes": 23454,
+      "sha256": "be15d7430e580a8bf82ece815105d48d288825a833eae863a3cc880301e42405",
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "formal/H7/runner.json",
+      "source": "/workspace/geo348-F0f695866-formal/H7/runner.json",
+      "bytes": 2142,
+      "sha256": "2ce30a6ba19ac8646ba626a91d1e1a38770dc1833d7c4ef47f05df70bc50ce7d",
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "formal/H7/unittest.log",
+      "source": "/workspace/geo348-F0f695866-formal/H7/unittest.log",
+      "bytes": 8149,
+      "sha256": "327f344f0f010deae7ac9f6fe59e4ef6898f7277464485deaea17a3bbc2d4a59",
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "formal/H7/observed/OBSERVATION.json",
+      "source": "/workspace/geo348-F0f695866-formal/H7/observed/OBSERVATION.json",
+      "bytes": 222,
+      "sha256": "efbda960779af6bb103a7ae32859e3fd9a5b6edc07e26d1cf333314c7825dc23",
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "collector-tools-and-selftests/observe_bridge_bytes.py",
+      "source": "/workspace/geo300-capacity512-h-pipe-capture-20261024/observe_bridge_bytes.py",
+      "bytes": 18048,
+      "sha256": "6a85e3ef7a75ccf93c46be1f0d3466f5fa5e3667d2a64cd501d967ea51e7e77a",
+      "verified_local_size_hash": true
+    },
+    {
+      "member": "point-in-time-input-supplement/pass-001/001-timber-capacity-512-placed.scene",
+      "source": "/workspace/geo348-F0f695866-formal-input-supplement-20261024/pass-001/001-timber-capacity-512-placed.scene",
+      "bytes": 45154,
+      "sha256": "760a7169ea3577341b4b0ec1b56ea39c21c85c777434325ec906debe0a816f10",
+      "verified_local_size_hash": true
+    }
+  ],
+  "verified_common_batch": {
+    "input_equal": true,
+    "bytes": 140,
+    "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff",
+    "payload_utf8": "loadfile /workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/timber-capacity-512-placed.scene\ndump\nobjects\nreferences\n",
+    "command_count": 4,
+    "bridge_executable_identity": {
+      "retained": true,
+      "path": "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge",
+      "bytes": 1316392,
+      "sha256": "050123dadc7e7082ff211fd1469594ddc49188b565a3d707309f682583681841",
+      "event": "before-original-subprocess.run",
+      "payload_retained": false
+    },
+    "same_binary_metadata_in_both_receipts": true,
+    "executable_payload_not_retained": true
+  },
+  "commands": [
+    {
+      "number": 79,
+      "timeout_seconds": 600,
+      "elapsed_seconds": 600.1147615909576,
+      "exception": {
+        "type": "TimeoutExpired",
+        "repr": "TimeoutExpired(['/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge'], 600)"
+      },
+      "completed_process_returned": false,
+      "returncode": null,
+      "stdout": {
+        "captured": false
+      },
+      "stderr": {
+        "captured": false
+      },
+      "local_captured_files": [
+        "input.bin",
+        "receipt.json"
+      ]
+    },
+    {
+      "number": 83,
+      "timeout_seconds": 600,
+      "elapsed_seconds": 600.1130447387695,
+      "exception": {
+        "type": "TimeoutExpired",
+        "repr": "TimeoutExpired(['/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge'], 600)"
+      },
+      "completed_process_returned": false,
+      "returncode": null,
+      "stdout": {
+        "captured": false
+      },
+      "stderr": {
+        "captured": false
+      },
+      "local_captured_files": [
+        "input.bin",
+        "receipt.json"
+      ]
+    }
+  ],
+  "verified_traceback_boundary": [
+    "原H7 unittest.log的sequential測試於host-source.py:242呼叫placed-512-load四命令preload時TimeoutExpired；未進入後面的commands建構/傳送。",
+    "另一個count=512方法在第一個placed batch呼叫（舊source第225行）逾時；不能把這次記成canonical replay成功或undo/redo已執行。",
+    "原H7 runner=7項、2通過、5失敗，其中3 assertion failures、2 TimeoutExpired；H7實際outer_exit=1。observer_complete=true只是收件器狀態，並非產品通過。"
+  ],
+  "partial_output_finding": {
+    "observer_sha256": "6a85e3ef7a75ccf93c46be1f0d3466f5fa5e3667d2a64cd501d967ea51e7e77a",
+    "code_lines": "observe_bridge_bytes.py:307-313,324-332",
+    "actual_logic": "result存在則取result，否則取failure；對stdout/stderr呼叫retain(getattr(source,name,None))。retain(None)回captured:false，bytes/str才實寫bin與size/hash。",
+    "recorded_effect": "兩份receipt均captured:false、原目錄僅input.bin/receipt.json，固定index亦無這兩個H7 stdout/stderr項；沒有可恢復的逐命令partial output原件。OBSERVATION errors=[]。",
+    "not_proven": "不能把None等同零bytes輸出，不能判斷子程序未輸出、尚未完成哪一命令、loadfile耗時600秒，或observer當次無能力捕捉任何TimeoutExpired。"
+  },
+  "sequential_version_boundary": {
+    "historical_host_sha256": "be15d7430e580a8bf82ece815105d48d288825a833eae863a3cc880301e42405",
+    "current_host_sha256": "abe3ab96bfbda4fd4a535558c0b95294c0bcdccabec7ba129ea2b13cdac8b740",
+    "historical_suffix_commands": 19,
+    "current_suffix_commands": 21,
+    "point_in_time_scene_bytes": 45154,
+    "point_in_time_scene_sha256": "760a7169ea3577341b4b0ec1b56ea39c21c85c777434325ec906debe0a816f10",
+    "point_in_time_scene_DSL_statements": 1026,
+    "historical_hypothetical_total": 1046,
+    "current_hypothetical_total": 1048,
+    "new_commands_in_current": [
+      "reject-incomplete",
+      "after-incomplete"
+    ],
+    "execution_claim": false,
+    "limit": "existing scene supplement是H7活動中的point-in-time copy，不是79/83各自launch前逐bytefixture捕捉。只用其字串計數解釋AST；未重跑generator且未證geometry接受。"
+  },
+  "report_clarifications": [
+    {
+      "id": "C1-existing-exception-retention",
+      "priority": "clarify-before-publication",
+      "location": "REPORT.md 後續診斷段",
+      "detail": "原observer已具TimeoutExpired failure.stdout/stderr的retain分支。建議明寫此次屬性為None/無捕捉原件；若加強診斷則補顯式None標記或逐列完成觀測，不把已存在的捕捉分支當待修根因。核心不歸因loadfile的判定正確。"
+    },
+    {
+      "id": "C2-current-versus-historical-batch",
+      "priority": "clarify-before-publication",
+      "location": "REPORT.md 「原 AST 建構…1048」",
+      "detail": "1048是當前9a8584f…的AST 1+1026+21；歷史F0f的suffix19，即同DSL下1046。應明寫1048的來源SHA；兩個已失敗payload都是4命令，兩種長批次都不可稱已執行。ANALYSIS頂層capacity_head已有9a來源，核心數字不錯。"
+    }
+  ],
+  "cannot_infer": [
+    "loadfile/dump/objects/references哪段獨占600秒。",
+    "捕捉不到等於空stdout或空stderr。",
+    "TimeoutExpired子的returncode等於1/124/-9；原件是null。",
+    "兩次batch相同即可證fixtures launch前相同或整體系統因果相同。",
+    "F0f的H7原件可以移標成當前9a或F驗收。",
+    "1048 sequential/history已跑過或已到undo/redo。",
+    "本次4件hash一致等於整tar6369件重新驗完。"
+  ],
+  "conclusion": "H7 79/83原件與固定索引核對通過；兩個歷史產品逾時仍紅。本peer exit0只表示唯讀邊界核對成功，不是H7或#348驗收通過。發布前建議採C1/C2明確措辭。"
+}

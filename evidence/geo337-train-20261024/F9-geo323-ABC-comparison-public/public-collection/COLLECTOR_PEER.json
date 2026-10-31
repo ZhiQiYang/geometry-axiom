@@ -1,0 +1,184 @@
+{
+  "schema": "geo323-F9-PUBLIC-part4-collector-static-peer/1",
+  "created_utc": "2026-10-25T14:21:43.707488+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "collector_sha256": "529d363cc5d07dc0cca155c98dc028d0bff1dcdd27d29d7b192bee85d9d8cfdb",
+  "private_inventory_sha256": "1ab22f16962fb861204932c4c46ff379c9c1e6144d9b7006999ded216a0f416f",
+  "private_parts_sha256": "14f6ddb9cb1358f93125d86f3dc8b716400fa16e2a62e9d6b9007d5e35745143",
+  "public_inventory_delta_sha256": "576e266ab77394da4b9aaeb877bc4b3c64a47546834be02f4cc170a488dbd4fd",
+  "public_exclusions_sha256": "8c811e191c924a6e1960597b5008bfa69d55ecdae878224ad082ed51fa696d24",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "scope_peer_sha256": "7a2d95d1898d203a35d81df0497987f3c244e66930033f1325e11edb2e62687b",
+  "checks": [
+    {
+      "check": "exact collector pin",
+      "passed": true
+    },
+    {
+      "check": "unbound false leases",
+      "passed": true
+    },
+    {
+      "check": "root input pins",
+      "passed": true
+    },
+    {
+      "check": "accepted originalscope unchanged",
+      "passed": true
+    },
+    {
+      "check": "fixed public metadata manifest",
+      "passed": true
+    },
+    {
+      "check": "metadata PUBLIC_EXCLUSIONS.json",
+      "passed": true
+    },
+    {
+      "check": "metadata PUBLIC_INVENTORY_DELTA.json",
+      "passed": true
+    },
+    {
+      "check": "metadata PROFILE_SCAN.json",
+      "passed": true
+    },
+    {
+      "check": "metadata SAFE_AUTHORITY_LOCATOR.json",
+      "passed": true
+    },
+    {
+      "check": "metadata scan_profile_scope.py",
+      "passed": true
+    },
+    {
+      "check": "metadata test_encoded_profile.py",
+      "passed": true
+    },
+    {
+      "check": "metadata prove_decoder_guard.py",
+      "passed": true
+    },
+    {
+      "check": "metadata scan.stdout",
+      "passed": true
+    },
+    {
+      "check": "metadata scan.stderr",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/before.json",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/before.stderr",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/before.stdout",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/restored.json",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/restored.stderr",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/restored.stdout",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/withdrawn.json",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/withdrawn.stderr",
+      "passed": true
+    },
+    {
+      "check": "metadata encoding-proof/withdrawn.stdout",
+      "passed": true
+    },
+    {
+      "check": "only reviewed part4 exclusion",
+      "passed": true
+    },
+    {
+      "check": "same publicscope totals",
+      "passed": true
+    }
+  ],
+  "scope": "最小靜態collector差分審；未讀SHM、未執collector/tar/subject、未重驗已審正式scope。",
+  "findings": [
+    "入口要求nonoptimized＋root true lease＋完整tool/input pins＋既有scope peer原hash及新collector peer頂層5pins/exit0；fresh固定OWN SHM直接新child且parent拒symlink/resolve漂移。",
+    "原private inventory/parts/RESULT完整hash固定；PUBLIC selected恰為原4667減唯一idx4627/2795B。不變formal command paths明確全保，原parts1/2/3/5不得含排除。",
+    "只從原private part4串流31members，唯一profile先核完整size/hash再跳過；regular逐stream bytes/hash，literal links原type/target/size0，不dereference或extract落盤。",
+    "新publicpart4完整gzip CRC讀到尾、tar member順序/type/size/完整bytes/hash roundtrip；src TarInfo逐個原樣寫入，沒有改mtime/mode/header資料。",
+    "私有5archive原hash前後全核，原privateRESULT亦前後同；原4safe archives不重封不複製，PUBLIC邏輯parts1/2/3/5只引用原rawbytes/hash，part4引用新archive。",
+    "full tar/gzip worstcase＋64MiBreserve＋2MiBmetadata初始與actualout freshfree再檢，執後仍64MiB。Metadata精確manifest固定hash並逐檔前後核，無完整profilebody。",
+    "新結果維持volatile/publishedfalse/remotehashfalse/deliveredfalse，all_auxiliary_API_raw_public=false、public_full_authority_input_replay_self_contained=false；R8outer1不改。"
+  ],
+  "part4_budget": {
+    "retained_members": 31,
+    "regular_bytes": 6429790,
+    "tar_upper_bytes": 6568030,
+    "gzip_upper_bytes": 6571060,
+    "required_fresh_bytes": 75777076,
+    "reserve_bytes": 67108864,
+    "metadata_bytes": 2097152
+  },
+  "runtime_status": {
+    "collector_executed_by_reviewer": false,
+    "SHM_read_or_written_by_reviewer": false,
+    "new_public_collection_exit": null,
+    "subject_rerun": false,
+    "published": false,
+    "remote_hash_verified": false
+  },
+  "limits": [
+    "此peer只認529d固定稿設計與metadata，不將私有collector0或scope0當PUBLIC實收／formal全綠。",
+    "執行必root require_escalated經auto_review，原完整privatepart4不得放入PUBLICpublication manifest；對外依新result五logical parts各source_path/public_name/hash選檔。",
+    "PUBLIC仍不含一個原authority完整私有input，不能宣稱全部APIraw公開或單靠PUBLIC原guardfull-input重放自足。",
+    "未重跑comparison/R8/性能/產品，不變既有175/350與700CLI原收據身份。"
+  ],
+  "pins": [
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/collect_public_part4.py",
+      "bytes": 14369,
+      "sha256": "529d363cc5d07dc0cca155c98dc028d0bff1dcdd27d29d7b192bee85d9d8cfdb"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/PUBLIC_COLLECTOR_PINS.json",
+      "bytes": 787,
+      "sha256": "3284a1a1339151cd1127c38b7b5831febdec18a20722799901142d976fcf0943"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/PUBLIC_METADATA_MANIFEST.json",
+      "bytes": 3304,
+      "sha256": "50e31f8dabf95a7cc2d9819ada8dcec8f3a25de8ca5f780a4175e467d749b70d"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/PUBLIC_COLLECTION_REQUEST.unbound.json",
+      "bytes": 1340,
+      "sha256": "b33c6807977c79fae0d5a7635ec6c0afdb80071d0df79a2d61ff3219e8c64cd7"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/README_PUBLIC_COLLECTOR.md",
+      "bytes": 2401,
+      "sha256": "df55537e549dfe9dc40e87f108d55e9c987f02e122dec38e4e27a36c47fbf521"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-scope-static-peer-d8xfnkwv/REVIEW.json",
+      "bytes": 12173,
+      "sha256": "7a2d95d1898d203a35d81df0497987f3c244e66930033f1325e11edb2e62687b"
+    }
+  ]
+}

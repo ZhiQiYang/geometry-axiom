@@ -1,0 +1,31 @@
+{
+  "valid": true,
+  "errors": [],
+  "events": [
+    {
+      "seq": 1,
+      "kind": "stdin_error",
+      "command": 0,
+      "monotonic_ns": 259335366645651,
+      "rc": 0,
+      "length": 0,
+      "feof": 0,
+      "ferror": 1
+    }
+  ],
+  "flushed_commands": [],
+  "last_boundary": {
+    "kind": "stdin_error",
+    "command": 0,
+    "monotonic_ns": 259335366645651
+  },
+  "root_cause": null,
+  "product_gate_verdict": null,
+  "status": {
+    "attached": 1,
+    "attempts": 1,
+    "successes": 1,
+    "faults": 0
+  },
+  "scope": "Handler/flush boundary observations only; JSON success and product acceptance remain separate."
+}

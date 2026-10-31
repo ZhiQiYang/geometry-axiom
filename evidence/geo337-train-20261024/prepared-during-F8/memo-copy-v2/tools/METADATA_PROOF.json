@@ -1,0 +1,57 @@
+{
+  "formal_executed": false,
+  "actual_exits": [
+    0,
+    1,
+    0
+  ],
+  "rows": [
+    {
+      "phase": "fixed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F8-memo-counterfactual-tools-20261025/check_metadata.py",
+        "--mode",
+        "fixed"
+      ],
+      "cwd": "/tmp/geo337-F8-memo-counterfactual-tools-20261025",
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "46654aeeaeb7da615963cce477bfc842fbc81e886b2610a48bd258732b15f565",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "withdraw-local-init-preservation",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F8-memo-counterfactual-tools-20261025/check_metadata.py",
+        "--mode",
+        "whole-file-H"
+      ],
+      "cwd": "/tmp/geo337-F8-memo-counterfactual-tools-20261025",
+      "actual_exit": 1,
+      "expected_exit": 1,
+      "stdout_sha256": "ad7f42f13100a02df39dc37dbfba627fa866b66e205f326d304d01788b8f44fd",
+      "stderr_sha256": "448fe0e319bc92c724b291a22ec00fbc9f50e03e5496aa4c2dd704b197646288"
+    },
+    {
+      "phase": "restored",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-F8-memo-counterfactual-tools-20261025/check_metadata.py",
+        "--mode",
+        "fixed"
+      ],
+      "cwd": "/tmp/geo337-F8-memo-counterfactual-tools-20261025",
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "46654aeeaeb7da615963cce477bfc842fbc81e886b2610a48bd258732b15f565",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "exit": 0,
+  "scope": "Pure source bytes only. Original whole-file H control loses F8 local-init and raises named AssertionError; fixed mechanical counterfactual preserves it and restores both files byte-identical F8. No C/compiler/profiles/ABC measurement."
+}

@@ -1,0 +1,23 @@
+{
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "originalCLI": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/train337-L-reading-a-source/geometry-core/framing-template/oracle/selftest.py",
+    "--mutants-only"
+  ],
+  "originalCLIExit": 0,
+  "originalStagePassed": true,
+  "stageBeforeAfterClean": true,
+  "sourceBindingCount": 22,
+  "outerCompletedPhaseCommandExit": 0,
+  "outerSession19147": "still active; quick not included; no final launcher/dual-stage verdict claimed",
+  "excluded": [
+    "live oracle-quick",
+    "outer RESULT.json",
+    "outer aggregate commands.json",
+    "source checkout",
+    ".git"
+  ],
+  "createdUTC": "2026-10-23T22:46:17.917428+00:00"
+}

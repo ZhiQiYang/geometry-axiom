@@ -1,0 +1,32 @@
+{
+  "exit_code": 0,
+  "date_utc": "2026-10-26T10:40:37.061996+00:00",
+  "previous_report_sha256": "023edfe7880a4d4efc86d5c349c11ed4801cce3f9a87e9ff22601efaf7cd40d1",
+  "report_sha256": "c3c9bc8d57a6558f618a1001045fd9d4a83480af321f512139a3d78841059a74",
+  "unchanged_analysis_sha256": "78cebe39dbe33146a6b8e99893b02bb5c45ab03d98239b9581a3f4b2443c80de",
+  "observer_original": {
+    "member": "collector-tools-and-selftests/observe_bridge_bytes.py",
+    "source": "/workspace/geo300-capacity512-h-pipe-capture-20261024/observe_bridge_bytes.py",
+    "bytes": 18048,
+    "sha256": "6a85e3ef7a75ccf93c46be1f0d3466f5fa5e3667d2a64cd501d967ea51e7e77a"
+  },
+  "observer_existing_capture_lines": [
+    307,
+    308,
+    330,
+    331
+  ],
+  "historical_host_original": {
+    "member": "formal/H7/host-source.py",
+    "source": "/workspace/geo348-F0f695866-formal/H7/host-source.py",
+    "bytes": 23454,
+    "sha256": "be15d7430e580a8bf82ece815105d48d288825a833eae863a3cc880301e42405"
+  },
+  "historical_suffix_count": 19,
+  "historical_batch_count_for_1026_dsl": 1046,
+  "current_pr348_suffix_count": 21,
+  "current_pr348_batch_count": 1048,
+  "actually_failed_batch_commands": 4,
+  "product_or_observer_modified": false,
+  "performance_rerun": false
+}

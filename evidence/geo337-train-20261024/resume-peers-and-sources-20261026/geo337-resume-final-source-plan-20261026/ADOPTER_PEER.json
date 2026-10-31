@@ -1,0 +1,67 @@
+{
+  "schema": "candidate-S10-A-three-leaf-adopter-static-peer/1",
+  "exit_code": 0,
+  "tool_sha256": "71b0b4eb9ddde59f6b8e9ab90eb2492f8e403d1469a645d81864585a631fefba",
+  "tool_bytes": 19066,
+  "original_tool_sha256": "9e53c8275ba8861679bca6cebe16d7a9f8b3436ee5feb13d30d501139e04797b",
+  "state": "STATIC_PREPARATION_ACCEPTED_RUNTIME_UNRUN",
+  "blocking_findings": [],
+  "scope": {
+    "read_only_text_and_ast": true,
+    "module_imported": false,
+    "tool_executed": false,
+    "git_executed": false,
+    "shm_accessed": false,
+    "network_access": false,
+    "fixtures_created": false,
+    "source_or_product_modified": false,
+    "leases_granted": false
+  },
+  "ast_identity": {
+    "parsed": true,
+    "unchanged_functions": [
+      "need",
+      "H",
+      "blob_id",
+      "oid",
+      "safe",
+      "pinned",
+      "paths",
+      "validate_targets",
+      "at",
+      "build_tree"
+    ],
+    "changed_functions": [
+      "validate_originals",
+      "main"
+    ],
+    "git_nul_and_tab_literals_are_actual_control_bytes": true
+  },
+  "accepted_checks": [
+    "Default entry is plan-only; mutation requires exact root-bound request schema, source identities, candidate branch and all explicit true leases.",
+    "Ledger terminal and full INDEX remain bound to S10, 123 rows, 120 exact execution heads and three retired rows; no record rewriting.",
+    "Architecture RESULT, sourceBaseHead/headObservedBefore/headObservedAfter, four output hashes and architecture peer bind to A separately from ledger peers.",
+    "Five artifact inputs are pinned regular files outside publisher/output; original bytes and state are checked.",
+    "Historical provider branch remains codex/train-337-continue-20261024 independently of candidate BRANCH.",
+    "Existing private publisher head/train ref remain fixed E3e4; HEAD bytes/index hash/branch/status are recorded before, repeatedly compared and checked in finally.",
+    "Candidate local and remote refs must equal the explicit parent before commit publication, and candidate branch differs from historical provider branch.",
+    "A must be an ancestor of candidate parent and S10 ancestor of A; S10 to A has only the exact decision leaf whose both old/new mode/OID/bytes/SHA are independently read from fixed Git revisions.",
+    "A to parent is evidence-only; parent to final and A to final outside evidence are exactly the three existing allowed artifact leaves.",
+    "Unchanged manifest and scan must match original A bytes, both before and after tree construction.",
+    "Original fixed-three-leaf build_tree AST is unchanged and requires existing 100644 leaves, existing parent trees and exact reconstructed entries.",
+    "Commit has exactly one expected parent; original leaf Git OIDs and full tree scope are checked before ref update.",
+    "Only candidate ref is changed by update-ref with expected-old-value CAS; ordinary push uses the named candidate ref and never HEAD or force.",
+    "Original WS provider snapshot stays unchanged; one-way alternate and private Gitdir/common-dir/toplevel identity checks remain.",
+    "Remote ref, commit/tree/unique parent, three full original blobs and a final remote ref are all checked before delivered=true.",
+    "Original artifacts are reread after publication, and both historical publisher and WS provider are checked even on failures.",
+    "Original 3x payload plus 2x index plus 64MiB actual-mount resource estimate is unchanged.",
+    "Mutation/execution source fields are explicitly separated; no new final tracked check or product test is represented as complete."
+  ],
+  "external_conditions_still_required": [
+    "Root must enforce current aggregate shared-space planning and exclusive writer/source leases; this static review cannot establish them.",
+    "Root must supply actual accepted A architecture artifacts/peer and complete S10 ledger actual/package peers; these input payloads were not read here.",
+    "Runtime branch-CAS/guard counterproof and true adoption are UNRUN; earlier original-tool proof is not represented as new-tool execution.",
+    "No final SHA, normal push, actual remote bytes, native/browser/oracle or ledger check has been performed by this review."
+  ],
+  "note": "The previously identified shared-BRANCH implementation trap is addressed by HISTORICAL_PROVIDER_BRANCH; no additional blocking defect found in this bounded static diff review."
+}

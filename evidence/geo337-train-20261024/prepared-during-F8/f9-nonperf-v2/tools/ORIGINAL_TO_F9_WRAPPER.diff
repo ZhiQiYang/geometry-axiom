@@ -1,0 +1,73 @@
+--- /tmp/train337-final-nonperf-specials-prep/run_original_specials.py
++++ /tmp/geo337-F9-nonperf-original-tools-20261025/run_original_specials.py
+@@ -1,4 +1,4 @@
+-"""Explicit-L binding for original Q38 / card-reference / GEO323 gates; no new judge."""
++"""Explicit ledger-only F9 binding for original Q38 / card-reference / GEO323 gates; no new judge."""
+ import argparse
+ import datetime
+ import fcntl
+@@ -10,11 +10,12 @@
+ import resource
+ import sys
+ import traceback
++from binding_guards import F8, validate_counts, validate_q38_source, validate_delta
+ 
+ HERE=Path(__file__).resolve().parent
+ CAPTURE=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
+ REAPER=Path('/workspace/geo261-environment/reap_children.py')
+-V4=Path('/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding')
++V5=Path('/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5')
+ BASE='b74f9a2ae7ade1555b9be45283adecc097fb76e3'
+ MAIN='adbaebf9c73ea6801d7b4d5214e4b846b132923b'
+ GATES=('q38','cardref','axiom','required-eight','pf3')
+@@ -33,11 +34,11 @@
+     p.add_argument('--heavy-lock',type=Path,required=True)
+     p.add_argument('--preparation-sha256',required=True)
+     a=p.parse_args();repo=a.repo.resolve();out=a.out.resolve();heavy=a.heavy_lock.resolve()
+-    need(len(a.sha)==40 and all(c in '0123456789abcdef'for c in a.sha),'explicit full final L required')
++    need(len(a.sha)==40 and all(c in '0123456789abcdef'for c in a.sha),'explicit full final F9 required')
+     need(repo.is_dir()and(repo/'.git').is_dir()and not(repo/'.git').is_symlink(),'independent private .git directory required; no browser pool/worktree')
+     need(out.parent.is_dir()and not out.exists(),'fresh output with existing parent required')
+     need(out.is_relative_to(Path('/workspace'))or out.is_relative_to(Path('/tmp')),'private workspace/tmp output only')
+-    for protected in (repo,HERE,V4):need(not out.is_relative_to(protected)and not protected.is_relative_to(out),'output/source/tools must not overlap')
++    for protected in (repo,HERE,V5):need(not out.is_relative_to(protected)and not protected.is_relative_to(out),'output/source/tools must not overlap')
+     need(heavy.is_file()and not heavy.is_relative_to(repo),'existing external root heavy lock required')
+     prep_raw=(HERE/'PREPARATION.json').read_bytes();need(sha(prep_raw)==a.preparation_sha256,'reviewed preparation pin')
+     prep=json.loads(prep_raw)
+@@ -58,8 +59,13 @@
+         values={}
+         for key,argv in [('head',['git','rev-parse','HEAD']),('tree',['git','rev-parse','HEAD^{tree}']),('status',['git','status','--porcelain=v1','--untracked-files=all']),('diff',['git','diff','--exit-code']),('index',['git','ls-files','--stage','-z']),('refs',['git','for-each-ref','--format=%(refname) %(objectname)'])]:
+             row,body,_=run(argv,'source-identity');need(row['actual_process_returncode']==0,'original Git identity command failed');values[key]=body
+-        need(values['head'].decode().strip()==a.sha and not values['status']and not values['diff'],'exact clean final L required; no reset/clean performed')
+-        result={'head':a.sha,'tree':values['tree'].decode().strip(),'status':'','index_sha256':sha(values['index']),'refs_sha256':sha(values['refs'])};save(folder/(label+'-source.json'),result);return result
++        need(values['head'].decode().strip()==a.sha and not values['status']and not values['diff'],'exact clean final F9 required; no reset/clean performed')
++        row,_,_=run(['git','merge-base','--is-ancestor',F8,a.sha],'ledger-only-source-ancestry')
++        ancestor_exit=row['actual_process_returncode']
++        delta_row,delta,_=run(['git','diff','--name-only','-z',F8,a.sha],'ledger-only-source-delta')
++        need(delta_row['actual_process_returncode']==0,'F8/F9 closure Git diff failed')
++        closure=validate_delta(a.sha,ancestor_exit,[p.decode('utf-8') for p in delta.split(b'\0') if p])
++        result={'head':a.sha,'tree':values['tree'].decode().strip(),'status':'','index_sha256':sha(values['index']),'refs_sha256':sha(values['refs']),'ledger_only_closure':closure};save(folder/(label+'-source.json'),result);return result
+     def original(folder,name,argv,internal_reaper=False):
+         item={'name':name,'original_argv':argv,'primary_command_exit':None,'outer_process_exit':None,'uses_original_internal_reaper':internal_reaper}
+         current['commands'].append(item);save(out/'receipt.json',r)
+@@ -90,6 +96,7 @@
+                 for relative,pin in prep['original_judges_sha256'].items():
+                     row,body,_=run(['git','show',a.sha+':'+relative],'original-final-judge-identity');need(row['actual_process_returncode']==0 and sha(body)==pin and(repo/relative).read_bytes()==body,'final original judge/registry bytes changed '+relative)
+                 if gate=='q38':
++                    current['original_q38_case_ids']=validate_q38_source((repo/'tests/section_profile_mutation_check.py').read_bytes())
+                     (folder/'q38').mkdir();env['GEOMETRY_MODEL_BASE']=str(folder/'q38-bin/model-base')
+                     build=[sys.executable,'-B','-c','from pathlib import Path; import sys; from tests import binaries; binaries.OUT_DIR=Path(sys.argv[1]); raise SystemExit(binaries.main(["build","model-base"]))',str(folder/'q38-bin')]
+                     build_exit=original(folder,'model-base-build',build)
+@@ -101,9 +108,9 @@
+                     original(folder,gate,[sys.executable,'-B','-u','geometry-core/card-reference/'+script,'--output',str(folder/'subject')])
+                 else:
+                     counts=json.loads((repo/'tests/run_all.expected.json').read_text())['suites']
+-                    need(all(counts[name]==value for name,value in prep['required_eight_expected'].items()),'original eight exact counts/units must remain676')
+-                    current['original_selected_registered_count']=676 if gate=='required-eight'else None
+-                    argv=[sys.executable,'-B',str(V4/'run.py'),'--repo',str(repo),'--sha',a.sha,'--base',BASE,'--main',MAIN,'--out',str(folder/'subject'),'--heavy-lock',str(heavy),'--stage',gate]
++                    selected_count=validate_counts(counts,prep['required_eight_expected'])
++                    current['original_selected_registered_count']=selected_count if gate=='required-eight'else None
++                    argv=[sys.executable,'-B',str(V5/'run.py'),'--repo',str(repo),'--sha',a.sha,'--base',BASE,'--main',MAIN,'--out',str(folder/'subject'),'--heavy-lock',str(heavy),'--stage',gate]
+                     original(folder,gate,argv,internal_reaper=True)
+                     receipt=json.loads((folder/'subject/receipt.json').read_text());current['original_stage_receipt_sha256']=sha((folder/'subject/receipt.json').read_bytes());current['original_stage_execution_exit']=receipt['stages'][gate]['execution_exit']
+                     need(current['original_stage_execution_exit']==0 and receipt['wrapper_exit']==0,'original GEO323 stage/wrapper nonzero; raw preserved')

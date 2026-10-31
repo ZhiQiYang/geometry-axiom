@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tests/test_recorder_contract.py", line 160, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tests/test_recorder_contract.py", line 58, in main
+    try:session.perf()
+        ^^^^^^^^^^^^^^
+  File "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals/defer/tools/run.py", line 255, in perf
+    self.v.perf(self.a.repo, self.work, self.evidence)
+  File "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tests/test_recorder_contract.py", line 54, in perf
+    check('no recorder disk serialization inside original perf',list(rec.root.iterdir())==[])
+  File "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tests/test_recorder_contract.py", line 20, in check
+    assert value,name
+           ^^^^^
+AssertionError: no recorder disk serialization inside original perf

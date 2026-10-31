@@ -1,0 +1,608 @@
+{
+  "schema": "geo337-final-L-original-browser-terminal-collection/1",
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "job": "canvas",
+  "createdUTC": "2026-10-24T00:38:50.428951+00:00",
+  "originalExit": 0,
+  "wrapperExit": 0,
+  "passed": true,
+  "overOriginalCITimeout": false,
+  "originalCITimeoutMinutes": 35,
+  "elapsedSeconds": 1718.8848816149984,
+  "sourceBefore": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "root": "/workspace/train337-browser-pool-L-7af8c5d8/layout/jobs/canvas/source",
+    "status": ""
+  },
+  "sourceAfter": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "root": "/workspace/train337-browser-pool-L-7af8c5d8/layout/jobs/canvas/source",
+    "status": ""
+  },
+  "versions": [
+    {
+      "argv": [
+        "google-chrome",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Google Chrome 156.0.8078.47 \n"
+    },
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.19.0\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Python 3.12.14\n"
+    },
+    {
+      "argv": [
+        "cc",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+    },
+    {
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Status} ${Version}\n",
+        "fonts-noto-cjk"
+      ],
+      "exit": 0,
+      "stdout": "install ok installed 1:20240730+repack1-1\n"
+    }
+  ],
+  "originalPoolGuardLogs": [
+    {
+      "phase": "before_guard",
+      "directory": "/workspace/train337-browser-pool-L-7af8c5d8/layout/guard-logs/guard-xs8pcg3n",
+      "selection": "unique completed directory mtime within original guard command interval; no later guard/later GUARD_LATEST relabeled"
+    },
+    {
+      "phase": "after_guard",
+      "directory": "/workspace/train337-browser-pool-L-7af8c5d8/layout/guard-logs/guard-63ibhac8",
+      "selection": "unique completed directory mtime within original guard command interval; no later guard/later GUARD_LATEST relabeled"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Cache/Cache_Data/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Cache/Cache_Data/index-dir/the-real-index",
+      "bytes": 48,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Cache/No_Vary_Search/journal.baj",
+      "bytes": 4,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Cache/No_Vary_Search/snapshot.baf",
+      "bytes": 20,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/09c1df1113e39779_0",
+      "bytes": 476,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/0bdaf96be7bc9893_0",
+      "bytes": 289,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/0c104eb660d51c1e_0",
+      "bytes": 322,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/0d9dabece6b9458a_0",
+      "bytes": 1069,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/0fbf36fc96472ff9_0",
+      "bytes": 310,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/138da0bafa44e150_0",
+      "bytes": 316,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/165dd4062cd50481_0",
+      "bytes": 1131,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/17ebf247d92dd2ea_0",
+      "bytes": 990,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/1e87d5522b29b809_0",
+      "bytes": 215,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/26399d5cce5f7aac_0",
+      "bytes": 220,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/2828c176b257abdc_0",
+      "bytes": 363,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/2c8a06a5f336176e_0",
+      "bytes": 309,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/3243f7e9df5e6663_0",
+      "bytes": 221,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/3255f0614aefbb5a_0",
+      "bytes": 217,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/33acfe3031158c85_0",
+      "bytes": 1463,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/35b805bc70adcfb8_0",
+      "bytes": 5720,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/3606e1212e591ad3_0",
+      "bytes": 308,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/38ed3a0213ab6895_0",
+      "bytes": 477,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/3e553b27d2ce26e9_0",
+      "bytes": 236,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/4144bf8be57ff430_0",
+      "bytes": 1334,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/4546161248b6eddc_0",
+      "bytes": 290,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/476a2ce43dfd9135_0",
+      "bytes": 224,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/52c64e2b902bfd3f_0",
+      "bytes": 275,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/54c5979fa74b67b7_0",
+      "bytes": 284,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/5a7ad86729a18b8a_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/5fb047f4b4a1ab41_0",
+      "bytes": 218,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/61821a962ef979c0_0",
+      "bytes": 293,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/6486b1846febab49_0",
+      "bytes": 234,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/690889ea72ed01f6_0",
+      "bytes": 307,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/6c48d6b52c9ee496_0",
+      "bytes": 239,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/6f0ab64886194e8a_0",
+      "bytes": 429,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/7242368ec2802563_0",
+      "bytes": 944,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/750b0f9bf4e98c9b_0",
+      "bytes": 223,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/7537f6f96ffbc0dd_0",
+      "bytes": 224,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/84434f4c94840490_0",
+      "bytes": 1028,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/850006131cd3d42c_0",
+      "bytes": 243,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/867fcd1abf0cda32_0",
+      "bytes": 447,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/8ae7ff82addb235c_0",
+      "bytes": 396,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/9989f66d9c1498dc_0",
+      "bytes": 211,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/a34456da2a7a0cee_0",
+      "bytes": 322,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/a6475788d42c177d_0",
+      "bytes": 1726,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/aab2e74df4e00011_0",
+      "bytes": 286,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/ad9aa96baec29ff4_0",
+      "bytes": 516,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/ba678a2fbd8c358c_0",
+      "bytes": 298,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/c9e40ad554ed0ae3_0",
+      "bytes": 1592,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/ceacf88a8520d788_0",
+      "bytes": 254,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/cf3715ca45317d1b_0",
+      "bytes": 217,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/d02338648abf077a_0",
+      "bytes": 219,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/db8dc5092301dd4d_0",
+      "bytes": 551,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/dc2ba4517608c6b5_0",
+      "bytes": 343,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/e0f5cd5ffd3d0640_0",
+      "bytes": 279,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/e34aef04fe87947f_0",
+      "bytes": 366,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/e49b25b6859f288e_0",
+      "bytes": 217,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/ec1d7bbab43872f3_0",
+      "bytes": 205,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/ed52faf2d884ecbc_0",
+      "bytes": 242,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/f4da84b33c4d90e5_0",
+      "bytes": 665,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/js/index-dir/the-real-index",
+      "bytes": 1392,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/wasm/index",
+      "bytes": 24,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/Code Cache/wasm/index-dir/the-real-index",
+      "bytes": 48,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnGraphiteCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnGraphiteCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnGraphiteCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnGraphiteCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnGraphiteCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnWebGPUCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnWebGPUCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnWebGPUCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnWebGPUCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/DawnWebGPUCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/GPUCache/data_0",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/GPUCache/data_1",
+      "bytes": 270336,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/GPUCache/data_2",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/GPUCache/data_3",
+      "bytes": 8192,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/Default/GPUCache/index",
+      "bytes": 262512,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.db",
+      "bytes": 4096,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.db-wal",
+      "bytes": 12392,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-cdp-etnZAg/GPUPersistentCache/GPUCache/BKIBWHCDX5RLPFAGTT5JW47JQF44XTYC/cache.journal",
+      "bytes": 0,
+      "reason": "rebuildable Chrome cache leaf; not removed",
+      "sha256": null
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-runtime/85e48394d430dfd7f295/bridge",
+      "bytes": 1122224,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "6781c6998e79395acb24d48ca7497885d24ea2a445b2b4712afbf19544948737"
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-runtime/85e48394d430dfd7f295/core",
+      "bytes": 904000,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "054ca797952b35c17f8965d3019962d1c2458f6ce1f5da587a62bc921081fd58"
+    },
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/geometry-runtime/85e48394d430dfd7f295/model-base",
+      "bytes": 968896,
+      "reason": "rebuildable ELF payload only; original file retained; fingerprint sidecar included",
+      "sha256": "e16f3ad4645688e63951ade997f0958c738e249d6030a56604203d1c951a12c3"
+    }
+  ],
+  "nonRegularNodes": [
+    {
+      "path": "/workspace/train337-browser-L-canvas/tmp/original/canvas/com.google.Chrome.qmnR82/SingletonSocket",
+      "mode": "0o140700",
+      "bytes": 0,
+      "reason": "non-regular IPC node; no serializable file payload, retained in place"
+    }
+  ],
+  "noExistingFileDeleted": true,
+  "noSubjectRerun": true,
+  "limits": [
+    "Original exposed command stdout/stderr only; no hidden compiler/test pipe interception or files already removed by original cleanup are reconstructed.",
+    "No ROOT/SEED/pool/Git/source payload copied; pool immutable plan/tree/raw preparation and original completed guard command streams are included.",
+    "GUARD_LATEST.json is shared mutable state and may already have been replaced by later jobs; it is not relabeled as the documents original. Original per-guard closed Git logs and actual guard argv/exit/fullstreams are retained.",
+    "Terminal profile non-cache files/symlinks retained; Chrome cache payloads excluded with inventory, no removal. ELF payloads excluded with actual hashes; original fingerprint sidecars retained.",
+    "GitHub artifact upload actions are preserved as original local artifact saves, not claimed uploaded to GitHub.",
+    "No independently predecoded host API launcher pipe is invented."
+  ]
+}

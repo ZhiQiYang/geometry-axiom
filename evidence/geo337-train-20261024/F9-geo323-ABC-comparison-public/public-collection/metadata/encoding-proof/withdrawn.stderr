@@ -1,0 +1,53 @@
+FFFFFF
+======================================================================
+FAIL: test_reordered_minified_profile_encodings_are_detected (__main__.EncodingGuard.test_reordered_minified_profile_encodings_are_detected) (variant=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/test_encoded_profile.py", line 29, in test_reordered_minified_profile_encodings_are_detected
+    self.assertIn('complete-decoded-profile-object',inspect(variant))
+AssertionError: 'complete-decoded-profile-object' not found in set()
+
+======================================================================
+FAIL: test_reordered_minified_profile_encodings_are_detected (__main__.EncodingGuard.test_reordered_minified_profile_encodings_are_detected) (variant=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/test_encoded_profile.py", line 29, in test_reordered_minified_profile_encodings_are_detected
+    self.assertIn('complete-decoded-profile-object',inspect(variant))
+AssertionError: 'complete-decoded-profile-object' not found in set()
+
+======================================================================
+FAIL: test_reordered_minified_profile_encodings_are_detected (__main__.EncodingGuard.test_reordered_minified_profile_encodings_are_detected) (variant=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/test_encoded_profile.py", line 29, in test_reordered_minified_profile_encodings_are_detected
+    self.assertIn('complete-decoded-profile-object',inspect(variant))
+AssertionError: 'complete-decoded-profile-object' not found in set()
+
+======================================================================
+FAIL: test_reordered_minified_profile_encodings_are_detected (__main__.EncodingGuard.test_reordered_minified_profile_encodings_are_detected) (variant=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/test_encoded_profile.py", line 29, in test_reordered_minified_profile_encodings_are_detected
+    self.assertIn('complete-decoded-profile-object',inspect(variant))
+AssertionError: 'complete-decoded-profile-object' not found in set()
+
+======================================================================
+FAIL: test_reordered_minified_profile_encodings_are_detected (__main__.EncodingGuard.test_reordered_minified_profile_encodings_are_detected) (variant=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/test_encoded_profile.py", line 29, in test_reordered_minified_profile_encodings_are_detected
+    self.assertIn('complete-decoded-profile-object',inspect(variant))
+AssertionError: 'complete-decoded-profile-object' not found in set()
+
+======================================================================
+FAIL: test_reordered_minified_profile_encodings_are_detected (__main__.EncodingGuard.test_reordered_minified_profile_encodings_are_detected) (variant=5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/test_encoded_profile.py", line 29, in test_reordered_minified_profile_encodings_are_detected
+    self.assertIn('complete-decoded-profile-object',inspect(variant))
+AssertionError: 'complete-decoded-profile-object' not found in set()
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=6)

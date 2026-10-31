@@ -1,0 +1,105 @@
+{
+  "schema": "geo337-F9-native-terminal-package-actual-peer/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "exit_code": 0,
+  "review_utc": "2026-10-25T10:45:11.388374+00:00",
+  "checks": 6191,
+  "failed_checks": [],
+  "formal_native_exit": 1,
+  "CI35MinuteGateExit": 0,
+  "collection_exit": 0,
+  "archive_sha256": "42217b1827d010e8eac017b95799a24910835c202aa1e32a0137cfee32e95d5c",
+  "archive_bytes": 2605652,
+  "inventory_sha256": "e4bdd4806a3cba0fccd77ebba732bf2801fae8d8af2e53799311548006eb3ad7",
+  "members": 1374,
+  "selected_original_logical_bytes": 13895527,
+  "ordinary_excluded_elfs": 6,
+  "included_elf_members": [],
+  "tar_hardlink_members": [],
+  "unknown_elf_excluded": false,
+  "full230_peer_sha256": "0ff05176ec8cf72d715a7cf11982174b6e0f30ba26f288e874f1805c84409cd7",
+  "limits": [
+    "本獨審只驗封存包、原 collector 全流及已獨審的完整230列證據；collection0不改 native1／CI35gate0。",
+    "未重跑 native、未修改 ROOT/cache。root已可接其他工作，故本審核沒有再掃描或重新hash目前可變的 /tmp/geometry-tests payload。",
+    "六普通ELF依原collector實際hash與已封入sidecar一致而排除；本peer核排除名單全部為原F9 REGISTRY頂層普通執行檔，沒有未知ELF排除，未第二次讀它們的payload。",
+    "原未知/反證ELF預設納入，tar每個已選member完整核hash；歷史 preserved cache 明確整份排除且原BEFORE/PRESERVED manifest保留，不冒新native產物。",
+    "原run_all內部未另存的管線／測試自行刪除scratch不能重建，沿原收據限制；沒有把另驗browser/owner整合當native通過。"
+  ],
+  "bindings": [
+    {
+      "path": "/tmp/geo337-F9-native-terminal-package-20261025/PACKAGE.json",
+      "bytes": 819,
+      "sha256": "b8457c840078a8284338e7cc9b8d096284809fb76c30cacb06607817ebec7e93"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-package-20261025/RAW_INVENTORY.json",
+      "bytes": 427447,
+      "sha256": "e4bdd4806a3cba0fccd77ebba732bf2801fae8d8af2e53799311548006eb3ad7"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-package-20261025/SUMMARY.json",
+      "bytes": 4255,
+      "sha256": "fbc5c108e8cb3909a394e8a6c150b1d1e0dd054e858928aeafef79630dd2f32b"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-package-20261025/BUDGET.json",
+      "bytes": 521,
+      "sha256": "7d4377000ba91c15f831455a95ac3a1b2526695861946c509e3fea364d50e972"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-collection-launch-20261025/RESULT.json",
+      "bytes": 2366,
+      "sha256": "5f7275a6e4df91d5390beeeff697eca637090b43224ac53bef900f84950cd6a3"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-collection-EXEC_FINAL-20261025.json",
+      "bytes": 344,
+      "sha256": "0ffabec98e8b24be79a11fb05bd003a95ba3d39b9415d73892e7af0f402e16cd"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-REQUEST-root-lease-20261025.json",
+      "bytes": 1320,
+      "sha256": "988a9b8057278e013b4b74c423581efef56941745931df3e26e1955bbc07ac3c"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-static-peer-20261025/REVIEW.json",
+      "bytes": 4845,
+      "sha256": "c072c90798dc6365dc861bc1c68cf306ed1c0047433efb89af3e976d174d1cd3"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-collection-launch-20261025/subcommands.json",
+      "bytes": 2171,
+      "sha256": "67af2833608172ae985f64a20d3fe5b31ea40a95b41b72d8009cc55fc0cb8108"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-collection-launch-20261025/subcommands/000001/result.json",
+      "bytes": 2077,
+      "sha256": "d76e2ac2c802c823d5dccbb1187b5b0daf89ab81990e7fcf0fb046863311eded"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-collection-launch-20261025/subcommands/000001/request.json",
+      "bytes": 1825,
+      "sha256": "57adde64b18ed2b3fc4620631d5f54a6a95dd19d87270e3349cdcb429ed6410b"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-collection-launch-20261025/subcommands/000001/stdout.bin",
+      "bytes": 779,
+      "sha256": "9d3c22d651cf91785f69d351bb8ce4c77b1ef549298fc012e3686f0064773e82"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-collection-launch-20261025/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-terminal-package-20261025/ORIGINAL_FULL_NATIVE_WORKFLOW_LOGS_AND_RUNTIME_SIDECARS.tar.gz",
+      "bytes": 2605652,
+      "sha256": "42217b1827d010e8eac017b95799a24910835c202aa1e32a0137cfee32e95d5c"
+    },
+    {
+      "path": "/tmp/geo337-F9-native-actual-peer-20261025/REVIEW.json",
+      "bytes": 260958,
+      "sha256": "0ff05176ec8cf72d715a7cf11982174b6e0f30ba26f288e874f1805c84409cd7"
+    }
+  ]
+}

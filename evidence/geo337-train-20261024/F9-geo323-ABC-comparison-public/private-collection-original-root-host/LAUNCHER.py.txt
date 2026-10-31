@@ -1,0 +1,21 @@
+from pathlib import Path
+import hashlib, importlib.util, json, os, shutil
+root=Path('/dev/shm/geometry-axiom-geo337-20261025')
+assert root.is_dir() and not root.is_symlink()
+policy=root/'STORAGE_POLICY.json'
+assert hashlib.sha256(policy.read_bytes()).hexdigest()=='9b2945ff5c6214d985cdb0a623c18721bfec3948bd9ea9e4e443a8b3f5c22f6a'
+prep=Path('/workspace/geo323-F9-owner-comparison-collector-shm-v2-20261025')
+q=json.loads((prep/'COLLECTION_REQUEST.unbound.json').read_bytes());q['execute']=True;q['root_execution_lease']=True
+q['independent_peer']={'path':'/workspace/geo323-F9-collector-shm-v2-static-peer-9pvtp8x7/REVIEW.json','sha256':'5d67bf327477915bc4e2a4d98a89238f87d798fdc1294f49c0a1bca08830e3b3'}
+req=Path('/workspace/geo323-F9-comparison-collection-shm-root-request-20261025.json')
+with req.open('x') as f:json.dump(q,f,ensure_ascii=False,indent=2);f.write('\n')
+tool=prep/'collect_comparison_v2.py';assert hashlib.sha256(tool.read_bytes()).hexdigest()==q['collector_sha256']
+cap=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py');assert hashlib.sha256(cap.read_bytes()).hexdigest()=='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+s=importlib.util.spec_from_file_location('capture',cap);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+out=root/'geo323-F9-comparison-collection-root-launch-20261025';out.mkdir()
+env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1');env.pop('PYTHONOPTIMIZE',None)
+r=m.Recorder(out,env,q['source_sha']);before=shutil.disk_usage(root).free
+row,_,_=r.run(['python3','-B',str(tool),'--request',str(req),'--execute'],cwd='/workspace',timeout=None,check=False)
+m.dump(out/'RESULT.json',{'original_exit':row['actual_process_returncode'],'source_sha':q['source_sha'],'capture_result':row,'package_result':q['out']+'/RESULT.json','free_before':before,'free_after':shutil.disk_usage(root).free,'storage_is_volatile':True,'published':False,'subject_rerun':False})
+print(json.dumps({'original_exit':row['actual_process_returncode'],'package_result':q['out']+'/RESULT.json','published':False}))
+raise SystemExit(row['actual_process_returncode'])

@@ -1,0 +1,2099 @@
+{
+  "schema": "train337-reading-a-r1-env-and-same-L-repair/1",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "scope": "Terminal r1 environment failures and completed sparse repair only, not live r2 results; no source checkout or .git",
+  "files": {
+    "r1/RESULT.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/RESULT.json",
+      "bytes": 28021,
+      "sha256": "39ef63ebf2901818ed902c582b334522b7bf7ef5b1f5d2f55ddb33dec11888e7"
+    },
+    "r1/commands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/commands.json",
+      "bytes": 19316,
+      "sha256": "326c3525185051fb13804edd30027150331b61673cd735c5dbc3aab13f021fd4"
+    },
+    "r1/oracle-mutants/reaper.jsonl": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/reaper.jsonl",
+      "bytes": 500,
+      "sha256": "d0805a2bca2494b11f9835b49e7fd90cc88fec64d44a31b8d86daf449e48b3d8"
+    },
+    "r1/oracle-mutants/receipt.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/receipt.json",
+      "bytes": 10134,
+      "sha256": "3c0bf5b67a54315fc409ea6c0b9fada6a54e2b4a4c4320ecd21ccdf497c7bddc"
+    },
+    "r1/oracle-mutants/subcommands/000001/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000001/request.json",
+      "bytes": 1553,
+      "sha256": "f4e9e20a95beacb36f754acdb022f57c0295f4ba488881b9d970c576b609fd08"
+    },
+    "r1/oracle-mutants/subcommands/000001/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000001/result.json",
+      "bytes": 1804,
+      "sha256": "04b44b2b4a0f2b6f982cd4cb105bdaad5ddf479a41581f336704947a5cf80e5e"
+    },
+    "r1/oracle-mutants/subcommands/000001/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000001/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000001/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "r1/oracle-mutants/subcommands/000002/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000002/request.json",
+      "bytes": 1589,
+      "sha256": "d3e8b394a5b709ce897f2b26cfa0b73a59c0f39a7df03c87529b556580116411"
+    },
+    "r1/oracle-mutants/subcommands/000002/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000002/result.json",
+      "bytes": 1839,
+      "sha256": "46e729600efe4d7d200337722a9c3ce8c24bc2f0f6529c3fd14ef301c2c7805d"
+    },
+    "r1/oracle-mutants/subcommands/000002/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000002/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000002/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000003/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000003/request.json",
+      "bytes": 1571,
+      "sha256": "ec489c4974d10ba3371b5dcaf64be2be630be8f2c0ce795d89d4d19c672e9d03"
+    },
+    "r1/oracle-mutants/subcommands/000003/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000003/result.json",
+      "bytes": 1821,
+      "sha256": "529f850bc1d32d1e7ecaf3890358dfb40d2bf2d94b2e05883b896d4713b936b7"
+    },
+    "r1/oracle-mutants/subcommands/000003/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000003/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000003/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000004/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000004/request.json",
+      "bytes": 1610,
+      "sha256": "da50bd7e436832a2a5773c5ea7f6cde4faabc7c360e71dbe044a426fda7ecac3"
+    },
+    "r1/oracle-mutants/subcommands/000004/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000004/result.json",
+      "bytes": 1861,
+      "sha256": "22f40fca29e755bf48a53ba57f30762943dbd481a83cfccd7a4ff5a10879026b"
+    },
+    "r1/oracle-mutants/subcommands/000004/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000004/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000004/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000004/stdout.bin",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    "r1/oracle-mutants/subcommands/000005/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000005/request.json",
+      "bytes": 1542,
+      "sha256": "06bab24b042be977301d87c4e699cfcdc9bb8ba4c748f7e8279af0f36f3fbc32"
+    },
+    "r1/oracle-mutants/subcommands/000005/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000005/result.json",
+      "bytes": 1792,
+      "sha256": "f35d2106ee6936ae849eb6b1a3395522f5c110d2890637af489de2e7587569e3"
+    },
+    "r1/oracle-mutants/subcommands/000005/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000005/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000005/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000005/stdout.bin",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    "r1/oracle-mutants/subcommands/000006/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000006/request.json",
+      "bytes": 1867,
+      "sha256": "cc8d84c3ca0ea7f5d707dea025fff894868ea617ff3d8c4c006ce04c27442f19"
+    },
+    "r1/oracle-mutants/subcommands/000006/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000006/result.json",
+      "bytes": 2123,
+      "sha256": "666c131f5a43f510d95160c1d42a38d01bab1aa47841474637453a9565bd74f6"
+    },
+    "r1/oracle-mutants/subcommands/000006/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000006/stderr.bin",
+      "bytes": 268,
+      "sha256": "8e4e6a58b2640bed73691fdf036c6cda166030f21342f3e03c486c3ed6393804"
+    },
+    "r1/oracle-mutants/subcommands/000006/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000006/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000006/stdout.bin",
+      "bytes": 36735,
+      "sha256": "68f4e9b4541f060499f743bc8a4d412eab9811932fd1e4c00f22f37e39606f5e"
+    },
+    "r1/oracle-mutants/subcommands/000007/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000007/request.json",
+      "bytes": 1553,
+      "sha256": "771dd18372d28145a5669a65b469e7d10347388fc86050fd4e04781830f3a9e7"
+    },
+    "r1/oracle-mutants/subcommands/000007/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000007/result.json",
+      "bytes": 1804,
+      "sha256": "510dec2a209d688d5d953177b19ab9cc50c2ff245f9b12229df5ac2dff1f7c77"
+    },
+    "r1/oracle-mutants/subcommands/000007/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000007/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000007/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000007/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "r1/oracle-mutants/subcommands/000008/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000008/request.json",
+      "bytes": 1588,
+      "sha256": "80183029a5461ce59d5525ae211cbbdfa8025b4597e5934ee62d50cfffc910c5"
+    },
+    "r1/oracle-mutants/subcommands/000008/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000008/result.json",
+      "bytes": 1838,
+      "sha256": "3d128adcd3ef38fbeb4ad7a6d61cb4b54ada31b4c1ea99e24686ebaa8c727014"
+    },
+    "r1/oracle-mutants/subcommands/000008/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000008/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000008/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000009/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000009/request.json",
+      "bytes": 1571,
+      "sha256": "99f1cd78b4d322f9ae39c5c674b6d4cc96933e83d240cde34cf6ca6a71ef9871"
+    },
+    "r1/oracle-mutants/subcommands/000009/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000009/result.json",
+      "bytes": 1821,
+      "sha256": "5f7bc5f4c30057f8ebe00fdecf48d0b7874b807aa238376eb3e59d8c6c5f022c"
+    },
+    "r1/oracle-mutants/subcommands/000009/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000009/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands/000009/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-mutants/subcommands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants/subcommands.json",
+      "bytes": 17465,
+      "sha256": "02b06baea17b1e58fcb9f71aa144f2ed1cb71160d785e1c41eb6c85f62271000"
+    },
+    "r1/oracle-mutants-outer-reaper.jsonl": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-mutants-outer-reaper.jsonl",
+      "bytes": 690,
+      "sha256": "7ef2c007adbe7de5ffda11c01526d48f6b7d5ac2c267f4163c546a558e026974"
+    },
+    "r1/oracle-quick/reaper.jsonl": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/reaper.jsonl",
+      "bytes": 492,
+      "sha256": "684657e3e98c5efa81b369aeef6ff6d69307651ab4333eb5d9b59635094489c5"
+    },
+    "r1/oracle-quick/receipt.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/receipt.json",
+      "bytes": 10089,
+      "sha256": "f257d894171671797053d15bdf807403e836b12f22cd95a822d97f55394e1565"
+    },
+    "r1/oracle-quick/subcommands/000001/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000001/request.json",
+      "bytes": 1547,
+      "sha256": "1ea8bd494421239a950d8f3c5e6b966c88f319e7022483296c66a8fb4523e6cf"
+    },
+    "r1/oracle-quick/subcommands/000001/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000001/result.json",
+      "bytes": 1798,
+      "sha256": "a06f680f609841cc2486a4257323d247ab7b7acd0f68df6f1c98c8c50860946d"
+    },
+    "r1/oracle-quick/subcommands/000001/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000001/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000001/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "r1/oracle-quick/subcommands/000002/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000002/request.json",
+      "bytes": 1583,
+      "sha256": "7a0168df2fac627b1ba4856615c4c62e58db9fc29fa5d13877cfe41963761a6a"
+    },
+    "r1/oracle-quick/subcommands/000002/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000002/result.json",
+      "bytes": 1833,
+      "sha256": "36960cb711297d4d7464cff94a15af5822b14131da3cdd7a3485895439a2e285"
+    },
+    "r1/oracle-quick/subcommands/000002/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000002/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000002/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000003/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000003/request.json",
+      "bytes": 1565,
+      "sha256": "1670c308f8309eb85ce3525c519cc2f9dca56db99aaf698cee4953856d5f2def"
+    },
+    "r1/oracle-quick/subcommands/000003/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000003/result.json",
+      "bytes": 1815,
+      "sha256": "dff54f44751548ce785fc4a92477ecfe0c6ea03c68bb34bf727f413ed159c5e3"
+    },
+    "r1/oracle-quick/subcommands/000003/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000003/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000003/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000004/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000004/request.json",
+      "bytes": 1605,
+      "sha256": "e80cd1a468027e77fdae5666811589ce749f6c9fa81c3dd7c62c0925bc806e6d"
+    },
+    "r1/oracle-quick/subcommands/000004/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000004/result.json",
+      "bytes": 1854,
+      "sha256": "b1d732a89e68c680bb325301c0c760a34afc417e551e65c12e8e5e1aff26f9a0"
+    },
+    "r1/oracle-quick/subcommands/000004/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000004/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000004/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000004/stdout.bin",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    "r1/oracle-quick/subcommands/000005/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000005/request.json",
+      "bytes": 1535,
+      "sha256": "2fa07c847859e9236b8d58ff2cf5e2a4274a160d0429e5c82f64cb81f90dcaf3"
+    },
+    "r1/oracle-quick/subcommands/000005/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000005/result.json",
+      "bytes": 1785,
+      "sha256": "ef5a0a24f2361e01049e0856eeaedfbeefc02f7d6954d7c7f393e79cce8469fb"
+    },
+    "r1/oracle-quick/subcommands/000005/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000005/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000005/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000005/stdout.bin",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    "r1/oracle-quick/subcommands/000006/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000006/request.json",
+      "bytes": 1854,
+      "sha256": "7404c0874d372706344a9b16d232d0f1f0500317fac34a6b31aa329dfb1cf561"
+    },
+    "r1/oracle-quick/subcommands/000006/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000006/result.json",
+      "bytes": 2110,
+      "sha256": "2bbd1b4aab3dbfa9c401b30d2cc8f9f73fc28052df954d174abdc95fd48867eb"
+    },
+    "r1/oracle-quick/subcommands/000006/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000006/stderr.bin",
+      "bytes": 268,
+      "sha256": "8e4e6a58b2640bed73691fdf036c6cda166030f21342f3e03c486c3ed6393804"
+    },
+    "r1/oracle-quick/subcommands/000006/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000006/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000006/stdout.bin",
+      "bytes": 36735,
+      "sha256": "68f4e9b4541f060499f743bc8a4d412eab9811932fd1e4c00f22f37e39606f5e"
+    },
+    "r1/oracle-quick/subcommands/000007/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000007/request.json",
+      "bytes": 1547,
+      "sha256": "aebc315a4c2419172a5c6e3cd4c0f86dedd50615a726a558aafa27522ad3cd02"
+    },
+    "r1/oracle-quick/subcommands/000007/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000007/result.json",
+      "bytes": 1798,
+      "sha256": "3e1dc00909f172dcf92de0fe119d44dc6f9e2cfbb19ff4063cbfb80738c9cf5a"
+    },
+    "r1/oracle-quick/subcommands/000007/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000007/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000007/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000007/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "r1/oracle-quick/subcommands/000008/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000008/request.json",
+      "bytes": 1582,
+      "sha256": "eeb2d8844697a7d24553e235358072a766a1c0f56f8ef645ea804022fb28d8d3"
+    },
+    "r1/oracle-quick/subcommands/000008/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000008/result.json",
+      "bytes": 1832,
+      "sha256": "835da14ad9007f558530f9bd9b3f618ee9dfeedaa30551478960824477529006"
+    },
+    "r1/oracle-quick/subcommands/000008/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000008/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000008/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000009/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000009/request.json",
+      "bytes": 1565,
+      "sha256": "52bf3b39490ddf08c04bc91fbe6781fc7ccde097e9fd7efe9d2043fe66a9769e"
+    },
+    "r1/oracle-quick/subcommands/000009/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000009/result.json",
+      "bytes": 1815,
+      "sha256": "5c130c49a3bc3f0947da5cfa80f7e12dae474325642d0215eeb20d9f5a5983f4"
+    },
+    "r1/oracle-quick/subcommands/000009/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000009/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands/000009/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/oracle-quick/subcommands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick/subcommands.json",
+      "bytes": 17402,
+      "sha256": "f6c15b39ffb0fd4aa2f9ef3578ebc92d55e02d148bacc192234b1e4100803a11"
+    },
+    "r1/oracle-quick-outer-reaper.jsonl": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/oracle-quick-outer-reaper.jsonl",
+      "bytes": 685,
+      "sha256": "331ee4a452f89144db15c19915d4c810045be0afaef8613e73fdb38f991f03ed"
+    },
+    "r1/subcommands/000001/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000001/request.json",
+      "bytes": 1470,
+      "sha256": "988dc9c35eb6dd928e1a03e3841845da4d464e26b61016d62e68595b42b89996"
+    },
+    "r1/subcommands/000001/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000001/result.json",
+      "bytes": 1720,
+      "sha256": "5bc269c5177a4fb67d10d8eb47c7952fcf7011bd5475c40e88051fb765cc2b15"
+    },
+    "r1/subcommands/000001/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000001/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000001/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "r1/subcommands/000002/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000002/request.json",
+      "bytes": 1505,
+      "sha256": "a3a72df7470ab8d8ae6b4feabcd26f9758dbc9095a67a4bcfb78ac21c4859a05"
+    },
+    "r1/subcommands/000002/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000002/result.json",
+      "bytes": 1755,
+      "sha256": "39ab740777dde4e58f5578a83071eeec199d5d19af54243fc92dd1f71117dd0d"
+    },
+    "r1/subcommands/000002/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000002/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000002/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000003/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000003/request.json",
+      "bytes": 1487,
+      "sha256": "d843cdf108c5ea8000bc25b9283da42d041ee4f7113f023b189fe27e902e9264"
+    },
+    "r1/subcommands/000003/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000003/result.json",
+      "bytes": 1737,
+      "sha256": "f51237d0544086dcb1c0fe599406ed9f3a57ab05d1fe80e54f6082a13a6c7a6a"
+    },
+    "r1/subcommands/000003/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000003/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000003/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000004/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000004/request.json",
+      "bytes": 1482,
+      "sha256": "7896ecc442b1d8c8b8ad129d5ec83083d399010c15fa6e559fbb773947492bd1"
+    },
+    "r1/subcommands/000004/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000004/result.json",
+      "bytes": 1737,
+      "sha256": "4014535ea64728d584845d6653ae2f446bc7c0a5c9a6e6d53a70de6fa5d4e044"
+    },
+    "r1/subcommands/000004/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000004/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000004/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000004/stdout.bin",
+      "bytes": 4270783,
+      "sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+    },
+    "r1/subcommands/000005/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000005/request.json",
+      "bytes": 2010,
+      "sha256": "af91408bf8e77c405c8bee760a6ae6ec21a7201232bc8e2e01b8a36fa9da3b70"
+    },
+    "r1/subcommands/000005/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000005/result.json",
+      "bytes": 2262,
+      "sha256": "435ae8c8c2ffe7b75b75dc283911ed426cf9e6a2c9edf5c5ec4128ef7ac83770"
+    },
+    "r1/subcommands/000005/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000005/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000005/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000005/stdout.bin",
+      "bytes": 219,
+      "sha256": "fcff46cdda8944c63c92fca3c11eae6e74feefb168bf45439be2760e92a5e1a8"
+    },
+    "r1/subcommands/000006/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000006/request.json",
+      "bytes": 2005,
+      "sha256": "adddcc810baa6bfed7161990af7d411a1b3be333e08cecc596cd4f06624f8366"
+    },
+    "r1/subcommands/000006/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000006/result.json",
+      "bytes": 2257,
+      "sha256": "d6df8341e2d668a8fb7560b5a0738c0e3a2a750bed16df7c51aa0fc0175fc447"
+    },
+    "r1/subcommands/000006/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000006/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000006/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000006/stdout.bin",
+      "bytes": 215,
+      "sha256": "1cd554cb91d9cc2dabb4f6fead2d45db8ac21345ff4a32f393c08879078043a2"
+    },
+    "r1/subcommands/000007/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000007/request.json",
+      "bytes": 1469,
+      "sha256": "d1fe3ae742c2a741fab714caa66f1542d487fd80f83c10fc4a918b9a49e3f194"
+    },
+    "r1/subcommands/000007/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000007/result.json",
+      "bytes": 1720,
+      "sha256": "5b7eaad9397b91169636f5f2bf062b16924958df7aad96b77672f6f709416812"
+    },
+    "r1/subcommands/000007/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000007/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000007/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000007/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "r1/subcommands/000008/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000008/request.json",
+      "bytes": 1506,
+      "sha256": "3e6c17dc90b7a34722aabff5a0c583069a58f0acc27e62902c099961e215b980"
+    },
+    "r1/subcommands/000008/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000008/result.json",
+      "bytes": 1756,
+      "sha256": "414c40ec567f7aace441e16990757599725654aa949c89bb93d6017510908877"
+    },
+    "r1/subcommands/000008/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000008/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000008/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000009/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000009/request.json",
+      "bytes": 1488,
+      "sha256": "0e448723ce796a4d8998edc5d289bed514efba0acb827108897aa2d2b9fec353"
+    },
+    "r1/subcommands/000009/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000009/result.json",
+      "bytes": 1737,
+      "sha256": "375b56769db4bdfbd758541b15af91d420e9c820b9e5ce645ee0b1e9bbd25441"
+    },
+    "r1/subcommands/000009/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000009/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000009/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000010/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000010/request.json",
+      "bytes": 1482,
+      "sha256": "a63eee38f257c4c4042a09d75a6deadbe94b375ad4140274c5d5b576e8fd4a9f"
+    },
+    "r1/subcommands/000010/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000010/result.json",
+      "bytes": 1738,
+      "sha256": "1e195d4566e71dedcfa9241492a11f9ae20f44febf1ee9fc5a2b2a6d6141dd61"
+    },
+    "r1/subcommands/000010/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000010/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "r1/subcommands/000010/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands/000010/stdout.bin",
+      "bytes": 4270783,
+      "sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+    },
+    "r1/subcommands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8/subcommands.json",
+      "bytes": 19316,
+      "sha256": "326c3525185051fb13804edd30027150331b61673cd735c5dbc3aab13f021fd4"
+    },
+    "source-preparation/commands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/commands.json",
+      "bytes": 39615,
+      "sha256": "67bf5f752856788178e38d95a2651b400df390d88154a9ed0fd548c8a029c589"
+    },
+    "source-preparation/subcommands/000001/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000001/request.json",
+      "bytes": 1480,
+      "sha256": "ffd415fdf3d011d24331676318d4be5c440ba445763e0393f79d536297007627"
+    },
+    "source-preparation/subcommands/000001/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000001/result.json",
+      "bytes": 1732,
+      "sha256": "488335ca80952c3c918606bcce70f5acc41f3078747632c1c438985a3ac7212b"
+    },
+    "source-preparation/subcommands/000001/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000001/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000001/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000001/stdout.bin",
+      "bytes": 189,
+      "sha256": "651beb018e98ed7598ff687dda676f1fd8170eaa4040b8012d6063c925188603"
+    },
+    "source-preparation/subcommands/000002/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000002/request.json",
+      "bytes": 1538,
+      "sha256": "e0a9991574d41d9d984addcd9de29a184b51b1e81686c2684388a28cbb3a9e8b"
+    },
+    "source-preparation/subcommands/000002/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000002/result.json",
+      "bytes": 1789,
+      "sha256": "c24137b91b35c7c7ca05f41f85faa51db4a8134ad739dbd78c7ff134365cf799"
+    },
+    "source-preparation/subcommands/000002/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000002/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000002/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000002/stdout.bin",
+      "bytes": 39,
+      "sha256": "1384794018b3ddb54368f098a6365a4f2d52adb9814b9da03da5a23977e17028"
+    },
+    "source-preparation/subcommands/000003/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000003/request.json",
+      "bytes": 1498,
+      "sha256": "754f43005cb2d6f68906b2c742e408cf2ff8a86c9d23b4bdb9f4bcf73b029383"
+    },
+    "source-preparation/subcommands/000003/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000003/result.json",
+      "bytes": 1751,
+      "sha256": "da7707a74305baae58aec460d17e93d7af5c9315dceaa33edefcd322eb230acc"
+    },
+    "source-preparation/subcommands/000003/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000003/stderr.bin",
+      "bytes": 586,
+      "sha256": "3e70934f1909b0f5a846d62237fcc1509d733b9fb0321187024723dfc67176d3"
+    },
+    "source-preparation/subcommands/000003/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000003/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000003/stdout.bin",
+      "bytes": 81,
+      "sha256": "039392e8cfda3f043f52d729f4ed22afafad44152aeb303393f0eefbc0cc2760"
+    },
+    "source-preparation/subcommands/000004/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000004/request.json",
+      "bytes": 1520,
+      "sha256": "fcee00bc9ba8ccba5995669f76548363b3a0143c30102df5b81ec966a6a67fd2"
+    },
+    "source-preparation/subcommands/000004/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000004/result.json",
+      "bytes": 1770,
+      "sha256": "f78c4d32b9a775f27ae9762397dfca3694c84399942a8bbd608dbd0d2f0aac9f"
+    },
+    "source-preparation/subcommands/000004/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000004/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000004/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000005/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000005/request.json",
+      "bytes": 1533,
+      "sha256": "7f4f7d8be7cf812e0ae2eb3d8d641c98e6a32206e8086dfc8606c8228bc4ee83"
+    },
+    "source-preparation/subcommands/000005/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000005/result.json",
+      "bytes": 1783,
+      "sha256": "e861b993eb99a13c419a5f99b0b4f194f029f06efb8478a01bb086ee50fd1afe"
+    },
+    "source-preparation/subcommands/000005/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000005/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000005/stdin.bin",
+      "bytes": 582,
+      "sha256": "86602317e8e94c8627f175c07cc79a5e20a0e505df69f5f813bfbb68ab986932"
+    },
+    "source-preparation/subcommands/000005/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000006/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000006/request.json",
+      "bytes": 1548,
+      "sha256": "ce996a48e7219b8954aee6c3cdc944df5c512494f3439883be5d7f8d3fac72c8"
+    },
+    "source-preparation/subcommands/000006/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000006/result.json",
+      "bytes": 1798,
+      "sha256": "85c14f92e90c92f530746e35f3132fd945f75d9ee01bba3582b9942579684080"
+    },
+    "source-preparation/subcommands/000006/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000006/stderr.bin",
+      "bytes": 88,
+      "sha256": "a83c5bd2bef2b2de426fd910de549725b7c3413813ffd21f3c82242b4d5406f3"
+    },
+    "source-preparation/subcommands/000006/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000006/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000007/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000007/request.json",
+      "bytes": 1578,
+      "sha256": "d89ed491e77e5a7ed761d0536c1e1bb85991bf40aec2909988b1d1735bd3aacb"
+    },
+    "source-preparation/subcommands/000007/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000007/result.json",
+      "bytes": 1833,
+      "sha256": "0c3af2928331a20f434114fd14e9d1b13fcf02a5b81cf7a48962eada403033c3"
+    },
+    "source-preparation/subcommands/000007/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000007/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000007/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000007/stdout.bin",
+      "bytes": 141042,
+      "sha256": "013fa3d2ef01d4cead6998d65d472deee0137266df2bc8ab9b1bbf567aaa309a"
+    },
+    "source-preparation/subcommands/000008/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000008/request.json",
+      "bytes": 1584,
+      "sha256": "ed2d819ce409721cd83e510041b94a2b93cdb68624b1622a8ab752493a97457a"
+    },
+    "source-preparation/subcommands/000008/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000008/result.json",
+      "bytes": 1839,
+      "sha256": "264cf4d5e31bcdf47fe3a9e51b91895f145ac687143c37ab4f14c1f85a563cf9"
+    },
+    "source-preparation/subcommands/000008/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000008/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000008/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000008/stdout.bin",
+      "bytes": 139970,
+      "sha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359"
+    },
+    "source-preparation/subcommands/000009/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000009/request.json",
+      "bytes": 1584,
+      "sha256": "dde483e8777291fb28fe6ab09ce328abbafbb8746323ebe8a5f327834205843b"
+    },
+    "source-preparation/subcommands/000009/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000009/result.json",
+      "bytes": 1837,
+      "sha256": "2e68ea0c430a3a5dc90d83edf848fa1e87e95dd06506cdfdeddca9468b5e67e9"
+    },
+    "source-preparation/subcommands/000009/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000009/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000009/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000009/stdout.bin",
+      "bytes": 1575,
+      "sha256": "b7d5ad2dcfbdedeed03998e4380d10437936e0e1f5c4e4845fd077ec9a9cd73f"
+    },
+    "source-preparation/subcommands/000010/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000010/request.json",
+      "bytes": 1600,
+      "sha256": "d1c72c665a95f400ea61e9242cad661a82d761a8f27ed9a52c7b504017a9425d"
+    },
+    "source-preparation/subcommands/000010/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000010/result.json",
+      "bytes": 1855,
+      "sha256": "5c1faa316a172b295432225648b7f3e5bf24cd83c561b2052ba7368e55779429"
+    },
+    "source-preparation/subcommands/000010/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000010/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000010/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000010/stdout.bin",
+      "bytes": 109823,
+      "sha256": "b5e4e707a4fc4b2710db237d0252d67104e0a555a50a875e79de2ad43c7d46c0"
+    },
+    "source-preparation/subcommands/000011/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000011/request.json",
+      "bytes": 1598,
+      "sha256": "493766d8c277eda0a9d41d9da8014323e59e5f4916fc5774822a2a430dba43b5"
+    },
+    "source-preparation/subcommands/000011/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000011/result.json",
+      "bytes": 1849,
+      "sha256": "27868545ba633e0ce57b95431efdd2fbba234c04f6c4471a386c3cc121fc5201"
+    },
+    "source-preparation/subcommands/000011/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000011/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000011/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000011/stdout.bin",
+      "bytes": 114,
+      "sha256": "afce8192d061c260698a24267d43f56662f0ee864e5d985d611430306b7cd80f"
+    },
+    "source-preparation/subcommands/000012/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000012/request.json",
+      "bytes": 1576,
+      "sha256": "242e1b9264511980cf491923092d6df36e4c909c16ac33377fff65b2b536d8b9"
+    },
+    "source-preparation/subcommands/000012/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000012/result.json",
+      "bytes": 1828,
+      "sha256": "2f88fad0066147c303d1acbfd3c57b1dab36621338ecb12ae2e990c4992fe405"
+    },
+    "source-preparation/subcommands/000012/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000012/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000012/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000012/stdout.bin",
+      "bytes": 699,
+      "sha256": "42a86840217a103912f89d923e307daa820b30aae745ef250304de7e93e8b4b4"
+    },
+    "source-preparation/subcommands/000013/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000013/request.json",
+      "bytes": 1585,
+      "sha256": "4a0111f4705bd210747889e786471321351478936f970f8b37bad99f3c9a2ac4"
+    },
+    "source-preparation/subcommands/000013/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000013/result.json",
+      "bytes": 1840,
+      "sha256": "8c9ce0999f34d207310f612b7cbb3b49cbff0eead9cfb1a7f60255008afe57e1"
+    },
+    "source-preparation/subcommands/000013/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000013/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000013/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000013/stdout.bin",
+      "bytes": 362847,
+      "sha256": "67027cbf023301d5280613856d7d26a3b29f2b6c0ec52073e428eeaae74f0ef1"
+    },
+    "source-preparation/subcommands/000014/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000014/request.json",
+      "bytes": 1580,
+      "sha256": "ebefcc4f7cdabceb9d308f442ceffb93746eb16d47d83021f75a0d3f982a36ff"
+    },
+    "source-preparation/subcommands/000014/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000014/result.json",
+      "bytes": 1834,
+      "sha256": "1262ad7a4275590e51af0aa5ef2fcee1af1b28c26b227db50c32cb80fb150306"
+    },
+    "source-preparation/subcommands/000014/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000014/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000014/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000014/stdout.bin",
+      "bytes": 25787,
+      "sha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5"
+    },
+    "source-preparation/subcommands/000015/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000015/request.json",
+      "bytes": 1576,
+      "sha256": "ab3d669b8ef51de79b4442b821822326e650674e746ed361856ac60f3cb90460"
+    },
+    "source-preparation/subcommands/000015/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000015/result.json",
+      "bytes": 1830,
+      "sha256": "02356e86b4deed1b396c95378872024835e58666cf05f41e82174758fc353d61"
+    },
+    "source-preparation/subcommands/000015/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000015/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000015/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000015/stdout.bin",
+      "bytes": 97823,
+      "sha256": "0cdb3c26acc81c68d669c277987277ca33c0d185d3cd5e5354242c1f56d17d6f"
+    },
+    "source-preparation/subcommands/000016/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000016/request.json",
+      "bytes": 1571,
+      "sha256": "5b317bb2441c79feaab30e1d1063ca74b13fea9bdb66cb674b4107756c6c6780"
+    },
+    "source-preparation/subcommands/000016/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000016/result.json",
+      "bytes": 1824,
+      "sha256": "5529e9703f6d2b82780f23b0d987ee123110e6c998ef5d2a47d241b00e1c0e81"
+    },
+    "source-preparation/subcommands/000016/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000016/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000016/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000016/stdout.bin",
+      "bytes": 38213,
+      "sha256": "8f6efd7a9f414d3410c4c46be854630cdd8330c776900c639d380ee4679a88f9"
+    },
+    "source-preparation/subcommands/000017/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000017/request.json",
+      "bytes": 1543,
+      "sha256": "165a72df45bfdfc4ac99166e4d217cdcfcd1ef7ae4468892874676682472ebdb"
+    },
+    "source-preparation/subcommands/000017/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000017/result.json",
+      "bytes": 1798,
+      "sha256": "03fc3b5ee45d9ade9a9bd8b63359621bf08c2536712dc890f1aa5bdb3ee892d9"
+    },
+    "source-preparation/subcommands/000017/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000017/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000017/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000017/stdout.bin",
+      "bytes": 237973,
+      "sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0"
+    },
+    "source-preparation/subcommands/000018/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000018/request.json",
+      "bytes": 1496,
+      "sha256": "558aa83de4199f4895339618f48205ab6909ce0b4e107d42f11bbf450aab3864"
+    },
+    "source-preparation/subcommands/000018/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000018/result.json",
+      "bytes": 1747,
+      "sha256": "eeb4c9a30cb774f9b114f2803e7292b73b0a905856b51e31447da471e96f4ffa"
+    },
+    "source-preparation/subcommands/000018/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000018/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000018/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000018/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "source-preparation/subcommands/000019/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000019/request.json",
+      "bytes": 1533,
+      "sha256": "5622f2acab3f06644d7a3137763c2a04b728c6f720c9f3489f1173c1c1eb5f2a"
+    },
+    "source-preparation/subcommands/000019/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000019/result.json",
+      "bytes": 1783,
+      "sha256": "22a4bf35ecda5b26d44caeeeb3f661fc4861ed04aca44538e5fa50caebd594c8"
+    },
+    "source-preparation/subcommands/000019/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000019/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000019/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000019/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000020/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000020/request.json",
+      "bytes": 1514,
+      "sha256": "bc385c8232bf6de4f44952aa1d97b11b1eb56da84563263f55d96ac7af6a1f8e"
+    },
+    "source-preparation/subcommands/000020/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000020/result.json",
+      "bytes": 1764,
+      "sha256": "57cc60742be7ba9c8c212200f3cde8975ad15c1c47626391dfaef32703cb188d"
+    },
+    "source-preparation/subcommands/000020/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000020/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000020/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000020/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000021/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000021/request.json",
+      "bytes": 1509,
+      "sha256": "deb328e040122c5fc63c38a80fd3f9d3c55b636cf61d9bbd56d5dda517ed2be9"
+    },
+    "source-preparation/subcommands/000021/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000021/result.json",
+      "bytes": 1765,
+      "sha256": "df8345c10f58186e0381a327a3314bb00bf532de190c6fd05fc1dbf407bff2a0"
+    },
+    "source-preparation/subcommands/000021/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000021/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-preparation/subcommands/000021/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands/000021/stdout.bin",
+      "bytes": 4270783,
+      "sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+    },
+    "source-preparation/subcommands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-preparation/subcommands.json",
+      "bytes": 39615,
+      "sha256": "67bf5f752856788178e38d95a2651b400df390d88154a9ed0fd548c8a029c589"
+    },
+    "source-repair-r2/commands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/commands.json",
+      "bytes": 55130,
+      "sha256": "673045d51634aecfa894e10ab2f591a60d6c46be393fd16ed861037a31152de6"
+    },
+    "source-repair-r2/subcommands/000001/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000001/request.json",
+      "bytes": 1492,
+      "sha256": "defd9b50802ce643548dd67585247efc12a69eb2e6c8046a0f8dc8be7613f1da"
+    },
+    "source-repair-r2/subcommands/000001/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000001/result.json",
+      "bytes": 1743,
+      "sha256": "834305a4629925e86caf6d96e66fce1f441a6a55c01c36cb8fd666f10d250dc3"
+    },
+    "source-repair-r2/subcommands/000001/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000001/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000001/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "source-repair-r2/subcommands/000002/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000002/request.json",
+      "bytes": 1528,
+      "sha256": "79a76d095f8b6e3118ea0cd7ea136329eb147db987cb6b62b128c80f0a25e75a"
+    },
+    "source-repair-r2/subcommands/000002/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000002/result.json",
+      "bytes": 1778,
+      "sha256": "37c1c81026d74661e78639ceea8f7adb39fec14aaa680ce98e185292e5abbb37"
+    },
+    "source-repair-r2/subcommands/000002/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000002/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000002/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000003/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000003/request.json",
+      "bytes": 1528,
+      "sha256": "4765dc4cf5d5b4122493c2f2d7b3b3911db0141331d51758c101e52546ba171d"
+    },
+    "source-repair-r2/subcommands/000003/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000003/result.json",
+      "bytes": 1777,
+      "sha256": "a3f7a444cfe49d41916db1de0419f05d0a932271ba5543a8129ede436ba78a8f"
+    },
+    "source-repair-r2/subcommands/000003/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000003/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000003/stdin.bin",
+      "bytes": 101,
+      "sha256": "2dcd56968f0030a910f1c31e749655683761831837ef1a046951dd3f7b315ceb"
+    },
+    "source-repair-r2/subcommands/000003/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000004/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000004/request.json",
+      "bytes": 1565,
+      "sha256": "a59688c84d0e45dcde059823d00030c67483d23a68959cff5b2a5188d4f05651"
+    },
+    "source-repair-r2/subcommands/000004/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000004/result.json",
+      "bytes": 1818,
+      "sha256": "0e6e19c289c036931e086dfece1f285725dcdaa501ace18914abb980d3387048"
+    },
+    "source-repair-r2/subcommands/000004/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000004/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000004/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000004/stdout.bin",
+      "bytes": 38213,
+      "sha256": "8f6efd7a9f414d3410c4c46be854630cdd8330c776900c639d380ee4679a88f9"
+    },
+    "source-repair-r2/subcommands/000005/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000005/request.json",
+      "bytes": 1571,
+      "sha256": "6510d1c9cbd18f98d420ecc333c3b3a84cb30b92e649fdc3a5279133d32b7c35"
+    },
+    "source-repair-r2/subcommands/000005/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000005/result.json",
+      "bytes": 1825,
+      "sha256": "6f96cefa64e80ed013e87c9d0723883313450c5b4e7fd3591e9fc0f5c93477c6"
+    },
+    "source-repair-r2/subcommands/000005/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000005/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000005/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000005/stdout.bin",
+      "bytes": 97823,
+      "sha256": "0cdb3c26acc81c68d669c277987277ca33c0d185d3cd5e5354242c1f56d17d6f"
+    },
+    "source-repair-r2/subcommands/000006/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000006/request.json",
+      "bytes": 1592,
+      "sha256": "9ed0c98adc4414f6fa0ab22a17bcd3b4aea4bce3abc0b983d6f05c91f7a66fb0"
+    },
+    "source-repair-r2/subcommands/000006/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000006/result.json",
+      "bytes": 1846,
+      "sha256": "7425e4add1e85825785a84a52442e718dc399609ed758c1601e8a13a9d9b0de4"
+    },
+    "source-repair-r2/subcommands/000006/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000006/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000006/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000006/stdout.bin",
+      "bytes": 11638,
+      "sha256": "ba90f0a77d9ca562d28cc95d77e553a7720e06aacdc01ebba8c5acaf236939a4"
+    },
+    "source-repair-r2/subcommands/000007/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000007/request.json",
+      "bytes": 1588,
+      "sha256": "7ee4e6f109645e1d27a2d9f1c4ae5282a8ba5dc92b11c87654364692f4f3b485"
+    },
+    "source-repair-r2/subcommands/000007/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000007/result.json",
+      "bytes": 1841,
+      "sha256": "31c1944de5f315017852c7415a2a09a6a89a8ec33f8c8367c8bf084a3a74aea5"
+    },
+    "source-repair-r2/subcommands/000007/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000007/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000007/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000007/stdout.bin",
+      "bytes": 5732,
+      "sha256": "bb2cd622cff1d838aa26c411d6d57d08804a20ff6dbb155d9eaeb170935204fd"
+    },
+    "source-repair-r2/subcommands/000008/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000008/request.json",
+      "bytes": 1601,
+      "sha256": "fff3511671f9c6315f2b56bff306f6a5a3aa6ae494465643d11b36e06623aa61"
+    },
+    "source-repair-r2/subcommands/000008/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000008/result.json",
+      "bytes": 1850,
+      "sha256": "bd8d991c619f7027bd7af5bbcc1f78cd6283348418c828b95201cea9432a6962"
+    },
+    "source-repair-r2/subcommands/000008/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000008/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000008/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000008/stdout.bin",
+      "bytes": 3033,
+      "sha256": "a1c6953f7f75eeafd0b6f587326fad402a21e73027fce39aa3c70454f8d4c0c1"
+    },
+    "source-repair-r2/subcommands/000009/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000009/request.json",
+      "bytes": 1596,
+      "sha256": "bc0df1301bf8e7343a40afdb44dbb317dbc0efaac305554b1eb6126f887c92ce"
+    },
+    "source-repair-r2/subcommands/000009/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000009/result.json",
+      "bytes": 1848,
+      "sha256": "3ee1228c92d1430e0e186ffbbe9b3d35d212dadf6afd2d9232b808fb2f698ab2"
+    },
+    "source-repair-r2/subcommands/000009/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000009/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000009/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000009/stdout.bin",
+      "bytes": 9676,
+      "sha256": "69d07a40d11f73cb70f967177aef6336fd6f893402d21cbdce2b921fe59b0403"
+    },
+    "source-repair-r2/subcommands/000010/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000010/request.json",
+      "bytes": 1591,
+      "sha256": "7fc19c6429bf4fd74d1a96a324bd07b413057150fead6cb75b08c37efc4c83c8"
+    },
+    "source-repair-r2/subcommands/000010/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000010/result.json",
+      "bytes": 1845,
+      "sha256": "8dd52e2b13ae099369551d001be32a6675cba43160919a5060f91f392035f8f9"
+    },
+    "source-repair-r2/subcommands/000010/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000010/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000010/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000010/stdout.bin",
+      "bytes": 33511,
+      "sha256": "b5c1adc1b0bf2a39b6825dd9391e903d6a68bf284150d8836a48e19723d430d8"
+    },
+    "source-repair-r2/subcommands/000011/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000011/request.json",
+      "bytes": 1601,
+      "sha256": "86e9d0c4dbc44b317044b3bdc76fe0bd43cccccc422e0cc46a558f9f4f916f85"
+    },
+    "source-repair-r2/subcommands/000011/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000011/result.json",
+      "bytes": 1855,
+      "sha256": "f9fdbdf1b1cf9b47d46a289931c28e9b47e9304672c01f99d4594e7d1cfff8fd"
+    },
+    "source-repair-r2/subcommands/000011/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000011/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000011/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000011/stdout.bin",
+      "bytes": 289871,
+      "sha256": "6ddc819e4c446b44aa41783d43e3d0db1f959c0e38fdfb5290970c90449b8681"
+    },
+    "source-repair-r2/subcommands/000012/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000012/request.json",
+      "bytes": 1593,
+      "sha256": "72903a94c9ab56ff3f5d25b8d8442d6e5a5f50bc126272799740e85ad0535523"
+    },
+    "source-repair-r2/subcommands/000012/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000012/result.json",
+      "bytes": 1845,
+      "sha256": "c5e0862fa4965ae466501cd5bea34063979aa81f0ff9bbf07831513e453dbfc6"
+    },
+    "source-repair-r2/subcommands/000012/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000012/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000012/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000012/stdout.bin",
+      "bytes": 332,
+      "sha256": "12d980bf4d22336e99695ff7d71c9105a906a54dff3387eda92cf643fe368660"
+    },
+    "source-repair-r2/subcommands/000013/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000013/request.json",
+      "bytes": 1588,
+      "sha256": "89cee6c0f48c5166caff2f4d9b4a8fa3f2dec4b0980893a53a62e6dddba34f34"
+    },
+    "source-repair-r2/subcommands/000013/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000013/result.json",
+      "bytes": 1841,
+      "sha256": "55e25390020f61ef02f47fdd60fab97037bc0e14576630968794dea4d61d06e3"
+    },
+    "source-repair-r2/subcommands/000013/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000013/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000013/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000013/stdout.bin",
+      "bytes": 5588,
+      "sha256": "909849f419d659b90aaf775432b7fe41ea5eea417cfb4f154a6ebe3692da702d"
+    },
+    "source-repair-r2/subcommands/000014/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000014/request.json",
+      "bytes": 1579,
+      "sha256": "080655fb9dc3cfc92f198d6874337105f10cd1716decbc2f805d5504b1653441"
+    },
+    "source-repair-r2/subcommands/000014/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000014/result.json",
+      "bytes": 1834,
+      "sha256": "53781fa4625188dc87458deb000d14f5c726dad02cb88ee292494eec2496ef61"
+    },
+    "source-repair-r2/subcommands/000014/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000014/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000014/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000014/stdout.bin",
+      "bytes": 139970,
+      "sha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359"
+    },
+    "source-repair-r2/subcommands/000015/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000015/request.json",
+      "bytes": 1576,
+      "sha256": "6ddd8c5145551881a87aa2853626642183da12710d8886fc435f39f1ff2eb2fb"
+    },
+    "source-repair-r2/subcommands/000015/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000015/result.json",
+      "bytes": 1829,
+      "sha256": "19b97a4e7cd0d2f3e314009b2832f6a531f6668282957fc6e96e6637edb2a25e"
+    },
+    "source-repair-r2/subcommands/000015/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000015/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000015/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000015/stdout.bin",
+      "bytes": 5014,
+      "sha256": "654a794cddbaac702921256a1f7e6d8a806cd3cc1a3100657856a72fd181c586"
+    },
+    "source-repair-r2/subcommands/000016/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000016/request.json",
+      "bytes": 1580,
+      "sha256": "14d00a58c91b79097b27cafaf292abe9ca7da176d015c55af698c1a220505b45"
+    },
+    "source-repair-r2/subcommands/000016/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000016/result.json",
+      "bytes": 1834,
+      "sha256": "9dce1b99bc1909effcd18e850c8a046b9df5953c509c5d32574bb1dc0afb27ff"
+    },
+    "source-repair-r2/subcommands/000016/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000016/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000016/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000016/stdout.bin",
+      "bytes": 362847,
+      "sha256": "67027cbf023301d5280613856d7d26a3b29f2b6c0ec52073e428eeaae74f0ef1"
+    },
+    "source-repair-r2/subcommands/000017/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000017/request.json",
+      "bytes": 1575,
+      "sha256": "0586529b3481d0953d5313d865a60e4a101142233716ca4e6b83a34e55f8bf10"
+    },
+    "source-repair-r2/subcommands/000017/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000017/result.json",
+      "bytes": 1829,
+      "sha256": "14df8f213151a21eddca0102972a113065d0ed360b62d2ac911e0e8375efc4a8"
+    },
+    "source-repair-r2/subcommands/000017/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000017/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000017/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000017/stdout.bin",
+      "bytes": 25787,
+      "sha256": "b122d9fcebc8b31b9af1c701baf6e086b3f590dfe496a2744a049e98b09e8cb5"
+    },
+    "source-repair-r2/subcommands/000018/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000018/request.json",
+      "bytes": 1595,
+      "sha256": "7eebc81d8326ec8628f035015e068a1ccd071252a2f8d42737dbd81b9b74075f"
+    },
+    "source-repair-r2/subcommands/000018/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000018/result.json",
+      "bytes": 1850,
+      "sha256": "d09adf74bd4ac609384ff35b80c55ed9dba1b8f2146d33c93b1cf84a2d90dd7f"
+    },
+    "source-repair-r2/subcommands/000018/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000018/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000018/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000018/stdout.bin",
+      "bytes": 109823,
+      "sha256": "b5e4e707a4fc4b2710db237d0252d67104e0a555a50a875e79de2ad43c7d46c0"
+    },
+    "source-repair-r2/subcommands/000019/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000019/request.json",
+      "bytes": 1580,
+      "sha256": "ef2573e786fdfb126158a0f7d1cc365be5f653795a8518d780651e1124235868"
+    },
+    "source-repair-r2/subcommands/000019/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000019/result.json",
+      "bytes": 1832,
+      "sha256": "aef6c53f8aa0809727f9b41a257c112332ba6807f8cf9b2579cd5b0eae706f17"
+    },
+    "source-repair-r2/subcommands/000019/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000019/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000019/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000019/stdout.bin",
+      "bytes": 1575,
+      "sha256": "b7d5ad2dcfbdedeed03998e4380d10437936e0e1f5c4e4845fd077ec9a9cd73f"
+    },
+    "source-repair-r2/subcommands/000020/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000020/request.json",
+      "bytes": 1589,
+      "sha256": "a6ce3e1966a83544a91ffa3a3fd1abd9390b8a3207ecfafc6a0cd44bc267af11"
+    },
+    "source-repair-r2/subcommands/000020/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000020/result.json",
+      "bytes": 1841,
+      "sha256": "4e417b22777515acbb9d4cbd1cd58b7de9e7a4745bea41e3ce22ab81ba6c282d"
+    },
+    "source-repair-r2/subcommands/000020/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000020/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000020/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000020/stdout.bin",
+      "bytes": 1221,
+      "sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95"
+    },
+    "source-repair-r2/subcommands/000021/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000021/request.json",
+      "bytes": 1570,
+      "sha256": "a308b54af76e63f6c1747b6cfaa62fe9c2cbf93c89dad75a4cb435cdb9e2efd9"
+    },
+    "source-repair-r2/subcommands/000021/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000021/result.json",
+      "bytes": 1821,
+      "sha256": "b0bac86f8b7dca5b200c7cf9b1063fa20dd68d60c89936a1f26af568afdd5415"
+    },
+    "source-repair-r2/subcommands/000021/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000021/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000021/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000021/stdout.bin",
+      "bytes": 8874,
+      "sha256": "52f77327191024528ef2161149f3c650f91098d2c97c25e0e0884ce207c3f0fe"
+    },
+    "source-repair-r2/subcommands/000022/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000022/request.json",
+      "bytes": 1571,
+      "sha256": "bad6cda8188262cf4ed1c2feb4085d0f6fbbf83cbe00468c66f36f1f08411cdf"
+    },
+    "source-repair-r2/subcommands/000022/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000022/result.json",
+      "bytes": 1823,
+      "sha256": "0e5df899a28cf2db584f58151ccb34336ff300f2c25bba23cd467fcaebc32128"
+    },
+    "source-repair-r2/subcommands/000022/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000022/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000022/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000022/stdout.bin",
+      "bytes": 699,
+      "sha256": "42a86840217a103912f89d923e307daa820b30aae745ef250304de7e93e8b4b4"
+    },
+    "source-repair-r2/subcommands/000023/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000023/request.json",
+      "bytes": 1573,
+      "sha256": "4b88e078303ccb29eb2922b3fa49c64c36f9052e2decf002e4af245803ace7ba"
+    },
+    "source-repair-r2/subcommands/000023/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000023/result.json",
+      "bytes": 1828,
+      "sha256": "d41e9c334f0345c6c3f93daad8d70144cab88995aface0747a1b0f7ec4f918cc"
+    },
+    "source-repair-r2/subcommands/000023/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000023/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000023/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000023/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000023/stdout.bin",
+      "bytes": 141042,
+      "sha256": "013fa3d2ef01d4cead6998d65d472deee0137266df2bc8ab9b1bbf567aaa309a"
+    },
+    "source-repair-r2/subcommands/000024/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000024/request.json",
+      "bytes": 1593,
+      "sha256": "c0d11286a90e2952d586e85697cff3f88a6772856aaed38843aaef45da34c0ea"
+    },
+    "source-repair-r2/subcommands/000024/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000024/result.json",
+      "bytes": 1844,
+      "sha256": "0bda321a3cdac5b697614a7b07034c8ce5515c502cc058a2de67965e423c8cf2"
+    },
+    "source-repair-r2/subcommands/000024/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000024/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000024/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000024/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000024/stdout.bin",
+      "bytes": 114,
+      "sha256": "afce8192d061c260698a24267d43f56662f0ee864e5d985d611430306b7cd80f"
+    },
+    "source-repair-r2/subcommands/000025/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000025/request.json",
+      "bytes": 1539,
+      "sha256": "0f15cd4f3e498483f452e66a7edfc77b9287f56f9ee3b6ece24d4c48e525412a"
+    },
+    "source-repair-r2/subcommands/000025/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000025/result.json",
+      "bytes": 1794,
+      "sha256": "370402af61a2343a7acabbe8196e85346801662a060b8fc2e3d6aea290814ea7"
+    },
+    "source-repair-r2/subcommands/000025/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000025/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000025/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000025/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000025/stdout.bin",
+      "bytes": 237973,
+      "sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0"
+    },
+    "source-repair-r2/subcommands/000026/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000026/request.json",
+      "bytes": 1492,
+      "sha256": "84a7da150fbddbeba0589d3a57047c12fe1aa95428f963b7c56904bd2ebf4b48"
+    },
+    "source-repair-r2/subcommands/000026/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000026/result.json",
+      "bytes": 1743,
+      "sha256": "93a1375aac4411574c58becdaef0abc1c663ae9f60041c866663760c1c9e769c"
+    },
+    "source-repair-r2/subcommands/000026/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000026/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000026/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000026/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000026/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000026/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "source-repair-r2/subcommands/000027/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000027/request.json",
+      "bytes": 1527,
+      "sha256": "0d0f613c2aec3073bc9259f0563c0bb4513271002194e2a021c7f7983b2d6993"
+    },
+    "source-repair-r2/subcommands/000027/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000027/result.json",
+      "bytes": 1776,
+      "sha256": "2437e9040950322899069692363c9c010121afddaf1aa98572fe95d9a3d65c93"
+    },
+    "source-repair-r2/subcommands/000027/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000027/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000027/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000027/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000027/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000027/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000028/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000028/request.json",
+      "bytes": 1510,
+      "sha256": "eec9fee38f401c4d037768a43782fff2d4ed6c2c0de7dc59571ab73ae2359ccd"
+    },
+    "source-repair-r2/subcommands/000028/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000028/result.json",
+      "bytes": 1758,
+      "sha256": "02994084afb8b9abfec1d2efafb4dd729058bac67b7e3d553b8915a808f8797c"
+    },
+    "source-repair-r2/subcommands/000028/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000028/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000028/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000028/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000028/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000028/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000029/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000029/request.json",
+      "bytes": 1504,
+      "sha256": "0693b5d2b1e6f87dfd1f8a9bf14a62d1e714b3702cc1f21e34fcf65291ed33b3"
+    },
+    "source-repair-r2/subcommands/000029/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000029/result.json",
+      "bytes": 1760,
+      "sha256": "019c030158b23ea01fd35dfe8f5984e504c0f1d8b1ee4fdd7c8631e4112989c8"
+    },
+    "source-repair-r2/subcommands/000029/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000029/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000029/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000029/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-repair-r2/subcommands/000029/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands/000029/stdout.bin",
+      "bytes": 4270783,
+      "sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+    },
+    "source-repair-r2/subcommands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/source-repair-r2/subcommands.json",
+      "bytes": 55130,
+      "sha256": "673045d51634aecfa894e10ab2f591a60d6c46be393fd16ed861037a31152de6"
+    },
+    "preparation/prepare_source.py": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/prepare_source.py",
+      "bytes": 2810,
+      "sha256": "ee76a887524a337a2298673215a2fdfec7475be7ba1422b87c5d8e599d4f8b00"
+    },
+    "preparation/launch_two_original_stages.py": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/launch_two_original_stages.py",
+      "bytes": 4624,
+      "sha256": "ede05fc668a2aeb2103adf16869bce2f56d8091b6089621e9070ed6ee2f7d3a2"
+    },
+    "preparation/repair_source_r2.py": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/repair_source_r2.py",
+      "bytes": 4240,
+      "sha256": "f302a0ed1eed13866cc629f64d25c33edbcb69143f88507ea932f418b0d2b62e"
+    },
+    "preparation/SOURCE_BINDING.r1.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/SOURCE_BINDING.r1.json",
+      "bytes": 3169,
+      "sha256": "0ddabfd3ab26fb3aad75e3d9140bb7f5f079ae14ace2c4123284a8400b0d67ba"
+    },
+    "preparation/SOURCE_BINDING.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/SOURCE_BINDING.json",
+      "bytes": 6325,
+      "sha256": "3f4dad1616442624941da4835f609a4fb397e35276773e7ec7186d410aa04325"
+    },
+    "preparation/REQUEST.r1.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/REQUEST.r1.json",
+      "bytes": 1574,
+      "sha256": "d1aa9d78560721806641d7cf255a9ff4819ea871fd0571ea9d332f7c1767b1d1"
+    },
+    "preparation/REQUEST.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/REQUEST.json",
+      "bytes": 1798,
+      "sha256": "8b23e7667623f50ef3fa442a5b5f29f8f09336c000ba891cfaf2402a695c5274"
+    },
+    "preparation/R1_ENVIRONMENT_CLASSIFICATION.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/R1_ENVIRONMENT_CLASSIFICATION.json",
+      "bytes": 2132,
+      "sha256": "2636400fe25b55404dae379be116dfc95f9910ba1699b86911f657816f9245ab"
+    },
+    "preparation/FULL_ORACLE_GIT_FILE_LIST.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/FULL_ORACLE_GIT_FILE_LIST.json",
+      "bytes": 3220,
+      "sha256": "62d6b40a13aed7cd5fde50e45e8ff99f5206467b4cfa0d8d37017438a3019c09"
+    },
+    "preparation/IMPORT_AND_READ_CENSUS_R2.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/IMPORT_AND_READ_CENSUS_R2.json",
+      "bytes": 8272,
+      "sha256": "55b2ea8723f9c1090250c7d3c192392ae4b0cf3eb5fdc13513adb2a3a85f11e8"
+    },
+    "preparation/package_r1_environment_and_repair.py": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/package_r1_environment_and_repair.py",
+      "bytes": 4367,
+      "sha256": "b05c96b8a9af57b24aa9f34892edeb357e627ae3bb68c47d7ed9304c9e812602"
+    },
+    "preparation-peer/REVIEW.json": {
+      "originalPath": "/tmp/reading-a-L-launch-narrow-peer/REVIEW.json",
+      "bytes": 1879,
+      "sha256": "414e8f4f6dfd3c1ea0f9be103d88bd6cc50643d4f88cd899cd12f80a2258d186"
+    },
+    "PROVENANCE.json": {
+      "originalPath": "/workspace/train337-L-reading-a-r1-environment-delivery/PROVENANCE.json",
+      "bytes": 1022,
+      "sha256": "b88b8b508774a12f98fadd7b51581be85e54ef82d5e33895ba538f85c8ceab2a"
+    }
+  },
+  "fileCount": 418,
+  "originalBytes": 20469890
+}

@@ -1,0 +1,32 @@
+{
+  "at_utc": "2026-10-24T03:50:53.997112+00:00",
+  "df_command": [
+    "df",
+    "-B1",
+    "/workspace",
+    "/tmp"
+  ],
+  "df_actual_exit": 0,
+  "df_stdout": "Filesystem       1B-blocks        Used Available Use% Mounted on\noverlay        33770192896 31858978816 176451584 100% /workspace\nnone           17871880192 17848614912  23265280 100% /tmp\n",
+  "df_stderr": "",
+  "free_bytes": 176451584,
+  "previous_L_five_stage_allocated_bytes_reported_by_root": 120061952,
+  "margin_bytes": 33554432,
+  "required_free_bytes": 153616384,
+  "resource_guard_met": true,
+  "cache_locks": [
+    {
+      "path": "/tmp/geometry-tests/build.lock",
+      "exists": true,
+      "available": true
+    },
+    {
+      "path": "/tmp/geometry-tests/run_all.lock",
+      "exists": true,
+      "available": true
+    }
+  ],
+  "active_compiler_or_profiler": [],
+  "cache_and_compilers_clear": true,
+  "scope": "One prelaunch resource check after owner reported #348 real terminal and released secondary; no compiler or stage launched"
+}

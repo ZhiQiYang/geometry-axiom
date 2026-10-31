@@ -1,0 +1,45 @@
+{
+  "schema": "geo348-protocol-only-command/1",
+  "name": "004-compile-withdrawn",
+  "argv": [
+    "/usr/bin/cc",
+    "-std=c11",
+    "-O0",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "/tmp/geo348-synthetic-c-protocol-20261025/stub.c",
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/withdrawn/trace_wrap.c",
+    "-Wl,--wrap=fgets",
+    "-Wl,--wrap=fflush",
+    "-o",
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/withdrawn/stub"
+  ],
+  "cwd": "/tmp/geo348-synthetic-c-protocol-20261025",
+  "timeout_seconds": 10,
+  "synthetic_protocol_only": true,
+  "product_process": false,
+  "input": null,
+  "selected_environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "STUB_PID_PATH": null,
+    "STUB_FIXTURE": null,
+    "GEO348_DIAG_EVENT_FD": null,
+    "GEO348_DIAG_STATUS_FD": null
+  },
+  "completed_process_returned": true,
+  "returncode": 0,
+  "exception": null,
+  "stdout": {
+    "captured": true,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "captured": true,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,12 @@
+--- original-v4/run.py
++++ tools-v5/run.py
+@@ -252,7 +252,8 @@
+ 
+     def perf(self):
+         self.require_binaries(('base', 'fix', 'main'))
+-        self.v.perf(self.a.repo, self.work, self.evidence)
++        with self.r.defer_flush():
++            self.v.perf(self.a.repo, self.work, self.evidence)
+         value = json.loads((self.evidence / 'performance.json').read_text())
+         if len(value['samples']) != 36:
+             raise RuntimeError('原性能樣本不完整36筆')
