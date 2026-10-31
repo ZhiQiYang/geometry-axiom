@@ -18,6 +18,21 @@ import re
 import subprocess
 import sys
 
+# Match the Windows link flag /STACK:16777216 (tests/_cl.bat) on POSIX hosts.
+# The core keeps multi-MB frames (apply_surface_combined_line ~4.87 MB); the
+# default 8 MB Linux soft limit makes scenes die with -11 outside CI, where the
+# workflow already runs `ulimit -s 16384`. Child processes inherit this limit;
+# mutate.py imports this module, so mutation baselines get it too.
+STACK_BYTES = 16 * 1024 * 1024
+try:
+    import resource
+    _soft, _hard = resource.getrlimit(resource.RLIMIT_STACK)
+    if _soft != resource.RLIM_INFINITY and _soft < STACK_BYTES:
+        _want = STACK_BYTES if _hard == resource.RLIM_INFINITY else min(STACK_BYTES, _hard)
+        resource.setrlimit(resource.RLIMIT_STACK, (_want, _hard))
+except (ImportError, ValueError, OSError):
+    pass
+
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
 
