@@ -66,6 +66,19 @@ jobs:
         run: |
           sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
           sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+      - name: Reprove the cancelled-candidate mutation after the approved world-disposal change
+        shell: bash
+        run: |
+          ulimit -s 16384
+          mkdir -p /tmp/r06-native-cancel-evidence
+          git rev-parse HEAD > /tmp/r06-native-cancel-evidence/head-sha.txt
+          set +e
+          python3 -u tests/bay_repeat_mutation_check.py --kind native --case r06_br13_confirm_cancelled_candidate --out /tmp/r06-native-cancel-evidence/mutations > /tmp/r06-native-cancel-evidence/runner.stdout 2> /tmp/r06-native-cancel-evidence/runner.stderr
+          status=$?
+          printf '%s\n' "$status" > /tmp/r06-native-cancel-evidence/runner-exit-code.txt
+          cat /tmp/r06-native-cancel-evidence/runner.stdout
+          cat /tmp/r06-native-cancel-evidence/runner.stderr
+          exit "$status"
       - name: Run baseline, three named browser mutations and restored baseline
         shell: bash
         run: |
@@ -91,5 +104,6 @@ jobs:
             /tmp/r06-browser-evidence/
             !/tmp/r06-browser-evidence/**/chrome-profile/**
             /tmp/r06-formal-archive-*/
+            /tmp/r06-native-cancel-evidence/
           if-no-files-found: error
           retention-days: 14
