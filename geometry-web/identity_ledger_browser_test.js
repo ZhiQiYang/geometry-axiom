@@ -77,11 +77,15 @@ module.exports = async function identityLedgerBrowser({send, eval_, sleep, click
   await waitForUI(`typeof window.__ilSaved === 'string' && window.__ilSaved.length > 0`, 30000);
   const saved = await eval_(`window.__ilSaved`);
   check('save wrote bytes', typeof saved === 'string' && saved.length > 0);
+  const savedWorld = await eval_(`api('dump')`);
 
   const origin = new URL(process.env.GEOMETRY_TEST_URL).origin;
   await send('Storage.clearDataForOrigin', {origin, storageTypes: 'all'});
   await send('Page.navigate', {url: process.env.GEOMETRY_TEST_URL});
-  await waitForUI(`typeof api === 'function' && typeof oc === 'object' && connection.phase === 'ready'`, 30000);
+  await waitForUI(`typeof api === 'function' && typeof oc === 'object' && connection.phase === 'ready' && typeof ReferenceWorkspace === 'object' && !ReferenceWorkspace.busy`, 30000);
+  const cold = await eval_(`(async () => ({reset: await api('reset'), ledger: await api('identity-read')}))()`);
+  if (cold.reset.ok !== true || cold.ledger.ok !== true || cold.ledger.active !== false || cold.ledger.marks.length !== 0)
+    throw Error('IL cold-open setup did not clear the native ledger');
   await eval_(`(() => {
     const binary = atob(${JSON.stringify(saved)});
     const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
@@ -100,5 +104,9 @@ module.exports = async function identityLedgerBrowser({send, eval_, sleep, click
     if (reopened && reopened.ok && reopened.marks && reopened.marks[0] && reopened.marks[0].mark === before.marks[0].mark) break;
     await sleep(100);
   }
-  check('reopen keeps the mark', !!(reopened && reopened.ok && reopened.marks && reopened.marks[0] && reopened.marks[0].mark === before.marks[0].mark));
+  await waitForUI(`typeof ReferenceWorkspace === 'object' && !ReferenceWorkspace.busy`, 30000);
+  const reopenedWorld = await eval_(`api('dump')`);
+  check('reopen keeps the mark', !!(reopened && reopened.ok && reopened.active === true &&
+    JSON.stringify(reopened.marks) === JSON.stringify(before.marks) && reopened.nextSerial >= cold.ledger.nextSerial &&
+    reopenedWorld.ok === true && reopenedWorld.text === savedWorld.text));
 };
