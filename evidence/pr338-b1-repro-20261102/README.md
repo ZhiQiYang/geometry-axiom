@@ -9,3 +9,11 @@
 來源 bytes／行尾直接從核過 hash 的原 R8 tar 還原：base-pg 使用原固定 BASE `b74f9a2ae7ade1555b9be45283adecc097fb76e3`，fix 與 trace 使用 F8 `75a1e93811a52b69385cbdaf6a09d773ed9052ad` 及其原 trace overlay。三個 lexical quoted-include closure 先驗 184／185／185 檔與獨立靜態雜湊，再按原 `build.json` 命令與絕對 cwd 建置。
 
 `RESULT.json` 保存三組原期望與完整重建 bytes／SHA256／mode、真 compile exit 及原流。`REPRODUCED_ELFS.tar` 保留重建 ELF 與 mode；只有三支 bytes、SHA 與完整 mode 全符，重現程式才真 exit 0。不同為真 exit 1，前提／環境失敗為真 exit 2。此工作不執行重建 ELF、不重抽 R8、不執行 whole-memo；正式反證及 B1 最後解除仍另列，原 R8 overall exit 1 保留。
+
+## 已取得精確 bytes，接續正式反證
+
+首輪完整 helper `4fd903cde1f591f927baa44c15ccf0eab0f81a02` 的 [run 41335297693](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41335297693) 已真 exit 0；三 ELF 的原完整 SHA／bytes／mode 全符。[artifact 13094439575](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41335297693/artifacts/13094439575) 為 3,520,689 bytes，ZIP SHA256 `d8a74b21a3466e2d463fec354ea03856410e108f7af64e412289e701e2da70b3`。第二位 agent 靜態讀回三 ELF 及 manifest 72 項，零差異，沒有執行 ELF。
+
+後續 `whole-memo-formal` 以重現 job 成功為前提，取其精確 hash artifact、恢復原 R8 receipt／streams／scene inputs，另建乾淨可寫 F8 Git checkout，執行**逐 byte 未改**的原 `memo-copy-v2/tools/run.py --phase all`。原六份工具硬 pin 先逐一驗明。V3 `verify_linux.py` 由已封存 V4 逆回原 scene 列舉的一行，**完整 SHA 精確命中原 pin** `ccbce3a5d32bee81f22be31a31c1f771ca05c54f53f21e4d94b11b4a08b4534d`（11,227 bytes），保存在 `frozen-tools/verify_linux.v3.py`；沒有產生新的裁判行為。
+
+原 driver 的 baseline 是既有 R8 profile exit 0／原有效 criterion，之後實跑 withdrawn=1、restored=0、isolated 175／350 ABC=0；不能把缺件查核或 metadata proof 當這三 phase 的終態。本工作保留原 R8 overall 1，不重抽 36 timing 樣本。`CI_RESULT.json` 保存正式 driver 真 process exit、原 phase 終態及來源；`CURRENT_PRODUCT_INPUT_CLOSURE.json` 逐 byte 核 F8／目前 #338 `9230a3dc04233e50c0bf97141a7fbe692828b2ca` 的 185 編譯輸入與原場景，並列實際非 evidence 差異及原工具 hash。是否正式完成以新 CI 原流為準；B1 最後解除仍由審查方判斷。
