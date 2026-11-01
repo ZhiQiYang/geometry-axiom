@@ -3125,7 +3125,8 @@ static bool apply_interactive_tokens(
         return ok;
     }
 
-    if (!g_history.grouping) {
+    bool recorded = !g_history.grouping;
+    if (recorded) {
         history_record(world);
     }
     uint32_t preview_before = reference_preview_token();
@@ -3133,7 +3134,7 @@ static bool apply_interactive_tokens(
     if (apply_scene_line(path, line_no, tokens, count, world)) {
         /* R56: a successful no-op does not create history or discard redo. */
         if (g_definition_revision == revision_before) {
-            if (!g_history.grouping) history_unrecord();
+            if (recorded) history_unrecord();
         } else app_history_group_mark_dirty(&g_history);
         return true;
     }
