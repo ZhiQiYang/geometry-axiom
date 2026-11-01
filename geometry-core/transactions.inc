@@ -42,7 +42,7 @@ static bool app_world_identity_finalize(AppWorldCandidate *candidate,void *opaqu
 }
 /* Only retained confirmation uses this wrapper. Its recorded deletion keys
  * belong to the retained candidate; previews never prepare marks or serials. */
-static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+static bool app_world_candidate_revalidate_retained(AppWorldCandidate *candidate,const World *live)
 {
     identity_drop_serials();
     if(candidate!=g_preview.transaction)return false;
