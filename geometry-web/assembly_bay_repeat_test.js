@@ -67,6 +67,9 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
   const previewReady=()=>wait(`!!$('asmConfirm')&&!$('asmConfirm').disabled`);
   async function newRepeat(){
     await ctl('#btnNewAssembly');await ctl('[data-asm-binding="1"]');await ctl('#asmGenerate');
+    // The existing creator awaits native state and a new ID before rendering.
+    // Wait for the common single/repeat form, then keep the mode assertion exact.
+    await wait(`!!$('asmInstanceName')&&!!$('asmInstanceSurface')`);
     check('R06_BR14_ENTRY 既有生成入口提供可選重複模式',await read(`(()=>{const e=$('asmInstanceLayout'),o=e?.querySelector('option[value="bay-repeat"]');return e?.tagName==='SELECT'&&!e.disabled&&!!o&&!o.disabled;})()`)===true);
     await choose('#asmInstanceLayout','bay-repeat');await choose('#asmInstanceSurface',1);
     return read(`ReferenceWorkspace.getAssemblyDrafts().find(d=>d.kind==='instance'&&d.data.layout==='bay-repeat')`);

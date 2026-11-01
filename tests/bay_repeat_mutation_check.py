@@ -212,6 +212,27 @@ def cleanup_cold_children(ledger, token, root):
     return cleaned
 
 
+def expected_browser_transport_fault(record):
+    """Accept only a receipt emitted at the existing deliberate post-commit throw.
+
+    The complete trace remains mandatory: an expected first fault must never
+    suppress a subsequent real transport failure or an extra unmarked event.
+    """
+    if not isinstance(record, dict):
+        return False
+    receipt = record.get('expectedFault')
+    return (isinstance(receipt, dict) and
+            record.get('source') == 'api-result' and record.get('transport') is True and
+            record.get('step') == '=== P77 review #33 #35 #36 #37 ===' and
+            re.fullmatch(r'assembly-confirm [0-9]+', str(record.get('command', ''))) is not None and
+            record.get('error') == 'Injected lost success response' and
+            receipt.get('schema') == 'geometry-cdp-injected-transport/1' and
+            receipt.get('fixture') == 'assembly-review-confirm-response' and
+            receipt.get('mode') in ('lost', 'unknown') and receipt.get('serverOk') is True and
+            receipt.get('command') == record.get('command') and
+            receipt.get('error') == record.get('error'))
+
+
 def browser_observation(code, timed_out, log, manifest):
     records = []
     for line in log.splitlines():
@@ -229,7 +250,12 @@ def browser_observation(code, timed_out, log, manifest):
     record = records[0]
     expected_scope = record.get('scope', {}).get('filters') == ['GEOMETRY_ASSEMBLY_ONLY']
     failed = [name for name, verdict in checks if verdict == '✗']
-    infrastructure = (not expected_scope or record.get('firstTransportFailure') or record.get('firstNetworkFailure') or
+    transports = record.get('apiTransportFailures')
+    complete_transport_trace = (record.get('apiTransportTraceComplete') is True and isinstance(transports, list))
+    transport_infrastructure = (not complete_transport_trace or
+                               (record.get('firstTransportFailure') or None) != (transports[0] if transports else None) or
+                               any(not expected_browser_transport_fault(item) for item in (transports or [])))
+    infrastructure = (not expected_scope or transport_infrastructure or record.get('firstNetworkFailure') or
                       record.get('uncaughtBrowserExceptions', 0) or re.search(r'^\[EXCEPTION\]|R06_ARCHIVE_INFRASTRUCTURE', log, re.M))
     if infrastructure:
         empty['errors'].append(dict(test='formal-cdp-assembly', tags=[], message='scope/transport/browser infrastructure failure'))

@@ -104,3 +104,32 @@ test('a broken diagnostic sink cannot alter a transport result', async () => {
   assert.strictEqual(target.apiRequest('cmd'), promise);
   assert.strictEqual(await promise, value);
 });
+
+test('complete API tracing retains the first failure and reports later unmarked failures', async () => {
+  const trace = createTransportFailureTrace('http://localhost:8765',undefined,{allApi:true});
+  const first = {ok:false,transport:true,error:'injected'};
+  const later = {ok:false,transport:true,error:'unexpected later failure'};
+  const values = [first,later];
+  const target = {apiRequest:()=>Promise.resolve(values.shift())};
+  const receipt = {command:'expected command',error:'injected',serverOk:true};
+  installClientTransportTrace(target,record=>trace.observeApiFailure(record),undefined,
+    {all:true,expectedFault:record=>record.command===receipt.command?receipt:null});
+  assert.strictEqual(await target.apiRequest('expected command'),first);
+  assert.strictEqual(await target.apiRequest('later command'),later);
+  const records=trace.apiFailures();
+  assert.equal(records.length,2,'COMPLETE_API_TRACE_MUST_NOT_STOP_AFTER_EXPECTED_FAILURE');
+  assert.strictEqual(trace.apiFirst(),records[0]);
+  assert.strictEqual(records[0].expectedFault,receipt);
+  assert.equal(records[1].expectedFault,undefined);
+  records.pop();
+  assert.equal(trace.apiFailures().length,2,'API_TRACE_COPY_MUST_NOT_ERASE_OBSERVATIONS');
+  assert.equal(trace.apiComplete(),true);
+});
+
+test('complete API tracing reports overflow instead of silently dropping failures', () => {
+  const trace = createTransportFailureTrace('http://localhost:8765',undefined,{allApi:true});
+  for(let i=0;i<1025;i++)trace.observeApiFailure({transport:true,command:String(i)});
+  assert.equal(trace.apiFailures().length,1024);
+  assert.equal(trace.apiFirst().command,'0');
+  assert.equal(trace.apiComplete(),false,'TRUNCATED_TRANSPORT_TRACE_CANNOT_BE_COMPLETE');
+});

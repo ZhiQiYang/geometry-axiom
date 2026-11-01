@@ -1,10 +1,12 @@
 'use strict';
 
 // Observe only; never retry, abort, wait, or change a harness assertion.
-function createTransportFailureTrace(origin, now = () => new Date().toISOString()) {
+function createTransportFailureTrace(origin, now = () => new Date().toISOString(), options = {}) {
   const requests = new Map();
   let first = null;
   let firstApi = null;
+  const apiFailures = [];
+  let apiOverflow = false;
   return {
     observe(message, step) {
       const p = message.params, key = (message.sessionId || 'main') + ':' + p.requestId;
@@ -27,14 +29,21 @@ function createTransportFailureTrace(origin, now = () => new Date().toISOString(
       if (['Network.loadingFailed', 'Network.loadingFinished'].includes(message.method)) requests.delete(key);
     },
     observeApiFailure(record) {
-      if (!firstApi && record?.transport === true) firstApi = record;
+      if (record?.transport !== true) return;
+      if (!firstApi || options.allApi) {
+        if (apiFailures.length < 1024) apiFailures.push(record);
+        else apiOverflow = true;
+      }
+      if (!firstApi) firstApi = record;
     },
     apiFirst: () => firstApi,
+    apiFailures: () => [...apiFailures],
+    apiComplete: () => !apiOverflow,
     first: () => first
   };
 }
 function installClientTransportTrace(target, report,
-    now = () => ({wall:new Date().toISOString(),monotonic:performance.now()})) {
+    now = () => ({wall:new Date().toISOString(),monotonic:performance.now()}), options = {}) {
   if (target.__geometryTransportObserver || typeof target.apiRequest !== 'function') return false;
   target.__geometryTransportObserver = true;
   const original = target.apiRequest;
@@ -43,14 +52,19 @@ function installClientTransportTrace(target, report,
     const requested = now();
     const promise = original.apply(this, args);
     if (promise && typeof promise.then === 'function') promise.then(result => {
-      if (first || result?.transport !== true) return;
+      if ((!options.all && first) || result?.transport !== true) return;
       first = true;
       try {
         const failed = now();
-        report({source:'api-result',transport:true,command:args[0],
+        const record = {source:'api-result',transport:true,command:args[0],
           requestedAt:requested.wall,requestedMonotonic:requested.monotonic,
           failedAt:failed.wall,failedMonotonic:failed.monotonic,
-          error:result.error || null});
+          error:result.error || null};
+        try {
+          const expectedFault = options.expectedFault?.(record);
+          if (expectedFault) record.expectedFault = expectedFault;
+        } catch (error) { record.expectedFaultError = String(error?.message || error); }
+        report(record);
       } catch { /* A failed diagnostic must not change the original Promise. */ }
     }, () => {});
     return promise;

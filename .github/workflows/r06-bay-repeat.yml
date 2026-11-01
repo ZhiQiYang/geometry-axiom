@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '24'
@@ -44,6 +45,8 @@ jobs:
           test -x "$GEOMETRY_CHROME"
           mkdir -p /tmp/r06-browser-evidence
           git rev-parse HEAD | tee /tmp/r06-browser-evidence/head-sha.txt
+          node --test tests/test_transport_failure_trace.js > /tmp/r06-browser-evidence/transport-controls.stdout 2> /tmp/r06-browser-evidence/transport-controls.stderr
+          python3 -m unittest tests.test_bay_repeat_mutation_check > /tmp/r06-browser-evidence/judge-controls.stdout 2> /tmp/r06-browser-evidence/judge-controls.stderr
           set +e
           python3 -u tests/bay_repeat_mutation_check.py --kind browser --out /tmp/r06-browser-evidence/mutations > /tmp/r06-browser-evidence/runner.stdout 2> /tmp/r06-browser-evidence/runner.stderr
           status=$?
@@ -58,6 +61,7 @@ jobs:
           name: r06-browser-mutations-${{ github.sha }}
           path: |
             /tmp/r06-browser-evidence/
-            !/tmp/r06-browser-evidence/**/chrome-profile/
+            !/tmp/r06-browser-evidence/**/chrome-profile/**
+            /tmp/r06-formal-archive-*/
           if-no-files-found: error
           retention-days: 14
