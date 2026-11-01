@@ -1,13 +1,12 @@
 """Identity ledger over a fresh bridge. SkipTest means this machine did not run it."""
 import json
+import secrets
 import tempfile
 import unittest
 from pathlib import Path
 
 from tests import _bridge
 
-EPOCH = "0123456789abcdef0123456789abcdef"
-OTHER = "fedcba9876543210fedcba9876543210"
 BOUNDARY = "boundary 1 outline 0,0 2000,0 2000,1000 0,1000"
 
 
@@ -17,11 +16,15 @@ class IdentityLedgerTests(unittest.TestCase):
         cls.bridge = _bridge.find_bridge()
 
     def setUp(self):
+        self.epoch = secrets.token_hex(16)
+        self.other_epoch = secrets.token_hex(16)
+        while self.other_epoch == self.epoch:
+            self.other_epoch = secrets.token_hex(16)
         self.session = _bridge.BridgeSession(self.bridge)
         self.session.__enter__()
         reset = self.session.command("reset")
         self.assertTrue(reset.get("ok"), reset)
-        epoch = self.session.command("identity-epoch " + EPOCH)
+        epoch = self.session.command("identity-epoch " + self.epoch)
         self.assertTrue(epoch.get("ok"), epoch)
 
     def tearDown(self):
@@ -47,7 +50,7 @@ class IdentityLedgerTests(unittest.TestCase):
         self.assertEqual(len(issued["marks"]), 1)
         self.assertEqual(issued["marks"][0]["kind"], "boundary")
         self.assertEqual(issued["marks"][0]["id"], 1)
-        self.assertTrue(issued["marks"][0]["mark"].startswith(EPOCH + ":"))
+        self.assertTrue(issued["marks"][0]["mark"].startswith(self.epoch + ":"))
         second = self.session.line("identity-ledger activate")
         self.assertFalse(second.get("ok"), second)
         self.assertIn("身分帳已啟用", second.get("error", ""))
@@ -92,7 +95,7 @@ class IdentityLedgerTests(unittest.TestCase):
         self.assertGreater(issued["nextSerial"], before)
 
     def test_interactive_identity_line_is_rejected(self):
-        rejected = self.session.line("identity boundary 1 %s:1" % EPOCH)
+        rejected = self.session.line("identity boundary 1 %s:1" % self.epoch)
         self.assertFalse(rejected.get("ok"), rejected)
         self.assertIn("互動輸入不得宣告 identity", rejected.get("error", ""))
 
@@ -135,7 +138,7 @@ class IdentityLedgerTests(unittest.TestCase):
         self.assertTrue(data["active"])
         self.assertEqual(data["marks"], [])
         self.assertGreaterEqual(data["nextSerial"], serial)
-        again = self.session.command("identity-epoch " + EPOCH)
+        again = self.session.command("identity-epoch " + self.epoch)
         self.assertTrue(again.get("ok"), again)
 
     def test_bridge_reset_is_replacement_and_does_not_rewind_serial(self):
@@ -152,10 +155,10 @@ class IdentityLedgerTests(unittest.TestCase):
     def test_epoch_already_in_marks_is_rejected_and_another_epoch_succeeds(self):
         self.assertTrue(self.session.line(BOUNDARY)["ok"])
         self.assertTrue(self.session.line("identity-ledger activate")["ok"])
-        rejected = self.session.command("identity-epoch " + EPOCH)
+        rejected = self.session.command("identity-epoch " + self.epoch)
         self.assertFalse(rejected.get("ok"), rejected)
         self.assertIn("配號區段已出現在目前記號", rejected.get("error", ""))
-        accepted = self.session.command("identity-epoch " + OTHER)
+        accepted = self.session.command("identity-epoch " + self.other_epoch)
         self.assertTrue(accepted.get("ok"), accepted)
 
     def test_undo_activate_restores_inactive_dump_text(self):
@@ -267,7 +270,7 @@ class IdentityLedgerTests(unittest.TestCase):
                              [("parameter", 7, None), ("parameter", 8, None),
                               ("parameter-field", 7, 1), ("parameter-field", 8, 1)])
             self.assertEqual([mark["mark"] for mark in after["marks"]],
-                             [EPOCH + ":%s" % serial for serial in range(before["nextSerial"], after["nextSerial"])])
+                             [self.epoch + ":%s" % serial for serial in range(before["nextSerial"], after["nextSerial"])])
             committed = self.session.command("dump")["text"]
             self.assertNotEqual(committed, world)
             self.assertFalse(self.session.command("engineering-confirm %s" % token)["ok"])
