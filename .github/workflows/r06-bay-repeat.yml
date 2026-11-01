@@ -20,6 +20,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  card-archive-mutations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Reprove every existing card archive guard after R06 re-anchoring
+        shell: bash
+        run: |
+          set +e
+          python3 geometry-core/card-reference/run_archive_mutations.py --output "$RUNNER_TEMP/r06-card-archive-evidence"
+          status=$?
+          printf '%s\n' "$status" > "$RUNNER_TEMP/r06-card-archive-evidence/exit-code.txt"
+          exit "$status"
+      - name: Preserve card baseline, six named red assertions and restorations
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r06-card-archive-mutations-${{ github.sha }}
+          path: ${{ runner.temp }}/r06-card-archive-evidence/
+          if-no-files-found: error
+          retention-days: 14
+
   browser-mutations:
     runs-on: ubuntu-latest
     timeout-minutes: 120

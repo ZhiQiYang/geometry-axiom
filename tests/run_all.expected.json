@@ -152,7 +152,7 @@
     "node:tests-js": {
       "mode": "count",
       "unit": "node test",
-      "count": 737
+      "count": 753
     },
     "node:woodworking_frontend": {
       "mode": "count",
@@ -170,6 +170,11 @@
     "py:test_architecture_contract": {
       "mode": "count",
       "count": 205,
+      "unit": "test"
+    },
+    "py:test_assembly_bay_repeat": {
+      "mode": "count",
+      "count": 48,
       "unit": "test"
     },
     "py:test_assembly_candidate_impact": {
@@ -210,6 +215,11 @@
     "py:test_axiom_reader": {
       "mode": "count",
       "count": 51,
+      "unit": "test"
+    },
+    "py:test_bay_repeat_mutation_check": {
+      "mode": "count",
+      "count": 7,
       "unit": "test"
     },
     "py:test_binaries": {

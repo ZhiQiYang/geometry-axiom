@@ -10,10 +10,10 @@ import time
 ROOT=Path(__file__).resolve().parents[2]
 TARGET=ROOT/'geometry-web/project-store.js'
 MUTATIONS=[
-    ('A01-format', [('if(card && (manifest.format !== CARD_FORMAT || !manifest.requiredCapabilities?.includes(CARD_CAPABILITY)) || manifest.format === CARD_FORMAT && !card)', 'if(false)')]),
-    ('A02-manifest', [('if(card && (manifest.format !== CARD_FORMAT || !manifest.requiredCapabilities?.includes(CARD_CAPABILITY)) || manifest.format === CARD_FORMAT && !card)', 'if(false)'), ('needed.some(c => !manifest.requiredCapabilities?.includes(c))', 'needed.some(c => c!==CARD_CAPABILITY && !manifest.requiredCapabilities?.includes(c))')]),
+    ('A01-format', [('if(card && (![CARD_FORMAT,BAY_REPEAT_FORMAT].includes(manifest.format) || !manifest.requiredCapabilities?.includes(CARD_CAPABILITY)) || manifest.format === CARD_FORMAT && !card)', 'if(false)')]),
+    ('A02-manifest', [('if(card && (![CARD_FORMAT,BAY_REPEAT_FORMAT].includes(manifest.format) || !manifest.requiredCapabilities?.includes(CARD_CAPABILITY)) || manifest.format === CARD_FORMAT && !card)', 'if(false)'), ('needed.some(c => !manifest.requiredCapabilities?.includes(c))', 'needed.some(c => c!==CARD_CAPABILITY && !manifest.requiredCapabilities?.includes(c))')]),
     ('A03-source-markers', [('if (usesCard && (!declared.has(CARD_CAPABILITY) || !declared.has(PARAMETER_CAPABILITY)))', 'if (false)')]),
-    ('A04-reader', [('SECTION_CAPABILITY,CARD_CAPABILITY].includes(capability)', 'SECTION_CAPABILITY].includes(capability)')]),
+    ('A04-reader', [('SECTION_CAPABILITY,CARD_CAPABILITY, BAY_REPEAT_CAPABILITY].includes(capability)', 'SECTION_CAPABILITY, BAY_REPEAT_CAPABILITY].includes(capability)')]),
     ('A05-version', [('const CARD_FORMAT = "geometry-canvas/18"', 'const CARD_FORMAT = "geometry-canvas/6"')]),
     ('A06-nested', [('if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(CARD_CAPABILITY)))', 'if(false)')]),
 ]
