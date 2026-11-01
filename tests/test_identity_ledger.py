@@ -1,4 +1,5 @@
 """Identity ledger over a fresh bridge. SkipTest means this machine did not run it."""
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -167,6 +168,120 @@ class IdentityLedgerTests(unittest.TestCase):
         data = self.read()
         self.assertFalse(data["active"])
         self.assertEqual(data["nextSerial"], serial)
+
+    def test_activation_without_epoch_keeps_original_diagnostic_and_state(self):
+        # The ordinary fixture sets an epoch; this independent process must not.
+        with _bridge.BridgeSession(self.bridge) as fresh:
+            self.assertTrue(fresh.command("reset")["ok"])
+            self.assertTrue(fresh.line(BOUNDARY)["ok"])
+            before = fresh.command("identity-read")
+            self.assertTrue(before["ok"], before)
+            self.assertFalse(before["active"])
+            self.assertFalse(before["epochSet"])
+            world = fresh.command("dump")["text"]
+            self.assertIn(BOUNDARY, world)
+            rejected = fresh.line("identity-ledger activate")
+            self.assertFalse(rejected.get("ok"), rejected)
+            self.assertIn("未設定配號區段", rejected.get("error", ""))
+            self.assertEqual(fresh.command("identity-read"), before)
+            self.assertEqual(fresh.command("dump")["text"], world)
+
+    def test_active_same_boundary_noop_keeps_marks_serial_and_history(self):
+        self.assertTrue(self.session.line(BOUNDARY)["ok"])
+        inactive = self.session.command("dump")["text"]
+        self.assertTrue(self.session.line("identity-ledger activate")["ok"])
+        before = self.read()
+        world = self.session.command("dump")["text"]
+        unchanged = self.session.line(BOUNDARY)
+        self.assertTrue(unchanged.get("ok"), unchanged)
+        self.assertEqual(self.read(), before)
+        self.assertEqual(self.session.command("dump")["text"], world)
+        # A no-op history entry would consume this undo and leave activation on.
+        self.assertTrue(self.session.line("undo")["ok"])
+        self.assertEqual(self.session.command("dump")["text"], inactive)
+        after = self.read()
+        self.assertFalse(after["active"])
+        self.assertEqual(after["marks"], [])
+        self.assertEqual(after["nextSerial"], before["nextSerial"])
+
+    def test_active_stale_preview_cannot_publish_or_consume_serial(self):
+        self.assertTrue(self.session.line("identity-ledger activate")["ok"])
+        before = self.read()
+        preview = self.session.line("preview " + BOUNDARY)
+        self.assertTrue(preview.get("ok"), preview)
+        self.assertTrue(preview["preview"]["valid"], preview)
+        self.assertEqual(self.read(), before)
+        token = preview["preview"]["token"]
+        edited = self.session.line("spec identity_unrelated 7")
+        self.assertTrue(edited.get("ok"), edited)
+        world = self.session.command("dump")["text"]
+        self.assertIn("spec identity_unrelated 7", world)
+        before_confirm = self.read()
+        self.assertEqual(before_confirm, before)
+        rejected = self.session.line("confirm %s" % token)
+        self.assertFalse(rejected.get("ok"), rejected)
+        self.assertIn("stale", rejected.get("error", "").lower())
+        self.assertEqual(self.session.command("dump")["text"], world)
+        self.assertEqual(self.read(), before_confirm)
+
+    def test_active_engineering_batch_allocates_once_only_on_confirm(self):
+        self.assertTrue(self.session.line("identity-ledger activate")["ok"])
+        before = self.read()
+        world = self.session.command("dump")["text"]
+        # Two independently declared cards each add one card and one field key.
+        operations = [{"op": "put-parameter", "value": {
+            "id": card, "name": "card-%s" % card, "fields": [
+                {"id": 1, "name": "width", "type": "dimension", "input": value}
+            ]}} for card, value in ((7, "20"), (8, "30"))]
+        with tempfile.TemporaryDirectory(prefix="identity-engineering-") as directory:
+            path = Path(directory) / "request.json"
+
+            def preview():
+                engineering = self.session.command("engineering-read")
+                self.assertTrue(engineering.get("ok"), engineering)
+                request = {"schema": "engineering-transaction/1",
+                           "expectedRevision": engineering["revision"], "operations": operations}
+                path.write_bytes(json.dumps(request, ensure_ascii=False).encode("utf-8"))
+                result = self.session.command("engineering-preview " + str(path))
+                self.assertTrue(result.get("ok"), result)
+                self.assertTrue(result["preview"]["valid"], result)
+                return result["preview"]["token"]
+
+            cancelled_token = preview()
+            self.assertEqual(self.read(), before)
+            self.assertEqual(self.session.command("dump")["text"], world)
+            cancelled = self.session.command("engineering-cancel %s" % cancelled_token)
+            self.assertTrue(cancelled.get("cancelled"), cancelled)
+            self.assertFalse(self.session.command("engineering-confirm %s" % cancelled_token)["ok"])
+            self.assertEqual(self.read(), before)
+            self.assertEqual(self.session.command("dump")["text"], world)
+            token = preview()
+            self.assertEqual(self.read(), before)
+            self.assertEqual(self.session.command("dump")["text"], world)
+            confirmed = self.session.command("engineering-confirm %s" % token)
+            self.assertTrue(confirmed.get("ok"), confirmed)
+            self.assertTrue(confirmed["history_changed"], confirmed)
+            after = self.read()
+            self.assertEqual(after["nextSerial"], before["nextSerial"] + 4)
+            self.assertEqual([(mark["kind"], mark["id"], mark.get("fieldId")) for mark in after["marks"]],
+                             [("parameter", 7, None), ("parameter", 8, None),
+                              ("parameter-field", 7, 1), ("parameter-field", 8, 1)])
+            self.assertEqual([mark["mark"] for mark in after["marks"]],
+                             [EPOCH + ":%s" % serial for serial in range(before["nextSerial"], after["nextSerial"])])
+            committed = self.session.command("dump")["text"]
+            self.assertNotEqual(committed, world)
+            self.assertFalse(self.session.command("engineering-confirm %s" % token)["ok"])
+            self.assertEqual(self.session.command("dump")["text"], committed)
+            self.assertEqual(self.read(), after)
+            self.assertTrue(self.session.line("undo")["ok"])
+            self.assertEqual(self.session.command("dump")["text"], world)
+            undone = self.read()
+            self.assertTrue(undone["active"])
+            self.assertEqual(undone["marks"], before["marks"])
+            self.assertEqual(undone["nextSerial"], after["nextSerial"])
+            self.assertTrue(self.session.line("redo")["ok"])
+            self.assertEqual(self.session.command("dump")["text"], committed)
+            self.assertEqual(self.read(), after)
 
 
 if __name__ == "__main__":
