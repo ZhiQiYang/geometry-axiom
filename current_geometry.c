@@ -3129,8 +3129,12 @@ static bool apply_interactive_tokens(
         history_record(world);
     }
     uint32_t preview_before = reference_preview_token();
+    uint64_t revision_before = g_definition_revision;
     if (apply_scene_line(path, line_no, tokens, count, world)) {
-        app_history_group_mark_dirty(&g_history);
+        /* R56: a successful no-op does not create history or discard redo. */
+        if (g_definition_revision == revision_before) {
+            if (!g_history.grouping) history_unrecord();
+        } else app_history_group_mark_dirty(&g_history);
         return true;
     }
     if (g_history.grouping) {

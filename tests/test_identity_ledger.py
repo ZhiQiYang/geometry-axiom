@@ -199,6 +199,11 @@ class IdentityLedgerTests(unittest.TestCase):
         self.assertTrue(unchanged.get("ok"), unchanged)
         self.assertEqual(self.read(), before)
         self.assertEqual(self.session.command("dump")["text"], world)
+        self.assertTrue(self.session.line("history-begin")["ok"])
+        self.assertTrue(self.session.line(BOUNDARY)["ok"])
+        self.assertTrue(self.session.line("history-end")["ok"])
+        self.assertEqual(self.read(), before)
+        self.assertEqual(self.session.command("dump")["text"], world)
         # A no-op history entry would consume this undo and leave activation on.
         self.assertTrue(self.session.line("undo")["ok"])
         self.assertEqual(self.session.command("dump")["text"], inactive)
@@ -206,6 +211,13 @@ class IdentityLedgerTests(unittest.TestCase):
         self.assertFalse(after["active"])
         self.assertEqual(after["marks"], [])
         self.assertEqual(after["nextSerial"], before["nextSerial"])
+        # An empty group must also preserve the existing activation redo.
+        self.assertTrue(self.session.line("history-begin")["ok"])
+        self.assertTrue(self.session.line(BOUNDARY)["ok"])
+        self.assertTrue(self.session.line("history-end")["ok"])
+        self.assertTrue(self.session.line("redo")["ok"])
+        self.assertEqual(self.session.command("dump")["text"], world)
+        self.assertEqual(self.read(), before)
 
     def test_active_stale_preview_cannot_publish_or_consume_serial(self):
         self.assertTrue(self.session.line("identity-ledger activate")["ok"])
