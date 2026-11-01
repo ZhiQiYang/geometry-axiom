@@ -238,12 +238,20 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
     if(!point)throw Error('R06 no visible native guide hit for trusted pointer drag');
     await drag(point.x,point.y,point.to,point.y,12);
   }
-  async function fitCanvasCards(){
+  async function fitCanvasCards(kind,id){
     await ctl('#btnZoom');
     if(await read(`(()=>{const b=document.querySelector('#ocSelectionSummary .guidance-dismiss');return !!b&&!b.hidden&&b.getBoundingClientRect().width>0;})()`))await ctl('#ocSelectionSummary .guidance-dismiss');
+    // Fit-all may legitimately collapse cards below the compact threshold in
+    // the full harness. Locate this fixture target before its trusted action,
+    // just as the parent harness does for compact boundary cards.
+    const targetState=()=>read(`(()=>{const c=document.querySelector('.ocard[data-kind="${kind}"][data-id="${id}"]'),r=c?.querySelector('.card-enter')?.getBoundingClientRect();return {kind:${JSON.stringify(kind)},id:${id},zoom:oc.zoom,compact:c?.classList.contains('compact'),entryRect:r?{x:r.x,y:r.y,width:r.width,height:r.height}:null};})()`);
+    console.log('R06 canvas fixture before locating target',await targetState());
+    await read(`centerOnNode(${JSON.stringify(kind)},${id});void 0`);
+    await wait(`(()=>{const r=document.querySelector('.ocard[data-kind="${kind}"][data-id="${id}"] .card-enter')?.getBoundingClientRect();return !!r&&r.width>0&&r.height>0;})()`);
+    console.log('R06 canvas fixture after locating target',await targetState());
   }
   async function upstreamPointer(){
-    await fixture('pointer');const old=await createMixedDraft(false);await ctl('#asmClose');await fitCanvasCards();await ctl('.ocard[data-kind="boundary"][data-id="1"] .card-enter');
+    await fixture('pointer');const old=await createMixedDraft(false);await ctl('#asmClose');await fitCanvasCards('boundary',1);await ctl('.ocard[data-kind="boundary"][data-id="1"] .card-enter');
     await wait(`!!oc.edit&&oc.edit.bid===1&&fe.guides.some(g=>g.id===1)`);await ctl('#feZoomFit');await ctl('[data-face-tool="select"]');
     const before=await dump(),count=await referenceCount();await dragPrimaryGuide();await referenceResult('R06_BR16_POINTER_NATIVE',before,count);await cancelReference();
     check('R06_BR16_POINTER_CANCEL 指標上游候選取消後世界與mapping不變',(await dump())===before&&same((await state()).instances[0],old));
@@ -252,7 +260,7 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
     await screenshot('r06-pointer-result');await ctl('#workspaceBackButton');await settle();
   }
   async function upstreamGrid(){
-    await fixture('grid');const old=await createMixedDraft(true);await ctl('#asmClose');await fitCanvasCards();await ctl('.ocard[data-kind="grid-system"][data-id="1"]');await ctl('#gridObjectOpen');
+    await fixture('grid');const old=await createMixedDraft(true);await ctl('#asmClose');await fitCanvasCards('grid-system',1);await ctl('.ocard[data-kind="grid-system"][data-id="1"]');await ctl('#gridObjectOpen');
     await wait(`$('infiniteGridWorkspace')?.open&&!!$('igUStep')`);await fill('#igUStep','4000');const before=await dump(),count=await referenceCount();await ctl('#igSaveSource');
     await referenceResult('R06_BR16_GRID_NATIVE',before,count);await cancelReference();
     check('R06_BR16_GRID_CANCEL 網格來源候選取消後所有身分不變',(await dump())===before&&same((await state()).instances[0],old));
