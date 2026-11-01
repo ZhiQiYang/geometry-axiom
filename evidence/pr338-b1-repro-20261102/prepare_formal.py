@@ -157,13 +157,14 @@ def main():
                                (["git", "fetch", "--no-tags", "--filter=blob:none", "--depth=1", "origin", F8, TARGET], "git-fetch-fixed-sources")]:
             if run(command, label, repo).returncode:
                 raise RuntimeError("clean fixed source checkout failed: " + label)
-        (repo / ".git/info/sparse-checkout").write_text("/*\n!/*/\n/geometry-core/\n/geometry-app/\n/geometry-templates/\n/geometry-web/*.c\n/tests/fixtures/\n")
+        original_fixed = json.loads((root / "evidence/pr338-b1-repro-20261102/FIXED_SOURCE_CLOSURE.json").read_bytes())
+        sparse = "/*\n!/*/\n/tests/fixtures/\n" + "".join("/" + row[0] + "\n" for row in original_fixed)
+        (repo / ".git/info/sparse-checkout").write_text(sparse)
         if run(["git", "checkout", "--detach", F8], "git-checkout-F8", repo, timeout=600).returncode:
             raise RuntimeError("F8 checkout failed")
         state = run(["git", "status", "--porcelain=v1", "--untracked-files=all"], "F8-clean-state", repo)
         if state.returncode or state.stdout:
             raise RuntimeError("independent F8 source is not clean")
-        original_fixed = json.loads((root / "evidence/pr338-b1-repro-20261102/FIXED_SOURCE_CLOSURE.json").read_bytes())
         closure = []
         for name, size, expected in original_fixed:
             data = (repo / name).read_bytes()
