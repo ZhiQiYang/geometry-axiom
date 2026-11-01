@@ -25,6 +25,10 @@ typedef struct {
 static bool app_world_identity_finalize(AppWorldCandidate *candidate,void *opaque)
 {
     const AppIdentityCommit *commit=opaque;
+    char problem[192];
+    if(candidate->before.app.identity_active&&!identity_check_world(&candidate->before,problem,sizeof problem)){
+        identity_fail(problem);identity_drop_serials();set_revalidate_error(g_scene_last_error);return false;
+    }
     if(commit->activate){
         if(candidate->before.app.identity_active||!candidate->after.app.identity_active){
             identity_fail("I71: 身分帳啟用候選與原狀態不符");
