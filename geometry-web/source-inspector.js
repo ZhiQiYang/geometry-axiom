@@ -117,6 +117,13 @@
     }
     for(const e of edges)if(['dimension','material-version'].includes(e.relation)&&/^[AB](?: override)?(?: ← |$)/.test(e.field)&&!seen.has(e.field[0]))throw Error('快照尺寸來源資料未完整提供。');
   }
+  function continuityOf(record,graph){
+    if(!record?.sourceIdentity?.roots)return {token:'unknown',text:'物件延續性未知',listed:[]};
+    let ledger=typeof IdentityLedger!=='undefined'&&IdentityLedger?IdentityLedger:null;
+    if(!ledger&&typeof module==='object'&&module.exports)ledger=require('./identity-ledger.js');
+    if(!ledger||typeof ledger.judgeRoots!=='function')return {token:'unknown',text:'物件延續性未知',listed:[]};
+    return ledger.continuitySummary({roots:ledger.judgeRoots(record.sourceIdentity,graph?.nodes||null)});
+  }
   function deriveModelSchedule(record,result,timberSchedule,project){
     if(typeof project?.validateSpaceModel!=='function'||typeof timberSchedule?.derive!=='function')throw Error('保存快照料單能力尚未核對。');
     project.validateSpaceModel(record);const ids=modelTimberIds(record),baseline=result?.baseline;
@@ -142,14 +149,16 @@
       }
     }
     if(rows.length!==ids.length||new Set(rows.map(r=>r.id)).size!==ids.length||rows.some(r=>!ids.includes(r.id)))throw Error('快照料單範圍超出保存模型的明選角材。');
+    const continuity=continuityOf(record,result.graph);
     return {schema:'native-timber-schedule/1',scope:'saved-model-snapshot',ids:[...ids],rows,sourceFingerprint:refs.sourceFingerprint,
       supportSourceFingerprint:refs.timberSupports.sourceFingerprint,modelId:record.id,modelName:record.name,contextId:result.context?.id||'',
-      identityContinuity:'unknown',freshness:freshness(baseline,result.graph,modelRoots(record)),liveSourceFingerprint:result.graph.data.sourceFingerprint};
+      identityContinuity:continuity.token,identityContinuityText:continuity.text,identityContinuityListed:continuity.listed,
+      freshness:freshness(baseline,result.graph,modelRoots(record)),liveSourceFingerprint:result.graph.data.sourceFingerprint};
   }
   function modelScheduleCSV(snapshot,timberSchedule,order='id',unit='mm'){
     if(snapshot?.scope!=='saved-model-snapshot'||!['mm','cm'].includes(unit)||!['id','length'].includes(order))throw Error('快照料單範圍或顯示單位無效。');
     const columns=['snapshot_kind','snapshot_model_id','snapshot_model_name','snapshot_context_id','snapshot_source_fingerprint','snapshot_units','snapshot_display_units','snapshot_source_status','snapshot_content_status','snapshot_identity_continuity','checked_live_source_fingerprint'];
-    const cells=['saved-model-snapshot',snapshot.modelId,snapshot.modelName,snapshot.contextId,snapshot.sourceFingerprint,'mm',unit,snapshot.freshness.status,snapshot.freshness.contentStatus,'unknown',snapshot.liveSourceFingerprint].map(timberSchedule.csvCell).join(',');
+    const cells=['saved-model-snapshot',snapshot.modelId,snapshot.modelName,snapshot.contextId,snapshot.sourceFingerprint,'mm',unit,snapshot.freshness.status,snapshot.freshness.contentStatus,snapshot.identityContinuity,snapshot.liveSourceFingerprint].map(timberSchedule.csvCell).join(',');
     const header=timberSchedule.csv({...snapshot,rows:[]},order).slice(0,-2)+','+columns.map(timberSchedule.csvCell).join(',');
     const rows=timberSchedule.sorted(snapshot.rows,order).map(row=>{const csv=timberSchedule.csv({...snapshot,rows:[row]},order);return csv.slice(csv.indexOf('\r\n')+2,-2)+','+cells;});
     return [header,...rows].join('\r\n')+'\r\n';
@@ -225,7 +234,8 @@
     const mounted=()=>active&&detail.open&&detail.isConnected!==false&&body.isConnected&&isActive()&&recordCurrent();
     function scheduleHTML(){
       if(!schedule)return '';const table=timberSchedule.sorted(schedule.rows,order).map(row=>{const content=`<strong>快照角材 ${row.id} · 承載面 ${row.surface}</strong><span>A ${esc(timberSchedule.dimension(row.A,unit))} × B ${esc(timberSchedule.dimension(row.B,unit))} · 完成 L ${esc(timberSchedule.dimension(row.L,unit))} ${unit}</span><span>${esc(timberSchedule.sourceText(row))}</span>`;return `<li data-snapshot-timber="${row.id}" data-snapshot-surface="${row.surface}">${onSelect?`<button type="button" data-snapshot-select="${row.id}" aria-pressed="${selectedTimber===row.id}" aria-label="3D定位快照角材 ${row.id}">${content}</button>`:content}</li>`;}).join('');
-      return `<section data-model-schedule><h4>保存快照料單 · ${esc(schedule.modelName)}</h4><p>單一模型 ${esc(schedule.modelId)} · ${schedule.rows.length} 支明選角材；保存快照尺寸，物件延續性未知。${esc(schedule.freshness.message)}</p><code title="保存快照原生來源指紋">${esc(schedule.sourceFingerprint)}</code><label>排列<select data-snapshot-order><option value="id"${order==='id'?' selected':''}>角材 ID</option><option value="length"${order==='length'?' selected':''}>完成料長</option></select></label><label>顯示單位<select data-snapshot-unit><option value="mm"${unit==='mm'?' selected':''}>mm</option><option value="cm"${unit==='cm'?' selected':''}>cm</option></select></label><ol>${table||'<li>此模型沒有明選角材；未納入來源場景的其他角材。</li>'}</ol><p>CSV 尺寸保持整數 mm；材料與加工未設定。${onSelect?'點料單列定位此保存模型的構件（隱藏材料牆）；點 3D 角材回選同列。':'快照列不定位同 ID 的目前角材。'}</p></section>`;
+      const continuityText=schedule.identityContinuityText||'物件延續性未知',listed=Array.isArray(schedule.identityContinuityListed)&&schedule.identityContinuityListed.length?`（${schedule.identityContinuityListed.map(esc).join('、')}）`:'';
+      return `<section data-model-schedule><h4>保存快照料單 · ${esc(schedule.modelName)}</h4><p>單一模型 ${esc(schedule.modelId)} · ${schedule.rows.length} 支明選角材；保存快照尺寸，${esc(continuityText)}${listed}。${esc(schedule.freshness.message)}</p><code title="保存快照原生來源指紋">${esc(schedule.sourceFingerprint)}</code><label>排列<select data-snapshot-order><option value="id"${order==='id'?' selected':''}>角材 ID</option><option value="length"${order==='length'?' selected':''}>完成料長</option></select></label><label>顯示單位<select data-snapshot-unit><option value="mm"${unit==='mm'?' selected':''}>mm</option><option value="cm"${unit==='cm'?' selected':''}>cm</option></select></label><ol>${table||'<li>此模型沒有明選角材；未納入來源場景的其他角材。</li>'}</ol><p>CSV 尺寸保持整數 mm；材料與加工未設定。${onSelect?'點料單列定位此保存模型的構件（隱藏材料牆）；點 3D 角材回選同列。':'快照列不定位同 ID 的目前角材。'}</p></section>`;
     }
     function render(){
       if(snapshotOnly){body.innerHTML=`${scheduleHTML()}${refresh()}`;return;}

@@ -47,7 +47,7 @@ window.SpaceModelWorkspace = (() => {
       </section>
       <aside class="sm-setup" aria-label="空間建模設定"><div class="sm-setup-scroll">
         <details class="sm-guide" open><summary>第一次使用？照這 3 步就能完成</summary><ol><li>點上方「試用角材骨架範例」，直接載入 z=2500、角材厚 33 mm、牆高 3000 mm 的模型。</li><li>查看 3D 預覽；可用「角材結構」開關獨立檢視。修改牆高、角材納入或邊界後，按「更新預覽」。</li><li>勾選核對面清單，按「建立空間」，再「保存專案」。之後從「已建立空間」重開。</li></ol><p>要用自己的圖：在畫布開啟一個已放置的面，再點面工具列的「建立空間」。先「設定平面投影」，明定俯視／仰視、輪廓內為淨空、牆在外側。圖面 z 是位置；牆底須另外填寫，牆高預設 3000 mm，可事後修改。</p></details>
-        <section class="sm-section"><div class="sm-section-heading"><span>01</span><h2>來源與建模方式</h2></div><div id="smSourceSummary" class="sm-source-summary">尚未選擇來源，先試範例或使用目前面。</div><section id="smProjectionCallout" class="sm-projection-callout" hidden><div id="smProjectionSummary"></div><button id="smSetProjection" class="sm-button" type="button">設定平面投影</button></section><label class="sm-field">建模方式<select id="smMode"><option value="plan">由平面輪廓建立空間</option><option value="faces">組合已有的放置面</option></select></label><label id="smSourceSelectWrap" class="sm-field" hidden>來源放置面<select id="smSourceSelect"></select></label><label class="sm-field">空間名稱<input id="smModelName" maxlength="100" placeholder="例如：客廳空間" autocomplete="off"></label></section>
+        <section class="sm-section"><div class="sm-section-heading"><span>01</span><h2>來源與建模方式</h2></div><div id="smSourceSummary" class="sm-source-summary">尚未選擇來源，先試範例或使用目前面。</div><p id="smIdentityNote" class="sm-help" hidden></p><button id="smActivateIdentity" class="sm-button" type="button" hidden>啟用物件身分追蹤</button><section id="smProjectionCallout" class="sm-projection-callout" hidden><div id="smProjectionSummary"></div><button id="smSetProjection" class="sm-button" type="button">設定平面投影</button></section><label class="sm-field">建模方式<select id="smMode"><option value="plan">由平面輪廓建立空間</option><option value="faces">組合已有的放置面</option></select></label><label id="smSourceSelectWrap" class="sm-field" hidden>來源放置面<select id="smSourceSelect"></select></label><label class="sm-field">空間名稱<input id="smModelName" maxlength="100" placeholder="例如：客廳空間" autocomplete="off"></label></section>
         <section id="smHeightEditPanel" class="sm-section sm-height-editor" hidden><div class="sm-section-heading"><span>02</span><h2>修改已建立空間</h2></div><p id="smHeightEditSummary" class="sm-help"></p><label class="sm-field">新牆高 <span>mm</span><input id="smEditHeight" type="number" min="1" step="1" inputmode="numeric" aria-describedby="smHeightEditSummary"></label><button id="smCurrentSourceUpdate" class="sm-button" type="button">採用現行來源…</button><button id="smCancelHeightEdit" class="sm-button" type="button">取消修改，保留原模型</button></section><fieldset id="smSettings" disabled><div id="smPlanSettings">
           <section class="sm-section"><div class="sm-section-heading"><span>02</span><h2>高度與空間邊界</h2></div><div class="sm-field-pair"><label class="sm-field">牆底標高 <span>mm</span><input id="smBottom" type="number" step="1" inputmode="numeric" placeholder="請明確填寫" aria-describedby="smBottomHelp"></label><label class="sm-field">牆高 <span>mm</span><input id="smHeight" type="number" min="1" step="1" inputmode="numeric" value="3000" placeholder="預設 3000"></label></div><p id="smBottomHelp" class="sm-help">牆底標高是牆開始的位置；若從 z=0 起請填 0，不能以圖面 z 代替。</p><p class="sm-help">牆高預設 3000 mm，建立前可改，建立後可從「已建立空間 → 修改模型」調整。牆頂 = 牆底 + 牆高；圖面 z 不代替牆底。</p><div id="smPlanOutline" class="sm-plan-outline" aria-label="來源輪廓及邊編號"></div><p id="smOutlineViewHelp" class="sm-help"></p><div class="sm-field-label">哪些外環邊形成空間邊界？</div><p class="sm-help">逐邊勾選，未勾選處保持開放。FREE 邊初始不選，請依實際用途決定。</p><div id="smEdges" class="sm-edge-list"></div><div class="sm-field-pair"><label class="sm-field">底面用途<select id="smFloor"><option value="boundary">實際邊界</option><option value="calculation-cap">僅作體積計算封口</option><option value="none">不建立</option></select></label><label class="sm-field">頂面用途<select id="smCeiling"><option value="boundary">實際邊界</option><option value="calculation-cap">僅作體積計算封口</option><option value="none">不建立</option></select></label></div><section id="smTimberSettings" class="sm-timber-settings"><label class="sm-check"><input id="smIncludeTimbers" type="checkbox" disabled><span>一併納入此面角材（<b id="smTimberCount">0</b> 支）</span></label><p class="sm-help">沿用各支已放置角材的真實尺寸、位置與方向；修改牆高不會搬移或拉伸角材。只納入這個放置面的角材。</p><details id="smTimberCandidateDetails" hidden><summary>核對角材尺寸與世界高度</summary><ul id="smTimberCandidates" class="sm-timber-list"></ul></details><div id="smTimberEmpty" class="sm-help">此放置面沒有已放置角材。可先建立空間，或返回面內工作區，在「構件 → 角材」完成放置再重新使用目前面。</div><button id="smBackToTimbers" class="sm-button" type="button">返回面內放置角材</button></section><div id="smHolesWrap" hidden><label class="sm-field">平面孔洞的用途<select id="smHoles"><option value="none">尚未指定（請先確認用途）</option><option value="through">形成上下貫通孔</option></select></label><p class="sm-help">孔洞不自動當成門窗或柱。選擇貫通孔會明確生成孔邊內壁。</p></div></section>
           <section class="sm-section"><div class="sm-section-heading"><span>03</span><h2>材料牆 <small>選用</small></h2></div><label class="sm-check"><input id="smWallsEnabled" type="checkbox" checked><span>同時建立有厚度的牆</span></label><label class="sm-field">牆厚 <span>mm</span><input id="smThickness" type="number" value="100" min="1" step="1" inputmode="numeric"></label><p class="sm-help">朝空間外側加厚，採方角接合，保留輪廓內的淨尺寸。100 mm 是可修改的工作預設。</p></section>
@@ -248,8 +248,68 @@ window.SpaceModelWorkspace = (() => {
     const current = libraryHistoryState(), running = WorkspaceShell.historyBusy(dialog) || ReferenceWorkspace.busy || oc.busy;
     for (const button of $('smLibraryList').querySelectorAll('button')) button.disabled = !!(running || button.hasAttribute('data-sm-remove-model') && current.blocked);
   }
+  function syncIdentityOffer() {
+    const note = $("smIdentityNote"), button = $("smActivateIdentity");
+    if (!note || !button) return;
+    const showOffer = state.ledgerKnown === true && state.ledgerActive !== true;
+    note.hidden = !showOffer;
+    button.hidden = !showOffer;
+    if (showOffer) note.textContent = "啟用物件身分追蹤後，日後可證明來源延續";
+  }
+  async function refreshLedgerOffer() {
+    try {
+      const read = await api("identity-read");
+      state.ledgerKnown = read?.ok === true;
+      state.ledgerActive = read?.ok === true && read.active === true;
+    } catch (_) {
+      state.ledgerKnown = false;
+      state.ledgerActive = false;
+    }
+    syncIdentityOffer();
+  }
+  async function activateIdentity() {
+    if (state.phase === "creating" || state.phase === "previewing") {
+      message("請等這次處理結束，再啟用物件身分追蹤。", "warning");
+      return;
+    }
+    let read;
+    try { read = await api("identity-read"); }
+    catch (error) { message(error.message, "error"); return; }
+    if (!read?.ok) { message(read?.error || "無法讀取身分帳。", "error"); return; }
+    if (read.active) { state.ledgerKnown = true; state.ledgerActive = true; syncIdentityOffer(); return; }
+    const hadPreview = state.result && state.previewRevision === state.revision;
+    let line;
+    try { line = await api("line identity-ledger activate"); }
+    catch (error) { message(error.message, "error"); return; }
+    if (!line?.ok) { message(line?.error || "未能啟用物件身分追蹤。", "error"); return; }
+    state.ledgerKnown = true;
+    state.ledgerActive = true;
+    syncIdentityOffer();
+    if (hadPreview) {
+      state.previewRevision = -1;
+      state.phase = "ready";
+      message("已啟用物件身分追蹤。這次預覽已過期，請重新預覽。", "warning");
+      updateActions();
+      return;
+    }
+    message("已啟用物件身分追蹤。重新預覽後建立的模型才會帶來源身分。", "success");
+    updateActions();
+  }
+  async function attachSourceIdentity(record) {
+    if (record.source?.kind !== "scene" || !globalThis.IdentityLedger || !globalThis.SourceInspector) return;
+    let read;
+    try { read = await api("identity-read"); }
+    catch (_) { return; }
+    if (!read?.ok || read.active !== true) return;
+    const graph = SourceInspector.index(await api("source-inspect"));
+    const normalized = String(record.input.base_scene).replace(/\r\n/g, "\n");
+    if (IdentityLedger.deidentifiedBase(normalized) !== normalized) throw new Error("來源基準仍含身分記號，未建立模型。");
+    record.sourceIdentity = IdentityLedger.buildSourceIdentity({...record.input, boundary_id:record.source.boundary_id}, graph.nodes);
+    GeometryProject.validateSpaceModel(record);
+  }
   function show(resume) {
     if (!dialog.open) dialog.showModal();
+    void refreshLedgerOffer();
     WorkspaceShell.attach(dialog, {saveBlocked:()=>state.viewerLoading || state.projectionPending || ['loading','previewing','creating'].includes(state.phase),
       saveReason:()=> '正在處理空間變更，完成後即可保存。', onProjectState:updateActions,
       history:{state:libraryHistoryState, run:runLibraryHistory, onError:error=>toast(error.message || '無法復原或重做。')}});
@@ -659,6 +719,7 @@ window.SpaceModelWorkspace = (() => {
       if(state.source.context_id!==contextId())throw new Error("目前專案已切換，請重新選取來源並更新預覽。");
       assertPlanProjection();
       const record={id:crypto.randomUUID(),name:$("smModelName").value.trim()||"未命名空間",created_at:new Date().toISOString(),source:{kind:state.source.kind,placement_id:state.source.placement_id,boundary_id:state.source.boundary_id,scene_hash:state.result.source_sha256,...(state.input.mode==="plan"?{projection:copy(state.source.projection)}:{})},input:copy(state.input),result:copy(state.result)};
+      await attachSourceIdentity(record);
       ReferenceWorkspace.addSpaceModel(record); draft=null;state.createdId=record.id;state.recordSignature=JSON.stringify(record);state.phase="created";message(`「${record.name}」已加入目前專案，尚未保存成檔案。請按「保存專案 .gcanvas」，之後可完整重開。`,"success");refresh();
     }catch(e){if(seq===state.sequence){state.phase="error";state.previewRevision=-1;message(e.message,"error");}}
     finally{updateActions();}
@@ -743,6 +804,7 @@ window.SpaceModelWorkspace = (() => {
     if(state.source&&state.source.context_id!==contextId()&&state.previewRevision===state.revision){state.previewRevision=-1;message("目前專案已切換。請重新選擇來源，以免使用上個專案的預覽。","warning");updateActions();}
   }
   function exportModel(){const pack=state.result?.[$("smExportKind").value];if(!pack){message("這個結果尚未確定，沒有可匯出的模型。","warning");return;}const a=document.createElement("a"),url=URL.createObjectURL(new Blob([JSON.stringify(pack,null,2)],{type:"application/json"}));a.href=url;a.download=($("smModelName").value.trim()||"空間").replace(/[\\/:*?"<>|]/g,"_")+"-"+$("smExportKind").value+".model.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);message("模型下載已開始；.model.json 保留完整定義與推導資料。","success");}
+  $("smActivateIdentity").onclick=()=>{void activateIdentity();};
   $("smClose").onclick=close;$("smTryTimberFrame").onclick=()=>openExample("timber-frame"); $("smTryRectangle").onclick=()=>openExample();$("smTryLShape").onclick=()=>openExample("l-shape");$("smWelcomeTry").onclick=()=>openExample();$("smUseCurrent").onclick=()=>openCurrentFace();$("smLibrary").onclick=openLibrary;$("smBackToBuild").onclick=buildView;
   $("smBackToTimbers").onclick=async()=>{const source=state.source;if(!source||source.kind!=="scene"||source.context_id!==contextId())return;close();if(oc.edit?.bid!==source.boundary_id)await enterFocus("face",source.boundary_id);if(source.context_id!==contextId())return;fiShowTab("timber");if(innerWidth<=680)openPanel("right",$("workspaceToggleRight"));};
   $("smTabPreview").onclick=()=>setTab("preview");$("smTabSetup").onclick=()=>setTab("setup");$("smPreview").onclick=preview;$("smCreate").onclick=create;$("smConfirmFaces").onchange=updateActions;
