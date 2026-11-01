@@ -1,0 +1,100 @@
+name: Native shard ledger evidence
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/native-shard-ledger.yml
+      - .github/scripts/mutation_evidence.py
+      - tests/NATIVE-SHARDING.md
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geometry-native-shard-ledger-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record historical ledger identity before generating new evidence
+        run: sha256sum tests/mutants_results.json
+      - id: plan
+        name: Partition every current mutation exactly once
+        run: python3 .github/scripts/mutation_evidence.py plan >> "$GITHUB_OUTPUT"
+
+  execute:
+    name: mutation (${{ matrix.shard }})
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Execute assigned mutations with new receipts and exact binary checks
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          ulimit -s 16384
+          python3 .github/scripts/mutation_evidence.py run --shard "$SHARD" --out "$RUNNER_TEMP/mutation-evidence"
+      - name: Preserve receipts, executed binaries and logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mutation-shard-${{ matrix.shard }}
+          path: |
+            ${{ runner.temp }}/mutation-evidence/manifest.json
+            ${{ runner.temp }}/mutation-evidence/mutants_results.json
+            ${{ runner.temp }}/mutation-evidence/cache.tar.gz
+            ${{ runner.temp }}/mutation-evidence/execution.log
+          if-no-files-found: error
+          retention-days: 30
+
+  verify:
+    name: Verify complete mutation evidence
+    needs: [plan, execute]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Require every execution job to succeed
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          EXECUTE_RESULT: ${{ needs.execute.result }}
+        run: test "$PLAN_RESULT:$EXECUTE_RESULT" = success:success
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: mutation-shard-*
+          path: ${{ runner.temp }}/mutation-download
+      - name: Verify downloaded binary bytes and full-table strict receipts
+        run: |
+          python3 .github/scripts/mutation_evidence.py verify --artifacts "$RUNNER_TEMP/mutation-download" --out "$RUNNER_TEMP/mutation-verified"
+      - name: Preserve aggregate ledger and manifest
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mutation-complete-evidence
+          path: |
+            ${{ runner.temp }}/mutation-verified/mutants_results.json
+            ${{ runner.temp }}/mutation-verified/summary.json
+          if-no-files-found: error
+          retention-days: 30
