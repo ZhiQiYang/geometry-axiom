@@ -22,6 +22,25 @@ static bool prepare(const char *path)
 }
 static bool preview(void){return line("preview spec x 600")&&g_preview.ready&&g_preview.valid;}
 static bool confirm(void){char text[64];snprintf(text,sizeof text,"confirm %u",g_preview.token);return line(text);}
+static int identity_incomplete_before(const char *path)
+{
+    CHECK(prepare(path),"identity-incomplete-setup");char error[192];
+    CHECK(identity_set_epoch(&g_world,"0123456789abcdef0123456789abcdef",error,sizeof error),"identity-incomplete-epoch");
+    CHECK(line("identity-ledger activate")&&g_world.app.identity_active&&g_world.app.identity_mark_count>0,
+          "identity-incomplete-active-baseline");
+    /* Damage only the live test World. An ordinary edit must not repair it. */
+    g_world.app.identity_mark_count=0;
+    World *before=malloc(sizeof *before);CHECK(before,"identity-incomplete-memory");memcpy(before,&g_world,sizeof *before);
+    AppHistory history;memcpy(&history,&g_history,sizeof history);
+    uint64_t serial=g_identity_next_serial,revision=g_definition_revision;
+    CHECK(!g_identity_pending_count,"identity-incomplete-no-pending-reservation");
+    CHECK(!line("spec identity_integrity_probe 7"),"identity-incomplete-edit-rejected");
+    CHECK(strstr(scene_last_error(),"I70:")&&strstr(scene_last_error(),"boundary 1"),"identity-incomplete-original-diagnostic");
+    CHECK(!memcmp(before,&g_world,sizeof *before)&&g_world.app.identity_mark_count==0,"identity-incomplete-not-repaired-or-published");
+    CHECK(g_identity_next_serial==serial&&!g_identity_pending_count,"identity-incomplete-does-not-consume-serial");
+    CHECK(g_definition_revision==revision&&!memcmp(&history,&g_history,sizeof history),"identity-incomplete-keeps-revision-and-history");
+    free(before);return 0;
+}
 static int lifecycle(const char *path)
 {
     CHECK(prepare(path),"setup");World *before=malloc(sizeof *before);CHECK(before,"memory");*before=g_world;
@@ -390,6 +409,7 @@ static int default_program_guard(void)
 int main(int argc,char **argv)
 {
     if(argc!=3)return 2;
+    if(!strcmp(argv[1],"identity-incomplete-before"))return identity_incomplete_before(argv[2]);
     if(!strcmp(argv[1],"default-cost"))return default_owned_candidate(argv[2],false);
     if(!strcmp(argv[1],"default-scratch-oom"))return default_owned_candidate(argv[2],true);
     if(!strcmp(argv[1],"default-standalone"))return default_standalone(argv[2]);
