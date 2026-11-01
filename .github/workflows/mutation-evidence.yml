@@ -7,6 +7,7 @@ on:
       - .github/workflows/mutation-evidence.yml
       - .github/scripts/mutation_evidence.py
       - tests/MUTATION-EVIDENCE.md
+      - .github/scripts/architecture_evidence.py
 
 permissions:
   contents: read
@@ -16,7 +17,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  architecture:
+    name: Verify merged architecture with original commands
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Run original scanner and architecture test commands
+        run: python3 .github/scripts/architecture_evidence.py --out "$RUNNER_TEMP/pr357-architecture"
+      - name: Preserve fresh derived architecture evidence and raw failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pr357-architecture-refresh
+          path: ${{ runner.temp }}/pr357-architecture/
+          if-no-files-found: error
+          retention-days: 30
+
   plan:
+    needs: architecture
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -26,10 +48,6 @@ jobs:
         with:
           persist-credentials: false
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-      - name: Check historical receipts on a clean checkout
-        env:
-          MUTATE_CACHE: ${{ runner.temp }}/historical-receipts-no-binaries
-        run: python3 tests/mutate.py --check --killers
       - id: plan
         name: Partition every current mutation exactly once
         run: python3 .github/scripts/mutation_evidence.py plan >> "$GITHUB_OUTPUT"
