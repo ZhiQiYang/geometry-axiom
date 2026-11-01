@@ -82,7 +82,7 @@ module.exports = async function identityLedgerBrowser({send, eval_, sleep, click
   const origin = new URL(process.env.GEOMETRY_TEST_URL).origin;
   await send('Storage.clearDataForOrigin', {origin, storageTypes: 'all'});
   await send('Page.navigate', {url: process.env.GEOMETRY_TEST_URL});
-  await waitForUI(`typeof api === 'function' && typeof oc === 'object' && connection.phase === 'ready'`, 30000);
+  await waitForUI(`typeof api === 'function' && typeof oc === 'object' && connection.phase === 'ready' && typeof ReferenceWorkspace === 'object' && !ReferenceWorkspace.busy`, 30000);
   const cold = await eval_(`(async () => ({reset: await api('reset'), ledger: await api('identity-read')}))()`);
   if (cold.reset.ok !== true || cold.ledger.ok !== true || cold.ledger.active !== false || cold.ledger.marks.length !== 0)
     throw Error('IL cold-open setup did not clear the native ledger');
