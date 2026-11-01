@@ -474,11 +474,18 @@ class Row:
         self.seconds = 0.0
         self.note = ''
         self.ran = False
+        self.process_exit_code = None  # actual child status; inventory checks are not assertions
         self.allowed_skips = 0      # skips matched by the named ALLOWED_SKIPS list: shown, but not an exit-3 reason
         self.env_problem = False    # counts towards exit code 2
         self.crashed = False        # counts towards exit code 1 even without a failed test
         self.expected_problem = ''  # discovered count differs from run_all.expected.json
         self.details = []
+
+
+def report_row(row):
+    keys = ['name', 'counted', 'total', 'passed', 'failed', 'skipped', 'seconds', 'ran',
+            'process_exit_code', 'allowed_skips', 'env_problem', 'crashed', 'expected_problem']
+    return {key: getattr(row, key) for key in keys}
 
 
 def node_exe():
@@ -727,6 +734,7 @@ def run_suite(suite, env, infos):
     else:
         res = run_process([node_exe(), *suite.cmd], env, suite.timeout)
     code, out, secs, timed_out = res.code, res.out, res.seconds, res.timed_out
+    row.process_exit_code = code
     row.seconds = secs
     row.ran = True
     log_file.write_text(out, encoding='utf-8')
@@ -1224,13 +1232,11 @@ def run(args, suites, registry_errors, partial):
         meaning += '；注意：本次用了 --allow-skip，skip 已不影響結果'
     print('\nexit %d：%s' % (code, meaning))
     if getattr(args, 'report', None):
-        keys = ['name', 'counted', 'total', 'passed', 'failed', 'skipped', 'seconds', 'ran',
-                'allowed_skips', 'env_problem', 'crashed', 'expected_problem']
         universe = getattr(args, '_shard_universe', None) or suites
         report = dict(schema='geometry-native-shard/1', shard=args.shard,
                       commit_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
                       universe=[s.name for s in universe], selected=[s.name for s in suites],
-                      rows=[{key:getattr(row,key) for key in keys} for row in rows],
+                      rows=[report_row(row) for row in rows],
                       exit_code=code, seconds=time.monotonic()-started,
                       registry_errors=registry_errors, expected_problems=expected_problems,
                       expected_sha256=hashlib.sha256(EXPECTED_FILE.read_bytes().replace(b'\r\n', b'\n')).hexdigest(),

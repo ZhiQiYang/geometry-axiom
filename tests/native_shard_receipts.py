@@ -20,6 +20,8 @@ def validate_rows(selected, rows, expected):
                 raise ValueError('套件計數必須是非負整數：'+row['name'])
         if any(type(row[key]) is not bool for key in ['counted', 'ran', 'crashed', 'env_problem']):
             raise ValueError('套件狀態必須是布林值：'+row['name'])
+        if type(row.get('process_exit_code')) is not int or row['process_exit_code'] != 0:
+            raise ValueError('套件真實子行程退出碼未通過：'+row['name'])
         if (not row['ran'] or row['failed'] or row['crashed'] or row['env_problem'] or row['expected_problem']
                 or not 0 <= row['allowed_skips'] <= row['skipped'] or row['skipped'] != row['allowed_skips']):
             raise ValueError('套件未嚴格通過：'+row['name'])
@@ -29,8 +31,13 @@ def validate_rows(selected, rows, expected):
                 raise ValueError('套件計數不守恆：'+row['name'])
             if registered['mode'] != 'count' or row['total'] != registered['count']:
                 raise ValueError('套件expected數量不符：'+row['name'])
-        elif registered['mode'] != 'exit-code-only' or row['passed'] != 1:
-            raise ValueError('僅退出碼套件未通過：'+row['name'])
+        else:
+            # The original mutation inventory deliberately counts no assertions.
+            # Preserve its zero counters and require the actual child exit above.
+            wanted_passed = 0 if row['name'] == 'mutation:check' else 1
+            if (registered['mode'] != 'exit-code-only' or row['passed'] != wanted_passed
+                    or row['total'] != 0 or row['skipped'] != 0):
+                raise ValueError('僅退出碼套件未通過：'+row['name'])
 
 
 def main():
