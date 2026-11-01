@@ -9,6 +9,7 @@ import argparse
 from collections import Counter
 import contextlib
 import io
+import json
 from types import SimpleNamespace
 from unittest import mock
 
@@ -93,15 +94,48 @@ class NativeShardCoverage(unittest.TestCase):
         self.assertTrue(row.expected_problem)
 
     def test_cross_shard_report_requires_all_rows(self):
-        row = vars(run_all.Row('a')); row.update(ran=True, total=1, passed=1)
+        row = vars(run_all.Row('a')); row.update(ran=True, total=1, passed=1, process_exit_code=0)
         expected = {'a':{'mode':'count','count':1}, 'b':{'mode':'count','count':1}}
         with self.assertRaisesRegex(ValueError, '缺少或重複suite'):
             validate_rows(['a','b'], [row], expected)
 
     def test_cross_shard_report_rejects_inconsistent_counters(self):
-        row = vars(run_all.Row('a')); row.update(ran=True, total=1, passed=0)
+        row = vars(run_all.Row('a')); row.update(ran=True, total=1, passed=0, process_exit_code=0)
         with self.assertRaisesRegex(ValueError, '計數不守恆'):
             validate_rows(['a'], [row], {'a':{'mode':'count','count':1}})
+
+    def test_inventory_keeps_zero_assertions_and_requires_real_child_exit(self):
+        suite = next(s for s in run_all.build_suites() if s.name == 'mutation:check')
+        expected = {suite.name:{'mode':'exit-code-only'}}
+        with tempfile.TemporaryDirectory(prefix='geometry-inventory-exit-') as temp:
+            with mock.patch.object(run_all, 'LOG_DIR', Path(temp)):
+                for code in [0, 1, 2, -11, None, False]:
+                    with mock.patch.object(run_all, 'run_process',
+                                           return_value=run_all.ProcResult(code, '', 0.0, False)):
+                        observed = json.loads(json.dumps(run_all.report_row(run_all.run_suite(suite, {}, {}))))
+                    self.assertEqual(observed['process_exit_code'], code)
+                    self.assertIs(type(observed['process_exit_code']), type(code))
+                    if type(code) is int and code == 0:
+                        row = observed
+                    else:
+                        with self.assertRaisesRegex(ValueError, '子行程退出碼'):
+                            validate_rows([suite.name], [observed], expected)
+        self.assertEqual(row['process_exit_code'], 0)
+        self.assertEqual([row[k] for k in ['total', 'passed', 'failed', 'skipped']], [0, 0, 0, 0])
+        validate_rows([suite.name], [row], expected)
+        for code in [1, 2, -11, None, False]:
+            with self.subTest(code=code), self.assertRaisesRegex(ValueError, '子行程退出碼'):
+                validate_rows([suite.name], [dict(row, process_exit_code=code)], expected)
+        missing = dict(row); missing.pop('process_exit_code')
+        with self.assertRaisesRegex(ValueError, '子行程退出碼'):
+            validate_rows([suite.name], [missing], expected)
+        with self.assertRaisesRegex(ValueError, '僅退出碼'):
+            validate_rows([suite.name], [dict(row, passed=1)], expected)
+        script = dict(row, name='oracle:framing-selftest')
+        with self.assertRaisesRegex(ValueError, '僅退出碼'):
+            validate_rows([script['name']], [script], {script['name']:{'mode':'exit-code-only'}})
+        validate_rows([script['name']], [dict(script, passed=1)],
+                      {script['name']:{'mode':'exit-code-only'}})
 
 
 if __name__ == '__main__':
