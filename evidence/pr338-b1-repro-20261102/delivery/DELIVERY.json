@@ -1,0 +1,51 @@
+{
+  "schema": "pr338-b1-permanent-delivery/1",
+  "prHead": "9230a3dc04233e50c0bf97141a7fbe692828b2ca",
+  "actualProductExecutionSha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "ciExecutionHead": "c7feff8036ed000d6dc9c7afc44c6509075de097",
+  "ciRun": 41337519632,
+  "formalJob": 124940790645,
+  "originalArtifact": 13095888231,
+  "originalZipBytes": 92447830,
+  "originalZipSha256": "29ba48759a323cce3ab2dfbe8773f2d49597dcd762c0bc1a6dd00682a282e0de",
+  "formalRawMembers": 5405,
+  "formalRawUncompressedBytes": 48678394,
+  "elfTarUncompressedSha256": "722ab5542b2efeb5bbde3bbf492b67815a0aab29ddd5576b508bfa57e8b0830b",
+  "packaging": "Static packaging only. EXACT_R8_ELFS gzip wraps the input ELF tar without changing its headers or payloads. FORMAL_RAW uses new tar headers with timestamp zero and preserves every formal file byte and permission bit. No ELF/product/tool execution.",
+  "formalRawScope": "Every file below formal/ from the successful CI ZIP, including phase receipts, sources, compiled variants, command stdin/stdout/stderr, gprof and 175/350 ABC raw streams/graphs/guards.",
+  "fullCiZipScope": "The original complete 92MB ZIP also contains wrapper/Git current-input streams, frozen tools, original R8 tar and container setup logs. It remains in the original CI artifact and local delivery; CI_MANIFEST records every original file.",
+  "b1Closed": false,
+  "reviewAuthority": "B1 final closure is decided by ChatGPT/dot reviewing party, not by this packaging or execution report.",
+  "files": [
+    {
+      "path": "CI_MANIFEST.json",
+      "bytes": 1078860,
+      "sha256": "6e0be71cba784b7afcd5d6782bd288c1e34f3eceb105407d142f3f385b974181"
+    },
+    {
+      "path": "CI_RESULT.json",
+      "bytes": 288591,
+      "sha256": "56de79e752b0742cb6969ba8372f27f31ca86bed529c90270c6c10fc9b06666a"
+    },
+    {
+      "path": "CURRENT_PRODUCT_INPUT_CLOSURE.json",
+      "bytes": 56470,
+      "sha256": "a682365e99e5315a66ddbe5efd13392d280851fc4ccba3e3d42fa2da9b520b36"
+    },
+    {
+      "path": "EXACT_R8_ELFS.tar.gz",
+      "bytes": 1583943,
+      "sha256": "67dbf7875cbd8c1800c7f4df49fa5a6238daf6c378e12bd26d00f8b2e5554592"
+    },
+    {
+      "path": "FORMAL_DRIVER_RECEIPT.json",
+      "bytes": 2570229,
+      "sha256": "81855fff8a6d6790d8c52783f21dfc1e1eac045c23ca902361b866a6d9431c24"
+    },
+    {
+      "path": "FORMAL_RAW.tar.gz",
+      "bytes": 9141100,
+      "sha256": "20daceb2c45017ba4c6142b4fcee446dca9a392ae73c0011fccb56ba6d13b2c3"
+    }
+  ]
+}
