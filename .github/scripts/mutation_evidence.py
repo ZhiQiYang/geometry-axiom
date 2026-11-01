@@ -59,6 +59,7 @@ def selected(ids):
 
 def require_binaries(mutants, records, cache):
     """Unlike --check alone, artifact verification requires every executed binary."""
+    sources = mt.Sources(ROOT)
     for mutant in mutants:
         record = records[mutant["id"]]
         if record["verdict"] == "retired":
@@ -66,17 +67,43 @@ def require_binaries(mutants, records, cache):
         execution = record["execution"]
         if mutant.get("binary") == "bridge":
             binary = "bridge.exe" if execution["platform"] == "nt" else "bridge"
+            baseline = cache / "_bridge-baseline" / execution["head"]
+            folder = cache / mutant["id"]
             paths = [
-                (cache / "_bridge-baseline" / execution["head"] / binary, execution["baseline_identity"]["exe_sha256"]),
-                (cache / mutant["id"] / "bridge-mutant" / binary, execution["mutant_identity"]["exe_sha256"]),
-                (cache / mutant["id"] / "bridge-restored" / binary, execution["restored_identity"]["exe_sha256"]),
+                (baseline / binary, execution["baseline_identity"]),
+                (folder / "bridge-mutant" / binary, execution["mutant_identity"]),
+                (folder / "bridge-restored" / binary, execution["restored_identity"]),
             ]
+            trials = execution.get("mutant_attempts") or [execution["mutant"]]
+            raw = [(baseline, execution["baseline_build"]), (baseline, execution["baseline"]),
+                   (folder, execution["mutant_build"]), (folder, execution["restored_build"]),
+                   (folder, execution["restored"]), *[(folder, trial) for trial in trials]]
+            for directory, receipt in raw:
+                for stream in ("stdout", "stderr"):
+                    path = directory / receipt[stream + "_file"]
+                    if not path.is_file() or sha(path) != receipt[stream + "_sha256"]:
+                        raise ValueError("missing or changed bridge raw output: " + str(path))
         else:
-            paths = [(cache / mutant["id"] / "_mut.exe", execution["exe_sha256"]),
-                     (cache / "_baseline" / "baseline.exe", execution["baseline_exe_sha256"])]
-        for path, expected in paths:
-            if not path.is_file() or sha(path) != expected:
+            paths = [
+                (cache / mutant["id"] / "_mut.exe", {
+                    "exe_sha256": execution["exe_sha256"],
+                    "fingerprint": mt.mutant_fingerprint(mutant, sources, execution["compile_sha256"])}),
+                (cache / "_baseline" / "baseline.exe", {
+                    "exe_sha256": execution["baseline_exe_sha256"],
+                    "fingerprint": mt.baseline_fingerprint(sources, execution["compile_sha256"])}),
+            ]
+        for path, identity in paths:
+            if not path.is_file() or sha(path) != identity["exe_sha256"]:
                 raise ValueError("missing or changed executed binary: " + str(path))
+            sidecar = path.with_name(path.name + ".fingerprint.json")
+            if not sidecar.is_file():
+                raise ValueError("missing executed binary sidecar: " + str(sidecar))
+            metadata = read_json(sidecar)
+            if mutant.get("binary") == "bridge":
+                if sha(sidecar) != identity["sidecar_sha256"] or metadata != identity["sidecar"]:
+                    raise ValueError("changed official bridge sidecar: " + str(sidecar))
+            elif metadata.get("exe_sha256") != identity["exe_sha256"] or metadata.get("fingerprint") != identity["fingerprint"]:
+                raise ValueError("changed core binary sidecar: " + str(sidecar))
 
 
 def strict_check(mutants, ledger, cache):
