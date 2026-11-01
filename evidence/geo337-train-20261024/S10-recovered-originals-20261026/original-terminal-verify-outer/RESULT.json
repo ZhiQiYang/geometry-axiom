@@ -1,0 +1,20 @@
+{
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "actual_exit": 0,
+  "request_sha256": "a612272280b18c63d3a578237471de9d716d263b5763baf457f5db3caffbbb1c",
+  "peer_sha256": "d718cbfa2cc8619511ed85a5314b057f17b0df21cec372e568fb9316a6529419",
+  "argv": [
+    "python3",
+    "-B",
+    "/tmp/geo337-S10-full123-terminal-preparation-20261025/verify_terminal.py",
+    "--request",
+    "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-BOUND_REQUEST-20261025.json",
+    "--request-sha256",
+    "a612272280b18c63d3a578237471de9d716d263b5763baf457f5db3caffbbb1c",
+    "--preparation-sha256",
+    "1cc1b919c3d872e538b8f4ff4d461fc0c6fc257caa3e207adfcfd3ae8f6d5448",
+    "--out",
+    "/dev/shm/geometry-axiom-geo337-20261025/S10-ledger-terminal-verify",
+    "--root-terminal-lease"
+  ]
+}

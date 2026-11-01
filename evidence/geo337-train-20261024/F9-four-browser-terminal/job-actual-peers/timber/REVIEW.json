@@ -1,0 +1,1194 @@
+{
+  "schema": "geo337-F9-timber-SHM-formal-and-sampler-actual-peer/1",
+  "utc": "2026-10-25T14:10:48.318042+00:00",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "exit_code": 0,
+  "checks": 223,
+  "blocking_findings": [],
+  "original_formal_exit": 0,
+  "formal_status": "GREEN_ORIGINAL_FULL_TIMBER_WORKFLOW_JOB; remote delivery separate",
+  "original_SPACE_result": {
+    "schema": "geometry-space-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_TIMBER_ONLY"
+      ],
+      "included": [
+        "timber-material",
+        "timber-source-guards",
+        "font-layout"
+      ],
+      "omitted": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "space-flow",
+        "projection-close"
+      ],
+      "url": "http://127.0.0.1:19086/",
+      "feedbackDirectory": "/dev/shm/geo337-F9-browsers-20261025/r/t/tmp/original/timber/geometry-integration-feedback"
+    },
+    "completed": true,
+    "groups": {
+      "setup": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      },
+      "timber-material": {
+        "expected": 48,
+        "passed": 48,
+        "failed": 0,
+        "completed": true
+      },
+      "timber-source-guards": {
+        "expected": 8,
+        "passed": 8,
+        "failed": 0,
+        "completed": true
+      },
+      "font-layout": {
+        "expected": 19,
+        "passed": 19,
+        "failed": 0,
+        "completed": true
+      },
+      "browser-health": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      }
+    },
+    "completenessProblems": [],
+    "passed": 79,
+    "failed": 0,
+    "exceptions": [],
+    "consoleErrors": []
+  },
+  "assertions": {
+    "passed": 79,
+    "failed": 0,
+    "groups": {
+      "setup": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      },
+      "timber-material": {
+        "expected": 48,
+        "passed": 48,
+        "failed": 0,
+        "completed": true
+      },
+      "timber-source-guards": {
+        "expected": 8,
+        "passed": 8,
+        "failed": 0,
+        "completed": true
+      },
+      "font-layout": {
+        "expected": 19,
+        "passed": 19,
+        "failed": 0,
+        "completed": true
+      },
+      "browser-health": {
+        "expected": 2,
+        "passed": 2,
+        "failed": 0,
+        "completed": true
+      }
+    }
+  },
+  "reported_suite_artifact_directory": "/dev/shm/geo337-F9-browsers-20261025/r/t/tmp/original/timber/geometry-tests/space-model-2033023",
+  "original_seconds": 124.53160412202124,
+  "original_ci_minutes": 20,
+  "original_argv_full_streams_checked": 6,
+  "original_workflow_files_checked": 40,
+  "raw_metadata_bytes_read": 205349,
+  "pins": {
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/timber/RESULT.json": "28f6f30ddd27ff14140174cd5a56c9830be7c0ecb7c828931033268b60692c04",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/receipt.json": "ad65c2866048fdea1c5675c4af61cd4366df240ca7b22e7ba0da69fdeaceb0a3",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/receipt.json": "56f141d48a17c9af7c82c8b9028045027c202c5260dba0a1bfa654ab066bbbb0",
+    "/workspace/geo337-F9-timber-SHM-EXEC_FINAL-20261025.json": "72dd2d6cedf7a25c23357cf5bf6726c56a385a4f4e6e5901eba6ec37cd47cb12",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/timber/subcommands/000001/result.json": "92cf123e3dcfbbd13b83b06e71211b8eca7268439faf525d215c7de7dcc595af",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/timber/subcommands/000001/stdout.bin": "617b8608ac99f7582b0bbf7c900eccab3e365830895b65dc9385b7d88c070a46",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/timber/subcommands/000001/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000001/result.json": "18f7bb1b86ac9f98e258aaa46a0d16058431c52338e524b587a0aa9522307c78",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000001/stdout.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000001/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000002/result.json": "caa33cd6606f424b77be0c4a1e046924733967c3cb3b912380f0f10b0541aa65",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000002/stdout.bin": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000002/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000003/result.json": "8418610483bb31f5390060b9f963fcbe52787bd20943833c18f7f42a141756ce",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000003/stdout.bin": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000003/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000004/result.json": "7a193790e4967819f1acd2860cea4a3381d33a4401f60dc7099cfc06c8dc3062",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000004/stdout.bin": "12a1862c4ebc763652da9bde7fc49f1303b15a1f1a7de8031f0e4822680b5e51",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000004/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000005/result.json": "757d2eb712d6eafeb50813f8160bdb3206397ac01c678f068137757b8e3b5de2",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000005/stdout.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000005/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/driver.py.txt": "4cdfe3dd250bc9bba6f8e8a513bbd2007176dc914b60b034b2aa7761e295affd",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.combined.log": "6d9e50c7a7b09112e81f5a06bbee27737262769b4998aaef95b6bc42fe430620",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.command.json": "d9aca8d48b297ce9703679099bf807edbe0dd820b251b4abc18a1cc1970b285d",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.executed.sh": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.original.sh.txt": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.stdout": "6d9e50c7a7b09112e81f5a06bbee27737262769b4998aaef95b6bc42fe430620",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02-package-0.combined.log": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02-package-0.command.json": "5195a9f7880f55dc6be9bf96be3721c58bce63022f948d63e4a58ac452036f8d",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02-package-0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02-package-0.stdout": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02.executed.sh": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02.original.sh.txt": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.combined.log": "78fe6a05c892c2091c730523d5dc8c497021b8d69a3743edf650f4cdc2b2943c",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.command.json": "422869378118ac59cb16292a3111f7ad72ef81fed2ca03ce7bceca33732923ca",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.executed.sh": "00327dfd703ddaae729e6e99a74092be4ffc06c132bfcfdd20435b6b0b7e77d3",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.original.sh.txt": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.stdout": "78fe6a05c892c2091c730523d5dc8c497021b8d69a3743edf650f4cdc2b2943c",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/0.combined.log": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/0.command.json": "3f3c95d39f543edb323c3706889f9286e709c40a792d3b3294025aa41828e327",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/0.stdout": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/1.combined.log": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/1.command.json": "fd6ab2433768242ba917d273dcb66f1656aa09b048a000854c9875d813402cfa",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/1.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/1.stdout": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/2.combined.log": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/2.command.json": "758dcef1def1bf7c66104a2e0ac7a910d3ea9ec4ab0f0ecee885463497f353cd",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/2.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/2.stdout": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/3.combined.log": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/3.command.json": "ad9570e51ee37bd58f43b496f36a386aaf3b5f017e4df918764c2c265aaa49b9",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/3.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/3.stdout": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/4.combined.log": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/4.command.json": "2024756f7febf811b7878be8f320ac3efaaa316db59e6b61ab50e76440ceb73b",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/4.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/4.stdout": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/workflow.yml.txt": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/timber/SAMPLES.jsonl": "1f045d2d600e8b6d241ed855ae04ae1dc56e5fff011e21f657bc37d8ea129fa2",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/timber/OWN_BEFORE.json": "8ceb15852376642da73e19ded51619fafb70ad8c09556355698d302e3a7eac18",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/timber/OWN_AFTER.json": "ffac9c6045edf37d15be3d2ea472a813199e64fb21889a12746c856845d8ed63",
+    "/dev/shm/geo337-F9-browsers-20261025/requests/timber.json": "f0cf9bceb2c027c1f342bef16da31d4ce558ac14904f844bea3bffb283c390a9",
+    "/dev/shm/geo337-F9-browsers-20261025/host/timber-materialize/subcommands/000001/result.json": "7fbfa3b2dce4ffcadab5b5e3973499138a9f2a802cc78257036aab9fe2ef2480"
+  },
+  "sampled_observations_recomputed": {
+    "samples": 129,
+    "nominal_interval_seconds": 1,
+    "maximum_observed_gap_seconds": 1.0027527139754966,
+    "filesystems": {
+      "/dev/shm": {
+        "minimum_sampled_free_bytes": 17455230976,
+        "maximum_sampled_filesystem_used_bytes": 416649216,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      },
+      "/workspace": {
+        "minimum_sampled_free_bytes": 15339520,
+        "maximum_sampled_filesystem_used_bytes": 33754853376,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      },
+      "/tmp": {
+        "minimum_sampled_free_bytes": 46899200,
+        "maximum_sampled_filesystem_used_bytes": 17824980992,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      }
+    },
+    "maximum_sampled_cgroup_memory_bytes": 34284195840,
+    "first_memory_events": {
+      "low": 0,
+      "high": 0,
+      "max": 283653,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "last_memory_events": {
+      "low": 0,
+      "high": 0,
+      "max": 283653,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "sample_read_errors": 0,
+    "continuous_true_peak_known": false,
+    "no_R8_or_P189_performance_inference": true
+  },
+  "own_before": {
+    "roots": [
+      {
+        "root": "/dev/shm/geo337-F9-browsers-20261025",
+        "entries": 52596,
+        "unique_allocated_bytes": 362332160,
+        "unique_lstat_logical_bytes": 351057906,
+        "duplicate_inode_paths": 41344,
+        "symlinks_not_followed": 13
+      },
+      {
+        "root": "/dev/shm/geometry-axiom-geo337-20261025",
+        "entries": 2824,
+        "unique_allocated_bytes": 44544000,
+        "unique_lstat_logical_bytes": 40695557,
+        "duplicate_inode_paths": 0,
+        "symlinks_not_followed": 0
+      }
+    ],
+    "unique_allocated_bytes": 406876160,
+    "unique_inode_count": 14076,
+    "endpoint_only": true,
+    "payload_read": false
+  },
+  "own_after": {
+    "roots": [
+      {
+        "root": "/dev/shm/geo337-F9-browsers-20261025",
+        "entries": 53220,
+        "unique_allocated_bytes": 372105216,
+        "unique_lstat_logical_bytes": 360502556,
+        "duplicate_inode_paths": 41344,
+        "symlinks_not_followed": 13
+      },
+      {
+        "root": "/dev/shm/geometry-axiom-geo337-20261025",
+        "entries": 2824,
+        "unique_allocated_bytes": 44544000,
+        "unique_lstat_logical_bytes": 40695557,
+        "duplicate_inode_paths": 0,
+        "symlinks_not_followed": 0
+      }
+    ],
+    "unique_allocated_bytes": 416649216,
+    "unique_inode_count": 14700,
+    "endpoint_only": true,
+    "payload_read": false
+  },
+  "mountinfo_at_original_launch": [
+    "56 54 0:26 / /dev/shm rw,relatime shared:5 - tmpfs shm rw",
+    "38 52 0:34 / /tmp rw,relatime shared:10 - tmpfs none rw"
+  ],
+  "socket_literal": {
+    "path": "/dev/shm/geo337-F9-browsers-20261025/r/t/tmp/original/timber/com.google.Chrome.ABCDEF/SingletonSocket",
+    "bytes": 101,
+    "including_NUL": 102
+  },
+  "checker_correction": {
+    "original_checker_exit": 1,
+    "cause": "Scope text replacement also changed /workspace to /worktimber; failure while opening host FINAL, before any output or source mutation.",
+    "original_failed_checker": "check.py",
+    "corrected_checker": "check.v2.py",
+    "product_or_formal_failure": false
+  },
+  "limits": [
+    "Only formally require_escalated read of terminal timber metadata/raw; no SHM writes, no NATIVE/source reads, no tests/guards rerun.",
+    "Sampler peaks are sampled shared mount/cgroup values, not continuous or this-job-only peaks; no R8 or P189 inference.",
+    "Endpoint OWN inventories compared to original recorded sums, not rewalked.",
+    "Original GEOMETRY_TIMBER_ONLY scope includes two timber groups plus font-layout/setup/health; five separate space groups intentionally omitted per original workflow, never claimed covered here.",
+    "Workflow file manifest40 and reported suite artifact-directory presence checked. Extra per-test artifact payloads are for full terminal collector, not recursively scanned by this lightweight peer.",
+    "Complete archive roundtrip, normal publication, and remote full blob hash confirmation remain separate."
+  ],
+  "check_details": [
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/timber/RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/workspace/geo337-F9-timber-SHM-EXEC_FINAL-20261025.json",
+      "passed": true
+    },
+    {
+      "check": "F9_ONE_SOURCE_IDENTITY",
+      "passed": true
+    },
+    {
+      "check": "ONE_TIMBER_JOB",
+      "passed": true
+    },
+    {
+      "check": "TRUE_ORIGINAL_AND_HOST_EXIT_0",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_PASS_TRUE",
+      "passed": true
+    },
+    {
+      "check": "UNCHANGED_CI_NOT_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "RECORDER_NO_CONCEALMENT_ERRORS",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_BEFORE_AFTER_GUARDS_ZERO",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SOURCE_AFTER_CLEAN_RECORD",
+      "passed": true
+    },
+    {
+      "check": "SAMPLER_TO_LAUNCHER_PIN",
+      "passed": true
+    },
+    {
+      "check": "LAUNCHER_TO_WORKFLOW_PIN",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/timber/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/timber/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/timber/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/timber/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/driver.py.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:driver.py.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/01.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02-package-0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02-package-0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02-package-0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02-package-0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/02.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/1.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/1.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/1.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/1.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/2.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/2.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/2.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/2.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/3.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/3.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/3.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/3.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/4.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/4.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/4.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/versions/4.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/workflow.yml.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:workflow.yml.txt",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/timber/SAMPLES.jsonl",
+      "passed": true
+    },
+    {
+      "check": "ALL_129_SAMPLES_PRESENT",
+      "passed": true
+    },
+    {
+      "check": "SAMPLE_READ_ERRORS_ZERO",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/dev/shm",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/dev/shm",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/workspace",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/workspace",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/tmp",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/tmp",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_CGROUP",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SAMPLE_GAP",
+      "passed": true
+    },
+    {
+      "check": "NO_OBSERVED_OOM_OR_OOM_KILL",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/timber/OWN_BEFORE.json",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_INVENTORY_ORIGINAL_before",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_SUM_before",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/timber/OWN_AFTER.json",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_INVENTORY_ORIGINAL_after",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_SUM_after",
+      "passed": true
+    },
+    {
+      "check": "STARTUP_ONLY_CAPACITY_ORIGINAL_PASS",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/t/original/timber/steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ONE_ORIGINAL_SPACE_RESULT_FOR_TIMBER",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_79_ASSERTIONS_ZERO_FAILED",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_GROUP_SET_TWO_TIMBER_PLUS_FONT_SETUP_HEALTH",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_COMPLETE_GROUP:setup",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_COMPLETE_GROUP:timber-material",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_COMPLETE_GROUP:timber-source-guards",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_COMPLETE_GROUP:font-layout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_COMPLETE_GROUP:browser-health",
+      "passed": true
+    },
+    {
+      "check": "ALL_79_ORIGINAL_PASS_LINES_GROUP_SUM",
+      "passed": true
+    },
+    {
+      "check": "NO_COMPLETENESS_EXCEPTIONS_CONSOLE_ERRORS",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_TIMBER_ONLY_SCOPE_AND_OMISSIONS",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_TWO_TIMBER_GROUPS_PLUS_FONT_INCLUDED",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_TIMBER_HTTP_PORT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/requests/timber.json",
+      "passed": true
+    },
+    {
+      "check": "FRESH_SHORT_TIMBER_STORAGE",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_REQUEST_HASH_CHAIN",
+      "passed": true
+    },
+    {
+      "check": "SAMPLER_REQUEST_HOST_CHAIN",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/host/timber-materialize/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_MATERIALIZE_ZERO_BOUND",
+      "passed": true
+    },
+    {
+      "check": "UNCHANGED_ORIGINAL_WORKFLOW_PIN",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SHM_DRIVER_PIN",
+      "passed": true
+    },
+    {
+      "check": "ALL_ORIGINAL_SUBCOMMAND_EXITS_ZERO",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_CI_DURATION_20_MINUTES",
+      "passed": true
+    },
+    {
+      "check": "FULL_LITERAL_SOCKET_101_PLUS_NUL_SAFE",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SHM_TMPFS_MOUNT_RECORDED",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_HUMAN_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "CLOSED_SUITE_ARTIFACT_DIRECTORY_PRESENT",
+      "passed": true
+    },
+    {
+      "check": "FRESH_PEER_OUTPUT",
+      "passed": true
+    }
+  ]
+}

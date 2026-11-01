@@ -51,7 +51,7 @@ ADOPTED_HASH = "18a9a75bcf4a5d5fed28c6c5f5cb9702d173198d7d0cd198ffad9936a4b94fa5
 # revision.  An unrecorded approval keeps the actual-SSOT test red.
 # Only replies some existing binding uses are approvals; add one only together
 # with the binding that needs it.
-APPROVAL_REPLIES = ("> 同意", "> 同意(建議)")
+APPROVAL_REPLIES = ("> 同意", "> 同意(建議)", "> 同意 #318 照閱讀 A", "> 照這兩句寫入 (建議)")
 POST_APPROVAL_REVISIONS = (
     {
         "id": "pr260-b",
@@ -144,8 +144,49 @@ POST_APPROVAL_REVISIONS = (
                 "核心契約（K）：參數候選以 (parameterId,fieldId) 建立欄位依賴圖"),
         ),
     },
+    {
+        "id": "pr318-reading-a",
+        "proposal": "Issue #318 comment 6357744513 (條文修改稿第 3 版), reading A: D11 (K) sentence, I19 exception three (W), R6(d)(e) (W)",
+        "approval": "決策佇列.md「2026-10-23 #318 柱跨牆階條文：核可「閱讀 A」🔒」使用者原話「同意 #318 照閱讀 A」;條號綁定見同節協調 agent 2026-10-24 補記條目",
+        "decision": {"heading": "### 2026-10-23 #318 柱跨牆階條文：核可「閱讀 A」🔒",
+                     # (bullet head line, the user's quoted reply in it, clauses it names and authorizes)
+                     "answers": (
+                         ('- **條文寫入綁定（條號 D11、I19、R6；協調 agent 2026-10-24 補記，不改上文）**：使用者回覆即上文原話',
+                          "> 同意 #318 照閱讀 A", ("D11", "I19", "R6")),
+                     )},
+        "edits": (
+            ('D11',
+                '核心契約（K）：接觸候選為具型別來源鍵的有向平面及其實際有限佔用區域。對一條有寬度的軸向掃掠帶，側向定位驗整條接觸邊共線，端向裁切驗垂直端面且覆蓋完整帶寬；相等比較精確，不以單點接觸、部分覆蓋或兩個不同平面拼湊成同一完整端面。候選是否可用、允許何種來源及優先關係由固定策略明列，核心只依傳入候選及策略結果求幾何，不從來源類名或角色字串自行放行。\n',
+                '核心契約（K）：接觸候選為具型別來源鍵的有向平面及其實際有限佔用區域。對一條有寬度的軸向掃掠帶，側向定位驗整條接觸邊共線，端向裁切驗垂直端面且覆蓋完整帶寬；相等比較精確，不以單點接觸、部分覆蓋或兩個不同平面拼湊成同一完整端面。這句只管被策略當成一個完整端面的候選。部分接觸、其餘不接觸，不是一個完整端面；要不要接受由模板策略另列。核心仍不從角色字串自行放行。候選是否可用、允許何種來源及優先關係由固定策略明列，核心只依傳入候選及策略結果求幾何，不從來源類名或角色字串自行放行。\n'),
+            ('I19',
+                '    違反 → 拒絕（V_CUT_PRIORITY），訊息指名兩支料與各自優先級。',
+                '    例外三：只給 `boundary` 的固定段、在它所覆蓋那條外輪廓邊的端點：\n    端面可以頂一支或多支已放角材的側面。不要求這幾支併成一個平面，也不要求涵蓋全寬。\n    這個端點不使用「優先級必須嚴格小於自己」。至少要有一段頂到角材。完全沒頂到角材仍拒絕。\n    放得下料寬的 RC 面必須先貼角材，端面頂的是那支角材。短於料寬、放不了自己的角材的 RC 面，\n    端面沒被角材蓋到的那一段可以對著它。那段不計入角材接觸，也不另設長度上限。\n    `primary`、`secondary`、`custom` 不適用。延伸段端面不適用，仍走 I22。\n    違反 → 拒絕（V_CUT_PRIORITY），訊息指名兩支料與各自優先級。'),
+            ('R6',
+                '   (e) 推導出的中線與長度**不凍結**（2026-09-18 拍板反轉）：存的是位置引用（I13），\n       被引用的線或邊移動 → 重新推導中線與長度，先走 I8a 影響預覽，\n       零違規且使用者確認才提交；仍失敗整筆回滾（I8 同軌）。\n       依賴鏈取遞移閉包——A 的側面是 B 的擋面，A 動則 B 一併重算。\n       world_revalidate 仍重驗 footprint 合法 + 兩端各有恰好一個涵蓋全寬的擋面。',
+                '       I19 例外三那個端面改依以下條件判定：\n       擋面必須是已放角材的側面，可以是一支或多支。不要求恰好一個，不要求這幾支共面，\n       不要求涵蓋全寬，也不要求對方優先級嚴格小於自己。完全沒有角材接觸仍是懸空拒絕。\n       不設懸空長度上限。短於料寬、放不下自己的角材的 RC 面，可以留在端面沒被角材蓋到的那一段，\n       那段不計入接觸。放得下料寬的 RC 面必須先貼角材，不得把端面直接留在裸 RC 上。\n       `primary`、`secondary`、`custom` 的端面，以及延伸段端面，仍用恰好一個全寬擋面。\n   (e) 推導出的中線與長度**不凍結**（2026-09-18 拍板反轉）：存的是位置引用（I13），\n       被引用的線或邊移動 → 重新推導中線與長度，先走 I8a 影響預覽，\n       零違規且使用者確認才提交；仍失敗整筆回滾（I8 同軌）。\n       依賴鏈取遞移閉包——A 的側面是 B 的擋面，A 動則 B 一併重算。\n       world_revalidate 仍重驗 footprint 合法 + 兩端各有恰好一個涵蓋全寬的擋面。\n       I19 例外三那個端面改驗「至少接觸一支已放角材」，其餘端面仍驗恰好一個全寬擋面。'),
+        ),
+    },
+    {
+        "id": "pr318-rc-run",
+        "proposal": "Claude Code 選項題附逐字差異 (2026-10-24): I19 例外三、R6(d) 各補一句 RC 面放不放得下料寬的量法",
+        "approval": "決策佇列.md「2026-10-24 #318 閱讀 A：放不放得下料寬，量 RC 面上還沒貼料的那段 🔒」條文補句條目「照這兩句寫入 (建議)」",
+        "decision": {"heading": "### 2026-10-24 #318 閱讀 A：放不放得下料寬，量 RC 面上還沒貼料的那段 🔒",
+                     # (bullet head line, the user's quoted reply in it, clauses it names and authorizes)
+                     "answers": (
+                         ('- **條文補句（條號 I19、R6；I19 例外三第 1333 行之後、R6(d) 第 1985 行之後各加一句）**：題目「要不要在 公理層.md 寫明你選的 RC 面量法？」，選項附逐字差異；使用者所選',
+                          "> 照這兩句寫入 (建議)", ("I19", "R6")),
+                     )},
+        "edits": (
+            ('I19',
+                '    放得下料寬的 RC 面必須先貼角材，端面頂的是那支角材。短於料寬、放不了自己的角材的 RC 面，\n',
+                '    放得下料寬的 RC 面必須先貼角材，端面頂的是那支角材。RC 面放不放得下料寬，量的是端面裸露那一段所在、\n    還沒貼角材的連續部分；同一面其餘已貼角材的部分不算進去。短於料寬、放不了自己的角材的 RC 面，\n'),
+            ('R6',
+                '       那段不計入接觸。放得下料寬的 RC 面必須先貼角材，不得把端面直接留在裸 RC 上。\n',
+                '       那段不計入接觸。放得下料寬的 RC 面必須先貼角材，不得把端面直接留在裸 RC 上。放不放得下的量法同 I19 例外三。\n'),
+        ),
+    },
 )
-CURRENT_HASH = "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
+CURRENT_HASH = "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
 
 
 def sha(raw):
@@ -489,7 +530,10 @@ class AdoptionIntegrity(unittest.TestCase):
         # the approval must be the user's own recorded answer about the edited clauses
         queue = (ROOT / "決策佇列.md").read_bytes()
         verify_revision_decisions(queue, POST_APPROVAL_REVISIONS)
-        approved, final = POST_APPROVAL_REVISIONS[0], POST_APPROVAL_REVISIONS[-1]
+        # the attacks below need the final-confirmation section, whose "> 同意" sits under several
+        # bullets; later revisions (#318) are appended after it, so name it instead of taking the last
+        approved = POST_APPROVAL_REVISIONS[0]
+        final = next(revision for revision in POST_APPROVAL_REVISIONS if revision["id"] == "pr260-final")
         decision = approved["decision"]
         (head, reply, clauses), = decision["answers"]
         final_head, final_reply, final_clauses = final["decision"]["answers"][0]

@@ -1,0 +1,8820 @@
+{
+  "scope": "Observation; not golden generation or formal acceptance",
+  "command": [
+    "/workspace/geo318-reading-a-prep/observe_reading_a.py",
+    "--root",
+    "/workspace/geo318-reading-a-work",
+    "--output",
+    "/workspace/geo318-reading-a-prep/observation-small.json"
+  ],
+  "sha": "2039b477a9669a9e3fcaad740283605b8de8a8f4",
+  "dirty": "",
+  "source_hashes": {
+    "framing_oracle.py": "4c271933e123b296d6c9240f2ee4f4ae045f1dc59173b8c6aa9acd12e0cd4e01",
+    "selftest.py": "8f40ec86d8c865bf3221b29b85d842724cd60dc61433d8d59feacb31ad81eadf",
+    "make_golden.py": "b0946fa184bcc92652e8fd948f7065643684dcabc7547ee6c2e468c3b63a8ceb"
+  },
+  "elapsed_seconds": 0.5041387910023332,
+  "rows": [
+    {
+      "room": "FZ120",
+      "layout": "左上起鋪,板長沿Y",
+      "policy": "current",
+      "verdict": "core_limited",
+      "problems": [],
+      "conflicts": [],
+      "core_limits": [
+        {
+          "code": "CORE_LIMIT_EXTENSION_END_FREE",
+          "end": 1000,
+          "check": "C8_EXTENSION_END_FREE",
+          "why": "邊界材 [1000, 3645, 4100, 3672] 越過凹角的延伸段停在 1000,端面有 (3645, 3648) 懸空;物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆",
+          "id": 1
+        }
+      ],
+      "seams_a": [
+        916,
+        1833,
+        2750,
+        3667
+      ],
+      "seams_b": [
+        1831,
+        3631
+      ],
+      "p182": null,
+      "timbers": [
+        {
+          "id": 0,
+          "kind": "boundary",
+          "rect": [
+            0,
+            0,
+            4100,
+            27
+          ],
+          "rc_line": 0,
+          "edge": [
+            0,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 1,
+          "kind": "boundary",
+          "rect": [
+            1000,
+            3645,
+            4100,
+            3672
+          ],
+          "rc_line": 3672,
+          "edge": [
+            1450,
+            4100
+          ],
+          "outer": true,
+          "ext": [
+            [
+              1000,
+              1450
+            ]
+          ]
+        },
+        {
+          "id": 2,
+          "kind": "boundary",
+          "rect": [
+            1000,
+            3693,
+            1450,
+            3720
+          ],
+          "rc_line": 3720,
+          "edge": [
+            1000,
+            1450
+          ],
+          "outer": true
+        },
+        {
+          "id": 3,
+          "kind": "boundary",
+          "rect": [
+            0,
+            3648,
+            1000,
+            3675
+          ],
+          "rc_line": 3675,
+          "edge": [
+            0,
+            1000
+          ],
+          "outer": true
+        },
+        {
+          "id": 4,
+          "kind": "rc_parallel",
+          "rect": [
+            4073,
+            27,
+            4100,
+            3645
+          ],
+          "rc_line": 4100
+        },
+        {
+          "id": 5,
+          "kind": "rc_parallel",
+          "rect": [
+            0,
+            27,
+            27,
+            3648
+          ],
+          "rc_line": 0
+        },
+        {
+          "id": 6,
+          "kind": "main",
+          "rect": [
+            903,
+            27,
+            930,
+            3648
+          ],
+          "seam": 916,
+          "shift": 0
+        },
+        {
+          "id": 7,
+          "kind": "main",
+          "rect": [
+            1820,
+            27,
+            1847,
+            3645
+          ],
+          "seam": 1833,
+          "shift": 0
+        },
+        {
+          "id": 8,
+          "kind": "main",
+          "rect": [
+            2737,
+            27,
+            2764,
+            3645
+          ],
+          "seam": 2750,
+          "shift": 0
+        },
+        {
+          "id": 9,
+          "kind": "main",
+          "rect": [
+            3654,
+            27,
+            3681,
+            3645
+          ],
+          "seam": 3667,
+          "shift": 0
+        },
+        {
+          "id": 10,
+          "kind": "secondary",
+          "rect": [
+            27,
+            350,
+            903,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 11,
+          "kind": "secondary",
+          "rect": [
+            27,
+            717,
+            903,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 12,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1084,
+            903,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 13,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1451,
+            903,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 14,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1818,
+            903,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 15,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2185,
+            903,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 16,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2552,
+            903,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 17,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2919,
+            903,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 18,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3286,
+            903,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 19,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3618,
+            903,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 20,
+          "kind": "secondary",
+          "rect": [
+            930,
+            350,
+            1820,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 21,
+          "kind": "secondary",
+          "rect": [
+            930,
+            717,
+            1820,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 22,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1084,
+            1820,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 23,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1451,
+            1820,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 24,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1818,
+            1820,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 25,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2185,
+            1820,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 26,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2552,
+            1820,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 27,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2919,
+            1820,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 28,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3286,
+            1820,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 29,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3618,
+            1820,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 30,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            350,
+            2737,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 31,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            717,
+            2737,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 32,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1084,
+            2737,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 33,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1451,
+            2737,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 34,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1818,
+            2737,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 35,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2185,
+            2737,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 36,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2552,
+            2737,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 37,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2919,
+            2737,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 38,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3286,
+            2737,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 39,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3618,
+            2737,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 40,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            350,
+            3654,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 41,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            717,
+            3654,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 42,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1084,
+            3654,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 43,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1451,
+            3654,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 44,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1818,
+            3654,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 45,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2185,
+            3654,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 46,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2552,
+            3654,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 47,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2919,
+            3654,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 48,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3286,
+            3654,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 49,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3618,
+            3654,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 50,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            350,
+            4073,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 51,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            717,
+            4073,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 52,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1084,
+            4073,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 53,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1451,
+            4073,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 54,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1818,
+            4073,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 55,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2185,
+            4073,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 56,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2552,
+            4073,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 57,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2919,
+            4073,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 58,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3286,
+            4073,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 59,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3618,
+            4073,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            9,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "room": "FZ120",
+      "layout": "左上起鋪,板長沿Y",
+      "policy": "withdrawn",
+      "verdict": "core_limited",
+      "problems": [],
+      "conflicts": [],
+      "core_limits": [
+        {
+          "code": "CORE_LIMIT_BOUNDARY_END_FREE",
+          "end": 1000,
+          "check": "C8_I19_BOUNDARY_END",
+          "at": [
+            1000,
+            3675
+          ],
+          "free": [
+            3672,
+            3675
+          ],
+          "why": "邊界材 [0, 3648, 1000, 3675] 在牆端 1000 的端面有 3 mm 落在室內、沒有別的 boundary 可頂;越過凹角延伸會撞到另一支外牆邊界材(兩支寬向重疊)。物理上這支料側面釘牆、端面懸空不影響承接;核心 I19 只准 boundary 端面的室內部分頂另一支 boundary",
+          "id": 3
+        },
+        {
+          "code": "CORE_LIMIT_EXTENSION_END_FREE",
+          "end": 1000,
+          "check": "C8_EXTENSION_END_FREE",
+          "why": "邊界材 [1000, 3645, 4100, 3672] 越過凹角的延伸段停在 1000,端面有 (3645, 3648) 懸空;物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆",
+          "id": 1
+        }
+      ],
+      "seams_a": [
+        916,
+        1833,
+        2750,
+        3667
+      ],
+      "seams_b": [
+        1831,
+        3631
+      ],
+      "p182": null,
+      "timbers": [
+        {
+          "id": 0,
+          "kind": "boundary",
+          "rect": [
+            0,
+            0,
+            4100,
+            27
+          ],
+          "rc_line": 0,
+          "edge": [
+            0,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 1,
+          "kind": "boundary",
+          "rect": [
+            1000,
+            3645,
+            4100,
+            3672
+          ],
+          "rc_line": 3672,
+          "edge": [
+            1450,
+            4100
+          ],
+          "outer": true,
+          "ext": [
+            [
+              1000,
+              1450
+            ]
+          ]
+        },
+        {
+          "id": 2,
+          "kind": "boundary",
+          "rect": [
+            1000,
+            3693,
+            1450,
+            3720
+          ],
+          "rc_line": 3720,
+          "edge": [
+            1000,
+            1450
+          ],
+          "outer": true
+        },
+        {
+          "id": 3,
+          "kind": "boundary",
+          "rect": [
+            0,
+            3648,
+            1000,
+            3675
+          ],
+          "rc_line": 3675,
+          "edge": [
+            0,
+            1000
+          ],
+          "outer": true
+        },
+        {
+          "id": 4,
+          "kind": "rc_parallel",
+          "rect": [
+            4073,
+            27,
+            4100,
+            3645
+          ],
+          "rc_line": 4100
+        },
+        {
+          "id": 5,
+          "kind": "rc_parallel",
+          "rect": [
+            0,
+            27,
+            27,
+            3648
+          ],
+          "rc_line": 0
+        },
+        {
+          "id": 6,
+          "kind": "main",
+          "rect": [
+            903,
+            27,
+            930,
+            3648
+          ],
+          "seam": 916,
+          "shift": 0
+        },
+        {
+          "id": 7,
+          "kind": "main",
+          "rect": [
+            1820,
+            27,
+            1847,
+            3645
+          ],
+          "seam": 1833,
+          "shift": 0
+        },
+        {
+          "id": 8,
+          "kind": "main",
+          "rect": [
+            2737,
+            27,
+            2764,
+            3645
+          ],
+          "seam": 2750,
+          "shift": 0
+        },
+        {
+          "id": 9,
+          "kind": "main",
+          "rect": [
+            3654,
+            27,
+            3681,
+            3645
+          ],
+          "seam": 3667,
+          "shift": 0
+        },
+        {
+          "id": 10,
+          "kind": "secondary",
+          "rect": [
+            27,
+            350,
+            903,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 11,
+          "kind": "secondary",
+          "rect": [
+            27,
+            717,
+            903,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 12,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1084,
+            903,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 13,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1451,
+            903,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 14,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1818,
+            903,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 15,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2185,
+            903,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 16,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2552,
+            903,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 17,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2919,
+            903,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 18,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3286,
+            903,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 19,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3618,
+            903,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 20,
+          "kind": "secondary",
+          "rect": [
+            930,
+            350,
+            1820,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 21,
+          "kind": "secondary",
+          "rect": [
+            930,
+            717,
+            1820,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 22,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1084,
+            1820,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 23,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1451,
+            1820,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 24,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1818,
+            1820,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 25,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2185,
+            1820,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 26,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2552,
+            1820,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 27,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2919,
+            1820,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 28,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3286,
+            1820,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 29,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3618,
+            1820,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 30,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            350,
+            2737,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 31,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            717,
+            2737,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 32,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1084,
+            2737,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 33,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1451,
+            2737,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 34,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1818,
+            2737,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 35,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2185,
+            2737,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 36,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2552,
+            2737,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 37,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2919,
+            2737,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 38,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3286,
+            2737,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 39,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3618,
+            2737,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 40,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            350,
+            3654,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 41,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            717,
+            3654,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 42,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1084,
+            3654,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 43,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1451,
+            3654,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 44,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1818,
+            3654,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 45,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2185,
+            3654,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 46,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2552,
+            3654,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 47,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2919,
+            3654,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 48,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3286,
+            3654,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 49,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3618,
+            3654,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 50,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            350,
+            4073,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 51,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            717,
+            4073,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 52,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1084,
+            4073,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 53,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1451,
+            4073,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 54,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1818,
+            4073,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 55,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2185,
+            4073,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 56,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2552,
+            4073,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 57,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2919,
+            4073,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 58,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3286,
+            4073,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 59,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3618,
+            4073,
+            3645
+          ],
+          "at": 3631,
+          "role": "seam",
+          "span": [
+            9,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "room": "FZ120",
+      "layout": "左下起鋪,板長沿Y",
+      "policy": "current",
+      "verdict": "core_limited",
+      "problems": [],
+      "conflicts": [],
+      "core_limits": [
+        {
+          "code": "CORE_LIMIT_EXTENSION_END_FREE",
+          "end": 1000,
+          "check": "C8_EXTENSION_END_FREE",
+          "why": "邊界材 [1000, 3645, 4100, 3672] 越過凹角的延伸段停在 1000,端面有 (3645, 3648) 懸空;物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆",
+          "id": 1
+        }
+      ],
+      "seams_a": [
+        916,
+        1833,
+        2750,
+        3667
+      ],
+      "seams_b": [
+        1889,
+        57
+      ],
+      "p182": null,
+      "timbers": [
+        {
+          "id": 0,
+          "kind": "boundary",
+          "rect": [
+            0,
+            0,
+            4100,
+            27
+          ],
+          "rc_line": 0,
+          "edge": [
+            0,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 1,
+          "kind": "boundary",
+          "rect": [
+            1000,
+            3645,
+            4100,
+            3672
+          ],
+          "rc_line": 3672,
+          "edge": [
+            1450,
+            4100
+          ],
+          "outer": true,
+          "ext": [
+            [
+              1000,
+              1450
+            ]
+          ]
+        },
+        {
+          "id": 2,
+          "kind": "boundary",
+          "rect": [
+            1000,
+            3693,
+            1450,
+            3720
+          ],
+          "rc_line": 3720,
+          "edge": [
+            1000,
+            1450
+          ],
+          "outer": true
+        },
+        {
+          "id": 3,
+          "kind": "boundary",
+          "rect": [
+            0,
+            3648,
+            1000,
+            3675
+          ],
+          "rc_line": 3675,
+          "edge": [
+            0,
+            1000
+          ],
+          "outer": true
+        },
+        {
+          "id": 4,
+          "kind": "rc_parallel",
+          "rect": [
+            4073,
+            27,
+            4100,
+            3645
+          ],
+          "rc_line": 4100
+        },
+        {
+          "id": 5,
+          "kind": "rc_parallel",
+          "rect": [
+            0,
+            27,
+            27,
+            3648
+          ],
+          "rc_line": 0
+        },
+        {
+          "id": 6,
+          "kind": "main",
+          "rect": [
+            903,
+            27,
+            930,
+            3648
+          ],
+          "seam": 916,
+          "shift": 0
+        },
+        {
+          "id": 7,
+          "kind": "main",
+          "rect": [
+            1820,
+            27,
+            1847,
+            3645
+          ],
+          "seam": 1833,
+          "shift": 0
+        },
+        {
+          "id": 8,
+          "kind": "main",
+          "rect": [
+            2737,
+            27,
+            2764,
+            3645
+          ],
+          "seam": 2750,
+          "shift": 0
+        },
+        {
+          "id": 9,
+          "kind": "main",
+          "rect": [
+            3654,
+            27,
+            3681,
+            3645
+          ],
+          "seam": 3667,
+          "shift": 0
+        },
+        {
+          "id": 10,
+          "kind": "secondary",
+          "rect": [
+            27,
+            44,
+            903,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 11,
+          "kind": "secondary",
+          "rect": [
+            27,
+            408,
+            903,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 12,
+          "kind": "secondary",
+          "rect": [
+            27,
+            775,
+            903,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 13,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1142,
+            903,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 14,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1509,
+            903,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 15,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1876,
+            903,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 16,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2243,
+            903,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 17,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2610,
+            903,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 18,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2977,
+            903,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 19,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3344,
+            903,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 20,
+          "kind": "secondary",
+          "rect": [
+            930,
+            44,
+            1820,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 21,
+          "kind": "secondary",
+          "rect": [
+            930,
+            408,
+            1820,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 22,
+          "kind": "secondary",
+          "rect": [
+            930,
+            775,
+            1820,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 23,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1142,
+            1820,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 24,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1509,
+            1820,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 25,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1876,
+            1820,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 26,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2243,
+            1820,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 27,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2610,
+            1820,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 28,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2977,
+            1820,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 29,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3344,
+            1820,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 30,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            44,
+            2737,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 31,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            408,
+            2737,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 32,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            775,
+            2737,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 33,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1142,
+            2737,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 34,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1509,
+            2737,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 35,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1876,
+            2737,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 36,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2243,
+            2737,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 37,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2610,
+            2737,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 38,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2977,
+            2737,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 39,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3344,
+            2737,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 40,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            44,
+            3654,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 41,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            408,
+            3654,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 42,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            775,
+            3654,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 43,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1142,
+            3654,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 44,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1509,
+            3654,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 45,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1876,
+            3654,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 46,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2243,
+            3654,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 47,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2610,
+            3654,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 48,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2977,
+            3654,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 49,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3344,
+            3654,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 50,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            44,
+            4073,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 51,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            408,
+            4073,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 52,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            775,
+            4073,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 53,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1142,
+            4073,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 54,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1509,
+            4073,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 55,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1876,
+            4073,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 56,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2243,
+            4073,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 57,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2610,
+            4073,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 58,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2977,
+            4073,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 59,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3344,
+            4073,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "room": "FZ120",
+      "layout": "左下起鋪,板長沿Y",
+      "policy": "withdrawn",
+      "verdict": "core_limited",
+      "problems": [],
+      "conflicts": [],
+      "core_limits": [
+        {
+          "code": "CORE_LIMIT_BOUNDARY_END_FREE",
+          "end": 1000,
+          "check": "C8_I19_BOUNDARY_END",
+          "at": [
+            1000,
+            3675
+          ],
+          "free": [
+            3672,
+            3675
+          ],
+          "why": "邊界材 [0, 3648, 1000, 3675] 在牆端 1000 的端面有 3 mm 落在室內、沒有別的 boundary 可頂;越過凹角延伸會撞到另一支外牆邊界材(兩支寬向重疊)。物理上這支料側面釘牆、端面懸空不影響承接;核心 I19 只准 boundary 端面的室內部分頂另一支 boundary",
+          "id": 3
+        },
+        {
+          "code": "CORE_LIMIT_EXTENSION_END_FREE",
+          "end": 1000,
+          "check": "C8_EXTENSION_END_FREE",
+          "why": "邊界材 [1000, 3645, 4100, 3672] 越過凹角的延伸段停在 1000,端面有 (3645, 3648) 懸空;物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆",
+          "id": 1
+        }
+      ],
+      "seams_a": [
+        916,
+        1833,
+        2750,
+        3667
+      ],
+      "seams_b": [
+        1889,
+        57
+      ],
+      "p182": null,
+      "timbers": [
+        {
+          "id": 0,
+          "kind": "boundary",
+          "rect": [
+            0,
+            0,
+            4100,
+            27
+          ],
+          "rc_line": 0,
+          "edge": [
+            0,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 1,
+          "kind": "boundary",
+          "rect": [
+            1000,
+            3645,
+            4100,
+            3672
+          ],
+          "rc_line": 3672,
+          "edge": [
+            1450,
+            4100
+          ],
+          "outer": true,
+          "ext": [
+            [
+              1000,
+              1450
+            ]
+          ]
+        },
+        {
+          "id": 2,
+          "kind": "boundary",
+          "rect": [
+            1000,
+            3693,
+            1450,
+            3720
+          ],
+          "rc_line": 3720,
+          "edge": [
+            1000,
+            1450
+          ],
+          "outer": true
+        },
+        {
+          "id": 3,
+          "kind": "boundary",
+          "rect": [
+            0,
+            3648,
+            1000,
+            3675
+          ],
+          "rc_line": 3675,
+          "edge": [
+            0,
+            1000
+          ],
+          "outer": true
+        },
+        {
+          "id": 4,
+          "kind": "rc_parallel",
+          "rect": [
+            4073,
+            27,
+            4100,
+            3645
+          ],
+          "rc_line": 4100
+        },
+        {
+          "id": 5,
+          "kind": "rc_parallel",
+          "rect": [
+            0,
+            27,
+            27,
+            3648
+          ],
+          "rc_line": 0
+        },
+        {
+          "id": 6,
+          "kind": "main",
+          "rect": [
+            903,
+            27,
+            930,
+            3648
+          ],
+          "seam": 916,
+          "shift": 0
+        },
+        {
+          "id": 7,
+          "kind": "main",
+          "rect": [
+            1820,
+            27,
+            1847,
+            3645
+          ],
+          "seam": 1833,
+          "shift": 0
+        },
+        {
+          "id": 8,
+          "kind": "main",
+          "rect": [
+            2737,
+            27,
+            2764,
+            3645
+          ],
+          "seam": 2750,
+          "shift": 0
+        },
+        {
+          "id": 9,
+          "kind": "main",
+          "rect": [
+            3654,
+            27,
+            3681,
+            3645
+          ],
+          "seam": 3667,
+          "shift": 0
+        },
+        {
+          "id": 10,
+          "kind": "secondary",
+          "rect": [
+            27,
+            44,
+            903,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 11,
+          "kind": "secondary",
+          "rect": [
+            27,
+            408,
+            903,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 12,
+          "kind": "secondary",
+          "rect": [
+            27,
+            775,
+            903,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 13,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1142,
+            903,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 14,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1509,
+            903,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 15,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1876,
+            903,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 16,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2243,
+            903,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 17,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2610,
+            903,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 18,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2977,
+            903,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 19,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3344,
+            903,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 20,
+          "kind": "secondary",
+          "rect": [
+            930,
+            44,
+            1820,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 21,
+          "kind": "secondary",
+          "rect": [
+            930,
+            408,
+            1820,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 22,
+          "kind": "secondary",
+          "rect": [
+            930,
+            775,
+            1820,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 23,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1142,
+            1820,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 24,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1509,
+            1820,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 25,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1876,
+            1820,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 26,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2243,
+            1820,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 27,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2610,
+            1820,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 28,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2977,
+            1820,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 29,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3344,
+            1820,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 30,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            44,
+            2737,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 31,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            408,
+            2737,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 32,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            775,
+            2737,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 33,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1142,
+            2737,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 34,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1509,
+            2737,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 35,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1876,
+            2737,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 36,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2243,
+            2737,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 37,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2610,
+            2737,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 38,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2977,
+            2737,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 39,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3344,
+            2737,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 40,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            44,
+            3654,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 41,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            408,
+            3654,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 42,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            775,
+            3654,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 43,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1142,
+            3654,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 44,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1509,
+            3654,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 45,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1876,
+            3654,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 46,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2243,
+            3654,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 47,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2610,
+            3654,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 48,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2977,
+            3654,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 49,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3344,
+            3654,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            8,
+            9
+          ]
+        },
+        {
+          "id": 50,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            44,
+            4073,
+            71
+          ],
+          "at": 57,
+          "role": "seam",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 51,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            408,
+            4073,
+            435
+          ],
+          "at": 421,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 52,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            775,
+            4073,
+            802
+          ],
+          "at": 788,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 53,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1142,
+            4073,
+            1169
+          ],
+          "at": 1155,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 54,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1509,
+            4073,
+            1536
+          ],
+          "at": 1522,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 55,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1876,
+            4073,
+            1903
+          ],
+          "at": 1889,
+          "role": "seam",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 56,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2243,
+            4073,
+            2270
+          ],
+          "at": 2256,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 57,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2610,
+            4073,
+            2637
+          ],
+          "at": 2623,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 58,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2977,
+            4073,
+            3004
+          ],
+          "at": 2990,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": 59,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3344,
+            4073,
+            3371
+          ],
+          "at": 3357,
+          "role": "mark",
+          "span": [
+            9,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "room": "FZ107",
+      "layout": "左上起鋪,板長沿Y",
+      "policy": "current",
+      "verdict": "buildable",
+      "problems": [],
+      "conflicts": [],
+      "core_limits": [],
+      "seams_a": [
+        916,
+        1833,
+        2750,
+        3667
+      ],
+      "seams_b": [
+        1831,
+        3659
+      ],
+      "p182": {
+        "c0": 3667,
+        "d0": 3667,
+        "cands": [
+          {
+            "d": 3667,
+            "seam": 3667,
+            "ok": true,
+            "phys": false,
+            "codes": [],
+            "checks": [],
+            "why": "可行"
+          }
+        ],
+        "chosen": 3667
+      },
+      "timbers": [
+        {
+          "id": 0,
+          "kind": "boundary",
+          "rect": [
+            0,
+            0,
+            4100,
+            27
+          ],
+          "rc_line": 0,
+          "edge": [
+            0,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 1,
+          "kind": "boundary",
+          "rect": [
+            3650,
+            3684,
+            4100,
+            3711
+          ],
+          "rc_line": 3711,
+          "edge": [
+            3650,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 2,
+          "kind": "boundary",
+          "rect": [
+            0,
+            3673,
+            3650,
+            3700
+          ],
+          "rc_line": 3700,
+          "edge": [
+            0,
+            3650
+          ],
+          "outer": true
+        },
+        {
+          "id": 3,
+          "kind": "rc_parallel",
+          "rect": [
+            4073,
+            27,
+            4100,
+            3684
+          ],
+          "rc_line": 4100
+        },
+        {
+          "id": 4,
+          "kind": "rc_parallel",
+          "rect": [
+            0,
+            27,
+            27,
+            3673
+          ],
+          "rc_line": 0
+        },
+        {
+          "id": 5,
+          "kind": "main",
+          "rect": [
+            903,
+            27,
+            930,
+            3673
+          ],
+          "seam": 916,
+          "shift": 0
+        },
+        {
+          "id": 6,
+          "kind": "main",
+          "rect": [
+            1820,
+            27,
+            1847,
+            3673
+          ],
+          "seam": 1833,
+          "shift": 0
+        },
+        {
+          "id": 7,
+          "kind": "main",
+          "rect": [
+            2737,
+            27,
+            2764,
+            3673
+          ],
+          "seam": 2750,
+          "shift": 0
+        },
+        {
+          "id": 8,
+          "kind": "main",
+          "rect": [
+            3654,
+            27,
+            3681,
+            3684
+          ],
+          "seam": 3667,
+          "shift": 0
+        },
+        {
+          "id": 9,
+          "kind": "secondary",
+          "rect": [
+            27,
+            350,
+            903,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 10,
+          "kind": "secondary",
+          "rect": [
+            27,
+            717,
+            903,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 11,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1084,
+            903,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 12,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1451,
+            903,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 13,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1818,
+            903,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 14,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2185,
+            903,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 15,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2552,
+            903,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 16,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2919,
+            903,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 17,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3286,
+            903,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 18,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3646,
+            903,
+            3673
+          ],
+          "at": 3659,
+          "role": "seam",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 19,
+          "kind": "secondary",
+          "rect": [
+            930,
+            350,
+            1820,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 20,
+          "kind": "secondary",
+          "rect": [
+            930,
+            717,
+            1820,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 21,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1084,
+            1820,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 22,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1451,
+            1820,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 23,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1818,
+            1820,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 24,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2185,
+            1820,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 25,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2552,
+            1820,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 26,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2919,
+            1820,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 27,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3286,
+            1820,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 28,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3646,
+            1820,
+            3673
+          ],
+          "at": 3659,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 29,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            350,
+            2737,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 30,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            717,
+            2737,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 31,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1084,
+            2737,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 32,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1451,
+            2737,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 33,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1818,
+            2737,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 34,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2185,
+            2737,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 35,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2552,
+            2737,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 36,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2919,
+            2737,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 37,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3286,
+            2737,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 38,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3646,
+            2737,
+            3673
+          ],
+          "at": 3659,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 39,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            350,
+            3654,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 40,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            717,
+            3654,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 41,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1084,
+            3654,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 42,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1451,
+            3654,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 43,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1818,
+            3654,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 44,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2185,
+            3654,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 45,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2552,
+            3654,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 46,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2919,
+            3654,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 47,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3286,
+            3654,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 48,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3646,
+            3654,
+            3673
+          ],
+          "at": 3659,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 49,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            350,
+            4073,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 50,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            717,
+            4073,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 51,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1084,
+            4073,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 52,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1451,
+            4073,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 53,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1818,
+            4073,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 54,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2185,
+            4073,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 55,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2552,
+            4073,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 56,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2919,
+            4073,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 57,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3286,
+            4073,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 58,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3646,
+            4073,
+            3673
+          ],
+          "at": 3659,
+          "role": "seam",
+          "span": [
+            8,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "room": "FZ114",
+      "layout": "右上起鋪,板長沿Y",
+      "policy": "current",
+      "verdict": "buildable",
+      "problems": [],
+      "conflicts": [],
+      "core_limits": [],
+      "seams_a": [
+        3184,
+        2267,
+        1350,
+        491
+      ],
+      "seams_b": [
+        1831,
+        3656
+      ],
+      "p182": {
+        "c0": 433,
+        "d0": 3667,
+        "cands": [
+          {
+            "d": 3667,
+            "seam": 433,
+            "ok": false,
+            "phys": false,
+            "codes": [],
+            "checks": [
+              "C10_SHORT_PIECE",
+              "C8_I19_PRIORITY"
+            ],
+            "why": "衝突碼 無;檢查失敗 C10_SHORT_PIECE,C8_I19_PRIORITY"
+          },
+          {
+            "d": 3609,
+            "seam": 491,
+            "ok": true,
+            "phys": false,
+            "codes": [],
+            "checks": [],
+            "why": "可行"
+          }
+        ],
+        "chosen": 3609
+      },
+      "timbers": [
+        {
+          "id": 0,
+          "kind": "boundary",
+          "rect": [
+            0,
+            0,
+            4100,
+            27
+          ],
+          "rc_line": 0,
+          "edge": [
+            0,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 1,
+          "kind": "boundary",
+          "rect": [
+            3800,
+            3670,
+            4100,
+            3697
+          ],
+          "rc_line": 3697,
+          "edge": [
+            3800,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 2,
+          "kind": "boundary",
+          "rect": [
+            1250,
+            3681,
+            3800,
+            3708
+          ],
+          "rc_line": 3708,
+          "edge": [
+            1250,
+            3800
+          ],
+          "outer": true
+        },
+        {
+          "id": 3,
+          "kind": "boundary",
+          "rect": [
+            300,
+            3618,
+            1337,
+            3645
+          ],
+          "rc_line": 3645,
+          "edge": [
+            450,
+            1250
+          ],
+          "outer": true,
+          "ext": [
+            [
+              1250,
+              1337
+            ],
+            [
+              300,
+              450
+            ]
+          ]
+        },
+        {
+          "id": 4,
+          "kind": "boundary",
+          "rect": [
+            0,
+            3678,
+            450,
+            3705
+          ],
+          "rc_line": 3705,
+          "edge": [
+            0,
+            450
+          ],
+          "outer": true
+        },
+        {
+          "id": 5,
+          "kind": "boundary",
+          "rect": [
+            300,
+            3358,
+            478,
+            3385
+          ],
+          "rc_line": 3385,
+          "edge": [
+            300,
+            700
+          ],
+          "outer": false
+        },
+        {
+          "id": 6,
+          "kind": "boundary",
+          "rect": [
+            300,
+            3585,
+            478,
+            3612
+          ],
+          "rc_line": 3585,
+          "edge": [
+            300,
+            700
+          ],
+          "outer": false
+        },
+        {
+          "id": 7,
+          "kind": "rc_parallel",
+          "rect": [
+            4073,
+            27,
+            4100,
+            3670
+          ],
+          "rc_line": 4100
+        },
+        {
+          "id": 8,
+          "kind": "rc_parallel",
+          "rect": [
+            1250,
+            3645,
+            1277,
+            3681
+          ],
+          "rc_line": 1250,
+          "core_role": "custom",
+          "priority": 3
+        },
+        {
+          "id": 9,
+          "kind": "rc_parallel",
+          "rect": [
+            423,
+            3645,
+            450,
+            3678
+          ],
+          "rc_line": 450,
+          "core_role": "custom",
+          "priority": 3
+        },
+        {
+          "id": 10,
+          "kind": "rc_parallel",
+          "rect": [
+            0,
+            27,
+            27,
+            3678
+          ],
+          "rc_line": 0
+        },
+        {
+          "id": 11,
+          "kind": "rc_parallel",
+          "rect": [
+            700,
+            27,
+            727,
+            3618
+          ],
+          "rc_line": 700
+        },
+        {
+          "id": 12,
+          "kind": "rc_parallel",
+          "rect": [
+            273,
+            27,
+            300,
+            3678
+          ],
+          "rc_line": 300
+        },
+        {
+          "id": 13,
+          "kind": "main",
+          "rect": [
+            3171,
+            27,
+            3198,
+            3681
+          ],
+          "seam": 3184,
+          "shift": 0
+        },
+        {
+          "id": 14,
+          "kind": "main",
+          "rect": [
+            2254,
+            27,
+            2281,
+            3681
+          ],
+          "seam": 2267,
+          "shift": 0
+        },
+        {
+          "id": 15,
+          "kind": "main",
+          "rect": [
+            1337,
+            27,
+            1364,
+            3681
+          ],
+          "seam": 1350,
+          "shift": 0
+        },
+        {
+          "id": 16,
+          "kind": "main",
+          "rect": [
+            478,
+            27,
+            505,
+            3385
+          ],
+          "seam": 491,
+          "shift": 0
+        },
+        {
+          "id": 17,
+          "kind": "main",
+          "rect": [
+            478,
+            3585,
+            505,
+            3618
+          ],
+          "seam": 491,
+          "shift": 0
+        },
+        {
+          "id": 18,
+          "kind": "boundary",
+          "rect": [
+            505,
+            3358,
+            700,
+            3385
+          ],
+          "rc_line": 3385,
+          "edge": [
+            300,
+            700
+          ],
+          "outer": false
+        },
+        {
+          "id": 19,
+          "kind": "boundary",
+          "rect": [
+            505,
+            3585,
+            700,
+            3612
+          ],
+          "rc_line": 3585,
+          "edge": [
+            300,
+            700
+          ],
+          "outer": false
+        },
+        {
+          "id": 20,
+          "kind": "secondary",
+          "rect": [
+            27,
+            350,
+            273,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 21,
+          "kind": "secondary",
+          "rect": [
+            27,
+            717,
+            273,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 22,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1084,
+            273,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 23,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1451,
+            273,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 24,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1818,
+            273,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 25,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2185,
+            273,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 26,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2552,
+            273,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 27,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2919,
+            273,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 28,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3286,
+            273,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 29,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3645,
+            273,
+            3672
+          ],
+          "at": 3656,
+          "role": "seam",
+          "span": [
+            10,
+            12
+          ]
+        },
+        {
+          "id": 30,
+          "kind": "secondary",
+          "rect": [
+            727,
+            350,
+            1337,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 31,
+          "kind": "secondary",
+          "rect": [
+            727,
+            717,
+            1337,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 32,
+          "kind": "secondary",
+          "rect": [
+            727,
+            1084,
+            1337,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 33,
+          "kind": "secondary",
+          "rect": [
+            727,
+            1451,
+            1337,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 34,
+          "kind": "secondary",
+          "rect": [
+            727,
+            1818,
+            1337,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 35,
+          "kind": "secondary",
+          "rect": [
+            727,
+            2185,
+            1337,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 36,
+          "kind": "secondary",
+          "rect": [
+            727,
+            2552,
+            1337,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 37,
+          "kind": "secondary",
+          "rect": [
+            727,
+            2919,
+            1337,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 38,
+          "kind": "secondary",
+          "rect": [
+            727,
+            3286,
+            1337,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            11,
+            15
+          ]
+        },
+        {
+          "id": 39,
+          "kind": "secondary",
+          "rect": [
+            300,
+            350,
+            478,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 40,
+          "kind": "secondary",
+          "rect": [
+            300,
+            717,
+            478,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 41,
+          "kind": "secondary",
+          "rect": [
+            300,
+            1084,
+            478,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 42,
+          "kind": "secondary",
+          "rect": [
+            300,
+            1451,
+            478,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 43,
+          "kind": "secondary",
+          "rect": [
+            300,
+            1818,
+            478,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 44,
+          "kind": "secondary",
+          "rect": [
+            300,
+            2185,
+            478,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 45,
+          "kind": "secondary",
+          "rect": [
+            300,
+            2552,
+            478,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 46,
+          "kind": "secondary",
+          "rect": [
+            300,
+            2919,
+            478,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 47,
+          "kind": "secondary",
+          "rect": [
+            300,
+            3286,
+            478,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            12,
+            16
+          ]
+        },
+        {
+          "id": 48,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            350,
+            4073,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 49,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            717,
+            4073,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 50,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            1084,
+            4073,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 51,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            1451,
+            4073,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 52,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            1818,
+            4073,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 53,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            2185,
+            4073,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 54,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            2552,
+            4073,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 55,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            2919,
+            4073,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 56,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            3286,
+            4073,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 57,
+          "kind": "secondary",
+          "rect": [
+            3198,
+            3643,
+            4073,
+            3670
+          ],
+          "at": 3656,
+          "role": "seam",
+          "span": [
+            13,
+            7
+          ]
+        },
+        {
+          "id": 58,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            350,
+            3171,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 59,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            717,
+            3171,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 60,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            1084,
+            3171,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 61,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            1451,
+            3171,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 62,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            1818,
+            3171,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 63,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            2185,
+            3171,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 64,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            2552,
+            3171,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 65,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            2919,
+            3171,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 66,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            3286,
+            3171,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 67,
+          "kind": "secondary",
+          "rect": [
+            2281,
+            3645,
+            3171,
+            3672
+          ],
+          "at": 3656,
+          "role": "seam",
+          "span": [
+            14,
+            13
+          ]
+        },
+        {
+          "id": 68,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            350,
+            2254,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 69,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            717,
+            2254,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 70,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            1084,
+            2254,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 71,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            1451,
+            2254,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 72,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            1818,
+            2254,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 73,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            2185,
+            2254,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 74,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            2552,
+            2254,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 75,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            2919,
+            2254,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 76,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            3286,
+            2254,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 77,
+          "kind": "secondary",
+          "rect": [
+            1364,
+            3645,
+            2254,
+            3672
+          ],
+          "at": 3656,
+          "role": "seam",
+          "span": [
+            15,
+            14
+          ]
+        },
+        {
+          "id": 78,
+          "kind": "secondary",
+          "rect": [
+            505,
+            350,
+            700,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 79,
+          "kind": "secondary",
+          "rect": [
+            505,
+            717,
+            700,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 80,
+          "kind": "secondary",
+          "rect": [
+            505,
+            1084,
+            700,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 81,
+          "kind": "secondary",
+          "rect": [
+            505,
+            1451,
+            700,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 82,
+          "kind": "secondary",
+          "rect": [
+            505,
+            1818,
+            700,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 83,
+          "kind": "secondary",
+          "rect": [
+            505,
+            2185,
+            700,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 84,
+          "kind": "secondary",
+          "rect": [
+            505,
+            2552,
+            700,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 85,
+          "kind": "secondary",
+          "rect": [
+            505,
+            2919,
+            700,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 86,
+          "kind": "secondary",
+          "rect": [
+            505,
+            3286,
+            700,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            16,
+            11
+          ]
+        },
+        {
+          "id": 87,
+          "kind": "secondary",
+          "rect": [
+            1277,
+            3645,
+            1337,
+            3672
+          ],
+          "at": 3656,
+          "role": "seam",
+          "span": [
+            8,
+            15
+          ],
+          "core_role": "custom",
+          "priority": 4
+        },
+        {
+          "id": 88,
+          "kind": "secondary",
+          "rect": [
+            300,
+            3645,
+            423,
+            3672
+          ],
+          "at": 3656,
+          "role": "seam",
+          "span": [
+            12,
+            9
+          ],
+          "core_role": "custom",
+          "priority": 4
+        }
+      ]
+    },
+    {
+      "room": "FZ114",
+      "layout": "左上起鋪,板長沿X",
+      "policy": "current",
+      "verdict": "buildable",
+      "problems": [],
+      "conflicts": [],
+      "core_limits": [],
+      "seams_a": [
+        916,
+        1833,
+        2750,
+        3544
+      ],
+      "seams_b": [
+        1831,
+        3663
+      ],
+      "p182": {
+        "c0": 3656,
+        "d0": 3656,
+        "cands": [
+          {
+            "d": 3656,
+            "seam": 3656,
+            "ok": false,
+            "phys": true,
+            "codes": [
+              "CORE_LIMIT_MAIN_ON_EXTENSION"
+            ],
+            "checks": [
+              "C8_I19_PRIORITY",
+              "C8_MAIN_ON_EXTENSION"
+            ],
+            "why": "衝突碼 CORE_LIMIT_MAIN_ON_EXTENSION;檢查失敗 C8_I19_PRIORITY,C8_MAIN_ON_EXTENSION"
+          },
+          {
+            "d": 3604,
+            "seam": 3604,
+            "ok": false,
+            "phys": false,
+            "codes": [
+              "MAIN_HITS_RC_TIMBER"
+            ],
+            "checks": [
+              "C1_OVERLAP",
+              "C8_END_NOT_ON_ONE_TIMBER"
+            ],
+            "why": "衝突碼 MAIN_HITS_RC_TIMBER;檢查失敗 C1_OVERLAP,C8_END_NOT_ON_ONE_TIMBER"
+          },
+          {
+            "d": 3544,
+            "seam": 3544,
+            "ok": true,
+            "phys": false,
+            "codes": [],
+            "checks": [],
+            "why": "可行"
+          }
+        ],
+        "chosen": 3544
+      },
+      "timbers": [
+        {
+          "id": 0,
+          "kind": "boundary",
+          "rect": [
+            4073,
+            0,
+            4100,
+            3697
+          ],
+          "rc_line": 4100,
+          "edge": [
+            0,
+            3697
+          ],
+          "outer": true
+        },
+        {
+          "id": 1,
+          "kind": "boundary",
+          "rect": [
+            3773,
+            3612,
+            3800,
+            3708
+          ],
+          "rc_line": 3800,
+          "edge": [
+            3697,
+            3708
+          ],
+          "outer": true,
+          "ext": [
+            [
+              3612,
+              3697
+            ]
+          ]
+        },
+        {
+          "id": 2,
+          "kind": "boundary",
+          "rect": [
+            1250,
+            3612,
+            1277,
+            3708
+          ],
+          "rc_line": 1250,
+          "edge": [
+            3645,
+            3708
+          ],
+          "outer": true,
+          "ext": [
+            [
+              3612,
+              3645
+            ]
+          ]
+        },
+        {
+          "id": 3,
+          "kind": "boundary",
+          "rect": [
+            423,
+            3612,
+            450,
+            3705
+          ],
+          "rc_line": 450,
+          "edge": [
+            3645,
+            3705
+          ],
+          "outer": true,
+          "ext": [
+            [
+              3612,
+              3645
+            ]
+          ]
+        },
+        {
+          "id": 4,
+          "kind": "boundary",
+          "rect": [
+            0,
+            0,
+            27,
+            3705
+          ],
+          "rc_line": 0,
+          "edge": [
+            0,
+            3705
+          ],
+          "outer": true
+        },
+        {
+          "id": 5,
+          "kind": "boundary",
+          "rect": [
+            700,
+            3385,
+            727,
+            3531
+          ],
+          "rc_line": 700,
+          "edge": [
+            3385,
+            3585
+          ],
+          "outer": false
+        },
+        {
+          "id": 6,
+          "kind": "boundary",
+          "rect": [
+            273,
+            3385,
+            300,
+            3531
+          ],
+          "rc_line": 300,
+          "edge": [
+            3385,
+            3585
+          ],
+          "outer": false
+        },
+        {
+          "id": 7,
+          "kind": "rc_parallel",
+          "rect": [
+            27,
+            0,
+            4073,
+            27
+          ],
+          "rc_line": 0
+        },
+        {
+          "id": 8,
+          "kind": "rc_parallel",
+          "rect": [
+            3800,
+            3670,
+            4073,
+            3697
+          ],
+          "rc_line": 3697,
+          "core_role": "custom",
+          "priority": 3
+        },
+        {
+          "id": 9,
+          "kind": "rc_parallel",
+          "rect": [
+            1277,
+            3681,
+            3773,
+            3708
+          ],
+          "rc_line": 3708,
+          "core_role": "custom",
+          "priority": 3
+        },
+        {
+          "id": 10,
+          "kind": "rc_parallel",
+          "rect": [
+            450,
+            3618,
+            1250,
+            3645
+          ],
+          "rc_line": 3645,
+          "core_role": "custom",
+          "priority": 3
+        },
+        {
+          "id": 11,
+          "kind": "rc_parallel",
+          "rect": [
+            27,
+            3678,
+            423,
+            3705
+          ],
+          "rc_line": 3705
+        },
+        {
+          "id": 12,
+          "kind": "rc_parallel",
+          "rect": [
+            27,
+            3358,
+            4073,
+            3385
+          ],
+          "rc_line": 3385
+        },
+        {
+          "id": 13,
+          "kind": "rc_parallel",
+          "rect": [
+            27,
+            3585,
+            4073,
+            3612
+          ],
+          "rc_line": 3585
+        },
+        {
+          "id": 14,
+          "kind": "main",
+          "rect": [
+            27,
+            903,
+            4073,
+            930
+          ],
+          "seam": 916,
+          "shift": 0
+        },
+        {
+          "id": 15,
+          "kind": "main",
+          "rect": [
+            27,
+            1820,
+            4073,
+            1847
+          ],
+          "seam": 1833,
+          "shift": 0
+        },
+        {
+          "id": 16,
+          "kind": "main",
+          "rect": [
+            27,
+            2737,
+            4073,
+            2764
+          ],
+          "seam": 2750,
+          "shift": 0
+        },
+        {
+          "id": 17,
+          "kind": "main",
+          "rect": [
+            27,
+            3531,
+            300,
+            3558
+          ],
+          "seam": 3544,
+          "shift": 0
+        },
+        {
+          "id": 18,
+          "kind": "main",
+          "rect": [
+            700,
+            3531,
+            4073,
+            3558
+          ],
+          "seam": 3544,
+          "shift": 0
+        },
+        {
+          "id": 19,
+          "kind": "boundary",
+          "rect": [
+            700,
+            3558,
+            727,
+            3585
+          ],
+          "rc_line": 700,
+          "edge": [
+            3385,
+            3585
+          ],
+          "outer": false
+        },
+        {
+          "id": 20,
+          "kind": "boundary",
+          "rect": [
+            273,
+            3558,
+            300,
+            3585
+          ],
+          "rc_line": 300,
+          "edge": [
+            3385,
+            3585
+          ],
+          "outer": false
+        },
+        {
+          "id": 21,
+          "kind": "secondary",
+          "rect": [
+            350,
+            27,
+            377,
+            903
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 22,
+          "kind": "secondary",
+          "rect": [
+            717,
+            27,
+            744,
+            903
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 23,
+          "kind": "secondary",
+          "rect": [
+            1084,
+            27,
+            1111,
+            903
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 24,
+          "kind": "secondary",
+          "rect": [
+            1451,
+            27,
+            1478,
+            903
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 25,
+          "kind": "secondary",
+          "rect": [
+            1818,
+            27,
+            1845,
+            903
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 26,
+          "kind": "secondary",
+          "rect": [
+            2185,
+            27,
+            2212,
+            903
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 27,
+          "kind": "secondary",
+          "rect": [
+            2552,
+            27,
+            2579,
+            903
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 28,
+          "kind": "secondary",
+          "rect": [
+            2919,
+            27,
+            2946,
+            903
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 29,
+          "kind": "secondary",
+          "rect": [
+            3286,
+            27,
+            3313,
+            903
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 30,
+          "kind": "secondary",
+          "rect": [
+            3650,
+            27,
+            3677,
+            903
+          ],
+          "at": 3663,
+          "role": "seam",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 31,
+          "kind": "secondary",
+          "rect": [
+            4017,
+            27,
+            4044,
+            903
+          ],
+          "at": 4030,
+          "role": "mark",
+          "span": [
+            7,
+            14
+          ]
+        },
+        {
+          "id": 32,
+          "kind": "secondary",
+          "rect": [
+            350,
+            3612,
+            377,
+            3678
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            13,
+            11
+          ]
+        },
+        {
+          "id": 33,
+          "kind": "secondary",
+          "rect": [
+            350,
+            930,
+            377,
+            1820
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 34,
+          "kind": "secondary",
+          "rect": [
+            717,
+            930,
+            744,
+            1820
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 35,
+          "kind": "secondary",
+          "rect": [
+            1084,
+            930,
+            1111,
+            1820
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 36,
+          "kind": "secondary",
+          "rect": [
+            1451,
+            930,
+            1478,
+            1820
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 37,
+          "kind": "secondary",
+          "rect": [
+            1818,
+            930,
+            1845,
+            1820
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 38,
+          "kind": "secondary",
+          "rect": [
+            2185,
+            930,
+            2212,
+            1820
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 39,
+          "kind": "secondary",
+          "rect": [
+            2552,
+            930,
+            2579,
+            1820
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 40,
+          "kind": "secondary",
+          "rect": [
+            2919,
+            930,
+            2946,
+            1820
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 41,
+          "kind": "secondary",
+          "rect": [
+            3286,
+            930,
+            3313,
+            1820
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 42,
+          "kind": "secondary",
+          "rect": [
+            3650,
+            930,
+            3677,
+            1820
+          ],
+          "at": 3663,
+          "role": "seam",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 43,
+          "kind": "secondary",
+          "rect": [
+            4017,
+            930,
+            4044,
+            1820
+          ],
+          "at": 4030,
+          "role": "mark",
+          "span": [
+            14,
+            15
+          ]
+        },
+        {
+          "id": 44,
+          "kind": "secondary",
+          "rect": [
+            350,
+            1847,
+            377,
+            2737
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 45,
+          "kind": "secondary",
+          "rect": [
+            717,
+            1847,
+            744,
+            2737
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 46,
+          "kind": "secondary",
+          "rect": [
+            1084,
+            1847,
+            1111,
+            2737
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 47,
+          "kind": "secondary",
+          "rect": [
+            1451,
+            1847,
+            1478,
+            2737
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 48,
+          "kind": "secondary",
+          "rect": [
+            1818,
+            1847,
+            1845,
+            2737
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 49,
+          "kind": "secondary",
+          "rect": [
+            2185,
+            1847,
+            2212,
+            2737
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 50,
+          "kind": "secondary",
+          "rect": [
+            2552,
+            1847,
+            2579,
+            2737
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 51,
+          "kind": "secondary",
+          "rect": [
+            2919,
+            1847,
+            2946,
+            2737
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 52,
+          "kind": "secondary",
+          "rect": [
+            3286,
+            1847,
+            3313,
+            2737
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 53,
+          "kind": "secondary",
+          "rect": [
+            3650,
+            1847,
+            3677,
+            2737
+          ],
+          "at": 3663,
+          "role": "seam",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 54,
+          "kind": "secondary",
+          "rect": [
+            4017,
+            1847,
+            4044,
+            2737
+          ],
+          "at": 4030,
+          "role": "mark",
+          "span": [
+            15,
+            16
+          ]
+        },
+        {
+          "id": 55,
+          "kind": "secondary",
+          "rect": [
+            350,
+            2764,
+            377,
+            3358
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 56,
+          "kind": "secondary",
+          "rect": [
+            717,
+            2764,
+            744,
+            3358
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 57,
+          "kind": "secondary",
+          "rect": [
+            1084,
+            2764,
+            1111,
+            3358
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 58,
+          "kind": "secondary",
+          "rect": [
+            1451,
+            2764,
+            1478,
+            3358
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 59,
+          "kind": "secondary",
+          "rect": [
+            1818,
+            2764,
+            1845,
+            3358
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 60,
+          "kind": "secondary",
+          "rect": [
+            2185,
+            2764,
+            2212,
+            3358
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 61,
+          "kind": "secondary",
+          "rect": [
+            2552,
+            2764,
+            2579,
+            3358
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 62,
+          "kind": "secondary",
+          "rect": [
+            2919,
+            2764,
+            2946,
+            3358
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 63,
+          "kind": "secondary",
+          "rect": [
+            3286,
+            2764,
+            3313,
+            3358
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 64,
+          "kind": "secondary",
+          "rect": [
+            3650,
+            2764,
+            3677,
+            3358
+          ],
+          "at": 3663,
+          "role": "seam",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 65,
+          "kind": "secondary",
+          "rect": [
+            4017,
+            2764,
+            4044,
+            3358
+          ],
+          "at": 4030,
+          "role": "mark",
+          "span": [
+            16,
+            12
+          ]
+        },
+        {
+          "id": 66,
+          "kind": "secondary",
+          "rect": [
+            727,
+            3385,
+            754,
+            3531
+          ],
+          "at": 740,
+          "role": "fill",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 67,
+          "kind": "secondary",
+          "rect": [
+            1084,
+            3385,
+            1111,
+            3531
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 68,
+          "kind": "secondary",
+          "rect": [
+            1451,
+            3385,
+            1478,
+            3531
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 69,
+          "kind": "secondary",
+          "rect": [
+            1818,
+            3385,
+            1845,
+            3531
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 70,
+          "kind": "secondary",
+          "rect": [
+            2185,
+            3385,
+            2212,
+            3531
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 71,
+          "kind": "secondary",
+          "rect": [
+            2552,
+            3385,
+            2579,
+            3531
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 72,
+          "kind": "secondary",
+          "rect": [
+            2919,
+            3385,
+            2946,
+            3531
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 73,
+          "kind": "secondary",
+          "rect": [
+            3286,
+            3385,
+            3313,
+            3531
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 74,
+          "kind": "secondary",
+          "rect": [
+            3650,
+            3385,
+            3677,
+            3531
+          ],
+          "at": 3663,
+          "role": "seam",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 75,
+          "kind": "secondary",
+          "rect": [
+            4017,
+            3385,
+            4044,
+            3531
+          ],
+          "at": 4030,
+          "role": "mark",
+          "span": [
+            12,
+            18
+          ]
+        },
+        {
+          "id": 76,
+          "kind": "secondary",
+          "rect": [
+            727,
+            3558,
+            754,
+            3585
+          ],
+          "at": 740,
+          "role": "fill",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 77,
+          "kind": "secondary",
+          "rect": [
+            1084,
+            3558,
+            1111,
+            3585
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 78,
+          "kind": "secondary",
+          "rect": [
+            1451,
+            3558,
+            1478,
+            3585
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 79,
+          "kind": "secondary",
+          "rect": [
+            1818,
+            3558,
+            1845,
+            3585
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 80,
+          "kind": "secondary",
+          "rect": [
+            2185,
+            3558,
+            2212,
+            3585
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 81,
+          "kind": "secondary",
+          "rect": [
+            2552,
+            3558,
+            2579,
+            3585
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 82,
+          "kind": "secondary",
+          "rect": [
+            2919,
+            3558,
+            2946,
+            3585
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 83,
+          "kind": "secondary",
+          "rect": [
+            3286,
+            3558,
+            3313,
+            3585
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 84,
+          "kind": "secondary",
+          "rect": [
+            3650,
+            3558,
+            3677,
+            3585
+          ],
+          "at": 3663,
+          "role": "seam",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 85,
+          "kind": "secondary",
+          "rect": [
+            4017,
+            3558,
+            4044,
+            3585
+          ],
+          "at": 4030,
+          "role": "mark",
+          "span": [
+            18,
+            13
+          ]
+        },
+        {
+          "id": 86,
+          "kind": "secondary",
+          "rect": [
+            1451,
+            3612,
+            1478,
+            3681
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            13,
+            9
+          ],
+          "core_role": "custom",
+          "priority": 4
+        },
+        {
+          "id": 87,
+          "kind": "secondary",
+          "rect": [
+            1818,
+            3612,
+            1845,
+            3681
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            13,
+            9
+          ],
+          "core_role": "custom",
+          "priority": 4
+        },
+        {
+          "id": 88,
+          "kind": "secondary",
+          "rect": [
+            2185,
+            3612,
+            2212,
+            3681
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            13,
+            9
+          ],
+          "core_role": "custom",
+          "priority": 4
+        },
+        {
+          "id": 89,
+          "kind": "secondary",
+          "rect": [
+            2552,
+            3612,
+            2579,
+            3681
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            13,
+            9
+          ],
+          "core_role": "custom",
+          "priority": 4
+        },
+        {
+          "id": 90,
+          "kind": "secondary",
+          "rect": [
+            2919,
+            3612,
+            2946,
+            3681
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            13,
+            9
+          ],
+          "core_role": "custom",
+          "priority": 4
+        },
+        {
+          "id": 91,
+          "kind": "secondary",
+          "rect": [
+            3286,
+            3612,
+            3313,
+            3681
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            13,
+            9
+          ],
+          "core_role": "custom",
+          "priority": 4
+        },
+        {
+          "id": 92,
+          "kind": "secondary",
+          "rect": [
+            3650,
+            3612,
+            3677,
+            3681
+          ],
+          "at": 3663,
+          "role": "seam",
+          "span": [
+            13,
+            9
+          ],
+          "core_role": "custom",
+          "priority": 4
+        },
+        {
+          "id": 93,
+          "kind": "secondary",
+          "rect": [
+            4017,
+            3612,
+            4044,
+            3670
+          ],
+          "at": 4030,
+          "role": "mark",
+          "span": [
+            13,
+            8
+          ],
+          "core_role": "custom",
+          "priority": 4
+        }
+      ]
+    },
+    {
+      "room": "STEP20",
+      "layout": "左上起鋪,板長沿Y",
+      "policy": "current",
+      "verdict": "buildable",
+      "problems": [],
+      "conflicts": [],
+      "core_limits": [],
+      "seams_a": [
+        916,
+        1833,
+        2750,
+        3667
+      ],
+      "seams_b": [
+        1831,
+        3639
+      ],
+      "p182": null,
+      "timbers": [
+        {
+          "id": 0,
+          "kind": "boundary",
+          "rect": [
+            0,
+            0,
+            4100,
+            27
+          ],
+          "rc_line": 0,
+          "edge": [
+            0,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 1,
+          "kind": "boundary",
+          "rect": [
+            2600,
+            3653,
+            4100,
+            3680
+          ],
+          "rc_line": 3680,
+          "edge": [
+            2600,
+            4100
+          ],
+          "outer": true
+        },
+        {
+          "id": 2,
+          "kind": "boundary",
+          "rect": [
+            0,
+            3673,
+            2600,
+            3700
+          ],
+          "rc_line": 3700,
+          "edge": [
+            0,
+            2600
+          ],
+          "outer": true
+        },
+        {
+          "id": 3,
+          "kind": "rc_parallel",
+          "rect": [
+            4073,
+            27,
+            4100,
+            3653
+          ],
+          "rc_line": 4100
+        },
+        {
+          "id": 4,
+          "kind": "rc_parallel",
+          "rect": [
+            0,
+            27,
+            27,
+            3673
+          ],
+          "rc_line": 0
+        },
+        {
+          "id": 5,
+          "kind": "main",
+          "rect": [
+            903,
+            27,
+            930,
+            3673
+          ],
+          "seam": 916,
+          "shift": 0
+        },
+        {
+          "id": 6,
+          "kind": "main",
+          "rect": [
+            1820,
+            27,
+            1847,
+            3673
+          ],
+          "seam": 1833,
+          "shift": 0
+        },
+        {
+          "id": 7,
+          "kind": "main",
+          "rect": [
+            2737,
+            27,
+            2764,
+            3653
+          ],
+          "seam": 2750,
+          "shift": 0
+        },
+        {
+          "id": 8,
+          "kind": "main",
+          "rect": [
+            3654,
+            27,
+            3681,
+            3653
+          ],
+          "seam": 3667,
+          "shift": 0
+        },
+        {
+          "id": 9,
+          "kind": "secondary",
+          "rect": [
+            27,
+            350,
+            903,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 10,
+          "kind": "secondary",
+          "rect": [
+            27,
+            717,
+            903,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 11,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1084,
+            903,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 12,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1451,
+            903,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 13,
+          "kind": "secondary",
+          "rect": [
+            27,
+            1818,
+            903,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 14,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2185,
+            903,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 15,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2552,
+            903,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 16,
+          "kind": "secondary",
+          "rect": [
+            27,
+            2919,
+            903,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 17,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3286,
+            903,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 18,
+          "kind": "secondary",
+          "rect": [
+            27,
+            3626,
+            903,
+            3653
+          ],
+          "at": 3639,
+          "role": "seam",
+          "span": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": 19,
+          "kind": "secondary",
+          "rect": [
+            930,
+            350,
+            1820,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 20,
+          "kind": "secondary",
+          "rect": [
+            930,
+            717,
+            1820,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 21,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1084,
+            1820,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 22,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1451,
+            1820,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 23,
+          "kind": "secondary",
+          "rect": [
+            930,
+            1818,
+            1820,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 24,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2185,
+            1820,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 25,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2552,
+            1820,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 26,
+          "kind": "secondary",
+          "rect": [
+            930,
+            2919,
+            1820,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 27,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3286,
+            1820,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 28,
+          "kind": "secondary",
+          "rect": [
+            930,
+            3626,
+            1820,
+            3653
+          ],
+          "at": 3639,
+          "role": "seam",
+          "span": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": 29,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            350,
+            2737,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 30,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            717,
+            2737,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 31,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1084,
+            2737,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 32,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1451,
+            2737,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 33,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            1818,
+            2737,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 34,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2185,
+            2737,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 35,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2552,
+            2737,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 36,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            2919,
+            2737,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 37,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3286,
+            2737,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 38,
+          "kind": "secondary",
+          "rect": [
+            1847,
+            3626,
+            2737,
+            3653
+          ],
+          "at": 3639,
+          "role": "seam",
+          "span": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": 39,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            350,
+            3654,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 40,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            717,
+            3654,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 41,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1084,
+            3654,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 42,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1451,
+            3654,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 43,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            1818,
+            3654,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 44,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2185,
+            3654,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 45,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2552,
+            3654,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 46,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            2919,
+            3654,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 47,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3286,
+            3654,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 48,
+          "kind": "secondary",
+          "rect": [
+            2764,
+            3626,
+            3654,
+            3653
+          ],
+          "at": 3639,
+          "role": "seam",
+          "span": [
+            7,
+            8
+          ]
+        },
+        {
+          "id": 49,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            350,
+            4073,
+            377
+          ],
+          "at": 363,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 50,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            717,
+            4073,
+            744
+          ],
+          "at": 730,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 51,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1084,
+            4073,
+            1111
+          ],
+          "at": 1097,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 52,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1451,
+            4073,
+            1478
+          ],
+          "at": 1464,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 53,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            1818,
+            4073,
+            1845
+          ],
+          "at": 1831,
+          "role": "seam",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 54,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2185,
+            4073,
+            2212
+          ],
+          "at": 2198,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 55,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2552,
+            4073,
+            2579
+          ],
+          "at": 2565,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 56,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            2919,
+            4073,
+            2946
+          ],
+          "at": 2932,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 57,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3286,
+            4073,
+            3313
+          ],
+          "at": 3299,
+          "role": "mark",
+          "span": [
+            8,
+            3
+          ]
+        },
+        {
+          "id": 58,
+          "kind": "secondary",
+          "rect": [
+            3681,
+            3626,
+            4073,
+            3653
+          ],
+          "at": 3639,
+          "role": "seam",
+          "span": [
+            8,
+            3
+          ]
+        }
+      ]
+    }
+  ]
+}

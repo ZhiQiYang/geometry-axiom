@@ -1,0 +1,337 @@
+{
+  "archive": "timber-01.tar.gz",
+  "bytes": 1009751,
+  "sha256": "8b636e5d6c963cb72c1865ce5351c7baa877614e493525e849a61895e5b36bcf",
+  "members": [
+    {
+      "path": "context/run-context.json",
+      "bytes": 1141,
+      "sha256": "32ba8d014f72229bb3704ab51c834e7d482425961498d059b3163ec3b19b8fae"
+    },
+    {
+      "path": "frozen-tools/publish_followup_progress.py",
+      "bytes": 6124,
+      "sha256": "c2fdeb5eb9174549c5a80726bdd37266b22f0f75ff94d744fdc82c0f384a14d2"
+    },
+    {
+      "path": "frozen-tools/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "frozen-tools/run_acceptance_seven_configured.py",
+      "bytes": 9438,
+      "sha256": "03e4c182cad40b6abd7dae52a8c8af43c5ffe90f2d38ae62e21be2f518b54d83"
+    },
+    {
+      "path": "frozen-tools/run_followup_browser_jobs.py",
+      "bytes": 6872,
+      "sha256": "6053a7291c90c67b8f3706d3733f634e93e549e8312bb9187209be78eb2360a1"
+    },
+    {
+      "path": "frozen-tools/run_workflow_round.py",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "job/driver.py.txt",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "job/receipt.json",
+      "bytes": 28375,
+      "sha256": "1cccefe9f4432587d637ec3b37c9a59b53ec97885630eb117b2b812e8d73486d"
+    },
+    {
+      "path": "job/receipt.sha256",
+      "bytes": 79,
+      "sha256": "c411f256c64f575fb5b0d195b65dd9171a12e1990068c1c2e1bed50e7c7fd988"
+    },
+    {
+      "path": "job/steps/01.combined.log",
+      "bytes": 1221,
+      "sha256": "f7dc7f442f040083ab16c192e8a13f3be650f09d1a0e2c9741407bbc5ed5ae09"
+    },
+    {
+      "path": "job/steps/01.command.json",
+      "bytes": 620,
+      "sha256": "16d762a287c8d4eed9eb41cd11264e8849dbf8938862b9e860bcf0c02b78f54d"
+    },
+    {
+      "path": "job/steps/01.executed.sh",
+      "bytes": 14,
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef"
+    },
+    {
+      "path": "job/steps/01.original.sh.txt",
+      "bytes": 13,
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054"
+    },
+    {
+      "path": "job/steps/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/01.stdout",
+      "bytes": 1221,
+      "sha256": "f7dc7f442f040083ab16c192e8a13f3be650f09d1a0e2c9741407bbc5ed5ae09"
+    },
+    {
+      "path": "job/steps/02-package-0.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02-package-0.command.json",
+      "bytes": 643,
+      "sha256": "64f172e395c39aea1df8d13900ec8657cfd0b3aa15581591a3aa4ce804e7ba5f"
+    },
+    {
+      "path": "job/steps/02-package-0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/02-package-0.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02.executed.sh",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/02.original.sh.txt",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/03.combined.log",
+      "bytes": 10229,
+      "sha256": "7cbd7631526484e992e8db2ad5386c3e92be0cbf4043dfac94e9cc093e61f8e9"
+    },
+    {
+      "path": "job/steps/03.command.json",
+      "bytes": 671,
+      "sha256": "dafa7cd9e8f70dc6537a7be19a87be76357108e8c60801ddaa1e69b6a5065c57"
+    },
+    {
+      "path": "job/steps/03.executed.sh",
+      "bytes": 2292,
+      "sha256": "a0909cb21e7ce89d9a5d6ac5c2f9661c969f86917f6f9123bf057737e4bdeb92"
+    },
+    {
+      "path": "job/steps/03.original.sh.txt",
+      "bytes": 2184,
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f"
+    },
+    {
+      "path": "job/steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/03.stdout",
+      "bytes": 10229,
+      "sha256": "7cbd7631526484e992e8db2ad5386c3e92be0cbf4043dfac94e9cc093e61f8e9"
+    },
+    {
+      "path": "job/versions/0.combined.log",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/0.command.json",
+      "bytes": 573,
+      "sha256": "e6b689554609d94472b198f8eb465c93b7beb7043c884780efbe52039c7a5e30"
+    },
+    {
+      "path": "job/versions/0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/0.stdout",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/1.combined.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/1.command.json",
+      "bytes": 565,
+      "sha256": "1c006596a6c8f9263307edfcf281dcd740688ddf64cd9e44c40d8bc2d09d84e3"
+    },
+    {
+      "path": "job/versions/1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/1.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/2.combined.log",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/2.command.json",
+      "bytes": 569,
+      "sha256": "baf9bc1119649640ddcb1dc8a5be33260f92237c495bb6b172b40460f6534341"
+    },
+    {
+      "path": "job/versions/2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/2.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/3.combined.log",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/3.command.json",
+      "bytes": 564,
+      "sha256": "4750fc4a7b3edee5ecce72897c581cab87b2a962a1aa112fc303e95f78dff02b"
+    },
+    {
+      "path": "job/versions/3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/3.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/4.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/versions/4.command.json",
+      "bytes": 618,
+      "sha256": "46e148d00df8f35b5e7a641d76f85d5696ab1321fe4cbd5d2a280299014933d8"
+    },
+    {
+      "path": "job/versions/4.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/4.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/workflow.yml.txt",
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+    },
+    {
+      "path": "job-temp/geometry-integration-server.log",
+      "bytes": 1658,
+      "sha256": "781612ac6ac2176b9a25dfdbd08c8b8cbff1214f65d8552bec2df624a7d92cf1"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/chrome.stderr.log",
+      "bytes": 6987,
+      "sha256": "1a27daec3482bc06f30bf83c7ce469c29ba736147a5eead1438d18afe6cb8c3f"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/downloads/z=2500 角材骨架・4 × 3 m空間-timbers.model.json",
+      "bytes": 113440,
+      "sha256": "d96b328e61af3478d2110b955c4040cd648367cdfabb33205da4caf4f8d9f1eb"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/final-state.png",
+      "bytes": 68634,
+      "sha256": "1c54b78e7e59313459a45d1d36b3d3bba8e9717b25d0471e40a898ac81d7e5ce"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/fonts-11px-desktop-1280x720.png",
+      "bytes": 137312,
+      "sha256": "b64086bacedbc7dd8007e3e682b02dfe03167a6c3b6c761336c6bfb450a8833c"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/fonts-11px-mobile-preview.png",
+      "bytes": 69423,
+      "sha256": "9a8295054ed00f68bbc78d36a27b1344a794a8082e2c0e8cbfcdd3ccb2d0c144"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/fonts-11px-mobile-settings.png",
+      "bytes": 65512,
+      "sha256": "3eb266d42170251513aae400799b6ad68d139de55a00e4b0e39edddfd34168ed"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/result.json",
+      "bytes": 13666,
+      "sha256": "013d5506195de83ca1262deef5ed315547cc4a0c0d40dd3f1fdac3654a80d4db"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/timber-frame-desktop-all.png",
+      "bytes": 142081,
+      "sha256": "e518edcfca16b1e58c151155301701161b846b7dab75d9d5a79d360e309f0716"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/timber-frame-desktop-timbers-bottom.png",
+      "bytes": 117014,
+      "sha256": "75ddd6a1376cbc0b3d1dbe0aad4dd2e66c7f055ecd384ee5a7620fbe2ef23e4c"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/timber-frame-desktop-timbers-iso.png",
+      "bytes": 139200,
+      "sha256": "73cd7d2b73d86abc7cbb02f129913011fc235472cb2fe1aed859598fe417208d"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/timber-frame-desktop-timbers-top.png",
+      "bytes": 117032,
+      "sha256": "32b7a514e28990102445406ba880ce4c3271af2ddf8695fb4d15413cf35d0717"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/timber-frame-mobile-settings.png",
+      "bytes": 68224,
+      "sha256": "8528982592dd57b9caec845a7493dc84c03bf9887127a34b5b0bcb5198c41ce2"
+    },
+    {
+      "path": "job-temp/geometry-tests/space-model-863946/timber-frame-mobile-timbers-bottom.png",
+      "bytes": 66083,
+      "sha256": "d8261730f5d9a932d587a0812d72f1960bdf36b09b961954d244f9b3b958f072"
+    },
+    {
+      "path": "job-temp/tmpye631ik7.scene",
+      "bytes": 301,
+      "sha256": "8de69e84d9f71822a14952da7e622f7ebfb92020763e1869d590597615b90598"
+    },
+    {
+      "path": "launch-stdout/timber.stdout",
+      "bytes": 393,
+      "sha256": "bf008ff266b139668e9962fb780a36db1fac2cdeb0cba583954cbac3c92c68a1"
+    },
+    {
+      "path": "launch-stderr/timber.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reaper/timber-reaper.jsonl",
+      "bytes": 1550,
+      "sha256": "c4f60293f4b235b618b9fff8ed71114920a5feb5fb03b4057ed1906f1fd5b8f0"
+    }
+  ]
+}

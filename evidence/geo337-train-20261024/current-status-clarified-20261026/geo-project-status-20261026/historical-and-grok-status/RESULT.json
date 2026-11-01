@@ -1,0 +1,19 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "graphql",
+    "-f",
+    "query=query { repository(owner:\"ZhiQiYang\",name:\"geometry-axiom\") { p325:pullRequest(number:325) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p331:pullRequest(number:331) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p333:pullRequest(number:333) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p288:pullRequest(number:288) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p291:pullRequest(number:291) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p262:pullRequest(number:262) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p133:pullRequest(number:133) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p202:pullRequest(number:202) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p196:pullRequest(number:196) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p237:pullRequest(number:237) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } p230:pullRequest(number:230) { number title state merged mergedAt headRefName mergeCommit { oid } closingIssuesReferences(first:10) { nodes { number title } } } } }"
+  ],
+  "cwd": "/tmp",
+  "started_utc": "2026-10-26T10:56:03.064971+00:00",
+  "ended_utc": "2026-10-26T10:56:03.877821+00:00",
+  "exit_code": 1,
+  "stdout_bytes": 3032,
+  "stdout_sha256": "7d6ec07ba638153515c1f5183288e19bce58a63a1bfb966a78745ec27032257e",
+  "stderr_bytes": 63,
+  "stderr_sha256": "111e6c6d0ced0b84e77a7e328ff94ec032dbf68f5f3736e20f02f6769f12f35a"
+}

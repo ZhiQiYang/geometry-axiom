@@ -1,0 +1,318 @@
+diff --git a/geometry-core/kernel/source.c b/geometry-core/kernel/source.c
+index 4cc6d10b..f1f0a602 100644
+--- a/geometry-core/kernel/source.c
++++ b/geometry-core/kernel/source.c
+@@ -73,7 +73,7 @@ static size_t geo_source_find_node(const GeoEvalContext *ctx,GeoSourceRef source
+         if(geo_source_ref_equal(ctx->nodes[i]->source,source))return i;
+     return SIZE_MAX;
+ }
+-static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge)
++static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge,size_t *empty_slot)
+ {
+     if(ctx->edge_index_capacity){
+         size_t mask=ctx->edge_index_capacity-1,slot=(size_t)geo_source_edge_hash(edge)&mask;
+@@ -81,12 +81,13 @@ static bool geo_source_find_edge(const GeoEvalContext *ctx,GeoSourceEdge edge)
+             if(geo_source_edge_equal(ctx->edges[ctx->edge_index[slot]-1],edge))return true;
+             slot=(slot+1)&mask;
+         }
++        *empty_slot=slot;
+     }else for(size_t i=0;i<ctx->edge_count;++i)
+         if(geo_source_edge_equal(ctx->edges[i],edge))return true;
+     return false;
+ }
+ /* 負載最多一半；新表建好才換入。失敗後舊表不完整，須改走線性搜尋。 */
+-static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
++static void geo_source_index_append(GeoEvalContext *ctx,bool nodes,size_t empty_slot)
+ {
+     size_t **table=nodes?&ctx->node_index:&ctx->edge_index;
+     size_t *capacity=nodes?&ctx->node_index_capacity:&ctx->edge_index_capacity;
+@@ -97,8 +98,11 @@ static void geo_source_index_append(GeoEvalContext *ctx,bool nodes)
+         if(next>SIZE_MAX/sizeof **table)goto fallback;
+         size_t *fresh=calloc(next,sizeof *fresh);
+         if(!fresh)goto fallback;
+-        free(*table);*table=fresh;*capacity=next;first=0;
++        free(*table);*table=fresh;*capacity=next;first=0;empty_slot=SIZE_MAX;
+     }
++    /* A missing edge already probed this unchanged index to an empty slot.
++     * Rebuilding discards that slot; allocation fallback stays linear. */
++    if(empty_slot<*capacity&&!(*table)[empty_slot]){(*table)[empty_slot]=count;return;}
+     for(size_t i=first;i<count;++i){
+         uint64_t hash=nodes?geo_source_node_hash(ctx->nodes[i]->source):geo_source_edge_hash(ctx->edges[i]);
+         size_t mask=*capacity-1,slot=(size_t)hash&mask;
+@@ -181,7 +185,9 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
+     if(!ctx||!index||(source.key_size&&!source.key))return GEO_SOURCE_INVALID;
+     ctx->started=true;
+     /* 只快取既有身分的插入序號；碰撞仍完整比對 K 持有的鍵。 */
+-    size_t slot=(size_t)source.provider^source.key_size;
++    /* Mix only the provider bucket; collisions still require exact key equality. */
++    uint32_t provider_hint=(uint32_t)(source.provider*UINT32_C(2654435761));
++    size_t slot=(size_t)(provider_hint>>24)^source.key_size;
+     if(source.key_size){const unsigned char *key=source.key;slot^=(size_t)key[0]^key[source.key_size-1];}
+     slot&=255;
+     size_t hint=ctx->node_hint[slot];
+@@ -201,19 +207,20 @@ static GeoSourceStatus geo_source_node(GeoEvalContext *ctx,GeoSourceRef source,s
+     if(!next){free((void *)source.key);free(node);return GEO_SOURCE_MEMORY;}
+     ctx->nodes=next;node->source=source;node->provider=provider;node->status=GEO_SOURCE_OK;
+     *index=ctx->node_count;next[ctx->node_count++]=node;
+-    geo_source_index_append(ctx,true);ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
++    geo_source_index_append(ctx,true,SIZE_MAX);ctx->node_hint[slot]=*index+1;return GEO_SOURCE_OK;
+ }
+ static GeoSourceStatus geo_source_edge(GeoEvalContext *ctx,size_t source,GeoDependencyKind kind)
+ {
+     if(kind<GEO_DEPENDENCY_VALUE_REQUIRED||kind>GEO_DEPENDENCY_EVALUATE_BEFORE)return GEO_SOURCE_INVALID;
+     if(ctx->active==SIZE_MAX)return GEO_SOURCE_OK;
+     GeoSourceEdge edge={ctx->active,source,kind};
+-    if(geo_source_find_edge(ctx,edge))return GEO_SOURCE_OK;
++    size_t empty_slot=SIZE_MAX;
++    if(geo_source_find_edge(ctx,edge,&empty_slot))return GEO_SOURCE_OK;
+     if(ctx->edge_count==SIZE_MAX/sizeof *ctx->edges)return GEO_SOURCE_MEMORY;
+     GeoSourceEdge *next=geo_source_grow(ctx->edges,ctx->edge_count,&ctx->edge_capacity,sizeof *next);
+     if(!next)return GEO_SOURCE_MEMORY;
+     ctx->edges=next;next[ctx->edge_count++]=edge;
+-    geo_source_index_append(ctx,false);return GEO_SOURCE_OK;
++    geo_source_index_append(ctx,false,empty_slot);return GEO_SOURCE_OK;
+ }
+ static bool geo_source_descriptor_valid(const GeoSourceDescriptor *d)
+ {
+diff --git a/geometry-core/references.inc b/geometry-core/references.inc
+index 22708285..ec7e4700 100644
+--- a/geometry-core/references.inc
++++ b/geometry-core/references.inc
+@@ -714,11 +714,13 @@ static bool reference_parameters_rebuild(World *w,char *error,size_t cap)
+ }
+ static bool reference_rebuild(World *w)
+ {
+-    ReferenceEval local={0},*ctx=&local;bool persistent=false;
++    ReferenceEval local,*ctx;bool persistent=false;
+     if(g_active_app_candidate&&w==&g_active_app_candidate->after){
+         ctx=app_candidate_evaluation_state(g_active_app_candidate->control);
+         if(!ctx||ctx->world!=w)ctx=reference_sources_begin_candidate(w);
+         if(!ctx)return false;persistent=true;
++    }else{
++        local=(ReferenceEval){0};ctx=&local;
+     }
+     ctx->world=w;bool ok=true;
+     geo_guides_reset_resolved(&w->geo.guide_lines);
+diff --git a/geometry-templates/woodworking/native/contact_world.c b/geometry-templates/woodworking/native/contact_world.c
+index 815e3354..c111cdce 100644
+--- a/geometry-templates/woodworking/native/contact_world.c
++++ b/geometry-templates/woodworking/native/contact_world.c
+@@ -16,7 +16,7 @@ enum { CONTACT_ORDER_SLOTS=WOOD_CONTACT_MEMBER_CAPACITY*2 };
+ typedef struct {
+     size_t last[CONTACT_ORDER_SLOTS];
+     uint64_t minimum[CONTACT_ORDER_SLOTS];
+-    bool indexed;
++    bool indexed,unique;
+ } ContactOrderIndex;
+ static size_t contact_order_slot(const WoodContactWorld *world,const ContactOrderIndex *index,uint32_t id)
+ {
+@@ -28,13 +28,14 @@ static size_t contact_order_slot(const WoodContactWorld *world,const ContactOrde
+ static void contact_order_index(const WoodContactWorld *world,ContactOrderIndex *index)
+ {
+     memset(index->last,0,sizeof index->last);
+-    index->indexed=world->member_count<=WOOD_CONTACT_MEMBER_CAPACITY;
++    index->indexed=world->member_count<=WOOD_CONTACT_MEMBER_CAPACITY;index->unique=true;
+     if(!index->indexed)return;
+     /* 僅在本次查詢內索引全部事實；不跨候選快取，也不改變容量。
+      * 重複 ID 的舊語義分開保留：排序取最後一筆，遮蓋判斷取最早順序。 */
+     for(size_t i=0;i<world->member_count;++i){
+         size_t slot=contact_order_slot(world,index,world->members[i].member->id);
+         if(!index->last[slot]||world->members[i].order<index->minimum[slot])index->minimum[slot]=world->members[i].order;
++        if(index->last[slot])index->unique=false;
+         index->last[slot]=i+1;
+     }
+ }
+@@ -51,6 +52,146 @@ static bool contact_earlier(const WoodContactWorld *world,const ContactOrderInde
+     for(size_t i=0;i<world->member_count;++i)if(world->members[i].member->id==id&&world->members[i].order<order)return true;
+     return false;
+ }
++/* Coverage-query metadata never reorders the placement-ordered public output.
++ * Query only already admitted earlier-order faces; a prefix value is one real
++ * face, never an interval union. */
++static size_t contact_min_size(size_t a,size_t b){return a<b?a:b;}
++static bool contact_prefix_lo(GeoCoord a,const WoodStopFace *face)
++{return a<=face->lo&&a<face->hi;}
++static bool contact_prefix_hi(GeoCoord a,const WoodStopFace *face)
++{return a>=face->hi&&a>face->lo;}
++static int contact_face_plane_compare(GeoCoord a,GeoCoord b)
++{return (a>b)-(a<b);}
++typedef struct {
++    size_t sorted[WOOD_CONTACT_FACE_CAPACITY],scratch[WOOD_CONTACT_FACE_CAPACITY];
++    size_t rank[WOOD_CONTACT_FACE_CAPACITY],maximum[WOOD_CONTACT_FACE_CAPACITY];
++} ContactFaceIndex;
++/* Reuse these buffers before the plane index rebuilds all of them. Only the
++ * member suffix moves; stable ties retain both the member and side order. */
++static bool contact_member_index_before(const WoodContactWorld *world,const ContactOrderIndex *orders,
++    const WoodStopFace *out,size_t a,size_t b)
++{
++    uint64_t left=contact_order(world,orders,out[a].timber_id),right=contact_order(world,orders,out[b].timber_id);
++    return left<=right;
++}
++static void contact_member_index_sort(const WoodContactWorld *world,const ContactOrderIndex *orders,
++    WoodStopFace *out,size_t count,size_t first,ContactFaceIndex *index)
++{
++    size_t members=count-first;
++    for(size_t i=first;i<count;++i)index->sorted[i]=i;
++    /* Placement order commonly already matches the admitted sequence.
++     * Equal orders keep their original member and side order. */
++    if(members<2)return;
++    uint64_t previous=contact_order(world,orders,out[first].timber_id);
++    bool ordered=true;
++    for(size_t i=first+1;i<count;++i){
++        uint64_t current=contact_order(world,orders,out[i].timber_id);
++        if(previous>current){ordered=false;break;}
++        previous=current;
++    }
++    if(ordered)return;
++    for(size_t width=1;width<members;){
++        for(size_t start=first;start<count;){
++            size_t middle=start+contact_min_size(width,count-start);
++            size_t end=middle+contact_min_size(width,count-middle),a=start,b=middle,at=start;
++            while(a<middle&&b<end)index->scratch[at++]=contact_member_index_before(world,orders,out,index->sorted[a],index->sorted[b])?index->sorted[a++]:index->sorted[b++];
++            while(a<middle)index->scratch[at++]=index->sorted[a++];
++            while(b<end)index->scratch[at++]=index->sorted[b++];
++            start=end;
++        }
++        memcpy(index->sorted+first,index->scratch+first,members*sizeof *index->sorted);
++        if(width>=members-width)break;width*=2;
++    }
++    for(size_t start=first;start<count;++start){
++        if(index->sorted[start]==start)continue;
++        WoodStopFace value=out[start];size_t at=start;
++        while(index->sorted[at]!=start){
++            size_t from=index->sorted[at];
++            out[at]=out[from];index->sorted[at]=at;at=from;
++        }
++        out[at]=value;index->sorted[at]=at;
++    }
++}
++static bool contact_face_index_before(const WoodStopFace *out,size_t a,size_t b)
++{
++    int plane=contact_face_plane_compare(out[a].fixed,out[b].fixed);
++    return plane<0||(plane==0&&out[a].lo<=out[b].lo);
++}
++static void contact_face_index_build(ContactFaceIndex *index,const WoodStopFace *out,size_t count)
++{
++    for(size_t i=0;i<count;++i){index->sorted[i]=i;index->maximum[i]=0;}
++    for(size_t width=1;width<count;){
++        for(size_t left=0;left<count;){
++            size_t middle=left+contact_min_size(width,count-left);
++            size_t end=middle+contact_min_size(width,count-middle),a=left,b=middle,at=left;
++            while(a<middle&&b<end)index->scratch[at++]=contact_face_index_before(out,index->sorted[a],index->sorted[b])?index->sorted[a++]:index->sorted[b++];
++            while(a<middle)index->scratch[at++]=index->sorted[a++];
++            while(b<end)index->scratch[at++]=index->sorted[b++];
++            left=end;
++        }
++        memcpy(index->sorted,index->scratch,count*sizeof *index->sorted);
++        if(width>=count-width)break;width*=2;
++    }
++    for(size_t i=0;i<count;++i)index->rank[index->sorted[i]]=i;
++    /* Sorting no longer needs scratch. Retain every face in each plane range,
++     * including inactive or later-covered faces: only maximum tracks admission.
++     * A group's first rank stores its exclusive end; other ranks store first.
++     * This index and the out array stay fixed throughout indexed deduplication. */
++    for(size_t begin=0;begin<count;){
++        size_t end=begin+1;GeoCoord plane=out[index->sorted[begin]].fixed;
++        while(end<count&&out[index->sorted[end]].fixed==plane)++end;
++        index->scratch[begin]=end;
++        for(size_t rank=begin+1;rank<end;++rank)index->scratch[rank]=begin;
++        begin=end;
++    }
++}
++static void contact_face_index_bounds(const ContactFaceIndex *index,size_t face,size_t *begin,size_t *end)
++{
++    size_t rank=index->rank[face],marker=index->scratch[rank];
++    *begin=marker>rank?rank:marker;
++    *end=index->scratch[*begin];
++}
++static void contact_face_index_insert(ContactFaceIndex *index,const WoodStopFace *out,size_t count,size_t face)
++{
++    (void)count;size_t begin,end;contact_face_index_bounds(index,face,&begin,&end);
++    size_t length=end-begin,at=index->rank[face]-begin+1;
++    while(at<=length){size_t *value=&index->maximum[begin+at-1];
++        if(!*value||out[*value-1].hi<out[face].hi)*value=face+1;
++        size_t step=at&(~at+1);if(step>length-at)break;at+=step;
++    }
++}
++static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodStopFace *out,
++    size_t count,size_t ordinal)
++{
++    (void)count;const WoodStopFace *face=&out[ordinal];
++    size_t begin,end;contact_face_index_bounds(index,ordinal,&begin,&end);
++    size_t lo=begin,hi=end;
++    while(lo<hi){size_t mid=lo+(hi-lo)/2;
++        if(contact_prefix_lo(out[index->sorted[mid]].lo,face))lo=mid+1;else hi=mid;
++    }
++    size_t witness=0;
++    for(size_t at=lo-begin;at;at-=at&(~at+1)){
++        size_t value=index->maximum[begin+at-1];
++        if(value&&(!witness||out[value-1].hi>out[witness-1].hi))witness=value;
++    }
++    return witness&&contact_prefix_hi(out[witness-1].hi,face);
++}
++static void contact_indexed_dedup(const WoodContactWorld *world,const ContactOrderIndex *orders,
++    WoodStopFace *out,size_t count,size_t first,bool *active,size_t *remaining)
++{
++    ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);
++    contact_face_index_build(&index,out,count);
++    for(size_t i=0;i<first;++i)contact_face_index_insert(&index,out,count,i);
++    size_t pending=first;
++    for(size_t i=first;i<count;++i){
++        uint64_t order=contact_order(world,orders,out[i].timber_id);
++        while(pending<i&&contact_earlier(world,orders,out[pending].timber_id,order)){
++            if(active[pending])contact_face_index_insert(&index,out,count,pending);++pending;
++        }
++        if(contact_face_index_covered(&index,out,count,i)){active[i]=false;--*remaining;}
++    }
++}
++
+ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,const WoodMember *exclude,WoodStopFace *out,size_t cap)
+ {
+     size_t count=0;
+@@ -84,6 +225,7 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
+     /* D11 placement order is independent of declaration order. Stable ties
+      * retain the two side identities in their original order. */
+     ContactOrderIndex orders;contact_order_index(world,&orders);
++    if(!(count<=WOOD_CONTACT_FACE_CAPACITY&&orders.indexed&&orders.unique)){
+     for(size_t i=1;i<count;++i){
+         if(out[i].kind!=WOOD_STOP_MEMBER_SIDE)continue;
+         uint64_t order=contact_order(world,&orders,out[i].timber_id);size_t j=i;WoodStopFace value=out[i];
+@@ -93,16 +235,37 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
+         }
+         out[j]=value;
+     }
++    }
++    /* Keep the original live-set deletion order, including duplicate IDs
++     * whose minimum/last orders can make two faces shadow one another.
++     * The usual bounded buffer needs only one final stable compaction;
++     * larger public caller buffers retain the original in-place fallback. */
++    bool active[WOOD_CONTACT_FACE_CAPACITY];
++    bool compact=count<=WOOD_CONTACT_FACE_CAPACITY;size_t remaining=count;
++    if(compact)for(size_t i=0;i<count;++i)active[i]=true;
++    size_t first=0;while(first<count&&out[first].kind!=WOOD_STOP_MEMBER_SIDE)++first;
++    if(compact&&orders.indexed&&orders.unique&&first<count)
++        contact_indexed_dedup(world,&orders,out,count,first,active,&remaining);
++    else{
+     for(size_t i=0;i<count;){bool duplicate=false;
+         if(out[i].kind==WOOD_STOP_MEMBER_SIDE){uint64_t order=contact_order(world,&orders,out[i].timber_id);
+             for(size_t j=0;j<count&&!duplicate;++j){
++                if(compact&&!active[j])continue;
+                 if(i==j||out[i].fixed!=out[j].fixed||out[i].lo>=out[j].hi||out[j].lo>=out[i].hi)continue;
+                 bool earlier=out[j].kind!=WOOD_STOP_MEMBER_SIDE;
+                 if(!earlier)earlier=contact_earlier(world,&orders,out[j].timber_id,order);
+                 if(earlier&&out[j].lo<=out[i].lo&&out[j].hi>=out[i].hi)duplicate=true;
+             }
+         }
+-        if(duplicate){memmove(out+i,out+i+1,(count-i-1)*sizeof *out);--count;}else ++i;
++        if(duplicate){
++            if(compact){active[i]=false;--remaining;++i;}
++            else{memmove(out+i,out+i+1,(count-i-1)*sizeof *out);--count;}
++        }else ++i;
++    }
++    }
++    if(compact){size_t write=0;
++        for(size_t i=0;i<count;++i)if(active[i]){if(write!=i)out[write]=out[i];++write;}
++        return remaining;
+     }
+     return count;
+ }

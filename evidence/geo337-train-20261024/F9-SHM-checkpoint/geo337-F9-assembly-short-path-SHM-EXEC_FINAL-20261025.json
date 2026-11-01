@@ -1,0 +1,17 @@
+{
+  "session_id": 3123,
+  "actual_tool_result": {
+    "chunk_id": "385fca",
+    "wall_time_seconds": 0.000038268,
+    "exit_code": 0,
+    "original_token_count": 40,
+    "output": "{\"source_sha\": \"4f8a794f4167c3562eb182045102e86e9e37cca9\", \"job\": \"assembly\", \"original_process_returncode\": 0, \"wrapper_exit\": 0, \"sampling_complete\": true}\n"
+  },
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "entry": "python3 -B /workspace/launch_geo337_F9_assembly_short_path_root_20261025.py",
+  "request_sha256": "2e6e75a8ec1427fb62988bdabd75c975bfb5184c699ed9c17a8b5260baa66b82",
+  "sampled_request_sha256": "fff96fd4562ca7541582e8a08acb6459f12aa481709b8125fca5ccea43a42f17",
+  "prior_attempt_exit": 1,
+  "environment_change": "Only fresh output paths shortened to fit unchanged Chrome Unix socket bound; original failed attempt retained",
+  "delivered": false
+}

@@ -1,0 +1,311 @@
+{
+  "scope": "Independent smallest R6-to-R7 collector/projection static review; read only frozen tools/PLAN and six small terminal records, not 108MB raw payload, no collector/test execution",
+  "source_sha": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "passed": 74,
+  "failed": 0,
+  "checks": [
+    {
+      "passed": true,
+      "check": "fixed final preparation manifest"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan collect.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan launch.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan PLAN.json"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan COLLECTOR_PINS.json"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan summarize_terminal.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan README.md"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan adapt_r6.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan freeze_terminal_plan.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan prepare_plan.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan collect.template.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan launch.template.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan PROVENANCE.json"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan TOOL_RESPONSE_SCOPE.json"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan selftest_terminal_contracts.py"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan SELFTEST_SUMMARY.json"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan INITIAL_FREEZE_MISSING_ROUTING_OBSERVATION.json"
+    },
+    {
+      "passed": true,
+      "check": "fixed tool/plan FREEZE_R2_COMMAND.json"
+    },
+    {
+      "passed": true,
+      "check": "exact R6 prior collector"
+    },
+    {
+      "passed": true,
+      "check": "unchanged original byte helper sha_bytes"
+    },
+    {
+      "passed": true,
+      "check": "unchanged original byte helper digest"
+    },
+    {
+      "passed": true,
+      "check": "unchanged original byte helper save"
+    },
+    {
+      "passed": true,
+      "check": "unchanged original byte helper need"
+    },
+    {
+      "passed": true,
+      "check": "unchanged original byte helper row"
+    },
+    {
+      "passed": true,
+      "check": "unchanged original byte helper BoundedArchive"
+    },
+    {
+      "passed": true,
+      "check": "all original atomic fullstream validation unchanged"
+    },
+    {
+      "passed": true,
+      "check": "all original planned kind/hash/seven ELF logic unchanged"
+    },
+    {
+      "passed": true,
+      "check": "all original tar/cap/roundtrip/retainedELF/failure logic unchanged"
+    },
+    {
+      "passed": true,
+      "check": "bound terminal PLAN"
+    },
+    {
+      "passed": true,
+      "check": "collector exact template binding only"
+    },
+    {
+      "passed": true,
+      "check": "launcher exact template bindings only"
+    },
+    {
+      "passed": true,
+      "check": "sharedNB locks/raw child/release logic unchanged"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard MAX_ARCHIVE=36*1024*1024"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard MAX_METADATA=4*1024*1024"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard NATIVE_TMP_RESERVE=128*1024*1024"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard MIN_FREE=NATIVE_TMP_RESERVE+MAX_ARCHIVE+MAX_METADATA"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard need(not OUT.exists()"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard free>=MIN_FREE"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard r['full_acceptance_passed'] is None"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard r['all_required_stages_completed'] is False"
+    },
+    {
+      "passed": true,
+      "check": "preserved guard r['quantitative_targets']==plan['expected_terminal']['quantitative_targets']"
+    },
+    {
+      "passed": true,
+      "check": "exact F7 binding"
+    },
+    {
+      "passed": true,
+      "check": "unique frozen9121 members"
+    },
+    {
+      "passed": true,
+      "check": "exact seven exclusions and declared payload budget"
+    },
+    {
+      "passed": true,
+      "check": "only seven original binaries excluded"
+    },
+    {
+      "passed": true,
+      "check": "six small original closed terminal binding receipt"
+    },
+    {
+      "passed": true,
+      "check": "six small original closed terminal binding performance"
+    },
+    {
+      "passed": true,
+      "check": "six small original closed terminal binding equivalence"
+    },
+    {
+      "passed": true,
+      "check": "six small original closed terminal binding profile_counts"
+    },
+    {
+      "passed": true,
+      "check": "six small original closed terminal binding launcher"
+    },
+    {
+      "passed": true,
+      "check": "six small original closed terminal binding outer"
+    },
+    {
+      "passed": true,
+      "check": "frozen values are exactly original targets"
+    },
+    {
+      "passed": true,
+      "check": "frozen actual ownstage exits"
+    },
+    {
+      "passed": true,
+      "check": "frozen original cumulative exits"
+    },
+    {
+      "passed": true,
+      "check": "original terminal1 retained"
+    },
+    {
+      "passed": true,
+      "check": "R7 greenN64/redN16 copied without R6 bothred assumption"
+    },
+    {
+      "passed": true,
+      "check": "API coverage limited, no reconstructed raw"
+    },
+    {
+      "passed": true,
+      "check": "exact supplied API bytes /tmp/geo323-final-r7-stage-tools-20261024/EXEC_TOOL_POLL_01.json"
+    },
+    {
+      "passed": true,
+      "check": "supplied API object included in frozen membership"
+    },
+    {
+      "passed": true,
+      "check": "exact supplied API bytes /tmp/geo323-final-r7-stage-tools-20261024/EXEC_TOOL_POLL_02.json"
+    },
+    {
+      "passed": true,
+      "check": "supplied API object included in frozen membership"
+    },
+    {
+      "passed": true,
+      "check": "exact supplied API bytes /tmp/geo323-final-r7-stage-tools-20261024/EXEC_TOOL_POLL_03.json"
+    },
+    {
+      "passed": true,
+      "check": "supplied API object included in frozen membership"
+    },
+    {
+      "passed": true,
+      "check": "pure collector contract threephase not product proof"
+    },
+    {
+      "passed": true,
+      "check": "original synthetic full streams fixed"
+    },
+    {
+      "passed": true,
+      "check": "pure29 contracts fixed"
+    },
+    {
+      "passed": true,
+      "check": "original synthetic full streams withdrawn"
+    },
+    {
+      "passed": true,
+      "check": "old bothred predicate normalAssertionError"
+    },
+    {
+      "passed": true,
+      "check": "original synthetic full streams restored"
+    },
+    {
+      "passed": true,
+      "check": "pure29 contracts restored"
+    },
+    {
+      "passed": true,
+      "check": "original36 sample counts and median recomputation unchanged"
+    },
+    {
+      "passed": true,
+      "check": "projection keeps raw status, no fixed R6 redlist"
+    },
+    {
+      "passed": true,
+      "check": "initial missingrouting and absent initial API not fabricated"
+    },
+    {
+      "passed": true,
+      "check": "documentation separates API partiality and metadata proof"
+    }
+  ],
+  "limits": [
+    "Actual collector must retain all runtime guards, take one shared heavy slot and produce its true result; this is not package roundtrip certification.",
+    "Initial routing preparation failure and pure selftests/execution/actual-package peer must be published separately as README says, not claimed inside frozen tar.",
+    "Only supplied three API polls are preserved; no completeness of initial launch or whole API sequence inferred.",
+    "N16 and original comparison remain red; collector success is evidence preservation, not product acceptance."
+  ],
+  "exit": 0
+}

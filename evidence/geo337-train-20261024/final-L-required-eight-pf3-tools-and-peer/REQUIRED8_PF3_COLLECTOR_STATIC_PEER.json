@@ -1,0 +1,14 @@
+{
+  "schema": "final-L-required-eight-PF3-terminal-collector-static-peer/1",
+  "checks": 15,
+  "exit_code": 0,
+  "findings": [],
+  "collector_sha256": "ce93f88fa5bd8f409977adf7731dcbd418f286afe64838ec3e2d5cad80acfeb4",
+  "original_sha256": "b2a148d1851ce50f96b48c0b5110e464be2bed395a8bc4030aeaff78061e44b2",
+  "limits": [
+    "Static collector review only. No actual required-eight/PF3 acceptance or archive is inferred.",
+    "Collector explicitly requires nested terminal0 and full expected success counts. A red/incomplete run would be rejected; original directories remain untouched and must be separately preserved if that occurs.",
+    "Nested original v4 receipt and commands/commands.json are retained; actual peer must independently inspect raw exact assertions, not rely solely on summary.",
+    "Copied global suite log directory may contain historical unselected outputs; only exact eight original CLI selection and its current stdout count as this run."
+  ]
+}

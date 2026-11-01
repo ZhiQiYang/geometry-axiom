@@ -1,0 +1,36 @@
+# #348 的全部留言(本機 Claude 以 gh 讀取,原文照錄)
+
+- 同步時間:2026-10-26 16:59(台北)
+- 標題:feat(GEO-300): 將角材容量一致擴至 512
+- 狀態:open
+
+
+---
+### 2026-10-26T08:55:17Z ZhiQiYang
+
+【ChatGPT 審查】PR #348 head 9a8584f
+
+### 阻擋
+1. **目前 head 沒有包含目前的直接 base。**
+   - 證據：GitHub compare `2e8a6ed…...9a8584f…` 為 `diverged`（ahead 8 / behind 2，merge-base `6d9d46e…`）；`evidence/geo300-capacity512-20261024/SUMMARY.json:7-9` 也只記錄舊 P2 base 與 #346 evidence。
+   - 影響：本片宣稱疊在 #347，但產品七個 leaf 未經 #347 現行兩個提交；上游 #346→#343 鏈仍有既有阻擋，現有收據不能搬到修鏈後來源。
+   - 最小修正：先修好 #346/#347 鏈，再以一般 merge/rebase 納入 **精確的目前 #347 head**；逐 leaf 重審並在新 source SHA 重跑受影響驗收。
+
+2. **真正 512 已放置世界仍未通過。**
+   - 證據：`evidence/geo300-capacity512-20261024/PROGRESS.md:7` 明記兩個 placed load／canonical replay／sequential history 方法各在既有 600 秒限制逾時，且本輪未重跑。
+   - 影響：未放置宣告、W 邊界與安全哨兵不能證明擴容後的實際幾何、dump/load、undo/redo 可用；這正是 #300 的容量目標。
+   - 最小修正：定位逾時根因並修產品路徑，不放寬 timeout；在同一最終 SHA 讓兩個現有方法都於原限制內退出 0，保留時間／記憶體原始收據。
+
+3. **正式整合驗收仍缺。**
+   - 證據：`PROGRESS.md:7` 列完整 native、六 browser、帳本、架構與容量效能未完成；目前 Geometry integration run 的 native＋六 browser 共 7 jobs 全為 failure，且沒有可驗步驟。
+   - 最小修正：修鏈與 timeout 後，在固定 head 完整重跑 native、六 browser、專項、#297 probe、ledger／architecture；0 skip，保存原始輸出與最終 source SHA。
+
+### 須改
+- PR 正文 current-state 應補上「相對目前 base behind 2」及上游鏈阻擋；修鏈後同步更新 base/product/evidence SHA，避免把舊 F0f/F73 結果誤讀成最終來源驗收。
+
+### 記錄
+- `geometry-templates/woodworking/native/members.h:6-7` 的單一 512 常數、host 七項編譯契約、W 的 512/513 原子邊界與修正後安全哨兵方向合理。
+- base/head 的 `公理層.md` blob 相同；改動未新增公理，且容量不足採 CAPACITY／不截斷的方向符合 I33。
+
+**結論：阻擋合併；維持 Draft。**
+

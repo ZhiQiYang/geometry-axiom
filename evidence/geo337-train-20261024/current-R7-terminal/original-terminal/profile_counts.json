@@ -1,0 +1,84 @@
+{
+  "base-32": {
+    "counts": {
+      "wd_read": 2971441,
+      "geo_eval_source": 450098,
+      "wood_contact_collect_stops": 3438,
+      "contact_order": 354308,
+      "app_reference_member_footprint": 19029,
+      "geo_eval_depend": 0
+    },
+    "original_flat_matched_lines": [
+      " 12.50      0.06     0.02  2971441     0.00     0.00  wd_read",
+      "  8.33      0.08     0.01   450098     0.00     0.00  geo_eval_source",
+      "  8.33      0.12     0.01     3438     0.00     0.00  wood_contact_collect_stops",
+      "  0.00      0.12     0.00   354308     0.00     0.00  contact_order",
+      "  0.00      0.12     0.00    19029     0.00     0.00  app_reference_member_footprint"
+    ],
+    "symbols_without_flat_call_record": [
+      "geo_eval_depend"
+    ],
+    "gprof_stdout_sha256": "2de06ae44967909b53f0cb5666901444750ae2934b194554096fc711d3878038"
+  },
+  "base-64": {
+    "counts": {
+      "wd_read": 20879401,
+      "geo_eval_source": 2980967,
+      "contact_order": 2729508,
+      "wood_contact_collect_stops": 12942,
+      "app_reference_member_footprint": 141429,
+      "geo_eval_depend": 0
+    },
+    "original_flat_matched_lines": [
+      "  8.96      0.06     0.06 20879401     0.00     0.00  wd_read",
+      "  8.96      0.12     0.06  2980967     0.00     0.00  geo_eval_source",
+      "  2.99      0.30     0.02  2729508     0.00     0.00  contact_order",
+      "  1.49      0.61     0.01    12942     0.00     0.00  wood_contact_collect_stops",
+      "  0.00      0.67     0.00   141429     0.00     0.00  app_reference_member_footprint"
+    ],
+    "symbols_without_flat_call_record": [
+      "geo_eval_depend"
+    ],
+    "gprof_stdout_sha256": "9f247c1f50dae62681a82cdbf0cb2cf215cd102473b019fc06b26b83dd5b2ce7"
+  },
+  "fix-32": {
+    "counts": {
+      "geo_eval_depend": 284965,
+      "contact_order": 238440,
+      "wd_read": 106669,
+      "geo_eval_source": 82668,
+      "wood_contact_collect_stops": 3438,
+      "app_reference_member_footprint": 1146
+    },
+    "original_flat_matched_lines": [
+      "  0.00      0.08     0.00   284965     0.00     0.00  geo_eval_depend",
+      "  0.00      0.08     0.00   238440     0.00     0.00  contact_order",
+      "  0.00      0.08     0.00   106669     0.00     0.00  wd_read",
+      "  0.00      0.08     0.00    82668     0.00     0.00  geo_eval_source",
+      "  0.00      0.08     0.00     3438     0.00     0.00  wood_contact_collect_stops",
+      "  0.00      0.08     0.00     1146     0.00     0.01  app_reference_member_footprint"
+    ],
+    "symbols_without_flat_call_record": [],
+    "gprof_stdout_sha256": "413f3c7d2beeee45d779f90384830ca69857ab5a8e07455b6fc2d8d31801ff84"
+  },
+  "fix-64": {
+    "counts": {
+      "wood_contact_collect_stops": 12942,
+      "geo_eval_depend": 2000109,
+      "contact_order": 1828200,
+      "wd_read": 392485,
+      "geo_eval_source": 364369,
+      "app_reference_member_footprint": 4314
+    },
+    "original_flat_matched_lines": [
+      "  3.23      0.29     0.01    12942     0.00     0.00  wood_contact_collect_stops",
+      "  0.00      0.31     0.00  2000109     0.00     0.00  geo_eval_depend",
+      "  0.00      0.31     0.00  1828200     0.00     0.00  contact_order",
+      "  0.00      0.31     0.00   392485     0.00     0.00  wd_read",
+      "  0.00      0.31     0.00   364369     0.00     0.00  geo_eval_source",
+      "  0.00      0.31     0.00     4314     0.00     0.01  app_reference_member_footprint"
+    ],
+    "symbols_without_flat_call_record": [],
+    "gprof_stdout_sha256": "9b7c8c5e0805bcd83f22489e279dffa596d5323ee5c4f2a1c2af535e1cdd169a"
+  }
+}

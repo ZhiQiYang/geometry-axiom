@@ -1,0 +1,14 @@
+{
+  "session_id": 21941,
+  "actual_tool_result": {
+    "chunk_id": "874a84",
+    "wall_time_seconds": 0.000021853,
+    "exit_code": 1,
+    "original_token_count": 182,
+    "output": "{\"exit_code\": 1, \"counterproof_passed\": true, \"formal_F9_pass\": false, \"restoration_errors\": [\"Traceback (most recent call last):\\n  File \\\"/workspace/geo314-F9-counterproof-shm-placement-20261025/run_counterproof_v2_shm.py\\\", line 348, in main\\n    path,raw,m=index_before;now,mm=read_owned(path);need(now==raw and mm==m,'original ROOT index bytes/inode/metadata untouched')\\n                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/workspace/geo314-F9-counterproof-shm-placement-20261025/run_counterproof_v2_shm.py\\\", line 33, in need\\n    raise AssertionError(text)\\nAssertionError: original ROOT index bytes/inode/metadata untouched\\n\"]}\n"
+  },
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "request_sha256": "782d960080e2e8853d8cd6beb305b93da7a38a992f29a2cd4de56cd6833731e6",
+  "executor_sha256": "bd471131af1f620964ec4f54a386b48b5127473f783c3292e256bfe3ba6f423d",
+  "source_variant": "temporary reviewed #314 test patch and K probes; no commit or acceptance relabel"
+}

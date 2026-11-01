@@ -1,0 +1,28 @@
+{
+  "schema": "two-terminal-maintenance-originals-package-peer/1",
+  "archive_sha256": "ddb7540605b3a439a996ec571bc65512f4795f49b6b8ae8ba1aac2ad16a161ac",
+  "inventory_sha256": "fc16187a94a225cf510717df1af3cca529a4dd18856b582244fe33ae45d0cc7a",
+  "manifest_sha256": "47ba18297081bb962f9b393558055c6b940c26c3e49076e3c82226831d572d10",
+  "checks": 777,
+  "exit_code": 0,
+  "findings": [],
+  "original_bytes": 34174546,
+  "compressed_bytes": 6776445,
+  "scope": "Streamed exact archive, all member hashes and complete two execution+outer directories; no extraction/duplicate raw payload or subject run.",
+  "limits": [
+    "Cloud package only at review time; does not claim Git publication.",
+    "Storage maintenance is not product acceptance; code58,408,960 allocatedB and PMA54,525,952 allocatedB retain separate actual free deltas.",
+    "Historical terminal receipts referenced by pinned scopes remain original; this package completeness statement concerns the two new maintenance executions, not every transitive historical test artifact."
+  ],
+  "original_members": 259,
+  "archive_members_including_inventory": 260,
+  "embedded_inventory_exact": true,
+  "reviewer_initial_assumption": {
+    "path": "/tmp/train337-adversarial/TWO_RETIREMENTS_PACKAGE_INITIAL_INDEX_MEMBER_ASSUMPTION.json",
+    "sha256": "6e2c3c9c7acfe0b957936cf23ac6ab7b2a73eaa4974a4833d13445940029e1a1",
+    "actual_helper_exit": 1,
+    "tool_capture_chunk": "d999ea",
+    "cause": "Reviewer initially counted the embedded exact INVENTORY.json as an unlisted raw original; archive has259 original files plus this one manifest metadata member.",
+    "correction": "Verified this sole extra regular member equals the external pinned inventory byte-for-byte; no archive, source, receipt or execution changed."
+  }
+}

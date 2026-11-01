@@ -1,0 +1,48 @@
+from pathlib import Path
+import datetime, hashlib, json, os, subprocess
+R=Path('/workspace/geometry-axiom');O=Path('/tmp/geo337-R8-terminal-evidence-publication-20261025')
+P=Path('/tmp/geo337-R8-terminal-publication-peer-20261025');D=Path('/tmp/geo337-R8-terminal-publication-preparation-20261025')
+F='75a1e93811a52b69385cbdaf6a09d773ed9052ad';B='815cd2e348e47e1666371aff5060820ff29a913a';E='0687f3bd67c150de4856585dae1cbaeded460bc6'
+def H(b):return hashlib.sha256(b).hexdigest()
+def J(p):return json.loads(Path(p).read_bytes())
+def git(*args):return subprocess.check_output(['git',*args],cwd=R,env=dict(os.environ,GIT_OPTIONAL_LOCKS='0'))
+assert not (P/'PUBLICATION_ACTUAL_REVIEW.json').exists()
+result=J(O/'RESULT.json');manifest=J(D/'FILES.final.json');rows=J(O/'subcommands.json')
+assert result['product_source']==F and result['previous_head']==B and result['evidence_head']==E
+assert result['manifest_sha256']==H((D/'FILES.final.json').read_bytes())=='9fca87ce2b8e167e2ca4460c317e02c5a5e0cbf59488e8f7d78d38045c8b3311'
+assert result['published'] and result['push_exit']==0 and result['files']==316 and result['logical_bytes']==1043771
+assert len(rows)==497
+for row in rows:
+    d=Path(row['directory']);assert d.parent==O/'subcommands' and J(d/'result.json')==row
+    assert row['source_sha']==row['acceptance_sha']==F and row['actual_process_returncode']==0 and not row['timeout_expired']
+    request=J(d/'request.json')
+    for key in ['command','cwd','source_sha','acceptance_sha','environment','stdin_sha256']:assert request[key]==row[key]
+    for stream in ['stdout','stderr']:
+        b=(d/(stream+'.bin')).read_bytes();assert len(b)==row[stream+'_bytes'] and H(b)==row[stream+'_sha256']
+    assert H((d/'stdin.bin').read_bytes())==row['stdin_sha256']
+push=[r for r in rows if 'push' in r['command']];remote=[r for r in rows if 'ls-remote' in r['command']]
+assert len(push)==len(remote)==1 and '--force' not in push[0]['command']
+assert (Path(remote[0]['directory'])/'stdout.bin').read_text().split()[0]==E
+assert git('show','-s','--format=%P',E).decode().strip()==B
+assert git('diff','--name-only',F,E,'--','.',':(exclude)evidence')==b''
+changed=git('diff','--name-only',B,E).decode().splitlines()
+assert changed==sorted(x['destination'] for x in manifest['files'])==sorted(result['changed_paths'])
+raw=subprocess.run(['git','cat-file','--batch'],cwd=R,env=dict(os.environ,GIT_OPTIONAL_LOCKS='0'),input=''.join(E+':'+x['destination']+'\n' for x in manifest['files']).encode(),capture_output=True,check=True).stdout
+offset=0
+for item in manifest['files']:
+    end=raw.index(b'\n',offset);oid,kind,size=raw[offset:end].split();size=int(size)
+    b=raw[end+1:end+1+size];assert raw[end+1+size:end+2+size]==b'\n';offset=end+2+size
+    assert kind==b'blob' and size==item['bytes'] and H(b)==item['sha256']
+    assert Path(item['source_path']).read_bytes()==b
+assert offset==len(raw)
+progress=git('show',E+':evidence/geo337-train-20261024/PROGRESS.md').decode()
+assert progress.count('## 唯一 current-state')==1
+assert progress==Path(next(x['source_path'] for x in manifest['files'] if x['destination'].endswith('/PROGRESS.md'))).read_text()
+assert '完整R8 inner/source preparation大型封包尚未公開' in progress and '目前不是READY-TO-MERGE' in progress
+report={'schema':'geo337-r8-terminal-publication-actual-peer/1','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'exit_code':0,'findings':[],
+ 'product_source':F,'previous_head':B,'evidence_head':E,'original_commands':497,'original_command_exits_all_zero':True,'files':316,'bytes':1043771,
+ 'manifest_matches_public_git_blobs_and_original_sources':True,'normal_push_and_remote_head_verified':True,'product_tree_unchanged':True,'unique_current_progress':True,
+ 'bindings':{str(p):H(p.read_bytes()) for p in [O/'RESULT.json',D/'FILES.final.json',P/'STATIC_DRAFT_REVIEW.json',P/'FINAL_DELTA_REVIEW.json',P/'audit_publication.py']},
+ 'limits':['No product gates rerun; no refs/index/object-store writes by reviewer.','Publication does not change exact red, stale ledger, required-CI failures, or full-gate UNRUN status.','Complete R8 archive remains separately unpublished at this evidence head.']}
+(P/'PUBLICATION_ACTUAL_REVIEW.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'exit_code':0,'review':str(P/'PUBLICATION_ACTUAL_REVIEW.json'),'sha256':H((P/'PUBLICATION_ACTUAL_REVIEW.json').read_bytes())}))

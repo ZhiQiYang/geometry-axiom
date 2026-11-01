@@ -1,0 +1,90 @@
+{
+  "removed": {
+    "source_sha256": {
+      "current_geometry.c": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+      "geometry-web/web_bridge.c": "9e97e08542e5dda12a662a446a020cc85c436a7af534adfac7774a0570e4411d"
+    },
+    "binary_sha256": {
+      "core": "a31ec58185ff29a50bb86581afc2a4a98f827febf2765a1ab872843a813dc77d",
+      "bridge": "60e8d4d9d5138b80848bb2949aeb4d36005e90fab55b8c0c49f5cd0cd44f8248",
+      "integrity": "d16eb56de0bd6408bf287949bc5c74c9c813c9d7da3dc2ac88bc8b603ed6a93a"
+    },
+    "base": "635dd86ee368579aec444fb3ba16e48bccf4877e",
+    "runs": {
+      "native": {
+        "argv": [
+          "/tmp/geometry-198-remove-fix/removed/integrity"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "exit": 1
+      },
+      "bridge": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_counterexample_A_rejects_disconnected_contact",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_counterexample_B_clips_ridge_and_applies_split",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_strip_reclassification_uses_exact_contact",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_real_hole_no_contact_and_notch_controls",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_unselected_complex_column_does_not_block_valid_item"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "exit": 1
+      },
+      "scenes": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "tests/run_tests.py",
+          "/tmp/geometry-198-remove-fix/removed/core"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "exit": 1
+      }
+    }
+  },
+  "restored": {
+    "source_sha256": {
+      "current_geometry.c": "d22fb66df8fa785c82c078f8fd294d97bc0a095e525bc9a0134c2f8dc28e4ddd",
+      "geometry-web/web_bridge.c": "e99e08a48ea7fe638c947a3cc1810e6df176ecfaa4fe464354cfd0391f026d53"
+    },
+    "binary_sha256": {
+      "core": "0fd0dadbed31727a66b0bffee124789bbc85ae19d0b758663cfd939c2f2b94c0",
+      "bridge": "a9b1082bf9eb011b25d3d16fb8257976a6e76f94189a60cd5f448394aacc934d",
+      "integrity": "e0ed36135aa174e253f61180ca95787b1723c2bd8ed41d35aa0d795f4283fe58"
+    },
+    "base": "635dd86ee368579aec444fb3ba16e48bccf4877e",
+    "runs": {
+      "native": {
+        "argv": [
+          "/tmp/geometry-198-remove-fix/restored/integrity"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "exit": 0
+      },
+      "bridge": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-m",
+          "unittest",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_counterexample_A_rejects_disconnected_contact",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_counterexample_B_clips_ridge_and_applies_split",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_strip_reclassification_uses_exact_contact",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_real_hole_no_contact_and_notch_controls",
+          "tests.test_reference_contract.ReferenceContract.test_rect_outline_unselected_complex_column_does_not_block_valid_item"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "exit": 0
+      },
+      "scenes": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "tests/run_tests.py",
+          "/tmp/geometry-198-remove-fix/restored/core"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "exit": 0
+      }
+    }
+  }
+}

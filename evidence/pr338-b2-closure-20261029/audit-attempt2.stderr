@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/pr338-b2-closure/audit_b2.py", line 142, in <module>
+    n=f'comparison/invocation/commands/{i:06}/{s}.bin';must(n in raw,'missing original '+n);must(sha(raw[n])==c[s+'_sha256'],'F9 process raw stream hash '+n)
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/pr338-b2-closure/audit_b2.py", line 11, in must
+    if not v:raise AssertionError(msg)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: missing original comparison/invocation/commands/000001/stdin.bin

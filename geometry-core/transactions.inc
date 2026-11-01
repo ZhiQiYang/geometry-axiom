@@ -610,7 +610,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
         g_preview.ready=false;
-        if(g_preview.transaction)app_candidate_discard(g_preview.transaction->control);
+        if(g_preview.transaction)app_world_candidate_discard(g_preview.transaction);
         return true;
     }
     if (!strcmp(tokens[0],"confirm")) {
@@ -620,19 +620,19 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         }
         /* Canvas layout does not invalidate geometry approval (D12/I14). */
         if (g_preview.revision!=g_definition_revision || !app_world_candidate_current(g_preview.transaction,world)) {
-            g_preview.ready=false;
+            g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);
             scene_error(path,line_no,"I8a: preview is stale; preview again against the current world"); return false;
         }
         if(!app_world_candidate_revalidate(g_preview.transaction,world)){
-            g_preview.ready=false;scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
+            g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
         }
         bool issued=g_identity_pending_count!=0;
         bool changed=!world_definitions_equal(world,&g_preview.transaction->after)||issued;
         if(!app_world_candidate_publish(g_preview.transaction,world,true)){
             identity_drop_serials();
-            g_preview.ready=false;scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;
+            g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;
         }
-        g_preview.ready=false;
+        g_preview.ready=false;app_world_candidate_clear_stagger(g_preview.transaction);
         if((changed||issued)&&!g_parsing_scene_file){identity_commit_serials();++g_definition_revision;}
         else identity_drop_serials();
         return true;

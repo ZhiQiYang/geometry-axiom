@@ -1,0 +1,17 @@
+{
+  "command": [
+    "gcc",
+    "-std=c11",
+    "-O1",
+    "-fno-inline",
+    "-pg",
+    "/tmp/geo261-residual-base/geometry-web/web_bridge.c",
+    "-o",
+    "/tmp/geo261-residual/base-pg/bridge",
+    "-lm"
+  ],
+  "cwd": "/tmp/geo261-residual-base",
+  "exit": 0,
+  "stdout": "",
+  "stderr": ""
+}

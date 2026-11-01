@@ -1,0 +1,241 @@
+{
+  "original_driver_exit": 0,
+  "original_passed": true,
+  "original_phases": [
+    {
+      "name": "p189-timing",
+      "original_argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-u",
+        "/tmp/train337-final-p52-p189-prep/p189/timing_only_after_dump_red.py",
+        "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+      ],
+      "outer_command": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/geo261-environment/reap_children.py",
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "-u",
+          "/tmp/train337-final-p52-p189-prep/p189/timing_only_after_dump_red.py",
+          "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+        ],
+        "cwd": "/tmp/train337-323-f64d638f-source",
+        "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_variant": "final-original-special",
+        "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/workspace/g337p189L-timing/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792807456.5829225,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/workspace/g337p189L-timing/subcommands/000006",
+        "ended_epoch": 1792807530.2111123,
+        "stdout_sha256": "7ec906bbe8264e87326e414f990ab0821fdbb849b72bb85c8474050a306c8fcc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1994,
+        "stderr_bytes": 0
+      },
+      "reaper_log": "/workspace/g337p189L-timing/p189-timing-reaper.jsonl",
+      "primary_returncode": 0,
+      "reaper_sha256": "81043564a6a1153293bd7597da92ce04c9d23ddcc0cd92190062ff6a7ff842e6"
+    }
+  ],
+  "source_before": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "tree": "0a9f5ecf3f2b43478049ae5a5fcd463cca6fb2a7",
+    "status": "",
+    "index_sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0",
+    "refs_sha256": "7ad654d3dabfe19ddcf726f26cd004dffbbc2493cf1d225611d39a0cfc711848"
+  },
+  "source_after": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "tree": "0a9f5ecf3f2b43478049ae5a5fcd463cca6fb2a7",
+    "status": "",
+    "index_sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0",
+    "refs_sha256": "7ad654d3dabfe19ddcf726f26cd004dffbbc2493cf1d225611d39a0cfc711848"
+  },
+  "original_errors": [],
+  "started_utc": "2026-10-24T02:04:16.521353+00:00",
+  "ended_utc": "2026-10-24T02:05:30.279710+00:00",
+  "overall_P189_passed": false,
+  "original_timing_only_scope": {
+    "scope": "timing-only; original full P189 dump assertion remains red",
+    "overall_P189_passed": false,
+    "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "original_full_out": "/workspace/g337p189L",
+    "original_full_receipt_sha256": "3e704c7fd54f325c09eae97e90367ef7470bef64598891324c66834ce86077c8",
+    "original_full_exit": 1,
+    "binary_identities": [
+      {
+        "side": "main",
+        "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+        "from": "/workspace/g337p189L/work/main/bridge",
+        "path": "/workspace/g337p189L-timing/work/main/bridge",
+        "bytes": 673216,
+        "sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045"
+      },
+      {
+        "side": "base",
+        "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+        "from": "/workspace/g337p189L/work/base/bridge",
+        "path": "/workspace/g337p189L-timing/work/base/bridge",
+        "bytes": 1100248,
+        "sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f"
+      },
+      {
+        "side": "fix",
+        "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "from": "/workspace/g337p189L/work/fix/bridge",
+        "path": "/workspace/g337p189L-timing/work/fix/bridge",
+        "bytes": 1122224,
+        "sha256": "345339f2762ee8733183ca9534024ab4ac95f3c4fbcce39407458be628c0232c"
+      }
+    ],
+    "dump_equivalence_executed_in_this_stage": false,
+    "sampling_retried": false,
+    "original_timing_tail_source": "p189_verify.original.py.txt",
+    "original_tail_ast_sha256": "d8ff5896588e0f167bc6f8d4ec24214c7c57ec02329885170ea16d00ccc348c7",
+    "timing_tail_exit": 0
+  },
+  "original_full_out": "/workspace/g337p189L",
+  "schema": "original-performance-terminal-collection/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate": "p189-timing",
+  "original_outer_exits": {
+    "p189-timing": 0
+  },
+  "original_capture_rows": [
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000001",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000002",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000003",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000004",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000005",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000006",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000007",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000008",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000009",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000010",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L-timing/subcommands.json",
+      "directory": "/workspace/g337p189L-timing/subcommands/000011",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/train337-L-p189-timing-original-launch-20261024/subcommands.json",
+      "directory": "/workspace/train337-L-p189-timing-original-launch-20261024/subcommands/000001",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    }
+  ],
+  "elf_payload_excluded_count": 3,
+  "elf_payload_excluded_bytes": 2895688,
+  "no_existing_file_deleted": true,
+  "no_subject_executed": true,
+  "limitations": [
+    "Only original exposed outputs are retained. No hidden pipe, missing receipt or already-cleaned source snapshot is invented.",
+    "All excluded ELF payloads remain at original paths with hashes; no executable body is archived or unlinked.",
+    "Original source guards establish historical identity; current shared ROOT/cache is not read.",
+    "Timing-only never changes original full P189 red. Each GEO323 stage execution, cumulative CLI result and quantitative target is distinct.",
+    "Original v4 source_role/source_sha heuristic may label orchestration base because argv contains --base; original fields remain unmodified.",
+    "A collection roundtrip success only verifies evidence bytes, not acceptance success.",
+    "Only exact terminal P52 Chrome Singleton IPC paths are metadata-only exclusions. Symlink bytes/targets and lstat are recorded without following links; socket payload is not representable and is not claimed archived. All original IPC paths remain. The initial collector failure and exact old collector bytes are retained separately inside this package."
+  ],
+  "terminal_chrome_ipc_metadata_count": 0
+}

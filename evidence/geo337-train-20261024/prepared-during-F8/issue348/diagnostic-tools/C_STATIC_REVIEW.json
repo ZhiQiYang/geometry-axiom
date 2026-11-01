@@ -1,0 +1,31 @@
+{
+  "schema": "geo348-wrapper-independent-static-review/1",
+  "utc": "2026-10-25T07:58:17.847489+00:00",
+  "reviewer": "/root/r8_terminal_peer",
+  "author": "/root/r8_terminal_peer/geo348_plan_peer",
+  "file": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/trace_wrap.c",
+  "sha256": "1a3cb2ae9cc0cad814dce190aae5d7e39f839e9440425f3cf3c33583fc8ed75d",
+  "exit": 0,
+  "findings": [],
+  "checks": [
+    "Matching and nonmatching fgets paths call __real_fgets exactly once.",
+    "Matching and nonmatching fflush paths call __real_fflush exactly once.",
+    "Matching paths restore entry errno before original call and original result errno before returning.",
+    "Only stdin and stdout FILE pointers are observed; NULL/other streams are direct pass-through.",
+    "No stdout/stderr diagnostic writes; snprintf stack buffer and write only dedicated checked FD.",
+    "Both dedicated descriptors strictly numeric >2, distinct writable regular files and distinct inodes.",
+    "Initial event file empty/offset0; status exact64 bytes and eight uint64 values validated.",
+    "Status native uint64 layout agrees with Python =8Q on same Linux process.",
+    "fgets NULL records feof/ferror and distinguishes error from EOF.",
+    "Monotonic timestamp clock/overflow failures mark faults; writes count attempts/successes and faults.",
+    "Kill between successful write and status success is conservatively invalid.",
+    "No retry of original fgets/fflush, no extra stdout flush, no timeout or protocol changes.",
+    "static original source callsites and O0 compile receipts retained in preparation package; no symbol-hit claim from source alone."
+  ],
+  "limits": [
+    "Static code review only; no C compile/link/ELF run, ABI test, wrapper symbol-hit calibration or product acceptance.",
+    "The wrapper is single-thread/Linux-only; concurrent process/thread use is outside the draft contract.",
+    "Runtime injected errno/I/O/partial write controls and C withdrawal/restoration remain unrun.",
+    "Underlying event regular-file writes add diagnostic overhead, so timings are never official product performance samples."
+  ]
+}
