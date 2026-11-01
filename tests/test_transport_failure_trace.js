@@ -124,6 +124,9 @@ test('complete API tracing retains the first failure and reports later unmarked 
   records.pop();
   assert.equal(trace.apiFailures().length,2,'API_TRACE_COPY_MUST_NOT_ERASE_OBSERVATIONS');
   assert.equal(trace.apiComplete(),true);
+  trace.invalidateApiTrace();
+  assert.equal(trace.apiComplete(),false,'FAILED_TRANSPORT_DIAGNOSTIC_CANNOT_CLAIM_COMPLETE_TRACE');
+  assert.strictEqual(trace.apiFirst(),records[0],'DIAGNOSTIC_FAILURE_MUST_KEEP_ORIGINAL_FIRST_EVENT');
 });
 
 test('complete API tracing reports overflow instead of silently dropping failures', () => {

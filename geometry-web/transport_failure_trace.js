@@ -7,6 +7,7 @@ function createTransportFailureTrace(origin, now = () => new Date().toISOString(
   let firstApi = null;
   const apiFailures = [];
   let apiOverflow = false;
+  let apiDiagnosticError = false;
   return {
     observe(message, step) {
       const p = message.params, key = (message.sessionId || 'main') + ':' + p.requestId;
@@ -38,7 +39,8 @@ function createTransportFailureTrace(origin, now = () => new Date().toISOString(
     },
     apiFirst: () => firstApi,
     apiFailures: () => [...apiFailures],
-    apiComplete: () => !apiOverflow,
+    apiComplete: () => !apiOverflow && !apiDiagnosticError,
+    invalidateApiTrace: () => { apiDiagnosticError = true; },
     first: () => first
   };
 }

@@ -170,7 +170,7 @@ async function connect() {
               if (!transportFailureTrace) transportFailureTrace = createTransportFailureTrace(new URL(scope.url).origin,undefined,{allApi:true});
               transportFailureTrace.observeApiFailure({...JSON.parse(m.params.payload),sessionId:m.sessionId||null,step:currentTestStep});
               _log('[API TRANSPORT FAILURE]',JSON.stringify(transportFailureTrace.apiFailures().at(-1)));
-            } catch(error) {_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
+            } catch(error) {transportFailureTrace?.invalidateApiTrace();_log('[TRANSPORT DIAGNOSTIC ERROR]',error.message);}
           }
           else if (m.method === "Runtime.consoleAPICalled")
             console.log("[console]", m.params.args.map(a => a.value ?? a.description).join(" "));
