@@ -6,6 +6,19 @@ const vm = require("node:vm");
 
 const ledger = require(process.env.IDENTITY_LEDGER_MODULE || path.join(__dirname, "..", "geometry-web", "identity-ledger.js"));
 const store = require(path.join(__dirname, "..", "geometry-web", "project-store.js"));
+const zip = require(path.join(__dirname, "..", "geometry-web", "vendor", "fflate", "umd", "index.js"));
+
+// Same minimal manifest shape used by the engineering/parameter archive suites.
+const identityScene = "requires identity-ledger/1\nboundary 1 outline 0,0 10,0 10,10 0,10\nidentity boundary 1 0123456789abcdef0123456789abcdef:1\n";
+const engineeringScenes = [
+  {scene: "requires engineering-spec/1\n" + identityScene, format: store.ENGINEERING_FORMAT, capability: store.ENGINEERING_CAPABILITY},
+  {scene: "requires parameters/1\nparameters begin\nparameters end\n" + identityScene, format: store.PARAMETER_FORMAT, capability: store.PARAMETER_CAPABILITY},
+];
+const archive = scene => store.pack(scene, {format:store.FORMAT, projectId:"identity-project", name:"身分帳專案", sceneHash:"0".repeat(64), sources:[], faces:[]}, new Map(), zip);
+function rewriteArchive(bytes, change) {
+  const entries = zip.unzipSync(bytes), manifest = JSON.parse(new TextDecoder().decode(entries["manifest.json"]));
+  change(manifest);entries["manifest.json"] = new TextEncoder().encode(JSON.stringify(manifest));return zip.zipSync(entries);
+}
 
 test("延續保留記號", () => {
   assert.strictEqual(ledger.settleKey("aa:1", false, true, () => "bb:2"), "aa:1");
@@ -70,6 +83,46 @@ test("只有身分帳不升格式", () => {
   assert.strictEqual(store.projectFormat({}, "requires engineering-spec/1\n"), store.ENGINEERING_FORMAT);
   store.validateProjectCapabilities(["identity-ledger/1", store.ENGINEERING_CAPABILITY, store.PARAMETER_CAPABILITY, store.ASSEMBLY_CAPABILITY, store.GENERATION_CAPABILITY, store.SUBDIVISION_CAPABILITY, store.SECTION_CAPABILITY, store.CARD_CAPABILITY]);
   assert.throws(() => store.validateProjectCapabilities(["identity-ledger/1", "future-native/1"]), /尚未支援的工程能力/);
+});
+
+test("純身分帳專案保存空世界與完整記號且不升格式", async () => {
+  for (const scene of ["requires identity-ledger/1\n", identityScene]) {
+    const bytes = await archive(scene), loaded = await store.unpack(bytes, zip);
+    assert.strictEqual(loaded.manifest.format, store.FORMAT);
+    assert.strictEqual(Object.hasOwn(loaded.manifest, "requiredCapabilities"), false);
+    assert.strictEqual(loaded.scene, scene);
+    assert.deepStrictEqual(zip.unzipSync(bytes)["world.scene"], new TextEncoder().encode(scene));
+    assert.deepStrictEqual(store.sceneCapabilities(loaded.scene), ["identity-ledger/1"]);
+    assert.strictEqual(loaded.manifest.sceneHash, await store.sha(new TextEncoder().encode(scene)));
+  }
+});
+
+test("身分帳與工程或參數共存保留既有格式與能力", async () => {
+  for (const {scene, format, capability} of engineeringScenes) {
+    const bytes = await archive(scene), loaded = await store.unpack(bytes, zip);
+    assert.strictEqual(loaded.manifest.format, format);
+    assert.strictEqual(loaded.scene, scene);
+    assert.deepStrictEqual(loaded.manifest.requiredCapabilities, [capability, "identity-ledger/1"].sort());
+    store.assertProjectCapabilities(loaded.manifest, [capability, "identity-ledger/1"]);
+    assert.throws(() => store.assertProjectCapabilities(loaded.manifest, ["identity-ledger/1"]), /目前服務不支援/);
+  }
+});
+
+test("身分帳不放寬工程能力缺失未知能力及舊版守門", async () => {
+  const legacy = await archive(identityScene);
+  await assert.rejects(() => store.unpack(rewriteArchive(legacy, m => {m.requiredCapabilities = ["identity-ledger/1"]; }), zip), /工程能力與草稿必須使用第 5 版/);
+  await assert.rejects(() => store.unpack(rewriteArchive(legacy, m => {m.format = "geometry-canvas/999"; }), zip), /專案版本不支援/);
+  await assert.rejects(() => archive("requires future-native/1\n" + identityScene), /尚未支援的工程能力/);
+  for (const {scene, capability} of engineeringScenes) {
+    const bytes = await archive(scene);
+    await assert.rejects(() => store.unpack(rewriteArchive(bytes, m => {m.requiredCapabilities = m.requiredCapabilities.filter(c => c !== capability); }), zip), /保留所需能力/);
+    await assert.rejects(() => store.unpack(rewriteArchive(bytes, m => {m.requiredCapabilities.push("future-native/1"); }), zip), /尚未支援的能力/);
+    const oldFormats = [store.FORMAT, store.MODEL_FORMAT, store.PROJECTION_FORMAT, store.TIMBER_FORMAT, ...(capability === store.PARAMETER_CAPABILITY ? [store.ENGINEERING_FORMAT] : [])];
+    for (const format of oldFormats) {
+      await assert.rejects(() => store.unpack(rewriteArchive(bytes, m => {m.format = format; }), zip));
+      await assert.rejects(() => store.unpack(rewriteArchive(bytes, m => {m.format = format;delete m.requiredCapabilities; }), zip));
+    }
+  }
 });
 
 test("原生讀者保留身分能力", () => {
