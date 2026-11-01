@@ -6414,19 +6414,34 @@ static bool app_world_revalidate_staged(World *world,World *staged)
     memcpy(world,staged,sizeof *world);return true;
 }
 
-/* I8a confirmation revalidates the same retained candidate. The existing
- * sealed bytes and provider set must pass before its resolver can be reopened. */
-static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+/* Commit finalization runs after full revalidation and before H captures the
+ * evaluated after bytes. Preview construction never calls this commit path. */
+typedef bool (*AppWorldCommitFinalizer)(AppWorldCandidate *,void *);
+typedef struct {
+    AppWorldCandidate *candidate;AppWorldCommitFinalizer finalize;void *opaque;
+} AppWorldCommitCall;
+static bool app_world_commit_revalidate_evaluate(void *after,GeoEvalContext *sources,void *opaque)
 {
-    if(!app_world_candidate_current(candidate,live)||app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
+    AppWorldCommitCall *call=opaque;
+    if(!app_world_revalidate_evaluate(after,sources,&call->candidate->before))return false;
+    return call->finalize(call->candidate,call->opaque);
+}
+/* The old seal, revision, providers, live World and keyed operation must pass
+ * before the same candidate and buffers receive a fresh complete evaluation. */
+static bool app_world_candidate_revalidate_commit(AppWorldCandidate *candidate,const World *live,
+    AppWorldCommitFinalizer finalize,void *opaque)
+{
+    if(!finalize||!app_world_candidate_current(candidate,live)||app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),
         app_world_candidate_equal,NULL)!=GEO_CANDIDATE_OK)return false;
     const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;
     bool previous_keyed=g_boundary_keyed_update;uint32_t previous_keyed_id=g_boundary_keyed_id;
     g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;
-    bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;
+    AppWorldCommitCall call={candidate,finalize,opaque};
+    bool ok=app_world_candidate_evaluate(candidate,app_world_commit_revalidate_evaluate,&call)==GEO_CANDIDATE_OK;
     g_boundary_keyed_update=previous_keyed;g_boundary_keyed_id=previous_keyed_id;g_subgrid_before=previous;
     return ok&&app_world_candidate_seal(candidate);
 }
+static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live);
 
 /* ---- 共用小解析工具 ---- */
 

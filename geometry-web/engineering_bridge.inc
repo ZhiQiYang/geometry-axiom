@@ -166,6 +166,7 @@ static bool app_batch_candidate_apply(void *after,GeoEvalContext *sources,void *
 static void batch_preview(const char *path,const char *schema_name,const char *schema_error,const char *stale_message,const char *memory_message,const char *label,int kind,bool (*operation)(World *,GeoJson *,int),void (*write_preview)(void))
 {
     g_asm_diagnostic=(AsmDiagnostic){0};
+    identity_drop_serials();
     if(g_history.grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return;}
     size_t size;char *text=eng_read_file(path,&size);if(!text){eng_bridge_error("INPUT",g_engineering_error);return;}
     GeoJson j;if(!app_json_parse_n(&j,text,size)){eng_bridge_error("JSON",j.error);geo_json_free(&j);free(text);return;}
@@ -195,19 +196,13 @@ static bool batch_token_kind(int kind)
 }
 static void batch_confirm(const char *arg,int kind,const char *token_message,const char *stale_message)
 {
+    identity_drop_serials();
     uint32_t token;bool mine=batch_token_kind(kind);
     if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!mine||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN",token_message);return;}
     if(g_history.grouping||g_preview.revision!=g_definition_revision||!app_world_candidate_current(g_preview.transaction,&g_world)){g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;}
     if(!assembly_versions_immutable(&g_world,&g_preview.transaction->after)){g_preview.ready=false;eng_bridge_error("INVALID",g_engineering_error);return;}
     if(!app_world_candidate_revalidate(g_preview.transaction,&g_world)){
         g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;
-    }
-    char identity_error[512];
-    if(!identity_prepare(&g_preview.transaction->before,&g_preview.transaction->after,g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow)){
-        snprintf(identity_error,sizeof identity_error,"%s",g_scene_last_error);
-        identity_drop_serials();
-        eng_bridge_error("INVALID",identity_error);
-        return;
     }
     bool issued=g_identity_pending_count!=0;
     bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after)||issued;uint64_t before=g_definition_revision;
@@ -223,6 +218,7 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
 }
 static void batch_cancel(const char *arg,int kind,const char *token_message)
 {
+    identity_drop_serials();
     uint32_t token;if(!arg||!parse_u32(arg,&token)){eng_bridge_error("TOKEN",token_message);return;}
     bool mine=batch_token_kind(kind);
     bool cancelled=g_preview.ready&&mine&&g_preview.token==token;if(cancelled){g_preview.ready=false;app_candidate_discard(g_preview.transaction->control);}

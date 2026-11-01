@@ -303,23 +303,30 @@ const ReferenceWorkspace = (() => {
         recoveryMessage("mismatch","先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。");return {...recovery};
       }
       const stage=label=>{busyLabel=label;present();};
-      const {loaded,c,ids}=await readProjectContext(record.bytes,"本機恢復專案",stage,assertInitial,true);
-      preparedContext=c;
-      if(await sceneFingerprint(loaded.scene)!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
+      stage("正在檢查專案完整性…");
+      const loaded=await P.unpack(record.bytes,fflate);assertInitial();
+      const archiveHash=await sceneFingerprint(loaded.scene);assertInitial();
+      if(archiveHash!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
       if(finishPin&&(loaded.manifest.projectId!==finishPin.projectId||!loaded.manifest.scenarioCatalog?.scenarios.some(s=>s.scenarioId===ticket.scenarioId)))
         throw new Error("試改完成收據與原方案身份不符，資料已保留。");
-      const probe=await sceneFingerprint(P.stripIdentityLedger(loaded.scene));
+      const probe=await sceneFingerprint(P.stripIdentityLedger(loaded.scene));assertInitial();
       const probed=await api("dump-deidentified");assertInitial();
-      if(!probed.ok || await sceneFingerprint(probed.text)!==probe){
+      const probedHash=probed.ok?await sceneFingerprint(probed.text):null;assertInitial();
+      if(!probed.ok || probedHash!==probe){
         recoveryMessage("mismatch","先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。");return {...recovery};
       }
+      // Reject a different live scene before native scenario checks or PDF work.
+      // Both probes remain tied to this single, integrity-checked archive.
+      const {c,ids}=await prepareProjectContext(loaded,"本機恢復專案",stage,assertInitial,true);
+      preparedContext=c;
       const verify=await api("dump-deidentified");assertInitial();
-      if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==probe)throw new Error("恢復期間服務場景已變更，未恢復專案。");
-      assertInitial();
+      const verifiedHash=verify.ok?await sceneFingerprint(verify.text):null;assertInitial();
+      if(!verify.ok || connection.session!==session || verifiedHash!==probe)throw new Error("恢復期間服務場景已變更，未恢復專案。");
       const full=await api("dump");assertInitial();
       const p=record.project;
       if(!p || typeof p.provenance?.kind!=="string" || typeof p.provenance?.label!=="string")throw new Error("本機專案來源記錄不完整。");
-      const disposition=P.restoreAfterProbe(p, full.ok===true, full.ok?await sceneFingerprint(full.text):null, record.sceneHash);
+      const fullHash=full.ok?await sceneFingerprint(full.text):null;assertInitial();
+      const disposition=P.restoreAfterProbe(p, full.ok===true, fullHash, record.sceneHash);
       Object.assign(c,{dirty:disposition.dirty,dirtyReason:disposition.dirtyReason,saved:disposition.saved,downloaded:disposition.downloaded,provenance:{...p.provenance}});
       history.frame={context:c,ids:new Map(ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
       if(record.finishReceipt&&/^[a-f0-9]{64}$/.test(record.finishReceipt))recoveryFinishReceipt={session,key:recoveryKey,hash:record.finishReceipt};
@@ -1819,6 +1826,9 @@ const ReferenceWorkspace = (() => {
   async function readProjectContext(bytes,name,stage,assertCurrent,verifyOnly=false) {
     stage("正在檢查專案完整性…","驗證中");
     const loaded=await P.unpack(bytes,fflate); assertCurrent();
+    return prepareProjectContext(loaded,name,stage,assertCurrent,verifyOnly);
+  }
+  async function prepareProjectContext(loaded,name,stage,assertCurrent,verifyOnly=false) {
     // Detached, private copies are the exact values subsequently committed.
     loaded.manifest=structuredClone(loaded.manifest);
     loaded.sources=new Map([...loaded.sources].map(([hash,data])=>[hash,data.slice()]));
