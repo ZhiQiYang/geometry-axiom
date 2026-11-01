@@ -46,6 +46,21 @@ module.exports = async function identityLedgerBrowser({send, eval_, sleep, click
   const before = await eval_(`api('identity-read')`);
   check('mark issued', before.ok === true && before.active === true && before.marks.length === 1 && typeof before.marks[0].mark === 'string');
 
+  const fullScene = await eval_(`api('dump')`);
+  const rejectedImport = await eval_(`(async () => {
+    const original = ${JSON.stringify(fullScene.text)};
+    const lines = original.split('\\n');
+    const invalid = lines.filter(line => line.trim() !== 'requires identity-ledger/1').join('\\n');
+    const response = await fetch('/upload/prepare', {method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: invalid});
+    return {removed: original !== invalid, result: await response.json()};
+  })()`);
+  check('native import rejects marks without requires', rejectedImport.removed && rejectedImport.result.ok === false &&
+    String(rejectedImport.result.error || '').includes('I72: 記號行缺少 requires identity-ledger/1') &&
+    !Object.hasOwn(rejectedImport.result, 'token'));
+  const unchangedScene = await eval_(`api('dump')`);
+  const unchangedLedger = await eval_(`api('identity-read')`);
+  check('rejected identity import keeps full World and serial', unchangedScene.text === fullScene.text && JSON.stringify(unchangedLedger) === JSON.stringify(before));
+
   await eval_(`window.__ilSaved = null; window.showSaveFilePicker = async () => ({
     createWritable: async () => ({
       write: async (data) => {

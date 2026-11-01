@@ -1954,7 +1954,8 @@ const ReferenceWorkspace = (() => {
       token=candidate.token;
       assertWritableLease();assertCurrent();
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
-      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
+      const requiredCapabilities=[...new Set([...(manifest.requiredCapabilities||[]),...P.sceneCapabilities(text)])];
+      P.assertProjectCapabilities({...manifest,requiredCapabilities},P.readerCapabilities(candidate.capabilities));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {

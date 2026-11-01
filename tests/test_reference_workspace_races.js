@@ -757,6 +757,44 @@ test('missing final native targets cancel without losing source bytes, metadata 
   assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
 });
 
+test('scene-only identity requires advertised native support before project confirmation',async()=>{
+  for(const supported of [false,true]){
+    const f=await openFixture(),old=f.w.context(),project=await P.unpack(f.bytes,zip);
+    const epoch=crypto.randomUUID().replaceAll('-','');
+    const scene=project.scene+'requires identity-ledger/1\nidentity boundary 8 '+epoch+':1\n';
+    const bytes=await P.pack(scene,project.manifest,project.sources,zip);
+    const archive=await P.unpack(bytes,zip);
+    assert.equal(archive.manifest.format,P.FORMAT);
+    assert.equal(Object.hasOwn(archive.manifest,'requiredCapabilities'),false);
+    assert.equal(archive.scene,scene);
+    const undo=f.w.history.undo.length,state=f.w.getProjectState(),sourceBytes=f.source.bytes.slice(),fetch=f.env.fetch;
+    f.env.fetch=async(url,request)=>{
+      const response=await fetch(url,request);
+      if(url!=='/upload/prepare')return response;
+      assert.equal(request.body,scene,'the native reader receives the complete identity scene');
+      const candidate=await response.json();
+      const capabilities=nativeCapabilities.filter(value=>value!=='identity-ledger/1');
+      if(supported)capabilities.push('identity-ledger/1');
+      return {...response,json:async()=>({...candidate,capabilities,required_capabilities:['identity-ledger/1'],final_scene:scene})};
+    };
+    if(supported){
+      await f.w.importBytes(bytes);
+      assert.notEqual(f.w.context(),old);
+      assert.deepEqual(f.requests.filter(r=>r.url.startsWith('/upload/')).map(r=>r.url),['/upload/prepare','/upload/confirm']);
+    }else{
+      await assert.rejects(()=>f.w.importBytes(bytes),/目前服務不支援此專案所需/);
+      assert.equal(f.w.context(),old);
+      assert.equal(f.w.history.undo.length,undo);
+      const after=f.w.getProjectState();
+      for(const key of ['dirty','dirtyReason','saved','downloaded'])assert.equal(after[key],state[key]);
+      assert.deepEqual(old.sources.get(f.source.meta.id).bytes,sourceBytes);
+      assert.deepEqual(f.requests.filter(r=>r.url.startsWith('/upload/')).map(r=>r.url),['/upload/prepare','/upload/cancel']);
+      assert.equal(f.requests.filter(r=>r.url==='/upload/confirm').length,0);
+    }
+    assert.equal(f.w.busy,false);
+  }
+});
+
 test('late confirm rejects local metadata edits and preserves externally invalidated context without import history',async()=>{
   let channel;const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}}),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
   f.env.connection.session='service-one';
