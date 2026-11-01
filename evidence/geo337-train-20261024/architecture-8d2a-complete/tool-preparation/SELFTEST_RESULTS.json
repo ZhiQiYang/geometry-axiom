@@ -1,0 +1,60 @@
+{
+  "synthetic_only": true,
+  "architecture_judges_executed": false,
+  "C_executed": false,
+  "source_materialized": false,
+  "contract_tests": 15,
+  "rows": [
+    {
+      "name": "contracts",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo337-architecture-zero-delta-tool-20261024/selftest_contracts.py"
+      ],
+      "exit": 0,
+      "expected": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "c0543c90883e2846c086a82ee1d1bfb1e36b76c2d33f66a5381d44631d6946d3"
+    },
+    {
+      "name": "fixed",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo337-architecture-zero-delta-tool-20261024/selftest_contracts.py",
+        "fixed"
+      ],
+      "exit": 0,
+      "expected": 0,
+      "stdout_sha256": "3ac31a26dc67e65f0e9a195ca77fcd18c8d9d92dadc5352a958573f1730cdc28",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "withdrawn",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo337-architecture-zero-delta-tool-20261024/selftest_contracts.py",
+        "withdrawn"
+      ],
+      "exit": 1,
+      "expected": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3974dccd3c6955467ae0dc7fb93f4fbb7f9dc9d38b55806232a1c168c41f197a"
+    },
+    {
+      "name": "restored",
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/geo337-architecture-zero-delta-tool-20261024/selftest_contracts.py",
+        "restored"
+      ],
+      "exit": 0,
+      "expected": 0,
+      "stdout_sha256": "3ac31a26dc67e65f0e9a195ca77fcd18c8d9d92dadc5352a958573f1730cdc28",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

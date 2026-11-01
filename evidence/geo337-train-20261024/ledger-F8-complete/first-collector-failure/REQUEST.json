@@ -1,0 +1,22 @@
+{
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "request_sha256": "3d59b96ed322eac32b76ebbd2b5387043ca1f1b805d328c7ad25761217475357",
+  "preparation_sha256": "45058091b308950ee18af616f6add2e4fe6535dc130cd5dc390f57f175d3369f",
+  "reserve_bytes": 67108864,
+  "root_reason": "64 MiB reserve after conservative full-uncompressed collection admission on TMP; original payloads preserved; no rerun or adoption",
+  "commands": [
+    [
+      "verify_terminal.py",
+      "/tmp/geo337-F8-full123-terminal-verified-20261025",
+      []
+    ],
+    [
+      "collect_terminal.py",
+      "/tmp/geo337-F8-full123-terminal-package-20261025",
+      [
+        "--reserve-bytes",
+        "67108864"
+      ]
+    ]
+  ]
+}

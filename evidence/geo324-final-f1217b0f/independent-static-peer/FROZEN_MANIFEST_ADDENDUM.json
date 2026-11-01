@@ -1,0 +1,32 @@
+{
+  "manifest_sha256": "d38dd52fe3f343ac90dae883c2efbf195409bdf7c42c25e03cb5b06dbbc4ffb6",
+  "source_sha": "f1217b0fa5e933e14906833bf4981dad97061b04",
+  "checks": [
+    {
+      "path": "preparation/run_face_predicate_proofs.py",
+      "passed": true
+    },
+    {
+      "path": "preparation/run_face_predicate_proofs_v2.py",
+      "passed": true
+    },
+    {
+      "path": "preparation-v2/README.md",
+      "passed": true
+    },
+    {
+      "path": "preparation-v2/V1_V2.diff",
+      "passed": true
+    },
+    {
+      "path": "preparation-v2/CURRENT_STATE_PREPARED.json",
+      "passed": true
+    },
+    {
+      "path": "geo324-pr-request.json",
+      "passed": true
+    }
+  ],
+  "productTestsExecuted": false,
+  "scope": "Read-only six frozen small-file hash checks; no driver execution."
+}

@@ -1,0 +1,40 @@
+diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json
+index 28e3bd85..db69446a 100644
+--- a/tests/run_all.expected.json
++++ b/tests/run_all.expected.json
+@@ -329,7 +329,7 @@
+     },
+     "py:test_geo261_contact_sources": {
+       "mode": "count",
+-      "count": 12,
++      "count": 13,
+       "unit": "test"
+     },
+     "py:test_geo261_default_native": {
+@@ -354,7 +354,7 @@
+     },
+     "py:test_geo261_definition_sources": {
+       "mode": "count",
+-      "count": 7,
++      "count": 9,
+       "unit": "test"
+     },
+     "py:test_geo261_derived_policy_graph_product": {
+@@ -454,7 +454,7 @@
+     },
+     "py:test_geo261_host_facts_authority": {
+       "mode": "count",
+-      "count": 17,
++      "count": 19,
+       "unit": "test"
+     },
+     "py:test_geo261_host_history": {
+@@ -614,7 +614,7 @@
+     },
+     "py:test_geo261_placement_definition": {
+       "mode": "count",
+-      "count": 15,
++      "count": 19,
+       "unit": "test"
+     },
+     "py:test_geo261_placement_sources": {

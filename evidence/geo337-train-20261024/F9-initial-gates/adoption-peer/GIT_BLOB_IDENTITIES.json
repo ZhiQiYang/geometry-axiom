@@ -1,0 +1,694 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "-C",
+    "/workspace/geometry-axiom",
+    "cat-file",
+    "--batch"
+  ],
+  "stdin_specs": [
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package/INDEX.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package/PROCESS_SCOPE.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package/TERMINAL.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package/complete-original-commands-and-streams.tar.gz",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.result.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.stderr.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.stdout.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT_DEVELOPMENT_NOTES.md",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/ORIGINAL_COMMANDS.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/RAW_FILES.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/README.md",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/REVIEW.initial-assumption-errors.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/REVIEW.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/ROWS.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.initial.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.second.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.third.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package-peer/REVIEW.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package-peer/REVIEW.md",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package-peer/audit.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/CHECKS.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/COMMAND.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/REVIEW.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/audit.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/BOUND_REQUEST.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/REQUEST.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/RESULT.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/request.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/result.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stderr.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stdin.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stdout.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/request.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/result.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stderr.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stdin.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stdout.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/verified-terminal/PROCESS_SCOPE.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/verified-terminal/TERMINAL.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/BOUND_REQUEST.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/REQUEST.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/RESULT.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/request.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/result.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stderr.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stdin.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stdout.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/BOUND_REQUEST.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/REQUEST.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/RESULT.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/request.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/result.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stderr.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stdin.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stdout.bin",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/root-first-collector.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/root-second-collector.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/root-v3-collector.py",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/ORIGINAL_EXEC_FINAL.json",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/ADOPTION_PLAN.md",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/README.md",
+    "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/PROGRESS.md",
+    "4f8a794f4167c3562eb182045102e86e9e37cca9:tests/mutants_results.json"
+  ],
+  "actual_exit": 0,
+  "started_utc": "2026-10-25T09:31:46.738539+00:00",
+  "ended_utc": "2026-10-25T09:31:46.827852+00:00",
+  "internal_stdout_bytes": 21247032,
+  "internal_stdout_sha256": "c459020729c678527ce579ecd3e70d0586eb60403b9ca6650ec8ab99a4fc5c05",
+  "stderr_hex": "",
+  "identities": [
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package/INDEX.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/package/INDEX.json",
+      "sha256": "c4ab625602baffd3e073f4dec765e586793a337963d1c4aec221277d4bfbcaa4",
+      "bytes": 640853,
+      "actual_sha256": "c4ab625602baffd3e073f4dec765e586793a337963d1c4aec221277d4bfbcaa4",
+      "actual_bytes": 640853,
+      "git_oid": "64f305d67c2feb63045bbc94674773de8fc37a2f"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package/PROCESS_SCOPE.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/package/PROCESS_SCOPE.json",
+      "sha256": "5d639e3a2aa49ea59bf00661193ca22eb6a6a4d909e1af98dce2df9d1c104acb",
+      "bytes": 1665,
+      "actual_sha256": "5d639e3a2aa49ea59bf00661193ca22eb6a6a4d909e1af98dce2df9d1c104acb",
+      "actual_bytes": 1665,
+      "git_oid": "f7bae26acef237f5bad23ce63fe920eb59bd65ce"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package/TERMINAL.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/package/TERMINAL.json",
+      "sha256": "e2de8642ee69616826b7acea4bdef563a5b9ec99cf8bb21aa078d4262a61d07a",
+      "bytes": 3044,
+      "actual_sha256": "e2de8642ee69616826b7acea4bdef563a5b9ec99cf8bb21aa078d4262a61d07a",
+      "actual_bytes": 3044,
+      "git_oid": "54bcc6ac3ee7bb8a429e5b074dfae5ca1de6fdc5"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package/complete-original-commands-and-streams.tar.gz",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/package/complete-original-commands-and-streams.tar.gz",
+      "sha256": "806ab05886963c6dd2673096e04272c734f09c602f830ded9561a79729e13be8",
+      "bytes": 8584878,
+      "actual_sha256": "806ab05886963c6dd2673096e04272c734f09c602f830ded9561a79729e13be8",
+      "actual_bytes": 8584878,
+      "git_oid": "b6aba7882a31495544ec4d94617b8451a5a06898"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.result.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.result.json",
+      "sha256": "6ac86a7d7832e081461a641950a820809e189321cc4f2ad42d6bc1ccd0382f6c",
+      "bytes": 405,
+      "actual_sha256": "6ac86a7d7832e081461a641950a820809e189321cc4f2ad42d6bc1ccd0382f6c",
+      "actual_bytes": 405,
+      "git_oid": "b986c845227665515c134f75c873705b5b30c9f5"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.stderr.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.stdout.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT.stdout.bin",
+      "sha256": "65a388a54675acfb1ac935852af6c319b027943a4565529ecb71d24ad506f90e",
+      "bytes": 180,
+      "actual_sha256": "65a388a54675acfb1ac935852af6c319b027943a4565529ecb71d24ad506f90e",
+      "actual_bytes": 180,
+      "git_oid": "513d5c6ea33c17892aea45fa4ff7f12e60d30de6"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT_DEVELOPMENT_NOTES.md",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/AUDIT_DEVELOPMENT_NOTES.md",
+      "sha256": "51e89698ca113a3f33134ee2e50b4827021924181edd9c00d792a94c0ca41439",
+      "bytes": 775,
+      "actual_sha256": "51e89698ca113a3f33134ee2e50b4827021924181edd9c00d792a94c0ca41439",
+      "actual_bytes": 775,
+      "git_oid": "1843ce0af497d6ec24551f14131e0b0562efca01"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/ORIGINAL_COMMANDS.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/ORIGINAL_COMMANDS.json",
+      "sha256": "1783b36c06f749c9d4fb52258ded26df435bdc35ef48a4e774bf89f0c2283942",
+      "bytes": 410637,
+      "actual_sha256": "1783b36c06f749c9d4fb52258ded26df435bdc35ef48a4e774bf89f0c2283942",
+      "actual_bytes": 410637,
+      "git_oid": "365b523bf4ddf885c25ffd7008f9b8d46a4150c7"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/RAW_FILES.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/RAW_FILES.json",
+      "sha256": "e9ca46d80d8281b07e5ffb2fad3e42ae6c8404c7d8fc043840cb28ca0f70b73a",
+      "bytes": 159781,
+      "actual_sha256": "e9ca46d80d8281b07e5ffb2fad3e42ae6c8404c7d8fc043840cb28ca0f70b73a",
+      "actual_bytes": 159781,
+      "git_oid": "1ca47764b4bb5e012faa7a42c1856049f0fe5204"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/README.md",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/README.md",
+      "sha256": "8bdd0f78c3c8059f6f50479b9ead7f8d2e599bd6ab47f900a80e29f1bee9708c",
+      "bytes": 2333,
+      "actual_sha256": "8bdd0f78c3c8059f6f50479b9ead7f8d2e599bd6ab47f900a80e29f1bee9708c",
+      "actual_bytes": 2333,
+      "git_oid": "ac05234fc8491099d680182a7d31ecf450e9e3ed"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/REVIEW.initial-assumption-errors.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/REVIEW.initial-assumption-errors.json",
+      "sha256": "e1d52106859a5fb57f4fd71e6107cdb699818a7733a21b31a8a992d62ff84177",
+      "bytes": 2679,
+      "actual_sha256": "e1d52106859a5fb57f4fd71e6107cdb699818a7733a21b31a8a992d62ff84177",
+      "actual_bytes": 2679,
+      "git_oid": "b5c0158fd1394357742dc840537bd6885a6f0142"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/REVIEW.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/REVIEW.json",
+      "sha256": "e0ebc7a897466fbb2d7a7d36bec3e84d10994f5bcca85ef6d78370f136cd8153",
+      "bytes": 2985,
+      "actual_sha256": "e0ebc7a897466fbb2d7a7d36bec3e84d10994f5bcca85ef6d78370f136cd8153",
+      "actual_bytes": 2985,
+      "git_oid": "4f033c84a9a20426b21ee2c818f313732cf0143b"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/ROWS.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/ROWS.json",
+      "sha256": "660b985ef4d59828399479bec8c90fd7c36e743c1e26e370638341a4663e89b5",
+      "bytes": 57996,
+      "actual_sha256": "660b985ef4d59828399479bec8c90fd7c36e743c1e26e370638341a4663e89b5",
+      "actual_bytes": 57996,
+      "git_oid": "bedff69f4b61654f9c8a0971a483697ebaca1fde"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.initial.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.initial.py",
+      "sha256": "bbfaaef3ad084db02d371f684f060ddfe276abf634b8b0d7fd05684cdc64a730",
+      "bytes": 18403,
+      "actual_sha256": "bbfaaef3ad084db02d371f684f060ddfe276abf634b8b0d7fd05684cdc64a730",
+      "actual_bytes": 18403,
+      "git_oid": "580839f2c7a23e7b04fff0e92b54942467d3dd09"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.py",
+      "sha256": "4d546ef8453650a61b1ec2ddb5a9ff041ea3ca3a267f71f8f726de0fb5834009",
+      "bytes": 19819,
+      "actual_sha256": "4d546ef8453650a61b1ec2ddb5a9ff041ea3ca3a267f71f8f726de0fb5834009",
+      "actual_bytes": 19819,
+      "git_oid": "4b145bf4e7e29650b363a5ddbf6d0c58b71412f1"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.second.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.second.py",
+      "sha256": "43995955ea5a36484e22849edea7d65afcfd3b9c58fbb6f1cea6a3dde24c6182",
+      "bytes": 18867,
+      "actual_sha256": "43995955ea5a36484e22849edea7d65afcfd3b9c58fbb6f1cea6a3dde24c6182",
+      "actual_bytes": 18867,
+      "git_oid": "9cd9bb551a2b507e6bd39ac82fd9b0fbed2623b7"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.third.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/actual-peer/audit_actual.third.py",
+      "sha256": "e08e50ed10450c077a1ded2fa163d915a68bbd7692c51afdc250a0dba311673c",
+      "bytes": 19205,
+      "actual_sha256": "e08e50ed10450c077a1ded2fa163d915a68bbd7692c51afdc250a0dba311673c",
+      "actual_bytes": 19205,
+      "git_oid": "94558f056f1803828533a81e28c51efdb274874b"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package-peer/REVIEW.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/package-peer/REVIEW.json",
+      "sha256": "c2651ee1dfcbf8fbf7b1475a2d2276be5b20f6e8bba49a8f28956606a8338cfd",
+      "bytes": 979839,
+      "actual_sha256": "c2651ee1dfcbf8fbf7b1475a2d2276be5b20f6e8bba49a8f28956606a8338cfd",
+      "actual_bytes": 979839,
+      "git_oid": "5f2c72277de9961decea763e67808ec0e5960d65"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package-peer/REVIEW.md",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/package-peer/REVIEW.md",
+      "sha256": "3ac35c6001511112a6e3ee41c0d54734dc5ba4a0535f261d9a6b52a0bd019a1d",
+      "bytes": 394,
+      "actual_sha256": "3ac35c6001511112a6e3ee41c0d54734dc5ba4a0535f261d9a6b52a0bd019a1d",
+      "actual_bytes": 394,
+      "git_oid": "e3afc8236319ad6daaa84968b29c7357a5889b8f"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/package-peer/audit.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/package-peer/audit.py",
+      "sha256": "5625efc685ae3d7c877ee9c7b542b4a2fae213d5b3934ae75d6638cbb32aa63b",
+      "bytes": 9547,
+      "actual_sha256": "5625efc685ae3d7c877ee9c7b542b4a2fae213d5b3934ae75d6638cbb32aa63b",
+      "actual_bytes": 9547,
+      "git_oid": "520972135b38f3a00adae2d226910e90115ac63b"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/CHECKS.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/CHECKS.json",
+      "sha256": "0438b6c715d7fa1edfb06b54b0d26c2e8674782ce5009b4a4894370915d4bada",
+      "bytes": 43895,
+      "actual_sha256": "0438b6c715d7fa1edfb06b54b0d26c2e8674782ce5009b4a4894370915d4bada",
+      "actual_bytes": 43895,
+      "git_oid": "def86cf175df0a25ef13ebae551382099373d874"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/COMMAND.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/COMMAND.json",
+      "sha256": "74ca6d8fc9db69cf1a1da71a9342f8c0eca387e413392a4609495f0a7d018119",
+      "bytes": 331,
+      "actual_sha256": "74ca6d8fc9db69cf1a1da71a9342f8c0eca387e413392a4609495f0a7d018119",
+      "actual_bytes": 331,
+      "git_oid": "f516adc3f86b6a282c06c8db97c3c2e5e4d1b62b"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/REVIEW.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/REVIEW.json",
+      "sha256": "b027a20b43069e4f012156af1a703285062e4b9cfad82ed512a9b872af763251",
+      "bytes": 56625,
+      "actual_sha256": "b027a20b43069e4f012156af1a703285062e4b9cfad82ed512a9b872af763251",
+      "actual_bytes": 56625,
+      "git_oid": "09b396000e1fceacd75c28646729af4851adcf44"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/audit.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-peer/audit.py",
+      "sha256": "02f235cbe7de1bbf23dc81293abf817b7708f6eea4c5f3670d88d9e6c266cacb",
+      "bytes": 8066,
+      "actual_sha256": "02f235cbe7de1bbf23dc81293abf817b7708f6eea4c5f3670d88d9e6c266cacb",
+      "actual_bytes": 8066,
+      "git_oid": "f08f529da08fbccbb2b625ce3ecc5f27fb1fe5cf"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/BOUND_REQUEST.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/BOUND_REQUEST.json",
+      "sha256": "3d59b96ed322eac32b76ebbd2b5387043ca1f1b805d328c7ad25761217475357",
+      "bytes": 852,
+      "actual_sha256": "3d59b96ed322eac32b76ebbd2b5387043ca1f1b805d328c7ad25761217475357",
+      "actual_bytes": 852,
+      "git_oid": "6682eed9fb9170c6f069fed90a199ac8a9479e9a"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/REQUEST.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/REQUEST.json",
+      "sha256": "1dd715d68447708cf9fe36a2941d8649a19d15a6183c3134c841beeacd54a123",
+      "bytes": 714,
+      "actual_sha256": "1dd715d68447708cf9fe36a2941d8649a19d15a6183c3134c841beeacd54a123",
+      "actual_bytes": 714,
+      "git_oid": "1ce70c5919f11cd5532336cdcd4ceceb22e8a2cd"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/RESULT.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/RESULT.json",
+      "sha256": "61259c1f3b34eb9a0768d0333c830d3a386bef3116f6cc47fbd47f16fe6a4a53",
+      "bytes": 5128,
+      "actual_sha256": "61259c1f3b34eb9a0768d0333c830d3a386bef3116f6cc47fbd47f16fe6a4a53",
+      "actual_bytes": 5128,
+      "git_oid": "b9d7397faf5aa9c0713a82f711593210a4d427a3"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/request.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/request.json",
+      "sha256": "026cd02550af72a3f90bbc0d3ebdcb5849a6de44605e0a24831ada5417c1018a",
+      "bytes": 2015,
+      "actual_sha256": "026cd02550af72a3f90bbc0d3ebdcb5849a6de44605e0a24831ada5417c1018a",
+      "actual_bytes": 2015,
+      "git_oid": "cc348aec1a0a869872a84abb9e4bbea9f98c85fe"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/result.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/result.json",
+      "sha256": "0417f388ac154c8c4568bdb5afc72ba583c68336874775d64065816ced074d84",
+      "bytes": 2267,
+      "actual_sha256": "0417f388ac154c8c4568bdb5afc72ba583c68336874775d64065816ced074d84",
+      "actual_bytes": 2267,
+      "git_oid": "8d7e00acfb43b00972bd1f825c518c48bd4f1c8d"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stderr.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stdin.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stdin.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stdout.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000001/stdout.bin",
+      "sha256": "37ba1a95fade414ddde3b2a92bb536807f7d54ce81844bb847d3f9dcecf42b43",
+      "bytes": 161,
+      "actual_sha256": "37ba1a95fade414ddde3b2a92bb536807f7d54ce81844bb847d3f9dcecf42b43",
+      "actual_bytes": 161,
+      "git_oid": "afb2dc463ef9c50af49afb9b7bee05e911786b2a"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/request.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/request.json",
+      "sha256": "142eb068923c1e1c79345c41371cb3ee2c7d5bdc96eb1e179e5684c5f603cad4",
+      "bytes": 2054,
+      "actual_sha256": "142eb068923c1e1c79345c41371cb3ee2c7d5bdc96eb1e179e5684c5f603cad4",
+      "actual_bytes": 2054,
+      "git_oid": "c695c2d9ab46e6dfefecf43f7110bd801b02c1dd"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/result.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/result.json",
+      "sha256": "ca0040605f4a3d1df990eaa41bcfe0d895198bfbe4e565438e50b034eacb0460",
+      "bytes": 2306,
+      "actual_sha256": "ca0040605f4a3d1df990eaa41bcfe0d895198bfbe4e565438e50b034eacb0460",
+      "actual_bytes": 2306,
+      "git_oid": "47f594e2f2bd69e6eae3f69ecc09317c8eedb571"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stderr.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stdin.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stdin.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stdout.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands/000002/stdout.bin",
+      "sha256": "daa41907db97d7a77cd82dd3b65a87192c6d2dc1bd1b541a0e38fba17166b1e4",
+      "bytes": 307,
+      "actual_sha256": "daa41907db97d7a77cd82dd3b65a87192c6d2dc1bd1b541a0e38fba17166b1e4",
+      "actual_bytes": 307,
+      "git_oid": "2e893cf22280717cd610b20944f39e7a5e67220a"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/collector-v3-originals/subcommands.json",
+      "sha256": "904b9cbb252eda730e83c0cec68ffe54583f44ff9557130e7bfb315faffb6fec",
+      "bytes": 4782,
+      "actual_sha256": "904b9cbb252eda730e83c0cec68ffe54583f44ff9557130e7bfb315faffb6fec",
+      "actual_bytes": 4782,
+      "git_oid": "e7dfbea9a8d8b4f4ec6cf49baebe917c77476fb0"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/verified-terminal/PROCESS_SCOPE.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/verified-terminal/PROCESS_SCOPE.json",
+      "sha256": "5d639e3a2aa49ea59bf00661193ca22eb6a6a4d909e1af98dce2df9d1c104acb",
+      "bytes": 1665,
+      "actual_sha256": "5d639e3a2aa49ea59bf00661193ca22eb6a6a4d909e1af98dce2df9d1c104acb",
+      "actual_bytes": 1665,
+      "git_oid": "f7bae26acef237f5bad23ce63fe920eb59bd65ce"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/verified-terminal/TERMINAL.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/verified-terminal/TERMINAL.json",
+      "sha256": "e2de8642ee69616826b7acea4bdef563a5b9ec99cf8bb21aa078d4262a61d07a",
+      "bytes": 3044,
+      "actual_sha256": "e2de8642ee69616826b7acea4bdef563a5b9ec99cf8bb21aa078d4262a61d07a",
+      "actual_bytes": 3044,
+      "git_oid": "54bcc6ac3ee7bb8a429e5b074dfae5ca1de6fdc5"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/BOUND_REQUEST.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/BOUND_REQUEST.json",
+      "sha256": "3d59b96ed322eac32b76ebbd2b5387043ca1f1b805d328c7ad25761217475357",
+      "bytes": 852,
+      "actual_sha256": "3d59b96ed322eac32b76ebbd2b5387043ca1f1b805d328c7ad25761217475357",
+      "actual_bytes": 852,
+      "git_oid": "6682eed9fb9170c6f069fed90a199ac8a9479e9a"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/REQUEST.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/REQUEST.json",
+      "sha256": "653fcdde15ae4203a3f81e35d4d73b35ca6dbcd5787bb3258f93a4e0a935efef",
+      "bytes": 714,
+      "actual_sha256": "653fcdde15ae4203a3f81e35d4d73b35ca6dbcd5787bb3258f93a4e0a935efef",
+      "actual_bytes": 714,
+      "git_oid": "7d5132de0336105981c028b3b63f83a74ed2a4e4"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/RESULT.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/RESULT.json",
+      "sha256": "8eecfbee0ec872899b776a0b055994adf8e50b77fb81559eb84bc0afc5e92717",
+      "bytes": 2608,
+      "actual_sha256": "8eecfbee0ec872899b776a0b055994adf8e50b77fb81559eb84bc0afc5e92717",
+      "actual_bytes": 2608,
+      "git_oid": "a85df49b2baf77fba873186ca1094da32c9de86e"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/request.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/request.json",
+      "sha256": "afeea3866d729c9bff5f7fbac4a099e02b0aff8d3f111b2c7855f4563248d17e",
+      "bytes": 2010,
+      "actual_sha256": "afeea3866d729c9bff5f7fbac4a099e02b0aff8d3f111b2c7855f4563248d17e",
+      "actual_bytes": 2010,
+      "git_oid": "79b758447b73fde55e0b792343c9665d8501211a"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/result.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/result.json",
+      "sha256": "5558713432c10688be5c8830e5f58707973d49d9a84648e67aae931747d1ff8a",
+      "bytes": 2262,
+      "actual_sha256": "5558713432c10688be5c8830e5f58707973d49d9a84648e67aae931747d1ff8a",
+      "actual_bytes": 2262,
+      "git_oid": "072f726810821d2649c1f97e9797750ab404e1b7"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stderr.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stderr.bin",
+      "sha256": "6a89066ae16ef6362c956852b3aa7d979327876226ae98f6d8ca6df9e7f60486",
+      "bytes": 936,
+      "actual_sha256": "6a89066ae16ef6362c956852b3aa7d979327876226ae98f6d8ca6df9e7f60486",
+      "actual_bytes": 936,
+      "git_oid": "557ca7f434d662d126ce4d0b88305e57bfe32a8c"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stdin.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stdin.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stdout.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands/000001/stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/first-collector-failure/subcommands.json",
+      "sha256": "66822756e060f90e84d683913c03a4ba0d0d5ea45381dd8618d151db1e5852fd",
+      "bytes": 2366,
+      "actual_sha256": "66822756e060f90e84d683913c03a4ba0d0d5ea45381dd8618d151db1e5852fd",
+      "actual_bytes": 2366,
+      "git_oid": "10262a4c34b8264294f6340996504a7e46ad7503"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/BOUND_REQUEST.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/BOUND_REQUEST.json",
+      "sha256": "3d59b96ed322eac32b76ebbd2b5387043ca1f1b805d328c7ad25761217475357",
+      "bytes": 852,
+      "actual_sha256": "3d59b96ed322eac32b76ebbd2b5387043ca1f1b805d328c7ad25761217475357",
+      "actual_bytes": 852,
+      "git_oid": "6682eed9fb9170c6f069fed90a199ac8a9479e9a"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/REQUEST.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/REQUEST.json",
+      "sha256": "653fcdde15ae4203a3f81e35d4d73b35ca6dbcd5787bb3258f93a4e0a935efef",
+      "bytes": 714,
+      "actual_sha256": "653fcdde15ae4203a3f81e35d4d73b35ca6dbcd5787bb3258f93a4e0a935efef",
+      "actual_bytes": 714,
+      "git_oid": "7d5132de0336105981c028b3b63f83a74ed2a4e4"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/RESULT.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/RESULT.json",
+      "sha256": "c317997302f06f3965681e808127ca1796bd01f02f6cedc444a9ad0c89a0046c",
+      "bytes": 2629,
+      "actual_sha256": "c317997302f06f3965681e808127ca1796bd01f02f6cedc444a9ad0c89a0046c",
+      "actual_bytes": 2629,
+      "git_oid": "eaa42cae9e11ee1619c659fc2a5b31fd80f03730"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/request.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/request.json",
+      "sha256": "1f72c72575754e64004cc22e01efb9d8105b3b305b61c36bcdfc492ab308d9a2",
+      "bytes": 2031,
+      "actual_sha256": "1f72c72575754e64004cc22e01efb9d8105b3b305b61c36bcdfc492ab308d9a2",
+      "actual_bytes": 2031,
+      "git_oid": "c21d663362ac97d790cb6b664b65730aad13a47d"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/result.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/result.json",
+      "sha256": "00ec0adeeaec409cea9a2f0fb1027906ea325226cdd250f24006685a6ca42fc5",
+      "bytes": 2283,
+      "actual_sha256": "00ec0adeeaec409cea9a2f0fb1027906ea325226cdd250f24006685a6ca42fc5",
+      "actual_bytes": 2283,
+      "git_oid": "6b88153b225b99cde3d9a2ce11be6d0fdf23718a"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stderr.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stderr.bin",
+      "sha256": "3082e88ced728ac4f80319fb8e52359bafd7c8836026bb7d33b12903dcc247c7",
+      "bytes": 938,
+      "actual_sha256": "3082e88ced728ac4f80319fb8e52359bafd7c8836026bb7d33b12903dcc247c7",
+      "actual_bytes": 938,
+      "git_oid": "e92e09802e71ee41e100c934459b2ad03c9c961c"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stdin.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stdin.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stdout.bin",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands/000001/stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_bytes": 0,
+      "git_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/second-collector-failure/subcommands.json",
+      "sha256": "2b51f476de7b77565181b7a88b5a4f39593e0c615bc6a52deaf6820e1d3fe556",
+      "bytes": 2387,
+      "actual_sha256": "2b51f476de7b77565181b7a88b5a4f39593e0c615bc6a52deaf6820e1d3fe556",
+      "actual_bytes": 2387,
+      "git_oid": "a1add75739809c6237e49223a3a9ed7db592d23a"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/root-first-collector.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/root-first-collector.py",
+      "sha256": "194f2385f516a1e312b278de42c9fd99d75aa04f61cd7e0f331cf6d975bcc1a1",
+      "bytes": 2863,
+      "actual_sha256": "194f2385f516a1e312b278de42c9fd99d75aa04f61cd7e0f331cf6d975bcc1a1",
+      "actual_bytes": 2863,
+      "git_oid": "bd8196e8da697b5b38a0b848d8355e2b87657334"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/root-second-collector.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/root-second-collector.py",
+      "sha256": "5ad530b8bf3e136b85c15a468168bd25933da8476e38c2af2f6d6a0e2c1323f3",
+      "bytes": 2874,
+      "actual_sha256": "5ad530b8bf3e136b85c15a468168bd25933da8476e38c2af2f6d6a0e2c1323f3",
+      "actual_bytes": 2874,
+      "git_oid": "77256a42677821a5243dfc2df0404989988b440f"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/root-v3-collector.py",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/root-v3-collector.py",
+      "sha256": "0a15c96fce58dfd515dc3fb01dd20e23b3ee821d00288f359d11046d59e9887b",
+      "bytes": 2866,
+      "actual_sha256": "0a15c96fce58dfd515dc3fb01dd20e23b3ee821d00288f359d11046d59e9887b",
+      "actual_bytes": 2866,
+      "git_oid": "ac03d00cdd036150a34eb97edc9df27f26f124e4"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/ORIGINAL_EXEC_FINAL.json",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/ORIGINAL_EXEC_FINAL.json",
+      "sha256": "7a6454bb04ecb7cbe3d8646b90655c54d79ff9220d0f43799e052be543cd4461",
+      "bytes": 292,
+      "actual_sha256": "7a6454bb04ecb7cbe3d8646b90655c54d79ff9220d0f43799e052be543cd4461",
+      "actual_bytes": 292,
+      "git_oid": "2570006cc295e139317f80a903566c06db864fbf"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/ADOPTION_PLAN.md",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/ADOPTION_PLAN.md",
+      "sha256": "51b7b7ecb5c5cc63d724284c1cffb12316106917b26a78cf31b52030c53e2d57",
+      "bytes": 1439,
+      "actual_sha256": "51b7b7ecb5c5cc63d724284c1cffb12316106917b26a78cf31b52030c53e2d57",
+      "actual_bytes": 1439,
+      "git_oid": "67104a3bf8e4b0dd30e8772756039848f9dbb5ab"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/ledger-F8-complete/README.md",
+      "path": "evidence/geo337-train-20261024/ledger-F8-complete/README.md",
+      "sha256": "f4bae0e86532079e8190e229b2ab9854ea97b0528265582e134219820922d720",
+      "bytes": 1621,
+      "actual_sha256": "f4bae0e86532079e8190e229b2ab9854ea97b0528265582e134219820922d720",
+      "actual_bytes": 1621,
+      "git_oid": "de29dfb85b065b7c1e1befffe12a3f3ae11fa9c6"
+    },
+    {
+      "spec": "f0f7888213a8cc5b54f0a4303fb0577fe812cefd:evidence/geo337-train-20261024/PROGRESS.md",
+      "path": "evidence/geo337-train-20261024/PROGRESS.md",
+      "sha256": "c95dde524344070f52eb5b322178132575ab153e43260c9702e46e854c48400c",
+      "bytes": 93941,
+      "actual_sha256": "c95dde524344070f52eb5b322178132575ab153e43260c9702e46e854c48400c",
+      "actual_bytes": 93941,
+      "git_oid": "b98506404f8799aaa517e9b66e47f27599e35783"
+    },
+    {
+      "spec": "4f8a794f4167c3562eb182045102e86e9e37cca9:tests/mutants_results.json",
+      "path": "tests/mutants_results.json",
+      "sha256": "0123548b29bf8adbaf3cf896bfffb212134452f2574eaf8ae1d1b663104ead1b",
+      "bytes": 10045593,
+      "actual_sha256": "0123548b29bf8adbaf3cf896bfffb212134452f2574eaf8ae1d1b663104ead1b",
+      "actual_bytes": 10045593,
+      "git_oid": "cfc0a168fc1f768a2b4af04d1ab91dc7e67c4534"
+    }
+  ],
+  "scope": "Complete internal Git batch bytes read and hashed. These bytes already exist as published Git blobs; internal stdout is not claimed as a separately stored original payload."
+}

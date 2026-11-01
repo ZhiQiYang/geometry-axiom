@@ -1,0 +1,58 @@
+{
+  "number": 83,
+  "started_epoch": 1792812984.361054,
+  "args": [
+    [
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge"
+    ]
+  ],
+  "kwargs": {
+    "input": {
+      "type": "bytes",
+      "bytes": 140,
+      "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff"
+    },
+    "capture_output": true,
+    "timeout": 600
+  },
+  "selected_environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TMPDIR": "/workspace/geo348-F0f695866-formal-tmp",
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "PYTHONOPTIMIZE": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": null
+  },
+  "executable": {
+    "retained": true,
+    "path": "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge",
+    "bytes": 1316392,
+    "sha256": "050123dadc7e7082ff211fd1469594ddc49188b565a3d707309f682583681841",
+    "event": "before-original-subprocess.run",
+    "payload_retained": false
+  },
+  "input": {
+    "captured": true,
+    "representation": "original-bytes",
+    "bytes": 140,
+    "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff"
+  },
+  "ended_epoch": 1792813584.4740987,
+  "completed_process_returned": false,
+  "returncode": null,
+  "exception": {
+    "type": "TimeoutExpired",
+    "repr": "TimeoutExpired(['/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge'], 600)"
+  },
+  "stdout": {
+    "captured": false
+  },
+  "stderr": {
+    "captured": false
+  }
+}

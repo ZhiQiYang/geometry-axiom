@@ -1,0 +1,1176 @@
+{
+  "schema": "geo337-F9-grid-SHM-formal-and-sampler-actual-peer/1",
+  "utc": "2026-10-25T13:59:55.560645+00:00",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "exit_code": 0,
+  "checks": 228,
+  "blocking_findings": [],
+  "original_formal_exit": 0,
+  "formal_status": "GREEN_ORIGINAL_FULL_GRID_JOB; remote delivery separate",
+  "original_CDP_result": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_GRID_SYSTEM_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:19084/",
+      "feedbackDirectory": "/dev/shm/geo337-F9-browsers-20261025/r/g/tmp/original/grid/geometry-integration-feedback",
+      "browserProfile": "/dev/shm/geo337-F9-browsers-20261025/r/g/tmp/original/grid/geometry-cdp-GhtBiF",
+      "cdpPort": 9334,
+      "browserPid": 2022934
+    },
+    "firstTransportFailure": null,
+    "firstNetworkFailure": null,
+    "completed": true,
+    "passedAssertions": 356,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "P70": 121,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 143
+    },
+    "goldenCompare": "not compared (partial mode)",
+    "uncaughtBrowserExceptions": 0,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "assertions": {
+    "passed": 356,
+    "failed": 0,
+    "sections": {
+      "P70": 121,
+      "P71": 9,
+      "P78": 23,
+      "P87": 60,
+      "P88": 143
+    }
+  },
+  "original_screenshots": {
+    "artifacts/06/grid-trial-desktop.png": {
+      "bytes": 100476,
+      "sha256": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b",
+      "mtime_ns": 1792936231970476664
+    },
+    "artifacts/06/grid-trial-mobile-alignment.png": {
+      "bytes": 57264,
+      "sha256": "128ff3af1aeac0ffc6bcf6380447927c7e878130246706f6925dfe984510cb60",
+      "mtime_ns": 1792936230770448413
+    },
+    "artifacts/06/grid-trial-mobile-canvas.png": {
+      "bytes": 52399,
+      "sha256": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8",
+      "mtime_ns": 1792936231014454157
+    },
+    "artifacts/06/grid-trial-mobile-controls.png": {
+      "bytes": 47196,
+      "sha256": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543",
+      "mtime_ns": 1792936230502442104
+    }
+  },
+  "original_seconds": 464.98406516801333,
+  "original_ci_minutes": 15,
+  "original_argv_full_streams_checked": 6,
+  "original_workflow_files_checked": 44,
+  "raw_metadata_bytes_read": 1497061,
+  "pins": {
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/grid/RESULT.json": "c6f1232c1e8c47058807d27c24e615efd40e3338e49184e56b5cd32a1b1d248d",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/receipt.json": "ec165dc9f3f79b996afa4111f1e68639e63189216ad1421a1776c3511f9c6e52",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/receipt.json": "7db52578705228743604caafd3e22b38dd7a06b8418fa73b29d3c8831d89ff37",
+    "/workspace/geo337-F9-grid-SHM-EXEC_FINAL-20261025.json": "cc1fad118adcd83c95f24dbbe29e76104e96e16cfda417df65ec9725bf9e727c",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/grid/subcommands/000001/result.json": "3e5b8283760a0dab263ef4105c8a2c3abc65aa65e5739ddb2003d8e78c533585",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/grid/subcommands/000001/stdout.bin": "cb5b14b34857b90768d2b27332273083b2a05bdb7161566c262a58bcf75acea9",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/grid/subcommands/000001/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000001/result.json": "89f5bdf9c0a4b46c9f39a089cbf4f8df2d06106b2d9f4bbb2921a82bf4061758",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000001/stdout.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000001/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000002/result.json": "6c0c33ab9568d09c8b464b893bf8c513baf683b1784533e5292ac9a5f2b9bdff",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000002/stdout.bin": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000002/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000003/result.json": "1b22aaba87cc96bd26e299ee77f1071ca2ecf51573de9f428cb4a0cab1434cbc",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000003/stdout.bin": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000003/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000004/result.json": "55118429041e14aa07c4277a5e4b17a6725e1d805904a6708edfd7142f865613",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000004/stdout.bin": "3775b642ed5f3f2a23592efb7e70faf98f3fdf31f84e77616ae509f0582dd201",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000004/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000005/result.json": "4e0a0e0ef75dff554b5c3f12ff2a8f6bae85db119b4d18948a71d0c67214d192",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000005/stdout.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000005/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/artifacts/06/grid-trial-desktop.png": "518236d18ec4b86e36968bf8ef23c51831c2d7b6f096072262779f5be217e11b",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/artifacts/06/grid-trial-mobile-alignment.png": "128ff3af1aeac0ffc6bcf6380447927c7e878130246706f6925dfe984510cb60",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/artifacts/06/grid-trial-mobile-canvas.png": "b066222c0fa31254bd92f93da75de6a9ef62dcf1ebb1095b404b438e69b181e8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/artifacts/06/grid-trial-mobile-controls.png": "b0cf66d5e29191b07e48aa237d53408c9feb4fc9964a7dada4453b940c2d0543",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/driver.py.txt": "4cdfe3dd250bc9bba6f8e8a513bbd2007176dc914b60b034b2aa7761e295affd",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.combined.log": "8f78148ebfd6dedb14c795a993a6abab49b8903ab21457d3860b6f3997bc449e",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.command.json": "42616a5bb6074a0b008baae51083abe0a58a27c530b78eeeefba41c87322e2f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.executed.sh": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.original.sh.txt": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.stdout": "8f78148ebfd6dedb14c795a993a6abab49b8903ab21457d3860b6f3997bc449e",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02-package-0.combined.log": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02-package-0.command.json": "4b249f9e568ad6f795851dc7dfc6526187a617e9663560e843cb3d1f7c519d0c",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02-package-0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02-package-0.stdout": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02.executed.sh": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02.original.sh.txt": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.combined.log": "f9b52f20215988a6d3e46db08c83166b0de276097f22989898a8a3b0bdc0d150",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.command.json": "4e2a957739f31bd1f8e9e161f53a5ab4a84102191ae88f2fc4e62e5eb09c701a",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.executed.sh": "34fb724d0ae3c3afe98b779d7792560fc58433460639a4e733f5c47d29d0866f",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.original.sh.txt": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.stdout": "f9b52f20215988a6d3e46db08c83166b0de276097f22989898a8a3b0bdc0d150",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/0.combined.log": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/0.command.json": "7ea9615ccb85250df0ddcca3922918296c50514fcceb29d558a70a78be5a8bb1",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/0.stdout": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/1.combined.log": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/1.command.json": "dc16fef607644f99cab96c8e30b0a568abc24588b80bb458102cf4384090f2c0",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/1.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/1.stdout": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/2.combined.log": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/2.command.json": "3c8fc1ba996c702362a31ac7a382c09ac6b540018bfcc68ab8e75c03bb4c063d",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/2.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/2.stdout": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/3.combined.log": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/3.command.json": "3bb8271bd94d6af92917151768104800846a947ae12b04d248cde8fde6cbda5f",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/3.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/3.stdout": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/4.combined.log": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/4.command.json": "1c13721cd2edb605ebe5c09f9088cb6e56ced2c404f47e4e52aed30d0f7487c7",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/4.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/4.stdout": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/workflow.yml.txt": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/grid/SAMPLES.jsonl": "66d506855773e3431168ea0ca0d3ea6f8f2b3cf9c70c535102f2bf6d599ae710",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/grid/OWN_BEFORE.json": "c40eabb0e65898dd2670a80bc9832e0efb7b2e26cd3aa604ee856472366bfa0e",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/grid/OWN_AFTER.json": "a6dcc9fcf1c4c06faed6c76a9e3daccfc99b297810f28efa04e570aff56f201a",
+    "/dev/shm/geo337-F9-browsers-20261025/requests/grid.json": "e4ff260028a77e0bc1458566192a6210d2ff897bb072faa3dfc518b9b2c81de5",
+    "/dev/shm/geo337-F9-browsers-20261025/host/grid-materialize/subcommands/000001/result.json": "d48b34d56738d6958c2d3cbc85506342a6df369e6dc62990f7dec99815579d1e"
+  },
+  "sampled_observations_recomputed": {
+    "samples": 469,
+    "nominal_interval_seconds": 1,
+    "maximum_observed_gap_seconds": 1.0044274600222707,
+    "filesystems": {
+      "/dev/shm": {
+        "minimum_sampled_free_bytes": 17551781888,
+        "maximum_sampled_filesystem_used_bytes": 320098304,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      },
+      "/workspace": {
+        "minimum_sampled_free_bytes": 17022976,
+        "maximum_sampled_filesystem_used_bytes": 33753169920,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      },
+      "/tmp": {
+        "minimum_sampled_free_bytes": 46874624,
+        "maximum_sampled_filesystem_used_bytes": 17825005568,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      }
+    },
+    "maximum_sampled_cgroup_memory_bytes": 34359730176,
+    "first_memory_events": {
+      "low": 0,
+      "high": 0,
+      "max": 281357,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "last_memory_events": {
+      "low": 0,
+      "high": 0,
+      "max": 283502,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "sample_read_errors": 0,
+    "continuous_true_peak_known": false,
+    "no_R8_or_P189_performance_inference": true
+  },
+  "own_before": {
+    "roots": [
+      {
+        "root": "/dev/shm/geo337-F9-browsers-20261025",
+        "entries": 34753,
+        "unique_allocated_bytes": 275189760,
+        "unique_lstat_logical_bytes": 264706482,
+        "duplicate_inode_paths": 26310,
+        "symlinks_not_followed": 9
+      },
+      {
+        "root": "/dev/shm/geometry-axiom-geo337-20261025",
+        "entries": 1358,
+        "unique_allocated_bytes": 14757888,
+        "unique_lstat_logical_bytes": 12914885,
+        "duplicate_inode_paths": 0,
+        "symlinks_not_followed": 0
+      }
+    ],
+    "unique_allocated_bytes": 289947648,
+    "unique_inode_count": 9801,
+    "endpoint_only": true,
+    "payload_read": false
+  },
+  "own_after": {
+    "roots": [
+      {
+        "root": "/dev/shm/geo337-F9-browsers-20261025",
+        "entries": 35401,
+        "unique_allocated_bytes": 296493056,
+        "unique_lstat_logical_bytes": 285639010,
+        "duplicate_inode_paths": 26310,
+        "symlinks_not_followed": 13
+      },
+      {
+        "root": "/dev/shm/geometry-axiom-geo337-20261025",
+        "entries": 1382,
+        "unique_allocated_bytes": 23605248,
+        "unique_lstat_logical_bytes": 21719064,
+        "duplicate_inode_paths": 0,
+        "symlinks_not_followed": 0
+      }
+    ],
+    "unique_allocated_bytes": 320098304,
+    "unique_inode_count": 10473,
+    "endpoint_only": true,
+    "payload_read": false
+  },
+  "mountinfo_at_original_launch": [
+    "56 54 0:26 / /dev/shm rw,relatime shared:5 - tmpfs shm rw",
+    "38 52 0:34 / /tmp rw,relatime shared:10 - tmpfs none rw"
+  ],
+  "socket_literal": {
+    "path": "/dev/shm/geo337-F9-browsers-20261025/r/g/tmp/original/grid/com.google.Chrome.ABCDEF/SingletonSocket",
+    "bytes": 99,
+    "including_NUL": 100
+  },
+  "limits": [
+    "Only formally require_escalated read of terminal grid metadata/raw/screens; no SHM writes, source or active space scan, no tests/guards rerun.",
+    "Sampler peaks are sampled shared mount/cgroup values, not continuous or this-job-only peaks; no R8 or P189 inference.",
+    "Endpoint OWN inventories compared to original recorded sums, not rewalked.",
+    "Grid original partial-mode golden noncomparison is original workflow scope; no full-canvas acceptance inferred.",
+    "Complete archive roundtrip, normal publication, and remote full blob hash confirmation remain separate."
+  ],
+  "check_details": [
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/grid/RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/workspace/geo337-F9-grid-SHM-EXEC_FINAL-20261025.json",
+      "passed": true
+    },
+    {
+      "check": "F9_ONE_SOURCE_IDENTITY",
+      "passed": true
+    },
+    {
+      "check": "ONE_GRID_JOB",
+      "passed": true
+    },
+    {
+      "check": "TRUE_ORIGINAL_AND_HOST_EXIT_0",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_PASS_TRUE",
+      "passed": true
+    },
+    {
+      "check": "UNCHANGED_CI_NOT_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "RECORDER_NO_CONCEALMENT_ERRORS",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_BEFORE_AFTER_GUARDS_ZERO",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SOURCE_AFTER_CLEAN_RECORD",
+      "passed": true
+    },
+    {
+      "check": "SAMPLER_TO_LAUNCHER_PIN",
+      "passed": true
+    },
+    {
+      "check": "LAUNCHER_TO_WORKFLOW_PIN",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/grid/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/grid/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/grid/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/grid/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/artifacts/06/grid-trial-desktop.png",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:artifacts/06/grid-trial-desktop.png",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/artifacts/06/grid-trial-mobile-alignment.png",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:artifacts/06/grid-trial-mobile-alignment.png",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/artifacts/06/grid-trial-mobile-canvas.png",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:artifacts/06/grid-trial-mobile-canvas.png",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/artifacts/06/grid-trial-mobile-controls.png",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:artifacts/06/grid-trial-mobile-controls.png",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/driver.py.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:driver.py.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/01.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02-package-0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02-package-0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02-package-0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02-package-0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/02.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/1.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/1.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/1.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/1.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/2.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/2.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/2.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/2.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/3.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/3.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/3.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/3.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/4.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/4.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/4.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/versions/4.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/workflow.yml.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:workflow.yml.txt",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/grid/SAMPLES.jsonl",
+      "passed": true
+    },
+    {
+      "check": "ALL_469_SAMPLES_PRESENT",
+      "passed": true
+    },
+    {
+      "check": "SAMPLE_READ_ERRORS_ZERO",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/dev/shm",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/dev/shm",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/workspace",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/workspace",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/tmp",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/tmp",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_CGROUP",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SAMPLE_GAP",
+      "passed": true
+    },
+    {
+      "check": "NO_OBSERVED_OOM_OR_OOM_KILL",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/grid/OWN_BEFORE.json",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_INVENTORY_ORIGINAL_before",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_SUM_before",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/grid/OWN_AFTER.json",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_INVENTORY_ORIGINAL_after",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_SUM_after",
+      "passed": true
+    },
+    {
+      "check": "STARTUP_ONLY_CAPACITY_ORIGINAL_PASS",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/r/g/original/grid/steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ONE_CDP_RESULT",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_356_ASSERTIONS_ZERO_FAILED",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SECTIONS_EXACT",
+      "passed": true
+    },
+    {
+      "check": "SECTION_COUNT_SUM",
+      "passed": true
+    },
+    {
+      "check": "NO_SKIPS_UNCAUGHT_TRANSPORT_NETWORK_FAILURES",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_GRID_ONLY_SCOPE_NO_CANVAS_GOLDEN_CLAIM",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_HTTP_AND_CDP_PORTS",
+      "passed": true
+    },
+    {
+      "check": "FOUR_ORIGINAL_HASHED_SCREENSHOTS",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/requests/grid.json",
+      "passed": true
+    },
+    {
+      "check": "FRESH_SHORT_GRID_STORAGE",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_REQUEST_HASH_CHAIN",
+      "passed": true
+    },
+    {
+      "check": "SAMPLER_REQUEST_HOST_CHAIN",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/host/grid-materialize/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_MATERIALIZE_ZERO_BOUND",
+      "passed": true
+    },
+    {
+      "check": "UNCHANGED_ORIGINAL_WORKFLOW_PIN",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SHM_DRIVER_PIN",
+      "passed": true
+    },
+    {
+      "check": "ALL_ORIGINAL_SUBCOMMAND_EXITS_ZERO",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_CI_DURATION_15_MINUTES",
+      "passed": true
+    },
+    {
+      "check": "FULL_LITERAL_SOCKET_99_PLUS_NUL_SAFE",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SHM_TMPFS_MOUNT_RECORDED",
+      "passed": true
+    },
+    {
+      "check": "FRESH_PEER_OUTPUT",
+      "passed": true
+    }
+  ]
+}

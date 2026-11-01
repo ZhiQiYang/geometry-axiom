@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/check_copy_metadata.py", line 12, in <module>
+    r=m._copy_exact(src,dst,want);assert src.read_bytes()==dst.read_bytes()==body
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/copy_r8_elf.py::hardlink", line 23, in _copy_exact
+  File "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025/copy_r8_elf.py::hardlink", line 6, in need
+RuntimeError: original R8 ELF metadata/bytes changed during copy

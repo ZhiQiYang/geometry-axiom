@@ -1,0 +1,190 @@
+{
+  "scope": "Synthetic external recorder contracts; no C/product/performance samples",
+  "only": "all",
+  "checks": 45,
+  "passed": true,
+  "details": [
+    {
+      "name": "original caller uses actual PIPE descriptors",
+      "passed": true
+    },
+    {
+      "name": "recorded child stdout/stderr remain original PIPE",
+      "passed": true
+    },
+    {
+      "name": "original stdin and process session preserved",
+      "passed": true
+    },
+    {
+      "name": "original binary stderr preserved",
+      "passed": true
+    },
+    {
+      "name": "actual child exit preserved",
+      "passed": true
+    },
+    {
+      "name": "complete persisted raw stdout/stderr",
+      "passed": true
+    },
+    {
+      "name": "driver original three binary precondition",
+      "passed": true
+    },
+    {
+      "name": "driver forwards original perf arguments",
+      "passed": true
+    },
+    {
+      "name": "original CompletedProcess identity in perf",
+      "passed": true
+    },
+    {
+      "name": "no recorder disk serialization inside original perf",
+      "passed": true
+    },
+    {
+      "name": "same original perf assertion preserved",
+      "passed": true
+    },
+    {
+      "name": "finally flush retains original result after perf failure",
+      "passed": true
+    },
+    {
+      "name": "normal CP and binary object identities preserved",
+      "passed": true
+    },
+    {
+      "name": "no hash or JSON serialization before original perf returns",
+      "passed": true
+    },
+    {
+      "name": "exact caller argv/input/env/cwd/preexec identities",
+      "passed": true
+    },
+    {
+      "name": "original timeout/check/capture flags unchanged",
+      "passed": true
+    },
+    {
+      "name": "no injected stdio/session/group options",
+      "passed": true
+    },
+    {
+      "name": "deferred writes and hashes happen after return boundary",
+      "passed": true
+    },
+    {
+      "name": "original nonzero return not converted to failure",
+      "passed": true
+    },
+    {
+      "name": "check same original exception identity",
+      "passed": true
+    },
+    {
+      "name": "check exactly one original invocation",
+      "passed": true
+    },
+    {
+      "name": "check observer complete does not invent product success",
+      "passed": true
+    },
+    {
+      "name": "timeout same original exception identity",
+      "passed": true
+    },
+    {
+      "name": "timeout exactly one original invocation",
+      "passed": true
+    },
+    {
+      "name": "timeout observer complete does not invent product success",
+      "passed": true
+    },
+    {
+      "name": "timeout true child return remains unknown not guessed -9",
+      "passed": true
+    },
+    {
+      "name": "timeout exposes original partial bytes explicitly",
+      "passed": true
+    },
+    {
+      "name": "launch same original exception identity",
+      "passed": true
+    },
+    {
+      "name": "launch exactly one original invocation",
+      "passed": true
+    },
+    {
+      "name": "launch observer complete does not invent product success",
+      "passed": true
+    },
+    {
+      "name": "absent outputs not claimed empty child streams",
+      "passed": true
+    },
+    {
+      "name": "storage-only read_output false legacy result",
+      "passed": true
+    },
+    {
+      "name": "storage-only full original binary retained",
+      "passed": true
+    },
+    {
+      "name": "flush failure preserves original timeout False",
+      "passed": true
+    },
+    {
+      "name": "flush failure explicitly marks incomplete False",
+      "passed": true
+    },
+    {
+      "name": "failed raw input remains retained in memory False",
+      "passed": true
+    },
+    {
+      "name": "flush failure preserves original timeout True",
+      "passed": true
+    },
+    {
+      "name": "flush failure explicitly marks incomplete True",
+      "passed": true
+    },
+    {
+      "name": "failed raw input remains retained in memory True",
+      "passed": true
+    },
+    {
+      "name": "successful child cannot hide recording failure",
+      "passed": true
+    },
+    {
+      "name": "original successful/nonzero return remains exact despite flush failure",
+      "passed": true
+    },
+    {
+      "name": "large actual pipe binary equivalence without deadlock",
+      "passed": true
+    },
+    {
+      "name": "input None inherits original stdin descriptor",
+      "passed": true
+    },
+    {
+      "name": "real stdlib timeout retains exact original limit",
+      "passed": true
+    },
+    {
+      "name": "real timeout exposed bytes and unknown true OS exit explicit",
+      "passed": true
+    }
+  ],
+  "product_tests_executed": false,
+  "C_executed": false
+}

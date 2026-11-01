@@ -1,0 +1,1048 @@
+{
+  "schema": "geo337-F9-assembly-first-SHM-environment-and-sampler-actual-peer/1",
+  "utc": "2026-10-25T13:36:51.582560+00:00",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "exit_code": 0,
+  "checks": 202,
+  "blocking_findings": [],
+  "original_formal_exit": 1,
+  "formal_status": "ENVIRONMENT_RED; browser never reached CDP/assertions, not passed",
+  "exact_fatal": "no CDP; Chrome startup output: [2017496:2017496:1025/133056.992924:FATAL:chrome/browser/process_singleton_posix.cc:315] Socket path too long: /dev/shm/geo337-F9-browsers-20261025/runs/assembly/tmp/original/assembly/com.google.Chrome.jH7byJ/SingletonSocket.\n[1025/133056.997923:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq: No such file or directory (2)\n[1025/133056.998024:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory (2)\n[2017506:2017506:0100/000000.018895:ERROR:content/zygote/zygote_linux.cc:662] write: Broken pipe (32)\n[2017508:2017508:0100/000000.018895:ERROR:content/zygote/zygote_linux.cc:662] write: Broken pipe (32)\n",
+  "assertions": {
+    "passed": 0,
+    "failed": 0,
+    "completed": false,
+    "golden": "not compared (run did not complete)"
+  },
+  "original_argv_full_streams_checked": 6,
+  "original_workflow_files_checked": 40,
+  "raw_metadata_bytes_read": 170990,
+  "pins": {
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/RESULT.json": "db0ba5fe66fd3aa0fdbb2125f033c84695ab60d0b47f006941ee170d21db14a0",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/receipt.json": "708351b67a57b948777650b672c41fd3c3bc8865d7e68e8209250df621514799",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/receipt.json": "d05ca44e7d9164fec921b6fe1517bf5aa301ee68b5c4c79dc13ddd47ddcd7e44",
+    "/workspace/geo337-F9-assembly-SHM-EXEC_FINAL-20261025.json": "809b37f038ab2d2d2150f43e049d7e68fb4fdb71097f0ae3323832298e44d358",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/subcommands/000001/result.json": "88dba3cddc490a32697a4acd62cce2fe4c9c2c7ed604aed3a1eb804f04ac3b4a",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/subcommands/000001/stdout.bin": "b57aaccba0cd8c4db128c51366b38210a8e69ec75e6448cdb16be8fd08b8355e",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/subcommands/000001/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000001/result.json": "0f380a7e69d6253564f72aa045d461e42066337c5d96ce6004788a8513cb299a",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000001/stdout.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000001/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000002/result.json": "eb2d24b91a26f3c6a23eac08f03ed3806f6cbb5c094b18029f5eda9a720196e1",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000002/stdout.bin": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000002/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000003/result.json": "73deed718080e94a3fc93a31e292e4152628aff31fc84711513923b8275664a8",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000003/stdout.bin": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000003/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000004/result.json": "db4253ba71890afa82ba3246d9a7d462607a4eff57e7c4b2fa571e375e2afdb6",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000004/stdout.bin": "8c25daad4f5c114851efd08b8d6f54020d01cb9f8b0780f24e777d522907c510",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000004/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000005/result.json": "2ff16cbea80b81f70b5adcefc3e23c4767f6037e1c08e75fcfb4f41ee7fbd7db",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000005/stdout.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000005/stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/driver.py.txt": "4cdfe3dd250bc9bba6f8e8a513bbd2007176dc914b60b034b2aa7761e295affd",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.combined.log": "2fc743c2d3b26720844c2afd9c9d630714d934dee4e87844e40f1dc80b76960b",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.command.json": "2183d2d61dccebb06b87a75775b01f116bffcd6b72606a06f7f893f65489c6f9",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.executed.sh": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.original.sh.txt": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.stdout": "2fc743c2d3b26720844c2afd9c9d630714d934dee4e87844e40f1dc80b76960b",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02-package-0.combined.log": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02-package-0.command.json": "b8cfdfc11d805ac373047ec2e823e58637e10e8d60e66c2cf37b0099ac31fd2c",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02-package-0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02-package-0.stdout": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02.executed.sh": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02.original.sh.txt": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.combined.log": "507f79d86bad524f6b791daf40267841f459b16b5827fecd73c97ae140a2f215",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.command.json": "1508bacc9183cbcb8c499be8b940f6b4730fb5d659f6316467cf1c5ab7f4e4be",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.executed.sh": "e76240005481893d85cd24bb0b8f163002a5ba2617d94b3fbc3ab7bf9a08535d",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.original.sh.txt": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.stdout": "507f79d86bad524f6b791daf40267841f459b16b5827fecd73c97ae140a2f215",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/0.combined.log": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/0.command.json": "07aab4a6abbc5207512f8392c27bb191a84686b4665a8649beee64aa9225020b",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/0.stdout": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/1.combined.log": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/1.command.json": "411b99d5f7fe93aac6768eaade1986c5116f87b473c6ec2db0a7009c380fbd31",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/1.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/1.stdout": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/2.combined.log": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/2.command.json": "907ecfad7db745b0736cb919d567bc2aedd81827f393f4d0d85e846cdafa92ce",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/2.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/2.stdout": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/3.combined.log": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/3.command.json": "0ae3508ad34a35879c0cf0e2d4554d69a81b12035e1fbb4d36bd39a5700120ef",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/3.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/3.stdout": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/4.combined.log": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/4.command.json": "27f60616949b0014edb511590ba123222723f27adf6b62df3f1aceb67ca535d3",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/4.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/4.stdout": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8",
+    "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/workflow.yml.txt": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/SAMPLES.jsonl": "e16fc25c177ec1555968aff701bd680084113feb56ac60cab90335f2b270eecb",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/OWN_BEFORE.json": "d3b5a2d1489c3f8909380e3ecc4870d215b6b086528e74d1bc58b7591b254695",
+    "/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/OWN_AFTER.json": "b9f3c5e869e15f402c9792ca974f92c8b03837d0fa9df26e7e832cc3f56cd5e8"
+  },
+  "sampled_observations_recomputed": {
+    "samples": 90,
+    "nominal_interval_seconds": 1,
+    "maximum_observed_gap_seconds": 1.0009061600430869,
+    "filesystems": {
+      "/dev/shm": {
+        "minimum_sampled_free_bytes": 17662304256,
+        "maximum_sampled_filesystem_used_bytes": 209575936,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      },
+      "/workspace": {
+        "minimum_sampled_free_bytes": 26247168,
+        "maximum_sampled_filesystem_used_bytes": 33743945728,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      },
+      "/tmp": {
+        "minimum_sampled_free_bytes": 46878720,
+        "maximum_sampled_filesystem_used_bytes": 17825001472,
+        "scope": "Entire mount, includes other owners; not OWN-only runtime peak"
+      }
+    },
+    "maximum_sampled_cgroup_memory_bytes": 34359734272,
+    "first_memory_events": {
+      "low": 0,
+      "high": 0,
+      "max": 275941,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "last_memory_events": {
+      "low": 0,
+      "high": 0,
+      "max": 278604,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "sample_read_errors": 0,
+    "continuous_true_peak_known": false,
+    "no_R8_or_P189_performance_inference": true
+  },
+  "own_before": {
+    "roots": [
+      {
+        "root": "/dev/shm/geo337-F9-browsers-20261025",
+        "entries": 16676,
+        "unique_allocated_bytes": 199348224,
+        "unique_lstat_logical_bytes": 190063779,
+        "duplicate_inode_paths": 11276,
+        "symlinks_not_followed": 0
+      },
+      {
+        "root": "/dev/shm/geometry-axiom-geo337-20261025",
+        "entries": 42,
+        "unique_allocated_bytes": 3985408,
+        "unique_lstat_logical_bytes": 3912243,
+        "duplicate_inode_paths": 0,
+        "symlinks_not_followed": 0
+      }
+    ],
+    "unique_allocated_bytes": 203333632,
+    "unique_inode_count": 5442,
+    "endpoint_only": true,
+    "payload_read": false
+  },
+  "own_after": {
+    "roots": [
+      {
+        "root": "/dev/shm/geo337-F9-browsers-20261025",
+        "entries": 16926,
+        "unique_allocated_bytes": 203411456,
+        "unique_lstat_logical_bytes": 193642360,
+        "duplicate_inode_paths": 11276,
+        "symlinks_not_followed": 1
+      },
+      {
+        "root": "/dev/shm/geometry-axiom-geo337-20261025",
+        "entries": 42,
+        "unique_allocated_bytes": 3985408,
+        "unique_lstat_logical_bytes": 3912243,
+        "duplicate_inode_paths": 0,
+        "symlinks_not_followed": 0
+      }
+    ],
+    "unique_allocated_bytes": 207396864,
+    "unique_inode_count": 5692,
+    "endpoint_only": true,
+    "payload_read": false
+  },
+  "mountinfo_at_original_launch": [
+    "56 54 0:26 / /dev/shm rw,relatime shared:5 - tmpfs shm rw",
+    "38 52 0:34 / /tmp rw,relatime shared:10 - tmpfs none rw"
+  ],
+  "short_storage_literal_paths": [
+    {
+      "job": "assembly",
+      "path": "/dev/shm/geo337-F9-browsers-20261025/r/a2/tmp/original/assembly/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_path_bytes": 104,
+      "with_terminating_NUL_bytes": 105,
+      "below_108_with_NUL": true
+    },
+    {
+      "job": "documents",
+      "path": "/dev/shm/geo337-F9-browsers-20261025/r/d/tmp/original/documents/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_path_bytes": 104,
+      "with_terminating_NUL_bytes": 105,
+      "below_108_with_NUL": true
+    },
+    {
+      "job": "grid",
+      "path": "/dev/shm/geo337-F9-browsers-20261025/r/g/tmp/original/grid/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_path_bytes": 99,
+      "with_terminating_NUL_bytes": 100,
+      "below_108_with_NUL": true
+    },
+    {
+      "job": "space",
+      "path": "/dev/shm/geo337-F9-browsers-20261025/r/s/tmp/original/space/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_path_bytes": 100,
+      "with_terminating_NUL_bytes": 101,
+      "below_108_with_NUL": true
+    },
+    {
+      "job": "timber",
+      "path": "/dev/shm/geo337-F9-browsers-20261025/r/t/tmp/original/timber/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_path_bytes": 101,
+      "with_terminating_NUL_bytes": 102,
+      "below_108_with_NUL": true
+    },
+    {
+      "job": "assembly-old",
+      "path": "/dev/shm/geo337-F9-browsers-20261025/runs/assembly/tmp/original/assembly/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_path_bytes": 113,
+      "with_terminating_NUL_bytes": 114,
+      "below_108_with_NUL": false
+    }
+  ],
+  "correction_of_initial_chat_arithmetic": "Initial base+40 calculation omitted one slash separator. Full literal UTF8 is104/104/99/100/101; includingNUL105/105/100/101/102. Original path113/NUL114. Prior original files unchanged.",
+  "next_change_scope": "Root changes only fresh request storage/output names to approved exactOWN short paths; original source plan/launcher/driver/CI/golden/ports unchanged. New run must succeed independently; first environment red retained.",
+  "limits": [
+    "Only formally require_escalated read of terminal metadata/raw; no SHM writes, source or payload scan, no tests/guards rerun.",
+    "Sampler peaks are sampled shared mount/cgroup values, not continuous or this-job-only peaks; no R8 inference.",
+    "Endpoint OWN inventories compared to original recorded sums, not rewalked during active r2.",
+    "Host/capture environment red retained despite this metadata verifier exit0.",
+    "Remote publication/full archive verification remains separate."
+  ],
+  "check_details": [
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/receipt.json",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/workspace/geo337-F9-assembly-SHM-EXEC_FINAL-20261025.json",
+      "passed": true
+    },
+    {
+      "check": "F9_ONE_SOURCE_IDENTITY",
+      "passed": true
+    },
+    {
+      "check": "ONE_ASSEMBLY_JOB",
+      "passed": true
+    },
+    {
+      "check": "TRUE_ORIGINAL_AND_HOST_EXIT_1",
+      "passed": true
+    },
+    {
+      "check": "RED_NOT_RELABELLED",
+      "passed": true
+    },
+    {
+      "check": "UNCHANGED_CI_NOT_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "RECORDER_NO_CONCEALMENT_ERRORS",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_BEFORE_AFTER_GUARDS_ZERO",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SOURCE_AFTER_CLEAN_RECORD",
+      "passed": true
+    },
+    {
+      "check": "SAMPLER_TO_LAUNCHER_PIN",
+      "passed": true
+    },
+    {
+      "check": "LAUNCHER_TO_WORKFLOW_PIN",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_IDENTITY_AND_NO_TIMEOUT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_ORIGINAL_RESULT_EXACT",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stdout",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/launches/assembly/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "CAPTURE_COMPLETE_stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/driver.py.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:driver.py.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/01.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/01.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02-package-0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02-package-0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02-package-0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02-package-0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02-package-0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/02.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/02.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.executed.sh",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.original.sh.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/0.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/1.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/1.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/1.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/1.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/1.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/2.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/2.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/2.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/2.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/2.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/3.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/3.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/3.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/3.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/3.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/4.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.combined.log",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/4.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.command.json",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/4.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.stderr",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/versions/4.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:versions/4.stdout",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_SCOPE",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/workflow.yml.txt",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_WORKFLOW_FILE_EXACT:workflow.yml.txt",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/SAMPLES.jsonl",
+      "passed": true
+    },
+    {
+      "check": "ALL_90_SAMPLES_PRESENT",
+      "passed": true
+    },
+    {
+      "check": "SAMPLE_READ_ERRORS_ZERO",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/dev/shm",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/dev/shm",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/workspace",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/workspace",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MIN_FREE:/tmp",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SHARED_USED:/tmp",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_CGROUP",
+      "passed": true
+    },
+    {
+      "check": "RECOMPUTED_MAX_SAMPLE_GAP",
+      "passed": true
+    },
+    {
+      "check": "NO_OBSERVED_OOM_OR_OOM_KILL",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/OWN_BEFORE.json",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_INVENTORY_ORIGINAL_before",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_SUM_before",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/sampled/assembly/OWN_AFTER.json",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_INVENTORY_ORIGINAL_after",
+      "passed": true
+    },
+    {
+      "check": "ENDPOINT_SUM_after",
+      "passed": true
+    },
+    {
+      "check": "STARTUP_ONLY_CAPACITY_ORIGINAL_PASS",
+      "passed": true
+    },
+    {
+      "check": "REGULAR_METADATA:/dev/shm/geo337-F9-browsers-20261025/runs/assembly/original/assembly/steps/03.stdout",
+      "passed": true
+    },
+    {
+      "check": "ONE_CDP_RESULT",
+      "passed": true
+    },
+    {
+      "check": "NO_PRODUCT_ASSERTION_EXECUTED",
+      "passed": true
+    },
+    {
+      "check": "GOLDEN_UNRUN_NOT_GREEN",
+      "passed": true
+    },
+    {
+      "check": "EXACT_ENVIRONMENT_SOCKET_FAILURE",
+      "passed": true
+    },
+    {
+      "check": "SHORT_LITERAL_PATHS_PASS_OLD_FAIL",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_SHM_TMPFS_MOUNT_RECORDED",
+      "passed": true
+    },
+    {
+      "check": "FRESH_PEER_OUTPUT",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "schema": "geo323-F9-comparison-collector-shm-v2-static-peer/1",
+  "created_utc": "2026-10-25T12:50:15.991997+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "collector_sha256": "9a1a6d673b7ade12bbe49480e8e646cd7d919619015749b34ab30ebc4401aae9",
+  "inventory_sha256": "1ab22f16962fb861204932c4c46ff379c9c1e6144d9b7006999ded216a0f416f",
+  "parts_sha256": "14f6ddb9cb1358f93125d86f3dc8b716400fa16e2a62e9d6b9007d5e35745143",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "checks": [
+    {
+      "check": "new collector pin",
+      "passed": true
+    },
+    {
+      "check": "v1 unchanged",
+      "passed": true
+    },
+    {
+      "check": "only exact three-line output guard delta",
+      "passed": true
+    },
+    {
+      "check": "all function AST exact unchanged",
+      "passed": true
+    },
+    {
+      "check": "original pinned INVENTORY.json",
+      "passed": true
+    },
+    {
+      "check": "original pinned PARTS.json",
+      "passed": true
+    },
+    {
+      "check": "original pinned RESULT.json",
+      "passed": true
+    },
+    {
+      "check": "v1 static accepted peer",
+      "passed": true
+    },
+    {
+      "check": "unbound false lease and correct pins path",
+      "passed": true
+    },
+    {
+      "check": "prepared not executed",
+      "passed": true
+    },
+    {
+      "check": "recorded default preparation only",
+      "passed": true
+    },
+    {
+      "check": "historical candidate preserved",
+      "passed": true
+    },
+    {
+      "check": "root original probe only",
+      "passed": true
+    }
+  ],
+  "scope": "只讀最終9a1a版本與已審v1作精確小delta；沒有SHM讀寫／建目錄／collector／archive／產品／Git執行。",
+  "delta": "僅out path guard由/tmp改為指定SHM OWN root新直接子目錄，新增parent symlink／resolve漂移拒絕；所有其餘bytes與function AST相同。",
+  "output_root": "/dev/shm/geometry-axiom-geo337-20261025",
+  "observed_execution_status": {
+    "archive_executed": false,
+    "SHM_written_by_reviewer": false,
+    "collection_actual_exit": null,
+    "new_capacity_admission_done": false
+  },
+  "unchanged_controls": [
+    "原五包4667members exactonce與全部4645 comparison regular＋4 literal ELF symlink。",
+    "PREP指回原inventory／parts／result／preparer，原payload／source／tool／完整leafset／逐leafhash守門不變。",
+    "每包regularlogical＋4096/member＋11264末尾、gzip worstcase上界、64MiBreserve與2MiBmetadata，不變。",
+    "初始free取out.parent、逐包freshfree取out本身、後reserve核對；因此後續若SHM實跑會讀實際SHM device，不使用舊TMP觀測值。",
+    "streaming tar、member header bound、symlink不dereference、回讀完整bytes/hash/順序及fail保partial，不變。",
+    "request必須固定新collector pin與原inventory/parts及本exact static peerexit0；root lease仍必要，false request不能執。"
+  ],
+  "execution_constraints": [
+    "指定SHM parent由root以require_escalated正式auto_review批准exec預建；collector不建立parent、不調mount/quota/security/付費資源。",
+    "16KiB rootprobe原0只證小型讀寫exec；不替代本次實寫權限審查或統一容量計畫／每包fresh64MiB gate。",
+    "本static peerexit0僅表示凍結小delta可用；實際SHM執行須原approvedexec與rootrequest，不能由此claim collection0。",
+    "root已澄清保/tmp原本亦獲准，因此6af的tmp選項不算實際阻擋；作者已凍結SHM-only最終稿，不再來回擴改。"
+  ],
+  "pins": [
+    {
+      "path": "/workspace/geo323-F9-owner-comparison-collector-shm-v2-20261025/collect_comparison_v2.py",
+      "bytes": 11479,
+      "sha256": "9a1a6d673b7ade12bbe49480e8e646cd7d919619015749b34ab30ebc4401aae9"
+    },
+    {
+      "path": "/workspace/geo323-F9-owner-comparison-collector-shm-v2-20261025/v2-from-v1.patch",
+      "bytes": 1310,
+      "sha256": "96136862f02a6734d1681732a26e17753f7a4a1fe1cdd59d646dffaee33129fc"
+    },
+    {
+      "path": "/workspace/geo323-F9-owner-comparison-collector-shm-v2-20261025/README.md",
+      "bytes": 1869,
+      "sha256": "a8e4c4c6c5d85e138bb37330abab78fe06d2f6a895b72de62d65ad7936abdc16"
+    },
+    {
+      "path": "/workspace/geo323-F9-owner-comparison-collector-shm-v2-20261025/PINS.json",
+      "bytes": 1567,
+      "sha256": "fdcdc9b74bbe6f9a99db3d37cced5bf11781ac3011fb1e552a601b3dff95a5ac"
+    },
+    {
+      "path": "/workspace/geo323-F9-owner-comparison-collector-shm-v2-20261025/COLLECTION_REQUEST.unbound.json",
+      "bytes": 657,
+      "sha256": "6d5558a64bb2412a9137d5c6a70a3f81362bfed5759488181af79b4cde1d3074"
+    },
+    {
+      "path": "/workspace/geo323-F9-comparison-collector-static-peer-8srszx95/REVIEW.json",
+      "bytes": 6129,
+      "sha256": "8597fc2d0ad5c2f639c3356543b774e62e4f7e5cdc5169baaf17f8883366ca48"
+    },
+    {
+      "path": "/workspace/geo337-existing-shm-probe-result-20261025.json",
+      "bytes": 317,
+      "sha256": "07c5fc83baa2017b9bf9a0175a2105455d840bac91de15ad8797372951ec1d82"
+    }
+  ]
+}

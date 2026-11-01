@@ -1,0 +1,13 @@
+{
+  "scope": "Root native r2 outer launcher static delta only; no subject execution",
+  "checks": 12,
+  "findings": [],
+  "exit_code": 0,
+  "tool_sha256": "83cfa7b2f817a68ec378fb25d760b3497dd07847f8be75bb30de76bab340d59f",
+  "original_launcher_sha256": "8d0a4e87a3aca2eab54ac4a25b43e8e902344f4dbeef67f616529107ab8b5fb3",
+  "conditions": [
+    "Root must first finish original three-L-fixture materialization and release canvas exclusive resource locks; this review is not proof those prerequisites are complete.",
+    "Original native failure remains historical; r2 results must be recorded separately.",
+    "Original 128MiB operational free-space reference and full 35-minute CI gate are unchanged."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "train337.reading-a-original-peer-package/1",
+  "source_sha": "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+  "started_utc": "2026-10-23T19:16:15.393987+00:00",
+  "ended_utc": "2026-10-23T19:16:16.275784+00:00",
+  "archive": "/tmp/train337-reading-a-package-f64d638f/reading-a-original-peer-f64d638f.tar.gz",
+  "archive_bytes": 5597339,
+  "archive_sha256": "eb715b8e866de430ffcaca4d533128c472df6f73b882408e5dc775b6a126163f",
+  "archive_members": 895,
+  "original_regular_files": 892,
+  "original_commands": 17,
+  "original_streams_complete": true,
+  "original_files_unchanged_before_after": true,
+  "roundtrip_all_member_bytes_verified": true,
+  "existing_elf_excluded": [],
+  "historical_native_elf_hash_rows": 41,
+  "root_bindings": {
+    "original/reader": "/tmp/train337-reader-original-f64d638f",
+    "original/native-r2": "/workspace/train337-reading-a-native-f64d638f-r2",
+    "original/oracle": "/workspace/train337-reading-a-oracle-f64d638f",
+    "original/native-preparation-failure": "/tmp/train337-reading-a-native-f64d638f",
+    "peer/r1": "/tmp/train337-reading-a-peer-f64d638f",
+    "peer/r2": "/tmp/train337-reading-a-peer-f64d638f-r2",
+    "peer/accepted-r3": "/tmp/train337-reading-a-peer-f64d638f-r3"
+  },
+  "peer_exit": 0,
+  "peer_checks": 629,
+  "peer_report_sha256": "05a4db5011807bfea52894b3b609ef984c8539ecb4383d0d24cf597341dacb89",
+  "limits": [
+    "Native 41 original child source_sha and GITHUB_SHA are null; not rewritten. Indirect parent/source-input binding only.",
+    "No independent outer launch or reaper events existed for these three direct c387 invocations; none fabricated.",
+    "Native compiler/harness inner outputs use original text capture, top Python outputs are original raw c387 bytes.",
+    "H four-source LF/include-relocated variants are explicitly derived source, not F64 raw-byte compilation.",
+    "Native executables were hashed by original execution logger and cleaned by original NativeBuild; peer does not claim rehashing absent ELF.",
+    "Oracle temporary mutant sources were cleaned by original test; proof is immutable source/precise anchor plus actual original text output.",
+    "Current checkout HEAD may have advanced; original fixed F64 head/status observations and immutable Git blobs are authoritative here."
+  ],
+  "product_tests_builds_executed_by_packager": false
+}

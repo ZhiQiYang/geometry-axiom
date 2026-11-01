@@ -1,0 +1,53 @@
+{
+  "schema": "recovery-evidence-publisher-static-peer/1",
+  "subject_path": "/tmp/geo337-recover-evidence-publisher-20261026.py",
+  "subject_sha256": "0f99c801fadbe2f1191bc77567e54a93dd8c359beb5c13a48fa664643999d942",
+  "reference_sha256": "3ef65a16e289ece72d2bdc9f9a7f48347af13f2192016b79f33ebc9539bdf4a7",
+  "exit_code": 1,
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "line": 32,
+      "finding": "New code inherits arbitrary GIT_* variables; cwd alone cannot bind writes to the intended private repository. Original publisher removes all inherited GIT_* before setting GIT_OPTIONAL_LOCKS=0.",
+      "fix": "Restore the original GIT_* environment sanitation; preserve non-Git managed GH_TOKEN/proxy/CA environment."
+    }
+  ],
+  "pure_environment_counterexample": {
+    "original": {
+      "retained_git_keys": [
+        "GIT_OPTIONAL_LOCKS"
+      ],
+      "non_git_auth_proxy_preserved": true
+    },
+    "new": {
+      "retained_git_keys": [
+        "GIT_COMMON_DIR",
+        "GIT_CONFIG_COUNT",
+        "GIT_CONFIG_KEY_0",
+        "GIT_CONFIG_VALUE_0",
+        "GIT_DIR",
+        "GIT_INDEX_FILE",
+        "GIT_OBJECT_DIRECTORY",
+        "GIT_OPTIONAL_LOCKS",
+        "GIT_WORK_TREE"
+      ],
+      "non_git_auth_proxy_preserved": true
+    }
+  },
+  "accepted_static_properties": [
+    "Fixed new evidence-only branch and base a6f4013364e21bcb7239b5dcc25caac0f6d61f77.",
+    "Default no --execute performs no publication.",
+    "No checkout, reset, merge, rebase, force-push or main/train ref update is present.",
+    "Only new branch update-ref uses zero expected old OID.",
+    "Existing evidence overwrite is rejected, including PROGRESS.",
+    "Diff path set equals manifest and product diff outside evidence must be empty.",
+    "Normal push is followed by exact ls-remote and complete unique remote blob bytes, SHA256 and Git blob OID checks.",
+    "Original shared 2GiB planning guard and actual mount free-space check remain.",
+    "Original capture.py pin remains exact."
+  ],
+  "limits": [
+    "Static code comparison and pure in-memory environment-block reproduction only; no real Git repository mutation, network call or publication.",
+    "Capacity constants retained; fresh actual usage and merged manifest remain root admission responsibilities.",
+    "Existing writer snapshot comparison does not authorize another concurrent writer."
+  ]
+}

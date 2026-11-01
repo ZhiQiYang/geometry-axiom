@@ -1,0 +1,426 @@
+[
+  {
+    "name": "public PINS exact",
+    "ok": true
+  },
+  {
+    "name": "public scope exact nine leaves",
+    "ok": true
+  },
+  {
+    "name": "no undeclared public payload",
+    "ok": true
+  },
+  {
+    "name": "public hash comments-api.request.json",
+    "ok": true
+  },
+  {
+    "name": "public hash ORIGINAL_COMMENT.md",
+    "ok": true
+  },
+  {
+    "name": "public hash comments-api.stderr.bin",
+    "ok": true
+  },
+  {
+    "name": "public hash IDENTITY_AND_ORIGINAL_COMMENT.json",
+    "ok": true
+  },
+  {
+    "name": "public hash comments-api.stdin.bin",
+    "ok": true
+  },
+  {
+    "name": "public hash comments-api.stdout.bin",
+    "ok": true
+  },
+  {
+    "name": "public hash REPORT.md",
+    "ok": true
+  },
+  {
+    "name": "public hash comments-api.result.json",
+    "ok": true
+  },
+  {
+    "name": "public hash ACCOUNT_READ_BINDING.json",
+    "ok": true
+  },
+  {
+    "name": "account HTTP200",
+    "ok": true
+  },
+  {
+    "name": "account actual integer exit0",
+    "ok": true
+  },
+  {
+    "name": "account no timeout",
+    "ok": true
+  },
+  {
+    "name": "account exact GET-default argv",
+    "ok": true
+  },
+  {
+    "name": "account request argv equality",
+    "ok": true
+  },
+  {
+    "name": "account request and terminal source same F9",
+    "ok": true
+  },
+  {
+    "name": "account times ordered",
+    "ok": true
+  },
+  {
+    "name": "account stdout hash",
+    "ok": true
+  },
+  {
+    "name": "account stdout byte count",
+    "ok": true
+  },
+  {
+    "name": "account stderr hash",
+    "ok": true
+  },
+  {
+    "name": "account stderr byte count",
+    "ok": true
+  },
+  {
+    "name": "account stderr empty",
+    "ok": true
+  },
+  {
+    "name": "account stdin hash",
+    "ok": true
+  },
+  {
+    "name": "account stdin empty",
+    "ok": true
+  },
+  {
+    "name": "comments HTTP200",
+    "ok": true
+  },
+  {
+    "name": "comments actual integer exit0",
+    "ok": true
+  },
+  {
+    "name": "comments no timeout",
+    "ok": true
+  },
+  {
+    "name": "comments exact GET-default argv",
+    "ok": true
+  },
+  {
+    "name": "comments request argv equality",
+    "ok": true
+  },
+  {
+    "name": "comments request and terminal source same F9",
+    "ok": true
+  },
+  {
+    "name": "comments times ordered",
+    "ok": true
+  },
+  {
+    "name": "comments stdout hash",
+    "ok": true
+  },
+  {
+    "name": "comments stdout byte count",
+    "ok": true
+  },
+  {
+    "name": "comments stderr hash",
+    "ok": true
+  },
+  {
+    "name": "comments stderr byte count",
+    "ok": true
+  },
+  {
+    "name": "comments stderr empty",
+    "ok": true
+  },
+  {
+    "name": "comments stdin hash",
+    "ok": true
+  },
+  {
+    "name": "comments stdin empty",
+    "ok": true
+  },
+  {
+    "name": "public comments original exact request.json",
+    "ok": true
+  },
+  {
+    "name": "public comments original exact result.json",
+    "ok": true
+  },
+  {
+    "name": "public comments original exact stdout.bin",
+    "ok": true
+  },
+  {
+    "name": "public comments original exact stderr.bin",
+    "ok": true
+  },
+  {
+    "name": "public comments original exact stdin.bin",
+    "ok": true
+  },
+  {
+    "name": "comments no pagination link",
+    "ok": true
+  },
+  {
+    "name": "eight full original comments",
+    "ok": true
+  },
+  {
+    "name": "unique selected original comment",
+    "ok": true
+  },
+  {
+    "name": "connected account equals commenter four fields",
+    "ok": true
+  },
+  {
+    "name": "expected login ID node User",
+    "ok": true
+  },
+  {
+    "name": "comment OWNER",
+    "ok": true
+  },
+  {
+    "name": "public identity fields exact",
+    "ok": true
+  },
+  {
+    "name": "only four account fields exposed",
+    "ok": true
+  },
+  {
+    "name": "identity equal is true",
+    "ok": true
+  },
+  {
+    "name": "selected created_at exact",
+    "ok": true
+  },
+  {
+    "name": "selected updated_at exact",
+    "ok": true
+  },
+  {
+    "name": "selected permalink exact",
+    "ok": true
+  },
+  {
+    "name": "selected comment ID exact",
+    "ok": true
+  },
+  {
+    "name": "identity association exact",
+    "ok": true
+  },
+  {
+    "name": "extracted body exact",
+    "ok": true
+  },
+  {
+    "name": "original md byte-exact no extra newline",
+    "ok": true
+  },
+  {
+    "name": "public identity artifact equals original",
+    "ok": true
+  },
+  {
+    "name": "account binding command",
+    "ok": true
+  },
+  {
+    "name": "account binding actual_process_returncode",
+    "ok": true
+  },
+  {
+    "name": "account binding started_epoch",
+    "ok": true
+  },
+  {
+    "name": "account binding ended_epoch",
+    "ok": true
+  },
+  {
+    "name": "account binding source_sha",
+    "ok": true
+  },
+  {
+    "name": "account binding full raw hash",
+    "ok": true
+  },
+  {
+    "name": "account binding full raw bytes",
+    "ok": true
+  },
+  {
+    "name": "account binding original path",
+    "ok": true
+  },
+  {
+    "name": "account binding four values",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection email",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection notification_email",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection bio",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection company",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection location",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection name",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection blog",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection twitter_username",
+    "ok": true
+  },
+  {
+    "name": "private account field not in public account projection hireable",
+    "ok": true
+  },
+  {
+    "name": "full account stdout not copied",
+    "ok": true
+  },
+  {
+    "name": "outer read-only",
+    "ok": true
+  },
+  {
+    "name": "outer account exit0",
+    "ok": true
+  },
+  {
+    "name": "outer account stdout exact",
+    "ok": true
+  },
+  {
+    "name": "outer account stderr exact",
+    "ok": true
+  },
+  {
+    "name": "outer exact comments endpoint",
+    "ok": true
+  },
+  {
+    "name": "outer comments exit0",
+    "ok": true
+  },
+  {
+    "name": "outer comments stdout exact",
+    "ok": true
+  },
+  {
+    "name": "outer comments stderr exact",
+    "ok": true
+  },
+  {
+    "name": "original decision text 【使用者裁決】",
+    "ok": true
+  },
+  {
+    "name": "original decision text > 讓 Codex 繼續做到審查通過",
+    "ok": true
+  },
+  {
+    "name": "original decision text > A 接受這 3 筆 (Recommended)",
+    "ok": true
+  },
+  {
+    "name": "original decision text > 延伸到所有 PR (Recommended)",
+    "ok": true
+  },
+  {
+    "name": "original decision text > 先合併，帳本留下次 (Recommended)",
+    "ok": true
+  },
+  {
+    "name": "original decision text 本機 Claude 整理，非原話",
+    "ok": true
+  },
+  {
+    "name": "original decision text Generated with [Claude Code]",
+    "ok": true
+  },
+  {
+    "name": "report scope API 證明帳戶身分，不能證明是使用者手動輸入",
+    "ok": true
+  },
+  {
+    "name": "report scope 這不是本任務對 B′ 問題的直接對話回覆",
+    "ok": true
+  },
+  {
+    "name": "report scope 依本任務管理指示的條件",
+    "ok": true
+  },
+  {
+    "name": "report scope 不改基準版本、不重抽 R8、不擴及 P-189",
+    "ok": true
+  },
+  {
+    "name": "report scope 原 R8 compare/outer=1 原樣保留",
+    "ok": true
+  },
+  {
+    "name": "report scope 目前 native 仍1、browser未完成",
+    "ok": true
+  },
+  {
+    "name": "report scope 不以此紀錄自行合併",
+    "ok": true
+  },
+  {
+    "name": "report scope 未將 Git author 或 merge 本身冒作帳戶核實",
+    "ok": true
+  },
+  {
+    "name": "read timestamp correct",
+    "ok": true
+  },
+  {
+    "name": "public source pin remains exact",
+    "ok": true
+  }
+]

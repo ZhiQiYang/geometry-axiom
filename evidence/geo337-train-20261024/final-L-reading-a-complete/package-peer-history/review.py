@@ -1,0 +1,23 @@
+from pathlib import Path,PurePosixPath
+import datetime,hashlib,json,tarfile
+P=Path('/workspace/train337-L-reading-a-r2-complete-delivery');O=Path('/tmp/reading-a-L-r2-complete-package-peer');O.mkdir(exist_ok=True)
+h=lambda b:hashlib.sha256(b).hexdigest();pkg=json.loads((P/'PACKAGE.json').read_text());inv=json.loads((P/'RAW_INVENTORY.json').read_text());checks=[];contents={}
+def ck(k,v):checks.append({'label':k,'passed':bool(v)})
+archive=Path(pkg['archive']);ck('1751713B archive original pin',archive.stat().st_size==pkg['archiveBytes']==1751713 and h(archive.read_bytes())==pkg['archiveSHA256']=='f9999fe3fc1742e167835b9e7aee2c1a31118d9ecafccd853d6f84093d13f088')
+ck('inventory original pin',h((P/'RAW_INVENTORY.json').read_bytes())==pkg['inventorySHA256']=='c3d061b15eded465c2d57fc8466ca55e842ce2304cc9e92d8c1bcf219f95cca9')
+with tarfile.open(archive,'r:gz')as tar:
+ members=tar.getmembers();ck('170 unique regular safe members',len(members)==len({m.name for m in members})==pkg['members']==170 and all(m.isfile()and not PurePosixPath(m.name).is_absolute()and'..'not in PurePosixPath(m.name).parts for m in members))
+ ck('169 originals plus selfinventory',len(inv['files'])==169 and {m.name for m in members}==set(inv['files'])|{'RAW_INVENTORY.json'})
+ for m in members:
+  raw=tar.extractfile(m).read();contents[m.name]=raw
+  if m.name=='RAW_INVENTORY.json':ck('inventory exact archived bytes',raw==(P/m.name).read_bytes());continue
+  z=inv['files'][m.name];ck('archivehash '+m.name,len(raw)==z['bytes'] and h(raw)==z['sha256']);ck('originalbytes '+m.name,raw==Path(z['originalPath']).read_bytes())
+ck('8955138 original bytes',sum(z['bytes']for z in inv['files'].values())==pkg['originalBytes']==inv['originalBytes']==8955138)
+ck('no naked checkout Git or ELF',not any('/.git/'in n or n.startswith('source/') or n.endswith('.exe') or raw.startswith(b'\x7fELF')for n,raw in contents.items()))
+outer=json.loads(contents['formal/RESULT.json']);ck('archived outer true terminal same L',outer['sha']==pkg['L']=='7af8c5d80d34cb4f49d01ba67deb78a3a6d725db' and outer['passed']is True and outer.get('endedUTC')=='2026-10-23T22:45:53.451047+00:00')
+ck('archived original two stage0',[(x['stage'],x['commandResult']['actual_process_returncode'])for x in outer['stageResults']]==[('oracle-mutants',0),('oracle-quick',0)] and pkg['originalCLIExits']==[0,0])
+ck('archived guards22 unchanged',outer['before']['passed'] and outer['after']['passed'] and len(outer['before']['inputs'])==22 and outer['before']['inputs']==outer['after']['inputs'] and outer['before']['stage']['stdoutSHA256']==outer['after']['stage']['stdoutSHA256'] and outer['before']['indexSHA256']==outer['after']['indexSHA256'])
+scope=json.loads(contents['SCOPE.json'])
+ck('original scope limits retained',scope['quickPrintedCounter']==39850 and scope['printedCounterNotAllInternalBuilds'] is True and 'C11_MAIN_NOT_BUTTED6'in scope['originalKnownDefects'] and 'tool API'in scope['outerHostLimitation'] and scope['r1EnvironmentFailureNotOverwritten']['sha256']=='c4f5610173079d9b86a8f099901e47b19419691de1b20995efcfd8a2f3bed43b')
+report={'schema':'reading-a-L-r2-complete-package-peer/1','createdUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'Independent completed-only archive roundtrip and original terminal metadata. No repetition of original46/119actual or any subject execution.','L':pkg['L'],'archiveSHA256':pkg['archiveSHA256'],'memberCount':170,'originalFileCount':169,'originalBytes':8955138,'checkCount':len(checks),'checks':checks,'findings':[x['label']for x in checks if not x['passed']],'limits':['Filesystem archive roundtrip only; future Git-publication bytes not yet independently verified.','Original printed39850 is not total internal builds, extra mirrors or separately counted odd1872; original C11 six remain separately tracked.','r1 environment-red history remains in separate immutable archive; not rehashed here.','Original outer host API-only limitation retained; no new outer OS capture invented.']}
+report['exitCode']=int(bool(report['findings']));p=O/'REVIEW.json';p.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'path':str(p),'sha256':h(p.read_bytes()),'checks':len(checks),'findings':report['findings'],'exitCode':report['exitCode']}));raise SystemExit(report['exitCode'])

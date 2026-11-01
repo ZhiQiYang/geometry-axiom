@@ -1,0 +1,27 @@
+{
+  "schema": "independent-final-L-assembly-actual-package-peer/1",
+  "checks": 3431,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "original_exit": 0,
+  "wrapper_exit": 0,
+  "passed_assertions": 150,
+  "failed_assertions": 0,
+  "screenshots": 9,
+  "elapsed_seconds": 191.69236098701367,
+  "ci_timeout_minutes": 15,
+  "archive_sha256": "a1fb7aa669e076beb323735b21ba3e51dcb89ec0b4f12f0685c948536f138c00",
+  "member_count": 672,
+  "raw_original_bytes": 37261955,
+  "limits": [
+    "Original exposed command stdout/stderr only; no hidden compiler/test pipe interception or files already removed by original cleanup are reconstructed.",
+    "No ROOT/SEED/pool/Git/source payload copied; pool immutable plan/tree/raw preparation and original completed guard command streams are included.",
+    "GUARD_LATEST.json is shared mutable state and may already have been replaced by later jobs; it is not relabeled as the documents original. Original per-guard closed Git logs and actual guard argv/exit/fullstreams are retained.",
+    "Terminal profile non-cache files/symlinks retained; Chrome cache payloads excluded with inventory, no removal. ELF payloads excluded with actual hashes; original fingerprint sidecars retained.",
+    "GitHub artifact upload actions are preserved as original local artifact saves, not claimed uploaded to GitHub.",
+    "No independently predecoded host API launcher pipe is invented."
+  ],
+  "scope_caveat": "Original workflow assembly-only partial scope: P77=134/P82=16; golden not compared per original, expected injected lost-success-response diagnostic retained. Not full canvas. Checker follows original newline/LF rules already established for documents.",
+  "scope": "All archived members compared with immutable original bytes/symlinks; exact L workflow, original job/launcher/reaper raw, prior pool guards, source fingerprint inputs and declared exclusions verified. No browser/test rerun. No claim other browser jobs or native passed."
+}

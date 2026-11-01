@@ -1,0 +1,44 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding/run.py",
+    "--repo",
+    "/workspace/geo323-union-fixed-source-20261024",
+    "--sha",
+    "ca7838e0f4950452b9befcf40899d606db9b81fa",
+    "--base",
+    "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+    "--main",
+    "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "--out",
+    "/workspace/g337323U",
+    "--heavy-lock",
+    "/workspace/g337323U/stage.lock",
+    "--stage",
+    "prepare"
+  ],
+  "cwd": "/workspace/geo323-union-fixed-source-20261024",
+  "source_sha": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+  "stage": "prepare",
+  "started_utc": "2026-10-24T03:51:40.313143+00:00",
+  "actual_process_exit": 0,
+  "stdout_sha256": "cbbc91fd3373e6f32962e00576e8a8cb617277f0d66e24dec7449aa95a17d800",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "original_stage": {
+    "started_utc": "2026-10-24T03:51:40.442969+00:00",
+    "execution_exit": 0,
+    "source_before": {
+      "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+      "status": ""
+    },
+    "source_after": {
+      "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+      "status": ""
+    },
+    "errors": [],
+    "ended_utc": "2026-10-24T03:51:42.165902+00:00"
+  },
+  "original_quantitative_targets": {},
+  "original_full_acceptance_passed": null
+}

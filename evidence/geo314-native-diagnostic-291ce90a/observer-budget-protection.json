@@ -1,0 +1,13 @@
+{
+  "schema": "geometry-diagnostic-observer-storage-protection/1",
+  "at_utc": "2026-10-22T23:34:10.820863+00:00",
+  "directory": "/workspace/geo314-work/native-p2-001/observed-build-objects",
+  "previous_mode": "0o700",
+  "mode": "0o555",
+  "action": "Disable creation of new optional observed payload copies; existing payload files retained and readable.",
+  "original_native_process_stopped": false,
+  "product_or_test_or_oracle_edited": false,
+  "original_stdout_stderr_source_and_existing_failure_receipts_deleted": false,
+  "coverage": "New optional observer payload writes can raise the original caught PermissionError and must be listed as missing; no complete transient-file capture claim.",
+  "restore_after_native": "chmod directory back to its recorded previous_mode when the original native finishes; do not restart original tests to refill optional copies."
+}

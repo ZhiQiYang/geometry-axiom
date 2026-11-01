@@ -1,0 +1,211 @@
+{
+  "schema": "reading-a-L-mutants-only-r2-actual-peer/1",
+  "createdUTC": "2026-10-23T22:46:01.534899+00:00",
+  "scope": "Only terminal r2 original mutants-only command, full nine c387 streams, original source guards/environment and scope footer. No quick half-result read and no test executed.",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "originalProcessExit": 0,
+  "receipt": {
+    "path": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/receipt.json",
+    "sha256": "43e5af1d575c77ed1eaf152419e55ad3010d43fce1b2bb22955be3ee4a5a28fb"
+  },
+  "originalStdout": {
+    "path": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000006/stdout.bin",
+    "bytes": 37015,
+    "sha256": "6359e37c80dcb20bb214c2e3bbaa5e97a77ff0855ab5e5f9441fa9c25fd0a869"
+  },
+  "checkCount": 46,
+  "checks": [
+    {
+      "label": "true terminal stage at L",
+      "passed": true
+    },
+    {
+      "label": "original exact CLI",
+      "passed": true
+    },
+    {
+      "label": "original actual0 notwrapperonly",
+      "passed": true
+    },
+    {
+      "label": "original stage driver pinned",
+      "passed": true
+    },
+    {
+      "label": "explicit Lenvironment and16MiB",
+      "passed": true
+    },
+    {
+      "label": "beforeafterLclean",
+      "passed": true
+    },
+    {
+      "label": "nine original captured commands",
+      "passed": true
+    },
+    {
+      "label": "row1original metadata",
+      "passed": true
+    },
+    {
+      "label": "row1stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row1stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row1stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row2original metadata",
+      "passed": true
+    },
+    {
+      "label": "row2stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row2stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row2stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row3original metadata",
+      "passed": true
+    },
+    {
+      "label": "row3stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row3stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row3stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row4original metadata",
+      "passed": true
+    },
+    {
+      "label": "row4stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row4stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row4stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row5original metadata",
+      "passed": true
+    },
+    {
+      "label": "row5stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row5stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row5stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row6original metadata",
+      "passed": true
+    },
+    {
+      "label": "row6stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row6stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row6stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row7original metadata",
+      "passed": true
+    },
+    {
+      "label": "row7stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row7stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row7stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row8original metadata",
+      "passed": true
+    },
+    {
+      "label": "row8stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row8stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row8stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row9original metadata",
+      "passed": true
+    },
+    {
+      "label": "row9stdoutbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row9stderrbyteshash",
+      "passed": true
+    },
+    {
+      "label": "row9stdinbyteshash",
+      "passed": true
+    },
+    {
+      "label": "all original commands0",
+      "passed": true
+    },
+    {
+      "label": "original successful requested scope footer",
+      "passed": true
+    },
+    {
+      "label": "r1 retained not erased",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "--mutants-only explicitly does not run the rectangle/reflex/step scan; this result cannot stand in for the independently required full --quick.",
+    "Original printed [紅] negative-control diagnostics are intentional controls, not failed CLI exits.",
+    "r1 missing-module environment failures remain immutable and independently archived; this r2 result does not overwrite them.",
+    "Final outer before/after22-input/fullstage/index guard remains separate until both stages truly terminate."
+  ],
+  "exitCode": 0
+}

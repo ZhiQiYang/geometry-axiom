@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-c",
+    "import sys;from pathlib import Path;sys.path.insert(0,'tests');import binaries;binaries.OUT_DIR=Path(sys.argv[1]);raise SystemExit(binaries.main(['build','bridge','pf3-algorithm']))",
+    "/tmp/geo261-residual-pf3/host-identity/binaries"
+  ],
+  "cwd": "/tmp/geo261-residual-pf3/host-identity/source",
+  "exit": 0,
+  "seconds": 41.17939481900248
+}

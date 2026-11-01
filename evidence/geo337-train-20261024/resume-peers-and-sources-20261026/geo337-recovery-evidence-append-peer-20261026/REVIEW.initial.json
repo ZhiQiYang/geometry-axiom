@@ -1,0 +1,22 @@
+{
+  "schema": "append-independent-initial-static-finding/1",
+  "exit_code": 1,
+  "subject_sha256": "4c657dc8dde82f213ff2b35c0e217dfc16355c6a223b6d08e26531d8aecaeb4a",
+  "blocking_findings": [
+    {
+      "classification": "safe rejection / stale ancestry binding",
+      "line": 55,
+      "exact_guard": "need(not git('diff','--name-only',BASE,a.expected_parent,'--','.',':(exclude)evidence'),'recovery parent contains product changes')",
+      "reason": "BASE is a6, whereas intended parent cbf0fb621888596aa14ad5f2349b503e23b1b72d has three adopted non-evidence artifacts. The adapter rejects before publishing.",
+      "root_confirmed_paths": [
+        "tests/mutants_results.json",
+        "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "geometry-core/domain-decoupling/product-architecture-receipt.json"
+      ],
+      "minimal_fix": "Bind fixed BASE to exact cbf0fb621888596aa14ad5f2349b503e23b1b72d, retaining zero non-evidence difference from that fixed final source to append parent."
+    }
+  ],
+  "formal_git_or_network_executed": false,
+  "cleanup_executed": false,
+  "utc": "2026-10-26T10:20:49.872544+00:00"
+}

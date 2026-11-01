@@ -1,0 +1,20 @@
+{
+  "schema": "geo323-PF3-original-complete-evidence/1",
+  "product_sha": "e9fffc1cb036b6e4538a23f4dd12a9e10c5136f9",
+  "original_outer_exit": 0,
+  "baseline_tests": 20,
+  "mutations": 19,
+  "killed": 19,
+  "restored_tests": 20,
+  "source_inputs": 204,
+  "originalSourcesUnchanged": true,
+  "prepared_at_utc": "2026-10-22T22:45:41.524990+00:00",
+  "scope": "Archives only the original completed full PF3 run; no Git/product/test/publisher executed here.",
+  "binary_and_source_exclusions_are_not_new_executions": true,
+  "tool_roles": {
+    "pf3_mutation_check.py": "original run input copied before mutation; hash matches sources.json",
+    "run_recorded.py": "original outer recorder path",
+    "reap_children.py": "original outer reaper path",
+    "test_entry.py": "shared diagnostic helper retained as reference; not present in the PF3 command"
+  }
+}

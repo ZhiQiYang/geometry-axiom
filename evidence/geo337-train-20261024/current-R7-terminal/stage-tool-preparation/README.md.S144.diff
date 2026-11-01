@@ -1,0 +1,11 @@
+--- S81-draft/README.md
++++ S144-required/README.md
+@@ -5,7 +5,7 @@
+ R6→R7只有以下必要變更：
+ 
+ - `launch_stages.py` 逐byte不變；原175scenes/36交錯樣本/4profiles、600秒/其他原時限、判準、兩非阻塞全域鎖、private stage.lock、累積CLI與各stage exit保原。
+-- binder必要祖先只改為K產品 `81b6c388f8b73e9aaf885b1d948e5f306b77bafd`。真正source須等root合流及採用新架構四檔後提供，不能先以S81測完冒成後續來源。
++- binder必要祖先只改為K產品 `1449d430d1c4734bb1bc3a9f91f3851c845cc0f3`。真正source須等root合流及採用新架構四檔後提供，必須包含已推送的S144見證修正版，不能先以S81測完冒成後續來源。
+ - prepare_source原WS statvfs改為`target.parent`真filesystem；原C/fixture closure、447級物化規則、nlink1/readonly/index/clean守門不變。
+ - source/output/tool新path皆TMP；source準備前及正式outer啟動前都用當下真正TMP free判定。以保守138MiB整輪估算＋128MiB native餘量＝278,921,216B入場；root所說138MB在此保守按MiB計，僅磁碟資源，不是任何產品/測時threshold。outer另核新source/OUT/tools全部在TMP同device；缺空間就不啟正式項，不改原紅結果。
+ 

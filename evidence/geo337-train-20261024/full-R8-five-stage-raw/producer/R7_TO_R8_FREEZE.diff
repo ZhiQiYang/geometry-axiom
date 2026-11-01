@@ -1,0 +1,74 @@
+--- reviewed-R7/freeze_terminal_plan.py
++++ unexecuted-R8/freeze_terminal_plan.py
+@@ -1,13 +1,13 @@
+-"""Freeze original R7 terminal membership once; no subject execution or payload packing."""
++"""Freeze original R8 terminal membership once; no subject execution or payload packing."""
+ from pathlib import Path
+ import hashlib,json,stat
+ O=Path(__file__).resolve().parent
+-RAW=Path('/tmp/g337323R7');TOOLS=Path('/tmp/geo323-final-r7-stage-tools-20261024');SOURCE=Path('/tmp/geo323-final-r7-source-20261024');V5=Path('/workspace/geo323-recorder-fidelity-v5-draft-20261024');R6=Path('/workspace/geo323-r6-full-collection-20261024');S='6df0264f75e84f03adb70746b6ac3db07a9910fc'
++RAW=Path('/tmp/g337323R8');TOOLS=Path('/tmp/geo323-final-r8-stage-tools-20261024');SOURCE=Path('/tmp/geo323-final-r8-source-20261024');V5=Path('/workspace/geo323-recorder-fidelity-v5-draft-20261024');PREVIOUS=Path('/tmp/geo323-r7-full-collection-20261024');S='75a1e93811a52b69385cbdaf6a09d773ed9052ad'
+ H=lambda b:hashlib.sha256(b).hexdigest()
+ assert not (O/'PLAN.json').exists() and not (O/'collect.py').exists() and not (O/'launch.py').exists()
+-assert H((O/'collect.template.py').read_bytes())=='aab84118de09b9bb394fb6a11eeb51bef3babecd9937b1c9c633caf4a046e211'
+-assert H((O/'launch.template.py').read_bytes())=='930f203eaaf6c7d428d7516491d883e613f75675673df522d96b36af9ff13bab'
+-summary_raw=Path('/tmp/geo323-r7-terminal-summary-20261024/SUMMARY.json').read_bytes();summary=json.loads(summary_raw)
++assert H((O/'collect.template.py').read_bytes())=='dffac4dfea4c954f15ef738b4a778e9d752c4da041b8ec27ec0eeb27a6ed4f5e'
++assert H((O/'launch.template.py').read_bytes())=='22e37f8e2eb8b8a012a45de5db275e6a0a4cf875658b5abe64806b947216e665'
++summary_raw=Path('/tmp/geo323-r8-terminal-summary-20261025/SUMMARY.json').read_bytes();summary=json.loads(summary_raw)
+ assert summary['source_sha']==S
+ for pin in summary['original_file_bindings'].values():
+  p=Path(pin['path']);raw=p.read_bytes();assert len(raw)==pin['bytes'] and H(raw)==pin['sha256']
+@@ -17,21 +17,26 @@
+ stages=['prepare','build','compare','perf','profile'];assert list(r['stages'])==outer['stages']==stages
+ assert all(type(r['stages'][k]['execution_exit']) is int and r['stages'][k]['ended_utc'] and r['stages'][k]['source_before']==r['stages'][k]['source_after']=={'head':S,'status':''} for k in stages)
+ assert [x['stage'] for x in outer['commands']]==stages and all(type(x['actual_process_exit']) is int for x in outer['commands'])
+-api=[TOOLS/f'EXEC_TOOL_POLL_{i:02d}.json' for i in range(1,4)]
+-api_records=[]
++api=sorted(TOOLS.glob('EXEC_TOOL_*.json'),key=lambda p:(p.name!='EXEC_TOOL_INITIAL.json',p.name))
++assert api and api[0].name=='EXEC_TOOL_INITIAL.json','original owner launch object is mandatory'
++api_records=[];terminal_api=[]
+ for p in api:
+  raw=p.read_bytes();z=json.loads(raw);assert isinstance(z,dict)
++ if 'exit_code' in z:
++  assert type(z['exit_code']) is int and z['exit_code']==outer['exit']
++  terminal_api.append(p.name)
++ else:assert z.get('session_id')==62076,'all supplied running API objects must bind the original R8 session'
+  api_records.append({'path':str(p),'bytes':len(raw),'sha256':H(raw),'scope':'Unmodified owner-supplied original API tool response'})
+-for p in api[:2]:assert json.loads(p.read_bytes())['session_id']==73841
+-last=json.loads(api[-1].read_bytes());assert last['exit_code']==outer['exit'] and last['chunk_id']=='87c3e8'
+-scope={'source_sha':S,'tool_session_id':73841,'stdout_stderr_reconstructed':False,'supplied_api_files':api_records,'sequence_completeness':'No claim of complete API response sequence. These three exact poll responses were supplied by the execution owner; initial launch response is not supplied here.','actual_original_streams':'outer-five Recorder and launch-five retain actual full subprocess streams and exits; these are separate from API object completeness.'}
++assert json.loads(api[0].read_bytes()).get('session_id')==62076
++assert len(terminal_api)==1,'one original owner terminal API response required; missing is not reconstructed'
++scope={'source_sha':S,'tool_session_id':62076,'stdout_stderr_reconstructed':False,'supplied_api_files':api_records,'terminal_api_file':terminal_api[0],'sequence_completeness':'No claim of complete API response sequence. All currently supplied original launch/poll/terminal objects are retained exactly; missing intermediate responses are not invented.','actual_original_streams':'outer-five Recorder and launch-five retain actual full subprocess streams and exits; these are separate from API object completeness.'}
+ scope_raw=(json.dumps(scope,indent=2)+'\n').encode()
+ if (O/'TOOL_RESPONSE_SCOPE.json').exists():assert (O/'TOOL_RESPONSE_SCOPE.json').read_bytes()==scope_raw
+ else:(O/'TOOL_RESPONSE_SCOPE.json').write_bytes(scope_raw)
+ rows=[];elf={str(RAW/'work'/n/'bridge')for n in ['base','base-pg','base-trace','fix','fix-pg','fix-trace','main']}
+ def add(name,p):
+  st=p.lstat();assert stat.S_ISREG(st.st_mode),str(p);rows.append({'name':name,'path':str(p),'bytes':st.st_size,'kind':'ELF-hash-only'if str(p)in elf else'original-payload'})
+-roots=[('original',RAW),('original-orchestration',TOOLS),('tools/v5',V5/'tools-v5'),('terminal-summary',Path('/tmp/geo323-r7-terminal-summary-20261024')),('terminal-summary-producer',Path('/tmp/geo323-r7-summary-tool-preparation-20261024')),('tracked-ledger-check-physical-E51e',Path('/tmp/geo337-6df-at-51e-ledger-freshness-20261024')),('tracked-ledger-check-preparation',Path('/tmp/geo337-R7-ledger-check-preparation-20261024'))]
++roots=[('original',RAW),('original-orchestration',TOOLS),('tools/v5',V5/'tools-v5'),('terminal-summary',Path('/tmp/geo323-r8-terminal-summary-20261025')),('terminal-summary-producer',O/'summary-tool')]
+ for prefix,root in roots:
+  assert root.is_dir(),root
+  for p in sorted(root.rglob('*')):
+@@ -39,15 +44,14 @@
+   if p.is_file()and'__pycache__'not in p.parts:add(prefix+'/'+p.relative_to(root).as_posix(),p)
+ prep=json.loads((TOOLS/'preparation/RESULT.json').read_bytes());assert prep['exit']==0 and prep['source_sha']==S
+ for item in prep['entries']:add('fixed-R-source/'+item['path'],SOURCE/item['path'])
+-for name in ['collect.py','launch.py','README.md','prepare_plan.py','PLAN.json','PROVENANCE.json']:add('original-R6-collector/'+name,R6/name)
++for name in ['collect.py','launch.py','README.md','prepare_plan.py','PLAN.json','PROVENANCE.json']:add('original-R7-collector/'+name,PREVIOUS/name)
+ add('terminal-summary-tool/summarize_terminal.py',O/'summarize_terminal.py')
+-PEERS=Path('/workspace/train337-canvas-peer-resume')
+-for name in ['R7_TMP_FINAL_STAGE_TOOLS_STATIC_PEER.json','review_R7_tmp_stage_tools_static.py','R7_SOURCE_PREPARATION_ACTUAL_PEER.json','review_R7_source_preparation_actual.py','R7_LEDGER_FRESHNESS_ACTUAL_PEER.json','review_R7_ledger_freshness_actual.py','R7_LEDGER_PEER_INITIAL_RETIRED_ROW_ASSUMPTION.json','review_R7_ledger_freshness_actual.initial-retired-rows.py.txt','R6_FULL_FIVE_STAGE_ACTUAL_PACKAGE_PEER.json','review_R6_full_package_actual.py']:
+- add('existing-peer/'+name,PEERS/name)
++PEERS=Path('/tmp/geo323-r8-tools-peer-specials-20261024')
++for name in ['REVIEW.json','review.py']:add('r8-stage-tools-static-peer/'+name,PEERS/name)
+ for name in ['FINAL_PINS.json','ORIGINAL_V4_PINS.json','geo323_record.py.v4-to-v5.diff','run.py.v4-to-v5.diff','README.md','ROOT_ADOPTION_NOTES.md','SCOPE_PINS.json','STATIC_INVARIANTS.json','SELFTEST_SUMMARY.json']:add('v5-fidelity-provenance/'+name,V5/name)
+ assert len({x['name'] for x in rows})==len(rows) and sum(x['kind']=='ELF-hash-only' for x in rows)==7
+ expected={'outer_exit':outer['exit'],'cumulative_cli_exits':[x['actual_process_exit']for x in outer['commands']],'own_stage_exits':[r['stages'][k]['execution_exit']for k in stages],'ABC_result_present':'ABC_result'in r,'quantitative_targets':r['quantitative_targets']}
+-plan={'source_sha':S,'archive_count':1,'max_archive_bytes':36*1024*1024,'operational_free_space_guard_bytes':168*1024*1024,'estimated_total_disk_growth_bytes':40*1024*1024,'note':'One complete original capture after true R7 terminal; no resampling. Original seven ELF payloads remain in place, exact hashes only. 36MiB cap/128MiB reserve are collection resource guards, never product thresholds.','terminal_bindings':summary['original_file_bindings'],'summary_sha256':H(summary_raw),'expected_terminal':expected,'original_files':rows,'counts':{'all':len(rows),'payload':sum(x['kind']!='ELF-hash-only' for x in rows),'ELF_hash_only':7},'payload_original_bytes':sum(x['bytes']for x in rows if x['kind']!='ELF-hash-only'),'ELF_hash_only_bytes':sum(x['bytes']for x in rows if x['kind']=='ELF-hash-only'),'tool_response_scope':scope,'heavy_io_guard':'Current R7 original terminal pinned; one shared heavy slot required. No performance or full canvas may run.'}
++plan={'source_sha':S,'archive_count':1,'max_archive_bytes':36*1024*1024,'operational_free_space_guard_bytes':168*1024*1024,'estimated_total_disk_growth_bytes':40*1024*1024,'note':'One complete original capture after true R8 terminal; no resampling. Original seven ELF payloads remain in place, exact hashes only. 36MiB cap/128MiB reserve are collection resource guards, never product thresholds.','terminal_bindings':summary['original_file_bindings'],'summary_sha256':H(summary_raw),'expected_terminal':expected,'original_files':rows,'counts':{'all':len(rows),'payload':sum(x['kind']!='ELF-hash-only' for x in rows),'ELF_hash_only':7},'payload_original_bytes':sum(x['bytes']for x in rows if x['kind']!='ELF-hash-only'),'ELF_hash_only_bytes':sum(x['bytes']for x in rows if x['kind']=='ELF-hash-only'),'tool_response_scope':scope,'heavy_io_guard':'Current R8 original terminal pinned; one shared heavy slot required. No performance or full canvas may run.'}
+ raw=(json.dumps(plan,ensure_ascii=False,indent=2)+'\n').encode();(O/'PLAN.json').write_bytes(raw);plan_hash=H(raw)
+ c=(O/'collect.template.py').read_text();assert c.count('__FROZEN_TERMINAL_PLAN_SHA256__')==1;c=c.replace('__FROZEN_TERMINAL_PLAN_SHA256__',plan_hash);(O/'collect.py').write_text(c)
+ l=(O/'launch.template.py').read_text();assert l.count('__FROZEN_TERMINAL_PLAN_SHA256__')==l.count('__FROZEN_COLLECTOR_SHA256__')==1;l=l.replace('__FROZEN_TERMINAL_PLAN_SHA256__',plan_hash).replace('__FROZEN_COLLECTOR_SHA256__',H(c.encode()));(O/'launch.py').write_text(l)

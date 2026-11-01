@@ -1,0 +1,130 @@
+{
+  "schema": "combined-source-union-independent-static-review/1",
+  "source": "15a735951a36b6fe52e0291152f335139e6921ad",
+  "parents": [
+    "c940a6543029a94d443709ebdcbd63828fdfef1d",
+    "8033aa756c62f654333c24d1276d4b61beb31a45"
+  ],
+  "scope": "read-only Git, literal AST/JSON comparisons; no test imports/assertions/emitter/scan/compiler/browser/bench",
+  "registry": {
+    "count": 111,
+    "unique": true,
+    "exact_parent_id_union": true,
+    "definitions_preserved_ours": true,
+    "definitions_preserved_theirs": true,
+    "M89_M98_unchanged": true,
+    "M121_from_predecessor": true
+  },
+  "migration": {
+    "base_expected": 50,
+    "stagger": 23,
+    "added_union": 61,
+    "total": 111,
+    "exact_registry_path_map": true,
+    "equivalents": [
+      "M09",
+      "M110",
+      "M23",
+      "M36",
+      "M56"
+    ],
+    "retired": [
+      "M35",
+      "M51",
+      "M55"
+    ]
+  },
+  "ledger": {
+    "rows": 110,
+    "exact_old_record_union": true,
+    "M121_absent": true,
+    "not_freshness_or_regeneration": true
+  },
+  "architecture": {
+    "source_rows": 334,
+    "exact_source_path_union": true,
+    "source_rows_match_predecessor_priority_union": true,
+    "stagger_facts_registered": true,
+    "has_new_boundary_edge_guard": true,
+    "dead_footprint_guard_absent": true,
+    "historical_blob_equal_ours": {
+      "product-architecture-scan.json": true,
+      "PRODUCT-ARCHITECTURE.md": true,
+      "product-architecture-receipt.json": true
+    }
+  },
+  "expected_drops": [
+    [
+      "theirs",
+      "py:test_geo261_wood_contact_world",
+      "lower count"
+    ]
+  ],
+  "suite_literal_counts": {
+    "test_geo261_contact_sources": {
+      "literal_methods": 15,
+      "expected": 15,
+      "match": true
+    },
+    "test_geo261_host_facts_authority": {
+      "literal_methods": 22,
+      "expected": 22,
+      "match": true
+    },
+    "test_geo261_load_residual": {
+      "literal_methods": 13,
+      "expected": 13,
+      "match": true
+    },
+    "test_geo314_stagger_commit": {
+      "literal_methods": 47,
+      "expected": 47,
+      "match": true
+    },
+    "test_geo261_wood_contacts": {
+      "literal_methods": 10,
+      "expected": 10,
+      "match": true
+    },
+    "test_geo261_wood_contact_world": {
+      "literal_methods": 9,
+      "expected": 9,
+      "match": true
+    },
+    "test_geo261_wood_world_validation": {
+      "literal_methods": 14,
+      "expected": 14,
+      "match": true
+    },
+    "test_geo261_wood_grid_application": {
+      "literal_methods": 23,
+      "expected": 23,
+      "match": true
+    }
+  },
+  "ssot_equal_predecessor": {
+    "公理層.md": true,
+    "決策佇列.md": true
+  },
+  "current_geometry": {
+    "crlf": 10498,
+    "bare_lf": 0
+  },
+  "reader_sync_recorded": {
+    "acceptance_sha": "c940a6543029a94d443709ebdcbd63828fdfef1d",
+    "source_variant": "mechanical-generation-uncommitted-merge-8033aa75-not-test",
+    "actual_exit": 0,
+    "not_new_S_acceptance": true
+  },
+  "expected_drop_classification": {
+    "suite": "py:test_geo261_wood_contact_world",
+    "predecessor_count": 10,
+    "combined_count": 9,
+    "reason": "pre-existing combined retirement of dead wood_contact_footprint_collides API and its collision-only unit case; not a new merge-time deletion",
+    "test_and_harness_blobs_equal_earlier_combined": {
+      "tests/test_geo261_wood_contact_world.py": true,
+      "tests/geo261_contact_world_harness.c": true
+    },
+    "live_I11_guards": "M13/M97/M98 and new same-UV cross-host acceptance scene remain pending new-stack execution"
+  }
+}

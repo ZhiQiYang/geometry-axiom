@@ -1,0 +1,34 @@
+{
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "tool_session_id": 62076,
+  "stdout_stderr_reconstructed": false,
+  "supplied_api_files": [
+    {
+      "path": "/tmp/geo323-final-r8-stage-tools-20261024/EXEC_TOOL_INITIAL.json",
+      "bytes": 131,
+      "sha256": "9887d950b8b6dd04047211260d8d60393aa74c6d91f092a869fba72338854ca2",
+      "scope": "Unmodified owner-supplied original API tool response"
+    },
+    {
+      "path": "/tmp/geo323-final-r8-stage-tools-20261024/EXEC_TOOL_POLL_01.json",
+      "bytes": 130,
+      "sha256": "1471c5e7cd6f02b756f47c84ae5ddc69d467cf781d66db2f53a42ba26eeeacb4",
+      "scope": "Unmodified owner-supplied original API tool response"
+    },
+    {
+      "path": "/tmp/geo323-final-r8-stage-tools-20261024/EXEC_TOOL_POLL_02.json",
+      "bytes": 131,
+      "sha256": "05124fb8b7b52a53a00b3de7871ff3666974081068e05a085ce57eaf8e656269",
+      "scope": "Unmodified owner-supplied original API tool response"
+    },
+    {
+      "path": "/tmp/geo323-final-r8-stage-tools-20261024/EXEC_TOOL_POLL_03.json",
+      "bytes": 229,
+      "sha256": "9c7e79e0163d75ad820657223ec8806e136f05bfe80f9833d69d2db373200e3d",
+      "scope": "Unmodified owner-supplied original API tool response"
+    }
+  ],
+  "terminal_api_file": "EXEC_TOOL_POLL_03.json",
+  "sequence_completeness": "No claim of complete API response sequence. All currently supplied original launch/poll/terminal objects are retained exactly; missing intermediate responses are not invented.",
+  "actual_original_streams": "outer-five Recorder and launch-five retain actual full subprocess streams and exits; these are separate from API object completeness."
+}

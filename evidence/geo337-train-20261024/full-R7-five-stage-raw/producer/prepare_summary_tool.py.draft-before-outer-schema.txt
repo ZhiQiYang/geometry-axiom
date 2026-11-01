@@ -1,0 +1,19 @@
+from pathlib import Path
+import ast,difflib,hashlib,json
+D=Path(__file__).resolve().parent
+old=Path('/workspace/summarize_geo323_r6_terminal_20261024.py').read_bytes();assert hashlib.sha256(old).hexdigest()=='166bb2ac703f43320f0cba79be86a3074670db22ea3452a3a7480d7a23dc7337'
+s=old.decode()
+for a,b in [('/workspace/g337323R6','/tmp/g337323R7'),('/workspace/geo323-final-r6-stage-tools-20261024','/tmp/geo323-final-r7-stage-tools-20261024'),('/workspace/geo323-r6-terminal-summary-20261024','/tmp/geo323-r7-terminal-summary-20261024'),('2bbe54f19b2d19e8a816530f0c4edca950629a34','6df0264f75e84f03adb70746b6ac3db07a9910fc')]:assert s.count(a)==1,a;s=s.replace(a,b)
+s=s.replace("need(launcher['exit']==outer['exit']==1,'original red terminal preserved')", "need(type(launcher['exit']) is int and launcher['exit']==outer['exit'] and outer['ended_epoch'],'actual closed launcher/outer terminal preserved')")
+s=s.replace("need([receipt['stages'][k]['execution_exit']for k in receipt['stages']]==[0,0,1,0,0],'separate original stage exits')", "need(all(type(v['execution_exit']) is int and v['ended_utc'] for v in receipt['stages'].values()),'all original own-stage exits terminal; no R6 verdict imposed')")
+s=s.replace("need([r['actual_process_exit']for r in launcher['commands']]==[0,0,1,1,1],'cumulative CLI exits preserved')", "need([r['stage'] for r in launcher['commands']]==list(receipt['stages']) and all(type(r['actual_process_exit']) is int for r in launcher['commands']),'original five cumulative CLI exits copied without R6 assumption')")
+a="'remaining_red':['N64/main original target '+receipt['quantitative_targets']['N64_fix_main']['target']+': actual '+str(receipt['quantitative_targets']['N64_fix_main']['actual']), 'N16/base original no-regression target: actual '+str(receipt['quantitative_targets']['small_N_no_regression']['points']['16']['fix_base']), 'Original175 comparison: same three stdout differences; no changed assertion or excluded scene']"
+b="'original_status_not_reinterpreted':{'errors':receipt['errors'],'quantitative_targets':receipt['quantitative_targets'],'own_stage_exits':[receipt['stages'][k]['execution_exit'] for k in receipt['stages']],'cumulative_cli_exits':[r['actual_process_exit'] for r in launcher['commands']],'equivalence_failures':eq['failures']}"
+assert s.count(a)==1;s=s.replace(a,b)
+s=s.replace('g337323R6 and stage-tools','g337323R7 and stage-tools').replace('architecture execution M8d2a with adopted outputs at F2bbe','architecture execution Me321 with adopted outputs at F7').replace('required-eight/pf3/native remain unrun at F2bbe in this driver. ABC_result is absent, all_required_stages_completed is false and full_acceptance_passed is null; no complete downstream audit verdict is inferred.','required-eight/pf3/native remain unrun at F7 in this driver. Original audit presence and all acceptance fields are retained from receipt without inferring any missing verdict.')
+# The first write is intentionally after real terminal existence checks; no active OUT polling or raw copies.
+s=s.replace("OUT.mkdir(exist_ok=False);receipt=", "need(not OUT.exists(),'fresh terminal-summary output');receipt=")
+s=s.replace("(OUT/'SUMMARY.json').write_text", "OUT.mkdir(exist_ok=False);(OUT/'SUMMARY.json').write_text")
+ast.parse(s);(D/'summarize_terminal.py').write_text(s);(D/'ORIGINAL_R6_SUMMARY.py.txt').write_bytes(old)
+(D/'SUMMARY_R6_TO_R7.diff').write_text(''.join(difflib.unified_diff(old.decode().splitlines(True),s.splitlines(True),fromfile='R6-summary',tofile='R7-summary')))
+print(json.dumps({'tool_sha256':hashlib.sha256(s.encode()).hexdigest(),'executed':False,'source':'6df0264f75e84f03adb70746b6ac3db07a9910fc'}))

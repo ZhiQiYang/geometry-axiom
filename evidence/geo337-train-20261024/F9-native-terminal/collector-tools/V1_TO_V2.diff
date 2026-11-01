@@ -1,0 +1,58 @@
+--- /tmp/geo337-F9-native-terminal-preparation-20261025/terminal_guard.py
++++ /tmp/geo337-F9-native-terminal-preparation-v2-20261025/terminal_guard.py
+@@ -38,6 +38,10 @@
+  need(w['ci_timeout_minutes']==35 and w['watchdog_factor']==3 and type(w.get('over_ci_timeout')) is bool,'ORIGINAL_CI_GATE_METADATA')
+  # A terminal red or inconsistent metadata remains collectable and visibly red.
+  issues=[]
++ try:
++  output=json.loads(final['output'].strip())
++  if output.get('source_sha')!=F9 or type(output.get('actual_exit')) is not int or output['actual_exit']!=final['exit_code']:issues.append('Original exec FINAL output source/exit differs')
++ except (ValueError,TypeError,KeyError,AttributeError):issues.append('Original exec FINAL output is not a parseable source/exit object')
+  if not final['exit_code']==outer['actual_exit']==r['actual_exit']:issues.append('Original exec/outer/native exits disagree')
+  if r.get('original_workflow_exit')!=w['exit_code']:issues.append('Original native/workflow exits disagree')
+  if r.get('ci_35_minute_gate_exit')!=(1 if w['over_ci_timeout'] else 0):issues.append('Original CI gate metadata disagrees')
+@@ -59,8 +63,11 @@
+  # Conservative tar/PAX/gzip framing plus exact inventory and small budget/package records.
+  tar_metadata_upper=4096*(len(inv)+4)+10240
+  json_metadata_upper=inventory_bytes*2+65536
+- required=logical+tar_metadata_upper+json_metadata_upper+term['reserve']
++ uncompressed_upper=logical+tar_metadata_upper+json_metadata_upper
++ # zlib default-deflate compressBound terms, rounded upward, plus conservative gzip header/name/trailer allowance.
++ deflate_gzip_upper=((uncompressed_upper+4095)//4096)+((uncompressed_upper+16383)//16384)+((uncompressed_upper+33554431)//33554432)+1024
++ required=uncompressed_upper+deflate_gzip_upper+term['reserve']
+  sv=os.statvfs(DEST.parent);free=sv.f_bavail*sv.f_frsize
+- result=dict(selectedOriginalLogicalBytes=logical,exactInventoryBytes=inventory_bytes,tarAndFramingUpperBytes=tar_metadata_upper,jsonMetadataUpperBytes=json_metadata_upper,minimumReserveBytes=term['reserve'],requiredBeforeArchiveBytes=required,freeBeforeArchiveBytes=free,admitted=free>=required,noCompressedSizeGuess=True,productThresholdChanged=False)
++ result=dict(selectedOriginalLogicalBytes=logical,exactInventoryBytes=inventory_bytes,tarAndFramingUpperBytes=tar_metadata_upper,jsonMetadataUpperBytes=json_metadata_upper,uncompressedTarAndMetadataUpperBytes=uncompressed_upper,deflateGzipExpansionUpperBytes=deflate_gzip_upper,minimumReserveBytes=term['reserve'],requiredBeforeArchiveBytes=required,freeBeforeArchiveBytes=free,admitted=free>=required,noCompressedSizeGuess=True,productThresholdChanged=False)
+  need(result['admitted'],'INSUFFICIENT_UNCOMPRESSED_ARCHIVE_PLUS_METADATA_AND_64MIB_RESERVE:'+json.dumps(result))
+  return result
+--- /tmp/geo337-F9-native-terminal-preparation-20261025/collect_terminal_native.py
++++ /tmp/geo337-F9-native-terminal-preparation-v2-20261025/collect_terminal_native.py
+@@ -18,7 +18,7 @@
+    if p.is_symlink():dirs.remove(name);yield p
+ 
+ GUARD_PATH=Path(__file__).with_name('terminal_guard.py')
+-GUARD_PIN='b4db60cbd077151738153e74bce9697ce30577b3a58ed3871a34979d38109858'
++GUARD_PIN='226015a2722a447ec3fceb5b18eaa5c918f7b0befd730cf2925fdf96aaef1834'
+ def main():
+  assert H(GUARD_PATH.read_bytes())==GUARD_PIN,'terminal guard exact source'
+  spec=importlib.util.spec_from_file_location('native_terminal_guard',GUARD_PATH);guard=importlib.util.module_from_spec(spec);spec.loader.exec_module(guard)
+--- /tmp/geo337-F9-native-terminal-preparation-20261025/launch_collection.py
++++ /tmp/geo337-F9-native-terminal-preparation-v2-20261025/launch_collection.py
+@@ -3,7 +3,8 @@
+ import argparse,hashlib,importlib.util,json,os,sys
+ F9='4f8a794f4167c3562eb182045102e86e9e37cca9'
+ TOOL=Path(__file__).with_name('collect_terminal_native.py')
+-TOOL_PIN='950721323cd5d56662184e1a89f39f439f498a07cebf2b1c90a0513b3905a8d3'
++TOOL_PIN='17352ac43c5dbd911143c5771e0280d61e58a487293d2b3ad38e8cb272001e54'
++GUARD_PIN='226015a2722a447ec3fceb5b18eaa5c918f7b0befd730cf2925fdf96aaef1834'
+ CAP=Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py')
+ OUT=Path('/tmp/geo337-F9-native-terminal-collection-launch-20261025')
+ def h(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+@@ -13,6 +14,7 @@
+  assert h(TOOL)==TOOL_PIN and h(CAP)=='c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762'
+  assert h(a.request)==a.request_sha256;q=json.loads(a.request.read_bytes());assert q['source_sha']==F9 and q['root_source_cache_collection_lease'] is True
+  peer=q['independent_static_review'];assert h(peer['path'])==peer['sha256'];r=json.loads(Path(peer['path']).read_bytes());code=r.get('exit_code',r.get('exit'));assert type(code) is int and code==0
++ assert r['collector_sha256']==TOOL_PIN and r['guard_sha256']==GUARD_PIN,'Independent review must bind these exact collector and guard bytes'
+  assert not OUT.exists();OUT.mkdir()
+  spec=importlib.util.spec_from_file_location('cap',CAP);cap=importlib.util.module_from_spec(spec);spec.loader.exec_module(cap)
+  env={k:v for k,v in os.environ.items() if not k.startswith(('GIT_','MUTATE_')) and k not in ['PYTHONOPTIMIZE','PYTHONPATH','PYTHONHOME','PYTHONSTARTUP','LD_PRELOAD']};env['PYTHONDONTWRITEBYTECODE']='1'

@@ -1,0 +1,294 @@
+{
+  "source_sha": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+  "base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "scope": "原 prepare/build/compare/perf/profile 各一次；非完整八stage驗收；不重抽樣",
+  "source_repo": "/workspace/geo323-union-fixed-source-20261024",
+  "launcher_exit": 1,
+  "stages": [
+    {
+      "stage": "prepare",
+      "original_cli_exit": 0,
+      "stage_execution_exit": 0,
+      "source_before": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      },
+      "source_after": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      }
+    },
+    {
+      "stage": "build",
+      "original_cli_exit": 0,
+      "stage_execution_exit": 0,
+      "source_before": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      },
+      "source_after": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      }
+    },
+    {
+      "stage": "compare",
+      "original_cli_exit": 1,
+      "stage_execution_exit": 1,
+      "source_before": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      },
+      "source_after": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      }
+    },
+    {
+      "stage": "perf",
+      "original_cli_exit": 1,
+      "stage_execution_exit": 0,
+      "source_before": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      },
+      "source_after": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      }
+    },
+    {
+      "stage": "profile",
+      "original_cli_exit": 1,
+      "stage_execution_exit": 0,
+      "source_before": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      },
+      "source_after": {
+        "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+        "status": ""
+      }
+    }
+  ],
+  "quantitative_targets": {
+    "N64_fix_main": {
+      "actual": 1.429347781620555,
+      "target": "<=1.3",
+      "target_met": false,
+      "method": "原36樣本，N16/32/48/64，每輪base→fix→main，共3輪；中位數"
+    },
+    "small_N_no_regression": {
+      "reference": "原固定base的變更前載入時間；不得變慢",
+      "points": {
+        "16": {
+          "fix_base": 0.9999532917535622,
+          "target_met": true
+        },
+        "32": {
+          "fix_base": 0.8129671517479105,
+          "target_met": true
+        },
+        "48": {
+          "fix_base": 0.806276034902179,
+          "target_met": true
+        }
+      }
+    },
+    "geo_eval_source_64_32": {
+      "N32_calls": 82668,
+      "N64_calls": 364369,
+      "actual": 4.407618425509266,
+      "target": "<=4.5",
+      "target_met": true,
+      "method": "原-O1 -fno-inline -pg；base/fix各N32/N64一次；無main profile；原profile無timeout"
+    }
+  },
+  "compare": {
+    "scenes": 175,
+    "runs": 350,
+    "failures": [
+      [
+        "_role_priority_mutant.scene",
+        "stdout"
+      ],
+      [
+        "_s1_p8_l_room_primary_through_reflex_extension.scene",
+        "stdout"
+      ],
+      [
+        "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+        "stdout"
+      ]
+    ],
+    "classification": "3 項完整 stdout 不同；ordered source graph 與 process guard traffic 無差異；仍為原 compare assertion 紅",
+    "assertion": "verify_linux.py:156 assert not failures,failures",
+    "trace_exit_counts": {
+      "0": 350
+    }
+  },
+  "original_receipt_fields": {
+    "ABC_result": {
+      "present": false,
+      "value": null
+    },
+    "all_required_stages_completed": {
+      "present": true,
+      "value": false
+    },
+    "all_executed_stage_commands_passed": {
+      "present": true,
+      "value": false
+    },
+    "all_measured_original_targets_met": {
+      "present": true,
+      "value": false
+    },
+    "full_acceptance_passed": {
+      "present": true,
+      "value": null
+    },
+    "wrapper_exit": {
+      "present": true,
+      "value": 1
+    }
+  },
+  "unrun": [
+    "required-eight",
+    "pf3",
+    "native",
+    "additional I11 scene outside original175",
+    "full native/browser/ledger/architecture on U"
+  ],
+  "locks_released_after_process": true,
+  "raw_locators": [
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/REQUEST.json",
+      "bytes": 6058,
+      "sha256": "5e2a4b75e948ca1cea2d37fa676419c8a08486fae878a51ae69cb2159376c8ee"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/RESULT.json",
+      "bytes": 11704,
+      "sha256": "d7e3ff422f8d005c1bf3ff161d16a537153f5d69a37dc0c30cb9a5098e704005"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/EXEC_COMPLETION.json",
+      "bytes": 426,
+      "sha256": "7557b9393337986a226290aadea7826ba85db5c99d59d74abc78e48e006b5495"
+    },
+    {
+      "path": "/workspace/g337323U/receipt.json",
+      "bytes": 13202,
+      "sha256": "d241868b9b832fb98dd023022a10e41f555ac20fc2c283a0da3f89f7c05f0d13"
+    },
+    {
+      "path": "/workspace/g337323U/evidence/equivalence.json",
+      "bytes": 285347,
+      "sha256": "6fe41fd3c8f19cde891a3b5cf59ec27807902277cf6a981faa7647f7c63cd2a6"
+    },
+    {
+      "path": "/workspace/g337323U/evidence/performance.json",
+      "bytes": 11340,
+      "sha256": "beaff72dae2ac7c335927ef293312d334c74e4f7b6783896899cc4818ada620a"
+    },
+    {
+      "path": "/workspace/g337323U/evidence/profile-counts.json",
+      "bytes": 3594,
+      "sha256": "e6de8f92e65f46b0cc121513b79ad345fe2ccfacca4f25e54556f24db230d6e3"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/CACHE_DISK_PREFLIGHT.json",
+      "bytes": 1019,
+      "sha256": "62580b54ee1b914de88171a806de765316628246745e2d3d0743c09463308a4b"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/INCLUDE_CLOSURE_CLASSIFICATION.json",
+      "bytes": 38170,
+      "sha256": "abce806ac78d4c47ca5f4223294c9c96e65ade2796b7d6c1e9c79d664b0a9a5e"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/prepare/result.json",
+      "bytes": 1446,
+      "sha256": "57ea30ec15aec753054f8a55c811827f568c4c1977246408ed030d1947a4e1ee"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/prepare/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/prepare/stdout",
+      "bytes": 225,
+      "sha256": "cbbc91fd3373e6f32962e00576e8a8cb617277f0d66e24dec7449aa95a17d800"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/build/result.json",
+      "bytes": 1442,
+      "sha256": "5d82a1d0ef6bb4e301bfc242dfb23d81286242890555a67eb1bf1c6d8fffe82c"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/build/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/build/stdout",
+      "bytes": 225,
+      "sha256": "089b47d7c71974d15a61343a8f15cbb7d860782cf69f40ce640ee27382babcbe"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/compare/result.json",
+      "bytes": 2177,
+      "sha256": "852c6609ae0cc98b85cddf8f1bc5dab071c76d41bde0fbd2e6185f9397450680"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/compare/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/compare/stdout",
+      "bytes": 225,
+      "sha256": "ce45512e647da3739b1f97d063e28e46914477722aeb06f38271cadc3bdaf7bc"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/perf/result.json",
+      "bytes": 2082,
+      "sha256": "70d715d31f69b39cc4a4f2f98f53e9132908ff09e1615e10b4dc9859ca534c75"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/perf/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/perf/stdout",
+      "bytes": 225,
+      "sha256": "a28095c1273c7b83606eb33ff34bf06ea9db30d3a981984bd5d7d995fa4ece7d"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/profile/result.json",
+      "bytes": 2374,
+      "sha256": "4e0e1637c8f999943e49ad70a53813fdcc6f65e2778aaea689ad6e7f610d5d1b"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/profile/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-union-stage-tools-20261024/launch-five/profile/stdout",
+      "bytes": 225,
+      "sha256": "af3d4945f52acb366a8a869a1fa17213b7bc7222ceff23229695cf84d0e80df6"
+    }
+  ],
+  "archive_created": false,
+  "published": false,
+  "notes": [
+    "perf/profile execution_exit=0 only means original invocation completed; cumulative original CLI exit remains 1 after compare and performance target red.",
+    "ABC_result key is absent; do not invent a green audit outcome. Original driver has eight stages: prepare/build/compare/perf/profile/required-eight/pf3/native; only the first five were run here.",
+    "Full stdout/stderr/command/environment/SHA are retained in original receipt and per-stage command files."
+  ]
+}
