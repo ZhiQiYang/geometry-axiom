@@ -2,7 +2,7 @@
 
 使用者同意修改P-186的執行安排：三個native矩陣job同時執行，每個`timeout-minutes: 35`保持。以main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[原GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)逐suite耗時配置，目標每片實跑低於20分鐘；不延長期限、不豁免失敗。
 
-`native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及224個suite的實測毫秒。按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；片內保留原完整runner的順序。新suite沒有歷史權重時用1000ms，仍必分到某片。配置不依本機cache、即時耗時、亂數或Python hash seed。
+`native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及原main的224個suite實測毫秒；這224筆是上述main來源的量測，不改造為其他分支的套件數。按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；片內保留原完整runner的順序。新suite沒有歷史權重時用1000ms，仍必分到某片。配置不依本機cache、即時耗時、亂數或Python hash seed。
 
 ```sh
 python3 tests/run_all.py --build --shard 1/3 --report /tmp/native/shard-1.json
@@ -13,7 +13,7 @@ python3 tests/native_shard_receipts.py --input /tmp/native --parts 3 --output /t
 
 上述三個runner命令由不同GitHub job執行。單一片只代表該片，不能獨自宣稱完整驗收。`native complete coverage`下載三份原始收據，核對同一完整checkout SHA、耗時表／expected雜湊、計畫與實跑套件清單；每列必實跑、無fail／crash／環境問題、數量等於原expected、計數守恆。各片suite聯集必須等於原完整registry，且彼此不重疊。三份收據缺一、重複、漏列、來源不同、片內耗時達20分鐘均拒絕。GitHub各job由setup至complete的時間另外直接由Actions API核對，不把suite時間冒稱全部job時間。
 
-完整suite清單維持拆分前的224個；沒有因新增守門增加或移除suite。11個新守門測試併入原`py:test_unittest_runner`，expected僅將該套1改12，其他expected不變。`check_registry`仍在每片執行；selected suite逐列嚴格比數量，另以完整universe檢查expected中已不存在的suite。`mutation:check`保留原套件、原指令、原退出碼及嚴格度，恰在某一片執行；不因分片跳過它。
+分片本身保留各checkout拆分前的完整suite清單，不增減suite。224個suite及「只有runner案例1改12」是原main基底的實測範例；其他PR以各自完整registry／expected及三片實跑聯集為準，不能固定宣稱224個。11個分片守門測試併入原`py:test_unittest_runner`；各分支另有自身功能與驗證案例的expected變動，仍須逐項通過原嚴格數量核對。`check_registry`仍在每片執行；selected suite逐列嚴格比數量，另以完整universe檢查expected中已不存在的suite。`mutation:check`保留原套件、原指令、原退出碼及嚴格度，恰在某一片執行；不因分片跳過它。
 
 每列另保留真實子程序`process_exit_code`，彙總必須收到整數0；缺失、布林、非0、未啟動或逾時的空值均拒絕。帳本inventory沿用原本的零斷言計數，不能偽造為一個通過斷言；其餘僅退出碼腳本保留原通過計數1。負控制同時驗證原runner記錄真實退出碼與彙總拒收偽綠列。這項修正來自首輪真CI彙總誤拒inventory的實際紅燈；不是放寬原mutation檢查。
 
