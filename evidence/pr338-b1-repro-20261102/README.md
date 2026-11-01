@@ -16,4 +16,6 @@
 
 後續 `whole-memo-formal` 以重現 job 成功為前提，取其精確 hash artifact、恢復原 R8 receipt／streams／scene inputs，另建乾淨可寫 F8 Git checkout，執行**逐 byte 未改**的原 `memo-copy-v2/tools/run.py --phase all`。原六份工具硬 pin 先逐一驗明。V3 `verify_linux.py` 由已封存 V4 逆回原 scene 列舉的一行，**完整 SHA 精確命中原 pin** `ccbce3a5d32bee81f22be31a31c1f771ca05c54f53f21e4d94b11b4a08b4534d`（11,227 bytes），保存在 `frozen-tools/verify_linux.v3.py`；沒有產生新的裁判行為。
 
+隨後又從真正舊原件找回相同 V3 bytes：`geo323-full-originals/geo323-F64-completed-raw.part-001.tar.gz` 的 `v3-original-scene-guard/tools-frozen/verify_linux.py`。該原 tar 為 11,489,504 bytes、SHA256 `32585561cd7bc639f083aa85b648ac9e66d7d67f55399f28a7e48fe911906585`，工具 bytes 與上述逆回結果全等；`FROZEN_TOOL_PROVENANCE.json` 保存來源。因此正式用的是可對回原封存工具的同份 bytes。
+
 原 driver 的 baseline 是既有 R8 profile exit 0／原有效 criterion，之後實跑 withdrawn=1、restored=0、isolated 175／350 ABC=0；不能把缺件查核或 metadata proof 當這三 phase 的終態。本工作保留原 R8 overall 1，不重抽 36 timing 樣本。`CI_RESULT.json` 保存正式 driver 真 process exit、原 phase 終態及來源；`CURRENT_PRODUCT_INPUT_CLOSURE.json` 逐 byte 核 F8／目前 #338 `9230a3dc04233e50c0bf97141a7fbe692828b2ca` 的 185 編譯輸入與原場景，並列實際非 evidence 差異及原工具 hash。是否正式完成以新 CI 原流為準；B1 最後解除仍由審查方判斷。

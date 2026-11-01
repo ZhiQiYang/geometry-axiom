@@ -150,6 +150,8 @@ def main():
         repo.mkdir()
         for command, label in [(["git", "init", "--quiet", str(repo)], "git-init"),
                                (["git", "remote", "add", "origin", "https://github.com/ZhiQiYang/geometry-axiom.git"], "git-remote"),
+                               (["git", "config", "remote.origin.promisor", "true"], "git-promisor"),
+                               (["git", "config", "remote.origin.partialclonefilter", "blob:none"], "git-partial-filter"),
                                (["git", "config", "core.autocrlf", "false"], "git-line-endings"),
                                (["git", "config", "core.sparseCheckout", "true"], "git-sparse"),
                                (["git", "fetch", "--no-tags", "--filter=blob:none", "--depth=1", "origin", F8, TARGET], "git-fetch-fixed-sources")]:
