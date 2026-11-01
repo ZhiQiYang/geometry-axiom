@@ -46,7 +46,7 @@ jobs:
       - name: Check selected authority and recovery suites before mutation generation
         run: |
           ulimit -s 16384
-          python3 tests/run_all.py --build --only identity_ledger --only geo261_native_candidate --only geo261_host_candidate --only geo261_candidate_product --only geo261_staged_candidate_graph --only geo261_host_history --only parameters_candidate_value_history --only product_architecture --only architecture_contract --only node:tests-js
+          python3 tests/run_all.py --build --only identity_ledger --only geo261_native_candidate --only geo261_host_candidate --only geo261_candidate_product --only geo261_staged_candidate_graph --only geo261_host_history --only parameters_candidate_value_history --only axiom_reader --only product_architecture --only architecture_contract --only node:tests-js
       - name: Preserve selected-suite raw logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

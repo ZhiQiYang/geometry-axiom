@@ -6446,7 +6446,13 @@ static bool app_world_candidate_revalidate_commit(AppWorldCandidate *candidate,c
     g_boundary_keyed_update=previous_keyed;g_boundary_keyed_id=previous_keyed_id;g_subgrid_before=previous;
     return ok&&app_world_candidate_seal(candidate);
 }
-static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live);
+static bool app_world_candidate_revalidate_retained(AppWorldCandidate *candidate,const World *live);
+/* I8a confirmation revalidates the same retained candidate. The existing
+ * sealed bytes and provider set must pass before its resolver can be reopened. */
+static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+{
+    return app_world_candidate_revalidate_retained(candidate,live);
+}
 
 /* ---- 共用小解析工具 ---- */
 
