@@ -64,6 +64,8 @@ PY_NEEDS = {
     'test_section_profile_modeling': ['bridge', 'model-base'],
     'test_section_profile_mutation_check': [],
     'test_assembly_generation': ['bridge'],
+    'test_assembly_bay_repeat': ['bridge'],
+    'test_bay_repeat_mutation_check': [],
     'test_axiom_reader': [],
     'test_binaries': [],
     'test_bridge_integrity': ['bridge'],
@@ -245,6 +247,7 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_assembly_bay_projection.js',
     'tests/test_grid_inspector_stagger.cjs',
     'tests/test_transport_failure_trace.js',
     'tests/test_section_profile_compat.js',
@@ -323,6 +326,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/bay_repeat_node_runner.cjs': 'R06 mutation-runner child adapter; invoked by bay_repeat_mutation_check.py with a selected Node oracle and output destination, not a standalone suite',
     'tests/k1b_cutting_settings_fixture.cjs': 'Pinned K1-b validator fixture for the shared /17 owner-dispatch contract; not an executable test',
     'tests/k2a_browser_receipt.cjs': 'Shared browser receipt/identity helper; registers no tests',
     'tests/k2a_rule_repin_browser.cjs': 'Required actual source-rule raw preservation and two-way repin comparison gate',

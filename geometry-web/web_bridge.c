@@ -655,7 +655,7 @@ static void cmd_surfaces(void)
         if (i) putchar(',');
         printf("{\"id\":%u,\"boundary\":%u,"
                "\"origin\":[%lld,%lld,%lld],"
-               "\"u\":[%lld,%lld,%lld],\"v\":[%lld,%lld,%lld]}",
+               "\"u\":[%lld,%lld,%lld],\"v\":[%lld,%lld,%lld],\"outerEdges\":[",
                (unsigned)p->id, (unsigned)p->boundary_id,
                (long long)p->frame.origin.x, (long long)p->frame.origin.y,
                (long long)p->frame.origin.z,
@@ -663,6 +663,10 @@ static void cmd_surfaces(void)
                (long long)p->frame.axis_u.z,
                (long long)p->frame.axis_v.x, (long long)p->frame.axis_v.y,
                (long long)p->frame.axis_v.z);
+        if(!p->derived_fill_id){PolygonLoop2 outline;placement_outline(p,world_placement_boundary(&g_world,p),&outline);
+            for(size_t edge=0;edge<outline.count;++edge){SurfaceSegment2 segment;if(!loop_get_edge_segment(&outline,edge,&segment))continue;
+                printf("%s{\"edge\":%zu,\"axis\":\"%s\"}",edge?",":"",edge,segment.start.u==segment.end.u?"v":"u");}}
+        fputs("]}",stdout);
     }
     fputs("]}\n", stdout);
 }

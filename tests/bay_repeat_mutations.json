@@ -1,0 +1,661 @@
+{
+  "schema": "assembly-bay-repeat-mutations/1",
+  "basis": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+  "nativeTags": {
+    "br01:rectangle-valid": "test_br01_exact_rectangle_native_preview_and_confirm",
+    "br01:all-bays": "test_br01_exact_rectangle_native_preview_and_confirm",
+    "br02:edge-valid": "test_br02_outer_edges_are_primary_occurrences",
+    "br02:edge-offset": "test_br02_outer_edges_are_primary_occurrences",
+    "br03:line-adjacency": "test_br03_l_room_uses_per_line_adjacency",
+    "br03n:selected-stop-closure": "test_br03n_selected_endpoint_dependency_reports_self_support",
+    "br03n:automatic-stop-closure": "test_br03n_automatic_endpoint_without_between_is_self_support",
+    "br04:minus-deleted-world": "test_br04_insert_removes_old_identity_before_evaluation",
+    "br04:full-identity": "test_br04_insert_removes_old_identity_before_evaluation",
+    "br04:no-id-reuse": "test_br04_insert_removes_old_identity_before_evaluation",
+    "br05:external-reference": "test_br05_external_consumer_blocks_deleted_bay_before_new_ids",
+    "br06:recompute-valid": "test_br06_grid_recompute_preserves_keys_and_cancel",
+    "br06:stable-keys": "test_br06_grid_recompute_preserves_keys_and_cancel",
+    "br07:no-auto-omit": "test_br07_hole_failure_is_explicit_and_omit_is_not_automatic",
+    "br07:every-failed-cell": "test_br07_all_failed_cells_keep_individual_diagnostics",
+    "br08:full-width-coverage": "test_br08_partial_width_band_is_not_a_bay",
+    "br09:unsupported-kind": "test_br09_unsupported_reference_kind_does_not_fallback",
+    "br09:same-primary-slot": "test_br09_primary_rule_slots_must_be_equal",
+    "br09:ortho-split": "test_br09_actual_orthogonal_split_is_unsupported",
+    "br09:child-grid": "test_br09_real_child_grid_is_not_promoted_to_main_grid",
+    "br09:phased-axis": "test_br09_real_staggered_axis_requires_unsupported",
+    "br09:unreferenced-phase": "test_br09_unreferenced_staggered_axis_does_not_ban_plain_axis",
+    "br09:upstream-phase": "test_br09_upstream_phase_is_unsupported_and_atomic",
+    "br09:from-fill": "test_br09_real_from_fill_host_is_unsupported",
+    "br10:signed-grid": "test_br10_configured_main_grid_retains_signed_indices",
+    "br06:source-order-invariance": "test_br06_source_order_and_names_do_not_change_identity_or_world_order",
+    "br04:new-order": "test_br04_new_ids_append_in_primary_then_sorted_tuple_order",
+    "br10:dangling-omit": "test_br10_dangling_omit_is_not_deleted_or_retargeted",
+    "br10:unique-keys": "test_br10_duplicate_positive_keys_reject",
+    "br10:axis": "test_br10_position_axis_is_semantic_not_ui_orientation",
+    "br10:zero-reference-id": "test_br10_external_reference_zero_is_a_real_uint32_id",
+    "br10:direct-self-support": "test_br10_direct_owned_support_is_self_support",
+    "br10b:zero-generated": "test_br10b_all_omitted_line_is_preserved_and_legal",
+    "br11:owned-capacity": "test_br11_owned_capacity_rejects_56_without_partial_creation",
+    "br11:instance-boundary-accepted": "test_br11_instance_count_accepts_16_and_rejects_17_atomically",
+    "br11:instance-capacity": "test_br11_instance_count_accepts_16_and_rejects_17_atomically",
+    "br11:primary-capacity": "test_br11_input_count_capacity_precedes_truncation",
+    "br11:line-capacity": "test_br11_secondary_line_count_has_valid_24_and_overflow_25",
+    "br11:omit-capacity": "test_br11_omit_count_has_valid_24_and_overflow_25",
+    "br11:global-owned-capacity": "test_br11_owned_capacity_is_global_across_instances",
+    "br11:record-boundary-accepted": "test_br11_instance_record_exact_byte_boundary",
+    "br11:record-byte-capacity": "test_br11_instance_record_exact_byte_boundary",
+    "br11:world-capacity": "test_br11_world_capacity_includes_non_owned_timbers",
+    "br12:replay-mapping": "test_br12_fresh_native_replay_preserves_definitions_and_mapping",
+    "br12:replay-accepted": "test_br12_fresh_native_replay_preserves_definitions_and_mapping",
+    "br12:required-capability": "test_br12_stripped_native_capability_rejects_atomically",
+    "br12:forged-mapping": "test_br12_forged_mapping_with_valid_record_hash_rejects",
+    "br13:whole-history": "test_br13_create_edit_delete_undo_redo_are_whole_transactions",
+    "br13:cancelled-token": "test_br13_cancelled_and_stale_tokens_never_commit",
+    "br13:stale-token": "test_br13_cancelled_and_stale_tokens_never_commit",
+    "br15:legacy-single-bay": "test_br15_legacy_single_bay_mapping_and_geometry_remain_exact",
+    "br16:native-created-rows": "test_br16_upstream_reference_preview_contains_native_created_rows"
+  },
+  "nodeTests": [
+    "R06 BR12 draft-only Save declares both capabilities and preserves raw indices",
+    "R06 BR12 recognized format refuses each stripped capability and every downgrade",
+    "R06 BR12 mixed grid collection card capability and repeat draft retain every component",
+    "R06 BR12 native repeat owned records cannot hide missing declarations",
+    "R06 BR10 draft shape permits incomplete raw values but refuses disguised schema",
+    "R06 BR10 raw drafts distinguish an unselected reference from actual ID zero",
+    "R06 BR12 a scenario-only repeat draft closes both capabilities over its snapshot",
+    "R06 BR15 legacy generation fixture payload bytes and format remain unchanged",
+    "R06_BAY_SOURCE_ROW: material schedule projects full native identities and fixed W slots",
+    "R06_BAY_MAPPING_REJECT: missing, duplicate or omitted owned identities cannot become schedule rows",
+    "R06_BAY_SUPPORT_IDENTITY: every member and supporting end keeps its complete native owner tuple",
+    "R06_BAY_SOURCE_GRAPH: typed native member edge and fixed rule are required for source inspection",
+    "R06_BAY_CSV_IDENTITY: mixed ordinary and repeated rows use aligned columns and exact typed identity JSON",
+    "R06_SINGLE_CSV_BYTES: legacy single-member schedule remains byte-for-byte compatible"
+  ],
+  "nodeTags": [
+    "R06_BAY_CSV_IDENTITY",
+    "R06_BAY_MAPPING_REJECT",
+    "R06_BAY_SOURCE_GRAPH",
+    "R06_BAY_SOURCE_ROW",
+    "R06_BAY_SUPPORT_IDENTITY",
+    "R06_SINGLE_CSV_BYTES",
+    "r06-br10:zero-reference-id",
+    "r06-br12:draft-capabilities",
+    "r06-br12:draft-format",
+    "r06-br12:draft-writer",
+    "r06-br12:mixed-capabilities",
+    "r06-br12:mixed-writer",
+    "r06-br12:scenario-capabilities",
+    "r06-br12:scenario-format",
+    "r06-br12:scenario-writer",
+    "r06-br12:scene-capability",
+    "r06-br12:service-capability",
+    "r06-br12:stripped-capability",
+    "r06-br15:legacy-manifest-bytes"
+  ],
+  "browserTags": [
+    "R06_BR12_ARCHIVE",
+    "R06_BR12_ATOMIC_REJECT",
+    "R06_BR12_COLD_ERRORS",
+    "R06_BR12_COLD_REOPEN",
+    "R06_BR12_DRAFT_COLD_ERRORS",
+    "R06_BR12_DRAFT_FILE",
+    "R06_BR12_DRAFT_ONLY",
+    "R06_BR12_DRAFT_SERVICE_REJECT",
+    "R06_BR12_REPEAT_SAVE_FILE",
+    "R06_BR12_SERVICE_CAP_REJECT",
+    "R06_BR14_CANCEL",
+    "R06_BR14_CONFIRM",
+    "R06_BR14_CREATE_VALID",
+    "R06_BR14_DANGLING",
+    "R06_BR14_ENTRY",
+    "R06_BR14_MOBILE",
+    "R06_BR14_NATIVE_MATRIX",
+    "R06_BR14_OMIT",
+    "R06_BR14_PREVIEW_SHAPE",
+    "R06_BR14_UNSUPPORTED",
+    "R06_BR16_GRID_CANCEL",
+    "R06_BR16_GRID_COMMIT",
+    "R06_BR16_GRID_NATIVE",
+    "R06_BR16_POINTER_CANCEL",
+    "R06_BR16_POINTER_COMMIT",
+    "R06_BR16_POINTER_NATIVE",
+    "R06_FORMAL_SAVE_FILE",
+    "R06_NO_BROWSER_EXCEPTION"
+  ],
+  "nodeBaseline": [
+    {
+      "file": "tests/test_assembly_project_store.js",
+      "pattern": "^R06 "
+    },
+    {
+      "file": "tests/test_assembly_bay_projection.js",
+      "pattern": "^R06_"
+    }
+  ],
+  "cases": [
+    {
+      "name": "r06_br01_skip_first_bay",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br01_exact_rectangle_native_preview_and_confirm",
+      "assertion": "br01:all-bays",
+      "covers": [
+        "BR01"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "for(size_t k=1;k<count;++k){AsmBayCell cell=",
+          "after": "for(size_t k=2;k<count;++k){AsmBayCell cell="
+        }
+      ]
+    },
+    {
+      "name": "r06_br02_center_outer_edge",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br02_outer_edges_are_primary_occurrences",
+      "assertion": "br02:edge-valid",
+      "covers": [
+        "BR02"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "*lo=value.edge.start.u-(value.outward.u>0?width:0);",
+          "after": "*lo=value.edge.start.u-width/2;"
+        }
+      ]
+    },
+    {
+      "name": "r06_br03_use_global_primary_set",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br03_l_room_uses_per_line_adjacency",
+      "assertion": "br03:line-adjacency",
+      "covers": [
+        "BR03"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "if(r->min_v<=lo&&r->max_v>=hi){size_t n=count++;",
+          "after": "if(true){size_t n=count++;"
+        }
+      ]
+    },
+    {
+      "name": "r06_br03n_ignore_owned_dependency",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br03n_selected_endpoint_dependency_reports_self_support",
+      "assertion": "br03n:selected-stop-closure",
+      "covers": [
+        "BR03N"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "if(node.kind==ASM_DEP_TIMBER)for(size_t k=0;k<w->state->owner_count;++k)",
+          "after": "if(false)for(size_t k=0;k<w->state->owner_count;++k)"
+        }
+      ]
+    },
+    {
+      "name": "r06_br04_reuse_retired_id",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br04_insert_removes_old_identity_before_evaluation",
+      "assertion": "br04:no-id-reuse",
+      "covers": [
+        "BR04"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "w->bay_report->retired[w->bay_report->retired_count++]=id;",
+          "after": "(void)id;"
+        }
+      ]
+    },
+    {
+      "name": "r06_br04_append_source_order",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br04_new_ids_append_in_primary_then_sorted_tuple_order",
+      "assertion": "br04:new-order",
+      "covers": [
+        "BR04"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "while(n&&wood_bay_identity_order(plan->next[n-1].identity,id)>0)",
+          "after": "while(false)"
+        }
+      ]
+    },
+    {
+      "name": "r06_br05_skip_external_reference_guard",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br05_external_consumer_blocks_deleted_bay_before_new_ids",
+      "assertion": "br05:external-reference",
+      "covers": [
+        "BR05"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "if(w->external_reference&&w->external_reference(w->user,instance,id,reason,sizeof reason))",
+          "after": "if(false)"
+        }
+      ]
+    },
+    {
+      "name": "r06_br06_discard_retained_primary_id",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br06_grid_recompute_preserves_keys_and_cancel",
+      "assertion": "br06:recompute-valid",
+      "covers": [
+        "BR06"
+      ],
+      "patches": [
+        {
+          "file": "geometry-core/assembly_generation.inc",
+          "before": "(void)user;char value[ASM_RECORD_MAX],text[ASM_RECORD_MAX];",
+          "after": "(void)user;bool prior_repeat=false;if(g_active_app_candidate)for(size_t prior=0;prior<g_active_app_candidate->before.wood.assembly.instance_count;++prior){const AsmInstance *previous=&g_active_app_candidate->before.wood.assembly.instances[prior];if(previous->id==a->id&&previous->bay_repeat)prior_repeat=true;}char value[ASM_RECORD_MAX],text[ASM_RECORD_MAX];"
+        },
+        {
+          "file": "geometry-core/assembly_generation.inc",
+          "before": "i?\",\":\"\",m->identity.key,m->timber);",
+          "after": "i?\",\":\"\",m->identity.key,m->timber+(prior_repeat?1u:0u));"
+        }
+      ]
+    },
+    {
+      "name": "r06_br07_silently_drop_last_bay",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br07_hole_failure_is_explicit_and_omit_is_not_automatic",
+      "assertion": "br07:no-auto-omit",
+      "covers": [
+        "BR07"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "if(!omitted&&capacity)capacity=wood_bay_add",
+          "after": "if(!omitted&&capacity&&k+1<count)capacity=wood_bay_add"
+        }
+      ]
+    },
+    {
+      "name": "r06_br08_ignore_partial_band",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br08_partial_width_band_is_not_a_bay",
+      "assertion": "br08:full-width-coverage",
+      "covers": [
+        "BR08"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "}else if(r->min_v<hi&&lo<r->max_v){wood_assembly_bay_failure",
+          "after": "}else if(false){wood_assembly_bay_failure"
+        }
+      ]
+    },
+    {
+      "name": "r06_br09_accept_different_primary_slots",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br09_primary_rule_slots_must_be_equal",
+      "assertion": "br09:same-primary-slot",
+      "covers": [
+        "BR09"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "return (ok&&slots[0]==slots[1])||wood_bay_unsupported",
+          "after": "return ok||wood_bay_unsupported"
+        }
+      ]
+    },
+    {
+      "name": "r06_br09_promote_child_grid",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br09_real_child_grid_is_not_promoted_to_main_grid",
+      "assertion": "br09:child-grid",
+      "covers": [
+        "BR09"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "if(value.subgrid||value.phased||value.from_fill)",
+          "after": "if(value.phased||value.from_fill)"
+        }
+      ]
+    },
+    {
+      "name": "r06_br09_accept_from_fill",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br09_real_from_fill_host_is_unsupported",
+      "assertion": "br09:from-fill",
+      "covers": [
+        "BR09"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "if(value.subgrid||value.phased||value.from_fill)",
+          "after": "if(value.subgrid||value.phased)"
+        }
+      ]
+    },
+    {
+      "name": "r06_br10_ignore_dangling_omit",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br10_dangling_omit_is_not_deleted_or_retargeted",
+      "assertion": "br10:dangling-omit",
+      "covers": [
+        "BR10"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "for(size_t o=0;o<a->omit_count;++o)if(!seen[o])return wood_assembly_bay_failure",
+          "after": "for(size_t o=0;o<a->omit_count;++o)if(false)return wood_assembly_bay_failure"
+        }
+      ]
+    },
+    {
+      "name": "r06_br10_reject_zero_surface",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br10_external_reference_zero_is_a_real_uint32_id",
+      "assertion": "br10:zero-reference-id",
+      "covers": [
+        "BR10"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "!wood_eng_u32(j,geo_json_member(j,t,\"surfaceId\"),&a->surface_id,false)||",
+          "after": "!wood_eng_u32(j,geo_json_member(j,t,\"surfaceId\"),&a->surface_id,true)||"
+        }
+      ]
+    },
+    {
+      "name": "r06_br10_reject_negative_grid_index",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br10_configured_main_grid_retains_signed_indices",
+      "assertion": "br10:signed-grid",
+      "covers": [
+        "BR10"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "bool neg=*p=='-';if(neg)++p;if(!*p)return false;",
+          "after": "bool neg=*p=='-';if(neg)return false;if(!*p)return false;"
+        }
+      ]
+    },
+    {
+      "name": "r06_br10b_reject_zero_secondary",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br10b_all_omitted_line_is_preserved_and_legal",
+      "assertion": "br10b:zero-generated",
+      "covers": [
+        "BR10b"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "plan->cell_end=report?report->cell_count:0;",
+          "after": "plan->cell_end=report?report->cell_count:0;if(plan->count==a->primary_count)return wood_bay_bad(w,a->id,\"no secondary produced\");"
+        }
+      ]
+    },
+    {
+      "name": "r06_br11_record_off_by_one",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_instance_record_exact_byte_boundary",
+      "assertion": "br11:record-boundary-accepted",
+      "covers": [
+        "BR11"
+      ],
+      "patches": [
+        {
+          "file": "geometry-core/assembly_generation.inc",
+          "before": "if(used+3>sizeof text)return false;",
+          "after": "if(used+4>sizeof text)return false;"
+        }
+      ]
+    },
+    {
+      "name": "r06_br11_reject_sixteenth_instance",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br11_instance_count_accepts_16_and_rejects_17_atomically",
+      "assertion": "br11:instance-boundary-accepted",
+      "covers": [
+        "BR11"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "if(w->state->instance_count==ASM_INSTANCE_MAX)return wood_bay_capacity(w,a.id,\"instance capacity exceeded\");",
+          "after": "if(w->state->instance_count>=ASM_INSTANCE_MAX-1)return wood_bay_capacity(w,a.id,\"instance capacity exceeded\");"
+        }
+      ]
+    },
+    {
+      "name": "r06_br12_drop_repeat_declaration",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br12_fresh_native_replay_preserves_definitions_and_mapping",
+      "assertion": "br12:replay-accepted",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "current_geometry.c",
+          "before": "if(world->wood.assembly.bay_required)fputs(\"requires assembly-bay-repeat/1\\n\",out);",
+          "after": "if(false)fputs(\"requires assembly-bay-repeat/1\\n\",out);"
+        }
+      ]
+    },
+    {
+      "name": "r06_br13_confirm_cancelled_candidate",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br13_cancelled_and_stale_tokens_never_commit",
+      "assertion": "br13:cancelled-token",
+      "covers": [
+        "BR13"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/engineering_bridge.inc",
+          "before": "||!g_preview.ready||!mine||g_preview.token!=token",
+          "after": "||!mine||g_preview.token!=token"
+        },
+        {
+          "file": "geometry-web/engineering_bridge.inc",
+          "before": "if(cancelled){g_preview.ready=false;app_candidate_discard(g_preview.transaction->control);}",
+          "after": "if(cancelled){g_preview.ready=false;}"
+        }
+      ]
+    },
+    {
+      "name": "r06_br15_upgrade_legacy_capability",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br15_legacy_single_bay_mapping_and_geometry_remain_exact",
+      "assertion": "br15:legacy-single-bay",
+      "covers": [
+        "BR15"
+      ],
+      "patches": [
+        {
+          "file": "current_geometry.c",
+          "before": "if(world->wood.assembly.bay_required)fputs(\"requires assembly-bay-repeat/1\\n\",out);",
+          "after": "if(world->wood.assembly.generation_required)fputs(\"requires assembly-bay-repeat/1\\n\",out);"
+        }
+      ]
+    },
+    {
+      "name": "r06_br16_hide_native_created_rows",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br16_upstream_reference_preview_contains_native_created_rows",
+      "assertion": "br16:native-created-rows",
+      "covers": [
+        "BR16"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference_bridge.inc",
+          "before": "for (int pass=0;pass<(include_new?2:1);++pass)",
+          "after": "for (int pass=0;pass<1;++pass)"
+        }
+      ]
+    },
+    {
+      "name": "r06_br03n_skip_selected_endpoint_closure",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br03n_automatic_endpoint_without_between_is_self_support",
+      "assertion": "br03n:automatic-stop-closure",
+      "covers": ["BR03N"],
+      "patches": [{
+        "file": "geometry-templates/woodworking/native/assembly.c",
+        "before": "if(!wood_bay_dependencies(w,a,true))return false;",
+        "after": "if(false)return false;"
+      }]
+    },
+    {
+      "name": "r06_archive_drop_draft_repeat_capability",
+      "kind": "node",
+      "file": "tests/test_assembly_project_store.js",
+      "test": "R06 BR12 draft-only Save declares both capabilities and preserves raw indices",
+      "assertion": "r06-br12:draft-format",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if (manifest.assemblyDrafts?.records?.some(r=>r.kind===\"instance\"&&r.data?.layout==='bay-repeat')) required.add(BAY_REPEAT_CAPABILITY);",
+          "after": "if (false) required.add(BAY_REPEAT_CAPABILITY);"
+        }
+      ]
+    },
+    {
+      "name": "r06_archive_drop_draft_generation_capability",
+      "kind": "node",
+      "file": "tests/test_assembly_project_store.js",
+      "test": "R06 BR12 draft-only Save declares both capabilities and preserves raw indices",
+      "assertion": "r06-br12:draft-writer",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if (manifest.assemblyDrafts?.records?.some(r=>r.kind===\"instance\")) required.add(GENERATION_CAPABILITY);",
+          "after": "if (false) required.add(GENERATION_CAPABILITY);"
+        }
+      ]
+    },
+    {
+      "name": "r06_archive_drop_scenario_repeat_closure",
+      "kind": "node",
+      "file": "tests/test_assembly_project_store.js",
+      "test": "R06 BR12 a scenario-only repeat draft closes both capabilities over its snapshot",
+      "assertion": "r06-br12:scenario-format",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if(manifest.scenarioCatalog?.scenarios.some(s=>projectCapabilities(s.snapshot.projectManifest,s.snapshot.worldScene).includes(BAY_REPEAT_CAPABILITY))){required.add(BAY_REPEAT_CAPABILITY);required.add(GENERATION_CAPABILITY);}",
+          "after": "if(false){required.add(BAY_REPEAT_CAPABILITY);required.add(GENERATION_CAPABILITY);}"
+        }
+      ]
+    },
+    {
+      "name": "r06_archive_reject_zero_reference",
+      "kind": "node",
+      "file": "tests/test_assembly_project_store.js",
+      "test": "R06 BR10 raw drafts distinguish an unselected reference from actual ID zero",
+      "assertion": "r06-br10:zero-reference-id",
+      "covers": [
+        "BR10"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "const reference=v=>v===null||uint(v);",
+          "after": "const reference=v=>v===null||positiveId(v);"
+        }
+      ]
+    },
+    {
+      "name": "r06_bay_projection_accept_duplicate_identity",
+      "kind": "node",
+      "file": "tests/test_assembly_bay_projection.js",
+      "test": "R06_BAY_MAPPING_REJECT: missing, duplicate or omitted owned identities cannot become schedule rows",
+      "assertion": "R06_BAY_MAPPING_REJECT",
+      "covers": [
+        "BR01",
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/assembly-provenance.js",
+          "before": "mapping.filter(m=>identityKey(memberIdentity(m))===identityKey(identity)).length!==1||",
+          "after": "false||"
+        }
+      ]
+    },
+    {
+      "name": "r06_browser_omit_checkbox_loses_tuple",
+      "kind": "browser",
+      "test": "formal-cdp-assembly",
+      "assertion": "R06_BR14_OMIT",
+      "covers": [
+        "BR14"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/assembly-workspace.js",
+          "before": "d.omit=next;changed(true);report(",
+          "after": "d.omit=[];changed(true);report("
+        }
+      ]
+    },
+    {
+      "name": "r06_browser_repeat_archive_downgrade",
+      "kind": "browser",
+      "test": "formal-cdp-assembly",
+      "assertion": "R06_BR12_REPEAT_SAVE_FILE",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "if(projectCapabilities(manifest,scene).includes(BAY_REPEAT_CAPABILITY)) return BAY_REPEAT_FORMAT;",
+          "after": "if(projectCapabilities(manifest,scene).includes(BAY_REPEAT_CAPABILITY)) return GENERATION_FORMAT;"
+        }
+      ]
+    },
+    {
+      "name": "r06_browser_hide_created_owned_rows",
+      "kind": "browser",
+      "test": "formal-cdp-assembly",
+      "assertion": "R06_BR16_POINTER_NATIVE",
+      "covers": [
+        "BR16"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/reference-ui.js",
+          "before": "for (const row of preview.timbers || []) {",
+          "after": "for (const row of (preview.timbers || []).filter(row=>!(row.change==='created'&&row.owner?.identity))) {"
+        }
+      ]
+    }
+  ]
+}

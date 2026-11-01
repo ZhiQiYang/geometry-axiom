@@ -7,6 +7,7 @@ typedef struct {
     AppCandidate *control;
     AppWorldOperation operation;
     char operation_seal[65];
+    AsmBayReport bay_report;
 } AppWorldCandidate;
 static AppWorldCandidate *g_active_app_candidate;
 static uint64_t g_app_candidate_serial;

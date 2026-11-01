@@ -81,6 +81,9 @@ static bool app_asm_remove(void *,uint32_t);
 static void app_asm_write(void *,const WoodMember *,const WoodAssemblyDefinition *);
 static bool app_asm_anchor_matches(void *,uint32_t,const WoodAssemblyDefinition *);
 static bool app_asm_instance_content(void *,AsmInstance *,GeoJson *,int);
+static bool app_asm_position(void *,uint32_t,const AsmLocation *,WoodAssemblyPosition *);
+static bool app_asm_dependencies(void *,WoodAssemblyDependency,WoodAssemblyDependency *,size_t,size_t *,bool);
+static bool app_asm_external_reference(void *,uint32_t,uint32_t,char *,size_t);
 static bool app_sp_resolve_dimension_sources(World *,GeoParameterSources *,WoodEngineeringSources *,const EngDimensionSource *,const EngTarget *,Coord *);
 static bool app_sp_live_host(void *,uint32_t,GeoFrame *,WoodBoundaryRegion *,bool *);
 static bool app_fs_boundary(void *,uint32_t,WoodBoundaryRegion *);
@@ -116,7 +119,7 @@ typedef struct {
     WoodContactSources *contact_sources;
     WoodAssemblySources *assembly_sources;
     WoodFinishSourceKey placement_binding_key;
-    bool use_current_values,source_failure;
+    bool use_current_values,source_failure,bay_planning;
     bool wanted[WORLD_MAX_TIMBERS];
 } ReferenceEval;
 static ReferenceEval *g_reference_active;

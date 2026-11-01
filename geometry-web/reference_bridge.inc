@@ -1,6 +1,40 @@
 /* Structured I8a report, derived geometry for UI, and reference snapping. */
 static void json_reference_grid(const World *w,const ReferenceGrid *g);
 static void json_assembly_state(const World *w,bool geometry);
+static void json_assembly_identity_fields(AsmIdentity identity)
+{
+    if(identity.kind==ASM_ID_PRIMARY)printf("\"primary\":%u",identity.key);
+    else if(identity.kind==ASM_ID_SECONDARY)printf("\"secondary\":{\"line\":%u,\"left\":%u,\"right\":%u}",identity.key,identity.left,identity.right);
+    else printf("\"memberId\":%u",identity.key);
+}
+static const AsmOwner *json_assembly_owner_find(const World *world,uint32_t timber)
+{for(size_t i=0;i<world->wood.assembly.owner_count;++i)if(world->wood.assembly.owners[i].timber==timber)return &world->wood.assembly.owners[i];return NULL;}
+static void json_assembly_owner_value(const AsmOwner *owner)
+{if(!owner){fputs("null",stdout);return;}printf("{\"instance\":%u,\"identity\":{",owner->instance);json_assembly_identity_fields(wood_assembly_owner_identity(owner));fputs("}}",stdout);}
+static void json_bay_issue(const AsmBayIssue *e)
+{
+    fputs("{\"category\":",stdout);js_string(e->category);fputs(",\"code\":",stdout);js_string(e->code);fputs(",\"clause\":",stdout);js_string(e->clause);
+    printf(",\"instanceId\":%u",e->instance);if(e->primary)printf(",\"primaryKey\":%u",e->primary);if(e->line)printf(",\"lineKey\":%u",e->line);
+    if(e->owned)printf(",\"ownedTimberId\":%u",e->owned);
+    fputs(",\"expected\":",stdout);js_string(e->expected);fputs(",\"actual\":",stdout);js_string(e->actual);fputs(",\"message\":",stdout);js_string(e->actual);
+    fputs(",\"dependencyPath\":[",stdout);for(size_t i=0;i<e->path_count;++i){const WoodAssemblyDependency *p=&e->path[i];const char *kind=p->kind==ASM_DEP_TIMBER?"timber":p->kind==ASM_DEP_GUIDE?"guide":p->kind==ASM_DEP_GRID?"grid":p->kind==ASM_DEP_DATUM?"datum":"outline";printf("%s{\"kind\":\"%s\",\"id\":%u}",i?",":"",kind,p->id);}fputs("]}",stdout);
+}
+static size_t json_bay_issues(bool comma)
+{const AsmBayReport *r=&g_preview.transaction->bay_report;for(size_t i=0;i<r->issue_count;++i){if(comma||i)putchar(',');json_bay_issue(&r->issues[i]);}return r->issue_count;}
+static void json_bay_cells(void)
+{
+    const AsmBayReport *report=&g_preview.transaction->bay_report;const World *after=&g_preview.transaction->after;putchar('[');
+    for(size_t i=0;i<report->cell_count;++i){const AsmBayCellReport *cell=&report->cells[i];int index=cell->timber?reference_timber_index(after,cell->timber):-1;bool failed=!cell->omitted&&(index<0||!after->wood.timbers[index].placed);
+        for(size_t k=0;k<g_preview.issue_count;++k)if(cell->timber&&g_preview.issues[k].timber==cell->timber)failed=true;
+        for(size_t k=0;k<report->issue_count;++k){const AsmBayIssue *issue=&report->issues[k];if(issue->instance==cell->instance&&(issue->line==cell->line||(issue->primary&&(issue->primary==cell->left||issue->primary==cell->right))))failed=true;}
+        printf("%s{\"instanceId\":%u,\"line\":%u,\"left\":%u,\"right\":%u,\"status\":\"%s\",\"timberId\":",i?",":"",cell->instance,cell->line,cell->left,cell->right,cell->omitted?"omitted":failed?"failed":"generated");
+        if(cell->timber)printf("%u",cell->timber);else fputs("null",stdout);fputs(",\"violations\":[",stdout);bool first=true;
+        for(size_t k=0;k<g_preview.issue_count;++k){const ReferenceIssue *issue=&g_preview.issues[k];if(!cell->timber||issue->timber!=cell->timber)continue;
+            if(!first)putchar(',');first=false;fputs("{\"category\":\"INVALID\",\"code\":\"GEOMETRY_INVALID\",\"clause\":",stdout);js_string(issue->clause);fputs(",\"expected\":",stdout);js_string(issue->expected);fputs(",\"actual\":",stdout);js_string(issue->actual);putchar('}');}
+        for(size_t k=0;k<report->issue_count;++k){const AsmBayIssue *issue=&report->issues[k];if(issue->instance!=cell->instance||(issue->line!=cell->line&&(!issue->primary||(issue->primary!=cell->left&&issue->primary!=cell->right))))continue;if(!first)putchar(',');first=false;json_bay_issue(issue);}
+        fputs("]}",stdout);
+    }putchar(']');
+}
 static void json_reference_geometry(const World *w,int i)
 {
     if (i<0 || !w->wood.timbers[i].placed) { fputs("null",stdout); return; }
@@ -44,21 +78,24 @@ static void json_reference_datum(const World *w,const GeoDatum *d)
     if(!d){fputs("null",stdout);return;}
     printf("{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",d->id,'X'+d->axis,(long long)d->position);js_string(app_datum_expression(w,d->id));putchar('}');
 }
-/* Serialize the rebuilt candidate, never an ownership-selected dependency set.
- * Reference previews retain their existing before-only timber list; assembly
- * also needs newly generated timbers. Both use the same native geometry. */
+/* Serialize the rebuilt candidate, including new and retired owned identities.
+ * Existing-but-invalid geometry is not mislabeled as a deletion. */
 static void json_candidate_timbers(const World *before,const World *after,bool include_new)
 {
     putchar('[');bool first=true;
     for (int pass=0;pass<(include_new?2:1);++pass) {
         const World *w=pass?after:before;
         for (size_t i=0;i<w->wood.timber_count;++i) {
-            const Timber *t=&w->wood.timbers[i];if (!t->placed) continue;
+            const Timber *t=&w->wood.timbers[i];if (!t->placed&&!json_assembly_owner_find(w,t->id)) continue;
             int old=reference_timber_index(before,t->id),now=reference_timber_index(after,t->id);
-            if (pass && old>=0 && before->wood.timbers[old].placed) continue;
+            if (pass && old>=0 && (before->wood.timbers[old].placed||json_assembly_owner_find(before,t->id))) continue;
             if (!first) putchar(',');first=false;
             printf("{\"id\":%u,\"before\":",t->id);json_reference_geometry(before,old);
-            fputs(",\"after\":",stdout);json_reference_geometry(after,now);putchar('}');
+            fputs(",\"after\":",stdout);json_reference_geometry(after,now);
+            const char *change=old<0?"created":now<0?"deleted":"kept";
+            if(old>=0&&now>=0){const Timber *a=&before->wood.timbers[old],*b=&after->wood.timbers[now];
+                if(a->placed!=b->placed||a->length!=b->length||a->size_a!=b->size_a||a->size_b!=b->size_b||memcmp(&a->origin,&b->origin,sizeof a->origin)||memcmp(&a->axis_length,&b->axis_length,sizeof a->axis_length)||memcmp(&a->axis_a,&b->axis_a,sizeof a->axis_a)||memcmp(&a->axis_b,&b->axis_b,sizeof a->axis_b)||before->wood.anchors[old].placement_id!=after->wood.anchors[now].placement_id)change="moved";}
+            printf(",\"change\":\"%s\",\"owner\":",change);const AsmOwner *owner=json_assembly_owner_find(now>=0?after:before,t->id);json_assembly_owner_value(owner);putchar('}');
         }
     }
     putchar(']');
@@ -93,7 +130,7 @@ static void json_reference_preview(void)
 {
     printf("{\"token\":%u,\"valid\":%s,\"command\":",g_preview.token,g_preview.valid?"true":"false");
     js_string(g_preview.command);fputs(",\"timbers\":",stdout);
-    json_candidate_timbers(&g_preview.transaction->before,&g_preview.transaction->after,false);
+    json_candidate_timbers(&g_preview.transaction->before,&g_preview.transaction->after,true);
     fputs(",\"guides\":",stdout);json_candidate_guides(&g_preview.transaction->before,&g_preview.transaction->after);
     fputs(",\"grids\":[",stdout); bool first=true;
     for (size_t i=0;i<g_preview.transaction->before.wood.grid_applications.count;++i) {
@@ -124,11 +161,13 @@ static void json_reference_preview(void)
     json_boundary_preview();
     fputs(",\"assembly\":{\"before\":",stdout);json_assembly_state(&g_preview.transaction->before,false);
     fputs(",\"after\":",stdout);json_assembly_state(&g_preview.transaction->after,false);putchar('}');
+    fputs(",\"bayCells\":",stdout);json_bay_cells();
     json_section_profile_impact(&g_preview.transaction->before,&g_preview.transaction->after);
     fputs(",\"violations\":[",stdout);
+    size_t bay_issues=json_bay_issues(false);
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];
-        printf("%s{\"timber\":%u,\"clause\":",i?",":"",e->timber); js_string(e->clause);
+        printf("%s{\"timber\":%u,\"clause\":",(i||bay_issues)?",":"",e->timber); js_string(e->clause);
         fputs(",\"expected\":",stdout); js_string(e->expected);
         fputs(",\"actual\":",stdout); js_string(e->actual); putchar('}');
     }

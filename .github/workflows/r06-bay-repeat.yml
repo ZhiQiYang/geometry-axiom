@@ -1,0 +1,63 @@
+name: R06 browser mutation evidence
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/r06-bay-repeat.yml'
+      - 'geometry-templates/woodworking/**'
+      - 'geometry-web/assembly*'
+      - 'geometry-web/cdp_bay_repeat_io.js'
+      - 'geometry-web/project-store.js'
+      - 'geometry-web/reference*'
+      - 'tests/*bay_repeat*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: r06-browser-mutations-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-mutations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install Chinese fonts for actual browser rendering
+        run: |
+          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+      - name: Run baseline, three named browser mutations and restored baseline
+        shell: bash
+        run: |
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          mkdir -p /tmp/r06-browser-evidence
+          git rev-parse HEAD | tee /tmp/r06-browser-evidence/head-sha.txt
+          set +e
+          python3 -u tests/bay_repeat_mutation_check.py --kind browser --out /tmp/r06-browser-evidence/mutations > /tmp/r06-browser-evidence/runner.stdout 2> /tmp/r06-browser-evidence/runner.stderr
+          status=$?
+          printf '%s\n' "$status" > /tmp/r06-browser-evidence/runner-exit-code.txt
+          cat /tmp/r06-browser-evidence/runner.stdout
+          cat /tmp/r06-browser-evidence/runner.stderr
+          exit "$status"
+      - name: Preserve raw logs, named assertion receipts and restoration evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r06-browser-mutations-${{ github.sha }}
+          path: |
+            /tmp/r06-browser-evidence/
+            !/tmp/r06-browser-evidence/**/chrome-profile/
+          if-no-files-found: error
+          retention-days: 14

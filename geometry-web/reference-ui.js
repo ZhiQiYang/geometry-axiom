@@ -1,10 +1,14 @@
 /* Reference editing and the mandatory I8a confirmation flow. */
 async function confirmReferenceImpact(preview) {
+  const repeat=(preview.timbers||[]).some(row=>row.owner?.identity)||
+    ['before','after'].some(side=>preview.assembly?.[side]?.instances?.some(r=>r.value.source.layout==='bay-repeat'));
+  const repeatComplete=!repeat||Array.isArray(preview.bayCells)&&(preview.timbers||[]).every(row=>!row.owner?.identity||['kept','moved','created','deleted'].includes(row.change));
+  const canApply=preview.valid&&repeatComplete;
   const dialog = document.createElement('dialog');
   dialog.className = 'reference-impact';
   dialog.setAttribute('aria-labelledby', 'impact-title');
   const title = document.createElement('h2'); title.id = 'impact-title';
-  title.textContent = preview.valid ? '確認連動變更' : '變更無法套用';
+  title.textContent = canApply ? '確認連動變更' : '變更無法套用';
   dialog.append(title);
   const note = document.createElement('p');
   note.textContent = '目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。';
@@ -27,23 +31,42 @@ async function confirmReferenceImpact(preview) {
   const wrap = document.createElement('div'); wrap.className = 'impact-table-wrap';
   const table = document.createElement('table');
   const heading = document.createElement('tr');
-  for (const text of ['角材／面', '中線：原 → 新', '長度：原 → 新', '世界位置／方向']) {
+  for (const text of ['角材／面／來源', '中線：原 → 新', '長度：原 → 新', '世界位置／方向']) {
     const th = document.createElement('th'); th.textContent = text; heading.append(th);
   }
   table.append(heading);
   for (const row of preview.timbers || []) {
     const tr = document.createElement('tr');
-    const value = (key) => `${row.before?.[key] ?? '—'} → ${row.after?.[key] ?? '無法推導'}`;
+    tr.dataset.impactTimber = row.id;
+    if(row.change)tr.dataset.impactChange = row.change;
+    if(row.owner){tr.dataset.impactOwner = JSON.stringify(row.owner);}
+    const absent = row.change === 'deleted' ? '已刪除' : '無合法結果';
+    const value = (key) => `${row.before?.[key] ?? '尚未存在'} → ${row.after?.[key] ?? absent}`;
     const moved = JSON.stringify(row.before) !== JSON.stringify(row.after);
     if (moved) tr.className = 'impact-changed';
-    const pose = g => g ? `[${g.origin.join(', ')}] · 長/A/B軸 ${g.axes?.map(a => '[' + a.join(', ') + ']').join(' / ') ?? '—'}` : '無法推導';
-    for (const text of [`${row.id}／面 ${row.before.surface}`, value('centerline'), value('length'),
-      row.after ? (moved ? `${pose(row.before)} → ${pose(row.after)}` : '保持原狀') : '已刪除或無合法結果']) {
+    const pose = g => g ? `[${g.origin.join(', ')}] · 長/A/B軸 ${g.axes?.map(a => '[' + a.join(', ') + ']').join(' / ') ?? '—'}` : '不存在';
+    const identity=row.owner?.identity,secondary=identity?.secondary,
+      owner=identity?.primary?`實例 #${row.owner.instance} · 主支 #${identity.primary}`:secondary?`實例 #${row.owner.instance} · 副支線 #${secondary.line}／主支 #${secondary.left} → #${secondary.right}`:row.owner?.memberId?`實例 #${row.owner.instance} · 構件 #${row.owner.memberId}`:'',
+      change={kept:'身分保留',moved:'身分保留，幾何更新',created:'新增身分',deleted:'刪除身分'}[row.change];
+    for (const text of [[`${row.id}／面 ${row.after?.surface??row.before?.surface??'—'}`,owner,change].filter(Boolean).join(' · '), value('centerline'), value('length'),
+      row.after ? (moved ? `${pose(row.before)} → ${pose(row.after)}` : '保持原狀') : `${pose(row.before)} → ${absent}`]) {
       const td = document.createElement('td'); td.textContent = text; tr.append(td);
     }
     table.append(tr);
   }
   if(preview.timbers?.length) {wrap.append(table); dialog.append(wrap);}
+  if(preview.bayCells?.length){
+    const section=document.createElement('section');section.className='impact-bay-cells';
+    const title=document.createElement('h3');title.textContent='逐線開間';section.append(title);
+    const list=document.createElement('ul');
+    for(const cell of preview.bayCells){
+      const item=document.createElement('li');item.dataset.bayCell=`${cell.line}:${cell.left}:${cell.right}`;item.dataset.instanceId=cell.instanceId;item.dataset.bayStatus=cell.status;
+      const status={generated:'生成',omitted:'明示略過',failed:'不能生成'}[cell.status]||'未確認',
+        errors=(cell.violations||[]).map(v=>`${v.code||''} ${v.clause||''} · 預期：${v.expected??'—'} · 實際：${v.actual??'—'}`).join('；');
+      item.textContent=`實例 #${cell.instanceId} · 副支線 #${cell.line} · 主支 #${cell.left} → #${cell.right}：${status}${cell.timberId?' · 角材 #'+cell.timberId:''}${errors?'；'+errors:''}`;list.append(item);
+    }
+    section.append(list);dialog.append(section);
+  }
   const gridChanges=(preview.grids || []).filter(row=>JSON.stringify(row.before)!==JSON.stringify(row.after));
   if(gridChanges.length) {
     const section=document.createElement('section');section.className='impact-grids';
@@ -79,18 +102,21 @@ async function confirmReferenceImpact(preview) {
   }
   for (const issue of preview.violations) {
     const p = document.createElement('p'); p.className = 'impact-violation';
-    p.textContent = `${issue.timber ? '角材 ' + issue.timber : '場景'} · ${issue.clause}\n預期：${issue.expected}\n實際：${issue.actual}`;
+    const source=[issue.timber?'角材 '+issue.timber:'',issue.instanceId?'實例 #'+issue.instanceId:'',issue.primaryKey?'主支 #'+issue.primaryKey:'',issue.lineKey?'副支線 #'+issue.lineKey:''].filter(Boolean).join(' · ')||'場景';
+    p.textContent = `${source} · ${issue.code?issue.code+' · ':''}${issue.clause}\n預期：${issue.expected}\n實際：${issue.actual}`;
     dialog.append(p);
   }
+  if(!repeatComplete){const p=document.createElement('p');p.className='impact-violation';p.textContent='原生服務缺少逐線開間或角材增刪身分結果；請更新服務後重新預覽。';dialog.append(p);}
   const actions = document.createElement('div'); actions.className = 'impact-actions';
   const cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'btn';
-  cancel.textContent = preview.valid ? '取消，保留原狀' : '返回修改';
+  cancel.textContent = canApply ? '取消，保留原狀' : '返回修改';
   const apply = document.createElement('button'); apply.type = 'button'; apply.className = 'btn primary';
-  apply.textContent = '確認套用'; apply.disabled = !preview.valid; apply.id = 'impact-confirm';
+  apply.textContent = '確認套用'; apply.disabled = !canApply; apply.id = 'impact-confirm';
   actions.append(cancel, apply); dialog.append(actions); document.body.append(dialog);
   return new Promise(resolve => {
     let settled = false;
     const finish = async approved => {
+      if(approved&&!canApply)return;
       if (settled) return; settled = true;
       apply.disabled = true; cancel.disabled = true;
       try {
