@@ -31,7 +31,8 @@ CLOSURE = (WORLD, CURRENT, BATCH, TRANSACTIONS, "geometry-web/web_bridge.c",
            "tests/geo314_stagger_facts_harness.c")
 CONFIRM_CONTEXT = (
     "    g_boundary_keyed_update=candidate->operation.boundary_keyed;g_boundary_keyed_id=candidate->operation.boundary_id;\n"
-    "    bool ok=app_world_candidate_evaluate(candidate,app_world_revalidate_evaluate,&candidate->before)==GEO_CANDIDATE_OK;")
+    "    AppWorldCommitCall call={candidate,finalize,opaque};\n"
+    "    bool ok=app_world_candidate_evaluate(candidate,app_world_commit_revalidate_evaluate,&call)==GEO_CANDIDATE_OK;")
 DSL_BASELINE = "const World *previous_baseline=g_subgrid_before;g_subgrid_before=call->before;"
 CONFIRM_BASELINE = "const World *previous=g_subgrid_before;g_subgrid_before=&candidate->before;"
 
