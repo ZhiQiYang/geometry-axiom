@@ -1,0 +1,21 @@
+{
+  "schema": "R6-stage-parameter-tools-static-peer-v1",
+  "checks": 35,
+  "exit_code": 0,
+  "findings": [],
+  "final_pins_sha256": "7234344b39724aa2970723ff402b040678ac00ffa8fed24859a6262cdd46a18c",
+  "required_ancestor": "df66452e7a514032453bea93b8b18ab74d7b1457",
+  "request_delta_keys": [
+    "acceptance_out",
+    "inner_lock",
+    "selected_final_source",
+    "source_checkout",
+    "status"
+  ],
+  "limits": [
+    "Only static small metadata/bytes/AST reviewed; no binding/materialization/C or timing sample executed.",
+    "Root must explicitly bind actual published final SHA after architecture adoption; Fdf/R5/M identities are not interchangeable.",
+    "Original resource admission40MiB is not estimate for all output bytes; fresh capacity and exclusive slot required at launch.",
+    "Original compare/perf red continues remaining stages; cumulative CLI is not per-stage execution exit; eight-stage/full acceptance not claimed."
+  ]
+}

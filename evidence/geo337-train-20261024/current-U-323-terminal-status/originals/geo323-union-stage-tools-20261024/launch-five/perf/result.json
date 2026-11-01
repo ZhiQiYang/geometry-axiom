@@ -1,0 +1,68 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding/run.py",
+    "--repo",
+    "/workspace/geo323-union-fixed-source-20261024",
+    "--sha",
+    "ca7838e0f4950452b9befcf40899d606db9b81fa",
+    "--base",
+    "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+    "--main",
+    "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "--out",
+    "/workspace/g337323U",
+    "--heavy-lock",
+    "/workspace/g337323U/stage.lock",
+    "--stage",
+    "perf"
+  ],
+  "cwd": "/workspace/geo323-union-fixed-source-20261024",
+  "source_sha": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+  "stage": "perf",
+  "started_utc": "2026-10-24T03:54:44.321438+00:00",
+  "actual_process_exit": 1,
+  "stdout_sha256": "a28095c1273c7b83606eb33ff34bf06ea9db30d3a981984bd5d7d995fa4ece7d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "original_stage": {
+    "started_utc": "2026-10-24T03:54:44.435974+00:00",
+    "execution_exit": 0,
+    "source_before": {
+      "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+      "status": ""
+    },
+    "source_after": {
+      "head": "ca7838e0f4950452b9befcf40899d606db9b81fa",
+      "status": ""
+    },
+    "errors": [],
+    "ended_utc": "2026-10-24T03:54:57.538030+00:00"
+  },
+  "original_quantitative_targets": {
+    "N64_fix_main": {
+      "actual": 1.429347781620555,
+      "target": "<=1.3",
+      "target_met": false,
+      "method": "原36樣本，N16/32/48/64，每輪base→fix→main，共3輪；中位數"
+    },
+    "small_N_no_regression": {
+      "reference": "原固定base的變更前載入時間；不得變慢",
+      "points": {
+        "16": {
+          "fix_base": 0.9999532917535622,
+          "target_met": true
+        },
+        "32": {
+          "fix_base": 0.8129671517479105,
+          "target_met": true
+        },
+        "48": {
+          "fix_base": 0.806276034902179,
+          "target_met": true
+        }
+      }
+    }
+  },
+  "original_full_acceptance_passed": null
+}

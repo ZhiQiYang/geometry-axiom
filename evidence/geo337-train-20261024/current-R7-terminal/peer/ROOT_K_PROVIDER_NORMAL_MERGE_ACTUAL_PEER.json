@@ -1,0 +1,26 @@
+{
+  "schema": "root-K-provider-normal-source-merge-actual-peer-v1",
+  "checks": 95,
+  "exit_code": 0,
+  "findings": [],
+  "merge_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "parents": [
+    "3df56ff38b450ad228da04b2c1dcb6511582af42",
+    "1449d430d1c4734bb1bc3a9f91f3851c845cc0f3"
+  ],
+  "original_result_sha256": "d959c2cb892f0e0c27e888636a8bdd946db7636472984da6f567cd09c48dc0ae",
+  "original_Git_commands": 16,
+  "fresh_small_local_Git_commands": 3,
+  "changed_paths": [
+    "geometry-core/kernel/source.c",
+    "tests/geo323_provider_hint_harness.c",
+    "tests/run_all.expected.json",
+    "tests/test_geo261_source_index.py"
+  ],
+  "subject_executions": 0,
+  "limits": [
+    "Original sixteen Git streams and three fixed local read-only commit/diff checks only; no network, large archive reread or product test by reviewer.",
+    "Child18+24 directed results remain bound to S144; root mergeM is product/test-closure identical but does not retroactively change execution SHA.",
+    "Architecture/fullledger/new formal performance status in this merge receipt is historical UNRUN; later actions need their own source-bound receipts."
+  ]
+}

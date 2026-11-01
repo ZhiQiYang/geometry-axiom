@@ -1,0 +1,793 @@
+{
+  "scope": "唯讀小型 API 現況快照；不關閉 issue、不宣告產品完成、不改分支或 BACKLOG",
+  "main_sha": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+  "root_candidate_sha_for_context_only": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "issue_total": 46,
+  "unique_issue_count": 46,
+  "issue_category_counts": {
+    "仍驗收缺口": 39,
+    "待核實使用者決定": 6,
+    "已合入可候選關閉": 1
+  },
+  "issues": [
+    {
+      "number": 318,
+      "title": "Framing oracle builder defects: columns across a wall step pass as buildable but fail checks; build crash when a hole edge midpoint hits another ring's vertex",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/318",
+      "state": "open",
+      "updated_at": "2026-10-23T17:06:11Z",
+      "category": "仍驗收缺口",
+      "basis": "#338 Reading A 列車仍 open；final native、六 browser、閱讀 A oracle 的正式缺口以最新審查與主代理新 F 收據逐項銜接。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 248,
+      "title": "[架構] 幾何核心與木工模板解耦(GEO-261)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/248",
+      "state": "open",
+      "updated_at": "2026-10-23T17:06:09Z",
+      "category": "仍驗收缺口",
+      "basis": "#288 已合入 main（API + 祖先 exit 0），但 GEO-261 總工單不能僅憑其中一張 PR 關閉；仍須對照無木工模板建置、後續列車與總範圍。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 316,
+      "title": "GEO-261 follow-up: dead world_footprint_collides and I11 mutation coverage at the other two same-surface filters",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/316",
+      "state": "open",
+      "updated_at": "2026-10-23T17:06:06Z",
+      "category": "仍驗收缺口",
+      "basis": "#338 列車仍 open；已實作的 I11 覆蓋不能代替該新來源的完整驗收。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 335,
+      "title": "Place two mutually-butting boundaries on a thin wall step (#318 reading A positive B)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/335",
+      "state": "open",
+      "updated_at": "2026-10-23T17:00:39Z",
+      "category": "待核實使用者決定",
+      "basis": "issue 明列 13 mm 薄牆階的相互頂靠邊界為另案；Reading A 已批准部分不等於批次交易／共求值設計已批准。核實原始批准邊界後才可變更該依賴。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 314,
+      "title": "Implement the one-axis grid stagger rule (D10b/I24) on every native commit path, including R60 card commits",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/314",
+      "state": "open",
+      "updated_at": "2026-10-23T15:35:22Z",
+      "category": "仍驗收缺口",
+      "basis": "#338 列車仍 open；題 3 比較器與禁止本功能修改 K 的反證需沿主代理既有修補來源核對。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 205,
+      "title": "[功能提案][下角材模式] 平釘天花一鍵下角材：第一個木工模板需要、規格尚缺的規則",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/205",
+      "state": "open",
+      "updated_at": "2026-10-23T14:47:08Z",
+      "category": "待核實使用者決定",
+      "basis": "#333 FIELD-RULES 已合入 main，但完整下角材模式的提案與批准範圍仍須對照；文件落地不代表整個模板功能已驗收。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 203,
+      "title": "[公理][子網格] 平釘天花的板中間支撐：整除保護與 PF-0 排除讓標準 1830 板無法用子網格，需定案依間距上限放支撐",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/203",
+      "state": "open",
+      "updated_at": "2026-10-22T07:44:06Z",
+      "category": "待核實使用者決定",
+      "basis": "舊 issue 要求決定間距上限、整除與 PF-0；2026-10-22～24 的鎖定決策可能已有回答。本輪未核對原始批准，不宣稱仍未拍板，也不自行採納舊提案。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 54,
+      "title": "[功能提案] 從 PDF／圖片底圖快速取得房間輪廓，減少手動臨摹",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/54",
+      "state": "open",
+      "updated_at": "2026-10-22T06:28:41Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 322,
+      "title": "GEO-261 follow-up: column/beam snapshot without faces raises unclassified KeyError",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/322",
+      "state": "open",
+      "updated_at": "2026-10-20T11:18:55Z",
+      "category": "仍驗收缺口",
+      "basis": "#324 原 Grok 分支仍 open；主代理接手的 successor 需完成整合驗收，原分支不由本工作修改。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 300,
+      "title": "Raise the timber capacity (64) so a real room's framing fits; unify the five GEO-261 capacity constants",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/300",
+      "state": "open",
+      "updated_at": "2026-10-20T09:27:09Z",
+      "category": "仍驗收缺口",
+      "basis": "#348 仍 open；原 N512 兩次全 batch 600 s 超時保留，不能定位為單一 loadfile 失敗；#341/#346/#347 鏈及正式整合缺口仍在。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 320,
+      "title": "Web app: recovering the connection leaves the old connection.error, which later blocked edits echo",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/320",
+      "state": "open",
+      "updated_at": "2026-10-20T03:36:01Z",
+      "category": "仍驗收缺口",
+      "basis": "#344 仍 open 且 API mergeable=CONFLICTING；strict aggregate 九項通過不等於完整 canvas／六 browser／native 通過。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 319,
+      "title": "Framing oracle: C3 bearing band is clipped at region x-blocks when boards run along Y",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/319",
+      "state": "open",
+      "updated_at": "2026-10-19T16:24:56Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 308,
+      "title": "Framing oracle: shallow pilasters (29–53 mm) and mid-room wall steps reported unbuildable without a reason",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/308",
+      "state": "open",
+      "updated_at": "2026-10-18T08:50:25Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 299,
+      "title": "V_EXTENSION diagnostic does not name the locating edge and the exceeding interval (I22)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/299",
+      "state": "open",
+      "updated_at": "2026-10-18T01:55:17Z",
+      "category": "仍驗收缺口",
+      "basis": "#338 列車仍 open；I22 診斷改動與跨版本 exact 的批准邊界須沿原始裁決核對，不能把舊 stdout 差異默認放行。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 252,
+      "title": "平行工作窗口 2026-10-15 晚:雲端 Codex 並行進度",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/252",
+      "state": "open",
+      "updated_at": "2026-10-17T06:43:31Z",
+      "category": "仍驗收缺口",
+      "basis": "歷史平行工作窗口的部分列車已合入；尚未對照所有工作項，僅可日後提出行政歸檔候選，不能整單宣告完成。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 232,
+      "title": "ChatGPT 研究工人:工作佇列與進度記錄",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/232",
+      "state": "open",
+      "updated_at": "2026-10-15T18:21:09Z",
+      "category": "仍驗收缺口",
+      "basis": "研究工作佇列屬進度紀錄；本輪未取得完整交付與歸檔依據，先保留。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 240,
+      "title": "公理層一致性總檢(2026-10-14 多批採納後)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/240",
+      "state": "open",
+      "updated_at": "2026-10-15T16:43:33Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 249,
+      "title": "[功能][公理] 網格系統直接引用整張參數卡(GEO-262)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/249",
+      "state": "open",
+      "updated_at": "2026-10-15T05:20:48Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 209,
+      "title": "[測試穩定性] canvas P78 在慢機器上可能卡住:grid-trial-query 被前端中止後 igTrial 一直不 ready",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/209",
+      "state": "open",
+      "updated_at": "2026-10-14T20:12:06Z",
+      "category": "仍驗收缺口",
+      "basis": "#237 等待追蹤已合入的歷史紀錄不等於 P78 慢機器根因已修；保留原 issue 所需重現與回歸缺口。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 230,
+      "title": "PF23/E1 oracle: distinguish R43 unit input from legal D7 fixture (P103)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/230",
+      "state": "open",
+      "updated_at": "2026-10-14T19:56:25Z",
+      "category": "待核實使用者決定",
+      "basis": "舊 E1／P103 的 R43 單元輸入與合法 D7 場景區別須對照最新 SSOT 與原始裁決；相關 PF-H 已合入不足以單獨判定此 issue 可關閉。",
+      "raw_source": "open-issues-page1/stdout.bin"
+    },
+    {
+      "number": 128,
+      "title": "[完成面][面材鋪滿] 空間完成面→鋪面材（帶縫／交丁）→比對並反推貼板角材，可選網格對齊鋪排",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/128",
+      "state": "open",
+      "updated_at": "2026-10-14T17:03:14Z",
+      "category": "仍驗收缺口",
+      "basis": "#347 空列修補仍 open；這也不是整個面材鋪滿／R10／PF 專項的完成證明。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 239,
+      "title": "證據原件發布方式:取代 base64 留言鏡像",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/239",
+      "state": "open",
+      "updated_at": "2026-10-14T13:19:41Z",
+      "category": "仍驗收缺口",
+      "basis": "證據發布流程需核對現有原件與交付制度；本輪沒有逐包審查，因此保留驗收缺口。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 214,
+      "title": "驗收耗時分析與不降斷言的加速方案",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/214",
+      "state": "open",
+      "updated_at": "2026-10-14T13:08:20Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 233,
+      "title": "PF23/E1 驗收足跡在 SSOT 下無法建立成合法的 D7 場景",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/233",
+      "state": "open",
+      "updated_at": "2026-10-14T06:50:13Z",
+      "category": "待核實使用者決定",
+      "basis": "舊 E1／PF23 場景與 SSOT 衝突屬語意邊界核對項；本輪未驗證後續批准是否已完整解除，不自行更新 golden。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 204,
+      "title": "[公理][端面] 獨立柱：I19 允許端面直接頂柱面、理由「端面不提供固定」與現場不符；主支不可斷開需另行把關",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/204",
+      "state": "open",
+      "updated_at": "2026-10-13T12:11:31Z",
+      "category": "待核實使用者決定",
+      "basis": "舊 issue 的 I19／端面固定提案須與後續已批准 Reading A、RC 面量法逐條對照；本輪只盤點，不新增木工語意。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 211,
+      "title": "[核心穩定性] 原生核心的堆疊用量超過 Linux 預設 8 MiB:subgrid 與 apply-proj 路徑在預設環境會 SIGSEGV",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/211",
+      "state": "open",
+      "updated_at": "2026-10-13T07:00:06Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 198,
+      "title": "core: classify_rect_outline 以四角計數判定接觸,凹口與尖脊會誤判(GEO-257 同類)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/198",
+      "state": "open",
+      "updated_at": "2026-10-11T15:15:37Z",
+      "category": "已合入可候選關閉",
+      "basis": "#202 head 137427563de2e94e41d067282266c232f176f0d8 已是目前 main 祖先（exit 0）；#291 已合入，BACKLOG 第 25、44 行也記載納入 #202。僅列候選：尚未逐項核對 issue 全部原始反例與最新回歸，不直接關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 166,
+      "title": "[跨模型審查] 三方判斷都可能偏：只累積可對帳主張，不採信共識",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/166",
+      "state": "open",
+      "updated_at": "2026-10-08T11:52:03Z",
+      "category": "仍驗收缺口",
+      "basis": "跨模型主張對帳是流程工單；未取得範圍完成／歸檔依據，不能把沒有新留言當完成。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 142,
+      "title": "[功能驗收][E2E] 全面功能審查與使用者完整操作旅程，缺陷修復後獨立複驗",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/142",
+      "state": "open",
+      "updated_at": "2026-10-05T18:11:58Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 123,
+      "title": "[UI整合] 依10/04全面審查統一六工作區介面與操作流程",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/123",
+      "state": "open",
+      "updated_at": "2026-10-04T14:45:12Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 118,
+      "title": "[工程品質] 盤點結構風險、測試有效性與等待成本，分段改善",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/118",
+      "state": "open",
+      "updated_at": "2026-10-04T11:53:14Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 116,
+      "title": "[互動設計][B] 依設計稿整合游標 v2 與情境右鍵選單",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/116",
+      "state": "open",
+      "updated_at": "2026-10-04T10:40:08Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 45,
+      "title": "[功能提案][F2] 情境式組合入口：顯示可用操作、缺少輸入，銜接 #25 有限構件生成",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/45",
+      "state": "open",
+      "updated_at": "2026-10-04T08:58:07Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 44,
+      "title": "[功能提案][F1] 來源／影響檢查器與模型更新狀態：先唯讀追溯，再受控重建",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/44",
+      "state": "open",
+      "updated_at": "2026-10-04T05:29:06Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 77,
+      "title": "[多房間][MR] 同一 PDF 共享來源基準，連續建立獨立房間邊界與保存",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/77",
+      "state": "open",
+      "updated_at": "2026-10-04T05:25:04Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 49,
+      "title": "[功能提案][F6] 規則試驗台與案例庫：正反例、隔離驗證、結果過期與可重用範例",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/49",
+      "state": "open",
+      "updated_at": "2026-10-04T04:20:40Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 24,
+      "title": "[組構規則][AR-05] 完成整合、24 項驗收、完整回歸與可重現 PR 交付",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/24",
+      "state": "open",
+      "updated_at": "2026-10-04T04:06:59Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 46,
+      "title": "[功能提案][F3] 保存 A/B 候選方案並比較來源、接合與幾何差異",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/46",
+      "state": "open",
+      "updated_at": "2026-10-04T04:01:50Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 47,
+      "title": "[功能提案][F4] 模型連動構件料單：完成尺寸、來源與雙向定位，後續銜接裁切／餘料",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/47",
+      "state": "open",
+      "updated_at": "2026-10-04T03:17:44Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 62,
+      "title": "[網格子規則][SGR-05] 24項整合驗收、完整回歸、見證文件與可重現PR交付",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/62",
+      "state": "open",
+      "updated_at": "2026-10-03T21:19:01Z",
+      "category": "仍驗收缺口",
+      "basis": "#133 的第一片不能替代 SGR-05 全部 24 項與完整回歸。",
+      "raw_source": "open-issues-page2/stdout.bin"
+    },
+    {
+      "number": 61,
+      "title": "[網格子規則][SGR-04] 正式來源工作區細分編輯、跨面繼承、選格／選線與手機操作",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/61",
+      "state": "open",
+      "updated_at": "2026-10-03T21:18:53Z",
+      "category": "仍驗收缺口",
+      "basis": "#133 已 merged，但 BACKLOG 明列只是第一片；跨面、手機及完整來源工作區範圍不能據此關閉。",
+      "raw_source": "open-issues-page3/stdout.bin"
+    },
+    {
+      "number": 57,
+      "title": "[網格子規則][SGR-00] 實作總工單：在網格系統定義可重用子網格，跨配置／承載面繼承",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/57",
+      "state": "open",
+      "updated_at": "2026-10-03T21:18:26Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page3/stdout.bin"
+    },
+    {
+      "number": 43,
+      "title": "[功能提案][F0] 新增功能路線：來源追溯、方案比較、構件料單、圖面證據與規則試驗台",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/43",
+      "state": "open",
+      "updated_at": "2026-10-03T21:17:20Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page3/stdout.bin"
+    },
+    {
+      "number": 87,
+      "title": "[房間辨識][B] 同一底圖頁取得多個獨立房間候選並逐一核對",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/87",
+      "state": "open",
+      "updated_at": "2026-10-03T21:17:12Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page3/stdout.bin"
+    },
+    {
+      "number": 25,
+      "title": "[組構規則][AR-06][後續] 由規則＋角材＋配置生成構件實例：先補求值契約再實作",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/25",
+      "state": "open",
+      "updated_at": "2026-10-03T18:08:51Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page3/stdout.bin"
+    },
+    {
+      "number": 19,
+      "title": "[組構規則][AR-00] 實作總工單：無限畫布規則編輯、角材組合、保存與完整驗收",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/issues/19",
+      "state": "open",
+      "updated_at": "2026-10-03T17:58:32Z",
+      "category": "仍驗收缺口",
+      "basis": "本輪只取得目前 open issue 原文及歷史 BACKLOG；沒有足以證明整個工單完成的最新固定來源驗收，不能因相關切片曾合入就關閉。",
+      "raw_source": "open-issues-page3/stdout.bin"
+    }
+  ],
+  "responsible_prs": [
+    {
+      "number": 338,
+      "title": "feat: complete the reading A integration train replacing #337",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/338",
+      "state": "OPEN",
+      "isDraft": true,
+      "merged": false,
+      "mergedAt": null,
+      "closedAt": null,
+      "headRefName": "codex/train-337-continue-20261024",
+      "headRefOid": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+      "baseRefName": "main",
+      "baseRefOid": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+      "mergeable": "MERGEABLE",
+      "reviewDecision": null,
+      "updatedAt": "2026-10-26T06:43:48Z",
+      "commits": {
+        "nodes": [
+          {
+            "commit": {
+              "oid": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+              "committedDate": "2026-10-26T01:01:32Z"
+            }
+          }
+        ]
+      },
+      "category": "仍驗收缺口",
+      "latest_comment_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/338#issuecomment-6409950139",
+      "latest_comment_created_at": "2026-10-26T06:43:48Z",
+      "gap_summary": "最新審查以 a6 為 checkpoint，列 S10／架構／final F、完整 native、六 browser、閱讀 A oracle 缺口。主代理已另推進新候選 F；本快照不把兩者視為同一受測來源，也不覆蓋已回收的新收據。"
+    },
+    {
+      "number": 344,
+      "title": "fix: 成功恢復連線後清除過時錯誤 (#320)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/344",
+      "state": "OPEN",
+      "isDraft": true,
+      "merged": false,
+      "mergedAt": null,
+      "closedAt": null,
+      "headRefName": "codex/issue320-connection-recovery-20261024",
+      "headRefOid": "df39d1933402c76b2f8b35ca013412daf16ed4c9",
+      "baseRefName": "codex/train-337-continue-20261024",
+      "baseRefOid": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+      "mergeable": "CONFLICTING",
+      "reviewDecision": null,
+      "updatedAt": "2026-10-25T14:35:16Z",
+      "commits": {
+        "nodes": [
+          {
+            "commit": {
+              "oid": "df39d1933402c76b2f8b35ca013412daf16ed4c9",
+              "committedDate": "2026-10-25T12:50:44Z"
+            }
+          }
+        ]
+      },
+      "category": "仍驗收缺口",
+      "latest_comment_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/344#issuecomment-6398950277",
+      "latest_comment_created_at": "2026-10-25T14:35:16Z",
+      "gap_summary": "完整實際 canvas 撤回／恢復與具名 P53-3/P61-10/P61-11、其他五 browser、native、帳本仍待；strict aggregate 九項不是整合通過。當前 API 顯示衝突。"
+    },
+    {
+      "number": 341,
+      "title": "perf(GEO-300): 保留活集合順序並一次壓緊擋面",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/341",
+      "state": "OPEN",
+      "isDraft": true,
+      "merged": false,
+      "mergedAt": null,
+      "closedAt": null,
+      "headRefName": "codex/geo300-prerequisites-20261024",
+      "headRefOid": "823729be5f4f025aebbf02c2dc85e09907c28812",
+      "baseRefName": "codex/geo324-faces-20261024",
+      "baseRefOid": "dcdf22655e0cf8ed47cd0b7f66d89f3a7beca694",
+      "mergeable": "MERGEABLE",
+      "reviewDecision": null,
+      "updatedAt": "2026-10-24T02:38:34Z",
+      "commits": {
+        "nodes": [
+          {
+            "commit": {
+              "oid": "823729be5f4f025aebbf02c2dc85e09907c28812",
+              "committedDate": "2026-10-23T20:54:31Z"
+            }
+          }
+        ]
+      },
+      "category": "仍驗收缺口",
+      "latest_comment_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/341#issuecomment-6378848374",
+      "latest_comment_created_at": "2026-10-24T02:38:34Z",
+      "gap_summary": "最佳化整組撤回與 none/few/dense/overflow 成本／CPU／wall 證據、final native／受影響 timber browser 仍缺；語意反證不是效能驗收。"
+    },
+    {
+      "number": 346,
+      "title": "refactor(GEO-300): 下料清單改用單一自有 ID 池",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/346",
+      "state": "OPEN",
+      "isDraft": true,
+      "merged": false,
+      "mergedAt": null,
+      "closedAt": null,
+      "headRefName": "codex/geo300-cut-list-storage-20261024",
+      "headRefOid": "eaf15e239324a6464a04740647afccce3a3c17c7",
+      "baseRefName": "codex/geo300-contact-index-20261024",
+      "baseRefOid": "a934a554ae58f16f124f1b264523947f170b3f0b",
+      "mergeable": "MERGEABLE",
+      "reviewDecision": null,
+      "updatedAt": "2026-10-25T16:38:47Z",
+      "commits": {
+        "nodes": [
+          {
+            "commit": {
+              "oid": "eaf15e239324a6464a04740647afccce3a3c17c7",
+              "committedDate": "2026-10-24T01:14:48Z"
+            }
+          }
+        ]
+      },
+      "category": "仍驗收缺口",
+      "latest_comment_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/346#issuecomment-6400283559",
+      "latest_comment_created_at": "2026-10-25T16:38:47Z",
+      "gap_summary": "與上游 #343 來源鏈須收斂；完整 native、六 browser、效能、帳本與架構尚缺。歷史 11 methods／9 controls／83 builds 不移作新 final。"
+    },
+    {
+      "number": 347,
+      "title": "perf(PF-2): 略過沒有板片的空列舉",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/347",
+      "state": "OPEN",
+      "isDraft": true,
+      "merged": false,
+      "mergedAt": null,
+      "closedAt": null,
+      "headRefName": "codex/issue128-empty-panel-rows-20261024",
+      "headRefOid": "2e8a6ed20325aa4842dcd0f89eacd598662be598",
+      "baseRefName": "codex/geo300-cut-list-storage-20261024",
+      "baseRefOid": "eaf15e239324a6464a04740647afccce3a3c17c7",
+      "mergeable": "MERGEABLE",
+      "reviewDecision": null,
+      "updatedAt": "2026-10-26T06:43:47Z",
+      "commits": {
+        "nodes": [
+          {
+            "commit": {
+              "oid": "2e8a6ed20325aa4842dcd0f89eacd598662be598",
+              "committedDate": "2026-10-24T01:23:33Z"
+            }
+          }
+        ]
+      },
+      "category": "仍驗收缺口",
+      "latest_comment_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/347#issuecomment-6409949843",
+      "latest_comment_created_at": "2026-10-26T06:43:47Z",
+      "gap_summary": "先收斂 #346 來源鏈；PF1/PF2/PF3、native/browser、帳本與架構缺口。先前 empty-row 修補不代表整體面材完成。"
+    },
+    {
+      "number": 348,
+      "title": "feat(GEO-300): 將角材容量一致擴至 512",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/348",
+      "state": "OPEN",
+      "isDraft": true,
+      "merged": false,
+      "mergedAt": null,
+      "closedAt": null,
+      "headRefName": "codex/geo300-capacity512-20261024",
+      "headRefOid": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+      "baseRefName": "codex/issue128-empty-panel-rows-20261024",
+      "baseRefOid": "2e8a6ed20325aa4842dcd0f89eacd598662be598",
+      "mergeable": "MERGEABLE",
+      "reviewDecision": null,
+      "updatedAt": "2026-10-26T08:55:17Z",
+      "commits": {
+        "nodes": [
+          {
+            "commit": {
+              "oid": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+              "committedDate": "2026-10-24T06:30:41Z"
+            }
+          }
+        ]
+      },
+      "category": "仍驗收缺口",
+      "latest_comment_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/348#issuecomment-6412053022",
+      "latest_comment_created_at": "2026-10-26T08:55:17Z",
+      "gap_summary": "先收斂 #343→#346→#347→#348；兩次 N512 全 batch 600 s 原失敗保留，無 partial bytes 不能分派至四命令中的某一命令；完整七項、#297、帳本／架構仍缺。"
+    },
+    {
+      "number": 323,
+      "title": "perf(geo261): reuse per-validation footprint source reads without dropping dependencies (#300 prerequisite)",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/323",
+      "state": "OPEN",
+      "isDraft": false,
+      "merged": false,
+      "mergedAt": null,
+      "closedAt": null,
+      "headRefName": "codex/geo261-load-residual-20261020",
+      "headRefOid": "4ea6c50796711ed1e79bae89c93d07037d317837",
+      "baseRefName": "main",
+      "baseRefOid": "eda91c8593f0795278f7f16ff8b93d147a4fdaa7",
+      "mergeable": "MERGEABLE",
+      "reviewDecision": null,
+      "updatedAt": "2026-10-25T14:32:52Z",
+      "commits": {
+        "nodes": [
+          {
+            "commit": {
+              "oid": "4ea6c50796711ed1e79bae89c93d07037d317837",
+              "committedDate": "2026-10-23T15:22:00Z"
+            }
+          }
+        ]
+      },
+      "category": "仍驗收缺口",
+      "latest_comment_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/323#issuecomment-6369925233",
+      "latest_comment_created_at": "2026-10-23T16:42:08Z",
+      "gap_summary": "2026-10-23 審查所列舊 head 的 N32/base、source calls 比例、負控制與帳本紅燈需與新列車 R8／exact 證據逐一銜接。API 現在 baseRefName=main，舊 retarget 要求不可再記為現況未做。"
+    },
+    {
+      "number": 324,
+      "title": "fix(GEO-261): reject column and beam snapshots that omit faces",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/324",
+      "state": "OPEN",
+      "isDraft": true,
+      "merged": false,
+      "mergedAt": null,
+      "closedAt": null,
+      "headRefName": "grok/geo261-faces-keyerror-322",
+      "headRefOid": "4e176e830b691269cc72d021ce7e1bc0b167d621",
+      "baseRefName": "main",
+      "baseRefOid": "eda91c8593f0795278f7f16ff8b93d147a4fdaa7",
+      "mergeable": "MERGEABLE",
+      "reviewDecision": null,
+      "updatedAt": "2026-10-23T17:48:44Z",
+      "commits": {
+        "nodes": [
+          {
+            "commit": {
+              "oid": "4e176e830b691269cc72d021ce7e1bc0b167d621",
+              "committedDate": "2026-10-23T05:46:22Z"
+            }
+          }
+        ]
+      },
+      "category": "仍驗收缺口",
+      "latest_comment_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/324#issuecomment-6370286270",
+      "latest_comment_created_at": "2026-10-23T17:01:09Z",
+      "gap_summary": "最新留言是承接前一則 ChatGPT 審查的回覆；五 public paths／45 tests 是舊收據。正式 native、六 browser、importers／帳本整合缺口仍轉交 successor；不修改 grok 分支。"
+    }
+  ],
+  "grok_ownership": [
+    {
+      "number": 325,
+      "title": "docs(backlog): continue the ledger after 2026-10-19",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/325",
+      "state": "OPEN",
+      "merged": false,
+      "mergedAt": null,
+      "headRefName": "grok/backlog-reconcile-20261022",
+      "headRefOid": "c16f9255383823fa3ce7610c69262905b64c1ff9",
+      "mergeCommit": null,
+      "closingIssuesReferences": {
+        "nodes": []
+      },
+      "category": "Grok負責不碰"
+    },
+    {
+      "number": 331,
+      "title": "草稿：公理層逐條分核心、宿主、木工、混合",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/331",
+      "state": "OPEN",
+      "merged": false,
+      "mergedAt": null,
+      "headRefName": "grok/axiom-layering-draft-20261022",
+      "headRefOid": "02086a3689d27d41fbfac470f707e4d6b17b7e70",
+      "mergeCommit": null,
+      "closingIssuesReferences": {
+        "nodes": []
+      },
+      "category": "Grok負責不碰"
+    },
+    {
+      "number": 333,
+      "title": "Add the flat-nailed ceiling field-rule page",
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/333",
+      "state": "MERGED",
+      "merged": true,
+      "mergedAt": "2026-10-23T18:40:27Z",
+      "headRefName": "grok/woodworking-field-rules-20261023",
+      "headRefOid": "7eaa359063b04a9f02aa72a05aeeca41ab17675a",
+      "mergeCommit": {
+        "oid": "425c092eaf16f90256d76433243baebde45163ac"
+      },
+      "closingIssuesReferences": {
+        "nodes": []
+      },
+      "category": "Grok負責不碰"
+    }
+  ],
+  "backlog": {
+    "git_blob": "610cd00186e7a11e1401f8c39dd7ab187dd80870",
+    "same_at_main_and_candidate": true,
+    "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "path": "BACKLOG.md",
+    "sha256": "ecfa7d3e3fa9895792f26ad47c51cafb6e2a95425b041205bc69983f2d50de50",
+    "raw_existing_packet_path": "/tmp/geo300-capacity-static-20261026/backlog/stdout.bin",
+    "snapshot_date_in_document": "2026-10-19",
+    "handling": "保留 2026-10-19 歷史內容；建議由 #325 負責人新增 2026-10-26 日期快照，不能直接抹除舊文。"
+  },
+  "limitations": [
+    "API 是 2026-10-26 10:53:57～11:00:35 UTC 的非原子快照；沒有逐 issue 下載全部留言，故不得宣稱完整語意／批准審核。",
+    "latest-comment 只取各指定 PR 最後一則；#324 是回覆，並非本輪直接重新取得它引用的較舊完整審查。",
+    "API mergeable 只代表機械可合併性，reviewDecision=null 不是批准，也不等同 READY-TO-MERGE。",
+    "GitHub PR baseRefOid 原樣保存；它可落後於 baseRefName 現在的分支 head，不把舊 baseOid 誤稱當前 main。",
+    "API 留言作者欄與同步文字不自動構成新的使用者批准；本快照不裁決 exact／P-189 白名單。",
+    "main 祖先判定不是該 issue 全部驗收；只有 #198 列為供負責人複核的關閉候選。",
+    "未執行編譯、重測試、清理、fetch、push、PR 或 issue mutation；只讀 API 與既有 Git objects。",
+    "第一次 historical-and-grok-status 因把 issue #230 當 PR 查而 API exit 1；保留原失敗與修正後 exit 0，這是盤點查詢錯誤而非產品失敗。"
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "reviewer": "/root/h_init_actual_review",
+  "reviewed_utc": "2026-10-25T07:09:05.356367+00:00",
+  "old_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "new_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "checks": 42095,
+  "groups": {
+    "identity": 2,
+    "result": 2,
+    "binding": 5,
+    "budget": 3,
+    "original_command": 26,
+    "original_stream": 44,
+    "physical": 34987,
+    "unchanged": 6975,
+    "metadata": 26,
+    "fixtures": 11,
+    "ignored": 1,
+    "refs": 2,
+    "fresh_git": 8,
+    "consumer": 3
+  },
+  "failures": [],
+  "exit": 0,
+  "actual_transition_accepted": true,
+  "materialized_files": 6997,
+  "materialized_bytes": 306790772,
+  "preservation_ref": "refs/codex-preserved/native-root-L-before-75a1e938-20261025T070635Z",
+  "changed_git_metadata": [
+    "index",
+    "HEAD",
+    "logs/HEAD"
+  ],
+  "fresh_readonly_commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout_bytes": 41,
+      "stdout_sha256": "73472da1551feb0fe0325b1c87dc30cc791fe2628a72b65df62757a620e9bed5",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit": 0,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "for-each-ref",
+        "--format=%(refname) %(objectname)"
+      ],
+      "exit": 0,
+      "stdout_bytes": 290,
+      "stdout_sha256": "a307ee4617568fc2a05bca54ed86771fcc231fc1890f9557bde49fd2a25ce818",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "refs/codex-preserved/native-root-L-before-75a1e938-20261025T070635Z"
+      ],
+      "exit": 0,
+      "stdout_bytes": 41,
+      "stdout_sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a",
+      "stderr": ""
+    }
+  ],
+  "bindings": {
+    "/tmp/geo337-native-root-transition-F8-apply-20261025/RESULT.json": "5e0f65a2abf983b582a1844d30695a8d5a50ec0abc1f805b26204a0ded473aa2",
+    "/tmp/geo337-native-root-transition-F8-apply-20261025/MATERIALIZED_BEFORE.json": "b933d532e527326f1f99ba2238ed7167d5d607de77427555080bedc3a4228b1e",
+    "/tmp/geo337-native-root-transition-F8-apply-20261025/MATERIALIZED_AFTER.json": "f5d3f38139c5a46d71989fc8d8dab863044e09742c323eff925bd4cfad167de2",
+    "/tmp/geo337-native-root-transition-F8-apply-20261025/FIXTURES_BEFORE.json": "8b6f8b4b652bfdfb15b29b3a1a8d20a5968172716f41990aec06ef430965a3ed",
+    "/tmp/geo337-resume-resource-review-20261025/TRANSITION_REQUEST.F8-apply.FINAL.json": "e93a560d50e64b8e5caef84356864383414c27bec1d08eb7bc5f7a82a2fc7b19"
+  },
+  "limits": [
+    "Ordinary source checkout accepted; no full123, native, browser or product gate executed by this review.",
+    "Prior request review had two reviewer temporal/schema mistakes (output already created by actual execution; BUDGET is a derived summary without exit field). Initial review preserved, subject request/tool unchanged. This report validates actual original fresh-output guard plus independent budget evidence."
+  ]
+}

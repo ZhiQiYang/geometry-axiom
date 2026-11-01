@@ -1,0 +1,368 @@
+{
+  "source_sha": "df66452e7a514032453bea93b8b18ab74d7b1457",
+  "archive": "ORIGINALS.tar.gz",
+  "archive_bytes": 11002057,
+  "archive_sha256": "2ce6d09e046d62efd1ef08cbe2d73318a58ca3ca9ebfaca1190bec3738cfd85c",
+  "member_count": 8529,
+  "original_exit": 0,
+  "all_original_bytes_roundtrip": true,
+  "original_bytes": 73911481,
+  "actual": {
+    "source_sha": "df66452e7a514032453bea93b8b18ab74d7b1457",
+    "actual_exit": 0,
+    "suites": [
+      {
+        "label": "wood-contact",
+        "methods": 14,
+        "actual_exit": 0,
+        "skipped": 0,
+        "compile_link_count": 183
+      },
+      {
+        "label": "contact-sources",
+        "methods": 15,
+        "actual_exit": 0,
+        "skipped": 0,
+        "compile_link_count": 85
+      },
+      {
+        "label": "reading-a",
+        "methods": 7,
+        "actual_exit": 0,
+        "skipped": 0,
+        "compile_link_count": 86
+      }
+    ],
+    "work": [
+      {
+        "phase": "fixed",
+        "actual_exit": 0,
+        "stdout": "CASE work faces=16 plane_comparisons=0\n",
+        "stderr": "",
+        "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+        "command": [
+          "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+          "work"
+        ]
+      },
+      {
+        "phase": "withdrawn",
+        "actual_exit": 1,
+        "stdout": "CASE work faces=16 plane_comparisons=84\n",
+        "stderr": "ASSERT:plane-cached-query-no-plane-search\n",
+        "executable_sha256": "b434fd26524b77b81694182e848a8bfa7762e738fd938e7167c97c25d1e931a0",
+        "command": [
+          "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-withdrawn-exe",
+          "work"
+        ]
+      },
+      {
+        "phase": "restored",
+        "actual_exit": 0,
+        "stdout": "CASE work faces=16 plane_comparisons=0\n",
+        "stderr": "",
+        "executable_sha256": "371446612107ef90bd458fe7fffcb51442683caf83fc680e0aa5abeb7ba2cbe8",
+        "command": [
+          "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-restored-exe",
+          "work"
+        ]
+      }
+    ],
+    "fine_controls": [
+      {
+        "label": "physical-ordinal",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE bounds faces=16 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "bounds"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:plane-linear-range-oracle\n",
+            "executable_sha256": "e6b38f79d0b33d1e5348e1ce35c57612f7ecc5d5a21e73fb626d040538a2cb64",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-physical-ordinal-exe",
+              "bounds"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE bounds faces=16 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "bounds"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "nonfirst-begin",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE bounds faces=16 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "bounds"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:plane-linear-range-oracle\n",
+            "executable_sha256": "fd512b667ecb350040e1fcb7c861fbe3ea66f13cba2a6c8bd35f85b16cbcd0aa",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-nonfirst-begin-exe",
+              "bounds"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE bounds faces=16 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "bounds"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "nonfirst-end",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE bounds faces=16 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "bounds"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:plane-linear-range-oracle\n",
+            "executable_sha256": "e2647fdb8a046705f2cc7583d1fb71271f539f3897df0cf445aa742d199b7cc1",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-nonfirst-end-exe",
+              "bounds"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE bounds faces=16 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "bounds"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "singleton-end",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE singleton faces=1 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "singleton"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:plane-linear-range-oracle\n",
+            "executable_sha256": "281c3924e90e50ec6ece04d3dce8ff693b3e0679b4aa051e6ab8fc1f5fba6e18",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-singleton-end-exe",
+              "singleton"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE singleton faces=1 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "singleton"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "truncated-plane",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE bounds faces=16 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "bounds"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:plane-linear-range-oracle\n",
+            "executable_sha256": "3f75c0762dcafc4dc879f039715934f5a1d9acf243d71abf5e4fb44930622952",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-truncated-plane-exe",
+              "bounds"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE bounds faces=16 plane_comparisons=0\n",
+            "stderr": "",
+            "executable_sha256": "923081645acbc2cadf6e4a5517002d9ce86503ab8dc0779e5839f7b5824f5699",
+            "command": [
+              "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/contact-plane-fixed-exe",
+              "bounds"
+            ]
+          }
+        ]
+      }
+    ],
+    "included_sources": [
+      {
+        "original": "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/isolated-woodworking/native/contact-plane-fixed-source.c",
+        "bytes": 27047,
+        "sha256": "88b33843f2c653c87f9d96f6db5725b0c964a5f43455d670849ca0550ebfc8fc",
+        "retained": "/workspace/geo343-plane-ranges-formal-r2-20261024/wood-contact/observed/native-inputs/bytes/88b33843f2c653c87f9d96f6db5725b0c964a5f43455d670849ca0550ebfc8fc"
+      },
+      {
+        "original": "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/isolated-woodworking/native/contact-plane-withdrawn-source.c",
+        "bytes": 26657,
+        "sha256": "bbe080dbfec1fbb3990cc1a31433a51352af611e9b990ba925d1ff5fceef49db",
+        "retained": "/workspace/geo343-plane-ranges-formal-r2-20261024/wood-contact/observed/native-inputs/bytes/bbe080dbfec1fbb3990cc1a31433a51352af611e9b990ba925d1ff5fceef49db"
+      },
+      {
+        "original": "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/isolated-woodworking/native/contact-plane-restored-source.c",
+        "bytes": 27047,
+        "sha256": "88b33843f2c653c87f9d96f6db5725b0c964a5f43455d670849ca0550ebfc8fc",
+        "retained": "/workspace/geo343-plane-ranges-formal-r2-20261024/wood-contact/observed/native-inputs/bytes/88b33843f2c653c87f9d96f6db5725b0c964a5f43455d670849ca0550ebfc8fc"
+      },
+      {
+        "original": "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/isolated-woodworking/native/contact-plane-physical-ordinal-source.c",
+        "bytes": 27034,
+        "sha256": "dd173bec7a1dde33c68f49adb8a1e27074aa5bf8b3c27dbf16644239bd786898",
+        "retained": "/workspace/geo343-plane-ranges-formal-r2-20261024/wood-contact/observed/native-inputs/bytes/dd173bec7a1dde33c68f49adb8a1e27074aa5bf8b3c27dbf16644239bd786898"
+      },
+      {
+        "original": "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/isolated-woodworking/native/contact-plane-nonfirst-begin-source.c",
+        "bytes": 27028,
+        "sha256": "b82086d21a815bfcbe31da3a7dec4b1c2ce58dfe4a400e6cd5103b20dbaa5a65",
+        "retained": "/workspace/geo343-plane-ranges-formal-r2-20261024/wood-contact/observed/native-inputs/bytes/b82086d21a815bfcbe31da3a7dec4b1c2ce58dfe4a400e6cd5103b20dbaa5a65"
+      },
+      {
+        "original": "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/isolated-woodworking/native/contact-plane-nonfirst-end-source.c",
+        "bytes": 27031,
+        "sha256": "f872036bd9a62030cfa88e0a5e3d6b66a5dd29d67738697128a9a43c23e8a7e0",
+        "retained": "/workspace/geo343-plane-ranges-formal-r2-20261024/wood-contact/observed/native-inputs/bytes/f872036bd9a62030cfa88e0a5e3d6b66a5dd29d67738697128a9a43c23e8a7e0"
+      },
+      {
+        "original": "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/isolated-woodworking/native/contact-plane-singleton-end-source.c",
+        "bytes": 27049,
+        "sha256": "7c01b1f98e58c1685627c02510c0f6023e014ade0087455eb4ac96983c5abbec",
+        "retained": "/workspace/geo343-plane-ranges-formal-r2-20261024/wood-contact/observed/native-inputs/bytes/7c01b1f98e58c1685627c02510c0f6023e014ade0087455eb4ac96983c5abbec"
+      },
+      {
+        "original": "/workspace/geo343-plane-ranges-formal-r2-tmp-20261024/geometry-tests/geo261-n1a-crm2zoci/isolated-woodworking/native/contact-plane-truncated-plane-source.c",
+        "bytes": 27067,
+        "sha256": "fd91d1135145b0073912d943664eeac890064a2b26b082db0afd4bf22b266b32",
+        "retained": "/workspace/geo343-plane-ranges-formal-r2-20261024/wood-contact/observed/native-inputs/bytes/fd91d1135145b0073912d943664eeac890064a2b26b082db0afd4bf22b266b32"
+      }
+    ],
+    "new_wall_measurement": false,
+    "old_coordinate_control": [
+      {
+        "phase": "baseline",
+        "actual_exit": 0,
+        "stdout": "",
+        "stderr": "",
+        "executable_sha256": "2306b81214f0d73a8a115a0b4fd9bdbfd6072799ab07bc154ec7633d5d1abf25"
+      },
+      {
+        "phase": "mutant",
+        "actual_exit": 1,
+        "stdout": "",
+        "stderr": "ASSERT:indexed-full-coordinate-plane\n",
+        "executable_sha256": "d7c1bbe73c05dd826bd2c59c1316db1fd5b312ad3efa9520c28d42063b15466b"
+      },
+      {
+        "phase": "restored",
+        "actual_exit": 0,
+        "stdout": "",
+        "stderr": "",
+        "executable_sha256": "2306b81214f0d73a8a115a0b4fd9bdbfd6072799ab07bc154ec7633d5d1abf25"
+      }
+    ],
+    "fixture_repair_proof": {
+      "actual_outer_exit": 0,
+      "original_phase_exits": [
+        0,
+        1,
+        0
+      ],
+      "source_restored": true,
+      "exact_failure": "AssertionError: 1 != 0 : Guard survived: indexed-plane-coordinate",
+      "original_locator": "/workspace/geo343-plane-fixture-proof-20261024"
+    },
+    "total_methods": 36,
+    "compile_link_count": 354,
+    "semantic_cases_across_whole_withdrawal": 39,
+    "prior_r1": {
+      "source_sha": "7c4a40a71fe46242c302efaa85f1a4d13df0c19a",
+      "actual_exit": 1,
+      "wood_passed": 13,
+      "wood_failed": 1,
+      "remaining_suites": "UNRUN_ENVIRONMENT original100MiB",
+      "failure": "AssertionError: 1 != 0 : Guard survived: indexed-plane-coordinate",
+      "raw_locator": "/workspace/geo343-plane-ranges-formal-20261024"
+    }
+  },
+  "created_utc": "2026-10-24T05:24:22.064337+00:00",
+  "limits": [
+    "Original36-method targeted acceptance, not final full native/browser/ledger/architecture or O2 wall performance.",
+    "Original native text-mode output is retained as decoded text; binary Bridge/run streams are labelled separately.",
+    "Whole and fine variants were actual compiler inputs retained before launch; original NativeBuild cleanup remains unchanged; ELF payloads are not archived.",
+    "Prior source7c4 formal red and both environment-unrun suites are retained; Fdf664 source repair and complete original36-method acceptance plus test-witness0/1/0 are distinct."
+  ]
+}

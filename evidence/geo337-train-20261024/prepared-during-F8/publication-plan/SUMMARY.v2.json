@@ -1,0 +1,127 @@
+{
+  "schema": "geo337-prepared-during-F8-selected-publication-manifest/1",
+  "revision": "v2 adds current QUESTIONS original attempt/resume streams and accepted document peer only",
+  "updated_utc": "2026-10-25T08:30:20.719936+00:00",
+  "source_F8": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "expected_parent_at_preparation": "ecdcc22c78d3fcbd44847674b7b38965a5edbfea",
+  "total_files": 877,
+  "total_bytes": 5825898,
+  "limit_bytes": 8388608,
+  "packages": [
+    {
+      "package": "f9-nonperf-v2/37-argv-plan",
+      "files": 4,
+      "bytes": 44584
+    },
+    {
+      "package": "f9-nonperf-v2/rename-actual-peer",
+      "files": 8,
+      "bytes": 10303
+    },
+    {
+      "package": "f9-nonperf-v2/rename-proof",
+      "files": 48,
+      "bytes": 26145
+    },
+    {
+      "package": "f9-nonperf-v2/tool-plan-peer",
+      "files": 1,
+      "bytes": 8989
+    },
+    {
+      "package": "f9-nonperf-v2/tools",
+      "files": 19,
+      "bytes": 144966
+    },
+    {
+      "package": "full123-collector-v2/peer",
+      "files": 2,
+      "bytes": 4176
+    },
+    {
+      "package": "full123-collector-v2/tools",
+      "files": 27,
+      "bytes": 64978
+    },
+    {
+      "package": "issue341-cost-v2/peer",
+      "files": 12,
+      "bytes": 76470
+    },
+    {
+      "package": "issue341-cost-v2/tools",
+      "files": 127,
+      "bytes": 417435
+    },
+    {
+      "package": "issue348/diagnostic-peers",
+      "files": 4,
+      "bytes": 37876
+    },
+    {
+      "package": "issue348/diagnostic-tools",
+      "files": 177,
+      "bytes": 683323
+    },
+    {
+      "package": "issue348/readonly-preparation",
+      "files": 85,
+      "bytes": 1848096
+    },
+    {
+      "package": "issue348/synthetic-c-actual-peer",
+      "files": 3,
+      "bytes": 68857
+    },
+    {
+      "package": "issue348/synthetic-c-protocol",
+      "files": 183,
+      "bytes": 1138246
+    },
+    {
+      "package": "memo-copy-v2/peer",
+      "files": 14,
+      "bytes": 402061
+    },
+    {
+      "package": "memo-copy-v2/tools",
+      "files": 44,
+      "bytes": 586157
+    },
+    {
+      "package": "shared-original-tools",
+      "files": 13,
+      "bytes": 94886
+    },
+    {
+      "package": "questions-current/doc-peer",
+      "files": 5,
+      "bytes": 14162
+    },
+    {
+      "package": "questions-current/document",
+      "files": 1,
+      "bytes": 13800
+    },
+    {
+      "package": "questions-current/first-attempt",
+      "files": 28,
+      "bytes": 38343
+    },
+    {
+      "package": "questions-current/resume",
+      "files": 72,
+      "bytes": 102045
+    }
+  ],
+  "collection_executed": false,
+  "published": false,
+  "source_freeze": "僅讀已終態／已審準備件，原 anchor 與 leaf pins 相符；lstat 讀取前後及全清單末端未變。未 chmod 或鎖定來源；出版前仍須逐葉重驗。",
+  "formal_boundaries": [
+    "F9 是 UNBOUND 來源；37 argv 為計畫而非已跑37項。",
+    "full123 collector 尚未對活動 run 凍結／收件／採用；metadata0/1/0不等於帳本全123通過。",
+    "memo copy-v2 只靜態及合成；正式同F8撤回／恢復、175ABC與profile尚未由此準備執行。",
+    "#341 cost-v2 只靜態／純metadata與protocol guards；產品C編譯、成本測量尚未由此準備執行。",
+    "#348 合成 stub C 可執行檔明列為 synthetic；產品 ELF、N512、性能根因及正式gate未執行。"
+  ]
+}

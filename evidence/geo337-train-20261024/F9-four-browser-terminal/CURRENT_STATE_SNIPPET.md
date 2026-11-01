@@ -1,0 +1,1 @@
+固定F9四個原browser job的workflow／wrapper／CI gate皆0：documents47／0、63.197160秒≤10分鐘；grid356／0、464.984065秒≤15分鐘；space242／0、209.339005秒≤15分鐘；timber79／0、124.531604秒≤20分鐘。grid／timber保原job範圍，不冒full-canvas golden／full-space。九包31,278,535B已收件，2411regular／125,944,310B＋8links，package actual17156／0；本草案未發布，需正常push及remote完整hash後才交付。native1、#314當次outer1/indexguard仍不因本批消失，新v3成果另待真驗收。

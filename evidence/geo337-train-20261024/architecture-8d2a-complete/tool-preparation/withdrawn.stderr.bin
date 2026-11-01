@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/geo337-architecture-zero-delta-tool-20261024/selftest_contracts.py", line 20, in <module>
+    assert set(manifest['policy']['forbiddenIdentifiers'])-set(previous_manifest['policy']['forbiddenIdentifiers'])==ADDED
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

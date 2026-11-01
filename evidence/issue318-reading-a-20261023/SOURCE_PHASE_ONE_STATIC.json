@@ -1,0 +1,35 @@
+{
+  "activity": "AST/JSON parsing and hashes only; no tests/product execution",
+  "exit": 0,
+  "candidate_parent": "ec02f79ea28d01ea1658c337911cdb85da0ecba0",
+  "files": [
+    {
+      "path": "公理層.md",
+      "bytes": 322864,
+      "sha256": "27b12f3838422f6c37c9c21d04f241112ddf7e6e8a8827132bd633fcf0ab5345"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+      "bytes": 138227,
+      "sha256": "4c271933e123b296d6c9240f2ee4f4ae045f1dc59173b8c6aa9acd12e0cd4e01"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/reading_a_cases.py",
+      "bytes": 1575,
+      "sha256": "b7d5ad2dcfbdedeed03998e4380d10437936e0e1f5c4e4845fd077ec9a9cd73f"
+    },
+    {
+      "path": "geometry-core/framing-template/oracle/reading-a-expected-buildable.json",
+      "bytes": 109823,
+      "sha256": "b5e4e707a4fc4b2710db237d0252d67104e0a555a50a875e79de2ad43c7d46c0"
+    },
+    {
+      "path": "tests/test_geo318_reading_a_oracle.py",
+      "bytes": 6714,
+      "sha256": "0b7cf6a24be792f4182e672cc22763891cc20391432423f33f18be417f06a8e7"
+    }
+  ],
+  "new_test_methods": 12,
+  "canonical_deferred": true,
+  "native_common_untouched": true
+}

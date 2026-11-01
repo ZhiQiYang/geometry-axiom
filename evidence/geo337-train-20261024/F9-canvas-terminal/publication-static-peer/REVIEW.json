@@ -1,0 +1,31 @@
+{
+  "exit_code": 0,
+  "verdict": "ACCEPTED_CANVAS_PUBLICATION_PREPARATION_V2",
+  "checks": 4269,
+  "manifest_sha256": "08c7038c712bb7decefe409a6c41eb0da81fc6c66dacb1fc57e148e120c71b4d",
+  "body_sha256": "ce552cda6a2f102342ff5cfa5aade57235a70364bcef2ceca622e153c35cb35a",
+  "progress_sha256": "bb54ef9de768ac8d319520e5f804dddac193b971fab49b5841875c986ab6ee86",
+  "next_delta_sha256": "1b24be2510efe77986783a12d689c8f66e04f34ee7f44edc6046c53d71b72d7b",
+  "files": 630,
+  "bytes": 13857990,
+  "original_71_unchanged": true,
+  "original_progress_bytes_preserved": 110515,
+  "preload_commands": 108,
+  "preload_exits": {
+    "0": 104,
+    "1": 4
+  },
+  "preloaded_archives": 4,
+  "blocking_findings": [],
+  "created_utc": "2026-10-25T12:23:05.660887+00:00",
+  "manual_review": [
+    "正文相對D1c601精確差分：canvas終態、新comparison單項0且待peer/公開、母E CI空清單、native既有scope根因草案；原R8五值與正式outer1及其他UNRUN保全。",
+    "單一current矩陣；110515B完整歷史原樣在details下。SOURCEPLAN五hash-only及socketmetadata界線、預期P38例外1保留。",
+    "私有index另案，不聲稱這批封存；Git permanent alternate store不可清除。"
+  ],
+  "limitations": [
+    "只審發布準備與既有preload實績，尚未Git commit/push；不得將此peer0冒產品gate或發布成功。",
+    "沿用已核5396/0的tar逐member結果，本次只重核4archive hash/ordinaryGit blob；沒有重跑產品或collector。",
+    "新comparison僅核終態小receipt，本次不代175/350逐列peer。NEXT需root真發布後綁E/D。"
+  ]
+}

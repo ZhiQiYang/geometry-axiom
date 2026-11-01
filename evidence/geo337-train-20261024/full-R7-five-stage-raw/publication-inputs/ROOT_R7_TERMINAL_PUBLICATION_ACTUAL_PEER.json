@@ -1,0 +1,22 @@
+{
+  "schema": "root-R7-small-terminal-actual-publication-peer-v1",
+  "checks": 5226,
+  "exit_code": 0,
+  "findings": [],
+  "product_source": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "parent": "597bce63e296c85e64d33ca4496f167a599f0848",
+  "evidence_head": "bd5df6b7fb3c563fa10d0e4cfd37e2ee3ca2b99e",
+  "original_result_sha256": "b71e82f73fa12410adf571322f794bd4a82f91e4f7e71c3859d08a17fcadd931",
+  "manifest_sha256": "53ceef8b0b3c22b434ac64c093b132f1026b55724dd35655d467e89e3926994e",
+  "original_Git_commands": 602,
+  "original_readonly_Git_commands": 5,
+  "new_readonly_Git_commands": 5,
+  "files": 399,
+  "logical_bytes": 1122842,
+  "large_archive_body_reads": 0,
+  "limits": [
+    "Original full Git streams plus small metadata independent blob checks and five fixed local metadata commands; no network, archive body cat-file/hash or test run.",
+    "Only small terminal/source adoption/current CI/check/tool/peer originals are published. Full R7 raw archive publication remains separate; no tar member or ELF body read.",
+    "F7 R7 source outcomes N64green/N16red/3exact red unchanged; stage0/0/1/0/0 and CLI0/0/1/1/1 preserved. Original CI failure/account constraints not waived; ledgercheck1 remains120stale/3retired."
+  ]
+}

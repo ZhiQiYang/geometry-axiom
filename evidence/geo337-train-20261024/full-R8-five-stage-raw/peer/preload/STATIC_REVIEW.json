@@ -1,0 +1,16 @@
+{
+  "schema": "geo337-r8-preload-wrapper-static-peer/1",
+  "utc": "2026-10-25T07:06:40.517545+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "wrapper_sha256": "e9a511d9c56f214dc93f90ae6e656c3874d01e2681861f5ec6d641ce0416e4f2",
+  "exact_previous_wrapper_after_parameter_reversal": true,
+  "package_sha256": "823ed195eb27a0dd5a4e96994fd01f0e37482f38c73cd03aad134dd6eee5dbbc",
+  "core_tool_unchanged": true,
+  "permanent_store_lease_and_alternate_unchanged": true,
+  "reviewer_executed_preload": false,
+  "limits": [
+    "Runtime all-ref/index/HEAD/source/hash checks remain mandatory in original core.",
+    "No new tests, archive hash reread, Git writes or object-store mutations performed by reviewer."
+  ]
+}

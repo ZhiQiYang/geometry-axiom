@@ -1,0 +1,1539 @@
+{
+  "schema": "geo324-native43-publication-adversarial-peer/1",
+  "source_sha": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "evidence_head": "cfdfa078abb38a46bda72e10056ddcc0ef74fb42",
+  "prbody_head": "782721b20243665e693729b6116d45d8ea4d30ba",
+  "check_count": 359,
+  "checks": [
+    {
+      "name": "E evidenceonly against S",
+      "pass": true
+    },
+    {
+      "name": "archive original pin",
+      "pass": true
+    },
+    {
+      "name": "85 inventory no exclusion",
+      "pass": true
+    },
+    {
+      "name": "member regular safe launcher/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes launcher/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes launcher/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe launcher/RESULT.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes launcher/RESULT.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes launcher/RESULT.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe launcher/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes launcher/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes launcher/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe launcher/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes launcher/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes launcher/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe launcher/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes launcher/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes launcher/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe launcher/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes launcher/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes launcher/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe launcher/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes launcher/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes launcher/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe launcher/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes launcher/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes launcher/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/INPUTS_AFTER.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/INPUTS_AFTER.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/INPUTS_AFTER.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/INPUTS_BEFORE.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/INPUTS_BEFORE.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/INPUTS_BEFORE.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/REQUEST.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/binaries/bridge",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/binaries/bridge",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/binaries/bridge",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/binaries/bridge.fingerprint.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/binaries/bridge.fingerprint.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/binaries/bridge.fingerprint.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/binaries/build.lock",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/binaries/build.lock",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/binaries/build.lock",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/binaries/model-base",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/binaries/model-base",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/binaries/model-base",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/binaries/model-base.fingerprint.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/binaries/model-base.fingerprint.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/binaries/model-base.fingerprint.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/binaries/smoke/model-base/empty.scene",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/binaries/smoke/model-base/empty.scene",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/binaries/smoke/model-base/empty.scene",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/receipt.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000001/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000001/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000001/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000001/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000001/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000002/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000002/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000002/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000002/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000002/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000003/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000003/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000003/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000003/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000003/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000004/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000004/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000004/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000004/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000004/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000005/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000005/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000005/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000005/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000005/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000006/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000006/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000006/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000006/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000006/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000007/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000007/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000007/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000007/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000007/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000008/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000008/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000008/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000008/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000008/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000009/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000009/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000009/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000009/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000009/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000010/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000010/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000010/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000010/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000010/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000011/request.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000011/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000011/stderr.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000011/stdin.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/subcommands/000011/stdout.bin",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/test_geo261_default_native/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/test_geo261_default_native/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/test_geo261_default_native/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/test_geo261_default_native/unittest.log",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/test_geo261_default_native/unittest.log",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/test_geo261_default_native/unittest.log",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/test_geometry_host_native/result.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/test_geometry_host_native/result.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/test_geometry_host_native/result.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe native43/test_geometry_host_native/unittest.log",
+      "pass": true
+    },
+    {
+      "name": "member bytes native43/test_geometry_host_native/unittest.log",
+      "pass": true
+    },
+    {
+      "name": "original bytes native43/test_geometry_host_native/unittest.log",
+      "pass": true
+    },
+    {
+      "name": "member regular safe prepared-tools/FROZEN_MANIFEST.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes prepared-tools/FROZEN_MANIFEST.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes prepared-tools/FROZEN_MANIFEST.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe prepared-tools/INPUT_MATERIALIZATION_PLAN.json",
+      "pass": true
+    },
+    {
+      "name": "member bytes prepared-tools/INPUT_MATERIALIZATION_PLAN.json",
+      "pass": true
+    },
+    {
+      "name": "original bytes prepared-tools/INPUT_MATERIALIZATION_PLAN.json",
+      "pass": true
+    },
+    {
+      "name": "member regular safe prepared-tools/README.md",
+      "pass": true
+    },
+    {
+      "name": "member bytes prepared-tools/README.md",
+      "pass": true
+    },
+    {
+      "name": "original bytes prepared-tools/README.md",
+      "pass": true
+    },
+    {
+      "name": "member regular safe prepared-tools/build_private_native.py",
+      "pass": true
+    },
+    {
+      "name": "member bytes prepared-tools/build_private_native.py",
+      "pass": true
+    },
+    {
+      "name": "original bytes prepared-tools/build_private_native.py",
+      "pass": true
+    },
+    {
+      "name": "member regular safe prepared-tools/launch_native43.py",
+      "pass": true
+    },
+    {
+      "name": "member bytes prepared-tools/launch_native43.py",
+      "pass": true
+    },
+    {
+      "name": "original bytes prepared-tools/launch_native43.py",
+      "pass": true
+    },
+    {
+      "name": "member regular safe prepared-tools/run_native_importers.py",
+      "pass": true
+    },
+    {
+      "name": "member bytes prepared-tools/run_native_importers.py",
+      "pass": true
+    },
+    {
+      "name": "original bytes prepared-tools/run_native_importers.py",
+      "pass": true
+    },
+    {
+      "name": "member regular safe tools/capture.py",
+      "pass": true
+    },
+    {
+      "name": "member bytes tools/capture.py",
+      "pass": true
+    },
+    {
+      "name": "original bytes tools/capture.py",
+      "pass": true
+    },
+    {
+      "name": "exact archive members",
+      "pass": true
+    },
+    {
+      "name": "nine142 no syntheticaggregate",
+      "pass": true
+    },
+    {
+      "name": "prior seven rows exact",
+      "pass": true
+    },
+    {
+      "name": "original row test_geometry_host_sources",
+      "pass": true
+    },
+    {
+      "name": "original row test_geometry_source_runtime",
+      "pass": true
+    },
+    {
+      "name": "original row test_geometry_kernel_runtime",
+      "pass": true
+    },
+    {
+      "name": "original row test_rectangular_python",
+      "pass": true
+    },
+    {
+      "name": "original row test_geometry_host_world",
+      "pass": true
+    },
+    {
+      "name": "original row test_geometry_kernel_compatibility",
+      "pass": true
+    },
+    {
+      "name": "original row test_domain_source_pins",
+      "pass": true
+    },
+    {
+      "name": "original row test_geometry_host_native",
+      "pass": true
+    },
+    {
+      "name": "original row test_geo261_default_native",
+      "pass": true
+    },
+    {
+      "name": "new result exact test_geometry_host_native",
+      "pass": true
+    },
+    {
+      "name": "new receipt exact test_geometry_host_native",
+      "pass": true
+    },
+    {
+      "name": "new result exact test_geo261_default_native",
+      "pass": true
+    },
+    {
+      "name": "new receipt exact test_geo261_default_native",
+      "pass": true
+    },
+    {
+      "name": "C module30/13",
+      "pass": true
+    },
+    {
+      "name": "16 unique4pass12unrun",
+      "pass": true
+    },
+    {
+      "name": "unrun null",
+      "pass": true
+    },
+    {
+      "name": "importers actualcommand binding",
+      "pass": true
+    },
+    {
+      "name": "receipt pointer",
+      "pass": true
+    },
+    {
+      "name": "predicates untouched",
+      "pass": true
+    },
+    {
+      "name": "no selfindex and incomplete12",
+      "pass": true
+    },
+    {
+      "name": "body fixed hash",
+      "pass": true
+    },
+    {
+      "name": "body unique exactmatrix",
+      "pass": true
+    },
+    {
+      "name": "body bindings and limits",
+      "pass": true
+    },
+    {
+      "name": "publication18",
+      "pass": true
+    },
+    {
+      "name": "pub exit 0",
+      "pass": true
+    },
+    {
+      "name": "pub stream 0 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 0 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 0 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 1",
+      "pass": true
+    },
+    {
+      "name": "pub stream 1 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 1 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 1 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 2",
+      "pass": true
+    },
+    {
+      "name": "pub stream 2 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 2 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 2 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 3",
+      "pass": true
+    },
+    {
+      "name": "pub stream 3 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 3 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 3 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 4",
+      "pass": true
+    },
+    {
+      "name": "pub stream 4 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 4 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 4 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 5",
+      "pass": true
+    },
+    {
+      "name": "pub stream 5 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 5 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 5 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 6",
+      "pass": true
+    },
+    {
+      "name": "pub stream 6 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 6 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 6 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 7",
+      "pass": true
+    },
+    {
+      "name": "pub stream 7 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 7 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 7 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 8",
+      "pass": true
+    },
+    {
+      "name": "pub stream 8 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 8 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 8 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 9",
+      "pass": true
+    },
+    {
+      "name": "pub stream 9 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 9 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 9 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 10",
+      "pass": true
+    },
+    {
+      "name": "pub stream 10 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 10 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 10 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 11",
+      "pass": true
+    },
+    {
+      "name": "pub stream 11 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 11 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 11 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 12",
+      "pass": true
+    },
+    {
+      "name": "pub stream 12 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 12 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 12 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 13",
+      "pass": true
+    },
+    {
+      "name": "pub stream 13 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 13 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 13 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 14",
+      "pass": true
+    },
+    {
+      "name": "pub stream 14 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 14 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 14 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 15",
+      "pass": true
+    },
+    {
+      "name": "pub stream 15 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 15 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 15 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 16",
+      "pass": true
+    },
+    {
+      "name": "pub stream 16 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 16 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 16 stdin",
+      "pass": true
+    },
+    {
+      "name": "pub exit 17",
+      "pass": true
+    },
+    {
+      "name": "pub stream 17 stdout",
+      "pass": true
+    },
+    {
+      "name": "pub stream 17 stderr",
+      "pass": true
+    },
+    {
+      "name": "pub stream 17 stdin",
+      "pass": true
+    },
+    {
+      "name": "published remote E observed",
+      "pass": true
+    },
+    {
+      "name": "published remote body observed",
+      "pass": true
+    }
+  ],
+  "findings": [],
+  "exit_code": 0,
+  "archive_sha256": "94aba5eb4e1c439b8c3bbf6500661fcc677b936b5d5361fd42457a8849c43097",
+  "git_reads": [
+    {
+      "argv": [
+        "diff",
+        "--name-only",
+        "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+        "cfdfa078abb38a46bda72e10056ddcc0ef74fb42"
+      ],
+      "exit": 0,
+      "stdout_sha256": "6ebfbe9b42370c486f254b0c2d99a707faef045633d9274954306ce4a6f364e0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "cfdfa078abb38a46bda72e10056ddcc0ef74fb42:evidence/geo324-final-57b68014/raw/two-native-importer-modules-57b68014.tar.gz"
+      ],
+      "exit": 0,
+      "stdout_sha256": "94aba5eb4e1c439b8c3bbf6500661fcc677b936b5d5361fd42457a8849c43097",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "cfdfa078abb38a46bda72e10056ddcc0ef74fb42:evidence/geo324-final-57b68014/raw/two-native-importer-modules-57b68014.inventory.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "325cb7ffe6856987b311785742618d269ae9ed2c6d1e237b0d22fa728a3a7a61",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "cfdfa078abb38a46bda72e10056ddcc0ef74fb42:evidence/geo324-final-57b68014/receipts/importers-nine-modules.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "24d38591826d981f08560be338f4c512ca5410c1a9a041eeba704ccc4db9014f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "6a7cfab60b78441e4d0bbcccf4c82ae103ef34ab:evidence/geo324-final-57b68014/receipts/pure-python99.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "7b41b62ed700ae10225e72436ffe50370f2ee670b2fabbea6cd9b0b3dc5629c8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "cfdfa078abb38a46bda72e10056ddcc0ef74fb42:evidence/geo324-final-57b68014/CURRENT_STATE.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "466d14435c3ce18b36b2a2ed4528ffb3da0ea8e91658bcab52ac18c3b311a8f6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "cfdfa078abb38a46bda72e10056ddcc0ef74fb42:evidence/geo324-final-57b68014/receipts/importers-nine-modules.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "24d38591826d981f08560be338f4c512ca5410c1a9a041eeba704ccc4db9014f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "cfdfa078abb38a46bda72e10056ddcc0ef74fb42:evidence/geo324-final-57b68014/PACKAGE_MANIFEST.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "38a9c72afb4a00dc40ba88d548b6cec0602e1423f4533d5ea890f468548d3b71",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "show",
+        "782721b20243665e693729b6116d45d8ea4d30ba:PR_BODY.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "fd9948064680a02dacb846cf942461fdf0d8723024a58dd5d61928668b8ebb67",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "固定Git E/D、85原archive members逐bytes等本地原件、原30/13索引與已核99七列、唯一current16矩陣、publisher18原commands；不重測、不重審全部歷史package。",
+  "limits": [
+    "actual C43另由noWood29746checks0審核，本報告為公開封裝與聲稱邊界核驗。",
+    "142是指定九原module，原run_all aggregate/fullnative/browser/ledger/架構12列仍未跑。",
+    "未新連網；只核原publisher push/lsremote輸出。"
+  ]
+}

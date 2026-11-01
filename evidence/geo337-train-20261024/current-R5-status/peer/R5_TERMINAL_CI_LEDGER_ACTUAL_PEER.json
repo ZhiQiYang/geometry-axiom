@@ -1,0 +1,90 @@
+{
+  "schema": "R5-terminal-projection-current-CI-ledger-actual-peer/1",
+  "checks": 671,
+  "exit_code": 0,
+  "findings": [],
+  "summary_sha256": "3b8ed2e4c82826cdf9a91039c3d639004c1edbe17aad40e8bc7ed1447d84ac89",
+  "source_sha": "a22df116c7e9f6b7d074451f1c8052d59e7e4f3e",
+  "evidence_head_at_checks": "39a48b7309f8f037543cee7f016f51837f3ff39c",
+  "original_file_bindings": {
+    "receipt": {
+      "path": "/workspace/g337323R5/receipt.json",
+      "bytes": 10429,
+      "sha256": "30b0f9ab592c88a1aa5e883ce49c5a4345daf9b66471fc2801914bb2374cbb02"
+    },
+    "performance": {
+      "path": "/workspace/g337323R5/evidence/performance.json",
+      "bytes": 11372,
+      "sha256": "f8eda8fb61b2bd96e67534d814a6cdcef67305b1e47c4231c5dd058f3ef8f2a8"
+    },
+    "equivalence": {
+      "path": "/workspace/g337323R5/evidence/equivalence.json",
+      "bytes": 283305,
+      "sha256": "1db65b1b135d6695aed228c348677dc2f1b281dc165b57adc03842351538f38d"
+    },
+    "profile_counts": {
+      "path": "/workspace/g337323R5/evidence/profile-counts.json",
+      "bytes": 3594,
+      "sha256": "f8660a92c29b56f22b2fe1c99257e04031ffe8c94e42210e56da64b2ad9cfa35"
+    },
+    "launcher": {
+      "path": "/workspace/geo323-final-r5-stage-tools-20261024/launch-five/RESULT.json",
+      "bytes": 11614,
+      "sha256": "930e04b2675ca38aed6eae3f4338eda5442b963d466a267fb69ce1f2292f221d"
+    },
+    "outer": {
+      "path": "/workspace/geo323-final-r5-stage-tools-20261024/outer-five/RESULT.json",
+      "bytes": 3463,
+      "sha256": "45537b83461d0074d0e29a5aad0fda95de4e532045578ec81873bfbc44d2783d"
+    }
+  },
+  "CI_summary_sha256": "345a21a7d9b2a33fc7d7d888c5b1bce148a2cf89cd86c034330bd67eb6e2da32",
+  "ledger_result_sha256": "5bc361e63ac061b38d1dbf36fffd330bff523a4c0642ed365992d82e3606785e",
+  "stage_execution_exits": [
+    0,
+    0,
+    1,
+    0,
+    0
+  ],
+  "cumulative_CLI_exits": [
+    0,
+    0,
+    1,
+    1,
+    1
+  ],
+  "outer_exit": 1,
+  "sample_count": 36,
+  "N64_fix_main": 1.3369644933292553,
+  "source_call_ratio": 4.407618425509266,
+  "compare_failures": [
+    [
+      "_role_priority_mutant.scene",
+      "stdout"
+    ],
+    [
+      "_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "stdout"
+    ],
+    [
+      "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "stdout"
+    ]
+  ],
+  "CI_runs": [
+    40063478544,
+    40063689734
+  ],
+  "CI_read_commands": 18,
+  "ledger_check_exit": 1,
+  "ledger_stale": 120,
+  "ledger_retired": 3,
+  "limits": [
+    "Only small terminal projection, original36 sample raw, four gprof flat outputs, five CLI and two outer raw plus current CI/check reads inspected. Full compare graph/trace/raw package remains separate and not certified by this review.",
+    "No C, perf sampling, network, source changes or threshold changes. Per-sample original perf timer preserved; recorder wall seconds not substituted.",
+    "Original source_role heuristic labels retained; acceptance SHA, stage source guards and actual executable paths bind attribution.",
+    "Current CI failed before runner/steps owing explicit account payment OR spending limit; no waiver or product pass inferred.",
+    "Ledger check red is freshness120stale/3retired, not invalid mutants or a regenerated ledger. All remaining currentR full gates stay UNRUN."
+  ]
+}

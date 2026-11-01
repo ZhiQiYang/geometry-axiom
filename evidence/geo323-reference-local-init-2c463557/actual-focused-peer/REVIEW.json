@@ -1,0 +1,103 @@
+{
+  "reviewed_utc": "2026-10-25T06:39:57.635567+00:00",
+  "reviewer": "/root/h_init_actual_review",
+  "scope": "read-only existing product diff and focused actual receipts; no heavy rerun, no branch write",
+  "source_sha": "2c4635577a8fcb11e88b346547f7bb1c7b739fb7",
+  "base_sha": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "changed_paths": [
+    "geometry-core/references.inc",
+    "tests/geo337_reference_local_init_harness.c",
+    "tests/run_all.expected.json",
+    "tests/test_geo261_load_residual.py"
+  ],
+  "checks": 1777,
+  "groups": {
+    "source": 25,
+    "identity": 10,
+    "closure_git": 219,
+    "closure_disk": 219,
+    "result": 15,
+    "outer_stream": 27,
+    "observed_stream": 338,
+    "observed_environment": 338,
+    "native_log": 178,
+    "proof": 28,
+    "compiler": 7,
+    "compiler_input": 366,
+    "tool_pin": 7
+  },
+  "failures": [],
+  "exit": 0,
+  "source_manifest_leaves": 219,
+  "native_cases": 89,
+  "observed_commands": 169,
+  "retained_unique_compiler_inputs": 189,
+  "proof": [
+    {
+      "phase": "fixed",
+      "exit": 0,
+      "stdout": "reference-local-calibration calls=1 bytes=127584 context_bytes=127584\nreference-local-work scope=linux-link-wrap calls=0 bytes=0 note_calls=0 note_bytes=0 context_bytes=127584\nPASS work\n",
+      "stderr": "",
+      "executable_sha256": "d7ae9966e197d4e492db5cc623872b723e91bdaacb3370d6a0790c67af1c7e39"
+    },
+    {
+      "phase": "withdrawn",
+      "exit": 1,
+      "stdout": "reference-local-calibration calls=1 bytes=127584 context_bytes=127584\nreference-local-work scope=linux-link-wrap calls=2 bytes=255168 note_calls=2 note_bytes=255168 context_bytes=127584\n",
+      "stderr": "ASSERT:persistent-reference-local-zero-work line=166 expr=local_zero_calls==0&&local_zero_bytes==0\n",
+      "executable_sha256": "777bcf627452a7fe47bdf8019fdcc4fcedd74bd17d1f226a0c2705cf5ffc6fbd"
+    },
+    {
+      "phase": "restored",
+      "exit": 0,
+      "stdout": "reference-local-calibration calls=1 bytes=127584 context_bytes=127584\nreference-local-work scope=linux-link-wrap calls=0 bytes=0 note_calls=0 note_bytes=0 context_bytes=127584\nPASS work\n",
+      "stderr": "",
+      "executable_sha256": "17533d2952d322c8026cf1abd87f8293386bb563990ec17781545bc27f70633c"
+    }
+  ],
+  "bindings": {
+    "/tmp/geo337-reference-local-init-formal-20261024/RESULT.json": {
+      "bytes": 58525,
+      "sha256": "aa33ff2e67a397d6d618b12c5b2923e2d98ddb7de35b37c30be2c9e9cc843135"
+    },
+    "/tmp/geo337-reference-local-init-formal-launch-20261024/RESULT.json": {
+      "bytes": 3286,
+      "sha256": "16b96f1d3997ad83a96f5a7bdbe91e34ca4889ffe53971219ebc48c7f7d4b7f5"
+    },
+    "/tmp/geo337-reference-local-init-formal-20261024/load-residual/runner.json": {
+      "bytes": 356,
+      "sha256": "d2d36a74d1bff572686635c8728d10fa7b864eb4f27e8496868003207d3f19e7"
+    },
+    "/tmp/geo337-reference-local-init-formal-20261024/load-residual/unittest.log": {
+      "bytes": 114,
+      "sha256": "88893458bfe66b4301b443357c1375c8c010752209e9c11493132d1b200447ed"
+    },
+    "/tmp/geo337-reference-local-init-formal-20261024/load-residual/observed/ORIGINAL_ENTRY.json": {
+      "bytes": 51254,
+      "sha256": "1384269b5bca25d745d8cc7eb557a7d2f622094b8f9d43b17f0e985f1fe23726"
+    },
+    "/tmp/geo337-reference-local-init-formal-20261024/load-residual/observed/OBSERVATION.json": {
+      "bytes": 223,
+      "sha256": "9c2d9f8b1a6cdbba095e6b63053475ac86a3db9bda146e63e6ada9dc41f26445"
+    },
+    "/tmp/geo337-reference-local-init-formal-20261024/load-residual/observed/REQUEST.json": {
+      "bytes": 5710471,
+      "sha256": "eae8c50220148259dd76648118ead5507a6acee990680102522518e76afb3800"
+    },
+    "/tmp/geo337-reference-local-init-formal-20261024/load-residual/manifest.json": {
+      "bytes": 25349,
+      "sha256": "3df231aeeebedb5fbd637c52be5528a81896f77d30a6b36007437fca50ef6dcb"
+    },
+    "/tmp/geo337-reference-local-init-formal-20261024/load-residual/native-executions.jsonl": {
+      "bytes": 126798,
+      "sha256": "c2a8eed890af70794c0e4ae118008c737c1743ace806bf3b2f86be3eb0b34bf0"
+    }
+  },
+  "limitations": [
+    "此 focused 原測試使用 -O0；未執行 O2 R8/N16 正式交錯效能。",
+    "Windows 未執行；portable 分支只計 initializer 路徑，不宣稱 actual memset 量測。",
+    "原 observer 只保留 native ELF hash，payload_retained=false；編譯輸入完整原件與所有命令/輸出已核對。",
+    "完整 native、browser、全帳本與架構重產不在本次 focused 審查範圍。"
+  ],
+  "findings": []
+}

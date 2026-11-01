@@ -1,0 +1,655 @@
+{
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "kind": "Original environment diagnosis and actual source materialization, not native test pass",
+  "members": [
+    {
+      "member": "diagnosis/DIAGNOSIS.json",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/DIAGNOSIS.json",
+      "bytes": 5934,
+      "sha256": "2e9e347770e4ec89d359ee2010911830dcf970cd47bf712a27be6f5950d70f27"
+    },
+    {
+      "member": "diagnosis/LITERAL_INPUTS.initial-conservative.json",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/LITERAL_INPUTS.initial-conservative.json",
+      "bytes": 227333,
+      "sha256": "e620da9b174aa0a53142e98b53a0cdffcf5bdebbb31ac1a2e839f7546e14b0af"
+    },
+    {
+      "member": "diagnosis/LITERAL_INPUTS.json",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/LITERAL_INPUTS.json",
+      "bytes": 226055,
+      "sha256": "3729b77c7cc64bcdb0052efba969bc292fde99399d44ea0e9d357acedfecaca7"
+    },
+    {
+      "member": "diagnosis/MANUAL_FINITE_TEMPLATED_INPUTS.json",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/MANUAL_FINITE_TEMPLATED_INPUTS.json",
+      "bytes": 1154,
+      "sha256": "561018b926e0ab00dd00a51b673e298c2e221c02df712b8a3eea1eacac374d95"
+    },
+    {
+      "member": "diagnosis/ORIGINAL_NODE_R1.log",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/ORIGINAL_NODE_R1.log",
+      "bytes": 80710,
+      "sha256": "2b37e179edf9cc05ad06e2f06c03fa486d79cc69a3e32aa61c5be9c670dc7875"
+    },
+    {
+      "member": "diagnosis/THREE_FIXTURES.json",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/THREE_FIXTURES.json",
+      "bytes": 2100,
+      "sha256": "6f029d7d6b6095701175e0a48b760a19aeead052311e109f562e19ed997eb827"
+    },
+    {
+      "member": "diagnosis/base49-capacity.gcanvas",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/base49-capacity.gcanvas",
+      "bytes": 131575,
+      "sha256": "791089400a54bb3ec53f8dc94046fe292d712b77bb16696d45b8c3f3d3673db8"
+    },
+    {
+      "member": "diagnosis/legacy6a-with-scene.gcanvas",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/legacy6a-with-scene.gcanvas",
+      "bytes": 133210,
+      "sha256": "3d5d3e19341356bad6a8b498cf75111e33a8bc61a4ef5c0c5dd615cbc12ffc0c"
+    },
+    {
+      "member": "diagnosis/legacy6a.gcanvas",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/legacy6a.gcanvas",
+      "bytes": 133167,
+      "sha256": "69f37d46587a98dc757cfbe16d0b0c4b44bd6da0a8746eab5627449823e2e007"
+    },
+    {
+      "member": "diagnosis/materialize_three_original_fixtures.py",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/materialize_three_original_fixtures.py",
+      "bytes": 4393,
+      "sha256": "2ff31df35fbddabccd132d812277b07b5dffbd5df27a28043a9b276429bbb8ed"
+    },
+    {
+      "member": "diagnosis/review_actual_and_pack.py",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/review_actual_and_pack.py",
+      "bytes": 6865,
+      "sha256": "e2010c58812866ec4a3fff774813425e4d7eeaffe3b0b932a844dee938d97e0f"
+    },
+    {
+      "member": "diagnosis/scan_literal_inputs.initial-conservative.py.txt",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/scan_literal_inputs.initial-conservative.py.txt",
+      "bytes": 5922,
+      "sha256": "9cb289b62e0f171c49b9a09e1bcc468bb1e24b09bca8a122d76cf5c55e04e2ec"
+    },
+    {
+      "member": "diagnosis/scan_literal_inputs.py",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/scan_literal_inputs.py",
+      "bytes": 5878,
+      "sha256": "bf1f52e9ccaa83404db5f261d4c692c4998d6932d32c45dc807038fc8aa5cbbd"
+    },
+    {
+      "member": "materialization/BEFORE.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/BEFORE.json",
+      "bytes": 595,
+      "sha256": "02c1e6e4fff5f7d88169a9631b58ea6aab0870e5cc1e14e53a2e483c0d02558d"
+    },
+    {
+      "member": "materialization/RESULT.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/RESULT.json",
+      "bytes": 1458,
+      "sha256": "f36e024cedd1d6e1a92f2ea9e5faa9b3bfd7f1795208912804d03b0e33dc8000"
+    },
+    {
+      "member": "materialization/commands/subcommands/000001/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000001/request.json",
+      "bytes": 1518,
+      "sha256": "7f5bf6a70bfd4eaadc842206ae404c7211ef997c39e72d91de19fe23b0be25d8"
+    },
+    {
+      "member": "materialization/commands/subcommands/000001/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000001/result.json",
+      "bytes": 1769,
+      "sha256": "e569e38b365502190287177205d639ad4c9d6bcb487e1dc9df055fd8c4b4986d"
+    },
+    {
+      "member": "materialization/commands/subcommands/000001/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000001/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000001/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    {
+      "member": "materialization/commands/subcommands/000002/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000002/request.json",
+      "bytes": 1554,
+      "sha256": "55a99d6d3131b6feb3a0873eef656cc9abec10b9498435f11e148adf52d014a4"
+    },
+    {
+      "member": "materialization/commands/subcommands/000002/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000002/result.json",
+      "bytes": 1803,
+      "sha256": "b73e4c6f8554fccc3f04254956f6d8e944d31e0a6aa607056d0238dbf02cb35e"
+    },
+    {
+      "member": "materialization/commands/subcommands/000002/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000002/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000002/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000003/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000003/request.json",
+      "bytes": 1525,
+      "sha256": "ccfe57b55b78d4fb918e75ed23addef321096c2877602867110f08f0c78ca4bb"
+    },
+    {
+      "member": "materialization/commands/subcommands/000003/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000003/result.json",
+      "bytes": 1776,
+      "sha256": "8a38692e5f653bb41c95b6fcfd593e1afd74f8e5ba835d51b988ef6a0a8e7299"
+    },
+    {
+      "member": "materialization/commands/subcommands/000003/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000003/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000003/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000003/stdout.bin",
+      "bytes": 41,
+      "sha256": "a42f667f212cbae6677728ff3d6a6bfc8e2b0dbd2f49fb211b8c80e2f02a3b9f"
+    },
+    {
+      "member": "materialization/commands/subcommands/000004/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000004/request.json",
+      "bytes": 1507,
+      "sha256": "c65a292de0a063e2c0f46be083624a1cb0193a1a75cc71685f9964bf5893f75d"
+    },
+    {
+      "member": "materialization/commands/subcommands/000004/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000004/result.json",
+      "bytes": 1758,
+      "sha256": "88119847b1167c9f517c85d481b68a2ef048b14114f8bd4354ce9924f9591d7f"
+    },
+    {
+      "member": "materialization/commands/subcommands/000004/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000004/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000004/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000004/stdout.bin",
+      "bytes": 41,
+      "sha256": "a42f667f212cbae6677728ff3d6a6bfc8e2b0dbd2f49fb211b8c80e2f02a3b9f"
+    },
+    {
+      "member": "materialization/commands/subcommands/000005/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000005/request.json",
+      "bytes": 1614,
+      "sha256": "8ba976893faf8d5308c55e632b07f54de7b6069fad53decf70c3226608dfaee1"
+    },
+    {
+      "member": "materialization/commands/subcommands/000005/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000005/result.json",
+      "bytes": 1868,
+      "sha256": "acc53d885ca5b2e446a0a219c65055622acd861cda9f4fd487fdf5c4f28637f0"
+    },
+    {
+      "member": "materialization/commands/subcommands/000005/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000005/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000005/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000005/stdout.bin",
+      "bytes": 133167,
+      "sha256": "69f37d46587a98dc757cfbe16d0b0c4b44bd6da0a8746eab5627449823e2e007"
+    },
+    {
+      "member": "materialization/commands/subcommands/000006/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000006/request.json",
+      "bytes": 1634,
+      "sha256": "fbbc7ee1e6914dfef23206090b586f744217178fa80d76a34e8c80648f1fb3bd"
+    },
+    {
+      "member": "materialization/commands/subcommands/000006/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000006/result.json",
+      "bytes": 1886,
+      "sha256": "05c7e047680a3c5815aa34028b517f4560679b50eee75d68b19422aad96f6623"
+    },
+    {
+      "member": "materialization/commands/subcommands/000006/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000006/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000006/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000006/stdout.bin",
+      "bytes": 118,
+      "sha256": "24f95a47ae071d24b7b028eac8f184cbe505acb8d511f0752dead1556094e02a"
+    },
+    {
+      "member": "materialization/commands/subcommands/000007/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000007/request.json",
+      "bytes": 1625,
+      "sha256": "bb3ce81fff1a6519fa73b99a310e9adcaa32bfa1beed63018f9cc63195f80407"
+    },
+    {
+      "member": "materialization/commands/subcommands/000007/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000007/result.json",
+      "bytes": 1880,
+      "sha256": "11fcd133927bcc22aa77cb15b382f88bcedc8e4c67603f961f6933f0e15f0e64"
+    },
+    {
+      "member": "materialization/commands/subcommands/000007/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000007/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000007/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000007/stdout.bin",
+      "bytes": 133210,
+      "sha256": "3d5d3e19341356bad6a8b498cf75111e33a8bc61a4ef5c0c5dd615cbc12ffc0c"
+    },
+    {
+      "member": "materialization/commands/subcommands/000008/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000008/request.json",
+      "bytes": 1645,
+      "sha256": "84520002eb8886cfce855a122de7e769f072654d614d48bc654b0314b1296d08"
+    },
+    {
+      "member": "materialization/commands/subcommands/000008/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000008/result.json",
+      "bytes": 1896,
+      "sha256": "f60dac5da1c8ca6c1d66de3974f37c00dabba70666f9f840a958a4edf6a2215a"
+    },
+    {
+      "member": "materialization/commands/subcommands/000008/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000008/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000008/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000008/stdout.bin",
+      "bytes": 129,
+      "sha256": "9c50e5bf6c6a965d02234658d6f5c2ad6946ef255c63748ac4d77ecd718faee5"
+    },
+    {
+      "member": "materialization/commands/subcommands/000009/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000009/request.json",
+      "bytes": 1624,
+      "sha256": "d637143fe9ae8365dce789ac47661d473b1ada44b8ff645a267219e2cf5b5c85"
+    },
+    {
+      "member": "materialization/commands/subcommands/000009/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000009/result.json",
+      "bytes": 1879,
+      "sha256": "a813ab00519f0079321043e1b68eeed2078d4b94149daea62743a7e03b733940"
+    },
+    {
+      "member": "materialization/commands/subcommands/000009/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000009/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000009/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000009/stdout.bin",
+      "bytes": 131575,
+      "sha256": "791089400a54bb3ec53f8dc94046fe292d712b77bb16696d45b8c3f3d3673db8"
+    },
+    {
+      "member": "materialization/commands/subcommands/000010/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000010/request.json",
+      "bytes": 1644,
+      "sha256": "7b4385675fa4fa9270ce306ae33b621edda208eae5cae730ab32735b70c889a0"
+    },
+    {
+      "member": "materialization/commands/subcommands/000010/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000010/result.json",
+      "bytes": 1896,
+      "sha256": "adae5e378c0d956666134380cec6eced0b0f4ddf413d187f607dd4a8b6996607"
+    },
+    {
+      "member": "materialization/commands/subcommands/000010/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000010/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000010/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000010/stdout.bin",
+      "bytes": 128,
+      "sha256": "67e4fa7080283d77308a0f906cb758210a58173504c89e719f3ff0502ec69d45"
+    },
+    {
+      "member": "materialization/commands/subcommands/000011/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000011/request.json",
+      "bytes": 1537,
+      "sha256": "fc58f193be49b6f8532e17effffb5777b98b793dd24b05d39428c18a50db619f"
+    },
+    {
+      "member": "materialization/commands/subcommands/000011/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000011/result.json",
+      "bytes": 1786,
+      "sha256": "f8119ab0973aff39948d1f6459217d907bd32392721185e99f6f5542e56452d2"
+    },
+    {
+      "member": "materialization/commands/subcommands/000011/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000011/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000011/stdin.bin",
+      "bytes": 219,
+      "sha256": "61b7a91278fea20dcc1cc0ab31380d110dbbb16c24033f85a2655c70e6933215"
+    },
+    {
+      "member": "materialization/commands/subcommands/000011/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000011/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000012/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000012/request.json",
+      "bytes": 1517,
+      "sha256": "6144b3e72d2d04155a3f592baaf6762d729e575a5a6e2be92c84aa2a57dfb2c8"
+    },
+    {
+      "member": "materialization/commands/subcommands/000012/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000012/result.json",
+      "bytes": 1767,
+      "sha256": "cbc2d0f9779533dec5133048fa11dd3f099b36b713403aa7953ca06eaeee7e1a"
+    },
+    {
+      "member": "materialization/commands/subcommands/000012/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000012/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000012/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000012/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    {
+      "member": "materialization/commands/subcommands/000013/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000013/request.json",
+      "bytes": 1507,
+      "sha256": "9acf1a00fce671bb6f9d3a8204e1f98b28fcc7ad447381e4540360f7e576e441"
+    },
+    {
+      "member": "materialization/commands/subcommands/000013/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000013/result.json",
+      "bytes": 1757,
+      "sha256": "4a6dfff802c4c4fc6433893e6cba89b95f7ae17635c838cf310abdc273a8e2a8"
+    },
+    {
+      "member": "materialization/commands/subcommands/000013/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000013/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000013/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000013/stdout.bin",
+      "bytes": 41,
+      "sha256": "a42f667f212cbae6677728ff3d6a6bfc8e2b0dbd2f49fb211b8c80e2f02a3b9f"
+    },
+    {
+      "member": "materialization/commands/subcommands/000014/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000014/request.json",
+      "bytes": 1520,
+      "sha256": "a2e5d3a2fb4543c78e053cbd74dbe4ff039432e1a836d55b9d6940255e64f8f1"
+    },
+    {
+      "member": "materialization/commands/subcommands/000014/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000014/result.json",
+      "bytes": 1769,
+      "sha256": "f9ed448041056297b823827cb77253f9d612c6899581848802dbe84373e5cee1"
+    },
+    {
+      "member": "materialization/commands/subcommands/000014/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000014/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000014/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000014/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000015/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000015/request.json",
+      "bytes": 1536,
+      "sha256": "5589848d36c590960d6b0cd5696e328a3ccda16e813567e50cdf57e9fc7235df"
+    },
+    {
+      "member": "materialization/commands/subcommands/000015/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000015/result.json",
+      "bytes": 1784,
+      "sha256": "c4e8268bfef9028a31b45f016f07e704cd02524b5bb417a8c66cb803b9ba2ead"
+    },
+    {
+      "member": "materialization/commands/subcommands/000015/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000015/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000015/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000015/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000016/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000016/request.json",
+      "bytes": 1553,
+      "sha256": "201be2ab71c39e3acae054f50e6fc347000fc470da48422eb704d0d6bacc724e"
+    },
+    {
+      "member": "materialization/commands/subcommands/000016/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000016/result.json",
+      "bytes": 1803,
+      "sha256": "4e63ddb00b12c23eee16e9f03153ae98d4f5511613af81113177b8cc4029ac76"
+    },
+    {
+      "member": "materialization/commands/subcommands/000016/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000016/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands/000016/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands/000016/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "materialization/commands/subcommands.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization/commands/subcommands.json",
+      "bytes": 30424,
+      "sha256": "c82cc8d19efb1b6f097d2b631a6b1e9d7c83661c8fa94f0b856429eba78020eb"
+    },
+    {
+      "member": "outer/REQUEST.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization-launch/REQUEST.json",
+      "bytes": 631,
+      "sha256": "acbd83a306fddbe748ce27a71e00211f89981994b8b6b99536bf341217a9d30e"
+    },
+    {
+      "member": "outer/RESULT.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization-launch/RESULT.json",
+      "bytes": 2033,
+      "sha256": "73b349131de458ba4704660d05a930c935e963237cb96887a0475fee1cc96827"
+    },
+    {
+      "member": "outer/subcommands/000001/request.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization-launch/subcommands/000001/request.json",
+      "bytes": 1780,
+      "sha256": "622b68d6e8065fef93df45d511cc621b664ccc91f00c547e795749766fd8c07d"
+    },
+    {
+      "member": "outer/subcommands/000001/result.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization-launch/subcommands/000001/result.json",
+      "bytes": 2033,
+      "sha256": "73b349131de458ba4704660d05a930c935e963237cb96887a0475fee1cc96827"
+    },
+    {
+      "member": "outer/subcommands/000001/stderr.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization-launch/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "outer/subcommands/000001/stdin.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization-launch/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "member": "outer/subcommands/000001/stdout.bin",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization-launch/subcommands/000001/stdout.bin",
+      "bytes": 1296,
+      "sha256": "57d1b851123f3e7c327dce4c6cd067b622ce996fac58b1dac3a1f31918be39ea"
+    },
+    {
+      "member": "outer/subcommands.json",
+      "sourcePath": "/workspace/train337-native-L-three-fixtures-materialization-launch/subcommands.json",
+      "bytes": 2129,
+      "sha256": "b7c236be0f679c3ce007a9e5bca9daa9f81dee2fa58e090c817a106ab3795e92"
+    },
+    {
+      "member": "diagnosis/synthetic-sparse-mechanics-command-record.json",
+      "sourcePath": "/tmp/train337-native-L-fixture-diagnosis/sparse-mechanics-only/RESULT.json",
+      "bytes": 1788,
+      "sha256": "ff2ce1c972995d9c0a2f76360f32f324756814df382035e8ef947bb12e0ad3e8"
+    },
+    {
+      "member": "tool-peer/FINAL_L_THREE_FIXTURE_MATERIALIZATION_TOOL_PEER.json",
+      "sourcePath": "/tmp/train337-adversarial/FINAL_L_THREE_FIXTURE_MATERIALIZATION_TOOL_PEER.json",
+      "bytes": 2220,
+      "sha256": "f2aa7d3884174e21417107081bd664d083a42d007226b5c05130fdb7f7635373"
+    },
+    {
+      "member": "actual-peer/ACTUAL_PEER.json",
+      "sourcePath": "/workspace/train337-native-L-fixture-environment-publication/ACTUAL_PEER.json",
+      "bytes": 8849,
+      "sha256": "dc32b44dcab463a44a0c4061b076a6509e79d542019a6ea30e8e350a89561254"
+    }
+  ],
+  "archive": "original-fixture-diagnosis-and-materialization.tar.gz",
+  "archiveBytes": 110826,
+  "archiveSHA256": "07dd83132891312f2378528e29c47a4d97d4c3c4b6b4f7c7eeee781563d937c7",
+  "memberCount": 107,
+  "producerRoundtrip": true,
+  "actualPeerChecks": 104,
+  "actualPeerExit": 0
+}

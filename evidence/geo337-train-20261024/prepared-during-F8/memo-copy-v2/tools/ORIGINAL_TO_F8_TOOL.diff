@@ -1,0 +1,38 @@
+--- /tmp/geo323-train337-lineage-20261024/memo-proof-tools/run.py
++++ /tmp/geo337-F8-memo-counterfactual-tools-20261025/run.py
+@@ -7,13 +7,17 @@
+  if a.heavy_lock.resolve()==protected or a.heavy_lock.resolve().is_relative_to(protected):p.error('--heavy-lock must remain outside repository and formal output')
+ V3=Path('/tmp/geo323-merge-20261023/acceptance-tools-v3');V4=Path('/tmp/geo323-train337-lineage-20261024/acceptance-tools-v4-scene-binding');CAP=Path('/workspace/geo288-main-merge-20261023/native-final-tools/capture.py');BASE='b74f9a2ae7ade1555b9be45283adecc097fb76e3';MAIN='adbaebf9c73ea6801d7b4d5214e4b846b132923b';H='3cbeb75926bb188e6c8f153d182303feadfa27dc'
+ PINS={CAP:'c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762',V3/'geo323_record.py':'8aa05afded8738078cb319606422270345abc0317257d63e8879009acaaabb9b',V3/'profile_linux.py':'0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c',V3/'verify_linux.py':'ccbce3a5d32bee81f22be31a31c1f771ca05c54f53f21e4d94b11b4a08b4534d',V4/'run.py':'d4a38b7b60ac698eba4a274c5d26c83684cd1c665b8399f5e47546befae1f70e',V4/'verify_linux.py':'c3db1834c49365a08ef5720d38156253a355e9f5d5db0239486013871d0e2cac'}
+-PRODUCT={'geometry-core/references.inc':('1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751','f2d1f595be0279b2a052bde8ae0fd55c44e7d710610ea21cac2209d2d6603c10'),'geometry-app/native/reference_sources.inc':('77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56','a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512')}
++PRODUCT={'geometry-core/references.inc': ('2f915779b14272a3cd9d2014d02d9476b05841145885e3d4b0717657e0a0378c', '093d5d7f06963a0f555c6614595791c99e250c019865006edadeacf956838a80'), 'geometry-app/native/reference_sources.inc': ('77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56', 'a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512')}
+ def sha(b):return hashlib.sha256(b).hexdigest()
+ def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
++HERE=Path(__file__).resolve().parent
++PINS.update({HERE/'memo_variant.py':'80f1c1c583d2b812f829035099e3612c5fd436915892437f27179f2072eb097e',HERE/'COUNTERFACTUAL.json':'4fb12fc272fb55e92f441f24f34f6657c64020b5c90c2c3c1f0fd117eff61a04'})
+ for file,want in PINS.items():assert sha(file.read_bytes())==want,('tool pin',str(file))
+ if sys.flags.optimize:raise RuntimeError('Original assertions require optimize0')
+ def load(name,path):
+  s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
++memo_variant=load('memo_only_counterfactual',HERE/'memo_variant.py')
++assert a.sha==memo_variant.F8,'This counterfactual is fixed to actual F8, never ledger-adoption F9'
+ cap=load('original_capture',CAP);sys.path.insert(0,str(V3));import geo323_record as original_record
+ v3=load('original_verify',V3/'verify_linux.py');v4=load('bound_verify',V4/'verify_linux.py');bound=load('bound_session',V4/'run.py')
+ env=dict(os.environ);env['PATH']='/workspace/geo261-environment/bin:'+env['PATH']
+@@ -30,6 +34,7 @@
+   if a.phase=='abc':role.update(sha=a.sha,variant='withdrawn-two-C' if is_base else 'fixed-F',scope='isolated323 ABC; never formal performance base')
+   else:role.update(sha=BASE if is_base else a.sha,variant='canonical-b74' if is_base else a.phase+'-two-C',scope='controlled profile; formal denominator unchanged')
+   return role
++assert sha((a.formal_out/'receipt.json').read_bytes())=='979680e78a381d28a6d1c6825b7b1b8af850bebec381ec3cee3ef42e9e46ea15','exact original R8 formal receipt required; no rewritten ABC/source'
+ formal=json.loads((a.formal_out/'receipt.json').read_text());assert formal['source_sha']==a.sha and formal['base']==BASE and formal['main']==MAIN and formal['stages']['profile']['execution_exit']==0
+ assert formal['stages']['profile']['source_before']==formal['stages']['profile']['source_after']=={'head':a.sha,'status':''}
+ if a.phase=='all':
+@@ -65,7 +70,7 @@
+    for path,(fixed,withdrawn) in PRODUCT.items():
+     assert sha((source/path).read_bytes())==fixed
+     if a.phase=='withdrawn':
+-     raw=rec.run(['git','show',H+':'+path],cwd=a.repo,source_sha=H,source_variant='withdraw-product-two-C')[1];assert sha(raw)==withdrawn;(source/path).write_bytes(raw)
++     raw=memo_variant.withdraw_memo(path,(source/path).read_bytes());assert sha(raw)==withdrawn;(source/path).write_bytes(raw)
+    r['source_after_variant']=inv(source);changed=[p for p in r['source_before_variant'] if r['source_before_variant'][p]!=r['source_after_variant'][p]];assert set(changed)==(set(PRODUCT) if a.phase=='withdrawn' else set());r['changed_source_paths']=changed
+    patch=''.join(''.join(difflib.unified_diff(product_before[path].splitlines(keepends=True),(source/path).read_text().splitlines(keepends=True),fromfile='F/'+path,tofile=a.phase+'/'+path)) for path in PRODUCT);(a.out/'product-variant.patch').write_text(patch);r['product_variant_patch_sha256']=sha(patch.encode())
+    src=a.formal_out/'work/base-pg/bridge';dst=work/'base-pg/bridge';dst.parent.mkdir();assert src.stat().st_dev==work.stat().st_dev;os.link(src,dst);r['base_binary_binding']={'path':str(src),'sha256':sha(src.read_bytes()),'source_sha':BASE}

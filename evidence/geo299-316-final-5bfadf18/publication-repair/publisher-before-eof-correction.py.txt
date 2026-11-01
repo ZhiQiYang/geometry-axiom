@@ -1,0 +1,108 @@
+"""封存後續分支的一項原結果，驗證封包後一般提交並推送。"""
+import argparse
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import tarfile
+
+p = argparse.ArgumentParser(description=__doc__)
+p.add_argument('--repo', type=Path, required=True)
+p.add_argument('--branch', required=True)
+p.add_argument('--issue', required=True)
+p.add_argument('--sha', required=True)
+p.add_argument('--label', required=True)
+p.add_argument('--result', required=True)
+p.add_argument('--next', required=True)
+p.add_argument('--input', action='append', default=[])
+p.add_argument('--receipt', type=Path)
+a = p.parse_args()
+repo = a.repo.resolve()
+git = lambda *v: subprocess.check_output(['git', *v], cwd=repo).decode().strip()
+digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+assert a.issue.replace('-', '').isdigit() and a.label.replace('-', '').replace('_', '').isalnum()
+assert len(a.sha) == 40 and git('rev-parse', a.sha + '^{commit}') == a.sha
+assert git('branch', '--show-current') == a.branch
+assert git('status', '--porcelain=v1', '--untracked-files=all') == ''
+relative = Path('evidence') / f'geo{a.issue}-final-{a.sha[:8]}'
+allowed = str(relative) + '/'
+assert all(path.startswith(allowed) for path in git('diff', '--name-only', a.sha, 'HEAD').splitlines())
+out = repo / relative
+raw = out / 'raw'
+raw.mkdir(parents=True, exist_ok=True)
+assert not list(raw.glob(a.label + '-*.tar.gz'))
+files, excluded, names = [], [], set()
+for pair in a.input:
+    label, value = pair.split('=', 1)
+    assert label.replace('-', '').replace('_', '').isalnum()
+    source = Path(value).resolve()
+    assert source.exists() and not source.is_relative_to(out)
+    for path in sorted(source.rglob('*')) if source.is_dir() else [source]:
+        if path.is_symlink() or not path.is_file():
+            continue
+        rel = path.relative_to(source) if source.is_dir() else Path(path.name)
+        reason = None
+        if any(part in ('.git', '__pycache__', 'node_modules', 'geometry-runtime', 'profile', 'chrome-profile', 'node-compile-cache') or part.startswith(('geometry-cdp-', 'geometry-documents-chrome-', 'com.google.Chrome.')) for part in rel.parts):
+            reason = '可重建套件／版本庫或瀏覽器暫存，不屬原命令輸出'
+        with path.open('rb') as handle:
+            elf = handle.read(4) == b'\x7fELF'
+        name = (Path(label) / rel).as_posix()
+        if reason:
+            excluded.append({'path': name, 'bytes': path.stat().st_size, 'reason': reason})
+            continue
+        row = {'path': name, 'bytes': path.stat().st_size, 'sha256': digest(path)}
+        if elf:
+            excluded.append(dict(row, reason='可重建 ELF，只保 bytes／SHA-256'))
+            continue
+        assert name not in names
+        names.add(name)
+        files.append((path, row))
+groups, size = [[]], 0
+for item in files:
+    cost = ((item[1]['bytes'] + 511) // 512) * 512 + 2048
+    assert cost < 80 * 1024 * 1024, ('單個原檔需另分包保存', item[1])
+    if groups[-1] and size + cost > 80 * 1024 * 1024:
+        groups.append([])
+        size = 0
+    groups[-1].append(item)
+    size += cost
+archives = []
+for index, group in enumerate(groups, 1):
+    archive = raw / f'{a.label}-{index:02d}.tar.gz'
+    members = []
+    with tarfile.open(archive, 'w:gz', compresslevel=6) as handle:
+        for path, row in group:
+            assert path.stat().st_size == row['bytes'] and digest(path) == row['sha256']
+            handle.add(path, arcname=row['path'], recursive=False)
+            members.append(row)
+    with tarfile.open(archive) as handle:
+        entries = handle.getmembers()
+        assert len(entries) == len(members)
+        for entry, row in zip(entries, members):
+            data = handle.extractfile(entry).read()
+            assert entry.name == row['path'] and len(data) == row['bytes'] and hashlib.sha256(data).hexdigest() == row['sha256']
+    assert archive.stat().st_size < 95 * 1024 * 1024
+    inventory = raw / (archive.name + '.inventory.json')
+    value = {'archive': archive.name, 'bytes': archive.stat().st_size, 'sha256': digest(archive), 'members': members}
+    inventory.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+    archives.append(archive.relative_to(out).as_posix())
+(raw / f'{a.label}-excluded.json').write_text(json.dumps(excluded, ensure_ascii=False, indent=2) + '\n')
+if a.receipt:
+    (out / 'receipts').mkdir(exist_ok=True)
+    shutil.copy2(a.receipt, out / 'receipts' / (a.label + '.json'))
+index = out / 'PROGRESS.json'
+progress = json.loads(index.read_text()) if index.exists() else {'schema': 'geometry-followup-live-progress/1', 'issue': a.issue, 'tested_sha': a.sha, 'entries': []}
+assert progress['tested_sha'] == a.sha
+progress['entries'].append({'utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'label': a.label, 'result': a.result, 'next': a.next, 'archives': archives})
+index.write_text(json.dumps(progress, ensure_ascii=False, indent=2) + '\n')
+issue_title = ' + '.join('#' + part for part in a.issue.split('-'))
+text = f'# {issue_title} 雲端驗收進度\n\n固定受驗來源：`{a.sha}`。後續提交只保存證據，沒有冒稱已在證據提交重跑產品。\n\n'
+for row in progress['entries']:
+    text += f"- {row['utc']} — **{row['label']}**：{row['result']}\n  下一步：{row['next']}。原始資料：" + '、'.join(f'`{q}`' for q in row['archives']) + '。\n\n'
+(out / 'PROGRESS.md').write_text(text)
+(out / 'SHA256SUMS').write_text(''.join(f'{digest(path)}  {path.relative_to(out).as_posix()}\n' for path in sorted(out.rglob('*')) if path.is_file() and path.name != 'SHA256SUMS'))
+for argv in [['git', 'add', '--sparse', '--', str(relative)], ['git', 'diff', '--cached', '--check'], ['git', 'commit', '-m', f'Publish GEO-{a.issue} {a.label} acceptance evidence'], ['git', 'push', 'origin', 'HEAD:refs/heads/' + a.branch]]:
+    subprocess.run(argv, cwd=repo, check=True)
+print(json.dumps({'commit': git('rev-parse', 'HEAD'), 'tested_sha': a.sha, 'label': a.label}, ensure_ascii=False))

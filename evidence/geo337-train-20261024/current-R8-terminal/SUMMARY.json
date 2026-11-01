@@ -1,0 +1,892 @@
+{
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+  "record_type": "Small original-terminal projection; full original command records remain at listed paths",
+  "original_file_bindings": {
+    "receipt": {
+      "path": "/tmp/g337323R8/receipt.json",
+      "bytes": 10369,
+      "sha256": "979680e78a381d28a6d1c6825b7b1b8af850bebec381ec3cee3ef42e9e46ea15"
+    },
+    "performance": {
+      "path": "/tmp/g337323R8/evidence/performance.json",
+      "bytes": 11163,
+      "sha256": "c138475dfeeb443e0f3a48c26942ccd717443909211bdab7f560a2ff467b163d"
+    },
+    "equivalence": {
+      "path": "/tmp/g337323R8/evidence/equivalence.json",
+      "bytes": 279101,
+      "sha256": "08a17ce1723d06c4903cb14ba66414262e51d86769a68ba2269c94aa0fa1fbf1"
+    },
+    "profile_counts": {
+      "path": "/tmp/g337323R8/evidence/profile-counts.json",
+      "bytes": 3594,
+      "sha256": "70c4e7ab111f4a43546adf2a8105ff03c9808c1c28da095670533f677bd38112"
+    },
+    "launcher": {
+      "path": "/tmp/geo323-final-r8-stage-tools-20261024/launch-five/RESULT.json",
+      "bytes": 11494,
+      "sha256": "78cdf7f4ee88c99ce992a922fded1313b0fba2341bd17e2a7823766e6b704584"
+    },
+    "outer": {
+      "path": "/tmp/geo323-final-r8-stage-tools-20261024/outer-five/RESULT.json",
+      "bytes": 3691,
+      "sha256": "f2a63642a83b9197f8e23e49c0c6ff9e4c819e5c3ef99c64d771407f76b523a7"
+    }
+  },
+  "original_receipt": {
+    "schema": "geo323-linux-acceptance/1",
+    "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+    "source_repo": "/tmp/geo323-final-r8-source-20261024",
+    "base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "started_utc": "2026-10-25T06:46:20.666919+00:00",
+    "stages": {
+      "prepare": {
+        "started_utc": "2026-10-25T06:46:20.677457+00:00",
+        "execution_exit": 0,
+        "source_before": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "source_after": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "errors": [],
+        "ended_utc": "2026-10-25T06:46:22.347820+00:00"
+      },
+      "build": {
+        "started_utc": "2026-10-25T06:46:22.487202+00:00",
+        "execution_exit": 0,
+        "source_before": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "source_after": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "errors": [],
+        "ended_utc": "2026-10-25T06:47:43.213816+00:00"
+      },
+      "compare": {
+        "started_utc": "2026-10-25T06:47:43.351906+00:00",
+        "execution_exit": 1,
+        "source_before": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "source_after": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "errors": [
+          "Traceback (most recent call last):\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py\", line 346, in stage\n    function()\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py\", line 232, in compare\n    self.v.compare(self.a.repo, self.work, self.evidence)\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/verify_linux.py\", line 156, in compare\n    assert not failures,failures\n           ^^^^^^^^^^^^\nAssertionError: [['_role_priority_mutant.scene', 'stdout'], ['_s1_p8_l_room_primary_through_reflex_extension.scene', 'stdout'], ['_s1_p8b_l_room_primary_through_reflex_extension_hi.scene', 'stdout']]\n"
+        ],
+        "ended_utc": "2026-10-25T06:49:08.214303+00:00"
+      },
+      "perf": {
+        "started_utc": "2026-10-25T06:49:08.383954+00:00",
+        "execution_exit": 0,
+        "source_before": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "source_after": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "errors": [],
+        "ended_utc": "2026-10-25T06:49:21.337465+00:00"
+      },
+      "profile": {
+        "started_utc": "2026-10-25T06:49:21.481877+00:00",
+        "execution_exit": 0,
+        "source_before": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "source_after": {
+          "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "status": ""
+        },
+        "errors": [],
+        "ended_utc": "2026-10-25T06:49:43.319533+00:00"
+      }
+    },
+    "errors": [],
+    "quantitative_targets": {
+      "N64_fix_main": {
+        "actual": 1.2846970752586067,
+        "target": "<=1.3",
+        "target_met": true,
+        "method": "原36樣本，N16/32/48/64，每輪base→fix→main，共3輪；中位數"
+      },
+      "small_N_no_regression": {
+        "reference": "原固定base的變更前載入時間；不得變慢",
+        "points": {
+          "16": {
+            "fix_base": 0.9834192453688345,
+            "target_met": true
+          },
+          "32": {
+            "fix_base": 0.9007932884873169,
+            "target_met": true
+          },
+          "48": {
+            "fix_base": 0.7392862448969592,
+            "target_met": true
+          }
+        }
+      },
+      "geo_eval_source_64_32": {
+        "N32_calls": 82668,
+        "N64_calls": 364369,
+        "actual": 4.407618425509266,
+        "target": "<=4.5",
+        "target_met": true,
+        "method": "原-O1 -fno-inline -pg；base/fix各N32/N64一次；無main profile；原profile無timeout"
+      }
+    },
+    "status": "完成；原命令與量化目標分欄，未執行項不代表通過",
+    "ABC_method": {
+      "A": "base/fix loadfile+dump完整stdout逐bytes及stderr",
+      "B": "每次seal完整ordered node/edge/descriptor/value序列",
+      "C": "每scene/process五guard總呼叫數；不是每seal五計數"
+    },
+    "original_judges_modified": false,
+    "policy": "沒有挑綠重跑；每個stage僅執行一次，任何原紅保留；未完成一律null。",
+    "tool_hashes": {
+      "geo323_record.py": "c997611f5ba14298d0a06759528c192adb0619a9587cb0cab4fd051d95126810",
+      "mini_gen.py": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749",
+      "profile_linux.py": "0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c",
+      "reap_children.py": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+      "run.py": "881d618cd06b3edddf10a6676504923bbd982c8901c632410db434cfd480e849",
+      "verify_linux.py": "c3db1834c49365a08ef5720d38156253a355e9f5d5db0239486013871d0e2cac"
+    },
+    "environment": {
+      "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "TMPDIR": "/tmp/g337323R8/tmp",
+      "GITHUB_SHA": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+      "GITHUB_WORKSPACE": "/tmp/geo323-final-r8-source-20261024",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONIOENCODING": "utf-8",
+      "PYTHONOPTIMIZE": null,
+      "PYTHONPATH": null,
+      "PYTHONSTARTUP": null,
+      "NODE_OPTIONS": null,
+      "CC": null,
+      "CXX": null,
+      "CFLAGS": null,
+      "CXXFLAGS": null,
+      "CPPFLAGS": null,
+      "LDFLAGS": null,
+      "CPATH": null,
+      "C_INCLUDE_PATH": null,
+      "LIBRARY_PATH": null,
+      "LD_LIBRARY_PATH": null,
+      "GCC_EXEC_PREFIX": null,
+      "COMPILER_PATH": null,
+      "GEO261_GRAPH": null,
+      "GEO261_GUARDS": null,
+      "GEO261_REAPER_LOG": "/tmp/g337323R8/control/2026-10-25T064921.4043040000/reaper.jsonl",
+      "GEO261_HOST_FACTS_EXECUTION_LOG": null,
+      "GEO261_CONTACT_SOURCES_EXECUTION_LOG": null,
+      "GEO261_LOAD_RESIDUAL_EXECUTION_LOG": null,
+      "GEO323_ROOT": null,
+      "GEO323_WORK": null,
+      "GEO323_EVIDENCE": null,
+      "GEO323_BASE_SHA": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+      "GEO323_MAIN_SHA": "adbaebf9c73ea6801d7b4d5214e4b846b132923b"
+    },
+    "cleared_environment_names": [],
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "python_optimize": 0,
+    "stack_before": [
+      16777216,
+      16777216
+    ],
+    "stack_during": [
+      16777216,
+      16777216
+    ],
+    "updated_utc": "2026-10-25T06:49:43.319807+00:00",
+    "additional_root_scene": {
+      "name": "_i11_two_surfaces_same_uv_accept.scene",
+      "origin": "6366304eb787b2a50282e4132f45e51eb7d21290",
+      "sha256": "4a1c2e411aa070ef89333eff235036f27d6c2f42806eefc6d0351c68cade89cb",
+      "bytes": 1182,
+      "scope": "不納入原175；另補比較／原run_tests.py具名accept+lengths正例，未跑不得當綠"
+    },
+    "versions": [
+      {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "Python 3.12.14\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "gcc",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "gprof",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "GNU gprof (GNU Binutils for Debian) 2.44\nBased on BSD gprof, copyright 1983 Regents of the University of California.\nThis program is free software.  This program has absolutely no warranty.\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "git",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "git version 2.52.0\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "node",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "v24.19.0\n",
+        "stderr": ""
+      }
+    ],
+    "source_archives": {
+      "base": "/tmp/g337323R8/work/source-base",
+      "main": "/tmp/g337323R8/work/source-main",
+      "fix": "/tmp/geo323-final-r8-source-20261024",
+      "scopes": [
+        "current_geometry.c",
+        "geometry-core",
+        "geometry-app",
+        "geometry-templates",
+        "geometry-web"
+      ],
+      "exclude": [
+        "geometry-core/domain-decoupling",
+        "geometry-web/docs",
+        "geometry-web/prototypes",
+        "geometry-web/vendor",
+        "geometry-web/node_modules"
+      ]
+    },
+    "scene_count": 175,
+    "all_executed_stage_commands_passed": false,
+    "all_measured_original_targets_met": true,
+    "all_required_stages_completed": false,
+    "wrapper_exit": 1,
+    "full_acceptance_passed": null,
+    "builds": [
+      {
+        "label": "base",
+        "source": "/tmp/g337323R8/work/source-base",
+        "execution_exit": 0,
+        "binary_sha256": "aaef15289d76d37bfad256049414ae3db30127b212ce3a6bacece28ab435f7cf"
+      },
+      {
+        "label": "fix",
+        "source": "/tmp/geo323-final-r8-source-20261024",
+        "execution_exit": 0,
+        "binary_sha256": "e07c98a5be1f28b151b2abf6b206bb2add438024424d5bb6c6d614428ead7088"
+      },
+      {
+        "label": "main",
+        "source": "/tmp/g337323R8/work/source-main",
+        "execution_exit": 0,
+        "binary_sha256": "458f9fe2ada0f4040afa34cd4af3e32d523d6c650c20ebeb10fd7a9501849343"
+      },
+      {
+        "label": "base-trace",
+        "source": "/tmp/g337323R8/work/source-base",
+        "execution_exit": 0,
+        "binary_sha256": "b15f9838d937c071fa0125e300deceaafa65e68fec035afbf5f83cd8e005e615"
+      },
+      {
+        "label": "fix-trace",
+        "source": "/tmp/geo323-final-r8-source-20261024",
+        "execution_exit": 0,
+        "binary_sha256": "fa793dd393932b946bfe521e30c12c3ca8a8096f20b50818a1ce9a50f881a978"
+      }
+    ]
+  },
+  "original_performance_samples_and_medians": {
+    "samples": [
+      {
+        "n": 16,
+        "round": 1,
+        "version": "base",
+        "seconds": 0.11005141600617208,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 16,
+        "round": 1,
+        "version": "fix",
+        "seconds": 0.10747526201885194,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 16,
+        "round": 1,
+        "version": "main",
+        "seconds": 0.11735833101556636,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 16,
+        "round": 2,
+        "version": "base",
+        "seconds": 0.14540879300329834,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 16,
+        "round": 2,
+        "version": "fix",
+        "seconds": 0.18302763998508453,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 16,
+        "round": 2,
+        "version": "main",
+        "seconds": 0.13644404298975132,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 16,
+        "round": 3,
+        "version": "base",
+        "seconds": 0.11427604098571464,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 16,
+        "round": 3,
+        "version": "fix",
+        "seconds": 0.1123812579899095,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 16,
+        "round": 3,
+        "version": "main",
+        "seconds": 0.12051274898112752,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s16.scene\n",
+        "exit": 0,
+        "stdout_sha256": "47dc95673272d0bc971c9b61e851e81e5023e10a0d03aadae8db71b4e05de374"
+      },
+      {
+        "n": 32,
+        "round": 1,
+        "version": "base",
+        "seconds": 0.2415299389977008,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 32,
+        "round": 1,
+        "version": "fix",
+        "seconds": 0.24471582501428202,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 32,
+        "round": 1,
+        "version": "main",
+        "seconds": 0.23976536799455062,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 32,
+        "round": 2,
+        "version": "base",
+        "seconds": 0.24117439400288276,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 32,
+        "round": 2,
+        "version": "fix",
+        "seconds": 0.21474834097898565,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 32,
+        "round": 2,
+        "version": "main",
+        "seconds": 0.20837833799305372,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 32,
+        "round": 3,
+        "version": "base",
+        "seconds": 0.26549187101772986,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 32,
+        "round": 3,
+        "version": "fix",
+        "seconds": 0.21756854801787995,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 32,
+        "round": 3,
+        "version": "main",
+        "seconds": 0.19317504498758353,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s32.scene\n",
+        "exit": 0,
+        "stdout_sha256": "fc1b7d3a1735e51a08fb3e7dc0fb5d673fbe8942154db50f57fa76498f8952ce"
+      },
+      {
+        "n": 48,
+        "round": 1,
+        "version": "base",
+        "seconds": 0.49346605798928067,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 48,
+        "round": 1,
+        "version": "fix",
+        "seconds": 0.3648126689950004,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 48,
+        "round": 1,
+        "version": "main",
+        "seconds": 0.3242485079972539,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 48,
+        "round": 2,
+        "version": "base",
+        "seconds": 0.48005352800828405,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 48,
+        "round": 2,
+        "version": "fix",
+        "seconds": 0.39101109199691564,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 48,
+        "round": 2,
+        "version": "main",
+        "seconds": 0.3296247370017227,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 48,
+        "round": 3,
+        "version": "base",
+        "seconds": 0.5460722300049383,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 48,
+        "round": 3,
+        "version": "fix",
+        "seconds": 0.3643879050214309,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 48,
+        "round": 3,
+        "version": "main",
+        "seconds": 0.2796813760069199,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s48.scene\n",
+        "exit": 0,
+        "stdout_sha256": "b4a9d9976271d33f4389a8f94b6c9da5c376751e28ed365168e8584a4662552a"
+      },
+      {
+        "n": 64,
+        "round": 1,
+        "version": "base",
+        "seconds": 0.9018904200056568,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      },
+      {
+        "n": 64,
+        "round": 1,
+        "version": "fix",
+        "seconds": 0.5934927409980446,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      },
+      {
+        "n": 64,
+        "round": 1,
+        "version": "main",
+        "seconds": 0.488513227988733,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      },
+      {
+        "n": 64,
+        "round": 2,
+        "version": "base",
+        "seconds": 0.9510506219812669,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      },
+      {
+        "n": 64,
+        "round": 2,
+        "version": "fix",
+        "seconds": 0.6251529880100861,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      },
+      {
+        "n": 64,
+        "round": 2,
+        "version": "main",
+        "seconds": 0.46670714698848315,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      },
+      {
+        "n": 64,
+        "round": 3,
+        "version": "base",
+        "seconds": 0.916453634010395,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      },
+      {
+        "n": 64,
+        "round": 3,
+        "version": "fix",
+        "seconds": 0.6676098559983075,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      },
+      {
+        "n": 64,
+        "round": 3,
+        "version": "main",
+        "seconds": 0.48661509397788905,
+        "command": "loadfile /tmp/g337323R8/evidence/scenes/s64.scene\n",
+        "exit": 0,
+        "stdout_sha256": "d9285d04cb060616e3c70c2abfe958c4745bed01eaab62bf4cecb321befa82b1"
+      }
+    ],
+    "medians": {
+      "16": {
+        "base": 0.11427604098571464,
+        "fix": 0.1123812579899095,
+        "main": 0.12051274898112752,
+        "fix/main": 0.9325258857675596,
+        "fix/base": 0.9834192453688345
+      },
+      "32": {
+        "base": 0.2415299389977008,
+        "fix": 0.21756854801787995,
+        "main": 0.20837833799305372,
+        "fix/main": 1.0441034807808698,
+        "fix/base": 0.9007932884873169
+      },
+      "48": {
+        "base": 0.49346605798928067,
+        "fix": 0.3648126689950004,
+        "main": 0.3242485079972539,
+        "fix/main": 1.125102074480756,
+        "fix/base": 0.7392862448969592
+      },
+      "64": {
+        "base": 0.916453634010395,
+        "fix": 0.6251529880100861,
+        "main": 0.48661509397788905,
+        "fix/main": 1.2846970752586067,
+        "fix/base": 0.6821436074997278
+      }
+    }
+  },
+  "original_profile_counts": {
+    "base-32": {
+      "counts": {
+        "wd_read": 2971441,
+        "geo_eval_source": 450098,
+        "wood_contact_collect_stops": 3438,
+        "contact_order": 354308,
+        "app_reference_member_footprint": 19029,
+        "geo_eval_depend": 0
+      },
+      "original_flat_matched_lines": [
+        " 11.11      0.01     0.01  2971441     0.00     0.00  wd_read",
+        " 11.11      0.02     0.01   450098     0.00     0.00  geo_eval_source",
+        " 11.11      0.09     0.01     3438     0.00     0.00  wood_contact_collect_stops",
+        "  0.00      0.09     0.00   354308     0.00     0.00  contact_order",
+        "  0.00      0.09     0.00    19029     0.00     0.00  app_reference_member_footprint"
+      ],
+      "symbols_without_flat_call_record": [
+        "geo_eval_depend"
+      ],
+      "gprof_stdout_sha256": "62db005ed03bda318c2ecddaa54db0abf322073483336a71e3f8530443d3eb82"
+    },
+    "base-64": {
+      "counts": {
+        "wd_read": 20879401,
+        "geo_eval_source": 2980967,
+        "wood_contact_collect_stops": 12942,
+        "contact_order": 2729508,
+        "app_reference_member_footprint": 141429,
+        "geo_eval_depend": 0
+      },
+      "original_flat_matched_lines": [
+        "  8.70      0.06     0.06 20879401     0.00     0.00  wd_read",
+        "  4.35      0.30     0.03  2980967     0.00     0.00  geo_eval_source",
+        "  1.45      0.64     0.01    12942     0.00     0.00  wood_contact_collect_stops",
+        "  0.00      0.69     0.00  2729508     0.00     0.00  contact_order",
+        "  0.00      0.69     0.00   141429     0.00     0.00  app_reference_member_footprint"
+      ],
+      "symbols_without_flat_call_record": [
+        "geo_eval_depend"
+      ],
+      "gprof_stdout_sha256": "6bc187989c1a9966c87acc78c4385b58a9f8250abf46d38906df8f6d63643550"
+    },
+    "fix-32": {
+      "counts": {
+        "geo_eval_depend": 284965,
+        "contact_order": 238440,
+        "wd_read": 106669,
+        "geo_eval_source": 82668,
+        "wood_contact_collect_stops": 3438,
+        "app_reference_member_footprint": 1146
+      },
+      "original_flat_matched_lines": [
+        "  0.00      0.07     0.00   284965     0.00     0.00  geo_eval_depend",
+        "  0.00      0.07     0.00   238440     0.00     0.00  contact_order",
+        "  0.00      0.07     0.00   106669     0.00     0.00  wd_read",
+        "  0.00      0.07     0.00    82668     0.00     0.00  geo_eval_source",
+        "  0.00      0.07     0.00     3438     0.00     0.01  wood_contact_collect_stops",
+        "  0.00      0.07     0.00     1146     0.00     0.01  app_reference_member_footprint"
+      ],
+      "symbols_without_flat_call_record": [],
+      "gprof_stdout_sha256": "7aa8ca0df8ca08aaf1c0d4819de8b1dd9c1141e2a5d5443ba6c84968cb713f10"
+    },
+    "fix-64": {
+      "counts": {
+        "geo_eval_depend": 2000109,
+        "wood_contact_collect_stops": 12942,
+        "contact_order": 1828200,
+        "wd_read": 392485,
+        "geo_eval_source": 364369,
+        "app_reference_member_footprint": 4314
+      },
+      "original_flat_matched_lines": [
+        "  4.65      0.20     0.02  2000109     0.00     0.00  geo_eval_depend",
+        "  4.65      0.28     0.02    12942     0.00     0.00  wood_contact_collect_stops",
+        "  0.00      0.43     0.00  1828200     0.00     0.00  contact_order",
+        "  0.00      0.43     0.00   392485     0.00     0.00  wd_read",
+        "  0.00      0.43     0.00   364369     0.00     0.00  geo_eval_source",
+        "  0.00      0.43     0.00     4314     0.00     0.01  app_reference_member_footprint"
+      ],
+      "symbols_without_flat_call_record": [],
+      "gprof_stdout_sha256": "dc15abec93a12188d9a0e31537b1ce6693012dabce565eb749c91902ed1837ae"
+    }
+  },
+  "equivalence": {
+    "scenes": 175,
+    "failures": [
+      [
+        "_role_priority_mutant.scene",
+        "stdout"
+      ],
+      [
+        "_s1_p8_l_room_primary_through_reflex_extension.scene",
+        "stdout"
+      ],
+      [
+        "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+        "stdout"
+      ]
+    ],
+    "full_runs_file": {
+      "path": "/tmp/g337323R8/evidence/equivalence.json",
+      "bytes": 279101,
+      "sha256": "08a17ce1723d06c4903cb14ba66414262e51d86769a68ba2269c94aa0fa1fbf1"
+    }
+  },
+  "original_launcher_terminal": {
+    "exit": 1,
+    "stages": [
+      {
+        "stage": "prepare",
+        "actual_process_exit": 0
+      },
+      {
+        "stage": "build",
+        "actual_process_exit": 0
+      },
+      {
+        "stage": "compare",
+        "actual_process_exit": 1
+      },
+      {
+        "stage": "perf",
+        "actual_process_exit": 1
+      },
+      {
+        "stage": "profile",
+        "actual_process_exit": 1
+      }
+    ]
+  },
+  "original_outer_exit": 1,
+  "normal_locks_released_by_launcher_finally": true,
+  "original_status_not_reinterpreted": {
+    "errors": [],
+    "quantitative_targets": {
+      "N64_fix_main": {
+        "actual": 1.2846970752586067,
+        "target": "<=1.3",
+        "target_met": true,
+        "method": "原36樣本，N16/32/48/64，每輪base→fix→main，共3輪；中位數"
+      },
+      "small_N_no_regression": {
+        "reference": "原固定base的變更前載入時間；不得變慢",
+        "points": {
+          "16": {
+            "fix_base": 0.9834192453688345,
+            "target_met": true
+          },
+          "32": {
+            "fix_base": 0.9007932884873169,
+            "target_met": true
+          },
+          "48": {
+            "fix_base": 0.7392862448969592,
+            "target_met": true
+          }
+        }
+      },
+      "geo_eval_source_64_32": {
+        "N32_calls": 82668,
+        "N64_calls": 364369,
+        "actual": 4.407618425509266,
+        "target": "<=4.5",
+        "target_met": true,
+        "method": "原-O1 -fno-inline -pg；base/fix各N32/N64一次；無main profile；原profile無timeout"
+      }
+    },
+    "own_stage_exits": [
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "cumulative_cli_exits": [
+      0,
+      0,
+      1,
+      1,
+      1
+    ],
+    "equivalence_failures": [
+      [
+        "_role_priority_mutant.scene",
+        "stdout"
+      ],
+      [
+        "_s1_p8_l_room_primary_through_reflex_extension.scene",
+        "stdout"
+      ],
+      [
+        "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+        "stdout"
+      ]
+    ]
+  },
+  "limits": [
+    "This small projection is not the full archive; original command stdin/stdout/stderr/environment/graphs and compiler artifacts remain in g337323R8 and stage-tools.",
+    "v5 PIPE/defer-flush contract is newly fixed; the previous U v4 run remains historical and is not rewritten or resampled.",
+    "gprof -O1/-pg function self times are diagnostic, not evidence of O2 wall improvement.",
+    "No completed-project or READY-TO-MERGE claim; final native/browser/ledger and other gates remain separately tracked; architecture execution and adopted outputs are separately recorded; this summary does not relabel those executions.",
+    "Original run.py has eight stages; this receipt contains the first five only. required-eight/pf3/native remain unrun at F8 in this driver. Original audit presence and all acceptance fields are retained from receipt without inferring any missing verdict."
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "schema": "geo348-python-synthetic-protocol-test/1",
+  "product_executed": false,
+  "wrapper_compiled": false,
+  "synthetic": true,
+  "checks": [
+    {
+      "name": "four-original-commands-observable-without-product-verdict",
+      "passed": true
+    },
+    {
+      "name": "timeout-with-handler-open-is-prefix-only",
+      "passed": true
+    },
+    {
+      "name": "timeout-during-flush-is-distinct-boundary",
+      "passed": true
+    },
+    {
+      "name": "reject-wrong-command-line-length",
+      "passed": true
+    },
+    {
+      "name": "reject-command-identity-drift",
+      "passed": true
+    },
+    {
+      "name": "reject-event-sequence-gap",
+      "passed": true
+    },
+    {
+      "name": "reject-clock-regression",
+      "passed": true
+    },
+    {
+      "name": "reject-impossible-flush-entry-return",
+      "passed": true
+    },
+    {
+      "name": "reject-negative-libc-flag",
+      "passed": true
+    },
+    {
+      "name": "reject-missing-flush-return",
+      "passed": true
+    },
+    {
+      "name": "reject-read-error-mislabeled-eof",
+      "passed": true
+    },
+    {
+      "name": "read-error-recorded-without-relabeling-it-eof",
+      "passed": true
+    },
+    {
+      "name": "reject-unattached-wrapper",
+      "passed": true
+    },
+    {
+      "name": "reject-observer-io-fault",
+      "passed": true
+    },
+    {
+      "name": "reject-dropped-event-count",
+      "passed": true
+    },
+    {
+      "name": "reject-incomplete-write",
+      "passed": true
+    },
+    {
+      "name": "reject-truncated-json-event",
+      "passed": true
+    },
+    {
+      "name": "reject-partial-normal-terminal",
+      "passed": true
+    },
+    {
+      "name": "reject-four-separate-budget-payload",
+      "passed": true
+    },
+    {
+      "name": "reject-substituted-smaller-fixture-even-with-own-consistent-hash",
+      "passed": true
+    },
+    {
+      "name": "original-completedprocess-object-identity",
+      "passed": true
+    },
+    {
+      "name": "single-original600-call-with-unchanged-argv-and-stdin",
+      "passed": true
+    },
+    {
+      "name": "full-stdout-and-stderr-original-bytes",
+      "passed": true
+    },
+    {
+      "name": "completed-receipt-keeps-gate-null",
+      "passed": true
+    },
+    {
+      "name": "original-timeoutexpired-object-identity",
+      "passed": true
+    },
+    {
+      "name": "timeout-is-not-completed-or-exit-zero",
+      "passed": true
+    },
+    {
+      "name": "timeout-full-partial-bytes-preserved",
+      "passed": true
+    },
+    {
+      "name": "timeout-boundary-not-root-cause",
+      "passed": true
+    },
+    {
+      "name": "absent-partial-is-not-fabricated-empty-file",
+      "passed": true
+    },
+    {
+      "name": "observer-failure-cannot-replace-original-timeout",
+      "passed": true
+    },
+    {
+      "name": "close-failure-cannot-replace-original-timeout",
+      "passed": true
+    },
+    {
+      "name": "nonzero-process-is-recorded-prefix-not-normal-full-completion",
+      "passed": true
+    }
+  ],
+  "exit": 0
+}

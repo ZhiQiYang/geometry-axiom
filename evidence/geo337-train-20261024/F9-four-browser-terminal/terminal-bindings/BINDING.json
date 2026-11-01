@@ -1,0 +1,112 @@
+{
+  "state": "BOUND_METADATA_ONLY",
+  "utc": "2026-10-25T14:12:19.200803+00:00",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "terminal_pins_sha256": "37453a0a48043e206127a591c5b6c02c13c535cd4150c7890aa63d312b5face0",
+  "originals": [
+    {
+      "job": "documents",
+      "phase": "formal",
+      "path": "/workspace/geo337-F9-documents-SHM-EXEC_FINAL-20261025.json",
+      "sha256": "deff4489932845b5864f35f2f6a13f573535d9e0bceb9da728f8072aacdb632c",
+      "bytes": 728,
+      "actual_exit": 0
+    },
+    {
+      "job": "documents",
+      "phase": "-plan",
+      "path": "/workspace/geo337-F9-documents-SHM-plan-EXEC_FINAL-20261025.json",
+      "sha256": "f44e32956ed136c5ae64ef43d34e8496acbd2c2d8e5f9f49c05c94f2703c995f",
+      "bytes": 282,
+      "actual_exit": 0
+    },
+    {
+      "job": "documents",
+      "phase": "-materialize",
+      "path": "/workspace/geo337-F9-documents-SHM-materialize-EXEC_FINAL-20261025.json",
+      "sha256": "0e7e103b988425f9af48716128cc4cebc576526fe4367de2a00eb6f0d7306ce8",
+      "bytes": 359,
+      "actual_exit": 0
+    },
+    {
+      "job": "grid",
+      "phase": "formal",
+      "path": "/workspace/geo337-F9-grid-SHM-EXEC_FINAL-20261025.json",
+      "sha256": "cc1fad118adcd83c95f24dbbe29e76104e96e16cfda417df65ec9725bf9e727c",
+      "bytes": 719,
+      "actual_exit": 0
+    },
+    {
+      "job": "grid",
+      "phase": "-plan",
+      "path": "/workspace/geo337-F9-grid-SHM-plan-EXEC_FINAL-20261025.json",
+      "sha256": "3e97ac9d706771f7a366d0ad03c190ac1fd5ebff818e8e5f1deb1967c92dbd5b",
+      "bytes": 272,
+      "actual_exit": 0
+    },
+    {
+      "job": "grid",
+      "phase": "-materialize",
+      "path": "/workspace/geo337-F9-grid-SHM-materialize-EXEC_FINAL-20261025.json",
+      "sha256": "e0ef526f38abb2a2fd5eaa4f190b6a5a86f49b2507a8ada8290420c178a17041",
+      "bytes": 348,
+      "actual_exit": 0
+    },
+    {
+      "job": "space",
+      "phase": "formal",
+      "path": "/workspace/geo337-F9-space-SHM-EXEC_FINAL-20261025.json",
+      "sha256": "c041386999214500df15f3bdd5239d6339bb0b7746e12b564ecb21e4d85cad15",
+      "bytes": 719,
+      "actual_exit": 0
+    },
+    {
+      "job": "space",
+      "phase": "-plan",
+      "path": "/workspace/geo337-F9-space-SHM-plan-EXEC_FINAL-20261025.json",
+      "sha256": "477911b805974437668d58337b937ec7aed1d4cc16650bbdaa067b7778f61ca2",
+      "bytes": 274,
+      "actual_exit": 0
+    },
+    {
+      "job": "space",
+      "phase": "-materialize",
+      "path": "/workspace/geo337-F9-space-SHM-materialize-EXEC_FINAL-20261025.json",
+      "sha256": "f5a09fede0314758adf288172261c67654a821aa94fb2e62e9d562ed0cd2f9e7",
+      "bytes": 351,
+      "actual_exit": 0
+    },
+    {
+      "job": "timber",
+      "phase": "formal",
+      "path": "/workspace/geo337-F9-timber-SHM-EXEC_FINAL-20261025.json",
+      "sha256": "72dd2d6cedf7a25c23357cf5bf6726c56a385a4f4e6e5901eba6ec37cd47cb12",
+      "bytes": 723,
+      "actual_exit": 0
+    },
+    {
+      "job": "timber",
+      "phase": "-plan",
+      "path": "/workspace/geo337-F9-timber-SHM-plan-EXEC_FINAL-20261025.json",
+      "sha256": "80ca4875cd01e7c26a90401e57b7f144b1f271d83159b46d9acb45a4dc61446c",
+      "bytes": 276,
+      "actual_exit": 0
+    },
+    {
+      "job": "timber",
+      "phase": "-materialize",
+      "path": "/workspace/geo337-F9-timber-SHM-materialize-EXEC_FINAL-20261025.json",
+      "sha256": "30ff7d6fd0b6697bb5dd05a7228f3423743992a80cf77166a9afc271b3d80bb5",
+      "bytes": 352,
+      "actual_exit": 0
+    }
+  ],
+  "collector_executed": false,
+  "source_or_SHM_access": false,
+  "formal_exits": [
+    0,
+    0,
+    0,
+    0
+  ]
+}

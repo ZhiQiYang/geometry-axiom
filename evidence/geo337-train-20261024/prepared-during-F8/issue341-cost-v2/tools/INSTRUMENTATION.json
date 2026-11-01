@@ -1,0 +1,154 @@
+{
+  "variants": [
+    {
+      "name": "fixed",
+      "source_sha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b",
+      "diagnostic_sha256": "f0474bb5617cf598875875b2e9cfaff550d44e06e476fc6ecd1512dc455406eb",
+      "roundtrip_exact": true,
+      "edits": [
+        [
+          "#include <string.h>\n",
+          "#include <string.h>\n\nuint64_t bench_shadow_iterations,bench_active_initializations,bench_active_reads;\nuint64_t bench_active_deletions,bench_memmove_calls,bench_memmove_bytes,bench_compaction_copies;\nuint64_t bench_orders_indexed,bench_orders_unique,bench_admitted,bench_indexed_calls;\nstatic void *bench_move(void *destination,const void *source,size_t bytes)\n{++bench_memmove_calls;bench_memmove_bytes+=bytes;return memmove(destination,source,bytes);}\n"
+        ],
+        [
+          "ContactOrderIndex orders;contact_order_index(world,&orders);",
+          "ContactOrderIndex orders;contact_order_index(world,&orders);\n    bench_orders_indexed=orders.indexed;bench_orders_unique=orders.unique;bench_admitted=count;"
+        ],
+        [
+          "    ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);",
+          "    ++bench_indexed_calls;ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);"
+        ],
+        [
+          "for(size_t j=0;j<count&&!duplicate;++j){",
+          "for(size_t j=0;j<count&&!duplicate;++j){++bench_shadow_iterations;"
+        ],
+        [
+          "memmove(out+i,out+i+1,(count-i-1)*sizeof *out)",
+          "bench_move(out+i,out+i+1,(count-i-1)*sizeof *out)"
+        ],
+        [
+          "for(size_t i=0;i<count;++i)active[i]=true;",
+          "for(size_t i=0;i<count;++i){++bench_active_initializations;active[i]=true;}"
+        ],
+        [
+          "if(active[i]){if(write!=i)",
+          "if((++bench_active_reads,active[i])){if(write!=i)"
+        ],
+        [
+          "if(write!=i)out[write]=out[i];",
+          "if(write!=i){++bench_compaction_copies;out[write]=out[i];}"
+        ],
+        [
+          "active[i]=false;--*remaining;",
+          "active[i]=false;++bench_active_deletions;--*remaining;"
+        ],
+        [
+          "if(compact&&!active[j])continue;",
+          "if(compact&&(++bench_active_reads,!active[j]))continue;"
+        ],
+        [
+          "active[i]=false;--remaining;++i;",
+          "active[i]=false;++bench_active_deletions;--remaining;++i;"
+        ]
+      ]
+    },
+    {
+      "name": "withdrawn",
+      "source_sha256": "6114a70c2a67e2f021010d4181f2225285a14578a81b110a85aabc1641c415ff",
+      "diagnostic_sha256": "e7e7357b25778277eac2cb0b7e609b13a815f81a10e2926ba29bf239e45d0c26",
+      "roundtrip_exact": true,
+      "edits": [
+        [
+          "#include <string.h>\n",
+          "#include <string.h>\n\nuint64_t bench_shadow_iterations,bench_active_initializations,bench_active_reads;\nuint64_t bench_active_deletions,bench_memmove_calls,bench_memmove_bytes,bench_compaction_copies;\nuint64_t bench_orders_indexed,bench_orders_unique,bench_admitted,bench_indexed_calls;\nstatic void *bench_move(void *destination,const void *source,size_t bytes)\n{++bench_memmove_calls;bench_memmove_bytes+=bytes;return memmove(destination,source,bytes);}\n"
+        ],
+        [
+          "ContactOrderIndex orders;contact_order_index(world,&orders);",
+          "ContactOrderIndex orders;contact_order_index(world,&orders);\n    bench_orders_indexed=orders.indexed;bench_orders_unique=orders.unique;bench_admitted=count;"
+        ],
+        [
+          "    ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);",
+          "    ++bench_indexed_calls;ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);"
+        ],
+        [
+          "for(size_t j=0;j<count&&!duplicate;++j){",
+          "for(size_t j=0;j<count&&!duplicate;++j){++bench_shadow_iterations;"
+        ],
+        [
+          "memmove(out+i,out+i+1,(count-i-1)*sizeof *out)",
+          "bench_move(out+i,out+i+1,(count-i-1)*sizeof *out)"
+        ],
+        [
+          "for(size_t i=0;i<count;++i)active[i]=true;",
+          "for(size_t i=0;i<count;++i){++bench_active_initializations;active[i]=true;}"
+        ],
+        [
+          "if(active[i]){if(write!=i)",
+          "if((++bench_active_reads,active[i])){if(write!=i)"
+        ],
+        [
+          "if(write!=i)out[write]=out[i];",
+          "if(write!=i){++bench_compaction_copies;out[write]=out[i];}"
+        ],
+        [
+          "active[i]=false;--*remaining;",
+          "active[i]=false;++bench_active_deletions;--*remaining;"
+        ]
+      ]
+    },
+    {
+      "name": "restored",
+      "source_sha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b",
+      "diagnostic_sha256": "f0474bb5617cf598875875b2e9cfaff550d44e06e476fc6ecd1512dc455406eb",
+      "roundtrip_exact": true,
+      "edits": [
+        [
+          "#include <string.h>\n",
+          "#include <string.h>\n\nuint64_t bench_shadow_iterations,bench_active_initializations,bench_active_reads;\nuint64_t bench_active_deletions,bench_memmove_calls,bench_memmove_bytes,bench_compaction_copies;\nuint64_t bench_orders_indexed,bench_orders_unique,bench_admitted,bench_indexed_calls;\nstatic void *bench_move(void *destination,const void *source,size_t bytes)\n{++bench_memmove_calls;bench_memmove_bytes+=bytes;return memmove(destination,source,bytes);}\n"
+        ],
+        [
+          "ContactOrderIndex orders;contact_order_index(world,&orders);",
+          "ContactOrderIndex orders;contact_order_index(world,&orders);\n    bench_orders_indexed=orders.indexed;bench_orders_unique=orders.unique;bench_admitted=count;"
+        ],
+        [
+          "    ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);",
+          "    ++bench_indexed_calls;ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);"
+        ],
+        [
+          "for(size_t j=0;j<count&&!duplicate;++j){",
+          "for(size_t j=0;j<count&&!duplicate;++j){++bench_shadow_iterations;"
+        ],
+        [
+          "memmove(out+i,out+i+1,(count-i-1)*sizeof *out)",
+          "bench_move(out+i,out+i+1,(count-i-1)*sizeof *out)"
+        ],
+        [
+          "for(size_t i=0;i<count;++i)active[i]=true;",
+          "for(size_t i=0;i<count;++i){++bench_active_initializations;active[i]=true;}"
+        ],
+        [
+          "if(active[i]){if(write!=i)",
+          "if((++bench_active_reads,active[i])){if(write!=i)"
+        ],
+        [
+          "if(write!=i)out[write]=out[i];",
+          "if(write!=i){++bench_compaction_copies;out[write]=out[i];}"
+        ],
+        [
+          "active[i]=false;--*remaining;",
+          "active[i]=false;++bench_active_deletions;--*remaining;"
+        ],
+        [
+          "if(compact&&!active[j])continue;",
+          "if(compact&&(++bench_active_reads,!active[j]))continue;"
+        ],
+        [
+          "active[i]=false;--remaining;++i;",
+          "active[i]=false;++bench_active_deletions;--remaining;++i;"
+        ]
+      ]
+    }
+  ],
+  "C_executed": false,
+  "performance_executed": false
+}

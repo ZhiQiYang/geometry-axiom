@@ -1,0 +1,54 @@
+{
+  "task_uid": 1000,
+  "task_directory_owners_verified": true,
+  "same_task_uid_denial_is_blocking": true,
+  "unknown_uid_denial_is_blocking": true,
+  "foreign_argv_hits_are_blocking": true,
+  "unreadable_foreign_cwds": [
+    {
+      "pid": 208,
+      "uids": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "argv": [
+        "/usr/local/bin/dockerd",
+        "--host=unix:///var/run/docker.sock",
+        "--pidfile=/run/codex-docker/dockerd.pid",
+        "--exec-root=/run/codex-docker/exec-e4tcvjv5",
+        "--storage-driver=vfs",
+        "--group=agent"
+      ],
+      "cwd": null,
+      "cwd_status": "permission-denied-not-inspected",
+      "status_sha256": "ca81f9d9b9e8a1926b67b0f2b9850bd3c714530c3c7709924d6b7e8fabb5f40b",
+      "classification": "proven-foreign-UID; no protected argv match",
+      "not_a_claim_of_system_wide_cwd_visibility": true,
+      "errno": 13
+    },
+    {
+      "pid": 260,
+      "uids": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "argv": [
+        "containerd",
+        "--config",
+        "/run/codex-docker/exec-e4tcvjv5/containerd/containerd.toml"
+      ],
+      "cwd": null,
+      "cwd_status": "permission-denied-not-inspected",
+      "status_sha256": "fc9347a5868430cda8f9686aede07aed3c687f4d2b862593923f4dd900cde79a",
+      "classification": "proven-foreign-UID; no protected argv match",
+      "not_a_claim_of_system_wide_cwd_visibility": true,
+      "errno": 13
+    }
+  ],
+  "all_system_cwds_inspected": false,
+  "scope": "Original producers are same task UID without privilege changes; task UID and any protected argv/cwd consumer block. Foreign unreadable cwd is explicitly unknown."
+}
