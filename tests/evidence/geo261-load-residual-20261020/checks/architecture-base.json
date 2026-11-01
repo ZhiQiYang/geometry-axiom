@@ -1,0 +1,15 @@
+{
+  "name": "architecture-base",
+  "command": [
+    "python3",
+    "-B",
+    "tests/architecture_contract.py",
+    "--root",
+    ".",
+    "--manifest",
+    "geometry-core/domain-decoupling/product-architecture.json"
+  ],
+  "cwd": "/tmp/geo261-residual-base",
+  "stack_bytes": 16777216,
+  "exit": 0
+}

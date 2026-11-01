@@ -1,0 +1,14 @@
+{
+  "session_id": 73905,
+  "actual_tool_result": {
+    "chunk_id": "1a0e68",
+    "wall_time_seconds": 0.000021653,
+    "exit_code": 1,
+    "original_token_count": 40,
+    "output": "{\"source_sha\": \"4f8a794f4167c3562eb182045102e86e9e37cca9\", \"job\": \"assembly\", \"original_process_returncode\": 1, \"wrapper_exit\": 1, \"sampling_complete\": true}\n"
+  },
+  "entry": "python3 -B /workspace/launch_geo337_F9_assembly_sampled_root_20261025.py",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "execution_permission": "require_escalated: existing task-owned SHM only; no mount/quota/security changes",
+  "status": "FAILED; original and sampler agree; not delivered until full publication and remote hash verification"
+}

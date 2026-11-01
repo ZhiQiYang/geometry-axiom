@@ -1,0 +1,11 @@
+--- /tmp/geo337-recovery-publisher-peer-20261026/SUBJECT.final.py
++++ /tmp/geo337-recover-evidence-publisher-20261026.py
+@@ -95,7 +95,7 @@
+    need(len(payload)==item['bytes'] and h(payload)==item['sha256'],'remote payload mismatch')
+    need(hashlib.sha1(b'blob '+str(len(payload)).encode()+b'\0'+payload).hexdigest()==blob,'remote Git OID mismatch')
+    checked[blob]={'bytes':len(payload),'sha256':h(payload)}
+-  cap.dump(a.out/'REMOTE_BLOBS.json',checked)
++  cap.dump(a.out/'REMOTE_BLOBS.json',[dict(blob_oid=blob,**identity) for blob,identity in checked.items()])
+   need(git('ls-remote','--heads','https://github.com/ZhiQiYang/geometry-axiom.git','refs/heads/'+BRANCH)==expected,'remote ref moved')
+   need(snapshot()==before,'existing writer changed after push')
+   result.update(exit_code=0,delivered=True,remote_blobs_verified=len(checked),existing_writer_unchanged=True)

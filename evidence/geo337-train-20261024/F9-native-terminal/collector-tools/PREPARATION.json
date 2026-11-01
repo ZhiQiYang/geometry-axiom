@@ -1,0 +1,23 @@
+{
+  "schema": "geo337-F9-native-terminal-collector-preparation/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "original_collector_path": "/workspace/train337-native-r2-terminal-collection/collect_terminal_native.py",
+  "original_collector_sha256": "a320b22c40a17ad4191e02fd397bf3cd3094889cfdb6df0cadfae41da42ad002",
+  "collector_sha256": "17352ac43c5dbd911143c5771e0280d61e58a487293d2b3ad38e8cb272001e54",
+  "guard_sha256": "226015a2722a447ec3fceb5b18eaa5c918f7b0befd730cf2925fdf96aaef1834",
+  "launcher_sha256": "af45b9182947dfa38849d27c696b62ea74cf90f1cb4a7192fb67a44185b001bc",
+  "only_static_preparation": true,
+  "live_native_out_or_cache_read": false,
+  "native_or_collector_executed": false,
+  "product_source_modified": false,
+  "original_scope_preserved": true,
+  "new_requirements": [
+    "4 pinned true terminal documents before content traversal",
+    "root lease plus four nonblocking existing regular locks",
+    "full uncompressed selected bytes plus tar/JSON metadata plus64MiB fresh reserve",
+    "invalid ordinary ELF sidecar retained with full payload instead of discarding failure evidence",
+    "terminal identity issues visibly red but archived"
+  ],
+  "independent_static_review_pending": true,
+  "supersedes_preparation_only": "/tmp/geo337-F9-native-terminal-preparation-20261025"
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "F9-axiom-complete-terminal-package-actual-peer/1",
+  "utc": "2026-10-25T14:18:38.460430+00:00",
+  "exit_code": 0,
+  "checks": 1475,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "package_result_sha256": "d3bbf12653fc89edabea15a901450a9ef17ef29d040f8c2b4ec713f258e836aa",
+  "outer_result_sha256": "b248f94f87e34a5f7f29745d46e022c338a4a8f445f3a70fa74277a353b4622d",
+  "host_final_sha256": "cad5850c020744e1fa5b6bd41c6af92d980601141b1b8296d33e746360ce1957",
+  "inventory_sha256": "9779dd47502124d55bd62fe5146627a81a853e1ef274fefba74b2fad7bf08aeb",
+  "archive_path": "/dev/shm/geometry-axiom-geo337-20261025/geo337-F9-axiom-terminal-package-20261025/ORIGINAL_AXIOM_PART1.tar.gz",
+  "archive_sha256": "b7d6aea19c5bcc81770c06ee8982d4687d80bd7e6f7a7dabd71b0ac6badbd3b2",
+  "archive_bytes": 2548379,
+  "regular_members": 206,
+  "logical_regular_bytes": 12652356,
+  "original_axiom_regular_files": 189,
+  "original_axiom_bytes": 12499444,
+  "original_gate_exit": 0,
+  "collection_exit": 0,
+  "blocking_findings": [],
+  "limits": [
+    "Read-only formal require_escalated on closed package/original evidence; no source checkout or active314 nativeROOT access, no product test rerun.",
+    "All206 original source hashes/stat plus exact206 tar member bytes/type/mode/mtime and completegzipCRC verified.",
+    "Existing original428/0 formal actual peer reused; this is package integrity, not a second product sample.",
+    "Only metadata/exact-file inventories and original frozen tools included; no source tree/Gitobjects copied.",
+    "SHM volatile remains deliveredfalse until normal publication and complete remote blob verification."
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "emergency12-cold105-complete-original-package-peer-v1",
+  "checks": 16438,
+  "exit_code": 0,
+  "findings": [],
+  "archive_sha256": "280cff70d2a7c3460da26af7153d88c865a4e1016a4bc036107856471f140eed",
+  "archive_members": 4084,
+  "original_bytes": 6821690,
+  "inventory_sha256": "2086e5e1a3b172621a65ca93403aa2b92d227be81c59d2dd98fc57324eeafd98",
+  "actual_collector_outer_exit": 0,
+  "preserved_source_archive": {
+    "path": "/workspace/cold105-source-retirement-body-preparation-20261024/original-source-payloads-and-exact-path-map.tar.gz",
+    "bytes": 2849441,
+    "sha256": "9daa4fc1743fe2c864740dfeb679170da2adaa851a25b471f00e176b7f00c340",
+    "included_in_metadata_tar": false,
+    "publication_requirement": "Publish this unique original preserved-source archive alongside the metadata package; do not claim its original bytes included in this tar.",
+    "hash_provenance": "Original prepare/execute full-byte checks and independent cold105 actual peer; collector does not rehash this payload."
+  },
+  "limits": [
+    "Only6.8MB original metadata/fullstreams and933474B small tar read; no61 original archive body or second cold105 payload hash.",
+    "Cold105 preserved16-payload tar is intentionally separate and must be published alongside this metadata tar.",
+    "Historical registry alias counts preserved as captured, not compared with current counts after root11-alias extension; new legitimate extension has separate3136/0 peer.",
+    "423cold,2cardref,1geo339-six,3large,4additional and new12groups keep their immutable alias write/reuse bans.",
+    "Original historical failures remain red; no product gate executed or reclassified.",
+    "Gross allocated block sums remain distinct from original df net changes; old175 absent ELF observation does not claim newly recovered space."
+  ]
+}

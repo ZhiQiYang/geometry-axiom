@@ -1,0 +1,95 @@
+from pathlib import Path
+import ast,collections,hashlib,json,os,re,subprocess,tarfile
+L='7af8c5d80d34cb4f49d01ba67deb78a3a6d725db';B=Path('/workspace/train337-native-r2-terminal-collection/completed');O=Path('/workspace/train337-canvas-peer-resume');checks=0;findings=[]
+def ck(v,l):
+ global checks
+ checks+=1
+ if not v:findings.append(l)
+def sh(b):return hashlib.sha256(b).hexdigest()
+def h(p):return sh(Path(p).read_bytes())
+def j(p):return json.loads(Path(p).read_text())
+p=j(B/'PACKAGE.json');s=j(B/'SUMMARY.json');iv=j(B/'RAW_INVENTORY.json');t=tarfile.open(p['archive'],'r:gz');members=t.getmembers();mi={x.name:x for x in members}
+def raw(n):return t.extractfile(mi[n]).read()
+def js(n):return json.loads(raw(n))
+ck(h(p['archive'])==p['archiveSHA256']=='f9c5ca6b5d6b368a52657aff6ac73b4b7b31195973d840e1f99180eae4e0efde','original R2 archive pin')
+ck(Path(p['archive']).stat().st_size==p['archiveBytes']==2230143 and h(B/'RAW_INVENTORY.json')==p['rawInventorySHA256']=='a12c4db628adbe0d887723b328a34cb0242452a9851422a0cfaa1509270b4f62','original bytes/inventory pin')
+ck(len(members)==len(mi)==p['memberCount']==1366 and set(mi)==set(iv)|{'RAW_INVENTORY.json','BUDGET.json'},'exact1366 unique members')
+ck(sum(x['bytes'] for x in iv.values())==p['selectedOriginalLogicalBytes']==11272878,'11272878 original bytes')
+for name,member in mi.items():
+ ck(not name.startswith('/') and '..' not in Path(name).parts,'safe member '+name)
+ if name not in iv:ck(raw(name)==(B/name).read_bytes(),'embedded metadata '+name);continue
+ x=iv[name];original=Path(x['originalPath'])
+ if x['kind']=='symlink':
+  ck(member.issym() and member.linkname==x['target']==os.readlink(original),'actual original symlink '+name);data=member.linkname.encode()
+ else:
+  ck(member.isfile(),'regular original '+name);data=raw(name);ck(data==original.read_bytes(),'actual immutable original bytes including leased cache '+name)
+ ck(len(data)==x['bytes'] and sh(data)==x['sha256'],'original member hash '+name)
+paths={v['originalPath']:k for k,v in iv.items()};allcommands=[]
+def capture(row):
+ d=Path(row['directory']);ck(j(d/'result.json')==row and j(d/'request.json')['command']==row['command'],'exact actual c387 request/result '+str(d));ck(row['source_sha']==row['acceptance_sha']==L and row['actual_process_returncode']==0 and row['timeout_expired'] is False and row['ended_epoch']>=row['started_epoch'],'original actual0/SHA/no timeout '+str(d))
+ for stream in ('stdin','stdout','stderr'):
+  data=(d/(stream+'.bin')).read_bytes();ck(sh(data)==row[stream+'_sha256'],'full original stream '+str(d/stream))
+  if stream!='stdin':ck(len(data)==row[stream+'_bytes'],'original stream length '+str(d/stream))
+for name in ('outer/subcommands.json','native/subcommands.json'):
+ rows=js(name);allcommands+=rows
+ for row in rows:capture(row)
+n=js('native/RECEIPT.json');w=js('native/workflow/native/receipt.json');outer=js('outer/receipt.json')
+ck(n['source_sha']==outer['source_sha']==p['sourceSHA']==L and n['source_before']==n['source_after']==s['sourceBefore']==s['sourceAfter'] and n['source_before']['head']==L and n['source_before']['status']=='','original sameL clean before/after')
+ck(n['actual_exit']==n['original_workflow_exit']==n['reaper_primary_exit']==outer['actual_exit']==w['exit_code']==s['outerExit']==s['originalDriverExit']==0 and n['passed'] is True and not n['metadata_errors'],'actual native/workflow/reaper/outer all0')
+ck(w['ci_timeout_minutes']==35 and w['seconds']==1819.5614838419715 and w['seconds']<2100 and w['over_ci_timeout'] is False and n['ci_35_minute_gate_exit']==0,'original CI35 unrelaxed and elapsed1819.561s')
+ck(n['original_native_cli']=='ulimit -s 16384; python3 tests/run_all.py --build' and n['all_suites_selected'] and n['selectors']==[],'full original native exact CLI')
+step=w['steps'][1];ck(step['original_run']==step['executed_run'] and raw('native/workflow/native/steps/01.executed.sh').decode()==step['executed_run'],'original shell unchanged')
+ck(step['result']['actual_process_returncode']==0 and not step['result']['watchdog_expired'],'original native process0 no watchdog')
+ck(sh(raw('native/workflow/native/driver.py.txt'))==w['driver_sha256']=='6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310','original exact workflow driver')
+ck(sh(raw('tools/run_full_native_workflow_v2.py'))=='763a6e8064be212a020522a43a80bdb6cd353d329997c83479f469c2359f4d21','original exact full-native driver')
+reapers=[json.loads(x) for x in raw('native/reaper.jsonl').splitlines()];ck(reapers[-1]['event']=='完成' and reapers[-1]['primary_returncode']==0 and sum(x.get('event')=='完成' for x in reapers)==1 and any(x.get('primary') and x.get('returncode')==0 for x in reapers),'one terminal original reaper0')
+gitraw={};gitmeta=[]
+for rel in ('tests/run_all.expected.json','tests/run_all.py','.github/workflows/integration-tests.yml'):
+ argv=['git','--git-dir=/workspace/geometry-axiom/.git','show',L+':'+rel];proc=subprocess.run(argv,capture_output=True);ck(proc.returncode==0,'fixed GitL original '+rel);gitraw[rel]=proc.stdout;gitmeta.append({'command':argv,'exit_code':proc.returncode,'stdout_sha256':sh(proc.stdout),'stderr_sha256':sh(proc.stderr)})
+ck(gitraw['.github/workflows/integration-tests.yml']==raw('native/workflow/native/workflow.yml.txt') and sh(gitraw['.github/workflows/integration-tests.yml'])==w['workflow_sha256']==n['original_workflow_sha256'],'exact GitL original workflow bytes')
+expected=json.loads(gitraw['tests/run_all.expected.json'])['suites'];stdout=raw('native/workflow/native/steps/01.stdout').decode();parsed={};occurrences=collections.Counter()
+for line in stdout.splitlines():
+ match=re.match(r'^(\S+:\S+)\s+(\d+|-)\s+(\d+|ok|FAIL|-)\s+(\d+|-)\s+(\d+|-)\s+([0-9.]+)(?:\s+(.*))?$',line)
+ if match:occurrences[match[1]]+=1;parsed[match[1]]=match.groups()[1:]
+ck(len(parsed)==len(expected)==230 and set(parsed)==set(expected) and sum(occurrences.values())==230 and all(v==1 for v in occurrences.values()),'all230 exact original suite names each occurs exactly once—not dictionary dedup')
+totals=[0,0,0,0];reds=[];skips=[]
+for name,ex in expected.items():
+ count,pas,fail,skip,secs,note=parsed[name]
+ if ex['mode']=='count':
+  nums=list(map(int,(count,pas,fail,skip)));ck(nums[0]==ex['count']==sum(nums[1:]),'exact original registered count '+name);totals=[a+b for a,b in zip(totals,nums)]
+  if nums[2]:reds.append(name)
+  if nums[3]:skips.append(name)
+  if name.startswith('py:'):
+   rr=js('native/workflow/native/run_all-logs/py_'+name.split(':',1)[1]+'.json');ck([rr['total'],rr['passed'],rr['failed'],rr['skipped']]==nums and not rr.get('import_error') and not rr.get('extra_errors'),'original unittest JSON agrees '+name)
+ else:ck(((count,pas,fail,skip)==('-','-','-','-') and 'mutation inventory freshness (not test assertions); exit 0' in note) if name=='mutation:check' else (count,pas,fail,skip)==('-','ok','-','-'),'original exit-only actual green '+name)
+ck(not reds and totals==[5309,5308,0,1] and re.search(r'合計\(已執行、有計數者\)\s+5309\s+5308\s+0\s+1',stdout),'complete original5309/5308/0/1')
+ck(parsed['node:tests-js'][:4]==('737','737','0','0'),'original Node737allpass after sameL fixture repair')
+ck(skips==['py:test_gdi_contract'],'sole GDI platform skip')
+tree=ast.parse(gitraw['tests/run_all.py']);allowed=ast.literal_eval(next(x.value for x in tree.body if isinstance(x,ast.Assign) and any(isinstance(k,ast.Name) and k.id=='ALLOWED_SKIPS' for k in x.targets)));gdi=js('native/workflow/native/run_all-logs/py_test_gdi_contract.json');skip=gdi['skip_items'][0]
+ck(len(gdi['skip_items'])==1 and any(x['suite']=='py:test_gdi_contract' and x['test']==skip['test'] and x['reason']==skip['reason'] and 'posix' in x['platforms'] for x in allowed),'exact original allowed GDI name/reason/posix')
+ck('exit 0：完整非瀏覽器登錄測試' in stdout and '必要正式 owner／瀏覽器整合另驗' in stdout,'aggregate result and separate formal-owner limitations explicit')
+old=js('native/GLOBAL_CACHE_BEFORE.json');preserved=js('native/GLOBAL_CACHE_PRESERVED.json');ck(old==preserved and len(old)==631 and n['cache_preservation']['all_original_entries_equal'] and not n['global_cache_deleted'],'original cache atomic-preservation manifests unchanged631')
+ck(s['excludedOldCache']['exactPath']=='/tmp/train337-full-native-L-7af8c5d8-r2/preserved-global-geometry-tests' and not any(x.startswith('native/preserved-global-geometry-tests/') for x in iv),'exact historical cache exclusion only')
+sidecars=[]
+for item in s['excludedOrdinaryELFs']:
+ original=Path(item['originalPath']);side=js('new-runtime-cache/'+original.name+'.fingerprint.json');sidecars.append(side)
+ ck(original.read_bytes()[:4]==b'\x7fELF' and h(original)==item['sha256']==side['exe_sha256'] and original.stat().st_size==item['bytes']==side['exe_size'],'actual retained ordinary ELF and sidecar '+original.name)
+ ck(side['exe']==original.name and (side['name']==original.name or original.name=='engineering-json-test' and side['name']=='engjson'),'original registry identity '+original.name)
+ calculated=hashlib.sha256();calculated.update(side['command'].encode());calculated.update(b'\0')
+ for rel in sorted(side['files']):calculated.update(('%s\0%s\n'%(rel,side['files'][rel])).encode())
+ ck(calculated.hexdigest()==side['fingerprint'],'original deterministic source fingerprint '+original.name)
+ck(len(sidecars)==6,'six ordinary original ELF exclusions')
+# Bind every sidecar source hash to fixed Git L, including original generated HARNESS.
+labels=sorted(set(k for side in sidecars for k in side['files']));files=sorted(set(k.split('#')[0] for k in labels));stdin=''.join(L+':'+k+'\n' for k in files).encode();argv=['git','--git-dir=/workspace/geometry-axiom/.git','cat-file','--batch'];proc=subprocess.run(argv,input=stdin,capture_output=True);ck(proc.returncode==0,'fixed GitL batch source read');at=0;sources={}
+for rel in files:
+ end=proc.stdout.index(b'\n',at);header=proc.stdout[at:end].split();ck(len(header)==3 and header[1]==b'blob','original Git source blob '+rel);size=int(header[2]);start=end+1;data=proc.stdout[start:start+size];sources[rel]=data;at=start+size+1
+ck(at==len(proc.stdout),'complete fixed source blob batch consumed')
+for side in sidecars:
+ for label,digest in side['files'].items():
+  file,*fragment=label.split('#');data=sources[file]
+  if fragment:
+   a=ast.parse(data);text=ast.literal_eval(next(n.value for n in a.body if isinstance(n,ast.Assign) and any(isinstance(x,ast.Name) and x.id==fragment[0] for x in n.targets)));data=text.encode()
+  ck(sh(data.replace(b'\r\n',b'\n'))==digest,'all original compiled source hash binds GitL '+label)
+gitmeta.append({'command':argv,'exit_code':proc.returncode,'stdin_sha256':sh(stdin),'stdout_sha256':sh(proc.stdout),'stderr_sha256':sh(proc.stderr),'distinct_source_files':len(files)})
+producer=j('/workspace/train337-native-r2-terminal-collection-producer/RESULT.json');capture(producer);ck(producer['actual_process_returncode']==0,'original collector actual0')
+report={'schema':'independent-final-L-native-r2-actual-package-peer/1','checks':checks,'exit_code':int(bool(findings)),'findings':findings,'source_sha':L,'original_native_exit':0,'workflow_exit':0,'outer_exit':0,'ci35_exit':0,'elapsed_seconds':w['seconds'],'ci_timeout_minutes':35,'original_rows':230,'duplicate_suite_rows':{k:v for k,v in occurrences.items() if v!=1},'counts':{'total':5309,'passed':5308,'failed':0,'skipped':1},'node_counts':{'total':737,'passed':737,'failed':0,'skipped':0},'allowed_skip':skip,'archive_sha256':p['archiveSHA256'],'archive_members':1366,'original_bytes':11272878,'ordinary_retained_elf_count':6,'distinct_fingerprint_source_files':len(files),'git_reads':gitmeta,'lease_status':'All archived live-cache bytes and six omitted ordinary ELF payloads were verified while root retained ROOT/global-cache lease. Review itself changed neither. Root may release after receiving this result.','limits':['Full original native230 registry only; original output explicitly lists formal owner/browser integrations requiring separate execution. No specialist result is inferred.','Exactly one original explicitly allowed posix GDI skip; no new skip authorization.','R1 environment failure remains separate immutable history; R2 sameL originals now show737/737 Node and original total5308pass.','Original exposed pipes/compiler logs and sidecars are retained. Hidden inner subprocess pipes and already-cleaned NativeBuild scratch are not invented.','Historical cache body excluded only at exact preserved path;631 original entries preserved by original atomic rename. Six ordinary ELF bodies remain at original paths and were independently hashed; no original file deleted.']};out=O/'FINAL_L_NATIVE_R2_ACTUAL_PACKAGE_PEER.json';out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'checks':checks,'exit_code':report['exit_code'],'findings':findings,'path':str(out),'sha256':h(out)},ensure_ascii=False));raise SystemExit(report['exit_code'])

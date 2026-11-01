@@ -1,0 +1,19 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "graphql",
+    "-f",
+    "query=query { repository(owner:\"ZhiQiYang\",name:\"geometry-axiom\") { i198:issue(number:198) { number title body url state updatedAt comments(last:1) { nodes { url createdAt author { login } body } } } p202:pullRequest(number:202) { number title body url state merged headRefOid baseRefOid mergeCommit { oid } comments(last:2) { nodes { url createdAt author { login } body } } } p291:pullRequest(number:291) { number title body url state merged headRefOid baseRefOid mergeCommit { oid } comments(last:1) { nodes { url createdAt author { login } body } } } } }"
+  ],
+  "cwd": "/tmp",
+  "started_utc": "2026-10-26T11:36:51.643021+00:00",
+  "ended_utc": "2026-10-26T11:36:52.345446+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 33144,
+  "stdout_sha256": "be0d0d53e2fa10f786afdd44b1b8868c088fecf536551e635bfefaba3aac57c2",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

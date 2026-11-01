@@ -1,0 +1,323 @@
+{
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "expected_evidence_head": "58a75f479fd9c65e71a7827b732ae738b667294e",
+  "captured_at": "2026-10-24T02:21:18.085559+00:00",
+  "files": [
+    {
+      "name": "p189-full/outer/REQUEST.json",
+      "original_path": "/workspace/train337-L-p189-original-launch-20261024/REQUEST.json",
+      "bytes": 1287,
+      "sha256": "1ea428c082e56acce17f74e37d948d081b8469b5bae9a8428cf4b7ff07889874"
+    },
+    {
+      "name": "p189-full/outer/RESULT.json",
+      "original_path": "/workspace/train337-L-p189-original-launch-20261024/RESULT.json",
+      "bytes": 2377,
+      "sha256": "58c5b7682cc7d9d1c195dd7c649ddfda68011ff00b7df7215e1e3e3f0e209641"
+    },
+    {
+      "name": "p189-full/outer/subcommands.json",
+      "original_path": "/workspace/train337-L-p189-original-launch-20261024/subcommands.json",
+      "bytes": 2268,
+      "sha256": "66f74a1b3326d2ea8fca1b2af814da66ec231f68cb1e10b0d2352b812f52fa2a"
+    },
+    {
+      "name": "p189-full/outer/subcommands/000001/request.json",
+      "original_path": "/workspace/train337-L-p189-original-launch-20261024/subcommands/000001/request.json",
+      "bytes": 1907,
+      "sha256": "6ae8b85f66e967be07fbbf9746221a4947325a560f3c506d5924a389e8fefd3b"
+    },
+    {
+      "name": "p189-full/outer/subcommands/000001/result.json",
+      "original_path": "/workspace/train337-L-p189-original-launch-20261024/subcommands/000001/result.json",
+      "bytes": 2158,
+      "sha256": "557232cc2eece83cb1c223e50b2eabe26f4d30fef337948973850e5c7f200cc5"
+    },
+    {
+      "name": "p189-full/outer/subcommands/000001/stdin.bin",
+      "original_path": "/workspace/train337-L-p189-original-launch-20261024/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "p189-full/outer/subcommands/000001/stdout.bin",
+      "original_path": "/workspace/train337-L-p189-original-launch-20261024/subcommands/000001/stdout.bin",
+      "bytes": 158,
+      "sha256": "a058c6a0d98ea239e86b0872a4081aaab6c9a9331ca8e0241c867cbf7e6e8c35"
+    },
+    {
+      "name": "p189-full/outer/subcommands/000001/stderr.bin",
+      "original_path": "/workspace/train337-L-p189-original-launch-20261024/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "p189-timing/outer/REQUEST.json",
+      "original_path": "/workspace/train337-L-p189-timing-original-launch-20261024/REQUEST.json",
+      "bytes": 1359,
+      "sha256": "5cbf9d2121f0fa7b5735184f72e9b6b1429ac63124a2e4e404c7097a0569a2b4"
+    },
+    {
+      "name": "p189-timing/outer/RESULT.json",
+      "original_path": "/workspace/train337-L-p189-timing-original-launch-20261024/RESULT.json",
+      "bytes": 2468,
+      "sha256": "ae42c612e26d1e807449ffc9db1ad81bdcd36ccc5f8baee3b072238bac33e280"
+    },
+    {
+      "name": "p189-timing/outer/subcommands.json",
+      "original_path": "/workspace/train337-L-p189-timing-original-launch-20261024/subcommands.json",
+      "bytes": 2352,
+      "sha256": "330c5c675ad53d113e0329b2289f0e177afb12c1c848e1a597742e2765c06bb0"
+    },
+    {
+      "name": "p189-timing/outer/subcommands/000001/request.json",
+      "original_path": "/workspace/train337-L-p189-timing-original-launch-20261024/subcommands/000001/request.json",
+      "bytes": 1986,
+      "sha256": "b398589b9c27447fe6a4c640521bdafd17d58f474fa564f9a62d04848ad6c6bd"
+    },
+    {
+      "name": "p189-timing/outer/subcommands/000001/result.json",
+      "original_path": "/workspace/train337-L-p189-timing-original-launch-20261024/subcommands/000001/result.json",
+      "bytes": 2238,
+      "sha256": "887463a311e068e7f1953de05714ed88833826a1a5e55f726b17323978ef5f52"
+    },
+    {
+      "name": "p189-timing/outer/subcommands/000001/stdin.bin",
+      "original_path": "/workspace/train337-L-p189-timing-original-launch-20261024/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "p189-timing/outer/subcommands/000001/stdout.bin",
+      "original_path": "/workspace/train337-L-p189-timing-original-launch-20261024/subcommands/000001/stdout.bin",
+      "bytes": 171,
+      "sha256": "acf89bc6cb7c23a9bf4afcbcc38c9b5c6eeacec1d55f3286f89bea1948546faa"
+    },
+    {
+      "name": "p189-timing/outer/subcommands/000001/stderr.bin",
+      "original_path": "/workspace/train337-L-p189-timing-original-launch-20261024/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "geo323-compare/outer/REQUEST.json",
+      "original_path": "/workspace/train337-L-geo323-compare-original-launch-20261024/REQUEST.json",
+      "bytes": 1353,
+      "sha256": "ddd90d9fd22458fce3c1a98aacb750b03043ac0fbf31e7679039a0ba1bed1197"
+    },
+    {
+      "name": "geo323-compare/outer/RESULT.json",
+      "original_path": "/workspace/train337-L-geo323-compare-original-launch-20261024/RESULT.json",
+      "bytes": 2469,
+      "sha256": "bacdabb62d79488a61b6cb24d3fe3e66d5badc04936fb6ea469c6f16218d2c01"
+    },
+    {
+      "name": "geo323-compare/outer/subcommands.json",
+      "original_path": "/workspace/train337-L-geo323-compare-original-launch-20261024/subcommands.json",
+      "bytes": 2350,
+      "sha256": "6c68a9b7c1eb1407da47362243b76278d6dd23eff228a29fe179495fea08c875"
+    },
+    {
+      "name": "geo323-compare/outer/subcommands/000001/request.json",
+      "original_path": "/workspace/train337-L-geo323-compare-original-launch-20261024/subcommands/000001/request.json",
+      "bytes": 1984,
+      "sha256": "f34834f3ad0d3e1778d57846a1448813d0a93c94da0d5795c6fa4fcf6fc7798e"
+    },
+    {
+      "name": "geo323-compare/outer/subcommands/000001/result.json",
+      "original_path": "/workspace/train337-L-geo323-compare-original-launch-20261024/subcommands/000001/result.json",
+      "bytes": 2236,
+      "sha256": "5567b9f4342fc859fbfd0c66489b154406a0487d728df84111889e62710682a6"
+    },
+    {
+      "name": "geo323-compare/outer/subcommands/000001/stdin.bin",
+      "original_path": "/workspace/train337-L-geo323-compare-original-launch-20261024/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "geo323-compare/outer/subcommands/000001/stdout.bin",
+      "original_path": "/workspace/train337-L-geo323-compare-original-launch-20261024/subcommands/000001/stdout.bin",
+      "bytes": 225,
+      "sha256": "dd7edc4fec72d4e275d98d9c5acc467fdb9b33ecc5ebcf11cc28f7ac646f631a"
+    },
+    {
+      "name": "geo323-compare/outer/subcommands/000001/stderr.bin",
+      "original_path": "/workspace/train337-L-geo323-compare-original-launch-20261024/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "p189-full/driver-receipt.json",
+      "original_path": "/workspace/g337p189L/receipt.json",
+      "bytes": 23166,
+      "sha256": "3e704c7fd54f325c09eae97e90367ef7470bef64598891324c66834ce86077c8"
+    },
+    {
+      "name": "p189-full/original-assertion.stdout.bin",
+      "original_path": "/workspace/g337p189L/subcommands/000006/stdout.bin",
+      "bytes": 8461,
+      "sha256": "d89aa27465d6bde11291da924b9bc81de8f2881640b302d86730a99354e16dee"
+    },
+    {
+      "name": "p189-full/first-mismatch-base.stdout",
+      "original_path": "/workspace/g337p189L/measurement/repo-_role_priority_mutant.scene-base.stdout",
+      "bytes": 1092,
+      "sha256": "f2a7fb6c0e175bdb5f4e4cc3e1e04925ef70026a53f130331b4cf11a158ba0e7"
+    },
+    {
+      "name": "p189-full/first-mismatch-fix.stdout",
+      "original_path": "/workspace/g337p189L/measurement/repo-_role_priority_mutant.scene-fix.stdout",
+      "bytes": 1152,
+      "sha256": "61823d285e3335511d34714e2d08dd8869e995c336fc75144942107ee01ca0f9"
+    },
+    {
+      "name": "p189-full/original-assertion.stderr.bin",
+      "original_path": "/workspace/g337p189L/subcommands/000006/stderr.bin",
+      "bytes": 376,
+      "sha256": "d16e02133274a180d676f0ec16b6f4a7be689aa7bb3d8a72dad7787444574f69"
+    },
+    {
+      "name": "p189-full/first-mismatch-base.stderr",
+      "original_path": "/workspace/g337p189L/measurement/repo-_role_priority_mutant.scene-base.stderr",
+      "bytes": 138,
+      "sha256": "5c056392785028cfbbe4628197db7719ef424f3dfb6142734cb931e91e473d78"
+    },
+    {
+      "name": "p189-full/first-mismatch-fix.stderr",
+      "original_path": "/workspace/g337p189L/measurement/repo-_role_priority_mutant.scene-fix.stderr",
+      "bytes": 198,
+      "sha256": "ad6427b8eb3b2d365cc106c33dc36c3aff6c21d84d281f6e5e98b86a2e77518b"
+    },
+    {
+      "name": "p189-timing/driver-receipt.json",
+      "original_path": "/workspace/g337p189L-timing/receipt.json",
+      "bytes": 22972,
+      "sha256": "76cad96c6cf6457d0fb7319a1cefa14541332ab649572b06669d8513894f876c"
+    },
+    {
+      "name": "p189-timing/measurement/samples.tsv",
+      "original_path": "/workspace/g337p189L-timing/measurement/samples.tsv",
+      "bytes": 965,
+      "sha256": "561dd3beef380efcab77bfb850726a129a2098866e3bd84cf193cb4c05aab114"
+    },
+    {
+      "name": "p189-timing/measurement/loadfile-samples.json",
+      "original_path": "/workspace/g337p189L-timing/measurement/loadfile-samples.json",
+      "bytes": 44060,
+      "sha256": "cab284ded59d4d871a6c6c9022ef115fd76ec7acb01877514affdde30d204f00"
+    },
+    {
+      "name": "p189-timing/measurement/receipt.json",
+      "original_path": "/workspace/g337p189L-timing/measurement/receipt.json",
+      "bytes": 9684,
+      "sha256": "a5a2b9c1035f3984351fff4b09f5852b50af78fd73721ca1f829dd675d4706d2"
+    },
+    {
+      "name": "p189-timing/measurement/TIMING_ONLY_SCOPE.json",
+      "original_path": "/workspace/g337p189L-timing/measurement/TIMING_ONLY_SCOPE.json",
+      "bytes": 1606,
+      "sha256": "d76ad68b632d0643454b0546abb662e80c029879940915dad416935577f1cc02"
+    },
+    {
+      "name": "p189-timing/measurement/summary.txt",
+      "original_path": "/workspace/g337p189L-timing/measurement/summary.txt",
+      "bytes": 670,
+      "sha256": "0670d49ee10399e2b4da208848d58b853a8facaf4f5c0330f8c0ae8ee6af2c03"
+    },
+    {
+      "name": "p189-timing/measurement/timing.log",
+      "original_path": "/workspace/g337p189L-timing/measurement/timing.log",
+      "bytes": 2344,
+      "sha256": "6017fb5c02637b568242244d91ff8db7b405b343fd810bade8032a3a193ae8f8"
+    },
+    {
+      "name": "p189-timing/original-timing.stdout.bin",
+      "original_path": "/workspace/g337p189L-timing/subcommands/000006/stdout.bin",
+      "bytes": 1994,
+      "sha256": "7ec906bbe8264e87326e414f990ab0821fdbb849b72bb85c8474050a306c8fcc"
+    },
+    {
+      "name": "p189-timing/original-timing.stderr.bin",
+      "original_path": "/workspace/g337p189L-timing/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "geo323-compare/receipt-after-compare.json",
+      "original_path": "/workspace/g337323L/receipt.json",
+      "bytes": 11394,
+      "sha256": "ba6a21f13702ce88d23ea15f2d3462a02fde9674955ce1df54c912dd022c3fa5"
+    },
+    {
+      "name": "geo323-compare/equivalence.json",
+      "original_path": "/workspace/g337323L/evidence/equivalence.json",
+      "bytes": 277127,
+      "sha256": "127addf8c27ea68a80a7b0448dd9eaff22745f0ca6008d33958e611e7078f6a8"
+    },
+    {
+      "name": "geo323-compare/prepare-outer-RESULT.json",
+      "original_path": "/workspace/train337-L-geo323-prepare-original-launch-20261024/RESULT.json",
+      "bytes": 2469,
+      "sha256": "9180e32360c376d5bf953514adb2346da7c10918327e6c88e212f689236f309f"
+    },
+    {
+      "name": "geo323-compare/build-outer-RESULT.json",
+      "original_path": "/workspace/train337-L-geo323-build-original-launch-20261024/RESULT.json",
+      "bytes": 2461,
+      "sha256": "5c2556731862f0eb781dae8edb9ed54e3fd4eb0edf5f9f19f085ee45ba3cb795"
+    },
+    {
+      "name": "local-complete-package-metadata/P52-PACKAGE.json",
+      "original_path": "/workspace/train337-final-performance-collection-preparation/p52-v3/PACKAGE.json",
+      "bytes": 740,
+      "sha256": "608e16aef58df3d43d03e529ed8f947e5ca1e908f5fd3dbae920da63cb116e5c"
+    },
+    {
+      "name": "local-complete-package-metadata/P52_ACTUAL_PACKAGE_PEER.json",
+      "original_path": "/workspace/train337-canvas-peer-resume/P52_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 2018,
+      "sha256": "7e1053fa59591991f024ff85cd5a5b8ee93d7120d2ab2781025f9ac337aed620"
+    },
+    {
+      "name": "local-complete-package-metadata/P189-PACKAGE.json",
+      "original_path": "/workspace/train337-final-performance-collection-preparation/p189-v2/PACKAGE.json",
+      "bytes": 743,
+      "sha256": "e4d67e2601b2c99b5d3e09c6522983e9bee5c3d1d5c40ac6d1ade7199b60b894"
+    },
+    {
+      "name": "local-complete-package-metadata/P189_ACTUAL_PACKAGE_PEER.json",
+      "original_path": "/workspace/train337-canvas-peer-resume/P189_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 1566,
+      "sha256": "2c4b890f9aae035bd82e0194c17f6ad5ccf3033d783302feabed73eae7d99f02"
+    },
+    {
+      "name": "local-complete-package-metadata/P189_TIMING-PACKAGE.json",
+      "original_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2/PACKAGE.json",
+      "bytes": 762,
+      "sha256": "fe026abe2456c172d028f1082b5ba88f29679d4e64ff63eaf84a3f256e36b9c0"
+    },
+    {
+      "name": "local-complete-package-metadata/P189_TIMING_ACTUAL_PACKAGE_PEER.json",
+      "original_path": "/workspace/train337-canvas-peer-resume/P189_TIMING_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 2001,
+      "sha256": "96ac85b0767a4c5aca4eedb6b638da4939b25b525e586a20a7437e8057a7cc9b"
+    }
+  ],
+  "small_original_bytes": 451505,
+  "complete_raw_archives_published": false,
+  "original_exits": {
+    "p52": 0,
+    "p189_full": 1,
+    "p189_timing": 0,
+    "geo323_prepare": 0,
+    "geo323_build": 0,
+    "geo323_compare": 1
+  },
+  "unrun": [
+    "geo323_perf",
+    "geo323_profile",
+    "memo"
+  ],
+  "source_unchanged": true
+}

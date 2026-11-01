@@ -1,0 +1,71 @@
+"""Freeze only closed S10 receipts; never traverse or inspect a live source checkout."""
+from pathlib import Path, PurePosixPath
+import hashlib, json, os, stat, tarfile, time
+HERE=Path('/tmp/geo337-S10-closed-original-collection-preparation-20261025')
+OWN=Path('/dev/shm/geometry-axiom-geo337-20261025')
+F='82c922a3941525d3a094ac0158bdc7dea57ea360'
+RESERVE=64*1024*1024; META=2*1024*1024
+RAW=[('source-preparation','F10-source-preparation-reserve-anchor',1038,11542171),('source-root-original','S10-source-preparation-root-original-20261025',9,18194),('preledger-original','S10-preledger-checks-original-20261025',65,11689691)]
+PEERS=[('/workspace/geo337-S10-source-preparation-actual-peer-20261025/REVIEW.json','c01f6d7337297ad36f617eecf1c9067cbb4bf9ce53ba4dd942930c723d38c1ed'),('/workspace/geo337-S10-preledger-actual-peer-20261025/REVIEW.json','1f945f9e84d04fe74c807388dc95d4076ff6ad814ac35e2fb93ff465efbaafd3')]
+def need(x,message):
+ if not x: raise RuntimeError(message)
+def h(p):
+ z=hashlib.sha256()
+ with p.open('rb') as f:
+  for b in iter(lambda:f.read(1024*1024),b''): z.update(b)
+ return z.hexdigest()
+def J(p):return json.loads(p.read_bytes())
+def state(p):
+ s=p.lstat();return [s.st_dev,s.st_ino,s.st_mode,s.st_size,s.st_mtime_ns,s.st_nlink]
+def write(name,data):(HERE/name).write_text(json.dumps(data,ensure_ascii=False,separators=(',',':'))+'\n')
+def overhead(n):return (n+4095)//4096+(n+16383)//16384+(n+33554431)//33554432+1024
+def leaves(root):
+ need(root.is_dir() and not root.is_symlink(),'real closed directory required')
+ found=[]
+ for cur,dirs,files in os.walk(root,followlinks=False):
+  for name in dirs:
+   need(not (Path(cur)/name).is_symlink(),'directory symlink forbidden')
+  for name in files:
+   p=Path(cur)/name;need(stat.S_ISREG(p.lstat().st_mode),'regular closed metadata only');found.append(p.relative_to(root).as_posix())
+ return sorted(found)
+def main():
+ need(not HERE.exists(),'fresh preparation required')
+ for path,pin in PEERS:
+  p=Path(path);need(h(p)==pin,'accepted actual peer changed');j=J(p);need(j['exit_code']==0 and j['source_sha']==F,'accepted actual peer identity')
+ src=J(OWN/RAW[0][1]/'RESULT.json');need(src['exit']==0 and src['source_sha']==F and src['formal_executed'] is False,'closed preparation identity')
+ out=J(OWN/RAW[1][1]/'RESULT.json');need(out['exit_code']==0 and out['source_sha']==F,'closed source launcher identity')
+ pre=J(OWN/RAW[2][1]/'RESULT.json');need(pre['source_sha']==F and pre['wrapper_exit']==0 and [r['exit_code']for r in pre['gates']]==[1,0,0,0,0,0] and pre['all_gates_passed'] is False,'preserve original preledger red')
+ roots=[]; rows=[]; names=set()
+ def add(prefix,root,rels=None):
+  root=Path(root);whole=rels is None;rels=leaves(root) if whole else sorted(rels)
+  need(not any(x in root.parts for x in ('F10-pool','F10-cache')),'live source/cache forbidden')
+  need(root==Path('/workspace') or root.parent==Path('/workspace') or root==Path('/workspace/geo261-environment/final-f-contact-checker-proof-tools') or root in [OWN/x[1] for x in RAW],'selected roots are closed original metadata only')
+  ri=len(roots);roots.append({'prefix':prefix,'source_root':str(root),'selection':'whole-tree'if whole else'exact-files','exact_files':None if whole else rels})
+  subtotal=0
+  for rel in rels:
+   need(not PurePosixPath(rel).is_absolute() and '..' not in PurePosixPath(rel).parts,'safe relative path')
+   p=root/rel;st=state(p);need(stat.S_ISREG(st[2]),'regular closed file required');pin=h(p);need(state(p)==st,'closed input changed during hash')
+   name=prefix+'/'+rel;need(name not in names,'duplicate member');names.add(name)
+   info=tarfile.TarInfo(name);info.mode=st[2]&0o777;info.mtime=st[4]//1000000000;info.size=st[3]
+   need(len(info.tobuf(tarfile.PAX_FORMAT))+511<=4096,'header bound exceeded')
+   rows.append([ri,rel,'regular',st[3],pin,st,None]);subtotal+=st[3]
+  return len(rels),subtotal
+ for prefix,name,count,size in RAW:need(add(prefix,OWN/name)==(count,size),'closed raw count/bytes changed')
+ add('source-tool-preparation','/workspace/geo337-F10-source-reserve-anchor-preparation-20261025')
+ add('source-tool-static-peer','/workspace/geo337-F10-source-reserve-anchor-static-peer-20261025')
+ add('source-actual-peer','/workspace/geo337-S10-source-preparation-actual-peer-20261025')
+ add('source-reviewer-history','/workspace/geo337-S10-source-preparation-actual-peer-preparation-20261025')
+ add('preledger-actual-peer','/workspace/geo337-S10-preledger-actual-peer-20261025')
+ add('host-and-reviewers','/workspace',[
+  'geo337-S10-source-preparation-EXEC_FINAL-20261025.json','geo337-S10-preledger-checks-EXEC_FINAL-20261025.json',
+  'launch_geo337_S10_source_preparation_root_20261025.py','run_geo337_S10_preledger_checks_20261025.py',
+  'review_geo337_S10_source_preparation_actual_20261025.py','review_geo337_S10_preledger_actual_20261025.py'])
+ add('original-recorder','/workspace/geo261-environment/final-f-contact-checker-proof-tools',['capture.py'])
+ add('original-admission-sampler','/workspace/geo337-F9-browser-sampler-preparation-20261025',['sample_original_browser_v2.py'])
+ logical=sum(r[3]for r in rows);n=logical+4096*len(rows)+11264;gz=n+overhead(n)
+ inv={'schema':'geo337-S10-closed-original-compact-inventory/1','source_sha':F,'roots':roots,'record_fields':['root','relative','type','bytes','sha256','state','target'],'state_fields':['device','inode','mode','bytes','mtime_ns','nlink'],'records':rows,'original_raw_regular_files':1112,'original_raw_symlinks':0,'original_raw_regular_bytes':23250056,'subject_rerun':False,'oracle_revalidated':False,'active_source_or_cache_read':False,'original_gate_exits':[1,0,0,0,0,0],'accepted_actual_peer_bindings':PEERS,'selection':'All three closed raw directories, complete preparation tool proof, original hosts/tools and accepted peers. No pool, seed, cache, live checkout, fixtures or git objects selected; serialized creation manifests remain original receipt bytes.'}
+ part={'part':1,'members':len(rows),'logical_regular_bytes':logical,'header_padding_bound':4096*len(rows),'tar_end_alignment_bound':11264,'tar_upper_bytes':n,'gzip_worst_case_overhead':overhead(n),'gzip_upper_bytes':gz,'metadata_bytes':META,'reserve_bytes':RESERVE,'required_fresh_bytes':gz+META+RESERVE,'members_exact':[roots[r[0]]['prefix']+'/'+r[1]for r in rows]}
+ HERE.mkdir();write('INVENTORY.json',inv);write('PARTS.json',[part]);(HERE/'prepare_inventory.py').write_bytes(Path(__file__).read_bytes())
+ write('RESULT.json',{'schema':'geo337-S10-closed-inventory-preparation/1','inventory_exit':0,'source_sha':F,'inventory_sha256':h(HERE/'INVENTORY.json'),'parts_sha256':h(HERE/'PARTS.json'),'inventory_regular_files':len(rows),'inventory_regular_bytes':logical,'inventory_symlinks':0,'part_count':1,'maximum_required_fresh_bytes':part['required_fresh_bytes'],'current_execution_admitted':False,'archive_created':False,'subject_rerun':False,'oracle_revalidated':False,'active_source_or_cache_read':False,'prepare_sha256':h(HERE/'prepare_inventory.py'),'epoch':time.time()})
+ print(json.dumps({'path':str(HERE),'inventory_sha256':h(HERE/'INVENTORY.json'),'parts_sha256':h(HERE/'PARTS.json'),'result_sha256':h(HERE/'RESULT.json'),'files':len(rows),'logical_bytes':logical,'required_fresh_bytes':part['required_fresh_bytes'],'archive_created':False}))
+if __name__=='__main__':main()

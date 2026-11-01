@@ -1,0 +1,23 @@
+{
+  "state": "PREPARATION_ONLY",
+  "collector_executed": false,
+  "SHM_access": false,
+  "product_rerun": false,
+  "base_collector_sha256": "7675c2af1de19a193195267245f57b10192a4a684cfd54654dd1d4cf3539da25",
+  "base_launcher_sha256": "c7bcd2e95400aa6a18babfdaca7f68ad67f1cf8537ac58a57802cac8b1ae42d7",
+  "delta": "Only original host FINAL envelope normalization: direct plan result and yielded materialize actual_tool_result. Actual exit/source job/phase/result retained and checked; archive algorithm unchanged.",
+  "files": {
+    "collect_four_browser_terminal_v3.py": {
+      "bytes": 18387,
+      "sha256": "813a770b414c6b57f4ffde568e6242614ed3bf28287a3e487ed9811f1113d741"
+    },
+    "launch_four_job_collection_v3.py": {
+      "bytes": 4498,
+      "sha256": "d50cfaa1bd6f9377fc44149dc51f6a365a50de0f4999addfbfb6f6c597b17545"
+    },
+    "V2_TO_V3.diff": {
+      "bytes": 2393,
+      "sha256": "7dfccce4ba771be8301d0361269f43bed9f5dc4397eb1cc6a6ca18712a691de5"
+    }
+  }
+}

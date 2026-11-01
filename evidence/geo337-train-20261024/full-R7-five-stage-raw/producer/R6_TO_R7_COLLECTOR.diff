@@ -1,0 +1,90 @@
+--- R6-collector
++++ R7-terminal-bound-collector
+@@ -3,12 +3,12 @@
+ import datetime,hashlib,json,os,stat,tarfile,traceback
+ 
+ HERE=Path(__file__).resolve().parent
+-R='2bbe54f19b2d19e8a816530f0c4edca950629a34'
+-RAW=Path('/workspace/g337323R6')
+-TOOLS=Path('/workspace/geo323-final-r6-stage-tools-20261024')
++R='6df0264f75e84f03adb70746b6ac3db07a9910fc'
++RAW=Path('/tmp/g337323R7')
++TOOLS=Path('/tmp/geo323-final-r7-stage-tools-20261024')
+ V5=Path('/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5')
+-SOURCE=Path('/workspace/geo323-final-r6-source-20261024')
+-OUT=Path('/tmp/geo323-r6-full-package-20261024')
++SOURCE=Path('/tmp/geo323-final-r7-source-20261024')
++OUT=Path('/tmp/geo323-r7-full-package-20261024')
+ STAGES=['prepare','build','compare','perf','profile']
+ MAX_ARCHIVE=36*1024*1024
+ MAX_METADATA=4*1024*1024
+@@ -34,23 +34,25 @@
+     def flush(self):return self.stream.flush()
+     def tell(self):return self.stream.tell()
+ def collect():
+-    need(digest(HERE/'PLAN.json')=='ede91bc92d702d4d3f386ab2c7622658ef5fc5ffdba1c8e5e53fd6201d510209','frozen membership plan')
++    need(digest(HERE/'PLAN.json')=='__FROZEN_TERMINAL_PLAN_SHA256__','frozen membership plan')
+     plan=json.loads((HERE/'PLAN.json').read_bytes())
+     need(plan['source_sha']==R,'fixed R plan')
++    for name,pin in plan['terminal_bindings'].items():
++        original=Path(pin['path']);need(original.stat().st_size==pin['bytes'] and digest(original)==pin['sha256'],'frozen original terminal binding '+name)
+     free=os.statvfs(OUT.parent).f_bavail*os.statvfs(OUT.parent).f_frsize
+     need(free>=MIN_FREE,'TMP resource guard: reserve128MiB plus archive36MiB and metadata4MiB')
+     need(not OUT.exists(),'single fresh package; never overwrite original or retry automatically')
+     r=json.loads((RAW/'receipt.json').read_bytes())
+     outer=json.loads((TOOLS/'launch-five/RESULT.json').read_bytes())
+     driver=json.loads((TOOLS/'outer-five/RESULT.json').read_bytes())
+-    annotation=json.loads((HERE/'TOP_LEVEL_TOOL_TRANSCRIPT_LIMIT.json').read_bytes())
++    annotation=json.loads((HERE/'TOOL_RESPONSE_SCOPE.json').read_bytes())
+     request=json.loads((TOOLS/'REQUEST.json').read_bytes())
+     prep=json.loads((TOOLS/'preparation/RESULT.json').read_bytes())
+     need(r['source_sha']==outer['source_sha']==request['source_sha']==prep['source_sha']==R,'original source bindings')
+     need(outer['stages']==STAGES and len(outer['commands'])==5,'five original stage commands')
+-    need(driver['source_sha']==R and driver['exit']==outer['exit']==1,'original outer Recorder and launcher terminal1 retained')
+-    need(annotation['complete_original_tool_response_saved'] is False and annotation['stdout_stderr_reconstructed'] is False and annotation['source_sha']==R,'missing tool transcript disclosed, never invented')
+-    need(len(driver['commands'])==2 and [x['actual_exit']for x in driver['commands']]==[0,1],'original df and five-stage outer exits')
++    need(driver['source_sha']==R and type(outer['exit']) is int and driver['exit']==outer['exit']==plan['expected_terminal']['outer_exit'],'frozen actual outer Recorder and launcher terminal retained')
++    need(annotation['stdout_stderr_reconstructed'] is False and annotation['source_sha']==R and annotation['supplied_api_files'],'actual owner-supplied API objects retained without reconstruction or completeness inference')
++    need(len(driver['commands'])==2 and [x['actual_exit']for x in driver['commands']]==[0,outer['exit']],'original df and five-stage outer exits')
+     for i,c in enumerate(driver['commands'],1):
+         directory=TOOLS/'outer-five/commands'/f'{i:03d}'
+         need(c==json.loads((directory/'result.json').read_bytes()),'original outer atomic row')
+@@ -63,11 +65,11 @@
+         need(c['stage']==phase and c['original_stage']==original,'outer/stage record identity '+phase)
+         for stream in ['stdout','stderr']:
+             need(digest(TOOLS/'launch-five'/phase/stream)==c[stream+'_sha256'],'outer full stream '+phase+'/'+stream)
+-    need([c['actual_process_exit'] for c in outer['commands']]==[0,0,1,1,1],'original cumulative CLI exits')
+-    need([r['stages'][n]['execution_exit'] for n in STAGES]==[0,0,1,0,0],'original own-stage exits')
++    need([c['actual_process_exit'] for c in outer['commands']]==plan['expected_terminal']['cumulative_cli_exits'],'frozen original cumulative CLI exits')
++    need([r['stages'][n]['execution_exit'] for n in STAGES]==plan['expected_terminal']['own_stage_exits'],'frozen original own-stage exits')
+     need(r['full_acceptance_passed'] is None and r['all_required_stages_completed'] is False,'unrun stages not passed')
+-    need('ABC_result' not in r,'missing downstream audit stays missing')
+-    need(r['quantitative_targets']['N64_fix_main']['target_met'] is False and r['quantitative_targets']['small_N_no_regression']['points']['16']['target_met'] is False,'both original R6 N64 and N16 targets stay red')
++    need(('ABC_result' in r)==plan['expected_terminal']['ABC_result_present'],'original downstream audit presence stays unchanged')
++    need(r['quantitative_targets']==plan['expected_terminal']['quantitative_targets'],'all original target values and verdicts retained, never inferred from R6')
+     for name,pin in r['tool_hashes'].items():need(digest(V5/name)==pin,'frozen v5 tool '+name)
+     need(prep['exit']==0 and len(prep['entries'])==447,'original thin source preparation')
+     for entry in prep['entries']:
+@@ -98,11 +100,11 @@
+             z['reason']='Only ELF body excluded; original path retained unchanged.';excluded.append(z)
+         else:rows.append(z)
+     need(len(excluded)==7,'exact seven original ELF paths')
+-    for name in ['collect.py','PLAN.json','launch.py','README.md','prepare_plan.py','R5_TO_R6_COLLECTOR.diff','PROVENANCE.json','TOP_LEVEL_TOOL_TRANSCRIPT_LIMIT.json','adapt_r5.py']:
++    for name in ['collect.py','PLAN.json','launch.py','README.md','freeze_terminal_plan.py','prepare_plan.py','R6_TO_R7_COLLECTOR.diff','PROVENANCE.json','TOOL_RESPONSE_SCOPE.json','adapt_r6.py','COLLECTOR_PINS.json']:
+         rows.append(row('collection-tools/'+name,HERE/name))
+     OUT.mkdir()
+     summary={k:r[k] for k in ['source_sha','base','main','stages','errors','quantitative_targets','wrapper_exit','all_executed_stage_commands_passed','all_measured_original_targets_met','all_required_stages_completed','full_acceptance_passed']}
+-    summary.update(outer_tool_transcript_complete=False,outer_tool_transcript_annotation=annotation,outer_original_recorder=driver,formal_stage_scope=STAGES,outer_exit=outer['exit'],original_cli_exits=[c['actual_process_exit'] for c in outer['commands']],original_capture_rows=commands,source_preparation_entries=447,excluded_elf_count=7,free_bytes_before=free,free_space_filesystem=str(OUT.parent),native_tmp_reserve_bytes=NATIVE_TMP_RESERVE,resource_min_free_bytes=MIN_FREE,archive_limit_bytes=MAX_ARCHIVE,no_existing_file_deleted=True,no_subject_executed=True,published=False,limitations=['Package success verifies evidence byte preservation, never product acceptance.','Original compare1, N64/main>1.3 and N16/base>1 remain red; perf/profile execution0 differs from cumulative CLI1.','Only five of the original eight stages ran here; full_acceptance_passed remains null.','Original source-role heuristic may label orchestration base from argv; no original field is rewritten.','ELF payloads remain at all original paths with exact hashes, not included or deleted.','Original emitted data only; missing audit fields or hidden outputs are not invented.','No complete top session60337 API tool response was supplied to this collector; original outer-five Recorder retains actual launch exit1 and full streams. The later annotation is explicitly not original tool raw.'])
++    summary.update(outer_tool_transcript_sequence_completeness='not independently inferred',outer_tool_transcript_annotation=annotation,outer_original_recorder=driver,formal_stage_scope=STAGES,outer_exit=outer['exit'],original_cli_exits=[c['actual_process_exit'] for c in outer['commands']],original_capture_rows=commands,source_preparation_entries=447,excluded_elf_count=7,free_bytes_before=free,free_space_filesystem=str(OUT.parent),native_tmp_reserve_bytes=NATIVE_TMP_RESERVE,resource_min_free_bytes=MIN_FREE,archive_limit_bytes=MAX_ARCHIVE,no_existing_file_deleted=True,no_subject_executed=True,published=False,limitations=['Package success verifies evidence byte preservation, never product acceptance.','Every current original target and exit is copied from frozen terminal receipts; no R6 verdict is imposed and no product acceptance is inferred.','Only five of the original eight stages ran here; full_acceptance_passed remains null.','Original source-role heuristic may label orchestration base from argv; no original field is rewritten.','ELF payloads remain at all original paths with exact hashes, not included or deleted.','Original emitted data only; missing audit fields or hidden outputs are not invented.','Exactly the supplied root-owned API response files are preserved bytewise. Full API sequence completeness is not inferred. Original outer Recorder and stage streams retain their actual exits and full bytes.'])
+     save(OUT/'SUMMARY.json',summary);save(OUT/'EXCLUDED_ELF_PAYLOADS.json',excluded)
+     for name in ['SUMMARY.json','EXCLUDED_ELF_PAYLOADS.json']:rows.append(row('collection/'+name,OUT/name))
+     need(len({z['name'] for z in rows})==len(rows),'unique archive members')
+@@ -110,7 +112,7 @@
+     save(OUT/'RAW_INVENTORY.json',inventory)
+     metadata_bytes=sum(f.stat().st_size for f in OUT.iterdir())
+     need(metadata_bytes+65536<=MAX_METADATA,'metadata resource budget (64KiB reserved for final PACKAGE.json)')
+-    archive=OUT/'ORIGINAL_R6_FIVE_STAGE_RAW.tar.gz'
++    archive=OUT/'ORIGINAL_R7_FIVE_STAGE_RAW.tar.gz'
+     with archive.open('xb') as raw:
+         with tarfile.open(fileobj=BoundedArchive(raw),mode='w:gz',compresslevel=6,dereference=True) as tar:
+             for z in rows:tar.add(z['source_path'],arcname=z['name'],recursive=False)

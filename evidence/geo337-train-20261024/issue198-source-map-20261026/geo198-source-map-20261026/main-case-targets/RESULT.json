@@ -1,0 +1,26 @@
+{
+  "command": [
+    "git",
+    "-C",
+    "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+    "grep",
+    "-n",
+    "-E",
+    "counterexample_a|counterexample_b|geo198|notch.*ridge|ridge.*notch",
+    "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+    "--",
+    "tests/*.py",
+    "tests/scenes",
+    "tests/fixtures",
+    ":(exclude)tests/evidence",
+    ":(exclude)tests/release-evidence"
+  ],
+  "cwd": "/tmp",
+  "started_utc": "2026-10-26T11:39:02.221131+00:00",
+  "ended_utc": "2026-10-26T11:39:02.310274+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 894,
+  "stdout_sha256": "ec38ef39bc925924693df6cc9a16fcceec8ed42013b8cfeed239c7bf6c42e010",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

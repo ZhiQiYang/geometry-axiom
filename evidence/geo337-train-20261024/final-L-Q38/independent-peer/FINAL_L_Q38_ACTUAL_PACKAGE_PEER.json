@@ -1,0 +1,457 @@
+{
+  "schema": "independent-final-L-Q38-original-actual-peer/1",
+  "checks": 2080,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "original_exit": 0,
+  "outer_exit": 0,
+  "materialization_exit": 0,
+  "materialized_file_count": 565,
+  "archive_sha256": "acbf826d08488d4d678c68004d0c5e9e5979d0ba05951f5926dc73a6a28a1690",
+  "archive_members": 449,
+  "original_files": 448,
+  "original_bytes": 21848948,
+  "original_command_captures": 48,
+  "collector_command_exit": 0,
+  "baseline_native_tests": 27,
+  "baseline_model_tests": 20,
+  "original_mutants": 42,
+  "native_mutants": 37,
+  "model_mutants": 5,
+  "killed": 41,
+  "equivalent": 1,
+  "equivalent_id": "SPM24",
+  "cause_classification": {
+    "builtins.AssertionError": 39,
+    "geometry_app.model_common.ModelError": 2
+  },
+  "compile_receipts": 40,
+  "cases": [
+    {
+      "id": "SPM01",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 2,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM02",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 2,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM03",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM04",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM05",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM06",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM07",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM08",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM09",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM10",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM11",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM12",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM13",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM14",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM15",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM16",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM17",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM18",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM19",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM20",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM21",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM22",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM23",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM24",
+      "group": "native",
+      "exit": 0,
+      "verdict": "equivalent",
+      "named_methods": 2,
+      "cause_types": []
+    },
+    {
+      "id": "SPM25",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM26",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM27",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM28",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM29",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM30",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM31",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 2,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM32",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM33",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM34",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM35",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM41",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM42",
+      "group": "native",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM36",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM37",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM38",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "geometry_app.model_common.ModelError"
+      ]
+    },
+    {
+      "id": "SPM39",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "builtins.AssertionError"
+      ]
+    },
+    {
+      "id": "SPM40",
+      "group": "model",
+      "exit": 1,
+      "verdict": "killed",
+      "named_methods": 1,
+      "cause_types": [
+        "geometry_app.model_common.ModelError"
+      ]
+    }
+  ],
+  "source_blob_sha256": "3004734c4e1052e95d3234091bc8fb03c20cf7546282432704fca0a07071ee6c",
+  "limitations": [
+    "No subject, compiler or browser was rerun. Git L source was parsed as AST data only.",
+    "Private bridge/model-base ELF bytes remain in their original locations and are excluded only from archive payload. Original disposable mutant trees/binaries were already cleaned by the original TemporaryDirectory runner; only original exposed compiler/log/exception receipts and hashes can be retained.",
+    "Original model-adapter compile argv stores <ADAPTER_BUILD>; its exact code is available in the pinned Git L source. No unexposed subprocess stream or individual OS status is invented.",
+    "This is original L 42-case Q38, not the independent later branch with 44 cases. Native full run and other specialist gates are not inferred."
+  ]
+}

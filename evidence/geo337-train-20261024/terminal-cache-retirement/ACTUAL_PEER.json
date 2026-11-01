@@ -1,0 +1,95 @@
+{
+  "schema": "independent-root-retirement-actual-r2-peer.v1",
+  "generatedUTC": "2026-10-23T20:03:58.051255+00:00",
+  "readOnly": true,
+  "deletedByReviewer": false,
+  "executedPath": "/tmp/geo337-terminal-cache-retirement-20261023-r2/EXECUTED.json",
+  "executedSHA256": "a2043e68e0b0ed3cc42b83f03ef892420f3c68707fbfdc90bbe4d0f7719dfc10",
+  "outerLaunchReceiptPath": "/tmp/geo337-terminal-cache-retirement-execute-launch-r2/receipt.json",
+  "outerLaunchReceiptSHA256": "9bf88d1c1560b5c1084884fba45fc8566e8ee1e7e752698d2b87d1530b0c3b68",
+  "outerLaunchTopLevelScalarFacts": {
+    "sha": "5b0ce47d25393fad675bf506a9d296cbab43c35d",
+    "exit_code": 0
+  },
+  "checkCount": 15,
+  "checks": [
+    {
+      "name": "preparedExactReviewedSHA",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "executedTrueOriginalExit0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact2000RemovedUnique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "onlyExactReviewedPaths",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "sameRemovedOriginalHashBytes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all2000ActuallyAbsent",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "allSevenArchivesRetained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "originalTerminalReceiptUnchanged:/tmp/geo323-baseline-b2445b5a-v3-r1/receipt.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "originalTerminalReceiptUnchanged:/workspace/train337-323-f64d638f-v4-r1/receipt.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "originalTerminalReceiptUnchanged:/workspace/train337-323-f64d638f-memo-proof/receipt.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "originalTerminalReceiptUnchanged:/tmp/geo323-baseline-b2445b5a-v3-r1/evidence/pf3/summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all961RetiredGitWorktreeSourcePreserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "allFourOriginalGmonPreserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "noSourceRootOrGitDirectoryRemoved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "freeSpaceMeasurementsExact",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "findings": [],
+  "exitCode": 0,
+  "scope": "Actual deletion metadata and exact absent/preserved-file set; original terminal receipt hash preservation. Did not rerun producer, rehash1931source files, or decompress seven archives again; reviewed prepared immutable SHA and earlier independent49full-byte roundtrip remain references."
+}

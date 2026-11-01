@@ -1,0 +1,115 @@
+{
+  "schema": "geo348-command-boundary-diagnostic/1",
+  "argv": [
+    "synthetic-never-launched"
+  ],
+  "source_sha": "synthetic",
+  "synthetic": true,
+  "timeout": 600,
+  "input_sha256": "866c040a788781a299c1b1865caecda91fc2a5b101298d8b8cbbd169ccab4271",
+  "input_bytes": 59,
+  "bindings": {},
+  "environment": {
+    "LANG": null,
+    "LC_ALL": null,
+    "TMPDIR": null,
+    "CC": null,
+    "CFLAGS": null,
+    "CPPFLAGS": null,
+    "LDFLAGS": null,
+    "LD_PRELOAD": null,
+    "LD_LIBRARY_PATH": null,
+    "GEO348_DIAG_EVENT_FD": "3",
+    "GEO348_DIAG_STATUS_FD": "4"
+  },
+  "started_monotonic_ns": 258875905161625,
+  "product_gate_verdict": null,
+  "ended_monotonic_ns": 258875905376579,
+  "completed_process_returned": false,
+  "returncode": null,
+  "exception": {
+    "type": "TimeoutExpired",
+    "repr": "TimeoutExpired(['synthetic-never-launched'], 600)"
+  },
+  "observer_errors": [],
+  "stdout": {
+    "captured": true,
+    "bytes": 7,
+    "sha256": "9834a14ab9bcaa0f6a8da71073617eac8f004e596a3fa11d807b84631b825d9d"
+  },
+  "stderr": {
+    "captured": true,
+    "bytes": 8,
+    "sha256": "0682c5f2076f099c34cfdd15a9e063849ed437a49677e6fcc5b4198c76575be5"
+  },
+  "sidecar": {
+    "valid": true,
+    "errors": [],
+    "events": [
+      {
+        "seq": 1,
+        "kind": "stdin_line_returned",
+        "command": 1,
+        "monotonic_ns": 1000,
+        "rc": 1,
+        "length": 35,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 2,
+        "kind": "stdout_flush_enter",
+        "command": 1,
+        "monotonic_ns": 1100,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 3,
+        "kind": "stdout_flush_return",
+        "command": 1,
+        "monotonic_ns": 1200,
+        "rc": 0,
+        "length": 0,
+        "feof": 0,
+        "ferror": 0
+      },
+      {
+        "seq": 4,
+        "kind": "stdin_line_returned",
+        "command": 2,
+        "monotonic_ns": 1300,
+        "rc": 1,
+        "length": 5,
+        "feof": 0,
+        "ferror": 0
+      }
+    ],
+    "flushed_commands": [
+      {
+        "command": 1,
+        "rc": 0
+      }
+    ],
+    "last_boundary": {
+      "kind": "stdin_line_returned",
+      "command": 2,
+      "monotonic_ns": 1300
+    },
+    "root_cause": null,
+    "product_gate_verdict": null,
+    "status": {
+      "attached": 1,
+      "attempts": 4,
+      "successes": 4,
+      "faults": 0
+    },
+    "scope": "Handler/flush boundary observations only; JSON success and product acceptance remain separate."
+  },
+  "event_sha256": "5febb68301a62502bdd1f19610adedc21e8c98e2a2e38e99d7adddda6f857773",
+  "status_sha256": "016b95cd5c1718ac4ca66ee1c549a0c3cc00f1aeba8144c2b5244d768d5165d0",
+  "diagnostic_observation_valid": true,
+  "root_cause": null
+}

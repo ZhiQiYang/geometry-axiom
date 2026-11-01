@@ -1,0 +1,242 @@
+{
+  "schema": "geo300-readonly-prerequisite-source-and-batch-analysis/1",
+  "analyzed_source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "capacity_head": "9a8584f57be7935604c3bad4c2481945a6ec3d9f",
+  "generated_at": "2026-10-26T10:28:51.009767+00:00",
+  "product_executed": false,
+  "compiler_executed": false,
+  "source_or_ref_modified": false,
+  "new_performance_samples": false,
+  "exit_code": 0,
+  "missing_existing_optimizations": [
+    {
+      "path": "geometry-core/kernel/source.c",
+      "current_sha256": "64c7a6223be0e824232bc0ec0139a3728606fb9666a991a951b5aa9357cf3e09",
+      "capacity_sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a",
+      "exact_reversal_matches_capacity": true,
+      "groups": [
+        "EDGE_PROBE_REUSE_EDITS",
+        "PROVIDER_HINT_EDIT"
+      ]
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "current_sha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b",
+      "capacity_sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "exact_reversal_matches_capacity": true,
+      "groups": [
+        "MONOTONIC_SORT_BLOCK",
+        "PLANE_RANGE_EDITS"
+      ]
+    }
+  ],
+  "original_timeout_seconds_per_batch": 600,
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "fixture_metadata": [
+    {
+      "n": 64,
+      "scene_bytes": 5676,
+      "scene_sha256": "ae61c7eb565efc3997402b124592c1201d9e3c6027f4945a735387ef4327416d",
+      "statements": 130,
+      "counts": {
+        "surface": 1,
+        "grid": 1,
+        "timber": 64,
+        "place": 64
+      },
+      "rooms": [
+        {
+          "surface": 1,
+          "timbers": 64,
+          "mains": 4,
+          "rows": 12,
+          "width": 4602,
+          "height": 4736,
+          "x0": 0
+        }
+      ],
+      "leaf_delete": "delete timber 64"
+    },
+    {
+      "n": 128,
+      "scene_bytes": 11199,
+      "scene_sha256": "594198d1de504a4e9df7ca57d7dc9a6220f9bc041ef7f8a7e886586da07729c5",
+      "statements": 258,
+      "counts": {
+        "surface": 1,
+        "grid": 1,
+        "timber": 128,
+        "place": 128
+      },
+      "rooms": [
+        {
+          "surface": 1,
+          "timbers": 128,
+          "mains": 6,
+          "rows": 17,
+          "width": 6438,
+          "height": 6571,
+          "x0": 0
+        }
+      ],
+      "leaf_delete": "delete timber 128"
+    },
+    {
+      "n": 256,
+      "scene_bytes": 22471,
+      "scene_sha256": "134ea833ddc90f5033e4795908f3b1f12dde6d7d6ce71e13acebdfacf1ba93f7",
+      "statements": 514,
+      "counts": {
+        "surface": 1,
+        "grid": 1,
+        "timber": 256,
+        "place": 256
+      },
+      "rooms": [
+        {
+          "surface": 1,
+          "timbers": 256,
+          "mains": 9,
+          "rows": 25,
+          "width": 9192,
+          "height": 9507,
+          "x0": 0
+        }
+      ],
+      "leaf_delete": "delete timber 256"
+    },
+    {
+      "n": 512,
+      "scene_bytes": 45154,
+      "scene_sha256": "760a7169ea3577341b4b0ec1b56ea39c21c85c777434325ec906debe0a816f10",
+      "statements": 1026,
+      "counts": {
+        "surface": 1,
+        "grid": 1,
+        "timber": 512,
+        "place": 512
+      },
+      "rooms": [
+        {
+          "surface": 1,
+          "timbers": 512,
+          "mains": 14,
+          "rows": 33,
+          "width": 13782,
+          "height": 12443,
+          "x0": 0
+        }
+      ],
+      "leaf_delete": "delete timber 512",
+      "sequential_batch_commands": 1048,
+      "sequential_prefix": [
+        [
+          "reset",
+          "reset"
+        ],
+        [
+          "statement-0",
+          "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 13782,0 13782,12443 0,12443"
+        ]
+      ],
+      "sequential_suffix": [
+        [
+          "dump",
+          "dump"
+        ],
+        [
+          "objects",
+          "objects"
+        ],
+        [
+          "references",
+          "references"
+        ],
+        [
+          "reject-513",
+          "line timber 513 27 33 role primary"
+        ],
+        [
+          "after-513",
+          "dump"
+        ],
+        [
+          "reject-incomplete",
+          "line timber 513 27 33"
+        ],
+        [
+          "after-incomplete",
+          "dump"
+        ],
+        [
+          "reject-missing",
+          "line timber"
+        ],
+        [
+          "after-missing",
+          "dump"
+        ],
+        [
+          "delete",
+          "line delete timber 512"
+        ],
+        [
+          "deleted",
+          "dump"
+        ],
+        [
+          "undo",
+          "line undo"
+        ],
+        [
+          "undone",
+          "dump"
+        ],
+        [
+          "reject-pending-redo",
+          "line timber 513 27 33 role primary"
+        ],
+        [
+          "after-pending-redo",
+          "dump"
+        ],
+        [
+          "redo",
+          "line redo"
+        ],
+        [
+          "redone",
+          "dump"
+        ],
+        [
+          "final-undo",
+          "line undo"
+        ],
+        [
+          "final-dump",
+          "dump"
+        ],
+        [
+          "final-objects",
+          "objects"
+        ],
+        [
+          "final-references",
+          "references"
+        ]
+      ],
+      "preload_batch_commands": [
+        "loadfile <same generated fixture>",
+        "dump",
+        "objects",
+        "references"
+      ]
+    }
+  ],
+  "limits": [
+    "These checks only prove source delta and original batch construction, not C behavior or speed.",
+    "The 600-second timer belongs to each placed_batch subprocess, not to loadfile alone or the whole unittest method.",
+    "Generator geometry self-check is not evidence that the bridge accepts a placed world.",
+    "Historical two TimeoutExpired results remain failures; no resampling, timeout changes or return-code fabrication."
+  ]
+}

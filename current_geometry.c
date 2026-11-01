@@ -5755,9 +5755,6 @@ static bool uv_rects_overlap(
     return geo_rect_overlap_positive(&a,&b);
 }
 
-/* 候選矩形是否與同承載面上任何已放角材正面積重疊。 */
-/* 公理 I11：同面任兩支已放角材的 footprint 正面積不得相交
- *（端點/邊相接 = 零面積 = 合法接觸）。 */
 #include "geometry-templates/woodworking/native/contact_world.h"
 static bool app_contact_sources_collect(const World *,uint32_t,bool,const WoodMember *,WoodStopFace *,size_t,bool *,size_t *);
 static bool app_reference_sources_valid(const World *);
@@ -5821,13 +5818,6 @@ static bool app_contact_resolve_stops(void *opaque,bool along_v,const WoodMember
     bool ok=app_contact_sources_collect(context->world,context->facts->placement_id,along_v,exclude,out,capacity,&handled,count);
     if(handled)return ok;
     *count=wood_contact_collect_stops(context->facts,along_v,exclude,out,capacity);return true;
-}
-static bool world_footprint_collides(const World *world,const PlacementSurface *placement,
-    const SurfaceRegion2 *rect,const Timber *exclude)
-{
-    if(!world||!placement||!rect)return true;
-    AppContactFacts facts;app_contact_facts(world,placement,world_placement_boundary(world,placement),&facts);
-    return wood_contact_footprint_collides(&facts.world,rect,exclude);
 }
 
 /* ============================================================
@@ -5965,24 +5955,6 @@ static bool timber_role_props(
 }
 
 /*
- * 定位邊在角材長度軸上的區間（D16 的固定段/延伸段切分要用它）。
- *
- * D16 寫的是「與它所覆蓋的那條外輪廓 FIXED 邊（boundaryEdge）在長度軸上
- * 重疊的部分」，而 R18 明寫 boundaryEdge 是**純幾何、不看宣告與錨法**，
- * 還特別點名「用 through 放的料貼齊邊一樣 onBoundary」。
- * 所以這裡只能問幾何，不能問 anchor_kind：同一支料用 at-face 放、
- * 或用 at／through 放在同一個位置，footprint 完全相同，固定段就必須相同。
- *
- * dump 往返保存引用與放置順序（R4），角色属性仍由幾何推導、
- * 丟掉放法記錄，但幾何沒變，推導結果因此不變。
- *
- * 只看外輪廓、不看孔邊——孔邊是柱擋面，沒有延伸段語意（I20、I21 同一分界）。
- */
-static bool boundary_edge_interval(const SpaceBoundarySurface *boundary,bool along_v,
-    Coord span_lo,Coord span_hi,Coord cross_lo,Coord cross_hi,Coord *out_lo,Coord *out_hi)
-{return wood_contact_boundary_interval(boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,out_lo,out_hi);}
-
-/*
  * I20 邊界材整條覆蓋：`boundary` 的固定段在長度軸上必須 ⊇ 它所覆蓋那條邊的
  * 整個區間，且該邊是外輪廓的 FIXED 邊、與主支軸垂直（D17）。
  *
@@ -6013,16 +5985,6 @@ static bool timber_boundary_role_check(
         along_v?cross_hi:span_hi,along_v?span_hi:cross_hi);
     return wood_member_boundary_role_check(timber,&outline,fixities,inside,along_v,span_lo,span_hi,cross_lo,cross_hi,err,err_cap);
 }
-
-/*
- * 擋面接觸範圍 [lo,hi]（擋面擁有者長度軸上的座標）是否落在
- * owner 的延伸段上——I22：延伸段的側面作擋面時以優先級 2 計。
- * 只有「at-face 外輪廓邊錨的 boundary」才有固定段/延伸段之分;
- * 其餘 owner 一律回傳 false（擋面優先級 = owner.cut_priority）。
- */
-static bool stop_in_owner_extension(const World *world,const PlacementSurface *placement,
-    const SpaceBoundarySurface *boundary,const Timber *owner,Coord lo,Coord hi)
-{AppContactFacts facts;app_contact_facts(world,placement,boundary,&facts);return wood_contact_owner_extension(&facts.world,owner,lo,hi);}
 
 /*
  * I19/I22 端面檢查：角材兩端面所頂擋面的裁切優先序。
@@ -6087,6 +6049,21 @@ typedef char app_span_scratch_bound_check[SPAN_CUT_MAX==WOOD_MEMBER_SPAN_CUT_CAP
  *   out_start/out_end  解析結果（長度軸座標）
  *   err/err_cap        失敗時的人話訊息
  */
+typedef struct {
+    const World *world;const PlacementSurface *placement;const SpaceBoundarySurface *boundary;
+} AppMemberSpanEndContext;
+static bool app_reference_boundary_end_policy(const World *,const PlacementSurface *,const SpaceBoundarySurface *,
+    const WoodMember *,bool,Coord,Coord,Coord,Coord,int,const WoodStopFace *,size_t,const WoodStopFace *,WoodBoundaryEndAdmission *);
+static bool app_member_span_end_admission(void *user,const WoodMember *self,bool along_v,
+    Coord start,Coord end,Coord cross_lo,Coord cross_hi,int which,const WoodStopFace *faces,size_t count,
+    const WoodStopFace *required,WoodBoundaryEndAdmission *admission)
+{
+    const AppMemberSpanEndContext *context=user;
+    GeoRect2 rect={along_v?cross_lo:start,along_v?start:cross_lo,along_v?cross_hi:end,along_v?end:cross_hi};
+    const SpaceBoundarySurface *selected=placement_boundary_for_rect(context->placement,context->boundary,&rect);
+    return app_reference_boundary_end_policy(context->world,context->placement,selected,self,along_v,
+        start,end,cross_lo,cross_hi,which,faces,count,required,admission);
+}
 static SpanStatus resolve_auto_span(
     const World *world,
     const PlacementSurface *placement,
@@ -6104,9 +6081,11 @@ static SpanStatus resolve_auto_span(
     Coord *out_start,
     Coord *out_end,
     char *err,
-    size_t err_cap
+    size_t err_cap,
+    const Timber *self
 )
 {
+    const SpaceBoundarySurface *span_boundary=boundary;
     GeoLoop2View region_holes[DP_COMPONENT_MAX][POLY_MAX_HOLES];
     GeoRegionView regions[DP_COMPONENT_MAX];GeoPoint2 rectangle[4];
     size_t region_count=placement->derived_fill_id?placement->component_count:1;
@@ -6121,6 +6100,10 @@ static SpanStatus resolve_auto_span(
             regions[c]=(GeoRegionView){{rectangle,4},NULL,0};
         }
     }
+    /* I11 的同承載面過濾（放置當下）：只有同一承載面上已放的角材才是障礙物（M13）；正面積判式在 K
+     * （geo_strip_intervals → geo_rect_overlap_positive，M12）。同一條公理在全量重驗另有兩個檢查點，
+     * 各有自己的同承載面過濾：reference_check_all（geometry-core/references.inc，M97）與
+     * W wood_world_validate_members（world_validation.c，M98）。 */
     GeoRect2 obstacles[WORLD_MAX_TIMBERS];size_t obstacle_count=0;
     for(size_t i=0;i<world->wood.timber_count;++i){
         const Timber *t=&world->wood.timbers[i];const TimberAnchor *a=&world->wood.anchors[i];
@@ -6128,11 +6111,14 @@ static SpanStatus resolve_auto_span(
         if(timber_a0_footprint_uv(placement,t,a,&obstacles[obstacle_count]))++obstacle_count;
     }
     StopFace faces[STOP_FACE_MAX];size_t face_count=collect_stop_faces(world,placement,boundary,along_v,NULL,faces,STOP_FACE_MAX);
-    WoodMemberSpanFacts facts={{regions,region_count},obstacles,obstacle_count,faces,face_count};
+    AppMemberSpanEndContext end_context={world,placement,span_boundary};
+    WoodMemberSpanFacts facts={{regions,region_count},obstacles,obstacle_count,faces,face_count,
+        app_member_span_end_admission,&end_context};
     WoodMemberSpanRequest request={along_v,cross_lo,cross_hi,has_contact,contact_lo,contact_hi,has_through,through,
         between!=NULL,{{0},{0}},scope!=NULL,{0}};
     if(between){request.stops[0]=between[0];request.stops[1]=between[1];}
     if(scope)request.scope=*scope;
+    request.self=self;
     return (SpanStatus)wood_member_resolve_span(&facts,&request,out_start,out_end,err,err_cap);
 }
 
@@ -6249,7 +6235,8 @@ static bool world_validate_derived(const World *world)
         }
     }
 
-    WoodWorldValidationContext context=app_world_validation_context(world);
+    AppValidationInputs inputs={0};
+    WoodWorldValidationContext context=app_world_validation_context(world,&inputs);
     char error[256]="";
     if(!wood_world_validate_members(&context,error,sizeof error)){
         if(error[0])set_revalidate_error(error);return false;
@@ -6299,6 +6286,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
     if (!grid_systems_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+    }
+    if (!grid_stagger_submission_valid(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
     if (!grid_bindings_rebuild(candidate,grid_error,sizeof grid_error)) {
@@ -7549,6 +7539,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 { return apply_reference_move(p, n, t, c, w); }
 
 #include "geometry-core/parameters.inc"
+#include "geometry-app/native/stagger_facts.inc"
 #include "geometry-core/references.inc"
 #include "geometry-app/native/enclosure_sources.inc"
 #include "geometry-core/engineering.inc"

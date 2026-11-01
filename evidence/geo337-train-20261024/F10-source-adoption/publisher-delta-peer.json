@@ -1,0 +1,22 @@
+{
+  "schema": "geo337-F10-publication-two-constant-delta-peer/1",
+  "utc": "2026-10-25T15:17:48.268811+00:00",
+  "exit_code": 0,
+  "checks": 15,
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "pins_sha256": "8a89319a8b5982641bde9adf2c5ae88be750ec6b7ab44166b1f2e704df0a4347",
+  "files": {
+    "bootstrap_private_publisher.py": "bcc565b8b4d12e65aa4bf81e00d7adc4634960e7f37fc67f789851b3eafde659",
+    "publish_evidence_shm_v2.py": "3ef65a16e289ece72d2bdc9f9a7f48347af13f2192016b79f33ebc9539bdf4a7",
+    "verify_remote_blobs.py": "9ee3847a612eeb5691ed728049464b04d302c4ae59aee4680bc5f6236ff00513",
+    "publish_and_verify.py": "3d83396cf8804df5eb3e75894428b51b22f6c7e4d8b06dbac59f32a829067a81"
+  },
+  "base_review_sha256": "a07bd0a057322174b8dc165b5e0ab310fef1d45167a99e511b4eb5d1b4bd9e74",
+  "blocking_findings": [],
+  "limits": [
+    "僅靜態／AST／精確byte差分；不執行bootstrap、publisher、Git、API、產品或SHM存取。",
+    "只有PRODUCT常數F9→F10與wrapper對應bootstrap pin改動；publisher／remoteverifier逐byte原樣，所有scope/FF/hash/remote完整性守門保持。",
+    "既有private Git保留，bootstrap main不得重跑；此工具審查不代替F10產品採用或驗收。",
+    "正式執行仍需root metadata窗口、require_escalated、fresh output、normal push與完整遠端blob驗證。"
+  ]
+}

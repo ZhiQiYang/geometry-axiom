@@ -1,0 +1,54 @@
+{
+  "scope": "Independent original raw command and four-artifact current-source audit; no rerun or root edit",
+  "source_sha": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "result_sha256": "a683fd4215d6bc08155f7506f0ec35c5568a0466b651ce4a16a177b0efc33951",
+  "passed": 1755,
+  "failed": 0,
+  "exit": 0,
+  "checks_by_group": {
+    "general": 106,
+    "commands": 306,
+    "origins": 54,
+    "inputs": 1208,
+    "proofs": 81
+  },
+  "failures": [],
+  "original_commands": 51,
+  "input_files": 604,
+  "original_gates": [
+    0,
+    0,
+    0
+  ],
+  "generic_tests": 205,
+  "product_tests": 18,
+  "same_source_guard_triples": 9,
+  "neutral_controls": 2,
+  "limits": [
+    "No native/browser/ledger/performance execution certified.",
+    "Previous937/current937 are identical; withdrawn historical928 is separately pinned and read from its own actual Git source. Same bytes scan is accepted only because current raw CLI stdout is preserved.",
+    "604 actual file/Git raw/LF equality checked from retained ls-tree and current source bytes; producer before/after guards retained."
+  ],
+  "outputs": {
+    "product-architecture.json": {
+      "bytes": 221953,
+      "rawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+      "lfSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
+    },
+    "product-architecture-scan.json": {
+      "bytes": 132559,
+      "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "bytes": 1445,
+      "rawSha256": "28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac",
+      "lfSha256": "28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac"
+    },
+    "product-architecture-receipt.json": {
+      "bytes": 131983,
+      "rawSha256": "80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765",
+      "lfSha256": "80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765"
+    }
+  }
+}

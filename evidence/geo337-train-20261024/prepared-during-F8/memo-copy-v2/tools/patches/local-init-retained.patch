@@ -1,0 +1,17 @@
+--- local-init-retained-before/geometry-core/references.inc
++++ local-init-retained-after/geometry-core/references.inc
+@@ -714,11 +714,13 @@
+ }
+ static bool reference_rebuild(World *w)
+ {
+-    ReferenceEval local={0},*ctx=&local;bool persistent=false;
++    ReferenceEval local,*ctx;bool persistent=false;
+     if(g_active_app_candidate&&w==&g_active_app_candidate->after){
+         ctx=app_candidate_evaluation_state(g_active_app_candidate->control);
+         if(!ctx||ctx->world!=w)ctx=reference_sources_begin_candidate(w);
+         if(!ctx)return false;persistent=true;
++    }else{
++        local=(ReferenceEval){0};ctx=&local;
+     }
+     ctx->world=w;bool ok=true;
+     geo_guides_reset_resolved(&w->geo.guide_lines);

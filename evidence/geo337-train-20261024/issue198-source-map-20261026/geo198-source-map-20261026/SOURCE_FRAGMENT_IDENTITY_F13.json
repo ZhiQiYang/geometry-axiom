@@ -1,0 +1,1053 @@
+{
+  "scope": "static fragment identity only; no runtime or full dependency-closure claim",
+  "refs": {
+    "base196": "635dd86ee368579aec444fb3ba16e48bccf4877e",
+    "pr202": "137427563de2e94e41d067282266c232f176f0d8",
+    "train291": "e8eb1da51f3b21df15869338a7e36e76e584ff9e",
+    "main": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+    "geo288_f13": "13d02c1db7022145a52ee063286a558e595eb212"
+  },
+  "c": {
+    "base196": {
+      "source_sha256": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+      "classify_rect_outline": {
+        "line": 10511,
+        "raw_sha256": "91ca4acc42d45759bd3704fb9eb842b32958c1438be105d091851f8bdad3e0a5",
+        "lf_sha256": "e8bcd301c3b9dc082a6cdade8e76381b9abb9b105a3a73362200ee3955caf3bd",
+        "bytes": 2569,
+        "text": "static bool classify_rect_outline(\r\n    const PolygonLoop2 *loop,\r\n    Coord in_u0, Coord in_v0, Coord in_u1, Coord in_v1,\r\n    ObstacleClass *cls,\r\n    Coord *out_u0, Coord *out_v0, Coord *out_u1, Coord *out_v1\r\n)\r\n{\r\n    Coord u0 = in_u0, v0 = in_v0, u1 = in_u1, v1 = in_v1;\r\n    size_t inside = 0;\r\n\r\n    {\r\n        SurfacePoint2 corners[4] = {\r\n            { u0, v0 }, { u1, v0 }, { u1, v1 }, { u0, v1 }\r\n        };\r\n        for (int i = 0; i < 4; ++i) {\r\n            if (poly_contains_point(loop, corners[i])) ++inside;\r\n        }\r\n    }\r\n    if (inside == 0) return false;\r\n\r\n    if (inside < 4) {\r\n        /* 矩形跨出輪廓：每條切過 R 內部的輪廓邊把 R 裁向內側。 */\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i];\r\n            SurfacePoint2 e = loop->v[(i + 1) % loop->count];\r\n            Coord lo, hi, mid;\r\n\r\n            if (a.u == e.u) {\r\n                lo = coord_min(a.v, e.v);\r\n                hi = coord_max(a.v, e.v);\r\n                if (coord_min(v1, hi) <= coord_max(v0, lo)) continue;\r\n                if (a.u <= u0 || a.u >= u1) continue;\r\n                mid = (lo + hi) / 2;\r\n                if (poly_contains_point(\r\n                        loop, (SurfacePoint2){ a.u + 1, mid }))\r\n                    u0 = a.u;\r\n                else\r\n                    u1 = a.u;\r\n            } else if (a.v == e.v) {\r\n                lo = coord_min(a.u, e.u);\r\n                hi = coord_max(a.u, e.u);\r\n                if (coord_min(u1, hi) <= coord_max(u0, lo)) continue;\r\n                if (a.v <= v0 || a.v >= v1) continue;\r\n                mid = (lo + hi) / 2;\r\n                if (poly_contains_point(\r\n                        loop, (SurfacePoint2){ mid, a.v + 1 }))\r\n                    v0 = a.v;\r\n                else\r\n                    v1 = a.v;\r\n            }\r\n        }\r\n        if (u0 >= u1 || v0 >= v1) return false;\r\n    }\r\n\r\n    {\r\n        int flush = 0;\r\n        bool f[4];\r\n        for (int s = 0; s < 4; ++s) {\r\n            f[s] = side_flush_outline(loop, s, u0, v0, u1, v1);\r\n            if (f[s]) ++flush;\r\n        }\r\n        if (flush == 0) {\r\n            *cls = OBSTACLE_HOLE;\r\n        } else if (flush == 1) {\r\n            *cls = OBSTACLE_NOTCH;\r\n        } else if (flush == 2) {\r\n            bool opposite = (f[0] && f[1]) || (f[2] && f[3]);\r\n            *cls = opposite ? OBSTACLE_SPLIT : OBSTACLE_CORNER;\r\n        } else {\r\n            *cls = OBSTACLE_SPLIT;\r\n        }\r\n    }\r\n    *out_u0 = u0; *out_v0 = v0; *out_u1 = u1; *out_v1 = v1;\r\n    return true;\r\n}\r\n"
+      }
+    },
+    "pr202": {
+      "source_sha256": "a21854a90dc127af4768f183c309db9709f13aad410fa736d0f3e7eed4aa2fcf",
+      "classify_rect_outline": {
+        "line": 10549,
+        "raw_sha256": "d7ffda4b031ffbd49d1516fd45949afd3e5b284c107c010512b6be48a19776c8",
+        "lf_sha256": "47223a87ad78b409aafb31766a2556d0191642cede63c4f135092fdd4551b7c7",
+        "bytes": 4522,
+        "text": "static int classify_rect_outline(\r\n    const PolygonLoop2 *loop,\r\n    Coord in_u0, Coord in_v0, Coord in_u1, Coord in_v1,\r\n    ObstacleClass *cls,\r\n    Coord *out_u0, Coord *out_v0, Coord *out_u1, Coord *out_v1\r\n)\r\n{\r\n    if (loop == NULL || loop->count < 4 || loop->count > POLY_MAX_VERTICES ||\r\n            in_u0 >= in_u1 || in_v0 >= in_v1) return 0;\r\n    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };\r\n    size_t nc = 2;\r\n    for (size_t i = 0; i < loop->count; ++i)\r\n        if (loop->v[i].v > in_v0 && loop->v[i].v < in_v1)\r\n            cuts[nc++] = loop->v[i].v;\r\n    proj_sort_coords(cuts, nc);\r\n\r\n    bool found = false;\r\n    Coord u0 = 0, v0 = 0, u1 = 0, v1 = 0;\r\n    for (size_t slab = 1; slab < nc; ++slab) {\r\n        Coord lo = cuts[slab - 1], hi = cuts[slab];\r\n        if (lo == hi) continue;\r\n        Coord mid2 = lo + hi;\r\n        Coord crossings[POLY_MAX_VERTICES];\r\n        size_t count = 0;\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i], b = loop->v[(i + 1) % loop->count];\r\n            if (a.u == b.u && mid2 > 2 * coord_min(a.v,b.v) &&\r\n                    mid2 < 2 * coord_max(a.v,b.v)) crossings[count++] = a.u;\r\n        }\r\n        if (count % 2) return -1; /* Valid simple orthogonal loops have paired crossings. */\r\n        proj_sort_coords(crossings, count);\r\n        int intervals = 0;\r\n        Coord left = 0, right = 0;\r\n        for (size_t i = 0; i < count; i += 2) {\r\n            Coord l = coord_max(in_u0, crossings[i]);\r\n            Coord r = coord_min(in_u1, crossings[i + 1]);\r\n            if (l >= r) continue;\r\n            if (++intervals > 1) return -1;\r\n            left = l; right = r;\r\n        }\r\n        if (intervals == 0) continue;\r\n        if (found && (left != u0 || right != u1 || lo != v1)) return -1;\r\n        if (!found) { u0 = left; u1 = right; v0 = lo; found = true; }\r\n        v1 = hi;\r\n    }\r\n    if (!found) {\r\n        /* Distinguish closed boundary tangency from a genuinely absent item. */\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];\r\n            if (coord_max(coord_min(a.u,b.u),in_u0) <= coord_min(coord_max(a.u,b.u),in_u1) &&\r\n                coord_max(coord_min(a.v,b.v),in_v0) <= coord_min(coord_max(a.v,b.v),in_v1))\r\n                return -1;\r\n        }\r\n        return 0;\r\n    }\r\n\r\n    /* Open slabs omit zero-area components. Every closed edge contact with\r\n     * the original footprint must also lie in the positive-area rectangle. */\r\n    for (size_t i = 0; i < loop->count; ++i) {\r\n        SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];\r\n        Coord l = coord_max(coord_min(a.u,b.u),in_u0);\r\n        Coord r = coord_min(coord_max(a.u,b.u),in_u1);\r\n        Coord bottom = coord_max(coord_min(a.v,b.v),in_v0);\r\n        Coord top = coord_min(coord_max(a.v,b.v),in_v1);\r\n        if (l <= r && bottom <= top &&\r\n                (l < u0 || r > u1 || bottom < v0 || top > v1)) return -1;\r\n    }\r\n\r\n    int flush = 0;\r\n    bool f[4];\r\n    for (int side = 0; side < 4; ++side) {\r\n        f[side] = side_flush_outline(loop, side, u0, v0, u1, v1);\r\n        if (f[side]) ++flush;\r\n    }\r\n    /* R7: positive contact must begin at this corner, not elsewhere on its side. */\r\n    SurfacePoint2 corners[4] = {{u0,v0},{u1,v0},{u1,v1},{u0,v1}};\r\n    for (int i = 0; i < 4; ++i) {\r\n        bool local_flush = false;\r\n        for (size_t edge = 0; edge < loop->count; ++edge) {\r\n            SurfacePoint2 a = loop->v[edge], b = loop->v[(edge+1)%loop->count];\r\n            if (a.u == b.u && a.u == corners[i].u &&\r\n                    coord_min(a.v,b.v) <= corners[i].v && corners[i].v <= coord_max(a.v,b.v) &&\r\n                    coord_min(v1,coord_max(a.v,b.v)) > coord_max(v0,coord_min(a.v,b.v)))\r\n                local_flush = true;\r\n            if (a.v == b.v && a.v == corners[i].v &&\r\n                    coord_min(a.u,b.u) <= corners[i].u && corners[i].u <= coord_max(a.u,b.u) &&\r\n                    coord_min(u1,coord_max(a.u,b.u)) > coord_max(u0,coord_min(a.u,b.u)))\r\n                local_flush = true;\r\n        }\r\n        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;\r\n    }\r\n\r\n    if (flush == 0) *cls = OBSTACLE_HOLE;\r\n    else if (flush == 1) *cls = OBSTACLE_NOTCH;\r\n    else if (flush == 2 && !((f[0] && f[1]) || (f[2] && f[3])))\r\n        *cls = OBSTACLE_CORNER;\r\n    else *cls = OBSTACLE_SPLIT;\r\n    *out_u0 = u0; *out_v0 = v0; *out_u1 = u1; *out_v1 = v1;\r\n    return 1;\r\n}\r\n"
+      },
+      "native_counterexamples": {
+        "line": 365,
+        "raw_sha256": "1faaf4d42edf6be6ba7b8d1379ba960c8a06696418ed020dd592e9dd2c9b89f6",
+        "lf_sha256": "1faaf4d42edf6be6ba7b8d1379ba960c8a06696418ed020dd592e9dd2c9b89f6",
+        "bytes": 2823,
+        "text": "static void test_rect_outline_counterexamples(void)\n{\n    PolygonLoop2 notch = { .count = 8, .v = {\n        {0,0},{100,0},{100,100},{60,100},{60,40},{40,40},{40,100},{0,100}\n    }};\n    PolygonLoop2 ridge = { .count = 8, .v = {\n        {0,0},{100,0},{100,50},{60,50},{60,90},{40,90},{40,50},{0,50}\n    }};\n    ObstacleClass cls;\n    Coord u0, v0, u1, v1;\n    int counterexample_A = classify_rect_outline(&notch, 30,50,70,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(counterexample_A < 0); /* Two disconnected contacts cannot be one hole/rectangle. */\n    int counterexample_B = classify_rect_outline(&ridge, 20,70,80,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(counterexample_B > 0);\n    CHECK(cls == OBSTACLE_SPLIT);\n    CHECK(u0 == 40 && v0 == 70 && u1 == 60 && v1 == 80);\n    CHECK(classify_rect_outline(&notch, 10,10,20,20,\n        &cls, &u0,&v0,&u1,&v1) > 0);\n    CHECK(cls == OBSTACLE_HOLE);\n    CHECK(u0 == 10 && v0 == 10 && u1 == 20 && v1 == 20);\n    CHECK(classify_rect_outline(&notch, 110,110,120,120,\n        &cls, &u0,&v0,&u1,&v1) == 0);\n    CHECK(classify_rect_outline(&notch, -10,10,20,20,\n        &cls, &u0,&v0,&u1,&v1) > 0);\n    CHECK(cls == OBSTACLE_NOTCH);\n    CHECK(u0 == 0 && v0 == 10 && u1 == 20 && v1 == 20);\n    /* Reverse winding, negative coordinates, one-mm slabs and collinear vertices. */\n    for (int reverse = 0; reverse < 2; ++reverse) {\n        PolygonLoop2 small = { .count = 9, .v = {\n            {-2,-2},{0,-2},{2,-2},{2,0},{1,0},{1,1},{0,1},{0,0},{-2,0}\n        }};\n        if (reverse) for (size_t i=0; i<small.count/2; ++i) {\n            SurfacePoint2 t=small.v[i]; small.v[i]=small.v[small.count-1-i];\n            small.v[small.count-1-i]=t;\n        }\n        /* The old wide footprint also touches the base at v=0 outside the\n         * ridge rectangle: it is another rectangle-plus-line case, not a\n         * valid positive control. Keep it as a rejection and add a true one. */\n        CHECK(classify_rect_outline(&small, -1,0,2,1,\n            &cls, &u0,&v0,&u1,&v1) < 0);\n        CHECK(classify_rect_outline(&small, 0,0,1,1,\n            &cls, &u0,&v0,&u1,&v1) > 0);\n        CHECK(cls == OBSTACLE_SPLIT);\n        CHECK(u0 == 0 && v0 == 0 && u1 == 1 && v1 == 1);\n    }\n    CHECK(classify_rect_outline(&notch, 100,100,110,110,\n        &cls, &u0,&v0,&u1,&v1) < 0); /* R7: isolated point tangency. */\n    int rectangle_plus_isolated_line = classify_rect_outline(&notch, 30,50,60,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(rectangle_plus_isolated_line < 0);\n    PolygonLoop2 stepped = { .count = 10, .v = {\n        {0,0},{100,0},{100,100},{60,100},{60,80},\n        {80,80},{80,40},{40,40},{40,100},{0,100}\n    }};\n    int rectangle_plus_isolated_point = classify_rect_outline(&stepped, 30,50,60,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(rectangle_plus_isolated_point < 0);\n}\n"
+      }
+    },
+    "train291": {
+      "source_sha256": "75db8d975e55f0aa46aed56848638e9741da29d99061692fce26d6dfec5b261b",
+      "classify_rect_outline": {
+        "line": 10644,
+        "raw_sha256": "d7ffda4b031ffbd49d1516fd45949afd3e5b284c107c010512b6be48a19776c8",
+        "lf_sha256": "47223a87ad78b409aafb31766a2556d0191642cede63c4f135092fdd4551b7c7",
+        "bytes": 4522,
+        "text": "static int classify_rect_outline(\r\n    const PolygonLoop2 *loop,\r\n    Coord in_u0, Coord in_v0, Coord in_u1, Coord in_v1,\r\n    ObstacleClass *cls,\r\n    Coord *out_u0, Coord *out_v0, Coord *out_u1, Coord *out_v1\r\n)\r\n{\r\n    if (loop == NULL || loop->count < 4 || loop->count > POLY_MAX_VERTICES ||\r\n            in_u0 >= in_u1 || in_v0 >= in_v1) return 0;\r\n    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };\r\n    size_t nc = 2;\r\n    for (size_t i = 0; i < loop->count; ++i)\r\n        if (loop->v[i].v > in_v0 && loop->v[i].v < in_v1)\r\n            cuts[nc++] = loop->v[i].v;\r\n    proj_sort_coords(cuts, nc);\r\n\r\n    bool found = false;\r\n    Coord u0 = 0, v0 = 0, u1 = 0, v1 = 0;\r\n    for (size_t slab = 1; slab < nc; ++slab) {\r\n        Coord lo = cuts[slab - 1], hi = cuts[slab];\r\n        if (lo == hi) continue;\r\n        Coord mid2 = lo + hi;\r\n        Coord crossings[POLY_MAX_VERTICES];\r\n        size_t count = 0;\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i], b = loop->v[(i + 1) % loop->count];\r\n            if (a.u == b.u && mid2 > 2 * coord_min(a.v,b.v) &&\r\n                    mid2 < 2 * coord_max(a.v,b.v)) crossings[count++] = a.u;\r\n        }\r\n        if (count % 2) return -1; /* Valid simple orthogonal loops have paired crossings. */\r\n        proj_sort_coords(crossings, count);\r\n        int intervals = 0;\r\n        Coord left = 0, right = 0;\r\n        for (size_t i = 0; i < count; i += 2) {\r\n            Coord l = coord_max(in_u0, crossings[i]);\r\n            Coord r = coord_min(in_u1, crossings[i + 1]);\r\n            if (l >= r) continue;\r\n            if (++intervals > 1) return -1;\r\n            left = l; right = r;\r\n        }\r\n        if (intervals == 0) continue;\r\n        if (found && (left != u0 || right != u1 || lo != v1)) return -1;\r\n        if (!found) { u0 = left; u1 = right; v0 = lo; found = true; }\r\n        v1 = hi;\r\n    }\r\n    if (!found) {\r\n        /* Distinguish closed boundary tangency from a genuinely absent item. */\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];\r\n            if (coord_max(coord_min(a.u,b.u),in_u0) <= coord_min(coord_max(a.u,b.u),in_u1) &&\r\n                coord_max(coord_min(a.v,b.v),in_v0) <= coord_min(coord_max(a.v,b.v),in_v1))\r\n                return -1;\r\n        }\r\n        return 0;\r\n    }\r\n\r\n    /* Open slabs omit zero-area components. Every closed edge contact with\r\n     * the original footprint must also lie in the positive-area rectangle. */\r\n    for (size_t i = 0; i < loop->count; ++i) {\r\n        SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];\r\n        Coord l = coord_max(coord_min(a.u,b.u),in_u0);\r\n        Coord r = coord_min(coord_max(a.u,b.u),in_u1);\r\n        Coord bottom = coord_max(coord_min(a.v,b.v),in_v0);\r\n        Coord top = coord_min(coord_max(a.v,b.v),in_v1);\r\n        if (l <= r && bottom <= top &&\r\n                (l < u0 || r > u1 || bottom < v0 || top > v1)) return -1;\r\n    }\r\n\r\n    int flush = 0;\r\n    bool f[4];\r\n    for (int side = 0; side < 4; ++side) {\r\n        f[side] = side_flush_outline(loop, side, u0, v0, u1, v1);\r\n        if (f[side]) ++flush;\r\n    }\r\n    /* R7: positive contact must begin at this corner, not elsewhere on its side. */\r\n    SurfacePoint2 corners[4] = {{u0,v0},{u1,v0},{u1,v1},{u0,v1}};\r\n    for (int i = 0; i < 4; ++i) {\r\n        bool local_flush = false;\r\n        for (size_t edge = 0; edge < loop->count; ++edge) {\r\n            SurfacePoint2 a = loop->v[edge], b = loop->v[(edge+1)%loop->count];\r\n            if (a.u == b.u && a.u == corners[i].u &&\r\n                    coord_min(a.v,b.v) <= corners[i].v && corners[i].v <= coord_max(a.v,b.v) &&\r\n                    coord_min(v1,coord_max(a.v,b.v)) > coord_max(v0,coord_min(a.v,b.v)))\r\n                local_flush = true;\r\n            if (a.v == b.v && a.v == corners[i].v &&\r\n                    coord_min(a.u,b.u) <= corners[i].u && corners[i].u <= coord_max(a.u,b.u) &&\r\n                    coord_min(u1,coord_max(a.u,b.u)) > coord_max(u0,coord_min(a.u,b.u)))\r\n                local_flush = true;\r\n        }\r\n        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;\r\n    }\r\n\r\n    if (flush == 0) *cls = OBSTACLE_HOLE;\r\n    else if (flush == 1) *cls = OBSTACLE_NOTCH;\r\n    else if (flush == 2 && !((f[0] && f[1]) || (f[2] && f[3])))\r\n        *cls = OBSTACLE_CORNER;\r\n    else *cls = OBSTACLE_SPLIT;\r\n    *out_u0 = u0; *out_v0 = v0; *out_u1 = u1; *out_v1 = v1;\r\n    return 1;\r\n}\r\n"
+      },
+      "native_counterexamples": {
+        "line": 365,
+        "raw_sha256": "1faaf4d42edf6be6ba7b8d1379ba960c8a06696418ed020dd592e9dd2c9b89f6",
+        "lf_sha256": "1faaf4d42edf6be6ba7b8d1379ba960c8a06696418ed020dd592e9dd2c9b89f6",
+        "bytes": 2823,
+        "text": "static void test_rect_outline_counterexamples(void)\n{\n    PolygonLoop2 notch = { .count = 8, .v = {\n        {0,0},{100,0},{100,100},{60,100},{60,40},{40,40},{40,100},{0,100}\n    }};\n    PolygonLoop2 ridge = { .count = 8, .v = {\n        {0,0},{100,0},{100,50},{60,50},{60,90},{40,90},{40,50},{0,50}\n    }};\n    ObstacleClass cls;\n    Coord u0, v0, u1, v1;\n    int counterexample_A = classify_rect_outline(&notch, 30,50,70,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(counterexample_A < 0); /* Two disconnected contacts cannot be one hole/rectangle. */\n    int counterexample_B = classify_rect_outline(&ridge, 20,70,80,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(counterexample_B > 0);\n    CHECK(cls == OBSTACLE_SPLIT);\n    CHECK(u0 == 40 && v0 == 70 && u1 == 60 && v1 == 80);\n    CHECK(classify_rect_outline(&notch, 10,10,20,20,\n        &cls, &u0,&v0,&u1,&v1) > 0);\n    CHECK(cls == OBSTACLE_HOLE);\n    CHECK(u0 == 10 && v0 == 10 && u1 == 20 && v1 == 20);\n    CHECK(classify_rect_outline(&notch, 110,110,120,120,\n        &cls, &u0,&v0,&u1,&v1) == 0);\n    CHECK(classify_rect_outline(&notch, -10,10,20,20,\n        &cls, &u0,&v0,&u1,&v1) > 0);\n    CHECK(cls == OBSTACLE_NOTCH);\n    CHECK(u0 == 0 && v0 == 10 && u1 == 20 && v1 == 20);\n    /* Reverse winding, negative coordinates, one-mm slabs and collinear vertices. */\n    for (int reverse = 0; reverse < 2; ++reverse) {\n        PolygonLoop2 small = { .count = 9, .v = {\n            {-2,-2},{0,-2},{2,-2},{2,0},{1,0},{1,1},{0,1},{0,0},{-2,0}\n        }};\n        if (reverse) for (size_t i=0; i<small.count/2; ++i) {\n            SurfacePoint2 t=small.v[i]; small.v[i]=small.v[small.count-1-i];\n            small.v[small.count-1-i]=t;\n        }\n        /* The old wide footprint also touches the base at v=0 outside the\n         * ridge rectangle: it is another rectangle-plus-line case, not a\n         * valid positive control. Keep it as a rejection and add a true one. */\n        CHECK(classify_rect_outline(&small, -1,0,2,1,\n            &cls, &u0,&v0,&u1,&v1) < 0);\n        CHECK(classify_rect_outline(&small, 0,0,1,1,\n            &cls, &u0,&v0,&u1,&v1) > 0);\n        CHECK(cls == OBSTACLE_SPLIT);\n        CHECK(u0 == 0 && v0 == 0 && u1 == 1 && v1 == 1);\n    }\n    CHECK(classify_rect_outline(&notch, 100,100,110,110,\n        &cls, &u0,&v0,&u1,&v1) < 0); /* R7: isolated point tangency. */\n    int rectangle_plus_isolated_line = classify_rect_outline(&notch, 30,50,60,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(rectangle_plus_isolated_line < 0);\n    PolygonLoop2 stepped = { .count = 10, .v = {\n        {0,0},{100,0},{100,100},{60,100},{60,80},\n        {80,80},{80,40},{40,40},{40,100},{0,100}\n    }};\n    int rectangle_plus_isolated_point = classify_rect_outline(&stepped, 30,50,60,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(rectangle_plus_isolated_point < 0);\n}\n"
+      }
+    },
+    "main": {
+      "source_sha256": "f91cfa7d3160558a0bed1d0d41381d7af1cc5dd0bcda2e016b2fd7275d49c996",
+      "classify_rect_outline": {
+        "line": 7989,
+        "raw_sha256": "d7ffda4b031ffbd49d1516fd45949afd3e5b284c107c010512b6be48a19776c8",
+        "lf_sha256": "47223a87ad78b409aafb31766a2556d0191642cede63c4f135092fdd4551b7c7",
+        "bytes": 4522,
+        "text": "static int classify_rect_outline(\r\n    const PolygonLoop2 *loop,\r\n    Coord in_u0, Coord in_v0, Coord in_u1, Coord in_v1,\r\n    ObstacleClass *cls,\r\n    Coord *out_u0, Coord *out_v0, Coord *out_u1, Coord *out_v1\r\n)\r\n{\r\n    if (loop == NULL || loop->count < 4 || loop->count > POLY_MAX_VERTICES ||\r\n            in_u0 >= in_u1 || in_v0 >= in_v1) return 0;\r\n    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };\r\n    size_t nc = 2;\r\n    for (size_t i = 0; i < loop->count; ++i)\r\n        if (loop->v[i].v > in_v0 && loop->v[i].v < in_v1)\r\n            cuts[nc++] = loop->v[i].v;\r\n    proj_sort_coords(cuts, nc);\r\n\r\n    bool found = false;\r\n    Coord u0 = 0, v0 = 0, u1 = 0, v1 = 0;\r\n    for (size_t slab = 1; slab < nc; ++slab) {\r\n        Coord lo = cuts[slab - 1], hi = cuts[slab];\r\n        if (lo == hi) continue;\r\n        Coord mid2 = lo + hi;\r\n        Coord crossings[POLY_MAX_VERTICES];\r\n        size_t count = 0;\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i], b = loop->v[(i + 1) % loop->count];\r\n            if (a.u == b.u && mid2 > 2 * coord_min(a.v,b.v) &&\r\n                    mid2 < 2 * coord_max(a.v,b.v)) crossings[count++] = a.u;\r\n        }\r\n        if (count % 2) return -1; /* Valid simple orthogonal loops have paired crossings. */\r\n        proj_sort_coords(crossings, count);\r\n        int intervals = 0;\r\n        Coord left = 0, right = 0;\r\n        for (size_t i = 0; i < count; i += 2) {\r\n            Coord l = coord_max(in_u0, crossings[i]);\r\n            Coord r = coord_min(in_u1, crossings[i + 1]);\r\n            if (l >= r) continue;\r\n            if (++intervals > 1) return -1;\r\n            left = l; right = r;\r\n        }\r\n        if (intervals == 0) continue;\r\n        if (found && (left != u0 || right != u1 || lo != v1)) return -1;\r\n        if (!found) { u0 = left; u1 = right; v0 = lo; found = true; }\r\n        v1 = hi;\r\n    }\r\n    if (!found) {\r\n        /* Distinguish closed boundary tangency from a genuinely absent item. */\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];\r\n            if (coord_max(coord_min(a.u,b.u),in_u0) <= coord_min(coord_max(a.u,b.u),in_u1) &&\r\n                coord_max(coord_min(a.v,b.v),in_v0) <= coord_min(coord_max(a.v,b.v),in_v1))\r\n                return -1;\r\n        }\r\n        return 0;\r\n    }\r\n\r\n    /* Open slabs omit zero-area components. Every closed edge contact with\r\n     * the original footprint must also lie in the positive-area rectangle. */\r\n    for (size_t i = 0; i < loop->count; ++i) {\r\n        SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];\r\n        Coord l = coord_max(coord_min(a.u,b.u),in_u0);\r\n        Coord r = coord_min(coord_max(a.u,b.u),in_u1);\r\n        Coord bottom = coord_max(coord_min(a.v,b.v),in_v0);\r\n        Coord top = coord_min(coord_max(a.v,b.v),in_v1);\r\n        if (l <= r && bottom <= top &&\r\n                (l < u0 || r > u1 || bottom < v0 || top > v1)) return -1;\r\n    }\r\n\r\n    int flush = 0;\r\n    bool f[4];\r\n    for (int side = 0; side < 4; ++side) {\r\n        f[side] = side_flush_outline(loop, side, u0, v0, u1, v1);\r\n        if (f[side]) ++flush;\r\n    }\r\n    /* R7: positive contact must begin at this corner, not elsewhere on its side. */\r\n    SurfacePoint2 corners[4] = {{u0,v0},{u1,v0},{u1,v1},{u0,v1}};\r\n    for (int i = 0; i < 4; ++i) {\r\n        bool local_flush = false;\r\n        for (size_t edge = 0; edge < loop->count; ++edge) {\r\n            SurfacePoint2 a = loop->v[edge], b = loop->v[(edge+1)%loop->count];\r\n            if (a.u == b.u && a.u == corners[i].u &&\r\n                    coord_min(a.v,b.v) <= corners[i].v && corners[i].v <= coord_max(a.v,b.v) &&\r\n                    coord_min(v1,coord_max(a.v,b.v)) > coord_max(v0,coord_min(a.v,b.v)))\r\n                local_flush = true;\r\n            if (a.v == b.v && a.v == corners[i].v &&\r\n                    coord_min(a.u,b.u) <= corners[i].u && corners[i].u <= coord_max(a.u,b.u) &&\r\n                    coord_min(u1,coord_max(a.u,b.u)) > coord_max(u0,coord_min(a.u,b.u)))\r\n                local_flush = true;\r\n        }\r\n        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;\r\n    }\r\n\r\n    if (flush == 0) *cls = OBSTACLE_HOLE;\r\n    else if (flush == 1) *cls = OBSTACLE_NOTCH;\r\n    else if (flush == 2 && !((f[0] && f[1]) || (f[2] && f[3])))\r\n        *cls = OBSTACLE_CORNER;\r\n    else *cls = OBSTACLE_SPLIT;\r\n    *out_u0 = u0; *out_v0 = v0; *out_u1 = u1; *out_v1 = v1;\r\n    return 1;\r\n}\r\n"
+      },
+      "native_counterexamples": {
+        "line": 365,
+        "raw_sha256": "1faaf4d42edf6be6ba7b8d1379ba960c8a06696418ed020dd592e9dd2c9b89f6",
+        "lf_sha256": "1faaf4d42edf6be6ba7b8d1379ba960c8a06696418ed020dd592e9dd2c9b89f6",
+        "bytes": 2823,
+        "text": "static void test_rect_outline_counterexamples(void)\n{\n    PolygonLoop2 notch = { .count = 8, .v = {\n        {0,0},{100,0},{100,100},{60,100},{60,40},{40,40},{40,100},{0,100}\n    }};\n    PolygonLoop2 ridge = { .count = 8, .v = {\n        {0,0},{100,0},{100,50},{60,50},{60,90},{40,90},{40,50},{0,50}\n    }};\n    ObstacleClass cls;\n    Coord u0, v0, u1, v1;\n    int counterexample_A = classify_rect_outline(&notch, 30,50,70,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(counterexample_A < 0); /* Two disconnected contacts cannot be one hole/rectangle. */\n    int counterexample_B = classify_rect_outline(&ridge, 20,70,80,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(counterexample_B > 0);\n    CHECK(cls == OBSTACLE_SPLIT);\n    CHECK(u0 == 40 && v0 == 70 && u1 == 60 && v1 == 80);\n    CHECK(classify_rect_outline(&notch, 10,10,20,20,\n        &cls, &u0,&v0,&u1,&v1) > 0);\n    CHECK(cls == OBSTACLE_HOLE);\n    CHECK(u0 == 10 && v0 == 10 && u1 == 20 && v1 == 20);\n    CHECK(classify_rect_outline(&notch, 110,110,120,120,\n        &cls, &u0,&v0,&u1,&v1) == 0);\n    CHECK(classify_rect_outline(&notch, -10,10,20,20,\n        &cls, &u0,&v0,&u1,&v1) > 0);\n    CHECK(cls == OBSTACLE_NOTCH);\n    CHECK(u0 == 0 && v0 == 10 && u1 == 20 && v1 == 20);\n    /* Reverse winding, negative coordinates, one-mm slabs and collinear vertices. */\n    for (int reverse = 0; reverse < 2; ++reverse) {\n        PolygonLoop2 small = { .count = 9, .v = {\n            {-2,-2},{0,-2},{2,-2},{2,0},{1,0},{1,1},{0,1},{0,0},{-2,0}\n        }};\n        if (reverse) for (size_t i=0; i<small.count/2; ++i) {\n            SurfacePoint2 t=small.v[i]; small.v[i]=small.v[small.count-1-i];\n            small.v[small.count-1-i]=t;\n        }\n        /* The old wide footprint also touches the base at v=0 outside the\n         * ridge rectangle: it is another rectangle-plus-line case, not a\n         * valid positive control. Keep it as a rejection and add a true one. */\n        CHECK(classify_rect_outline(&small, -1,0,2,1,\n            &cls, &u0,&v0,&u1,&v1) < 0);\n        CHECK(classify_rect_outline(&small, 0,0,1,1,\n            &cls, &u0,&v0,&u1,&v1) > 0);\n        CHECK(cls == OBSTACLE_SPLIT);\n        CHECK(u0 == 0 && v0 == 0 && u1 == 1 && v1 == 1);\n    }\n    CHECK(classify_rect_outline(&notch, 100,100,110,110,\n        &cls, &u0,&v0,&u1,&v1) < 0); /* R7: isolated point tangency. */\n    int rectangle_plus_isolated_line = classify_rect_outline(&notch, 30,50,60,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(rectangle_plus_isolated_line < 0);\n    PolygonLoop2 stepped = { .count = 10, .v = {\n        {0,0},{100,0},{100,100},{60,100},{60,80},\n        {80,80},{80,40},{40,40},{40,100},{0,100}\n    }};\n    int rectangle_plus_isolated_point = classify_rect_outline(&stepped, 30,50,60,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(rectangle_plus_isolated_point < 0);\n}\n"
+      }
+    },
+    "geo288_f13": {
+      "source_sha256": "f91cfa7d3160558a0bed1d0d41381d7af1cc5dd0bcda2e016b2fd7275d49c996",
+      "classify_rect_outline": {
+        "line": 7989,
+        "raw_sha256": "d7ffda4b031ffbd49d1516fd45949afd3e5b284c107c010512b6be48a19776c8",
+        "lf_sha256": "47223a87ad78b409aafb31766a2556d0191642cede63c4f135092fdd4551b7c7",
+        "bytes": 4522,
+        "text": "static int classify_rect_outline(\r\n    const PolygonLoop2 *loop,\r\n    Coord in_u0, Coord in_v0, Coord in_u1, Coord in_v1,\r\n    ObstacleClass *cls,\r\n    Coord *out_u0, Coord *out_v0, Coord *out_u1, Coord *out_v1\r\n)\r\n{\r\n    if (loop == NULL || loop->count < 4 || loop->count > POLY_MAX_VERTICES ||\r\n            in_u0 >= in_u1 || in_v0 >= in_v1) return 0;\r\n    Coord cuts[POLY_MAX_VERTICES + 2] = { in_v0, in_v1 };\r\n    size_t nc = 2;\r\n    for (size_t i = 0; i < loop->count; ++i)\r\n        if (loop->v[i].v > in_v0 && loop->v[i].v < in_v1)\r\n            cuts[nc++] = loop->v[i].v;\r\n    proj_sort_coords(cuts, nc);\r\n\r\n    bool found = false;\r\n    Coord u0 = 0, v0 = 0, u1 = 0, v1 = 0;\r\n    for (size_t slab = 1; slab < nc; ++slab) {\r\n        Coord lo = cuts[slab - 1], hi = cuts[slab];\r\n        if (lo == hi) continue;\r\n        Coord mid2 = lo + hi;\r\n        Coord crossings[POLY_MAX_VERTICES];\r\n        size_t count = 0;\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i], b = loop->v[(i + 1) % loop->count];\r\n            if (a.u == b.u && mid2 > 2 * coord_min(a.v,b.v) &&\r\n                    mid2 < 2 * coord_max(a.v,b.v)) crossings[count++] = a.u;\r\n        }\r\n        if (count % 2) return -1; /* Valid simple orthogonal loops have paired crossings. */\r\n        proj_sort_coords(crossings, count);\r\n        int intervals = 0;\r\n        Coord left = 0, right = 0;\r\n        for (size_t i = 0; i < count; i += 2) {\r\n            Coord l = coord_max(in_u0, crossings[i]);\r\n            Coord r = coord_min(in_u1, crossings[i + 1]);\r\n            if (l >= r) continue;\r\n            if (++intervals > 1) return -1;\r\n            left = l; right = r;\r\n        }\r\n        if (intervals == 0) continue;\r\n        if (found && (left != u0 || right != u1 || lo != v1)) return -1;\r\n        if (!found) { u0 = left; u1 = right; v0 = lo; found = true; }\r\n        v1 = hi;\r\n    }\r\n    if (!found) {\r\n        /* Distinguish closed boundary tangency from a genuinely absent item. */\r\n        for (size_t i = 0; i < loop->count; ++i) {\r\n            SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];\r\n            if (coord_max(coord_min(a.u,b.u),in_u0) <= coord_min(coord_max(a.u,b.u),in_u1) &&\r\n                coord_max(coord_min(a.v,b.v),in_v0) <= coord_min(coord_max(a.v,b.v),in_v1))\r\n                return -1;\r\n        }\r\n        return 0;\r\n    }\r\n\r\n    /* Open slabs omit zero-area components. Every closed edge contact with\r\n     * the original footprint must also lie in the positive-area rectangle. */\r\n    for (size_t i = 0; i < loop->count; ++i) {\r\n        SurfacePoint2 a = loop->v[i], b = loop->v[(i+1)%loop->count];\r\n        Coord l = coord_max(coord_min(a.u,b.u),in_u0);\r\n        Coord r = coord_min(coord_max(a.u,b.u),in_u1);\r\n        Coord bottom = coord_max(coord_min(a.v,b.v),in_v0);\r\n        Coord top = coord_min(coord_max(a.v,b.v),in_v1);\r\n        if (l <= r && bottom <= top &&\r\n                (l < u0 || r > u1 || bottom < v0 || top > v1)) return -1;\r\n    }\r\n\r\n    int flush = 0;\r\n    bool f[4];\r\n    for (int side = 0; side < 4; ++side) {\r\n        f[side] = side_flush_outline(loop, side, u0, v0, u1, v1);\r\n        if (f[side]) ++flush;\r\n    }\r\n    /* R7: positive contact must begin at this corner, not elsewhere on its side. */\r\n    SurfacePoint2 corners[4] = {{u0,v0},{u1,v0},{u1,v1},{u0,v1}};\r\n    for (int i = 0; i < 4; ++i) {\r\n        bool local_flush = false;\r\n        for (size_t edge = 0; edge < loop->count; ++edge) {\r\n            SurfacePoint2 a = loop->v[edge], b = loop->v[(edge+1)%loop->count];\r\n            if (a.u == b.u && a.u == corners[i].u &&\r\n                    coord_min(a.v,b.v) <= corners[i].v && corners[i].v <= coord_max(a.v,b.v) &&\r\n                    coord_min(v1,coord_max(a.v,b.v)) > coord_max(v0,coord_min(a.v,b.v)))\r\n                local_flush = true;\r\n            if (a.v == b.v && a.v == corners[i].v &&\r\n                    coord_min(a.u,b.u) <= corners[i].u && corners[i].u <= coord_max(a.u,b.u) &&\r\n                    coord_min(u1,coord_max(a.u,b.u)) > coord_max(u0,coord_min(a.u,b.u)))\r\n                local_flush = true;\r\n        }\r\n        if (!local_flush && poly_point_on_edge(loop, corners[i])) return -1;\r\n    }\r\n\r\n    if (flush == 0) *cls = OBSTACLE_HOLE;\r\n    else if (flush == 1) *cls = OBSTACLE_NOTCH;\r\n    else if (flush == 2 && !((f[0] && f[1]) || (f[2] && f[3])))\r\n        *cls = OBSTACLE_CORNER;\r\n    else *cls = OBSTACLE_SPLIT;\r\n    *out_u0 = u0; *out_v0 = v0; *out_u1 = u1; *out_v1 = v1;\r\n    return 1;\r\n}\r\n"
+      },
+      "native_counterexamples": {
+        "line": 365,
+        "raw_sha256": "1faaf4d42edf6be6ba7b8d1379ba960c8a06696418ed020dd592e9dd2c9b89f6",
+        "lf_sha256": "1faaf4d42edf6be6ba7b8d1379ba960c8a06696418ed020dd592e9dd2c9b89f6",
+        "bytes": 2823,
+        "text": "static void test_rect_outline_counterexamples(void)\n{\n    PolygonLoop2 notch = { .count = 8, .v = {\n        {0,0},{100,0},{100,100},{60,100},{60,40},{40,40},{40,100},{0,100}\n    }};\n    PolygonLoop2 ridge = { .count = 8, .v = {\n        {0,0},{100,0},{100,50},{60,50},{60,90},{40,90},{40,50},{0,50}\n    }};\n    ObstacleClass cls;\n    Coord u0, v0, u1, v1;\n    int counterexample_A = classify_rect_outline(&notch, 30,50,70,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(counterexample_A < 0); /* Two disconnected contacts cannot be one hole/rectangle. */\n    int counterexample_B = classify_rect_outline(&ridge, 20,70,80,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(counterexample_B > 0);\n    CHECK(cls == OBSTACLE_SPLIT);\n    CHECK(u0 == 40 && v0 == 70 && u1 == 60 && v1 == 80);\n    CHECK(classify_rect_outline(&notch, 10,10,20,20,\n        &cls, &u0,&v0,&u1,&v1) > 0);\n    CHECK(cls == OBSTACLE_HOLE);\n    CHECK(u0 == 10 && v0 == 10 && u1 == 20 && v1 == 20);\n    CHECK(classify_rect_outline(&notch, 110,110,120,120,\n        &cls, &u0,&v0,&u1,&v1) == 0);\n    CHECK(classify_rect_outline(&notch, -10,10,20,20,\n        &cls, &u0,&v0,&u1,&v1) > 0);\n    CHECK(cls == OBSTACLE_NOTCH);\n    CHECK(u0 == 0 && v0 == 10 && u1 == 20 && v1 == 20);\n    /* Reverse winding, negative coordinates, one-mm slabs and collinear vertices. */\n    for (int reverse = 0; reverse < 2; ++reverse) {\n        PolygonLoop2 small = { .count = 9, .v = {\n            {-2,-2},{0,-2},{2,-2},{2,0},{1,0},{1,1},{0,1},{0,0},{-2,0}\n        }};\n        if (reverse) for (size_t i=0; i<small.count/2; ++i) {\n            SurfacePoint2 t=small.v[i]; small.v[i]=small.v[small.count-1-i];\n            small.v[small.count-1-i]=t;\n        }\n        /* The old wide footprint also touches the base at v=0 outside the\n         * ridge rectangle: it is another rectangle-plus-line case, not a\n         * valid positive control. Keep it as a rejection and add a true one. */\n        CHECK(classify_rect_outline(&small, -1,0,2,1,\n            &cls, &u0,&v0,&u1,&v1) < 0);\n        CHECK(classify_rect_outline(&small, 0,0,1,1,\n            &cls, &u0,&v0,&u1,&v1) > 0);\n        CHECK(cls == OBSTACLE_SPLIT);\n        CHECK(u0 == 0 && v0 == 0 && u1 == 1 && v1 == 1);\n    }\n    CHECK(classify_rect_outline(&notch, 100,100,110,110,\n        &cls, &u0,&v0,&u1,&v1) < 0); /* R7: isolated point tangency. */\n    int rectangle_plus_isolated_line = classify_rect_outline(&notch, 30,50,60,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(rectangle_plus_isolated_line < 0);\n    PolygonLoop2 stepped = { .count = 10, .v = {\n        {0,0},{100,0},{100,100},{60,100},{60,80},\n        {80,80},{80,40},{40,40},{40,100},{0,100}\n    }};\n    int rectangle_plus_isolated_point = classify_rect_outline(&stepped, 30,50,60,80,\n        &cls, &u0,&v0,&u1,&v1);\n    CHECK(rectangle_plus_isolated_point < 0);\n}\n"
+      }
+    }
+  },
+  "bridge_methods": {
+    "pr202": {
+      "projection_fixture": {
+        "line": 17,
+        "end_line": 20,
+        "sha256": "6bb78db61bba202b523164070f5f535e9a1052d1e29ffcd2966c1f8f1d68e2f4"
+      },
+      "notch_projection_fixture": {
+        "line": 22,
+        "end_line": 25,
+        "sha256": "c5e1c896f510f6342bf0304879c33c21efcb1dd337924879069e116254568a0f"
+      },
+      "test_rect_outline_rectangle_plus_isolated_line_transaction": {
+        "line": 27,
+        "end_line": 39,
+        "sha256": "086af4072daef21d656adf64ce95e0a2a5979403ec741f1502a0b0403bff5103"
+      },
+      "test_rect_outline_strip_plus_isolated_line": {
+        "line": 41,
+        "end_line": 52,
+        "sha256": "17d227606b7cdea4beecf679e3755e37c1be57048a1f502433d00c554f200d3b"
+      },
+      "test_rect_outline_rectangle_plus_isolated_point": {
+        "line": 54,
+        "end_line": 61,
+        "sha256": "093bedb5b167d1b9f3aa0bf750878ad366cc08af78eb8c837da0d1f90a47fd0c"
+      },
+      "test_rect_outline_uncut_complex_strip_is_noop": {
+        "line": 63,
+        "end_line": 69,
+        "sha256": "cd06ec9f549c796d0addb4c9d48edfdc2cd9d2b5002e69ef0eee391df7888118"
+      },
+      "test_rect_outline_uncut_strip_continues_with_later_valid_item": {
+        "line": 71,
+        "end_line": 76,
+        "sha256": "b718637af59ed3dafaef5d0e17905aa93129c7549e31489b1211f4e9cce51aa2"
+      },
+      "test_rect_outline_uncut_strip_still_validates_later_missing_id": {
+        "line": 78,
+        "end_line": 85,
+        "sha256": "ed5a1686cd9fe4b8c1af6560039764b15e6a0fa4e64c9306f1015a3d6a66fe37"
+      },
+      "test_rect_outline_uncut_strip_still_requires_unique_piece": {
+        "line": 87,
+        "end_line": 95,
+        "sha256": "b9efeec9f1f53eff418888ffa94cbb12339228d96a17ccaaf21c8e343cd88cb3"
+      },
+      "test_rect_outline_uncut_strip_still_requires_contact": {
+        "line": 97,
+        "end_line": 104,
+        "sha256": "c8b8d3ac60c7d764333937871fbbb71f06befa8a76b72779d8037f5cd4277a80"
+      },
+      "test_rect_outline_counterexample_A_rejects_disconnected_contact": {
+        "line": 106,
+        "end_line": 117,
+        "sha256": "fd8c55a67ebe1e9e89e63f2ed61015d3075a58f66c6c631915272639c4606cdf"
+      },
+      "test_rect_outline_counterexample_B_clips_ridge_and_applies_split": {
+        "line": 119,
+        "end_line": 128,
+        "sha256": "ccf326813b781254906b57d69d9e45d50ead713b13d1bf8025f20932835b3fe9"
+      },
+      "test_rect_outline_remote_flush_does_not_excuse_corner_tangency": {
+        "line": 130,
+        "end_line": 168,
+        "sha256": "4293084a72f8692f47adb9ca44fd21b024b90859db03b6928fcb34648c1e8599"
+      },
+      "test_rect_outline_three_residual_components_rejects_and_rolls_back": {
+        "line": 170,
+        "end_line": 195,
+        "sha256": "ab03daa2d7216555736e5ee2ef547581170347e12ffc39e1e3b71748823194f4"
+      },
+      "test_rect_outline_two_piece_difference_is_complete_after_redo_and_reopen": {
+        "line": 197,
+        "end_line": 238,
+        "sha256": "f4afd580c0164099cc5c3758ef4ce3c88a62f2ca9d851baf83c34c2fddbf983a"
+      },
+      "test_rect_outline_unselected_complex_column_does_not_block_valid_item": {
+        "line": 240,
+        "end_line": 245,
+        "sha256": "6eb2db7ace36f779f19cc32081bda2c1aaf5f67a1d2f90c53722afea7e877a49"
+      },
+      "test_rect_outline_strip_reclassification_uses_exact_contact": {
+        "line": 247,
+        "end_line": 254,
+        "sha256": "d40f12e9f32ab298c78306960f89d48c3e45bef36e37c85824f7e1ead56170a3"
+      },
+      "test_rect_outline_real_hole_no_contact_and_notch_controls": {
+        "line": 256,
+        "end_line": 267,
+        "sha256": "88fd61142648189d6c3b505efdef75b6fefd77425c8b372e0c2e6054804854a0"
+      }
+    },
+    "train291": {
+      "projection_fixture": {
+        "line": 17,
+        "end_line": 20,
+        "sha256": "6bb78db61bba202b523164070f5f535e9a1052d1e29ffcd2966c1f8f1d68e2f4"
+      },
+      "notch_projection_fixture": {
+        "line": 22,
+        "end_line": 25,
+        "sha256": "c5e1c896f510f6342bf0304879c33c21efcb1dd337924879069e116254568a0f"
+      },
+      "test_rect_outline_rectangle_plus_isolated_line_transaction": {
+        "line": 27,
+        "end_line": 39,
+        "sha256": "086af4072daef21d656adf64ce95e0a2a5979403ec741f1502a0b0403bff5103"
+      },
+      "test_rect_outline_strip_plus_isolated_line": {
+        "line": 41,
+        "end_line": 52,
+        "sha256": "17d227606b7cdea4beecf679e3755e37c1be57048a1f502433d00c554f200d3b"
+      },
+      "test_rect_outline_rectangle_plus_isolated_point": {
+        "line": 54,
+        "end_line": 61,
+        "sha256": "093bedb5b167d1b9f3aa0bf750878ad366cc08af78eb8c837da0d1f90a47fd0c"
+      },
+      "test_rect_outline_uncut_complex_strip_is_noop": {
+        "line": 63,
+        "end_line": 69,
+        "sha256": "cd06ec9f549c796d0addb4c9d48edfdc2cd9d2b5002e69ef0eee391df7888118"
+      },
+      "test_rect_outline_uncut_strip_continues_with_later_valid_item": {
+        "line": 71,
+        "end_line": 76,
+        "sha256": "b718637af59ed3dafaef5d0e17905aa93129c7549e31489b1211f4e9cce51aa2"
+      },
+      "test_rect_outline_uncut_strip_still_validates_later_missing_id": {
+        "line": 78,
+        "end_line": 85,
+        "sha256": "ed5a1686cd9fe4b8c1af6560039764b15e6a0fa4e64c9306f1015a3d6a66fe37"
+      },
+      "test_rect_outline_uncut_strip_still_requires_unique_piece": {
+        "line": 87,
+        "end_line": 95,
+        "sha256": "b9efeec9f1f53eff418888ffa94cbb12339228d96a17ccaaf21c8e343cd88cb3"
+      },
+      "test_rect_outline_uncut_strip_still_requires_contact": {
+        "line": 97,
+        "end_line": 104,
+        "sha256": "c8b8d3ac60c7d764333937871fbbb71f06befa8a76b72779d8037f5cd4277a80"
+      },
+      "test_rect_outline_counterexample_A_rejects_disconnected_contact": {
+        "line": 106,
+        "end_line": 117,
+        "sha256": "fd8c55a67ebe1e9e89e63f2ed61015d3075a58f66c6c631915272639c4606cdf"
+      },
+      "test_rect_outline_counterexample_B_clips_ridge_and_applies_split": {
+        "line": 119,
+        "end_line": 128,
+        "sha256": "ccf326813b781254906b57d69d9e45d50ead713b13d1bf8025f20932835b3fe9"
+      },
+      "test_rect_outline_remote_flush_does_not_excuse_corner_tangency": {
+        "line": 130,
+        "end_line": 168,
+        "sha256": "4293084a72f8692f47adb9ca44fd21b024b90859db03b6928fcb34648c1e8599"
+      },
+      "test_rect_outline_three_residual_components_rejects_and_rolls_back": {
+        "line": 170,
+        "end_line": 195,
+        "sha256": "ab03daa2d7216555736e5ee2ef547581170347e12ffc39e1e3b71748823194f4"
+      },
+      "test_rect_outline_two_piece_difference_is_complete_after_redo_and_reopen": {
+        "line": 197,
+        "end_line": 238,
+        "sha256": "f4afd580c0164099cc5c3758ef4ce3c88a62f2ca9d851baf83c34c2fddbf983a"
+      },
+      "test_rect_outline_unselected_complex_column_does_not_block_valid_item": {
+        "line": 240,
+        "end_line": 245,
+        "sha256": "6eb2db7ace36f779f19cc32081bda2c1aaf5f67a1d2f90c53722afea7e877a49"
+      },
+      "test_rect_outline_strip_reclassification_uses_exact_contact": {
+        "line": 247,
+        "end_line": 254,
+        "sha256": "d40f12e9f32ab298c78306960f89d48c3e45bef36e37c85824f7e1ead56170a3"
+      },
+      "test_rect_outline_real_hole_no_contact_and_notch_controls": {
+        "line": 256,
+        "end_line": 267,
+        "sha256": "88fd61142648189d6c3b505efdef75b6fefd77425c8b372e0c2e6054804854a0"
+      }
+    },
+    "main": {
+      "projection_fixture": {
+        "line": 17,
+        "end_line": 20,
+        "sha256": "6bb78db61bba202b523164070f5f535e9a1052d1e29ffcd2966c1f8f1d68e2f4"
+      },
+      "notch_projection_fixture": {
+        "line": 22,
+        "end_line": 25,
+        "sha256": "c5e1c896f510f6342bf0304879c33c21efcb1dd337924879069e116254568a0f"
+      },
+      "test_rect_outline_rectangle_plus_isolated_line_transaction": {
+        "line": 27,
+        "end_line": 39,
+        "sha256": "086af4072daef21d656adf64ce95e0a2a5979403ec741f1502a0b0403bff5103"
+      },
+      "test_rect_outline_strip_plus_isolated_line": {
+        "line": 41,
+        "end_line": 52,
+        "sha256": "17d227606b7cdea4beecf679e3755e37c1be57048a1f502433d00c554f200d3b"
+      },
+      "test_rect_outline_rectangle_plus_isolated_point": {
+        "line": 54,
+        "end_line": 61,
+        "sha256": "093bedb5b167d1b9f3aa0bf750878ad366cc08af78eb8c837da0d1f90a47fd0c"
+      },
+      "test_rect_outline_uncut_complex_strip_is_noop": {
+        "line": 63,
+        "end_line": 69,
+        "sha256": "cd06ec9f549c796d0addb4c9d48edfdc2cd9d2b5002e69ef0eee391df7888118"
+      },
+      "test_rect_outline_uncut_strip_continues_with_later_valid_item": {
+        "line": 71,
+        "end_line": 76,
+        "sha256": "b718637af59ed3dafaef5d0e17905aa93129c7549e31489b1211f4e9cce51aa2"
+      },
+      "test_rect_outline_uncut_strip_still_validates_later_missing_id": {
+        "line": 78,
+        "end_line": 85,
+        "sha256": "ed5a1686cd9fe4b8c1af6560039764b15e6a0fa4e64c9306f1015a3d6a66fe37"
+      },
+      "test_rect_outline_uncut_strip_still_requires_unique_piece": {
+        "line": 87,
+        "end_line": 95,
+        "sha256": "b9efeec9f1f53eff418888ffa94cbb12339228d96a17ccaaf21c8e343cd88cb3"
+      },
+      "test_rect_outline_uncut_strip_still_requires_contact": {
+        "line": 97,
+        "end_line": 104,
+        "sha256": "c8b8d3ac60c7d764333937871fbbb71f06befa8a76b72779d8037f5cd4277a80"
+      },
+      "test_rect_outline_counterexample_A_rejects_disconnected_contact": {
+        "line": 106,
+        "end_line": 117,
+        "sha256": "fd8c55a67ebe1e9e89e63f2ed61015d3075a58f66c6c631915272639c4606cdf"
+      },
+      "test_rect_outline_counterexample_B_clips_ridge_and_applies_split": {
+        "line": 119,
+        "end_line": 128,
+        "sha256": "ccf326813b781254906b57d69d9e45d50ead713b13d1bf8025f20932835b3fe9"
+      },
+      "test_rect_outline_remote_flush_does_not_excuse_corner_tangency": {
+        "line": 130,
+        "end_line": 168,
+        "sha256": "4293084a72f8692f47adb9ca44fd21b024b90859db03b6928fcb34648c1e8599"
+      },
+      "test_rect_outline_three_residual_components_rejects_and_rolls_back": {
+        "line": 170,
+        "end_line": 195,
+        "sha256": "ab03daa2d7216555736e5ee2ef547581170347e12ffc39e1e3b71748823194f4"
+      },
+      "test_rect_outline_two_piece_difference_is_complete_after_redo_and_reopen": {
+        "line": 197,
+        "end_line": 238,
+        "sha256": "f4afd580c0164099cc5c3758ef4ce3c88a62f2ca9d851baf83c34c2fddbf983a"
+      },
+      "test_rect_outline_unselected_complex_column_does_not_block_valid_item": {
+        "line": 240,
+        "end_line": 245,
+        "sha256": "6eb2db7ace36f779f19cc32081bda2c1aaf5f67a1d2f90c53722afea7e877a49"
+      },
+      "test_rect_outline_strip_reclassification_uses_exact_contact": {
+        "line": 247,
+        "end_line": 254,
+        "sha256": "d40f12e9f32ab298c78306960f89d48c3e45bef36e37c85824f7e1ead56170a3"
+      },
+      "test_rect_outline_real_hole_no_contact_and_notch_controls": {
+        "line": 256,
+        "end_line": 267,
+        "sha256": "88fd61142648189d6c3b505efdef75b6fefd77425c8b372e0c2e6054804854a0"
+      }
+    },
+    "geo288_f13": {
+      "projection_fixture": {
+        "line": 17,
+        "end_line": 20,
+        "sha256": "6bb78db61bba202b523164070f5f535e9a1052d1e29ffcd2966c1f8f1d68e2f4"
+      },
+      "notch_projection_fixture": {
+        "line": 22,
+        "end_line": 25,
+        "sha256": "c5e1c896f510f6342bf0304879c33c21efcb1dd337924879069e116254568a0f"
+      },
+      "test_rect_outline_rectangle_plus_isolated_line_transaction": {
+        "line": 27,
+        "end_line": 39,
+        "sha256": "086af4072daef21d656adf64ce95e0a2a5979403ec741f1502a0b0403bff5103"
+      },
+      "test_rect_outline_strip_plus_isolated_line": {
+        "line": 41,
+        "end_line": 52,
+        "sha256": "17d227606b7cdea4beecf679e3755e37c1be57048a1f502433d00c554f200d3b"
+      },
+      "test_rect_outline_rectangle_plus_isolated_point": {
+        "line": 54,
+        "end_line": 61,
+        "sha256": "093bedb5b167d1b9f3aa0bf750878ad366cc08af78eb8c837da0d1f90a47fd0c"
+      },
+      "test_rect_outline_uncut_complex_strip_is_noop": {
+        "line": 63,
+        "end_line": 69,
+        "sha256": "cd06ec9f549c796d0addb4c9d48edfdc2cd9d2b5002e69ef0eee391df7888118"
+      },
+      "test_rect_outline_uncut_strip_continues_with_later_valid_item": {
+        "line": 71,
+        "end_line": 76,
+        "sha256": "b718637af59ed3dafaef5d0e17905aa93129c7549e31489b1211f4e9cce51aa2"
+      },
+      "test_rect_outline_uncut_strip_still_validates_later_missing_id": {
+        "line": 78,
+        "end_line": 85,
+        "sha256": "ed5a1686cd9fe4b8c1af6560039764b15e6a0fa4e64c9306f1015a3d6a66fe37"
+      },
+      "test_rect_outline_uncut_strip_still_requires_unique_piece": {
+        "line": 87,
+        "end_line": 95,
+        "sha256": "b9efeec9f1f53eff418888ffa94cbb12339228d96a17ccaaf21c8e343cd88cb3"
+      },
+      "test_rect_outline_uncut_strip_still_requires_contact": {
+        "line": 97,
+        "end_line": 104,
+        "sha256": "c8b8d3ac60c7d764333937871fbbb71f06befa8a76b72779d8037f5cd4277a80"
+      },
+      "test_rect_outline_counterexample_A_rejects_disconnected_contact": {
+        "line": 106,
+        "end_line": 117,
+        "sha256": "fd8c55a67ebe1e9e89e63f2ed61015d3075a58f66c6c631915272639c4606cdf"
+      },
+      "test_rect_outline_counterexample_B_clips_ridge_and_applies_split": {
+        "line": 119,
+        "end_line": 128,
+        "sha256": "ccf326813b781254906b57d69d9e45d50ead713b13d1bf8025f20932835b3fe9"
+      },
+      "test_rect_outline_remote_flush_does_not_excuse_corner_tangency": {
+        "line": 130,
+        "end_line": 168,
+        "sha256": "4293084a72f8692f47adb9ca44fd21b024b90859db03b6928fcb34648c1e8599"
+      },
+      "test_rect_outline_three_residual_components_rejects_and_rolls_back": {
+        "line": 170,
+        "end_line": 195,
+        "sha256": "ab03daa2d7216555736e5ee2ef547581170347e12ffc39e1e3b71748823194f4"
+      },
+      "test_rect_outline_two_piece_difference_is_complete_after_redo_and_reopen": {
+        "line": 197,
+        "end_line": 238,
+        "sha256": "f4afd580c0164099cc5c3758ef4ce3c88a62f2ca9d851baf83c34c2fddbf983a"
+      },
+      "test_rect_outline_unselected_complex_column_does_not_block_valid_item": {
+        "line": 240,
+        "end_line": 245,
+        "sha256": "6eb2db7ace36f779f19cc32081bda2c1aaf5f67a1d2f90c53722afea7e877a49"
+      },
+      "test_rect_outline_strip_reclassification_uses_exact_contact": {
+        "line": 247,
+        "end_line": 254,
+        "sha256": "d40f12e9f32ab298c78306960f89d48c3e45bef36e37c85824f7e1ead56170a3"
+      },
+      "test_rect_outline_real_hole_no_contact_and_notch_controls": {
+        "line": 256,
+        "end_line": 267,
+        "sha256": "88fd61142648189d6c3b505efdef75b6fefd77425c8b372e0c2e6054804854a0"
+      }
+    }
+  },
+  "scene_specs": {
+    "pr202": [
+      {
+        "scene": "_ax_r7_notch_disconnected.scene",
+        "expect": "reject",
+        "error": "R7: 投影接觸非單一矩形"
+      },
+      {
+        "scene": "_ax_r7_ridge_crossing.scene",
+        "expect": "accept",
+        "contains": [
+          "(60, 70)",
+          "(40, 80)"
+        ],
+        "not_contains": [
+          "孔 #0"
+        ]
+      },
+      {
+        "scene": "_ax_r7_ridge_strip.scene",
+        "expect": "accept",
+        "contains": [
+          "(60, 70)",
+          "(40, 80)"
+        ],
+        "not_contains": [
+          "孔 #0"
+        ]
+      }
+    ],
+    "train291": [
+      {
+        "scene": "_ax_r7_notch_disconnected.scene",
+        "expect": "reject",
+        "error": "R7: 投影接觸非單一矩形"
+      },
+      {
+        "scene": "_ax_r7_ridge_crossing.scene",
+        "expect": "accept",
+        "contains": [
+          "(60, 70)",
+          "(40, 80)"
+        ],
+        "not_contains": [
+          "孔 #0"
+        ]
+      },
+      {
+        "scene": "_ax_r7_ridge_strip.scene",
+        "expect": "accept",
+        "contains": [
+          "(60, 70)",
+          "(40, 80)"
+        ],
+        "not_contains": [
+          "孔 #0"
+        ]
+      }
+    ],
+    "main": [
+      {
+        "scene": "_ax_r7_notch_disconnected.scene",
+        "expect": "reject",
+        "error": "R7: 投影接觸非單一矩形"
+      },
+      {
+        "scene": "_ax_r7_ridge_crossing.scene",
+        "expect": "accept",
+        "contains": [
+          "(60, 70)",
+          "(40, 80)"
+        ],
+        "not_contains": [
+          "孔 #0"
+        ]
+      },
+      {
+        "scene": "_ax_r7_ridge_strip.scene",
+        "expect": "accept",
+        "contains": [
+          "(60, 70)",
+          "(40, 80)"
+        ],
+        "not_contains": [
+          "孔 #0"
+        ]
+      }
+    ],
+    "geo288_f13": [
+      {
+        "scene": "_ax_r7_notch_disconnected.scene",
+        "expect": "reject",
+        "error": "R7: 投影接觸非單一矩形"
+      },
+      {
+        "scene": "_ax_r7_ridge_crossing.scene",
+        "expect": "accept",
+        "contains": [
+          "(60, 70)",
+          "(40, 80)"
+        ],
+        "not_contains": [
+          "孔 #0"
+        ]
+      },
+      {
+        "scene": "_ax_r7_ridge_strip.scene",
+        "expect": "accept",
+        "contains": [
+          "(60, 70)",
+          "(40, 80)"
+        ],
+        "not_contains": [
+          "孔 #0"
+        ]
+      }
+    ]
+  },
+  "fixtures": {
+    "pr202": {
+      "_ax_r7_notch_disconnected.scene": {
+        "sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952",
+        "bytes": 222
+      },
+      "_ax_r7_ridge_crossing.scene": {
+        "sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7",
+        "bytes": 220
+      },
+      "_ax_r7_ridge_strip.scene": {
+        "sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f",
+        "bytes": 251
+      }
+    },
+    "train291": {
+      "_ax_r7_notch_disconnected.scene": {
+        "sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952",
+        "bytes": 222
+      },
+      "_ax_r7_ridge_crossing.scene": {
+        "sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7",
+        "bytes": 220
+      },
+      "_ax_r7_ridge_strip.scene": {
+        "sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f",
+        "bytes": 251
+      }
+    },
+    "main": {
+      "_ax_r7_notch_disconnected.scene": {
+        "sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952",
+        "bytes": 222
+      },
+      "_ax_r7_ridge_crossing.scene": {
+        "sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7",
+        "bytes": 220
+      },
+      "_ax_r7_ridge_strip.scene": {
+        "sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f",
+        "bytes": 251
+      }
+    },
+    "geo288_f13": {
+      "_ax_r7_notch_disconnected.scene": {
+        "sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952",
+        "bytes": 222
+      },
+      "_ax_r7_ridge_crossing.scene": {
+        "sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7",
+        "bytes": 220
+      },
+      "_ax_r7_ridge_strip.scene": {
+        "sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f",
+        "bytes": 251
+      }
+    }
+  },
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "635dd86ee368579aec444fb3ba16e48bccf4877e:current_geometry.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 469215,
+      "stdout_sha256": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "137427563de2e94e41d067282266c232f176f0d8:current_geometry.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 474287,
+      "stdout_sha256": "a21854a90dc127af4768f183c309db9709f13aad410fa736d0f3e7eed4aa2fcf",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "137427563de2e94e41d067282266c232f176f0d8:tests/test_core_integrity.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 26808,
+      "stdout_sha256": "46dd3e1ea86dfa05dc62e496ca54a5ee6f3e7dfc8a91d2771003ae87924e45e7",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "137427563de2e94e41d067282266c232f176f0d8:tests/test_reference_contract.py"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 37492,
+      "stdout_sha256": "b2d09d081ee987b67552417dd25144be23dd5e3f34e3ce6637084e287833e75c",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "137427563de2e94e41d067282266c232f176f0d8:tests/run_tests.py"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 21652,
+      "stdout_sha256": "1153cffc7199c963e732b77f9d89fc417f170d144fed219546abf9e565e4d8dc",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "137427563de2e94e41d067282266c232f176f0d8:_ax_r7_notch_disconnected.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 222,
+      "stdout_sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "137427563de2e94e41d067282266c232f176f0d8:_ax_r7_ridge_crossing.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 220,
+      "stdout_sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "137427563de2e94e41d067282266c232f176f0d8:_ax_r7_ridge_strip.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 251,
+      "stdout_sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "e8eb1da51f3b21df15869338a7e36e76e584ff9e:current_geometry.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 481833,
+      "stdout_sha256": "75db8d975e55f0aa46aed56848638e9741da29d99061692fce26d6dfec5b261b",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "e8eb1da51f3b21df15869338a7e36e76e584ff9e:tests/test_core_integrity.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 26808,
+      "stdout_sha256": "46dd3e1ea86dfa05dc62e496ca54a5ee6f3e7dfc8a91d2771003ae87924e45e7",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "e8eb1da51f3b21df15869338a7e36e76e584ff9e:tests/test_reference_contract.py"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 37492,
+      "stdout_sha256": "b2d09d081ee987b67552417dd25144be23dd5e3f34e3ce6637084e287833e75c",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "e8eb1da51f3b21df15869338a7e36e76e584ff9e:tests/run_tests.py"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 21652,
+      "stdout_sha256": "1153cffc7199c963e732b77f9d89fc417f170d144fed219546abf9e565e4d8dc",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "e8eb1da51f3b21df15869338a7e36e76e584ff9e:_ax_r7_notch_disconnected.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 222,
+      "stdout_sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "e8eb1da51f3b21df15869338a7e36e76e584ff9e:_ax_r7_ridge_crossing.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 220,
+      "stdout_sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "e8eb1da51f3b21df15869338a7e36e76e584ff9e:_ax_r7_ridge_strip.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 251,
+      "stdout_sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:current_geometry.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 401973,
+      "stdout_sha256": "f91cfa7d3160558a0bed1d0d41381d7af1cc5dd0bcda2e016b2fd7275d49c996",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_core_integrity.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 27029,
+      "stdout_sha256": "9f646656ab9af3a8c05d0cf2fa59c24faed0901d374bd0f0fd7d858a9e84b1ca",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/test_reference_contract.py"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 37492,
+      "stdout_sha256": "b2d09d081ee987b67552417dd25144be23dd5e3f34e3ce6637084e287833e75c",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:tests/run_tests.py"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 25261,
+      "stdout_sha256": "a41dace1eff6a4936dbc3476b0348c1ef22d48c4ae1d3aac1a72874f287b877e",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:_ax_r7_notch_disconnected.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 222,
+      "stdout_sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:_ax_r7_ridge_crossing.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 220,
+      "stdout_sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "405f8c5e1a637a16cbe47470faf5ae1fa02b8676:_ax_r7_ridge_strip.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 251,
+      "stdout_sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "13d02c1db7022145a52ee063286a558e595eb212:current_geometry.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 401973,
+      "stdout_sha256": "f91cfa7d3160558a0bed1d0d41381d7af1cc5dd0bcda2e016b2fd7275d49c996",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "13d02c1db7022145a52ee063286a558e595eb212:tests/test_core_integrity.c"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 27029,
+      "stdout_sha256": "9f646656ab9af3a8c05d0cf2fa59c24faed0901d374bd0f0fd7d858a9e84b1ca",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "13d02c1db7022145a52ee063286a558e595eb212:tests/test_reference_contract.py"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 37492,
+      "stdout_sha256": "b2d09d081ee987b67552417dd25144be23dd5e3f34e3ce6637084e287833e75c",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "13d02c1db7022145a52ee063286a558e595eb212:tests/run_tests.py"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 25261,
+      "stdout_sha256": "a41dace1eff6a4936dbc3476b0348c1ef22d48c4ae1d3aac1a72874f287b877e",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "13d02c1db7022145a52ee063286a558e595eb212:_ax_r7_notch_disconnected.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 222,
+      "stdout_sha256": "2aad360dc46910ef43e65a5878ad3e43586e279320725ad4697316a1e2269952",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "13d02c1db7022145a52ee063286a558e595eb212:_ax_r7_ridge_crossing.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 220,
+      "stdout_sha256": "740d322eb99726234a4991941782a554c75a125e31ffb5dd330dae357c32ebc7",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+        "show",
+        "13d02c1db7022145a52ee063286a558e595eb212:_ax_r7_ridge_strip.scene"
+      ],
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "stdout_bytes": 251,
+      "stdout_sha256": "29044807c2147050c5c0d7a9f88c2850d6d76fa9c177315cc4a0f64f548e063f",
+      "stderr": ""
+    }
+  ],
+  "equalities": {
+    "classify_function_raw_all_four": true,
+    "classify_function_lf_all_four": true,
+    "native_counterexample_function_raw_all_four": true,
+    "bridge_method_bodies_all_four": true,
+    "scene_specs_all_four": true,
+    "fixtures_all_four": true
+  },
+  "base_probe_source_hash_matches_base196_blob": true
+}

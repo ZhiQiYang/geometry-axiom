@@ -1,0 +1,11 @@
+--- R6/bind_final_request.py
++++ R7/bind_final_request.py
+@@ -13,7 +13,7 @@
+  rec=Recorder(out,a.sha,clean_env());root=Path(request['source_owner_repo']);pins_ok(request)
+  def git(*args):return rec.run(['git','-c','gc.auto=0','-c','maintenance.auto=false',*args],root)
+  need(git('rev-parse',a.sha+'^{commit}').decode().strip()==a.sha,'actual selected commit exists')
+- git('merge-base','--is-ancestor','df66452e7a514032453bea93b8b18ab74d7b1457',a.sha)
++ git('merge-base','--is-ancestor','1449d430d1c4734bb1bc3a9f91f3851c845cc0f3',a.sha)
+  request['selected_final_source']=a.sha;request['status']='FINAL_R_BOUND_ONLY; source/materialization and five stages UNRUN'
+  (HERE/'REQUEST.template.json').write_text(json.dumps(request,ensure_ascii=False,indent=2)+'\n')
+  result={'source_sha':a.sha,'source_materialized':False,'formal_run':False,'original_unbound_sha256':hashlib.sha256(original).hexdigest(),'bound_request_sha256':hashlib.sha256((HERE/'REQUEST.template.json').read_bytes()).hexdigest(),'commands':rec.rows,'exit':0}

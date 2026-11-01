@@ -77,6 +77,29 @@ class GridInspectorContract(unittest.TestCase):
             text=True, encoding="utf-8", capture_output=True, check=True, env=os.environ.copy())
         return json.loads(result.stdout)["line"]
 
+    def load_legacy_dual(self, identifier, u, v):
+        """Add only the old declaration through whole-scene replay.
+
+        The frozen inputs are dumps from an unpatched bridge.  Map only the
+        source id/name tokens so that the existing independent cases retain
+        their original ids, names, and all geometric/source assertions.
+        """
+        kind = "parameter" if "param:" in u or "param:" in v else "direct"
+        fixture = ROOT / "tests/fixtures" / f"legacy-two-axis-stagger-inspector-{kind}.scene"
+        rows = [line for line in fixture.read_text(encoding="utf-8").splitlines()
+                if line.startswith("grid-system ")]
+        self.assertEqual([infinite.infinite(0, name="Before", u=u, v=v)], rows,
+                         "frozen legacy input must retain the exact independent declaration")
+        prefix = f"grid-system 0 name-hex {b'Before'.hex()} "
+        self.assertTrue(rows[0].startswith(prefix), rows)
+        mapped = f"grid-system {identifier} name-hex {b'Before'.hex()} " + rows[0][len(prefix):]
+        scene = self.dump()
+        path = Path(self.directory.name) / f"legacy-inspector-{identifier}.scene"
+        path.write_text(scene + ("" if not scene or scene.endswith("\n") else "\n") + mapped + "\n",
+                        encoding="utf-8")
+        loaded = self.command("loadfile " + native_path(path))
+        self.assertTrue(loaded["ok"], loaded)
+
     def test_six_rename_shapes_preserve_sources_segments_and_cancel_history(self):
         self.parameters()
         cases = [
@@ -89,7 +112,10 @@ class GridInspectorContract(unittest.TestCase):
         ]
         for identifier, (u, v) in enumerate(cases):
             with self.subTest(u=u, v=v):
-                self.commit(infinite.infinite(identifier, name="Before", u=u, v=v))
+                if "stagger" in u and "stagger" in v:
+                    self.load_legacy_dual(identifier, u, v)
+                else:
+                    self.commit(infinite.infinite(identifier, name="Before", u=u, v=v))
                 self.boundary(identifier+1)
                 self.binding(identifier, boundary=identifier+1, source=identifier, cell=(0, 1))
                 self.commit(f"placement {identifier+1} on boundary {identifier+1} origin 0 0 0 u +x v +y")

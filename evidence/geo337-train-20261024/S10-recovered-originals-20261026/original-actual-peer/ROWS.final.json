@@ -1,0 +1,2088 @@
+[
+  {
+    "id": "M01",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      5
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 4
+  },
+  {
+    "id": "M02",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      7
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 6
+  },
+  {
+    "id": "M03",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      9
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 8
+  },
+  {
+    "id": "M04",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      11
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 10
+  },
+  {
+    "id": "M05",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      13
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 12
+  },
+  {
+    "id": "M06",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      15
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 14
+  },
+  {
+    "id": "M07",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      17
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 16
+  },
+  {
+    "id": "M08",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      19
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 18
+  },
+  {
+    "id": "M09",
+    "verdict": "equivalent",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      25
+    ],
+    "attempt_exits": [
+      0
+    ],
+    "compile_command": 24
+  },
+  {
+    "id": "M10",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      27
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 26
+  },
+  {
+    "id": "M100",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='direct')",
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='param')",
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='card')",
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='panel')",
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='bound')"
+    ]
+  },
+  {
+    "id": "M101",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M102",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M103",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M104",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M105",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M106",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M107",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M108",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_C3_archive_new_and_existing_second_axes_reject_M1"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_C3_archive_new_and_existing_second_axes_reject_M1"
+    ]
+  },
+  {
+    "id": "M109",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_C4_batch_new_and_added_second_axes_reject_M1"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_C4_batch_new_and_added_second_axes_reject_M1"
+    ]
+  },
+  {
+    "id": "M11",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      29
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 28
+  },
+  {
+    "id": "M110",
+    "verdict": "equivalent",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 0,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_C3_archive_new_and_existing_second_axes_reject_M1"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": []
+  },
+  {
+    "id": "M111",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route"
+    ]
+  },
+  {
+    "id": "M112",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M113",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M114",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M115",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"
+    ]
+  },
+  {
+    "id": "M116",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"
+    ]
+  },
+  {
+    "id": "M117",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"
+    ]
+  },
+  {
+    "id": "M118",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"
+    ]
+  },
+  {
+    "id": "M119",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_fact_bytes_order_count_revision_and_provider_tampering_are_rejected"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_fact_bytes_order_count_revision_and_provider_tampering_are_rejected"
+    ]
+  },
+  {
+    "id": "M12",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      31
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 30
+  },
+  {
+    "id": "M120",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_failed_preview_clears_evidence_and_keeps_definition_and_revision"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_failed_preview_clears_evidence_and_keeps_definition_and_revision"
+    ]
+  },
+  {
+    "id": "M121",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_same_final_reference_preserves_card_then_unbind_and_rebind_order",
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_same_final_reference_cannot_exempt_value_changing_rebind"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_same_final_reference_cannot_exempt_value_changing_rebind"
+    ]
+  },
+  {
+    "id": "M13",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      33
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 32
+  },
+  {
+    "id": "M14",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      39
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 38
+  },
+  {
+    "id": "M140",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles"
+    ]
+  },
+  {
+    "id": "M141",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ]
+  },
+  {
+    "id": "M142",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ]
+  },
+  {
+    "id": "M143",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ]
+  },
+  {
+    "id": "M144",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"
+    ]
+  },
+  {
+    "id": "M145",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"
+    ]
+  },
+  {
+    "id": "M146",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"
+    ]
+  },
+  {
+    "id": "M147",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision"
+    ]
+  },
+  {
+    "id": "M148",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_r6e_partial_single_full_rc_source_failure_and_collision"
+    ]
+  },
+  {
+    "id": "M149",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_host_collector_partial_and_i11_wiring_on_explicit_world"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_host_collector_partial_and_i11_wiring_on_explicit_world"
+    ]
+  },
+  {
+    "id": "M15",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      41
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 40
+  },
+  {
+    "id": "M150",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"
+    ]
+  },
+  {
+    "id": "M151",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"
+    ]
+  },
+  {
+    "id": "M16",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      43
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 42
+  },
+  {
+    "id": "M17",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      45
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 44
+  },
+  {
+    "id": "M18",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      47
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 46
+  },
+  {
+    "id": "M19",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      49
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 48
+  },
+  {
+    "id": "M20",
+    "verdict": "crashed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      51,
+      52,
+      53
+    ],
+    "attempt_exits": [
+      2,
+      2,
+      2
+    ],
+    "compile_command": 50
+  },
+  {
+    "id": "M21",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      55
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 54
+  },
+  {
+    "id": "M22",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      57
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 56
+  },
+  {
+    "id": "M23",
+    "verdict": "equivalent",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      59
+    ],
+    "attempt_exits": [
+      0
+    ],
+    "compile_command": 58
+  },
+  {
+    "id": "M24",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      61
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 60
+  },
+  {
+    "id": "M25",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      63
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 62
+  },
+  {
+    "id": "M26",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      65
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 64
+  },
+  {
+    "id": "M27",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      67
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 66
+  },
+  {
+    "id": "M28",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      69
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 68
+  },
+  {
+    "id": "M29",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      71
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 70
+  },
+  {
+    "id": "M30",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      73
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 72
+  },
+  {
+    "id": "M31",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      75
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 74
+  },
+  {
+    "id": "M32",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      77
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 76
+  },
+  {
+    "id": "M33",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      91
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 90
+  },
+  {
+    "id": "M34",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      93
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 92
+  },
+  {
+    "id": "M35",
+    "verdict": "retired"
+  },
+  {
+    "id": "M36",
+    "verdict": "equivalent",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      95
+    ],
+    "attempt_exits": [
+      0
+    ],
+    "compile_command": 94
+  },
+  {
+    "id": "M37",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      97
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 96
+  },
+  {
+    "id": "M38",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      99
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 98
+  },
+  {
+    "id": "M39",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      101
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 100
+  },
+  {
+    "id": "M40",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      103
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 102
+  },
+  {
+    "id": "M51",
+    "verdict": "retired"
+  },
+  {
+    "id": "M52",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      83
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 82
+  },
+  {
+    "id": "M53",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      87
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 86
+  },
+  {
+    "id": "M54",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      89
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 88
+  },
+  {
+    "id": "M55",
+    "verdict": "retired"
+  },
+  {
+    "id": "M56",
+    "verdict": "equivalent",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      85
+    ],
+    "attempt_exits": [
+      0
+    ],
+    "compile_command": 84
+  },
+  {
+    "id": "M57",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      79
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 78
+  },
+  {
+    "id": "M58",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      81
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 80
+  },
+  {
+    "id": "M59",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      21
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 20
+  },
+  {
+    "id": "M60",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      23
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 22
+  },
+  {
+    "id": "M61",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_system_contract.GridSystemContract.test_k2a_parameter_confirmation_receipt_includes_intermediate_deletion"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_system_contract.GridSystemContract.test_k2a_parameter_confirmation_receipt_includes_intermediate_deletion"
+    ]
+  },
+  {
+    "id": "M62",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_core.ParametersCore.test_delete_then_import_or_redeclare_keeps_the_deletion_receipt",
+      "tests.test_parameters_core.ParametersCore.test_referenced_card_rebuild_without_referrer_declaration_rejects"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_core.ParametersCore.test_delete_then_import_or_redeclare_keeps_the_deletion_receipt",
+      "tests.test_parameters_core.ParametersCore.test_referenced_card_rebuild_without_referrer_declaration_rejects"
+    ]
+  },
+  {
+    "id": "M63",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_core.ParametersCore.test_referenced_field_omission_and_rebuild_requires_declaration"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_core.ParametersCore.test_referenced_field_omission_and_rebuild_requires_declaration"
+    ]
+  },
+  {
+    "id": "M64",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_core.ParametersCore.test_referrer_must_be_declared_after_the_last_card_deletion"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_core.ParametersCore.test_referrer_must_be_declared_after_the_last_card_deletion"
+    ]
+  },
+  {
+    "id": "M65",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_core.ParametersCore.test_direct_grid_axis_redeclaration_is_local"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_core.ParametersCore.test_direct_grid_axis_redeclaration_is_local (operations=[{'op': 'delete-parameter', 'id': 0}, {'op': 'put-parameter', 'value': {'id': 0, 'name': '重建來源', 'fields': [{'id': 1, 'name': '1', 'type': 'dimension', 'input': '920'}]}}, {'op': 'set-source', 'target': {'kind': 'grid', 'id': 1, 'axis': 'u', 'field': 'panel'}, 'source': {'kind': 'parameter', 'parameterId': 0, 'fieldId': 1}}])",
+      "tests.test_parameters_core.ParametersCore.test_direct_grid_axis_redeclaration_is_local (operations=[{'op': 'delete-parameter', 'id': 0}, {'op': 'put-parameter', 'value': {'id': 0, 'name': '重建來源', 'fields': [{'id': 1, 'name': '1', 'type': 'dimension', 'input': '920'}]}}, {'op': 'set-source', 'target': {'kind': 'grid', 'id': 1, 'axis': 'u', 'field': 'panel'}, 'source': {'kind': 'parameter', 'parameterId': 0, 'fieldId': 1}}, {'op': 'set-source', 'target': {'kind': 'grid', 'id': 1, 'axis': 'v', 'field': 'panel'}, 'source': {'kind': 'parameter', 'parameterId': 0, 'fieldId': 1}}, {'op': 'delete-parameter', 'id': 0}, {'op': 'put-parameter', 'value': {'id': 0, 'name': '重建來源', 'fields': [{'id': 1, 'name': '1', 'type': 'dimension', 'input': '920'}]}}, {'op': 'set-source', 'target': {'kind': 'grid', 'id': 1, 'axis': 'u', 'field': 'panel'}, 'source': {'kind': 'parameter', 'parameterId': 0, 'fieldId': 1}}])"
+    ]
+  },
+  {
+    "id": "M66",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"
+    ]
+  },
+  {
+    "id": "M67",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_core.ParametersCore.test_preview_discloses_only_last_deletion_redeclarations"
+    ]
+  },
+  {
+    "id": "M68",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_gap_rebuild_requires_prior_reference_change",
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_stagger_rebuild_requires_prior_reference_change",
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_threshold_rebuild_requires_prior_reference_change"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_gap_rebuild_requires_prior_reference_change (target='gap', ended='delete-parameter')",
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_gap_rebuild_requires_prior_reference_change (target='gap', ended='put-parameter')",
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_stagger_rebuild_requires_prior_reference_change (target='stagger', ended='delete-parameter')",
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_stagger_rebuild_requires_prior_reference_change (target='stagger', ended='put-parameter')",
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_threshold_rebuild_requires_prior_reference_change (target='threshold', ended='delete-parameter')",
+      "tests.test_parameters_core.ParametersCore.test_panel_fill_threshold_rebuild_requires_prior_reference_change (target='threshold', ended='put-parameter')"
+    ]
+  },
+  {
+    "id": "M69",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_core.ParametersCore.test_delete_rebuild_then_unbind_reads_current_99_instead_of_deleted_cache"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_core.ParametersCore.test_delete_rebuild_then_unbind_reads_current_99_instead_of_deleted_cache"
+    ]
+  },
+  {
+    "id": "M70",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_parameters_deleted_unbind.DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_parameters_deleted_unbind.DeletedSourceUnbind.test_delete_then_unbind_has_identical_dump_to_legal_order"
+    ]
+  },
+  {
+    "id": "M71",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      105
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 104
+  },
+  {
+    "id": "M72",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      107
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 106
+  },
+  {
+    "id": "M73",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      109
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 108
+  },
+  {
+    "id": "M74",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      111
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 110
+  },
+  {
+    "id": "M75",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      113
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 112
+  },
+  {
+    "id": "M76",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      115
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 114
+  },
+  {
+    "id": "M77",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      117
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 116
+  },
+  {
+    "id": "M78",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION",
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION",
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION",
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_STAGGER_SHARE_I38_REJECTION",
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_THRESHOLD_SHARE_I38_REJECTION"
+    ]
+  },
+  {
+    "id": "M79",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_CARD_AND_PANEL_FILL_GAP_SHARE_I38_REJECTION"
+    ]
+  },
+  {
+    "id": "M80",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE",
+      "tests.test_parameters_core.ParametersCore.test_native_consumers_require_explicit_rebinding_after_parameter_rebuild"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE",
+      "tests.test_parameters_core.ParametersCore.test_native_consumers_require_explicit_rebinding_after_parameter_rebuild (owner='grid-system 1')"
+    ]
+  },
+  {
+    "id": "M81",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S1_GRID_SYSTEM_FIELD_REBIND_IN_SAME_CANDIDATE"
+    ]
+  },
+  {
+    "id": "M82",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99"
+    ]
+  },
+  {
+    "id": "M83",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S2_INTEGRATED_FIELD_AND_CARD_REBUILD_READS_99"
+    ]
+  },
+  {
+    "id": "M84",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_B2_LONG_OWNER_LIST_KEEPS_COMPLETE_NAMES"
+    ]
+  },
+  {
+    "id": "M85",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_grid_card_reference.GridCardReference.test_P142_S1_REDECLARATION_WITHOUT_REBUILD_REJECTS"
+    ]
+  },
+  {
+    "id": "M86",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      119
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 118
+  },
+  {
+    "id": "M87",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      121
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 120
+  },
+  {
+    "id": "M88",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      123
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 122
+  },
+  {
+    "id": "M89",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      125
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 124
+  },
+  {
+    "id": "M90",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      127
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 126
+  },
+  {
+    "id": "M91",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      129
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 128
+  },
+  {
+    "id": "M92",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      131
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 130
+  },
+  {
+    "id": "M93",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      133
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 132
+  },
+  {
+    "id": "M94",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      135
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 134
+  },
+  {
+    "id": "M95",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      137
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 136
+  },
+  {
+    "id": "M96",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      139
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 138
+  },
+  {
+    "id": "M97",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      35
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 34
+  },
+  {
+    "id": "M98",
+    "verdict": "killed",
+    "schema": "geometry-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "baseline_command": 3,
+    "attempt_commands": [
+      37
+    ],
+    "attempt_exits": [
+      1
+    ],
+    "compile_command": 36
+  },
+  {
+    "id": "M99",
+    "verdict": "killed",
+    "schema": "geometry-bridge-mutation-execution/1",
+    "head": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+    "phase_exits": {
+      "baseline_build": 0,
+      "baseline": 0,
+      "mutant_build": 0,
+      "mutant": 1,
+      "restored_build": 0,
+      "restored": 0
+    },
+    "methods": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_C1_new_direct_and_repeat_panel_dual_axes_reject_M1"
+    ],
+    "restored_count": 43,
+    "mutant_failure_tests": [
+      "tests.test_geo314_stagger_commit.StaggerCommit.test_C1_new_direct_and_repeat_panel_dual_axes_reject_M1"
+    ]
+  }
+]
