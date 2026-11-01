@@ -36,7 +36,7 @@ async function fixture(options = {}) {
     document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
       createElement:tag=>tag==='canvas'?{getContext:()=>({}),toDataURL:()=> 'data:image/png;base64,rendered'}:element(tag)},
     oc:{busy:false,faces:[{id:1,kind:'boundary'}],bmap:{},edit:null},fe:{feats:{}},connection:{phase:'ready'},
-    api:async command=>{if(options.api)return options.api(command);assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
+    api:async command=>{if(options.api)return options.api(command);assert.ok(command==='dump'||command==='dump-deidentified','Unexpected API command: '+command);calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
     setStatus:s=>statuses.push(s),toast:s=>statuses.push(s),drawFaceEditor(){},renderFaceInspector(){},
     innerWidth:1280,feUlImgToMm:(_p,x,y)=>[x,y],feFit(){}};
   // Only the PDF library provider is faked here; production validation/cleanup
@@ -983,8 +983,9 @@ async function recoveryRecord(f,scene) {
 
 test('matching reload restores complete project context without uploading or inventing undo',async()=>{
   const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene);
-  const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
+  const commands=[],records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async command=>{commands.push(command);return {ok:true,text:loaded.scene};};
   assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);
+  assert.deepEqual(commands,['dump-deidentified','dump-deidentified','dump']);
   assert.equal(f.w.context().id,'opened');assert.equal(f.w.context().name,'試用工程');assert.equal(f.w.context().dirty,true);
   assert.equal(f.w.getProjectInfo().sourceKind,'example');assert.equal(f.w.getProjectInfo().undoLabel,null);
   assert.match(f.w.getProjectInfo().historyNote,/較早/);
@@ -1005,9 +1006,10 @@ test('reload refuses different server or geometry and preserves the original bac
   for(const mismatch of ['session','scene']) {
     const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene),before=f.w.context();
     if(mismatch==='session')record.session='other-service';
-    const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});
-    f.env.api=async()=>({ok:true,text:mismatch==='scene'?'boundary 55 outline 0,0 1,0 1,1\n':loaded.scene});
+    const commands=[],records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});
+    f.env.api=async command=>{commands.push(command);return {ok:true,text:mismatch==='scene'?'boundary 55 outline 0,0 1,0 1,1\n':loaded.scene};};
     assert.equal((await f.w.restoreSession()).state,'mismatch');assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+    assert.deepEqual(commands,mismatch==='scene'?['dump-deidentified']:[]);
     await f.w.persistSession();assert.equal(records.get('tab-one'),record);
   }
 });
@@ -1036,11 +1038,14 @@ test('another tab invalidates saving, metadata editing and local undo until expl
 });
 
 test('external mutation during final reload fingerprint cannot commit the earlier local context',async()=>{
-  let channel,hashes=0;const reached=deferred(),gate=deferred();
+  let channel,finalFingerprint=false;const reached=deferred(),gate=deferred();
   const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}},projectOverride:{sha:async bytes=>{
-    if(++hashes===3){reached.resolve();await gate.promise;}return P.sha(bytes);
+    if(finalFingerprint){reached.resolve();await gate.promise;}return P.sha(bytes);
   }}}),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene),before=f.w.context();
-  recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
+  recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async command=>{
+    assert.ok(command==='dump'||command==='dump-deidentified','Unexpected API command: '+command);
+    if(command==='dump')finalFingerprint=true;return {ok:true,text:loaded.scene};
+  };
   const restoring=f.w.restoreSession();await reached.promise;
   channel.onmessage({data:{peer:'other-tab',session:'service-one'}});gate.resolve();
   assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);

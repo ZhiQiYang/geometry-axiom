@@ -39,6 +39,8 @@ class CandidateProduct(unittest.TestCase):
 
     def test_preview_revalidates_same_candidate_through_confirm_and_one_history_step(self):
         r=self.case('lifecycle');self.assertEqual(0,r.returncode,r.stderr)
+    def test_incomplete_active_identity_before_rejects_without_repair_or_serial_advance(self):
+        r=self.case('identity-incomplete-before');self.assertEqual(0,r.returncode,r.stderr)
     def test_sealed_template_bytes_cannot_be_replaced(self):
         r=self.case('wood-tamper');self.assertEqual(0,r.returncode,r.stderr)
     def test_sealed_presentation_bytes_cannot_be_replaced(self):
