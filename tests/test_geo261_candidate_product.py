@@ -1,5 +1,6 @@
 """Real preview/import paths retain and publish the validated candidate exactly once."""
 import json
+import secrets
 import subprocess
 import sys
 import unittest
@@ -31,8 +32,8 @@ class CandidateProduct(unittest.TestCase):
             ['GEOMETRY_KERNEL_EXTERNAL=1','GEOMETRY_WOODWORKING_EXTERNAL=1','GEOMETRY_HOST_HISTORY_EXTERNAL=1','GEOMETRY_HOST_CANDIDATE_EXTERNAL=1'])
         cls.exe=b.link('candidate-product-client',[cls.client,*b.product_objects()])
 
-    def case(self,name,exe=None,path=None):
-        r=subprocess.run([str(exe or self.exe),name,str(path or self.scene)],capture_output=True,text=True,timeout=30)
+    def case(self,name,exe=None,path=None,args=()):
+        r=subprocess.run([str(exe or self.exe),name,str(path or self.scene),*args],capture_output=True,text=True,timeout=30)
         self.assertIn(r.returncode,(0,1),'Crash/setup failure is not a candidate verdict: '+r.stderr)
         if r.returncode:self.assertIn('ASSERT:',r.stderr)
         return r
@@ -40,7 +41,7 @@ class CandidateProduct(unittest.TestCase):
     def test_preview_revalidates_same_candidate_through_confirm_and_one_history_step(self):
         r=self.case('lifecycle');self.assertEqual(0,r.returncode,r.stderr)
     def test_incomplete_active_identity_before_rejects_without_repair_or_serial_advance(self):
-        r=self.case('identity-incomplete-before');self.assertEqual(0,r.returncode,r.stderr)
+        r=self.case('identity-incomplete-before',args=[secrets.token_hex(16)]);self.assertEqual(0,r.returncode,r.stderr)
     def test_sealed_template_bytes_cannot_be_replaced(self):
         r=self.case('wood-tamper');self.assertEqual(0,r.returncode,r.stderr)
     def test_sealed_presentation_bytes_cannot_be_replaced(self):
