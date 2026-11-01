@@ -328,7 +328,7 @@ static bool identity_prepare_scratch(const World *before, World *after)
     identity_explicit_capture(keys, APP_IDENTITY_MARK_CAPACITY, &count, &overflow);
     return identity_prepare(before, after, keys, count, overflow);
 }
-static bool identity_set_epoch(const char *hex, char *err, size_t cap)
+static bool identity_set_epoch(const World *w, const char *hex, char *err, size_t cap)
 {
     if (!hex) {
         snprintf(err, cap, "配號區段須是 32 位小寫十六進位");
@@ -347,8 +347,8 @@ static bool identity_set_epoch(const char *hex, char *err, size_t cap)
         snprintf(err, cap, "配號區段須是 32 位小寫十六進位");
         return false;
     }
-    for (uint32_t i = 0; i < g_world.app.identity_mark_count; ++i) {
-        if (!memcmp(g_world.app.identity_marks[i].epoch, epoch, 16)) {
+    for (uint32_t i = 0; i < w->app.identity_mark_count; ++i) {
+        if (!memcmp(w->app.identity_marks[i].epoch, epoch, 16)) {
             snprintf(err, cap, "配號區段已出現在目前記號");
             return false;
         }
