@@ -1,0 +1,66 @@
+{
+  "valid": true,
+  "errors": [],
+  "events": [
+    {
+      "seq": 1,
+      "kind": "stdin_line_returned",
+      "command": 1,
+      "monotonic_ns": 259335377200747,
+      "rc": 1,
+      "length": 63,
+      "feof": 0,
+      "ferror": 0
+    },
+    {
+      "seq": 2,
+      "kind": "stdout_flush_enter",
+      "command": 1,
+      "monotonic_ns": 259335377206205,
+      "rc": 0,
+      "length": 0,
+      "feof": 0,
+      "ferror": 0
+    },
+    {
+      "seq": 3,
+      "kind": "stdout_flush_return",
+      "command": 1,
+      "monotonic_ns": 259335377223111,
+      "rc": 0,
+      "length": 0,
+      "feof": 0,
+      "ferror": 0
+    },
+    {
+      "seq": 4,
+      "kind": "stdin_line_returned",
+      "command": 2,
+      "monotonic_ns": 259335377223982,
+      "rc": 1,
+      "length": 5,
+      "feof": 0,
+      "ferror": 0
+    }
+  ],
+  "flushed_commands": [
+    {
+      "command": 1,
+      "rc": 0
+    }
+  ],
+  "last_boundary": {
+    "kind": "stdin_line_returned",
+    "command": 2,
+    "monotonic_ns": 259335377223982
+  },
+  "root_cause": null,
+  "product_gate_verdict": null,
+  "status": {
+    "attached": 1,
+    "attempts": 4,
+    "successes": 4,
+    "faults": 0
+  },
+  "scope": "Handler/flush boundary observations only; JSON success and product acceptance remain separate."
+}

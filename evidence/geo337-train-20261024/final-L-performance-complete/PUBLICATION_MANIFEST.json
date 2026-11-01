@@ -1,0 +1,895 @@
+{
+  "schema": "five-original-performance-publication-allowlist/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "expected_head": "b621a4fbc3cdea359b3676fb22dc8ef566968b8a",
+  "created_utc": "2026-10-24T03:08:37.040205+00:00",
+  "files": [
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "bytes": 12199518,
+      "sha256": "68af29e8b306afab056156f4b883a000c605e942de9f2c72486abdd7d917a641",
+      "gate": "p52",
+      "role": "archive"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3/EXCLUDED_CHROME_IPC_METADATA.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/EXCLUDED_CHROME_IPC_METADATA.json",
+      "bytes": 30993,
+      "sha256": "06bc032bf7650274e821ff61f4831780be8f4818b057704c9e5566c456c6fa6a",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3/EXCLUDED_ELF_PAYLOADS.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/EXCLUDED_ELF_PAYLOADS.json",
+      "bytes": 2436,
+      "sha256": "ece53a80219a4e7f371b3297a0abf2bd01d613c022650cb93468dc97986a8793",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3/ORIGINAL_P52_CAPTURE_ANNOTATIONS.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/ORIGINAL_P52_CAPTURE_ANNOTATIONS.json",
+      "bytes": 108827,
+      "sha256": "c1d275f1fefb94cd2a6a8b6a64dbed47aad167ce1d900facc4d2637b4a273929",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3/PACKAGE.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/PACKAGE.json",
+      "bytes": 740,
+      "sha256": "608e16aef58df3d43d03e529ed8f947e5ca1e908f5fd3dbae920da63cb116e5c",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3/SUMMARY.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/SUMMARY.json",
+      "bytes": 34302,
+      "sha256": "42036aa9c6ae24e1ba72fe2fb15ba9da4fad6909a5fa10e2d9f8b62834fc2cf0",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3-collection-launch/RESULT.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/collector-outer/RESULT.json",
+      "bytes": 1950,
+      "sha256": "b9c8b0a393659ff74abb1dd529dff831ba3e6b7f1d4d02a8148f7e2e65856bd1",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3-collection-launch/subcommands/000001/request.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/collector-outer/subcommands/000001/request.json",
+      "bytes": 1698,
+      "sha256": "66fc18260296f1e874dd251fd136fdf6cbaad6f9cc2be2ee4afec88cf070cf02",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3-collection-launch/subcommands/000001/result.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/collector-outer/subcommands/000001/result.json",
+      "bytes": 1950,
+      "sha256": "b9c8b0a393659ff74abb1dd529dff831ba3e6b7f1d4d02a8148f7e2e65856bd1",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3-collection-launch/subcommands/000001/stderr.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/collector-outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3-collection-launch/subcommands/000001/stdin.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/collector-outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3-collection-launch/subcommands/000001/stdout.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/collector-outer/subcommands/000001/stdout.bin",
+      "bytes": 688,
+      "sha256": "84d01e8091d28b5a6bf898fe1df65ed897a42dd4987a0826e5379a82fb512184",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3-collection-launch/subcommands.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/collector-outer/subcommands.json",
+      "bytes": 2040,
+      "sha256": "41db56d282cc212f0bc2f3d1a8bb6f88adeef06c81b842c189b54dca6e1474ab",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/P52_ACTUAL_PACKAGE_PEER.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/independent-peer/P52_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 2018,
+      "sha256": "7e1053fa59591991f024ff85cd5a5b8ee93d7120d2ab2781025f9ac337aed620",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_p52_actual.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/independent-peer/review_p52_actual.py",
+      "bytes": 6052,
+      "sha256": "de6888047437cee54202d90426bd4a7ad71fb813236de8fbe807e4fda57afc8b",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_performance_package_common.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/independent-peer/review_performance_package_common.py",
+      "bytes": 8686,
+      "sha256": "bc260a6ec5ca218094809243b297da3132588781d0c93705f0e42ec04a1b69a2",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/P52_PEER_INITIAL_STAT_FIELD_ERROR.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/independent-peer/P52_PEER_INITIAL_STAT_FIELD_ERROR.json",
+      "bytes": 247,
+      "sha256": "2bc718168316bc920900dcc868831f568bd01a52ac4c3c03e0428287e420a895",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_performance_package_common.before-inode-correction.py.txt",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p52/independent-peer/review_performance_package_common.before-inode-correction.py.txt",
+      "bytes": 8658,
+      "sha256": "cbf6da01f5a5d5bcd51794e995b10c4d72d0d182e49057be2813a2f49bfb96e4",
+      "gate": "p52",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "bytes": 26354132,
+      "sha256": "a2c4775e54a118c429060575f4b1ddd981d3d827726e69837f4222afa0a59615",
+      "gate": "p189",
+      "role": "archive"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2/EXCLUDED_CHROME_IPC_METADATA.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/EXCLUDED_CHROME_IPC_METADATA.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2/EXCLUDED_ELF_PAYLOADS.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/EXCLUDED_ELF_PAYLOADS.json",
+      "bytes": 972,
+      "sha256": "5bbce0aad4c6a8dd0ba32ff5fe97d55f288117ae0af00cfea7de92ee091de60c",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2/PACKAGE.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/PACKAGE.json",
+      "bytes": 743,
+      "sha256": "e4d67e2601b2c99b5d3e09c6522983e9bee5c3d1d5c40ac6d1ade7199b60b894",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2/SUMMARY.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/SUMMARY.json",
+      "bytes": 8677,
+      "sha256": "9cf8da067b5b00149c209b20bf2392242b39d23793aa5b269761839b9def6002",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2-collection-launch/RESULT.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/collector-outer/RESULT.json",
+      "bytes": 1952,
+      "sha256": "834ee3dd313721c9ad43f3b1172f6a9c7c534ff6b248284a2b4e500a33af9f2b",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2-collection-launch/subcommands/000001/request.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/collector-outer/subcommands/000001/request.json",
+      "bytes": 1700,
+      "sha256": "08a2e7620551786b260102d1908f0d72df77b052a43e11a2697b27ae12011c6e",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2-collection-launch/subcommands/000001/result.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/collector-outer/subcommands/000001/result.json",
+      "bytes": 1952,
+      "sha256": "834ee3dd313721c9ad43f3b1172f6a9c7c534ff6b248284a2b4e500a33af9f2b",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2-collection-launch/subcommands/000001/stderr.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/collector-outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2-collection-launch/subcommands/000001/stdin.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/collector-outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2-collection-launch/subcommands/000001/stdout.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/collector-outer/subcommands/000001/stdout.bin",
+      "bytes": 691,
+      "sha256": "85a333dc7eb91802478ffc2fbaefa87c4156762ac442f816c70630bf4880b9d1",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2-collection-launch/subcommands.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/collector-outer/subcommands.json",
+      "bytes": 2042,
+      "sha256": "9cb32e77cd570fd73e8bd21c4157bd6bece20aadc5e343d9bc812cce2682f044",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/P189_ACTUAL_PACKAGE_PEER.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/independent-peer/P189_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 1566,
+      "sha256": "2c4b890f9aae035bd82e0194c17f6ad5ccf3033d783302feabed73eae7d99f02",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_p189_actual.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/independent-peer/review_p189_actual.py",
+      "bytes": 5871,
+      "sha256": "f37fe1de09674970bf7e9f233bb89ec1af1f51cbe7a13fcc00af009424f2070c",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_performance_package_common.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189/independent-peer/review_performance_package_common.py",
+      "bytes": 8686,
+      "sha256": "bc260a6ec5ca218094809243b297da3132588781d0c93705f0e42ec04a1b69a2",
+      "gate": "p189",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "bytes": 1815645,
+      "sha256": "d48055d2e7f46fd8948ebda8364f6548e0022cb36d953102ce7101a4a9dffdde",
+      "gate": "p189-timing",
+      "role": "archive"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2/EXCLUDED_CHROME_IPC_METADATA.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/EXCLUDED_CHROME_IPC_METADATA.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2/EXCLUDED_ELF_PAYLOADS.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/EXCLUDED_ELF_PAYLOADS.json",
+      "bytes": 993,
+      "sha256": "1175b55eacfc2e85c9dd8f531b066c6bc0311f658eb5051f142f3aebb8a45f45",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2/PACKAGE.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/PACKAGE.json",
+      "bytes": 762,
+      "sha256": "fe026abe2456c172d028f1082b5ba88f29679d4e64ff63eaf84a3f256e36b9c0",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2/SUMMARY.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/SUMMARY.json",
+      "bytes": 10715,
+      "sha256": "a6687436aafb7de1ee0fcddde5d5f1c117efc5a2d5dd103821e9793c8ae736cf",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2-collection-launch/RESULT.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/collector-outer/RESULT.json",
+      "bytes": 1965,
+      "sha256": "8e85bd2555a7a2bb76eb4bd42f3e1da626992f4fae5e25b0ddeb363a88e523a8",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2-collection-launch/subcommands/000001/request.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/collector-outer/subcommands/000001/request.json",
+      "bytes": 1713,
+      "sha256": "5713f735a0eb0ead62572a98089e81d2b399fcbaf538d827ae96523c5cc93700",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2-collection-launch/subcommands/000001/result.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/collector-outer/subcommands/000001/result.json",
+      "bytes": 1965,
+      "sha256": "8e85bd2555a7a2bb76eb4bd42f3e1da626992f4fae5e25b0ddeb363a88e523a8",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2-collection-launch/subcommands/000001/stderr.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/collector-outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2-collection-launch/subcommands/000001/stdin.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/collector-outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2-collection-launch/subcommands/000001/stdout.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/collector-outer/subcommands/000001/stdout.bin",
+      "bytes": 710,
+      "sha256": "d6e404ee9680ae7fddbd0b28f321ce7a28d2ec6167f49fc6d6a94094039ced02",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2-collection-launch/subcommands.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/collector-outer/subcommands.json",
+      "bytes": 2055,
+      "sha256": "177c439c5b3e31691dab7b76e5ad0688663b0dc124bd1c67f674004375187d46",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/P189_TIMING_ACTUAL_PACKAGE_PEER.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/independent-peer/P189_TIMING_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 2001,
+      "sha256": "96ac85b0767a4c5aca4eedb6b638da4939b25b525e586a20a7437e8057a7cc9b",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_p189_actual.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/independent-peer/review_p189_actual.py",
+      "bytes": 5871,
+      "sha256": "f37fe1de09674970bf7e9f233bb89ec1af1f51cbe7a13fcc00af009424f2070c",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_performance_package_common.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/independent-peer/review_performance_package_common.py",
+      "bytes": 8686,
+      "sha256": "bc260a6ec5ca218094809243b297da3132588781d0c93705f0e42ec04a1b69a2",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/P189_TIMING_INITIAL_ORDER_ASSUMPTION.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/independent-peer/P189_TIMING_INITIAL_ORDER_ASSUMPTION.json",
+      "bytes": 2052,
+      "sha256": "6900ec44e12d2247d462719a38dd8ea7c6906e7399e35672ae1d8997dc1af4a8",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_p189_actual.v1.py.txt",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/p189-timing/independent-peer/review_p189_actual.v1.py.txt",
+      "bytes": 5829,
+      "sha256": "0f6c3d63ee582c1ba13b4d1d3ff9dd2a6fb2d7b425313fe56c4baaf2a08b7905",
+      "gate": "p189-timing",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "bytes": 28362225,
+      "sha256": "a02f97fe618e547c0347e1727e9edb96cb892d4e05e4b953fe2c255452ca131f",
+      "gate": "geo323",
+      "role": "archive"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3/EXCLUDED_CHROME_IPC_METADATA.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/EXCLUDED_CHROME_IPC_METADATA.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3/EXCLUDED_ELF_PAYLOADS.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/EXCLUDED_ELF_PAYLOADS.json",
+      "bytes": 2293,
+      "sha256": "2b3e8be91bf68205f88e72b8d94dd8272fedd38af2988d0805d2621c3c2c1649",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3/ORIGINAL_P52_CAPTURE_ANNOTATIONS.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/ORIGINAL_P52_CAPTURE_ANNOTATIONS.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3/PACKAGE.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/PACKAGE.json",
+      "bytes": 749,
+      "sha256": "8cc64bf1f55eb3ab2f7d7c933de57bd2ab6bd7a0501d3027558f3aa362d82fa0",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3/SUMMARY.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/SUMMARY.json",
+      "bytes": 386233,
+      "sha256": "98b6dbb094e642107845a71f72a2f410cd76a01ce1d89b9f844a2c28424bcd50",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3-collection-launch/RESULT.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/collector-outer/RESULT.json",
+      "bytes": 1956,
+      "sha256": "99aca01388609537d09f38c32a22d758e2c28fff8a7ef5dd8c51f8ec0bfbdc50",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3-collection-launch/subcommands/000001/request.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/collector-outer/subcommands/000001/request.json",
+      "bytes": 1704,
+      "sha256": "e783bef06774238ad516f809ff1d5ea1146040b0d5bedea88768c3fac17966bd",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3-collection-launch/subcommands/000001/result.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/collector-outer/subcommands/000001/result.json",
+      "bytes": 1956,
+      "sha256": "99aca01388609537d09f38c32a22d758e2c28fff8a7ef5dd8c51f8ec0bfbdc50",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3-collection-launch/subcommands/000001/stderr.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/collector-outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3-collection-launch/subcommands/000001/stdin.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/collector-outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3-collection-launch/subcommands/000001/stdout.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/collector-outer/subcommands/000001/stdout.bin",
+      "bytes": 697,
+      "sha256": "cf1d8567906c26d0e7d68571a5a76ae12304c4086583a3d99e2fef334f19f13b",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3-collection-launch/subcommands.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/collector-outer/subcommands.json",
+      "bytes": 2046,
+      "sha256": "1dfe4380687dc68d10879f9b0fc4fce90a261d9b8a4a053e309625366769b8a0",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/GEO323_ACTUAL_PACKAGE_PEER.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/independent-peer/GEO323_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 2025,
+      "sha256": "021d2ee5ac7febe7b82c1a7d438de4c143258e25a9015e18657339f98a34bd7e",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_geo323_memo_actual_packages.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/independent-peer/review_geo323_memo_actual_packages.py",
+      "bytes": 10686,
+      "sha256": "88e55c44eb55ee384b3adb9ca62b38c78be0b26da04aa5b5f9ed36b7b1afddc9",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_performance_package_common.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/independent-peer/review_performance_package_common.py",
+      "bytes": 8686,
+      "sha256": "bc260a6ec5ca218094809243b297da3132588781d0c93705f0e42ec04a1b69a2",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/GEO323_ALL_TERMINAL_METADATA_PEER.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/independent-peer/GEO323_ALL_TERMINAL_METADATA_PEER.json",
+      "bytes": 1879,
+      "sha256": "872b9078acea8208c23faec1d97b85a1a98146d69de5d13dc31da444516500fa",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_geo323_terminal_metadata.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/independent-peer/review_geo323_terminal_metadata.py",
+      "bytes": 7868,
+      "sha256": "52e747592653b4be98ea84f974307018f7cd519f7f1415bccf20e2eeac3021ef",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_geo323_memo_actual_packages.v1.py.txt",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/independent-peer/review_geo323_memo_actual_packages.v1.py.txt",
+      "bytes": 10673,
+      "sha256": "f6a34b619d53800126b3c2a088f396b87663beb4f0f87c692640232f2bd02edc",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/GEO323_MEMO_PACKAGE_INITIAL_SCHEMA_ERROR.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/geo323/independent-peer/GEO323_MEMO_PACKAGE_INITIAL_SCHEMA_ERROR.json",
+      "bytes": 488,
+      "sha256": "3622bcfb9d688000e6d827c0c0baf639b9b78d463471d7ba16c5cb3182ae0197",
+      "gate": "geo323",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz",
+      "bytes": 5765281,
+      "sha256": "c10dbcee22a96890a0f4816fb58414a8f2f542f1c04d5ff50d427f69cbc0e3a4",
+      "gate": "memo",
+      "role": "archive"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3/EXCLUDED_CHROME_IPC_METADATA.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/EXCLUDED_CHROME_IPC_METADATA.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3/EXCLUDED_ELF_PAYLOADS.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/EXCLUDED_ELF_PAYLOADS.json",
+      "bytes": 2767,
+      "sha256": "a2724b927ea94bc45bff7d3c573fb80964d17de19204940780bd6c6969aaaebb",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3/ORIGINAL_P52_CAPTURE_ANNOTATIONS.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/ORIGINAL_P52_CAPTURE_ANNOTATIONS.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3/PACKAGE.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/PACKAGE.json",
+      "bytes": 742,
+      "sha256": "d5041ca392c2507e55163ccebffa47506c88d2da7bba39c0afc02d79f547b12e",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3/SUMMARY.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/SUMMARY.json",
+      "bytes": 3118745,
+      "sha256": "b9a2b1bf4f7775bd8fd23f116af3899387c226f6a72b2125f7bb70162f4055bf",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3-collection-launch/RESULT.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/collector-outer/RESULT.json",
+      "bytes": 1951,
+      "sha256": "da1f16c1a37d09ab17118cbffc1dc8e728343861f4d878609845b7fc6e40f4b1",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3-collection-launch/subcommands/000001/request.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/collector-outer/subcommands/000001/request.json",
+      "bytes": 1700,
+      "sha256": "ad6479a66c5bda6f208cabe15348a8937bb5fb1f380de20975cad802f854569e",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3-collection-launch/subcommands/000001/result.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/collector-outer/subcommands/000001/result.json",
+      "bytes": 1951,
+      "sha256": "da1f16c1a37d09ab17118cbffc1dc8e728343861f4d878609845b7fc6e40f4b1",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3-collection-launch/subcommands/000001/stderr.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/collector-outer/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3-collection-launch/subcommands/000001/stdin.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/collector-outer/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3-collection-launch/subcommands/000001/stdout.bin",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/collector-outer/subcommands/000001/stdout.bin",
+      "bytes": 690,
+      "sha256": "38636d4099c38389e6bd4d4dbe2bc07c89daa2101be5d4220c34ec867ce4b170",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3-collection-launch/subcommands.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/collector-outer/subcommands.json",
+      "bytes": 2041,
+      "sha256": "392f91116e36034947cbbba5b0e16b0ff377063b34a84befdc25b4d7992a3560",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/MEMO_ACTUAL_PACKAGE_PEER.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/independent-peer/MEMO_ACTUAL_PACKAGE_PEER.json",
+      "bytes": 1666,
+      "sha256": "13789f5a393899552adc52c1eff2bf00fcf644f082009845477f7bca9246fc8a",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_geo323_memo_actual_packages.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/independent-peer/review_geo323_memo_actual_packages.py",
+      "bytes": 10686,
+      "sha256": "88e55c44eb55ee384b3adb9ca62b38c78be0b26da04aa5b5f9ed36b7b1afddc9",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_performance_package_common.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/independent-peer/review_performance_package_common.py",
+      "bytes": 8686,
+      "sha256": "bc260a6ec5ca218094809243b297da3132588781d0c93705f0e42ec04a1b69a2",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/GEO323_ALL_TERMINAL_METADATA_PEER.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/independent-peer/GEO323_ALL_TERMINAL_METADATA_PEER.json",
+      "bytes": 1879,
+      "sha256": "872b9078acea8208c23faec1d97b85a1a98146d69de5d13dc31da444516500fa",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_geo323_terminal_metadata.py",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/independent-peer/review_geo323_terminal_metadata.py",
+      "bytes": 7868,
+      "sha256": "52e747592653b4be98ea84f974307018f7cd519f7f1415bccf20e2eeac3021ef",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/review_geo323_memo_actual_packages.v1.py.txt",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/independent-peer/review_geo323_memo_actual_packages.v1.py.txt",
+      "bytes": 10673,
+      "sha256": "f6a34b619d53800126b3c2a088f396b87663beb4f0f87c692640232f2bd02edc",
+      "gate": "memo",
+      "role": "metadata"
+    },
+    {
+      "source_path": "/workspace/train337-canvas-peer-resume/GEO323_MEMO_PACKAGE_INITIAL_SCHEMA_ERROR.json",
+      "destination": "evidence/geo337-train-20261024/final-L-performance-complete/memo/independent-peer/GEO323_MEMO_PACKAGE_INITIAL_SCHEMA_ERROR.json",
+      "bytes": 488,
+      "sha256": "3622bcfb9d688000e6d827c0c0baf639b9b78d463471d7ba16c5cb3182ae0197",
+      "gate": "memo",
+      "role": "metadata"
+    }
+  ],
+  "gates": [
+    {
+      "gate": "p52",
+      "archive_sha256": "68af29e8b306afab056156f4b883a000c605e942de9f2c72486abdd7d917a641",
+      "archive_members": 3150,
+      "collector_exit": 0,
+      "peer_report": "/workspace/train337-canvas-peer-resume/P52_ACTUAL_PACKAGE_PEER.json",
+      "peer_sha256": "7e1053fa59591991f024ff85cd5a5b8ee93d7120d2ab2781025f9ac337aed620",
+      "original_outer_exits": {
+        "p52": 0
+      },
+      "original_passed": true,
+      "overall_P189_passed": null,
+      "subject_executions_by_collector": 0
+    },
+    {
+      "gate": "p189",
+      "archive_sha256": "a2c4775e54a118c429060575f4b1ddd981d3d827726e69837f4222afa0a59615",
+      "archive_members": 3455,
+      "collector_exit": 0,
+      "peer_report": "/workspace/train337-canvas-peer-resume/P189_ACTUAL_PACKAGE_PEER.json",
+      "peer_sha256": "2c4b890f9aae035bd82e0194c17f6ad5ccf3033d783302feabed73eae7d99f02",
+      "original_outer_exits": {
+        "p189": 1
+      },
+      "original_passed": false,
+      "overall_P189_passed": null,
+      "subject_executions_by_collector": 0
+    },
+    {
+      "gate": "p189-timing",
+      "archive_sha256": "d48055d2e7f46fd8948ebda8364f6548e0022cb36d953102ce7101a4a9dffdde",
+      "archive_members": 261,
+      "collector_exit": 0,
+      "peer_report": "/workspace/train337-canvas-peer-resume/P189_TIMING_ACTUAL_PACKAGE_PEER.json",
+      "peer_sha256": "96ac85b0767a4c5aca4eedb6b638da4939b25b525e586a20a7437e8057a7cc9b",
+      "original_outer_exits": {
+        "p189-timing": 0
+      },
+      "original_passed": true,
+      "overall_P189_passed": false,
+      "subject_executions_by_collector": 0
+    },
+    {
+      "gate": "geo323",
+      "archive_sha256": "a02f97fe618e547c0347e1727e9edb96cb892d4e05e4b953fe2c255452ca131f",
+      "archive_members": 7485,
+      "collector_exit": 0,
+      "peer_report": "/workspace/train337-canvas-peer-resume/GEO323_ACTUAL_PACKAGE_PEER.json",
+      "peer_sha256": "021d2ee5ac7febe7b82c1a7d438de4c143258e25a9015e18657339f98a34bd7e",
+      "original_outer_exits": {
+        "geo323-prepare": 0,
+        "geo323-build": 0,
+        "geo323-compare": 1,
+        "geo323-perf": 1,
+        "geo323-profile": 1
+      },
+      "original_passed": null,
+      "overall_P189_passed": null,
+      "subject_executions_by_collector": 0
+    },
+    {
+      "gate": "memo",
+      "archive_sha256": "c10dbcee22a96890a0f4816fb58414a8f2f542f1c04d5ff50d427f69cbc0e3a4",
+      "archive_members": 5501,
+      "collector_exit": 0,
+      "peer_report": "/workspace/train337-canvas-peer-resume/MEMO_ACTUAL_PACKAGE_PEER.json",
+      "peer_sha256": "13789f5a393899552adc52c1eff2bf00fcf644f082009845477f7bca9246fc8a",
+      "original_outer_exits": {
+        "memo": 0
+      },
+      "original_passed": true,
+      "overall_P189_passed": null,
+      "subject_executions_by_collector": 0
+    }
+  ],
+  "inventory_references": [
+    {
+      "gate": "p52",
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p52-v3/RAW_INVENTORY.json",
+      "bytes": 934186,
+      "sha256": "f8d2df202094223b93f4174e7312c618ed229120dff4386a22880bd54fe27bb1",
+      "archive_member": "RAW_INVENTORY.json",
+      "publication": "Exact original inventory is already in this gate's sole archive; no duplicate loose inventory is copied."
+    },
+    {
+      "gate": "p189",
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-v2/RAW_INVENTORY.json",
+      "bytes": 968509,
+      "sha256": "328b9f160eb9233cdc1d3c44034fd7115be254bb00e4319a095bde1f1ef9bcb8",
+      "archive_member": "RAW_INVENTORY.json",
+      "publication": "Exact original inventory is already in this gate's sole archive; no duplicate loose inventory is copied."
+    },
+    {
+      "gate": "p189-timing",
+      "source_path": "/workspace/train337-final-performance-collection-preparation/p189-timing-v2/RAW_INVENTORY.json",
+      "bytes": 72544,
+      "sha256": "c11e26e19256b2840d920035a3adbc9c714354a7bcef1f24ea6db03cd6640eef",
+      "archive_member": "RAW_INVENTORY.json",
+      "publication": "Exact original inventory is already in this gate's sole archive; no duplicate loose inventory is copied."
+    },
+    {
+      "gate": "geo323",
+      "source_path": "/workspace/train337-final-performance-collection-preparation/geo323-v3/RAW_INVENTORY.json",
+      "bytes": 2361795,
+      "sha256": "ed440df691df0d30e26048957e4361b65f397869d1eeabc37ac6d95ace7cd943",
+      "archive_member": "RAW_INVENTORY.json",
+      "publication": "Exact original inventory is already in this gate's sole archive; no duplicate loose inventory is copied."
+    },
+    {
+      "gate": "memo",
+      "source_path": "/workspace/train337-final-performance-collection-preparation/memo-v3/RAW_INVENTORY.json",
+      "bytes": 1554512,
+      "sha256": "bbdd7518b93f4fcfce21ab59bd18e64b745af5988456263975b9cac84e268ccf",
+      "archive_member": "RAW_INVENTORY.json",
+      "publication": "Exact original inventory is already in this gate's sole archive; no duplicate loose inventory is copied."
+    }
+  ],
+  "archive_bytes": 74496801,
+  "metadata_bytes": 3903944,
+  "limits": [
+    "No file copied and no archive payload rehashed by this metadata allowlist generator. Exact archive pins come from original roundtrip PACKAGE plus independent actual peers; file sizes are freshly checked.",
+    "Original published:false remains the original producer field and is not rewritten.",
+    "Original collector/tools and failed P52 collection attempts already remain in the gate archives; no duplicate original-tool tree is added.",
+    "Collector and peer success verify preserved originals only. Original P189 full1 and GEO323 compare1 remain red; timing-only and memo proof do not waive those red results.",
+    "Root alone adds PROGRESS/PR text and performs ordinary Git publication using hash-object/skip-worktree for the five unique tar files."
+  ],
+  "archives": {
+    "p52": {
+      "sha256": "68af29e8b306afab056156f4b883a000c605e942de9f2c72486abdd7d917a641",
+      "bytes": 12199518,
+      "members": 3150
+    },
+    "p189": {
+      "sha256": "a2c4775e54a118c429060575f4b1ddd981d3d827726e69837f4222afa0a59615",
+      "bytes": 26354132,
+      "members": 3455
+    },
+    "p189-timing": {
+      "sha256": "d48055d2e7f46fd8948ebda8364f6548e0022cb36d953102ce7101a4a9dffdde",
+      "bytes": 1815645,
+      "members": 261
+    },
+    "geo323": {
+      "sha256": "a02f97fe618e547c0347e1727e9edb96cb892d4e05e4b953fe2c255452ca131f",
+      "bytes": 28362225,
+      "members": 7485
+    },
+    "memo": {
+      "sha256": "c10dbcee22a96890a0f4816fb58414a8f2f542f1c04d5ff50d427f69cbc0e3a4",
+      "bytes": 5765281,
+      "members": 5501
+    }
+  },
+  "progress_before_sha256": "fd1b1113e99f482022a8ac7b6556be86911fe6092105442772cfec618c8a970d",
+  "progress_draft": "/workspace/geo337-complete-performance-docs-preparation-20261024/PROGRESS.draft.md",
+  "progress_draft_sha256": "cf9b1d673f73a8769b58fa619cb522e1dbb0b1bf363f31bfba4b8cda7fb2ca19",
+  "prbody_draft": "/workspace/geo337-complete-performance-docs-preparation-20261024/PR_BODY.draft.md",
+  "prbody_draft_sha256": "d58c1ec8adf18fd2726b1f225ae44a2291125fcf377f5731b5637e7a273c1e46",
+  "prepared_only": true,
+  "branch_unchanged": true,
+  "no_subject_executed": true,
+  "independent_actual_reviews_complete": true,
+  "derived_from_allowlist": "/workspace/five-performance-publication-allowlist-20261024.json",
+  "derived_from_allowlist_sha256": "e352e2143811da63be5ac2aab04312ada4fd2a1a2b144a499931c109d2f49fe4",
+  "documents_metadata_path": "/workspace/geo337-complete-performance-docs-preparation-20261024/DOCUMENTS.json",
+  "documents_metadata_sha256": "5635249984f1acecc006ce24bdd4739134b91cfa2968bb49ab7632a3fd04c067"
+}

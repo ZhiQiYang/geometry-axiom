@@ -1,0 +1,2721 @@
+{
+  "scope": "Eef840固定Git公開包320members逐原bytes＋實際出版raw；不重跑44，不宣稱未保留的逐buildC/ELF",
+  "source_sha": "eb846c345881cc6fc73a53c457a291175365b88c",
+  "evidence_sha": "ef840a299b597958aea23bec51f0c0798c05c46f",
+  "checks": [
+    {
+      "name": "only exactownprefix",
+      "passed": true
+    },
+    {
+      "name": "public archive exact",
+      "passed": true
+    },
+    {
+      "name": "source formal0",
+      "passed": true
+    },
+    {
+      "name": "320 indexed distinct",
+      "passed": true
+    },
+    {
+      "name": "320 regular unique",
+      "passed": true
+    },
+    {
+      "name": "exactmembers",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/INPUTS_BEFORE.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/INPUTS_BEFORE.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/REQUEST.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/REQUEST.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/PARTIAL_OBSERVATION.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/PARTIAL_OBSERVATION.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/ENVIRONMENT.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/ENVIRONMENT.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/environment-observation-absolute/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/environment-observation-absolute/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM01.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM01.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM01.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM01.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM02.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM02.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM02.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM02.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM03.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM03.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM03.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM03.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM04.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM04.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM04.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM04.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM05.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM05.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM05.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM05.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM06.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM06.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM06.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM06.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM07.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM07.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM07.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM07.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM08.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM08.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM08.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM08.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM09.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM09.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM09.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM09.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM10.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM10.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM10.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM10.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM11.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM11.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM11.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM11.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM12.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM12.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM12.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM12.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM13.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM13.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM13.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM13.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM14.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM14.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM14.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM14.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM15.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM15.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM15.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM15.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM16.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM16.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM16.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM16.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM17.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM17.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM17.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM17.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM18.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM18.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM18.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM18.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM19.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM19.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM19.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM19.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM20.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM20.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM20.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM20.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM21.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM21.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM21.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM21.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM22.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM22.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM22.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM22.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM23.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM23.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM23.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM23.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM24.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM24.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM24.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM24.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM25.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM25.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM25.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM25.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM26.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM26.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM26.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM26.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM27.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM27.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM27.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM27.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM28.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM28.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM28.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM28.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM29.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM29.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM29.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM29.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM30.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM30.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM30.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM30.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM31.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM31.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM31.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM31.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM32.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM32.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM32.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM32.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM33.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM33.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM33.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM33.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM34.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM34.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM34.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM34.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM35.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM35.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM35.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM35.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM36.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM36.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM36.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM36.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM36.model-base.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM36.model-base.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM37.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM37.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM37.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM37.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM38.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM38.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM38.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM38.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM39.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM39.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM39.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM39.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM39.model-base.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM39.model-base.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM40.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM40.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM40.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM40.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM41.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM41.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM41.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM41.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM42.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM42.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM42.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM42.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM43.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM43.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM43.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM43.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM44.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM44.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/SPM44.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/SPM44.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM01.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM01.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM02.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM02.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM03.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM03.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM04.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM04.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM05.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM05.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM06.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM06.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM07.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM07.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM08.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM08.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM09.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM09.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM10.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM10.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM11.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM11.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM12.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM12.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM13.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM13.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM14.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM14.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM15.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM15.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM16.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM16.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM17.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM17.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM18.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM18.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM19.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM19.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM20.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM20.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM21.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM21.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM22.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM22.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM23.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM23.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM24.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM24.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM25.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM25.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM26.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM26.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM27.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM27.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM28.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM28.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM29.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM29.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM30.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM30.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM31.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM31.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM32.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM32.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM33.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM33.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM34.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM34.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM35.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM35.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM41.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM41.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM42.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM42.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM43.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM43.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-SPM44.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-SPM44.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/bridge-baseline.compile.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/bridge-baseline.compile.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/model-baseline.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/model-baseline.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/model-baseline.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/model-baseline.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/native-baseline.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/native-baseline.exceptions.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-logs/native-baseline.log",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-logs/native-baseline.log",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/gate-receipt.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/gate-receipt.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/private-native/build.lock",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/private-native/build.lock",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/private-native/model-base.fingerprint.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/private-native/model-base.fingerprint.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/private-native/smoke/model-base/empty.scene",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/private-native/smoke/model-base/empty.scene",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-full44/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original original-full44/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-launch/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "original original-launch/RESULT.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-launch/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original original-launch/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-launch/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original original-launch/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive original-launch/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-launch/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-launch/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-launch/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-launch/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original original-launch/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive original-launch/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original original-launch/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "name": "archive forward-merge-continuation/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "original forward-merge-continuation/subcommands.json",
+      "passed": true
+    },
+    {
+      "name": "archive tools-and-provenance/package_full44.py",
+      "passed": true
+    },
+    {
+      "name": "original tools-and-provenance/package_full44.py",
+      "passed": true
+    },
+    {
+      "name": "archive tools-and-provenance/run_full44.py",
+      "passed": true
+    },
+    {
+      "name": "original tools-and-provenance/run_full44.py",
+      "passed": true
+    },
+    {
+      "name": "archive tools-and-provenance/merge_next_baton.py",
+      "passed": true
+    },
+    {
+      "name": "original tools-and-provenance/merge_next_baton.py",
+      "passed": true
+    },
+    {
+      "name": "archive tools-and-provenance/merge_next_baton_continue.py",
+      "passed": true
+    },
+    {
+      "name": "original tools-and-provenance/merge_next_baton_continue.py",
+      "passed": true
+    },
+    {
+      "name": "archive tools-and-provenance/MERGE_PREFLIGHT_ENVIRONMENT_FAILURE.json",
+      "passed": true
+    },
+    {
+      "name": "original tools-and-provenance/MERGE_PREFLIGHT_ENVIRONMENT_FAILURE.json",
+      "passed": true
+    },
+    {
+      "name": "archive tools-and-provenance/GEO260_EB846_MERGE_EXPECTED_STATIC_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "original tools-and-provenance/GEO260_EB846_MERGE_EXPECTED_STATIC_PEER.json",
+      "passed": true
+    },
+    {
+      "name": "archive immutable-source/tests/section_profile_mutation_check.py",
+      "passed": true
+    },
+    {
+      "name": "original immutable-source/tests/section_profile_mutation_check.py",
+      "passed": true
+    },
+    {
+      "name": "archive immutable-source/tests/section_profile_mutation_runner.py",
+      "passed": true
+    },
+    {
+      "name": "original immutable-source/tests/section_profile_mutation_runner.py",
+      "passed": true
+    },
+    {
+      "name": "archive immutable-source/tests/test_section_profile_native.py",
+      "passed": true
+    },
+    {
+      "name": "original immutable-source/tests/test_section_profile_native.py",
+      "passed": true
+    },
+    {
+      "name": "archive immutable-source/tests/run_all.expected.json",
+      "passed": true
+    },
+    {
+      "name": "original immutable-source/tests/run_all.expected.json",
+      "passed": true
+    },
+    {
+      "name": "one ELF excluded openly",
+      "passed": true
+    },
+    {
+      "name": "excluded retained size",
+      "passed": true
+    },
+    {
+      "name": "publish 1 exit",
+      "passed": true
+    },
+    {
+      "name": "publish1 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish1 stderr",
+      "passed": true
+    },
+    {
+      "name": "publish 2 exit",
+      "passed": true
+    },
+    {
+      "name": "publish2 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish2 stderr",
+      "passed": true
+    },
+    {
+      "name": "publish 3 exit",
+      "passed": true
+    },
+    {
+      "name": "publish3 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish3 stderr",
+      "passed": true
+    },
+    {
+      "name": "publish 4 exit",
+      "passed": true
+    },
+    {
+      "name": "publish4 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish4 stderr",
+      "passed": true
+    },
+    {
+      "name": "publish 5 exit",
+      "passed": true
+    },
+    {
+      "name": "publish5 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish5 stderr",
+      "passed": true
+    },
+    {
+      "name": "publish 6 exit",
+      "passed": true
+    },
+    {
+      "name": "publish6 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish6 stderr",
+      "passed": true
+    },
+    {
+      "name": "publish 7 exit",
+      "passed": true
+    },
+    {
+      "name": "publish7 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish7 stderr",
+      "passed": true
+    },
+    {
+      "name": "normalpush",
+      "passed": true
+    },
+    {
+      "name": "publish 8 exit",
+      "passed": true
+    },
+    {
+      "name": "publish8 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish8 stderr",
+      "passed": true
+    },
+    {
+      "name": "remote E exact",
+      "passed": true
+    },
+    {
+      "name": "publish 9 exit",
+      "passed": true
+    },
+    {
+      "name": "publish9 stdout",
+      "passed": true
+    },
+    {
+      "name": "publish9 stderr",
+      "passed": true
+    },
+    {
+      "name": "one push/remote",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "exit_code": 0
+}

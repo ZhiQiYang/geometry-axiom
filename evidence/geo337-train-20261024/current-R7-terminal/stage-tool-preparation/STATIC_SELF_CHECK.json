@@ -1,0 +1,177 @@
+{
+  "checks": [
+    {
+      "check": "exact original five stage launcher",
+      "passed": true
+    },
+    {
+      "check": "unchanged request base",
+      "passed": true
+    },
+    {
+      "check": "unchanged request main",
+      "passed": true
+    },
+    {
+      "check": "unchanged request stages",
+      "passed": true
+    },
+    {
+      "check": "unchanged request global_locks",
+      "passed": true
+    },
+    {
+      "check": "unchanged request original_tools",
+      "passed": true
+    },
+    {
+      "check": "unchanged request tool_files",
+      "passed": true
+    },
+    {
+      "check": "unchanged request expected_original_samples",
+      "passed": true
+    },
+    {
+      "check": "unchanged request expected_original_scenes",
+      "passed": true
+    },
+    {
+      "check": "unchanged request expected_profile_points",
+      "passed": true
+    },
+    {
+      "check": "unchanged request performance_thresholds_changed",
+      "passed": true
+    },
+    {
+      "check": "unchanged request clock_boundaries_changed",
+      "passed": true
+    },
+    {
+      "check": "new TMP path source_checkout",
+      "passed": true
+    },
+    {
+      "check": "new TMP path acceptance_out",
+      "passed": true
+    },
+    {
+      "check": "new TMP path inner_lock",
+      "passed": true
+    },
+    {
+      "check": "unbound actual final source",
+      "passed": true
+    },
+    {
+      "check": "conservative 138+128 MiB resource sum",
+      "passed": true
+    },
+    {
+      "check": "source prep only real filesystem metadata change",
+      "passed": true
+    },
+    {
+      "check": "binder only required ancestor change",
+      "passed": true
+    },
+    {
+      "check": "real outer guard os.statvfs(resource_root)",
+      "passed": true
+    },
+    {
+      "check": "real outer guard destination.is_relative_to(resource_root)",
+      "passed": true
+    },
+    {
+      "check": "real outer guard destination.parent.stat().st_dev==resource_root.stat().st_dev",
+      "passed": true
+    },
+    {
+      "check": "real outer guard free>=request['full_round_min_free_bytes']",
+      "passed": true
+    },
+    {
+      "check": "real outer guard '--stage','five'",
+      "passed": true
+    },
+    {
+      "check": "real outer guard request['source_sha']==S",
+      "passed": true
+    },
+    {
+      "check": "unchanged v5 geo323_record.py",
+      "passed": true
+    },
+    {
+      "check": "unchanged v5 mini_gen.py",
+      "passed": true
+    },
+    {
+      "check": "unchanged v5 profile_linux.py",
+      "passed": true
+    },
+    {
+      "check": "unchanged v5 reap_children.py",
+      "passed": true
+    },
+    {
+      "check": "unchanged v5 run.py",
+      "passed": true
+    },
+    {
+      "check": "unchanged v5 verify_linux.py",
+      "passed": true
+    },
+    {
+      "check": "AST prepare_plan.py",
+      "passed": true
+    },
+    {
+      "check": "AST prepare_source.py",
+      "passed": true
+    },
+    {
+      "check": "AST launch_stages.py",
+      "passed": true
+    },
+    {
+      "check": "AST bind_final_request.py",
+      "passed": true
+    },
+    {
+      "check": "AST start_five.py",
+      "passed": true
+    },
+    {
+      "check": "no binding/materialization/formal run",
+      "passed": true
+    },
+    {
+      "check": "new required ancestor exact S144",
+      "passed": true
+    },
+    {
+      "check": "original S81 frozen draft preserved",
+      "passed": true
+    },
+    {
+      "check": "binder delta precisely one S81 to S144",
+      "passed": true
+    },
+    {
+      "check": "prepare generator delta precisely two S81 to S144",
+      "passed": true
+    },
+    {
+      "check": "unbound request retained bytewise",
+      "passed": true
+    }
+  ],
+  "passed": 42,
+  "failed": 0,
+  "C_run": false,
+  "formal_run": false,
+  "scope": "Pure tool-byte/AST/contracts only; S144 publication is owner and independent peer evidence, not reproduced as C execution here."
+}

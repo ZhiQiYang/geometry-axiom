@@ -1,0 +1,71 @@
+{
+  "suite": "test_geo261_wood_grid_application.py",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/geo314-work/affected-p2-001/capture_suite.py",
+    "/workspace/geo314-work/affected-p2-001/test_geo261_wood_grid_application",
+    "/tmp/g261-next314",
+    "test_geo261_wood_grid_application.py"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.180550092998601,
+  "head": "291ce90abf9c3bfaf68bd61c4969f2ff9a1be6f6",
+  "cwd": "/tmp/g261-next314",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "TMPDIR": "/workspace/geo314-work/affected-p2-001/test_geo261_wood_grid_application/native-tmp",
+    "GEOMETRY_TEST_BRIDGE": "/workspace/geo314-work/p2-private-build-001/cache/bridge",
+    "CC": null,
+    "GEO314_DIAGNOSTIC_SCOPE": "five-affected-suites-only"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "output_files": {
+    "native-build-0.json": {
+      "sha256": "175555ec9a6b24ba042f22ec68113024c74dec9f93157ce07f1d746e3720a2f5",
+      "size": 396533
+    },
+    "native-build-files.json": {
+      "sha256": "2da5a3f8dc75571946a8c0b58359ba6569620479e1856150e42fc690b40205a6",
+      "size": 50711
+    },
+    "native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "96acf411801c4fab5b7d520317734bbed1efc12166f27b1e6a6cbefd75a8f0e6",
+      "size": 5981932
+    },
+    "result.json": {
+      "sha256": "7ba59e29deea013eb8ca3243b2f4a3cbc9a71c15c751cfe4100a2d0868ca78ff",
+      "size": 363
+    },
+    "stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "stdout.raw": {
+      "sha256": "c63e2bb394483b626d4bb99f130389beecd09a50ea139823c78d2dc7994269b0",
+      "size": 8873
+    },
+    "unittest.log": {
+      "sha256": "3fb0aef443418b8e631956ff6682be5af988b673fdcc8d340919356c87d331be",
+      "size": 122
+    }
+  },
+  "result": {
+    "file": "tests/test_geo261_wood_grid_application.py",
+    "total": 23,
+    "run": 23,
+    "passed": 23,
+    "failed": 0,
+    "skipped": 0,
+    "explicit_skipped": 0,
+    "unrun_skipped": 0,
+    "blocked_by_error": 0,
+    "expected_failed": 0,
+    "expected_failures": [],
+    "failures": [],
+    "skip_reasons": {},
+    "skip_items": [],
+    "import_error": null,
+    "extra_errors": 0,
+    "seconds": 6.55
+  }
+}

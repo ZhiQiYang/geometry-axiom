@@ -1,0 +1,3058 @@
+{
+  "schema": "pr338-L-reader3-and-RC2-actual-and-package-peer/1",
+  "createdUTC": "2026-10-23T23:16:00.578950+00:00",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "scope": "Terminal original three readerCLI, two precise RC source 0/1/0 controls,45c387 original streams and253-member archive roundtrip; no subject rerun and no use of later ROOT HEAD/physical source state.",
+  "readerOriginalExits": [
+    0,
+    0,
+    0
+  ],
+  "readerUnitMethods": 51,
+  "RCOriginalExits": [
+    [
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      1,
+      0
+    ]
+  ],
+  "c387CommandCount": 45,
+  "archiveSHA256": "e1bc507e6aa3a2b8b772e5fb7ea5df3d898d4d5cc502cd60048f6f0f07540c8c",
+  "checkCount": 755,
+  "checks": [
+    {
+      "label": "actualterminalsameL",
+      "passed": true
+    },
+    {
+      "label": "historicalclean sourceBefore",
+      "passed": true
+    },
+    {
+      "label": "historicalclean sourceAfterReaders",
+      "passed": true
+    },
+    {
+      "label": "historicalclean sourceAfter",
+      "passed": true
+    },
+    {
+      "label": "originalR3andfinallyrelease",
+      "passed": true
+    },
+    {
+      "label": "originalcommandcount train337-L-readers-and-rc-7af8c5d8",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000010",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000010/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000010/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000010",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000011",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000011/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000011/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000011",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000012",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000012/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000012/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000012",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000013",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000013/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000013/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000013",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000014",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000014/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000014/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000014",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000015",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000015/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000015/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000015",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000016",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000016/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000016/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000016",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000017",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000017/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000017/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000017",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000018",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000018/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000018/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/subcommands/000018",
+      "passed": true
+    },
+    {
+      "label": "originalcommandcount reader-generate",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-generate/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "originalcommandcount reader-check",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-check/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "originalcommandcount reader-unit",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000001/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000001/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000001",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000002/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000002/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000002",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000003/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000003/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000003",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000004/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000004/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000004",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000005/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000005/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000005",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000006/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000006/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000006",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000007/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000007/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000007",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000008/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000008/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000008",
+      "passed": true
+    },
+    {
+      "label": "originalmetadata /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000009/stdout",
+      "passed": true
+    },
+    {
+      "label": "fullstream /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000009/stderr",
+      "passed": true
+    },
+    {
+      "label": "stdin /workspace/train337-L-readers-and-rc-7af8c5d8/reader-unit/subcommands/000009",
+      "passed": true
+    },
+    {
+      "label": "readertrueoriginal0 reader-generate",
+      "passed": true
+    },
+    {
+      "label": "readerexactargv reader-generate",
+      "passed": true
+    },
+    {
+      "label": "readercleanbeforeafter reader-generate",
+      "passed": true
+    },
+    {
+      "label": "readertrueoriginal0 reader-check",
+      "passed": true
+    },
+    {
+      "label": "readerexactargv reader-check",
+      "passed": true
+    },
+    {
+      "label": "readercleanbeforeafter reader-check",
+      "passed": true
+    },
+    {
+      "label": "readertrueoriginal0 reader-unit",
+      "passed": true
+    },
+    {
+      "label": "readerexactargv reader-unit",
+      "passed": true
+    },
+    {
+      "label": "readercleanbeforeafter reader-unit",
+      "passed": true
+    },
+    {
+      "label": "originalunit51notregistrycount",
+      "passed": true
+    },
+    {
+      "label": "RC original0/1/0 builder-whole-face",
+      "passed": true
+    },
+    {
+      "label": "RC onebindingoutcome builder-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC exactnormaloutcome builder-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC originalGitguards builder-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC fiveoriginalGitinputs builder-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC allphasesidenticalfiveinputs builder-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC exactsourcevariant builder-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC unchangedmethodsixassertsites builder-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC onebindingoutcome builder-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC exactnormaloutcome builder-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC assertkillnotcrash builder-whole-face",
+      "passed": true
+    },
+    {
+      "label": "RC originalGitguards builder-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC fiveoriginalGitinputs builder-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC allphasesidenticalfiveinputs builder-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC exactsourcevariant builder-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC unchangedmethodsixassertsites builder-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC onebindingoutcome builder-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC exactnormaloutcome builder-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC originalGitguards builder-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC fiveoriginalGitinputs builder-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC allphasesidenticalfiveinputs builder-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC exactsourcevariant builder-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC unchangedmethodsixassertsites builder-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC original0/1/0 checker-whole-face",
+      "passed": true
+    },
+    {
+      "label": "RC onebindingoutcome checker-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC exactnormaloutcome checker-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC originalGitguards checker-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC fiveoriginalGitinputs checker-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC allphasesidenticalfiveinputs checker-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC exactsourcevariant checker-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC unchangedmethodsixassertsites checker-whole-facebaseline",
+      "passed": true
+    },
+    {
+      "label": "RC onebindingoutcome checker-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC exactnormaloutcome checker-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC assertkillnotcrash checker-whole-face",
+      "passed": true
+    },
+    {
+      "label": "RC originalGitguards checker-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC fiveoriginalGitinputs checker-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC allphasesidenticalfiveinputs checker-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC exactsourcevariant checker-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC unchangedmethodsixassertsites checker-whole-facewithdrawn",
+      "passed": true
+    },
+    {
+      "label": "RC onebindingoutcome checker-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC exactnormaloutcome checker-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC originalGitguards checker-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC fiveoriginalGitinputs checker-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC allphasesidenticalfiveinputs checker-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC exactsourcevariant checker-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "RC unchangedmethodsixassertsites checker-whole-facerestored",
+      "passed": true
+    },
+    {
+      "label": "packagefixedindexhash",
+      "passed": true
+    },
+    {
+      "label": "packagefixedarchivehash",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/REQUEST.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/REQUEST.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/RESULT.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/RESULT.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/builder-whole-face/baseline-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/builder-whole-face/baseline-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/builder-whole-face/framing_oracle.py",
+      "passed": true
+    },
+    {
+      "label": "archive original original/builder-whole-face/framing_oracle.py",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/builder-whole-face/restored-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/builder-whole-face/restored-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/builder-whole-face/withdrawn-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/builder-whole-face/withdrawn-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/checker-whole-face/baseline-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/checker-whole-face/baseline-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/checker-whole-face/framing_oracle.py",
+      "passed": true
+    },
+    {
+      "label": "archive original original/checker-whole-face/framing_oracle.py",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/checker-whole-face/restored-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/checker-whole-face/restored-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/checker-whole-face/withdrawn-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/checker-whole-face/withdrawn-reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-check/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-check/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-generate/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-generate/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/reaper.jsonl",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/receipt.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/reader-unit/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/reader-unit/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000013/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000013/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000013/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000013/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000013/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000014/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000014/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000014/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000014/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000014/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000015/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000015/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000015/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000015/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000015/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000016/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000016/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000016/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000016/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000016/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000017/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000017/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000017/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000017/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000017/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000017/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000017/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000017/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000017/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000017/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000018/request.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000018/request.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000018/result.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000018/result.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000018/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000018/stderr.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000018/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000018/stdin.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands/000018/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands/000018/stdout.bin",
+      "passed": true
+    },
+    {
+      "label": "safe regular original/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "archive original original/subcommands.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular tools/launch_L_readers_and_rc.py",
+      "passed": true
+    },
+    {
+      "label": "archive original tools/launch_L_readers_and_rc.py",
+      "passed": true
+    },
+    {
+      "label": "safe regular tools/run_stage.py",
+      "passed": true
+    },
+    {
+      "label": "archive original tools/run_stage.py",
+      "passed": true
+    },
+    {
+      "label": "safe regular tools/native_with_compile_log_retention.py",
+      "passed": true
+    },
+    {
+      "label": "archive original tools/native_with_compile_log_retention.py",
+      "passed": true
+    },
+    {
+      "label": "safe regular tools/run_original_rc_method.py",
+      "passed": true
+    },
+    {
+      "label": "archive original tools/run_original_rc_method.py",
+      "passed": true
+    },
+    {
+      "label": "safe regular tools/RC_PROOF_REQUEST_TEMPLATE.json",
+      "passed": true
+    },
+    {
+      "label": "archive original tools/RC_PROOF_REQUEST_TEMPLATE.json",
+      "passed": true
+    },
+    {
+      "label": "safe regular tools/capture.py",
+      "passed": true
+    },
+    {
+      "label": "archive original tools/capture.py",
+      "passed": true
+    },
+    {
+      "label": "safe regular tools/reap_children.py",
+      "passed": true
+    },
+    {
+      "label": "archive original tools/reap_children.py",
+      "passed": true
+    },
+    {
+      "label": "safe regular SCOPE.json",
+      "passed": true
+    },
+    {
+      "label": "archive original SCOPE.json",
+      "passed": true
+    },
+    {
+      "label": "packageexact253members",
+      "passed": true
+    },
+    {
+      "label": "package2377837originalbytes",
+      "passed": true
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "Hostsession84069 exit0 was tool-API observed only; no separate outermostOS pipes invented. All original stage/RC c387 and subreaper streams preserved.",
+    "Sixassertsites belong to one original unittest method; a withdrawn failure can stop at its first assertion, not a claim all six assertions executed in that red phase.",
+    "Original ROOT has been released and may later advance; this peer uses fixed historical Gitshow payloads/guard captures only.",
+    "Package roundtrip is filesystem archive validation, not future Gitpublication review."
+  ],
+  "exitCode": 0,
+  "rawIndexSHA256": "124eb49d4116199ab5766ff57e872b9cf273f4d0903cf08f3831337e74b4dee3"
+}

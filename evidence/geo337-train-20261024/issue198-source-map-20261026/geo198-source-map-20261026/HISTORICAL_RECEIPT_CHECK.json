@@ -1,0 +1,194 @@
+{
+  "exit_code": 0,
+  "scope": "verify existing historical bytes only; no product or test execution",
+  "f13_source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "f13_original_step": {
+    "command": [
+      "bash",
+      "-e",
+      "/tmp/g288s7/workflow/native/steps/01.executed.sh"
+    ],
+    "cwd": "/tmp/g288f-13d02c1d",
+    "started": "2026-10-23T05:25:13.977185+00:00",
+    "stdout": "/tmp/g288s7/workflow/native/steps/01.stdout",
+    "stderr": "/tmp/g288s7/workflow/native/steps/01.stderr",
+    "combined": "/tmp/g288s7/workflow/native/steps/01.combined.log",
+    "timeout_seconds": 6299.893453557001,
+    "ended": "2026-10-23T05:53:17.903919+00:00",
+    "seconds": 1683.9267737960035,
+    "actual_process_returncode": 0,
+    "exit_code": 0,
+    "watchdog_expired": false,
+    "owned_process_group_cleanup": false
+  },
+  "selected_members": [
+    {
+      "archive_path": "job/run_all-logs/c_integrity.log",
+      "saved_path": "f13-selected-originals/run_all-logs__c_integrity.log",
+      "bytes": 5857,
+      "sha256": "de71669e13286944b645688bf0af37f4d1cda3a0d057368daaa57b238be5d286",
+      "receipt_hash_matches": true
+    },
+    {
+      "archive_path": "job/run_all-logs/core_run_tests.log",
+      "saved_path": "f13-selected-originals/run_all-logs__core_run_tests.log",
+      "bytes": 25003,
+      "sha256": "a85b46b8587169ceb4ea144f4496326903c0ab78b8b7473ef57a50de7d0b6f8b",
+      "receipt_hash_matches": true
+    },
+    {
+      "archive_path": "job/run_all-logs/py_test_reference_contract.json",
+      "saved_path": "f13-selected-originals/run_all-logs__py_test_reference_contract.json",
+      "bytes": 353,
+      "sha256": "44076f44b524233c9f60534018f839037df2ea3b5fa3c4f0cb2a134d413de4f0",
+      "receipt_hash_matches": true
+    },
+    {
+      "archive_path": "job/run_all-logs/py_test_reference_contract.unittest.log",
+      "saved_path": "f13-selected-originals/run_all-logs__py_test_reference_contract.unittest.log",
+      "bytes": 151,
+      "sha256": "beebde23cc01f420667c48026f7c6869c2ef0af192aa823da76f5943180f9990",
+      "receipt_hash_matches": true
+    },
+    {
+      "archive_path": "job/steps/01.stdout",
+      "saved_path": "f13-selected-originals/steps__01.stdout",
+      "bytes": 36794,
+      "sha256": "247299ed5c4a2e40962b44c826e45b1ea908b570bbe7df07510d70e93062c0b0",
+      "receipt_hash_matches": true
+    }
+  ],
+  "reference_contract_result": {
+    "file": "tests/test_reference_contract.py",
+    "total": 51,
+    "run": 51,
+    "passed": 51,
+    "failed": 0,
+    "skipped": 0,
+    "explicit_skipped": 0,
+    "unrun_skipped": 0,
+    "blocked_by_error": 0,
+    "expected_failed": 0,
+    "expected_failures": [],
+    "failures": [],
+    "skip_reasons": {},
+    "skip_items": [],
+    "import_error": null,
+    "extra_errors": 0,
+    "seconds": 20.5
+  },
+  "native_log_first_line": "432/432 integrity checks passed (World=4759448 bytes)",
+  "aggregate_relevant_lines": [
+    "[1/224] c:integrity …",
+    "[2/224] core:run_tests …",
+    "[168/224] py:test_reference_contract …",
+    "c:integrity                                        432   432     0     0     6.6  C 檢查點數（非 test 級）",
+    "core:run_tests                                     165   165     0     0    13.8",
+    "py:test_reference_contract                          51    51     0     0    20.6"
+  ],
+  "historical_withdrawal_exit_matrix": {
+    "removed": {
+      "native": 1,
+      "bridge": 1,
+      "scenes": 1
+    },
+    "restored": {
+      "native": 0,
+      "bridge": 0,
+      "scenes": 0
+    }
+  },
+  "historical_probes": {
+    "before": {
+      "identity": {
+        "head": "d44d784a7fcf06103ae2c5a5d9321549611a3007",
+        "tree": "2e2b030b049b1ed4fa474b665e5ffd3c503ff702",
+        "source_sha256": "9e2ae4fb4f133c5df604ddf3a30962f3c84da8fe5f8ba77b3b4145a78fe35f89",
+        "core_sha256": "a31ec58185ff29a50bb86581afc2a4a98f827febf2765a1ab872843a813dc77d",
+        "bridge_sha256": "60e8d4d9d5138b80848bb2949aeb4d36005e90fab55b8c0c49f5cd0cd44f8248",
+        "platform": "linux",
+        "note": "Source and test edits may be uncommitted; hashes and raw inputs bind this run."
+      },
+      "A_query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "hole",
+            "rect": [
+              30,
+              50,
+              70,
+              80
+            ]
+          }
+        ]
+      },
+      "A_apply": {
+        "ok": false,
+        "error": "line 3: 套用投影後有物件失效（輪廓退化/空間成員衝突）"
+      },
+      "A_dump_unchanged": true,
+      "B_query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": []
+      },
+      "B_apply": {
+        "ok": false,
+        "error": "line 3: apply-proj 的項目在此面上不存在（整筆拒絕）"
+      }
+    },
+    "after": {
+      "identity": {
+        "head": "bd5715c318ed17a4f9ff4f9263d3dc9ccb75bcbb",
+        "tree": "6ae49e67a4cd4f200303a6f132435d62d5caa545",
+        "source_sha256": "d22fb66df8fa785c82c078f8fd294d97bc0a095e525bc9a0134c2f8dc28e4ddd",
+        "core_sha256": "0fd0dadbed31727a66b0bffee124789bbc85ae19d0b758663cfd939c2f2b94c0",
+        "bridge_sha256": "a9b1082bf9eb011b25d3d16fb8257976a6e76f94189a60cd5f448394aacc934d",
+        "platform": "linux",
+        "note": "Source and test edits may be uncommitted; hashes and raw inputs bind this run."
+      },
+      "A_query": {
+        "ok": false,
+        "error": "R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "A_apply": {
+        "ok": false,
+        "error": "line 3: R7: 投影接觸非單一矩形或僅相切（退化，不猜）"
+      },
+      "A_dump_unchanged": true,
+      "B_query": {
+        "ok": true,
+        "face": 1,
+        "kind": "plan",
+        "items": [
+          {
+            "id": 1,
+            "type": "column",
+            "cls": "split",
+            "rect": [
+              40,
+              70,
+              60,
+              80
+            ]
+          }
+        ]
+      },
+      "B_apply": {
+        "ok": true
+      }
+    }
+  },
+  "limitations": [
+    "F13 is historical source, not current main or root candidate F.",
+    "probe head fields alone do not prove clean checkout; their own identity note allows uncommitted edits.",
+    "new selected-member recovery proves exactly five hashes, not every archive member or whole test closure.",
+    "PR291 seven-job evidence remains an API body report; its D: original certificate was not read here."
+  ]
+}

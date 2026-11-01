@@ -1,0 +1,48 @@
+{
+  "scope": "Root-only adoption inputs; this file performs no commit, push, or source modification",
+  "actual_execution_source": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "required_adoption_parent": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "original_source_out": "/tmp/geo337-e321-architecture-four-20261024",
+  "outer_source_out": "/tmp/geo337-e321-architecture-four-launch-20261024",
+  "preparation_and_completion": "/tmp/geo337-e321-architecture-preparation-20261024",
+  "original_result_sha256": "a683fd4215d6bc08155f7506f0ec35c5568a0466b651ce4a16a177b0efc33951",
+  "four_outputs": {
+    "product-architecture.json": {
+      "bytes": 221953,
+      "rawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+      "lfSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
+    },
+    "product-architecture-scan.json": {
+      "bytes": 132559,
+      "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "bytes": 1445,
+      "rawSha256": "28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac",
+      "lfSha256": "28f365862a3a66c43b59b13939f32d0288f8d16caf7aa01778bc09067a6b94ac"
+    },
+    "product-architecture-receipt.json": {
+      "bytes": 131983,
+      "rawSha256": "80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765",
+      "lfSha256": "80b2b52deec27b5194a3773c5fc1926f8c6f288b4db6a39576afb27c77884765"
+    }
+  },
+  "expected_changed_non_evidence_paths": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json"
+  ],
+  "must_remain_byte_equal": [
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-core/domain-decoupling/product-architecture-scan.json"
+  ],
+  "input_closure_sha256": "6ce0a6e52281613d069826a689b7a67d1268c5730932b43f88b35e66d29b9bf7",
+  "peer_status": "WAITING independent actual reviewer; root to require final pinned peer before adoption",
+  "binding_after_adoption": "Bind R7 only to root actual public adoption SHA, never relabel M execution as F7",
+  "r7_tools": "/tmp/geo323-final-r7-stage-tools-20261024",
+  "r7_final_pins_sha256": "d3b42b86b723a75e44fe6ad6f14d1c365b76c980f7a185fa79d2fcb6ee474759",
+  "r7_required_ancestor": "1449d430d1c4734bb1bc3a9f91f3851c845cc0f3",
+  "r7_source_unbound": true,
+  "ledger_regenerated": false,
+  "next_formal_ledger_check": "After root adoption, original tracked mutate.py --check with MUTATE_* absent; driver completion is distinct from check exit."
+}

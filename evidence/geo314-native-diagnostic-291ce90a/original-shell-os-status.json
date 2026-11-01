@@ -1,0 +1,13 @@
+{
+  "schema": "geo314-original-shell-os-status-supplement/1",
+  "captured_at": "2026-10-23T00:07:51.106048+00:00",
+  "pid": 571656,
+  "state_field3": "Z",
+  "linux_proc_stat_field52_wait_status": 0,
+  "decoded_shell_exit_code": 0,
+  "raw_sha256": "cd2d21ceb6e5dd9704a1e2722a8610ddae03b6c0bfe17591ff3601e2aec31848",
+  "scope": "OS status of the original outer shell, not the native run_all judge or recovered tool-session return object",
+  "original_run_all_exit_code": 1,
+  "tool_terminal_return_object": "unavailable: execution session registry cleared at environment interface switch",
+  "classification": "native diagnostic failed; shell OS zero does not turn native inner1 green"
+}

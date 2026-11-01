@@ -1,0 +1,28 @@
+{
+  "scope": "Correction to prior small terminal metadata review: original driver has eight stages, not seven; actual current receipt records only the first five.",
+  "checks": 14,
+  "exit_code": 0,
+  "findings": [],
+  "original_summary_sha256": "a1c97a1309cf38aea995dab79929e2ea500606d640e0f91bf5ebbc06cde48d63",
+  "corrected_summary_sha256": "cc1a5ed2d2b0d4513f5e1f2c836f3029e477c3f1b508c1713a1b0839ff9d6588",
+  "original_driver_sha256": "d4a38b7b60ac698eba4a274c5d26c83684cd1c665b8399f5e47546befae1f70e",
+  "original_driver_STAGES": [
+    "prepare",
+    "build",
+    "compare",
+    "perf",
+    "profile",
+    "required-eight",
+    "pf3",
+    "native"
+  ],
+  "previous_peer": {
+    "path": "/workspace/train337-canvas-peer-resume/U_FIVE_STAGE_TERMINAL_METADATA_PEER.json",
+    "sha256": "a22c1e5c0ce1f4a3fc6fcd4c0ecf4eec307cf2643861b613c6b30aaa87132627"
+  },
+  "explicit_correction": "Prior1728/0 independently verified the original numeric/command/source data, but its limitation repeated incorrect audit/mutations UNRUN stage names. Replace only that classification with required-eight/pf3/native. Prior report/helper and original summary are retained without rewriting.",
+  "changes_not_made": [
+    "No receipt, original command, threshold, result, source or payload changed.",
+    "No product rerun or new pass claimed."
+  ]
+}

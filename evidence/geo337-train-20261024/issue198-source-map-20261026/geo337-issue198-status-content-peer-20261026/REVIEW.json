@@ -1,0 +1,148 @@
+{
+  "schema": "issue198-new-status-content-independent-peer/1",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "reviewed_utc": "2026-10-26T12:09:17.209431+00:00",
+  "files": {
+    "/tmp/geo337-new-issue198-delivery-20261026/BLOCKERS.md": {
+      "sha256": "22d7bff62a31a48707f9215e492bd98be501d8b76681ad7bbbd477fc0fb79998",
+      "bytes": 4847
+    },
+    "/tmp/geo337-new-issue198-delivery-20261026/PROGRESS.md": {
+      "sha256": "01a4488be3e21fe9f1da25cbf96fad23092a821ad069ab5106df562d9ca60277",
+      "bytes": 7213
+    }
+  },
+  "resource_observation": {
+    "path": "/tmp/geo337-final-resource-state-20261026.json",
+    "sha256": "f49f37a856627d0acb60dfe0356d303425b604aa3a43d5e98164c77dd87db2c3",
+    "observed_utc": "2026-10-26T11:29:02.125874+00:00",
+    "fresh_observation_performed": false
+  },
+  "identities": {
+    "F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "E3": "d803910822803a020a57a7568c62325a076239f0",
+    "D": "990440297d851dccbc077cdf59fe654fdbd9ffd8",
+    "H": "023c35e40fd2f4f1c108cdbb7cfc4506c0b0a7df",
+    "A": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77"
+  },
+  "checks": [
+    {
+      "name": "fixed_resource_observation_time",
+      "passed": true,
+      "basis": "Z and +00:00 denote the same existing observation; no fresh resource inspection performed."
+    },
+    {
+      "name": "all_exact_resource_values",
+      "passed": true,
+      "basis": "Every quoted BLOCKERS byte value matches the supplied observation."
+    },
+    {
+      "name": "native_true_tmp_deficit",
+      "passed": true,
+      "basis": "134217728-15925248=118292480; even gross107233280 recovery leaves11059200."
+    },
+    {
+      "name": "browser_original_planning_deficit",
+      "passed": true,
+      "basis": "2147483648-2031005696=116477952; 436207616-116477952=319729664, plus unknown D."
+    },
+    {
+      "name": "units_exact",
+      "passed": true,
+      "basis": "128MiB native floor,416MiB browser floor and2GiB original shared ceiling preserved."
+    },
+    {
+      "name": "actual_mount_vs_plan_distinguished",
+      "passed": true,
+      "basis": "True native output mount, shared browser budget, actual SHM free and unmaterialized D are separated; no six-job simultaneous requirement invented."
+    },
+    {
+      "name": "historical_capacity_not_current_admission",
+      "passed": true,
+      "basis": "Numbers remain dated observations and conservative planning deficits; fresh admission is still required."
+    },
+    {
+      "name": "cleanup_rejection_preserved",
+      "passed": true,
+      "basis": "Rejected retirement remains unexecuted; no replacement deletion or approval is implied."
+    },
+    {
+      "name": "retirement_scope_arithmetic",
+      "passed": true,
+      "basis": "3156 leaves and108 directories are distinguished; gross allocation is not guaranteed free space."
+    },
+    {
+      "name": "identity_F",
+      "passed": true,
+      "basis": "Exact current-state identity retained in both new documents."
+    },
+    {
+      "name": "identity_E3",
+      "passed": true,
+      "basis": "Exact current-state identity retained in both new documents."
+    },
+    {
+      "name": "identity_D",
+      "passed": true,
+      "basis": "Exact current-state identity retained in both new documents."
+    },
+    {
+      "name": "identity_H",
+      "passed": true,
+      "basis": "Exact current-state identity retained in both new documents."
+    },
+    {
+      "name": "identity_A",
+      "passed": true,
+      "basis": "Exact current-state identity retained in both new documents."
+    },
+    {
+      "name": "E3_reference_matches_delivered_body",
+      "passed": true,
+      "basis": "E3 naming is consistent with the already-delivered D text; no prior E3 package re-audit was performed."
+    },
+    {
+      "name": "PR_application_explicitly_pending",
+      "passed": true,
+      "basis": "Initial ambiguous opening was corrected; branch/body request delivery is not existing PR application."
+    },
+    {
+      "name": "product_not_all_green",
+      "passed": true,
+      "basis": "Only the four actual F light gates are green; native/browser/special gates remain explicit unrun or unresolved."
+    },
+    {
+      "name": "source_execution_identities_not_relabelled",
+      "passed": true,
+      "basis": "Historical ledger/architecture and current F executions remain separate; M20 is not relabelled killed and source selection limits remain explicit."
+    },
+    {
+      "name": "comparator_approval_boundary",
+      "passed": true,
+      "basis": "No new comparison exception, relaxed threshold or inferred semantic approval."
+    },
+    {
+      "name": "management_actions_not_claimed",
+      "passed": true,
+      "basis": "Unverified management capability/actions are not reported as executed."
+    },
+    {
+      "name": "issue198_scope_not_overstated",
+      "passed": true,
+      "basis": "Issue198 source map remains separately reviewed closure candidate only, not current product acceptance or closed issue."
+    }
+  ],
+  "check_count": 21,
+  "closed_finding": {
+    "location": "PROGRESS opening paragraph",
+    "initial_ambiguity": "正文經對應 prbody 與既有交接 request 更新 could read as completed PR application.",
+    "resolution": "Root changed new unpublished text to explicit prbody delivery + queued request + application unverified; published previous draft untouched."
+  },
+  "scope_limits": [
+    "Content-only review of these two newly created documents against the fixed11:29 observation and already-known identity evidence.",
+    "No capacity scan, Git/API, deletion, product test, replay, performance sample or old receipt re-audit performed.",
+    "Issue198 source-map technical correctness is assigned to a separate peer; this report only checks the new status claims and boundaries.",
+    "No publication or PR application is performed or certified by this content review."
+  ]
+}

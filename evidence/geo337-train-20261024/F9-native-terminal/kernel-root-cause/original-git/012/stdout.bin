@@ -1,0 +1,11 @@
+commit f61413ba785b67d2f455e4977e8b8da06050d654
+Author:     Chih-Chi Yang <b10102230@gmail.com>
+AuthorDate: Fri Oct 23 07:01:32 2026 +0000
+Commit:     Chih-Chi Yang <b10102230@gmail.com>
+CommitDate: Fri Oct 23 07:01:32 2026 +0000
+
+    Preserve ordered stagger checks when references are rebound
+
+ geometry-templates/woodworking/native/grid_application.c | 10 ++++++++--
+ tests/test_geo314_stagger_commit.py                      | 12 ++++++++++++
+ 2 files changed, 20 insertions(+), 2 deletions(-)

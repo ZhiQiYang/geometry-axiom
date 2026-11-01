@@ -1,0 +1,7 @@
+{
+  "actual_exit": 1,
+  "kind": "reviewer assumption",
+  "assertion": "len(push)==len(remote)==1",
+  "observed": "publisher correctly captured two before-push remote reads and one after-push remote read; expected B/B/E",
+  "producer_or_originals_changed": false
+}

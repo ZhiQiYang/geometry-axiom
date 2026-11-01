@@ -1,0 +1,75 @@
+{
+  "schema": "independent-original-performance-package-peer-v1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate": "p52",
+  "checks": 13496,
+  "exit_code": 0,
+  "findings": [],
+  "archive_sha256": "68af29e8b306afab056156f4b883a000c605e942de9f2c72486abdd7d917a641",
+  "archive_members": 3150,
+  "original_bytes": 73465647,
+  "original_driver_exit": 0,
+  "original_outer_exit": 0,
+  "capture_records": 83,
+  "excluded_retained_elf_count": 6,
+  "metadata_only_chrome_ipc_count": 45,
+  "no_subject_executed": true,
+  "limitations": [
+    "This peer verifies original evidence; exit 0 here does not override any original product red.",
+    "Only historical source guards were read; no current shared ROOT/cache inspection or modification.",
+    "Excluded executable payloads remain at original paths with complete hashes; no deletion."
+  ],
+  "product_passed": true,
+  "formal_exit": 0,
+  "original_verifier_exit": 0,
+  "timing_medians_ms": {
+    "main": 218.2650215,
+    "fix": 176.21824199999998
+  },
+  "fix_main_ratio": 0.8073590573008969,
+  "samples_per_side": 16,
+  "controls": [
+    {
+      "mode": "normal",
+      "exit": 0,
+      "expected_behavior_proved": true
+    },
+    {
+      "mode": "delay",
+      "exit": 0,
+      "expected_behavior_proved": true
+    },
+    {
+      "mode": "revert-delay",
+      "exit": 1,
+      "expected_behavior_proved": true
+    },
+    {
+      "mode": "wrong",
+      "exit": 1,
+      "expected_behavior_proved": true
+    },
+    {
+      "mode": "missing",
+      "exit": 1,
+      "expected_behavior_proved": true
+    }
+  ],
+  "actual_node_exits": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1
+  ],
+  "historical_collection_failures": [
+    1,
+    1
+  ],
+  "post_capture_annotation_rows": 65,
+  "projection_note": "Verifier legacy projections are derived from original c387 rows/streams and labelled derived; original complete streams independently archived. Exact Chrome IPC symlinks/sockets are lstat/readlink metadata only, never dereferenced."
+}

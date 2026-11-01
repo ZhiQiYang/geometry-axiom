@@ -1,0 +1,50 @@
+{
+  "schema": "geo337-S10-source-package-actual-review/1",
+  "utc": "2026-10-26T09:20:45.451135+00:00",
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "exit_code": 0,
+  "checks": 15410,
+  "blocking_findings": [],
+  "original_collection_exit": 0,
+  "original_source_preparation_exit": 0,
+  "original_preledger_gate_exits": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "original_source_git_commands": 342,
+  "original_preledger_commands": 12,
+  "archived_members": 1214,
+  "archived_logical_bytes": 23510881,
+  "archive_bytes": 4072619,
+  "archive_sha256": "b23b3662c4f35d59c047ad138e5e843ec1ac79bcb2fde2b9062d5fc521ac8305",
+  "full_gzip_crc_verified": true,
+  "all_members_original_bytes_reverified": true,
+  "accepted_source_peer_checks": 18498,
+  "accepted_preledger_peer_checks": 198,
+  "accepted_oracle_peers_rerun": false,
+  "active_source_cache_read": false,
+  "formal_product_tests_rerun": false,
+  "git_commands_executed": false,
+  "package_modified": false,
+  "publication_performed": false,
+  "collection_started_utc": "2026-10-26T09:16:11.237545+00:00",
+  "collection_ended_utc": "2026-10-26T09:16:12.002968+00:00",
+  "script_sha256": "e00281922387df14b3a297c62cb9fc525cd19aad3ceb93dd39a89285cb18f184",
+  "limits": [
+    "Package integrity review only; the accepted source/oracle peer predicates were not reexecuted.",
+    "The original stale ledger exit1 remains a preledger failure; packaging exit0 does not change it.",
+    "Current archive storage is volatile and is not delivered until ordinary push and complete remote verification.",
+    "Source/execution identity remains S10; no later head relabelling."
+  ],
+  "reader_correction": {
+    "initial_actual_exit": 1,
+    "initial_reader_sha256": "2c671d7b767ba3c411732c4a2af28efbf60d28a734785f1792e0f07e88b260df",
+    "failure_record": "INITIAL_FAILURE.json",
+    "cause": "Host tool result is nested under actual_tool_result, with status FINISHED; initial reader incorrectly used a top-level exit_code.",
+    "scope": "Only host schema reader corrected; original assertions, payloads and execution results unchanged."
+  }
+}

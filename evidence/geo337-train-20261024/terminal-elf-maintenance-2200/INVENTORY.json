@@ -1,0 +1,289 @@
+{
+  "created": "2026-10-23T22:03:36.211147+00:00",
+  "source_context": "125c4d8a3f12ab292b15d7c2652d3dcdae521832",
+  "purpose": "Original exact-retirement receipts for 76 old4f and 54 historical browser runtime rebuildable ELF caches. No ELF payload claimed archived; source, build recipes, sidecars, original test receipts and fixtures retained. Prior test state remains historical, not relabelled.",
+  "files": [
+    {
+      "path": "/tmp/baseline-runtime-54-executor-peer/CHECKS.json",
+      "member": "tmp/baseline-runtime-54-executor-peer/CHECKS.json",
+      "bytes": 1720,
+      "sha256": "d3eca3b1cc6c2917e8d1a6243d287fa744422cc6f771f3214b0ef3d46c2d15ee"
+    },
+    {
+      "path": "/tmp/train337-adversarial/BASELINE_RUNTIME_54_ELF_ACTUAL_PEER.json",
+      "member": "tmp/train337-adversarial/BASELINE_RUNTIME_54_ELF_ACTUAL_PEER.json",
+      "bytes": 1116,
+      "sha256": "2fc3c1a0c54e0a492a98b8214c0dd9a7cb04db960fc8e26ac7fa5817eabecb21"
+    },
+    {
+      "path": "/tmp/train337-adversarial/BASELINE_RUNTIME_54_ELF_SCOPE_PEER.json",
+      "member": "tmp/train337-adversarial/BASELINE_RUNTIME_54_ELF_SCOPE_PEER.json",
+      "bytes": 1074,
+      "sha256": "08643a2bd0ca83bb7996454072979e8a828cfd77a14e7bec370064d17fcb63b2"
+    },
+    {
+      "path": "/tmp/train337-adversarial/OLD4F_76_ELF_CACHE_ACTUAL_PEER.json",
+      "member": "tmp/train337-adversarial/OLD4F_76_ELF_CACHE_ACTUAL_PEER.json",
+      "bytes": 1060,
+      "sha256": "4c6301ca4a51bd2a7bb055b8d27ce699183a7de621690a4412e7bcc6f8180ff8"
+    },
+    {
+      "path": "/tmp/train337-adversarial/OLD4F_76_ELF_CACHE_EXECUTOR_PEER.json",
+      "member": "tmp/train337-adversarial/OLD4F_76_ELF_CACHE_EXECUTOR_PEER.json",
+      "bytes": 1496,
+      "sha256": "753c7cf8cd7b7916795eb99fbeef16d7bcdb4dd43c00bc2ff1daa88bfdb9ff25"
+    },
+    {
+      "path": "/tmp/train337-old4f-elf-cache-prep/ALLOWLIST.json",
+      "member": "tmp/train337-old4f-elf-cache-prep/ALLOWLIST.json",
+      "bytes": 202789,
+      "sha256": "aa94cbfa624b006f69d416c75627cd4205a50736798f7c1bdf8ccd4939251a9d"
+    },
+    {
+      "path": "/tmp/train337-old4f-elf-cache-prep/README.md",
+      "member": "tmp/train337-old4f-elf-cache-prep/README.md",
+      "bytes": 1322,
+      "sha256": "6baa9406313164efcfc53b8029bf1414becac7c38ce789b73dfa27f6884bf8e3"
+    },
+    {
+      "path": "/tmp/train337-old4f-elf-cache-prep/RETIREMENT.json",
+      "member": "tmp/train337-old4f-elf-cache-prep/RETIREMENT.json",
+      "bytes": 21150,
+      "sha256": "ebc6d0e51778da1fae1ed245c9625373b0722c5e1676cb4dc2246d2e20093dba"
+    },
+    {
+      "path": "/tmp/train337-old4f-elf-cache-prep/prepare_inventory.py",
+      "member": "tmp/train337-old4f-elf-cache-prep/prepare_inventory.py",
+      "bytes": 6485,
+      "sha256": "ef8ef30c2ace8fabe2748286d53c11b0963d28d861097d36365e5eba7b6edaff"
+    },
+    {
+      "path": "/tmp/train337-old4f-elf-cache-prep/unlink_exact_old_elf_cache.py",
+      "member": "tmp/train337-old4f-elf-cache-prep/unlink_exact_old_elf_cache.py",
+      "bytes": 5402,
+      "sha256": "151c5b1116e49cf62c569cae930811cbcb33ceffdffec8c33a831634f7c3fce6"
+    },
+    {
+      "path": "/workspace/clear_terminal_baseline_runtime_elfs.py",
+      "member": "workspace/clear_terminal_baseline_runtime_elfs.py",
+      "bytes": 6914,
+      "sha256": "df571547c732fc47a16a10cebbdc113f351ec8dca1d5bb51070e75b9f5d90821"
+    },
+    {
+      "path": "/workspace/clear_terminal_chrome_caches.py",
+      "member": "workspace/clear_terminal_chrome_caches.py",
+      "bytes": 6666,
+      "sha256": "c51b4da96fc8ce88043484d3072a870fd725a18b00e6288e12144c399069e847"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/BUILDER_COMMANDS.json",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/BUILDER_COMMANDS.json",
+      "bytes": 2700,
+      "sha256": "38e57e9e21469a85deff1c0a2530fda25bcd31e9eb155a3439067db511632983"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/CONSUMER_OBSERVATION.json",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/CONSUMER_OBSERVATION.json",
+      "bytes": 134870,
+      "sha256": "a9d19cfc6a0bfa6923cfd3fac31645776da4b94734d56685b56d25c717646844"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/PLAN.json",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/PLAN.json",
+      "bytes": 111484,
+      "sha256": "542d8a44b8c8658a7fdb0ffdd1748b2f17a70aaa7af81edc8561a875e02a5e4e"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-00.stderr.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-00.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-00.stdout.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-00.stdout.bin",
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-01.stderr.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-01.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-01.stdout.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-01.stdout.bin",
+      "bytes": 7031,
+      "sha256": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-02.stderr.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-02.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-02.stdout.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-02.stdout.bin",
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-03.stderr.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-03.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-03.stdout.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-03.stdout.bin",
+      "bytes": 7031,
+      "sha256": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-04.stderr.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-04.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-04.stdout.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-04.stdout.bin",
+      "bytes": 33058,
+      "sha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-05.stderr.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-05.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-05.stdout.bin",
+      "member": "workspace/cold-build-cache-readonly-20261023/baseline-runtime-54-plan/git-05.stdout.bin",
+      "bytes": 7031,
+      "sha256": "31137d9635da7c62d34a72d1f4cadcf60e2240f33aff418ddba28bea55c5ce29"
+    },
+    {
+      "path": "/workspace/launch_old4f_elf_retirement.py",
+      "member": "workspace/launch_old4f_elf_retirement.py",
+      "bytes": 1760,
+      "sha256": "9d4690c0a75b416a639cadd2ca4bbf22f20ef5fdf598b161337f2a5719b85e41"
+    },
+    {
+      "path": "/workspace/launch_terminal_runtime_retirement.py",
+      "member": "workspace/launch_terminal_runtime_retirement.py",
+      "bytes": 1681,
+      "sha256": "d8e84bdb925a34e85cac9ab750a342462ef69941b5b2217ea403497faa48c510"
+    },
+    {
+      "path": "/workspace/old4f-elf-retirement-launch-20261023/launch-context.json",
+      "member": "workspace/old4f-elf-retirement-launch-20261023/launch-context.json",
+      "bytes": 412,
+      "sha256": "9e49702d95809f59c6a3134f190ff2f038b560d8a73e85d827fc156c865bbe23"
+    },
+    {
+      "path": "/workspace/old4f-elf-retirement-launch-20261023/receipt.json",
+      "member": "workspace/old4f-elf-retirement-launch-20261023/receipt.json",
+      "bytes": 2141,
+      "sha256": "7102a6f80465a2a8ba8981419512c2df54bdb28572e2f6ef984bf2354af31680"
+    },
+    {
+      "path": "/workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/request.json",
+      "member": "workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/request.json",
+      "bytes": 1622,
+      "sha256": "46af6829ca9570e68dc699221b0018891c3d5b9591ced3344d0104acf2833ba1"
+    },
+    {
+      "path": "/workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/result.json",
+      "member": "workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/result.json",
+      "bytes": 1873,
+      "sha256": "235cd125f53d40bdd34ae72e64163fa080e529474bd59bdf1ebc8c8c3f7a228d"
+    },
+    {
+      "path": "/workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/stderr.bin",
+      "member": "workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/stdin.bin",
+      "member": "workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/stdout.bin",
+      "member": "workspace/old4f-elf-retirement-launch-20261023/subcommands/000001/stdout.bin",
+      "bytes": 85,
+      "sha256": "6db8f5af9ccbf3b27f28f2f64a7e38e6d41178df765051e4f98586763f0217e2"
+    },
+    {
+      "path": "/workspace/old4f-elf-retirement-launch-20261023/subcommands.json",
+      "member": "workspace/old4f-elf-retirement-launch-20261023/subcommands.json",
+      "bytes": 1965,
+      "sha256": "83099ee010b3692457f5a6ea74cde27f3b3ae861d3549f4070c26276baf47599"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-execution-20261023/CONSUMERS.json",
+      "member": "workspace/terminal-baseline-runtime-54-execution-20261023/CONSUMERS.json",
+      "bytes": 2640,
+      "sha256": "5c0677483a6e872fc6ff53c31e6c7156f42cd5f67339330e3b020c94feed4615"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-execution-20261023/RESULT.json",
+      "member": "workspace/terminal-baseline-runtime-54-execution-20261023/RESULT.json",
+      "bytes": 7077,
+      "sha256": "6d9d276785208c829a9d331f0afecb4eec09a59ab7c15b1a8609eb270df76dc5"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-launch-20261023/launch-context.json",
+      "member": "workspace/terminal-baseline-runtime-54-launch-20261023/launch-context.json",
+      "bytes": 409,
+      "sha256": "c80d9658f86672665572e6c93998c2e74a94f79c0ee0094664f88e5f1608f602"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-launch-20261023/receipt.json",
+      "member": "workspace/terminal-baseline-runtime-54-launch-20261023/receipt.json",
+      "bytes": 2047,
+      "sha256": "a2142f9912a7838d24f572076b248d0e9b2d22d74232092ed339a802256c2874"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/request.json",
+      "member": "workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/request.json",
+      "bytes": 1532,
+      "sha256": "89d03ca114f4bd3ac28b8c407ccd6253977627abede1edb47542ceb81b98fba7"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/result.json",
+      "member": "workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/result.json",
+      "bytes": 1785,
+      "sha256": "9bcf676ff43bf417b3cc475136e7dd249618f2b0425017e14f5a4041336b7829"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/stderr.bin",
+      "member": "workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/stdin.bin",
+      "member": "workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/stdout.bin",
+      "member": "workspace/terminal-baseline-runtime-54-launch-20261023/subcommands/000001/stdout.bin",
+      "bytes": 1238,
+      "sha256": "717cf212c35e3b3ce9700ee7611a60749bf3de3cf7f4cf66ffd7dc7d2b43e5cb"
+    },
+    {
+      "path": "/workspace/terminal-baseline-runtime-54-launch-20261023/subcommands.json",
+      "member": "workspace/terminal-baseline-runtime-54-launch-20261023/subcommands.json",
+      "bytes": 1871,
+      "sha256": "babb2cddc8955a3402ff8efa46171120cd998d50a89e7585ad82eb894ea275f1"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "subject": "/workspace/geo339-publication-20261024/publish_current_actions.py",
+  "subject_sha256": "bfa6a96f0ee2576340d12a615f751795a24f20e39f3ac4fa7640dc1dc956ada5",
+  "checks_total": 17,
+  "failed_checks": 0,
+  "checks": [
+    {
+      "name": "fixed-publisher-pin",
+      "passed": true
+    },
+    {
+      "name": "public-root-only",
+      "passed": true
+    },
+    {
+      "name": "approved-archive-pin",
+      "passed": true
+    },
+    {
+      "name": "safe-package-peer-required",
+      "passed": true
+    },
+    {
+      "name": "body-template-and-peer-fixed",
+      "passed": true
+    },
+    {
+      "name": "public-copy-two-json",
+      "passed": true
+    },
+    {
+      "name": "no-private-tree-recursion",
+      "passed": true
+    },
+    {
+      "name": "fixed-owner-clean-preflight",
+      "passed": true
+    },
+    {
+      "name": "staged-owned-evidence",
+      "passed": true
+    },
+    {
+      "name": "preserve-omitted-old-receipts",
+      "passed": true
+    },
+    {
+      "name": "preservation-before-commit",
+      "passed": true
+    },
+    {
+      "name": "normal-push-no-force-push",
+      "passed": true
+    },
+    {
+      "name": "one-real-E-replacement",
+      "passed": true
+    },
+    {
+      "name": "only-body-staged",
+      "passed": true
+    },
+    {
+      "name": "public-body-byte-verification",
+      "passed": true
+    },
+    {
+      "name": "source-diff-evidence-only",
+      "passed": true
+    },
+    {
+      "name": "no-subject-execution",
+      "passed": true
+    }
+  ],
+  "scope": "Static publisher boundary/receipt-preservation review; no execution, Git mutation or payload copy.",
+  "preparation_history": "An initial inline peer helper had an unmatched parenthesis and exited1 before execution; corrected into this file. Subject publisher was not changed by this helper correction.",
+  "limitations": [
+    "Actual publisher execution and push results remain pending root disk-write grant.",
+    "Safe archive bytes/security were independently reviewed by another peer; this does not rescan private secrets."
+  ]
+}
