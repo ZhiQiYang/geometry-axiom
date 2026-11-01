@@ -1021,7 +1021,7 @@ static void cmd_dump_deidentified(void) { emit_dump_text(true); }
 static void cmd_identity_epoch(const char *hex)
 {
     char err[160];
-    if (!identity_set_epoch(hex, err, sizeof err)) {
+    if (!identity_set_epoch(&g_world, hex, err, sizeof err)) {
         fputs("{\"ok\":false,\"error\":", stdout);
         js_string(err);
         fputs("}\n", stdout);
