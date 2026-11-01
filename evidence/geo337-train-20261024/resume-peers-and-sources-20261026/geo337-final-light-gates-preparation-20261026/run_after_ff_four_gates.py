@@ -1,0 +1,114 @@
+"""Root-only three original architecture judges at actual a6, no relabelling."""
+from pathlib import Path
+import argparse,contextlib,fcntl,hashlib,importlib.util,json,os,resource,shutil,stat,sys
+SHARED=Path('/tmp/geo337-a6-architecture-preparation-20261026/prepare_source.py')
+if hashlib.sha256(SHARED.read_bytes()).hexdigest()!='8f08d1325d5fa43fef2c3a46ef8bca94693568d7318b1c1326496c44c48fee16':raise RuntimeError('original shared helper pin')
+spec=importlib.util.spec_from_file_location('original_a6_source_helpers',SHARED);shared=importlib.util.module_from_spec(spec);spec.loader.exec_module(shared)
+
+PREPARED_SOURCE=shared.SOURCE
+SOURCE='cbf0fb621888596aa14ad5f2349b503e23b1b72d'
+ROOT=shared.ROOT;OWN=shared.OWN;OUT=OWN/'F-final-light-gates-original-20261026'
+CHANGED={'tests/mutants_results.json','geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md','geometry-core/domain-decoupling/product-architecture-receipt.json'}
+CAP=shared.CAP;H=shared.H;need=shared.need;dump=shared.dump
+JUDGES=[['tests/mutate.py','--check'],['tests/architecture_contract.py','--root','.','--manifest','geometry-core/domain-decoupling/product-architecture.json'],['tests/test_architecture_contract.py'],['tests/test_product_architecture.py']]
+def pinned(item):
+ p=Path(item['path']);raw=p.read_bytes();need(H(raw)==item['sha256'],'bound input '+str(p));return json.loads(raw)
+def main():
+ ap=argparse.ArgumentParser();ap.add_argument('--request',type=Path);ap.add_argument('--request-sha256');ap.add_argument('--execute-root-approved',action='store_true');a=ap.parse_args()
+ if not a.execute_root_approved:print('PLAN_ONLY: after root-recorded ordinary FF only; actual final tracked check and three architecture judges');return 0
+ need(not sys.flags.optimize and resource.getrlimit(resource.RLIMIT_STACK)[0]==16777216,'original16MiB stack and no optimization')
+ raw=a.request.read_bytes();need(H(raw)==a.request_sha256,'exact root request');q=json.loads(raw)
+ need(q['schema']=='final-after-ff-four-light-gates/1' and q['source_sha']==SOURCE and q['prepared_source_sha']==PREPARED_SOURCE and q['root_execution_lease']is True and q['root_source_exclusive']is True and q['root_adoption_actual_peer_reviewed']is True,'explicit final execution and historical source binding')
+ adopted=pinned(q['adoption_result'])
+ need(adopted['exit_code']==0 and adopted['final_sha']==SOURCE and adopted['source_sha']==PREPARED_SOURCE and adopted['ledger_execution_sha']==shared.S10 and adopted['architecture_execution_sha']==PREPARED_SOURCE and adopted['published']is True and adopted['delivered']is True and adopted['remote_commit_resolved']is True and adopted['historical_publisher_unchanged']is True and adopted['old_repo_changed']is False and set(adopted['changed_paths'])==CHANGED,'actual published exact-three-leaf final adoption')
+ need(adopted['candidate_branch']=='codex/train337-recovered-evidence-20261026' and adopted['other_product_test_ssot_unchanged']is True and adopted['manifest_scan_byte_unchanged']is True,'fixed candidate and source closure')
+ need(Path(q['source_result']['path'])==shared.OUT/'RESULT.json','exact actual source result path')
+ prepared=pinned(q['source_result']);peer=pinned(q['source_actual_peer'])
+ need(prepared['source_sha']==PREPARED_SOURCE and prepared['exit_code']==0 and prepared['materialized']is True,'actual newsource complete')
+ need(peer['exit_code']==0 and not peer['blocking_findings']and peer['source_sha']==PREPARED_SOURCE and peer['source_result_sha256']==q['source_result']['sha256'],'actual a6 preparation peer binding; never relabelled as F')
+ manifest_path=shared.OUT/'SOURCE_MANIFEST.json';need(H(manifest_path.read_bytes())==prepared['source_manifest_sha256'],'new source manifest pin');manifest=json.loads(manifest_path.read_bytes())
+ need(H(CAP.read_bytes())==shared.CAP_PIN and not OUT.exists(),'original recorder/fresh output')
+ with contextlib.ExitStack()as stack:
+  for p in map(Path,['/tmp/g261r3/heavy.lock','/tmp/g261r3/secondary.lock']):
+   st=p.lstat();need(stat.S_ISREG(st.st_mode)and st.st_uid==os.getuid(),'existing owned scheduler locks');f=stack.enter_context(p.open('r+b'));need((os.fstat(f.fileno()).st_dev,os.fstat(f.fileno()).st_ino)==(st.st_dev,st.st_ino),'same lock');fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB)
+  need(shared.combined_allocated()+64*1024**2<=2*1024**3 and shutil.disk_usage(OWN).free>=64*1024**2,'original64MiB and combined2GiB gate')
+  OUT.mkdir(mode=0o700);(OUT/'tmp').mkdir();(OUT/'ROOT_REQUEST.json').write_bytes(raw);(OUT/'EXECUTOR.py').write_bytes(Path(__file__).read_bytes())
+  sp=importlib.util.spec_from_file_location('capture',CAP);cap=importlib.util.module_from_spec(sp);sp.loader.exec_module(cap)
+  env={k:v for k,v in os.environ.items()if not k.startswith(('GIT_','GEOMETRY_','MUTATE_'))and k not in ['PYTHONOPTIMIZE','PYTHONPATH','PYTHONHOME','PYTHONSTARTUP','NODE_OPTIONS','LD_PRELOAD']}
+  env.update(PYTHONDONTWRITEBYTECODE='1',PYTHONIOENCODING='utf-8',LANG='C.UTF-8',LC_ALL='C.UTF-8',GIT_OPTIONAL_LOCKS='0',TMPDIR=str(OUT/'tmp'),TMP=str(OUT/'tmp'),TEMP=str(OUT/'tmp'),GITHUB_SHA=SOURCE,GITHUB_WORKSPACE=str(ROOT))
+  index=ROOT/'.git/index';index_before=index.read_bytes();index_stat=index.stat();(OUT/'private-index').write_bytes(index_before)
+  env.update(GIT_INDEX_FILE=str(OUT/'private-index'),GIT_CONFIG_COUNT='1',GIT_CONFIG_KEY_0='core.splitIndex',GIT_CONFIG_VALUE_0='false')
+  rec=cap.Recorder(OUT,env,SOURCE);rows=[]
+  result={'source_sha':SOURCE,'prepared_source_sha':PREPARED_SOURCE,'native_source_claimed':False,'source_selected_count':3763,'exit_code':1,'gates':rows,'full_native_executed':False,'full123_executed':False,'historical_gates_relabelled':False}
+  def git(*args):return rec.run(['git','-c','gc.auto=0','-c','maintenance.auto=false',*args],cwd=ROOT,timeout=None,check=True,source_sha=SOURCE,source_variant='final four light gates: source preparation remains a6; actual checkout is F')[1]
+  def state():
+   head=git('rev-parse','HEAD').decode().strip();status=git('status','--porcelain=v1','--untracked-files=all').decode();idx=git('ls-files','--stage','-z')
+   need(head==SOURCE and not status,'exact clean final source after root-recorded FF')
+   return {'head':head,'status':status,'index':H(idx)}
+  def snapshot():
+   items=[]
+   for name in manifest['architecture_paths']:
+    p=ROOT/name;b=p.read_bytes();st=p.lstat();oid=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest();need(stat.S_ISREG(st.st_mode)and st.st_nlink==1 and oid==manifest['files'][name]['oid'],'exact independent architecture source '+name)
+    items.append({'path':name,'raw_sha256':H(b),'lf_sha256':H(b.replace(b'\r\n',b'\n')),'git_blob':oid})
+   need(len(items)==604,'all604 source inputs')
+   return items
+  def publisher_state():
+   # Read protected metadata only; never run Git against the publisher with the
+   # source's private index override. The candidate ref is already final.
+   result={}
+   for owner in [shared.OWNER,Path('/workspace/geometry-axiom')]:
+    base=owner/'.git';need(base.is_dir()and not base.is_symlink(),'protected physical Gitdir')
+    paths=[base/'HEAD',base/'index',base/'config']
+    for rel in ['packed-refs','objects/info/alternates']:
+     if (base/rel).exists():paths.append(base/rel)
+    paths+=sorted(p for p in (base/'refs').rglob('*')if p.is_file())
+    rows={}
+    for p in paths:
+     st=p.lstat();need(stat.S_ISREG(st.st_mode)and not p.is_symlink(),'protected metadata regular')
+     rows[str(p.relative_to(base))]={'sha256':H(p.read_bytes()),'device':st.st_dev,'inode':st.st_ino,'mode':st.st_mode,'bytes':st.st_size,'mtime_ns':st.st_mtime_ns}
+    result[str(owner)]=rows
+   return result
+  def selected_inventory():
+   selected={os.fsdecode(x[2:])for x in git('ls-files','-t','-z').split(b'\0')if x and x[:1]!=b'S'}
+   need(selected==set(manifest['files'])and len(selected)==3763,'all original3763 selected leaves retained')
+   rows=[]
+   for name in sorted(selected):
+    p=ROOT/name;st=p.lstat();b=p.read_bytes();oid=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
+    need(stat.S_ISREG(st.st_mode)and st.st_nlink==1 and not p.is_symlink(),'independent selected source '+name)
+    mode='100755'if st.st_mode&0o111 else'100644';expected=final_files[name]
+    need(oid==expected['oid']and len(b)==expected['bytes']and mode==expected['mode'],'exact final selected bytes '+name)
+    if name in manifest['fixture_paths']:need(expected==manifest['files'][name],'five protected fixture identities unchanged')
+    rows.append({'path':name,'oid':oid,'raw_sha256':H(b),'mode':mode,'bytes':len(b)})
+   need(len(manifest['fixture_paths'])==5,'original five fixtures required')
+   return rows
+  try:
+   publisher_before=publisher_state();dump(OUT/'PUBLISHER.before.json',publisher_before)
+   before=state()
+   git('merge-base','--is-ancestor',PREPARED_SOURCE,SOURCE)
+   changed={os.fsdecode(x)for x in git('diff','--no-renames','--name-only','-z',PREPARED_SOURCE,SOURCE,'--','.',':(exclude)evidence').split(b'\0')if x}
+   need(changed==CHANGED,'exact three non-evidence changes from actual a6 preparation')
+   final_files={}
+   for raw in git('ls-tree','-r','-l','-z',SOURCE,'--',*sorted(manifest['files'])).split(b'\0'):
+    if not raw:continue
+    meta,name=raw.split(b'\t',1);mode,kind,oid,size=meta.split();need(kind==b'blob'and mode in (b'100644',b'100755'),'regular final selected Git entry')
+    final_files[os.fsdecode(name)]={'mode':mode.decode(),'oid':oid.decode(),'bytes':int(size)}
+   need(set(final_files)==set(manifest['files']),'complete final selected Git inventory')
+   need({n for n in final_files if final_files[n]!=manifest['files'][n]}==CHANGED,'selected delta is only the three adopted leaves')
+   for n in CHANGED:need(H((ROOT/n).read_bytes())==adopted['original_artifact_hashes'][n],'byte-exact adopted original '+n)
+   selected_before=selected_inventory();dump(OUT/'SELECTED.before.json',selected_before)
+   sources=snapshot();dump(OUT/'SOURCE_INPUTS.before.json',sources)
+   for name,judge in zip(['tracked-mutation-check','architecture-contract','architecture-unit','product-architecture-unit'],JUDGES):
+    row,stdout,stderr=rec.run([sys.executable,'-B',*judge],cwd=ROOT,timeout=None,check=False,source_sha=SOURCE,source_variant=name)
+    rows.append({'gate':name,'exit_code':row['actual_process_returncode'],'command':row});dump(OUT/'PROGRESS.json',{'source_sha':SOURCE,'gates':rows,'terminal':False})
+   after=state();after_sources=snapshot();
+   selected_after=selected_inventory();dump(OUT/'SELECTED.after.json',selected_after)
+   publisher_after=publisher_state();dump(OUT/'PUBLISHER.after.json',publisher_after)
+   need(selected_before==selected_after and publisher_before==publisher_after,'selected3763 and historical publisher HEAD/index/refs unchanged during final gates');dump(OUT/'SOURCE_INPUTS.after.json',after_sources)
+   need(before==after and sources==after_sources,'full source identity unchanged across real judges')
+   st=index.stat();need(index.read_bytes()==index_before and (st.st_dev,st.st_ino,st.st_size,st.st_mtime_ns)==(index_stat.st_dev,index_stat.st_ino,index_stat.st_size,index_stat.st_mtime_ns),'real private source index untouched')
+   ok=all(x['exit_code']==0 for x in rows)
+   result.update(exit_code=0 if ok else 1,before=before,after=after,source_unchanged=True,all_gates_passed=ok,publisher_preserved=True,selected_3763_preserved=True,five_fixtures_preserved=True,wrapper_exit=0 if ok else 1,source_inputs_before_sha256=H((OUT/'SOURCE_INPUTS.before.json').read_bytes()),source_inputs_after_sha256=H((OUT/'SOURCE_INPUTS.after.json').read_bytes()))
+  except BaseException as e:result.update(exit_code=1,error=repr(e));raise
+  finally:dump(OUT/'RESULT.json',result)
+  print(json.dumps(result,ensure_ascii=False));return result['exit_code']
+if __name__=='__main__':raise SystemExit(main())

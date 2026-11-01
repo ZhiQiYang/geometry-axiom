@@ -31,6 +31,7 @@
     "geometry-app/native/legacy_json.inc",
     "geometry-app/native/model_sources.inc",
     "geometry-app/native/reference_sources.inc",
+    "geometry-app/native/stagger_facts.inc",
     "geometry-app/native/versions_adapter.inc",
     "geometry-app/native/woodworking_unity.inc",
     "geometry-app/native/world_candidate.inc",
@@ -357,7 +358,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/enclosure_sources.inc",
-      "line": 7553
+      "line": 7544
     },
     {
       "source": "current_geometry.c",
@@ -367,7 +368,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/grid_context.inc",
-      "line": 6216
+      "line": 6202
     },
     {
       "source": "current_geometry.c",
@@ -378,6 +379,11 @@
       "source": "current_geometry.c",
       "target": "geometry-app/native/legacy_json.inc",
       "line": 12
+    },
+    {
+      "source": "current_geometry.c",
+      "target": "geometry-app/native/stagger_facts.inc",
+      "line": 7542
     },
     {
       "source": "current_geometry.c",
@@ -392,17 +398,17 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-app/native/world_validation.inc",
-      "line": 6219
+      "line": 6205
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/assembly.inc",
-      "line": 7560
+      "line": 7551
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/assembly_generation.inc",
-      "line": 7561
+      "line": 7552
     },
     {
       "source": "current_geometry.c",
@@ -412,22 +418,22 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/boundary_vertex_keys.inc",
-      "line": 7555
+      "line": 7546
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/derived_placements.inc",
-      "line": 7565
+      "line": 7556
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/engineering.inc",
-      "line": 7554
+      "line": 7545
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/engineering_commands.inc",
-      "line": 7559
+      "line": 7550
     },
     {
       "source": "current_geometry.c",
@@ -442,12 +448,12 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/finish_surfaces.inc",
-      "line": 7563
+      "line": 7554
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_bindings.inc",
-      "line": 7556
+      "line": 7547
     },
     {
       "source": "current_geometry.c",
@@ -457,17 +463,17 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_subdivision.inc",
-      "line": 7557
+      "line": 7548
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_subdivision_query.inc",
-      "line": 7558
+      "line": 7549
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/grid_systems.inc",
-      "line": 7226
+      "line": 7216
     },
     {
       "source": "current_geometry.c",
@@ -482,12 +488,12 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/panel_fill_layout.inc",
-      "line": 7564
+      "line": 7555
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/panel_fill_support.inc",
-      "line": 7566
+      "line": 7557
     },
     {
       "source": "current_geometry.c",
@@ -502,7 +508,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/parameters.inc",
-      "line": 7551
+      "line": 7541
     },
     {
       "source": "current_geometry.c",
@@ -512,7 +518,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/references.inc",
-      "line": 7552
+      "line": 7543
     },
     {
       "source": "current_geometry.c",
@@ -522,22 +528,22 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/section_profiles.inc",
-      "line": 7562
+      "line": 7553
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_commands.inc",
-      "line": 7536
+      "line": 7526
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_rebind.inc",
-      "line": 8571
+      "line": 8562
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-core/subgrid_world.inc",
-      "line": 6217
+      "line": 6203
     },
     {
       "source": "current_geometry.c",
@@ -547,17 +553,17 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-core/transactions.inc",
-      "line": 10007
+      "line": 9998
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/contact_world.h",
-      "line": 5761
+      "line": 5758
     },
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/cut_list.h",
-      "line": 10160
+      "line": 10151
     },
     {
       "source": "current_geometry.c",
@@ -572,7 +578,7 @@
     {
       "source": "current_geometry.c",
       "target": "geometry-templates/woodworking/native/member_declaration.h",
-      "line": 7092
+      "line": 7082
     },
     {
       "source": "geometry-app/application.js",
@@ -2352,32 +2358,32 @@
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/__init__.py",
-      "line": 373
+      "line": 382
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/__init__.py",
-      "line": 380
+      "line": 389
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/__init__.py",
-      "line": 381
+      "line": 390
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/bootstrap.py",
-      "line": 380
+      "line": 389
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/model_world.py",
-      "line": 373
+      "line": 382
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-app/geometry_app/model_world.py",
-      "line": 381
+      "line": 390
     },
     {
       "source": "geometry-core/modeling/__init__.py",
@@ -2387,17 +2393,17 @@
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 220
+      "line": 228
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-core/modeling/__init__.py",
-      "line": 379
+      "line": 388
     },
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-core/modeling/base.py",
-      "line": 379
+      "line": 388
     },
     {
       "source": "geometry-core/modeling/__init__.py",
@@ -2407,7 +2413,7 @@
     {
       "source": "geometry-core/modeling/__init__.py",
       "target": "geometry-core/modeling/engine.py",
-      "line": 220
+      "line": 228
     },
     {
       "source": "geometry-core/modeling/_host.py",
@@ -2677,12 +2683,12 @@
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-app/native/reference_sources.inc",
-      "line": 622
+      "line": 638
     },
     {
       "source": "geometry-core/references.inc",
       "target": "geometry-templates/woodworking/native/member_reference.h",
-      "line": 455
+      "line": 471
     },
     {
       "source": "geometry-core/rule_cases/__init__.py",
@@ -3392,12 +3398,17 @@
     {
       "source": "geometry-templates/woodworking/native/member_reference.h",
       "target": "geometry-core/kernel/grid_store.h",
-      "line": 9
+      "line": 10
     },
     {
       "source": "geometry-templates/woodworking/native/member_reference.h",
       "target": "geometry-core/kernel/source.h",
-      "line": 12
+      "line": 13
+    },
+    {
+      "source": "geometry-templates/woodworking/native/member_reference.h",
+      "target": "geometry-templates/woodworking/native/contact_world.h",
+      "line": 8
     },
     {
       "source": "geometry-templates/woodworking/native/member_reference.h",

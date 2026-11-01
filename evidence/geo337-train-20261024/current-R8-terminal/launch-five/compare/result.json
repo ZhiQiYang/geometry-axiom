@@ -1,0 +1,46 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py",
+    "--repo",
+    "/tmp/geo323-final-r8-source-20261024",
+    "--sha",
+    "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+    "--base",
+    "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+    "--main",
+    "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "--out",
+    "/tmp/g337323R8",
+    "--heavy-lock",
+    "/tmp/g337323R8/stage.lock",
+    "--stage",
+    "compare"
+  ],
+  "cwd": "/tmp/geo323-final-r8-source-20261024",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "stage": "compare",
+  "started_utc": "2026-10-25T06:47:43.237165+00:00",
+  "actual_process_exit": 1,
+  "stdout_sha256": "33fc406db60ab296fe90f0498bb4f78b5a3a2627864d3b2414e3db6a3e0de1b9",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "original_stage": {
+    "started_utc": "2026-10-25T06:47:43.351906+00:00",
+    "execution_exit": 1,
+    "source_before": {
+      "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+      "status": ""
+    },
+    "source_after": {
+      "head": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+      "status": ""
+    },
+    "errors": [
+      "Traceback (most recent call last):\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py\", line 346, in stage\n    function()\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py\", line 232, in compare\n    self.v.compare(self.a.repo, self.work, self.evidence)\n  File \"/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/verify_linux.py\", line 156, in compare\n    assert not failures,failures\n           ^^^^^^^^^^^^\nAssertionError: [['_role_priority_mutant.scene', 'stdout'], ['_s1_p8_l_room_primary_through_reflex_extension.scene', 'stdout'], ['_s1_p8b_l_room_primary_through_reflex_extension_hi.scene', 'stdout']]\n"
+    ],
+    "ended_utc": "2026-10-25T06:49:08.214303+00:00"
+  },
+  "original_quantitative_targets": {},
+  "original_full_acceptance_passed": null
+}

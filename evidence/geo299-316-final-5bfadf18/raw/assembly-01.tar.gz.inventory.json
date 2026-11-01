@@ -1,0 +1,372 @@
+{
+  "archive": "assembly-01.tar.gz",
+  "bytes": 1055026,
+  "sha256": "8a1a66dbb5d1564e13062597bb6a34f1c3e18a883253a4582b576058b2ec92e2",
+  "members": [
+    {
+      "path": "context/run-context.json",
+      "bytes": 1141,
+      "sha256": "32ba8d014f72229bb3704ab51c834e7d482425961498d059b3163ec3b19b8fae"
+    },
+    {
+      "path": "frozen-tools/publish_followup_progress.py",
+      "bytes": 6124,
+      "sha256": "c2fdeb5eb9174549c5a80726bdd37266b22f0f75ff94d744fdc82c0f384a14d2"
+    },
+    {
+      "path": "frozen-tools/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    {
+      "path": "frozen-tools/run_acceptance_seven_configured.py",
+      "bytes": 9438,
+      "sha256": "03e4c182cad40b6abd7dae52a8c8af43c5ffe90f2d38ae62e21be2f518b54d83"
+    },
+    {
+      "path": "frozen-tools/run_followup_browser_jobs.py",
+      "bytes": 6872,
+      "sha256": "6053a7291c90c67b8f3706d3733f634e93e549e8312bb9187209be78eb2360a1"
+    },
+    {
+      "path": "frozen-tools/run_workflow_round.py",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "job/artifacts/05/assembly-blank-390.png",
+      "bytes": 51010,
+      "sha256": "609fc256b73d9dddc3c9bc2d9d0ba2eb705f14407d480a1a733c082efebf1105"
+    },
+    {
+      "path": "job/artifacts/05/assembly-desktop.png",
+      "bytes": 92258,
+      "sha256": "dd5829fc013802e59730eb00eab64eb4e1ee31b616a12ff25001e3ac64076054"
+    },
+    {
+      "path": "job/artifacts/05/assembly-generation-mobile.png",
+      "bytes": 40930,
+      "sha256": "241bc87475559580a0ffc69f1f42dc75215f7e4a007fafe2b6b8c9d2717385b5"
+    },
+    {
+      "path": "job/artifacts/05/assembly-mobile.png",
+      "bytes": 39145,
+      "sha256": "166cb31c105baba3af7616df771ff4c75e31a1a1abbc7635cb8d6264149b78b3"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-glyphs-390.png",
+      "bytes": 32520,
+      "sha256": "9bccf0bce8ba7deb52cffd09d181fe6d66f03631fbd4d6ff176532ccbfc98eaa"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-glyphs-desktop.png",
+      "bytes": 88222,
+      "sha256": "ba26c19826d14da0630c13ad2aeed4d534c7417145aedd5ba441fb3a46ec266d"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-glyphs-max-zoom-390.png",
+      "bytes": 47941,
+      "sha256": "099f5ce5d68455642f730e2b888c945ed68dbda148ca05a7c1d86ca95d0342c6"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-sources-390.png",
+      "bytes": 51611,
+      "sha256": "2152deed9a7750f029a2eb4dd99617f570b77deb750e499b622fa1c2f9d1f61c"
+    },
+    {
+      "path": "job/artifacts/05/assembly-review-sources-desktop.png",
+      "bytes": 90029,
+      "sha256": "ec931bd69c46caba5de917c3ba8057bcf00e30025464851373abd0b131c5771a"
+    },
+    {
+      "path": "job/driver.py.txt",
+      "bytes": 20021,
+      "sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+    },
+    {
+      "path": "job/receipt.json",
+      "bytes": 30771,
+      "sha256": "05c80027dfce2e099673740afdff477a38201bf46eef9e078783e3cbec36526a"
+    },
+    {
+      "path": "job/receipt.sha256",
+      "bytes": 79,
+      "sha256": "2e36b3918f9c0e5c8d19b8d4c8bf4271e25ec3d30b0c0fdea908f0872e8bdec0"
+    },
+    {
+      "path": "job/steps/01.combined.log",
+      "bytes": 1241,
+      "sha256": "bb50530eec56ac36fae8b016aca99dbefdb63b8295c56e488792398c808226da"
+    },
+    {
+      "path": "job/steps/01.command.json",
+      "bytes": 628,
+      "sha256": "728605475a76339757b7cdd5d18a8d730367b4de688d5c896de5efe6f7fa4ef6"
+    },
+    {
+      "path": "job/steps/01.executed.sh",
+      "bytes": 14,
+      "sha256": "dae58de3ddfde95b066b259e24d83e50d15aedeafb58b0b20d7b26dd324ef0ef"
+    },
+    {
+      "path": "job/steps/01.original.sh.txt",
+      "bytes": 13,
+      "sha256": "16c0e4305ac213dff39fc82b69b6e08aeeb8758e33cd72d7c409752a70e9f054"
+    },
+    {
+      "path": "job/steps/01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/01.stdout",
+      "bytes": 1241,
+      "sha256": "bb50530eec56ac36fae8b016aca99dbefdb63b8295c56e488792398c808226da"
+    },
+    {
+      "path": "job/steps/02-package-0.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02-package-0.command.json",
+      "bytes": 649,
+      "sha256": "34d27769ddcac6b3da2bd1119edd8fa5476dd46c4c807b4c6da94d07861ceda7"
+    },
+    {
+      "path": "job/steps/02-package-0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/02-package-0.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/steps/02.executed.sh",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/02.original.sh.txt",
+      "bytes": 245,
+      "sha256": "61a5490e118451408024a701ca905d6781f97d02eaf19efc74c3700f7fb5d855"
+    },
+    {
+      "path": "job/steps/03.combined.log",
+      "bytes": 24555,
+      "sha256": "532695a810746ea28464c5e64ccfa47c5dffb0a1dfa3d9208f458d6e65181ba2"
+    },
+    {
+      "path": "job/steps/03.command.json",
+      "bytes": 680,
+      "sha256": "757e7cc010d2c3a1646b5067dcabbff27705f07ed1458844288a4ebd5c2f6b7f"
+    },
+    {
+      "path": "job/steps/03.executed.sh",
+      "bytes": 2300,
+      "sha256": "4295a168e64c2072cebf1fc80a2f97040277c39d44f20ba4ab298ed6ef1aef82"
+    },
+    {
+      "path": "job/steps/03.original.sh.txt",
+      "bytes": 2184,
+      "sha256": "d8e6bc8c0ebf7492b7546c6c56865733b2171fcad06c14597572ecf09e40d44f"
+    },
+    {
+      "path": "job/steps/03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/steps/03.stdout",
+      "bytes": 24555,
+      "sha256": "532695a810746ea28464c5e64ccfa47c5dffb0a1dfa3d9208f458d6e65181ba2"
+    },
+    {
+      "path": "job/versions/0.combined.log",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/0.command.json",
+      "bytes": 580,
+      "sha256": "7d274c04c3821e7e95d885548f2f29ab0cfb99f3233263b2ed46ecd5a04dd5a9"
+    },
+    {
+      "path": "job/versions/0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/0.stdout",
+      "bytes": 29,
+      "sha256": "8d7631c58053db6151fae1dbe220415fa30a8bfec85a95886027bf77f06f230b"
+    },
+    {
+      "path": "job/versions/1.combined.log",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/1.command.json",
+      "bytes": 571,
+      "sha256": "6d3f4a1c658efacb6e2385ab432fe592b283b4949620506270e4e5c64415a5fa"
+    },
+    {
+      "path": "job/versions/1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/1.stdout",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    {
+      "path": "job/versions/2.combined.log",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/2.command.json",
+      "bytes": 575,
+      "sha256": "15722f22d4ace52e1c19a05856f950d7eb6dc0d8b13444513c7118f0e1797a6c"
+    },
+    {
+      "path": "job/versions/2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/2.stdout",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    {
+      "path": "job/versions/3.combined.log",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/3.command.json",
+      "bytes": 570,
+      "sha256": "4691a505a385539acdfc3bfff22fba3bbc7a7e3754074cc94f873054082bf244"
+    },
+    {
+      "path": "job/versions/3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/3.stdout",
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    {
+      "path": "job/versions/4.combined.log",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/versions/4.command.json",
+      "bytes": 625,
+      "sha256": "67f1615b7616156a4062ffc578a5a4cd283e7c14c589f64b1658ff51422e62da"
+    },
+    {
+      "path": "job/versions/4.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "job/versions/4.stdout",
+      "bytes": 42,
+      "sha256": "97ade6e2e1a07c30742176269eac3ff346f2efbc66bb24992bd8622e1410f4f8"
+    },
+    {
+      "path": "job/workflow.yml.txt",
+      "bytes": 6854,
+      "sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d"
+    },
+    {
+      "path": "job-temp/geometry-integration-server.log",
+      "bytes": 3344,
+      "sha256": "6e3a8a2746e468033749334f0c34ac94ab4c6b5fdd290ec98a5985d14e799597"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-blank-390.png",
+      "bytes": 51010,
+      "sha256": "609fc256b73d9dddc3c9bc2d9d0ba2eb705f14407d480a1a733c082efebf1105"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-desktop.png",
+      "bytes": 92258,
+      "sha256": "dd5829fc013802e59730eb00eab64eb4e1ee31b616a12ff25001e3ac64076054"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-generation-g07-before.gcanvas",
+      "bytes": 5200,
+      "sha256": "b23cb4aecd4636893cda7ebe949bc622dc37516c9edf034415a3a8bb2c6d9920"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-generation-g07-before.json",
+      "bytes": 1874,
+      "sha256": "9a81ec8e8ae95c0c314c83f52b734d6ffa95f49ef029e021d4badade6983b9b1"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-generation-mobile.png",
+      "bytes": 40930,
+      "sha256": "241bc87475559580a0ffc69f1f42dc75215f7e4a007fafe2b6b8c9d2717385b5"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-mobile.png",
+      "bytes": 39145,
+      "sha256": "166cb31c105baba3af7616df771ff4c75e31a1a1abbc7635cb8d6264149b78b3"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-glyphs-390.png",
+      "bytes": 32520,
+      "sha256": "9bccf0bce8ba7deb52cffd09d181fe6d66f03631fbd4d6ff176532ccbfc98eaa"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-glyphs-desktop.png",
+      "bytes": 88222,
+      "sha256": "ba26c19826d14da0630c13ad2aeed4d534c7417145aedd5ba441fb3a46ec266d"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-glyphs-max-zoom-390.png",
+      "bytes": 47941,
+      "sha256": "099f5ce5d68455642f730e2b888c945ed68dbda148ca05a7c1d86ca95d0342c6"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-sources-390.png",
+      "bytes": 51611,
+      "sha256": "2152deed9a7750f029a2eb4dd99617f570b77deb750e499b622fa1c2f9d1f61c"
+    },
+    {
+      "path": "job-temp/geometry-tests/assembly-review-sources-desktop.png",
+      "bytes": 90029,
+      "sha256": "ec931bd69c46caba5de917c3ba8057bcf00e30025464851373abd0b131c5771a"
+    },
+    {
+      "path": "job-temp/tmpq2kzieae.scene",
+      "bytes": 6147,
+      "sha256": "b7c84e6390b5fff0c57f5043f4aaacb47104f5f726a49e79b216aa0d176b3bd5"
+    },
+    {
+      "path": "launch-stdout/assembly.stdout",
+      "bytes": 408,
+      "sha256": "d925e5577ca3e99ba7d4806cf46066c5c2bb478bf388c9c96ddddcd84f5b5997"
+    },
+    {
+      "path": "launch-stderr/assembly.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reaper/assembly-reaper.jsonl",
+      "bytes": 2270,
+      "sha256": "0622c75b50b393de2bc54227f5988181c4fe0d35febc257c1f2988df2341c42c"
+    }
+  ]
+}

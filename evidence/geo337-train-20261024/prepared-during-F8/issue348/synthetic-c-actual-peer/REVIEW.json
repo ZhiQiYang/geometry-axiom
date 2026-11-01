@@ -1,0 +1,1103 @@
+{
+  "schema": "geo348-synthetic-real-c-protocol-actual-independent-peer/1",
+  "utc": "2026-10-25T08:13:56.646088+00:00",
+  "reviewer": "/root/r8_terminal_peer",
+  "checks": 355,
+  "exit": 0,
+  "findings": [],
+  "source_result_sha256": "58310d85b42628c2fc55bb790cd51bb23d803def2454bde225e56b0bdf8afa11",
+  "original_checks": 61,
+  "original_commands": 26,
+  "original_driver_exit": 0,
+  "actual_c_withdrawal_exits": [
+    0,
+    1,
+    0
+  ],
+  "retained_stub_elf_hashes_at_review": [
+    {
+      "phase": "unwrapped",
+      "bytes": 17648,
+      "sha256_at_review": "d0a735842db05dad00ff5132b0bd097930b6b6f4e828e0c80ecdc7626d4df639"
+    },
+    {
+      "phase": "fixed",
+      "bytes": 22504,
+      "sha256_at_review": "73b743628f93f9491634b8e94895d4f962be50edd31fe67cbf1d3a8b141baf21"
+    },
+    {
+      "phase": "withdrawn",
+      "bytes": 22504,
+      "sha256_at_review": "40afa9310f1313878ba23742eadd850f46d13496386f1d9e6fc95fa05b4c222f"
+    },
+    {
+      "phase": "restored",
+      "bytes": 22504,
+      "sha256_at_review": "73b743628f93f9491634b8e94895d4f962be50edd31fe67cbf1d3a8b141baf21"
+    }
+  ],
+  "bindings": {
+    "/tmp/geo348-synthetic-c-protocol-20261025/RESULT.json": {
+      "bytes": 13297,
+      "sha256": "58310d85b42628c2fc55bb790cd51bb23d803def2454bde225e56b0bdf8afa11"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/DRIVER_COMMAND_RESULT.json": {
+      "bytes": 590,
+      "sha256": "46f92d4494a9071f46ff886868e4209b43b052f7ea05435cdca8e2427625b414"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/DRIVER_COMMAND.json": {
+      "bytes": 397,
+      "sha256": "f61759fd53a04df686471c7eb5a5b90357dd5bd78210e710f0baa5e17c2d1140"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/driver.stdout.bin": {
+      "bytes": 152,
+      "sha256": "21933df101e1e0390175686acfec3e8d7dbc15a823b471a70d86f97bb0d6580f"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/driver.stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-command-boundary-diagnostic-tools-20261025/trace_wrap.c": {
+      "bytes": 8616,
+      "sha256": "1a3cb2ae9cc0cad814dce190aae5d7e39f839e9440425f3cf3c33583fc8ed75d"
+    },
+    "/tmp/geo348-command-boundary-diagnostic-tools-20261025/sidecar.py": {
+      "bytes": 4507,
+      "sha256": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/stub.c": {
+      "bytes": 5455,
+      "sha256": "aa72daa998384998a5b05980d9e7914566e2d804ab7a4176c4f1623b52b15363"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/driver.py": {
+      "bytes": 17051,
+      "sha256": "89e761515592a4659db0d83dbcaec9bde3a3bfc00805435651badafe00574c90"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/guard.py": {
+      "bytes": 776,
+      "sha256": "0993fa6559bce201901875c9eb5903cf29154a5389e10a0d03533f1ec228ddc1"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/sources/trace_wrap.original.c": {
+      "bytes": 8616,
+      "sha256": "1a3cb2ae9cc0cad814dce190aae5d7e39f839e9440425f3cf3c33583fc8ed75d"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/sidecar_snapshot.py": {
+      "bytes": 4507,
+      "sha256": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/001-cc-version/COMMAND_RESULT.json": {
+      "bytes": 882,
+      "sha256": "1df5fd261203c8694709c6d447504672aaabae1b54124c5ffb8046bf0289ee2f"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/001-cc-version/COMMAND.json": {
+      "bytes": 526,
+      "sha256": "bef7da5087c1591410498a74cd95bc3c6942f6f71c4632f42e52aa7015deb74f"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/001-cc-version/stdout.bin": {
+      "bytes": 231,
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/001-cc-version/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/002-compile-unwrapped/COMMAND_RESULT.json": {
+      "bytes": 1077,
+      "sha256": "85120eb64d92d54f3d926fcccffffbc545e56694f0c6c70f6c4b2d96dcf78c80"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/002-compile-unwrapped/COMMAND.json": {
+      "bytes": 723,
+      "sha256": "6c4466300154d4049a01e25f404b4522d6491b5730839415c2571872aec27d08"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/002-compile-unwrapped/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/002-compile-unwrapped/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/006-nm-unwrapped/COMMAND_RESULT.json": {
+      "bytes": 949,
+      "sha256": "cc2a44c305597b4ca17d9f707ddabd611b52c67e9a3e9dd37f758d8aee8db933"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/006-nm-unwrapped/COMMAND.json": {
+      "bytes": 592,
+      "sha256": "a60d6cbd88ddca25e3e00e1efe1f807b87da8d427d8e16a07be9c881e6df28dc"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/006-nm-unwrapped/stdout.bin": {
+      "bytes": 2566,
+      "sha256": "af173b93f6e19ca6f4c00e0e28121cdee2779c019e810e1255e0a0eb1b9a8afe"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/006-nm-unwrapped/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/003-compile-fixed/COMMAND_RESULT.json": {
+      "bytes": 1193,
+      "sha256": "813d09cc4c8f250995e40fe37d0bbccf240105a45cce9780e7bc1bec41dc2d6b"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/003-compile-fixed/COMMAND.json": {
+      "bytes": 839,
+      "sha256": "5c6767681dde6e97d586dde5ad1670e2f5178c24c26259b3a76071c662d91ade"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/003-compile-fixed/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/003-compile-fixed/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/007-nm-fixed/COMMAND_RESULT.json": {
+      "bytes": 941,
+      "sha256": "f839cbdf4a40bf7edad6df58c8f77c30fde65e136ec44061bcf61255e089b931"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/007-nm-fixed/COMMAND.json": {
+      "bytes": 584,
+      "sha256": "ee23923d06fa31c309eec5a4ef10689362410982174e8ae028b9d7ec5071e855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/007-nm-fixed/stdout.bin": {
+      "bytes": 3178,
+      "sha256": "27c94951133e294766b9947e09f2c7130d502171a059853c2c3944563de107ad"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/007-nm-fixed/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/004-compile-withdrawn/COMMAND_RESULT.json": {
+      "bytes": 1205,
+      "sha256": "f84ff239a01bf9199790227fd1e836684d559fe9f6d55394344c572024e6dd78"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/004-compile-withdrawn/COMMAND.json": {
+      "bytes": 851,
+      "sha256": "ed64292a5c5551a0bb9f98539d09c16bdadabbaadcd71ac147903711d7b23192"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/004-compile-withdrawn/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/004-compile-withdrawn/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/008-nm-withdrawn/COMMAND_RESULT.json": {
+      "bytes": 949,
+      "sha256": "26fb73c0af04d15aac28246f9367b6c46f2f4cb8585207db2ba0fa6b01b34795"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/008-nm-withdrawn/COMMAND.json": {
+      "bytes": 592,
+      "sha256": "f634ad3d8622a33a2f7b58bed3662836c6ef46d02709b5187472bc59f2df0f44"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/008-nm-withdrawn/stdout.bin": {
+      "bytes": 3178,
+      "sha256": "18a545e9f8c552a29237115bdd1f2bbd5a385147ea97edf20234e6ae7d5ca101"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/008-nm-withdrawn/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/005-compile-restored/COMMAND_RESULT.json": {
+      "bytes": 1202,
+      "sha256": "5159daedd8504018d58a77f5dec5e56b9cbf467ac266ba14d39fae604e77ebc3"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/005-compile-restored/COMMAND.json": {
+      "bytes": 848,
+      "sha256": "7263d595b6c8411743bf01cf98ab363521e7d0506e65aafacad5d95ddbe0ca98"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/005-compile-restored/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/005-compile-restored/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/009-nm-restored/COMMAND_RESULT.json": {
+      "bytes": 947,
+      "sha256": "c0f8d62a66eabaaa57e7ac67f76c1ccafdaf4c8ec3be608193fc15489e0602f3"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/009-nm-restored/COMMAND.json": {
+      "bytes": 590,
+      "sha256": "4687dfbfad563c366e72bb51f57f055913b325101c4066992ea16d20c5f165c6"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/009-nm-restored/stdout.bin": {
+      "bytes": 3178,
+      "sha256": "27c94951133e294766b9947e09f2c7130d502171a059853c2c3944563de107ad"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/009-nm-restored/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/020-unwrapped-normal/COMMAND_RESULT.json": {
+      "bytes": 1383,
+      "sha256": "a7925c58def98289d669e034fbd81f35f501c84cec4d1d5b496f0d9eb510561b"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/020-unwrapped-normal/COMMAND.json": {
+      "bytes": 804,
+      "sha256": "4345e45fc55302d2c594734106784f8c66f139296fb44f2dff2bde83c0cd3d6e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/020-unwrapped-normal/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/020-unwrapped-normal/stderr.bin": {
+      "bytes": 220,
+      "sha256": "2214bff781cc12baadb5d698e8e05ba03047f458fcd37fa5dc4aa2774aa6f18c"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/020-unwrapped-normal/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/020-unwrapped-normal/pid.txt": {
+      "bytes": 8,
+      "sha256": "e0bc1eaaf6575e4a1d4ddcab02063b52f4efdfd6f9032b0ed3d56b8272b69185"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/COMMAND_RESULT.json": {
+      "bytes": 1787,
+      "sha256": "9c1f75a4236af1a826e6ea6f9050cf5b6ef72c918e0417eb2c7b87444635ae47"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/COMMAND.json": {
+      "bytes": 790,
+      "sha256": "0da2d5494bd23c7dd8401f0c4809cee335c0c4c69e1455049772a52d445b599f"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/stderr.bin": {
+      "bytes": 220,
+      "sha256": "2214bff781cc12baadb5d698e8e05ba03047f458fcd37fa5dc4aa2774aa6f18c"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/pid.txt": {
+      "bytes": 8,
+      "sha256": "a7decbe833cb410621cac754c0b11a0040ebcd9ccb50b14b869bdc6978b0ed98"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/events.jsonl": {
+      "bytes": 1552,
+      "sha256": "ca8b4f00c9f28da66e0c85e0f13fa3b29889d7f1bf9776d4138ddddfbf18ccc4"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/021-fixed-normal/status.bin": {
+      "bytes": 64,
+      "sha256": "e661886f987c2c3adf35b626f97f17c7fc48f9044000ef974225fe45a95d52c2"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/022-unwrapped-stress/COMMAND_RESULT.json": {
+      "bytes": 1386,
+      "sha256": "c1b164b302de304be085f0e278b4e8982821e7742bc2f2e87ebaba5e8c1bec1c"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/022-unwrapped-stress/COMMAND.json": {
+      "bytes": 804,
+      "sha256": "0fe0b74dec4a0c83afa19a04c8537712ef2ba563896805fcb673b6732446e934"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/022-unwrapped-stress/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/022-unwrapped-stress/stderr.bin": {
+      "bytes": 262364,
+      "sha256": "80037bce33970c02b2e5f050b601d21a8153f88a4dcdb430d3a1aa82a7b2e172"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/022-unwrapped-stress/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/022-unwrapped-stress/pid.txt": {
+      "bytes": 8,
+      "sha256": "c45e509f9b34560cec46a26a53ba07757c4e3e06ff5335f871769f36233ab3bf"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/COMMAND_RESULT.json": {
+      "bytes": 1790,
+      "sha256": "e6eec86c2131e2e967600159233e0845fd40cbec149ad2e92f5d3cce7f401393"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/COMMAND.json": {
+      "bytes": 790,
+      "sha256": "987a4db0af2298e733d50ebbc3427b87bf1cc8cda3651881d1293b124819974a"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/stderr.bin": {
+      "bytes": 262364,
+      "sha256": "80037bce33970c02b2e5f050b601d21a8153f88a4dcdb430d3a1aa82a7b2e172"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/pid.txt": {
+      "bytes": 8,
+      "sha256": "57827299de0e300658cb3410cd15d60fcc753ebc0b381aa68b37f46b68638af7"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/events.jsonl": {
+      "bytes": 1552,
+      "sha256": "ec4eee3bd26b4dd9781bd65f14f71318471933c4c07c74958ce0f9074979c71a"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/023-fixed-stress/status.bin": {
+      "bytes": 64,
+      "sha256": "e661886f987c2c3adf35b626f97f17c7fc48f9044000ef974225fe45a95d52c2"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/COMMAND_RESULT.json": {
+      "bytes": 1398,
+      "sha256": "174d51197c8ceb191123f0020d101b9ba892a67b3b3f1f491eb5c2e1aa20cfcf"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/COMMAND.json": {
+      "bytes": 819,
+      "sha256": "83d482ad964037dda6f39b93d2bed8a36308ff09bac9e6575539a28d95b9f473"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/stderr.bin": {
+      "bytes": 211,
+      "sha256": "0ec684b165636db2a7d5c8b25b26edfd109835fa6f6dc2f0dae9180d932df472"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/024-unwrapped-stdin_error/pid.txt": {
+      "bytes": 8,
+      "sha256": "401aff5eeb94b82b3c2f2d03bc3e38bc7a0c9e3b2cd5d468e243bf085d143d92"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/COMMAND_RESULT.json": {
+      "bytes": 1811,
+      "sha256": "f7a4b4635a461081b8916c6f55bd688cf9a84c3307c24b7684eef8515789c39a"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/COMMAND.json": {
+      "bytes": 805,
+      "sha256": "0fb79eaddd1401f765017570a52ee23de20ff496311d35451bb412e299016b9d"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/stderr.bin": {
+      "bytes": 211,
+      "sha256": "0ec684b165636db2a7d5c8b25b26edfd109835fa6f6dc2f0dae9180d932df472"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/pid.txt": {
+      "bytes": 8,
+      "sha256": "459f416f0b9f230e8a480e2f0439a43abc17a56bc20cb32e6182dc69dd1a0279"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/events.jsonl": {
+      "bytes": 112,
+      "sha256": "48ad76588eafcf2a87843e6f05b26d6c61dbe728752f784455a72227472ae9a1"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/025-fixed-stdin_error/status.bin": {
+      "bytes": 64,
+      "sha256": "3297e086cde484d28de3e32929929a4277bac5c9bd4fc76ca80c46829d8aa92b"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/026-unwrapped-stdout_error/COMMAND_RESULT.json": {
+      "bytes": 1401,
+      "sha256": "af0ad88624a3692cf744e9f787d0d48d91bcf9aa9b81fda04de20b2ce7b97dec"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/026-unwrapped-stdout_error/COMMAND.json": {
+      "bytes": 822,
+      "sha256": "0d61873dcf21e0d7e07d59aad673dab3f91465e88ae4253416cabf703bf14f9d"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/026-unwrapped-stdout_error/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/026-unwrapped-stdout_error/stderr.bin": {
+      "bytes": 213,
+      "sha256": "9310b0e5cf6807b845a8bc4c2f22375faf53c0d7e5b6c44a98dfd3d9dbfb1b1b"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/026-unwrapped-stdout_error/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/026-unwrapped-stdout_error/pid.txt": {
+      "bytes": 8,
+      "sha256": "d770d42aa723fc5ab3b82e8258373864f03aa47cb99dab56af64b9d706e500b6"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/COMMAND_RESULT.json": {
+      "bytes": 1816,
+      "sha256": "c482e333ec345cd30f14831596d5384c14e720a672480830370158071e6f1b29"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/COMMAND.json": {
+      "bytes": 808,
+      "sha256": "4ab5404534ab49031b5d4fce25bea6574de8677e8876d2e7ec59e480ca671b2b"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/stderr.bin": {
+      "bytes": 213,
+      "sha256": "9310b0e5cf6807b845a8bc4c2f22375faf53c0d7e5b6c44a98dfd3d9dbfb1b1b"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/pid.txt": {
+      "bytes": 8,
+      "sha256": "c5d136e9e9743bd818a3e58a8b444494b4d20bdc07e18ee2282a53da2094a19f"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/events.jsonl": {
+      "bytes": 361,
+      "sha256": "919b480affa560f4040f0946f7aaa65e2b9401822b74676fcf35bcef0aef667a"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/027-fixed-stdout_error/status.bin": {
+      "bytes": 64,
+      "sha256": "4b1f1085b779b0988fa247650bde28b2957ac1ec152e04dc944d69f202148ff9"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/COMMAND_RESULT.json": {
+      "bytes": 1825,
+      "sha256": "5538700d7c7de624211a84d6d7e547ddb590ca39f2c706d05108363760998633"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/COMMAND.json": {
+      "bytes": 815,
+      "sha256": "31001867bd294a0888df4c1ca3c67ddcd86bb1f5617ae0f6bec7cb5cc4107b3a"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/stderr.bin": {
+      "bytes": 220,
+      "sha256": "2214bff781cc12baadb5d698e8e05ba03047f458fcd37fa5dc4aa2774aa6f18c"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/pid.txt": {
+      "bytes": 8,
+      "sha256": "06f1654e3d83fe7fcd9d41dca57340d7e39d3fd9539ad1f5011a46554577b684"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/events.jsonl": {
+      "bytes": 121,
+      "sha256": "7f6b5a7edb63bd4d8d890665d335e8154991003993a5a62be34692005d6ec147"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/status.bin": {
+      "bytes": 64,
+      "sha256": "8ead04c1b9dd66543de9b7cdd4a4dc3000be5a2116e17fef86c3735fcc51fe03"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/COMMAND_RESULT.json": {
+      "bytes": 1952,
+      "sha256": "15a58dc786ddc7d08ebcc558a8743448bfddd32472a6ae081a56d0a3976b58c4"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/COMMAND.json": {
+      "bytes": 802,
+      "sha256": "1f1413aa7d5206cb308089493bebde81f39c77c24164de5149f24f5acc791a68"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/stdout.bin": {
+      "bytes": 30,
+      "sha256": "85f86ca505551065dafda575e0a96c665868ff3542b52dd44c5db412a46ffc40"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/stderr.bin": {
+      "bytes": 33,
+      "sha256": "279a77d3aabb6947c879b1dc3dd06ad7e5a87d9582967081aa40bb69e5852b34"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/pid.txt": {
+      "bytes": 8,
+      "sha256": "f19ac476c831b67d288f01220b91d603892c82bfdb9831109464b38caf0290b7"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/events.jsonl": {
+      "bytes": 480,
+      "sha256": "e3ee4acd54ac9dc35f86e8eea38ee8497f72c3985c7cb09d0c545297848ff544"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/031-real-timeout-0.25s/status.bin": {
+      "bytes": 64,
+      "sha256": "016b95cd5c1718ac4ca66ee1c549a0c3cc00f1aeba8144c2b5244d768d5165d0"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/COMMAND_RESULT.json": {
+      "bytes": 1318,
+      "sha256": "cf7c028fca0471dc40b0bae4be2fdd87fedf356c22ba935b37f20f4a9227c43b"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/COMMAND.json": {
+      "bytes": 416,
+      "sha256": "ae636206fd96f9ced7f4a29acd029c09b605a23bf1ae010725dec3711bf4e3c3"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/stderr.bin": {
+      "bytes": 262364,
+      "sha256": "80037bce33970c02b2e5f050b601d21a8153f88a4dcdb430d3a1aa82a7b2e172"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/pid.txt": {
+      "bytes": 8,
+      "sha256": "a78df8cf80da35817d2267c0d88eaef5d5bcc9fbd91413333b73c9d967a073ed"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/CHUNKS.json": {
+      "bytes": 3103,
+      "sha256": "5feb0e90228feea703556c69ab29c2fc734e6febf76e367e1bc023581b05361b"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/COMMAND_RESULT.json": {
+      "bytes": 1799,
+      "sha256": "dc3b492295eaaf6bc2bf5db8b8223ee7657bc9820301163fb9f8752d3d889dd2"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/COMMAND.json": {
+      "bytes": 796,
+      "sha256": "5ebbdef38e256aed146988ad1567f2221f18cdb961a38a1564ccc79974018ebe"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/stderr.bin": {
+      "bytes": 220,
+      "sha256": "2214bff781cc12baadb5d698e8e05ba03047f458fcd37fa5dc4aa2774aa6f18c"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/pid.txt": {
+      "bytes": 8,
+      "sha256": "781cfd52ab6da203e77173050141cab0b1a8e0e2d41da9893cad7ccdbb0d210c"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/events.jsonl": {
+      "bytes": 1552,
+      "sha256": "264a7e4d667afecdda1b2c1c36ccde4ff1045cd3ef92fe81c1274678c4554f00"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/040-c-control-fixed/status.bin": {
+      "bytes": 64,
+      "sha256": "e661886f987c2c3adf35b626f97f17c7fc48f9044000ef974225fe45a95d52c2"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/043-guard-fixed/COMMAND_RESULT.json": {
+      "bytes": 1102,
+      "sha256": "38f0f5db0c68078afddc01d14274c1966e6180be305af353057f25db62b7382a"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/043-guard-fixed/COMMAND.json": {
+      "bytes": 745,
+      "sha256": "2536d0914341341140b27973c84e0270537fa15b89ed93aa2836ea48cc560ecb"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/043-guard-fixed/stdout.bin": {
+      "bytes": 2396,
+      "sha256": "dbe9079233d6d9a566a48ce2a2aed5d984c65c5a5c2d050094417fe991d526f9"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/043-guard-fixed/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/COMMAND_RESULT.json": {
+      "bytes": 1819,
+      "sha256": "9e751cf315c1f59a6e093f8b6be212041e1dfcd0cf3ab75aa99d62ae058ba9c3"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/COMMAND.json": {
+      "bytes": 808,
+      "sha256": "45da4b3d9e1c5855cf93b18df2451891c338e41f93ba5b0fc94ecb6f36fd94a0"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/stderr.bin": {
+      "bytes": 220,
+      "sha256": "2214bff781cc12baadb5d698e8e05ba03047f458fcd37fa5dc4aa2774aa6f18c"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/pid.txt": {
+      "bytes": 8,
+      "sha256": "ecff8d07e6fe447b57f438d6175e7b0f7288f09b49c7b7b14fde5f2bd1a80c12"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/events.jsonl": {
+      "bytes": 1068,
+      "sha256": "33565562ae7b1dbacf96ef2a3267a0ca86421b96a7eccd831fd2b71dc217ec05"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/041-c-control-withdrawn/status.bin": {
+      "bytes": 64,
+      "sha256": "8dcb919ef3a8d13d131a172ed0fbbbf694b1ddd18bffa470308655e6dc40c4a7"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/044-guard-withdrawn/COMMAND_RESULT.json": {
+      "bytes": 1109,
+      "sha256": "06ca8b636a3da848c09801d238190485c91f4f1ac11f234647af6eb6b8b1b3a4"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/044-guard-withdrawn/COMMAND.json": {
+      "bytes": 753,
+      "sha256": "c8ee8f23b80b66496bdab2b04c6f18114e96c88e438ed980f731ffd53a7b66f6"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/044-guard-withdrawn/stdout.bin": {
+      "bytes": 759,
+      "sha256": "7a1867e1f7e8fe1c3549a6f1228193fba916ca8ef4abfa0ce58569b71708a97f"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/044-guard-withdrawn/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/COMMAND_RESULT.json": {
+      "bytes": 1814,
+      "sha256": "2b0108ea3e018c7aafa011e729e41d277c428ef0138e1dceb31e34980fa62cb1"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/COMMAND.json": {
+      "bytes": 805,
+      "sha256": "a0d6ec7ba8d51564b8e5e6d2feaaf6343db21748bdff12b880ab4a8048629ec1"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/stdout.bin": {
+      "bytes": 96,
+      "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/stderr.bin": {
+      "bytes": 220,
+      "sha256": "2214bff781cc12baadb5d698e8e05ba03047f458fcd37fa5dc4aa2774aa6f18c"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/stdin.bin": {
+      "bytes": 87,
+      "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/pid.txt": {
+      "bytes": 8,
+      "sha256": "8d61bc9d37d22920fecff509581daeb381c5357fd520ef185a712f40fedee882"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/events.jsonl": {
+      "bytes": 1552,
+      "sha256": "a11248ed846bf25eaea76f2eb208294913b14b3756d1567918b96443fc7a27c9"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/042-c-control-restored/status.bin": {
+      "bytes": 64,
+      "sha256": "e661886f987c2c3adf35b626f97f17c7fc48f9044000ef974225fe45a95d52c2"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/045-guard-restored/COMMAND_RESULT.json": {
+      "bytes": 1108,
+      "sha256": "2e948193948a50dadeed09909cc6c7ea2f334f95cb0d699ebe7235fdd2728407"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/045-guard-restored/COMMAND.json": {
+      "bytes": 751,
+      "sha256": "e5fb4d2675426e64c69f443b047053ca85d47f84c1ea1a26d791c4936b81cdbd"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/045-guard-restored/stdout.bin": {
+      "bytes": 2396,
+      "sha256": "fcd391e94632e589ad4384158861e4e3cca09bd91604f29f1d6efb2bc6355ad7"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/045-guard-restored/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/unwrapped/stub": {
+      "bytes": 17648,
+      "sha256": "d0a735842db05dad00ff5132b0bd097930b6b6f4e828e0c80ecdc7626d4df639"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/fixed/stub": {
+      "bytes": 22504,
+      "sha256": "73b743628f93f9491634b8e94895d4f962be50edd31fe67cbf1d3a8b141baf21"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/fixed/trace_wrap.c": {
+      "bytes": 8616,
+      "sha256": "1a3cb2ae9cc0cad814dce190aae5d7e39f839e9440425f3cf3c33583fc8ed75d"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/withdrawn/stub": {
+      "bytes": 22504,
+      "sha256": "40afa9310f1313878ba23742eadd850f46d13496386f1d9e6fc95fa05b4c222f"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/withdrawn/trace_wrap.c": {
+      "bytes": 8611,
+      "sha256": "a46b9f1c442647a15af526af8946307d302984f1bf5ebf743486a75749e51543"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/restored/stub": {
+      "bytes": 22504,
+      "sha256": "73b743628f93f9491634b8e94895d4f962be50edd31fe67cbf1d3a8b141baf21"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/restored/trace_wrap.c": {
+      "bytes": 8616,
+      "sha256": "1a3cb2ae9cc0cad814dce190aae5d7e39f839e9440425f3cf3c33583fc8ed75d"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/events.jsonl": {
+      "bytes": 1552,
+      "sha256": "96a26be70ed84ee9231f19fa1dc21d84354e120c283a4abe7a3f0e8da4f1eac4"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/032-real-pipe-chunks/status.bin": {
+      "bytes": 64,
+      "sha256": "e661886f987c2c3adf35b626f97f17c7fc48f9044000ef974225fe45a95d52c2"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/OBSERVATION.json": {
+      "bytes": 297,
+      "sha256": "55c029d71650105e9b5329d8c6b27bf508165181afdfac4dacf33ff831ab321f"
+    },
+    "/tmp/geo348-synthetic-c-protocol-20261025/C_WITHDRAWAL_PROOF.json": {
+      "bytes": 11329,
+      "sha256": "d5fcfe5baffa90ebfb3ce316d73ef7a69f00d8233bd842a352cd63601c2463cc"
+    }
+  },
+  "checks_performed": [
+    "original final RESULT pin",
+    "actual driver request/result exit0",
+    "actual driver full stdout",
+    "actual driver full stderr",
+    "actual driver terminal stdout",
+    "61 reported original controls all true",
+    "pinned actual original_wrapper",
+    "pinned actual original_parser",
+    "pinned actual stub",
+    "pinned actual driver",
+    "pinned actual guard",
+    "caller/producer exact driver identity",
+    "original wrapper/parser exact snapshots",
+    "complete recorded command binding 001-cc-version",
+    "original request/result metadata 001-cc-version",
+    "synthetic-only source scope 001-cc-version",
+    "isolated actual cwd 001-cc-version",
+    "full original stream 001-cc-version/stdout",
+    "full original stream 001-cc-version/stderr",
+    "complete recorded command binding 002-compile-unwrapped",
+    "original request/result metadata 002-compile-unwrapped",
+    "synthetic-only source scope 002-compile-unwrapped",
+    "isolated actual cwd 002-compile-unwrapped",
+    "full original stream 002-compile-unwrapped/stdout",
+    "full original stream 002-compile-unwrapped/stderr",
+    "complete recorded command binding 006-nm-unwrapped",
+    "original request/result metadata 006-nm-unwrapped",
+    "synthetic-only source scope 006-nm-unwrapped",
+    "isolated actual cwd 006-nm-unwrapped",
+    "full original stream 006-nm-unwrapped/stdout",
+    "full original stream 006-nm-unwrapped/stderr",
+    "complete recorded command binding 003-compile-fixed",
+    "original request/result metadata 003-compile-fixed",
+    "synthetic-only source scope 003-compile-fixed",
+    "isolated actual cwd 003-compile-fixed",
+    "full original stream 003-compile-fixed/stdout",
+    "full original stream 003-compile-fixed/stderr",
+    "complete recorded command binding 007-nm-fixed",
+    "original request/result metadata 007-nm-fixed",
+    "synthetic-only source scope 007-nm-fixed",
+    "isolated actual cwd 007-nm-fixed",
+    "full original stream 007-nm-fixed/stdout",
+    "full original stream 007-nm-fixed/stderr",
+    "complete recorded command binding 004-compile-withdrawn",
+    "original request/result metadata 004-compile-withdrawn",
+    "synthetic-only source scope 004-compile-withdrawn",
+    "isolated actual cwd 004-compile-withdrawn",
+    "full original stream 004-compile-withdrawn/stdout",
+    "full original stream 004-compile-withdrawn/stderr",
+    "complete recorded command binding 008-nm-withdrawn",
+    "original request/result metadata 008-nm-withdrawn",
+    "synthetic-only source scope 008-nm-withdrawn",
+    "isolated actual cwd 008-nm-withdrawn",
+    "full original stream 008-nm-withdrawn/stdout",
+    "full original stream 008-nm-withdrawn/stderr",
+    "complete recorded command binding 005-compile-restored",
+    "original request/result metadata 005-compile-restored",
+    "synthetic-only source scope 005-compile-restored",
+    "isolated actual cwd 005-compile-restored",
+    "full original stream 005-compile-restored/stdout",
+    "full original stream 005-compile-restored/stderr",
+    "complete recorded command binding 009-nm-restored",
+    "original request/result metadata 009-nm-restored",
+    "synthetic-only source scope 009-nm-restored",
+    "isolated actual cwd 009-nm-restored",
+    "full original stream 009-nm-restored/stdout",
+    "full original stream 009-nm-restored/stderr",
+    "complete recorded command binding 020-unwrapped-normal",
+    "original request/result metadata 020-unwrapped-normal",
+    "synthetic-only source scope 020-unwrapped-normal",
+    "isolated actual cwd 020-unwrapped-normal",
+    "full original stream 020-unwrapped-normal/stdout",
+    "full original stream 020-unwrapped-normal/stderr",
+    "same four-command actual synthetic batch 020-unwrapped-normal",
+    "original stdin binding 020-unwrapped-normal",
+    "original pid/reap/absence observation 020-unwrapped-normal",
+    "complete recorded command binding 021-fixed-normal",
+    "original request/result metadata 021-fixed-normal",
+    "synthetic-only source scope 021-fixed-normal",
+    "isolated actual cwd 021-fixed-normal",
+    "full original stream 021-fixed-normal/stdout",
+    "full original stream 021-fixed-normal/stderr",
+    "same four-command actual synthetic batch 021-fixed-normal",
+    "original stdin binding 021-fixed-normal",
+    "original pid/reap/absence observation 021-fixed-normal",
+    "original side stream binding 021-fixed-normal/events",
+    "original side stream binding 021-fixed-normal/status",
+    "complete recorded command binding 022-unwrapped-stress",
+    "original request/result metadata 022-unwrapped-stress",
+    "synthetic-only source scope 022-unwrapped-stress",
+    "isolated actual cwd 022-unwrapped-stress",
+    "full original stream 022-unwrapped-stress/stdout",
+    "full original stream 022-unwrapped-stress/stderr",
+    "same four-command actual synthetic batch 022-unwrapped-stress",
+    "original stdin binding 022-unwrapped-stress",
+    "original pid/reap/absence observation 022-unwrapped-stress",
+    "complete recorded command binding 023-fixed-stress",
+    "original request/result metadata 023-fixed-stress",
+    "synthetic-only source scope 023-fixed-stress",
+    "isolated actual cwd 023-fixed-stress",
+    "full original stream 023-fixed-stress/stdout",
+    "full original stream 023-fixed-stress/stderr",
+    "same four-command actual synthetic batch 023-fixed-stress",
+    "original stdin binding 023-fixed-stress",
+    "original pid/reap/absence observation 023-fixed-stress",
+    "original side stream binding 023-fixed-stress/events",
+    "original side stream binding 023-fixed-stress/status",
+    "complete recorded command binding 024-unwrapped-stdin_error",
+    "original request/result metadata 024-unwrapped-stdin_error",
+    "synthetic-only source scope 024-unwrapped-stdin_error",
+    "isolated actual cwd 024-unwrapped-stdin_error",
+    "full original stream 024-unwrapped-stdin_error/stdout",
+    "full original stream 024-unwrapped-stdin_error/stderr",
+    "same four-command actual synthetic batch 024-unwrapped-stdin_error",
+    "original stdin binding 024-unwrapped-stdin_error",
+    "original pid/reap/absence observation 024-unwrapped-stdin_error",
+    "complete recorded command binding 025-fixed-stdin_error",
+    "original request/result metadata 025-fixed-stdin_error",
+    "synthetic-only source scope 025-fixed-stdin_error",
+    "isolated actual cwd 025-fixed-stdin_error",
+    "full original stream 025-fixed-stdin_error/stdout",
+    "full original stream 025-fixed-stdin_error/stderr",
+    "same four-command actual synthetic batch 025-fixed-stdin_error",
+    "original stdin binding 025-fixed-stdin_error",
+    "original pid/reap/absence observation 025-fixed-stdin_error",
+    "original side stream binding 025-fixed-stdin_error/events",
+    "original side stream binding 025-fixed-stdin_error/status",
+    "complete recorded command binding 026-unwrapped-stdout_error",
+    "original request/result metadata 026-unwrapped-stdout_error",
+    "synthetic-only source scope 026-unwrapped-stdout_error",
+    "isolated actual cwd 026-unwrapped-stdout_error",
+    "full original stream 026-unwrapped-stdout_error/stdout",
+    "full original stream 026-unwrapped-stdout_error/stderr",
+    "same four-command actual synthetic batch 026-unwrapped-stdout_error",
+    "original stdin binding 026-unwrapped-stdout_error",
+    "original pid/reap/absence observation 026-unwrapped-stdout_error",
+    "complete recorded command binding 027-fixed-stdout_error",
+    "original request/result metadata 027-fixed-stdout_error",
+    "synthetic-only source scope 027-fixed-stdout_error",
+    "isolated actual cwd 027-fixed-stdout_error",
+    "full original stream 027-fixed-stdout_error/stdout",
+    "full original stream 027-fixed-stdout_error/stderr",
+    "same four-command actual synthetic batch 027-fixed-stdout_error",
+    "original stdin binding 027-fixed-stdout_error",
+    "original pid/reap/absence observation 027-fixed-stdout_error",
+    "original side stream binding 027-fixed-stdout_error/events",
+    "original side stream binding 027-fixed-stdout_error/status",
+    "complete recorded command binding 030-event-write-failure",
+    "original request/result metadata 030-event-write-failure",
+    "synthetic-only source scope 030-event-write-failure",
+    "isolated actual cwd 030-event-write-failure",
+    "full original stream 030-event-write-failure/stdout",
+    "full original stream 030-event-write-failure/stderr",
+    "same four-command actual synthetic batch 030-event-write-failure",
+    "original stdin binding 030-event-write-failure",
+    "original pid/reap/absence observation 030-event-write-failure",
+    "original side stream binding 030-event-write-failure/events",
+    "original side stream binding 030-event-write-failure/status",
+    "complete recorded command binding 031-real-timeout-0.25s",
+    "original request/result metadata 031-real-timeout-0.25s",
+    "synthetic-only source scope 031-real-timeout-0.25s",
+    "isolated actual cwd 031-real-timeout-0.25s",
+    "full original stream 031-real-timeout-0.25s/stdout",
+    "full original stream 031-real-timeout-0.25s/stderr",
+    "same four-command actual synthetic batch 031-real-timeout-0.25s",
+    "original stdin binding 031-real-timeout-0.25s",
+    "original pid/reap/absence observation 031-real-timeout-0.25s",
+    "original side stream binding 031-real-timeout-0.25s/events",
+    "original side stream binding 031-real-timeout-0.25s/status",
+    "complete recorded command binding 032-real-pipe-chunks",
+    "original request/result metadata 032-real-pipe-chunks",
+    "synthetic-only source scope 032-real-pipe-chunks",
+    "isolated actual cwd 032-real-pipe-chunks",
+    "full original stream 032-real-pipe-chunks/stdout",
+    "full original stream 032-real-pipe-chunks/stderr",
+    "same four-command actual synthetic batch 032-real-pipe-chunks",
+    "original stdin binding 032-real-pipe-chunks",
+    "original pid/reap/absence observation 032-real-pipe-chunks",
+    "original side stream binding 032-real-pipe-chunks/chunks",
+    "complete recorded command binding 040-c-control-fixed",
+    "original request/result metadata 040-c-control-fixed",
+    "synthetic-only source scope 040-c-control-fixed",
+    "isolated actual cwd 040-c-control-fixed",
+    "full original stream 040-c-control-fixed/stdout",
+    "full original stream 040-c-control-fixed/stderr",
+    "same four-command actual synthetic batch 040-c-control-fixed",
+    "original stdin binding 040-c-control-fixed",
+    "original pid/reap/absence observation 040-c-control-fixed",
+    "original side stream binding 040-c-control-fixed/events",
+    "original side stream binding 040-c-control-fixed/status",
+    "complete recorded command binding 043-guard-fixed",
+    "original request/result metadata 043-guard-fixed",
+    "synthetic-only source scope 043-guard-fixed",
+    "isolated actual cwd 043-guard-fixed",
+    "full original stream 043-guard-fixed/stdout",
+    "full original stream 043-guard-fixed/stderr",
+    "complete recorded command binding 041-c-control-withdrawn",
+    "original request/result metadata 041-c-control-withdrawn",
+    "synthetic-only source scope 041-c-control-withdrawn",
+    "isolated actual cwd 041-c-control-withdrawn",
+    "full original stream 041-c-control-withdrawn/stdout",
+    "full original stream 041-c-control-withdrawn/stderr",
+    "same four-command actual synthetic batch 041-c-control-withdrawn",
+    "original stdin binding 041-c-control-withdrawn",
+    "original pid/reap/absence observation 041-c-control-withdrawn",
+    "original side stream binding 041-c-control-withdrawn/events",
+    "original side stream binding 041-c-control-withdrawn/status",
+    "complete recorded command binding 044-guard-withdrawn",
+    "original request/result metadata 044-guard-withdrawn",
+    "synthetic-only source scope 044-guard-withdrawn",
+    "isolated actual cwd 044-guard-withdrawn",
+    "full original stream 044-guard-withdrawn/stdout",
+    "full original stream 044-guard-withdrawn/stderr",
+    "complete recorded command binding 042-c-control-restored",
+    "original request/result metadata 042-c-control-restored",
+    "synthetic-only source scope 042-c-control-restored",
+    "isolated actual cwd 042-c-control-restored",
+    "full original stream 042-c-control-restored/stdout",
+    "full original stream 042-c-control-restored/stderr",
+    "same four-command actual synthetic batch 042-c-control-restored",
+    "original stdin binding 042-c-control-restored",
+    "original pid/reap/absence observation 042-c-control-restored",
+    "original side stream binding 042-c-control-restored/events",
+    "original side stream binding 042-c-control-restored/status",
+    "complete recorded command binding 045-guard-restored",
+    "original request/result metadata 045-guard-restored",
+    "synthetic-only source scope 045-guard-restored",
+    "isolated actual cwd 045-guard-restored",
+    "full original stream 045-guard-restored/stdout",
+    "full original stream 045-guard-restored/stderr",
+    "all26 original command records",
+    "exact actual exit 001-cc-version",
+    "exact actual exit 002-compile-unwrapped",
+    "only small stub/wrapper inputs compiled 002-compile-unwrapped",
+    "no product compiler argument 002-compile-unwrapped",
+    "exact actual exit 006-nm-unwrapped",
+    "exact actual exit 003-compile-fixed",
+    "only small stub/wrapper inputs compiled 003-compile-fixed",
+    "no product compiler argument 003-compile-fixed",
+    "exact actual exit 007-nm-fixed",
+    "exact actual exit 004-compile-withdrawn",
+    "only small stub/wrapper inputs compiled 004-compile-withdrawn",
+    "no product compiler argument 004-compile-withdrawn",
+    "exact actual exit 008-nm-withdrawn",
+    "exact actual exit 005-compile-restored",
+    "only small stub/wrapper inputs compiled 005-compile-restored",
+    "no product compiler argument 005-compile-restored",
+    "exact actual exit 009-nm-restored",
+    "exact actual exit 020-unwrapped-normal",
+    "exact actual exit 021-fixed-normal",
+    "exact actual exit 022-unwrapped-stress",
+    "exact actual exit 023-fixed-stress",
+    "exact actual exit 024-unwrapped-stdin_error",
+    "exact actual exit 025-fixed-stdin_error",
+    "exact actual exit 026-unwrapped-stdout_error",
+    "exact actual exit 027-fixed-stdout_error",
+    "exact actual exit 030-event-write-failure",
+    "exact actual exit 031-real-timeout-0.25s",
+    "exact actual exit 032-real-pipe-chunks",
+    "exact actual exit 040-c-control-fixed",
+    "exact actual exit 043-guard-fixed",
+    "exact actual exit 041-c-control-withdrawn",
+    "exact actual exit 044-guard-withdrawn",
+    "exact actual exit 042-c-control-restored",
+    "exact actual exit 045-guard-restored",
+    "retained actual stub ELF unwrapped",
+    "retained actual stub ELF fixed",
+    "one exact C withdrawal/restoration fixed",
+    "actual linker symbols fixed",
+    "retained actual stub ELF withdrawn",
+    "one exact C withdrawal/restoration withdrawn",
+    "actual linker symbols withdrawn",
+    "retained actual stub ELF restored",
+    "one exact C withdrawal/restoration restored",
+    "actual linker symbols restored",
+    "whole unchanged bytes 020-unwrapped-normal/021-fixed-normal/stdout",
+    "whole unchanged bytes 020-unwrapped-normal/021-fixed-normal/stderr",
+    "whole unchanged bytes 022-unwrapped-stress/023-fixed-stress/stdout",
+    "whole unchanged bytes 022-unwrapped-stress/023-fixed-stress/stderr",
+    "whole unchanged bytes 024-unwrapped-stdin_error/025-fixed-stdin_error/stdout",
+    "whole unchanged bytes 024-unwrapped-stdin_error/025-fixed-stdin_error/stderr",
+    "whole unchanged bytes 026-unwrapped-stdout_error/027-fixed-stdout_error/stdout",
+    "whole unchanged bytes 026-unwrapped-stdout_error/027-fixed-stdout_error/stderr",
+    "whole unchanged bytes 021-fixed-normal/030-event-write-failure/stdout",
+    "whole unchanged bytes 021-fixed-normal/030-event-write-failure/stderr",
+    "whole unchanged bytes 023-fixed-stress/032-real-pipe-chunks/stdout",
+    "whole unchanged bytes 023-fixed-stress/032-real-pipe-chunks/stderr",
+    "whole unchanged bytes 020-unwrapped-normal/040-c-control-fixed/stdout",
+    "whole unchanged bytes 020-unwrapped-normal/040-c-control-fixed/stderr",
+    "whole unchanged bytes 020-unwrapped-normal/041-c-control-withdrawn/stdout",
+    "whole unchanged bytes 020-unwrapped-normal/041-c-control-withdrawn/stderr",
+    "whole unchanged bytes 020-unwrapped-normal/042-c-control-restored/stdout",
+    "whole unchanged bytes 020-unwrapped-normal/042-c-control-restored/stderr",
+    "real attached13-event status 021-fixed-normal",
+    "real complete wrapper boundary order 021-fixed-normal",
+    "actual input line lengths 021-fixed-normal",
+    "actual command identities 021-fixed-normal",
+    "actual normal return/EOF 021-fixed-normal",
+    "actual clock ordering 021-fixed-normal",
+    "real attached13-event status 023-fixed-stress",
+    "real complete wrapper boundary order 023-fixed-stress",
+    "actual input line lengths 023-fixed-stress",
+    "actual command identities 023-fixed-stress",
+    "actual normal return/EOF 023-fixed-stress",
+    "actual clock ordering 023-fixed-stress",
+    "real attached13-event status 032-real-pipe-chunks",
+    "real complete wrapper boundary order 032-real-pipe-chunks",
+    "actual input line lengths 032-real-pipe-chunks",
+    "actual command identities 032-real-pipe-chunks",
+    "actual normal return/EOF 032-real-pipe-chunks",
+    "actual clock ordering 032-real-pipe-chunks",
+    "real attached13-event status 040-c-control-fixed",
+    "real complete wrapper boundary order 040-c-control-fixed",
+    "actual input line lengths 040-c-control-fixed",
+    "actual command identities 040-c-control-fixed",
+    "actual normal return/EOF 040-c-control-fixed",
+    "actual clock ordering 040-c-control-fixed",
+    "real attached13-event status 042-c-control-restored",
+    "real complete wrapper boundary order 042-c-control-restored",
+    "actual input line lengths 042-c-control-restored",
+    "actual command identities 042-c-control-restored",
+    "actual normal return/EOF 042-c-control-restored",
+    "actual clock ordering 042-c-control-restored",
+    "actual Linux nonmatching streams and errno unchanged",
+    "actual stdin EBADF is not EOF",
+    "actual stdout EBADF saved",
+    "actual sidecar write fault marked not silently accepted",
+    "sidecar failure rejected",
+    "true synthetic timeout retained, no fake exit",
+    "actual timeout exact partial raw bytes",
+    "actual timeout stops within second handler boundary",
+    "actual chunk complete coverage stderr/0",
+    "actual chunk complete coverage stderr/32768",
+    "actual chunk complete coverage stderr/65536",
+    "actual chunk complete coverage stderr/98304",
+    "actual chunk complete coverage stderr/131072",
+    "actual chunk complete coverage stderr/163840",
+    "actual chunk complete coverage stderr/196608",
+    "actual chunk complete coverage stderr/229376",
+    "actual chunk complete coverage stdout/0",
+    "actual chunk complete coverage stdout/6",
+    "actual chunk complete coverage stdout/30",
+    "actual chunk complete coverage stdout/54",
+    "actual chunk complete coverage stdout/78",
+    "actual chunk complete coverage stderr/262144",
+    "all raw pipe bytes covered once in order",
+    "actual five stdout chunks with four partial endings",
+    "actual256KiB stderr pipe pressure",
+    "actual C withdrawal guard exits0/1/0",
+    "guard original stdout binding fixed",
+    "guard original stdout binding withdrawn",
+    "guard original stdout binding restored",
+    "withdrawal dies on missing boundary order, not output or timeout",
+    "all product scope remains unrun",
+    "later r2 preparation unexecuted"
+  ],
+  "limits": [
+    "Read-only existing actual receipts/source/bytes review; no rerun, C compile, product, browser, network or branch write by reviewer.",
+    "Only synthetic stub ELF protocol calibrated. Actual product wrapper ELF, N512, geometry, performance and formal gates remain unrun.",
+    "The0.25-second timeout belongs to a synthetic hanging stub; original product600 unchanged.",
+    "First run did not seal initial disk preflight or PYTHONOPTIMIZE; not reconstructed retroactively. Exact source/hash/header facts independently checked here; primary parser uses must(), not assert.",
+    "Later r2 preparatory files/preflight remain unrun; original successful collection was not repeated merely for missing metadata.",
+    "This separate calibration driver is not the production launcher. Its true-pipe tests do not claim the production launcher has itself been exercised end-to-end with this C stub.",
+    "Compiler/run original commands and retained stub ELFs are preserved. ELF hashes recorded above were computed at review time, not fabricated as historical per-invocation hash observations."
+  ]
+}

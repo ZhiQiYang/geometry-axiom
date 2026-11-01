@@ -1,0 +1,7 @@
+Merge made by the 'ort' strategy.
+ geometry-core/references.inc                |   4 +-
+ tests/geo337_reference_local_init_harness.c | 211 ++++++++++++++++++++++++++++
+ tests/run_all.expected.json                 |   2 +-
+ tests/test_geo261_load_residual.py          |  77 ++++++++++
+ 4 files changed, 292 insertions(+), 2 deletions(-)
+ create mode 100644 tests/geo337_reference_local_init_harness.c

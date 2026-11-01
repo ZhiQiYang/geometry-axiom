@@ -1,0 +1,94 @@
+{
+  "scope": "Publication inputs only; no branch write, new packing or product execution",
+  "package_json": "/tmp/geo323-r7-full-package-20261024/PACKAGE.json",
+  "archive": "/tmp/geo323-r7-full-package-20261024/ORIGINAL_R7_FIVE_STAGE_RAW.tar.gz",
+  "archive_sha256": "8f2420a2c4a78cd99355b32183928d1c8ce14c893fdbe88db0f101104622cd7e",
+  "avoid_duplicate_external_large_inventory": "RAW_INVENTORY.json is already embedded in the tar; its external bytes need not be duplicated in Git",
+  "producer_complete_directory": "/tmp/geo323-r7-full-collection-20261024/execution",
+  "producer_extra_files": [
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/INITIAL_FREEZE_MISSING_ROUTING_OBSERVATION.json",
+      "bytes": 610,
+      "sha256": "59a69ed065b6194301cf3e0f6a802afb42b3e2324daf4942adc8407b54d4a6f2"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/freeze_terminal_plan.py.initial-missing-routing.py.txt",
+      "bytes": 7753,
+      "sha256": "44c62ab40692b35a01a529c010cd3706f60970314c3b52a3a327c2f588e39961"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/prepare_plan.py.initial-missing-routing.py.txt",
+      "bytes": 7753,
+      "sha256": "44c62ab40692b35a01a529c010cd3706f60970314c3b52a3a327c2f588e39961"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/FREEZE_R2_COMMAND.json",
+      "bytes": 386,
+      "sha256": "d65c3358e9f9d875810e0bdcd0445f6f578be945ec2d0ca992f950b96e3a3c42"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/freeze-r2.stdout.bin",
+      "bytes": 385,
+      "sha256": "47619b013ab664f51d16b8e7f86b9e5458d1cf65e45bd0572346580854bce64a"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/freeze-r2.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/SELFTEST_SUMMARY.json",
+      "bytes": 1449,
+      "sha256": "30151c5f35777d1c300fd3a7980c113f8acf1f755c5bbea719efea4ad8ec7287"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/selftest_terminal_contracts.py",
+      "bytes": 4504,
+      "sha256": "b696da72a1a3778b79ada168a67f49ab41e132635a662146c2c1b667cf23249b"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/selftest-fixed.stdout.bin",
+      "bytes": 255,
+      "sha256": "dc8af8aa3389de40cac4e909376f1837584084bd8439f7b829d3f51295054db2"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/selftest-fixed.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/selftest-withdrawn.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/selftest-withdrawn.stderr.bin",
+      "bytes": 638,
+      "sha256": "c80b51575d9073ba26726ca793412f53b0e3532c578f9f0d5be2a9f09cae2c5f"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/selftest-restored.stdout.bin",
+      "bytes": 258,
+      "sha256": "e6720d54c907f128d95df5cb0dc162c5e29ec4a02768838d3454d991249e9dc7"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/selftest-restored.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/FINAL_PREPARATION_PINS.json",
+      "bytes": 2527,
+      "sha256": "f882d27ce6ba9da514af05beff8755ffcea1c0e04e1187e3eb8df3578ab32292"
+    },
+    {
+      "path": "/tmp/geo323-r7-full-collection-20261024/EXEC_COMPLETION.json",
+      "bytes": 483,
+      "sha256": "1df48e82a8101c3f707447b006c957e3e7cfb8d7125d57d59c463d6c69856066"
+    }
+  ],
+  "static_peer_directory": "/tmp/geo323-r7-collector-static-peer-specials-20261024",
+  "terminal_peer_directory": "/tmp/train337-terminal-peer-20261024",
+  "actual_package_peer": "PENDING train independent actual; do not mark already audited or published",
+  "limitations": "Initial freeze failure full API object was not saved separately; observation annotation is explicit. All formal R7 actual raw and three root API poll objects are preserved in the package."
+}

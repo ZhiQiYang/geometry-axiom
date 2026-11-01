@@ -1,0 +1,27 @@
+{
+  "schema": "four-alias-scopes-original-metadata-collector-static-peer-v1",
+  "checks": 36,
+  "exit_code": 0,
+  "findings": [],
+  "collector_sha256": "42731aa4a5b39436ce7a7084acb5c3dd681e2dddbeadac2f2c1a1f32c85e1020",
+  "previous_collector_sha256": "6cd5ada3cb64b637aa9f391c6c792a69cc6a644d14c599b784982f11ea068ffe",
+  "group_counts": [
+    21,
+    8,
+    3,
+    2
+  ],
+  "preserved_path_counts": [
+    147,
+    56,
+    14,
+    4
+  ],
+  "configured_gross_bytes": 706985984,
+  "limits": [
+    "Static small tools/plans/existing terminal receipts only. No packing or payload hash by reviewer.",
+    "All221 PNG/nested archive/TMP archive/raw stdout bodies are excluded from metadata archive while retaining every original path and byte.",
+    "Original failed reviewer/producer records retained; no failed product gate changes. Actual collector outer and independent package peer remain separate post-package attachments.",
+    "Shared heavy-slot scheduling and root resource reservation remain required for actual compression."
+  ]
+}

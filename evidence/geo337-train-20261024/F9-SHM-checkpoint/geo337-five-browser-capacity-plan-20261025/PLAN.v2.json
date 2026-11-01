@@ -1,0 +1,596 @@
+{
+  "schema": "geo337-five-browser-common-capacity-plan/2",
+  "created_utc": "2026-10-25T12:52:38.641401+00:00",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "plan_only": true,
+  "no_SHM_write_or_source_copy_or_cleanup_by_this_agent": true,
+  "snapshot": {
+    "/tmp": {
+      "device": 34,
+      "free_bytes": 47214592,
+      "total_bytes": 17871880192
+    },
+    "/workspace": {
+      "device": 27,
+      "free_bytes": 27578368,
+      "total_bytes": 33770192896
+    },
+    "/dev/shm": {
+      "device": 37,
+      "free_bytes": 17871880192,
+      "total_bytes": 17871880192
+    }
+  },
+  "memory_snapshot": {
+    "memory.max": "34359738368",
+    "memory.current": "34257244160",
+    "memory.swap.max": "max",
+    "memory.swap.current": "0",
+    "stat_selected": {
+      "anon": 65576960,
+      "file": 31465680896,
+      "shmem": 17824669696,
+      "slab_reclaimable": 2338615056,
+      "inactive_file": 1862803456,
+      "active_file": 11778211840
+    },
+    "disk_file_cache_estimate": 13641011200,
+    "MemAvailable": "MemAvailable:   15869444 kB"
+  },
+  "named_closed_artifact_measurements": {
+    "F9_sourceplan": {
+      "path": "/tmp/geo337-F9-canvas-sourceplan-20261025",
+      "device": 34,
+      "categories": {
+        "directories": {
+          "paths": 15,
+          "logical_bytes": 3000,
+          "unique_allocated_bytes": 0
+        },
+        "original_source_preparation_metadata": {
+          "paths": 102,
+          "logical_bytes": 17179150,
+          "unique_allocated_bytes": 17383424
+        },
+        "private_git_index": {
+          "paths": 1,
+          "logical_bytes": 6432788,
+          "unique_allocated_bytes": 6434816
+        },
+        "private_git_other": {
+          "paths": 3,
+          "logical_bytes": 283,
+          "unique_allocated_bytes": 12288
+        }
+      },
+      "unique_allocated_bytes": 23830528,
+      "duplicate_inode_paths_not_double_counted": 0,
+      "payload_hashed": false
+    },
+    "F9_source_layout": {
+      "path": "/workspace/geo337-F9-canvas-source-20261025",
+      "device": 27,
+      "categories": {
+        "directories": {
+          "paths": 637,
+          "logical_bytes": 2723840,
+          "unique_allocated_bytes": 2723840
+        },
+        "already_shared_readonly_payload": {
+          "paths": 7517,
+          "logical_bytes": 278118178,
+          "unique_allocated_bytes": 148246528
+        },
+        "private_source_and_metadata": {
+          "paths": 2,
+          "logical_bytes": 1398,
+          "unique_allocated_bytes": 8192
+        }
+      },
+      "unique_allocated_bytes": 150978560,
+      "duplicate_inode_paths_not_double_counted": 3758,
+      "payload_hashed": false
+    },
+    "F9_runtime": {
+      "path": "/tmp/geo337-F9-browser-canvas-run-20261025",
+      "device": 34,
+      "categories": {
+        "directories": {
+          "paths": 153,
+          "logical_bytes": 19420,
+          "unique_allocated_bytes": 0
+        },
+        "runtime_profiles_fixtures_outputs_preserved": {
+          "paths": 371,
+          "logical_bytes": 22107100,
+          "unique_allocated_bytes": 22892544
+        },
+        "nonregular_metadata": {
+          "paths": 5,
+          "logical_bytes": 163,
+          "unique_allocated_bytes": 0
+        },
+        "terminal_Chrome_cache": {
+          "paths": 82,
+          "logical_bytes": 1721356,
+          "unique_allocated_bytes": 1196032
+        },
+        "independent_build_runtime": {
+          "paths": 8,
+          "logical_bytes": 3072692,
+          "unique_allocated_bytes": 3084288
+        },
+        "original_workflow_outputs_receipts_artifacts": {
+          "paths": 47,
+          "logical_bytes": 1538758,
+          "unique_allocated_bytes": 1658880
+        }
+      },
+      "unique_allocated_bytes": 28831744,
+      "duplicate_inode_paths_not_double_counted": 0,
+      "payload_hashed": false
+    },
+    "F9_launch": {
+      "path": "/tmp/geo337-F9-browser-canvas-launch-20261025",
+      "device": 34,
+      "categories": {
+        "directories": {
+          "paths": 7,
+          "logical_bytes": 980,
+          "unique_allocated_bytes": 0
+        },
+        "launch_original_metadata": {
+          "paths": 29,
+          "logical_bytes": 65435,
+          "unique_allocated_bytes": 114688
+        }
+      },
+      "unique_allocated_bytes": 114688,
+      "duplicate_inode_paths_not_double_counted": 0,
+      "payload_hashed": false
+    },
+    "F9_complete_package": {
+      "path": "/tmp/geo337-F9-canvas-terminal-package-20261025",
+      "device": 34,
+      "categories": {
+        "directories": {
+          "paths": 1,
+          "logical_bytes": 320,
+          "unique_allocated_bytes": 0
+        },
+        "complete_original_archives": {
+          "paths": 4,
+          "logical_bytes": 11914524,
+          "unique_allocated_bytes": 11923456
+        },
+        "collection_metadata": {
+          "paths": 10,
+          "logical_bytes": 489244,
+          "unique_allocated_bytes": 520192
+        }
+      },
+      "unique_allocated_bytes": 12443648,
+      "duplicate_inode_paths_not_double_counted": 0,
+      "payload_hashed": false
+    },
+    "F9_published_archive_Git_blobs": {
+      "objects": [
+        {
+          "path": "/tmp/geo337-published-archive-git-objects-20261024/c8/f78cdec57741c5f556b488a177267394634fc5",
+          "oid": "c8f78cdec57741c5f556b488a177267394634fc5",
+          "bytes": 5778049,
+          "allocated_bytes": 5779456,
+          "protected": true
+        },
+        {
+          "path": "/tmp/geo337-published-archive-git-objects-20261024/82/d5eed682e3926b48ca5f2d0232e703fb2148ce",
+          "oid": "82d5eed682e3926b48ca5f2d0232e703fb2148ce",
+          "bytes": 3235632,
+          "allocated_bytes": 3235840,
+          "protected": true
+        },
+        {
+          "path": "/tmp/geo337-published-archive-git-objects-20261024/de/8b1000bab448184b528e42b898bcb5afb001b9",
+          "oid": "de8b1000bab448184b528e42b898bcb5afb001b9",
+          "bytes": 2420208,
+          "allocated_bytes": 2420736,
+          "protected": true
+        },
+        {
+          "path": "/tmp/geo337-published-archive-git-objects-20261024/4e/43e18875895148b1a593ecd3c74a777e5fa67e",
+          "oid": "4e43e18875895148b1a593ecd3c74a777e5fa67e",
+          "bytes": 388120,
+          "allocated_bytes": 389120,
+          "protected": true
+        }
+      ],
+      "allocated_bytes": 11825152
+    }
+  },
+  "historical_five_jobs": [
+    {
+      "job": "assembly",
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "original_exit": 0,
+      "wrapper_exit": 0,
+      "original_elapsed_seconds": 191.69236098701367,
+      "original_CI_minutes": 15,
+      "rounded_retained_categories": {
+        "launch": 69632,
+        "original": 782336,
+        "temporary": 9580544,
+        "pool-preparation": 27885568,
+        "original-pool-guards": 188416,
+        "tools": 45056,
+        "SUMMARY.json": 28672
+      },
+      "excluded_from_old_tar_but_physically_retained": {
+        "rebuildable Chrome cache leaf; not removed": 1957888,
+        "rebuildable ELF payload only; original file retained; fingerprint sidecar included": 2998272
+      },
+      "runtime_raw_build_cache_without_common_pool_rounded_bytes": 15650816,
+      "old_archive_bytes": 5226869,
+      "limitation": "Retained endpoint inventory, not sampled runtime peak. Old collector excluded ELF/cache payload from tar; new F9 collector preserves them, so old archive sizes are references rather than exact forecasts."
+    },
+    {
+      "job": "documents",
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "original_exit": 0,
+      "wrapper_exit": 0,
+      "original_elapsed_seconds": 64.3160554660135,
+      "original_CI_minutes": 10,
+      "rounded_retained_categories": {
+        "launch": 69632,
+        "original": 958464,
+        "temporary": 3977216,
+        "pool-preparation": 27885568,
+        "original-pool-guards": 188416,
+        "tools": 45056,
+        "SUMMARY.json": 28672
+      },
+      "excluded_from_old_tar_but_physically_retained": {
+        "rebuildable Chrome cache leaf; not removed": 1966080,
+        "rebuildable ELF payload only; original file retained; fingerprint sidecar included": 2998272
+      },
+      "runtime_raw_build_cache_without_common_pool_rounded_bytes": 10231808,
+      "old_archive_bytes": 5357450,
+      "limitation": "Retained endpoint inventory, not sampled runtime peak. Old collector excluded ELF/cache payload from tar; new F9 collector preserves them, so old archive sizes are references rather than exact forecasts."
+    },
+    {
+      "job": "grid",
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "original_exit": 0,
+      "wrapper_exit": 0,
+      "original_elapsed_seconds": 482.2789733009995,
+      "original_CI_minutes": 15,
+      "rounded_retained_categories": {
+        "launch": 69632,
+        "original": 1064960,
+        "temporary": 16154624,
+        "pool-preparation": 27885568,
+        "original-pool-guards": 188416,
+        "tools": 45056,
+        "SUMMARY.json": 24576
+      },
+      "excluded_from_old_tar_but_physically_retained": {
+        "rebuildable Chrome cache leaf; not removed": 1957888,
+        "rebuildable ELF payload only; original file retained; fingerprint sidecar included": 2998272
+      },
+      "runtime_raw_build_cache_without_common_pool_rounded_bytes": 22503424,
+      "old_archive_bytes": 8569103,
+      "limitation": "Retained endpoint inventory, not sampled runtime peak. Old collector excluded ELF/cache payload from tar; new F9 collector preserves them, so old archive sizes are references rather than exact forecasts."
+    },
+    {
+      "job": "space",
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "original_exit": 0,
+      "wrapper_exit": 0,
+      "original_elapsed_seconds": 229.7544228140032,
+      "original_CI_minutes": 15,
+      "rounded_retained_categories": {
+        "launch": 69632,
+        "original": 237568,
+        "temporary": 13717504,
+        "pool-preparation": 27885568,
+        "original-pool-guards": 188416,
+        "tools": 45056,
+        "SUMMARY.json": 28672
+      },
+      "excluded_from_old_tar_but_physically_retained": {
+        "rebuildable ELF payload only; original file retained; fingerprint sidecar included": 2998272,
+        "rebuildable Chrome cache leaf; not removed": 1957888
+      },
+      "runtime_raw_build_cache_without_common_pool_rounded_bytes": 19243008,
+      "old_archive_bytes": 8393840,
+      "limitation": "Retained endpoint inventory, not sampled runtime peak. Old collector excluded ELF/cache payload from tar; new F9 collector preserves them, so old archive sizes are references rather than exact forecasts."
+    },
+    {
+      "job": "timber",
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "original_exit": 0,
+      "wrapper_exit": 0,
+      "original_elapsed_seconds": 124.23609746200964,
+      "original_CI_minutes": 20,
+      "rounded_retained_categories": {
+        "launch": 69632,
+        "original": 204800,
+        "temporary": 5070848,
+        "pool-preparation": 27885568,
+        "original-pool-guards": 188416,
+        "tools": 45056,
+        "SUMMARY.json": 28672
+      },
+      "excluded_from_old_tar_but_physically_retained": {
+        "rebuildable ELF payload only; original file retained; fingerprint sidecar included": 2998272,
+        "rebuildable Chrome cache leaf; not removed": 1957888
+      },
+      "runtime_raw_build_cache_without_common_pool_rounded_bytes": 10563584,
+      "old_archive_bytes": 5230162,
+      "limitation": "Retained endpoint inventory, not sampled runtime peak. Old collector excluded ELF/cache payload from tar; new F9 collector preserves them, so old archive sizes are references rather than exact forecasts."
+    }
+  ],
+  "historical_totals": {
+    "retained_job_endpoint_bytes": 78192640,
+    "old_archive_bytes": 32777424
+  },
+  "F9_canvas_full_package": {
+    "original_formal_exit": 0,
+    "original_35minute_gate_exit": 0,
+    "regular_original_bytes": 45780854,
+    "archive_bytes": 11914524,
+    "all_roundtrip_complete": true
+  },
+  "seed": {
+    "items": 3759,
+    "logical_bytes": 139059750,
+    "rounded_source_payload_bytes": 148242432,
+    "copies": 1,
+    "independent_of_nativeROOT": true,
+    "then_readonly_same_device_hardlinks_to_five_isolated_jobs": true
+  },
+  "original_split_fallback": {
+    "source_plan_existing_canvas_bytes": 10483982,
+    "materialize_TMP_required_after_plan": 106558263,
+    "materialize_WS_required_after_plan": 69349376,
+    "snapshot_immediate_TMP_gap_after_plan": 59343671,
+    "snapshot_immediate_WS_gap": 41771008,
+    "snapshot_TMP_gap_including_new_plan_bytes": 69827653,
+    "whole_five_original_TMP_envelope_excluding_seed": 1342177280,
+    "whole_five_original_WS_envelope_private_sources_audit_reserve": 155189248,
+    "whole_five_TMP_estimate_gap": 1294962688,
+    "whole_five_WS_estimate_gap": 127610880,
+    "remote_download_160MiB_additional_if_left_TMP": 167772160
+  },
+  "recommended_SHM": {
+    "existing_mount": "/dev/shm",
+    "exact_OWN_root": "/dev/shm/geo337-F9-browsers-20261025",
+    "allocation_MiB": {
+      "one_independent_complete_seed_and_private_Git": 192,
+      "five_independent_job_metadata_indexes_directories_private_sources": 320,
+      "five_job_runtime_build_Chrome_raw_retained": 320,
+      "five_complete_archives_retained": 160,
+      "tools_publication_receipts_and_audits": 64,
+      "one_active_job_unmeasured_transient_file_margin": 256,
+      "original_materialization_reserve_retained": 64,
+      "five_new_protected_volatile_Git_archive_object_sets": 160,
+      "five_remote_full_archive_download_verification_copies": 160
+    },
+    "retained_plus_active_margin_budget_bytes": 1778384896,
+    "root_planning_ceiling_bytes": 2147483648,
+    "unused_ceiling_contingency_bytes": 369098752,
+    "fresh_filesystem_free_above_budget": 16093495296,
+    "sequence": [
+      {
+        "job": "assembly",
+        "ordinal": 1,
+        "all_outputs_kept_budget_after_job_bytes": 503316480,
+        "plus_single_active_transient_and_original_reserve_bytes": 838860800,
+        "ports": [
+          19082,
+          9367
+        ]
+      },
+      {
+        "job": "documents",
+        "ordinal": 2,
+        "all_outputs_kept_budget_after_job_bytes": 738197504,
+        "plus_single_active_transient_and_original_reserve_bytes": 1073741824,
+        "ports": [
+          19083,
+          9366
+        ]
+      },
+      {
+        "job": "grid",
+        "ordinal": 3,
+        "all_outputs_kept_budget_after_job_bytes": 973078528,
+        "plus_single_active_transient_and_original_reserve_bytes": 1308622848,
+        "ports": [
+          19084,
+          9334
+        ]
+      },
+      {
+        "job": "space",
+        "ordinal": 4,
+        "all_outputs_kept_budget_after_job_bytes": 1207959552,
+        "plus_single_active_transient_and_original_reserve_bytes": 1543503872,
+        "ports": [
+          19085,
+          9347
+        ]
+      },
+      {
+        "job": "timber",
+        "ordinal": 5,
+        "all_outputs_kept_budget_after_job_bytes": 1442840576,
+        "plus_single_active_transient_and_original_reserve_bytes": 1778384896,
+        "ports": [
+          19086,
+          9348
+        ]
+      }
+    ],
+    "runtime_peak_is_measured": false,
+    "budget_is_not_proven_maximum": true,
+    "original_64MiB_guard_unchanged": true,
+    "no_new_CI_or_assertion_threshold": true,
+    "cleanup_credit_assumed": 0,
+    "old_TMP_permanent_store_unchanged": true,
+    "ordinary_Git_reader_graph_must_include_new_store_before_publication": true,
+    "SHM_commands_require_specific_auto_review_permission": true,
+    "new_protected_volatile_Git_store_must_be_in_OWN_SHM": true,
+    "SHM_persistence": "tmpfs is volatile. Protected means no arbitrary deletion while retained/referenced, not disk persistence. Every delivered job needs exact archive remote download hash verification after normal push.",
+    "remote_download_cache_policy": "Budget keeps all five copies; after verified hash matches, only explicitly identified download cache copies may later be retired. Original raw/archive/Git objects remain protected."
+  },
+  "preserve": [
+    "All existing raw receipts, fixtures, tests, Git objects and dirty files",
+    "F9 native ROOT/current seed/pool, F8/R8/P189 original source and ELF",
+    "Existing permanent /tmp/geo337-published-archive-git-objects-20261024 unchanged",
+    "Every newly generated formal output/raw/archive/Git blob through all five jobs; no per-job deletions needed for this budget",
+    "After archiving and pushing, new SHM Git objects remain protected while referenced; persistence across environment teardown is not assumed"
+  ],
+  "operational_sequence": [
+    "Only after original heavy/secondary scheduling allows: auto-reviewed exact OWN SHM bootstrap; preserve full original source bytes/modes and Git closure, verify source/native inode independence.",
+    "Use separately reviewed placement-only preparer/driver/launcher. Each job has its own plan, private Git/index/golden, source root, HTTP/CDP ports and TMP/build paths.",
+    "Before every materialize run, rerun the original per-device admission with 64MiB reserve; when all are one SHM device combine actual device demands, do not multiply reserves by path aliases or drop required work.",
+    "Run assembly, documents, grid, space, timber sequentially with unchanged workflow/CI/watchdog/assertions. Record every original command/exit/full stdout/stderr/environment/F9 SHA.",
+    "After each true terminal run, before delivery: collect every original regular payload with roundtrip; retain raw and archive; preload in the separately reviewed protected volatile SHM Git store; normal push; verify remotely resolvable evidence SHA and download exact complete archives into separately named OWN download caches, compare byte count and SHA256 to original manifests. Handoff records remote rebuild path. No remote verification means not delivered.",
+    "Record mount type, filesystem free and sampled own allocated use/cgroup/RAM during each job and collection/publication. Report actual observed sample maximum with sampling interval and gaps; no exact dynamic peak claimed without measurement. Retain ENOSPC/OOM as environment failures, never relax product gates. Do not extrapolate SHM browser timing to R8/P189 performance."
+  ],
+  "bounded_candidate_findings_not_credited": [
+    "Already executed source retirements (895 TMP,597 WS,3 reader leaves) are in current free space and are not counted again.",
+    "Known obsolete native private caches of #299/#314 contain only 4,804,608/4,829,184 allocated ELF bytes; mutation-cache directories are empty. No claim of300MB reclaim.",
+    "Old Q38 work/repo now contains only AGENTS.md and .git, and its tmp is empty: the1.29GB du is not disposable source. Git objects remain protected.",
+    "Old ledger caches b6e1e454/4f4a24d7 mostly contain retained raw/stdout, with at most one1,122,304B ELF in the bounded classified scope.",
+    "Existing terminal canvas index gzip proposal estimated5,287,936B net before metadata; unexecuted and not needed for SHM plan.",
+    "Four closed L browser BrowserMetrics-spare.pma leaves share recorded4MiB zero-payload hash; exact sharing could preserve paths but is not prepared, authorized or credited."
+  ],
+  "minimal_environment_action": "Use the existing RW/executable SHM mount only through the explicit auto-review path already proven for a16KiB probe; no mount/quota/security setting change, purchase, protected deletion or silent sandbox bypass. Full bootstrap/launcher/collector/store approvals and exact small-tool peers remain necessary.",
+  "limitations": [
+    "statvfs snapshots are shared-environment instants; other running work can change free space.",
+    "Named-directory allocated counts deduplicate inodes inside each scope. Shared source payload was allocated before canvas and is not counted as newly reclaimable bytes.",
+    "Old retained data and generous per-stage allowances support planning, not an exact observed peak or product acceptance.",
+    "If new archive/object routing is left on TMP, this common-capacity solution is incomplete: old five archive reference32,777,424B plus another Git copy already exceeds current TMP free before new metadata/runtime.",
+    "No filesystem-wide scan or payload hashing was performed for capacity measurement; no new source replica, archive or cleanup was produced.",
+    "SHM path placement, independent source seed copier, complete collector and new-store/publication adapters must each have actual accepted preparation before launch; this capacity plan is not a tool execution or passing gate.",
+    "The retained F9 source layout 150,978,560 B includes existing shared inode payload; it is a per-scope footprint, not incremental disk used by that canvas layout. New SHM seed uses one fresh independent copy.",
+    "No new SHM writes, old-source/cache cleanup, fresh formal run or remote download was performed by this plan."
+  ],
+  "bindings": {
+    "/tmp/geo337-F9-canvas-archive-preload-20261025/RESULT.json": {
+      "bytes": 3023,
+      "sha256": "5538b21d9baf5dfaec29f09de4eceef41aa98755f1822a7946e02744347785de"
+    },
+    "/tmp/geo337-F9-canvas-archive-preload-20261025/part1/RESULT.json": {
+      "bytes": 4282,
+      "sha256": "5f2594bee996d61d9c5de2ddf24e3a195bedea5c22c6f029b6121ed6b05a7c18"
+    },
+    "/tmp/geo337-F9-canvas-archive-preload-20261025/part2/RESULT.json": {
+      "bytes": 4282,
+      "sha256": "92859370008b4209f9d7f4f03619861cd4e7bf058a0538594481405b81ab3b6f"
+    },
+    "/tmp/geo337-F9-canvas-archive-preload-20261025/part3/RESULT.json": {
+      "bytes": 4282,
+      "sha256": "086e0d88af3652be11ed4587ab5ff947c29805910e57851a136aa26b12b1ab85"
+    },
+    "/tmp/geo337-F9-canvas-archive-preload-20261025/part4/RESULT.json": {
+      "bytes": 4280,
+      "sha256": "edf48ad848fea7f6d981fb35f64f737744918607d49a0f955a88226370d8937e"
+    },
+    "/tmp/geo337-F9-canvas-terminal-package-20261025/RESULT.json": {
+      "bytes": 2636,
+      "sha256": "eb604c5973fa7e19549d85cd3c7c045485a84a0697730fe6a682f984121fe704"
+    },
+    "/tmp/geo337-F9-canvas-sourceplan-20261025/PLAN.json": {
+      "bytes": 4589015,
+      "sha256": "c1a1ce03b782b7a26db3b908edebb18d22abad784bcb2926a2934941356a7bde"
+    },
+    "/workspace/train337-browser-terminal-collection/assembly/RAW_INVENTORY.json": {
+      "bytes": 213649,
+      "sha256": "bccac94030c23c1dd1fb7166ec27cafacb371381cf12a7f51dd5a8055bbfa750"
+    },
+    "/workspace/train337-browser-terminal-collection/assembly/SUMMARY.json": {
+      "bytes": 24996,
+      "sha256": "4cc1ad80569fed798c389f8cbb509b1a03d1420d9f89e84d0eac7f5ceac925f8"
+    },
+    "/workspace/train337-browser-terminal-collection/assembly/PACKAGE.json": {
+      "bytes": 643,
+      "sha256": "1fa8ae8ce9590c08a861b27383a7fde2be09a182b06d427599b9b7375e4895a6"
+    },
+    "/workspace/train337-browser-terminal-collection/documents/RAW_INVENTORY.json": {
+      "bytes": 218431,
+      "sha256": "8b92b417d29bcc2999fe49782565853d34153335788c753a173bae21f6725621"
+    },
+    "/workspace/train337-browser-terminal-collection/documents/SUMMARY.json": {
+      "bytes": 26743,
+      "sha256": "51b720767d0833e3ea6fb7a36c82635e947e3c05a3a06aa82dab81120ff7aa57"
+    },
+    "/workspace/train337-browser-terminal-collection/documents/PACKAGE.json": {
+      "bytes": 645,
+      "sha256": "2fc7b654f8b0b7212bdf718956697a6b196a279937a39df5950123ade7c37796"
+    },
+    "/workspace/train337-browser-terminal-collection/grid/RAW_INVENTORY.json": {
+      "bytes": 210595,
+      "sha256": "d4c72ca6d7f467a9e22b4fe4271423f221c8aec99ea0a5a5408368653354ae54"
+    },
+    "/workspace/train337-browser-terminal-collection/grid/SUMMARY.json": {
+      "bytes": 24311,
+      "sha256": "816929a52a12225ee94e075b780862d9c63042230ffe4dfe0ab7143b2423dda4"
+    },
+    "/workspace/train337-browser-terminal-collection/grid/PACKAGE.json": {
+      "bytes": 635,
+      "sha256": "ee0d747689bfdd50b2f7ea144a0b75e8c16c806db00372fb9216dd78da4aa2b8"
+    },
+    "/workspace/train337-browser-terminal-collection/space/RAW_INVENTORY.json": {
+      "bytes": 225616,
+      "sha256": "dc3ae96960192f4f969f6559a555267297cf3f15f51a0b49abdff55f9ef99557"
+    },
+    "/workspace/train337-browser-terminal-collection/space/SUMMARY.json": {
+      "bytes": 26623,
+      "sha256": "e2a5f0589eb298ff6d6d1f273f5597a2cdc7cb0433092612345bfec5e370e337"
+    },
+    "/workspace/train337-browser-terminal-collection/space/PACKAGE.json": {
+      "bytes": 637,
+      "sha256": "10180df00f1f95e38d4e51d29f586d2cfff3c38eae80c38672acd2d6dc6ecb88"
+    },
+    "/workspace/train337-browser-terminal-collection/timber/RAW_INVENTORY.json": {
+      "bytes": 217427,
+      "sha256": "26c52274af2a3e0c57caae6d1d28c6a961d15608cef11c0312f59ca33abb61b5"
+    },
+    "/workspace/train337-browser-terminal-collection/timber/SUMMARY.json": {
+      "bytes": 26793,
+      "sha256": "963e33c56ab547837be9cc74f7944c499da37864e738aaf0e9d06e55dfa2e978"
+    },
+    "/workspace/train337-browser-terminal-collection/timber/PACKAGE.json": {
+      "bytes": 639,
+      "sha256": "b02fdea1ad858ccdbbc9571893ad7006ba961f201caf88f874125bfd5eb90f6a"
+    },
+    "/workspace/geo337-existing-shm-probe-result-20261025.json": {
+      "bytes": 317,
+      "sha256": "07c5fc83baa2017b9bf9a0175a2105455d840bac91de15ad8797372951ec1d82"
+    },
+    "/workspace/geo337-existing-shm-probe-invocation-20261025.json": {
+      "bytes": 1117,
+      "sha256": "3414a4b130a66dfdbc8a621e3b73a0b2e5a1970bbc4ddb3163b56fb4187dcd5b"
+    }
+  },
+  "supersedes": {
+    "path": "/workspace/geo337-five-browser-capacity-plan-20261025/PLAN.json",
+    "sha256": "1a55a0d7f21adb1eb30db406498a93f955d5186d1c36dc90516b0376d13f445d",
+    "reason": "Add five remote full-byte verification copies and explicit volatile SHM retention semantics; original read-only measurements unchanged."
+  },
+  "updated_utc": "2026-10-25T12:57:45.925250+00:00",
+  "execution_exit": null,
+  "plan_generation_complete": true,
+  "mountinfo_snapshot": [
+    "89 87 0:26 / /dev/shm ro,nosuid,nodev,relatime master:5 - tmpfs shm rw",
+    "94 85 0:34 / /tmp ro,nosuid,nodev,relatime master:10 - tmpfs none rw",
+    "104 85 0:27 /workspace /workspace rw,nosuid,nodev,relatime master:1 - overlay overlay rw,lowerdir=/run/kata-containers/erofs-multi-layer/6c44c2ba0f2d4ad8a1e1d33cd97683a5/lower-0,upperdir=/run/kata-containers/erofs-multi-layer/6c44c2ba0f2d4ad8a1e1d33cd97683a5/upper/upper,workdir=/run/kata-containers/erofs-multi-layer/6c44c2ba0f2d4ad8a1e1d33cd97683a5/upper/work,index=off,metacopy=off",
+    "109 94 0:34 / /tmp rw,nosuid,nodev,relatime master:10 - tmpfs none rw"
+  ],
+  "probe_invocation_evidence": {
+    "path": "/workspace/geo337-existing-shm-probe-invocation-20261025.json",
+    "sha256": "3414a4b130a66dfdbc8a621e3b73a0b2e5a1970bbc4ddb3163b56fb4187dcd5b"
+  }
+}

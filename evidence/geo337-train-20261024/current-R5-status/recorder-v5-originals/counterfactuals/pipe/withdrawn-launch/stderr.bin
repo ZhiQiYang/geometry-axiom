@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tests/test_recorder_contract.py", line 160, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tests/test_recorder_contract.py", line 34, in main
+    check('recorded child stdout/stderr remain original PIPE',b['stdout_fifo'] and b['stderr_fifo'])
+  File "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tests/test_recorder_contract.py", line 20, in check
+    assert value,name
+           ^^^^^
+AssertionError: recorded child stdout/stderr remain original PIPE

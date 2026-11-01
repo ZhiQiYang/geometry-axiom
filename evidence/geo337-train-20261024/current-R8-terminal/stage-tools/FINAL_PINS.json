@@ -1,0 +1,44 @@
+{
+  "required_product_ancestor": null,
+  "selected_final_source": null,
+  "source_materialized": false,
+  "formal_run": false,
+  "files": {
+    "prepare_plan.py": {
+      "bytes": 4753,
+      "sha256": "f2f0bed5e9301ff78c78abb81e698f74b336dfcfc891c13296d7d0beaaca711f"
+    },
+    "prepare_source.py": {
+      "bytes": 9812,
+      "sha256": "c0422c0f727c13b3af28f541390a7de9eb0739b5cfa220e25a90247121b3ab7c"
+    },
+    "launch_stages.py": {
+      "bytes": 4290,
+      "sha256": "480e07e9002f9a84f2779d93073a545755e78dba02d645232a41483aec762345"
+    },
+    "bind_final_request.py": {
+      "bytes": 2170,
+      "sha256": "d52137bf8f5ab5e6887ce5b455a031ef7d0cef00df7a76bd700e1751ebc40d08"
+    },
+    "start_five.py": {
+      "bytes": 2182,
+      "sha256": "6a2cb8468a4e40c48489fbe8002e0cd6e33df1076ef80aac27b4424606d41bc4"
+    },
+    "REQUEST.unbound.json": {
+      "bytes": 2545,
+      "sha256": "9cceb98afcb2b953f22c1bdfbe9c0f98b8fed5c7cb3471a37d0f2c6a42c18fb1"
+    },
+    "REQUEST.template.json": {
+      "bytes": 2545,
+      "sha256": "9cceb98afcb2b953f22c1bdfbe9c0f98b8fed5c7cb3471a37d0f2c6a42c18fb1"
+    },
+    "PLAN.json": {
+      "bytes": 2131,
+      "sha256": "b279aa7bec7b9eb5f33918766d9f2e30587187f4ff9f795b3a383b7bdf96f582"
+    },
+    "README.md": {
+      "bytes": 1969,
+      "sha256": "27fa546792564869613de43c7f493d8939fc5ddcb883293b7036f43cf119cdd1"
+    }
+  }
+}

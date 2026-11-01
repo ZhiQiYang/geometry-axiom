@@ -1,0 +1,428 @@
+{
+  "schema": "geo348-timeout-command-boundary-static-preparation/1",
+  "utc": "2026-10-25T07:44:23.003102+00:00",
+  "author": "/root/r8_terminal_peer",
+  "read_only": true,
+  "product_executed": false,
+  "product_changed": false,
+  "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+  "later_sentinel_source": "73b21e64dce72f0d16ca29e18559c51815b9724d",
+  "current_train_F8": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "sources": [
+    {
+      "path": "tests/test_geo261_timber_capacity_host.py",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 23454,
+      "sha256": "be15d7430e580a8bf82ece815105d48d288825a833eae863a3cc880301e42405",
+      "copy": "source-F0f/tests/test_geo261_timber_capacity_host.py"
+    },
+    {
+      "path": "tests/_bridge.py",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 12285,
+      "sha256": "dddeaec72eaed7e6255bb6c37013180b68364dc65f2f5aa4edd6f9fab6456423",
+      "copy": "source-F0f/tests/_bridge.py"
+    },
+    {
+      "path": "tests/geo300_scene_generator.py",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 18860,
+      "sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+      "copy": "source-F0f/tests/geo300_scene_generator.py"
+    },
+    {
+      "path": "geometry-web/web_bridge.c",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 52474,
+      "sha256": "e69df59bffae112e8c961f88a87f7739cc611612e7d16f1258fbeae64f7dd32c",
+      "copy": "source-F0f/geometry-web/web_bridge.c"
+    },
+    {
+      "path": "geometry-web/reference_bridge.inc",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 26300,
+      "sha256": "8d46bda5a8340d44363fb8df5f74cc007eb47664cd043be1a2a5acb02ee58cb8",
+      "copy": "source-F0f/geometry-web/reference_bridge.inc"
+    },
+    {
+      "path": "geometry-web/engineering_bridge.inc",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 22339,
+      "sha256": "c98a3d33ec62748e180c2ac3b05fc2124e081232c86f513083a17b8268a5013f",
+      "copy": "source-F0f/geometry-web/engineering_bridge.inc"
+    },
+    {
+      "path": "geometry-core/references.inc",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 64355,
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751",
+      "copy": "source-F0f/geometry-core/references.inc"
+    },
+    {
+      "path": "geometry-core/kernel/source.c",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 16890,
+      "sha256": "678877fab2d5acac05d7a1400c9068210beb7844c60c4b8fb30bda693e4f1e2a",
+      "copy": "source-F0f/geometry-core/kernel/source.c"
+    },
+    {
+      "path": "geometry-app/native/reference_sources.inc",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 63190,
+      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "copy": "source-F0f/geometry-app/native/reference_sources.inc"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 26113,
+      "sha256": "4862b7c956b5944276d2ee3de6915704945da2899a50a29ba2a5e20150e7478a",
+      "copy": "source-F0f/geometry-templates/woodworking/native/contact_world.c"
+    },
+    {
+      "path": "geometry-templates/woodworking/native/contact_sources.c",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839",
+      "copy": "source-F0f/geometry-templates/woodworking/native/contact_sources.c"
+    },
+    {
+      "path": "current_geometry.c",
+      "source_sha": "0f695866c0ba12d2c70dfd7d40628d0fda0f905f",
+      "bytes": 402554,
+      "sha256": "15cfa1f0bd4aa58ebc2482f78d7a0c19cb9da27ec6cf27179473c1808ea00bc9",
+      "copy": "source-F0f/current_geometry.c"
+    }
+  ],
+  "selected_paths_changed_F0f_to_F73": [
+    "tests/test_geo261_timber_capacity_host.py"
+  ],
+  "selected_paths_changed_F0f_to_F8": [
+    "tests/test_geo261_timber_capacity_host.py",
+    "tests/geo300_scene_generator.py",
+    "geometry-core/references.inc",
+    "geometry-core/kernel/source.c",
+    "geometry-templates/woodworking/native/contact_world.c",
+    "current_geometry.c"
+  ],
+  "cases": [
+    {
+      "number": 79,
+      "command_bytes_sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff",
+      "input": "loadfile /workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/timber-capacity-512-placed.scene\ndump\nobjects\nreferences\n",
+      "timeout": 600,
+      "completed_process_returned": false,
+      "returncode": null,
+      "exception": {
+        "type": "TimeoutExpired",
+        "repr": "TimeoutExpired(['/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge'], 600)"
+      },
+      "stdout": {
+        "captured": false
+      },
+      "stderr": {
+        "captured": false
+      },
+      "executable": {
+        "retained": true,
+        "path": "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge",
+        "bytes": 1316392,
+        "sha256": "050123dadc7e7082ff211fd1469594ddc49188b565a3d707309f682583681841",
+        "event": "before-original-subprocess.run",
+        "payload_retained": false
+      },
+      "original_recorder_elapsed_seconds": 600.1147615909576
+    },
+    {
+      "number": 80,
+      "command_bytes_sha256": "c3c4631b3e3c88c4ab7aa5ae70bfc5b60de3d3c7e2fc11f12c3535a31f68a358",
+      "input": "loadfile /workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/timber-capacity-64-placed.scene\ndump\nobjects\nreferences\n",
+      "timeout": 600,
+      "completed_process_returned": true,
+      "returncode": 0,
+      "exception": null,
+      "stdout": {
+        "captured": true,
+        "representation": "original-bytes",
+        "bytes": 74419,
+        "sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef"
+      },
+      "stderr": {
+        "captured": true,
+        "representation": "original-bytes",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "executable": {
+        "retained": true,
+        "path": "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge",
+        "bytes": 1316392,
+        "sha256": "050123dadc7e7082ff211fd1469594ddc49188b565a3d707309f682583681841",
+        "event": "before-original-subprocess.run",
+        "payload_retained": false
+      },
+      "original_recorder_elapsed_seconds": 1.3948183059692383
+    },
+    {
+      "number": 81,
+      "command_bytes_sha256": "ac03d88a253a12fca61faaa07b4554b2fc2d6d1458cdf7c25103feb2ec155387",
+      "input": "loadfile /workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/timber-capacity-64-placed-replay.scene\ndump\nobjects\nreferences\n",
+      "timeout": 600,
+      "completed_process_returned": true,
+      "returncode": 0,
+      "exception": null,
+      "stdout": {
+        "captured": true,
+        "representation": "original-bytes",
+        "bytes": 74419,
+        "sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef"
+      },
+      "stderr": {
+        "captured": true,
+        "representation": "original-bytes",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "executable": {
+        "retained": true,
+        "path": "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge",
+        "bytes": 1316392,
+        "sha256": "050123dadc7e7082ff211fd1469594ddc49188b565a3d707309f682583681841",
+        "event": "before-original-subprocess.run",
+        "payload_retained": false
+      },
+      "original_recorder_elapsed_seconds": 1.4933216571807861
+    },
+    {
+      "number": 82,
+      "command_bytes_sha256": "ac03d88a253a12fca61faaa07b4554b2fc2d6d1458cdf7c25103feb2ec155387",
+      "input": "loadfile /workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/timber-capacity-64-placed-replay.scene\ndump\nobjects\nreferences\n",
+      "timeout": 600,
+      "completed_process_returned": true,
+      "returncode": 0,
+      "exception": null,
+      "stdout": {
+        "captured": true,
+        "representation": "original-bytes",
+        "bytes": 74419,
+        "sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef"
+      },
+      "stderr": {
+        "captured": true,
+        "representation": "original-bytes",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "executable": {
+        "retained": true,
+        "path": "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge",
+        "bytes": 1316392,
+        "sha256": "050123dadc7e7082ff211fd1469594ddc49188b565a3d707309f682583681841",
+        "event": "before-original-subprocess.run",
+        "payload_retained": false
+      },
+      "original_recorder_elapsed_seconds": 1.445873498916626
+    },
+    {
+      "number": 83,
+      "command_bytes_sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff",
+      "input": "loadfile /workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/timber-capacity-512-placed.scene\ndump\nobjects\nreferences\n",
+      "timeout": 600,
+      "completed_process_returned": false,
+      "returncode": null,
+      "exception": {
+        "type": "TimeoutExpired",
+        "repr": "TimeoutExpired(['/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge'], 600)"
+      },
+      "stdout": {
+        "captured": false
+      },
+      "stderr": {
+        "captured": false
+      },
+      "executable": {
+        "retained": true,
+        "path": "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge",
+        "bytes": 1316392,
+        "sha256": "050123dadc7e7082ff211fd1469594ddc49188b565a3d707309f682583681841",
+        "event": "before-original-subprocess.run",
+        "payload_retained": false
+      },
+      "original_recorder_elapsed_seconds": 600.1130447387695
+    }
+  ],
+  "fixture": {
+    "sha256": "760a7169ea3577341b4b0ec1b56ea39c21c85c777434325ec906debe0a816f10",
+    "bytes": 45154,
+    "capture_scope": "Passive point-in-time copy of still-existing original NativeBuild scene inputs while H7 second 512 load is running; after first timeout. Not a retrospective pre-execution snapshot; original files and frozen collector unchanged.",
+    "captured_utc": "2026-10-24T03:40:17.438701+00:00",
+    "statements": 1026,
+    "timbers": 512,
+    "places": 512
+  },
+  "original_selected_compiler_argv": [
+    [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/isolated-kernel",
+      "-c",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/isolated-kernel/source.c",
+      "-o",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/source.o"
+    ],
+    [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/isolated-kernel",
+      "-c",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/isolated-woodworking/native/contact_world.c",
+      "-o",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/wood-contact-world.o"
+    ],
+    [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/isolated-kernel",
+      "-c",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/isolated-woodworking/native/contact_sources.c",
+      "-o",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/wood-contact-sources.o"
+    ],
+    [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O0",
+      "-Werror=implicit-function-declaration",
+      "-I",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/isolated-kernel",
+      "-DGEOMETRY_KERNEL_EXTERNAL=1",
+      "-DGEOMETRY_WOODWORKING_EXTERNAL=1",
+      "-DGEOMETRY_HOST_HISTORY_EXTERNAL=1",
+      "-DGEOMETRY_HOST_CANDIDATE_EXTERNAL=1",
+      "-c",
+      "/workspace/geo348-F0f695866-source/geometry-web/web_bridge.c",
+      "-o",
+      "/workspace/geo348-F0f695866-formal-tmp/geometry-tests/geo261-n1a-9m6ewo1y/product-bridge.o"
+    ]
+  ],
+  "F73_actual_phase_labels": [
+    "H3-affected",
+    "count-fixed",
+    "count-withdrawn",
+    "count-restored",
+    "population-fixed",
+    "population-withdrawn",
+    "population-restored",
+    "unplaced_replay-fixed",
+    "unplaced_replay-withdrawn",
+    "unplaced_replay-restored",
+    "sentinel-fix-fixed",
+    "sentinel-fix-withdrawn",
+    "sentinel-fix-restored"
+  ],
+  "observer_already_retains_exception_stream_attributes": true,
+  "git_read_count": 15,
+  "bindings": {
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000079/receipt.json": {
+      "bytes": 2031,
+      "sha256": "cee88cc07759310ef6c3966dc2d4dffc347c838381edfa8ef402fe486f5b18f3"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000079/input.bin": {
+      "bytes": 140,
+      "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000080/receipt.json": {
+      "bytes": 2146,
+      "sha256": "d81d44397ca2dd2689ccd1bbed869566d362931ac0a1db4e3b7a05bfebfec8c9"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000080/input.bin": {
+      "bytes": 139,
+      "sha256": "c3c4631b3e3c88c4ab7aa5ae70bfc5b60de3d3c7e2fc11f12c3535a31f68a358"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000080/stdout.bin": {
+      "bytes": 74419,
+      "sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000080/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000081/receipt.json": {
+      "bytes": 2146,
+      "sha256": "51e5fa69c882e02c5ad00d63dfbea4ed79a62050c776b1afbf2080ec265b81e1"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000081/input.bin": {
+      "bytes": 146,
+      "sha256": "ac03d88a253a12fca61faaa07b4554b2fc2d6d1458cdf7c25103feb2ec155387"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000081/stdout.bin": {
+      "bytes": 74419,
+      "sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000081/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000082/receipt.json": {
+      "bytes": 2146,
+      "sha256": "e751a93de78753d584c23c0762eaa95a73abea59cfc2e8004e9b708edb7a6c0e"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000082/input.bin": {
+      "bytes": 146,
+      "sha256": "ac03d88a253a12fca61faaa07b4554b2fc2d6d1458cdf7c25103feb2ec155387"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000082/stdout.bin": {
+      "bytes": 74419,
+      "sha256": "3ab18b1897e30188b4df2c17f1d263e93b56b221b8171adeeedae487cdec7eef"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000082/stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000083/receipt.json": {
+      "bytes": 2031,
+      "sha256": "03082d156084c43a03aecc6dfb4f9daa0239addb0b75f39b3781b81d52ed6ff6"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/command-000083/input.bin": {
+      "bytes": 140,
+      "sha256": "6589eb1c26654effdceee204dd0871d688f8a10c5bbe663ffc974983d63339ff"
+    },
+    "/workspace/geo348-F0f695866-formal-input-supplement-20261024/pass-001/MANIFEST.json": {
+      "bytes": 1956,
+      "sha256": "cd115d316914d10f8860d715a38afbe7bc84e6cafc590e5d9e61c356dd0c2538"
+    },
+    "/workspace/geo348-F0f695866-formal-input-supplement-20261024/pass-001/001-timber-capacity-512-placed.scene": {
+      "bytes": 45154,
+      "sha256": "760a7169ea3577341b4b0ec1b56ea39c21c85c777434325ec906debe0a816f10"
+    },
+    "/workspace/geo300-capacity512-h-pipe-capture-20261024/observe_bridge_bytes.py": {
+      "bytes": 18048,
+      "sha256": "6a85e3ef7a75ccf93c46be1f0d3466f5fa5e3667d2a64cd501d967ea51e7e77a"
+    },
+    "/workspace/geo348-F0f695866-formal/H7/observed/native-inputs/compiler-input-snapshots.json": {
+      "bytes": 136155,
+      "sha256": "4bea45ea2b9ff6e0ee6b468ba7fd0aa0c6ad2dd79162f3e0bc2e97a54847f1c5"
+    },
+    "/workspace/geo348-F73b21e64-formal/RESULT.json": {
+      "bytes": 524292,
+      "sha256": "23119c194be860059362672980d984c805838f5227c83788c3d2522b7fbc29c0"
+    }
+  },
+  "limits": [
+    "Two original600-second failures bound only toF0f; null returncode and absent stdout/stderr do not identify a command.",
+    "Retained512fixture was copied during second timeout, after first timeout, not a preexecution snapshot of either batch.",
+    "Original ELF is hash-only in these receipts; no payload-preservation claim.",
+    "Source inspection supplies candidate costs and conditional complexity, not measured attribution.",
+    "F73 and F8 differ from F0f; old results cannot be relabeled as either source.",
+    "No tests or product process launched; diagnostic scheme remains unimplemented/unexecuted."
+  ]
+}

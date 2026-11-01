@@ -1,0 +1,26 @@
+{
+  "schema": "geometry-followup-browser-workflow/1",
+  "source_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+  "repo": "/tmp/g288f-13d02c1d",
+  "started_utc": "2026-10-23T05:25:13.736898+00:00",
+  "tool_hashes": {
+    "run_followup_seven_jobs.py": "fc343a758313bb6a08f70a776bebe0f7a9c3688f2e5d01e03e35ad134edb9bdf",
+    "run_workflow_round.py": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310",
+    "reap_children.py": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+    "run_acceptance_seven_configured.py": "03e4c182cad40b6abd7dae52a8c8af43c5ffe90f2d38ae62e21be2f518b54d83",
+    "publish_followup_progress.py": "c2fdeb5eb9174549c5a80726bdd37266b22f0f75ff94d744fdc82c0f384a14d2"
+  },
+  "stack_before": [
+    16777216,
+    -1
+  ],
+  "stack_during": [
+    16777216,
+    -1
+  ],
+  "jobs": [],
+  "policy": "All original workflow jobs run serially; preserve failures, original CI limits and complete command streams. No automatic retry or product edits.",
+  "publication_repo": "/workspace/geometry-axiom",
+  "publication_branch": "architecture/geo261-integration-20261016",
+  "issue": "261"
+}

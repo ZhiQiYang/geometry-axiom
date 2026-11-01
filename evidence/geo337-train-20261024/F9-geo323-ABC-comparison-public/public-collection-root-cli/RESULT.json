@@ -1,0 +1,57 @@
+{
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "exit_code": 0,
+  "request_sha256": "b6da9bf332183df705d664ca886d36014d0924b93c4bd45ef7712c0669b1c3a3",
+  "collector_sha256": "529d363cc5d07dc0cca155c98dc028d0bff1dcdd27d29d7b192bee85d9d8cfdb",
+  "peer_sha256": "39dba4a22ffa9bae8a66f3b669965e1da4b6fe14fa4908910a6a6ebe2c6fe632",
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/collect_public_part4.py",
+        "--request",
+        "/dev/shm/geometry-axiom-geo337-20261025/PUBLIC-comparison-collection-root-original-20261025/ROOT_REQUEST.json",
+        "--execute"
+      ],
+      "cwd": "/workspace",
+      "acceptance_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "source_variant": "PUBLIC-only archival projection; formal comparison bytes unchanged; private profile retained locally",
+      "environment": {
+        "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONIOENCODING": null,
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": null,
+        "TMPDIR": null,
+        "CC": null,
+        "CFLAGS": null,
+        "CPPFLAGS": null,
+        "LDFLAGS": null,
+        "C_INCLUDE_PATH": null,
+        "CPATH": null,
+        "LIBRARY_PATH": null,
+        "LD_LIBRARY_PATH": null,
+        "GCC_EXEC_PREFIX": null,
+        "COMPILER_PATH": null
+      },
+      "started_epoch": 1792938400.3898761,
+      "stdin_provided": false,
+      "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_process_returncode": 0,
+      "timeout_expired": false,
+      "directory": "/dev/shm/geometry-axiom-geo337-20261025/PUBLIC-comparison-collection-root-original-20261025/subcommands/000001",
+      "ended_epoch": 1792938400.5692155,
+      "stdout_sha256": "ade7107988f4c3c2b83841bbe00157944d14c5b5a43ea16de769ac75dccd0bf4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 4334,
+      "stderr_bytes": 0
+    }
+  ],
+  "subject_rerun": false,
+  "private_originals_unchanged": true,
+  "delivered": false,
+  "package_result": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-PUBLIC-comparison-20261025/RESULT.json"
+}

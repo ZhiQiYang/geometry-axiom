@@ -1,0 +1,166 @@
+{
+  "schema": "geo314-isolated-wood-diagnostic/1",
+  "scope": "Only tests/test_geo261_wood_grid_application.py; not full acceptance",
+  "head": "32f42e3d991c7d2d916d21bfe8ac5d3dd0f9b131",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/geo314-work/w-diagnostic-32f42e3d-002/capture_runner.py",
+    "/workspace/geo314-work/w-diagnostic-32f42e3d-002",
+    "/tmp/g261-next314"
+  ],
+  "stack_limit_bytes": 16777216,
+  "started_at": "2026-10-22T22:57:49.683981+00:00",
+  "elapsed_seconds": 11.001492650000728,
+  "exit_code": 0,
+  "cwd": "/tmp/g261-next314",
+  "environment": {
+    "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+    "TMPDIR": "/workspace/geo314-work/w-diagnostic-32f42e3d-002/native-tmp",
+    "CC": null,
+    "GEO314_DIAGNOSTIC_SCOPE": "isolated-wood-suite-only"
+  },
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "versions": {
+    "python": {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    "cc": {
+      "command": [
+        "cc",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    "node": {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    "chrome": {
+      "command": [
+        "google-chrome",
+        "--version"
+      ],
+      "exit_code": 127
+    },
+    "uname": {
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "exit_code": 0
+    }
+  },
+  "output_files": {
+    "after-head.txt": {
+      "sha256": "f29b6b0cd441e76f7b67150431edd9de5a9850164fb9fec544d667ecd9e36f19",
+      "size": 41
+    },
+    "after-status.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "after.patch": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "before-head.txt": {
+      "sha256": "f29b6b0cd441e76f7b67150431edd9de5a9850164fb9fec544d667ecd9e36f19",
+      "size": 41
+    },
+    "before-status.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "before.patch": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "capture_runner.py": {
+      "sha256": "108da5ade9cc74c5ffa2f9af686c5b8b7ada6bbb9b3f3f77e58de60a4f22f1d6",
+      "size": 1069
+    },
+    "cc.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "cc.stdout": {
+      "sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+      "size": 231
+    },
+    "chrome.stderr": {
+      "sha256": "792127f5af29c2e6c307d33572c798fc226df704a0b3ec9997dd61fdbde40819",
+      "size": 52
+    },
+    "chrome.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "native-build-0.json": {
+      "sha256": "bc08fc4b94719d5855c89acaccd42f2f416d341d1fdf1d453140fe189106ce89",
+      "size": 337397
+    },
+    "native-build-files.json": {
+      "sha256": "ceac1fa6182d5968384c9a4337a4845f8c73883fea73eb93753a8fd5ad064eee",
+      "size": 50711
+    },
+    "native-build-inputs-and-binaries.tar.gz": {
+      "sha256": "7ab842ac1a7451208a24975c8bed483173023e4d8fe4e82724d0b8d8f50b3a90",
+      "size": 5981590
+    },
+    "node.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "node.stdout": {
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41",
+      "size": 9
+    },
+    "python.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "python.stdout": {
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+      "size": 15
+    },
+    "result.json": {
+      "sha256": "6eefb7a73668e989751d8b6490525ebfffd4df31a55ba417b5842dc13fcc888f",
+      "size": 363
+    },
+    "source-inputs.json": {
+      "sha256": "9e8554c310f1e41c1eee5540535cdee5730709227070e9e3c8aaa485f1fc0ce7",
+      "size": 77240
+    },
+    "source-inputs.tar.gz": {
+      "sha256": "8d6d5bd4329bb34be6acee6bcfb3a4ebed47394cb401133bf4126722183b9009",
+      "size": 2340388
+    },
+    "stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "stdout.raw": {
+      "sha256": "0e773d7bee1d65ee5e5b09bc9309b159d26d77b8c24e5af34c7bbd9b55d18ce2",
+      "size": 8081
+    },
+    "uname.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "uname.stdout": {
+      "sha256": "27de62bdb8635a9dcd7eb3a882f061b08bed16354c75c1fbbfda9356685f854a",
+      "size": 80
+    },
+    "unittest.log": {
+      "sha256": "d841d29fa3e44a909ff7cd81dda7dcce280e09fdd813e19cd5c25ca680e1dd13",
+      "size": 122
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "geo337-r8-terminal-publication-actual-peer/1",
+  "utc": "2026-10-25T07:08:23.090808+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "product_source": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "previous_head": "815cd2e348e47e1666371aff5060820ff29a913a",
+  "evidence_head": "0687f3bd67c150de4856585dae1cbaeded460bc6",
+  "original_commands": 497,
+  "original_command_exits_all_zero": true,
+  "files": 316,
+  "bytes": 1043771,
+  "manifest_matches_public_git_blobs_and_original_sources": true,
+  "normal_push_and_remote_head_verified": true,
+  "product_tree_unchanged": true,
+  "unique_current_progress": true,
+  "bindings": {
+    "/tmp/geo337-R8-terminal-evidence-publication-20261025/RESULT.json": "b9c95e34ca013eeb126dba397f78143f27c1dd376d10c14961b1c8b097f173e1",
+    "/tmp/geo337-R8-terminal-publication-preparation-20261025/FILES.final.json": "9fca87ce2b8e167e2ca4460c317e02c5a5e0cbf59488e8f7d78d38045c8b3311",
+    "/tmp/geo337-R8-terminal-publication-peer-20261025/STATIC_DRAFT_REVIEW.json": "740ef70e46f955ff4215acdcd483a2fa80725e825378f14acc5dcc4e911c0467",
+    "/tmp/geo337-R8-terminal-publication-peer-20261025/FINAL_DELTA_REVIEW.json": "ae3c00c218ba9e8e284e46cd62d9023638df045933da0525ac0374b90fb8e15e",
+    "/tmp/geo337-R8-terminal-publication-peer-20261025/audit_publication.py": "5cf886e646d03c5b665fd293700dd86a2631b653860d1322bd40179254557bdd"
+  },
+  "initial_reviewer_assumption_corrected": "Preserved initial reviewer incorrectly expected one ls-remote; producer records B/B/E three reads. Only reviewer expectation corrected; original commands unchanged.",
+  "limits": [
+    "No product gates rerun; no refs/index/object-store writes by reviewer.",
+    "Publication does not change exact red, stale ledger, required-CI failures, or full-gate UNRUN status.",
+    "Complete R8 archive remains separately unpublished at this evidence head."
+  ]
+}

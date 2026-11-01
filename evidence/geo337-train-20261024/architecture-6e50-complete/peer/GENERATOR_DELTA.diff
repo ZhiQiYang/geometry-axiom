@@ -1,0 +1,19 @@
+--- /workspace/geo337-architecture-k-source-delta-tool-20261024/refresh_architecture_k_source_delta.py
++++ /tmp/geo337-architecture-h-local-init-tool-20261024/refresh_architecture_h_local_init.py
+@@ -5,6 +5,7 @@
+ import argparse,collections,copy,datetime,hashlib,importlib.util,json,os,re,resource,sys
+ p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--sha',required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--prior-source',required=True);p.add_argument('--guard-baseline-source',default='ca7838e0f4950452b9befcf40899d606db9b81fa');a=p.parse_args();R=a.root.resolve();O=a.out.resolve();F=a.sha
+ assert re.fullmatch('[0-9a-f]{40}',a.prior_source) and re.fullmatch('[0-9a-f]{40}',a.guard_baseline_source)
++assert a.prior_source=='e321026fb9bc9bc19c54b8034af6e6eaec2857f9', 'prior receipt actual execution source must be Me321; F7 is its adoption commit'
+ assert re.fullmatch('[0-9a-f]{40}',F) and not O.exists() and not O.is_relative_to(R) and not sys.flags.optimize
+ assert resource.getrlimit(resource.RLIMIT_STACK)[0]==16777216
+ ART='geometry-core/domain-decoupling';NAMES=['product-architecture.json','product-architecture-scan.json','PRODUCT-ARCHITECTURE.md','product-architecture-receipt.json'];JUDGES=['tests/architecture_contract.py','tests/test_architecture_contract.py','tests/test_product_architecture.py']
+@@ -15,7 +16,7 @@
+ HISTORICAL_PIN='80f44b8c870e097413e395d30ba029199ba66b7302985c0f325d4f446d0ce525'
+ CURRENT_PIN='81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975'
+ PROBE_PIN='350fc09a16660d33144fe7b7a8198032e8251e37a67a61179ec96eba39e1e739'
+-EXPECTED_CHANGED_INPUT='geometry-core/kernel/source.c'
++EXPECTED_CHANGED_INPUT='geometry-core/references.inc'
+ def validate_manifests(current_raw,previous_raw,historical_raw):
+  assert current_raw==previous_raw and H(LF(current_raw))==CURRENT_PIN
+  assert H(historical_raw)==HISTORICAL_PIN

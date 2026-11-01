@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "show",
+    "--format=fuller",
+    "--no-ext-diff",
+    "6366304eb787b2a50282e4132f45e51eb7d21290",
+    "--",
+    "geometry-templates/woodworking/native/contacts.c",
+    "geometry-templates/woodworking/native/contacts.h",
+    "geometry-templates/woodworking/native/contact_world.c",
+    "tests/run_tests.py",
+    "tests/geo261_contacts_harness.c"
+  ],
+  "cwd": "/workspace/geometry-axiom",
+  "exit": 0,
+  "stdout_sha256": "56e848b22d5520926e8d42433e32fb96c90d0511e34fef394b2c71df083ac9c9",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

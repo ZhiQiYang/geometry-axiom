@@ -1,0 +1,200 @@
+{
+  "original_driver_exit": 1,
+  "original_passed": false,
+  "original_phases": [
+    {
+      "name": "p189",
+      "original_argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-u",
+        "/tmp/train337-final-p52-p189-prep/p189/p189_verify.py",
+        "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+      ],
+      "outer_command": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/geo261-environment/reap_children.py",
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "-u",
+          "/tmp/train337-final-p52-p189-prep/p189/p189_verify.py",
+          "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+        ],
+        "cwd": "/tmp/train337-323-f64d638f-source",
+        "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_variant": "final-original-special",
+        "environment": {
+          "PATH": "/workspace/geo261-environment/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": "utf-8",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": "/workspace/g337p189L/tmp",
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792807309.5993032,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 1,
+        "timeout_expired": false,
+        "directory": "/workspace/g337p189L/subcommands/000006",
+        "ended_epoch": 1792807371.9927938,
+        "stdout_sha256": "d89aa27465d6bde11291da924b9bc81de8f2881640b302d86730a99354e16dee",
+        "stderr_sha256": "d16e02133274a180d676f0ec16b6f4a7be689aa7bb3d8a72dad7787444574f69",
+        "stdout_bytes": 8461,
+        "stderr_bytes": 376
+      },
+      "reaper_log": "/workspace/g337p189L/p189-reaper.jsonl",
+      "primary_returncode": 1,
+      "reaper_sha256": "1806e988d6b165ec7d98f1f135613fe1020732668e0172df481905f64dba7571"
+    }
+  ],
+  "source_before": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "tree": "0a9f5ecf3f2b43478049ae5a5fcd463cca6fb2a7",
+    "status": "",
+    "index_sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0",
+    "refs_sha256": "7ad654d3dabfe19ddcf726f26cd004dffbbc2493cf1d225611d39a0cfc711848"
+  },
+  "source_after": {
+    "head": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+    "tree": "0a9f5ecf3f2b43478049ae5a5fcd463cca6fb2a7",
+    "status": "",
+    "index_sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0",
+    "refs_sha256": "7ad654d3dabfe19ddcf726f26cd004dffbbc2493cf1d225611d39a0cfc711848"
+  },
+  "original_errors": [],
+  "started_utc": "2026-10-24T02:01:49.525737+00:00",
+  "ended_utc": "2026-10-24T02:02:52.051498+00:00",
+  "schema": "original-performance-terminal-collection/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate": "p189",
+  "original_outer_exits": {
+    "p189": 1
+  },
+  "original_capture_rows": [
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000001",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000002",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000003",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000004",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000005",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000006",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000007",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000008",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000009",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000010",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/g337p189L/subcommands.json",
+      "directory": "/workspace/g337p189L/subcommands/000011",
+      "exit": 0,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    },
+    {
+      "record_file": "/workspace/train337-L-p189-original-launch-20261024/subcommands.json",
+      "directory": "/workspace/train337-L-p189-original-launch-20261024/subcommands/000001",
+      "exit": 1,
+      "timeout": false,
+      "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+    }
+  ],
+  "elf_payload_excluded_count": 3,
+  "elf_payload_excluded_bytes": 2895688,
+  "no_existing_file_deleted": true,
+  "no_subject_executed": true,
+  "limitations": [
+    "Only original exposed outputs are retained. No hidden pipe, missing receipt or already-cleaned source snapshot is invented.",
+    "All excluded ELF payloads remain at original paths with hashes; no executable body is archived or unlinked.",
+    "Original source guards establish historical identity; current shared ROOT/cache is not read.",
+    "Timing-only never changes original full P189 red. Each GEO323 stage execution, cumulative CLI result and quantitative target is distinct.",
+    "Original v4 source_role/source_sha heuristic may label orchestration base because argv contains --base; original fields remain unmodified.",
+    "A collection roundtrip success only verifies evidence bytes, not acceptance success.",
+    "Only exact terminal P52 Chrome Singleton IPC paths are metadata-only exclusions. Symlink bytes/targets and lstat are recorded without following links; socket payload is not representable and is not claimed archived. All original IPC paths remain. The initial collector failure and exact old collector bytes are retained separately inside this package."
+  ],
+  "terminal_chrome_ipc_metadata_count": 0
+}

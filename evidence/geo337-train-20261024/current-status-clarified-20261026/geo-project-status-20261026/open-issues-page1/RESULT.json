@@ -1,0 +1,29 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "--method",
+    "GET",
+    "search/issues",
+    "-f",
+    "q=repo:ZhiQiYang/geometry-axiom is:issue is:open",
+    "-f",
+    "per_page=20",
+    "-f",
+    "page=1",
+    "-f",
+    "sort=updated",
+    "-f",
+    "order=desc"
+  ],
+  "cwd": "/tmp",
+  "started_utc": "2026-10-26T10:53:57.013897+00:00",
+  "ended_utc": "2026-10-26T10:53:57.580366+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 129287,
+  "stdout_sha256": "a40b75d5abda4399f9eb575a0da5baef189c39feb92ba2e3339800b93448b9c1",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

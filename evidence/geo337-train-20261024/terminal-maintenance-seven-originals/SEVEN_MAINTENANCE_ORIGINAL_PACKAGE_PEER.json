@@ -1,0 +1,23 @@
+{
+  "schema": "independent-seven-maintenance-original-package-peer/1",
+  "created_utc": "2026-10-23T23:24:02.661758+00:00",
+  "checks": 8446,
+  "exit_code": 0,
+  "findings": [],
+  "member_count": 1677,
+  "payload_bytes": 7711908,
+  "archive_sha256": "eba221475730fefff24833b058e4aa5adc365771e1a4b9875341dc08aba3c51a",
+  "index_sha256": "3219237bad264ad406dfda7eb44bcce0b727a29c4737c92b33571d68785a5197",
+  "scope": "Streamed every archive member and compared original bytes; seven action trees and terminal receipts, sidecars, scope arithmetic, collector raw checked. No extraction, cleanup or subject test.",
+  "publication_companions_required": [
+    "/workspace/storage-maintenance-originals-package-20261023/INDEX.json",
+    "/workspace/storage-maintenance-originals-package-20261023/PACKAGE.json",
+    "/workspace/storage-maintenance-package-launch-20261023"
+  ],
+  "limits": [
+    "Metadata maintenance is not product validation. No executable/archive/relocated-body payload in this package.",
+    "Configured allocations differ from concurrent observed free bytes; raw move is cross-filesystem transfer.",
+    "Nine original archive paths/bytes retained with aliases; three cold checkouts remain barred until de-link.",
+    "Independent action acceptance is in included prior peers; package review does not rerun any action."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "geo337-r8-terminal-publication-draft-static-peer/1",
+  "utc": "2026-10-25T06:58:40.289083+00:00",
+  "exit_code": 0,
+  "findings": [],
+  "product_source": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "expected_parent": "815cd2e348e47e1666371aff5060820ff29a913a",
+  "draft_manifest_sha256": "f3954c2777b7c18c9815aeee02d6a30cfa36e8a84df9ff8fdda567f5e4674ede",
+  "files": 312,
+  "bytes": 1020399,
+  "all_sources_match": true,
+  "current_state_count": 1,
+  "publisher_sha256": "16d1b53f1ccb6a93b227fe31a2b28536287a77045107368afc1537363c266ea5",
+  "producer_sha256": "a5e51462fd26eb9fa2029061a83ae5f03dfc98249bee34dc77cfeb43496dfeb4",
+  "progress_sha256": "cd8410e56eb87a2814864d9289946173771f08c3329d524694f007446aa60077",
+  "fact_check_scope": [
+    "Performance values and verdicts, stage exits, outer1, exact3 and missing ABC match small original terminal summary.",
+    "Physical ledger check source is F8 with exit1, no ledger regeneration.",
+    "CI run IDs match captured summary; future evidence CI explicitly unread.",
+    "Architecture and H focused proofs retain actual earlier source IDs; full F8 gates remain UNRUN.",
+    "Full R8 archive explicitly unpublished; no READY claim."
+  ],
+  "pending": [
+    "r8_terminal_peer actual gate/CI/ledger review must be appended before final publication.",
+    "FILES.final delta and post-publication actual need separate checks."
+  ],
+  "limits": [
+    "Read-only ~1MB source hashing and small receipt checks; no original gates rerun or larger raw package read."
+  ]
+}
