@@ -3125,12 +3125,17 @@ static bool apply_interactive_tokens(
         return ok;
     }
 
-    if (!g_history.grouping) {
+    bool recorded = !g_history.grouping;
+    if (recorded) {
         history_record(world);
     }
     uint32_t preview_before = reference_preview_token();
+    uint64_t revision_before = g_definition_revision;
     if (apply_scene_line(path, line_no, tokens, count, world)) {
-        app_history_group_mark_dirty(&g_history);
+        /* R56: a successful no-op does not create history or discard redo. */
+        if (g_definition_revision == revision_before) {
+            if (recorded) history_unrecord();
+        } else app_history_group_mark_dirty(&g_history);
         return true;
     }
     if (g_history.grouping) {
@@ -6441,7 +6446,13 @@ static bool app_world_candidate_revalidate_commit(AppWorldCandidate *candidate,c
     g_boundary_keyed_update=previous_keyed;g_boundary_keyed_id=previous_keyed_id;g_subgrid_before=previous;
     return ok&&app_world_candidate_seal(candidate);
 }
-static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live);
+static bool app_world_candidate_revalidate_retained(AppWorldCandidate *candidate,const World *live);
+/* I8a confirmation revalidates the same retained candidate. The existing
+ * sealed bytes and provider set must pass before its resolver can be reopened. */
+static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+{
+    return app_world_candidate_revalidate_retained(candidate,live);
+}
 
 /* ---- 共用小解析工具 ---- */
 
