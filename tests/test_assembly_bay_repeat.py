@@ -280,6 +280,10 @@ class BayRepeat(unittest.TestCase):
         state = self.read()["state"]
         self.assertIn(CAPABILITY, state.get("capabilities", []), "R06 native capability is absent")
         self.assertEqual(LIMITS, {k: state.get("limits", {}).get(k) for k in LIMITS})
+        engineering = self.command("engineering-read")
+        self.assertTrue(engineering.get("ok"), engineering)
+        self.assertIn(CAPABILITY, engineering["state"].get("capabilities", []),
+                      "I69: the project reader must advertise repeat support independently of current content")
 
     def test_br01_exact_rectangle_native_preview_and_confirm(self):
         before = self.stable()
@@ -820,6 +824,14 @@ class BayRepeat(unittest.TestCase):
             self.assertTrue(result.get("ok"), killer("br12:replay-accepted", result))
             actual = {"dump": fresh.command("dump")["text"], "state": fresh.command("assembly-read")["state"]}
             self.assert_native_provenance(fresh.command, actual["state"]["instances"][0])
+            candidate = fresh.command("load-prepare " + str(path))
+            self.assertTrue(candidate.get("ok"), candidate)
+            for capability in (CAPABILITY, "assembly-timber-generation/1"):
+                self.assertIn(capability, candidate.get("capabilities", []),
+                              "I69: detached project candidates must advertise both generation capabilities")
+                self.assertIn(capability, candidate.get("required_capabilities", []),
+                              "I69: repeat scene candidates must require both generation capabilities")
+            self.assertTrue(fresh.command("load-cancel " + str(candidate["token"]))["cancelled"])
         self.assertEqual({"dump": before["dump"], "state": before["assembly"]["state"]}, actual,
                          killer("br12:replay-mapping", actual))
         self.assertIn("requires " + CAPABILITY + "\n", before["dump"])
