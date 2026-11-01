@@ -601,6 +601,7 @@ static bool app_scene_candidate_apply(void *after,GeoEvalContext *sources,void *
 static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,AppWorldCandidate *transaction,bool *retained)
 {
     World *candidate=&transaction->after;
+    identity_drop_serials();
     if (!count) return true;
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
