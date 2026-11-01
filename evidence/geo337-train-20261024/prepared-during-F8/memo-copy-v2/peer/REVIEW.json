@@ -1,0 +1,485 @@
+{
+  "schema": "F8-memo-copy-v2-static-and-metadata-peer/1",
+  "utc": "2026-10-25T08:17:38.383287+00:00",
+  "subject": "/tmp/geo337-F8-memo-counterfactual-tools-v2-20261025",
+  "preparation_sha256": "cee50f54e8c28b059c17a223091a2780b7268406d14474c200869a5fd3ed53bd",
+  "checks": [
+    {
+      "id": "prep-pin",
+      "passed": true
+    },
+    {
+      "id": "run-pin",
+      "passed": true
+    },
+    {
+      "id": "prepared-COPY_METADATA_PROOF.initial-summary.json",
+      "passed": true
+    },
+    {
+      "id": "prepared-COPY_METADATA_PROOF.json",
+      "passed": true
+    },
+    {
+      "id": "prepared-COUNTERFACTUAL.json",
+      "passed": true
+    },
+    {
+      "id": "prepared-METADATA_PROOF.json",
+      "passed": true
+    },
+    {
+      "id": "prepared-ORIGINAL_TO_F8_TOOL.diff",
+      "passed": true
+    },
+    {
+      "id": "prepared-R8_ELF_COPY_BINDINGS.json",
+      "passed": true
+    },
+    {
+      "id": "prepared-README.md",
+      "passed": true
+    },
+    {
+      "id": "prepared-V1_TO_V2_COPY_ONLY.diff",
+      "passed": true
+    },
+    {
+      "id": "prepared-check_copy_metadata.py",
+      "passed": true
+    },
+    {
+      "id": "prepared-check_metadata.py",
+      "passed": true
+    },
+    {
+      "id": "prepared-copy_r8_elf.py",
+      "passed": true
+    },
+    {
+      "id": "prepared-memo_variant.py",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/F7-geometry-app__native__reference_sources.inc",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/F7-geometry-core__references.inc",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/F8-geometry-app__native__reference_sources.inc",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/F8-geometry-core__references.inc",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/H-geometry-app__native__reference_sources.inc",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/H-geometry-core__references.inc",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-fixed.stderr.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-fixed.stdout.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-fixture-fixed/synthetic-copy",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-fixture-fixed/synthetic-original",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-fixture-restored/synthetic-copy",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-fixture-restored/synthetic-original",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-fixture-withdraw-copy-to-hardlink/synthetic-copy",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-fixture-withdraw-copy-to-hardlink/synthetic-original",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-restored.stderr.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-restored.stdout.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-withdraw-copy-to-hardlink.stderr.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/copy-withdraw-copy-to-hardlink.stdout.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/fixed.stderr.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/fixed.stdout.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/restored.stderr.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/restored.stdout.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/withdraw-local-init-preservation.stderr.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/withdraw-local-init-preservation.stdout.bin",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/withdrawn-geometry-app__native__reference_sources.inc",
+      "passed": true
+    },
+    {
+      "id": "prepared-metadata/withdrawn-geometry-core__references.inc",
+      "passed": true
+    },
+    {
+      "id": "prepared-patches/historical-memo-added.patch",
+      "passed": true
+    },
+    {
+      "id": "prepared-patches/local-init-retained.patch",
+      "passed": true
+    },
+    {
+      "id": "prepared-patches/restored.patch",
+      "passed": true
+    },
+    {
+      "id": "prepared-patches/withdrawn.patch",
+      "passed": true
+    },
+    {
+      "id": "prepared-run.py",
+      "passed": true
+    },
+    {
+      "id": "formal-UNRUN",
+      "passed": true
+    },
+    {
+      "id": "readonly-Git-0",
+      "passed": true
+    },
+    {
+      "id": "real-Git-source-F8-geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "id": "readonly-Git-1",
+      "passed": true
+    },
+    {
+      "id": "real-Git-source-F8-geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "id": "readonly-Git-2",
+      "passed": true
+    },
+    {
+      "id": "real-Git-source-F7-geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "id": "readonly-Git-3",
+      "passed": true
+    },
+    {
+      "id": "real-Git-source-F7-geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "id": "readonly-Git-4",
+      "passed": true
+    },
+    {
+      "id": "real-Git-source-H-geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "id": "readonly-Git-5",
+      "passed": true
+    },
+    {
+      "id": "real-Git-source-H-geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "id": "exact-original-withdraw-restore-geometry-core/references.inc",
+      "passed": true
+    },
+    {
+      "id": "H-plus-local-init-exact",
+      "passed": true
+    },
+    {
+      "id": "local-init-only-F7-F8",
+      "passed": true
+    },
+    {
+      "id": "exact-original-withdraw-restore-geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "id": "F7-F8-app-identical-and-withdraw-H",
+      "passed": true
+    },
+    {
+      "id": "exact-four-mechanical-edits",
+      "passed": true
+    },
+    {
+      "id": "patch-pin-historical-memo-added.patch",
+      "passed": true
+    },
+    {
+      "id": "patch-pin-local-init-retained.patch",
+      "passed": true
+    },
+    {
+      "id": "patch-pin-restored.patch",
+      "passed": true
+    },
+    {
+      "id": "patch-pin-withdrawn.patch",
+      "passed": true
+    },
+    {
+      "id": "v1-v2-unchanged-memo_variant.py",
+      "passed": true
+    },
+    {
+      "id": "v1-v2-unchanged-COUNTERFACTUAL.json",
+      "passed": true
+    },
+    {
+      "id": "v1-v2-unchanged-METADATA_PROOF.json",
+      "passed": true
+    },
+    {
+      "id": "exact-copy-only-diff",
+      "passed": true
+    },
+    {
+      "id": "same-F8-guard-kept",
+      "passed": true
+    },
+    {
+      "id": "unchanged-original-numeric-criteria",
+      "passed": true
+    },
+    {
+      "id": "no-original-ELF-link-now",
+      "passed": true
+    },
+    {
+      "id": "true-R8-receipt-pin",
+      "passed": true
+    },
+    {
+      "id": "actual-R8-same-F8-profile-green-exact-red",
+      "passed": true
+    },
+    {
+      "id": "original-ELF-hash-only-manifest-pin",
+      "passed": true
+    },
+    {
+      "id": "ELF-role-pins-equal",
+      "passed": true
+    },
+    {
+      "id": "original-ELF-role-base-pg",
+      "passed": true
+    },
+    {
+      "id": "original-ELF-role-fix",
+      "passed": true
+    },
+    {
+      "id": "original-ELF-role-fix-trace",
+      "passed": true
+    },
+    {
+      "id": "copy-only-increment-not-total-budget",
+      "passed": true
+    },
+    {
+      "id": "proof-010-METADATA_PROOF.json",
+      "passed": true
+    },
+    {
+      "id": "proof-original-streams-METADATA_PROOF.json-fixed",
+      "passed": true
+    },
+    {
+      "id": "proof-original-streams-METADATA_PROOF.json-withdraw-local-init-preservation",
+      "passed": true
+    },
+    {
+      "id": "proof-original-streams-METADATA_PROOF.json-restored",
+      "passed": true
+    },
+    {
+      "id": "proof-010-COPY_METADATA_PROOF.json",
+      "passed": true
+    },
+    {
+      "id": "proof-original-streams-COPY_METADATA_PROOF.json-fixed",
+      "passed": true
+    },
+    {
+      "id": "copy-fixed-distinct-original-preserved-fixed",
+      "passed": true
+    },
+    {
+      "id": "proof-original-streams-COPY_METADATA_PROOF.json-withdraw-copy-to-hardlink",
+      "passed": true
+    },
+    {
+      "id": "proof-original-streams-COPY_METADATA_PROOF.json-restored",
+      "passed": true
+    },
+    {
+      "id": "copy-fixed-distinct-original-preserved-restored",
+      "passed": true
+    },
+    {
+      "id": "exact-local-init-negative-assertion",
+      "passed": true
+    },
+    {
+      "id": "true-copy-negative-is-source-nlink-guard",
+      "passed": true
+    },
+    {
+      "id": "tiny-fixture-alias-state-fixed",
+      "passed": true
+    },
+    {
+      "id": "tiny-fixture-alias-state-withdraw-copy-to-hardlink",
+      "passed": true
+    },
+    {
+      "id": "tiny-fixture-alias-state-restored",
+      "passed": true
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "75a1e93811a52b69385cbdaf6a09d773ed9052ad:geometry-core/references.inc"
+      ],
+      "exit": 0,
+      "stdout_sha256": "2f915779b14272a3cd9d2014d02d9476b05841145885e3d4b0717657e0a0378c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "75a1e93811a52b69385cbdaf6a09d773ed9052ad:geometry-app/native/reference_sources.inc"
+      ],
+      "exit": 0,
+      "stdout_sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "6df0264f75e84f03adb70746b6ac3db07a9910fc:geometry-core/references.inc"
+      ],
+      "exit": 0,
+      "stdout_sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "6df0264f75e84f03adb70746b6ac3db07a9910fc:geometry-app/native/reference_sources.inc"
+      ],
+      "exit": 0,
+      "stdout_sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "3cbeb75926bb188e6c8f153d182303feadfa27dc:geometry-core/references.inc"
+      ],
+      "exit": 0,
+      "stdout_sha256": "f2d1f595be0279b2a052bde8ae0fd55c44e7d710610ea21cac2209d2d6603c10",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/workspace/geometry-axiom",
+        "show",
+        "3cbeb75926bb188e6c8f153d182303feadfa27dc:geometry-app/native/reference_sources.inc"
+      ],
+      "exit": 0,
+      "stdout_sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "passed": true,
+  "exit": 0,
+  "errors": [],
+  "formal_executed": false,
+  "scope": "只審精確四處memo撤回/local-init保留、v2copy隔離、固定F8原Git bytes與既有小metadata原0/1/0；沒有編譯、profile、175ABC或原ELF payload讀取。",
+  "limits": [
+    "正式memo全部UNRUN，原R8跨版本exact三紅/compare1/ABC缺席不改。",
+    "root須另備獨立可寫cleanF8來源、原來源lease、完整source/build/profile/ABC空間與獨占排程；4.34MB僅copy增量。",
+    "保持原3phase預期1/0/0與4.5門檻，metadata綠不代正式反證。",
+    "若copy失敗，部分私有copy留原OUT記錄；不回寫或清除原ELF。"
+  ]
+}

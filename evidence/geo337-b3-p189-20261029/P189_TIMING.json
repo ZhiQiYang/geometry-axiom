@@ -1,0 +1,214 @@
+{
+  "schema": "geo261-p189-final/1",
+  "shas": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "fix": "0ae1728c2309e1d670369289a6b8da059fa63a50"
+  },
+  "execution_sha": "0ae1728c2309e1d670369289a6b8da059fa63a50",
+  "product_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+  "old_timing_execution_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+  "binaries_sha256": {
+    "main": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045",
+    "base": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f",
+    "fix": "2c5290f59f625ff8a639464e856bfe09bc0cd83a57f04c5b1e46ce63148222b2"
+  },
+  "generator_sha256": "347142beb7aa06c39969cd5bce35bacddc0734046eb7853e84d96f1ff9ef7c91",
+  "timing_script_sha256": "086805189dc5596853c0c52ca05dd2cbf5c3a605792023366004426ab61a4dd1",
+  "original_driver_sha256": "efafef38357088710ab69ab198931fc845350bfe72201b5eaec52da5681c63f4",
+  "new_driver_sha256": "ed0f854cb171b83f966a8b7312d77faeb5ff14ec2b7d5564c674fcdc66b9b0a7",
+  "comparator_sha256": "569b416daf2938f1a0ca0d2305013ef170a0d029a08b6bab61bf5c5f0fa05721",
+  "reference_builds": {
+    "main": {
+      "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+      "original_elf_path": "/workspace/g337p189L/work/main/bridge",
+      "bytes": 673216,
+      "mode": "0700",
+      "sha256": "8f9b8ed6498986d33b6789d2839761d3b9814d91782a0ad2e98f6f4eda08c045",
+      "recompiled": false,
+      "original_provenance_sha256": "e3f6a53eb545a546ec9fc024c1c9267c0b466f6abc27c950f01e9abe6c755d15",
+      "original_raw_build_provenance_verified": [
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000002/stdout.bin",
+          "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "raw_bytes": 41,
+          "raw_sha256": "8ab99c6ce1577c529823decc048198bb79478acca7e1086db9aeb01ceb4bb9c0",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000002-stdout.bin.gz",
+          "stored_bytes": 59,
+          "stored_sha256": "d8b5c9058ad358bc6fa8729738502c6fa7be010925ba68ea0f98155f1318a35d"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000002/stderr.bin",
+          "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "raw_bytes": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000002-stderr.bin.gz",
+          "stored_bytes": 20,
+          "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000004/stdout.bin",
+          "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "raw_bytes": 14745600,
+          "raw_sha256": "e23b5eb07856ec5729b62e881dba7e009d84ab923c76556bd7b5c83e2584f020",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000004-stdout.bin.gz",
+          "stored_bytes": 5765192,
+          "stored_sha256": "d01454c29f99788e541360d5cc658a68f2529a6da229a828b9b2199e38c22145"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000004/stderr.bin",
+          "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "raw_bytes": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000004-stderr.bin.gz",
+          "stored_bytes": 20,
+          "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000005/stdout.bin",
+          "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "raw_bytes": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000005-stdout.bin.gz",
+          "stored_bytes": 20,
+          "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000005/stderr.bin",
+          "source_sha": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+          "raw_bytes": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/main/000005-stderr.bin.gz",
+          "stored_bytes": 20,
+          "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+        }
+      ],
+      "published_M_path": "evidence/geo337-train-20261024/final-L-performance-complete/p189/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz"
+    },
+    "base": {
+      "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+      "original_elf_path": "/workspace/g337p189L/work/base/bridge",
+      "bytes": 1100248,
+      "mode": "0700",
+      "sha256": "b8c16ffceee42f33c6452d91942473ad84af6d71d1fe5307f824819d4821212f",
+      "recompiled": false,
+      "original_provenance_sha256": "e3f6a53eb545a546ec9fc024c1c9267c0b466f6abc27c950f01e9abe6c755d15",
+      "original_raw_build_provenance_verified": [
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000006/stdout.bin",
+          "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+          "raw_bytes": 41,
+          "raw_sha256": "588ceca84da066a867437dd960645c959bea459f757579060a6850ffa95de7ef",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000006-stdout.bin.gz",
+          "stored_bytes": 59,
+          "stored_sha256": "b4718dc51420c5fe4f2682ae16cdff930a741974bf20da5cd3da584c00b9fd40"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000006/stderr.bin",
+          "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+          "raw_bytes": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000006-stderr.bin.gz",
+          "stored_bytes": 20,
+          "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000008/stdout.bin",
+          "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+          "raw_bytes": 16056320,
+          "raw_sha256": "eb1a3a14c3cba61c651cbf824e705475f1e7f4ce7d32ad2606bb965d3b540d04",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000008-stdout.bin.gz",
+          "stored_bytes": 6037534,
+          "stored_sha256": "7d58d21a5b7214311accd8293c24f629e74fcdb716953ffb04def354cfc26655"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000008/stderr.bin",
+          "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+          "raw_bytes": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000008-stderr.bin.gz",
+          "stored_bytes": 20,
+          "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000009/stdout.bin",
+          "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+          "raw_bytes": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000009-stdout.bin.gz",
+          "stored_bytes": 20,
+          "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+        },
+        {
+          "original_source": "/tmp/g261r3/tools/p189-8f76f2b7/subcommands/000009/stderr.bin",
+          "source_sha": "3e600772076465fc65a26ac09055028301c0fb0b",
+          "raw_bytes": 0,
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "representation": "lossless gzip, decompression equals original bytes",
+          "stored_file": "/workspace/g337p189L/measurement/reference-provenance/base/000009-stderr.bin.gz",
+          "stored_bytes": 20,
+          "stored_sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+        }
+      ],
+      "published_M_path": "evidence/geo337-train-20261024/final-L-performance-complete/p189/ORIGINAL_PERFORMANCE_LOGS_REPORTS_AND_ELF_HASHES.tar.gz"
+    }
+  },
+  "dump_count": 175,
+  "samples": 36,
+  "ratios": [
+    {
+      "n": 16,
+      "medians": {
+        "main": 0.1278,
+        "base": 0.171,
+        "fix": 0.1141
+      },
+      "fix_main": 0.8928012519561815,
+      "pass": true
+    },
+    {
+      "n": 32,
+      "medians": {
+        "main": 0.1961,
+        "base": 1.1929,
+        "fix": 0.2194
+      },
+      "fix_main": 1.118816930137685,
+      "pass": true
+    },
+    {
+      "n": 48,
+      "medians": {
+        "main": 0.3448,
+        "base": 5.0182,
+        "fix": 0.3693
+      },
+      "fix_main": 1.0710556844547565,
+      "pass": true
+    },
+    {
+      "n": 64,
+      "medians": {
+        "main": 0.5341,
+        "base": 17.1972,
+        "fix": 0.7632
+      },
+      "fix_main": 1.4289458902827186,
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "seconds": 78.5570776462555
+}

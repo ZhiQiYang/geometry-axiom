@@ -1,0 +1,67 @@
+{
+  "scope": "static metadata only; no tests/compiler/Chrome/scanner/ledger executed",
+  "head": "c939d4f35ec6083e7c661f50a0e90fe3ded9f440",
+  "worktreeIsCommitted": false,
+  "pythonAstParsed": [
+    "tests/mutate.py",
+    "tests/mutation_bridge.py",
+    "tests/test_geo261_mutation_migration.py",
+    "tests/test_geo314_stagger_commit.py"
+  ],
+  "registeredMutantCount": 101,
+  "uniqueMutantCount": 101,
+  "staggerIds": [
+    "M99",
+    "M100",
+    "M101",
+    "M102",
+    "M103",
+    "M104",
+    "M105",
+    "M106",
+    "M107",
+    "M108",
+    "M109",
+    "M110",
+    "M111",
+    "M112",
+    "M113",
+    "M114",
+    "M115",
+    "M116",
+    "M117",
+    "M118",
+    "M119",
+    "M120",
+    "M121"
+  ],
+  "anchorCounts": {
+    "M102": 1,
+    "M103": 1,
+    "M105": 1,
+    "M121": 1
+  },
+  "staggerTestMethods": 47,
+  "expectedCounts": {
+    "py:test_geo314_stagger_commit": 47
+  },
+  "protectedFiles": {
+    "公理層.md": {
+      "currentBlob": "c34e8d6acf862455db2d47978feb04cd43324284",
+      "predecessorBlob": "c34e8d6acf862455db2d47978feb04cd43324284",
+      "worktreeSha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d",
+      "worktreeEqualsPredecessor": true
+    },
+    "決策佇列.md": {
+      "currentBlob": "12d718fd62d3337c65eed7e3b13361475b948e9e",
+      "predecessorBlob": "12d718fd62d3337c65eed7e3b13361475b948e9e",
+      "worktreeSha256": "97d671dd87fcacc811d810c04e1ce8538c2487f9b29c4373d6c8713700bf99e7",
+      "worktreeEqualsPredecessor": true
+    }
+  },
+  "currentGeometry": {
+    "crlfCount": 10532,
+    "lfCount": 10532,
+    "loneLfCount": 0
+  }
+}

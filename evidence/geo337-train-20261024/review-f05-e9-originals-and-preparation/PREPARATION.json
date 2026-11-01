@@ -1,0 +1,264 @@
+{
+  "schema": "latest-review-f05-e9-followup-preparation/1",
+  "preparedUTC": "2026-10-24T00:59:50.175441+00:00",
+  "handoffSHA": "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6",
+  "evidenceBase": "935dc904c933a2c54e89848bc99436073e84fcd8",
+  "sourceSHA": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "sourceCapture": {
+    "338-all-original.md": {
+      "commit": "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6",
+      "path": "handoff/pr-reviews/338.md",
+      "bytes": 6570,
+      "sha256": "dc7fa1048d52f215aef967ac8a5f8081a1f68e5969f3200d431394b8568ab206",
+      "command": {
+        "command": [
+          "git",
+          "show",
+          "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6:handoff/pr-reviews/338.md"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_sha": "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6",
+        "source_variant": "original-review-and-progress-snapshot",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": null,
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": null,
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792803545.4206166,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/workspace/geo337-review-followup-f05-preparation-20261024/source-capture/subcommands/000001",
+        "ended_epoch": 1792803545.4239526,
+        "stdout_sha256": "dc7fa1048d52f215aef967ac8a5f8081a1f68e5969f3200d431394b8568ab206",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 6570,
+        "stderr_bytes": 0
+      }
+    },
+    "339-all-original.md": {
+      "commit": "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6",
+      "path": "handoff/pr-reviews/339.md",
+      "bytes": 3619,
+      "sha256": "dcafc57f309a7b65bea083fddce5c0b9db93a9cd182fb7d95b46a0b469b8df36",
+      "command": {
+        "command": [
+          "git",
+          "show",
+          "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6:handoff/pr-reviews/339.md"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_sha": "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6",
+        "source_variant": "original-review-and-progress-snapshot",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": null,
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": null,
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792803545.4243758,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/workspace/geo337-review-followup-f05-preparation-20261024/source-capture/subcommands/000002",
+        "ended_epoch": 1792803545.4270945,
+        "stdout_sha256": "dcafc57f309a7b65bea083fddce5c0b9db93a9cd182fb7d95b46a0b469b8df36",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 3619,
+        "stderr_bytes": 0
+      }
+    },
+    "NEXT.original.md": {
+      "commit": "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6",
+      "path": "handoff/NEXT.md",
+      "bytes": 11335,
+      "sha256": "e00578f842ffdf85007daa14f24e270ea3200bde10d8c099d6551f5b8312e820",
+      "command": {
+        "command": [
+          "git",
+          "show",
+          "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6:handoff/NEXT.md"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_sha": "e3934fbdee70c4dbd226eb19137fb4a5ecf885d6",
+        "source_variant": "original-review-and-progress-snapshot",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": null,
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": null,
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792803545.4276278,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/workspace/geo337-review-followup-f05-preparation-20261024/source-capture/subcommands/000003",
+        "ended_epoch": 1792803545.429886,
+        "stdout_sha256": "e00578f842ffdf85007daa14f24e270ea3200bde10d8c099d6551f5b8312e820",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 11335,
+        "stderr_bytes": 0
+      }
+    },
+    "PROGRESS.original.md": {
+      "commit": "935dc904c933a2c54e89848bc99436073e84fcd8",
+      "path": "evidence/geo337-train-20261024/PROGRESS.md",
+      "bytes": 41604,
+      "sha256": "e31cc44a42c8787a74b9e243313f2fccf9303593540e8a984897a257ada771d8",
+      "command": {
+        "command": [
+          "git",
+          "show",
+          "935dc904c933a2c54e89848bc99436073e84fcd8:evidence/geo337-train-20261024/PROGRESS.md"
+        ],
+        "cwd": "/workspace/geometry-axiom",
+        "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+        "source_sha": "935dc904c933a2c54e89848bc99436073e84fcd8",
+        "source_variant": "original-review-and-progress-snapshot",
+        "environment": {
+          "PATH": "/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/opt/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/agent/.local/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONIOENCODING": null,
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONOPTIMIZE": null,
+          "TMPDIR": null,
+          "CC": null,
+          "CFLAGS": null,
+          "CPPFLAGS": null,
+          "LDFLAGS": null,
+          "C_INCLUDE_PATH": null,
+          "CPATH": null,
+          "LIBRARY_PATH": null,
+          "LD_LIBRARY_PATH": null,
+          "GCC_EXEC_PREFIX": null,
+          "COMPILER_PATH": null
+        },
+        "started_epoch": 1792803545.4307375,
+        "stdin_provided": false,
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_process_returncode": 0,
+        "timeout_expired": false,
+        "directory": "/workspace/geo337-review-followup-f05-preparation-20261024/source-capture/subcommands/000004",
+        "ended_epoch": 1792803545.433954,
+        "stdout_sha256": "e31cc44a42c8787a74b9e243313f2fccf9303593540e8a984897a257ada771d8",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 41604,
+        "stderr_bytes": 0
+      }
+    }
+  },
+  "latestReview338": {
+    "timestamp": "2026-10-24T00:39:37Z",
+    "head": "f05e7cf",
+    "actionsRun": "40043471807"
+  },
+  "latestReview339": {
+    "timestamp": "2026-10-24T00:39:36Z",
+    "head": "e9ee6d0",
+    "actionsRun": "40040764499"
+  },
+  "oldCIClassificationNotTransferred": true,
+  "newActionsClassification": "collecting; no inferred environment diagnosis",
+  "prbodyPublication": "hold current D5bc; update once native terminal can join completed canvas",
+  "nativeR2": "RUNNING; not read or packaged by this preparation",
+  "productOrTestsChanged": false,
+  "branchWrites": false,
+  "refreshBeforeApplying": "If original native/Q38 terminal or new Actions evidence arrives, revise only those current-state claims; do not overwrite newer root progress.",
+  "outputs": {
+    "INITIAL_PREPARATION_FAILURE.txt": {
+      "bytes": 857,
+      "sha256": "3edb730f6f44b5f1ddf02b42612be2bfbe46d6b7a9c8237b85b940f5a70156b0"
+    },
+    "339-all-original.md": {
+      "bytes": 3619,
+      "sha256": "dcafc57f309a7b65bea083fddce5c0b9db93a9cd182fb7d95b46a0b469b8df36"
+    },
+    "NEXT.draft.md": {
+      "bytes": 12543,
+      "sha256": "60c977b2cc9dc83f993fb757576d11fbddf86b507ec03b9b1955a6eecd74df16"
+    },
+    "339-latest-review-excerpt.md": {
+      "bytes": 1606,
+      "sha256": "52ee0d882eaa1a2997e37545518a1005291108a7d18ead371e4482001a88b4fe"
+    },
+    "PROGRESS.original.md": {
+      "bytes": 41604,
+      "sha256": "e31cc44a42c8787a74b9e243313f2fccf9303593540e8a984897a257ada771d8"
+    },
+    "338-latest-review-excerpt.md": {
+      "bytes": 1676,
+      "sha256": "2503baf167d08cb1c075591a22a1dda2cd0cc289b2f2651ec4fd130df85c4a5b"
+    },
+    "prepare.initial-header-guard.py.txt": {
+      "bytes": 9381,
+      "sha256": "44098846e66d63bc9f7efdd5e9baaa54d5f770cfff029e20d5e5a6804c7b1686"
+    },
+    "338-all-original.md": {
+      "bytes": 6570,
+      "sha256": "dc7fa1048d52f215aef967ac8a5f8081a1f68e5969f3200d431394b8568ab206"
+    },
+    "NEXT.original.md": {
+      "bytes": 11335,
+      "sha256": "e00578f842ffdf85007daa14f24e270ea3200bde10d8c099d6551f5b8312e820"
+    },
+    "PROGRESS.review-only.diff": {
+      "bytes": 4626,
+      "sha256": "e043533883015b74461f5f1a7173692c59e3ffddcf0b7ae4a264f50687fc6ff8"
+    },
+    "PROGRESS.draft.md": {
+      "bytes": 42704,
+      "sha256": "12048af25e59c67b9e45e49663216f2225c22db30fd12ed83738754f9e444b53"
+    },
+    "NEXT.review-only.diff": {
+      "bytes": 5217,
+      "sha256": "09306ad85331293d8eccf61f9dc5af896f76844bcf7d41c4ff95a4995c411a28"
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "schema": "a6-four-artifact-assembly-actual-peer/1",
+  "source_sha": "a6f4013364e21bcb7239b5dcc25caac0f6d61f77",
+  "result_sha256": "a532b83a67e19b37e2cf724fb4d9ec86753b3a090de554093646b2e2c3d1b2df",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "reviewed_utc": "2026-10-26T10:16:51.520383+00:00",
+  "formal_judges_rerun_by_peer": false,
+  "assembly_rerun_by_peer": false,
+  "source_or_refs_modified_by_peer": false,
+  "network_used_by_peer": false,
+  "input_count": 604,
+  "input_closure_sha256": "8d47b6202e793aa5755a887ea2cbb6b90506c68ca4270e0c0df0716142ca3b89",
+  "original_gate_exits": [
+    0,
+    0,
+    0
+  ],
+  "original_gates": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_epoch": 1793008991.8197656,
+      "ended_epoch": 1793008997.556318
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "51eab918e4e0ffdd0f9c72b216441e6c44650bc75e2dc28eae83723b7a8e97c7",
+      "started_epoch": 1793008997.5568783,
+      "ended_epoch": 1793008998.0941834
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f593cb32a44a5eaa1a6c40bbf028e1be474cca05c4bbe4becf815bef7a4a7f40",
+      "started_epoch": 1793008998.0948424,
+      "ended_epoch": 1793009011.0868874
+    }
+  ],
+  "all_four_actual_output_hashes": {
+    "product-architecture.json": {
+      "bytes": 221953,
+      "rawSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975",
+      "lfSha256": "81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975"
+    },
+    "product-architecture-scan.json": {
+      "bytes": 132559,
+      "rawSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "lfSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    "PRODUCT-ARCHITECTURE.md": {
+      "bytes": 1396,
+      "rawSha256": "65232fe9f275bc37db539380a6c51a9abbeba84185b1b991ded2f8810621d4f9",
+      "lfSha256": "65232fe9f275bc37db539380a6c51a9abbeba84185b1b991ded2f8810621d4f9"
+    },
+    "product-architecture-receipt.json": {
+      "bytes": 118552,
+      "rawSha256": "70984629e344ef4e5f3609133e35c616bb6115cf8d50ee9f951b97c696161d9f",
+      "lfSha256": "70984629e344ef4e5f3609133e35c616bb6115cf8d50ee9f951b97c696161d9f"
+    }
+  },
+  "manifest_scan_byte_unchanged": true,
+  "only_report_receipt_changed": true,
+  "all604_raw_lf_git_inputs_verified": true,
+  "source_index_identity": {
+    "device": 26,
+    "inode": 122503,
+    "mode": 33152,
+    "nlink": 1,
+    "size": 6891390,
+    "mtime_ns": 1793008600796321208,
+    "ctime_ns": 1793008600800711153,
+    "sha256": "4a5a2ae794f977ac05d298ddaad83e015738bc34755209b14b7e5acb8cd6d205"
+  },
+  "source_index_matches_pre_gates_actual_peer": true,
+  "original_heads_clean_before_after": true,
+  "historical_mutation_execution_source": "6e50aef65513b7b38f93228919272c6d40d6c196",
+  "historical_probes_relabelled": false,
+  "S10_ledger_relabelled": false,
+  "source_result_sha256": "2c8542df06b79b21a2a94ef5ce382d07a697a562e035ea86613dfb4a135274c4",
+  "gate_result_sha256": "1dd78c0ef53d715316da892886bdb20d475a2a03e3dccf8a84c3f060e26b6f25",
+  "outer_result_sha256": "eb7b45821fd8454b3ccda5903b66f95612683e17d2ad9efa383fdb9e78c4d007",
+  "root_bindings_sha256": "1e6ba3cef1d24e25ff1d922c36f0df7f80ead5bb021265dc07922ddbd6bcdf01",
+  "original_capture_commands": 17,
+  "original_capture_stream_bytes": 1600712,
+  "resource_admission": {
+    "shared_before": 1731289088,
+    "additional_bound": 67108864,
+    "shared_ceiling": 2147483648
+  },
+  "limits": [
+    "This verifies four artifacts assembled from the three original a6 judge executions. It is not product testing at any later adoption/final SHA.",
+    "Gate times and assembly snapshot times are distinct; all original execution records were retained exactly.",
+    "The source physical index exactly matches the earlier independent source peer, including bytes and inode/metadata; pinned original assembler additionally checked its own before/after state.",
+    "Original actual mount free capacity was checked by the pinned assembler but not persisted as a separate numeric field. This peer confirms recorded original shared bound/reserve, not future admission.",
+    "Native/browser/performance and S10 ledger applicability require separate original receipts. Historical M6e50 controls remain historical.",
+    "SHM artifacts and receipts still require separate byte-exact preservation/publication; this report does not prove remote delivery."
+  ],
+  "checked_count": 2620
+}

@@ -1,0 +1,6 @@
+
+## 合流獨立靜審與 manifest 自索引修正
+
+新來源 S 的合流窄審已完成254 metadata checks／0 findings；原 peer 保於 revision-3-peer-and-manifest，不把此結果外推正式16 gate或整包驗證。完整前一18條出版命令與原 streams 同封。
+
+自查發現原E792的root manifest把前一版同名manifest也列為self-entry，只有此metadata自索引過期；原manifest完整bytes另存，所有其它列冊檔已逐bytes/hash驗證未變。新root manifest明確排除自身，原snapshot以獨立revision member守門；原出版1／raw whitespace2與完整raw全保，沒有改原輸出、產品碼或測試。正式16列仍UNRUN。

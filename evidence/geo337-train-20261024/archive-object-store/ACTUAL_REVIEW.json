@@ -1,0 +1,15 @@
+{
+  "checks": 646,
+  "failed_checks": 0,
+  "findings": [],
+  "tool_sha256": "d4c9f40e41aac7e210a038f466f89945b8c21b68ffff9b6f44c2c6fed244d940",
+  "original_commands": 60,
+  "root_result_sha256": "2b86b90052d348ee4ee831fbe4b23efef5befbfcd962ca9766b793bf4dd50380",
+  "lease_sha256": "556c513142d9559c9497bb118d12da5487ee61b80953ee27095e49269d7c0104",
+  "scope": "Read-only full small original command streams and actual root/reader/lease/HEAD/refs/index metadata. No Git invocation, archive/loose-object body reread, compiler, performance or root ref mutation.",
+  "limits": [
+    "The reviewed d4c9 tool itself fully validated 62MB archive/header/GitOID/payload hashes during execution; this peer validates its complete recorded stream and final metadata, not a second independent62MB scan.",
+    "Actual publication of these blobs into commits and remote push is separate; this result certifies only preload and ordinary local readers.",
+    "Protected TMP store contains permanent Git data and must never be cache-cleaned."
+  ]
+}

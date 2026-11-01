@@ -1,0 +1,9 @@
+I8a preview 1: valid; confirm token to apply
+grid 1 on 1 sample (not complete geometry) u stride 1 total 1: k=0@1000{[1000,0]-[1000,3000]} v stride 1 total 0: undefined -> grid 1 on 1 sample (not complete geometry) u stride 1 total 1: k=0@1500{[1500,0]-[1500,3000]} v stride 1 total 0: undefined
+ timber 1 center 10 -> 10 length 4000 -> 4000
+  surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,2500] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 2 center 2990 -> 2990 length 4000 -> 4000
+  surface 1 origin [4000,3000,2500] axes [-1,0,0]/[0,-1,0]/[0,0,1] -> surface 1 origin [4000,3000,2500] axes [-1,0,0]/[0,-1,0]/[0,0,1]
+ timber 3 center 1000 -> 1500 length 2960 -> 2960
+  surface 1 origin [1014,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [1514,20,2500] axes [0,1,0]/[-1,0,0]/[0,0,1]
+/workspace/geometry-axiom/_edge_grid_locked.scene:11: I8a: impact preview required; inspect preview, then confirm token (World unchanged)

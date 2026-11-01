@@ -1,0 +1,574 @@
+{
+  "inspection_only": true,
+  "base_sha": "4b665fae21ab63aaffb7d84f6a32d5a469ba1675",
+  "python_ast_valid": [
+    "tests/mutate.py",
+    "tests/run_tests.py",
+    "tests/test_geo261_mutation_migration.py",
+    "tests/test_geo261_wood_contact_world.py",
+    "tests/test_geo261_wood_contacts.py",
+    "tests/test_geo261_wood_world_validation.py"
+  ],
+  "mutants_before": 78,
+  "mutants_after_derived_from_AST": 88,
+  "new_ids": [
+    "M89",
+    "M90",
+    "M91",
+    "M92",
+    "M93",
+    "M94",
+    "M95",
+    "M96",
+    "M97",
+    "M98"
+  ],
+  "existing_mutant_definitions_preserved_except_M13_description": true,
+  "anchors": [
+    {
+      "id": "M01",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M02",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M03",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M04",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M05",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M06",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M07",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M08",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M59",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M60",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M09",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M10",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M11",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M12",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M13",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M97",
+      "file": "geometry-core/references.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M98",
+      "file": "geometry-templates/woodworking/native/world_validation.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M14",
+      "file": "geometry-templates/woodworking/native/contact_world.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M15",
+      "file": "geometry-templates/woodworking/native/contact_world.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M16",
+      "file": "geometry-templates/woodworking/native/supports.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M17",
+      "file": "geometry-templates/woodworking/native/supports.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M18",
+      "file": "geometry-templates/woodworking/native/supports.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M19",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M20",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M21",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M22",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M23",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M24",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M25",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M26",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M27",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M28",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M29",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M30",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M31",
+      "file": "geometry-core/kernel/grid.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M32",
+      "file": "geometry-core/kernel/grid.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M57",
+      "file": "geometry-templates/woodworking/native/supports.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M58",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M51",
+      "file": "current_geometry.c",
+      "anchor_count": 0,
+      "retired": "GEO-125(commit bc87d02,2026-09-18)解除 I23(a) 引用鎖:apply_grid_line 已無 was/now 座標比對區塊(整段刪除);公理層 I23(a) 改為「不再直接拒絕,重新推導引用它的角材並走 I8a 影響預覽」。取代它的是重算 + 預覽機制,不是同一判定的新寫法,故退役。"
+    },
+    {
+      "id": "M52",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M56",
+      "file": "geometry-templates/woodworking/native/world_validation.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M53",
+      "file": "geometry-core/kernel/grid.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M54",
+      "file": "geometry-core/kernel/grid.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M55",
+      "file": "current_geometry.c",
+      "anchor_count": 0,
+      "retired": "GEO-122 / GEO-125(commit bc87d02,2026-09-18)刪除奇數縫寬拒絕:apply_grid_line 的 `p_gap % 2 != 0` 檢查已移除(只剩一行過期註解),公理層 D10a「gap 為奇數不拒絕」,縫中心線取下界(錨點在 current_geometry.c:1495 `def->anchor + k*T + def->panel + def->gap / 2`,該公式仍由 M53 變異)。被變異的拒絕已不屬於產品。"
+    },
+    {
+      "id": "M33",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M34",
+      "file": "geometry-templates/woodworking/native/member_reference.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M35",
+      "file": "current_geometry.c",
+      "anchor_count": 0,
+      "retired": "GEO-125(commit bc87d02,2026-09-18)廢除明寫長度:timber_construct 現在以 `!auto_length ||` 一律拒絕明寫長度(current_geometry.c timber_construct),`(!auto_length && length <= 0)` 這條判定隨整個分支消失;apply_timber_line 的訊息亦改為「明寫長度已廢除」,公理層 D7/I18/R4 同。沒有可對應的現行判定,不另編變異湊數。"
+    },
+    {
+      "id": "M36",
+      "file": "geometry-templates/woodworking/native/world_validation.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M37",
+      "file": "geometry-templates/woodworking/native/world_validation.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M38",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M39",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M40",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M71",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M72",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M73",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M74",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M75",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M76",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M77",
+      "file": "current_geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M86",
+      "file": "geometry-core/kernel/geometry.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M87",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M88",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M89",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M90",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M91",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M92",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M93",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M94",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M95",
+      "file": "geometry-templates/woodworking/native/contacts.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M96",
+      "file": "geometry-templates/woodworking/native/contact_world.c",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M61",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M62",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M63",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M64",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M65",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M66",
+      "file": "geometry-web/engineering_bridge.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M67",
+      "file": "geometry-web/engineering_bridge.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M68",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M69",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M70",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M78",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M84",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M79",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M80",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M81",
+      "file": "geometry-core/card_reference.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M85",
+      "file": "geometry-core/grid_systems.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M82",
+      "file": "geometry-core/parameters.inc",
+      "anchor_count": 1,
+      "retired": null
+    },
+    {
+      "id": "M83",
+      "file": "geometry-core/card_reference.inc",
+      "anchor_count": 1,
+      "retired": null
+    }
+  ],
+  "F2_order_index_and_complete_collect_stops_exact_bytes_preserved": true,
+  "F2_prepare_wrapper_and_index_equal_order_control_preserved": true,
+  "F2_host_facts_harness_only_exact_V_EXTENSION_string_changed": true,
+  "current_geometry_uniform_CRLF": true,
+  "manifest_unchanged": true,
+  "manifest_policy_before": 920,
+  "manifest_delta_to_recompute": {
+    "add": [
+      "wood_contact_boundary_edge"
+    ],
+    "retire": [
+      "wood_contact_footprint_collides"
+    ]
+  },
+  "core_scene_count_AST": 166,
+  "wood_contact_world_methods_AST": 9,
+  "PENDING": "All compiler/runtime/mutation/architecture/ledger/browser/performance verdicts remain unexecuted."
+}

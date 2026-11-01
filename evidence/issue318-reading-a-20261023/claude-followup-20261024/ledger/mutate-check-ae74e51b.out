@@ -1,0 +1,110 @@
+結果檔 /tmp/claude-0/-home-user-geometry-axiom/3fc60c40-7cad-594d-aa8a-664b53a07ac4/scratchpad/s318/tests/mutants_results.json
+變異表 122 筆,紀錄 110 筆
+殺死 killed 0 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 107 / 受阻 blocked 0 / 退役 retired 3 / 未跑 unrun 12
+  STALE M01(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M02(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M03(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M04(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M05(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M06(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M07(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M08(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M59(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M60(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M09(原 equivalent):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M10(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M11(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M12(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M13(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M97(原 killed):geometry-core/references.inc 已變(紀錄 3f8fe931e8 / 現行 f2d1f595be);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M98(原 killed):geometry-templates/woodworking/native/world_validation.c 已變(紀錄 3a5d05ffdf / 現行 ea62a9fcc8);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M14(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 6e1d070cc7 / 現行 e1664ccfe9);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M15(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 6e1d070cc7 / 現行 e1664ccfe9);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M16(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M17(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M18(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M19(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M20(原 crashed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M21(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M22(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M23(原 equivalent):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M24(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M25(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M26(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M27(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M28(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M29(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M30(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M31(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M32(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M57(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M58(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M52(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M56(原 equivalent):geometry-templates/woodworking/native/world_validation.c 已變(紀錄 3a5d05ffdf / 現行 ea62a9fcc8);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M53(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M54(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M33(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M34(原 killed):geometry-templates/woodworking/native/member_reference.c 已變(紀錄 90f3316777 / 現行 003675f6dd);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M36(原 equivalent):變異定義(file/old/new)與紀錄不符或紀錄沒有 mutant_sha256;geometry-templates/woodworking/native/world_validation.c 已變(紀錄 3a5d05ffdf / 現行 ea62a9fcc8);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M37(原 killed):geometry-templates/woodworking/native/world_validation.c 已變(紀錄 3a5d05ffdf / 現行 ea62a9fcc8);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M38(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M39(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M40(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M71(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M72(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M73(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M74(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M75(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M76(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M77(原 killed):current_geometry.c 已變(紀錄 69658523be / 現行 7d28ec7c8f);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M86(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M87(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M88(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M89(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M90(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M91(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M92(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M93(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M94(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M95(原 killed):#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M96(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 6e1d070cc7 / 現行 e1664ccfe9);#include 閉包內有檔案已變;execution receipt invalid: mutation tool changed
+  STALE M61(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M62(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M63(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M64(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M65(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M66(原 killed):geometry-web/engineering_bridge.inc 已變(紀錄 930134f89d / 現行 c98a3d33ec);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M67(原 killed):geometry-web/engineering_bridge.inc 已變(紀錄 930134f89d / 現行 c98a3d33ec);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M68(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M69(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M70(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M78(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M84(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M79(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M80(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M81(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M85(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M82(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M83(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M99(原 killed):current_geometry.c 已變(紀錄 a1e0a214f8 / 現行 7d28ec7c8f);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M100(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M101(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M102(原 killed):變異定義(file/old/new)與紀錄不符或紀錄沒有 mutant_sha256;geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M103(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M104(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M105(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M106(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M107(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M108(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M109(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M110(原 equivalent):current_geometry.c 已變(紀錄 a1e0a214f8 / 現行 7d28ec7c8f);#include 閉包內有檔案已變;equivalence audit oracle changed;bridge execution tool/head
+  STALE M111(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M112(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M113(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M114(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M115(原 killed):geometry-templates/woodworking/native/grid_application.c 已變(紀錄 4bdc0c7f20 / 現行 5491ab487d);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M116(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M117(原 killed):current_geometry.c 已變(紀錄 a1e0a214f8 / 現行 7d28ec7c8f);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M118(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M119(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head
+  STALE M120(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge execution tool/head

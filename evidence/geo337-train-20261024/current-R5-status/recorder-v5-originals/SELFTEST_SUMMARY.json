@@ -1,0 +1,38 @@
+{
+  "scope": "Synthetic semantic contracts only; no C/product/browser/formal performance samples",
+  "tool_pins_sha256": "b6199f36fbb5d35f3ba71140304ff2f1dbb1b1875ac201660234cb517d8cb660",
+  "contracts": {
+    "result": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/contract-r3/RESULT.json",
+    "checks": 48,
+    "actual_exit": 0,
+    "outer": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/contract-r3-launch/RESULT.json"
+  },
+  "counterfactuals": {
+    "result": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/RESULT.json",
+    "pipe": [
+      0,
+      1,
+      0
+    ],
+    "defer": [
+      0,
+      1,
+      0
+    ],
+    "actual_exit": 0
+  },
+  "static_invariants": {
+    "checks": 12,
+    "actual_exit": 0
+  },
+  "history_preserved": [
+    "contract-r1",
+    "contract-r2",
+    "counterfactuals",
+    "before-input-error-fidelity"
+  ],
+  "tool_output_not_product_mutation_kills": true,
+  "product_test_run": false,
+  "prior_U_red_unchanged": true,
+  "independent_review": "PENDING"
+}

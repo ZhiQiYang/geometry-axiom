@@ -1,0 +1,14 @@
+{
+  "phase": "before-F64",
+  "source": "/tmp/train337-323-f64d638f-source/current_geometry.svg",
+  "retained": "/tmp/train337-ledger-4f4a24d7-r2/generated-outputs/before-F64-current_geometry.svg",
+  "source_context_sha": "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+  "bytes": 5323,
+  "sha256": "7a1dfb9a489e1645a6d8d3ac25058d3edd93861b4dd40740d83a18669a8be971",
+  "xml_root": "{http://www.w3.org/2000/svg}svg",
+  "move": "same-filesystem rename; no deletion",
+  "original_main_raw_sha256": "05c05a8028efe7723a552154e2db2e52223c2e4c00d5875540e1e58f9076fbca",
+  "main_lines_10456_10485": "    /*\n     * 純 C 輸出三視圖 SVG：\n     * 只用 stdio 把上面算好的幾何印成 SVG 標籤，\n     * 預設放在本原始碼旁邊（current_geometry.svg），--out 可以改。\n     */\n    Scene scene = scene_from_world(&world);\n\n    SceneLayout layout;\n\n    if (!scene_compute_layout(&scene, &layout)) {\n        fprintf(stderr, \"無法計算三視圖版面。\\n\");\n        return 1;\n    }\n\n    char svg_path[512];\n\n    if (out_path != NULL) {\n        int written = snprintf(svg_path, sizeof svg_path, \"%s\", out_path);\n\n        if (written < 0 || (size_t)written >= sizeof svg_path) {\n            fprintf(stderr, \"--out 的路徑太長。\\n\");\n            return 1;\n        }\n    } else if (!path_beside_source(\n                   svg_path, sizeof svg_path, \"current_geometry.svg\")) {\n        fprintf(stderr, \"無法組出 SVG 的輸出路徑。\\n\");\n        return 1;\n    }\n\n    if (!emit_svg_three_views(svg_path, &scene, &layout)) {",
+  "run_tests_lines_288_292": "    proc = subprocess.run(\n        [exe, \"--scene\", str(scene), \"--no-window\"],\n        capture_output=True, text=True, encoding=\"utf-8\", errors=\"replace\",\n        timeout=30,\n    )",
+  "provenance_limit": "Existing pre-ledger SVG matches original CLI default output; no claim which historical command created it."
+}

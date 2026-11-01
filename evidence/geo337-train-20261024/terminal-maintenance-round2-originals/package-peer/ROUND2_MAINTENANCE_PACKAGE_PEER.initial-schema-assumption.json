@@ -1,0 +1,28 @@
+{
+  "schema": "independent-round2-terminal-maintenance-originals-package-peer/1",
+  "checks": 9315,
+  "findings": [
+    {
+      "check": "exact3100 original members and payload",
+      "ok": false
+    },
+    {
+      "check": "all3101 exactmembers",
+      "ok": false
+    },
+    {
+      "check": "12 old sidecars frozen not native r2",
+      "ok": false
+    }
+  ],
+  "exit_code": 1,
+  "archive_sha256": "6b43f60093971b791838c969133984fef91e3fb025f01b0a87628ba44e9d16c6",
+  "member_count": 3101,
+  "original_payload_bytes": 8127937,
+  "limits": [
+    "No maintenance action or product acceptance rerun; all packaged members roundtrip compared with original retained bytes.",
+    "12 native sidecars use explicit frozen original copies before r2 reuse; current regenerated cache bytes are not substituted.",
+    "This package closes original27 actions/24 archive alias groups only, not later212 groups.",
+    "Outer collector RESULT and raw c387 streams are outside archive and must be published alongside it."
+  ]
+}

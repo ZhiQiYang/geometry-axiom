@@ -1,0 +1,305 @@
+{
+  "schema": "geo348-repaired-tool-guards-proof/1",
+  "exit": 0,
+  "groups": {
+    "fixture": [
+      0,
+      1,
+      0
+    ],
+    "close": [
+      0,
+      1,
+      0
+    ],
+    "flush_entry": [
+      0,
+      1,
+      0
+    ],
+    "flags": [
+      0,
+      1,
+      0
+    ]
+  },
+  "commands": [
+    {
+      "control": "fixture",
+      "phase": "fixed",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/fixture/fixed/case.py",
+        "fixture"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/fixture/fixed",
+      "exit": 0,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "2541238d4fc748fe6e6ffca02e89ce1a1c909e477c6843ef9982687d3eb3e4d4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "fixture",
+      "phase": "withdrawn",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/fixture/withdrawn/case.py",
+        "fixture"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/fixture/withdrawn",
+      "exit": 1,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "1ec3c081443568568a0d5553b6927b9bb8f47033f0157ee4782ab194675c5cc2",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "e171463dfca37409f841eedbb274e2eede14af707f91f9e31b8f3e240d384604",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "fixture",
+      "phase": "restored",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/fixture/restored/case.py",
+        "fixture"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/fixture/restored",
+      "exit": 0,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "2541238d4fc748fe6e6ffca02e89ce1a1c909e477c6843ef9982687d3eb3e4d4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "close",
+      "phase": "fixed",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/close/fixed/case.py",
+        "close"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/close/fixed",
+      "exit": 0,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "bfd9c631e7e7c4e686fcfacbe7f392b63ad1efaed97709240e3992816f54844c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "close",
+      "phase": "withdrawn",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/close/withdrawn/case.py",
+        "close"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/close/withdrawn",
+      "exit": 1,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "6352d417e9beeaac2d22b5c7506ea24872ebe8d31241a5338e3c7620eee84068",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "e8d0c7568e48365a55949bd072b5e5ed4df4f711908c3a2a9716f0afc645bb5e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "close",
+      "phase": "restored",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/close/restored/case.py",
+        "close"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/close/restored",
+      "exit": 0,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "bfd9c631e7e7c4e686fcfacbe7f392b63ad1efaed97709240e3992816f54844c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "flush_entry",
+      "phase": "fixed",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flush_entry/fixed/case.py",
+        "flush_entry"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flush_entry/fixed",
+      "exit": 0,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "de76b8e788ed0e092449bcbac233714485a85c257f9e00588d279ea22c1e735c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "flush_entry",
+      "phase": "withdrawn",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flush_entry/withdrawn/case.py",
+        "flush_entry"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flush_entry/withdrawn",
+      "exit": 1,
+      "source_sha256": {
+        "sidecar.py": "853f0ccf2ad74784366cbf81f88b197fbc528f0aca611814c18b091771d245ee",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "df536c88d73d972d1d7ff2b5251d5cbf24f08e565e0d86806615322fdedd2202",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "flush_entry",
+      "phase": "restored",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flush_entry/restored/case.py",
+        "flush_entry"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flush_entry/restored",
+      "exit": 0,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "de76b8e788ed0e092449bcbac233714485a85c257f9e00588d279ea22c1e735c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "flags",
+      "phase": "fixed",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flags/fixed/case.py",
+        "flags"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flags/fixed",
+      "exit": 0,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "94478a8875d8793f406ded00d4b3ecd98d6aba7df2ce5131d0c0969c324c3c8e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "flags",
+      "phase": "withdrawn",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flags/withdrawn/case.py",
+        "flags"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flags/withdrawn",
+      "exit": 1,
+      "source_sha256": {
+        "sidecar.py": "0f0cd5bbc4ec49e1d42d39711b1eb8b7869651d09946fbe2708391da96ae21b4",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "74be620444865b18c428450b048e3d23601ab972b4e88b5c0eaa8f2758e41f2e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    },
+    {
+      "control": "flags",
+      "phase": "restored",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flags/restored/case.py",
+        "flags"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/flags/restored",
+      "exit": 0,
+      "source_sha256": {
+        "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+        "launch_diagnostic.py": "89914aef8c5a6f34ce8a0bf97e605b2575e24ce3d381f1208bf2179b31842e89",
+        "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+      },
+      "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+      "stdout_sha256": "94478a8875d8793f406ded00d4b3ecd98d6aba7df2ce5131d0c0969c324c3c8e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic": true,
+      "product_executed": false,
+      "wrapper_compiled": false
+    }
+  ],
+  "scope": "Each repaired guard withdrawn independently; only Python synthetic counterexamples, no product or C."
+}

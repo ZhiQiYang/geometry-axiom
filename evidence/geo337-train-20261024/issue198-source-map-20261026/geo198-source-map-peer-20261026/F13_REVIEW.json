@@ -1,0 +1,203 @@
+{
+  "schema": "geo198-F13-historical-receipt-peer/1",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "reviewed_utc": "2026-10-26T12:03:56.343477+00:00",
+  "scope": "唯讀現有/tmp原件及222197B壓縮包；記憶體解讀5 payload members及1控制script，未抽寫、未Git/API/compile/native/原分析工具重跑。A/B幾何與跨版本片段比對由parent獨審。",
+  "formal_runtime_this_review": "UNRUN",
+  "input_pins": {
+    "/tmp/geo198-source-map-20261026/REPORT.md": {
+      "bytes": 10531,
+      "sha256": "4e5c11971525f4041e7d7b895a728d615ca35d817d1c3a3a4e85636a1577153c"
+    },
+    "/tmp/geo198-source-map-20261026/MANIFEST.json": {
+      "bytes": 24961,
+      "sha256": "730a2b13603c9561cca99faf3092a585218dc7015079c4def915a79464fdd2a1"
+    },
+    "/tmp/geo198-source-map-20261026/geo288-f13-native/stdout.bin": {
+      "bytes": 138314,
+      "sha256": "53847316c333b95f1999914b2a3a98d2d2fd21aa4c281e6ef65a12eab6718a85"
+    },
+    "/tmp/geo198-source-map-20261026/geo288-f13-native/RESULT.json": {
+      "bytes": 579,
+      "sha256": "17324839fcfbe78c1abfe5d85b8f212a08733023f502ecac10d23ed34a47a601"
+    },
+    "/tmp/geo198-source-map-20261026/geo288-f13-native-archive/stdout.bin": {
+      "bytes": 222197,
+      "sha256": "4ac2c0d5ff5c5607fb5e500b66953329a44309d191be711f53f2c17318869879"
+    },
+    "/tmp/geo198-source-map-20261026/geo288-f13-native-archive/RESULT.json": {
+      "bytes": 579,
+      "sha256": "7ac84f7c80015f131d94502bce26e1fbb0687cffde042d6493d451e046bbb64e"
+    },
+    "/tmp/geo198-source-map-20261026/HISTORICAL_RECEIPT_CHECK.json": {
+      "bytes": 6567,
+      "sha256": "41f31f5f06e240e2737e237f7b1941b9cfb3d3d820ca65fc3d33c0d7dfcb981e"
+    }
+  },
+  "source_identity": {
+    "execution_sha": "13d02c1db7022145a52ee063286a558e595eb212",
+    "evidence_retrieval_sha": "405f8c5e1a637a16cbe47470faf5ae1fa02b8676",
+    "receipt_repository_path": "evidence/geo261-final-13d02c1d/receipts/native.json",
+    "archive_repository_path": "evidence/geo261-final-13d02c1d/raw/native-01.tar.gz",
+    "checkout_before": {
+      "head": "13d02c1db7022145a52ee063286a558e595eb212",
+      "root": "/tmp/g288f-13d02c1d",
+      "status": ""
+    },
+    "checkout_after": {
+      "head": "13d02c1db7022145a52ee063286a558e595eb212",
+      "root": "/tmp/g288f-13d02c1d",
+      "status": ""
+    },
+    "workflow_sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+    "driver_sha256": "6a3e3c327687ee6fdafb1044e4c4036f4d2f881a75498af97bd1e1af861e1310"
+  },
+  "original_terminal": {
+    "job": "native",
+    "status": "完成",
+    "workflow_exit": 0,
+    "started": "2026-10-23T05:25:13.870603+00:00",
+    "ended": "2026-10-23T05:53:17.999187+00:00",
+    "whole_job_seconds": 1684.1285846579995,
+    "original_shell_argv": [
+      "bash",
+      "-e",
+      "/tmp/g288s7/workflow/native/steps/01.executed.sh"
+    ],
+    "shell_actual_process_returncode": 0,
+    "shell_exit_code": 0,
+    "shell_seconds": 1683.9267737960035,
+    "ci_timeout_minutes": 35,
+    "watchdog_factor": 3,
+    "watchdog_expired": false,
+    "over_ci_timeout": false,
+    "command_script_verified": {
+      "archive_member": "job/steps/01.executed.sh",
+      "bytes": 123,
+      "sha256": "3a11d490990930ff8c7860942f37a46836baf3cbbd524be91e232466d45012e0",
+      "exact_declared_and_executed_run": "ulimit -s 16384\n# The Windows GDI harness is unavailable on Linux; the runner reports it.\npython3 tests/run_all.py --build\n",
+      "scope": "只在記憶體讀取控制metadata；未新增選定payload副本。"
+    }
+  },
+  "archive": {
+    "path": "/tmp/geo198-source-map-20261026/geo288-f13-native-archive/stdout.bin",
+    "bytes": 222197,
+    "sha256": "4ac2c0d5ff5c5607fb5e500b66953329a44309d191be711f53f2c17318869879",
+    "equals_stored_manifest_and_capture": true,
+    "payload_members_verified": 5,
+    "control_script_verified": 1,
+    "all_archive_member_payloads_reverified": false,
+    "no_extract_to_filesystem": true
+  },
+  "five_selected_originals": [
+    {
+      "archive_member": "job/run_all-logs/c_integrity.log",
+      "saved_path": "/tmp/geo198-source-map-20261026/f13-selected-originals/run_all-logs__c_integrity.log",
+      "bytes": 5857,
+      "sha256": "de71669e13286944b645688bf0af37f4d1cda3a0d057368daaa57b238be5d286",
+      "unique_regular_member": true,
+      "matches_original_receipt": true,
+      "matches_capture_copy": true,
+      "matches_manifest": true
+    },
+    {
+      "archive_member": "job/run_all-logs/core_run_tests.log",
+      "saved_path": "/tmp/geo198-source-map-20261026/f13-selected-originals/run_all-logs__core_run_tests.log",
+      "bytes": 25003,
+      "sha256": "a85b46b8587169ceb4ea144f4496326903c0ab78b8b7473ef57a50de7d0b6f8b",
+      "unique_regular_member": true,
+      "matches_original_receipt": true,
+      "matches_capture_copy": true,
+      "matches_manifest": true
+    },
+    {
+      "archive_member": "job/run_all-logs/py_test_reference_contract.json",
+      "saved_path": "/tmp/geo198-source-map-20261026/f13-selected-originals/run_all-logs__py_test_reference_contract.json",
+      "bytes": 353,
+      "sha256": "44076f44b524233c9f60534018f839037df2ea3b5fa3c4f0cb2a134d413de4f0",
+      "unique_regular_member": true,
+      "matches_original_receipt": true,
+      "matches_capture_copy": true,
+      "matches_manifest": true
+    },
+    {
+      "archive_member": "job/run_all-logs/py_test_reference_contract.unittest.log",
+      "saved_path": "/tmp/geo198-source-map-20261026/f13-selected-originals/run_all-logs__py_test_reference_contract.unittest.log",
+      "bytes": 151,
+      "sha256": "beebde23cc01f420667c48026f7c6869c2ef0af192aa823da76f5943180f9990",
+      "unique_regular_member": true,
+      "matches_original_receipt": true,
+      "matches_capture_copy": true,
+      "matches_manifest": true
+    },
+    {
+      "archive_member": "job/steps/01.stdout",
+      "saved_path": "/tmp/geo198-source-map-20261026/f13-selected-originals/steps__01.stdout",
+      "bytes": 36794,
+      "sha256": "247299ed5c4a2e40962b44c826e45b1ea908b570bbe7df07510d70e93062c0b0",
+      "unique_regular_member": true,
+      "matches_original_receipt": true,
+      "matches_capture_copy": true,
+      "matches_manifest": true
+    }
+  ],
+  "verified_log_results": {
+    "integrity_first_line": "432/432 integrity checks passed (World=4759448 bytes)",
+    "integrity_count_semantics": "432/432 C檢查點，非432個獨立unittest方法。",
+    "scene_counts": {
+      "pass": 165,
+      "fail": 0,
+      "infrastructure": 0
+    },
+    "named_A_B_strip_results": {
+      "_ax_r7_notch_disconnected.scene": {
+        "scene": "_ax_r7_notch_disconnected.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "rejection-diagnostic"
+      },
+      "_ax_r7_ridge_crossing.scene": {
+        "scene": "_ax_r7_ridge_crossing.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+      },
+      "_ax_r7_ridge_strip.scene": {
+        "scene": "_ax_r7_ridge_strip.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+      }
+    },
+    "reference_counts": {
+      "total": 51,
+      "run": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "extra_errors": 0
+    },
+    "reference_unittest_tail": "...................................................\n----------------------------------------------------------------------\nRan 51 tests in 20.370s\n\nOK\n",
+    "aggregate_rows": [
+      "c:integrity                                        432   432     0     0     6.6  C 檢查點數（非 test 級）",
+      "core:run_tests                                     165   165     0     0    13.8",
+      "py:test_reference_contract                          51    51     0     0    20.6"
+    ]
+  },
+  "report_boundary_assessment": {
+    "F13_historical_not_current_source_explicit": true,
+    "five_member_not_whole_archive_hash_claim_explicit": true,
+    "source_fragments_not_full_dependency_closure_explicit": true,
+    "current_main_or_new_F_not_relabelled_green": true,
+    "PR291_D_drive_originals_not_claimed_read": true,
+    "issues_not_closed_or_project_complete_claimed": true,
+    "no_F13_scope_blocker_found": true
+  },
+  "limits": [
+    "此peer證明既有F13原收據/選件吻合，不是本輪重新驗收native。",
+    "完整native成功由原workflow/step真退出碼支持；本次只核所列5 logs與控制script，未重算646個tar member的全部hash或重驗整suite。",
+    "1683.9267737960035是shell step，整個job1684.1285846579995；兩者都低於35分鐘，但不可把它們混為同一計時欄。",
+    "13d02c1db7022145a52ee063286a558e595eb212結果不得因分類函式片段相同而沿用成405f8c5e或cbf0fb6正式通過；跨SHA閉包仍未由此建立。"
+  ]
+}

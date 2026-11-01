@@ -1,0 +1,30 @@
+{
+  "schema": "four-archive-groups-originals/1",
+  "createdUtc": "2026-10-24T03:12:03.424066+00:00",
+  "exit_code": 0,
+  "member_count": 840,
+  "original_member_count": 839,
+  "original_bytes": 1694913,
+  "archive": "/workspace/four-archive-groups-originals-20261024/four-archive-groups-originals.tar.gz",
+  "archive_bytes": 248731,
+  "archive_sha256": "fc852b7d53c9c0c41feb2ce6256e61723cf2903fcdff4142e1076bb237ce73e7",
+  "inventory": "/workspace/four-archive-groups-originals-20261024/MEMBER_INVENTORY.json",
+  "inventory_sha256": "df0c9c152626cf889768f97c02247a719a83523bce3e2acb5825fa995b3c9d87",
+  "roundtrip_original_bytes": true,
+  "groups_added": {
+    "six_archive_alias_group": 1,
+    "large_archive_groups": 3
+  },
+  "configured_gross_source_block_saving": 476540928,
+  "limits": [
+    "Maintenance only; no product gate is executed or relabeled.",
+    "All19 named archive/stream paths and original bytes remain; no archive bodies or ELF payloads are duplicated into this metadata package.",
+    "Original423 cold groups,2 cardref ELF groups,1 six-alias group and3 large archive groups are separate write/reuse bans. Every applicable alias must be de-linked before rewrite.",
+    "Original6alias publication exits1/1/1/0 and original54 terminal rows including failures remain unchanged; maintenance0 does not turn them green.",
+    "Owner fresh byte/Git checks remain in journals; independent actual reviews inspect metadata/small streams without second large body hash.",
+    "Gross476540928 source block saving is not net df recovery; package/Git overhead and concurrent writes remain.",
+    "F2perf source-counterfactual excluded because its owner receipt is truncated; baseline formal-F is not that owner terminal.",
+    "Original prep producers ran via direct exec, with full recorded Git subcommands but no independent outer producer transcript; nothing is backfilled.",
+    "Independent post-package peer is adjacent to avoid self-reference."
+  ]
+}

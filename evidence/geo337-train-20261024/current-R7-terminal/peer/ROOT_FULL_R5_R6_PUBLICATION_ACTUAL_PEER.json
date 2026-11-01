@@ -1,0 +1,23 @@
+{
+  "schema": "root-full-R5-R6-and-maintenance-actual-publication-peer-v1",
+  "checks": 5339,
+  "exit_code": 0,
+  "findings": [],
+  "product_source": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "parent": "51e36b94b327c7bc1142c82b59e26ce9ab983d69",
+  "evidence_head": "597bce63e296c85e64d33ca4496f167a599f0848",
+  "original_result_sha256": "f43c03c6afa67e2a2c81418c6a4f95398a46fa44ad0dd58b137a1e745c1d9e87",
+  "manifest_sha256": "f602cabe1d0dfe5fcf43de1d8c484c6f45a1cc047d58c0c75c33168002bea526",
+  "original_Git_commands": 623,
+  "original_readonly_Git_commands": 5,
+  "additional_Git_commands_on_corrected_review": 0,
+  "files": 398,
+  "logical_bytes": 77488565,
+  "large_archive_body_reads": 0,
+  "reviewer_initial_error": "Initial peer assumed a source file appears once in manifest; the same peer source is intentionally committed at two distinct paths. Both original hash-object commands produced the same OID. Initial failed report and helper retained; no product/publication change.",
+  "limits": [
+    "Original full Git streams plus small metadata independent blob checks and five fixed local metadata commands; no network, archive body cat-file/hash or test run.",
+    "All six original archives bound to already-reviewed exact SHA256 plus original insertion/preload Git OIDs. Permanent TMP object alternate cannot be removed merely because remote push succeeded.",
+    "Historical R5a22/R6F2bbe failures remain unchanged; current product F7 has its own formal R7 execution. No source/result relabel."
+  ]
+}

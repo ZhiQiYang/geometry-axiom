@@ -1,0 +1,1967 @@
+{
+  "schema": "pr338-b2-fallback-header-audit/1",
+  "references": {
+    "b74f9a2ae7ade1555b9be45283adecc097fb76e3": [
+      {
+        "including": "geometry-templates/woodworking/native/members.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/supports.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/boundary_policy.h",
+        "operand": "regions.h",
+        "resolved": "geometry-templates/woodworking/native/regions.h",
+        "guard": "GEO_KERNEL_REGIONS_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/regions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/contact_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "parameters.h",
+        "resolved": "geometry-templates/woodworking/native/parameters.h",
+        "guard": "GEOMETRY_KERNEL_PARAMETERS_H",
+        "line": 8,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/parameters.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "named_values.h",
+        "resolved": "geometry-templates/woodworking/native/named_values.h",
+        "guard": "GEO_KERNEL_NAMED_VALUES_H",
+        "line": 11,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/named_values.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "codec.h",
+        "resolved": "geometry-templates/woodworking/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 14,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "versions.h",
+        "resolved": "geometry-templates/woodworking/native/versions.h",
+        "guard": "GEO_KERNEL_VERSIONS_H",
+        "line": 17,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/versions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 8,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 11,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/obstacles.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.h",
+        "operand": "clip.h",
+        "resolved": "geometry-templates/woodworking/native/clip.h",
+        "guard": "GEO_KERNEL_CLIP_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/clip.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "enclosure_sources.h",
+        "resolved": "geometry-templates/woodworking/native/enclosure_sources.h",
+        "guard": "GEO_KERNEL_ENCLOSURE_SOURCES_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/enclosure_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "version_sources.h",
+        "resolved": "geometry-templates/woodworking/native/version_sources.h",
+        "guard": "GEO_KERNEL_VERSION_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/version_sources.h",
+            "line": 3
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/section_profile_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/assembly_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/derived_placement.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_definition_codec.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 3,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.c",
+        "operand": "region_key_sources.h",
+        "resolved": "geometry-templates/woodworking/native/region_key_sources.h",
+        "guard": "GEO_KERNEL_REGION_KEY_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/region_key_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.h",
+        "operand": "candidate.h",
+        "resolved": "geometry-app/native/candidate.h",
+        "guard": "GEO_KERNEL_CANDIDATE_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/candidate.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.c",
+        "operand": "codec.h",
+        "resolved": "geometry-app/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      }
+    ],
+    "adbaebf9c73ea6801d7b4d5214e4b846b132923b": [],
+    "75a1e93811a52b69385cbdaf6a09d773ed9052ad": [
+      {
+        "including": "geometry-templates/woodworking/native/members.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/supports.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/boundary_policy.h",
+        "operand": "regions.h",
+        "resolved": "geometry-templates/woodworking/native/regions.h",
+        "guard": "GEO_KERNEL_REGIONS_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/regions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/contact_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "parameters.h",
+        "resolved": "geometry-templates/woodworking/native/parameters.h",
+        "guard": "GEOMETRY_KERNEL_PARAMETERS_H",
+        "line": 8,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/parameters.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "named_values.h",
+        "resolved": "geometry-templates/woodworking/native/named_values.h",
+        "guard": "GEO_KERNEL_NAMED_VALUES_H",
+        "line": 11,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/named_values.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "codec.h",
+        "resolved": "geometry-templates/woodworking/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 14,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "versions.h",
+        "resolved": "geometry-templates/woodworking/native/versions.h",
+        "guard": "GEO_KERNEL_VERSIONS_H",
+        "line": 17,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/versions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 12,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/obstacles.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.h",
+        "operand": "clip.h",
+        "resolved": "geometry-templates/woodworking/native/clip.h",
+        "guard": "GEO_KERNEL_CLIP_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/clip.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "enclosure_sources.h",
+        "resolved": "geometry-templates/woodworking/native/enclosure_sources.h",
+        "guard": "GEO_KERNEL_ENCLOSURE_SOURCES_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/enclosure_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "version_sources.h",
+        "resolved": "geometry-templates/woodworking/native/version_sources.h",
+        "guard": "GEO_KERNEL_VERSION_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/version_sources.h",
+            "line": 3
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/section_profile_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/assembly_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/derived_placement.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_definition_codec.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 3,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.c",
+        "operand": "region_key_sources.h",
+        "resolved": "geometry-templates/woodworking/native/region_key_sources.h",
+        "guard": "GEO_KERNEL_REGION_KEY_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/region_key_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.h",
+        "operand": "candidate.h",
+        "resolved": "geometry-app/native/candidate.h",
+        "guard": "GEO_KERNEL_CANDIDATE_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/candidate.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.c",
+        "operand": "codec.h",
+        "resolved": "geometry-app/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      }
+    ],
+    "4f8a794f4167c3562eb182045102e86e9e37cca9": [
+      {
+        "including": "geometry-templates/woodworking/native/members.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/supports.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/boundary_policy.h",
+        "operand": "regions.h",
+        "resolved": "geometry-templates/woodworking/native/regions.h",
+        "guard": "GEO_KERNEL_REGIONS_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/regions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/contact_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "parameters.h",
+        "resolved": "geometry-templates/woodworking/native/parameters.h",
+        "guard": "GEOMETRY_KERNEL_PARAMETERS_H",
+        "line": 8,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/parameters.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "named_values.h",
+        "resolved": "geometry-templates/woodworking/native/named_values.h",
+        "guard": "GEO_KERNEL_NAMED_VALUES_H",
+        "line": 11,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/named_values.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "codec.h",
+        "resolved": "geometry-templates/woodworking/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 14,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "versions.h",
+        "resolved": "geometry-templates/woodworking/native/versions.h",
+        "guard": "GEO_KERNEL_VERSIONS_H",
+        "line": 17,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/versions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 12,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/obstacles.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.h",
+        "operand": "clip.h",
+        "resolved": "geometry-templates/woodworking/native/clip.h",
+        "guard": "GEO_KERNEL_CLIP_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/clip.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "enclosure_sources.h",
+        "resolved": "geometry-templates/woodworking/native/enclosure_sources.h",
+        "guard": "GEO_KERNEL_ENCLOSURE_SOURCES_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/enclosure_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "version_sources.h",
+        "resolved": "geometry-templates/woodworking/native/version_sources.h",
+        "guard": "GEO_KERNEL_VERSION_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/version_sources.h",
+            "line": 3
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/section_profile_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/assembly_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/derived_placement.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_definition_codec.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 3,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.c",
+        "operand": "region_key_sources.h",
+        "resolved": "geometry-templates/woodworking/native/region_key_sources.h",
+        "guard": "GEO_KERNEL_REGION_KEY_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/region_key_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.h",
+        "operand": "candidate.h",
+        "resolved": "geometry-app/native/candidate.h",
+        "guard": "GEO_KERNEL_CANDIDATE_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/candidate.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.c",
+        "operand": "codec.h",
+        "resolved": "geometry-app/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      }
+    ],
+    "cbf0fb621888596aa14ad5f2349b503e23b1b72d": [
+      {
+        "including": "geometry-templates/woodworking/native/members.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/supports.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/boundary_policy.h",
+        "operand": "regions.h",
+        "resolved": "geometry-templates/woodworking/native/regions.h",
+        "guard": "GEO_KERNEL_REGIONS_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/regions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/contact_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "parameters.h",
+        "resolved": "geometry-templates/woodworking/native/parameters.h",
+        "guard": "GEOMETRY_KERNEL_PARAMETERS_H",
+        "line": 8,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/parameters.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "named_values.h",
+        "resolved": "geometry-templates/woodworking/native/named_values.h",
+        "guard": "GEO_KERNEL_NAMED_VALUES_H",
+        "line": 11,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/named_values.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "codec.h",
+        "resolved": "geometry-templates/woodworking/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 14,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "versions.h",
+        "resolved": "geometry-templates/woodworking/native/versions.h",
+        "guard": "GEO_KERNEL_VERSIONS_H",
+        "line": 17,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/versions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 12,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/obstacles.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.h",
+        "operand": "clip.h",
+        "resolved": "geometry-templates/woodworking/native/clip.h",
+        "guard": "GEO_KERNEL_CLIP_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/clip.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "enclosure_sources.h",
+        "resolved": "geometry-templates/woodworking/native/enclosure_sources.h",
+        "guard": "GEO_KERNEL_ENCLOSURE_SOURCES_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/enclosure_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "version_sources.h",
+        "resolved": "geometry-templates/woodworking/native/version_sources.h",
+        "guard": "GEO_KERNEL_VERSION_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/version_sources.h",
+            "line": 3
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/section_profile_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/assembly_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/derived_placement.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_definition_codec.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 3,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.c",
+        "operand": "region_key_sources.h",
+        "resolved": "geometry-templates/woodworking/native/region_key_sources.h",
+        "guard": "GEO_KERNEL_REGION_KEY_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/region_key_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.h",
+        "operand": "candidate.h",
+        "resolved": "geometry-app/native/candidate.h",
+        "guard": "GEO_KERNEL_CANDIDATE_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/candidate.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.c",
+        "operand": "codec.h",
+        "resolved": "geometry-app/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      }
+    ],
+    "0ae1728c2309e1d670369289a6b8da059fa63a50": [
+      {
+        "including": "geometry-templates/woodworking/native/members.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/supports.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/boundary_policy.h",
+        "operand": "regions.h",
+        "resolved": "geometry-templates/woodworking/native/regions.h",
+        "guard": "GEO_KERNEL_REGIONS_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/regions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/contact_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_application.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "parameters.h",
+        "resolved": "geometry-templates/woodworking/native/parameters.h",
+        "guard": "GEOMETRY_KERNEL_PARAMETERS_H",
+        "line": 8,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/parameters.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "named_values.h",
+        "resolved": "geometry-templates/woodworking/native/named_values.h",
+        "guard": "GEO_KERNEL_NAMED_VALUES_H",
+        "line": 11,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/named_values.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "codec.h",
+        "resolved": "geometry-templates/woodworking/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 14,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering.h",
+        "operand": "versions.h",
+        "resolved": "geometry-templates/woodworking/native/versions.h",
+        "guard": "GEO_KERNEL_VERSIONS_H",
+        "line": 17,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/versions.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "grid_store.h",
+        "resolved": "geometry-templates/woodworking/native/grid_store.h",
+        "guard": "GEO_KERNEL_GRID_STORE_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid_store.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/member_reference.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 12,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/obstacles.h",
+        "operand": "geometry.h",
+        "resolved": "geometry-templates/woodworking/native/geometry.h",
+        "guard": "GEOMETRY_KERNEL_GEOMETRY_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/geometry.h",
+            "line": 6
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.h",
+        "operand": "clip.h",
+        "resolved": "geometry-templates/woodworking/native/clip.h",
+        "guard": "GEO_KERNEL_CLIP_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/clip.h",
+            "line": 5
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/definition_sources.h",
+        "operand": "enclosure_sources.h",
+        "resolved": "geometry-templates/woodworking/native/enclosure_sources.h",
+        "guard": "GEO_KERNEL_ENCLOSURE_SOURCES_H",
+        "line": 9,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/enclosure_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "version_sources.h",
+        "resolved": "geometry-templates/woodworking/native/version_sources.h",
+        "guard": "GEO_KERNEL_VERSION_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/version_sources.h",
+            "line": 3
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/engineering_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/section_profile_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 7,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/assembly_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/derived_placement.h",
+        "operand": "placements.h",
+        "resolved": "geometry-templates/woodworking/native/placements.h",
+        "guard": "GEO_KERNEL_PLACEMENTS_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/placements.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_definition_codec.h",
+        "operand": "source.h",
+        "resolved": "geometry-templates/woodworking/native/source.h",
+        "guard": "GEO_KERNEL_SOURCE_H",
+        "line": 6,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/source.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/panel_layout.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/finish.c",
+        "operand": "grid.h",
+        "resolved": "geometry-templates/woodworking/native/grid.h",
+        "guard": "GEOMETRY_KERNEL_GRID_H",
+        "line": 3,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/grid.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-templates/woodworking/native/grid_sources.c",
+        "operand": "region_key_sources.h",
+        "resolved": "geometry-templates/woodworking/native/region_key_sources.h",
+        "guard": "GEO_KERNEL_REGION_KEY_SOURCES_H",
+        "line": 4,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/region_key_sources.h",
+            "line": 4
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.h",
+        "operand": "candidate.h",
+        "resolved": "geometry-app/native/candidate.h",
+        "guard": "GEO_KERNEL_CANDIDATE_H",
+        "line": 5,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/candidate.h",
+            "line": 2
+          }
+        ]
+      },
+      {
+        "including": "geometry-app/native/app_candidate.c",
+        "operand": "codec.h",
+        "resolved": "geometry-app/native/codec.h",
+        "guard": "GEOMETRY_KERNEL_CODEC_H",
+        "line": 2,
+        "guard_definition_in_pinned_closure": [
+          {
+            "path": "geometry-core/kernel/codec.h",
+            "line": 7
+          }
+        ]
+      }
+    ]
+  },
+  "limitation": "This is source guard classification, not a fresh preprocessor run. Original successful builds and unchanged source/binary inputs are the reuse evidence."
+}

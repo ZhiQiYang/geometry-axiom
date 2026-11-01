@@ -1,0 +1,2443 @@
+{
+  "schema": "geo337-source-checkpoint/1",
+  "product_sha": "f64d638f15c48d2b9723b7ae9d230fb5dacb82d9",
+  "source_parent": "3417ab932e40431fc99ca74e50762149ebfc09f8",
+  "archive_sha256": "c63223e83118c616994b59b9f9c6f9e658a5adb1ee7efee65edc2c53fb2f50b1",
+  "archive_bytes": 1899833,
+  "files": [
+    {
+      "path": "initial-checkout/receipt.json",
+      "source": "/tmp/geo337-continue-20261024/source-checkout/receipt.json",
+      "bytes": 3833,
+      "sha256": "6690b7df29aa849b976df69fc421f8cdfac62c38cc3900888aa089b0140ab4e9"
+    },
+    {
+      "path": "initial-checkout/subcommands/000001/request.json",
+      "source": "/tmp/geo337-continue-20261024/source-checkout/subcommands/000001/request.json",
+      "bytes": 1481,
+      "sha256": "68d16fdca573d25d7aabbb84c4729e73c1387fe5e6dcfce3a58f16c49979b3fd"
+    },
+    {
+      "path": "initial-checkout/subcommands/000001/result.json",
+      "source": "/tmp/geo337-continue-20261024/source-checkout/subcommands/000001/result.json",
+      "bytes": 1732,
+      "sha256": "5b68bafac7876a4e81b44bb971334cd2f63e412be8f8f3fc902a6c79e0760076"
+    },
+    {
+      "path": "initial-checkout/subcommands/000001/stderr.bin",
+      "source": "/tmp/geo337-continue-20261024/source-checkout/subcommands/000001/stderr.bin",
+      "bytes": 55,
+      "sha256": "193eedce15e310b889af3522da9e6443edf2364e639d6a8ba1467b330cb59ea6"
+    },
+    {
+      "path": "initial-checkout/subcommands/000001/stdin.bin",
+      "source": "/tmp/geo337-continue-20261024/source-checkout/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "initial-checkout/subcommands/000001/stdout.bin",
+      "source": "/tmp/geo337-continue-20261024/source-checkout/subcommands/000001/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "initial-checkout/subcommands.json",
+      "source": "/tmp/geo337-continue-20261024/source-checkout/subcommands.json",
+      "bytes": 1818,
+      "sha256": "dc5c65fa397311674c83e722f50c1890fd5d24e7d6e3c1de0099880ad0a6c080"
+    },
+    {
+      "path": "merge-current-main/receipt.json",
+      "source": "/tmp/geo337-continue-20261024/merge-current-main/receipt.json",
+      "bytes": 3839,
+      "sha256": "03a6666f253362feb5250a35f73f2063d80231b994515f99d25cb4b5c61c4034"
+    },
+    {
+      "path": "merge-current-main/subcommands/000001/request.json",
+      "source": "/tmp/geo337-continue-20261024/merge-current-main/subcommands/000001/request.json",
+      "bytes": 1478,
+      "sha256": "a848ccd94bb9991ba80787a445f02e7974e8cf3dc3760fc3810eb1d9061a571b"
+    },
+    {
+      "path": "merge-current-main/subcommands/000001/result.json",
+      "source": "/tmp/geo337-continue-20261024/merge-current-main/subcommands/000001/result.json",
+      "bytes": 1732,
+      "sha256": "71fb9796ba60fc73c7e41081f85556e604c7e59467d5969b18fec271244fb2a5"
+    },
+    {
+      "path": "merge-current-main/subcommands/000001/stderr.bin",
+      "source": "/tmp/geo337-continue-20261024/merge-current-main/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "merge-current-main/subcommands/000001/stdin.bin",
+      "source": "/tmp/geo337-continue-20261024/merge-current-main/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "merge-current-main/subcommands/000001/stdout.bin",
+      "source": "/tmp/geo337-continue-20261024/merge-current-main/subcommands/000001/stdout.bin",
+      "bytes": 63476,
+      "sha256": "dc04467765c77c5fa45bc325c9aad3d3f36c6ddfa2ccd59783cdc7ff50ce5fed"
+    },
+    {
+      "path": "merge-current-main/subcommands.json",
+      "source": "/tmp/geo337-continue-20261024/merge-current-main/subcommands.json",
+      "bytes": 1820,
+      "sha256": "2a9c6c369c286fb545ec45ea825fcd8d106d8097d057168ae06dd1f09d0a6d09"
+    },
+    {
+      "path": "adopt-residual-candidate/receipt.json",
+      "source": "/tmp/geo337-continue-20261024/adopt-residual-candidate/receipt.json",
+      "bytes": 3939,
+      "sha256": "b568a4fbfb658964666f507d2cf489ff3399f0776d6f3eb160e411bbcbf9f712"
+    },
+    {
+      "path": "adopt-residual-candidate/subcommands/000001/request.json",
+      "source": "/tmp/geo337-continue-20261024/adopt-residual-candidate/subcommands/000001/request.json",
+      "bytes": 1533,
+      "sha256": "775dd67cfbd7400af7a27227021cecd3556708829299e7aad8cddca615d521fd"
+    },
+    {
+      "path": "adopt-residual-candidate/subcommands/000001/result.json",
+      "source": "/tmp/geo337-continue-20261024/adopt-residual-candidate/subcommands/000001/result.json",
+      "bytes": 1785,
+      "sha256": "e75e0a4989da9a7905bb2d3bd9e139bd5eae01b2fdbc19b464ebb54c4030fa41"
+    },
+    {
+      "path": "adopt-residual-candidate/subcommands/000001/stderr.bin",
+      "source": "/tmp/geo337-continue-20261024/adopt-residual-candidate/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adopt-residual-candidate/subcommands/000001/stdin.bin",
+      "source": "/tmp/geo337-continue-20261024/adopt-residual-candidate/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "adopt-residual-candidate/subcommands/000001/stdout.bin",
+      "source": "/tmp/geo337-continue-20261024/adopt-residual-candidate/subcommands/000001/stdout.bin",
+      "bytes": 2702,
+      "sha256": "b83576ed0fe44025329fec6d3d42d6dade14d5285629bac9dad080b9a3bc0ee7"
+    },
+    {
+      "path": "adopt-residual-candidate/subcommands.json",
+      "source": "/tmp/geo337-continue-20261024/adopt-residual-candidate/subcommands.json",
+      "bytes": 1871,
+      "sha256": "98d4ad9ad582a1cd71a88aeb19cb9533ad90ac49ed5d391c2e47a5725d4175fc"
+    },
+    {
+      "path": "314-identity/COMPARATOR_IDENTITY.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/COMPARATOR_IDENTITY.json",
+      "bytes": 13464,
+      "sha256": "1371bd8fad4b48a643b2446b991246b45d88ad1b242c7975f1a5a40212f7f446"
+    },
+    {
+      "path": "314-identity/EXPECTED_SUBCLOSURE.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/EXPECTED_SUBCLOSURE.json",
+      "bytes": 1450,
+      "sha256": "e89c4eef4570d05431ba8d84bdc4ace49825f3b5cbb058dd76c7e0d10724c533"
+    },
+    {
+      "path": "314-identity/MANIFEST.draft.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/MANIFEST.draft.json",
+      "bytes": 7753,
+      "sha256": "ab8e0099d93b50054832576b3e4d9a813358387a769c783d6740dfbea1659290"
+    },
+    {
+      "path": "314-identity/MANIFEST.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/MANIFEST.json",
+      "bytes": 8302,
+      "sha256": "36d81198ac23a0a0aadf02e072fb7f5669a6f4d8e06d53114d2607998dc4eed1"
+    },
+    {
+      "path": "314-identity/MUTATION_SUBCLOSURE.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/MUTATION_SUBCLOSURE.json",
+      "bytes": 9207,
+      "sha256": "9ffde0d43039d5b7e48032c6fcb0b37936aaa8f9a371ef4b5b79a518c1766694"
+    },
+    {
+      "path": "314-identity/PREPARATION_DIAGNOSTICS.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/PREPARATION_DIAGNOSTICS.json",
+      "bytes": 764,
+      "sha256": "484cc455d8557cc3ab62062512c3f303ad1f4bc843dfd179d5b70128ffd81eb1"
+    },
+    {
+      "path": "314-identity/PROTECTED_TARGET_BLOBS.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/PROTECTED_TARGET_BLOBS.json",
+      "bytes": 7931,
+      "sha256": "4de7a10ee17088af42ce7cb552c870c93811bb64bcc72f9214d7a92ef2193cc4"
+    },
+    {
+      "path": "314-identity/README.md",
+      "source": "/tmp/geo314-comparator-transplant-prep/README.md",
+      "bytes": 1483,
+      "sha256": "7b44c45cc9e885a15a5de0a928d5b6521a5059fe0950ef1a9641380d45f36992"
+    },
+    {
+      "path": "314-identity/READ_COMMANDS.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/READ_COMMANDS.json",
+      "bytes": 8605,
+      "sha256": "1eeec3f9ac7aa3cccbce821fa76214783fb07147a5f6752c85e3f8d61c67e281"
+    },
+    {
+      "path": "314-identity/approved314/geometry-core/subgrid_world.inc",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314/geometry-core/subgrid_world.inc",
+      "bytes": 1882,
+      "sha256": "72987c628e6fa357b8892060b8ca3c74a628f3bccfe01d52db8d5790bf2dde31"
+    },
+    {
+      "path": "314-identity/approved314/tests/mutate.py",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314/tests/mutate.py",
+      "bytes": 128842,
+      "sha256": "796eb32d8dffa48ae1909b20060c080de9b9075f9760c0b0d5aebc5c3aae72da"
+    },
+    {
+      "path": "314-identity/approved314/tests/run_all.expected.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314/tests/run_all.expected.json",
+      "bytes": 25056,
+      "sha256": "947c8ca2bc5f92b797d307fbee87ac6afa2fd35aaf8b0d21ca2aec7cc1752608"
+    },
+    {
+      "path": "314-identity/approved314/tests/run_all.py",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314/tests/run_all.py",
+      "bytes": 65843,
+      "sha256": "0ecc4597761aa57b31cf9bcb41eaa960172ff7ca105342849c43f5da75583400"
+    },
+    {
+      "path": "314-identity/approved314/tests/test_geo261_mutation_migration.py",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314/tests/test_geo261_mutation_migration.py",
+      "bytes": 17175,
+      "sha256": "fa89d87f22111dee5162d71d5612ce43f0e3f1bd7a1416eb3674e336ccbc211d"
+    },
+    {
+      "path": "314-identity/approved314-agents.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314-agents.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/approved314-agents.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314-agents.stdout",
+      "bytes": 19140,
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    {
+      "path": "314-identity/approved314-field-rules.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314-field-rules.stderr",
+      "bytes": 121,
+      "sha256": "ad2e6a2d4e01b6022b5a140b667d0c93a1c40e76a72f2fb78e71253ec4fbab43"
+    },
+    {
+      "path": "314-identity/approved314-field-rules.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314-field-rules.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/approved314-queue.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314-queue.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/approved314-queue.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314-queue.stdout",
+      "bytes": 231324,
+      "sha256": "97d671dd87fcacc811d810c04e1ce8538c2487f9b29c4373d6c8713700bf99e7"
+    },
+    {
+      "path": "314-identity/approved314-ssot.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314-ssot.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/approved314-ssot.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/approved314-ssot.stdout",
+      "bytes": 321170,
+      "sha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
+    },
+    {
+      "path": "314-identity/closure-paths.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/closure-paths.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/closure-paths.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/closure-paths.stdout",
+      "bytes": 8776,
+      "sha256": "4565423bcc7c8c7216a11623b248eb2df04080fc8057e3acfba05f2d6f0845a3"
+    },
+    {
+      "path": "314-identity/comparator-transplant.patch",
+      "source": "/tmp/geo314-comparator-transplant-prep/comparator-transplant.patch",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/comparator-transplant.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/comparator-transplant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/identities.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/identities.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/identities.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/identities.stdout",
+      "bytes": 123,
+      "sha256": "6b08227591093064d214a8532ae3e9df6285840e4e4c297d7cdb2bf2698673e1"
+    },
+    {
+      "path": "314-identity/main-agents.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/main-agents.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/main-agents.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/main-agents.stdout",
+      "bytes": 19140,
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    {
+      "path": "314-identity/main-field-rules.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/main-field-rules.stderr",
+      "bytes": 121,
+      "sha256": "9623d0ab78ace8d42c832932ee38b2fe34f94f7636ad50fb8ffa2cdec055e173"
+    },
+    {
+      "path": "314-identity/main-field-rules.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/main-field-rules.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/main-queue.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/main-queue.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/main-queue.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/main-queue.stdout",
+      "bytes": 234334,
+      "sha256": "a9f14cdd3cf2846c65d0a7cc32f02bf3a12ba60e817cd9223c59e4da6f4734e5"
+    },
+    {
+      "path": "314-identity/main-ssot.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/main-ssot.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/main-ssot.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/main-ssot.stdout",
+      "bytes": 321170,
+      "sha256": "7794a7782ea87347c8b1b2f3721287c954ee3a3fa74caab570f87f066d1f892d"
+    },
+    {
+      "path": "314-identity/pr333-field-rules.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr333-field-rules.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/pr333-field-rules.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr333-field-rules.stdout",
+      "bytes": 11811,
+      "sha256": "3305d8000af9814b91c2646cfcbbc841e1ead813fe3390e482f8bfc2a71c0ab2"
+    },
+    {
+      "path": "314-identity/pr337/geometry-core/subgrid_world.inc",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337/geometry-core/subgrid_world.inc",
+      "bytes": 1882,
+      "sha256": "72987c628e6fa357b8892060b8ca3c74a628f3bccfe01d52db8d5790bf2dde31"
+    },
+    {
+      "path": "314-identity/pr337/tests/mutate.py",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337/tests/mutate.py",
+      "bytes": 139592,
+      "sha256": "bd2d0c768439a93e7f848ff0299a5b164aabe1d80a0f4e9a5bcb7ab83eb4b315"
+    },
+    {
+      "path": "314-identity/pr337/tests/run_all.expected.json",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337/tests/run_all.expected.json",
+      "bytes": 25284,
+      "sha256": "5c9b6f70f11c7f985a8e1e37e7b11f057a83d31db5a452709b8a87729874daab"
+    },
+    {
+      "path": "314-identity/pr337/tests/run_all.py",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337/tests/run_all.py",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "path": "314-identity/pr337/tests/test_geo261_mutation_migration.py",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337/tests/test_geo261_mutation_migration.py",
+      "bytes": 18674,
+      "sha256": "855203b0808e364faebf14d6f578494c9cf6aeb1dcc09cb85122e5ac9b6b4efe"
+    },
+    {
+      "path": "314-identity/pr337-agents.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337-agents.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/pr337-agents.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337-agents.stdout",
+      "bytes": 19140,
+      "sha256": "d3fcb30f0e711a4130f032a2ae8edab70c0cd69897c37ae504cd5f3416d3cbca"
+    },
+    {
+      "path": "314-identity/pr337-field-rules.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337-field-rules.stderr",
+      "bytes": 121,
+      "sha256": "2bdec72c88f0e85cc21fae1a023d33e9f9a0c762750235207071026623bb739c"
+    },
+    {
+      "path": "314-identity/pr337-field-rules.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337-field-rules.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/pr337-queue.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337-queue.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/pr337-queue.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337-queue.stdout",
+      "bytes": 237973,
+      "sha256": "cfad2b7ad5181a97a0d87e0791f96548cb0838f6222a01fabdf06d987b5211e0"
+    },
+    {
+      "path": "314-identity/pr337-ssot.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337-ssot.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "314-identity/pr337-ssot.stdout",
+      "source": "/tmp/geo314-comparator-transplant-prep/pr337-ssot.stdout",
+      "bytes": 323066,
+      "sha256": "c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7"
+    },
+    {
+      "path": "314-identity/shared-delta.diff",
+      "source": "/tmp/geo314-comparator-transplant-prep/shared-delta.diff",
+      "bytes": 24093,
+      "sha256": "23e503fbf967062729cf7526d5ae0cc595db26e44cecc1c318a01f54969b6e98"
+    },
+    {
+      "path": "314-identity/shared-delta.stderr",
+      "source": "/tmp/geo314-comparator-transplant-prep/shared-delta.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/323_delta_paths.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/323_delta_paths.txt",
+      "bytes": 610,
+      "sha256": "7439cbfd6f798b5cadf073193c549c6a48ccabb83c5ee913b2a733ce48d49548"
+    },
+    {
+      "path": "323-lineage-candidate/337_last_log.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/337_last_log.txt",
+      "bytes": 2220,
+      "sha256": "1b216f4ba9321051e6927af651d48a029a04fbcb713403da9a3dfde261e7e08e"
+    },
+    {
+      "path": "323-lineage-candidate/E_is_ancestor_H.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/E_is_ancestor_H.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/LINEAGE_REVIEW.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/LINEAGE_REVIEW.json",
+      "bytes": 5650,
+      "sha256": "28b8834f04a4839dacb19c7924f81c0f8dab90e1969caf86b1d5ffeb73a35b05"
+    },
+    {
+      "path": "323-lineage-candidate/LINEAGE_REVIEW.md",
+      "source": "/tmp/geo323-train337-lineage-20261024/LINEAGE_REVIEW.md",
+      "bytes": 1708,
+      "sha256": "f895c516ded0426d69617644c7e78e7a422c9094c290d62bb71c30f78ecda6eb"
+    },
+    {
+      "path": "323-lineage-candidate/M_is_ancestor_H.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/M_is_ancestor_H.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/PORT_RESULT.md",
+      "source": "/tmp/geo323-train337-lineage-20261024/PORT_RESULT.md",
+      "bytes": 1505,
+      "sha256": "15f9b00ec75ed4037572901df650be44f6d95553f37613f60438fe4e0d577234"
+    },
+    {
+      "path": "323-lineage-candidate/S5c_ancestor_H.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/S5c_ancestor_H.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/STEP1.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/STEP1.json",
+      "bytes": 17748,
+      "sha256": "5a4cba15949880cbd5e27e3a00b301198f3e3503738ebdb21cac232d15014c10"
+    },
+    {
+      "path": "323-lineage-candidate/STEP2.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/STEP2.json",
+      "bytes": 77353,
+      "sha256": "c115a6517560ea06ad428028317551fc91186929f8b7fb08c17853259964a1dd"
+    },
+    {
+      "path": "323-lineage-candidate/STEP3.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/STEP3.json",
+      "bytes": 21573,
+      "sha256": "75fc7a7923f0d5ef7aa55e2467d5462db85078edd5a10d5e5142852fa4967e91"
+    },
+    {
+      "path": "323-lineage-candidate/S_H_mergebase.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/S_H_mergebase.txt",
+      "bytes": 41,
+      "sha256": "abb8c94d2681b4b5daa7fcc4f86e794e458d53af4e9b30cc41964da89644766d"
+    },
+    {
+      "path": "323-lineage-candidate/S_is_ancestor_H.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/S_is_ancestor_H.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v1/base/geometry-app/native/reference_sources.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v1/base/geometry-app/native/reference_sources.inc",
+      "bytes": 62346,
+      "sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v1/base/geometry-core/references.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v1/base/geometry-core/references.inc",
+      "bytes": 64152,
+      "sha256": "f2d1f595be0279b2a052bde8ae0fd55c44e7d710610ea21cac2209d2d6603c10"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v1/candidate/geometry-app/native/reference_sources.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v1/candidate/geometry-app/native/reference_sources.inc",
+      "bytes": 63190,
+      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v1/candidate/geometry-core/references.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v1/candidate/geometry-core/references.inc",
+      "bytes": 64355,
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/CANDIDATE.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/CANDIDATE.json",
+      "bytes": 12351,
+      "sha256": "07020c41e584e82cd520507b5f9cd043b8a02f83c5b327f43d6717c1ba487526"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/base/geometry-app/native/reference_sources.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/base/geometry-app/native/reference_sources.inc",
+      "bytes": 62346,
+      "sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/base/geometry-core/references.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/base/geometry-core/references.inc",
+      "bytes": 64152,
+      "sha256": "f2d1f595be0279b2a052bde8ae0fd55c44e7d710610ea21cac2209d2d6603c10"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/base/tests/geo261_load_residual_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/base/tests/geo261_load_residual_harness.c",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/base/tests/test_geo261_load_residual.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/base/tests/test_geo261_load_residual.py",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/candidate/geometry-app/native/reference_sources.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/candidate/geometry-app/native/reference_sources.inc",
+      "bytes": 63190,
+      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/candidate/geometry-core/references.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/candidate/geometry-core/references.inc",
+      "bytes": 64355,
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/candidate/tests/geo261_load_residual_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/candidate/tests/geo261_load_residual_harness.c",
+      "bytes": 22125,
+      "sha256": "d24508bf0dccb47ffe6baaca13942b175888afbf6e30eed66c169a4836b23cbc"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/candidate/tests/test_geo261_load_residual.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/candidate/tests/test_geo261_load_residual.py",
+      "bytes": 22146,
+      "sha256": "5eaefc367c609bfaff10fb6b6f2fbb47c4d92aaddb2eaff529fce2fe7c0ce894"
+    },
+    {
+      "path": "323-lineage-candidate/candidate-H3cbeb759-v2/candidate.patch",
+      "source": "/tmp/geo323-train337-lineage-20261024/candidate-H3cbeb759-v2/candidate.patch",
+      "bytes": 17280,
+      "sha256": "a44018ad1e3455af89dc9fbc19ea4ec3d9b0e4dfec56f9ddab5d2893d91871b0"
+    },
+    {
+      "path": "323-lineage-candidate/content_history.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/content_history.txt",
+      "bytes": 3218,
+      "sha256": "decdb13c2131c73a28f02e65a956b095f0e52a34fc0c3ec5759ff016d9310025"
+    },
+    {
+      "path": "323-lineage-candidate/host_harness_later_diff.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/host_harness_later_diff.txt",
+      "bytes": 1303,
+      "sha256": "720ff7e95f2dac408f0ffe7ca86b02566fa9bd3b38b303c8c2e3d0da7a5caba3"
+    },
+    {
+      "path": "323-lineage-candidate/later_closure_paths.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/later_closure_paths.txt",
+      "bytes": 3437,
+      "sha256": "30b0c0c6d54f2e801d4a275e080210d7eb8ec5f5c662246fac29f77349ed280b"
+    },
+    {
+      "path": "323-lineage-candidate/latest_review.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/latest_review.txt",
+      "bytes": 18180,
+      "sha256": "e19105106f027d08403c50d9d2a78ef14a11bac69eda306763baaa64374b52a3"
+    },
+    {
+      "path": "323-lineage-candidate/legacy323_ancestor_H.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/legacy323_ancestor_H.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/port_candidate.failed-exact-global-v1.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/port_candidate.failed-exact-global-v1.py",
+      "bytes": 7207,
+      "sha256": "d47955e4def117fc1b1e737fb9a50fb7d76edbbf4c3ba548d1dc61b7bc3c8dd9"
+    },
+    {
+      "path": "323-lineage-candidate/port_candidate.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/port_candidate.py",
+      "bytes": 8454,
+      "sha256": "5c051f4826a320e3d75e62ce41271abc524fad3438240cf7faddef728d4889b9"
+    },
+    {
+      "path": "323-lineage-candidate/product_323_delta_zero.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/product_323_delta_zero.txt",
+      "bytes": 15054,
+      "sha256": "51acf727ba14e01cf80b671cea8f28c7b233ee6d66ca2b1adfb58057373944d5"
+    },
+    {
+      "path": "323-lineage-candidate/product_later_diff.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/product_later_diff.txt",
+      "bytes": 15609,
+      "sha256": "2fab35d6f193db0299193f2f841d0f9047ad5df75faf0f79f7c306262ef76a68"
+    },
+    {
+      "path": "323-lineage-candidate/product_later_numstat.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/product_later_numstat.txt",
+      "bytes": 151,
+      "sha256": "7305dddeb70b7e8f1da19c381221bbe2f0a00c78bb7ef7ac408da4ee4e17fbac"
+    },
+    {
+      "path": "323-lineage-candidate/product_later_zero.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/product_later_zero.txt",
+      "bytes": 10491,
+      "sha256": "7a20858918d24cefe33910667bf100afe20447b3346a5131974ba2511b81eacc"
+    },
+    {
+      "path": "323-lineage-candidate/run_all_later_diff.txt",
+      "source": "/tmp/geo323-train337-lineage-20261024/run_all_later_diff.txt",
+      "bytes": 720,
+      "sha256": "42aae4f14464b4f5b74fe8507a2735ff2eac80632b4fefcc67f5366887e953f8"
+    },
+    {
+      "path": "323-lineage-candidate/runtime-preparation/PREPARATION.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/runtime-preparation/PREPARATION.json",
+      "bytes": 18098,
+      "sha256": "e9340cd480d1b1284c7e1a9f509de528148882a252f3bdb03365cc955c2a3d01"
+    },
+    {
+      "path": "323-lineage-candidate/runtime-preparation/README.md",
+      "source": "/tmp/geo323-train337-lineage-20261024/runtime-preparation/README.md",
+      "bytes": 1270,
+      "sha256": "dd8a707c783250fe5b2b4b621252fdd4825952f4aa3b18b39b3ddd57e5c3aea0"
+    },
+    {
+      "path": "323-lineage-candidate/runtime-preparation/audit_three_controls.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/runtime-preparation/audit_three_controls.py",
+      "bytes": 6050,
+      "sha256": "b5b49aba242e32976e04bf140438c85595f9bce82d26925aafc2e15addf9fe7c"
+    },
+    {
+      "path": "323-lineage-candidate/runtime-preparation/run_fixed_three_launch.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/runtime-preparation/run_fixed_three_launch.py",
+      "bytes": 3855,
+      "sha256": "8b2b949932ad50fe335ae933c3eccaa61842e76239ea498d11530fd40f04df4e"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/current_geometry.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/current_geometry.c",
+      "bytes": 401655,
+      "sha256": "05c05a8028efe7723a552154e2db2e52223c2e4c00d5875540e1e58f9076fbca"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/geometry-app/native/reference_sources.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/geometry-app/native/reference_sources.inc",
+      "bytes": 62346,
+      "sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/geometry-app/native/world_validation.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/geometry-app/native/world_validation.inc",
+      "bytes": 8603,
+      "sha256": "4a6f085dd1d983a4a3d43787054dbd96aeb2a6bbe6e48e336faabe10430c9d8b"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/geometry-core/references.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/geometry-core/references.inc",
+      "bytes": 64152,
+      "sha256": "f2d1f595be0279b2a052bde8ae0fd55c44e7d710610ea21cac2209d2d6603c10"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/geometry-templates/woodworking/native/contact_sources.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/geometry-templates/woodworking/native/contact_sources.c",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/geo261_contact_sources_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/geo261_contact_sources_harness.c",
+      "bytes": 30015,
+      "sha256": "8b80563061ee0c68c6e421953d3d4881574e4a6a2acb5c24413477171878150f"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/geo261_host_facts_authority_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/geo261_host_facts_authority_harness.c",
+      "bytes": 54717,
+      "sha256": "0b2f9af52a8e21dcd114c192447d72d80d810cd03a843174bf600a7401a063f7"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/geo261_load_residual_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/geo261_load_residual_harness.c",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/geo261_member_reads_cases.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/geo261_member_reads_cases.inc",
+      "bytes": 8458,
+      "sha256": "f1e29c860e9273c661c58c1bfff5e4e73cc6f37810690577fcfab86dae12b641"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/geo261_world_validation_product_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/geo261_world_validation_product_harness.c",
+      "bytes": 4149,
+      "sha256": "82abbf5cd9a2fb3be4624ce96aad8d6f7357a2a49ac08e2b0b974cab4c58bbe9"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/pf3_mutation_check.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/pf3_mutation_check.py",
+      "bytes": 10662,
+      "sha256": "73b622fb59033b0ebe8672fe024c3c46645c9a3e863a60545c486223e44b5692"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/run_all.expected.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/run_all.expected.json",
+      "bytes": 25284,
+      "sha256": "5c9b6f70f11c7f985a8e1e37e7b11f057a83d31db5a452709b8a87729874daab"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/run_all.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/run_all.py",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/test_geo261_contact_sources.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/test_geo261_contact_sources.py",
+      "bytes": 13423,
+      "sha256": "b12b36e967feb08be661f39e7f39b450c3f04dc59e91c647e6d4bad6e2a0e94a"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/test_geo261_host_facts_authority.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/test_geo261_host_facts_authority.py",
+      "bytes": 19209,
+      "sha256": "15c72b5b35dcafa57551feac46f6daeea96341d768cf6f0d4bf6c24f64f46f72"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/H/tests/test_geo261_load_residual.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/H/tests/test_geo261_load_residual.py",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/current_geometry.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/current_geometry.c",
+      "bytes": 402018,
+      "sha256": "65417775dbfe034346373bf290d3804ea363b4b680aa4b4a7de3a9fe5473c508"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/geometry-app/native/reference_sources.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/geometry-app/native/reference_sources.inc",
+      "bytes": 61205,
+      "sha256": "4cb8d3d59d39776570880c17cddaacc4169900802df1b4f6b7547e7f96123713"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/geometry-app/native/world_validation.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/geometry-app/native/world_validation.inc",
+      "bytes": 7897,
+      "sha256": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/geometry-core/references.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/geometry-core/references.inc",
+      "bytes": 63717,
+      "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/geometry-templates/woodworking/native/contact_sources.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/geometry-templates/woodworking/native/contact_sources.c",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/geo261_contact_sources_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/geo261_contact_sources_harness.c",
+      "bytes": 30015,
+      "sha256": "8b80563061ee0c68c6e421953d3d4881574e4a6a2acb5c24413477171878150f"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/geo261_host_facts_authority_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/geo261_host_facts_authority_harness.c",
+      "bytes": 54662,
+      "sha256": "562b9fff78caffd47448dc3178997d96c10b71721bac517d355392de859d413e"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/geo261_load_residual_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/geo261_load_residual_harness.c",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/geo261_member_reads_cases.inc",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/geo261_member_reads_cases.inc",
+      "bytes": 8458,
+      "sha256": "f1e29c860e9273c661c58c1bfff5e4e73cc6f37810690577fcfab86dae12b641"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/geo261_world_validation_product_harness.c",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/geo261_world_validation_product_harness.c",
+      "bytes": 4149,
+      "sha256": "82abbf5cd9a2fb3be4624ce96aad8d6f7357a2a49ac08e2b0b974cab4c58bbe9"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/pf3_mutation_check.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/pf3_mutation_check.py",
+      "bytes": 10662,
+      "sha256": "73b622fb59033b0ebe8672fe024c3c46645c9a3e863a60545c486223e44b5692"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/run_all.expected.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/run_all.expected.json",
+      "bytes": 24732,
+      "sha256": "cc6a858609edfaed84e53e7fd9c3d12aa189d6119f71df60fcef4f890a5536f5"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/run_all.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/run_all.py",
+      "bytes": 65724,
+      "sha256": "4a7593bb1e62f2ef9fd432f2ca49548c797ec993edee4b4cf31869581568aa5d"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/test_geo261_contact_sources.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/test_geo261_contact_sources.py",
+      "bytes": 13423,
+      "sha256": "b12b36e967feb08be661f39e7f39b450c3f04dc59e91c647e6d4bad6e2a0e94a"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/test_geo261_host_facts_authority.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/test_geo261_host_facts_authority.py",
+      "bytes": 19209,
+      "sha256": "15c72b5b35dcafa57551feac46f6daeea96341d768cf6f0d4bf6c24f64f46f72"
+    },
+    {
+      "path": "323-lineage-candidate/snapshots/S/tests/test_geo261_load_residual.py",
+      "source": "/tmp/geo323-train337-lineage-20261024/snapshots/S/tests/test_geo261_load_residual.py",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000001/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000001/request.json",
+      "bytes": 1482,
+      "sha256": "96df8b0ef295a4860216d14df610ea1460473bdd15456d0e3aeb7c062376589a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000001/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000001/result.json",
+      "bytes": 1737,
+      "sha256": "ec1c0f8cee33edcb480e2b240ab24f25315e199f038c78d31eadea728fa9779b"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000001/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000001/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000001/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000001/stdout.bin",
+      "bytes": 402018,
+      "sha256": "65417775dbfe034346373bf290d3804ea363b4b680aa4b4a7de3a9fe5473c508"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000002/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000002/request.json",
+      "bytes": 1483,
+      "sha256": "f4513b87f0b0c7f5331cda4304130f5fbce443b344c27cf59d3caef334c0f74a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000002/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000002/result.json",
+      "bytes": 1737,
+      "sha256": "9e2fd6df6820d536a647142e1a57667afd36ceecdbb32ae15662d04c5e7e5033"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000002/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000002/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000002/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000002/stdout.bin",
+      "bytes": 401655,
+      "sha256": "05c05a8028efe7723a552154e2db2e52223c2e4c00d5875540e1e58f9076fbca"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000003/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000003/request.json",
+      "bytes": 1505,
+      "sha256": "bd27f2fc1a8787b06eee29a2eb428a4f45a4c26961ef364a91f40bf5f875c4a3"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000003/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000003/result.json",
+      "bytes": 1759,
+      "sha256": "e3f54c90d1eb10e1ac9494e90045c06cdb84bd31502097dabf97db409975fd19"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000003/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000003/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000003/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000003/stdout.bin",
+      "bytes": 61205,
+      "sha256": "4cb8d3d59d39776570880c17cddaacc4169900802df1b4f6b7547e7f96123713"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000004/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000004/request.json",
+      "bytes": 1506,
+      "sha256": "9cca8f0648da20d7f8c504c8889e941a7f6e6c140160a716293fa5ae4c026999"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000004/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000004/result.json",
+      "bytes": 1759,
+      "sha256": "1568f3c08caa6d40a42a76f90f94ab03b0086848e8e652a6e5677c6d3daca841"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000004/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000004/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000004/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000004/stdout.bin",
+      "bytes": 62346,
+      "sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000005/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000005/request.json",
+      "bytes": 1505,
+      "sha256": "0542eaaac5afb5889793504e5fb3b42851fa60c526d65da8377ae0e276f5e6bd"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000005/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000005/result.json",
+      "bytes": 1758,
+      "sha256": "157e1750f1c739d144b3d9ee6e8a28b8b26ca2492f0c50596709f97f53c2369a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000005/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000005/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000005/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000005/stdout.bin",
+      "bytes": 7897,
+      "sha256": "cf82cbe72e5a7dfb96d76cb2f63e1dba9dc6b694d69592391406f26117f8cda6"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000006/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000006/request.json",
+      "bytes": 1505,
+      "sha256": "e0b64aa556077797aceca109f99609106830e11e4b054d3e019fb8cb66eb5b3a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000006/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000006/result.json",
+      "bytes": 1757,
+      "sha256": "29e8d10fda0f60527a7fed47a822afefd6a60be7af612c98bcc23d406422bb9a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000006/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000006/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000006/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000006/stdout.bin",
+      "bytes": 8603,
+      "sha256": "4a6f085dd1d983a4a3d43787054dbd96aeb2a6bbe6e48e336faabe10430c9d8b"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000007/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000007/request.json",
+      "bytes": 1493,
+      "sha256": "e20e5a7bd334197504dcb18caa0dd3094a2e89bde313e200535935658d998239"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000007/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000007/result.json",
+      "bytes": 1747,
+      "sha256": "d288209676a7be2b705cc137768010d82481fedf626d21dbbeb49f703892d957"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000007/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000007/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000007/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000007/stdout.bin",
+      "bytes": 63717,
+      "sha256": "7b154275a58354598923686412622369dce8e9ac6f1d6836bbce578258ff96b4"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000008/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000008/request.json",
+      "bytes": 1493,
+      "sha256": "7de6f6c0c55c9b432583c520eb24070997082c138d908d357c928a55c342391f"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000008/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000008/result.json",
+      "bytes": 1746,
+      "sha256": "a56865592f038e2dfa908f7b1a12a6583fdc8d01925410e24f9698b899e30ffb"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000008/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000008/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000008/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000008/stdout.bin",
+      "bytes": 64152,
+      "sha256": "f2d1f595be0279b2a052bde8ae0fd55c44e7d710610ea21cac2209d2d6603c10"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000009/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000009/request.json",
+      "bytes": 1519,
+      "sha256": "9a8141c178f470969d9a93a794974fbfc3a3fc53e45363a16f33d93294915406"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000009/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000009/result.json",
+      "bytes": 1773,
+      "sha256": "b784d6f6829b6f872b22c236ab7e9600365d54f20a7f91084003d7f51616a962"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000009/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000009/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000009/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000009/stdout.bin",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000010/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000010/request.json",
+      "bytes": 1519,
+      "sha256": "9ed8bb53ed8e4a00c953092c501c57078c5b915c495f01cd6144557fb7464f87"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000010/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000010/result.json",
+      "bytes": 1773,
+      "sha256": "809ef6f1b5aaf0762b6b7e348cd85c893b757b60fcc7c54099bdeb635dd9b35e"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000010/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000010/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000010/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000010/stdout.bin",
+      "bytes": 12554,
+      "sha256": "6f1394eb9e1509d8cb27169fe9f51108ac0c25130c6e2e232e508ed3156ec839"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000011/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000011/request.json",
+      "bytes": 1503,
+      "sha256": "6169a5e09ec7b01c4d03b855fc4e1606e39b14490ba069677ff71468fa305fec"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000011/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000011/result.json",
+      "bytes": 1757,
+      "sha256": "7f2e3123d7bc67ea364b4eb18ed3cec126dda58c28cadea550bb1360d1e42818"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000011/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000011/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000011/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000011/stdout.bin",
+      "bytes": 30015,
+      "sha256": "8b80563061ee0c68c6e421953d3d4881574e4a6a2acb5c24413477171878150f"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000012/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000012/request.json",
+      "bytes": 1503,
+      "sha256": "6d783bff3407c996b98decd3831c50252096de5afa45fe20b8cd3a1c6d3d9673"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000012/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000012/result.json",
+      "bytes": 1757,
+      "sha256": "c2c9842dacdf6f2d71637c36191a393ad418fca16c7538fd78a71753333d0647"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000012/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000012/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000012/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000012/stdout.bin",
+      "bytes": 30015,
+      "sha256": "8b80563061ee0c68c6e421953d3d4881574e4a6a2acb5c24413477171878150f"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000013/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000013/request.json",
+      "bytes": 1508,
+      "sha256": "c0e7b9399e582bd46c3af55a4869f78ba97f178ac87796975f527e8929d8a103"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000013/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000013/result.json",
+      "bytes": 1762,
+      "sha256": "f7433b2fe0ee9e2efed1feb99b133cfec369abdbb579b9d3791b98b7f1800fff"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000013/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000013/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000013/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000013/stdout.bin",
+      "bytes": 54662,
+      "sha256": "562b9fff78caffd47448dc3178997d96c10b71721bac517d355392de859d413e"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000014/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000014/request.json",
+      "bytes": 1508,
+      "sha256": "1e960e39b17ac70e7f02fe0c856d8392f1b8d98eca87a95dbcbb12e6038f66b2"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000014/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000014/result.json",
+      "bytes": 1762,
+      "sha256": "c390911076daa7d1973beae614b7197d2ededeeb799524350361ce74c382c13e"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000014/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000014/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000014/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000014/stdout.bin",
+      "bytes": 54717,
+      "sha256": "0b2f9af52a8e21dcd114c192447d72d80d810cd03a843174bf600a7401a063f7"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000015/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000015/request.json",
+      "bytes": 1501,
+      "sha256": "32eb4233abd496ebd9504cc8266715d93bae647896c9c6130e422099fd932988"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000015/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000015/result.json",
+      "bytes": 1755,
+      "sha256": "7d8a41924af959ff1f9ee0901368192be5c80435f115eb246be25346c72f672f"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000015/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000015/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000015/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000015/stdout.bin",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000016/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000016/request.json",
+      "bytes": 1500,
+      "sha256": "f70c7cc06d25c391720e974cae936cead7db63e1f6372f17761bfa84820eccac"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000016/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000016/result.json",
+      "bytes": 1754,
+      "sha256": "2df786404983c13ec2abc16f50159014aa83a96f9eca666ecf2371e37ac0eeeb"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000016/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000016/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000016/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000016/stdout.bin",
+      "bytes": 21615,
+      "sha256": "9bff9642cbc87934d547f6b506bfcf3246fc9e09b008ab6ba0228a04e9e4b045"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000017/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000017/request.json",
+      "bytes": 1500,
+      "sha256": "75a363fef84e5bea9f372a2592c7cf7afe411e0f3620a095cd935acbc15c16ac"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000017/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000017/result.json",
+      "bytes": 1753,
+      "sha256": "ee4dbc5d2ea4c1ca1061500a6549de04636b51a5b647ada23dfcda1c09ea11f4"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000017/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000017/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000017/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000017/stdout.bin",
+      "bytes": 8458,
+      "sha256": "f1e29c860e9273c661c58c1bfff5e4e73cc6f37810690577fcfab86dae12b641"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000018/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000018/request.json",
+      "bytes": 1500,
+      "sha256": "bcf9c94e116583e96c32005a07af3299485e73ed77c03f7563a389b89b7bcce3"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000018/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000018/result.json",
+      "bytes": 1753,
+      "sha256": "16ff2e91299611bbbe410931edaf5ca98d91c3832f67a9906b18a354ed3ccc85"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000018/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000018/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000018/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000018/stdout.bin",
+      "bytes": 8458,
+      "sha256": "f1e29c860e9273c661c58c1bfff5e4e73cc6f37810690577fcfab86dae12b641"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000019/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000019/request.json",
+      "bytes": 1511,
+      "sha256": "03d98e6a04dc7b58bdcc5ca68229cc759b0a7b691675210eef115e02cfbbafd8"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000019/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000019/result.json",
+      "bytes": 1764,
+      "sha256": "6a9f70d94cf481d70ba7ced9e763f1b3c2ee0490fc0eba8656f2168625b4a1da"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000019/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000019/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000019/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000019/stdout.bin",
+      "bytes": 4149,
+      "sha256": "82abbf5cd9a2fb3be4624ce96aad8d6f7357a2a49ac08e2b0b974cab4c58bbe9"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000020/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000020/request.json",
+      "bytes": 1512,
+      "sha256": "3e60d32f16251e8fa4a5a6ecaf0f2d7df27b97d0f6d061dfb3edd8886345b809"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000020/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000020/result.json",
+      "bytes": 1765,
+      "sha256": "9ade40f147153562702557a0423872297afcbe42233c439c0a220d83dec71128"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000020/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000020/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000020/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000020/stdout.bin",
+      "bytes": 4149,
+      "sha256": "82abbf5cd9a2fb3be4624ce96aad8d6f7357a2a49ac08e2b0b974cab4c58bbe9"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000021/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000021/request.json",
+      "bytes": 1492,
+      "sha256": "7d03e8bdcfb347662f6a6ee8456f4adff06fdb8b506e79fbaa85997dd78ea668"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000021/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000021/result.json",
+      "bytes": 1746,
+      "sha256": "5673728f387651ee8ad6cffa2eae76564c6aaec2bc5ddac5ac9a211e83574b17"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000021/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000021/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000021/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000021/stdout.bin",
+      "bytes": 10662,
+      "sha256": "73b622fb59033b0ebe8672fe024c3c46645c9a3e863a60545c486223e44b5692"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000022/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000022/request.json",
+      "bytes": 1492,
+      "sha256": "81b3713ddeec37955e0f313033ec31bdc8c31995394e2d1a33e2913e4c71c230"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000022/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000022/result.json",
+      "bytes": 1746,
+      "sha256": "a3fca19d3b247b6cb41c7e59f867a91c4b79f6ca84125255fad6154e08346c40"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000022/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000022/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000022/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000022/stdout.bin",
+      "bytes": 10662,
+      "sha256": "73b622fb59033b0ebe8672fe024c3c46645c9a3e863a60545c486223e44b5692"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000023/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000023/request.json",
+      "bytes": 1492,
+      "sha256": "b545f2a78ba69dc2f2c176862911bb6e7424febc625dfbb8ddb1e24defe4907e"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000023/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000023/result.json",
+      "bytes": 1745,
+      "sha256": "9273f8bf8146baddf4d7f72a3e14311b549ea009e71da8a3624a6d91e61a2534"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000023/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000023/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000023/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000023/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000023/stdout.bin",
+      "bytes": 24732,
+      "sha256": "cc6a858609edfaed84e53e7fd9c3d12aa189d6119f71df60fcef4f890a5536f5"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000024/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000024/request.json",
+      "bytes": 1491,
+      "sha256": "2f4061f44b8e32af820ac60c1c417962916e811aeaf980c8fa080c9ac85dfef4"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000024/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000024/result.json",
+      "bytes": 1745,
+      "sha256": "177f6831e8958900f93caf6882841c7145102a7cd3070f0d5e2d3c9d4e9f3d6f"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000024/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000024/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000024/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000024/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000024/stdout.bin",
+      "bytes": 25284,
+      "sha256": "5c9b6f70f11c7f985a8e1e37e7b11f057a83d31db5a452709b8a87729874daab"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000025/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000025/request.json",
+      "bytes": 1481,
+      "sha256": "1e08eacb73b9038e7d45ee742c794da95f0cb4770df9a51213e772d76330131a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000025/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000025/result.json",
+      "bytes": 1735,
+      "sha256": "e5b31c236b497c698c7c4a5354da46f42ceaf21a4fdd419ab425b54824a4f35a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000025/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000025/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000025/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000025/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000025/stdout.bin",
+      "bytes": 65724,
+      "sha256": "4a7593bb1e62f2ef9fd432f2ca49548c797ec993edee4b4cf31869581568aa5d"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000026/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000026/request.json",
+      "bytes": 1481,
+      "sha256": "6862aa923878ea8fe32cc347e4656b8202311f1b2c0721820539785b40d1617f"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000026/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000026/result.json",
+      "bytes": 1735,
+      "sha256": "9eb6b2921137e8c465d3084f6a07fad94e827428179a3375a83b8a14faee7ad0"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000026/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000026/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000026/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000026/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000026/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000026/stdout.bin",
+      "bytes": 65923,
+      "sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000027/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000027/request.json",
+      "bytes": 1500,
+      "sha256": "b528d1bebcaa8c40e4e704c31cf71299351fd5b23bb3a173ec8d92b58e3ec69c"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000027/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000027/result.json",
+      "bytes": 1754,
+      "sha256": "bbdbe990ef4fe2f592610635fd4de775fc655650945dbd96150b344f4da448b0"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000027/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000027/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000027/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000027/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000027/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000027/stdout.bin",
+      "bytes": 13423,
+      "sha256": "b12b36e967feb08be661f39e7f39b450c3f04dc59e91c647e6d4bad6e2a0e94a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000028/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000028/request.json",
+      "bytes": 1501,
+      "sha256": "e20055ec3a578afcca630174ab1f5723e9bc0e2e74daa54ec303e901fd91846f"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000028/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000028/result.json",
+      "bytes": 1755,
+      "sha256": "85b5f5602fdb7f5d94bc9a95f1030ded79a09ecf9df14b2d7b47a6107507a330"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000028/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000028/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000028/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000028/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000028/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000028/stdout.bin",
+      "bytes": 13423,
+      "sha256": "b12b36e967feb08be661f39e7f39b450c3f04dc59e91c647e6d4bad6e2a0e94a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000029/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000029/request.json",
+      "bytes": 1505,
+      "sha256": "8f025bdac90db35f804cc89b1942645bf6e2af29f9085cd7f6f7ad67ba6a1423"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000029/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000029/result.json",
+      "bytes": 1759,
+      "sha256": "7dd3b3659a4c943039c59766021b5faf28e539b512124ec0fa25e3174346971f"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000029/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000029/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000029/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000029/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000029/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000029/stdout.bin",
+      "bytes": 19209,
+      "sha256": "15c72b5b35dcafa57551feac46f6daeea96341d768cf6f0d4bf6c24f64f46f72"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000030/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000030/request.json",
+      "bytes": 1505,
+      "sha256": "51ef69c09116ebab9550a03f710549fc080069f2e3d9f246da69f299cbd96d39"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000030/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000030/result.json",
+      "bytes": 1759,
+      "sha256": "14d4593f85d9f919b62eccf432e1b5b6224b09934cd8d56adea355506fa19325"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000030/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000030/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000030/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000030/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000030/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000030/stdout.bin",
+      "bytes": 19209,
+      "sha256": "15c72b5b35dcafa57551feac46f6daeea96341d768cf6f0d4bf6c24f64f46f72"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000031/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000031/request.json",
+      "bytes": 1499,
+      "sha256": "71bfec1a50deac1cde972c8a2e552400526254160f47dc2eb8ca2547f6e752e7"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000031/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000031/result.json",
+      "bytes": 1753,
+      "sha256": "b2365e6bf3e7487a47cf6b058562befb7e9c44e926985b98c48f5b2672394387"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000031/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000031/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000031/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000031/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000031/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000031/stdout.bin",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000032/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000032/request.json",
+      "bytes": 1498,
+      "sha256": "908b608183a715994574d6af3ad163f0fe1fed4e045514a9f41bf57476dac9bc"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000032/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000032/result.json",
+      "bytes": 1752,
+      "sha256": "7da1e842fca1fc0a1e2cc97afc7ce72172beb214fe44e308b1f4631fab0b2abd"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000032/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000032/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000032/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000032/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000032/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000032/stdout.bin",
+      "bytes": 17497,
+      "sha256": "9f0e5a5deda958cf7bd44a0863c1e644ec4fce277490490e339d86125663f08c"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000033/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000033/request.json",
+      "bytes": 1761,
+      "sha256": "7b62d9ea368e68ed6b9506e411696c2ccb6c9772e5773f5240d8b88baf7fe374"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000033/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000033/result.json",
+      "bytes": 2013,
+      "sha256": "a8d44419dcc3720aa893177059f1c18092cc38727ea75580b551917e5f92ea2c"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000033/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000033/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000033/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000033/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000033/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000033/stdout.bin",
+      "bytes": 151,
+      "sha256": "7305dddeb70b7e8f1da19c381221bbe2f0a00c78bb7ef7ac408da4ee4e17fbac"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000034/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000034/request.json",
+      "bytes": 1804,
+      "sha256": "1347def5b17ebdb60195d85bb20601e8cb2ccc45284fecd59c833b7b752b4169"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000034/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000034/result.json",
+      "bytes": 2057,
+      "sha256": "3f2e9252f6d29542c72238b551bd600fa14db2e3858a1200a24d0e76bbfaf959"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000034/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000034/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000034/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000034/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000034/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000034/stdout.bin",
+      "bytes": 15609,
+      "sha256": "2fab35d6f193db0299193f2f841d0f9047ad5df75faf0f79f7c306262ef76a68"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000035/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000035/request.json",
+      "bytes": 1634,
+      "sha256": "be24c87f94620ca36684083f03bb9d4cf92bb8a6dc0b327e65998036a7b22bb8"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000035/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000035/result.json",
+      "bytes": 1887,
+      "sha256": "d78a1d2ef2d7f81d49906c6865532efc04c6d1f64df548a745d310bd7869acc1"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000035/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000035/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000035/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000035/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000035/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000035/stdout.bin",
+      "bytes": 1303,
+      "sha256": "720ff7e95f2dac408f0ffe7ca86b02566fa9bd3b38b303c8c2e3d0da7a5caba3"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000036/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000036/request.json",
+      "bytes": 1607,
+      "sha256": "2e5a5fed669af56678394ea99983a984efcbd55e70e86ba0bce76f6d933d44a3"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000036/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000036/result.json",
+      "bytes": 1859,
+      "sha256": "bc8af3bb78b378dbe00fd13c18413b9d7cba4302b3f61af3b26e74f338cdb57a"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000036/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000036/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000036/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000036/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands/000036/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands/000036/stdout.bin",
+      "bytes": 720,
+      "sha256": "42aae4f14464b4f5b74fe8507a2735ff2eac80632b4fefcc67f5366887e953f8"
+    },
+    {
+      "path": "323-lineage-candidate/step2/subcommands.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step2/subcommands.json",
+      "bytes": 66979,
+      "sha256": "7b6baf15014188465ae9e61df0247405337f8817d55fb1e08ee052532add0f61"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000001/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000001/request.json",
+      "bytes": 1805,
+      "sha256": "d208b3941a116343967e4ff6de076ca3e2fdb7303cee3c828b139b5a5cd5b43a"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000001/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000001/result.json",
+      "bytes": 2059,
+      "sha256": "e32a5660a5593e99878a206259abe2b00b6c00e9196b47ee441815257da9a199"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000001/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000001/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000001/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000001/stdout.bin",
+      "bytes": 15054,
+      "sha256": "51acf727ba14e01cf80b671cea8f28c7b233ee6d66ca2b1adfb58057373944d5"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000002/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000002/request.json",
+      "bytes": 1805,
+      "sha256": "67aa902afa04270428e8cb1fbfa49ec9b8bc93c982e1ae836cd125ced220a3aa"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000002/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000002/result.json",
+      "bytes": 2059,
+      "sha256": "c78a7ee0e1457e443bde7694253d36307134229e39b6db2ab12ace5de358d159"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000002/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000002/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000002/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000002/stdout.bin",
+      "bytes": 10491,
+      "sha256": "7a20858918d24cefe33910667bf100afe20447b3346a5131974ba2511b81eacc"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000003/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000003/request.json",
+      "bytes": 1731,
+      "sha256": "7aa6ed44a00a80b70f926b9199eb3eb68480b3b5eb471291e0499913ba225071"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000003/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000003/result.json",
+      "bytes": 1984,
+      "sha256": "8b59bb47c1c6dc0c516f8c28f1396f1f8eb5eaa81100bd4721d00a475a4a5384"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000003/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000003/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000003/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000003/stdout.bin",
+      "bytes": 3218,
+      "sha256": "decdb13c2131c73a28f02e65a956b095f0e52a34fc0c3ec5759ff016d9310025"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000004/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000004/request.json",
+      "bytes": 1537,
+      "sha256": "ed0bced5d65077d8254ce6240e5a070754d493478020a0aa8d0431ebb4fad951"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000004/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000004/result.json",
+      "bytes": 1786,
+      "sha256": "54275c45bb99bc785655562fc04c92f3047f5b56efa2b5f6f51d3495f0fe3c1a"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000004/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000004/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000004/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000005/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000005/request.json",
+      "bytes": 1539,
+      "sha256": "4461a989b07ff0ea3a319c2a6aa06331ec7d1bd2ceae9443a77fdf696853c70d"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000005/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000005/result.json",
+      "bytes": 1789,
+      "sha256": "722655ae11e229354e419379708cbc855fbad1c1f856a49ce144fc5b59bbdbe7"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000005/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000005/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands/000005/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/step3/subcommands.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/step3/subcommands.json",
+      "bytes": 10159,
+      "sha256": "c110fa236be95060befc0025a2f9ad17b77563e98bdb90a7e582ab418bcb25da"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000001/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000001/request.json",
+      "bytes": 1533,
+      "sha256": "f817fd54f2d7211de4ad7da241cc7caaae12d7bfac0124d721cfc0d52c2b8663"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000001/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000001/result.json",
+      "bytes": 1783,
+      "sha256": "31307f0a2f81d32b2d868162361c37d0fcdd71b18221f40c7c23c5f9b9e5485c"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000001/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000001/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000001/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000001/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000002/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000002/request.json",
+      "bytes": 1533,
+      "sha256": "242f60366baa8935ef7952a9287b3caf9260a446d2f6b0368da8437aa2893e7d"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000002/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000002/result.json",
+      "bytes": 1783,
+      "sha256": "7f4be6ade02ea5aeacb04a1f6ea7a82a9b6ed08a722bfbd18c636eeda108c588"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000002/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000002/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000002/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000003/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000003/request.json",
+      "bytes": 1533,
+      "sha256": "f94f523c0a2acc760c7676d1330405f8fb2876ffdbb4173c66d23a50687f6c04"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000003/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000003/result.json",
+      "bytes": 1781,
+      "sha256": "66ad997bf4a38339ae09f264d2356433360940865c307c170b8de899055efa43"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000003/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000003/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000003/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000004/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000004/request.json",
+      "bytes": 1512,
+      "sha256": "a39b12eec5a625860e12b27a0b8a28ce015f1e66597280f14c2d323c71b660c1"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000004/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000004/result.json",
+      "bytes": 1763,
+      "sha256": "6db4e7c3adbfec5885ec33d87231082e1b57ccc918512147b3c26893aa38927d"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000004/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000004/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000004/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000004/stdout.bin",
+      "bytes": 41,
+      "sha256": "abb8c94d2681b4b5daa7fcc4f86e794e458d53af4e9b30cc41964da89644766d"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000005/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000005/request.json",
+      "bytes": 1493,
+      "sha256": "c942e3d324387377d3deac549876999d1bbd36d0e45973b6c5ffc4ed48a43aff"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000005/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000005/result.json",
+      "bytes": 1746,
+      "sha256": "34c301710ec7331faac6c9bc1042bf07cd878f5dad065c1e5123a15f4b4f3f47"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000005/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000005/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000005/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000005/stdout.bin",
+      "bytes": 2220,
+      "sha256": "1b216f4ba9321051e6927af651d48a029a04fbcb713403da9a3dfde261e7e08e"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000006/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000006/request.json",
+      "bytes": 1850,
+      "sha256": "22af2f06fb5a763baab515b503c242115df93983cdb55682b1bc2e55e7acb39c"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000006/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000006/result.json",
+      "bytes": 2102,
+      "sha256": "753d9e998879b0ccafc58bc0e091588de5b8ae5d08030521d4b42984d7d0cedb"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000006/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000006/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000006/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000006/stdout.bin",
+      "bytes": 610,
+      "sha256": "7439cbfd6f798b5cadf073193c549c6a48ccabb83c5ee913b2a733ce48d49548"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000007/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000007/request.json",
+      "bytes": 1851,
+      "sha256": "f0a4d909deb5911f045e9fac8446dd098ba0795a62939cc37de23e02c32947bb"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000007/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000007/result.json",
+      "bytes": 2104,
+      "sha256": "6c75dc532de99bbd84d6f0a8109c5ccdbcc0bba2a44f40d4a6a1afbd8b809694"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000007/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000007/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000007/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000007/stdout.bin",
+      "bytes": 3437,
+      "sha256": "30b0c0c6d54f2e801d4a275e080210d7eb8ec5f5c662246fac29f77349ed280b"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000008/request.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000008/request.json",
+      "bytes": 1484,
+      "sha256": "38ac2a2aaeb1bb5a18b10a6ea3ff64e813a829a1dc3940003bd2c833b1e6f9de"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000008/result.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000008/result.json",
+      "bytes": 1737,
+      "sha256": "111749595a4f5636c2ec6cf4fccc77b73b6fc22ebc0efec4c3bcf26f062c78cd"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000008/stderr.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000008/stdin.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands/000008/stdout.bin",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands/000008/stdout.bin",
+      "bytes": 18180,
+      "sha256": "e19105106f027d08403c50d9d2a78ef14a11bac69eda306763baaa64374b52a3"
+    },
+    {
+      "path": "323-lineage-candidate/subcommands.json",
+      "source": "/tmp/geo323-train337-lineage-20261024/subcommands.json",
+      "bytes": 15540,
+      "sha256": "61a1ccce4818dd4c4663ccc05f6823c4d888cb44a49b5c1455fbb986a594cf80"
+    },
+    {
+      "path": "initial-probe/mutation-check-initial.stdout",
+      "source": "/tmp/geo337-continue-20261024/mutation-check-initial.stdout",
+      "bytes": 18141,
+      "sha256": "67a8cb7f4a5ca1632e817e86c88190b287e462e33adb4facae158c8b6e43cb00"
+    },
+    {
+      "path": "initial-probe/mutation-check-initial.stderr",
+      "source": "/tmp/geo337-continue-20261024/mutation-check-initial.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "initial-probe/adopt_residual_candidate.py",
+      "source": "/tmp/geo337-continue-20261024/adopt_residual_candidate.py",
+      "bytes": 2019,
+      "sha256": "aa3f143718fcd76ceb8735ec537e5bc15d0d0d2ff7e6f2b9e94451a2f47602d1"
+    },
+    {
+      "path": "independent-review/314-identity/CHECKS.json",
+      "source": "/tmp/train337-adversarial/314-identity/CHECKS.json",
+      "bytes": 31887,
+      "sha256": "e263a93f5db4ba506e9a35a35e13ea6aa334b48564b454033cf2971d0cded164"
+    },
+    {
+      "path": "independent-review/323-candidate/CHECKS.json",
+      "source": "/tmp/train337-adversarial/323-candidate/CHECKS.json",
+      "bytes": 29267,
+      "sha256": "5883209370cdad568b24bfd27680349f3b1b9eca5b6ca66c2146868625a2fabb"
+    },
+    {
+      "path": "independent-review/STORAGE_ACTUAL_PEER.json",
+      "source": "/tmp/train337-adversarial/STORAGE_ACTUAL_PEER.json",
+      "bytes": 129159,
+      "sha256": "83f244b30ef15ac74b81dcb9a58da26ae806e5738dcc4d2f569e6923d361efef"
+    },
+    {
+      "path": "independent-review/318_PLAN_PEER.json",
+      "source": "/tmp/train337-adversarial/318_PLAN_PEER.json",
+      "bytes": 15756,
+      "sha256": "bf5fc9d6e1c9494793ebebad0bacbcf9461e458d1bd2ea52f460212d5db51c72"
+    }
+  ],
+  "formal_acceptance_pass_claimed": false,
+  "initial_mutation_probe": {
+    "sha": "3417ab932e40431fc99ca74e50762149ebfc09f8",
+    "command": "python3 -B tests/mutate.py --check",
+    "exit_code": 1,
+    "stale": 107,
+    "retired": 3,
+    "unrun": 13,
+    "limitation": "Initial diagnostic has original stdout/stderr and observed tool exit; not a full formal environment receipt."
+  }
+}

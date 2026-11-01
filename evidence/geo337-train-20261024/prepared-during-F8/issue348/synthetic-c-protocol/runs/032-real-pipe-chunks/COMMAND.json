@@ -1,0 +1,13 @@
+{
+  "schema": "geo348-protocol-only-popen-pipe/1",
+  "argv": [
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/fixed/stub",
+    "stress"
+  ],
+  "cwd": "/tmp/geo348-synthetic-c-protocol-20261025",
+  "synthetic_protocol_only": true,
+  "product_process": false,
+  "capture": "Popen+selectors+os.read",
+  "timeout_seconds": 3,
+  "input_sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+}
