@@ -19,6 +19,29 @@ static bool reference_preview_pending(void) { return g_preview.ready; }
 static bool reference_preview_valid(void) { return g_preview.ready && g_preview.valid; }
 static uint32_t reference_preview_token(void) { return g_preview.token; }
 
+typedef struct {
+    const AppIdentityKey *keys;size_t count;bool overflow,scratch;
+} AppIdentityCommit;
+static bool app_world_identity_finalize(AppWorldCandidate *candidate,void *opaque)
+{
+    const AppIdentityCommit *commit=opaque;
+    bool ok=commit->scratch?identity_prepare_scratch(&candidate->before,&candidate->after):
+        identity_prepare(&candidate->before,&candidate->after,commit->keys,commit->count,commit->overflow);
+    if(!ok)set_revalidate_error(g_scene_last_error);
+    return ok;
+}
+/* Only retained confirmation uses this wrapper. Its recorded deletion keys
+ * belong to the retained candidate; previews never prepare marks or serials. */
+static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const World *live)
+{
+    identity_drop_serials();
+    if(candidate!=g_preview.transaction)return false;
+    AppIdentityCommit commit={g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow,false};
+    bool ok=app_world_candidate_revalidate_commit(candidate,live,app_world_identity_finalize,&commit);
+    if(!ok)identity_drop_serials();
+    return ok;
+}
+
 static void reference_pose_text(const World *w,int index,char *out,size_t cap)
 {
     if (index<0 || !w->wood.timbers[index].placed) { snprintf(out,cap,"unavailable"); return; }
@@ -592,13 +615,6 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         if(!app_world_candidate_revalidate(g_preview.transaction,world)){
             g_preview.ready=false;scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
         }
-        char identity_error[512];
-        if(!identity_prepare(&g_preview.transaction->before,&g_preview.transaction->after,g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow)){
-            snprintf(identity_error,sizeof identity_error,"%s",g_scene_last_error);
-            identity_drop_serials();
-            scene_error(path,line_no,identity_error);
-            return false;
-        }
         bool issued=g_identity_pending_count!=0;
         bool changed=!world_definitions_equal(world,&g_preview.transaction->after)||issued;
         if(!app_world_candidate_publish(g_preview.transaction,world,true)){
@@ -655,15 +671,23 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     }
     bool skip_identity=g_parsing_scene_file||!strcmp(tokens[0],"canvas-pos");
     char identity_error[512];
-    if(!skip_identity&&!identity_prepare_scratch(world,candidate)){
-        snprintf(identity_error,sizeof identity_error,"%s",g_scene_last_error);
+    if(!skip_identity){
         identity_drop_serials();
-        scene_error(path,line_no,identity_error);
-        return false;
+        AppIdentityCommit commit={NULL,0,false,true};
+        bool prepared=app_world_candidate_seal(transaction)&&
+            app_world_candidate_revalidate_commit(transaction,world,app_world_identity_finalize,&commit);
+        if(!prepared){
+            const char *problem=g_scene_last_error[0]?g_scene_last_error:
+                g_revalidate_error[0]?g_revalidate_error:"I8: candidate seal failed; World unchanged";
+            snprintf(identity_error,sizeof identity_error,"%s",problem);
+            identity_drop_serials();
+            scene_error(path,line_no,identity_error);
+            return false;
+        }
     }
     bool issued=!skip_identity&&g_identity_pending_count!=0;
     bool changed=!g_parsing_scene_file&&strcmp(tokens[0],"canvas-pos")&&(!world_definitions_equal(world,candidate)||issued);
-    if(!app_world_candidate_seal(transaction)||!app_world_candidate_publish(transaction,world,false)){
+    if((skip_identity&&!app_world_candidate_seal(transaction))||!app_world_candidate_publish(transaction,world,false)){
         identity_drop_serials();
         scene_error(path,line_no,"I8: candidate seal failed; World unchanged");return false;
     }

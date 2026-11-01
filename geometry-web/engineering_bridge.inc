@@ -202,13 +202,6 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
     if(!app_world_candidate_revalidate(g_preview.transaction,&g_world)){
         g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;
     }
-    char identity_error[512];
-    if(!identity_prepare(&g_preview.transaction->before,&g_preview.transaction->after,g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow)){
-        snprintf(identity_error,sizeof identity_error,"%s",g_scene_last_error);
-        identity_drop_serials();
-        eng_bridge_error("INVALID",identity_error);
-        return;
-    }
     bool issued=g_identity_pending_count!=0;
     bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after)||issued;uint64_t before=g_definition_revision;
     if(changed)history_record(&g_world);
