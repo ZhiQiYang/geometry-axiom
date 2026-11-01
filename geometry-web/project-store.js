@@ -17,7 +17,7 @@
   const CASE_FORMAT="geometry-canvas/15", CASE_CAPABILITY=Features.CASE_SCHEMA;
   const SCENARIO_FORMAT="geometry-canvas/14", SCENARIO_CAPABILITY=ScenarioCatalog.SCHEMA;
   const GRID_RULE_FORMAT = "geometry-canvas/13";
-  const EVIDENCE_FORMAT = "geometry-canvas/12", EVIDENCE_CAPABILITY = Features.Evidence.SCHEMA, EVIDENCE_V2_CAPABILITY = Features.Evidence.SCHEMA_V2;
+  const EVIDENCE_FORMAT = "geometry-canvas/12", EVIDENCE_CAPABILITY = Features.Evidence.SCHEMA;
   const SUBDIVISION_FORMAT = "geometry-canvas/11", SUBDIVISION_CAPABILITY = "grid-subdivision-rules/1";
   const GENERATION_FORMAT="geometry-canvas/8", GENERATION_CAPABILITY="assembly-timber-generation/1";
   const PARAMETER_FORMAT = "geometry-canvas/6", PARAMETER_CAPABILITY = "parameters/1";
@@ -159,11 +159,6 @@
       nodes.set(node.key,node);
     }
     return value.links.map(link => {
-      if (link.target.kind === "boundary" || link.target.kind === "timber") {
-        const node = nodes.get(`${link.target.kind}:${link.target.id}`);
-        if (!node) return {evidenceId:link.evidenceId,status:"target-missing"};
-        return {evidenceId:link.evidenceId,status:"needs-reassociation",definitionMatches:node.definitionFingerprint===link.target.definitionPin};
-      }
       const node = nodes.get(`parameter-field:${link.target.parameterId}:f${link.target.fieldId}`);
       if (!node) return {evidenceId:link.evidenceId,status:"target-missing"};
       const target = Features.Evidence.targetFromNode(manifest.projectId,node);
@@ -318,7 +313,7 @@
   }
   // Editor capabilities are checked by this reader, never advertised as native
   // scene or model-producer capabilities.
-  const manifestCapabilities = [...new Set([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY, IDENTITY_CAPABILITY])];
+  const manifestCapabilities = [...new Set([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY, SECTION_CAPABILITY, CARD_CAPABILITY, IDENTITY_CAPABILITY])];
   function validateManifestCapabilities(capabilities) {
     // /1 and /2 share one active grid-draft kind; capacity follows the finite registry.
     if (!Array.isArray(capabilities) || capabilities.length > manifestCapabilities.length || new Set(capabilities).size !== capabilities.length ||
@@ -328,7 +323,7 @@
     return capabilities;
   }
   function readerCapabilities(nativeCapabilities) {
-    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
+    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, ...format17Capabilities, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
@@ -356,9 +351,8 @@
         (manifest.scenarioCatalog || manifest.requiredCapabilities?.includes(SCENARIO_CAPABILITY)) && ![SCENARIO_FORMAT,CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format))
       fail("候選方案須使用第 14 版格式並保留完整目錄與能力。");
     const evidence = manifest.featureAttachments && Features.evidenceLinks(manifest.featureAttachments);
-    const evidenceDeclared = !!(manifest.requiredCapabilities?.includes(EVIDENCE_CAPABILITY) || manifest.requiredCapabilities?.includes(EVIDENCE_V2_CAPABILITY));
-    if (manifest.format === EVIDENCE_FORMAT && (!evidence || !evidenceDeclared) ||
-        (evidence || evidenceDeclared) && ![EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format))
+    if (manifest.format === EVIDENCE_FORMAT && (!evidence || !manifest.requiredCapabilities?.includes(EVIDENCE_CAPABILITY)) ||
+        (evidence || manifest.requiredCapabilities?.includes(EVIDENCE_CAPABILITY)) && ![EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format))
       fail("證據連結須使用第 12 版格式並保留對應附件與能力。");
     const needed = projectCapabilities({...manifest, requiredCapabilities: []}, scene ?? "");
     const card = scene === null ? manifest.requiredCapabilities?.includes(CARD_CAPABILITY) : needed.includes(CARD_CAPABILITY);
@@ -387,7 +381,7 @@
     // Identity is declared by the complete scene, including legacy containers.
     // Manifest engineering capabilities still govern every engineering feature.
     if (needed.some(c => c !== IDENTITY_CAPABILITY && !manifest.requiredCapabilities?.includes(c)) ||
-        (needed.some(capability => [Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_DRAFTS_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, EVIDENCE_V2_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY].includes(capability)) && ![FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format)) ||
+        (needed.some(capability => [Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.GRID_DRAFTS_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY, CASE_CAPABILITY].includes(capability)) && ![FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format)) ||
         (needed.includes(PARAMETER_CAPABILITY) && ![PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format)) ||
         (needed.includes(ASSEMBLY_CAPABILITY) && ![ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format)) ||
         (needed.includes(GENERATION_CAPABILITY) && ![GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format)) ||
@@ -485,14 +479,9 @@
     if (present.size !== ids.size || result.summary.timber_count !== ids.size || result.summary.timber_volume_mm3 !== volume.toString())
       fail("角材支數或材料體積與模型不一致。");
   }
-  function modelIdentity() {
-    if (typeof IdentityLedger !== "undefined" && IdentityLedger && typeof IdentityLedger.validateSourceIdentity === "function") return IdentityLedger;
-    if (typeof module === "object" && module.exports) return require("./identity-ledger.js");
-    fail("模型來源身分能力尚未載入。");
-  }
   function validateSpaceModel(record) {
     jsonData(record);
-    if (!keys(record, ["id", "name", "created_at", "source", "input", "result"], ["sourceIdentity"]) || !id(record.id) || !str(record.name, 200) || !record.name.trim() ||
+    if (!keys(record, ["id", "name", "created_at", "source", "input", "result"]) || !id(record.id) || !str(record.name, 200) || !record.name.trim() ||
         !str(record.created_at, 100) || !Number.isFinite(Date.parse(record.created_at))) fail("空間模型紀錄不合法。");
     const s = record.source, i = record.input, r = record.result;
     if (!keys(s, ["kind", "placement_id", "boundary_id", "scene_hash"], ["projection"]) || !["scene", "example"].includes(s.kind) ||
@@ -501,8 +490,6 @@
     if (!keys(i, ["mode", "base_scene", "obstacles"], ["placement_id", "settings", "uses", "timbers"]) || !["plan", "faces"].includes(i.mode) ||
         !str(i.base_scene, MAX_MANIFEST) || !Array.isArray(i.obstacles) || i.obstacles.length > 512 ||
         !i.obstacles.every(o => keys(o, ["kind", "id"]) && ["column", "beam"].includes(o.kind) && uint(o.id))) fail("空間模型輸入不合法。");
-    const normalizedBase = String(i.base_scene).replace(/\r\n/g, "\n");
-    if (modelIdentity().deidentifiedBase(normalizedBase) !== normalizedBase) fail("模型基準必須是去身分場景。");
     if (sceneCapabilities(i.base_scene).includes(SUBDIVISION_CAPABILITY)) fail("模型 adapter 尚未支援來源子規則能力，未變更目前專案。");
     const use = u => keys(u, ["placement_id", "orientation", "purpose"]) && uint(u.placement_id) && [1, -1].includes(u.orientation) && ["boundary", "calculation-cap"].includes(u.purpose);
     if (i.mode === "plan") {
@@ -540,10 +527,6 @@
     }
     for (const key of ["volume", "clearance"]) if (r[key] && r[key].manifest.source_sha256 !== r.space.manifest.source_sha256) fail("空間與體積模型的來源不一致。");
     if (withTimbers) validateTimberModel(record);
-    if (Object.hasOwn(record, "sourceIdentity")) {
-      try { modelIdentity().validateSourceIdentity(record.sourceIdentity, {...i, boundary_id: s.boundary_id}); }
-      catch (error) { fail(error && error.message ? error.message : "模型來源身分不合法。"); }
-    }
     return record;
   }
   async function sha(bytes) {
