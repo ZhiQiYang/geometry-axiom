@@ -138,7 +138,7 @@ class IdentityLedgerTests(unittest.TestCase):
         self.assertTrue(data["active"])
         self.assertEqual(data["marks"], [])
         self.assertGreaterEqual(data["nextSerial"], serial)
-        again = self.session.command("identity-epoch " + self.epoch)
+        again = self.session.command("identity-epoch " + self.other_epoch)
         self.assertTrue(again.get("ok"), again)
 
     def test_bridge_reset_is_replacement_and_does_not_rewind_serial(self):
