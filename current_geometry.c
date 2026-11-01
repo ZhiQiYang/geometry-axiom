@@ -3132,7 +3132,7 @@ static bool apply_interactive_tokens(
     uint32_t preview_before = reference_preview_token();
     uint64_t revision_before = g_definition_revision;
     if (apply_scene_line(path, line_no, tokens, count, world)) {
-        /* R56: a successful no-op does not create history or discard redo. */
+        /* A successful no-op does not create history or discard redo. */
         if (g_definition_revision == revision_before) {
             if (recorded) history_unrecord();
         } else app_history_group_mark_dirty(&g_history);
