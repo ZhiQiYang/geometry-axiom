@@ -2563,7 +2563,7 @@
     {
       "path": "geometry-web/assembly_bay_repeat_test.js",
       "reason": "R06 formal CDP acceptance driver; invoked by cdp_test.js only, never a product runtime entry point.",
-      "sha256": "605ab093d3e0d76877a2cb4c805e97c92fc6d59af0a204a6709ca721623335dd",
+      "sha256": "e406e8cd66536d45861e6b3d7cef87a3928af96b6041fe232fe6531e34df153f",
       "hashMode": "lf"
     },
     {
@@ -2623,7 +2623,7 @@
     {
       "path": "geometry-web/cdp_bay_repeat_io.js",
       "reason": "R06 formal CDP archive I/O test helper; owns download, fresh browser profile and isolated native service only during acceptance tests; never loaded by product entry points.",
-      "sha256": "92c26b69e59ec14589d434a9c4420ddbe497d39aaceb7fcef51ed693705a2b80",
+      "sha256": "1f1ae69a212cf669f509fdeaee43d0f763e97185b2ebe2f2496b6358ef9ed8f3",
       "hashMode": "lf"
     },
     {

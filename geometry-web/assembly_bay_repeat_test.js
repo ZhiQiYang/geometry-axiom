@@ -212,6 +212,7 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
     // data; the tested refusal is the existing generation entry's mode control.
     await read(`(async()=>{const a=await apiRequest('assembly-read'),base=structuredClone(a.state.rules[0].value),binding=structuredClone(a.state.bindings[0].value);base.id=2;base.name='R06 不支援的主支槽位';base.members.find(m=>m.id===2).slotId=2;binding.id=2;binding.rule={id:2,version:1};const response=await fetch('/assembly/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'assembly-transaction/1',expectedRevision:a.revision,operations:[{op:'publish-rule',value:base},{op:'create-binding',value:binding}]})});const r=await response.json();if(!r.ok||!r.preview?.valid)throw Error(JSON.stringify(r));const c=await apiRequest('assembly-confirm '+r.preview.token);if(!c.ok)throw Error(JSON.stringify(c));await renderObjects();})()`);
     const before=await dump();await ctl('#btnNewAssembly');await ctl('[data-asm-binding="2"]');await ctl('#asmGenerate');
+    await wait(`!!$('asmInstanceName')&&!!$('asmInstanceSurface')`);
     check('R06_BR14_UNSUPPORTED 不相容規則不能切入重複模式且不改規則',await read(`$('asmInstanceLayout').querySelector('option[value="bay-repeat"]').disabled&&$('asmInstanceLayout').value==='single'&&!$('asmRepeatPrimaries')`)===true&&(await dump())===before);
     await ctl('#asmDeleteDraft');await ctl('#asmClose');
   }

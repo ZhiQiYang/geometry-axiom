@@ -55,8 +55,11 @@ async function runtime(url){
 }
 function freshBridge(){
  const python=process.env.GEOMETRY_PYTHON||process.env.PYTHON||'python3';
- const configured=process.env.GEOMETRY_TEST_BRIDGE||process.env.GEOMETRY_BRIDGE_EXECUTABLE||'';
- const script='import json,sys;sys.path.insert(0,sys.argv[1]+"/tests");import binaries;from pathlib import Path;i=binaries.inspect_one(binaries.BY_NAME["bridge"],path=Path(sys.argv[2]) if sys.argv[2] else None);print(json.dumps(i.as_dict()))';
+ const configured=process.env.GEOMETRY_TEST_BRIDGE||process.env.GEOMETRY_BRIDGE_EXECUTABLE||process.env.GEOMETRY_BRIDGE||'';
+ // start_local.py owns a per-checkout TEMP directory and exports its paths only
+ // to the server child. Use that launcher's directory policy for an unconfigured
+ // parent harness, then retain the same source/sidecar/actual-byte inspection.
+ const script='import json,sys,runpy;sys.path.insert(0,sys.argv[1]+"/tests");import binaries;from pathlib import Path;launch=runpy.run_path(str(Path(sys.argv[1])/"geometry-web/start_local.py"));candidate=Path(sys.argv[2]) if sys.argv[2] else launch["binary_directory"]()/binaries.BY_NAME["bridge"].path.name;explicit=candidate if sys.argv[2] or candidate.is_file() else None;i=binaries.inspect_one(binaries.BY_NAME["bridge"],path=explicit);print(json.dumps(i.as_dict()))';
  const result=spawnSync(python,['-B','-c',script,ROOT,configured],{cwd:ROOT,encoding:'utf8',timeout:30000});
  if(result.error||result.status!==0)throw infra('fresh bridge inspection failed: '+(result.error?.message||result.stderr));
  let record;try{record=JSON.parse(result.stdout);}catch{throw infra('bridge inspection did not return one JSON record');}
