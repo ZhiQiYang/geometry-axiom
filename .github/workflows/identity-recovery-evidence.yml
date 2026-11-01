@@ -44,7 +44,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/identity-recovery-smoke"
           set -o pipefail
           python3 tests/binaries.py build core bridge model-base 2>&1 | tee "$RUNNER_TEMP/identity-recovery-smoke/build.log"
-          python3 tests/run_all.py --build --only identity_ledger --only geo261_native_candidate --only geo261_host_candidate --only geo261_candidate_product --only geo261_staged_candidate_graph --only geo261_host_history --only parameters_candidate_value_history --only axiom_reader --only product_architecture --only architecture_contract --only mutation_anchors --only node:tests-js --report "$RUNNER_TEMP/identity-recovery-smoke/report.json"
+          python3 tests/run_all.py --build --only identity_ledger --only geo261_native_candidate --only geo261_host_candidate --only geo261_candidate_product --only geo261_staged_candidate_graph --only geo261_host_history --only parameters_candidate_value_history --only axiom_reader --only product_architecture --only architecture_contract --only mutation_anchors --only geo314_commit_paths --only geo314_ordered_facts --only node:tests-js --report "$RUNNER_TEMP/identity-recovery-smoke/report.json"
       - name: Preserve selected-suite raw logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

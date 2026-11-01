@@ -89,8 +89,8 @@ STAGED_SITES = (
 BASELINE_ASSIGNMENTS = (
     ("current_geometry.c", "app_world_revalidate_staged", "staged"),
     ("current_geometry.c", "app_world_revalidate_staged", "previous"),
-    ("current_geometry.c", "app_world_candidate_revalidate", "&candidate->before"),
-    ("current_geometry.c", "app_world_candidate_revalidate", "previous"),
+    ("current_geometry.c", "app_world_candidate_revalidate_commit", "&candidate->before"),
+    ("current_geometry.c", "app_world_candidate_revalidate_commit", "previous"),
     ("geometry-core/boundary_vertex_keys.inc", "apply_boundary_keyed_line", "world"),
     ("geometry-core/boundary_vertex_keys.inc", "apply_boundary_keyed_line", "previous_baseline"),
     ("geometry-core/grid_bindings.inc", "apply_grid_binding_application", "w"),
@@ -342,14 +342,42 @@ class Geo314CommitPaths(unittest.TestCase):
             self.assertIn("candidate->operation_seal", body)
             self.assertIn("g_definition_revision", body)
             self.assertIn("app_world_provider_stamp()", body)
-        confirm = compact(masked(self.body("current_geometry.c", "app_world_candidate_revalidate")))
+        wrapper = compact(masked(self.body("current_geometry.c", "app_world_candidate_revalidate")))
+        self.assertEqual("returnapp_world_candidate_revalidate_retained(candidate,live);", wrapper,
+                         "the public confirmation wrapper must retain its reviewed delegate")
+        retained = compact(masked(self.body("geometry-core/transactions.inc", "app_world_candidate_revalidate_retained")))
+        self.assertEqual(
+            "identity_drop_serials();"
+            "if(candidate!=g_preview.transaction)returnfalse;"
+            "AppIdentityCommitcommit={g_preview.identity_explicit,g_preview.identity_explicit_count,"
+            "g_preview.identity_explicit_overflow,false,false};"
+            "boolok=app_world_candidate_revalidate_commit(candidate,live,app_world_identity_finalize,&commit);"
+            "if(!ok)identity_drop_serials();returnok;", retained,
+            "retained confirmation must use this same preview and its recorded deletion keys exactly once")
+        confirm = compact(masked(self.body("current_geometry.c", "app_world_candidate_revalidate_commit")))
+        self.assertIn(
+            "if(!finalize||!app_world_candidate_current(candidate,live)||"
+            "app_candidate_reopen(candidate->control,live,g_definition_revision,app_world_provider_stamp(),"
+            "app_world_candidate_equal,NULL)!=GEO_CANDIDATE_OK)returnfalse;", confirm)
+        self.assertIn(
+            "AppWorldCommitCallcall={candidate,finalize,opaque};"
+            "boolok=app_world_candidate_evaluate(candidate,app_world_commit_revalidate_evaluate,&call)"
+            "==GEO_CANDIDATE_OK;", confirm)
         self.assertLess(confirm.index("app_world_candidate_current("), confirm.index("app_candidate_reopen("))
         self.assertLess(confirm.index("app_candidate_reopen("), confirm.index("app_world_candidate_evaluate("))
         self.assertLess(confirm.index("app_world_candidate_evaluate("), confirm.index("app_world_candidate_seal("))
+        self.assertEqual(1, confirm.count("app_world_candidate_current("))
+        self.assertEqual(1, confirm.count("app_candidate_reopen("))
         self.assertEqual(1, confirm.count("app_world_candidate_evaluate("))
         self.assertEqual(1, confirm.count("app_world_candidate_seal("))
         self.assertNotIn("app_world_candidate_clear_stagger(", confirm,
                          "confirmation must revalidate with the same sealed facts before releasing them")
+        evaluate = compact(masked(self.body("current_geometry.c", "app_world_commit_revalidate_evaluate")))
+        self.assertEqual(
+            "AppWorldCommitCall*call=opaque;"
+            "if(!app_world_revalidate_evaluate(after,sources,&call->candidate->before))returnfalse;"
+            "returncall->finalize(call->candidate,call->opaque);", evaluate,
+            "full revalidation must succeed before the retained identity finalizer can run")
 
     def test_cancel_failure_stale_success_and_disposal_release_ordered_evidence(self):
         path = "geometry-app/native/world_candidate.inc"
