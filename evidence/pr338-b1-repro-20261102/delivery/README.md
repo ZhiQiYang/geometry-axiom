@@ -12,7 +12,7 @@
 | isolated 175／350 ABC | 新實跑 exit 0；175 scenes、350 observations、700 plain／trace 原呼叫，完整 stdout／stderr／有序 graph／五 guards 四元組全等 |
 | 原 whole-memo driver／外層 | 真 process exit `0／0`、passed=true、errors=[]；F8 source before／after 均 clean |
 
-**原 R8 overall exit 1 保留**。本次新 profile 屬既定撤回／恢復反證，沒有覆寫或重標原 R8 36 timing 樣本／四 profile 原件，也沒有以 isolated ABC 回填原跨版本紅燈。185 個編譯輸入與 175 個原場景均逐 byte 閉到目前 9230；六份原工具硬 pin 與原 V3 封存來源都可追。B1 最後解除仍由 ChatGPT／dot 審查方判斷，這裡的 `b1Closed=false` 不自行改成 true。
+**原 R8 overall exit 1 保留**。本次新 profile 屬既定撤回／恢復反證，沒有覆寫或重標原 R8 36 timing 樣本／四 profile 原件，也沒有以 isolated ABC 回填原跨版本紅燈。185 個編譯輸入與 171 個固定場景的 F8／9230 Git bytes 全等；另 4 個 generated 場景保留原 bytes／hash pin，沒有重產，共 175 個場景輸入核符。六份原工具硬 pin 與原 V3 封存來源都可追。B1 最後解除仍由 ChatGPT／dot 審查方判斷，這裡的 `b1Closed=false` 不自行改成 true。
 
 ## 檔案
 
