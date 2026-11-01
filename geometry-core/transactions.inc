@@ -20,11 +20,17 @@ static bool reference_preview_valid(void) { return g_preview.ready && g_preview.
 static uint32_t reference_preview_token(void) { return g_preview.token; }
 
 typedef struct {
-    const AppIdentityKey *keys;size_t count;bool overflow,scratch;
+    const AppIdentityKey *keys;size_t count;bool overflow,scratch,activate;
 } AppIdentityCommit;
 static bool app_world_identity_finalize(AppWorldCandidate *candidate,void *opaque)
 {
     const AppIdentityCommit *commit=opaque;
+    if(commit->activate){
+        if(candidate->before.app.identity_active||!candidate->after.app.identity_active){
+            identity_fail("I71: 身分帳啟用候選與原狀態不符");
+            identity_drop_serials();set_revalidate_error(g_scene_last_error);return false;
+        }
+    }else candidate->after.app.identity_active=candidate->before.app.identity_active;
     bool ok=commit->scratch?identity_prepare_scratch(&candidate->before,&candidate->after):
         identity_prepare(&candidate->before,&candidate->after,commit->keys,commit->count,commit->overflow);
     if(!ok)set_revalidate_error(g_scene_last_error);
@@ -36,7 +42,7 @@ static bool app_world_candidate_revalidate(AppWorldCandidate *candidate,const Wo
 {
     identity_drop_serials();
     if(candidate!=g_preview.transaction)return false;
-    AppIdentityCommit commit={g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow,false};
+    AppIdentityCommit commit={g_preview.identity_explicit,g_preview.identity_explicit_count,g_preview.identity_explicit_overflow,false,false};
     bool ok=app_world_candidate_revalidate_commit(candidate,live,app_world_identity_finalize,&commit);
     if(!ok)identity_drop_serials();
     return ok;
@@ -673,7 +679,8 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     char identity_error[512];
     if(!skip_identity){
         identity_drop_serials();
-        AppIdentityCommit commit={NULL,0,false,true};
+        bool activate=count==2&&!strcmp(tokens[0],"identity-ledger")&&!strcmp(tokens[1],"activate");
+        AppIdentityCommit commit={NULL,0,false,true,activate};
         bool prepared=app_world_candidate_seal(transaction)&&
             app_world_candidate_revalidate_commit(transaction,world,app_world_identity_finalize,&commit);
         if(!prepared){
