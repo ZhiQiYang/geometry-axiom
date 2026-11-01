@@ -1,6 +1,7 @@
 /* Real file-menu entry for definition-import/1.
    Fresh reopen clears this origin's storage and navigates the same tab.
-   It does not start a second Chrome user-data-dir. */
+   It does not start a second Chrome user-data-dir.
+   Because it wipes origin storage (seen-guidance flags included), cdp_test.js runs it last in full mode. */
 const cdp = require('./cdp_helpers.js');
 const fs = require('fs');
 const os = require('os');
@@ -8,7 +9,7 @@ const path = require('path');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 
 module.exports = async ({send, eval_, sleep, click, waitForUI, exceptionCount}) => {
-  const check = cdp.makeCheck({prefix:'R08 ', throwOnFail:true, detail:'none', failMessage:name => 'R08 ' + name});
+  const check = cdp.makeCheck({prefix:'P359 ', throwOnFail:true, detail:'none', failMessage:name => 'P359 ' + name});
   const read = cdp.makeRead(eval_);
   const wait = (expression, timeout = 20000) => waitForUI(expression, timeout);
   const ctl = cdp.makeCtl({eval_, sleep, click}, {
@@ -18,7 +19,7 @@ module.exports = async ({send, eval_, sleep, click, waitForUI, exceptionCount}) 
   const key = cdp.makeKey({send, sleep});
   const fill = cdp.makeFill({ctl, key, send, sleep});
   const started = exceptionCount();
-  console.log('=== R08 從其他專案匯入定義 ===');
+  console.log('=== P359. 從其他專案匯入定義（R08） ===');
   await send('Emulation.setDeviceMetricsOverride', {width:1400, height:1000, deviceScaleFactor:1, mobile:false});
 
   const rule = (id, version, name) => ({
