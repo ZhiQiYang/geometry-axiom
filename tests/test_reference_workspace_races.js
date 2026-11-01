@@ -1251,6 +1251,13 @@ function prepareSnapshotCase(data,runPython=require('node:child_process').execFi
 }
 test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
   const {definition,receipt,data}=structuredClone(snapshotCaseFixture);
+  assert.strictEqual(P.Features.Cases.validate(data),data,'R06 native capacity facts remain part of the exact portable receipt');
+  const legacy=structuredClone(data);for(const key of ['before','after'])delete legacy.receipts[0].receipt.observations[key].limits;
+  assert.strictEqual(P.Features.Cases.validate(legacy),legacy,'Historical observations without capacity facts remain readable');
+  for(const alter of [v=>v.instances=0,v=>v.ownedTimbers=true,v=>v.worldTimbers=4294967296,v=>v.unknown=1,v=>delete v.bayOmit]){
+    const malformed=structuredClone(data);alter(malformed.receipts[0].receipt.observations.after.limits);
+    assert.throws(()=>P.Features.Cases.validate(malformed),'Unknown, missing or malformed capacity facts must still reject');
+  }
   assert.equal(receipt.status,'passed');
   receipt.observations.after.rules[0].value.members[0].slotId=13;P.Features.Cases.validate(data);
   const reached=deferred(),gate=deferred(),f=await fixture({projectOverride:{Features:{...P.Features,Cases:{...P.Features.Cases,
