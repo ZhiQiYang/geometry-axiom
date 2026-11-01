@@ -1,0 +1,146 @@
+name: 身分帳恢復列車完整突變證據
+
+on:
+  push:
+    branches:
+      - grok/r09a-identity-ledger-20261029
+      - codex/r10-evidence-links-recovery-20261102
+      - grok/r09a-k3-44-20261029
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geometry-identity-recovery-mutation-evidence-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - id: plan
+        name: Partition every current mutation exactly once
+        run: python3 .github/scripts/mutation_evidence.py plan >> "$GITHUB_OUTPUT"
+
+  smoke:
+    name: identity authority and recovery regressions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Check selected authority and recovery suites before mutation generation
+        run: |
+          ulimit -s 16384
+          mkdir -p "$RUNNER_TEMP/identity-recovery-smoke"
+          set -o pipefail
+          python3 tests/binaries.py build core bridge model-base 2>&1 | tee "$RUNNER_TEMP/identity-recovery-smoke/build.log"
+          python3 tests/run_all.py --build --only identity_ledger --only geo261_native_candidate --only geo261_host_candidate --only geo261_candidate_product --only geo261_staged_candidate_graph --only geo261_host_history --only parameters_candidate_value_history --only axiom_reader --only product_architecture --only architecture_contract --only mutation_anchors --only node:tests-js --report "$RUNNER_TEMP/identity-recovery-smoke/report.json"
+      - name: Preserve selected-suite raw logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: identity-authority-smoke-logs
+          path: |
+            /tmp/geometry-tests/run_all-logs/
+            ${{ runner.temp }}/identity-recovery-smoke/
+          if-no-files-found: error
+          retention-days: 30
+
+  archive:
+    name: archive capability mutation proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Prove every archive mutation and its restored baseline
+        run: python3 geometry-core/card-reference/run_archive_mutations.py --output "$RUNNER_TEMP/archive-mutations"
+      - name: Preserve the archive mutation report and raw logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: archive-mutation-evidence
+          path: ${{ runner.temp }}/archive-mutations/
+          if-no-files-found: error
+          retention-days: 30
+
+  execute:
+    name: mutation (${{ matrix.shard }})
+    needs: [plan, smoke]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Execute assigned mutations with new receipts and exact binary checks
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          ulimit -s 16384
+          python3 .github/scripts/mutation_evidence.py run --shard "$SHARD" --out "$RUNNER_TEMP/mutation-evidence"
+      - name: Preserve receipts, executed binaries and logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mutation-shard-${{ matrix.shard }}
+          path: |
+            ${{ runner.temp }}/mutation-evidence/manifest.json
+            ${{ runner.temp }}/mutation-evidence/mutants_results.json
+            ${{ runner.temp }}/mutation-evidence/cache.tar.gz
+            ${{ runner.temp }}/mutation-evidence/execution.log
+          if-no-files-found: error
+          retention-days: 30
+
+  verify:
+    name: Verify complete mutation evidence
+    needs: [plan, smoke, execute, archive]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Require every execution job to succeed
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          SMOKE_RESULT: ${{ needs.smoke.result }}
+          EXECUTE_RESULT: ${{ needs.execute.result }}
+          ARCHIVE_RESULT: ${{ needs.archive.result }}
+        run: test "$PLAN_RESULT:$SMOKE_RESULT:$EXECUTE_RESULT:$ARCHIVE_RESULT" = success:success:success:success
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: mutation-shard-*
+          path: ${{ runner.temp }}/mutation-download
+      - name: Verify downloaded binary bytes and full-table strict receipts
+        run: |
+          python3 .github/scripts/mutation_evidence.py verify --artifacts "$RUNNER_TEMP/mutation-download" --out "$RUNNER_TEMP/mutation-verified"
+      - name: Preserve aggregate ledger and manifest
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mutation-complete-evidence
+          path: |
+            ${{ runner.temp }}/mutation-verified/mutants_results.json
+            ${{ runner.temp }}/mutation-verified/summary.json
+          if-no-files-found: error
+          retention-days: 30
