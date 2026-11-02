@@ -40,8 +40,9 @@ function harness(options={}) {
     feUlImgToMm:(_p,x,y)=>[x*10,y*10],feSetTool:()=>{},fiShowTab:()=>{},openPanel:()=>{},drawFaceEditor:()=>{},setStatus:()=>{},toast:()=>{},
     cleanDraft:()=>{fe.draft.pts=[];},renderObjects:async()=>{if(options.tamperOldCollection){const changed=clone(attachments['source-rooms']);changed.collections.find(c=>c.id==='other-collection').roomIds.reverse();W.setFeatureAttachment('source-rooms',changed,'ctx',{recordHistory:true});}if(options.tamperOther)W.setFeatureAttachment(E.KIND,E.empty(),'ctx',{recordHistory:true});if(options.tamperDraft){const changed=clone(attachments[D.KIND]);changed.rows[1].rawInputs.refRoomLength='999';W.setFeatureAttachment(D.KIND,changed,'ctx',{recordHistory:true});}},
     enterFocus:async(t,id)=>{oc.edit={bid:id};oc.focus={t,id};},renderFaceInspector:()=>{if(workspace&&oc.edit)workspace.paneHTML(oc.edit.bid);},
-    apiRequest:async(command,l)=>{commands.push(command);let result;
+    apiRequest:async(command,l)=>{const settle=workspace?.beginNativeRequest(command);commands.push(command);let result;try{
       if(command==='newid')result={ok:true,boundary:2};
+      else if(command==='objects')result={ok:true,faces:Object.keys(native).map(id=>({id:Number(id),kind:'boundary'}))};
       else if(command.startsWith('boundary ')){const id=Number(command.split(' ')[1]);result=native[id]?{ok:true,...clone(native[id])}:{ok:false,error:'missing'};}
       else if(command.startsWith('line preview boundary ')){const id=Number(command.split(' ')[3]),points=command.split(' outline ')[1].split(' ').map(p=>p.split(',').map(Number));snapshot={id,kind:'unspecified',geometryFingerprint:'ef'.repeat(32),loops:[{verts:points,fixity:points.map(()=>1)}]};result={ok:true,preview:{valid:true,token:7,boundaries:[{id,before:null,after:clone(snapshot)}]}};}
       else if(command==='line history-begin'){history.group={base:capture(),dirty:false};result={ok:true};}
@@ -51,19 +52,21 @@ function harness(options={}) {
       else if(command==='line cancel-preview'){snapshot=null;result={ok:true};}
       else throw Error('unexpected command '+command);
       workspace?.observeNativeResult(command,result);return result;
+      }finally{settle?.(result);}
     }};
   context.window.RoomCollectionWorkspace=undefined;vm.createContext(context);vm.runInContext(fs.readFileSync(base+'room-collection-workspace.js','utf8'),context,{filename:'room-collection-workspace.js'});workspace=context.window.RoomCollectionWorkspace;
-  async function start(){const bid=oc.edit.bid;workspace.receiveCandidates(bid,{candidates:[{key:'a',points:[[10,10],[30,10],[30,30],[10,30]],method:'image-lines',warnings:[]},{key:'b',points:[[40,10],[60,10],[60,30],[40,30]],method:'image-lines',warnings:[]}],total:2,complete:true,ignoredNested:0},{mode:'image',minWidth:1,minLength:8},workspace.captureCandidateStamp(bid));workspace.flushCandidates();await workspace.selectCandidate(0);}
+  async function ready(){await context.apiRequest('objects');for(const id of Object.keys(native))await context.apiRequest('boundary '+id);}
+  async function start(){await ready();const bid=oc.edit.bid;workspace.receiveCandidates(bid,{candidates:[{key:'a',points:[[10,10],[30,10],[30,30],[10,30]],method:'image-lines',warnings:[]},{key:'b',points:[[40,10],[60,10],[60,30],[40,30]],method:'image-lines',warnings:[]}],total:2,complete:true,ignoredNested:0},{mode:'image',minWidth:1,minLength:8},workspace.captureCandidateStamp(bid));workspace.flushCandidates();await workspace.selectCandidate(0);}
   async function commit(){return workspace.commitDraft(outline.points);}
   function undo(){const entry=history.undo.pop();assert.ok(entry);restore(entry.before);history.redo.push(entry);}
-  return {workspace,attachments,native,history,writes,commands,oc,start,commit,undo,capture,get lease(){return ownedLease;}};
+  return {workspace,attachments,native,history,writes,commands,oc,start,commit,undo,capture,ready,get lease(){return ownedLease;}};
 }
 
 const {test}=require('node:test');
 test('R358-06 first-room commit persists collection anchor and reopens fresh',async()=>{
   const h=harness();await h.start();await h.commit();
   assert.equal(h.attachments[D.KIND].anchor.kind,'collection','same-group persisted anchor must use newly created collection');
-  const reopened=harness({attachments:h.attachments,native:h.native});reopened.workspace.paneHTML(1);
+  const reopened=harness({attachments:h.attachments,native:h.native});await reopened.ready();reopened.workspace.paneHTML(1);
   assert.equal(reopened.workspace.candidateSnapshot().stale,false,'unchanged cold reopen must keep remaining rows fresh');
 });
 test('R358-06 existing-collection commit persists current roomsPin and reopens fresh',async()=>{
@@ -72,7 +75,7 @@ test('R358-06 existing-collection commit persists current roomsPin and reopens f
   initial.rooms.push({id:'existing-room',name:'Existing',boundaryRef:{kind:'boundary',id:1,associationPin:pin},acceptedBasisRevision:1,reviewState:'confirmed',display:{crop:page.crop,opacity:page.opacity,locked:false}});S.validate(initial);
   const h=harness({attachments:{'source-rooms':initial}});await h.start();await h.commit();
   assert.equal(h.attachments[D.KIND].anchor.roomsPin,h.workspace.candidateSnapshot().stamp.roomsPin,'same-group persisted pin must include the accepted room');
-  const reopened=harness({attachments:h.attachments,native:h.native});reopened.workspace.paneHTML(1);
+  const reopened=harness({attachments:h.attachments,native:h.native});await reopened.ready();reopened.workspace.paneHTML(1);
   assert.equal(reopened.workspace.candidateSnapshot().stale,false);
 });
 test('R358-06 control: draft attachment rejection rolls World and draft back',async()=>{

@@ -12,7 +12,8 @@ const RoomCollectionWorkspace = (() => {
   // that may overlap a report forgets it, so a remembered value is never older
   // than the last observed change.
   const nativePins = new Map(), previewBoundaries = new Map(), nativeRefresh = new Map();
-  let nativeEpoch = 0, nativeSettled = 0, nativeGroup = null, nativeReadFailure = null;
+  let nativeEpoch = 0, nativeSettled = 0, nativeReadOrder = 0, nativeGroup = null, nativeReadFailure = null, nativeObjects = null;
+  const nativeChanging = new Set();
   const W = () => ReferenceWorkspace;
   const token = () => W().getProjectState().contextToken;
   const state = () => W().readFeatureAttachment("source-rooms", token()) || S.empty();
@@ -28,21 +29,22 @@ const RoomCollectionWorkspace = (() => {
     for (const name of ["readSource", "readIncarnation", "beginTransaction", "assertTransaction", "endTransaction", "preflightAttachment", "groupOpen", "labelTransaction", "adoptLegacySource"])
       if (typeof adapter?.[name] !== "function") throw new Error("房間來源缺少 owner 接口：" + name);
     integration = adapter;
-    installNativeObserver();
   }
   function nativeCommand(command) {
     if (typeof command !== "string") return "";
     return command.startsWith("line ") ? "line " + command.slice(5).split("#", 1)[0].trim() : command.trim();
   }
   function pinScope() {
-    try { return integration && W()?.getProjectState ? token() : null; } catch (_) { return null; }
+    try { return integration && W()?.getModelOperationState ? W().getModelOperationState().contextToken : null; } catch (_) { return null; }
   }
   function forgetNativePins(ids = null) {
-    if (ids === null) {nativePins.clear(); previewBoundaries.clear();} else for (const id of ids) nativePins.delete(id);
+    if (ids === null) {nativeObjects = null; nativePins.clear(); previewBoundaries.clear();}
+    else for (const id of ids) {nativePins.delete(id); nativeObjects?.unknown.add(id);}
   }
   // Applies one settled result of a changing command to the remembered fingerprints.
   function noteNativeChange(command, result) {
     if (result?.ok !== true) {
+      if (result?.stale === true) return; // Version rejection did not reach native.
       // Unknown delivery: anything may have changed.
       if (!result || result.transport) {forgetNativePins(); nativeGroup = null; return;}
       // A known rejection changes nothing, except that the core rolls back an open group
@@ -67,44 +69,48 @@ const RoomCollectionWorkspace = (() => {
     // A confirmed preview changes exactly its listed boundaries; anything else may change any of them.
     if (recorded && recorded.scope === pinScope()) forgetNativePins(recorded.ids); else forgetNativePins();
   }
-  function rememberBoundaryRead(command, result, scope) {
+  function rememberBoundaryRead(command, result, scope, order, ownerRevision) {
     const match = command.match(/^boundary (\d+)$/);
     if (!match) return;
     const id = Number(match[1]);
     let incarnation = null;
-    try { if (integration && scope !== null && scope === pinScope()) incarnation = integration.readIncarnation(id, scope); } catch (_) { incarnation = null; }
-    if (incarnation === null || incarnation === undefined || !result?.ok || (result.id !== undefined && result.id !== id) || !isHash(result.geometryFingerprint)) {
+    if (scope === null || scope !== pinScope()) return;
+    if ((nativePins.get(id)?.order ?? 0) > order) return;
+    try { incarnation = integration.readIncarnation(id, token()) ?? null; } catch (_) { return; }
+    if (!result?.ok || result.id !== id || !isHash(result.geometryFingerprint)) {
       nativePins.delete(id); return;
     }
-    nativePins.set(id, {scope, incarnation, pin: result.geometryFingerprint});
+    nativePins.set(id, {scope, incarnation, pin: result.geometryFingerprint, order, ownerRevision});
     nativeGroup?.add(id);
   }
-  // Observe every native request at the transport boundary: only it sees both when a
-  // boundary report was requested and whether a change was sent or settled meanwhile.
-  // The original Promise is returned untouched (same pattern as transport_failure_trace.js).
-  function installNativeObserver() {
-    const root = globalThis;
-    if (typeof root.apiRequest !== "function" || root.apiRequest.roomNativeObserver === true) return;
-    const original = root.apiRequest;
-    const observed = function (...args) {
-      const command = nativeCommand(args[0]), change = NATIVE_CHANGE.test(command), steady = change && NATIVE_STEADY.test(command), scope = pinScope();
-      // A boundary report is remembered only if no definition-changing command was sent or
-      // settled while it was in flight (steady commands change nothing unless they fail).
-      if (change && !steady) nativeEpoch++;
-      const epoch = nativeEpoch, promise = original.apply(this, args);
-      if (promise && typeof promise.then === "function") promise.then(result => {
-        try {
-          nativeSettled++;
-          if (change) {if (!steady || result?.ok !== true) nativeEpoch++; noteNativeChange(command, result);}
-          else if (epoch === nativeEpoch) rememberBoundaryRead(command, result, scope);
-        } catch (_) { /* Observation must never change the native result. */ }
-      }, () => {try {nativeSettled++; if (change) {nativeEpoch++; noteNativeChange(command, null);}} catch (_) {}});
-      return promise;
-    };
-    Object.defineProperty(observed, "roomNativeObserver", {value: true});
-    root.apiRequest = observed;
+  function rememberObjects(result, scope, order, ownerRevision) {
+    if (scope === null || scope !== pinScope()) return;
+    if ((nativeObjects?.order ?? 0) > order) return;
+    if (!result?.ok || !Array.isArray(result.faces) || result.faces.some(face =>
+        !Number.isSafeInteger(face?.id) || face.id <= 0 || typeof face.kind !== "string")) {nativeObjects = null; return;}
+    nativeObjects = {scope, ids: new Set(result.faces.filter(face => face.kind === "boundary").map(face => face.id)), unknown: new Set(), order, ownerRevision};
   }
-  installNativeObserver();
+  // apiRequest calls this once, immediately before delivery, and settles it once.
+  // Diagnostic wrappers never own this observation and cannot make it run twice.
+  function beginNativeRequest(text) {
+    const command = nativeCommand(text), change = NATIVE_CHANGE.test(command), steady = change && NATIVE_STEADY.test(command), scope = pinScope();
+    const order = ++nativeReadOrder, ownerRevision = W().getModelOperationState().revision;
+    const ticket = {};
+    if (change && !steady) {nativeEpoch++; nativeChanging.add(ticket);}
+    const epoch = nativeEpoch;
+    let settled = false;
+    return result => {
+      if (settled) return; settled = true; nativeChanging.delete(ticket);
+      try {
+        nativeSettled++;
+        if (change) {if (!steady || result?.ok !== true) nativeEpoch++; noteNativeChange(command, result);}
+        else if (epoch === nativeEpoch && !nativeChanging.size) {
+          if (command === "objects") rememberObjects(result, scope, order, ownerRevision);
+          else rememberBoundaryRead(command, result, scope, order, ownerRevision);
+        }
+      } catch (_) { /* Observation must not change the request's result. */ }
+    };
+  }
   function request(command) { return apiRequest(command, lease); }
   function assertTransaction(ownerLease) {ensureReady(); return integration.assertTransaction(ownerLease);}
   async function checked(command) {
@@ -247,14 +253,13 @@ const RoomCollectionWorkspace = (() => {
   // does not exist), acceptedBasisRevision, reviewState]. undefined = not known yet.
   function currentNativePin(room, known = {}) {
     if (Object.hasOwn(known, room.id)) return known[room.id];
-    const id = room.boundaryRef.id, scope = token(), incarnation = integration.readIncarnation(id, scope);
-    if (incarnation === null || incarnation === undefined) return null;
+    if (nativeChanging.size) return undefined;
+    const id = room.boundaryRef.id, scope = pinScope(), incarnation = integration.readIncarnation(id, token()) ?? null;
     const report = nativePins.get(id);
     if (report && report.scope === scope && report.incarnation === incarnation) return report.pin;
-    // I63: a confirmed room's association fingerprint equals its D3's current geometry
-    // fingerprint (any paired change makes it needs-review, unknown history needs-reassociation).
-    // Rooms in other states carry an old receipt, never a current fingerprint.
-    if (room.reviewState === "confirmed" && isHash(room.boundaryRef.associationPin)) return room.boundaryRef.associationPin;
+    // A missing runtime incarnation can mean objects has not synchronized yet.
+    // Only the current native object list proves absence; metadata is a receipt.
+    if (nativeObjects?.scope === scope && !nativeObjects.unknown.has(id) && !nativeObjects.ids.has(id)) return null;
     return undefined;
   }
   function collectionRoomsPin(data, collection, unknown = [], known = {}) {
@@ -269,13 +274,27 @@ const RoomCollectionWorkspace = (() => {
   async function readNativePins(bid) {
     // Reads the referenced D3 definitions whose current native fingerprint is not known yet.
     // A report that overlapped a native change is discarded and read again (bounded).
+    const scope = pinScope(), owner = W().getModelOperationState(), firstRead = nativeReadOrder;
+    const assertOwner = () => {
+      if (pinScope() !== scope || !same(W().getModelOperationState(), owner)) {
+        // Retire only reports learnt by obsolete work. A newer independent read
+        // must survive this late rejection (including a save during refresh).
+        for (const [id, report] of nativePins) if (report.scope === scope && report.order > firstRead && report.ownerRevision === owner.revision) nativePins.delete(id);
+        if (nativeObjects?.scope === scope && nativeObjects.order > firstRead && nativeObjects.ownerRevision === owner.revision) nativeObjects = null;
+        throw new Error("房間原生幾何讀取期間專案或版本已變更，請重新操作。");
+      }
+    };
     for (let attempt = 0; attempt < 3; attempt++) {
+      assertOwner();
       const stamp = candidateStamp(bid);
       if (stamp.kind !== "collection" || !stamp.unknownNative.length) return stamp;
-      for (const id of stamp.unknownNative) {
-        const scope = token(), epoch = nativeEpoch, result = await request("boundary " + id);
+      if (nativeObjects?.scope !== scope || stamp.unknownNative.some(id => nativeObjects.unknown.has(id))) {
+        const objects = await request("objects"); assertOwner();
+        if (!objects.ok) throw new Error("房間原生物件清單讀取失敗：" + (objects.error || "未知錯誤"));
+      }
+      for (const id of candidateStamp(bid).unknownNative) {
+        const result = await request("boundary " + id); assertOwner();
         if (!result.ok) throw Object.assign(new Error("房間 D3 " + id + " 的原生幾何讀取失敗：" + (result.error || "未知錯誤")), {transport: result.transport});
-        if (epoch === nativeEpoch) rememberBoundaryRead("boundary " + id, result, scope);
       }
     }
     const after = candidateStamp(bid);
@@ -368,18 +387,18 @@ const RoomCollectionWorkspace = (() => {
   // not retried until another native result has settled (at most three times).
   function refreshRestoredPins(key, bid) {
     if (nativeRefresh.has(key)) return;
-    const scope = token();
+    const scope = pinScope();
     nativeRefresh.set(key, readNativePins(bid).then(() => {nativeReadFailure = null;}, error => {
       const attempts = nativeReadFailure?.key === key ? nativeReadFailure.attempts + 1 : 1;
       nativeReadFailure = {key, settled: nativeSettled, attempts, message: "房間原生幾何指紋讀取失敗：" + error.message};
-    }).finally(() => {nativeRefresh.delete(key); if (scope === pinScope()) renderFaceInspector();}));
+    }).finally(() => {nativeRefresh.delete(key); if (scope === pinScope()) {invalidateCandidates(); renderFaceInspector();}}));
   }
   const canonical = value => JSON.stringify(value, (_, item) => item && typeof item === "object" && !Array.isArray(item)
     ? Object.fromEntries(Object.keys(item).sort().map(key => [key, item[key]])) : item);
   // A stale restored session that still equals the stored draft holds no work of its own;
   // it is judged again from storage (R51 fingerprints only) instead of keeping a runtime verdict.
   function mirrorsStoredDraft(s, bid) {
-    if (!s.parked || !s.stale || s.expired || s.active !== null || s.committing || s.bid !== bid || !ownsSession(s)) return false;
+    if (!s.parked || (!s.stale && !s.nativePending) || s.expired || s.active !== null || s.committing || s.bid !== bid || !ownsSession(s)) return false;
     try { return canonical(Drafts().persistValue(draftFromSession(s))) === canonical(W().readFeatureAttachment(Drafts().KIND, token())); }
     catch (_) { return false; }
   }
@@ -413,10 +432,10 @@ const RoomCollectionWorkspace = (() => {
     if (!stale && anchor.kind === "page" && (stamp.kind !== "page" || stamp.pagePin !== anchor.pagePin || stamp.pageId !== anchor.pageId)) { stale = true; reason = "圖頁已變更"; }
     if (!stale && anchor.kind === "collection" && stamp.kind === "collection" && stamp.collectionId === anchor.collectionId &&
         stamp.planePin === anchor.planePin && stamp.roomsPin === null) {
-      const key = token() + "\n" + bid, failed = nativeReadFailure?.key === key ? nativeReadFailure : null;
-      stale = true;
-      if (failed && (failed.settled === nativeSettled || failed.attempts >= 3)) reason = failed.message;
-      else {nativePending = true; reason = "正在讀取房間原生幾何指紋"; refreshRestoredPins(key, bid);}
+      const key = pinScope() + "\n" + bid, failed = nativeReadFailure?.key === key ? nativeReadFailure : null;
+      nativePending = true;
+      if (failed && failed.settled === nativeSettled) reason = failed.message;
+      else {reason = "正在讀取房間原生幾何指紋"; refreshRestoredPins(key, bid);}
     }
     else if (!stale && anchor.kind === "collection" && (stamp.collectionId !== anchor.collectionId || stamp.planePin !== anchor.planePin || stamp.roomsPin !== anchor.roomsPin)) { stale = true; reason = "共享來源或房間清單已變更"; }
     candidateSession = {bid, stamp, anchor: structuredClone(anchor), ownerToken: token(), expired: false, nativePending,
@@ -435,14 +454,32 @@ const RoomCollectionWorkspace = (() => {
     writeSavedCandidates(s, {recordHistory: true});
   }
   function assertCandidates(s=candidateSession) {
-    if(!s||s!==candidateSession||s.stale||s.expired||!ownsSession(s)||!same(s.stamp,candidateStamp(s.bid)))throw Error('來源、房間或專案已變更，舊候選不可接受；請重新取得。');
+    if(!s||s!==candidateSession||s.stale||s.nativePending||s.expired||!ownsSession(s)||!same(s.stamp,candidateStamp(s.bid)))throw Error('來源、房間或專案已變更，或原生指紋尚未確認；候選目前不可接受。');
     if(s.stamp.kind==='collection'&&!isHash(s.stamp.roomsPin))throw Error('房間原生幾何指紋尚未讀取，舊候選不可接受；請稍候重新操作。');
     W().assertEditable();return s;
   }
   function invalidateCandidates() {
     const s=candidateSession;if(!s||s.committing||s.stale)return;
-    try{assertCandidates(s);}catch(error){
-      s.stale=true;s.reason=error.message;
+    try{
+      const next=candidateStamp(s.bid),before=s.stamp.owner,after=next.owner;
+      if(!s.nativePending&&same(s.stamp,next)){assertCandidates(s);return;}
+      // No active editor or transaction is rebased. Idle rows may wait for a
+      // native report without confusing an empty cache with a changed domain.
+      if(!s.expired&&s.active===null&&!lease&&!instance?.intent&&!instance?.busy&&!s.pendingAcceptance&&ownsSession(s)&&
+        before.context===after.context&&before.frame===after.frame&&before.contextToken===after.contextToken&&
+        s.anchor.kind==='collection'&&next.kind==='collection'&&next.collectionId===s.anchor.collectionId&&next.planePin===s.anchor.planePin){
+        if(next.roomsPin===null){
+          s.nativePending=true;
+          const key=pinScope()+'\n'+s.bid,failed=nativeReadFailure?.key===key?nativeReadFailure:null;
+          s.reason=failed&&failed.settled===nativeSettled?failed.message:'正在讀取房間原生幾何指紋';
+          if(!failed||failed.settled!==nativeSettled)refreshRestoredPins(key,s.bid);
+          return;
+        }
+        if(next.roomsPin===s.anchor.roomsPin){s.stamp=next;s.nativePending=false;s.reason='';return;}
+      }
+      assertCandidates(s);
+    }catch(error){
+      s.stale=true;s.nativePending=false;s.reason=error.message;
       // Never retire an unknown native owner. Its normal receipt recovery owns it.
       if(s.active!==null&&!lease&&!instance?.busy){instance?.cancel().catch(()=>{});activeBid=null;RoomOutlineWorkspace.reset();s.active=null;}
     }
@@ -498,9 +535,11 @@ const RoomCollectionWorkspace = (() => {
     s.generation=++candidateGeneration;
   }
   async function selectCandidate(index) {
-    const s=assertCandidates(),row=s.candidates[index];
+    const s=assertCandidates(),row=s.candidates[index],actionStamp=s.stamp;
     if(!row||row.status==='accepted')throw Error('請選擇尚未接受的候選。');
-    await releaseCandidateEditor(s);assertCandidates(s);
+    await releaseCandidateEditor(s);
+    if(s.stamp!==actionStamp)throw Error('候選操作期間專案版本已變更，請重新選取。');
+    assertCandidates(s);
     if(RoomOutlineWorkspace.hasWork||fe.draft.pts.length)throw Error('請先完成其他輪廓草稿。');
     const bid=oc.edit?.bid;
     Drafts().assertSelectable(draftFromSession(s), {fresh:!s.stale, reason:s.reason||'', note:''});
@@ -522,10 +561,12 @@ const RoomCollectionWorkspace = (() => {
     document.getElementById('refRoomVertices')?.focus();
   }
   async function parkCandidates() {
-    const s=assertCandidates();
+    const s=assertCandidates(),actionStamp=s.stamp;
     if(s.active!==null)snapshotActive(s);
     Drafts().persistValue(draftFromSession(s));
-    await releaseCandidateEditor(s);assertCandidates(s);
+    await releaseCandidateEditor(s);
+    if(s.stamp!==actionStamp)throw Error('候選操作期間專案版本已變更，請重新暫停。');
+    assertCandidates(s);
     writeSavedCandidates(s,{recordHistory:true});
     s.parked=true;renderFaceInspector();drawFaceEditor();setStatus('候選已暫停。未接受的房間候選已寫入專案，重新開啟後仍在；接受後才進入場景。');
   }
@@ -575,13 +616,13 @@ const RoomCollectionWorkspace = (() => {
   function candidatesHTML(bid) {
     const s=candidateSession;if(!s)return '';
     invalidateCandidates();
-    const disabled=s.stale||s.committing||!!lease||!!instance?.busy||!!currentDialog;
-    return `<section id="roomCandidates"><p role="status">${s.nativePending?'正在讀取房間原生幾何指紋，讀取後重新判定草稿是否仍有效':s.stale?'舊候選已失效，只能查看或放棄：'+escape(s.reason):s.parked?'已暫停。未接受的房間候選已寫入專案，重新開啟後仍在':`找到 ${s.total} 個可核對區域${s.complete?'':`，僅顯示前 12 個（未完整呈現）`}`}；來源取景 ${escape(s.stamp.crop.join(', '))}${s.ignoredNested?`；排除 ${s.ignoredNested} 個巢狀障礙內框`:''}</p>`+
+    const disabled=s.stale||s.nativePending||s.committing||!!lease||!!instance?.busy||!!currentDialog;
+    return `<section id="roomCandidates"><p role="status">${s.nativePending?escape(s.reason):s.stale?'舊候選已失效，只能查看或放棄：'+escape(s.reason):s.parked?'已暫停。未接受的房間候選已寫入專案，重新開啟後仍在':`找到 ${s.total} 個可核對區域${s.complete?'':`，僅顯示前 12 個（未完整呈現）`}`}；來源取景 ${escape(s.stamp.crop.join(', '))}${s.ignoredNested?`；排除 ${s.ignoredNested} 個巢狀障礙內框`:''}</p>`+
       s.candidates.map((c,i)=>`<div class="ref-record" data-candidate-row="${i}"><span>候選 ${i+1} · ${c.existing?'與既有房間外環相同':c.status==='accepted'?'已建立':c.status==='excluded'?'已排除':s.active===i?'核對中':'待核對'}</span><button type="button" class="btn" style="min-height:44px" data-room-candidate="${i}"${disabled||c.status==='accepted'?' disabled':''}>${c.status==='excluded'?'恢復並核對':s.parked?'恢復核對':'選取核對'}</button>${c.status==='accepted'?'':`<button type="button" class="btn" style="min-height:44px" data-room-exclude="${i}"${disabled?' disabled':''}>排除</button>`}</div>`).join('')+
       `<div class="ref-actions"><button id="roomCandidatesPark" type="button" class="btn"${disabled?' disabled':''}>暫停候選，以便保存成果</button><button id="roomCandidatesDiscard" type="button" class="btn"${s.committing||lease?' disabled':''}>放棄剩餘候選</button></div></section>`;
   }
   function drawCandidates(root) {
-    const s=candidateSession;if(!s||s.stale||s.parked)return;
+    const s=candidateSession;if(!s||s.stale||s.nativePending||s.parked)return;
     if(s.stamp.kind==='page'?oc.edit?.bid!==s.bid:collectionFor(oc.edit?.bid)?.id!==s.stamp.collectionId)return;
     s.candidates.forEach((c,i)=>{
       if(c.status!=='pending'||s.active===i)return;
@@ -929,11 +970,6 @@ const RoomCollectionWorkspace = (() => {
   }
   const changeBasis=changeView;
   function observeNativeResult(command, result) {
-    // Without the transport observer, owner-reported results still retire remembered fingerprints.
-    try {
-      const normalized = nativeCommand(command);
-      if (globalThis.apiRequest?.roomNativeObserver !== true && NATIVE_CHANGE.test(normalized)) {nativeEpoch++; noteNativeChange(normalized, result);}
-    } catch (_) {}
     if (!lease || !result.ok) return;
     if (command === ownedPreviewCommand && result.preview?.valid === true && Number.isInteger(result.preview.token) && result.preview.token > 0)
       ownedPreviewToken = result.preview.token;
@@ -968,7 +1004,7 @@ const RoomCollectionWorkspace = (() => {
     if (settledLease) integration.endTransaction(settledLease);
     lease = null;
   }
-  return {configure, assertTransaction, paneHTML, bindPane, overviewHTML, bindOverview, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeView, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
+  return {configure, beginNativeRequest, assertTransaction, paneHTML, bindPane, overviewHTML, bindOverview, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeView, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
     receiveCandidates,captureCandidateStamp:candidateStamp,parkCandidates,selectCandidate,drawCandidates,flushCandidates,
     get hasUnacceptedCandidates(){return hasUnacceptedCandidates();},
     candidateSnapshot:()=>candidateSession?structuredClone(candidateSession):null,

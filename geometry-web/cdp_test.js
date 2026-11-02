@@ -7156,7 +7156,10 @@ async function main() {
   if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./source_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
   if(scope.mode==='full'||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
-  if(scope.mode==='full'||process.env.GEOMETRY_ROOM_CANDIDATE_ONLY)await require('./room_candidate_browser_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if(scope.mode==='full'||process.env.GEOMETRY_ROOM_CANDIDATE_ONLY){
+    await require('./room_candidate_browser_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+    await require('./room_candidate_cold_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN,browserProfile:scope.browserProfile});
+  }
   if(scope.mode==='full')await require('./model_snapshot_schedule_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if(scope.mode==='full')await require('./model_snapshot_navigation_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   chrome.kill();

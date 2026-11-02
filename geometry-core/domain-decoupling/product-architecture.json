@@ -2653,7 +2653,7 @@
     {
       "path": "geometry-web/cdp_test.js",
       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
-      "sha256": "6ee6edf53c4a6af1328b0f248e7e3d1b7805a73abf11b1bc06ebcc5d497ddbd3",
+      "sha256": "c93e63e2a69a13b0a91469942db7d2be75f84592bcee173458586595bd30f7ea",
       "hashMode": "lf"
     },
     {
@@ -3675,6 +3675,24 @@
       "reason": "Reading A independent numeric source-withdrawal witness for constructor/checker 0/1/0; an explicitly invoked dedicated test driver that loads a supplied oracle source path, not a product-loaded module or product entry point.",
       "sha256": "fe786d9f12cb664fe0188dc87803855449eaa86a8d115969e13bef5213fb3d95",
       "hashMode": "lf"
+    },
+    {
+      "path": "geometry-web/cdp_room_candidate_contract.js",
+      "reason": "Dedicated acceptance/test driver cdp_room_candidate_contract.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "6f0bdad7aab51249cd803a1bdadbad9bdbd860c15540fec112be5dea47dc3212"
+    },
+    {
+      "path": "geometry-web/cdp_room_candidate_io.js",
+      "reason": "Dedicated acceptance/test driver cdp_room_candidate_io.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "fe3f1fdec5ef875d2dee16b424cb53ec28a95f7905b3fce43e5e12bc9ea76abc"
+    },
+    {
+      "path": "geometry-web/room_candidate_cold_test.js",
+      "reason": "Dedicated acceptance/test driver room_candidate_cold_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+      "hashMode": "lf",
+      "sha256": "f3e2966f0ab99de6da43159ff09d74e4363df81ebd9d451c255d702507474013"
     }
   ],
   "htmlScriptRoutes": [

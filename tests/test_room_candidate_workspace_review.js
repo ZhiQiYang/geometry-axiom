@@ -35,7 +35,15 @@ function fixture(owner = null) {
     document:{getElementById:id=>id==='faceInspectorContent'?pane:null},fe:{draft:{pts:[]}},connection:{phase:'ready'},
     RoomOutlineWorkspace:{hasWork:false,reset(){},paneHTML:()=>'',collect:async bid=>{owner.collects++;owner.protocol.push('analyze');if(owner.onCollect)await owner.onCollect(bid);}},
     renderFaceInspector(){},drawFaceEditor(){},feSetTool(){},toast:message=>owner.notices.push(message),confirm:()=>{owner.confirms++;return owner.allowConfirm;},
-    apiRequest:async command=>{nativeCalls.push(command);if(owner.onNative)await owner.onNative(command);const id=Number(command.replace(/^boundary /,''));return copy(nativeRows[id]||{ok:false,error:'BOUNDARY_NOT_FOUND'});},
+    apiRequest:async command=>{
+      const settle=window.RoomCollectionWorkspace?.beginNativeRequest(command);let result;
+      try{
+        nativeCalls.push(command);if(owner.onNative)await owner.onNative(command);
+        result=command==='objects'?{ok:true,faces:Object.values(nativeRows).map(row=>({id:row.id,kind:'boundary'}))}
+          :copy(nativeRows[Number(command.replace(/^boundary /,''))]||{ok:false,error:'BOUNDARY_NOT_FOUND'});
+        return result;
+      }finally{settle?.(result);}
+    },
     feUlImgToMm:(_,x,y)=>[x,y],RoomOutline:{integerProposal:points=>({points,deviation:0}),canonicalLoop:JSON.stringify}};
   vm.runInNewContext(source,sandbox,{filename:path.join(root,'geometry-web/room-collection-workspace.js')});
   const workspace = window.RoomCollectionWorkspace;
@@ -92,7 +100,7 @@ for(const present of [true,false])test('R358-04 roomsPin uses '+(present?'curren
   const f=fixture(),plane=S.fromPage(f.owner.pages[1],'image/png','plane-a'),room={id:'room-a',name:'room',boundaryRef:{kind:'boundary',id:1,associationPin:'aa'.repeat(32)},acceptedBasisRevision:1,reviewState:'needs-review'};
   const collection={id:'collection-a',planeId:plane.id,roomIds:[room.id]};f.owner.attachments.A['source-rooms']={...S.empty(),planes:[plane],collections:[collection],rooms:[room]};
   if(!present){delete f.oc.bmap[1];delete f.nativeRows[1];}
-  const native=await f.apiRequest('boundary 1');f.nativeCalls.length=0;
+  const native=await f.apiRequest('boundary 1');if(!present)await f.apiRequest('objects');f.nativeCalls.length=0;
   const actual=f.workspace.captureCandidateStamp(2).roomsPin,expected=D.roomsPin([{...room,boundaryRef:{id:1,geometryFingerprint:native.ok?native.geometryFingerprint:null}}]);
   console.log(JSON.stringify({case:'R358-04',present,actual,expected,nativeResponse:native,nativeCallsDuringCapture:f.nativeCalls,associationPin:room.boundaryRef.associationPin}));
   assert.equal(actual,expected,'associationPin is a prior acceptance receipt, not R51 current native fingerprint');
