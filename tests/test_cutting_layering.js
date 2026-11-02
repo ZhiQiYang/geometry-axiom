@@ -5,6 +5,8 @@ const ROOT=path.resolve(process.env.GEOMETRY_CUTTING_TEST_ROOT||path.join(__dirn
 const {cases,verifyCases,applyChanges}=require('./cutting_legacy_cases.js');
 const golden=require('./fixtures/cutting_legacy_cd4bc880.json');
 const clone=v=>JSON.parse(JSON.stringify(v)),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+/* Text sources are hashed as LF: a Windows core.autocrlf checkout must not look like a changed oracle. */
+const lf=b=>b.toString('utf8').replace(/\r\n/g,'\n');
 const read=p=>{assert.ok(fs.existsSync(path.join(ROOT,p)),'required layer source: '+p);return fs.readFileSync(path.join(ROOT,p),'utf8');};
 const K_PATH='geometry-core/interval-allocation.js',W_PATH='geometry-templates/woodworking/cutting.js';
 function load(relative){assert.ok(fs.existsSync(path.join(ROOT,relative)),'required layer source: '+relative);return require(path.join(ROOT,relative));}
@@ -29,7 +31,7 @@ function hostContext({kernel=true,template=true,application=true}={}){
 test('R357 legacy oracle is pinned independently with all fixed input hashes',()=>{
  assert.equal(golden.sourceCommit,'cd4bc8803016943e6ec7bf98f0c90bc0312cfa06');
  assert.deepEqual(golden.sources.map(s=>s.blob),['d7cac099298d42018c5a278a5217bc625d8598a7','c634957ad21e16377fab55fcf7edc7c5e6239392','feb3b9ab98e73f9cbe7e022f71e3d7e354b71c73']);
- assert.equal(golden.inputHelperSha256,sha(fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js'))));
+ assert.equal(golden.inputHelperSha256,sha(lf(fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js')))));
  assert.equal(golden.cases.length,53);
  assert.deepEqual(cases().map(c=>[c.id,sha(JSON.stringify(c))]),golden.cases.map(c=>[c.id,c.inputSha256]));
 });
@@ -61,6 +63,12 @@ test('R357 W evaluates native rows without H, DOM, Window, Schedule or Settings'
   assert.equal(JSON.stringify([rows,settings]),before,expected.id+' standalone W inputs are read-only');count++;
  }
  assert.equal(count,29,'all independently derived valid-row cases must run');
+});
+test('R357 helper hash ignores the checkout line ending',()=>{
+ const helper=fs.readFileSync(path.join(__dirname,'cutting_legacy_cases.js'),'utf8').replace(/\r\n/g,'\n');
+ assert.equal(sha(lf(Buffer.from(helper.replace(/\n/g,'\r\n')))),golden.inputHelperSha256,'CRLF checkout of the fixed helper');
+ assert.equal(sha(lf(Buffer.from(helper))),golden.inputHelperSha256,'LF checkout of the fixed helper');
+ assert.notEqual(sha(Buffer.from(helper.replace(/\n/g,'\r\n'))),golden.inputHelperSha256,'raw CRLF bytes differ, so the LF step is load-bearing');
 });
 test('R357 W delegates identity, each allocation and full conservation to shared K',()=>{
  const context=vm.createContext({TextEncoder});
