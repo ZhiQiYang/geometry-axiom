@@ -121,6 +121,102 @@ module.exports = async ({send, eval_, sleep, click, waitForUI, exceptionCount}) 
   await wait(`!$('definitionImportConfirm').disabled && $('definitionImportClosure').textContent.includes('規格 柱寬 → 柱寬匯入（rename）')`);
   const previewText = await read(`$('definitionImportClosure').textContent`);
   check('預覽列出重寫後的規格', previewText.includes('規格 柱寬 → 柱寬匯入（rename）'), previewText);
+
+  // Cancel requests go through a test gate, so the races below do not depend
+  // on which request reaches the bridge first.
+  const gateInstalled = await read(`(()=>{
+    window.__diRealApi = api;
+    window.__diCancelLog = [];
+    window.__diCancelMode = 'pass';
+    window.api = async cmd => {
+      if (typeof cmd === 'string' && cmd.startsWith('definition-import-cancel ')) {
+        window.__diCancelLog.push(cmd.slice('definition-import-cancel '.length));
+        if (window.__diCancelMode === 'transport') return {ok:false, transport:true, error:'測試：取消結果尚未確認'};
+        if (window.__diCancelMode === 'hold') await new Promise(resolve => { window.__diReleaseCancel = resolve; });
+      }
+      return window.__diRealApi(cmd);
+    };
+    return true;
+  })()`);
+  if (gateInstalled !== true) throw Error('R08 cancel gate not installed');
+  const forceConfirm = `(()=>{ $('definitionImportConfirm').disabled = false; $('definitionImportConfirm').click(); return true; })()`;
+  const unchanged = `(async()=> (await __diDump())===${JSON.stringify(before)})()`;
+  try {
+    // B1: editing a name choice after a valid preview makes it stale at once.
+    await fill('#definitionImportNames input[data-di-rename="柱寬"]', '柱寬改名');
+    check('改名稱後確認立即停用', await read(`$('definitionImportConfirm').disabled===true`));
+    await read(forceConfirm);
+    await sleep(500);
+    check('改名稱後強制確認也不寫入舊預覽', await read(unchanged));
+    await ctl('#definitionImportPreview');
+    await wait(`!$('definitionImportConfirm').disabled && $('definitionImportClosure').textContent.includes('規格 柱寬 → 柱寬改名（rename）')`);
+    check('重新預覽後帶入新名稱', await read(`$('definitionImportClosure').textContent.includes('規格 柱寬 → 柱寬改名（rename）')`));
+    await ctl('#definitionImportNames input[data-di-mode="map-existing"]');
+    check('改成沿用既有名稱後確認立即停用', await read(`$('definitionImportConfirm').disabled===true`));
+    await read(forceConfirm);
+    await sleep(500);
+    check('改成沿用既有名稱後強制確認也不寫入', await read(unchanged));
+    await ctl('#definitionImportNames input[data-di-mode="rename"]');
+    await fill('#definitionImportNames input[data-di-rename="柱寬"]', '柱寬匯入');
+    await ctl('#definitionImportPreview');
+    await wait(`!$('definitionImportConfirm').disabled && $('definitionImportClosure').textContent.includes('規格 柱寬 → 柱寬匯入（rename）')`);
+
+    // B2: toggling a root and confirming in the same task, while the cancel
+    // of the old token is still in flight, must not publish the old candidate.
+    await read(`window.__diCancelMode = 'hold'; true`);
+    const raced = await read(`(()=>{
+      document.querySelector('#definitionImportBindings input[data-di-binding="1"]').click();
+      const disabled = $('definitionImportConfirm').disabled;
+      $('definitionImportConfirm').disabled = false;
+      $('definitionImportConfirm').click();
+      return disabled;
+    })()`);
+    check('改勾匯入根後確認立即停用', raced === true);
+    await sleep(500);
+    await read(`window.__diCancelMode = 'pass'; if (window.__diReleaseCancel) window.__diReleaseCancel(); true`);
+    await sleep(500);
+    check('改勾匯入根後立即確認也不發布舊候選', await read(unchanged));
+    await ctl('#definitionImportBindings input[data-di-binding="1"]');
+    await ctl('#definitionImportPreview');
+    await wait(`!$('definitionImportConfirm').disabled && $('definitionImportClosure').textContent.includes('規格 柱寬 → 柱寬匯入（rename）')`);
+
+    // B3: an unconfirmed cancel keeps the dialog and the token for a retry.
+    await read(`window.__diCancelLog = []; window.__diCancelMode = 'transport'; true`);
+    await ctl('#definitionImportClose');
+    await wait(`window.__diCancelLog.length === 1 && $('definitionImportStatus').textContent.includes('取消結果尚未確認')`);
+    await sleep(300);
+    check('取消結果未確認時保留對話框', await read(`$('definitionImportDialog').open === true`));
+    await ctl('#definitionImportPreview');
+    await wait(`window.__diCancelLog.length === 2`);
+    check('新預覽前仍以同一個權杖重試取消', await read(`window.__diCancelLog[1] === window.__diCancelLog[0] && ${unchanged}`));
+    await read(`window.__diCancelMode = 'pass'; true`);
+    await ctl('#definitionImportClose');
+    await wait(`!$('definitionImportDialog').open`);
+    check('重試取消用同一個權杖並關閉', await read(`window.__diCancelLog.length === 3 && window.__diCancelLog[2] === window.__diCancelLog[0]`));
+  } finally {
+    await read(`if (window.__diRealApi) { window.api = window.__diRealApi; delete window.__diRealApi; } window.__diCancelMode = 'pass'; if (window.__diReleaseCancel) window.__diReleaseCancel(); true`);
+  }
+
+  // Reopen the same source for the original cancel / confirm path.
+  await send('Page.setInterceptFileChooserDialog', {enabled:true});
+  try {
+    await ctl('#fileMenuBtn');
+    await wait(`!$('fileMenuPop').hidden`);
+    await ctl('#btnDefinitionImport');
+    const documentAgain = await send('DOM.getDocument', {depth:0});
+    const inputAgain = await send('DOM.querySelector', {nodeId:documentAgain.result.root.nodeId, selector:'#definitionImportFile'});
+    await send('DOM.setFileInputFiles', {nodeId:inputAgain.result.nodeId, files:[sourceFile]});
+    await wait(`$('definitionImportDialog').open && !!document.querySelector('#definitionImportBindings input[data-di-binding="1"]')`);
+  } finally {
+    await send('Page.setInterceptFileChooserDialog', {enabled:false});
+  }
+  await ctl('#definitionImportBindings input[data-di-binding="1"]');
+  await ctl('#definitionImportPreview');
+  await wait(`$('definitionImportStatus').textContent.includes('IMPORT_RENAME_REQUIRED') && !!document.querySelector('#definitionImportNames [data-di-row="柱寬"]')`);
+  await ctl('#definitionImportNames input[data-di-mode="rename"]');
+  await fill('#definitionImportNames input[data-di-rename="柱寬"]', '柱寬匯入');
+  await ctl('#definitionImportPreview');
+  await wait(`!$('definitionImportConfirm').disabled && $('definitionImportClosure').textContent.includes('規格 柱寬 → 柱寬匯入（rename）')`);
   await ctl('#definitionImportCancel');
   await wait(`$('definitionImportStatus').textContent.includes('已取消預覽') && $('definitionImportConfirm').disabled`);
   check('取消預覽不寫入世界', await read(`(async()=> (await __diDump())===${JSON.stringify(before)})()`));
