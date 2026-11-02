@@ -49,7 +49,7 @@ CONTROLS = (
      "    face.lo=wood_contact_source_read_coord(metadata+32);\n"
      "    face.hi=wood_contact_source_read_coord(metadata+40);"),
     ("placement-order", "contact_world", "ordering", "contact-placement-order-and-stable-ties",
-     "if(previous<=order)break;", "if(true)break;"),
+     "return left<=right;", "return true;"),
     ("duplicate-last-order", "contact_world", "order-index", "contact-order-index-retains-last-duplicate-order",
      "index->last[slot]=i+1;", "if(!index->last[slot])index->last[slot]=i+1;"),
     ("duplicate-earliest-order", "contact_world", "order-index", "contact-order-index-retains-earliest-duplicate-order",

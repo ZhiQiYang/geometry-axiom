@@ -1,0 +1,17 @@
+{
+  "schema": "geo337.peer.final-L-start-package/1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "checks": 2318,
+  "exit_code": 0,
+  "findings": [],
+  "members": 401,
+  "backwards_tar_hardlinks": 107,
+  "original_commands": 39,
+  "original_tracked_check_exit": 0,
+  "archive_sha256": "83708872e94fd07b19fe92d3a6fccc7ac2eb2385c2d8292d79a75aa5bbb6ada4",
+  "limits": [
+    "Only completed preflight and immutable start requests reviewed. Full CLI remains RUNNING; no terminal verdict/count claimed.",
+    "All tar member names reconstruct original bytes. Tar hardlinks do not mutate filesystem originals.",
+    "No live observer/RESULTS/cache or command40 read."
+  ]
+}

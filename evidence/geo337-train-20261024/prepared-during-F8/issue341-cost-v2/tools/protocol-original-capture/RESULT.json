@@ -1,0 +1,135 @@
+{
+  "exit": 0,
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "groups": [
+    {
+      "guard": "source",
+      "phases": [
+        {
+          "phase": "fixed",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000001"
+        },
+        {
+          "phase": "withdrawn",
+          "exit": 1,
+          "failures": [
+            "wrong-source"
+          ],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000002"
+        },
+        {
+          "phase": "restored",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000003"
+        }
+      ]
+    },
+    {
+      "guard": "count",
+      "phases": [
+        {
+          "phase": "fixed",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000004"
+        },
+        {
+          "phase": "withdrawn",
+          "exit": 1,
+          "failures": [
+            "truncated-one-face",
+            "extra-face"
+          ],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000005"
+        },
+        {
+          "phase": "restored",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000006"
+        }
+      ]
+    },
+    {
+      "guard": "identity",
+      "phases": [
+        {
+          "phase": "fixed",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000007"
+        },
+        {
+          "phase": "withdrawn",
+          "exit": 1,
+          "failures": [
+            "wrong-meta-case",
+            "wrong-meta-n"
+          ],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000008"
+        },
+        {
+          "phase": "restored",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000009"
+        }
+      ]
+    },
+    {
+      "guard": "numeric",
+      "phases": [
+        {
+          "phase": "fixed",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000010"
+        },
+        {
+          "phase": "withdrawn",
+          "exit": 1,
+          "failures": [
+            "nonnumeric-face"
+          ],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000011"
+        },
+        {
+          "phase": "restored",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000012"
+        }
+      ]
+    },
+    {
+      "guard": "duplicates",
+      "phases": [
+        {
+          "phase": "fixed",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000013"
+        },
+        {
+          "phase": "withdrawn",
+          "exit": 1,
+          "failures": [
+            "duplicate-time-key"
+          ],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000014"
+        },
+        {
+          "phase": "restored",
+          "exit": 0,
+          "failures": [],
+          "command": "/tmp/geo341-cost-preparation-v2-20261025/protocol-original-capture/subcommands/000015"
+        }
+      ]
+    }
+  ],
+  "C_executed": false,
+  "product_mutation_proof": false
+}

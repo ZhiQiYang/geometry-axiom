@@ -1,0 +1,15 @@
+{
+  "command": [
+    "git",
+    "cat-file",
+    "-e",
+    "9a8584f57be7935604c3bad4c2481945a6ec3d9f^{commit}"
+  ],
+  "cwd": "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+  "exit_code": 128,
+  "timestamp_utc": "2026-10-26T10:23:06.150321+00:00",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "474dee570abd7f7e95198e6c779d9cef15a6802d4d0100b946a37b6a1300be33",
+  "stdout_bytes": 0,
+  "stderr_bytes": 81
+}

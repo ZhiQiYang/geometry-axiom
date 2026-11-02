@@ -1,0 +1,26 @@
+{
+  "source": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
+  "target": "tests/test_geo261_contact_sources.py",
+  "before_sha256": "b12b36e967feb08be661f39e7f39b450c3f04dc59e91c647e6d4bad6e2a0e94a",
+  "after_sha256": "8fe6a68c93770ba6cf0521f829ed1f9faf9f3b3d5891b96a76575fd9e31b4694",
+  "patch_sha256": "1dec787f8a10604166b7ea420226d27da6cd84dce58dd1bfb17b717d8d3a5c06",
+  "exactly_one_tuple_changed": true,
+  "all_class_functions_AST_identical": true,
+  "method_count": 15,
+  "same_case": "ordering",
+  "same_assertion": "contact-placement-order-and-stable-ties",
+  "old_failure": "original fallback insertion change is bypassed by normal indexed member sort; actual mutant PASS ordering/exit0",
+  "new_mutant": "same no-sort semantic: normal comparison always selects left",
+  "other_controls_assertions_timeouts_unchanged": true,
+  "subject": "UNRUN",
+  "git_show": {
+    "argv": [
+      "git",
+      "show",
+      "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041:tests/test_geo261_contact_sources.py"
+    ],
+    "exit": 0,
+    "stdout_sha256": "b12b36e967feb08be661f39e7f39b450c3f04dc59e91c647e6d4bad6e2a0e94a",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

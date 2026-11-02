@@ -1,0 +1,82 @@
+{
+  "schema": "independent-original-full123-actual-peer/1",
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "exit_code": 0,
+  "checks": 7575,
+  "errors": [],
+  "verdicts": {
+    "killed": 114,
+    "equivalent": 5,
+    "crashed": 1,
+    "retired": 3
+  },
+  "execution_head_counts": {
+    "82c922a3941525d3a094ac0158bdc7dea57ea360": 120
+  },
+  "core_rows": 67,
+  "bridge_rows": 53,
+  "retired": [
+    "M35",
+    "M51",
+    "M55"
+  ],
+  "equivalent": [
+    "M09",
+    "M110",
+    "M23",
+    "M36",
+    "M56"
+  ],
+  "crashed": [
+    "M20"
+  ],
+  "observer_commands": 143,
+  "original_c387_commands": 31,
+  "formal_phase_exits": {
+    "original-tracked-ledger-check": 1,
+    "original-full123-passive-observer": 0,
+    "original-core-stream-map": 0,
+    "original-new-ledger-check": 0
+  },
+  "ledger_sha256": "a4b5f1957e4bde6d30e4c05328e8a8dc1282fa811c52260eb01670cd560d56e7",
+  "raw_files_verified": 883,
+  "raw_bytes_verified": 50125796,
+  "unmapped_core_calls": [],
+  "observer_inherited_stderr_commands": [
+    140,
+    141,
+    142,
+    143
+  ],
+  "normal_original_exception": {
+    "type": "SystemExit",
+    "repr": "SystemExit(0)"
+  },
+  "limits": [
+    "四個原 Git check_output 的 stderr 未由 subprocess.run 單獨捕獲；原始 parent stdout/stderr 全流已核，保留 inherited/None 而不偽造獨立空檔。",
+    "唯讀審核已終態原件；沒有執行 mutator、正式測試、編譯或新 check。",
+    "core 完整 stream 為原 subprocess.run 捕獲 str 的 UTF-8 bytes；沒有冒稱 pre-decode OS pipe bytes。",
+    "本審逐筆核原始 mapper 的二進位 hash 與 ledger 綁定，未再次讀取 ELF；原 mapper 與新 check 的正式實績均為 0。",
+    "封包完整性、採用 commit 及其他 native/browser/special gates 不在本次接受範圍。",
+    "原 tracked-ledger check 1 與 M20 crashed 保持原判，沒有改成 killed 或全專案可合併。",
+    "本次registry僅取原observer Git show捕獲hex，沒有再次掃來源／185原closure；不另複製原command和rawfile清單，完整原件在正式包，這裡保摘要hash。"
+  ],
+  "bindings": {
+    "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/receipt.json": "c7d00f3e144a94a7d486c8419a253ae3bd94549c080662854e9081094a008b28",
+    "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/mutants_results.json": "a4b5f1957e4bde6d30e4c05328e8a8dc1282fa811c52260eb01670cd560d56e7",
+    "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/observer/request.json": "d27c5f8fe2226c21b946f72df8a16842654ed8665a96e8ce1b0317e19932c69e",
+    "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/observer/receipt.json": "3aacc0dcd80d76545c467d94b2dc69304456762238795c86a3ed2eaafee5a8a8",
+    "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/CORE_RAW_MAPPING.json": "4b7414b90f99debd9cf25746777569523e63f0e38d8ed6625a8f28bdbca33ad8",
+    "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-job/BRIDGE_RAW_INVENTORY.json": "03cc55c613f45f5e6fb43f2a3bc5dd06d8e67d1dad600eaaa24791b85c52f0fb",
+    "/dev/shm/geometry-axiom-geo337-20261025/F10-ledger-launch/RESULT.json": "dd2888b614c7769a0879c59a1f67628ae04fdb155ef8c8a48304d3f1a2cacc02",
+    "/tmp/geo337-S10-full123-host-results-20261025/FINAL.json": "7eff1e024a6c6f06ca92fd5b537d6f6c4dff9c5f1595241db0b487a92ff02c86"
+  },
+  "reviewer_prior_error": {
+    "retained": "REVIEW.initial-offset-error.json",
+    "reason": "F8 had before generated-SVG guard two commands; S10 before SVG absent, so source-state groups start12/16/20/24 rather than14/18/22/26. Fixed reader locates six exact argv/cwd groups in strict root/seed order; product/source/raw unchanged."
+  },
+  "repository_payload_reads": 0,
+  "source_registry_from_original_observer_git_preflight": true,
+  "raw_file_catalog_sha256": "35457ad98302854171026f2754b655d7708c95b038f8a54a09f5ab808340218d",
+  "original_command_catalog_sha256": "38b1a05b2636f826c0cb2493eb29699ea89b0c014a76e43e267054a1fdb636b4"
+}

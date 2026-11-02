@@ -1,0 +1,75 @@
+{
+  "schema": "geo348-python-tool-withdrawal-proof/1",
+  "exit": 0,
+  "phases": [
+    {
+      "phase": "fixed",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/fixed/selftest_protocol.py",
+        "--out",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/fixed/TEST_RESULT.json"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/fixed",
+      "exit": 0,
+      "stdout_sha256": "63c9bedfe572d112f18c5a2b680f294751779867b9959444003063c80ede6e0d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sidecar_sha256": "04662a9feb687cf8009b3bd06f2a961f8bac55622979d2c8a819a091a282e6ab",
+      "environment": {
+        "PYTHONOPTIMIZE": null,
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "product_executed": false,
+      "wrapper_compiled": false,
+      "failed": []
+    },
+    {
+      "phase": "withdrawn",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/withdrawn/selftest_protocol.py",
+        "--out",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/withdrawn/TEST_RESULT.json"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/withdrawn",
+      "exit": 1,
+      "stdout_sha256": "daca30494ebc95a64dc13660bde5f1ca904a9eade877ab70d74549bc26444d4e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sidecar_sha256": "d5445ccef20be542902ffe278424548ad8964a720f3f13aea7b3883b7f634901",
+      "environment": {
+        "PYTHONOPTIMIZE": null,
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "product_executed": false,
+      "wrapper_compiled": false,
+      "failed": [
+        "reject-wrong-command-line-length"
+      ]
+    },
+    {
+      "phase": "restored",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/restored/selftest_protocol.py",
+        "--out",
+        "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/restored/TEST_RESULT.json"
+      ],
+      "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/python-proof/restored",
+      "exit": 0,
+      "stdout_sha256": "63c9bedfe572d112f18c5a2b680f294751779867b9959444003063c80ede6e0d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sidecar_sha256": "04662a9feb687cf8009b3bd06f2a961f8bac55622979d2c8a819a091a282e6ab",
+      "environment": {
+        "PYTHONOPTIMIZE": null,
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "product_executed": false,
+      "wrapper_compiled": false,
+      "failed": []
+    }
+  ],
+  "scope": "Synthetic Python tool protocol only; no C compile, product process, original512 rerun or new performance data."
+}

@@ -1,0 +1,294 @@
+commit 6366304eb787b2a50282e4132f45e51eb7d21290
+Author:     Chih-Chi Yang <b10102230@gmail.com>
+AuthorDate: Thu Oct 22 23:05:16 2026 +0000
+Commit:     Chih-Chi Yang <b10102230@gmail.com>
+CommitDate: Thu Oct 22 23:05:16 2026 +0000
+
+    Prepare combined extension diagnostics and retire unused collision adapters
+
+diff --git a/geometry-templates/woodworking/native/contact_world.c b/geometry-templates/woodworking/native/contact_world.c
+index 95e2431d..ac12c1ac 100644
+--- a/geometry-templates/woodworking/native/contact_world.c
++++ b/geometry-templates/woodworking/native/contact_world.c
+@@ -12,16 +12,6 @@ static bool contact_contains(const WoodBoundaryRegion *b,const GeoRect2 *rect)
+     GeoRegionView region={{b->outline.v,b->outline.count},holes,b->hole_count};
+     return geo_region_contains_rect(&region,rect->min_u,rect->min_v,rect->max_u,rect->max_v);
+ }
+-bool wood_contact_footprint_collides(const WoodContactWorld *world,const GeoRect2 *rect,const WoodMember *exclude)
+-{
+-    if(!world||!rect)return true;
+-    for(size_t i=0;i<world->member_count;++i){const WoodContactMemberFact *fact=&world->members[i];
+-        const WoodMember *member=fact->member;
+-        if(!member->placed||member==exclude||fact->placement_id!=world->placement_id||!fact->footprint_valid)continue;
+-        if(geo_rect_overlap_positive(rect,&fact->footprint))return true;
+-    }
+-    return false;
+-}
+ enum { CONTACT_ORDER_SLOTS=WOOD_CONTACT_MEMBER_CAPACITY*2 };
+ typedef struct {
+     size_t last[CONTACT_ORDER_SLOTS];
+@@ -116,8 +106,8 @@ size_t wood_contact_collect_stops(const WoodContactWorld *world,bool along_v,con
+     }
+     return count;
+ }
+-bool wood_contact_boundary_interval(const WoodBoundaryRegion *boundary,bool along_v,
+-    GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,GeoCoord *out_lo,GeoCoord *out_hi)
++bool wood_contact_boundary_edge(const WoodBoundaryRegion *boundary,bool along_v,
++    GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,GeoCoord *out_lo,GeoCoord *out_hi,int *out_edge)
+ {
+     GeoRect2 rect={along_v?cross_lo:span_lo,along_v?span_lo:cross_lo,along_v?cross_hi:span_hi,along_v?span_hi:cross_hi};
+     if(!contact_contains(boundary,&rect))return false;
+@@ -125,8 +115,11 @@ bool wood_contact_boundary_interval(const WoodBoundaryRegion *boundary,bool alon
+     if(!wood_member_boundary_props(&outline,along_v,span_lo,span_hi,cross_lo,cross_hi,&on_boundary,&covers_edge,&edge)||!on_boundary||edge<0||(size_t)edge>=outline.count)return false;
+     GeoPoint2 a=outline.v[edge],b=outline.v[((size_t)edge+1)%outline.count];
+     *out_lo=along_v?contact_min(a.v,b.v):contact_min(a.u,b.u);
+-    *out_hi=along_v?contact_max(a.v,b.v):contact_max(a.u,b.u);return true;
++    *out_hi=along_v?contact_max(a.v,b.v):contact_max(a.u,b.u);if(out_edge)*out_edge=edge;return true;
+ }
++bool wood_contact_boundary_interval(const WoodBoundaryRegion *boundary,bool along_v,
++    GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,GeoCoord *out_lo,GeoCoord *out_hi)
++{return wood_contact_boundary_edge(boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,out_lo,out_hi,NULL);}
+ bool wood_contact_owner_extension(const WoodContactWorld *world,const WoodMember *owner,GeoCoord lo,GeoCoord hi)
+ {
+     if(owner->role!=WOOD_MEMBER_ROLE_BOUNDARY)return false;
+@@ -147,8 +140,9 @@ bool wood_contact_end_faces_with_sources(const WoodContactWorld *world,const Woo
+     GeoCoord span_lo,GeoCoord span_hi,GeoCoord cross_lo,GeoCoord cross_hi,
+     WoodContactStopResolver resolver,void *user,char *error,size_t cap)
+ {
+-    GeoCoord edge_lo=0,edge_hi=0;bool has_edge=wood_contact_boundary_interval(world->role_boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,&edge_lo,&edge_hi);
+-    if(!wood_member_span_extension_check(self,has_edge,span_lo,span_hi,edge_lo,edge_hi,error,cap))return false;
++    GeoCoord edge_lo=0,edge_hi=0;int edge_index=-1;
++    bool has_edge=wood_contact_boundary_edge(world->role_boundary,along_v,span_lo,span_hi,cross_lo,cross_hi,&edge_lo,&edge_hi,&edge_index);
++    if(!wood_member_span_extension_check(self,has_edge,edge_index,span_lo,span_hi,edge_lo,edge_hi,error,cap))return false;
+     bool ext_end[2]={has_edge&&self->role==WOOD_MEMBER_ROLE_BOUNDARY&&span_lo<edge_lo,has_edge&&self->role==WOOD_MEMBER_ROLE_BOUNDARY&&span_hi>edge_hi};
+     WoodStopFace faces[WOOD_CONTACT_FACE_CAPACITY];size_t face_count;
+     if(resolver){if(!resolver(user,along_v,self,faces,WOOD_CONTACT_FACE_CAPACITY,&face_count)){
+diff --git a/geometry-templates/woodworking/native/contacts.c b/geometry-templates/woodworking/native/contacts.c
+index 8a3e78c7..74e65bb1 100644
+--- a/geometry-templates/woodworking/native/contacts.c
++++ b/geometry-templates/woodworking/native/contacts.c
+@@ -1,8 +1,12 @@
+ #include "contacts.h"
+ #include <stdio.h>
+ 
++/* I22 (W): a non-boundary member must stay inside its locating edge. The refusal keeps the
++ * original wording as an exact prefix and then names the locating edge ("e<edge_index>" and its
++ * interval on the length axis) and each exceeded interval: the low end [span_lo,edge_lo] and/or
++ * the high end [edge_hi,span_hi], all in mm. Capacity, truncation and err==NULL behave as before. */
+ bool wood_member_span_extension_check(
+-    const WoodMember *self, bool has_edge,
++    const WoodMember *self, bool has_edge, int edge_index,
+     GeoCoord span_lo, GeoCoord span_hi, GeoCoord edge_lo, GeoCoord edge_hi,
+     char *err, size_t err_cap
+ )
+@@ -10,9 +14,21 @@ bool wood_member_span_extension_check(
+     if (has_edge && self->role != WOOD_MEMBER_ROLE_BOUNDARY &&
+         (span_lo < edge_lo || span_hi > edge_hi)) {
+         if (err != NULL) {
++            char low_note[64] = "", high_note[64] = "";
++            if (edge_lo > span_lo) {
++                snprintf(low_note, sizeof low_note, "，低端超出 [%lld,%lld] mm",
++                         (long long)span_lo, (long long)edge_lo);
++            }
++            if (edge_hi < span_hi) {
++                snprintf(high_note, sizeof high_note, "，高端超出 [%lld,%lld] mm",
++                         (long long)edge_hi, (long long)span_hi);
++            }
+             snprintf(err, err_cap,
+                      "V_EXTENSION：非 boundary 角材（%u）的 "
+-                     "footprint 超出定位邊範圍", (unsigned)self->id);
++                     "footprint 超出定位邊範圍"
++                     "——定位邊 e%d [%lld,%lld] mm%s%s",
++                     (unsigned)self->id, edge_index,
++                     (long long)edge_lo, (long long)edge_hi, low_note, high_note);
+         }
+         return false;
+     }
+diff --git a/geometry-templates/woodworking/native/contacts.h b/geometry-templates/woodworking/native/contacts.h
+index 3c445289..081cb5b0 100644
+--- a/geometry-templates/woodworking/native/contacts.h
++++ b/geometry-templates/woodworking/native/contacts.h
+@@ -6,10 +6,15 @@
+ #include "supports.h"
+ 
+ /* self is the same non-null member supplied to the original placement check.
+- * Acceptance leaves err unchanged; refusal preserves the existing wording,
+- * truncation and optional err==NULL behavior. */
++ * Acceptance leaves err unchanged. Refusal keeps the original wording as an
++ * exact prefix and then names the locating edge ("e<edge_index>" plus its
++ * interval [edge_lo,edge_hi] on the length axis) and each exceeded interval,
++ * the low end [span_lo,edge_lo] and/or the high end [edge_hi,span_hi], in mm
++ * (I22 W). edge_index is the outline edge id that located the member and is
++ * only read when has_edge. Truncation and optional err==NULL behavior are
++ * unchanged. */
+ bool wood_member_span_extension_check(
+-    const WoodMember *self, bool has_edge,
++    const WoodMember *self, bool has_edge, int edge_index,
+     GeoCoord span_lo, GeoCoord span_hi, GeoCoord edge_lo, GeoCoord edge_hi,
+     char *err, size_t err_cap
+ );
+diff --git a/tests/geo261_contacts_harness.c b/tests/geo261_contacts_harness.c
+index 1ae1d481..c33d5d71 100644
+--- a/tests/geo261_contacts_harness.c
++++ b/tests/geo261_contacts_harness.c
+@@ -10,8 +10,15 @@ bool frozen_span_extension_check(const WoodMember *, bool,
+ bool frozen_end_contact_check(const WoodMember *, const WoodStopFace *,
+     const WoodMember *, bool, char *, size_t);
+ 
+-static const char SPAN_ERROR[] =
++#define EDGE 5
++static const char SPAN_LEGACY_PREFIX[] =
+     "V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍";
++static const char SPAN_ERROR[] =
++    "V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍——定位邊 e5 [0,100] mm，低端超出 [-1,0] mm";
++static const char SPAN_HIGH_ERROR[] =
++    "V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍——定位邊 e5 [0,100] mm，高端超出 [100,101] mm";
++static const char SPAN_BOTH_ERROR[] =
++    "V_EXTENSION：非 boundary 角材（17）的 footprint 超出定位邊範圍——定位邊 e5 [0,100] mm，低端超出 [-3,0] mm，高端超出 [100,104] mm";
+ static const char OUTLINE_ERROR[] =
+     "V_CUT_PRIORITY：角材 17 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC";
+ static const char EQUAL_PRIORITY_ERROR[] =
+@@ -31,18 +38,23 @@ static int span(void)
+ {
+     WoodMember self = member(17,WOOD_MEMBER_ROLE_PRIMARY,2);
+     char err[512] = "unchanged";
+-    CHECK("span-no-edge", wood_member_span_extension_check(&self,false,-1,101,0,100,err,sizeof err));
++    CHECK("span-no-edge", wood_member_span_extension_check(&self,false,EDGE,-1,101,0,100,err,sizeof err));
+     CHECK("span-accept-output-unchanged", !strcmp(err,"unchanged"));
+     self.role = WOOD_MEMBER_ROLE_BOUNDARY;
+-    CHECK("span-boundary-extension", wood_member_span_extension_check(&self,true,-1,101,0,100,err,sizeof err));
++    CHECK("span-boundary-extension", wood_member_span_extension_check(&self,true,EDGE,-1,101,0,100,err,sizeof err));
+     self.role = WOOD_MEMBER_ROLE_PRIMARY;
+-    CHECK("span-touch-equality", wood_member_span_extension_check(&self,true,0,100,0,100,err,sizeof err));
+-    CHECK("span-contained", wood_member_span_extension_check(&self,true,1,99,0,100,err,sizeof err));
+-    CHECK("span-low-refusal", !wood_member_span_extension_check(&self,true,-1,100,0,100,err,sizeof err));
++    CHECK("span-touch-equality", wood_member_span_extension_check(&self,true,EDGE,0,100,0,100,err,sizeof err));
++    CHECK("span-contained", wood_member_span_extension_check(&self,true,EDGE,1,99,0,100,err,sizeof err));
++    CHECK("span-low-refusal", !wood_member_span_extension_check(&self,true,EDGE,-1,100,0,100,err,sizeof err));
+     CHECK("span-error-exact", !strcmp(err,SPAN_ERROR));
+-    CHECK("span-high-refusal", !wood_member_span_extension_check(&self,true,0,101,0,100,NULL,0));
++    CHECK("span-legacy-prefix", !strncmp(err,SPAN_LEGACY_PREFIX,strlen(SPAN_LEGACY_PREFIX)));
++    CHECK("span-high-refusal", !wood_member_span_extension_check(&self,true,EDGE,0,101,0,100,NULL,0));
++    CHECK("span-high-refusal-message", !wood_member_span_extension_check(&self,true,EDGE,0,101,0,100,err,sizeof err));
++    CHECK("span-high-error-exact", !strcmp(err,SPAN_HIGH_ERROR));
++    CHECK("span-both-refusal", !wood_member_span_extension_check(&self,true,EDGE,-3,104,0,100,err,sizeof err));
++    CHECK("span-both-error-exact", !strcmp(err,SPAN_BOTH_ERROR));
+     self.role = (WoodMemberRole)-7;
+-    CHECK("span-unknown-role-not-boundary", !wood_member_span_extension_check(&self,true,0,101,0,100,NULL,0));
++    CHECK("span-unknown-role-not-boundary", !wood_member_span_extension_check(&self,true,EDGE,0,101,0,100,NULL,0));
+     return 0;
+ }
+ 
+@@ -151,7 +163,7 @@ static int buffer(void)
+             size_t cap = capacities[c];
+             bool ok;
+             if (kind == 0) {
+-                ok = wood_member_span_extension_check(&self,true,-1,100,0,100,err,cap);
++                ok = wood_member_span_extension_check(&self,true,EDGE,-1,100,0,100,err,cap);
+             } else {
+                 face.kind = kind == 1 ? WOOD_STOP_OUTLINE_EDGE : WOOD_STOP_MEMBER_SIDE;
+                 ok = wood_member_end_contact_check(&self,&face,&owner,false,err,cap);
+@@ -171,8 +183,8 @@ static int buffer(void)
+     }
+     self.id = UINT32_MAX;
+     char err[512];
+-    CHECK("full-id-refusal", !wood_member_span_extension_check(&self,true,-1,100,0,100,err,sizeof err));
+-    CHECK("full-id-text", !strcmp(err,"V_EXTENSION：非 boundary 角材（4294967295）的 footprint 超出定位邊範圍"));
++    CHECK("full-id-refusal", !wood_member_span_extension_check(&self,true,EDGE,-1,100,0,100,err,sizeof err));
++    CHECK("full-id-text", !strcmp(err,"V_EXTENSION：非 boundary 角材（4294967295）的 footprint 超出定位邊範圍——定位邊 e5 [0,100] mm，低端超出 [-1,0] mm"));
+     return 0;
+ }
+ 
+@@ -204,9 +216,16 @@ static int equivalence(void)
+         GeoCoord lo = (GeoCoord)(next_random()%20)-5, hi = lo+(GeoCoord)(next_random()%20);
+         bool has_edge = (next_random()%2)!=0;
+         memset(actual,0x5a,sizeof actual); memset(expected,0x5a,sizeof expected);
+-        a = wood_member_span_extension_check(&self,has_edge,lo,hi,0,20,actual,cap);
++        a = wood_member_span_extension_check(&self,has_edge,EDGE,lo,hi,0,20,actual,cap);
+         e = frozen_span_extension_check(&self,has_edge,lo,hi,0,20,expected,cap);
+-        CHECK("frozen-span-verdict-and-bytes", a == e && !memcmp(actual,expected,sizeof actual));
++        /* #299 appends the locating edge and the exceeded interval(s) to the frozen wording: the verdict
++         * is identical, a truncating capacity cuts both texts at the same byte, and a full-size refusal
++         * keeps the frozen text as an exact, strictly shorter prefix. */
++        if (a == e && !a && cap == sizeof actual) {
++            CHECK("frozen-span-verdict-and-prefix", !strncmp(actual,expected,strlen(expected)) && strlen(actual) > strlen(expected));
++        } else {
++            CHECK("frozen-span-verdict-and-bytes", a == e && !memcmp(actual,expected,sizeof actual));
++        }
+     }
+     return 0;
+ }
+diff --git a/tests/run_tests.py b/tests/run_tests.py
+index f415e56d..65e015fc 100644
+--- a/tests/run_tests.py
++++ b/tests/run_tests.py
+@@ -4,7 +4,9 @@
+ 每個測試 = 一份 .scene + 預期:
+   expect: "accept" | "reject"
+   lengths: accept 時,依序比對輸出中所有「尺寸:L=…」的值
+-  error:   reject 時,本夾具的「路徑:[行號:]診斷」必須包含此子字串
++  error:   reject 時,本夾具的「路徑:[行號:]診斷」必須包含此子字串;
++           也可寫成清單——同一行診斷必須逐項全含(#299:逐欄位釘訊息)
++  error_not: reject 時(選填),上述那一行診斷不得含清單中的任何子字串
+   contains: accept 時,stdout 必須包含此子字串(可多條)
+   not_contains: accept 時,stdout 不得包含此子字串(可多條)——
+                 用來驗「什麼都沒發生」這種主張,光靠 accept 驗不到
+@@ -244,14 +246,29 @@ TESTS = [
+   'lengths': [4000, 4000, 2946, 1287, 1287]},
+  {'scene': '_s1_p4_alcove_wall_primary_cut_priority.scene', 'expect': 'reject',
+   'error': 'V_CUT_PRIORITY：角材 6（優先級 2）端面頂到角材 4（優先級 2）側面'},
+- # 只釘前綴:I22 要求訊息另指名定位邊與超出區間,核心日後補上時不該誤紅。
++ # I22 W(#299):訊息指名料件、定位邊與超出的區間。error 清單 = 同一行診斷必須逐項全含;error_not = 該行不得出現。
++ # p8 = 低端:凹角在定位邊 e3(v 3000..4800)的起點,足跡 v∈[27,4773] → 低端超出 [27,3000],沒有高端超出。
++ # M92 殺手 = p8(拿掉低端區間)、M95 殺手 = p8(error_not 擋住無條件多印的高端區間)。
+  {'scene': '_s1_p8_l_room_primary_through_reflex_extension.scene', 'expect': 'reject',
+-  'error': 'V_EXTENSION：非 boundary 角材（3）'},
+- # p8 的高端鏡像:M88 殺手(V_EXTENSION 只驗起點那一半)。
++  'error': ['V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍',
++            '定位邊 e3 [3000,4800] mm',
++            '低端超出 [27,3000] mm'],
++  'error_not': ['高端超出']},
++ # p8 的高端鏡像:定位邊 e1(v 0..1800),足跡同 → 高端超出 [1800,4773],沒有低端超出。
++ # M88 殺手(V_EXTENSION 只驗起點那一半)、M93 殺手(拿掉高端區間)、M94 殺手(error_not 擋住無條件多印的低端區間)。
++ # M89–M91、M96(料件、定位邊編號、定位邊區間、W 回報編號)由 p8 與 p8b 各自殺。
+  {'scene': '_s1_p8b_l_room_primary_through_reflex_extension_hi.scene', 'expect': 'reject',
+-  'error': 'V_EXTENSION：非 boundary 角材（3）'},
++  'error': ['V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍',
++            '定位邊 e1 [0,1800] mm',
++            '高端超出 [1800,4773] mm'],
++  'error_not': ['低端超出']},
+  {'scene': '_s1_p9_l_room_custom_inner_wall_accept.scene', 'expect': 'accept',
+   'lengths': [5000, 3200, 4746, 2236, 1773]},
++ # #316:I11 的「只比同承載面」過濾。天花板與牆各一支 boundary,局部座標下足跡正面積重疊(u∈[0,3000]、v∈[0,20])
++ # 但不在同一面 → 接受。單一承載面的場景分不出這道過濾在不在;M97(references.inc 的 reference_check_all 兩兩檢查)與
++ # M98(world_validation.c 的最終世界兩兩檢查)拿掉過濾後,跨面配對被拿去比,整個世界被拒,由本場景殺。
++ # 放在最後的理由同上:不擠掉舊突變 killed_by 裡的舊夾具。
++ {'scene': '_i11_two_surfaces_same_uv_accept.scene', 'expect': 'accept', 'lengths': [4000, 3000]},
+ ]
+ 
+ 
+@@ -264,6 +281,8 @@ def run_one(exe: str, spec: dict) -> str:
+         return "INFRA invalid test expectation"
+     if spec["expect"] == "reject" and not spec.get("error"):
+         return "INFRA rejection requires an explicit expected diagnostic"
++    if spec.get("error_not") and spec["expect"] != "reject":
++        return "INFRA error_not only applies to a rejection"
+     if not scene.is_file():
+         return f"INFRA missing fixture: {scene}"
+     proc = subprocess.run(
+@@ -301,8 +320,13 @@ def run_one(exe: str, spec: dict) -> str:
+         return f"FAIL 應拒絕但接受 (L={lengths})"
+     first = err.strip().splitlines()[0] if err.strip() else "(無錯誤訊息)"
+     diagnostics = re.findall(r"^" + re.escape(str(scene)) + r":(?:\d+:)?\s*(.*)$", err, re.MULTILINE)
+-    if not any(spec["error"] in diagnostic for diagnostic in diagnostics):
+-        return f"FAIL 錯誤不符: 期望含「{spec['error']}」實得「{first}」"
++    needles = spec["error"] if isinstance(spec["error"], list) else [spec["error"]]
++    forbidden = spec.get("error_not", [])
++    if not any(all(n in diagnostic for n in needles) and not any(n in diagnostic for n in forbidden)
++               for diagnostic in diagnostics):
++        shown = "」且含「".join(needles)
++        absent = ("且不含「" + "」「".join(forbidden) + "」") if forbidden else ""
++        return f"FAIL 錯誤不符: 期望含「{shown}」{absent}實得「{first}」"
+     return "ok"
+ 
+ 

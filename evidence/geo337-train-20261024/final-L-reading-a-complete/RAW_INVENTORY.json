@@ -1,0 +1,853 @@
+{
+  "schema": "train337-L-original-reading-a-r2-complete/1",
+  "L": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "files": {
+    "formal/RESULT.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/RESULT.json",
+      "bytes": 32699,
+      "sha256": "a7b8c01f9ecc38ad26bc0dd34ad934703532c74a5261f94960e0ad13f1c32677"
+    },
+    "formal/commands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/commands.json",
+      "bytes": 19353,
+      "sha256": "709cae85db29976d02dda803ac23cbf73d4baef983c843d15bb528e2663c1bdc"
+    },
+    "formal/oracle-mutants/reaper.jsonl": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/reaper.jsonl",
+      "bytes": 499,
+      "sha256": "3be37e1d54071e0e8bc9047fa5e559613f46429cdd27ecbc14bf1eb815117433"
+    },
+    "formal/oracle-mutants/receipt.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/receipt.json",
+      "bytes": 10160,
+      "sha256": "43e5af1d575c77ed1eaf152419e55ad3010d43fce1b2bb22955be3ee4a5a28fb"
+    },
+    "formal/oracle-mutants/subcommands/000001/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000001/request.json",
+      "bytes": 1559,
+      "sha256": "9a745569618435768597256907dd1bd8c6bec0ff8a03c4cb4e9c5aebd560fe23"
+    },
+    "formal/oracle-mutants/subcommands/000001/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000001/result.json",
+      "bytes": 1810,
+      "sha256": "41a8cf5d104db88006d7c7b2fbbf28b8a8c51c06382fcb24fac9ae29a7876b64"
+    },
+    "formal/oracle-mutants/subcommands/000001/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000001/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000001/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "formal/oracle-mutants/subcommands/000002/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000002/request.json",
+      "bytes": 1594,
+      "sha256": "829388621e4e693a2ce6b91c9c55f6123d9a0221e50acee30d3f19793e8ab650"
+    },
+    "formal/oracle-mutants/subcommands/000002/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000002/result.json",
+      "bytes": 1843,
+      "sha256": "38c26264903b84d511a5f785465ffda7cc133ee3cd1f13f4b433417e6b2aa252"
+    },
+    "formal/oracle-mutants/subcommands/000002/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000002/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000002/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000003/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000003/request.json",
+      "bytes": 1577,
+      "sha256": "a07deb143b226c58a6e26a24d140f809b69e71b549439297b8bd4734ded499ef"
+    },
+    "formal/oracle-mutants/subcommands/000003/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000003/result.json",
+      "bytes": 1827,
+      "sha256": "db8888f6a3f3ed2fb98355ecdfc8917b676c157b40950138fcf7c19cb6e8f596"
+    },
+    "formal/oracle-mutants/subcommands/000003/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000003/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000003/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000004/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000004/request.json",
+      "bytes": 1617,
+      "sha256": "779130be2fe5f9a26172750408c5d89ffe654f7a24ff459f885b4a3cda978ef4"
+    },
+    "formal/oracle-mutants/subcommands/000004/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000004/result.json",
+      "bytes": 1867,
+      "sha256": "b043f11c471ea6d7c88214dbd8f8ba7aab3c2d446c60007bc2900fd03090227f"
+    },
+    "formal/oracle-mutants/subcommands/000004/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000004/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000004/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000004/stdout.bin",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    "formal/oracle-mutants/subcommands/000005/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000005/request.json",
+      "bytes": 1548,
+      "sha256": "e8d29aced2bde12d9841eb13da51dd9b53ceec3ee375619bc1ee25dca53914f2"
+    },
+    "formal/oracle-mutants/subcommands/000005/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000005/result.json",
+      "bytes": 1798,
+      "sha256": "30011e2ca3480ca131df2e3888f2cfd42514a2da2ca36805d960e1faec827774"
+    },
+    "formal/oracle-mutants/subcommands/000005/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000005/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000005/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000005/stdout.bin",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    "formal/oracle-mutants/subcommands/000006/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000006/request.json",
+      "bytes": 1873,
+      "sha256": "bff27b8d2348eae19bd1f17cb01fd6f7db43f8f656ec7b42b39cd5589a7e569b"
+    },
+    "formal/oracle-mutants/subcommands/000006/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000006/result.json",
+      "bytes": 2127,
+      "sha256": "65789a073e3826754dbba817ac173680303937635ee6a278e9e83151143d9cc1"
+    },
+    "formal/oracle-mutants/subcommands/000006/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000006/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000006/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000006/stdout.bin",
+      "bytes": 37015,
+      "sha256": "6359e37c80dcb20bb214c2e3bbaa5e97a77ff0855ab5e5f9441fa9c25fd0a869"
+    },
+    "formal/oracle-mutants/subcommands/000007/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000007/request.json",
+      "bytes": 1559,
+      "sha256": "34d266c7cfb689135de2545f5639185fc7ea9cce1e9f0b9916ceef4785414277"
+    },
+    "formal/oracle-mutants/subcommands/000007/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000007/result.json",
+      "bytes": 1810,
+      "sha256": "5b34d181c2d178ffe4bc76cb63915d942e3bd3496c05eba8ddb15d0ceeaf01ac"
+    },
+    "formal/oracle-mutants/subcommands/000007/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000007/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000007/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000007/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "formal/oracle-mutants/subcommands/000008/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000008/request.json",
+      "bytes": 1595,
+      "sha256": "9c60071ce26615473990226479e64507bf252404cd16bbfce78355a3fac479d2"
+    },
+    "formal/oracle-mutants/subcommands/000008/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000008/result.json",
+      "bytes": 1845,
+      "sha256": "c58fcdfc5f7175936c837b45ac6f9f448b05ae1dc45d31bd2718c38f884f9b10"
+    },
+    "formal/oracle-mutants/subcommands/000008/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000008/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000008/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000009/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000009/request.json",
+      "bytes": 1577,
+      "sha256": "47d7d6cea22f51b5e549d3d4a460afcfe8b0ac54836764ae831bf36c1b0f7818"
+    },
+    "formal/oracle-mutants/subcommands/000009/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000009/result.json",
+      "bytes": 1826,
+      "sha256": "e3a0fb3070dfee28334b01ff9fd02db2c00d40f7c312d8754db05d8ea0919579"
+    },
+    "formal/oracle-mutants/subcommands/000009/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000009/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands/000009/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-mutants/subcommands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants/subcommands.json",
+      "bytes": 17515,
+      "sha256": "312a724f5ddd481b954138714a09c782fd5c82d4634b9f72ed9a6deb902f1f11"
+    },
+    "formal/oracle-mutants-outer-reaper.jsonl": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-mutants-outer-reaper.jsonl",
+      "bytes": 693,
+      "sha256": "e3423937820dfdf4897f716cc717eb918f5f4620879ef47941cf712eb39dc1a3"
+    },
+    "formal/oracle-quick/reaper.jsonl": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/reaper.jsonl",
+      "bytes": 492,
+      "sha256": "35398e3afbb24241796c8e8f398f82bb1faef81323b2680d963a2f08d72534fc"
+    },
+    "formal/oracle-quick/receipt.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/receipt.json",
+      "bytes": 10120,
+      "sha256": "a94e85b5d5722e4bf5ebf22f25843db66c597a94fef1531afae9780a28796b96"
+    },
+    "formal/oracle-quick/subcommands/000001/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001/request.json",
+      "bytes": 1553,
+      "sha256": "ee0470cd94f9b0c6d808a24f05249f66dadde903b78804c3703c3c727a8ede6e"
+    },
+    "formal/oracle-quick/subcommands/000001/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001/result.json",
+      "bytes": 1804,
+      "sha256": "b0fa80d8e7e24331706652cf82c2e8704af1e4640af1f80cab29e4f5b8f959c7"
+    },
+    "formal/oracle-quick/subcommands/000001/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000001/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000001/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "formal/oracle-quick/subcommands/000002/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002/request.json",
+      "bytes": 1589,
+      "sha256": "00758bcaf62fb64dc00edfa5322554382e775d0c451f62c5181d28ec2e39640b"
+    },
+    "formal/oracle-quick/subcommands/000002/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002/result.json",
+      "bytes": 1839,
+      "sha256": "dc8ae1e9969cc825b26e20cdcaab2c02a128c9e5d136cf7e64f1fb62532f4736"
+    },
+    "formal/oracle-quick/subcommands/000002/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000002/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000002/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000003/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003/request.json",
+      "bytes": 1571,
+      "sha256": "8b14a67adc33f48ab93918b6428f8536538799d40d6e3bd9c34a4005e484a91b"
+    },
+    "formal/oracle-quick/subcommands/000003/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003/result.json",
+      "bytes": 1821,
+      "sha256": "6c55ee73642b889701c8bc3c79631f2ecfc5ee843d8bc6b7b946bbf5cbd89c9c"
+    },
+    "formal/oracle-quick/subcommands/000003/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000003/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000003/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000004/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004/request.json",
+      "bytes": 1611,
+      "sha256": "0ae4aeb33c1c5b6702b036047442b6fbbfea4a5a2b9a295b181980ff7c18b6b5"
+    },
+    "formal/oracle-quick/subcommands/000004/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004/result.json",
+      "bytes": 1862,
+      "sha256": "3a82595e00c475c1d3ca179c6de173a9f9a3b0465525ac062a07461e2a2e8986"
+    },
+    "formal/oracle-quick/subcommands/000004/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000004/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000004/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000004/stdout.bin",
+      "bytes": 15,
+      "sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+    },
+    "formal/oracle-quick/subcommands/000005/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005/request.json",
+      "bytes": 1542,
+      "sha256": "97e71096c477a3c28138e8d766f8933c5e566009fd6d5bdfdacd90f4058afb24"
+    },
+    "formal/oracle-quick/subcommands/000005/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005/result.json",
+      "bytes": 1792,
+      "sha256": "625100d983a1c474dea340ffb14f555d430103e147df77db002a3cd3773b54b8"
+    },
+    "formal/oracle-quick/subcommands/000005/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000005/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000005/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000005/stdout.bin",
+      "bytes": 9,
+      "sha256": "b7677d3ec37ee1897ba07dc2cfe8292fe421c9ac93396cca5bbece486d1a2a41"
+    },
+    "formal/oracle-quick/subcommands/000006/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006/request.json",
+      "bytes": 1860,
+      "sha256": "6abe976320057e98b1cfaf32c8db76a436e60642b70e1cd1eabd40fb3d74e8d5"
+    },
+    "formal/oracle-quick/subcommands/000006/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006/result.json",
+      "bytes": 2114,
+      "sha256": "ddde5f1ffbad5b0b24af474e7964f94507fd0189091cabfb215479b4fc608523"
+    },
+    "formal/oracle-quick/subcommands/000006/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000006/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000006/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000006/stdout.bin",
+      "bytes": 39824,
+      "sha256": "2710f75986babb4f3d7166823609477c591b43967c55331b7633a05ee91ec77e"
+    },
+    "formal/oracle-quick/subcommands/000007/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007/request.json",
+      "bytes": 1552,
+      "sha256": "8d4c4d090ce700579eaac73b44965075ce1cc0d6fd6a4491d522fb79016af999"
+    },
+    "formal/oracle-quick/subcommands/000007/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007/result.json",
+      "bytes": 1803,
+      "sha256": "777ab72805e0e715259a4c3d51b3c6312604b7e300a0f5e723ab06e109f3f73e"
+    },
+    "formal/oracle-quick/subcommands/000007/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000007/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000007/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000007/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "formal/oracle-quick/subcommands/000008/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008/request.json",
+      "bytes": 1589,
+      "sha256": "7a88e71f2271ce4a04ab8a06bdb089c4ada0d9fecbd93c235f02bfa1b516ffa0"
+    },
+    "formal/oracle-quick/subcommands/000008/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008/result.json",
+      "bytes": 1839,
+      "sha256": "2598df060255040e98c21193334ef57e285a843a6f98cef60b4df5dfb4156614"
+    },
+    "formal/oracle-quick/subcommands/000008/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000008/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000008/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000009/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009/request.json",
+      "bytes": 1571,
+      "sha256": "74c4584939e8096d09abc66ceda952e49e274aea97bc84565b891bcfa3adeecb"
+    },
+    "formal/oracle-quick/subcommands/000009/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009/result.json",
+      "bytes": 1821,
+      "sha256": "89e73936138a1debef75c5514844e032a5f8fccd9297fd035c6f60538c0c6d24"
+    },
+    "formal/oracle-quick/subcommands/000009/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000009/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands/000009/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/oracle-quick/subcommands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick/subcommands.json",
+      "bytes": 17457,
+      "sha256": "ba56261d644407f3c797af86fe53934c510da1f8d07864ed130ad922806f8126"
+    },
+    "formal/oracle-quick-outer-reaper.jsonl": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/oracle-quick-outer-reaper.jsonl",
+      "bytes": 689,
+      "sha256": "bbdf9aaed68976e260161872df658966d63a4cf9a9513262ea32e703ee5281bf"
+    },
+    "formal/subcommands/000001/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001/request.json",
+      "bytes": 1472,
+      "sha256": "857ac5f281e19b0b34775bae6719863915f5ceb237f86a0e77c31ab71e573082"
+    },
+    "formal/subcommands/000001/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001/result.json",
+      "bytes": 1723,
+      "sha256": "c43ac46d444fcbd127c60d307f5ff9c4750e5e9d6e71fcf59c232a18d82e1c6e"
+    },
+    "formal/subcommands/000001/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000001/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000001/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "formal/subcommands/000002/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002/request.json",
+      "bytes": 1509,
+      "sha256": "c1bd33780b288b193ee9ad2f416654fb31d01c1c26dd3516ccb2f1e58aa8120f"
+    },
+    "formal/subcommands/000002/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002/result.json",
+      "bytes": 1758,
+      "sha256": "e154a7d4666dbef5987d9cf924591ebc47122e1a5a0f0caf1f598995a64a2692"
+    },
+    "formal/subcommands/000002/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000002/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000002/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000003/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003/request.json",
+      "bytes": 1490,
+      "sha256": "e77a2f2f27c9b07ad212313b3ef9864b1102ef1a156d1a06072104fa1fc6e353"
+    },
+    "formal/subcommands/000003/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003/result.json",
+      "bytes": 1739,
+      "sha256": "52f1ba2afd8291174a0580be27a6738878dd4f99428e956fab33165339cac7a9"
+    },
+    "formal/subcommands/000003/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000003/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000003/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000004/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004/request.json",
+      "bytes": 1485,
+      "sha256": "4099f0f05cf6dba95ce46be5034f092777e5b3948009a4a518030e490e44dfb4"
+    },
+    "formal/subcommands/000004/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004/result.json",
+      "bytes": 1741,
+      "sha256": "be4f00b382e56c7af5af11be9caed5faf2598389854753b927dd1c4df507cc87"
+    },
+    "formal/subcommands/000004/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000004/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000004/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000004/stdout.bin",
+      "bytes": 4270783,
+      "sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+    },
+    "formal/subcommands/000005/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005/request.json",
+      "bytes": 2016,
+      "sha256": "e35e572acd8c54b5c5853dfaa6fd50647cdb7cf76b1719a24603fae36f991fa0"
+    },
+    "formal/subcommands/000005/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005/result.json",
+      "bytes": 2267,
+      "sha256": "afbdb9f1d90e3ea85d3f13dbf8e762f5b4abc7bbac324a80ff2cae2cf686a0a5"
+    },
+    "formal/subcommands/000005/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000005/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000005/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000005/stdout.bin",
+      "bytes": 221,
+      "sha256": "206022402d6ba5aca2d7fd84645689665ad3c4e027f97204d8f69a2f97c2bcaa"
+    },
+    "formal/subcommands/000006/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006/request.json",
+      "bytes": 2011,
+      "sha256": "1140108ca7aff006b030ca63ef7d6bf233cda3e52e53a712af693b1abcaa1a44"
+    },
+    "formal/subcommands/000006/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006/result.json",
+      "bytes": 2263,
+      "sha256": "d84579709b1c455bc9539cfb5b1ee3682442f61b436d98237d5ddb732b8aee3a"
+    },
+    "formal/subcommands/000006/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000006/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000006/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000006/stdout.bin",
+      "bytes": 217,
+      "sha256": "96f64212e4438d53ce37ab8b0924106830cf38d6dd2c58df8098c8f38578a29b"
+    },
+    "formal/subcommands/000007/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007/request.json",
+      "bytes": 1473,
+      "sha256": "a924a9188f098c0c94cf61e6fdb88e1c079dd0c68dfe54aa93dc1612e93ffea3"
+    },
+    "formal/subcommands/000007/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007/result.json",
+      "bytes": 1724,
+      "sha256": "643927c69d6477ffb76d2890fed5dcd79c2763bec94b9dae3280cdaa13aab8aa"
+    },
+    "formal/subcommands/000007/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000007/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000007/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000007/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    "formal/subcommands/000008/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008/request.json",
+      "bytes": 1509,
+      "sha256": "58fad8279b0730dfc9fdd895fb223ee7218616a8cce20954eabe3ba4b924091b"
+    },
+    "formal/subcommands/000008/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008/result.json",
+      "bytes": 1759,
+      "sha256": "62fc639d761359b4f7fc8f461029d95e2ac42721e892859a025710af0860ccc9"
+    },
+    "formal/subcommands/000008/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000008/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000008/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000009/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009/request.json",
+      "bytes": 1491,
+      "sha256": "ebf2189aa9bd24a986fa429d4e44768822f656d14530f01383e9ac2ae0ccc958"
+    },
+    "formal/subcommands/000009/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009/result.json",
+      "bytes": 1741,
+      "sha256": "80c0c59e5333bc96b1de84e0c85117d26df9ca0affde232149d73295599f7244"
+    },
+    "formal/subcommands/000009/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000009/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000009/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000009/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000010/request.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010/request.json",
+      "bytes": 1485,
+      "sha256": "e587cdb05c419ba83cc46b15168ce6b4076034e94ed1c57389b2622931040fbe"
+    },
+    "formal/subcommands/000010/result.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010/result.json",
+      "bytes": 1741,
+      "sha256": "74a90f270a741900b031fc1a03847def27f2aa7e17f8cfa41ce562b4c427fc01"
+    },
+    "formal/subcommands/000010/stderr.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000010/stdin.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal/subcommands/000010/stdout.bin": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands/000010/stdout.bin",
+      "bytes": 4270783,
+      "sha256": "b5485ae237f17ecbc5b009563b1924af6666048c3e67417565216209980f63e0"
+    },
+    "formal/subcommands.json": {
+      "originalPath": "/workspace/train337-L-reading-a-results-7af8c5d8-r2/subcommands.json",
+      "bytes": 19353,
+      "sha256": "709cae85db29976d02dda803ac23cbf73d4baef983c843d15bb528e2663c1bdc"
+    },
+    "peer/mutants/REVIEW.json": {
+      "originalPath": "/tmp/reading-a-L-mutants-r2-actual-peer/REVIEW.json",
+      "bytes": 4804,
+      "sha256": "0f64928a92b9d919ae50757915307abc3824ba738a785f34ea7a129669c4936f"
+    },
+    "peer/mutants/review.py": {
+      "originalPath": "/tmp/reading-a-L-mutants-r2-actual-peer/review.py",
+      "bytes": 4325,
+      "sha256": "dc8735acd85f13adac53c15e971c07b867db251d6c3c29566b367dec640ca48e"
+    },
+    "peer/quick-and-outer/RAW_INDEX.json": {
+      "originalPath": "/tmp/reading-a-L-quick-r2-actual-peer/RAW_INDEX.json",
+      "bytes": 20034,
+      "sha256": "9539628756b9c8650dec4825db4d77257bb77ec38e755be894643c3e89f95576"
+    },
+    "peer/quick-and-outer/REVIEW.json": {
+      "originalPath": "/tmp/reading-a-L-quick-r2-actual-peer/REVIEW.json",
+      "bytes": 17453,
+      "sha256": "3fd739accc7352ea6825fa0ba803207002385c5c9d98908794bb7ddcaacf3815"
+    },
+    "peer/quick-and-outer/review.py": {
+      "originalPath": "/tmp/reading-a-L-quick-r2-actual-peer/review.py",
+      "bytes": 7171,
+      "sha256": "4a1a06370979f8de0cdca0a58f92477f6bfc7232b0c807652e4e8f903f17dc28"
+    },
+    "peer/preparation-and-repair/REPAIR_R2_REVIEW.json": {
+      "originalPath": "/tmp/reading-a-L-launch-narrow-peer/REPAIR_R2_REVIEW.json",
+      "bytes": 6767,
+      "sha256": "d7023d2cd9fe8e82ad34740b655bff32d121ca22ace0bb5368994fe58ed93443"
+    },
+    "peer/preparation-and-repair/REVIEW.json": {
+      "originalPath": "/tmp/reading-a-L-launch-narrow-peer/REVIEW.json",
+      "bytes": 1879,
+      "sha256": "414e8f4f6dfd3c1ea0f9be103d88bd6cc50643d4f88cd899cd12f80a2258d186"
+    },
+    "peer/preparation-and-repair/review.py": {
+      "originalPath": "/tmp/reading-a-L-launch-narrow-peer/review.py",
+      "bytes": 3987,
+      "sha256": "ac26a7088c40fd350acbb617d4bfc560890625a05c72a546d684f38bf960b00d"
+    },
+    "peer/preparation-and-repair/review_repair_r2.py": {
+      "originalPath": "/tmp/reading-a-L-launch-narrow-peer/review_repair_r2.py",
+      "bytes": 3084,
+      "sha256": "58be610994451554feed8819415f820fdfac3930b661bf242a77085ea4dc351a"
+    },
+    "preparation/SOURCE_BINDING.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/SOURCE_BINDING.json",
+      "bytes": 6325,
+      "sha256": "3f4dad1616442624941da4835f609a4fb397e35276773e7ec7186d410aa04325"
+    },
+    "preparation/REQUEST.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/REQUEST.json",
+      "bytes": 1798,
+      "sha256": "8b23e7667623f50ef3fa442a5b5f29f8f09336c000ba891cfaf2402a695c5274"
+    },
+    "preparation/IMPORT_AND_READ_CENSUS_R2.json": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/IMPORT_AND_READ_CENSUS_R2.json",
+      "bytes": 8272,
+      "sha256": "55b2ea8723f9c1090250c7d3c192392ae4b0cf3eb5fdc13513adb2a3a85f11e8"
+    },
+    "preparation/launch_two_original_stages.py": {
+      "originalPath": "/workspace/train337-L-reading-a-preparation/launch_two_original_stages.py",
+      "bytes": 4624,
+      "sha256": "ede05fc668a2aeb2103adf16869bce2f56d8091b6089621e9070ed6ee2f7d3a2"
+    },
+    "original-tools/run_stage.py": {
+      "originalPath": "/workspace/geo318-reading-a-prep/formal-tools/run_stage.py",
+      "bytes": 10603,
+      "sha256": "1f10c3028e2491a4076e83b9f4396e9428ede31389a8577224da85f7f1272c8a"
+    },
+    "original-tools/capture.py": {
+      "originalPath": "/workspace/geo288-main-merge-20261023/bound-3d681636/p73/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762"
+    },
+    "original-tools/reap_children.py": {
+      "originalPath": "/workspace/geo261-environment/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760"
+    },
+    "original-tools/native_with_compile_log_retention.not_executed.py.txt": {
+      "originalPath": "/workspace/geo318-reading-a-prep/formal-tools/native_with_compile_log_retention.py",
+      "bytes": 2383,
+      "sha256": "5dfe683e297514e0888db7b525053997b41142e6bb3509805fabee659f4fbc10"
+    },
+    "SCOPE.json": {
+      "originalPath": "/workspace/train337-L-reading-a-r2-complete-delivery/SCOPE.json",
+      "bytes": 1765,
+      "sha256": "a834e86dbed5315c180b2e8a59ed3eaf7dcfca8f2ae71aab01bd857b1a1029f9"
+    }
+  },
+  "originalBytes": 8955138,
+  "originalFileCount": 169
+}

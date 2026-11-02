@@ -1,0 +1,19 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--hostname",
+    "github.com",
+    "graphql",
+    "-f",
+    "query=query { repository(owner:\"ZhiQiYang\",name:\"geometry-axiom\") { nameWithOwner defaultBranchRef { name target { oid } } p338:pullRequest(number:338) { number title url state isDraft merged mergedAt closedAt headRefName headRefOid baseRefName baseRefOid mergeable reviewDecision updatedAt commits(last:1) { nodes { commit { oid committedDate } } } } p344:pullRequest(number:344) { number title url state isDraft merged mergedAt closedAt headRefName headRefOid baseRefName baseRefOid mergeable reviewDecision updatedAt commits(last:1) { nodes { commit { oid committedDate } } } } p341:pullRequest(number:341) { number title url state isDraft merged mergedAt closedAt headRefName headRefOid baseRefName baseRefOid mergeable reviewDecision updatedAt commits(last:1) { nodes { commit { oid committedDate } } } } p346:pullRequest(number:346) { number title url state isDraft merged mergedAt closedAt headRefName headRefOid baseRefName baseRefOid mergeable reviewDecision updatedAt commits(last:1) { nodes { commit { oid committedDate } } } } p347:pullRequest(number:347) { number title url state isDraft merged mergedAt closedAt headRefName headRefOid baseRefName baseRefOid mergeable reviewDecision updatedAt commits(last:1) { nodes { commit { oid committedDate } } } } p348:pullRequest(number:348) { number title url state isDraft merged mergedAt closedAt headRefName headRefOid baseRefName baseRefOid mergeable reviewDecision updatedAt commits(last:1) { nodes { commit { oid committedDate } } } } p323:pullRequest(number:323) { number title url state isDraft merged mergedAt closedAt headRefName headRefOid baseRefName baseRefOid mergeable reviewDecision updatedAt commits(last:1) { nodes { commit { oid committedDate } } } } p324:pullRequest(number:324) { number title url state isDraft merged mergedAt closedAt headRefName headRefOid baseRefName baseRefOid mergeable reviewDecision updatedAt commits(last:1) { nodes { commit { oid committedDate } } } } } }"
+  ],
+  "cwd": "/tmp",
+  "started_utc": "2026-10-26T10:54:07.073307+00:00",
+  "ended_utc": "2026-10-26T10:54:08.059970+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 5288,
+  "stdout_sha256": "f8080fec2bf600e4e4736f4579c3d703626dff7ca6b8f97081c682dbacebd472",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

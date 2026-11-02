@@ -1,0 +1,15 @@
+from pathlib import Path
+import json,hashlib,tarfile
+B=Path('/workspace/geo343-plane-ranges-evidence-package-20261024');O=Path(__file__).parent;N=0;failed=[]
+def h(b):return hashlib.sha256(b).hexdigest()
+def ck(v,s):
+ global N
+ if v:N+=1
+ else:failed.append(s)
+x=json.loads((B/'RAW_INDEX.json').read_bytes());summary=json.loads((B/'SUMMARY.json').read_bytes());rows=x['files'];tar=B/x['archive'];ck(h(tar.read_bytes())==x['archive_sha256']==summary['archive_sha256']=='2ce6d09e046d62efd1ef08cbe2d73318a58ca3ca9ebfaca1190bec3738cfd85c','exactarchivepin');ck(tar.stat().st_size==x['archive_bytes']==summary['archive_bytes']==11002057,'exactgzipbytes');ck(len(rows)==x['member_count']==summary['member_count']==8529 and sum(r['bytes']for r in rows)==summary['original_bytes']==73911481,'exact8529/73911481B');ck(summary['original_exit']==0 and summary['all_original_bytes_roundtrip']is True,'producer true complete')
+with tarfile.open(tar,'r:gz')as t:
+ members=t.getmembers();ck(len(members)==len(rows)and len({m.name for m in members})==len(rows)and{m.name for m in members}=={r['member']for r in rows},'exactunique member allowlist')
+ for r in rows:
+  m=t.getmember(r['member']);ck(m.isfile()and not m.name.startswith('/')and '..'not in Path(m.name).parts,'safe regular '+m.name);b=t.extractfile(m).read();ck(len(b)==r['bytes']and h(b)==r['sha256'],'indexed archivebytes '+m.name);p=Path(r['source']);ck(not p.is_symlink()and p.is_file(),'regular original '+m.name);ck(b==p.read_bytes(),'original byte roundtrip '+m.name)
+a=summary['actual'];ck(summary['source_sha']==x['source_sha']==a['source_sha']=='df66452e7a514032453bea93b8b18ab74d7b1457','Fidentity');ck(a['total_methods']==36 and a['compile_link_count']==354 and a['new_wall_measurement']is False,'targeted36/354 only no wall');ck(a['prior_r1']['actual_exit']==1 and a['prior_r1']['wood_passed']==13 and a['prior_r1']['wood_failed']==1 and a['prior_r1']['source_sha']=='7c4a40a71fe46242c302efaa85f1a4d13df0c19a','original R1red kept');ck(a['fixture_repair_proof']['actual_outer_exit']==0 and a['fixture_repair_proof']['original_phase_exits']==[0,1,0]and a['fixture_repair_proof']['source_restored']is True,'fixture proof separate0/1/0')
+report={'scope':'Independent compact full archive/original byte roundtrip and terminal summary reconciliation; no C, extraction or archive mutation','source_sha':summary['source_sha'],'passed':N,'failed':len(failed),'failures':failed,'archive_sha256':summary['archive_sha256'],'members':len(rows),'original_bytes':summary['original_bytes'],'limits':['Prior independent actual3915/fixture4183/R1actual2000 certify detailed runtime semantics; this review does not rerun them.','source-and-tools/PROGRESS is a frozen historical preparation draft; current body/progress must remain separate publication leaves.','This targeted36 does not certify final fullnative/browser/ledger/architecture or O2wall.']};report['exit']=int(bool(failed));(O/'PACKAGE_REVIEW.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:report[k]for k in ['passed','failed','exit']}));print(h((O/'PACKAGE_REVIEW.json').read_bytes()));raise SystemExit(report['exit'])

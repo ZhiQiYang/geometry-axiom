@@ -1,0 +1,20 @@
+{
+  "schema": "F8-full123-original-terminal-binding/1",
+  "binding_status": "BOUND_AFTER_REAL_TERMINAL",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "terminal_bindings": {
+    "job_receipt": {
+      "path": "/tmp/geo337-full123-F8-job-20261025/receipt.json",
+      "sha256": "4c953c9b9a2cec30afde2d8ac06a4a2b9edb5b9a1ab1083234506bde79052595"
+    },
+    "outer_result": {
+      "path": "/tmp/geo337-full123-F8-launch-20261025/RESULT.json",
+      "sha256": "7b14875e0c4fe496e099fa4d3c4782fdf9f3b4a39c2f2c0357265689891a6934"
+    },
+    "original_tool_final": {
+      "path": "/tmp/geo337-full123-F8-EXEC_FINAL-20261025.json",
+      "sha256": "7a6454bb04ecb7cbe3d8646b90655c54d79ff9220d0f43799e052be543cd4461"
+    }
+  },
+  "root_rule": "Create a different request only after actual original exec terminal; preserve this unbound draft."
+}

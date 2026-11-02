@@ -1,0 +1,169 @@
+{
+  "reviewer": "/root/h_init_actual_review",
+  "reviewed_utc": "2026-10-25T06:41:44.777524+00:00",
+  "source_sha": "2c4635577a8fcb11e88b346547f7bb1c7b739fb7",
+  "collector_sha256": "164b736aa3edb334f7c1cf556e257ce13d8d8cf342bd494fb9af5338e4670cf0",
+  "plan_sha256": "5123d82a4b372e167398309db262e9fa43f43ddce82cc22660a96998b2677b92",
+  "checks": 38,
+  "failures": [],
+  "exit": 0,
+  "details": [
+    {
+      "passed": true,
+      "label": "reviewed collector pin"
+    },
+    {
+      "passed": true,
+      "label": "frozen plan pin"
+    },
+    {
+      "passed": true,
+      "label": "original collector pin"
+    },
+    {
+      "passed": true,
+      "label": "exact three documented changes from original"
+    },
+    {
+      "passed": true,
+      "label": "public product source pinned"
+    },
+    {
+      "passed": true,
+      "label": "2546 frozen leaves"
+    },
+    {
+      "passed": true,
+      "label": "complete frozen byte count"
+    },
+    {
+      "passed": true,
+      "label": "unique archive names"
+    },
+    {
+      "passed": true,
+      "label": "safe archive names"
+    },
+    {
+      "passed": true,
+      "label": "original regular paths"
+    },
+    {
+      "passed": true,
+      "label": "all frozen originals currently hash exact"
+    },
+    {
+      "passed": true,
+      "label": "exhaustive frozen scope formal"
+    },
+    {
+      "passed": true,
+      "label": "exhaustive frozen scope formal-outer"
+    },
+    {
+      "passed": true,
+      "label": "exhaustive frozen scope source-and-tools"
+    },
+    {
+      "passed": true,
+      "label": "exhaustive frozen scope product-static-peer"
+    },
+    {
+      "passed": true,
+      "label": "exhaustive frozen scope harness-static-peer"
+    },
+    {
+      "passed": true,
+      "label": "exhaustive frozen scope driver-static-peer"
+    },
+    {
+      "passed": true,
+      "label": "exhaustive frozen scope root-cause-originals"
+    },
+    {
+      "passed": true,
+      "label": "guard retained need(not OUT.exists()"
+    },
+    {
+      "passed": true,
+      "label": "guard retained shutil.disk_usage(H).free>=100*1024*1024"
+    },
+    {
+      "passed": true,
+      "label": "guard retained fcntl.LOCK_EX|fcntl.LOCK_NB"
+    },
+    {
+      "passed": true,
+      "label": "guard retained OUT.mkdir()"
+    },
+    {
+      "passed": true,
+      "label": "guard retained need(sha(b)==item['sha256']"
+    },
+    {
+      "passed": true,
+      "label": "guard retained dereference=True"
+    },
+    {
+      "passed": true,
+      "label": "guard retained recursive=False"
+    },
+    {
+      "passed": true,
+      "label": "guard retained need(m.isfile()"
+    },
+    {
+      "passed": true,
+      "label": "guard retained roundtrip bytes/hash"
+    },
+    {
+      "passed": true,
+      "label": "guard retained original bytes unchanged through collect"
+    },
+    {
+      "passed": true,
+      "label": "guard retained originals_deleted':False"
+    },
+    {
+      "passed": true,
+      "label": "guard retained product_tests_reexecuted':False"
+    },
+    {
+      "passed": true,
+      "label": "guard retained dump(OUT/'RAW_INDEX.json'"
+    },
+    {
+      "passed": true,
+      "label": "guard retained dump(OUT/'SUMMARY.json'"
+    },
+    {
+      "passed": true,
+      "label": "guard retained fcntl.LOCK_UN"
+    },
+    {
+      "passed": true,
+      "label": "no test/git/subprocess execution"
+    },
+    {
+      "passed": true,
+      "label": "no source deletion/rename"
+    },
+    {
+      "passed": true,
+      "label": "lock before output mutation"
+    },
+    {
+      "passed": true,
+      "label": "frozen source hash before packaging"
+    },
+    {
+      "passed": true,
+      "label": "full roundtrip precedes success"
+    }
+  ],
+  "scope": "static and frozen original bytes only; archive not yet executed/reviewed",
+  "limitations": [
+    "固定 plan 的所有現有路徑均核 hash；後續 actual tar 仍需再驗。",
+    "此工具沒有任何產品重跑，不產生新的效能判決。"
+  ]
+}

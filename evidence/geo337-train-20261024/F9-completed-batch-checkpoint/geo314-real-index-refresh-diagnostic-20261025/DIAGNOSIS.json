@@ -1,0 +1,218 @@
+{
+  "schema": "geo314-real-index-refresh-readonly-diagnostic/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "original_exit_code": 1,
+  "counterproof_passed": true,
+  "formal_F9_pass": false,
+  "original_result_sha256": "92917bb2e49003e9ef65353fc94bb20a6225c87037a769632dd4df72ed8d9b04",
+  "original_index_record": {
+    "path": "/tmp/train337-323-f64d638f-source/.git/index",
+    "sha256": "3916c388a49d66327ebb120d2ddb10f40e043bc8932e86f386764743a2868228",
+    "metadata": {
+      "dev": 34,
+      "inode": 3668411,
+      "mode": 33152,
+      "uid": 1000,
+      "gid": 1000,
+      "nlink": 1,
+      "size": 6575523,
+      "mtime_ns": 1792930837902807238,
+      "atime_ns": 1792930837907804095
+    }
+  },
+  "after_index_sha256": "ad03de61dae2e621503443050fb230baf80e2192bd84662140c9e73d597163c2",
+  "staged_index_sha256": "567565b677ed47ad5d2113141948a99663d31fe7985d7018a35624527db6976c",
+  "full_before_snapshot_available": false,
+  "index_mtime_epoch_ns": 1792937487519429135,
+  "index_mtime_utc": "2026-10-25T14:11:27.519429+00:00",
+  "timing_locates_last_write_inside": "restored-existing-K-1; commands/subcommands/000029",
+  "staged_add_started_epoch": 1792937487.5614018,
+  "last_write_predates_staged_add": true,
+  "common_entries": 35237,
+  "common_entry_full_equality": true,
+  "staged_only": [
+    "geometry-core/kernel/geo314_scope_staged_probe.c"
+  ],
+  "after_only": [],
+  "extension_sha256": {
+    "staged": "8ff94f5c545daf75b5c2e65a54b3983bfe6a65dd54421c680d9d8b2c3fceed72",
+    "after": "0e883da2859fc037c989564da545bb0ac5db9082ca8e3bb138bc9fd8c3ac4144"
+  },
+  "selected_after_entries": {
+    "geometry-core/kernel/source.c": {
+      "stat": [
+        1792937486,
+        775212760,
+        1792937486,
+        775212760,
+        34,
+        3434429,
+        33188,
+        1000,
+        1000,
+        17442
+      ],
+      "oid": "f1f0a602593d94c88e86d1057b37bc8e6f7a6cc7",
+      "flags": 29,
+      "extended_flags": 0
+    },
+    "geometry-core/kernel/candidate.c": {
+      "stat": [
+        1792937487,
+        293325348,
+        1792937487,
+        293325348,
+        34,
+        2859433,
+        33188,
+        1000,
+        1000,
+        12611
+      ],
+      "oid": "6e676a67066780a3b9e022f2de0d5928ca64c2c9",
+      "flags": 32,
+      "extended_flags": 0
+    },
+    "tests/test_geo314_commit_paths.py": {
+      "stat": [
+        1792779606,
+        17946145,
+        1792779606,
+        17946145,
+        34,
+        2865541,
+        33188,
+        1000,
+        1000,
+        21890
+      ],
+      "oid": "4c8d5ebecd6544965efcd033b3f4da289635802b",
+      "flags": 33,
+      "extended_flags": 0
+    }
+  },
+  "environment_evidence": {
+    "executor_sets_GIT_OPTIONAL_LOCKS": "0",
+    "capture_passes_complete_env_to_Popen": true,
+    "reaper_execvp_inherits_env": true,
+    "git_env_omitted_from_original_capture_metadata": true
+  },
+  "reproduction_results": {
+    "TINY_DIFF_REFRESH.json": {
+      "sha256": "dbcb08120e51a305c18ebe856537f5e596539b5b5d6f3fa40775d37d05618475",
+      "index_unchanged": true
+    },
+    "TINY_SPARSE_DIFF_REFRESH.json": {
+      "sha256": "bdd3b5214eefe1b46f92830e98f0818ff59df18ea6a69a2ab5de3455955e56c9",
+      "index_unchanged": true
+    },
+    "TINY_ESCALATED_SPARSE_DIFF_REFRESH.json": {
+      "sha256": "ec49c46582c6c37b4a6f7d378c06802897daefe094bedf6a25f81e74abe495d8",
+      "index_unchanged": true
+    }
+  },
+  "cause_status": "NOT_FULLY_ESTABLISHED; evidence is consistent with stat-cache refresh, but child-versus-external Git writer cannot be proved from original traces",
+  "prohibited_inference": "Do not attribute to staged-private add, do not say optional-locks was dropped, do not claim flags-only or product bytes unchanged solely from missing original full snapshot.",
+  "safe_fix_plan": [
+    "All Git subprocesses including preflight/normal/negative/restoration use an exact copied complete private index from the start; staged-negative has its own index.",
+    "Archive complete original index bytes and metadata before any operational Git call; retain original exact bytes/inode/mode/mtime guard and add per-command guards plus explicit Git env metadata.",
+    "Force private core.splitIndex=false, private object directory with readonly original object alternate, retain full-index and sharedindex guards.",
+    "Use a tiny fixture where Git refresh is deliberately enabled to prove no real-index change with private env, removal makes real index change, restoration protects it again; this establishes isolation not historical cause.",
+    "No repair/reset/replacement of real index from reconstructed stat fields. Rerun only with root fresh exclusive lease after read-only source identity; preserve original red."
+  ],
+  "source_or_index_modified_by_this_diagnostic": false,
+  "time_window_commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_geo314_commit_paths.Geo314CommitPaths.test_kernel_has_no_changes_against_the_fixed_integration_base"
+      ],
+      "source_variant": "restored-existing-K-0",
+      "started_epoch": 1792937486.7754724,
+      "ended_epoch": 1792937487.0417907,
+      "actual_process_returncode": 0,
+      "result_sha256": "d7a51e88036461e5d29cd38dfa9219454a56864705638a23e8bd17acd95a8ef9"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_geo314_commit_paths.Geo314CommitPaths.test_kernel_has_no_changes_against_the_fixed_integration_base"
+      ],
+      "source_variant": "negative-existing-K-1",
+      "started_epoch": 1792937487.043641,
+      "ended_epoch": 1792937487.2918391,
+      "actual_process_returncode": 1,
+      "result_sha256": "829cbb5b52fc4b69429b9a09370a5ceeef7975dd4d3fdc756304150b137d8f22"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/geo261-environment/reap_children.py",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_geo314_commit_paths.Geo314CommitPaths.test_kernel_has_no_changes_against_the_fixed_integration_base"
+      ],
+      "source_variant": "restored-existing-K-1",
+      "started_epoch": 1792937487.293534,
+      "ended_epoch": 1792937487.5494628,
+      "actual_process_returncode": 0,
+      "result_sha256": "3f908c83250f32d77df2a2b4ac92e4a615dcde35434357cd370535117af99e07"
+    },
+    {
+      "command": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "core.splitIndex=false",
+        "add",
+        "--",
+        "geometry-core/kernel/geo314_scope_staged_probe.c"
+      ],
+      "source_variant": "stage-new-K-private-index",
+      "started_epoch": 1792937487.5614018,
+      "ended_epoch": 1792937487.5951915,
+      "actual_process_returncode": 0,
+      "result_sha256": "5b5374b7d6108efd903263b58a784acced18dcc6ad797c95dba54b92e1599a03"
+    },
+    {
+      "command": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "diff",
+        "--cached",
+        "--name-only",
+        "4f8a794f4167c3562eb182045102e86e9e37cca9",
+        "--",
+        "geometry-core/kernel"
+      ],
+      "source_variant": "temporary-counterproof-preflight",
+      "started_epoch": 1792937487.631922,
+      "ended_epoch": 1792937487.642367,
+      "actual_process_returncode": 0,
+      "result_sha256": "dbb0ec7c751f20af181619f9e0cc4e278a5ea5592fbbffbfc26b6da5173b1214"
+    }
+  ]
+}
