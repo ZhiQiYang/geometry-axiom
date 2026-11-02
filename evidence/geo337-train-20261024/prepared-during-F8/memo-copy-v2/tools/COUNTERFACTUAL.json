@@ -1,0 +1,75 @@
+{
+  "schema": "F8-memo-only-counterfactual/1",
+  "formal_executed": false,
+  "source_F8": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "historical_fixed_F7": "6df0264f75e84f03adb70746b6ac3db07a9910fc",
+  "historical_withdrawn_H": "3cbeb75926bb188e6c8f153d182303feadfa27dc",
+  "formal_out": "/tmp/g337323R8",
+  "formal_receipt_sha256": "979680e78a381d28a6d1c6825b7b1b8af850bebec381ec3cee3ef42e9e46ea15",
+  "formal_profile_execution_exit": 0,
+  "formal_profile_ratio": 4.407618425509266,
+  "formal_ABC_present": false,
+  "formal_compare_execution_exit": 1,
+  "original_formal_prerequisite": "same source/base/main and profile0 with exact clean source before/after; does not require formalABC. The unchanged isolated compare still requires175/350 and full stdout/stderr/graph/guards audit.",
+  "changed_source_paths": [
+    "geometry-core/references.inc",
+    "geometry-app/native/reference_sources.inc"
+  ],
+  "mechanical_edits": {
+    "geometry-core/references.inc": [
+      {
+        "id": "remove-contact-memo-fields",
+        "fixed": "        /* Contact keeps only its successful three-field decode; its key is independent of the full anchor. */\n        bool contact_valid;uint32_t contact_id;\n        WoodMemberPlacementContact contact;\n        WoodMemberPlacement anchor;\n        WoodMemberDefinition definition;\n",
+        "withdrawn": "        WoodMemberPlacement anchor;\n        WoodMemberDefinition definition;\n"
+      }
+    ],
+    "geometry-app/native/reference_sources.inc": [
+      {
+        "id": "remove-contact-memo-and-shared-depend-helpers",
+        "fixed": "static bool reference_member_placement_depend(ReferenceEval *ctx,uint32_t id)\n{\n    WoodDefinitionKey key;\n    if(geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),\n            GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;\n    return true;\n}\nstatic bool reference_member_contact_read(ReferenceEval *ctx,size_t i,uint32_t id,WoodMemberPlacementContact *out)\n{\n    if(i>=WORLD_MAX_TIMBERS||geo_eval_is_sealed(ctx->sources))\n        return wood_definition_sources_placement_contact(ctx->definition_sources,id,out);\n    if(ctx->member_reads[i].contact_valid&&ctx->member_reads[i].contact_id==id){\n        /* Use the original shared edge site for every current consumer. */\n        if(!reference_member_placement_depend(ctx,id))return false;\n        *out=ctx->member_reads[i].contact;return true;\n    }\n    if(!wood_definition_sources_placement_contact(ctx->definition_sources,id,out))return false;\n    ctx->member_reads[i].contact=*out;ctx->member_reads[i].contact_id=id;\n    ctx->member_reads[i].contact_valid=true;return true;\n}\nstatic void reference_member_footprint_invalidate(ReferenceEval *ctx,size_t i)\n",
+        "withdrawn": "static void reference_member_footprint_invalidate(ReferenceEval *ctx,size_t i)\n"
+      },
+      {
+        "id": "restore-original-anchor-hit-dependency-site",
+        "fixed": "        if(!reference_member_placement_depend(ctx,id))return false;\n",
+        "withdrawn": "        WoodDefinitionKey key;\n        /* 解碼命中仍須記錄當前 consumer 的依賴邊。 */\n        if(geo_eval_depend(ctx->sources,wood_definition_source_ref(APP_SOURCE_WOOD_DEFINITION,WOOD_DEFINITION_PLACEMENT,id,&key),\n            GEO_DEPENDENCY_DEFINITION_REQUIRED)!=GEO_SOURCE_OK)return false;\n"
+      },
+      {
+        "id": "restore-original-contact-decode",
+        "fixed": "            if(!reference_member_contact_read(ctx,i,id,&anchor)){\n",
+        "withdrawn": "            if(!wood_definition_sources_placement_contact(ctx->definition_sources,id,&anchor)){\n"
+      }
+    ]
+  },
+  "file_bindings": {
+    "geometry-core/references.inc": {
+      "H_sha256": "f2d1f595be0279b2a052bde8ae0fd55c44e7d710610ea21cac2209d2d6603c10",
+      "F7_sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751",
+      "F8_sha256": "2f915779b14272a3cd9d2014d02d9476b05841145885e3d4b0717657e0a0378c",
+      "withdrawn_sha256": "093d5d7f06963a0f555c6614595791c99e250c019865006edadeacf956838a80",
+      "restored_sha256": "2f915779b14272a3cd9d2014d02d9476b05841145885e3d4b0717657e0a0378c",
+      "H_plus_local_init_equals_withdrawn": true
+    },
+    "geometry-app/native/reference_sources.inc": {
+      "H_sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512",
+      "F7_sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "F8_sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "withdrawn_sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512",
+      "restored_sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "H_plus_local_init_equals_withdrawn": true
+    }
+  },
+  "preservation": "F8→withdrawn consists only of four exact memo edits; F7→F8 local-init retained byte-for-byte. All other source/edge-index and closure bytes remain fixed F8 under original inv(source) before/after guard.",
+  "patches": {
+    "historical-memo-added.patch": "e5668855c5c97d24716f8c1261ca89b2ceac457ffcd67eae283894df71117f1d",
+    "local-init-retained.patch": "4909cbf51efc391298701b11df136a660f5a9f1542fccdcfb3cf1af5ebd66bb7",
+    "restored.patch": "45c99cdaf920e91f41dfbf0759ad1257818572889d125688134c1d70b951fd18",
+    "withdrawn.patch": "3fae9e3ee0a1a5a12be03480c9e65d03d9dd9f61c72938ce5ab2931771e19d4e"
+  },
+  "not_claimed": [
+    "No profile/compile/ABC execution",
+    "No approval of cross-version exact differences",
+    "No F9 execution label",
+    "No formal R8 rerun or mutation"
+  ]
+}

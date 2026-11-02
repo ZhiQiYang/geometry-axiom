@@ -1,0 +1,38 @@
+--- reviewed-R7/collect.template.py
++++ unexecuted-R8/collect.template.py
+@@ -3,12 +3,12 @@
+ import datetime,hashlib,json,os,stat,tarfile,traceback
+ 
+ HERE=Path(__file__).resolve().parent
+-R='6df0264f75e84f03adb70746b6ac3db07a9910fc'
+-RAW=Path('/tmp/g337323R7')
+-TOOLS=Path('/tmp/geo323-final-r7-stage-tools-20261024')
++R='75a1e93811a52b69385cbdaf6a09d773ed9052ad'
++RAW=Path('/tmp/g337323R8')
++TOOLS=Path('/tmp/geo323-final-r8-stage-tools-20261024')
+ V5=Path('/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5')
+-SOURCE=Path('/tmp/geo323-final-r7-source-20261024')
+-OUT=Path('/tmp/geo323-r7-full-package-20261024')
++SOURCE=Path('/tmp/geo323-final-r8-source-20261024')
++OUT=Path('/tmp/geo323-r8-full-package-20261025')
+ STAGES=['prepare','build','compare','perf','profile']
+ MAX_ARCHIVE=36*1024*1024
+ MAX_METADATA=4*1024*1024
+@@ -100,7 +100,7 @@
+             z['reason']='Only ELF body excluded; original path retained unchanged.';excluded.append(z)
+         else:rows.append(z)
+     need(len(excluded)==7,'exact seven original ELF paths')
+-    for name in ['collect.py','PLAN.json','launch.py','README.md','freeze_terminal_plan.py','prepare_plan.py','R6_TO_R7_COLLECTOR.diff','PROVENANCE.json','TOOL_RESPONSE_SCOPE.json','adapt_r6.py','COLLECTOR_PINS.json']:
++    for name in ['collect.py','PLAN.json','launch.py','README.md','freeze_terminal_plan.py','prepare_plan.py','R7_TO_R8_COLLECTOR.diff','PROVENANCE.json','TOOL_RESPONSE_SCOPE.json','adapt_r7.py','COLLECTOR_PINS.json']:
+         rows.append(row('collection-tools/'+name,HERE/name))
+     OUT.mkdir()
+     summary={k:r[k] for k in ['source_sha','base','main','stages','errors','quantitative_targets','wrapper_exit','all_executed_stage_commands_passed','all_measured_original_targets_met','all_required_stages_completed','full_acceptance_passed']}
+@@ -112,7 +112,7 @@
+     save(OUT/'RAW_INVENTORY.json',inventory)
+     metadata_bytes=sum(f.stat().st_size for f in OUT.iterdir())
+     need(metadata_bytes+65536<=MAX_METADATA,'metadata resource budget (64KiB reserved for final PACKAGE.json)')
+-    archive=OUT/'ORIGINAL_R7_FIVE_STAGE_RAW.tar.gz'
++    archive=OUT/'ORIGINAL_R8_FIVE_STAGE_RAW.tar.gz'
+     with archive.open('xb') as raw:
+         with tarfile.open(fileobj=BoundedArchive(raw),mode='w:gz',compresslevel=6,dereference=True) as tar:
+             for z in rows:tar.add(z['source_path'],arcname=z['name'],recursive=False)

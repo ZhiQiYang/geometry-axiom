@@ -1,5 +1,19 @@
 # 待複審釐清的驗收界線
 
+## 當前狀態（2026-10-25，固定產品 F8）
+
+F8=`75a1e93811a52b69385cbdaf6a09d773ed9052ad`。本節為目前狀態，後續舊記錄只保留沿革與其原來源。沒有批准新的公理、數值門檻、golden或比較器政策；其他驗收持續執行，不等待回覆。
+
+- **Q-323-N64／N16 效能缺陷已在 R8 的原量測解除。** 原36樣本全部保留：N16/base=0.9834192453688345≤1、N32/base=0.9007932884873169≤1、N48/base=0.7392862448969592≤1、N64/main=1.2846970752586067≤1.3；source calls64/32=4.407618425509266≤4.5。這些是已完成的F8量測，不重抽、不改分母，也不代表整個PR可合併。
+- **Q-323-ABC仍紅。** R8的175場景／350 runs仍只有原三個stdout差；原compare exit1、ABC_result缺席、full_acceptance=null。三差來源6366304eb787b2a50282e4132f45e51eb7d21290；b74固定base與F8的I22整條相同，原條文已要求定位邊與超出區間。現在採A：保留產品診斷及原紅。B′僅補診斷的新exact基準、C具名三pair政策均未批准、未實作；建議B′仍需明確裁決，不由工具自行接受。
+- **Q-P189-EXACT另案保紅。** 它的base是3e600772，不能把Q-323的任何裁決自動套用；目前沒有擴及P-189的批准。原<=2倍門檻、完整stdout exact不變，新的最終來源驗收仍待跑。
+- **required CI未解除。** F8 run40170221039／較早證據E815 run40170692505均七job failure、runner_id0、steps0；原annotation為付款失敗或支出上限。後續證據head的CI未讀；未改帳戶、workflow或required checks，也沒有正式核可的替代接受紀錄。
+- Q-314已核可條文與後續寫入時序、Q-335 CLI初放入口的政策界線保留以下原沿革；本次不更改公理或決策，也不宣稱這些工作已完成。
+
+完整R8原件：[full-R8-five-stage-raw](https://github.com/ZhiQiYang/geometry-axiom/tree/219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6/evidence/geo337-train-20261024/full-R8-five-stage-raw/)。三差的[原文／引入提交／SSOT依據](https://github.com/ZhiQiYang/geometry-axiom/blob/219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6/evidence/geo337-train-20261024/current-R8-exact-three/originals/REPORT.md)及[具體選項與風險](https://github.com/ZhiQiYang/geometry-axiom/blob/219bf5d44a0c0f1c3a0d5e67b2782ed807e09af6/evidence/geo337-train-20261024/current-R8-exact-three/originals/QUESTIONS.md)已公開。
+
+## 歷史沿革（以下保留原文字、原來源與當時結果）
+
 本檔供後續審查判讀，不等待使用者回覆才做其他工作。未採用新的公理、數值門檻或忽略差異的規則。
 
 ## Q-323-ABC：跨功能版本的診斷文字差異

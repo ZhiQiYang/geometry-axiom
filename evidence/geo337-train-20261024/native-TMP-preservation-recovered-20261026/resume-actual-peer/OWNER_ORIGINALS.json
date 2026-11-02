@@ -1,0 +1,243 @@
+{
+  "schema": "TMP-preservation-owner-originals-readonly-check/1",
+  "reviewed_utc": "2026-10-26T09:25:21.054329+00:00",
+  "exit_code": 0,
+  "facts_sha256": "656b7467da64843ad7de155379f6738f5652ee8915ba4e8bc0e2eec051bcf2ab",
+  "owner_receipts": [
+    {
+      "source_path": "/tmp/g288s7/native-cache-isolation.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/0-isolation_receipt.json",
+      "bytes": 114914,
+      "sha256": "356c79d0db48e890fc3c52a5d24a487d5e898666e25c59d6cbe7ff2a2a9012b5"
+    },
+    {
+      "source_path": "/tmp/g288s7/receipt.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/0-successor_terminal_receipt.json",
+      "bytes": 16907,
+      "sha256": "f145d11af64397af23595160a2fe35c8ee698612329605fa2d650ae60959e7ad"
+    },
+    {
+      "source_path": "/tmp/g288s7/run-context.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/0-context.json",
+      "bytes": 1133,
+      "sha256": "ccaaf8706968bebe4ff07a0104497b3aca83542ea3f63b69dea47d25e866453f"
+    },
+    {
+      "source_path": "/tmp/geo299316-final-native-5bfadf18-r1/native-cache-isolation.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/1-isolation_receipt.json",
+      "bytes": 113813,
+      "sha256": "88ab2d6da8fe016753c1b208ac3bc790730e39456cca24cbd3adb6112f7c1575"
+    },
+    {
+      "source_path": "/tmp/geo299316-final-native-5bfadf18-r1/receipt.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/1-successor_terminal_receipt.json",
+      "bytes": 3805,
+      "sha256": "665787c6fa7c9d28c0dc07007b47c66c0c114edbbd9c7e1670699ea5f002d52d"
+    },
+    {
+      "source_path": "/tmp/geo299316-final-native-5bfadf18-r1/run-context.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/1-context.json",
+      "bytes": 1191,
+      "sha256": "f5f144578de357216791c939b02db2095367da983d0bea6cccd4d50ca0678379"
+    },
+    {
+      "source_path": "/tmp/g261s7/native-cache-isolation.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/2-isolation_receipt.json",
+      "bytes": 113272,
+      "sha256": "0b19946268696524215e8915ecb8d4623f6972841b9b80b6f64e3059d8cd08cc"
+    },
+    {
+      "source_path": "/tmp/g261s7/receipt.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/2-successor_terminal_receipt.json",
+      "bytes": 16879,
+      "sha256": "526bafbad3b19359c2e337ec04ba0fb3859bad82f6f6babb1faf81350493ac15"
+    },
+    {
+      "source_path": "/tmp/g261s7/run-context.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/2-context.json",
+      "bytes": 1126,
+      "sha256": "e58247dd83c1fd3856b935e1b275a69daae6fae31ccc4849cf400dc28504d81b"
+    },
+    {
+      "source_path": "/workspace/geo261-environment/geo323-preformal-cache-isolation.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/3-isolation_receipt.json",
+      "bytes": 113956,
+      "sha256": "94b31cbf09e99e1d9380cfed9556143cea3029694deec3e0b3aba5737841da14"
+    },
+    {
+      "source_path": "/workspace/geo323-final-f43e8d8b-r1/receipt.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-owner-receipts/3-successor_terminal_receipt.json",
+      "bytes": 13519,
+      "sha256": "ed221a55e12835a6887db9a8df0c7deecf5941caadc39afd84ff32bfbf8320f0"
+    }
+  ],
+  "fingerprints": [
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-261-13d02c1d/bridge.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/0.json",
+      "bytes": 22986,
+      "sha256": "d2b45ba3d54ed6d6dce2434101bd682a9c7675cbbd1f41a15b9abc1acde974ab"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-261-13d02c1d/core.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/1.json",
+      "bytes": 22972,
+      "sha256": "9094a1ee13cc964793fdf5ff1c1b9136249f77791e7ce53ecbc362da9725ee88"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-261-13d02c1d/engineering-json-test.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/2.json",
+      "bytes": 23199,
+      "sha256": "7d18a298e546cbfb1f5bc7b400eb9b5fc76d0535477077f6b659a1e9ed4ce24c"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-261-13d02c1d/integrity.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/3.json",
+      "bytes": 23097,
+      "sha256": "cc652709e746f8d309ebb76a84217bb94b12a3fc6cae58875da5dc737adbada0"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-261-13d02c1d/model-base.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/4.json",
+      "bytes": 22998,
+      "sha256": "f0a77cb3cf71478cc2a06b7771de7c40bbe2005a8f932b0ac011505a87e58c03"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-261-13d02c1d/pf3-algorithm.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/5.json",
+      "bytes": 23097,
+      "sha256": "81c8025cf3a61ff15e26333fe2d93084e7d914f4548e3e693329cdc9d9f337dc"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-299-316-5bfadf18/bridge.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/6.json",
+      "bytes": 22875,
+      "sha256": "8555f536b1a5dd20b230bfacb206136acc56bd7b60ddcfe11b02484b1bf2fc75"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-299-316-5bfadf18/core.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/7.json",
+      "bytes": 22861,
+      "sha256": "c1bd560c631fb6de7ef2a88e34b149a405a14b1c03e992ba1c15d141fc847457"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-299-316-5bfadf18/engineering-json-test.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/8.json",
+      "bytes": 23088,
+      "sha256": "af7b90b327b104a54d2047d9aaa53e92444418e1e04656139768a64f0d6f3f25"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-299-316-5bfadf18/integrity.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/9.json",
+      "bytes": 22986,
+      "sha256": "f90ed115818123c4a439a09d33db61234a9de124b51512da8ec5e84aa2c1d2dc"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-299-316-5bfadf18/model-base.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/10.json",
+      "bytes": 22887,
+      "sha256": "9241a2f6d26ebbd8ec278c9584ae2e96bb9b0ec2973a3acd07ade481054a0712"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-299-316-5bfadf18/pf3-algorithm.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/11.json",
+      "bytes": 22986,
+      "sha256": "c9e1d3a825990c18a128a1b98715635dec7e57acf776fe176ec5241fde34b73b"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-314-cc67e251/bridge.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/12.json",
+      "bytes": 22875,
+      "sha256": "6cc503cbc6fd4284a0b5ac732d4bddbe0c5fc3385b9c84e7c1dd753edca648bd"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-314-cc67e251/core.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/13.json",
+      "bytes": 22861,
+      "sha256": "217be6aae4299b3a8e035b022e5e6d4211de552913b5d29531f5eb19229f4c75"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-314-cc67e251/engineering-json-test.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/14.json",
+      "bytes": 23088,
+      "sha256": "dcd1250dadde66fb4b3be3d2ceb77e2fca4ce7f1f83499922a54814101e3be1b"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-314-cc67e251/integrity.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/15.json",
+      "bytes": 22986,
+      "sha256": "c119362401723279924baf6d4d874dd826575f11a057c020f04b4ba7d61ea7a7"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-314-cc67e251/model-base.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/16.json",
+      "bytes": 22887,
+      "sha256": "a5328064b8a2b8dfa73195738c61149c51fa282be95fb0f8a08d8783b143e993"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-followup-314-cc67e251/pf3-algorithm.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/17.json",
+      "bytes": 22986,
+      "sha256": "63cdb6a05e1899e3ced1f7a42b848e88db1c82ad9cd5cce1a73966eefa25d5cc"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-geo323-f43e8d8b/bridge.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/18.json",
+      "bytes": 22875,
+      "sha256": "ef896506c868d1087b1591e046f1bfa6d47e2a22a9e0bdfff8f3b9c9d0ea2955"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-geo323-f43e8d8b/core.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/19.json",
+      "bytes": 22861,
+      "sha256": "eb81def047f1929176c43b1c5f0cd95407faf3b360d420c4bb82610bb2a5ccbd"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-geo323-f43e8d8b/engineering-json-test.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/20.json",
+      "bytes": 23088,
+      "sha256": "f082a28e63c753acec3fe906395b4e57572181d17ec54de21c203f391f00924f"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-geo323-f43e8d8b/integrity.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/21.json",
+      "bytes": 22986,
+      "sha256": "a7dd460cd61b2d0d9b79a1b9ffae80f064766992995a232cad449dcd153eec9e"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-geo323-f43e8d8b/model-base.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/22.json",
+      "bytes": 22887,
+      "sha256": "2b33e9ae060934a7925639e2b2e9023e462aac6c8abd7a3c911c993595cd3fcf"
+    },
+    {
+      "source_path": "/tmp/geometry-tests-pre-geo323-f43e8d8b/pf3-algorithm.fingerprint.json",
+      "destination": "evidence/geo337-train-20261024/native-TMP-preservation-recovered-20261026/original-ELF-fingerprints/23.json",
+      "bytes": 22986,
+      "sha256": "bcee3b9748757fe094e88cd81c1aa9462f3e3eeed6d77f967dc39be75dbf6e1f"
+    }
+  ],
+  "original_absent_contexts": [
+    {
+      "cache": "/tmp/geometry-tests-pre-geo323-f43e8d8b",
+      "field": "context",
+      "original_value": null,
+      "not_a_newly_missing_file": true
+    }
+  ],
+  "reader_schema_correction": {
+    "initial_tool_exits": [
+      1,
+      1
+    ],
+    "initial_exceptions": [
+      "KeyError: 'all_jobs_terminal'",
+      "TypeError: 'NoneType' object is not subscriptable"
+    ],
+    "cause": "Original #323 metadata uses all_stages_terminal and has context:null; other three use all_jobs_terminal with context paths. Reader now preserves both exact original schema differences, selects 11 actual receipt files, and records original null explicitly; no terminal verdict changed."
+  },
+  "limits": [
+    "Exact existing task-owned generated-cache metadata only; old failure exits preserved.",
+    "No inference that all runtime consumers are currently absent; no retirement or publication performed."
+  ]
+}

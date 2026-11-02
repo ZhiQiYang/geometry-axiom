@@ -1,0 +1,21 @@
+{
+  "source_head": "e321026fb9bc9bc19c54b8034af6e6eaec2857f9",
+  "previous_evidence_head": "3df56ff38b450ad228da04b2c1dcb6511582af42",
+  "child_execution_source": "1449d430d1c4734bb1bc3a9f91f3851c845cc0f3",
+  "parents": [
+    "3df56ff38b450ad228da04b2c1dcb6511582af42",
+    "1449d430d1c4734bb1bc3a9f91f3851c845cc0f3"
+  ],
+  "changed_paths": [
+    "geometry-core/kernel/source.c",
+    "tests/geo323_provider_hint_harness.c",
+    "tests/run_all.expected.json",
+    "tests/test_geo261_source_index.py"
+  ],
+  "product_and_test_tree_equals_child": true,
+  "published": true,
+  "push_exit": 0,
+  "formal_performance_at_new_source": "UNRUN",
+  "architecture_at_new_source": "UNRUN",
+  "full_ledger_at_new_source": "UNRUN"
+}

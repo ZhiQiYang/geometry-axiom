@@ -1,0 +1,241 @@
+{
+  "schema": "geo337-F9-axiom-package-source-inventory/1",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "scope": {
+    "read_only_originals": true,
+    "products_run": false,
+    "peer_checks_rerun": false,
+    "SHM_read": false,
+    "Git_used": false,
+    "large_raw_copied_or_hashed": false,
+    "new_files": [
+      "/workspace/geo337-F9-axiom-package-source-peer-20261025/FACTS.json",
+      "/workspace/geo337-F9-axiom-package-source-peer-20261025/REPORT.md"
+    ],
+    "helper_scope": "build_snapshot_link_readonly independently read host and three original peer files"
+  },
+  "raw_tree": {
+    "path": "/tmp/geo337-F9-axiom-original-20261025",
+    "regular_files": 189,
+    "regular_bytes": 12499444,
+    "symlinks": 0,
+    "other_entries": 0,
+    "directories": 51,
+    "method": "lstat metadata only, do not follow links; no full raw hash traversal"
+  },
+  "tools_include": [
+    {
+      "path": "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/PREPARATION.json",
+      "bytes": 5196,
+      "sha256": "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+      "role": "read-and-validated-data; not executable"
+    },
+    {
+      "path": "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py",
+      "bytes": 13374,
+      "sha256": "993ee0102107e13e3391e31ffbc84ae88e6c6979673ebc1c42ca794ef6c1b8e9",
+      "role": "executed: actual gate launcher"
+    },
+    {
+      "path": "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/binding_guards.py",
+      "bytes": 2673,
+      "sha256": "1b7556db553c17265407adf77023c63e6b6166da9297b5461d3c1eeaab17eeb3",
+      "role": "imported/executed: validate_delta source guards"
+    },
+    {
+      "path": "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/REQUESTS.json",
+      "bytes": 8316,
+      "sha256": "2ace7266ff4ed5ee002e318f69c0a90918c08a4b323f397e1936207e543aa515",
+      "role": "hash-checked data only"
+    },
+    {
+      "path": "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/README.md",
+      "bytes": 2397,
+      "sha256": "4093a67b61d03323c2c2324c4c47c9a3fa84850fde2b6709495fbeea72774b3a",
+      "role": "hash-checked preparation documentation only"
+    },
+    {
+      "path": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+      "role": "imported/executed: actual c387 Recorder"
+    },
+    {
+      "path": "/workspace/geo261-environment/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+      "role": "executed: actual external reaper in command 22"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/geo323_record.py",
+      "bytes": 10675,
+      "sha256": "c997611f5ba14298d0a06759528c192adb0619a9587cb0cab4fd051d95126810",
+      "role": "hash-checked only: not executed by this axiom branch; retain for original PREPARATION guard"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/mini_gen.py",
+      "bytes": 1560,
+      "sha256": "5613eb2bce4bdb26ec4852ee0d70e00ebd2b9b249aa9086e32e63d5259e17749",
+      "role": "hash-checked only: not executed by this axiom branch; retain for original PREPARATION guard"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/profile_linux.py",
+      "bytes": 1630,
+      "sha256": "0dda20c3d4de8c4472ed7f936fcf7bbc48c4adacfdc779bc2bda6e300a0c853c",
+      "role": "hash-checked only: not executed by this axiom branch; retain for original PREPARATION guard"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/reap_children.py",
+      "bytes": 2096,
+      "sha256": "7d848d6c135b7f329852d16c6da5743effde8b29ccbbc6e70092b6ba25877760",
+      "role": "hash-checked only: not executed by this axiom branch; retain for original PREPARATION guard"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/run.py",
+      "bytes": 25764,
+      "sha256": "881d618cd06b3edddf10a6676504923bbd982c8901c632410db434cfd480e849",
+      "role": "hash-checked only: not executed by this axiom branch; retain for original PREPARATION guard"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/tools-v5/verify_linux.py",
+      "bytes": 11459,
+      "sha256": "c3db1834c49365a08ef5720d38156253a355e9f5d5db0239486013871d0e2cac",
+      "role": "hash-checked only: not executed by this axiom branch; retain for original PREPARATION guard"
+    }
+  ],
+  "host_and_peer_include": [
+    {
+      "path": "/workspace/geo337-F9-axiom-original-EXEC_FINAL-20261025.json",
+      "bytes": 342,
+      "sha256": "35a903d74a7dd57dcf3d36ac645f7a014c31c85d27b63a9e61a7099844b33d2d",
+      "role": "original host terminal"
+    },
+    {
+      "path": "/workspace/geo337-F9-axiom-actual-peer-20261025/CHECKS.json",
+      "bytes": 21863,
+      "sha256": "557c760bfd5be49a5c81e11c3b0a26591f40ba4e074078d293071ab4bfee8dbd",
+      "role": "original independent-review check results"
+    },
+    {
+      "path": "/workspace/geo337-F9-axiom-actual-peer-20261025/REVIEW.json",
+      "bytes": 28185,
+      "sha256": "437a46c2a0b521ae09feb9031a1acebed413190e2cbf5b5ce5df8259946daecc",
+      "role": "original independent-review receipt"
+    },
+    {
+      "path": "/workspace/geo337-F9-axiom-actual-peer-20261025/review_actual.py",
+      "bytes": 12467,
+      "sha256": "14713cad9d1f16e3039cc5bb43c724bf544a7843b24ca785d59a74f1ac6dd320",
+      "role": "recorded independent-review program; not executed by this inventory"
+    }
+  ],
+  "raw_anchors_already_inside_189": [
+    {
+      "path": "/tmp/geo337-F9-axiom-original-20261025/receipt.json",
+      "bytes": 69361,
+      "sha256": "ec1c9d638095d04c20388c2eb7682df2af13a7e21456009aebf4ffcb8467341f"
+    },
+    {
+      "path": "/tmp/geo337-F9-axiom-original-20261025/subcommands.json",
+      "bytes": 60048,
+      "sha256": "151f34d09bd70aa1070936f041b306b7eef903ff0df2057dc60f24bd6ec779e2"
+    },
+    {
+      "path": "/tmp/geo337-F9-axiom-original-20261025/axiom/subject/report.json",
+      "bytes": 9845,
+      "sha256": "05cce7b2845a7a906905129d7faa2ac4f7af7dfc55f4e95ade62410e861400cb"
+    },
+    {
+      "path": "/tmp/geo337-F9-axiom-original-20261025/axiom/axiom-reaper.jsonl",
+      "bytes": 517,
+      "sha256": "9a4a5bc1a0094fdfd561b30aa2433bcf4b91c39b9447aab9c51a24717266ef01"
+    },
+    {
+      "path": "/tmp/geo337-F9-axiom-original-20261025/subcommands/000012/stdout.bin",
+      "bytes": 6124,
+      "sha256": "73475426a1060389972bc41e25da97026f717c5c9f7d3cdb40d538a8fcada10e"
+    }
+  ],
+  "actual_gate_execution": {
+    "launcher_argv": [
+      "/tmp/geo337-F9-nonperf-original-tools-v2-20261025/run_original_specials.py",
+      "--repo",
+      "/tmp/train337-323-f64d638f-source",
+      "--sha",
+      "4f8a794f4167c3562eb182045102e86e9e37cca9",
+      "--out",
+      "/tmp/geo337-F9-axiom-original-20261025",
+      "--heavy-lock",
+      "/tmp/g261r3/heavy.lock",
+      "--preparation-sha256",
+      "593ab353216e0cd50d49c92dd48d1b532bc43154ba46e494daf65cf11d8be72c",
+      "--gate",
+      "axiom"
+    ],
+    "capture_module": "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py",
+    "actual_child_argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "/workspace/geo261-environment/reap_children.py",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "-u",
+      "geometry-core/card-reference/run_axiom_mutations.py",
+      "--output",
+      "/tmp/geo337-F9-axiom-original-20261025/axiom/subject"
+    ],
+    "cwd": "/tmp/train337-323-f64d638f-source",
+    "raw_command_directory": "/tmp/geo337-F9-axiom-original-20261025/subcommands/000022",
+    "outer_returncode": 0,
+    "primary_returncode": 0,
+    "reaper_terminal_sha256": "9a4a5bc1a0094fdfd561b30aa2433bcf4b91c39b9447aab9c51a24717266ef01",
+    "original_judge_snapshot": "/tmp/geo337-F9-axiom-original-20261025/subcommands/000012/stdout.bin",
+    "original_judge_source_path_at_execution": "/tmp/train337-323-f64d638f-source/geometry-core/card-reference/run_axiom_mutations.py",
+    "original_judge_source_sha256": "73475426a1060389972bc41e25da97026f717c5c9f7d3cdb40d538a8fcada10e",
+    "captured_source_snapshots": "commands 9..21 preserve all thirteen pinned judges/registry source bytes; source tree need not be copied"
+  },
+  "execution_classification": {
+    "executed_during_axiom": [
+      "v2 run_original_specials.py",
+      "binding_guards.py source delta functions",
+      "original c387 capture Recorder",
+      "/workspace/geo261-environment/reap_children.py",
+      "original run_axiom_mutations.py and its unittest subject subprocesses"
+    ],
+    "not_executed_during_axiom": [
+      "six tools-v5 files (hash verified only)",
+      "check_metadata.py and historical metadata proofs",
+      "q38/cardref/required-eight/pf3 branches"
+    ],
+    "preparation_warning": "subject_executed:false, source_sha:null and README draft wording describe original preparation; actual formal receipt binds F9. Do not rewrite originals."
+  },
+  "original_peer_identity": {
+    "checks": 428,
+    "exit_code": 0,
+    "blocking_findings": [],
+    "recorded_review_command": [
+      "python3",
+      "-B",
+      "/workspace/geo337-F9-axiom-actual-peer-20261025/review_actual.py"
+    ],
+    "host_terminal_is_command_output_only": true,
+    "additional_outer_launcher_source_found": false,
+    "note": "host terminal contains no launch argv; actual v2 launcher argv is in original receipt; do not infer an absent outer shell source"
+  },
+  "collector_selection": {
+    "raw_regular_files": 189,
+    "additional_files": 17,
+    "additional_bytes": 152912,
+    "total_regular_files": 206,
+    "total_payload_bytes": 12652356,
+    "source_tree_included": false,
+    "this_inventory_and_future_collector_metadata_excluded": true,
+    "all_12_PREPARATION_referenced_files_match_bytes_and_sha256": true,
+    "six_v5_files_not_executed_but_required_for_original_tool_pin_guard": true
+  },
+  "report": {
+    "path": "/workspace/geo337-F9-axiom-package-source-peer-20261025/REPORT.md",
+    "bytes": 1495,
+    "sha256": "eeed40eea7e7c8fe02403bc56e51661c6818b7d215f8a3cbf49336e3f80108c8"
+  }
+}

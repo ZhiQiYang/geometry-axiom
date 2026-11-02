@@ -1,0 +1,265 @@
+{
+  "after_observation": {
+    "cgroup": {
+      "/proc/pressure/memory": {
+        "available": false,
+        "errno": 2,
+        "error": "FileNotFoundError"
+      },
+      "/sys/fs/cgroup/memory.current": {
+        "available": true,
+        "text": "32881180672\n"
+      },
+      "/sys/fs/cgroup/memory.events": {
+        "available": true,
+        "text": "low 0\nhigh 0\nmax 324954\noom 0\noom_kill 0\noom_group_kill 0\n"
+      },
+      "/sys/fs/cgroup/memory.max": {
+        "available": true,
+        "text": "34359738368\n"
+      },
+      "/sys/fs/cgroup/memory.pressure": {
+        "available": false,
+        "errno": 2,
+        "error": "FileNotFoundError"
+      },
+      "/sys/fs/cgroup/memory.stat": {
+        "available": true,
+        "text": "anon 75669504\nfile 30647672832\nkernel 2156838912\nkernel_stack 557056\npagetables 1585152\nsec_pagetables 0\npercpu 13664\nsock 0\nvmalloc 0\nshmem 23745683456\nfile_mapped 24576\nfile_dirty 69632\nfile_writeback 0\nswapcached 0\nanon_thp 0\nfile_thp 538968064\nshmem_thp 0\ninactive_anon 7175577600\nactive_anon 16645656576\ninactive_file 869416960\nactive_file 6032576512\nunevictable 0\nslab_reclaimable 1674657744\nslab_unreclaimable 479974112\nslab 2154631856\nworkingset_refault_anon 0\nworkingset_refault_file 8842515\nworkingset_activate_anon 0\nworkingset_activate_file 3131078\nworkingset_restore_anon 0\nworkingset_restore_file 762419\nworkingset_nodereclaim 0\npgdemote_kswapd 0\npgdemote_direct 0\npgdemote_khugepaged 0\npgdemote_proactive 0\npgscan 15243077\npgsteal 15186609\npswpin 0\npswpout 0\npgscan_kswapd 1473521\npgscan_direct 13769556\npgscan_khugepaged 0\npgscan_proactive 0\npgsteal_kswapd 1470928\npgsteal_direct 13715681\npgsteal_khugepaged 0\npgsteal_proactive 0\npgfault 13491311001\npgmajfault 89247\npgrefill 5150138\npgactivate 54142664\npgdeactivate 5127121\npglazyfree 5276\npglazyfreed 0\nswpin_zero 0\nswpout_zero 0\nthp_fault_alloc 0\nthp_collapse_alloc 0\nthp_swpout 0\nthp_swpout_fallback 0\n"
+      }
+    },
+    "mounts": {
+      "/dev/shm/geo337-F9-browsers-20261025": {
+        "available_bytes": 11910754304,
+        "device": 26,
+        "total_bytes": 17871880192
+      },
+      "/dev/shm/geometry-axiom-geo337-20261025": {
+        "available_bytes": 11910754304,
+        "device": 26,
+        "total_bytes": 17871880192
+      },
+      "/tmp": {
+        "available_bytes": 87326720,
+        "device": 34,
+        "total_bytes": 17871880192
+      }
+    },
+    "two_OWN_allocated": 5961125888,
+    "utc": "2026-10-27T04:36:19Z"
+  },
+  "aliases": [
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/PROGRESS.md",
+      "git_blob": "cff0a183dfd4c5c66c464ddae7b2fee742ff4dc1",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000052/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000052/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "2ac3af40322f77bc240a5f0c8132f7f0bb2a18804ff7a7736e30b3a94d990649",
+      "size": 10733
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/BUILDER_PEER.json",
+      "git_blob": "ca1cff4d32f0eb5fca4017759f7d789a2cce520a",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000053/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000053/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "38b1b3e4abdefecd3d2d8fc2f0a885f36d208b26b43e32bb420739df50791597",
+      "size": 4825
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/BUILD_ACTUAL_PEER.json",
+      "git_blob": "21c5189663c8244d70529cd6f3a1d990efae8046",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000054/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000054/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "557657e3a5caa732a30b759372bc7ce48cd31329e53af969ff558c89f1e1ca75",
+      "size": 7510
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/BUILD_RESULT.json",
+      "git_blob": "0f682c5ac04c0bc575519692d399eb5e4f836be9",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000055/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000055/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "bc8f8cc31ebd7e1fc55518053ad2731714bab63faa365c9a58b78db0f3d4ff2f",
+      "size": 7110
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/COST.json",
+      "git_blob": "54c0ab62bb30fd2d2da89648ff6680761d23999e",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000056/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000056/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "ce2c25a30de31d4f826960f68efb5b77b1ff6d4e113b28a949b5966e761209e5",
+      "size": 3634
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/F-assembly.tar.gz",
+      "git_blob": "3b06340b9a63bcbf749e0bce8ba80d8e6d3e20eb",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000057/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000057/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "3823d762c01de4e5cf91c7608bac456522c2ae711085f047555597d327728f0e",
+      "size": 7129907
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/F-grid.tar.gz",
+      "git_blob": "783d89d9320ccda44e4a27de18aa7f1b850ebb0a",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000058/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000058/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "8a43e6b7b4d372038bb13854c8ca9f39479ab1300ef31154c350531141eb14d4",
+      "size": 10301483
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/PLAN.json",
+      "git_blob": "29055ab2f0f888c65916c0d61ed9a03abee757e2",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000059/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000059/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "820a069df2c39e4ada7525f03e9708653af7d3e1339a2f0452cebe0531dc1990",
+      "size": 4291965
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/PUBLISHER.py",
+      "git_blob": "622e1ff687650dd1e98903f655b0c728c3ef5bfc",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000060/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000060/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "d61edc652904c442292b8d3a365bb4ab972130cca79eac8d453b07e565c31c2b",
+      "size": 14054
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/PUBLISHER_PEER.json",
+      "git_blob": "a5fe04f49161caad9f33282774a13d24a7160d32",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000061/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000061/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "d8f69278e2d7fef2230b587a9a4f3ba07ed778a9262e2a87004a482c0353d050",
+      "size": 46307
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/cleanup-supplements.tar.gz",
+      "git_blob": "3ada11b4b8d927e626809a58e4c8e5c734e55714",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000062/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000062/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "21074da6d1a366a2164f348ce8c628ca3ac2814eb1493bfba18f0d537703581e",
+      "size": 2092483
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/transport.tar.gz",
+      "git_blob": "e9211a633d641d7e868ff464a4b6d39d8930edc2",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000063/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000063/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "1e6cfdbcf5bd1967f58262856af0c397969e677ca448c131ee0c8cf316f76fb9",
+      "size": 57804722
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/withdrawn-assembly.tar.gz",
+      "git_blob": "0ac8bde944e62365d3a384bf7a14d0b19d1aca2c",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000064/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000064/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "f5b905047d25b718eea02f433f8f3bdda52111a9fb9b44adf8a0a6dd22113217",
+      "size": 11209371
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/recovery-bundle-20261027/withdrawn-documents-ledger.tar.gz",
+      "git_blob": "94814e69e18c0c239c77ae52b0a55fbb66e7307e",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000065/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000065/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "bbb1826d435cdba9e58b7c90576527d9a41fe12182cd464a57cad8f4cf8f8f4c",
+      "size": 7292937
+    },
+    {
+      "fixed_commit": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+      "fixed_public_path": "evidence/geo337-train-20261024/resume-20261026/PROGRESS.md",
+      "git_blob": "c6a1fa6376298e0520ab49038545ecf3b68d4fcc",
+      "new_leaf": "evidence/geo337-train-20261024/final-browser-delivery-20261027/six-bundle-publication/raw/subcommands/000066/stdout.bin",
+      "original_path": "/dev/shm/geometry-axiom-geo337-20261025/recovery-bundle-20261027/git-publication/subcommands/000066/stdout.bin",
+      "proof": "Eprime prior full raw byte readback+independent207stream audit; next new tree/path must bind same immutable OID. No duplicate payload copy or download.",
+      "sha256": "75c41a550b002cf0bc4829257920d68813be92b513aef4c4f13c8b5fee90dadb",
+      "size": 686
+    }
+  ],
+  "archives": [
+    {
+      "index_sha256": "9ee12ee46a400a57376857a1c97ae889baef428eb67518f194c372eaaf23d59f",
+      "members": 1425,
+      "name": "F-space",
+      "original_bytes": 44128360,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/final-browser-delivery-20261027/F-space.tar.gz",
+      "regular_original_files": 631,
+      "roundtrip_exit": 0,
+      "sha256": "7e943c71c7fce371d1dfa7f0984d77e3921b5ffc33456526620ca55e2104245e",
+      "size": 10332163,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 46858240
+    },
+    {
+      "index_sha256": "bc8587d4bc0b0055e6a3b1a6fece27af4a56ab4b11013b707fde0b140982a0a0",
+      "members": 1399,
+      "name": "F-timber",
+      "original_bytes": 35700546,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/final-browser-delivery-20261027/F-timber.tar.gz",
+      "regular_original_files": 605,
+      "roundtrip_exit": 0,
+      "sha256": "844e9b681a3afba9b563f7328b3847d2d658fc00038f797aff1050ee716389fc",
+      "size": 7140723,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 38389760
+    },
+    {
+      "index_sha256": "cfd0e4169ec78549dfcf3ee77ea3be180e66011fce687f7373e9955d19a5a6d6",
+      "members": 1573,
+      "name": "F-canvas",
+      "original_bytes": 56481184,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/final-browser-delivery-20261027/F-canvas.tar.gz",
+      "regular_original_files": 734,
+      "roundtrip_exit": 0,
+      "sha256": "94e8191bcb11b613d301aba133a655309a0e0c1fa6a88a7e1a2deccfd6a488c4",
+      "size": 12724269,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 59453440
+    },
+    {
+      "index_sha256": "7d2f3b9894961c102ad66bfab034572b81049ef7200d68f26259f7d44dd118b2",
+      "members": 470,
+      "name": "reception-publication",
+      "original_bytes": 1377282,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/final-browser-delivery-20261027/reception-publication.tar.gz",
+      "regular_original_files": 389,
+      "roundtrip_exit": 0,
+      "sha256": "bed8da5dd1f2a1c77445ad96c38c6c7969e62d5c7dfee1fbe206a0c1086f287e",
+      "size": 261521,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 2416640
+    }
+  ],
+  "ended_utc": "2026-10-27T04:36:19Z",
+  "evidence_parent": "e5da59b7e570a360f99ee07e2194c938da0c2626",
+  "exit_code": 0,
+  "no_delete": true,
+  "no_publish": true,
+  "plan_sha256": "0857de0ecbb07ac5014155e8b7ea8bd1ce4da0d2e22368853f4d029a215fd1fd",
+  "schema": 1,
+  "started_utc": "2026-10-27T04:36:15Z"
+}

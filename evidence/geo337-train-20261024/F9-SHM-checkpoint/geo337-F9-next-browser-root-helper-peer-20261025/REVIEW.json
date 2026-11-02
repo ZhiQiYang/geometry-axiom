@@ -1,0 +1,121 @@
+{
+  "schema": "geo337-next-browser-root-bind-helper-static-peer/1",
+  "utc": "2026-10-25T13:37:51.256821+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "checks": 19,
+  "subject_path": "/workspace/launch_geo337_F9_next_browser_root_20261025.py",
+  "subject_sha256": "fddc43230619c4c3d0a1c36adc6ed2c55c9838f4a82e3e8ee674409d4b53b8ba",
+  "tool_pins": {
+    "/workspace/geo337-F9-browser-sampler-preparation-20261025/sample_original_browser_v2.py": "919eafb54f20454ee44a27754ce04f6f63f05f6e1c9b32a5b51652058735af30",
+    "/workspace/geo337-F9-five-browser-shm-preparation-20261025/launch_F9_browser_shm_v2.py": "58106e23496c9ee67c7c2162817283464e7af011e758658283139060b797fc3b",
+    "/workspace/geo337-F9-browser-sampler-static-peer-z23i2u7p/REVIEW.json": "c93e09b10dfd949792077b9aed794db4ab92859844213d78ad23caae7d9a938b",
+    "/workspace/geo337-F9-five-browser-shm-placement-peer-20261025/REVIEW.json": "90f7a2c0387c69f41f0a457ac26dae159fe98e63a8c0ce124e5db3c5ad6508a2"
+  },
+  "path_capacity": [
+    {
+      "job": "documents",
+      "full_path": "/dev/shm/geo337-F9-browsers-20261025/r/d/tmp/original/documents/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_bytes_including_NUL": 105
+    },
+    {
+      "job": "grid",
+      "full_path": "/dev/shm/geo337-F9-browsers-20261025/r/g/tmp/original/grid/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_bytes_including_NUL": 100
+    },
+    {
+      "job": "space",
+      "full_path": "/dev/shm/geo337-F9-browsers-20261025/r/s/tmp/original/space/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_bytes_including_NUL": 101
+    },
+    {
+      "job": "timber",
+      "full_path": "/dev/shm/geo337-F9-browsers-20261025/r/t/tmp/original/timber/com.google.Chrome.ABCDEF/SingletonSocket",
+      "utf8_bytes_including_NUL": 102
+    }
+  ],
+  "check_details": [
+    {
+      "check": "EXACT_STATIC_PIN:/workspace/geo337-F9-browser-sampler-preparation-20261025/sample_original_browser_v2.py",
+      "passed": true
+    },
+    {
+      "check": "EXACT_STATIC_PIN:/workspace/geo337-F9-five-browser-shm-preparation-20261025/launch_F9_browser_shm_v2.py",
+      "passed": true
+    },
+    {
+      "check": "EXACT_STATIC_PIN:/workspace/geo337-F9-browser-sampler-static-peer-z23i2u7p/REVIEW.json",
+      "passed": true
+    },
+    {
+      "check": "EXACT_STATIC_PIN:/workspace/geo337-F9-five-browser-shm-placement-peer-20261025/REVIEW.json",
+      "passed": true
+    },
+    {
+      "check": "F9_CONSTANT",
+      "passed": true
+    },
+    {
+      "check": "ONLY_REMAINING_FOUR",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_MATERIALIZE_EXIT_SHA",
+      "passed": true
+    },
+    {
+      "check": "EXACT_SOURCE_PLAN_SUITE",
+      "passed": true
+    },
+    {
+      "check": "ALL_PREPARATION_ANCESTORS_NO_SYMLINK",
+      "passed": true
+    },
+    {
+      "check": "REQUEST_CREATE_EXCLUSIVE_DURABLE",
+      "passed": true
+    },
+    {
+      "check": "UNCHANGED_PINNED_LAUNCHER_7_ARGV",
+      "passed": true
+    },
+    {
+      "check": "UNCHANGED_PINNED_SAMPLER_ENTRY",
+      "passed": true
+    },
+    {
+      "check": "ORIGINAL_HEAVY_AND_ISOLATED_SOURCE_BINDING",
+      "passed": true
+    },
+    {
+      "check": "NO_ENV_TIMEOUT_SELECTOR_MUTATION",
+      "passed": true
+    },
+    {
+      "check": "FULL_LITERAL_UNIX_SOCKET:documents",
+      "passed": true
+    },
+    {
+      "check": "FULL_LITERAL_UNIX_SOCKET:grid",
+      "passed": true
+    },
+    {
+      "check": "FULL_LITERAL_UNIX_SOCKET:space",
+      "passed": true
+    },
+    {
+      "check": "FULL_LITERAL_UNIX_SOCKET:timber",
+      "passed": true
+    },
+    {
+      "check": "FOUR_DISTINCT_STORAGE_ROOTS",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Static only; no helper execution, SHM read/write, source scan, browser or locks.",
+    "Original launcher remains responsible for complete materialize argv/streams/plan/privategit/source before-after guard; this binding helper does not replace those checks.",
+    "Root must invoke actual command via formal require_escalated and keep single-job budget/lease truth.",
+    "First assembly environment red remains historical; fresh path names do not constitute browser success."
+  ]
+}

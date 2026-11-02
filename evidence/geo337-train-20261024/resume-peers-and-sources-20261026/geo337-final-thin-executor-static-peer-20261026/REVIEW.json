@@ -1,0 +1,198 @@
+{
+  "schema": "geo337-final-thin-browser-seed-full-static-peer/1",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "executor_sha256": "8919c65b0729cc10513af7aba4206e4e599e8f9e604cafd3825db38ff9a07a31",
+  "executor_path": "/tmp/geo337-new-final-six-browser-preparation-20261025/prepare_final_thin_seed.py",
+  "executor_bytes": 21258,
+  "reviewed_utc": "2026-10-26T10:32:11.384586+00:00",
+  "state": "STATIC_PREPARATION_ACCEPTED_RUNTIME_UNRUN",
+  "formal_runtime": "UNRUN",
+  "execution_authorized": false,
+  "scope": {
+    "text_ast_hash_only": true,
+    "module_imported": false,
+    "subject_or_helper_executed": false,
+    "git_executed": false,
+    "formal_SHM_read": false,
+    "source_modified": false,
+    "cache_or_clone_created": false,
+    "leases_granted": false
+  },
+  "source_pins": {
+    "/tmp/geo337-new-final-six-browser-preparation-20261025/prepare_final_thin_seed.py": {
+      "sha256": "8919c65b0729cc10513af7aba4206e4e599e8f9e604cafd3825db38ff9a07a31",
+      "bytes": 21258
+    },
+    "/tmp/geo337-new-final-six-browser-preparation-20261025/prove_thin_seed_helpers.py": {
+      "sha256": "ca0cea1832a40592195479b8c485a92d1e846fe6a99079debade590fe7255b0b",
+      "bytes": 5151
+    },
+    "/tmp/geo337-new-final-six-browser-preparation-20261025/THIN_SEED_HELPER_PROOF_SOURCE.py.gz": {
+      "sha256": "ce77bc721c435d21e8a7a2992c5fb57942f6fd7ddd9e3fad50cf9a3a9a30641b",
+      "bytes": 7935
+    },
+    "/tmp/geo337-new-final-six-browser-preparation-20261025/thin-seed-helper-proof-retry1/RESULT.json": {
+      "sha256": "892862de67c1c15ec787c8fc15427381fef9f7391b508c97efd5baa6740dbe77",
+      "bytes": 1829
+    },
+    "/tmp/geo337-new-final-six-browser-preparation-20261025/THIN_SEED_CONSUMER_SCOPE_ADDENDUM.json": {
+      "sha256": "647fc9f91c10cbe0a3c81bc252ac0997a67c3677743a2bf8c0ff409448120f74",
+      "bytes": 444
+    },
+    "/tmp/geo337-new-final-six-browser-preparation-20261025/FIXTURE_TREE.stdout.bin": {
+      "sha256": "cd9a09b18bd1f697e382179f8e9e29cc796632636f5a3f2d4162eb8455a4042e",
+      "bytes": 691
+    },
+    "/tmp/geo337-F9-canvas-sourceplan-20261025/PLAN.json": {
+      "sha256": "c1a1ce03b782b7a26db3b908edebb18d22abad784bcb2926a2934941356a7bde",
+      "bytes": 4589015
+    },
+    "/workspace/clear_terminal_chrome_caches.py": {
+      "sha256": "c51b4da96fc8ce88043484d3072a870fd725a18b00e6288e12144c399069e847",
+      "bytes": 6666
+    },
+    "/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py": {
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+      "bytes": 2819
+    },
+    "/workspace/geo337-F9-browser-sampler-preparation-20261025/sample_original_browser_v2.py": {
+      "sha256": "919eafb54f20454ee44a27754ce04f6f63f05f6e1c9b32a5b51652058735af30",
+      "bytes": 9510
+    },
+    "/workspace/geo337-F9-five-browser-shm-preparation-20261025/browser_readonly_pool_preparer_single_job_shm_v2.py": {
+      "sha256": "29e3248c3d09dac2977e0f85e5814f15aede0cbbfe743b7bad573f547dd188f7",
+      "bytes": 22151
+    },
+    "/tmp/geo337-resume-final-source-plan-20261026/adopt_candidate_three_leaves.py": {
+      "sha256": "71b0b4eb9ddde59f6b8e9ab90eb2492f8e403d1469a645d81864585a631fefba",
+      "bytes": 19066
+    },
+    "/tmp/geo337-resume-final-source-plan-20261026/ADOPTER_PEER.json": {
+      "sha256": "dd2c9e9d6eb5a16d1ac705f6156c2da71438f8988ca839eed923d33c576c398b",
+      "bytes": 4388
+    }
+  },
+  "embedded_tool_pins_match_current_local_bytes": true,
+  "accepted_checks": [
+    {
+      "lines": "128-145",
+      "check": "預設拒絕；--template 不得搭 --execute，模板九個 root leases 均false；正式入口需全true、request/executor/peer/identity pins與真F。peer/int的完整型別強化不是本次變更；本review提供實際int0。"
+    },
+    {
+      "lines": "11-18,39-44,160-161",
+      "check": "寫入命名空間固定新OWN/sf；SOURCE/OLD_GD/native/新路徑皆絕對、無..、無symlink component。BASE必須全不存在；不重用任何舊partial sf。read採NOFOLLOW/NOATIME。"
+    },
+    {
+      "lines": "146-159,184-191",
+      "check": "真原29e canvas plan pin、retained PREPARER pin、原 workflow/private scope；完整ls-tree重新解析且逐項items/omissions相同，實際provider Git再解析F並驗F9祖先與全tree raw逐byte相同。原plan命令需sourceF/exit0/notimeout/exact參數及完整streamhash。"
+    },
+    {
+      "lines": "73-87,193-203",
+      "check": "每個F9基準葉以原seed+verifiedpool+五job pools+五nonprivate job sources完整列known aliases；nonprivate預期12、private預期7，全部同(dev,inode)且nlink==已知路徑數，unknown alias拒絕。原owner唯讀，blob/size/executable mode準確；全3759舊葉先完成preflight後才link。"
+    },
+    {
+      "lines": "88-113,194-207",
+      "check": "每個final selected葉與native bytes/blob/mode吻合且native inode不共用舊payload；unchanged判定含path/mode/blob/size，新增/內容/可執行mode變更使用新O_EXCL inode，從真final Git blob讀bytes，不chmod舊alias。"
+    },
+    {
+      "lines": "93-103,114-118,224-229",
+      "check": "link前重驗原meta/bytes；intent journal先落盤。link後精確inode、nlink+1，保bytes/mode/mtime/uid/gid/xattrs；ctime只允link造成改動。最後遍歷全部舊aliases重驗，deleted final葉仍留舊路徑。"
+    },
+    {
+      "lines": "157-159,201-202",
+      "check": "FIXTURE_RECORD實讀確有五筆且hash符合pin；五個final Git blob/mode/size與F9相同，並逐一核native實bytes。browser原略去四個tests/evidence或release-evidence fixture，唯一web fixture納入；不刪原fixture也不新增skip。"
+    },
+    {
+      "lines": "165-192",
+      "check": "原heavy+secondary雙flock、lock inode/nlink與no symlink檢查；root no-active/full123/browser/freeze/native leases保留。只import既有consumer模組並呼叫consumer_check；不呼叫其main、不執任何cache刪除。consumer輸出改至新sf/preparation。"
+    },
+    {
+      "lines": "169-176",
+      "check": "兩OWN與SOURCE必在真SHM同device；usage使用原sampler按(dev,inode)去重，actual free與U+required均檢查。required=64MiB+page-rounded changedpayload+3*tree_raw+32MiB+8192*parents，原64與2GiB未減。這是啟動規畫非OS配額/連續peak。"
+    },
+    {
+      "lines": "177-191,209-229",
+      "check": "舊seed及native HEAD/status/allrefs/indexhash/indexmetadata初末相同；Git設nooptional、禁gc/maintenance/hooks/fsmonitor/lazyfetch，原object provider只讀。新GD獨立、alternate唯讀provider；新HEAD=F、read-tree F、精確omit S/selected H flags、new source clean。沒有checkout/reset/push/改原refs。"
+    },
+    {
+      "lines": "212-219",
+      "check": "新gitdir/config/HEAD/index/alternate/source.git全在新sf；產生的檔案與journal/capture只在sf。原scheduler lock只flock不改內容；原shared檔唯一預期外觀變更是hardlink nlink與ctime。"
+    },
+    {
+      "lines": "230-246",
+      "check": "例外不rollback、不unlink/rmtree/clean，不刪原流或partial新source；有report時exit1與traceback，保journal及已建path觀測。若建立目錄或最終dump本身失敗，需outer原capture保存非零，不能以缺RESULT稱成功。"
+    },
+    {
+      "lines": "177-180",
+      "check": "所有實際Git子命令使用原c387Recorder保存argv/env/source/完整stdin/stdout/stderr與真exit；source_variant明標來源準備，沒有偽稱browser/native已跑。"
+    }
+  ],
+  "final_delta_applicability": {
+    "reported_candidate_F": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "live_F_not_read_by_this_review": true,
+    "reason": "候選adopter的A→F exactly3葉與thin的OLD=F9→F不是同一diff。thin不假設只copy3葉；從真F完整plan/tree算所有selected新增/變更，包括S10的#314測試、A決策與ledger/report/receipt。上游已審adopter與真identity receipt負責F合法採用範圍，thin負責準確物化；不把generic identity booleans當成自產批准。",
+    "required_before_execution": "原完整native ROOT先transition至同F且clean/fivefixture保全；不可代入architecture3763或其他裁切來源；真候選delivery/byteadoption receipt及其pins需由root綁定。"
+  },
+  "existing_helper_proof_applicability": {
+    "archived_executor_sha256": "bdeec69d32b8bbc46b2ff6f7838b921089754148af4e92d8e9a7987ba80ae99b",
+    "recorded_result_exit_code": 0,
+    "recorded_checks": 16,
+    "recorded_withdrawal_sequence": [
+      0,
+      1,
+      0
+    ],
+    "unchanged_function_ASTs": [
+      "need",
+      "H",
+      "safe",
+      "read",
+      "blob",
+      "meta",
+      "syncdir",
+      "dump",
+      "journal",
+      "load_pinned",
+      "module",
+      "tree",
+      "unchanged",
+      "original_aliases",
+      "inspect_shared",
+      "inspect_final_native",
+      "link_shared",
+      "copy_changed",
+      "final_original_state",
+      "env_for_git"
+    ],
+    "changed_existing_function_ASTs": [
+      "main"
+    ],
+    "added_functions": [
+      "request_template"
+    ],
+    "coverage": "原16項結果涉及實際read/meta/inspect_shared/link_shared/copy_changed/final_original_state；這些helper與當前AST同一。main新consumer scope及template入口未由該helper結果執行。",
+    "limit": "本次只讀已保存RESULT與對應壓縮source；未重跑、未重新驗證當年外層程序退出碼，不把16個布林結果或[0,1,0]列值稱為正式browser/整個executor CLI退出。",
+    "source_delta": "舊bdee→當前8919：新增request_template與--template入口（不得execute），consumer額外覆蓋舊verifiedpool、五sources、五plans；未刪原SOURCE/OLD_GD/NATIVE。",
+    "stale_addendum": "THIN_SEED_CONSUMER_SCOPE_ADDENDUM的171438 pin不是當前executor；本review明綁8919，不繼承舊pin的整體接受。"
+  },
+  "consumer_limitations": [
+    "原consumer_check只觀測可存取/proc cwd/exe/cmdline/fd；unreadable會列記但不當作已檢查，仍依root獨占freeze lease補足，未新增偽保證。",
+    "工具沒有主動讀或寫活動cache；import cache工具的純函式不執其main。",
+    "unknown aliases由nlink完整集合拒絕，不能把目前靜審當現場alias census。"
+  ],
+  "historical_docstring_clarification": "第5–6行「all finish before any browser」只是過時敘述。此main只物化seed，未產六layouts；launcher真guard只需當次job。依root目前排程採每job plan→materialize→guard→正式→完整遠端交付→下一job，仍獨占不重疊；不新增先造六份門檻，也不靠comment放寬容量。",
+  "runtime_preconditions_not_established": [
+    "目前兩OWN容量仍以root新鮮准入為準；parent先前U=1741426688，光後續browser416MiB已缺30150656B且未計seed，不可依本peer直接執行。",
+    "九項root leases、正式require_escalated、完整native F transition、原五fixture現場保全、真finalplan/identity/command pins。",
+    "root維持所有shared source凍結；readonly0444/0555不是防owner chmod的安全邊界。",
+    "原THIN_SEED_REQUEST.unbound.json schema是早期稿；使用目前request_template欄位，不移除guards。",
+    "新seed失敗若留下partial，只保留並重新審核；不自動重跑同sf或清除原證據。"
+  ],
+  "no_claims": [
+    "無新產品驗收通過",
+    "無SHM/source准入",
+    "無新批准或P189 comparator擴張",
+    "無執行lease或先前runtime重新認證"
+  ]
+}

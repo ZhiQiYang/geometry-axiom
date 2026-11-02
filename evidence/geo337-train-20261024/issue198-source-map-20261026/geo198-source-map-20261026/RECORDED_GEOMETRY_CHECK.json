@@ -1,0 +1,64 @@
+{
+  "exit_code": 0,
+  "cases": [
+    {
+      "case": "A",
+      "original_area_mm2": 8800,
+      "footprint_area_mm2": 1200,
+      "intersection_area_mm2": 600,
+      "component_areas_mm2": [
+        300,
+        300
+      ],
+      "component_bounds": [
+        [
+          30,
+          50,
+          40,
+          80
+        ],
+        [
+          60,
+          50,
+          70,
+          80
+        ]
+      ],
+      "saved_dump_after_rejection_identical": true
+    },
+    {
+      "case": "B",
+      "original_area_mm2": 5800,
+      "footprint_area_mm2": 600,
+      "intersection_area_mm2": 200,
+      "component_areas_mm2": [
+        200
+      ],
+      "component_bounds": [
+        [
+          40,
+          70,
+          60,
+          80
+        ]
+      ],
+      "saved_z0_boundary_ids": [
+        1,
+        2
+      ],
+      "saved_component_areas_mm2": [
+        5400,
+        200
+      ],
+      "saved_union_mm2": 5600,
+      "saved_components_disjoint": true,
+      "saved_union_equals_original_minus_intersection": true,
+      "excluded_from_same_plane_comparison": "boundary 3 has placement origin z=70 in the recorded dump"
+    }
+  ],
+  "scope": "derived analysis of historical recorded integer geometry; no new C/native run, no new fixture or semantic decision",
+  "limits": [
+    "Integer open-cell area/interior equality only; not a proof of zero-area boundary topology, metadata, renderer ghosts, or current-source execution.",
+    "No application success inferred from positive contact alone; successful B application comes from the preserved after probe."
+  ]
+}

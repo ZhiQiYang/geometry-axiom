@@ -1,0 +1,129 @@
+--- v1/run_costs.py
++++ v2/run_costs.py
+@@ -2,7 +2,7 @@
+ Original #341 Sc493 whole withdrawal remains a separate, unexecuted subject.
+ """
+ from pathlib import Path
+-import argparse,datetime,fcntl,hashlib,importlib.util,json,os,resource,shutil,statistics,sys
++import argparse,datetime,fcntl,hashlib,importlib.util,json,os,re,resource,shutil,statistics,sys
+ P=Path(__file__).resolve().parent
+ SOURCE='75a1e93811a52b69385cbdaf6a09d773ed9052ad'
+ LEAF='geometry-templates/woodworking/native/contact_world.c'
+@@ -16,20 +16,43 @@
+ def need(v,m):
+  if not v:raise RuntimeError(m)
+ def dump(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+-def inspect_output(raw,diagnostic):
+- text=raw.decode('utf-8');lines=text.splitlines()
+- need(sum(x.startswith('META ')for x in lines)==1,'one META')
+- need(sum(x.startswith('TIME ')for x in lines)==1,'one TIME')
++def inspect_output(raw,diagnostic,case,n):
++ need((case,n)in CASES,'exact requested case and size')
++ need(raw.endswith(b'\n'),'complete final output line')
++ lines=raw.decode('utf-8').splitlines()
++ expected_mode='MODE diagnostic=true performance_sample=false'if diagnostic else 'MODE diagnostic=false performance_sample=true'
++ need([x for x in lines if x.startswith('MODE ')]==[expected_mode],'diagnostic/performance separation')
++ keys={'META','TIME','WORK','PATH'}if diagnostic else {'META','TIME'}
+  fields={}
+  for line in lines:
+-  if line.startswith(('META ','TIME ','WORK ','PATH ')):
+-   key,rest=line.split(' ',1);fields[key]=dict(p.split('=',1)for p in rest.split())
+- need(('MODE diagnostic=true performance_sample=false'if diagnostic else 'MODE diagnostic=false performance_sample=true')in lines,'diagnostic/performance separation')
+- need(('WORK'in fields)==diagnostic and ('PATH'in fields)==diagnostic,'diagnostic counts cannot become timing samples')
++  key,sep,rest=line.partition(' ')
++  need(sep and key in keys|{'MODE','FACE'},'known complete output record')
++  if key in keys:
++   need(key not in fields,'one '+key)
++   pairs=[p.split('=',1)for p in rest.split()]
++   need(all(len(p)==2 and p[0]and p[1]for p in pairs),'complete key/value record')
++   need(len({p[0]for p in pairs})==len(pairs),'unique fields')
++   fields[key]=dict(pairs)
++ need(set(fields)==keys,'complete diagnostic or timing records')
++ meta=fields['META']
++ need(set(meta)=={'case','n','admitted','capacity','fallback','face_size'},'complete META fields')
++ need(meta['case']==case and meta['n']==str(n),'META matches exact requested case/size')
++ need(meta['admitted']==str(n*2)and meta['capacity']=='2432'and meta['fallback']==str(int(case.startswith('fallback-'))),'META matches fixture capacity and path')
++ need(re.fullmatch(r'[0-9]+',meta['face_size'])and int(meta['face_size'])>0,'positive numeric face size')
++ numeric_keys={'TIME':{'cpu_ns','wall_ns','cpu_resolution_ns','wall_resolution_ns'}}
++ if diagnostic:
++  numeric_keys.update(WORK={'shadow_iterations','active_initializations','active_reads','active_deletions','memmove_calls','memmove_bytes','compaction_copies'},PATH={'orders_indexed','orders_unique','admitted','indexed_calls'})
++ for key,expected in numeric_keys.items():
++  need(set(fields[key])==expected,'complete '+key+' fields')
++  need(all(re.fullmatch(r'[0-9]+',v)for v in fields[key].values()),'unsigned numeric '+key)
++ kind=case.removeprefix('unique-')
++ expected_faces=2 if kind in ('dense','fallback-dense')else (n-1)*2 if kind=='few'else n*2
+  fields['FACE']=[line for line in lines if line.startswith('FACE ')]
+- need(fields['FACE'],'complete field-serialized face sequence required')
+- for k,v in fields['TIME'].items():need(k in ('cpu_ns','wall_ns','cpu_resolution_ns','wall_resolution_ns')and v.isdigit(),'clock numeric value')
+- need(set(fields['TIME'])=={'cpu_ns','wall_ns','cpu_resolution_ns','wall_resolution_ns'},'all clocks/resolutions')
++ need(len(fields['FACE'])==expected_faces,'complete expected FACE row count')
++ for line in fields['FACE']:
++  values=line.split()[1:]
++  need(len(values)==9 and all(re.fullmatch(r'-?[0-9]+',v)for v in values),'nine numeric FACE fields')
++  need(all(re.fullmatch(r'[0-9]+',values[i])for i in (1,2)),'unsigned FACE identifiers')
+  return fields
+ 
+ def plan():
+@@ -120,7 +143,7 @@
+    for variant in VARIANTS:
+     row,stdout,stderr=run([executables[variant][1],case,n],check=False)
+     if row['actual_process_returncode']!=0:report['errors'].append(dict(scope='diagnostic',variant=variant,case=case,n=n,command=row['directory']));continue
+-    fields=inspect_output(stdout,True);diagnostics[variant]=fields;reference=reference or fields['FACE']
++    fields=inspect_output(stdout,True,case,n);diagnostics[variant]=fields;reference=reference or fields['FACE']
+     need(fields['FACE']==reference,'diagnostic exact sequence mismatch')
+     report['samples'].append(dict(kind='diagnostic-not-performance',case=case,n=n,variant=variant,fields=fields,command=row['directory']))
+    if set(diagnostics)==set(VARIANTS):need(diagnostics['fixed']['WORK']==diagnostics['restored']['WORK'],'restored exact work differs')
+@@ -129,7 +152,7 @@
+     for variant in order:
+      row,stdout,stderr=run([executables[variant][0],case,n],check=False)
+      if row['actual_process_returncode']!=0:report['errors'].append(dict(scope='timing',round=round_no,variant=variant,case=case,n=n,command=row['directory']));continue
+-     fields=inspect_output(stdout,False);need(reference is not None and fields['FACE']==reference,'uninstrumented exact sequence mismatch')
++     fields=inspect_output(stdout,False,case,n);need(reference is not None and fields['FACE']==reference,'uninstrumented exact sequence mismatch')
+      report['samples'].append(dict(kind='warmup'if round_no==0 else 'scored',round=round_no,case=case,n=n,variant=variant,fields=fields,command=row['directory']))
+   report['medians']=[]
+   for case,n in CASES:
+--- v1/test_metadata_guards.py
++++ v2/test_metadata_guards.py
+@@ -21,12 +21,12 @@
+  edits=[('wrong-source','source_sha','0'*40),('missing-withdrawn','variants',('fixed','restored')),('missing-positive','positive_cases',namespace['POSITIVE'][:-1]),('missing-fallback','cases',make()['cases'][:-4]),('discarded-sample','scored_triplets',6),('changed-runtime-timeout','run_timeout',21),('invented-threshold','performance_thresholds_added',True),('false-historical-completion','Sc493_whole_withdrawal_executed',True)]
+  for name,key,value in edits:
+   d=copy.deepcopy(make());d[key]=value;check(name,lambda d=d:validate(d),True)
+- raw=b'MODE diagnostic=false performance_sample=true\nMETA case=none n=8 admitted=16 capacity=2432 fallback=0 face_size=64\nTIME cpu_ns=1 wall_ns=2 cpu_resolution_ns=1 wall_resolution_ns=1\nFACE synthetic-parser-control\n'
+- check('timing-protocol',lambda:parse(raw,False),False)
+- check('missing-full-face-stream',lambda:parse(raw.replace(b'FACE synthetic-parser-control\n',b''),False),True)
+- check('diagnostic-not-performance',lambda:parse(raw,True),True)
+- check('duplicate-time-record',lambda:parse(raw+b'TIME cpu_ns=1 wall_ns=2 cpu_resolution_ns=1 wall_resolution_ns=1\n',False),True)
+- check('invalid-clock-number',lambda:parse(raw.replace(b'cpu_ns=1',b'cpu_ns=-1'),False),True)
++ raw=b'MODE diagnostic=false performance_sample=true\nMETA case=none n=8 admitted=16 capacity=2432 fallback=0 face_size=64\nTIME cpu_ns=1 wall_ns=2 cpu_resolution_ns=1 wall_resolution_ns=1\n'+b'FACE 1 0 42 -1 0 0 0 0 27\n'*16
++ check('timing-protocol',lambda:parse(raw,False,'none',8),False)
++ check('missing-full-face-stream',lambda:parse(raw.replace(b'FACE 1 0 42 -1 0 0 0 0 27\n',b''),False,'none',8),True)
++ check('diagnostic-not-performance',lambda:parse(raw,True,'none',8),True)
++ check('duplicate-time-record',lambda:parse(raw+b'TIME cpu_ns=1 wall_ns=2 cpu_resolution_ns=1 wall_resolution_ns=1\n',False,'none',8),True)
++ check('invalid-clock-number',lambda:parse(raw.replace(b'cpu_ns=1',b'cpu_ns=-1'),False,'none',8),True)
+  failures=[x['name']for x in checks if not x['passed']]
+  result=dict(exit=1 if failures else 0,checks=len(checks),failures=failures,withdraw_source_guard=a.withdraw_source_guard,C_executed=False,product_mutation_proof=False,details=checks)
+  print(json.dumps(result,ensure_ascii=False));return result['exit']
+--- v1/PLAN.md
++++ v2/PLAN.md
+@@ -43,11 +43,11 @@
+ 
+ ## 精確下一步命令（目前尚未執行）
+ 
+-1. 保持 root full123 完成前不啟動此重工作。先由 h_init_actual_review 審本稿；檢查當時disk，128MiB額外資源守門是儲存預算，不是產品門檻。不要刪原件、fixtures或Gitobjects。
++1. 保持 root full123 完成前不啟動此重工作。先由 cost_tool_adversarial 審本v2稿；檢查當時disk，128MiB額外資源守門是儲存預算，不是產品門檻。不要刪原件、fixtures或Gitobjects。
+ 2. 由 root 在獨占性能時槽呼叫：
+ 
+ ```sh
+-python3 -B /tmp/geo341-cost-preparation-20261025/run_costs.py --owner /workspace/geometry-axiom --out /tmp/geo341-F8-fallback-cost-run-20261025 --execute --root-exclusive-lease --minimum-free-bytes 134217728
++python3 -B /tmp/geo341-cost-preparation-v2-20261025/run_costs.py --owner /workspace/geometry-axiom --out /tmp/geo341-F8-fallback-cost-run-20261025 --execute --root-exclusive-lease --minimum-free-bytes 134217728
+ ```
+ 
+ 所有檔案會保留於fresh OUT；若同名OUT已存在，拒絕覆寫。沒有任何已完成的這輪測量可以安全復用；可復用的是原harness／capture／已凍結的工具。三版 source、所有編譯ELF與完整raw均保，不在末尾cleanup。
+@@ -59,3 +59,7 @@
+ `prepare_instrumentation.py` 只產生外部C字串，三版轉換全部可逆，沒有編譯。`test_metadata_guards.py` 14項 metadata/protocol checks；只撤回source identity守門，原／撤回／恢復 process exit為0／1／0，唯一紅是wrong-source。原輸出在 `metadata-proof/`。這是收件工具的自證，不是產品突變證據，也不是任何性能結果。
+ 
+ 完整 metadata 原收件另在 `metadata-original-capture/`：使用既有 c387 Recorder 記三次真 argv／UTC／exit／stdout／stderr／環境，三phase仍0／1／0，唯一撤回紅仍wrong-source。先前短收據保在 metadata-proof/，這次只補收件完整度；沒有C或性能重跑。
++
++## v2 收件修正（外部工具；未執行C或性能）
++
++初稿獨審發現完整16列FACE被截成1列仍可接受。v2向parser傳入實際case/n，精確核對META、原harness公式導出的FACE列數、9整數欄、唯一MODE/KEY與完整行。所有C候選/原harness/插樁逐byte未改；未新增效能門檻、未變取樣或時限。原初稿與失敗反例保留，v2 supersedes原啟動稿。五組純metadata/protocol固定／撤回／恢復均0／1／0（source、count、identity、numeric、duplicates），完整原命令在protocol-original-capture；每次14或45檢查，不是產品驗收。由root接手v2以免子代理thread limit重試；未開替代任務。
