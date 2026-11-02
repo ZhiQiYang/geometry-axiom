@@ -1,0 +1,7 @@
+{
+  "actual_reviewer_exit": 1,
+  "exception": "KeyError: directory",
+  "line": 94,
+  "cause": "Reviewer treated original producer wrapper RESULT as c387 row; original schema wraps actual row under command. No subject receipt changed.",
+  "correction": "Review producer.command and separately require producer.actual_exit == command.actual_process_returncode == 0."
+}

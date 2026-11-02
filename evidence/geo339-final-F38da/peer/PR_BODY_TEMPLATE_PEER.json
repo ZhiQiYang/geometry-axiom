@@ -1,0 +1,78 @@
+{
+  "subject": "/workspace/geo339-publication-20261024/PR_BODY.template.md",
+  "sha256": "4bf2bfd32adb1f0e954975f3f40a24fb124ac33fcf7b770cb44cbe42e0c1bdfa",
+  "checks": [
+    {
+      "name": "fixed-current-template",
+      "passed": true
+    },
+    {
+      "name": "unique-current-state",
+      "passed": true
+    },
+    {
+      "name": "one-E-placeholder",
+      "passed": true
+    },
+    {
+      "name": "formal-11-counts",
+      "passed": true
+    },
+    {
+      "name": "142-arithmetic",
+      "passed": true
+    },
+    {
+      "name": "new-142-execution-F",
+      "passed": true
+    },
+    {
+      "name": "three-real-0-1-0",
+      "passed": true
+    },
+    {
+      "name": "old-judge-execution-M-not-retagged",
+      "passed": true
+    },
+    {
+      "name": "ledger-explicit-red",
+      "passed": true
+    },
+    {
+      "name": "new-CI-not-old-cause",
+      "passed": true
+    },
+    {
+      "name": "B3-partial",
+      "passed": true
+    },
+    {
+      "name": "C1-C2-pending",
+      "passed": true
+    },
+    {
+      "name": "no-new-skip",
+      "passed": true
+    },
+    {
+      "name": "rawpin",
+      "passed": true
+    },
+    {
+      "name": "new-handoff",
+      "passed": true
+    },
+    {
+      "name": "not-ready",
+      "passed": true
+    }
+  ],
+  "checks_total": 16,
+  "failed_checks": 0,
+  "scope": "Narrow static body consistency review against supplied actual package peer facts; no execution or GitHub/API status claim.",
+  "limitations": [
+    "Evidence placeholder must be replaced by the actual normal-pushed E before publication.",
+    "This does not re-run the 6636-check actual-package peer or verify new CI causes."
+  ],
+  "created_utc": "2026-10-24T01:15:29.066409+00:00"
+}

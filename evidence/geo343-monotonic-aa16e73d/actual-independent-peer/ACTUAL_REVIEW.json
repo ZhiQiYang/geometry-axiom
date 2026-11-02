@@ -1,0 +1,31 @@
+{
+  "source_sha": "aa16e73d6e1f2965e0a911581e2a545aaaf66870",
+  "checks": 3139,
+  "failures": 0,
+  "findings": [],
+  "original_methods": 35,
+  "compile_link_zero": 332,
+  "new_semantic_controls": 4,
+  "whole_work": [
+    {
+      "phase": "fixed",
+      "exit": 0,
+      "stdout": "CASE work faces=128 first=2 order_calls=128\n",
+      "stderr": ""
+    },
+    {
+      "phase": "withdrawn",
+      "exit": 1,
+      "stdout": "CASE work faces=128 first=2 order_calls=896\n",
+      "stderr": "ASSERT:monotonic-linear-order-lookups\n"
+    },
+    {
+      "phase": "restored",
+      "exit": 0,
+      "stdout": "CASE work faces=128 first=2 order_calls=128\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Independent original actual streams/compiler-input/metadata review; no subject rerun, C compilation, network, or archive rewrite. Source/evidence publication peer is separate. Full native, ledger, architecture and original final-union performance remain UNRUN for this source.",
+  "reviewer_correction": "Initial reader wrongly required a per-command stderr file for two original reading-a git check_output calls (61/66) that inherit stderr. Original captured:false plus argv/kwargs and missing-file state verified exactly; not rewritten or invented. Initial failed helper/report retained."
+}

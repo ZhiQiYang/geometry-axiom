@@ -1,0 +1,28 @@
+{
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "root": "/tmp/train337-323-f64d638f-source",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/native-final-executable-preparation/run_full_native_workflow_v2.py",
+    "--repo",
+    "/tmp/train337-323-f64d638f-source",
+    "--sha",
+    "4f8a794f4167c3562eb182045102e86e9e37cca9",
+    "--out",
+    "/tmp/geo337-F9-native-4f8a794f-20261025",
+    "--resource-lock",
+    "/tmp/g261r3/heavy.lock",
+    "--root-cache-quiescent"
+  ],
+  "tool_sha256": "763a6e8064be212a020522a43a80bdb6cd353d329997c83479f469c2359f4d21",
+  "free_before": {
+    "/workspace": 86327296,
+    "/tmp": 141058048
+  },
+  "root_quiescence_authorized": true,
+  "root_secondary_exclusion": true,
+  "original_ci_timeout_minutes": 35,
+  "source_or_tests_modified": false,
+  "all_MUTATE_environment_removed": true
+}

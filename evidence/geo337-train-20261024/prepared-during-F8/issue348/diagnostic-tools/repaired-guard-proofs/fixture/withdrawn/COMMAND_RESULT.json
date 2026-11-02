@@ -1,0 +1,23 @@
+{
+  "control": "fixture",
+  "phase": "withdrawn",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/fixture/withdrawn/case.py",
+    "fixture"
+  ],
+  "cwd": "/tmp/geo348-command-boundary-diagnostic-tools-20261025/repaired-guard-proofs/fixture/withdrawn",
+  "exit": 1,
+  "source_sha256": {
+    "sidecar.py": "f0180d1d40158f5994c4937e6feb786f9494c28315ed72e6929a52badfd12142",
+    "launch_diagnostic.py": "1ec3c081443568568a0d5553b6927b9bb8f47033f0157ee4782ab194675c5cc2",
+    "selftest_protocol.py": "48e30edd4e50e35cebd8677eabca5d73c3a0089c7a32ad8ad9bf19fd878a6cc5"
+  },
+  "case_sha256": "062be969ef56360011b1a6122620c735c1b52ec7a7c62b55df0c2962622338b1",
+  "stdout_sha256": "e171463dfca37409f841eedbb274e2eede14af707f91f9e31b8f3e240d384604",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "synthetic": true,
+  "product_executed": false,
+  "wrapper_compiled": false
+}

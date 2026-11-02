@@ -1,0 +1,17 @@
+{
+  "schema": "four-archive-groups-complete-original-package-peer-v1",
+  "checks": 3421,
+  "exit_code": 0,
+  "findings": [],
+  "archive_sha256": "fc852b7d53c9c0c41feb2ce6256e61723cf2903fcdff4142e1076bb237ce73e7",
+  "archive_members": 840,
+  "original_bytes": 1694913,
+  "inventory_sha256": "df0c9c152626cf889768f97c02247a719a83523bce3e2acb5825fa995b3c9d87",
+  "actual_collector_outer_exit": 0,
+  "limits": [
+    "Only1.7MB original metadata/fullstreams and248731B small tar read; no19 original archive bodies hashed or copied.",
+    "423cold,2cardref,1geo339-six,3large groups remain separate immutable write/reuse bans.",
+    "Original historical red outcomes remain red; no product gate executed or reclassified.",
+    "Source allocation saving476540928 remains distinct from actual df free-space delta."
+  ]
+}

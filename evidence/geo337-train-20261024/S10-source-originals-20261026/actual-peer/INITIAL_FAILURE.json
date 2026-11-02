@@ -1,0 +1,11 @@
+{
+  "command": ["python3", "-B", "/tmp/geo337-resume-source-package-peer-20261026/audit.py"],
+  "actual_exit_code": 1,
+  "tool_chunk_id": "e4484b",
+  "stdout": "",
+  "exception": "KeyError: 'exit_code'",
+  "failing_operation": "J(name)['exit_code'] on host-and-reviewers/geo337-S10-source-preparation-EXEC_FINAL-20261025.json",
+  "scope": "Reader schema assumption; package and original commands unchanged; no product rerun.",
+  "original_reader_preserved": "audit.initial.py",
+  "provenance": "Recorded from actual exec tool return; original tool traceback remains in this task history."
+}

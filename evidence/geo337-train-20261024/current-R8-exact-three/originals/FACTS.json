@@ -1,0 +1,291 @@
+{
+  "schema": "geo337-r8-exact-three-readonly-triage/1",
+  "utc": "2026-10-25T07:03:39.460556+00:00",
+  "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "fixed_base": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+  "introduced_commit": "6366304eb787b2a50282e4132f45e51eb7d21290",
+  "introduced_parent": "4b665fae21ab63aaffb7d84f6a32d5a469ba1675",
+  "ssot_I22_byte_equal_after_LF": true,
+  "base_I22_lines": [
+    1339,
+    1353
+  ],
+  "F8_I22_lines": [
+    1346,
+    1360
+  ],
+  "I22_clause": "I22 延伸段（分層契約）：\n\n核心契約（K）：定位來源區間與實例區間按 D16 精確分解；各分量的長度、全覆蓋與端點接觸均由核心判式求值。不同分量是否改變可用接觸候選、優先序或端部義務由顯式策略選擇，不能從「區間伸出」這個幾何結果自行賦予豁免。\n\n固定木工模板契約（W）：以下完整保留現行輸入、用途與驗收條件；其中可共用的求值委由上述核心完成。\n\n延伸段：只有 `boundary` 可有延伸段（其他角色的 footprint 必須完整落在兩個擋面之間，\n    無「超出定位邊」的段）。延伸段的端面仍須恰有一個涵蓋全寬的擋面（R6(d)），\n    但**不受 I19 限制**——可以頂任何優先級的側面，被頂的料不因此被裁斷\n    （幾何上：被頂者 footprint 不變）。延伸段 ⊆ 有效範圍（I5）——因此只有凹角\n    （反射角）端點才可能延伸，凸角處延伸即出界，不需另立規則。\n    延伸段的側面作為別支料的擋面時，以優先級 2 計（懸出段不是固定邊界，\n    主支端面不得頂它；可頂它的只有平行主支軸且優先級大於 2 的 custom 料）。\n    違反本條 → 拒絕（V_EXTENSION），\n    訊息指名料件、定位邊與超出的區間。\n",
+  "original_compare_assertion": "verify_linux.py:156 assert not failures,failures",
+  "original_compare_exit": 1,
+  "scenes_in_original_compare": 175,
+  "runs_in_original_compare": 350,
+  "failures": [
+    [
+      "_role_priority_mutant.scene",
+      "stdout"
+    ],
+    [
+      "_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "stdout"
+    ],
+    [
+      "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "stdout"
+    ]
+  ],
+  "cases": [
+    {
+      "scene": "_role_priority_mutant.scene",
+      "command": "loadfile /tmp/geo323-final-r8-source-20261024/_role_priority_mutant.scene\ndump\n",
+      "versions": {
+        "base": {
+          "source_sha": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+          "streams": {
+            "stdout": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/base/_role_priority_mutant.scene.stdout",
+              "bytes": 1092,
+              "sha256": "f2a7fb6c0e175bdb5f4e4cc3e1e04925ef70026a53f130331b4cf11a158ba0e7",
+              "copy": "raw/_role_priority_mutant.scene/base/stdout.bin"
+            },
+            "stderr": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/base/_role_priority_mutant.scene.stderr",
+              "bytes": 144,
+              "sha256": "ee3e8102bd213ce83e69d1e1a695100a3a0849d5112bb270c8985d0b1a4ef2cd",
+              "copy": "raw/_role_priority_mutant.scene/base/stderr.bin"
+            }
+          },
+          "first_stdout_line": "{\"ok\":false,\"error\":\"line 8: V_EXTENSION：非 boundary 角材（1）的 footprint 超出定位邊範圍\",\"status\":\"INVALID\",\"code\":\"SCENE_INVALID\"}\n",
+          "first_response": {
+            "ok": false,
+            "error": "line 8: V_EXTENSION：非 boundary 角材（1）的 footprint 超出定位邊範圍",
+            "status": "INVALID",
+            "code": "SCENE_INVALID"
+          },
+          "dump_line_sha256": "749aac5c71876a8bffc820d8cf4a8c7dbf254713a377dfb749dc1061c4f83624",
+          "graph_sha256": "467a4a9d1b5f793d10865a3f821c1e4ec8734a899ec45032b512005e86f72550",
+          "graph_bytes": 64845,
+          "guards": {
+            "app_world_candidate_create": 4,
+            "app_world_candidate_seal": 3,
+            "app_world_candidate_publish": 3,
+            "app_world_candidate_revalidate": 0,
+            "reference_check_all": 9
+          },
+          "exit": 0,
+          "trace_exit": 0
+        },
+        "fix": {
+          "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "streams": {
+            "stdout": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/fix/_role_priority_mutant.scene.stdout",
+              "bytes": 1152,
+              "sha256": "61823d285e3335511d34714e2d08dd8869e995c336fc75144942107ee01ca0f9",
+              "copy": "raw/_role_priority_mutant.scene/fix/stdout.bin"
+            },
+            "stderr": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/fix/_role_priority_mutant.scene.stderr",
+              "bytes": 204,
+              "sha256": "4f47f1f9a638b9feb1a1c274fbbf2d606edba0bf47c324ce496f42ab2bba63af",
+              "copy": "raw/_role_priority_mutant.scene/fix/stderr.bin"
+            }
+          },
+          "first_stdout_line": "{\"ok\":false,\"error\":\"line 8: V_EXTENSION：非 boundary 角材（1）的 footprint 超出定位邊範圍——定位邊 e2 [2000,4000] mm，低端超出 [0,2000] mm\",\"status\":\"INVALID\",\"code\":\"SCENE_INVALID\"}\n",
+          "first_response": {
+            "ok": false,
+            "error": "line 8: V_EXTENSION：非 boundary 角材（1）的 footprint 超出定位邊範圍——定位邊 e2 [2000,4000] mm，低端超出 [0,2000] mm",
+            "status": "INVALID",
+            "code": "SCENE_INVALID"
+          },
+          "dump_line_sha256": "749aac5c71876a8bffc820d8cf4a8c7dbf254713a377dfb749dc1061c4f83624",
+          "graph_sha256": "467a4a9d1b5f793d10865a3f821c1e4ec8734a899ec45032b512005e86f72550",
+          "graph_bytes": 64845,
+          "guards": {
+            "app_world_candidate_create": 4,
+            "app_world_candidate_seal": 3,
+            "app_world_candidate_publish": 3,
+            "app_world_candidate_revalidate": 0,
+            "reference_check_all": 9
+          },
+          "exit": 0,
+          "trace_exit": 0
+        }
+      },
+      "only_stdout_json_field_changed": "error",
+      "added_message_suffix": "——定位邊 e2 [2000,4000] mm，低端超出 [0,2000] mm",
+      "introduced_by": "6366304eb787b2a50282e4132f45e51eb7d21290",
+      "diagnostic_is_required_by_both_base_and_current_I22": true
+    },
+    {
+      "scene": "_s1_p8_l_room_primary_through_reflex_extension.scene",
+      "command": "loadfile /tmp/geo323-final-r8-source-20261024/_s1_p8_l_room_primary_through_reflex_extension.scene\ndump\n",
+      "versions": {
+        "base": {
+          "source_sha": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+          "streams": {
+            "stdout": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/base/_s1_p8_l_room_primary_through_reflex_extension.scene.stdout",
+              "bytes": 1093,
+              "sha256": "1588124a410c2920e9eccbe938754341c6a434c80d3b8649501aad1d382e8e3f",
+              "copy": "raw/_s1_p8_l_room_primary_through_reflex_extension.scene/base/stdout.bin"
+            },
+            "stderr": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/base/_s1_p8_l_room_primary_through_reflex_extension.scene.stderr",
+              "bytes": 170,
+              "sha256": "89276563365a51e788d30a1747cbea5aa5d6647f3a485d16fcb9c2bdf28027da",
+              "copy": "raw/_s1_p8_l_room_primary_through_reflex_extension.scene/base/stderr.bin"
+            }
+          },
+          "first_stdout_line": "{\"ok\":false,\"error\":\"line 15: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍\",\"status\":\"INVALID\",\"code\":\"SCENE_INVALID\"}\n",
+          "first_response": {
+            "ok": false,
+            "error": "line 15: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍",
+            "status": "INVALID",
+            "code": "SCENE_INVALID"
+          },
+          "dump_line_sha256": "749aac5c71876a8bffc820d8cf4a8c7dbf254713a377dfb749dc1061c4f83624",
+          "graph_sha256": "467a4a9d1b5f793d10865a3f821c1e4ec8734a899ec45032b512005e86f72550",
+          "graph_bytes": 64845,
+          "guards": {
+            "app_world_candidate_create": 4,
+            "app_world_candidate_seal": 3,
+            "app_world_candidate_publish": 3,
+            "app_world_candidate_revalidate": 0,
+            "reference_check_all": 11
+          },
+          "exit": 0,
+          "trace_exit": 0
+        },
+        "fix": {
+          "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "streams": {
+            "stdout": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/fix/_s1_p8_l_room_primary_through_reflex_extension.scene.stdout",
+              "bytes": 1154,
+              "sha256": "ce2c3f1d6e4e02576cd8f66a64a938b984fc237e215ad62b2f485a024f19a581",
+              "copy": "raw/_s1_p8_l_room_primary_through_reflex_extension.scene/fix/stdout.bin"
+            },
+            "stderr": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/fix/_s1_p8_l_room_primary_through_reflex_extension.scene.stderr",
+              "bytes": 231,
+              "sha256": "a410e57b8930365f4852413a0244a5607f0d4aec15e47883344a393511d57459",
+              "copy": "raw/_s1_p8_l_room_primary_through_reflex_extension.scene/fix/stderr.bin"
+            }
+          },
+          "first_stdout_line": "{\"ok\":false,\"error\":\"line 15: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e3 [3000,4800] mm，低端超出 [27,3000] mm\",\"status\":\"INVALID\",\"code\":\"SCENE_INVALID\"}\n",
+          "first_response": {
+            "ok": false,
+            "error": "line 15: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e3 [3000,4800] mm，低端超出 [27,3000] mm",
+            "status": "INVALID",
+            "code": "SCENE_INVALID"
+          },
+          "dump_line_sha256": "749aac5c71876a8bffc820d8cf4a8c7dbf254713a377dfb749dc1061c4f83624",
+          "graph_sha256": "467a4a9d1b5f793d10865a3f821c1e4ec8734a899ec45032b512005e86f72550",
+          "graph_bytes": 64845,
+          "guards": {
+            "app_world_candidate_create": 4,
+            "app_world_candidate_seal": 3,
+            "app_world_candidate_publish": 3,
+            "app_world_candidate_revalidate": 0,
+            "reference_check_all": 11
+          },
+          "exit": 0,
+          "trace_exit": 0
+        }
+      },
+      "only_stdout_json_field_changed": "error",
+      "added_message_suffix": "——定位邊 e3 [3000,4800] mm，低端超出 [27,3000] mm",
+      "introduced_by": "6366304eb787b2a50282e4132f45e51eb7d21290",
+      "diagnostic_is_required_by_both_base_and_current_I22": true
+    },
+    {
+      "scene": "_s1_p8b_l_room_primary_through_reflex_extension_hi.scene",
+      "command": "loadfile /tmp/geo323-final-r8-source-20261024/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene\ndump\n",
+      "versions": {
+        "base": {
+          "source_sha": "b74f9a2ae7ade1555b9be45283adecc097fb76e3",
+          "streams": {
+            "stdout": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/base/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene.stdout",
+              "bytes": 1093,
+              "sha256": "3e907bbee2d6e639137c9f56deb53bb541ce6ac3514818e711ef2356189e57e4",
+              "copy": "raw/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene/base/stdout.bin"
+            },
+            "stderr": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/base/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene.stderr",
+              "bytes": 174,
+              "sha256": "f0f64cafeaa7035e01348acaded6c0be62ddc2d3ffc6c7a6eece81b8e1714b91",
+              "copy": "raw/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene/base/stderr.bin"
+            }
+          },
+          "first_stdout_line": "{\"ok\":false,\"error\":\"line 12: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍\",\"status\":\"INVALID\",\"code\":\"SCENE_INVALID\"}\n",
+          "first_response": {
+            "ok": false,
+            "error": "line 12: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍",
+            "status": "INVALID",
+            "code": "SCENE_INVALID"
+          },
+          "dump_line_sha256": "749aac5c71876a8bffc820d8cf4a8c7dbf254713a377dfb749dc1061c4f83624",
+          "graph_sha256": "467a4a9d1b5f793d10865a3f821c1e4ec8734a899ec45032b512005e86f72550",
+          "graph_bytes": 64845,
+          "guards": {
+            "app_world_candidate_create": 4,
+            "app_world_candidate_seal": 3,
+            "app_world_candidate_publish": 3,
+            "app_world_candidate_revalidate": 0,
+            "reference_check_all": 11
+          },
+          "exit": 0,
+          "trace_exit": 0
+        },
+        "fix": {
+          "source_sha": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+          "streams": {
+            "stdout": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/fix/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene.stdout",
+              "bytes": 1153,
+              "sha256": "330b619f44194bb25f283b14b4398d43bcf38934ff24bfebc29b6365ff43635c",
+              "copy": "raw/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene/fix/stdout.bin"
+            },
+            "stderr": {
+              "original_path": "/tmp/g337323R8/evidence/stdout/fix/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene.stderr",
+              "bytes": 234,
+              "sha256": "2675f45b582bee69f70fe3dc6250c073060c24e4c6f226a5796313e0574db333",
+              "copy": "raw/_s1_p8b_l_room_primary_through_reflex_extension_hi.scene/fix/stderr.bin"
+            }
+          },
+          "first_stdout_line": "{\"ok\":false,\"error\":\"line 12: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e1 [0,1800] mm，高端超出 [1800,4773] mm\",\"status\":\"INVALID\",\"code\":\"SCENE_INVALID\"}\n",
+          "first_response": {
+            "ok": false,
+            "error": "line 12: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e1 [0,1800] mm，高端超出 [1800,4773] mm",
+            "status": "INVALID",
+            "code": "SCENE_INVALID"
+          },
+          "dump_line_sha256": "749aac5c71876a8bffc820d8cf4a8c7dbf254713a377dfb749dc1061c4f83624",
+          "graph_sha256": "467a4a9d1b5f793d10865a3f821c1e4ec8734a899ec45032b512005e86f72550",
+          "graph_bytes": 64845,
+          "guards": {
+            "app_world_candidate_create": 4,
+            "app_world_candidate_seal": 3,
+            "app_world_candidate_publish": 3,
+            "app_world_candidate_revalidate": 0,
+            "reference_check_all": 11
+          },
+          "exit": 0,
+          "trace_exit": 0
+        }
+      },
+      "only_stdout_json_field_changed": "error",
+      "added_message_suffix": "——定位邊 e1 [0,1800] mm，高端超出 [1800,4773] mm",
+      "introduced_by": "6366304eb787b2a50282e4132f45e51eb7d21290",
+      "diagnostic_is_required_by_both_base_and_current_I22": true
+    }
+  ],
+  "classification": "Historical base omits existing I22-required diagnostic detail; current output fixes that omission. Original cross-version byte-equality gate remains failed.",
+  "product_changed": false,
+  "tests_changed": false,
+  "comparator_changed": false,
+  "bridge_or_perf_rerun": false,
+  "new_semantic_decision_adopted": false,
+  "proof_scope": "Only three existing failed scene pairs were inspected here; their raw streams/graphs preserved. No new product acceptance claimed."
+}

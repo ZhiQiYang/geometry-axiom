@@ -1,0 +1,117 @@
+{
+  "subject_sha256": "988a3b851db4417d41c073d02e8d3e440ea7dd22c10c53421490da79174cb720",
+  "memory_only": true,
+  "formal_git_executed": false,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "fixed"
+      ],
+      "actual_process_returncode": 0,
+      "stdout": "{\"case\": \"fixed\", \"memory_only\": true, \"actual_git_called\": false, \"filesystem_or_network_mutation\": false, \"outcome\": \"accepted\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "withdrawn-unlisted-overwrite"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 49, in <module>\n    final=update(base,changes)\n          ^^^^^^^^^^^^^^^^^^^^\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 80, in update\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 12, in need\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: refuse overwrite except exact explicitly bound PROGRESS blob\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "restored"
+      ],
+      "actual_process_returncode": 0,
+      "stdout": "{\"case\": \"restored\", \"memory_only\": true, \"actual_git_called\": false, \"filesystem_or_network_mutation\": false, \"outcome\": \"accepted\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "stale-progress"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 49, in <module>\n    final=update(base,changes)\n          ^^^^^^^^^^^^^^^^^^^^\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 80, in update\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 12, in need\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: refuse overwrite except exact explicitly bound PROGRESS blob\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "unbound-progress"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 49, in <module>\n    final=update(base,changes)\n          ^^^^^^^^^^^^^^^^^^^^\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 80, in update\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 12, in need\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: refuse overwrite except exact explicitly bound PROGRESS blob\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "other-progress"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 49, in <module>\n    final=update(base,changes)\n          ^^^^^^^^^^^^^^^^^^^^\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 84, in update\n  File \"<real-update-helper>\", line 80, in update\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 12, in need\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: refuse overwrite except exact explicitly bound PROGRESS blob\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "new-only"
+      ],
+      "actual_process_returncode": 0,
+      "stdout": "{\"case\": \"new-only\", \"memory_only\": true, \"actual_git_called\": false, \"filesystem_or_network_mutation\": false, \"outcome\": \"accepted\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "stale-parent"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 44, in <module>\n    eval(compile(ast.Expression(copy.deepcopy(call)),'<real-remote-parent-guard>','eval'),{'need':need,'git':lambda *args:actual,'BRANCH':branch,'expected_parent_ref':expected})\n  File \"<real-remote-parent-guard>\", line 51, in <module>\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 12, in need\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: recovery remote parent changed\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "parent-restored"
+      ],
+      "actual_process_returncode": 0,
+      "stdout": "{\"case\": \"parent-restored\", \"memory_only\": true, \"actual_git_called\": false, \"filesystem_or_network_mutation\": false, \"outcome\": \"accepted\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py",
+        "product-path"
+      ],
+      "actual_process_returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 47, in <module>\n    dst='tests/mutate.py';eval(compile(ast.Expression(copy.deepcopy(call)),'<real-path-guard>','eval'),{'need':need,'dst':dst,'parts':Path(dst).parts,'PREFIX':PREFIX})\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<real-path-guard>\", line 59, in <module>\n  File \"/tmp/geo337-recovery-evidence-append-preparation-20261026/scope_probe.py\", line 12, in need\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: destination outside evidence\n"
+    }
+  ]
+}
