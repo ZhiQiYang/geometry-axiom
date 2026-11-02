@@ -1376,8 +1376,11 @@ const ReferenceWorkspace = (() => {
     return {bytes,stamp,scene:r.text,nativeRevision:r.revision??null};
   }
   function flushRoomCandidates() {
-    try { window.RoomCollectionWorkspace?.flushCandidates?.(); }
-    catch (error) { setStatus("房間候選草稿未能寫入；檔案仍保留先前的草稿或沒有草稿。"); }
+    try { window.RoomCollectionWorkspace?.flushCandidates?.(); return null; }
+    catch (error) {
+      const warning="房間候選草稿未能寫入；檔案仍保留先前的草稿或沒有草稿。";
+      setStatus(warning);return warning;
+    }
   }
   async function exportBytes() { flushRoomCandidates(); return (await exportSnapshot()).bytes; }
   async function readScenarioProject(assertCurrent=()=>{},afterFlush=()=>{}) {
@@ -1717,7 +1720,8 @@ const ReferenceWorkspace = (() => {
   }
   async function save() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
-    flushRoomCandidates();
+    const roomCandidateWarning=flushRoomCandidates();
+    const reportSave=message=>setStatus(roomCandidateWarning?message+" "+roomCandidateWarning:message);
     window.AssemblyWorkspace?.flush();
     window.InfiniteGridWorkspace?.flush();
     const shellState=window.WorkspaceShell?.saveState();
@@ -1736,12 +1740,13 @@ const ReferenceWorkspace = (() => {
       if(handle){const writable=await handle.createWritable();try{await writable.write(bytes);await writable.close();}catch(e){await writable.abort().catch(()=>{});throw e;}
         c.provenance.lastSavedAt=new Date().toISOString();
         if (unchanged(stamp)) {
-          c.dirty=false;c.modelsDirty=false;c.faceProjectionsDirty=false;c.saved=true;c.downloaded=false;setStatus("✓ 專案已保存，包含場景、工程來源與草稿、參考資料及空間模型");
+          // A valid file was saved, but failed candidate synchronization leaves input unsaved.
+          c.dirty=!!roomCandidateWarning;c.modelsDirty=false;c.faceProjectionsDirty=false;c.saved=true;c.downloaded=false;reportSave("✓ 專案已保存，包含場景、工程來源與草稿、參考資料及空間模型");
         } else {
           c.dirty=true;c.downloaded=false;
-          setStatus(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
+          reportSave(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
         }}
-      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;c.provenance.lastDownloadAt=new Date().toISOString();setStatus("已產生專案下載；請確認下載完成後再關閉。");}
+      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;if(roomCandidateWarning)c.dirty=true;c.provenance.lastDownloadAt=new Date().toISOString();reportSave("已產生專案下載；請確認下載完成後再關閉。");}
     } finally {busy=false;busyLabel="";busyShort="處理中";window.InfiniteGridWorkspace?.setProjectBusy(false);present();scheduleRecovery();}
   }
   function sameModelData(a, b) {

@@ -319,6 +319,8 @@ NODE_PURE_TEST_FILES = {
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
     'node:room_candidate_draft': 'tests/test_room_candidate_draft.js',
+    'node:room_candidate_transaction_review': 'tests/test_room_candidate_transaction_review.cjs',
+    'node:room_candidate_workspace_review': 'tests/test_room_candidate_workspace_review.js',
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
     'node:room_outline_closeout': 'tests/test_room_outline_closeout.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
