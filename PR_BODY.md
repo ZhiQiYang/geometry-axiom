@@ -1,28 +1,20 @@
-核心 K 與矩形格網模板的隔離編譯守門已隨本分支一般 merge 納入 L。`geometry_woodworking` 與 `geometry_app` 即使可匯入也須被拒絕；K 引入已安裝模板的 quoted／angle literal header 仍由原層界守門拒絕。矩形格網的功能見證與核心整除反證保留。
+保留核心K＋矩形格網的有限建置與木工include具名反證，將來源以一般merge收斂最新main。
 
-新的 source S1 `175cee44c56c89871803d955c0c525236727ba65` 已以原 `run_all.py --only test_rectangular_template` 完成 selected aggregate：**13／13、零 fail／skip、原 strict expected 通過，exit 0**。這是本輪新執行；完整 native 與六 browser 仍未跑。以下是唯一 current-state 矩陣。
+完整current head：**edf556eedc204bb285fb4504e246e4310f4e1e88**。base **main**；已一般merge精確 e02057b4c725d6f03ae52c3bc30776bf9442b0cf，再採正式重產原件。**Draft／當前F整合CI待收，未達合併條件**；只一般merge與快轉推送，Codex未合main。
 
-| 項目 | 目前狀態／原 exit／execution SHA |
+| 唯一current-state gate | 真結果／execution與界線 |
 |---|---|
-| Current source S1 | `175cee44c56c89871803d955c0c525236727ba65`，一般 merge 並一般 push，remote exact |
-| Evidence head E | `04959e04c334ceaf03f865514f76b1cac8ee91f2` |
-| Source／body branch | `codex/kernel-without-woodworking-20261023`／`codex/kernel-without-woodworking-20261023-prbody` |
-| 一般 merge parents | 舊 S `4d3a17c306cad42057589c5cfd964f1c32b755c4` ＋ L `7af8c5d80d34cb4f49d01ba67deb78a3a6d725db` |
-| 新來源的原 aggregate selected row | PASS／`0`／`175cee44c56c89871803d955c0c525236727ba65`；原 expected 嚴格 13，13 實跑／通過、0 fail／skip |
-| 原 13 方法內的反例 | 新 S1 原方法已實跑，native 原命令 35 筆、31 exit 0／4 預期 exit 1；含 quoted／angle 層界、核心整除與缺 grid link 負控，不把預期紅算產品紅 |
-| 原外層七階段反證 | 沿用 bfb 的原 `0/1/0/1/0/1/0`；11 SOURCE_FILES 加 registry 第 12 比較項同 bytes，未重新執行整輪外層 driver |
-| mutation-check／重產帳本 | UNRUN／`null`／`null`；一般 merge 採入 L 原 blob，未執行 check 或重產 |
-| 架構三條／全 native／六 browser | UNRUN at S1／`null`／`null`；由 root 在最後組合來源安排 |
-| 靜態 closure 守門 | merge driver 原 exit `0`；11 個原 kernel inputs 的 Git mode/type/blob 全同，230 項 registry 保留 kernel13／host39；這不是正式測試執行 |
-| 原環境 R1 | 原 exit `1`：全新 `--no-checkout` worktree 尚無 index；保留 3,000,230 bytes 原 status，沒有刪除原檔 |
-| 環境 R2／普通 push | 原 exit `0`：固定舊 S 的 read-tree dry-run 後初始化新 index，再完成正常 merge／push；舊 bfb checkout 仍 clean |
-| 允許 skip | 無；UNRUN 不等於 skip |
-| 可合併狀態 | 尚未 READY-TO-MERGE；等待最終組合驗收與最新審查 |
+| 最新main合流source M | aca3d2a5f604848b159a0e5cdd3d3f55fcad190f；root與獨立peer記錄parent／逐leaf閉包，main產品與新回歸完整保留。不是rebase／force |
+| #366整份重產 | [run41430549123](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41430549123)，event workflow_dispatch／attempt1、10/10success；9原ZIP/cache byte校驗，原verifier真exit0、official ledger與summary逐byte相同，下載ELF執行0 |
+| 本次正式ledger | **已採入tracked tests/mutants_results.json**，SHA256 140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef；123＝114killed／1crashed／5equivalent／3retired，其餘stale/blocked/survived/invalid/unrun全0；七個badcache負控各strict1。120個active execution.head仍全部M，不改標F；M20仍crashed而不是assert-killed |
+| 架構正式產物 | 採該run原scan/report/receipt，manifest保持原policy input；scan本來就與原件相同。M→F實際只ledger、PRODUCT-ARCHITECTURE.md、receipt三leaf改變；C/H/JS/Python tests、expected、judge、policy全同M |
+| F新原帳本check | **已實跑**`python3 -B tests/mutate.py --check`，exit0，無stale／blocked／survived。此為正式新ledger的check，不拿舊有效檢查代新採入 |
+| F架構三條原裁判 | **已實跑全0**：`python3 -B tests/architecture_contract.py --root . --manifest geometry-core/domain-decoupling/product-architecture.json`；`python3 -B tests/test_architecture_contract.py`；`python3 -B tests/test_product_architecture.py`。新receipt真execution仍M，未改stamp |
+| 前輪正式結果 | M正式integration41430557786十項全success，真checkout afa52541ef2bcdd00e184e0f5d0d5e33874610ed與M同tree；237native／5420pass／1原GDI，fullcanvas2286/86golden、5其他browser全綠。原native CLI原件復驗0／summary逐byte等官方；明確是M的執行，不冒F已跑。 |
+| 新F正式integration | [{'id': 41438184818, 'name': 'Geometry integration', 'event': 'pull_request', 'status': 'queued'}]；**原件與真終態尚未收齊，不能寫已通過**。原每native/browser job時限、assert/golden/skip完全不變 |
+| 重產與重跑界線 | M→F只精確採入已驗原derived bytes、所有product/test/judge inputs同M，不再重跑第二次123。F新正式CI由原workflow自動執行；舊M/source的execution留原身份 |
+| 合併判斷 | 待F required CI全綠、原件核收、最新獨立審查後才READY-TO-MERGE；合main由本機Claude，不由Codex處理 |
 
-舊實際 execution `bfbab207a92a809fca50fefcefb3fa4b2af05ea9` 的原 13 方法 exit 0、零 skip，七階段 `0/1/0/1/0/1/0`、整除 `0/1/0`，以及獨立 actual peer 530／0 均保留歷史身份。三個撤回階段是具名正常 AssertionError；quoted／angle 模板 include 先真編譯、執行 0，再被層界拒絕 1。舊完整原件 `evidence/kernel-without-woodworking-bfbab207/nowood-original-bfbab207.tar.gz`（317,049 bytes／384 members，SHA-256 `bcb8dfacbc3c20f7e7b25b279502c03b0d9d1e7fb2f496dc948927b985522819`）沒有改寫或刪除。原 compiler text capture／cleanup 限制照舊，不事後補造原件。
+[已發布證據總索引與歷史原紅](https://github.com/ZhiQiYang/geometry-axiom/tree/48da3fa2b054ca74da2e13277db1522a6e6133ce/evidence/cloud-resume-20261102)。新sourceM/F的整份ZIP/cache、全量ledger、架構三條stdout/stderr、真SHA/退出碼正沿相同獨立evidence分支持久交付；目前可直接由上述正式Actions下載原件。沒有用本機路徑冒充已推送。
 
-對舊 S 的非 evidence 差異只有 `tests/mutants_results.json`，精確採入 L 的 blob `fb470f96399093f6b25b2b2358011d26f3c36898`。11 個受驗來源保持原 Git entries；本輪原 selected aggregate 已補跑，舊外層七階段仍保原 execution SHA，不另標新執行。`tests/run_all.py` registry 與兩個來源方法數均未改動。本次沒有編輯產品、tests 或裁判，沒有自行重產帳本；root 會在最終統一列車一次產生帳本與架構收據，再安排原 workflow 驗收。
-
-最新已讀 handoff `d2ed8e6efe2760ca562ab7d28f4a2ac09a404fd5` 的 `handoff/pr-reviews/340.md` 為 2026-10-24 02:38:33 UTC／head `4d3a17c`。B1 要求的原 aggregate row 已補上；不是以 direct13 取代。B2 提及 Actions run [40019345512](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40019345512) 七 required jobs failure，仍待同 final 的正式 CI 或替代流程，未宣稱排程或帳戶環境已修。C1 已納入固定 L 的產品 closure；沒有宣稱納入其後 base 的全部 evidence commits，也未將 C1 整體標為解除。root 會在最後來源收斂時一次普通 merge 當下 base。本次 R1／R2 全部原命令、退出碼、stdout／stderr、SHA、環境與 merge parents 收在 `evidence/geo340-convergence-175cee44/`。未 merge PR、未 rebase、未 force push，未更動公理或決策佇列。
-
-本輪 selected aggregate 原指令為 `python3 -B tests/run_all.py --only test_rectangular_template`。此原 registry row 的 needs 為空，不加 `--build` 仍由原 NativeBuild 真編核心，suite／compiler／case 原時限 1200／120／10 秒不變；原 strict count／所有斷言不改，沒有允許 skip。全 329 個 registry／judge／受測來源實物化自同 S1 Git，初末 bytes 相同。原三個共享 row logs 已逐 byte 備份，保留新 row 原件後還原；共享 binaries／sidecars 未寫入。受測範圍只有這一列，不冒充完整 `run_all.py --build` 或七 jobs；原 compiler text capture 與測試內建 cleanup 維持原樣。
+#339已合main；#340合後按341→342→343→346→347→348推進，不把來源祖先已在main當成缺的效能／whole-opt驗收完成。未放寬斷言、golden、時限、允許skip；未改公理層、閱讀器、決策佇列。
