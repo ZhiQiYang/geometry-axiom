@@ -91,11 +91,14 @@ test('sectionOf 只取主編號,子標頭歸到同一段', () => {
     '=== P72. 來源、配置與底部編輯面板 ===': 'P72',
     '=== P99Z. 未列入 STANDALONE_SECTIONS 的大寫後綴 ===': 'P99',
     '=== P76 畫布參數卡 ===': 'P76',
+    '=== P77 原有組構流程 ===': 'P77',
+    '=== R06 正式重複開間工作區與保存 ===': 'R06',
     '=== BF2. 一按就壞/會丟資料 ===': 'BF2'
   };
   for (const [header, name] of Object.entries(cases)) assert.equal(F.sectionOf(header), name, header);
   assert.equal(F.sectionOf('=== 結果:1482 通過斷言 ==='), null);
   assert.equal(F.sectionOf('P3-1 not a header'), null);
+  assert.equal(F.sectionOf('=== R060 未登記段 ==='), null);
   assert.equal(F.sectionOf(undefined), null);
 });
 

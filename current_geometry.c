@@ -9727,10 +9727,10 @@ static void world_dump_dsl(const World *world, FILE *out)
                 (long long)b->z_hi);
     }
 
-    assembly_dump(world,out);
+    if(!world->wood.finish_surfaces.host_count)assembly_dump(world,out);
     sp_dump(world,out);
     fs_dump(world,out);
-    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);}
+    if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);assembly_dump(world,out);}
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->app.canvas_pos_count; ++i) {
         const CanvasPos *p = &world->app.canvas_pos[i];

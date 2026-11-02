@@ -146,7 +146,7 @@
   }
   function assemblyBayRepeatEdges(edges) {
     if(!Array.isArray(edges))return [];
-    return edges.filter(edge=>edge.axis==='v'&&Number.isInteger(edge.edge)&&edge.edge>=0&&edge.edge<=0xffffffff).map(edge=>edge.edge);
+    return edges.filter(edge=>edge.axis==='v'&&(Array.isArray(edge.edgeKey)&&edge.edgeKey.length>0||Number.isInteger(edge.edge)&&edge.edge>=0&&edge.edge<=0xffffffff)).map(edge=>edge.edgeKey??edge.edge);
   }
 
   return freeze({id: 'woodworking/1', panel, section, labels, materialDraft, sectionMember,

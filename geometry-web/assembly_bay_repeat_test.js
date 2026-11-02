@@ -113,7 +113,7 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
   let io=null;
   await send('Emulation.setDeviceMetricsOverride',{width:1280,height:960,deviceScaleFactor:1,mobile:false});
   await read(`(()=>{if(window.__r06FetchOriginal)throw Error('R06 observer already exists');window.__r06PreviewLog=[];const original=window.fetch;window.__r06FetchOriginal=original;window.fetch=function(...args){return original.apply(this,args).then(response=>{if(['/api','/assembly/preview','/assembly/generate-preview'].includes(String(args[0])))response.clone().json().then(data=>{if(data.preview)window.__r06PreviewLog.push({url:String(args[0]),preview:data.preview});}).catch(()=>{});return response;});};})()`);
-  console.log('=== P77 R06 正式重複開間工作區與保存 ===');
+  console.log('=== R06 正式重複開間工作區與保存 ===');
   try{
     await fixture();io=await createArchiveHarness({send,read,ctl});
     // First prove the real download mechanism, before treating any in-memory
@@ -174,12 +174,62 @@ module.exports=async function assemblyBayRepeat({send,eval_:evaluate,sleep,click
       check('R06_BR12_DRAFT_COLD_ERRORS 僅草稿冷開服務沒有未處理頁面例外',onlyCold.errors.length===0,onlyCold.errors);
     }finally{await onlyCold.close();}
     await danglingReference();await unsupportedTopology();
-    await upstreamPointer();await upstreamGrid();
+    await upstreamPointer();await upstreamGrid();await derivedOutlineArchive();
     check('R06_NO_BROWSER_EXCEPTION 正式操作沒有新增未處理例外',exceptionCount()===errors);
   }finally{
     if(io)await io.close();
     await read(`(()=>{if(window.__r06FetchOriginal){window.fetch=window.__r06FetchOriginal;delete window.__r06FetchOriginal;}delete window.__r06PreviewLog;})()`);
     await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+  }
+
+  async function derivedOutlineArchive(){
+    await fixture();
+    const foreign=(namespace,operations)=>read(`(async()=>{const current=await apiRequest('assembly-read'),response=await fetch('/'+${JSON.stringify(namespace)}+'/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:${JSON.stringify(namespace+'-transaction/1')},expectedRevision:current.revision,operations:${JSON.stringify(operations)}})}),p=await response.json();if(!p.ok||!p.preview?.valid)throw Error(JSON.stringify(p));const done=await apiRequest(${JSON.stringify(namespace+'-confirm ')}+p.preview.token);if(!done.ok)throw Error(JSON.stringify(done));await renderObjects();})()`);
+    await foreign('engineering',[
+      {op:'publish-material',value:{id:'r06-edge-board',version:1,name:'R06 edge board',kind:'panel',width:4000,length:3000,thickness:'9'}},
+      {op:'put-parameter',value:{id:90,name:'R06 cut limit',fields:[{id:1,name:'X',type:'dimension',input:'8'}]}}
+    ]);
+    await foreign('panel-fill',[
+      {op:'put-finish-surface',value:{id:1,name:'R06 derived host',boundaryId:1,frame:{origin:[6000,0,2500],U:'+X',V:'+Y',N:'+Z'},structureSide:1,obstacles:[]}},
+      {op:'put-panel-fill',value:{id:1,finishSurfaceId:1,panel:{id:'r06-edge-board',version:1},lengthAlong:'v',origin:[0,0],gap:0,pattern:'straight',threshold:{parameterId:90,fieldId:1}}},
+      {op:'put-derived-placement',value:{id:10,fillId:1,h:33}}
+    ]);
+    const key=edge=>JSON.stringify([['e'+edge,0,1]]),hex=edge=>Buffer.from(key(edge)).toString('hex');
+    await nativeFixture(['timber 100 20 33 role boundary',`place 100 on 10 at-face key-hex:${hex(0)} +u +n`,
+      'timber 101 20 33 role boundary',`place 101 on 10 at-face key-hex:${hex(2)} +u +n`,
+      'spec r06derived20 1000','guide 20 10 u spec:r06derived20','spec r06derived21 2000','guide 21 10 u spec:r06derived21']);
+    const before=await dump();await newRepeat();await choose('#asmInstanceSurface',10);
+    for(const [id,edge] of [[1,3],[2,1]]){
+      await choose('#asmPrimaryAtKind'+id,'outline-edge');await choose('#asmPrimaryEdge'+id,key(edge));
+      await choose('#asmPrimaryEnd'+id+'start',100);await choose('#asmPrimaryEnd'+id+'finish',101);
+    }
+    await ctl('#asmAddSecondaryLine');
+    for(const [id,guide] of [[1,20],[2,21]]){await choose('#asmLineAtKind'+id,'guide');await choose('#asmLineGuide'+id,guide);}
+    const selected=(await readDrafts()).find(d=>d.data.layout==='bay-repeat');
+    const p=await preview();
+    check('R06_R41_NATIVE 外輪廓選項傳遞完整來源鍵並由原生求得四件精確料長',p.valid===true&&
+      same(selected.data.primaries.map(p=>p.at),[{kind:'outline-edge',edgeKey:JSON.parse(key(3))},{kind:'outline-edge',edgeKey:JSON.parse(key(1))}])&&
+      p.after.instances.at(-1).members.length===4&&p.after.instances.at(-1).members.every(m=>m.geometry.length===(m.primary!=null?2960:3946)),p);
+    await confirm();const original=(await state()).instances[0],committed=await dump(),committedDrafts=await readDrafts();
+    await ctl('#asmClose');await ctl('#btnUndo');await settle();
+    const undone=(await dump())===before&&(await state()).instances.length===0&&(await readDrafts()).some(d=>same(d.data,selected.data));
+    await ctl('#btnRedo');await settle();
+    check('R06_R41_HISTORY 復原重做整筆保留來源鍵owned與草稿',undone&&(await dump())===committed&&same((await state()).instances,[original])&&same(await readDrafts(),committedDrafts));
+    await ctl('#btnNewAssembly');await ctl('[data-asm-binding="1"]');await ctl('#asmInstanceEdit'+original.value.source.id);
+    await fill('#asmInstanceName','衍生外輪廓未提交草稿');await screenshot('r06-derived-outline-draft');await ctl('#asmClose');
+    const drafts=await readDrafts(),saved=await io.save();
+    check('R06_R41_SAVE_FILE 衍生宿主與重複來源經正式保存實際下載檔案',saved.completed===true&&saved.size>0&&typeof saved.file==='string'&&fs.existsSync(saved.file),saved);
+    const archive=await unpackFile(saved);
+    check('R06_R41_SAVE 真下載檔保留來源鍵的正式實例與未提交草稿',saved.completed===true&&saved.size>0&&same(archive.manifest.assemblyDrafts.records,drafts)&&drafts.some(d=>same(d.data.primaries.map(p=>p.at),selected.data.primaries.map(p=>p.at))),archive.manifest);
+    const cold=await io.cold();
+    try{
+      await observeOpen(cold);await openAndWait(cold,saved.file);
+      const restored=await cold.read(`Promise.all([apiRequest('assembly-read'),apiRequest('dump')]).then(([a,d])=>({instances:a.state.instances,scene:d.text,drafts:ReferenceWorkspace.getAssemblyDrafts()}))`);
+      await cold.ctl('#btnNewAssembly');await cold.ctl('[data-asm-binding="1"]');await cold.ctl('#asmInstanceEdit'+original.value.source.id);
+      const controls=await cold.read(`[$('asmPrimaryEdge1').value,$('asmPrimaryEdge2').value]`);
+      check('R06_R41_COLD_REOPEN 新profile新服務正式Open重算並重選原R41來源鍵',cold.info.service.session!==cold.info.sourceRuntime.session&&same(restored.instances,[original])&&same(restored.drafts,drafts)&&restored.scene===committed&&same(controls,[key(3),key(1)])&&cold.errors.length===0,{restored,controls,errors:cold.errors});
+    }finally{await cold.close();}
+    await screenshot('r06-derived-outline-saved');
   }
 
   async function serviceCapabilityRejections(client,file,marker){

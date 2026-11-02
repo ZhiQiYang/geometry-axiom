@@ -18,7 +18,9 @@
 | 能力與保存 | 重複來源或未完成草稿使用 `geometry-canvas/19`，同時要求 `assembly-timber-generation/1` 與 `assembly-bay-repeat/1`。缺宣告、未知形式、懸空來源或映射不符均拒絕；重開在隔離世界重算比對，不扁平化成普通角材。情境快照內的重複來源亦受同一雙能力守門。 |
 | 有限容量 | `assembly-read.state.limits` 明列 16 實例、全體 48 支 owned、World 64 支角材、每筆 canonical source＋mapping 8191 bytes；每實例最多 12 主支、24 副支線、24 個 omit。 |
 
-反組法、巢狀、任意拓樸、相位／子格／規則子線、from-fill、孔邊仍回 `UNSUPPORTED`。不存在來源、錯面／錯軸／非主格是來源驗證拒絕，不以猜測替代。一般角材編輯／刪除不能獨立改動所屬角材。
+反組法、巢狀、任意拓樸、相位／子格／規則子線、鋪排來源主格線（from-fill）、孔邊仍不在 D58 的能力內。這裡排除的是引用種類，不是整個衍生承載面：同面的 D6 參考線與普通有限主格仍可用於重複開間，角材照 I53 驗證 B＝h 及 +N。不存在來源、錯面／錯軸／非主格是來源驗證拒絕，不以猜測替代。一般角材編輯／刪除不能獨立改動所屬角材。
+
+外輪廓定位以 `{"kind":"outline-edge","edge":3}` 引用一般面的邊；衍生面改存 `{"kind":"outline-edge","edgeKey":[["e3",0,1]]}` 的完整 R41 來源鍵。兩種欄位互斥；衍生面不接受數字索引，一般面不接受衍生鍵，孔鍵或不再完全相等的段號／總段數亦拒絕。草稿與完整專案原樣保存來源鍵，重開時仍由原生重新求值。
 
 W 固定模板在 `geometry-templates/woodworking/` 實作重複政策，H 只提供同候選幾何事實、交易及傳輸；K 不引用 W。新增 H adapter `geometry-web/assembly-provenance.js` 已登記 `product-architecture.json`，只核對原生完整身分與固定槽位，供材料表、支撐與來源檢視共用，不推導開間。
 

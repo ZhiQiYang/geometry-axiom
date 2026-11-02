@@ -519,22 +519,24 @@ class BayRepeat(unittest.TestCase):
         observed = dict(valid=preview.get("valid"), matched=matched, unchanged=before == self.stable())
         self.assertEqual(dict(valid=False, matched=True, unchanged=True), observed, killer("br09:upstream-phase", preview))
 
-    def test_br09_real_from_fill_host_is_unsupported(self):
+    def derived_host_source(self, split=False):
         # Public native PF setup, adapted from fixed-main test_panel_fill_host /
         # test_panel_fill_layout. No fake at-kind stands in for a derived face.
         self.foreign_transaction("engineering", [
             {"op": "publish-material", "value": {"id": "r06-board", "version": 1, "name": "R06 board", "kind": "panel", "width": 4000, "length": 3000, "thickness": "9"}},
             {"op": "put-parameter", "value": {"id": 90, "name": "cut limit", "fields": [{"id": 1, "name": "X", "type": "dimension", "input": "8"}]}}])
+        if split:
+            self.line("beam 20 along x from 7800 to 8200 at 1500 width 3200 depth 33 top 2542")
         self.foreign_transaction("panel-fill", [
             {"op": "put-finish-surface", "value": {"id": 1, "name": "R06 derived host", "boundaryId": 1,
-             "frame": {"origin": [6000, 0, 2500], "U": "+X", "V": "+Y", "N": "+Z"}, "structureSide": 1, "obstacles": []}},
+             "frame": {"origin": [6000, 0, 2500], "U": "+X", "V": "+Y", "N": "+Z"}, "structureSide": 1, "obstacles": ["b20"] if split else []}},
             {"op": "put-panel-fill", "value": {"id": 1, "finishSurfaceId": 1, "panel": {"id": "r06-board", "version": 1},
              "lengthAlong": "v", "origin": [0, 0], "gap": 0, "pattern": "straight", "threshold": {"parameterId": 90, "fieldId": 1}}},
             {"op": "put-derived-placement", "value": {"id": 10, "fillId": 1, "h": 33}}])
         hosts = self.command("panel-fill-read")["state"]["derivedPlacements"]
         self.assertEqual({"id": 10, "fillId": 1, "h": 33}, hosts[0]["definition"])
         for identifier, edge in ((100, 0), (101, 2)):
-            key = json.dumps([["e" + str(edge), 0, 1]], separators=(",", ":")).encode().hex()
+            key = json.dumps([["e" + str(edge), 1 if split and edge == 0 else 0, 2 if split else 1]], separators=(",", ":")).encode().hex()
             self.line(f"timber {identifier} 20 33 role boundary")
             self.line(f"place {identifier} on 10 at-face key-hex:{key} +u +n")
         for identifier, axis, coordinate in ((10, "v", 500), (11, "v", 1500), (12, "v", 2500), (13, "u", 1000), (14, "u", 2000)):
@@ -543,9 +545,86 @@ class BayRepeat(unittest.TestCase):
         source = self.source(surface=10)
         source["primaries"] = [primary(key, {"kind": "guide", "id": identifier}, (100, 101)) for key, identifier in ((10, 10), (20, 11), (30, 12))]
         source["secondaryLines"] = [line_source(101, {"kind": "guide", "id": 13}), line_source(202, {"kind": "guide", "id": 14})]
-        observed, preview, _ = self.rejection([self.create(source)], "UNSUPPORTED")
-        self.assertEqual({"valid": False, "matched": True, "unchanged": True}, observed,
-                         killer("br09:from-fill", preview))
+        return source
+
+    def assert_derived_host_repeat(self, source, tag, expected=None):
+        before = self.stable()
+        preview = self.request([self.create(source)])
+        self.assertTrue(preview["valid"], killer(tag, preview))
+        self.assertEqual(self.rectangle_expected() if expected is None else expected,
+                         {ident: g["length"] for ident, g in self.geometry(preview["after"]["instances"][0]).items()})
+        self.assertTrue(self.command("assembly-confirm " + str(preview["token"]))["ok"])
+        saved = self.stable()
+        self.assertEqual(source, self.instance()["value"]["source"])
+        path = self.directory / "derived-repeat.scene"
+        path.write_text(saved["dump"], encoding="utf-8")
+        with BridgeSession(self.binary, cwd=self.directory) as fresh:
+            loaded = fresh.command("loadfile " + str(path))
+            self.assertTrue(loaded["ok"], killer(tag, {"load": loaded, "dump": saved["dump"]}))
+            self.assertEqual(saved["dump"], fresh.command("dump")["text"])
+            self.assertEqual(saved["assembly"]["state"], fresh.command("assembly-read")["state"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(before["dump"], self.dump())
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(saved["dump"], self.dump())
+
+    def test_br09_derived_host_guides_are_supported(self):
+        self.assert_derived_host_repeat(self.derived_host_source(), "br09:derived-guide")
+
+    def test_br09_derived_host_finite_grid_is_supported(self):
+        source = self.derived_host_source()
+        self.line("grid 10 on 10 u 500 1000 1500 2500 v 1000 2000")
+        source["primaries"] = [primary(key, grid_at(index, grid=10), (100, 101))
+                               for key, index in ((10, 0), (20, 2), (30, 3))]
+        source["secondaryLines"] = [line_source(key, grid_at(index, "v", grid=10))
+                                    for key, index in ((101, 0), (202, 1))]
+        self.assert_derived_host_repeat(source, "br09:derived-finite-grid")
+
+    def test_br12_repeat_with_unrelated_derived_host_replays(self):
+        self.derived_host_source()
+        self.assert_derived_host_repeat(self.source(), "br12:mixed-derived-host")
+
+    def test_br02_derived_outer_edges_preserve_r41_keys(self):
+        source = self.derived_host_source()
+        surface = next(p for p in self.command("surfaces")["surfaces"] if p["id"] == 10)
+        self.assertEqual({json.dumps([["e1", 0, 1]]), json.dumps([["e3", 0, 1]])},
+                         {json.dumps(edge["edgeKey"]) for edge in surface["outerEdges"] if edge["axis"] == "v"},
+                         killer("br02:derived-outline-options", surface))
+        source["primaries"][0]["at"] = {"kind": "outline-edge", "edgeKey": [["e3", 0, 1]]}
+        source["primaries"][2]["at"] = {"kind": "outline-edge", "edgeKey": [["e1", 0, 1]]}
+        expected = {("primary", key): 2960 for key in (10, 20, 30)}
+        expected.update({("secondary", line, left, right): length for line in (101, 202)
+                         for left, right, length in ((10, 20, 1460), (20, 30, 2459))})
+        self.assert_derived_host_repeat(source, "br02:derived-outline-key", expected)
+
+    def test_br02_second_derived_component_uses_exact_outer_keys(self):
+        source = self.derived_host_source(split=True)
+        source["primaries"] = [primary(10, {"kind": "outline-edge", "edgeKey": [["b20:u+", 0, 1]]}, (100, 101)),
+                               primary(30, {"kind": "outline-edge", "edgeKey": [["e1", 0, 1]]}, (100, 101))]
+        expected = {("primary", key): 2960 for key in (10, 30)}
+        expected.update({("secondary", line, 10, 30): 1746 for line in (101, 202)})
+        self.assert_derived_host_repeat(source, "br02:derived-second-component", expected)
+
+    def test_br02_derived_outer_keys_reject_alias_hole_stale_and_duplicate(self):
+        self.fixture(hole=True)
+        source = self.derived_host_source()
+        for at in [{"kind": "outline-edge", "edge": 3},
+                   {"kind": "outline-edge", "edgeKey": [["h0e1", 0, 1]]},
+                   {"kind": "outline-edge", "edgeKey": [["e3", 0, 2]]}]:
+            invalid = deepcopy(source)
+            invalid["primaries"][0]["at"] = at
+            observed, preview, _ = self.rejection([self.create(invalid)], "INVALID")
+            self.assertEqual(dict(valid=False, matched=True, unchanged=True), observed,
+                             killer("br02:derived-key-reject", preview))
+        ordinary = self.source()
+        ordinary["primaries"][0]["at"] = {"kind": "outline-edge", "edgeKey": [["e3", 0, 1]]}
+        observed, preview, _ = self.rejection([self.create(ordinary)], "INVALID")
+        self.assertEqual(dict(valid=False, matched=True, unchanged=True), observed, killer("br02:ordinary-key-reject", preview))
+        duplicate = deepcopy(source)
+        for p in duplicate["primaries"][:2]:
+            p["at"] = {"kind": "outline-edge", "edgeKey": [["e3", 0, 1]]}
+        observed, preview, _ = self.rejection([self.create(duplicate)], "INVALID")
+        self.assertEqual(dict(valid=False, matched=True, unchanged=True), observed, killer("br02:duplicate-derived-key", preview))
 
     def test_br10_configured_main_grid_retains_signed_indices(self):
         source = self.configured_grid()

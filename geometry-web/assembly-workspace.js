@@ -251,7 +251,7 @@ window.AssemblyWorkspace=(()=>{
       surface=(s.surfaces||(typeof oc!=='undefined'?oc.surfs||[]:[])).find(p=>p.id===d.surfaceId);
     return {guides:refs.guides||[],grids:(refs.grids||[]).filter(g=>g.surface===d.surfaceId&&g.kind==='main'),
       supports:[['','請選擇'],...(refs.timbers||[]).filter(t=>t.geometry?.surface===d.surfaceId&&!owned.has(t.id)).map(t=>[t.id,`角材 #${t.id} · ${GeometryApplication.woodworking.labels?.roles?.[t.role]||t.role}`])],
-      edges:GeometryApplication.woodworking.assemblyBayRepeatEdges(surface?.outerEdges).map(edge=>[edge,`外輪廓邊 e${edge}（沿 v）`])};
+      edges:GeometryApplication.woodworking.assemblyBayRepeatEdges(surface?.outerEdges).map(edge=>Array.isArray(edge)?[JSON.stringify(edge),`外輪廓來源鍵 ${JSON.stringify(edge)}（沿 v）`]:[edge,`外輪廓邊 e${edge}（沿 v）`])};
   }
   function repeatAtFields(row,primary,options,d){
     const prefix=primary?'asmPrimary':'asmLine',key=row.key,a=row.at,kind=a?.kind||'',
@@ -259,7 +259,7 @@ window.AssemblyWorkspace=(()=>{
     let html=field('定位來源',select(prefix+'AtKind'+key,kinds,kind));
     if(kind==='guide')html+=field('參考線',choices(prefix+'Guide'+key,[['','請選擇'],...options.guides.filter(g=>g.surface===d.surfaceId&&g.axis===(primary?'v':'u')).map(g=>[g.id,`參考線 #${g.id} · ${g.expression}`])],a.id));
     if(kind==='grid-line')html+=field('承載面主格',choices(prefix+'Grid'+key,[['','請選擇'],...options.grids.map(g=>[g.id,`主格 #${g.id} · ${g.indexSpace==='lattice'?'帶符號索引':'從 0 起算'}`])],a.gridId))+field((primary?'u':'v')+' 座標格線索引',repeatIndexInput(prefix+'Index'+key,a.index));
-    if(kind==='outline-edge')html+=field('與主支平行的外輪廓邊',choices(prefix+'Edge'+key,[['','請選擇'],...options.edges],a.edge));
+    if(kind==='outline-edge')html+=field('與主支平行的外輪廓邊',choices(prefix+'Edge'+key,[['','請選擇'],...options.edges],a.edgeKey?JSON.stringify(a.edgeKey):a.edge));
     return html;
   }
   function renderRepeatInstanceForm(d){
@@ -275,7 +275,7 @@ window.AssemblyWorkspace=(()=>{
         bind(prefix+'Guide'+row.key,'change',e=>{row.at.id=e.target.value===''?null:Number(e.target.value);changed();});
         bind(prefix+'Grid'+row.key,'change',e=>{row.at.gridId=e.target.value===''?null:Number(e.target.value);changed();});
         bind(prefix+'Index'+row.key,'input',e=>{row.at.index=e.target.value;changed();});
-        bind(prefix+'Edge'+row.key,'change',e=>{row.at.edge=e.target.value===''?null:Number(e.target.value);changed();});
+        bind(prefix+'Edge'+row.key,'change',e=>{const value=e.target.value;row.at=value.startsWith('[')?{kind:'outline-edge',edgeKey:JSON.parse(value)}:{kind:'outline-edge',edge:value===''?null:Number(value)};changed();});
         if(primary)for(const k of ['start','finish'])bind(prefix+'End'+row.key+k,'change',e=>{row.ends[k].id=e.target.value===''?null:Number(e.target.value);changed();});
         bind(prefix+'Remove'+row.key,'click',()=>{const key=primary?'primaries':'secondaryLines';d[key]=d[key].filter(r=>r.key!==row.key);changed(true);});
       }

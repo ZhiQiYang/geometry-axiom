@@ -462,7 +462,7 @@ static bool wood_bay_index(GeoJson *j,int t,int64_t *out)
     *out=neg?(n==(uint64_t)INT64_MAX+1?INT64_MIN:-(int64_t)n):(int64_t)n;return true;
 }
 static bool wood_bay_location_equal(const AsmLocation *a,const AsmLocation *b)
-{return a->kind==b->kind&&a->id==b->id&&a->axis==b->axis&&a->index==b->index&&a->edge==b->edge;}
+{return a->kind==b->kind&&a->id==b->id&&a->axis==b->axis&&a->index==b->index&&a->edge==b->edge&&!strcmp(a->edge_key,b->edge_key);}
 static bool wood_bay_location(WoodAssemblyContext *w,GeoJson *j,int t,bool primary,uint32_t instance,AsmLocation *at)
 {
     char kind[32],axis[8];memset(at,0,sizeof *at);
@@ -473,6 +473,8 @@ static bool wood_bay_location(WoodAssemblyContext *w,GeoJson *j,int t,bool prima
            (strcmp(axis,"u")&&strcmp(axis,"v"))||!wood_bay_index(j,geo_json_member(j,t,"index"),&at->index))return wood_bay_bad(w,instance,"invalid exact decimal grid reference");
         at->axis=!strcmp(axis,"v");return (at->axis==(primary?0:1))||wood_bay_bad(w,instance,"grid coordinate axis must be perpendicular to member length");}
     if(!strcmp(kind,"outline-edge")&&primary){int64_t edge;at->kind=ASM_AT_OUTLINE;
+        int key=geo_json_member(j,t,"edgeKey");
+        if(key>=0)return (geo_json_keys(j,t,"kind,edgeKey","")&&geo_json_is_array(j,key)&&geo_json_size(j,key)>0&&geo_json_canonical(j,key,at->edge_key,sizeof at->edge_key))||wood_bay_bad(w,instance,"invalid R41 outer edge key");
         if(!geo_json_keys(j,t,"kind,edge","")||!geo_json_integer(j,geo_json_member(j,t,"edge"),&edge)||edge<0||edge>INT32_MAX)return wood_bay_bad(w,instance,"invalid outer outline edge");at->edge=(int)edge;return true;}
     return wood_bay_unsupported(w,instance,"position kind is outside D58; hole, phase, child and rule lines are not supported");
 }

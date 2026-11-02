@@ -98,6 +98,33 @@ const bayDraft=()=>({id:'repeat-draft',kind:'instance',base_ref:null,updated_at:
  secondaryLines:[{key:1,at:{kind:'grid-line',gridId:1,axis:'v',index:'9007199254740993'}}],omit:[]}});
 const bayArchive=record=>pack('reset\n',{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[record]}});
 
+test('R06 R41 exact outer edge keys survive draft Save and fresh archive reopen',async()=>{
+ const record=bayDraft();record.data.surfaceId=10;
+ record.data.primaries[0].at={kind:'outline-edge',edgeKey:[['e3',0,2],['b20:u+',0,1]]};
+ record.data.primaries[1].at={kind:'outline-edge',edgeKey:null};
+ let bytes;
+ await assert.doesNotReject(async()=>{bytes=await bayArchive(record);},'KILLER[r06-r41:draft-key-writer]');
+ const reopened=await P.unpack(bytes,zip);
+ assert.deepEqual(reopened.manifest.assemblyDrafts.records,[record],'KILLER[r06-r41:draft-key-reopen]');
+ const scene='requires panel-fill/1\nrequires assembly-bay-repeat/1\nrequires assembly-timber-generation/1\nfinish-surface 1 on boundary 1\npanel-fill 1 definition-hex 7b7d\nderived-placement 10 definition-hex 7b7d\n';
+ let derived;
+ await assert.doesNotReject(async()=>{derived=await pack(scene,{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[record]}});},'KILLER[r06-r41:host-capability-writer]');
+ const host=await P.unpack(derived,zip);
+ assert.ok(host.manifest.requiredCapabilities.includes('panel-fill/1'));
+ assert.deepEqual(host.manifest.assemblyDrafts.records,[record]);assert.equal(host.scene,scene);
+ assert.throws(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(['assembly-rule-authoring/1','assembly-bay-repeat/1','assembly-timber-generation/1'])));
+ assert.doesNotThrow(()=>P.assertProjectCapabilities(host.manifest,P.readerCapabilities(['assembly-rule-authoring/1','assembly-bay-repeat/1','assembly-timber-generation/1','panel-fill/1'])));
+ for(const command of ['finish-surface 1 on boundary 1','panel-fill 1 definition-hex 7b7d','derived-placement 10 definition-hex 7b7d'])
+  assert.throws(()=>P.sceneCapabilities(command+'\n'));
+ await assert.rejects(()=>P.unpack(rewrite(derived,m=>{m.requiredCapabilities=m.requiredCapabilities.filter(c=>c!=='panel-fill/1');}),zip));
+ for(const at of [{kind:'outline-edge',edge:1,edgeKey:[['e1',0,1]]},
+  {kind:'outline-edge',edgeKey:[]},{kind:'outline-edge',edgeKey:[['e1',1,1]]},
+  {kind:'outline-edge',edgeKey:'[["e1",0,1]]'}]){
+  const malformed=bayDraft();malformed.data.primaries[0].at=at;
+  assert.throws(()=>P.validateAssemblyDraft(malformed));
+ }
+});
+
 test('R06 BR12 draft-only Save declares both capabilities and preserves raw indices',async()=>{
  const record=bayDraft();let bytes;
  await assert.doesNotReject(async()=>{bytes=await bayArchive(record);},'KILLER[r06-br12:draft-writer]');

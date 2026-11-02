@@ -64,7 +64,7 @@ typedef struct {
 typedef enum { ASM_ID_MEMBER=0, ASM_ID_PRIMARY=1, ASM_ID_SECONDARY=2 } AsmIdentityKind;
 typedef struct { int kind; uint32_t key,left,right; } AsmIdentity;
 typedef enum { ASM_AT_GUIDE=1, ASM_AT_GRID=2, ASM_AT_OUTLINE=3 } AsmLocationKind;
-typedef struct { int kind,axis,edge; uint32_t id; int64_t index; } AsmLocation;
+typedef struct { int kind,axis,edge; uint32_t id; int64_t index; char edge_key[512]; } AsmLocation;
 typedef struct { uint32_t key; AsmLocation at; uint32_t ends[2]; } AsmBayPrimary;
 typedef struct { uint32_t key; AsmLocation at; } AsmBayLine;
 typedef struct { uint32_t line,left,right; } AsmBayCell;

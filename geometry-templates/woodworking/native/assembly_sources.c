@@ -362,22 +362,25 @@ static bool wood_assembly_bay_record(WoodAssemblySources *s,uint32_t id,AsmIdent
 }
 static bool wood_assembly_bay_result(WoodAssemblySourceResult *r,GeoSourceValue *out)
 {
-    const WoodAssemblyDefinition *d=&r->generated;char text[768];int n=snprintf(text,sizeof text,
-        "{\"at\":{\"axis\":%d,\"edge\":%d,\"id\":%u,\"index\":\"%" PRId64 "\",\"kind\":%d},\"between\":[%u,%u],\"depth\":%" PRId64 ",\"direction\":%d,\"guideId\":%u,\"role\":%d,\"surfaceId\":%u,\"timberId\":%u,\"width\":%" PRId64 "}",
-        d->at.axis,d->at.edge,d->at.id,d->at.index,d->at.kind,d->between[0],d->between[1],d->depth,d->direction,d->guide_id,d->role,d->surface_id,d->timber_id,d->width);
+    const WoodAssemblyDefinition *d=&r->generated;char text[1280],key[524]="";
+    if(d->at.edge_key[0]){int n=snprintf(key,sizeof key,",\"edgeKey\":%s",d->at.edge_key);if(n<0||(size_t)n>=sizeof key)return false;}
+    int n=snprintf(text,sizeof text,
+        "{\"at\":{\"axis\":%d,\"edge\":%d%s,\"id\":%u,\"index\":\"%" PRId64 "\",\"kind\":%d},\"between\":[%u,%u],\"depth\":%" PRId64 ",\"direction\":%d,\"guideId\":%u,\"role\":%d,\"surfaceId\":%u,\"timberId\":%u,\"width\":%" PRId64 "}",
+        d->at.axis,d->at.edge,key,d->at.id,d->at.index,d->at.kind,d->between[0],d->between[1],d->depth,d->direction,d->guide_id,d->role,d->surface_id,d->timber_id,d->width);
     if(n<0||(size_t)n>=sizeof text||!wood_assembly_text(r,text,(size_t)n))return false;wood_assembly_definition_value(out,"wood.assembly.result/2",r->text);return true;
 }
 static bool wood_assembly_bay_result_read(WoodAssemblySources *s,const GeoSourceValue *value,WoodAssemblyDefinition *out)
 {
-    char text[768],index[32];GeoJson j;WoodAssemblyDefinition d={0};int64_t direction,role,kind,axis,edge;
+    char text[1280],index[32];GeoJson j;WoodAssemblyDefinition d={0};int64_t direction,role,kind,axis,edge;
     bool ok=wood_assembly_read_json(s,value,"wood.assembly.result/2",text,sizeof text,&j)&&geo_json_keys(&j,0,"at,between,depth,direction,guideId,role,surfaceId,timberId,width","")&&
         geo_json_integer(&j,geo_json_member(&j,0,"width"),&d.width)&&d.width>0&&geo_coord_in_range(d.width)&&geo_json_integer(&j,geo_json_member(&j,0,"depth"),&d.depth)&&d.depth>0&&geo_coord_in_range(d.depth)&&
         geo_json_integer(&j,geo_json_member(&j,0,"direction"),&direction)&&(direction==ASM_DIR_U||direction==ASM_DIR_V)&&geo_json_integer(&j,geo_json_member(&j,0,"role"),&role)&&(role==WOOD_MEMBER_ROLE_PRIMARY||role==WOOD_MEMBER_ROLE_SECONDARY)&&
         wood_eng_u32(&j,geo_json_member(&j,0,"guideId"),&d.guide_id,false)&&wood_eng_u32(&j,geo_json_member(&j,0,"surfaceId"),&d.surface_id,false)&&wood_eng_u32(&j,geo_json_member(&j,0,"timberId"),&d.timber_id,true);
-    int at=geo_json_member(&j,0,"at"),between=geo_json_member(&j,0,"between");ok=ok&&geo_json_keys(&j,at,"axis,edge,id,index,kind","")&&geo_json_integer(&j,geo_json_member(&j,at,"axis"),&axis)&&(axis==0||axis==1)&&
+    int at=geo_json_member(&j,0,"at"),between=geo_json_member(&j,0,"between"),key=geo_json_member(&j,at,"edgeKey");ok=ok&&geo_json_keys(&j,at,"axis,edge,id,index,kind","edgeKey")&&geo_json_integer(&j,geo_json_member(&j,at,"axis"),&axis)&&(axis==0||axis==1)&&
         geo_json_integer(&j,geo_json_member(&j,at,"edge"),&edge)&&edge>=0&&edge<=INT32_MAX&&geo_json_integer(&j,geo_json_member(&j,at,"kind"),&kind)&&kind>=ASM_AT_GUIDE&&kind<=ASM_AT_OUTLINE&&
         wood_eng_u32(&j,geo_json_member(&j,at,"id"),&d.at.id,false)&&geo_json_string(&j,geo_json_member(&j,at,"index"),index,sizeof index)&&
         geo_json_is_array(&j,between)&&geo_json_size(&j,between)==2&&wood_eng_u32(&j,geo_json_at(&j,between,0),&d.between[0],false)&&wood_eng_u32(&j,geo_json_at(&j,between,1),&d.between[1],false);
+    ok=ok&&(key<0||(geo_json_is_array(&j,key)&&geo_json_size(&j,key)>0&&geo_json_canonical(&j,key,d.at.edge_key,sizeof d.at.edge_key)));
     if(ok){char *end;errno=0;intmax_t integer=strtoimax(index,&end,10);ok=!errno&&end!=index&&!*end&&integer>=INT64_MIN&&integer<=INT64_MAX;d.at.index=(int64_t)integer;}
     geo_json_free(&j);if(!ok)return false;d.at.kind=(int)kind;d.at.axis=(int)axis;d.at.edge=(int)edge;d.direction=(AsmDir)direction;d.role=(WoodMemberRole)role;*out=d;return true;
 }

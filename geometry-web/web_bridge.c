@@ -666,6 +666,11 @@ static void cmd_surfaces(void)
         if(!p->derived_fill_id){PolygonLoop2 outline;placement_outline(p,world_placement_boundary(&g_world,p),&outline);
             for(size_t edge=0;edge<outline.count;++edge){SurfaceSegment2 segment;if(!loop_get_edge_segment(&outline,edge,&segment))continue;
                 printf("%s{\"edge\":%zu,\"axis\":\"%s\"}",edge?",":"",edge,segment.start.u==segment.end.u?"v":"u");}}
+        else{WoodDerivedContext context=app_dp_context(&g_world);WoodDerivedValue value;bool comma=false;
+            if(app_dp_read(&g_world,p->id,&value))for(size_t c=0;c<p->component_count;++c){const PolygonLoop2 *loop=&p->components[c].outline;
+                for(size_t edge=0;edge<loop->count;++edge){SurfaceSegment2 segment;char key[512];
+                    if(!loop_get_edge_segment(loop,edge,&segment)||!wood_dp_edge_key(&context,&value,c,-1,edge,key,sizeof key))continue;
+                    printf("%s{\"edgeKey\":%s,\"axis\":\"%s\"}",comma?",":"",key,segment.start.u==segment.end.u?"v":"u");comma=true;}}}
         fputs("]}",stdout);
     }
     fputs("]}\n", stdout);

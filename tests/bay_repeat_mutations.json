@@ -25,7 +25,8 @@
     "br09:phased-axis": "test_br09_real_staggered_axis_requires_unsupported",
     "br09:unreferenced-phase": "test_br09_unreferenced_staggered_axis_does_not_ban_plain_axis",
     "br09:upstream-phase": "test_br09_upstream_phase_is_unsupported_and_atomic",
-    "br09:from-fill": "test_br09_real_from_fill_host_is_unsupported",
+    "br09:derived-guide": "test_br09_derived_host_guides_are_supported",
+    "br09:derived-finite-grid": "test_br09_derived_host_finite_grid_is_supported",
     "br10:signed-grid": "test_br10_configured_main_grid_retains_signed_indices",
     "br06:source-order-invariance": "test_br06_source_order_and_names_do_not_change_identity_or_world_order",
     "br04:new-order": "test_br04_new_ids_append_in_primary_then_sorted_tuple_order",
@@ -47,15 +48,23 @@
     "br11:world-capacity": "test_br11_world_capacity_includes_non_owned_timbers",
     "br12:replay-mapping": "test_br12_fresh_native_replay_preserves_definitions_and_mapping",
     "br12:replay-accepted": "test_br12_fresh_native_replay_preserves_definitions_and_mapping",
+    "br12:mixed-derived-host": "test_br12_repeat_with_unrelated_derived_host_replays",
     "br12:required-capability": "test_br12_stripped_native_capability_rejects_atomically",
     "br12:forged-mapping": "test_br12_forged_mapping_with_valid_record_hash_rejects",
     "br13:whole-history": "test_br13_create_edit_delete_undo_redo_are_whole_transactions",
     "br13:cancelled-token": "test_br13_cancelled_and_stale_tokens_never_commit",
     "br13:stale-token": "test_br13_cancelled_and_stale_tokens_never_commit",
     "br15:legacy-single-bay": "test_br15_legacy_single_bay_mapping_and_geometry_remain_exact",
-    "br16:native-created-rows": "test_br16_upstream_reference_preview_contains_native_created_rows"
+    "br16:native-created-rows": "test_br16_upstream_reference_preview_contains_native_created_rows",
+    "br02:derived-outline-options": "test_br02_derived_outer_edges_preserve_r41_keys",
+    "br02:derived-outline-key": "test_br02_derived_outer_edges_preserve_r41_keys",
+    "br02:derived-second-component": "test_br02_second_derived_component_uses_exact_outer_keys",
+    "br02:derived-key-reject": "test_br02_derived_outer_keys_reject_alias_hole_stale_and_duplicate",
+    "br02:ordinary-key-reject": "test_br02_derived_outer_keys_reject_alias_hole_stale_and_duplicate",
+    "br02:duplicate-derived-key": "test_br02_derived_outer_keys_reject_alias_hole_stale_and_duplicate"
   },
   "nodeTests": [
+    "R06 R41 exact outer edge keys survive draft Save and fresh archive reopen",
     "R06 BR12 draft-only Save declares both capabilities and preserves raw indices",
     "R06 BR12 recognized format refuses each stripped capability and every downgrade",
     "R06 BR12 mixed grid collection card capability and repeat draft retain every component",
@@ -90,7 +99,10 @@
     "r06-br12:scene-capability",
     "r06-br12:service-capability",
     "r06-br12:stripped-capability",
-    "r06-br15:legacy-manifest-bytes"
+    "r06-br15:legacy-manifest-bytes",
+    "r06-r41:draft-key-writer",
+    "r06-r41:draft-key-reopen",
+    "r06-r41:host-capability-writer"
   ],
   "browserTags": [
     "R06_BR12_ARCHIVE",
@@ -120,7 +132,12 @@
     "R06_BR16_POINTER_COMMIT",
     "R06_BR16_POINTER_NATIVE",
     "R06_FORMAL_SAVE_FILE",
-    "R06_NO_BROWSER_EXCEPTION"
+    "R06_NO_BROWSER_EXCEPTION",
+    "R06_R41_NATIVE",
+    "R06_R41_HISTORY",
+    "R06_R41_SAVE",
+    "R06_R41_COLD_REOPEN",
+    "R06_R41_SAVE_FILE"
   ],
   "nodeBaseline": [
     {
@@ -331,18 +348,34 @@
       ]
     },
     {
-      "name": "r06_br09_accept_from_fill",
+      "name": "r06_br09_reject_derived_guide_host",
       "kind": "native",
-      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br09_real_from_fill_host_is_unsupported",
-      "assertion": "br09:from-fill",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br09_derived_host_guides_are_supported",
+      "assertion": "br09:derived-guide",
       "covers": [
         "BR09"
       ],
       "patches": [
         {
-          "file": "geometry-templates/woodworking/native/assembly.c",
-          "before": "if(value.subgrid||value.phased||value.from_fill)",
-          "after": "if(value.subgrid||value.phased)"
+          "file": "geometry-app/native/reference_sources.inc",
+          "before": "* turn this guide into an unsupported from-fill grid reference. */\n        return true;}",
+          "after": "* turn this guide into an unsupported from-fill grid reference. */\n        out->from_fill=p.derived_fill_id!=0;return true;}"
+        }
+      ]
+    },
+    {
+      "name": "r06_br09_reject_derived_finite_grid_host",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br09_derived_host_finite_grid_is_supported",
+      "assertion": "br09:derived-finite-grid",
+      "covers": [
+        "BR09"
+      ],
+      "patches": [
+        {
+          "file": "geometry-app/native/reference_sources.inc",
+          "before": "* panel-fill provenance. Finite grids on derived D4 hosts are legal. */",
+          "after": "* panel-fill provenance. Finite grids on derived D4 hosts are legal. */\n        out->from_fill=p.derived_fill_id!=0;if(out->from_fill)return true;"
         }
       ]
     },
@@ -516,12 +549,16 @@
       "kind": "native",
       "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br03n_automatic_endpoint_without_between_is_self_support",
       "assertion": "br03n:automatic-stop-closure",
-      "covers": ["BR03N"],
-      "patches": [{
-        "file": "geometry-templates/woodworking/native/assembly.c",
-        "before": "if(!wood_bay_dependencies(w,a,true))return false;",
-        "after": "if(false)return false;"
-      }]
+      "covers": [
+        "BR03N"
+      ],
+      "patches": [
+        {
+          "file": "geometry-templates/woodworking/native/assembly.c",
+          "before": "if(!wood_bay_dependencies(w,a,true))return false;",
+          "after": "if(false)return false;"
+        }
+      ]
     },
     {
       "name": "r06_archive_drop_draft_repeat_capability",
@@ -654,6 +691,95 @@
           "file": "geometry-web/reference-ui.js",
           "before": "for (const row of preview.timbers || []) {",
           "after": "for (const row of (preview.timbers || []).filter(row=>!(row.change==='created'&&row.owner?.identity))) {"
+        }
+      ]
+    },
+    {
+      "name": "r06_br02_drop_derived_outline_key",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br02_derived_outer_edges_preserve_r41_keys",
+      "assertion": "br02:derived-outline-key",
+      "covers": [
+        "BR02"
+      ],
+      "patches": [
+        {
+          "file": "geometry-core/assembly_generation.inc",
+          "before": "memcpy(a.ref_derived_key,d->at.edge_key,sizeof a.ref_derived_key);",
+          "after": "/* mutation: discard the R41 source key */"
+        }
+      ]
+    },
+    {
+      "name": "r06_br02_hide_derived_outer_options",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br02_derived_outer_edges_preserve_r41_keys",
+      "assertion": "br02:derived-outline-options",
+      "covers": [
+        "BR02"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/web_bridge.c",
+          "before": "if(app_dp_read(&g_world,p->id,&value))for(size_t c=0;c<p->component_count;++c)",
+          "after": "if(false&&app_dp_read(&g_world,p->id,&value))for(size_t c=0;c<p->component_count;++c)"
+        }
+      ]
+    },
+    {
+      "name": "r06_br12_dump_before_derived_dependencies",
+      "kind": "native",
+      "test": "tests.test_assembly_bay_repeat.BayRepeat.test_br12_repeat_with_unrelated_derived_host_replays",
+      "assertion": "br12:mixed-derived-host",
+      "covers": [
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "current_geometry.c",
+          "before": "if(!world->wood.finish_surfaces.host_count)assembly_dump(world,out);",
+          "after": "assembly_dump(world,out);"
+        },
+        {
+          "file": "current_geometry.c",
+          "before": "if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);assembly_dump(world,out);}",
+          "after": "if(world->wood.finish_surfaces.host_count){world_dump_grids(world,out);reference_dump(world,out);}"
+        }
+      ]
+    },
+    {
+      "name": "r06_archive_reject_derived_outline_key",
+      "kind": "node",
+      "file": "tests/test_assembly_project_store.js",
+      "test": "R06 R41 exact outer edge keys survive draft Save and fresh archive reopen",
+      "assertion": "r06-r41:draft-key-writer",
+      "covers": [
+        "BR02",
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "keys(v,['kind','edgeKey'])&&(v.edgeKey===null||Array.isArray(v.edgeKey)",
+          "after": "false&&keys(v,['kind','edgeKey'])&&(v.edgeKey===null||Array.isArray(v.edgeKey)"
+        }
+      ]
+    },
+    {
+      "name": "r06_archive_reject_derived_host_capability",
+      "kind": "node",
+      "file": "tests/test_assembly_project_store.js",
+      "test": "R06 R41 exact outer edge keys survive draft Save and fresh archive reopen",
+      "assertion": "r06-r41:host-capability-writer",
+      "covers": [
+        "BR02",
+        "BR12"
+      ],
+      "patches": [
+        {
+          "file": "geometry-web/project-store.js",
+          "before": "PANEL_FILL_CAPABILITY=\"panel-fill/1\"",
+          "after": "PANEL_FILL_CAPABILITY=\"panel-fill/unsupported\""
         }
       ]
     }

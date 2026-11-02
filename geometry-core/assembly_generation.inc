@@ -39,7 +39,7 @@ static TimberAnchor app_asm_anchor(const WoodAssemblyDefinition *d)
 {
     TimberAnchor a;memset(&a,0,sizeof a);a.placement_id=d->surface_id;a.ref_hole=-1;a.anchor_kind=ANCHOR_AT_LINE;a.span_mode=SPAN_AUTO;a.ref_guide=d->guide_id;a.has_between=true;a.length_direction=d->direction==ASM_DIR_U?SURFACE_DIRECTION_POS_U:SURFACE_DIRECTION_POS_V;a.depth_side=SURFACE_DEPTH_POSITIVE_NORMAL;
     if(d->at.kind==ASM_AT_GRID){a.anchor_kind=ANCHOR_AT_GRID;a.ref_guide=0;a.ref_grid=d->at.id;a.ref_grid_axis=d->at.axis;a.ref_grid_index=d->at.index;}
-    else if(d->at.kind==ASM_AT_OUTLINE){a.anchor_kind=ANCHOR_AT_EDGE;a.ref_guide=0;a.ref_edge=d->at.edge;}
+    else if(d->at.kind==ASM_AT_OUTLINE){a.anchor_kind=ANCHOR_AT_EDGE;a.ref_guide=0;a.ref_edge=d->at.edge;memcpy(a.ref_derived_key,d->at.edge_key,sizeof a.ref_derived_key);}
     for(int k=0;k<2;++k)a.between[k]=(ReferenceFace){1,-1,0,d->between[k]};return a;
 }
 static void app_asm_write(void *user,const WoodMember *value,const WoodAssemblyDefinition *d)

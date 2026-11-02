@@ -306,7 +306,9 @@ static bool reference_asm_position(void *opaque,uint32_t surface,const AsmLocati
         else{GeoAxisPosition value;if(!reference_guide_position(ctx,(size_t)i,&value)||!value.context.has_placement)return false;out->surface_id=(uint32_t)value.context.placement;out->axis=value.context.axis;out->coordinate=value.coordinate;}
         PlacementSurface p;if(ctx->use_current_values){if(!app_placement_read(world,out->surface_id,&p))return false;}
         else{SpaceBoundarySurface b;const SpaceBoundarySurface *view;if(!reference_host_read(ctx,out->surface_id,&p,&b,&view))return false;}
-        out->from_fill=p.derived_fill_id!=0;return true;}
+        /* D58 permits D6 guides on any D4 host; a derived host does not
+         * turn this guide into an unsupported from-fill grid reference. */
+        return true;}
     if(at->kind==ASM_AT_GRID){const ReferenceGrid *stored=world_find_grid(world,at->id);WoodGridApplication g;if(!stored)return false;
         if(ctx->use_current_values)g=*stored;else if(!reference_grid_definition(ctx,at->id,&g))return false;
         out->surface_id=g.placement_id;out->axis=at->axis;out->subgrid=g.is_subgrid;
@@ -314,7 +316,8 @@ static bool reference_asm_position(void *opaque,uint32_t surface,const AsmLocati
         PlacementSurface p;SpaceBoundarySurface b;const SpaceBoundarySurface *view;
         if(ctx->use_current_values){if(!app_placement_read(world,surface,&p))return false;view=app_placement_boundary(world,&p,&b);}
         else if(!reference_host_read(ctx,surface,&p,&b,&view))return false;
-        out->from_fill=p.derived_fill_id!=0;if(out->from_fill)return true;
+        /* This is the referenced ordinary grid's source, not the host's
+         * panel-fill provenance. Finite grids on derived D4 hosts are legal. */
         if(!ctx->use_current_values&&!wood_grid_sources_application_value(ctx->grid_sources,at->id,&g))return false;
         out->phased=g.axis[at->axis].stagger_set;if(out->phased)return true;
         if(ctx->use_current_values)return grid_anchor_line_coord(world->wood.grid_applications.items,world->wood.grid_applications.count,&g,&p,view,at->axis,at->index,false,0,&out->coordinate,NULL,0);
@@ -323,7 +326,12 @@ static bool reference_asm_position(void *opaque,uint32_t surface,const AsmLocati
     if(at->kind==ASM_AT_OUTLINE){PlacementSurface p;SpaceBoundarySurface b,effective;const SpaceBoundarySurface *view;
         if(ctx->use_current_values){if(!app_placement_read(world,surface,&p))return false;view=app_placement_boundary(world,&p,&b);}
         else if(!reference_host_read(ctx,surface,&p,&b,&view))return false;
-        out->surface_id=surface;out->axis=0;out->from_fill=p.derived_fill_id!=0;if(out->from_fill)return true;
+        out->surface_id=surface;out->axis=0;
+        if(p.derived_fill_id){int hole,edge;if(!at->edge_key[0]||!reference_derived_resolve(ctx,&p,at->edge_key,&hole,&edge)||hole>=0||edge<0)return false;
+            size_t component=(size_t)edge/GEO_LOOP_MAX_VERTICES,index=(size_t)edge%GEO_LOOP_MAX_VERTICES;
+            if(component>=p.component_count)return false;const PolygonLoop2 *loop=&p.components[component].outline;
+            return loop_get_edge_segment(loop,index,&out->edge)&&loop_edge_outward_normal(loop,index,&out->outward);}
+        if(at->edge_key[0])return false;
         view=placement_effective_boundary(&p,view,&effective);PolygonLoop2 rect;const PolygonLoop2 *loop;if(view)loop=&view->outline;else{placement_outline(&p,NULL,&rect);loop=&rect;}
         return at->edge>=0&&loop_get_edge_segment(loop,(size_t)at->edge,&out->edge)&&loop_edge_outward_normal(loop,(size_t)at->edge,&out->outward);
     }return false;
