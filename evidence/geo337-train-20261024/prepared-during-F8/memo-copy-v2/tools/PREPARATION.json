@@ -1,0 +1,235 @@
+{
+  "schema": "F8-memo-counterfactual-copy-v2-preparation/1",
+  "prepared_utc": "2026-10-25T08:11:26.202193+00:00",
+  "formal_executed": false,
+  "R8_ELF_payload_read_or_copied": false,
+  "source_F8": "75a1e93811a52b69385cbdaf6a09d773ed9052ad",
+  "previous_preparation_sha256": "e099bd6583854acda5f55f998fd889add41c4ebbaf682413e417f338c3eb8d37",
+  "new_tool_sha256": "bb255e134528642cc53629e267f4cf2a35bcf958615b57aa1b0b6ee959b4857b",
+  "formal_receipt_sha256": "979680e78a381d28a6d1c6825b7b1b8af850bebec381ec3cee3ef42e9e46ea15",
+  "files": [
+    {
+      "path": "COPY_METADATA_PROOF.initial-summary.json",
+      "bytes": 2328,
+      "sha256": "0cea0a5c0969a3a607e17383cca3361849b057d4340aa0fcf2c46836dd699d77"
+    },
+    {
+      "path": "COPY_METADATA_PROOF.json",
+      "bytes": 2679,
+      "sha256": "d9bfdbe2e17723b8f70872f3d19dd3dce824a77305d660a66241465c3512b63a"
+    },
+    {
+      "path": "COUNTERFACTUAL.json",
+      "bytes": 5641,
+      "sha256": "4fb12fc272fb55e92f441f24f34f6657c64020b5c90c2c3c1f0fd117eff61a04"
+    },
+    {
+      "path": "METADATA_PROOF.json",
+      "bytes": 1906,
+      "sha256": "57c27990f3cd8a6a51e8728a6613f8ca04708c0ffffaa93a737f91253bf6a010"
+    },
+    {
+      "path": "ORIGINAL_TO_F8_TOOL.diff",
+      "bytes": 5228,
+      "sha256": "250c3eabfb5bbcae746fdbe05a51d92812a071298d1d29f5f49999b9d3cb878f"
+    },
+    {
+      "path": "R8_ELF_COPY_BINDINGS.json",
+      "bytes": 1673,
+      "sha256": "fa0d0cdc150addfa6107e203b00f54399145e2315516069dc339918c2e93f13b"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2841,
+      "sha256": "721b157b55bde85d3b812c98114e5eec0500793a4f5c406b7fa2735766462417"
+    },
+    {
+      "path": "V1_TO_V2_COPY_ONLY.diff",
+      "bytes": 4766,
+      "sha256": "d71e566a3032e47dceb18334cacdc04c5512661058a25db074d10243b827ca5a"
+    },
+    {
+      "path": "check_copy_metadata.py",
+      "bytes": 1241,
+      "sha256": "0676f6855f7bb35572a0fb46a299d53ac7d7c12786ee54a771d5c4c86deed611"
+    },
+    {
+      "path": "check_metadata.py",
+      "bytes": 988,
+      "sha256": "4131759113b88f83e1a8d67d5f1a98d1da336fba7e5104331026761bcf272e08"
+    },
+    {
+      "path": "copy_r8_elf.py",
+      "bytes": 3409,
+      "sha256": "07bc1f02c9d813fa20f7289e4fde687362ef5db5e9831b831dc9307a5a5a47e5"
+    },
+    {
+      "path": "memo_variant.py",
+      "bytes": 4666,
+      "sha256": "80f1c1c583d2b812f829035099e3612c5fd436915892437f27179f2072eb097e"
+    },
+    {
+      "path": "metadata/F7-geometry-app__native__reference_sources.inc",
+      "bytes": 63190,
+      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56"
+    },
+    {
+      "path": "metadata/F7-geometry-core__references.inc",
+      "bytes": 64355,
+      "sha256": "1c77919f801bb639c5b42f621759fd940b0a3b9e3d90aa6be8e98dd4c952b751"
+    },
+    {
+      "path": "metadata/F8-geometry-app__native__reference_sources.inc",
+      "bytes": 63190,
+      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56"
+    },
+    {
+      "path": "metadata/F8-geometry-core__references.inc",
+      "bytes": 64400,
+      "sha256": "2f915779b14272a3cd9d2014d02d9476b05841145885e3d4b0717657e0a0378c"
+    },
+    {
+      "path": "metadata/H-geometry-app__native__reference_sources.inc",
+      "bytes": 62346,
+      "sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512"
+    },
+    {
+      "path": "metadata/H-geometry-core__references.inc",
+      "bytes": 64152,
+      "sha256": "f2d1f595be0279b2a052bde8ae0fd55c44e7d710610ea21cac2209d2d6603c10"
+    },
+    {
+      "path": "metadata/copy-fixed.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata/copy-fixed.stdout.bin",
+      "bytes": 899,
+      "sha256": "dbf0688d6367a20463492000b2e891377be6d20bc3fd22eddf3c06a5362ec20a"
+    },
+    {
+      "path": "metadata/copy-fixture-fixed/synthetic-copy",
+      "bytes": 504,
+      "sha256": "303d957ca768a864a8ff03a02deec27155e59731f56caedd71658eabc4f8a0a2"
+    },
+    {
+      "path": "metadata/copy-fixture-fixed/synthetic-original",
+      "bytes": 504,
+      "sha256": "303d957ca768a864a8ff03a02deec27155e59731f56caedd71658eabc4f8a0a2"
+    },
+    {
+      "path": "metadata/copy-fixture-restored/synthetic-copy",
+      "bytes": 504,
+      "sha256": "303d957ca768a864a8ff03a02deec27155e59731f56caedd71658eabc4f8a0a2"
+    },
+    {
+      "path": "metadata/copy-fixture-restored/synthetic-original",
+      "bytes": 504,
+      "sha256": "303d957ca768a864a8ff03a02deec27155e59731f56caedd71658eabc4f8a0a2"
+    },
+    {
+      "path": "metadata/copy-fixture-withdraw-copy-to-hardlink/synthetic-copy",
+      "bytes": 504,
+      "sha256": "303d957ca768a864a8ff03a02deec27155e59731f56caedd71658eabc4f8a0a2"
+    },
+    {
+      "path": "metadata/copy-fixture-withdraw-copy-to-hardlink/synthetic-original",
+      "bytes": 504,
+      "sha256": "303d957ca768a864a8ff03a02deec27155e59731f56caedd71658eabc4f8a0a2"
+    },
+    {
+      "path": "metadata/copy-restored.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata/copy-restored.stdout.bin",
+      "bytes": 905,
+      "sha256": "a77d28ec49ead043dca77af87cfbf6968451c17873a368e5d024828cda90baa1"
+    },
+    {
+      "path": "metadata/copy-withdraw-copy-to-hardlink.stderr.bin",
+      "bytes": 539,
+      "sha256": "4a7be5ad08783c2de153b730167bd638cab8f8fe572c95cf745b15dd42066cd9"
+    },
+    {
+      "path": "metadata/copy-withdraw-copy-to-hardlink.stdout.bin",
+      "bytes": 121,
+      "sha256": "d63b9e4499a22983958b0df9b7f6534035b8211a21cbd2523773bf75c94da76b"
+    },
+    {
+      "path": "metadata/fixed.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata/fixed.stdout.bin",
+      "bytes": 754,
+      "sha256": "46654aeeaeb7da615963cce477bfc842fbc81e886b2610a48bd258732b15f565"
+    },
+    {
+      "path": "metadata/restored.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "metadata/restored.stdout.bin",
+      "bytes": 754,
+      "sha256": "46654aeeaeb7da615963cce477bfc842fbc81e886b2610a48bd258732b15f565"
+    },
+    {
+      "path": "metadata/withdraw-local-init-preservation.stderr.bin",
+      "bytes": 335,
+      "sha256": "448fe0e319bc92c724b291a22ec00fbc9f50e03e5496aa4c2dd704b197646288"
+    },
+    {
+      "path": "metadata/withdraw-local-init-preservation.stdout.bin",
+      "bytes": 118,
+      "sha256": "ad7f42f13100a02df39dc37dbfba627fa866b66e205f326d304d01788b8f44fd"
+    },
+    {
+      "path": "metadata/withdrawn-geometry-app__native__reference_sources.inc",
+      "bytes": 62346,
+      "sha256": "a6dece841da1a19d5df5c032a17d713363136c49aee09f7f641d374c26b85512"
+    },
+    {
+      "path": "metadata/withdrawn-geometry-core__references.inc",
+      "bytes": 64197,
+      "sha256": "093d5d7f06963a0f555c6614595791c99e250c019865006edadeacf956838a80"
+    },
+    {
+      "path": "patches/historical-memo-added.patch",
+      "bytes": 3587,
+      "sha256": "e5668855c5c97d24716f8c1261ca89b2ceac457ffcd67eae283894df71117f1d"
+    },
+    {
+      "path": "patches/local-init-retained.patch",
+      "bytes": 722,
+      "sha256": "4909cbf51efc391298701b11df136a660f5a9f1542fccdcfb3cf1af5ebd66bb7"
+    },
+    {
+      "path": "patches/restored.patch",
+      "bytes": 3535,
+      "sha256": "45c99cdaf920e91f41dfbf0759ad1257818572889d125688134c1d70b951fd18"
+    },
+    {
+      "path": "patches/withdrawn.patch",
+      "bytes": 3539,
+      "sha256": "3fae9e3ee0a1a5a12be03480c9e65d03d9dd9f61c72938ce5ab2931771e19d4e"
+    },
+    {
+      "path": "run.py",
+      "bytes": 13532,
+      "sha256": "bb255e134528642cc53629e267f4cf2a35bcf958615b57aa1b0b6ee959b4857b"
+    }
+  ],
+  "formal_pending": [
+    "root exclusive schedule/storage admission",
+    "independent exact clean F8 source",
+    "withdrawn/restored profiles1/0 and isolated175ABC+4tupleaudit0",
+    "cross-version exact policy remainsred"
+  ],
+  "changed_judges_or_thresholds": false,
+  "storage_delta": "Only exact pinned original ELF copies into different private inode; no originalbinary rebuild/move/write/link."
+}

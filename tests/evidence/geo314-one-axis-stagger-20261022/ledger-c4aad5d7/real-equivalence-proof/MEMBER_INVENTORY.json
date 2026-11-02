@@ -1,0 +1,2195 @@
+{
+  "schema": "geo314-equivalence-proof-members/1",
+  "source_sha": "c4aad5d7bb98ea864639f9e6d85c99bb2613c24b",
+  "verified_member_count": 311,
+  "uncompressed_file_bytes": 17499777,
+  "archives": [
+    {
+      "path": "archives/proof-raw-01.tar.gz",
+      "bytes": 2389449,
+      "sha256": "c96691665ac2fafa323f96d77734fa314a24d229916be5a21690259a0de2cbbb",
+      "member_count": 311,
+      "uncompressed_file_bytes": 17499777,
+      "every_member_verified": true
+    }
+  ],
+  "members": [
+    {
+      "path": "inner/CONTROL_COMMIT.txt",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/CONTROL_COMMIT.txt",
+      "bytes": 253,
+      "sha256": "44bc6abe7a85a0b2c2cad62fd7e18ddafc18375bd50a90b3b2f7e7c43f603b5e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/CONTROL_WITHDRAWAL.diff",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/CONTROL_WITHDRAWAL.diff",
+      "bytes": 3086,
+      "sha256": "2e497b32cb172f51e3351bcf29f04acf5634ba06f53469483a300e83498a31c4",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/M110_VALIDATION.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/M110_VALIDATION.json",
+      "bytes": 114402,
+      "sha256": "9240dfa332475a59d152b5d27687522c349e58fbb42645e1bdeb87132d014457",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/SCRATCH_IDENTITY.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/SCRATCH_IDENTITY.json",
+      "bytes": 95558,
+      "sha256": "15505f5938491917018c9d773e7029c5026f86349c5287263a1e8cd9738618e1",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/bridge-mutant/bridge.fingerprint.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "e9038ded6bc4f743468ea7590bf89f5726bc4c2ee4414493620bdd69fde3158e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/bridge-mutant/build.lock",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/bridge-mutant/build.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/bridge-restored/bridge.fingerprint.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "be1f2174b26d844dd3fe5f07ad553e776b21e86c7dd0dd6009dc9344b9283e2a",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/bridge-restored/build.lock",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/bridge-restored/build.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/mutant-build.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/mutant-build.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/mutant-build.stdout",
+      "bytes": 272,
+      "sha256": "46beae30583ac7a3e6163e33e8c23537ac7b485ae83a07e70d2c4e2f50410e30",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/mutant.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/mutant.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/mutant.stdout",
+      "bytes": 688,
+      "sha256": "015c3d48f332db1769f0e7e2ae075bbea67b2cf7d00719276463226af7554d99",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/restored-build.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/restored-build.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/restored-build.stdout",
+      "bytes": 276,
+      "sha256": "d938da7765b0577c9636605fbc065fbc45e6580ac38511e687ec964a2ec582ca",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/restored.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/M110/restored.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/M110/restored.stdout",
+      "bytes": 15238,
+      "sha256": "d6f794100ab110fe579de58b91dd99683a0a471fadb9f883be5f9974affed1fc",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline-build.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline-build.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline-build.stdout",
+      "bytes": 350,
+      "sha256": "a632772e5a656b474de822380951fdd8eaf0924c1401e07ad2c3a06b2e0b85cd",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline.stdout",
+      "bytes": 15238,
+      "sha256": "b300fc0dfd10c6cabb4b67169b964c265f357a43e77bd3cb14cfab0ad51f4fef",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/bridge.fingerprint.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "e5275dd1fd78fc1cf641590876d7e951fdfef5bc5a5a07a6b965f1c265e18be5",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/build.lock",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/build.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-baseline/ledger.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-baseline/ledger.json",
+      "bytes": 5289611,
+      "sha256": "0eefb816a4b5d5cfc78a1754026696e76c6335157cef784d62cd8f18b98cec9e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/M110_VALIDATION.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/M110_VALIDATION.json",
+      "bytes": 114402,
+      "sha256": "5d8135e53d027a96b597e31e28901b6519039c1523aa08d723defbcbe5e962f2",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/SCRATCH_IDENTITY.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/SCRATCH_IDENTITY.json",
+      "bytes": 95558,
+      "sha256": "15505f5938491917018c9d773e7029c5026f86349c5287263a1e8cd9738618e1",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/bridge-mutant/bridge.fingerprint.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/bridge-mutant/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "9176e9f72c9f09d2cc11d79957fceb156b920b756baba68c54004552f03e6a00",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/bridge-mutant/build.lock",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/bridge-mutant/build.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/bridge-restored/bridge.fingerprint.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/bridge-restored/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "15e6c662fabd04807b55efe8b26656b028c0f4c81674ff82205b73c3ab8bf3d1",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/bridge-restored/build.lock",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/bridge-restored/build.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/mutant-build.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/mutant-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/mutant-build.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/mutant-build.stdout",
+      "bytes": 272,
+      "sha256": "c48a297671c9936cb58f1388c688b4fbb3d13010e3061e750224d76452ceea3a",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/mutant.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/mutant.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/mutant.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/mutant.stdout",
+      "bytes": 688,
+      "sha256": "8fd084ced3c656cee026f8ae4b4ecebf76f9f82e4cec56739aa36bf75b993cc0",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/restored-build.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/restored-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/restored-build.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/restored-build.stdout",
+      "bytes": 276,
+      "sha256": "a518bc9613c7fbc24b6f5c0b00948d7d1794e2a283af5dfdd491d79694b26a1e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/restored.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/restored.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/M110/restored.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/M110/restored.stdout",
+      "bytes": 15238,
+      "sha256": "fa5dbe1a69162eda519fb1147bdf4ea14bf615d578fc90107c2d98d84ccc0713",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline-build.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline-build.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline-build.stdout",
+      "bytes": 350,
+      "sha256": "eea604cd703c4664a2ba38fd311bbc1a9e3403dd23a73114b969d7cc3dfd41ef",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/baseline.stdout",
+      "bytes": 15238,
+      "sha256": "c451cac73e4e295e7f07555d2a83a66a594e0216baeea0b35b6430b4da8f026c",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/bridge.fingerprint.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "6cee4dbb8e266c1a5a17ae36cad7e666d38d623e152b25d3af16445a024728ba",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/build.lock",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/cache/_bridge-baseline/c4aad5d7bb98ea864639f9e6d85c99bb2613c24b/build.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/fixed-restored/ledger.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/fixed-restored/ledger.json",
+      "bytes": 5289611,
+      "sha256": "95a8a2887b8c07d466ad44fd658b57d811372cc9a2f6e56bd6308b86435fc472",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/receipt.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/receipt.json",
+      "bytes": 188910,
+      "sha256": "53cc1904c58cd793f1e3a677e105ea636f72edb671dea6904ff05ad19edcc9b8",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands.json",
+      "bytes": 85067,
+      "sha256": "fa297921a040a2860e43d99b398f94353af828a6f681a1647cb886579ea78dd9",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000001/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000001/request.json",
+      "bytes": 1471,
+      "sha256": "db3cd8bd6d254c61d9ab2ba5a6addc40cbdd2c4bfa05f79540cc888e9bbe14b3",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000001/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000001/result.json",
+      "bytes": 1722,
+      "sha256": "d8f8aabe58eb91185244fd33fb72926a8ff62bef8b21189dbecf4ad637ee5ea3",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000001/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000001/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000001/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "c8d22a5c0aab8bc75b1403e6e70860abe12b1266c62943894cfca87d8611c90d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000002/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000002/request.json",
+      "bytes": 1507,
+      "sha256": "32521e859f0e0d42f3a9a05818511142c57aa3774355d0dd6f070d7dc9205a67",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000002/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000002/result.json",
+      "bytes": 1757,
+      "sha256": "7bcd2bba38e05f7a7f5f101fd5cb0ed682cdea3f98086ee4694d927d576a06ac",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000002/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000002/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000002/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000003/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000003/request.json",
+      "bytes": 1507,
+      "sha256": "d0f83ce0a4ba4f047b08372fa87cd6a6ae616f5416de616cce34599a5e5e86b6",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000003/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000003/result.json",
+      "bytes": 1761,
+      "sha256": "7b11b072ffbfc349ebe118aa9dd01865da270588c2ef9019b2260125959f33eb",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000003/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000003/stderr.bin",
+      "bytes": 11944,
+      "sha256": "dd0a8cc2cf002978c177a7e593620b91f4a4d33a71a63d4d97b462ca3c39de70",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000003/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000003/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000004/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000004/request.json",
+      "bytes": 1508,
+      "sha256": "98521fbd308cb1b06004798ae9309ba7c4ee30d9b350208d903715485c3021b1",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000004/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000004/result.json",
+      "bytes": 1759,
+      "sha256": "932f88546a35bedcb4b42147aad102f5dab6ee3867c58e34c4106d222babd8f2",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000004/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000004/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000004/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000004/stdout.bin",
+      "bytes": 41,
+      "sha256": "c8d22a5c0aab8bc75b1403e6e70860abe12b1266c62943894cfca87d8611c90d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000005/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000005/request.json",
+      "bytes": 1544,
+      "sha256": "b92f0d0b6380e93757936b39d9141c16df39e3b92075053eb17c07a793b2aedb",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000005/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000005/result.json",
+      "bytes": 1794,
+      "sha256": "35583080d81b75b52969f50e3ed3b29827a0241dfd176e057bf9f046c7f5d968",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000005/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000005/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000005/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000006/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000006/request.json",
+      "bytes": 1659,
+      "sha256": "16daba3fa41afe9b218d1d772df50c6d1c9a7f3f6e3d4e684eb01fd479d28c8d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000006/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000006/result.json",
+      "bytes": 1911,
+      "sha256": "1aa3a3db88d4980fa89bfd2081bd76f12977ccd4d79bdf2f67055a9311d25fe6",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000006/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000006/stderr.bin",
+      "bytes": 143,
+      "sha256": "5ac72ae8b83c5367377a4c35a6445643abfd4310b60628b6167710dca0d23730",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000006/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000006/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000006/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000007/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000007/request.json",
+      "bytes": 1626,
+      "sha256": "81b1dc24000ffcaf3f5e090c383e548cd0a70b1fce33f024090357bd6fb64d03",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000007/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000007/result.json",
+      "bytes": 1875,
+      "sha256": "622f8485379ad1ab8a7aa51126cc9a2844bb125c143ee3dbd5d8369d771d009f",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000007/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000007/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000007/stdin.bin",
+      "bytes": 59,
+      "sha256": "345674a94fab7642fddee27747ff046250cc30d369eea831425b7c97bcbf7aee",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000007/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000008/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000008/request.json",
+      "bytes": 1679,
+      "sha256": "508f4188342933eabe527864d00b0ad5c368463d4a93ab7b0999a19774293d6a",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000008/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000008/result.json",
+      "bytes": 1930,
+      "sha256": "580f332ce9b97d39607f4026c7ba7f0e9399e4b12b1bcac3c2c64e5e7069e474",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000008/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000008/stderr.bin",
+      "bytes": 94,
+      "sha256": "5b5c349cc6fb8589fd72b9571160debaa40b3fe105517a8d26fe0417002f9e77",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000008/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000008/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000008/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000008/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000009/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000009/request.json",
+      "bytes": 1763,
+      "sha256": "6f383db8edbb6ba2a785c7c383be73a0d3b386eb7be7f7d08b77c072ee0c6217",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000009/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000009/result.json",
+      "bytes": 2017,
+      "sha256": "a9e7799e7d2c73213f19cc6f2424a4429d0a28a9715003d0cd9a922d21c5dec1",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000009/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000009/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000009/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000009/stdout.bin",
+      "bytes": 82224,
+      "sha256": "871bc0b951858b0ba2a83c7b6bf7652afcfde9296e97a9d6250959fb3373681b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000010/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000010/request.json",
+      "bytes": 1523,
+      "sha256": "cce104b287d3ae1fd716f01176fd8a99e362b1cc46751ff0a640321dc550281e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000010/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000010/result.json",
+      "bytes": 1775,
+      "sha256": "eed732c5e605ae7a7d984d956b76dafaf7dad31eae22272ff92adc9bcd214c7e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000010/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000010/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000010/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000010/stdout.bin",
+      "bytes": 236,
+      "sha256": "3add8e34d2378ffd1fe16a27349a37d4a11a2d3496f134119c16c69a5eddb697",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000011/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000011/request.json",
+      "bytes": 1757,
+      "sha256": "d4e98950650479fce35f5c15a89ce130b40e7951e36465f00ee9d09e37e39df0",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000011/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000011/result.json",
+      "bytes": 2012,
+      "sha256": "c4dd0295ed802453ebca9eb7f8c2ade0ed5f4470840155003f2854b463d00cc1",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000011/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000011/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000011/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000011/stdout.bin",
+      "bytes": 102724,
+      "sha256": "c7f037680212061f0a0eb7160b90b1afad54a5868da0932b950310f9a630689b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000012/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000012/request.json",
+      "bytes": 1507,
+      "sha256": "41d52cc465eb9b643731ad0d13ebd0947b3a3a1c185a05dd27e59c64eda6f3a0",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000012/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000012/result.json",
+      "bytes": 1758,
+      "sha256": "911e9300a6d49019f1a63a0a5fbd67958401ed7274426c8cfd995c19d485ff6b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000012/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000012/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000012/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000012/stdout.bin",
+      "bytes": 41,
+      "sha256": "c8d22a5c0aab8bc75b1403e6e70860abe12b1266c62943894cfca87d8611c90d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000013/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000013/request.json",
+      "bytes": 1545,
+      "sha256": "e00aeb1b9ccc33599c4817bc99085070d4278c01328fecb99b9840145fdb9a4b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000013/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000013/result.json",
+      "bytes": 1795,
+      "sha256": "80cf137475e2a670454558fc0c578ed53c66317cf878d9f85c0485c149a54524",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000013/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000013/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000013/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000013/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000014/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000014/request.json",
+      "bytes": 1581,
+      "sha256": "fd6c41e527e9de8c808fa3b157ef749d75626bc91c65692127b5407f7949ef77",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000014/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000014/result.json",
+      "bytes": 1832,
+      "sha256": "0dbcb812ab0b17870b162040732791618925f5d42bdfda04f5a73e649d9b3928",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000014/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000014/stderr.bin",
+      "bytes": 79,
+      "sha256": "2865676c7c21b1b77d0e889595d628bdc917e74522894934f1fb07693193633c",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000014/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000014/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000014/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000015/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000015/request.json",
+      "bytes": 1547,
+      "sha256": "7c212e8e9ce7f5c8f1c4c0355bdca00e9ff4a6be9afe89cdb5c1e9a29db3e2d9",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000015/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000015/result.json",
+      "bytes": 1797,
+      "sha256": "ade6b165642abdacee09c4bf9a89464de3dbbd7e51d90f7c47c28d3507918309",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000015/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000015/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000015/stdin.bin",
+      "bytes": 59,
+      "sha256": "345674a94fab7642fddee27747ff046250cc30d369eea831425b7c97bcbf7aee",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000015/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000015/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000016/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000016/request.json",
+      "bytes": 1601,
+      "sha256": "f58a7c5e1b0ad3c91e5c7e33fce7c5328fdb23ed32db3e0cc98ae4578cd4f5ac",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000016/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000016/result.json",
+      "bytes": 1852,
+      "sha256": "3c6ca93aa6cbff7d83879309ff2e6ef491ff106c192ecb0e303aacb4db642abd",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000016/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000016/stderr.bin",
+      "bytes": 94,
+      "sha256": "5b5c349cc6fb8589fd72b9571160debaa40b3fe105517a8d26fe0417002f9e77",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000016/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000016/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000016/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000016/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000017/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000017/request.json",
+      "bytes": 1593,
+      "sha256": "d6bb9ee9e77f940529363c6047c15c1ebbe770156108d03b918eb1c33fdc2bbf",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000017/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000017/result.json",
+      "bytes": 1843,
+      "sha256": "a53d87e55a8a2fa07c10dd7534b1eaa12123039f341a0055ff93a29026799071",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000017/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000017/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000017/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000017/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000018/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000018/request.json",
+      "bytes": 1556,
+      "sha256": "8f5151edb8e0bc3806ac82c43fe9ffec77a63989f06b74ae39f01600e975ae6c",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000018/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000018/result.json",
+      "bytes": 1809,
+      "sha256": "a02f0dc73ef6a3f1ecf91dc644180e2ee2d7d6da5d3dd08d7b5163112cc0b286",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000018/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000018/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000018/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000018/stdout.bin",
+      "bytes": 3086,
+      "sha256": "2e497b32cb172f51e3351bcf29f04acf5634ba06f53469483a300e83498a31c4",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000019/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000019/request.json",
+      "bytes": 1522,
+      "sha256": "4cbfed2d7e11e5e5a192db4ac53c2fcfd2aced5f9afc8bc4716a3dc4f0f686f4",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000019/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000019/result.json",
+      "bytes": 1771,
+      "sha256": "d64e778d0b6d1a7de8d35753ff7712c7fe81980a39bc80cdad5389b535dd2624",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000019/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000019/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000019/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000019/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000020/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000020/request.json",
+      "bytes": 1648,
+      "sha256": "df0cc41d36331f2fd19de9d4cbc32b6f1a16a0bdd57cd1d1eb3e1b6ff75113ca",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000020/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000020/result.json",
+      "bytes": 1900,
+      "sha256": "eddac42a8febdc9afb3d4c741f1f1bb21fe366bafb0673464961dbede2be3251",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000020/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000020/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000020/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000020/stdout.bin",
+      "bytes": 131,
+      "sha256": "be890a764340d886d284d75c3575bf9140acd0ad6d27fd1c2b3bf21aa15b4829",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000021/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000021/request.json",
+      "bytes": 1509,
+      "sha256": "f8bbcc6e311d3dfe8fd9bc4c6d8e99843efee0c76604afbf25bd03baa1a1e05d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000021/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000021/result.json",
+      "bytes": 1760,
+      "sha256": "050d4010f30eaa3958499ba834333bba09198ad9e2217fefd06480309aa05365",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000021/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000021/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000021/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000021/stdout.bin",
+      "bytes": 41,
+      "sha256": "28c5abde82f934071f16a3c1e9c6711114ab625f1f77270575fc93e8428e3463",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000022/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000022/request.json",
+      "bytes": 1564,
+      "sha256": "8dbfba86b791abd183245c8eac213ca1a8791046258733c38a625a7ddecf5ead",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000022/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000022/result.json",
+      "bytes": 1816,
+      "sha256": "bb934fc07a62e153c24a1d31bfa9cce4ecdbeef3970667b7c6f72230c52151c6",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000022/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000022/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000022/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000022/stdout.bin",
+      "bytes": 253,
+      "sha256": "44bc6abe7a85a0b2c2cad62fd7e18ddafc18375bd50a90b3b2f7e7c43f603b5e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000023/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000023/request.json",
+      "bytes": 1535,
+      "sha256": "c171558c2096c222ee2b2459e9e0e752f20fcb3331cb589448ed01895596e00c",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000023/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000023/result.json",
+      "bytes": 1786,
+      "sha256": "653a93a3c4bf20e1aca1c6a2c1a6005a061adf8f961661765aea6a4b3798a2d0",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000023/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000023/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000023/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000023/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000023/stdout.bin",
+      "bytes": 41,
+      "sha256": "28c5abde82f934071f16a3c1e9c6711114ab625f1f77270575fc93e8428e3463",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000024/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000024/request.json",
+      "bytes": 1573,
+      "sha256": "0297e9185b1862273761630474fdcfafb3c352b5b29f17470d415c8fe64c649a",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000024/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000024/result.json",
+      "bytes": 1823,
+      "sha256": "d7e02a759fce59ac766de66e4e92c61ac0b352c03541b66aa78b96e6c6c29e6d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000024/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000024/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000024/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000024/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000024/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000025/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000025/request.json",
+      "bytes": 1724,
+      "sha256": "b61894ae4b061928be5ceed6d1cbe2d62e9187c93dc9c445d1d9c355c17cb0f0",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000025/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000025/result.json",
+      "bytes": 1976,
+      "sha256": "9034d14f3d0b748adcd8fa4e64a3aee13fb6f77bfdd22a857afc5c8dc72eaf96",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000025/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000025/stderr.bin",
+      "bytes": 138,
+      "sha256": "bf43e884e8fbfa1f851b8c5b80e903644ddd54bd27e6302f16457c44a73828da",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000025/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000025/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000025/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000026/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000026/request.json",
+      "bytes": 1616,
+      "sha256": "8c77a2317f58ff623a4de8e39e0739d03b1b72e07badccbc101a12ec6c9dce27",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000026/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000026/result.json",
+      "bytes": 1866,
+      "sha256": "75c3758e89da0379843408789f4558c35fa93902fc64bea29b68ab65aa039857",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000026/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000026/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000026/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000026/stdin.bin",
+      "bytes": 59,
+      "sha256": "345674a94fab7642fddee27747ff046250cc30d369eea831425b7c97bcbf7aee",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000026/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000026/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000027/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000027/request.json",
+      "bytes": 1670,
+      "sha256": "78d71e78ab0c82448bcd8498f7424435c8d036739381664520da8761e9180369",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000027/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000027/result.json",
+      "bytes": 1921,
+      "sha256": "2ed53f62c53822675851ca04e51b5168c60a75658c947d1219c3072606b4f9f8",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000027/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000027/stderr.bin",
+      "bytes": 81,
+      "sha256": "0ebd79a7db34efbcb55c7a30c3b2f8282eb009ecb8f111ceb662f152b49db4d5",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000027/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000027/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000027/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000027/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000028/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000028/request.json",
+      "bytes": 1827,
+      "sha256": "c686529ddf09342c8439a763cbff4cbf80cf0dc87085475f83178e4b2dc2cb9b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000028/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000028/result.json",
+      "bytes": 2081,
+      "sha256": "010e44bed990d94067c77706965e93c4bf466c2814bc24ad54819297c64f3e13",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000028/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000028/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000028/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000028/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000028/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000028/stdout.bin",
+      "bytes": 82224,
+      "sha256": "9442acf43e2e692a1f80139358f3c8f3717b7a8fba7bdfaad583066104255dab",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000029/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000029/request.json",
+      "bytes": 1548,
+      "sha256": "e7cdbc5bebcad182fb3deffc13954fc72ce185cf9d81e8a635e25218ad8fcbcc",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000029/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000029/result.json",
+      "bytes": 1800,
+      "sha256": "321353baef67e97d92871a70fce993f0c5bf4bd3df78c50070593d0dbcd2c3e6",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000029/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000029/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000029/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000029/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000029/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000029/stdout.bin",
+      "bytes": 160,
+      "sha256": "a5a5f13b577993b0c63e5663a7224a1091defccf35e4884ce42e70f20b649ecd",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000030/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000030/request.json",
+      "bytes": 1814,
+      "sha256": "e271dd7c1e93729d3ff4024431a5d7bb4751301f5e5c2cafd81a4786c18a0304",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000030/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000030/result.json",
+      "bytes": 2067,
+      "sha256": "2fec69a183648c141e0de246c19d6439e5e060c2382f18612a5cc4990deb4ab0",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000030/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000030/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000030/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000030/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000030/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000030/stdout.bin",
+      "bytes": 1367,
+      "sha256": "5e0a3b7055127dfb89b0e6f9b4add48499bedae04b4e8fb2d7f21179f6dc6811",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000031/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000031/request.json",
+      "bytes": 1534,
+      "sha256": "5c50cb4c82379b0d12423d1c85a5de93fddcb91ed81ff56279fcd2ef0864534d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000031/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000031/result.json",
+      "bytes": 1784,
+      "sha256": "5e0bb090836c72ebea4a3d73937578e4854ddd3bece135fbe8185017d4003fb3",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000031/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000031/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000031/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000031/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000031/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000031/stdout.bin",
+      "bytes": 41,
+      "sha256": "28c5abde82f934071f16a3c1e9c6711114ab625f1f77270575fc93e8428e3463",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000032/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000032/request.json",
+      "bytes": 1572,
+      "sha256": "4bd79f73ea7e7f7d10da30a5a4bc8f400d80c94adc9fc6ea9f0af69d385f6cae",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000032/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000032/result.json",
+      "bytes": 1822,
+      "sha256": "3f66c1a53aa9e269ccc594a2e1389f710aea9e14d0c54f1128280a7b8f426a5e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000032/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000032/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000032/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000032/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000032/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000032/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000033/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000033/request.json",
+      "bytes": 1508,
+      "sha256": "d06ce8f1ca9d61291badebdfc1ce7824e596047c3ab147673cc88c171febd616",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000033/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000033/result.json",
+      "bytes": 1759,
+      "sha256": "fcbf26aab422f2c8b54ae689c0926f09b676702d7c2e0cd3187a5856371ac1ae",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000033/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000033/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000033/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000033/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000033/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000033/stdout.bin",
+      "bytes": 41,
+      "sha256": "c8d22a5c0aab8bc75b1403e6e70860abe12b1266c62943894cfca87d8611c90d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000034/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000034/request.json",
+      "bytes": 1546,
+      "sha256": "0872135ffcfd91d9aba66a58fcc82119d3f6c11bf61eb932c514eb7a7e725fe0",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000034/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000034/result.json",
+      "bytes": 1796,
+      "sha256": "aead4263aeaf6814aaa7fe602f55966f47a2a22a86348168939ddca090d614d7",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000034/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000034/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000034/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000034/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000034/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000034/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000035/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000035/request.json",
+      "bytes": 1660,
+      "sha256": "f6dde184f85b17a7536144e6f798e7794fadf5eff223da11e2032b1a8dffd990",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000035/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000035/result.json",
+      "bytes": 1912,
+      "sha256": "97b48088512e3b94f26a0290c1e9b074728ef070dcad13fc5107cc0deb7be450",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000035/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000035/stderr.bin",
+      "bytes": 143,
+      "sha256": "870b9d39bc7cbd196cbd900c94ff64b168401f13340c3cb6c27015aef87ec05e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000035/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000035/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000035/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000035/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000036/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000036/request.json",
+      "bytes": 1626,
+      "sha256": "722da463855434627a81435b80029ac1ebb4ef0cce2a0102a89eae9d3fce6365",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000036/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000036/result.json",
+      "bytes": 1876,
+      "sha256": "e76c595ee3c17065076107be942dac039282be8ace8f08a021f33b06f614430c",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000036/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000036/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000036/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000036/stdin.bin",
+      "bytes": 59,
+      "sha256": "345674a94fab7642fddee27747ff046250cc30d369eea831425b7c97bcbf7aee",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000036/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000036/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000037/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000037/request.json",
+      "bytes": 1680,
+      "sha256": "b4d7c39eabe8fb3ea6048ec916f7fde3c2f6d1b5053032e30c28a0a0ad2336d8",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000037/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000037/result.json",
+      "bytes": 1931,
+      "sha256": "2ed9ebd8cbe4431f6d89617af0b42d3f10c42c7266df39594df4ee9b13f03a92",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000037/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000037/stderr.bin",
+      "bytes": 94,
+      "sha256": "5b5c349cc6fb8589fd72b9571160debaa40b3fe105517a8d26fe0417002f9e77",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000037/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000037/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000037/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000037/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000038/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000038/request.json",
+      "bytes": 1762,
+      "sha256": "8af771321104bc4dd45b0d9f39a8d22c6e97503dc0db10aa0ede8c2561afbf80",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000038/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000038/result.json",
+      "bytes": 2015,
+      "sha256": "2db98499a3b61d315778f53e0884371b5e5ecf7d24ae2c90c1b6a1b17d6da1f3",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000038/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000038/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000038/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000038/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000038/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000038/stdout.bin",
+      "bytes": 82224,
+      "sha256": "871bc0b951858b0ba2a83c7b6bf7652afcfde9296e97a9d6250959fb3373681b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000039/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000039/request.json",
+      "bytes": 1523,
+      "sha256": "3ed56bd2819cd16a513483d45ee44dc74ad41bd431038bbcd213303c8f125dc8",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000039/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000039/result.json",
+      "bytes": 1774,
+      "sha256": "7398da5327f163f4ba4adbb05b37424c166b795547013a43be7975fb97ae6329",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000039/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000039/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000039/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000039/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000039/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000039/stdout.bin",
+      "bytes": 236,
+      "sha256": "3add8e34d2378ffd1fe16a27349a37d4a11a2d3496f134119c16c69a5eddb697",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000040/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000040/request.json",
+      "bytes": 1758,
+      "sha256": "4f028b02caaa9920d5beb0e4f896bdd53e577fdb3b422a922130409ca05fabbc",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000040/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000040/result.json",
+      "bytes": 2013,
+      "sha256": "d535472f264a1567cb7d636034425d3c38e0cca6a808ce6fc37d6b5db05e6187",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000040/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000040/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000040/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000040/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000040/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000040/stdout.bin",
+      "bytes": 102724,
+      "sha256": "be987da03c2fbe06e8110c041b101d1ec0a37992c65df85c434d2c04a94f19a2",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000041/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000041/request.json",
+      "bytes": 1507,
+      "sha256": "52abbd3d6aa75992c20d9b5d400d1b891ae4a1243756224744983febf3a2fc71",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000041/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000041/result.json",
+      "bytes": 1758,
+      "sha256": "da5d12e73c9a68f3702cb02ab1e653aa96c284fc82fb87feabc711806d3f0e5f",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000041/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000041/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000041/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000041/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000041/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000041/stdout.bin",
+      "bytes": 41,
+      "sha256": "c8d22a5c0aab8bc75b1403e6e70860abe12b1266c62943894cfca87d8611c90d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000042/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000042/request.json",
+      "bytes": 1545,
+      "sha256": "b7de75d77f83d8722f8485a8000a36fe7e076a88b0c982328ea17c0d7bc30f5e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000042/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000042/result.json",
+      "bytes": 1794,
+      "sha256": "e91985abb446299b257d5360a70a9e678b76d7536e7c34d0d3c168570b68201e",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000042/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000042/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000042/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000042/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000042/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000042/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000043/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000043/request.json",
+      "bytes": 1470,
+      "sha256": "5b39e2128314f084f9ccbca1451e55a19cf4dc64d9b6e5522d2e5af9485c93bf",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000043/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000043/result.json",
+      "bytes": 1721,
+      "sha256": "d14b3b8e73ea7b99347c096a2c2d5b28a51473868e90aa44bc9b37f3e8f2e624",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000043/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000043/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000043/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000043/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000043/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000043/stdout.bin",
+      "bytes": 41,
+      "sha256": "c8d22a5c0aab8bc75b1403e6e70860abe12b1266c62943894cfca87d8611c90d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000044/request.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000044/request.json",
+      "bytes": 1508,
+      "sha256": "6dcb7e76a47b13ac7cbe93a3adc13e4162b8148f3a431d130309ca8517f3056c",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000044/result.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000044/result.json",
+      "bytes": 1757,
+      "sha256": "10abfd947db29d5a9091e42632bc41921ea569e3731e9d8fec73c097b33c79ca",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000044/stderr.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000044/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000044/stdin.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000044/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/subcommands/000044/stdout.bin",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/subcommands/000044/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/tools/capture.py",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/tools/capture.py",
+      "bytes": 2819,
+      "sha256": "c387835c03fce36be0861b7fa5228ae494ad2be94bfa9cd62d4f36b9782dc762",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/tools/prove_bridge_equivalence_real.py",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/tools/prove_bridge_equivalence_real.py",
+      "bytes": 12489,
+      "sha256": "d8654f1cc900a189f87184803ae6b74fdb050c231b0696811abf8edf7cd116e5",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/tools/regenerate_ledger_fixed_source.py",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/tools/regenerate_ledger_fixed_source.py",
+      "bytes": 12141,
+      "sha256": "e14e75825102060aaa3c0361b7a6ffcbf892bc3150f1df39fa06cbe413391f17",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/tools/runner-only.patch",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/tools/runner-only.patch",
+      "bytes": 2821,
+      "sha256": "a5f86b9ba470fbe01b517c374b6733a36a07c37ca8f9f5b9aec9f36c2191c999",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/tools/validate_M110.py",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/tools/validate_M110.py",
+      "bytes": 1358,
+      "sha256": "46bf05dd4d0cfdee9000fb92f6c429ac88b2550f1a56ec4d30544f6623a73fd2",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/tools/verify_scratch.py",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/tools/verify_scratch.py",
+      "bytes": 1427,
+      "sha256": "1c7d1c9a193704c59ae46b6f20ce783fa90e16ca591ac8a5e3e7afcc58531b9b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/M110_VALIDATION.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/M110_VALIDATION.json",
+      "bytes": 1463,
+      "sha256": "07a0e5e5e83d1aa8273dbd37ac56bc7e9fde668e55893e7fc7cd25e0dc2d7567",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/SCRATCH_IDENTITY.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/SCRATCH_IDENTITY.json",
+      "bytes": 95558,
+      "sha256": "6413acec551d64d355a28323cdc0f7c27c70cd5a6b310d42b54e8818e388844b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/baseline-build.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/baseline-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/baseline-build.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/baseline-build.stdout",
+      "bytes": 340,
+      "sha256": "474c06389e79731fd1ec16b1eda5eaa694bad3e60ac2220363179cad2f0f5af4",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/baseline.stderr",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/baseline.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/baseline.stdout",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/baseline.stdout",
+      "bytes": 15238,
+      "sha256": "38eeef5d3cd47eb090f4b07e9c5a3115af9ce3213f5bdcf65061630c4d0485bc",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/bridge.fingerprint.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/bridge.fingerprint.json",
+      "bytes": 22986,
+      "sha256": "e92dbf1da99ad1df7f72fd439b22c93e4fb8b254a08ae971129453c6e18e138b",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/build.lock",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/cache/_bridge-baseline/160e9dc9759aea2cd6b6f7c9eb717590924d1a24/build.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "inner/withdrawn/ledger.json",
+      "original_path": "/tmp/geo314-equivalence-proof-c4aad5d7/withdrawn/ledger.json",
+      "bytes": 5182427,
+      "sha256": "d9f51110f59ee216682003ddf24328a4e32fdaa7ee2e60f84019106230826b52",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/launcher.py.txt",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/launcher.py.txt",
+      "bytes": 3566,
+      "sha256": "68256d90e597fe52807637e3603b7392dd09e9a5342909adc54d21fa4cba2928",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/reaper.jsonl",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/reaper.jsonl",
+      "bytes": 787,
+      "sha256": "143324cad4319860a6913e4f62b9f01ed54e4795b9e80e4958d550fd3fde04bc",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/receipt.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/receipt.json",
+      "bytes": 14531,
+      "sha256": "3f84b3f6d492f90bc8a660373a749dcf07c23604106eb8d59427bb2478639c65",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/request.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/request.json",
+      "bytes": 2307,
+      "sha256": "f7f5f22b8220f037f0379de3bf7ca521cefd11e222e6078da4085e7239a2cc65",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands.json",
+      "bytes": 9497,
+      "sha256": "206f63defad04ab43682d46b40fd547f5b10934786f4a34e4a1d83343303ac05",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000001/request.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000001/request.json",
+      "bytes": 1458,
+      "sha256": "cdd5bee681916363b6690782c27d2bd97bea0b68d613e098c52e19cd5780a95d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000001/result.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000001/result.json",
+      "bytes": 1709,
+      "sha256": "eb911d7ab637e431b21f7383617cc5dfc1b4fd7f7814e0938fbdb5460414221f",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000001/stderr.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000001/stdin.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000001/stdout.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "c8d22a5c0aab8bc75b1403e6e70860abe12b1266c62943894cfca87d8611c90d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000002/request.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000002/request.json",
+      "bytes": 1494,
+      "sha256": "702721dda61e240d8b5a9c53693b6141bf41c2f1782b9bf1ec6baff0e535fe8d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000002/result.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000002/result.json",
+      "bytes": 1744,
+      "sha256": "a1735155c0382be56cfe93843a03b41395068c20585791777fe42c318d3df1fd",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000002/stderr.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000002/stdin.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000002/stdout.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000003/request.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000003/request.json",
+      "bytes": 1898,
+      "sha256": "5b4e7dae3975e93d689aa1cd11aaaba69d2ffccc10a3bc680a87885ff2e6cb42",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000003/result.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000003/result.json",
+      "bytes": 2149,
+      "sha256": "cdf0b7fce94c0544343fd61287c6f8ae05a130913cc99ded66719395c5564896",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000003/stderr.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000003/stdin.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000003/stdout.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000003/stdout.bin",
+      "bytes": 83,
+      "sha256": "6fb5154ce4a93318cd9d9351f5790157136466e05849348b0fed6d8842af1608",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000004/request.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000004/request.json",
+      "bytes": 1458,
+      "sha256": "42765ec906df2c641f99e4ff261f3bad4ecb9e9f9763a7c75d695578aef7ab23",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000004/result.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000004/result.json",
+      "bytes": 1708,
+      "sha256": "62f37aa55b45c67fa8d5f798481da477c19cc7c00e9423ec294a15643a89cb67",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000004/stderr.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000004/stdin.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000004/stdout.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000004/stdout.bin",
+      "bytes": 41,
+      "sha256": "c8d22a5c0aab8bc75b1403e6e70860abe12b1266c62943894cfca87d8611c90d",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000005/request.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000005/request.json",
+      "bytes": 1493,
+      "sha256": "e5aac1d35d6f5733684edbd91b18dbe34fe015cdadc3a349d7805f03f5c7167c",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000005/result.json",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000005/result.json",
+      "bytes": 1743,
+      "sha256": "a91ad7f2729a763eae6f9a11269c9b0d12b2fbd45d3935ee7157f8286654c35c",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000005/stderr.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000005/stdin.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    },
+    {
+      "path": "outer/subcommands/000005/stdout.bin",
+      "original_path": "/workspace/geo314-equivalence-proof-outer/geo314-equivalence-real-c4aad5d7/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "archives/proof-raw-01.tar.gz"
+    }
+  ]
+}

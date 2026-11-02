@@ -22,10 +22,18 @@ static void json_engineering_capabilities(const World *w)
     bool fs=fs_used(w),eng=engineering_used(w)||fs,par=geo_parameters_card_count(&w->geo.parameters)||fs,first=true;
     const struct {bool used;const char *name;} required[]={{eng,"engineering-spec/1"},{par,"parameters/1"},{assembly_used(w),ASM_CAPABILITY},
         {w->wood.assembly.instance_count!=0,ASM_GENERATION_CAPABILITY},{grid_subdivision_used(w),GRID_SUBDIVISION_CAPABILITY},{sp_used(w),SP_CAPABILITY},{fs,FS_CAPABILITY},{grid_card_used(w),GRID_CARD_CAPABILITY}};
-    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\"],\"required_capabilities\":[",stdout);
+    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\",\"section-profile/1\",\"grid-card-reference/1\",\"definition-import/1\"],\"required_capabilities\":[",stdout);
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
     fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\"]",stdout);
+}
+static void json_eng_terminal(const EngTerminal *terminal)
+{
+    if(!terminal||!terminal->valid){fputs("null",stdout);return;}
+    const char *kind=terminal->kind==ENG_MATERIAL?"material":terminal->kind==ENG_SPEC?"spec":terminal->kind==ENG_PARAMETER?"parameter":"literal";
+    fputs("{\"kind\":",stdout);js_string(kind);
+    if(terminal->kind==ENG_MATERIAL){fputs(",\"id\":",stdout);js_string(terminal->material.id);printf(",\"version\":%u,\"fingerprint\":",terminal->material.version);js_string(terminal->fingerprint);}
+    putchar('}');
 }
 static void json_engineering_sources(const World *w)
 {
@@ -33,7 +41,9 @@ static void json_engineering_sources(const World *w)
     for(size_t i=0;i<w->wood.engineering.binding_count;++i){const EngBinding *b=&w->wood.engineering.bindings[i];char source[640],override[640],path[400];Coord value;
         eng_source_json(&b->source,source,sizeof source);if(b->has_override)eng_source_json(&b->override_value,override,sizeof override);else snprintf(override,sizeof override,"null");
         printf("%s{\"target\":",i?",":"");eng_target_json(&b->target,stdout);printf(",\"source\":%s,\"override\":%s,\"effective\":",source,override);
-        if(eng_effective((World*)w,b,&value,path,sizeof path)){printf("%lld,\"path\":",(long long)value);js_string(path);}else{fputs("null,\"path\":null,\"error\":",stdout);js_string(g_engineering_error);}putchar('}');
+        EngTerminal terminal={0};bool resolved=eng_effective_terminal((World*)w,b,&value,path,sizeof path,&terminal);
+        if(resolved){printf("%lld,\"path\":",(long long)value);js_string(path);}else{fputs("null,\"path\":null,\"error\":",stdout);js_string(g_engineering_error);}
+        fputs(",\"terminal\":",stdout);json_eng_terminal(resolved?&terminal:NULL);putchar('}');
     }putchar(']');
 }
 static void json_assembly_state(const World *w,bool geometry);
@@ -141,7 +151,10 @@ static bool app_batch_candidate_apply(void *after,GeoEvalContext *sources,void *
     ParameterCandidateScope scope;
     if(!parameters_begin_candidate(candidate,&scope))ok=eng_fail(g_parameter_error);
     for(int i=0;i<call->count&&ok;++i){
+        AppStaggerSnapshot stagger_before;
+        if(!app_stagger_snapshot(candidate,&stagger_before)){ok=eng_fail("UNSUPPORTED/CAPACITY: ordered stagger evidence memory");break;}
         ok=call->operation(candidate,call->json,geo_json_at(call->json,call->operations,i));
+        if(ok&&!app_stagger_record_step(candidate,&stagger_before))ok=eng_fail("UNSUPPORTED/CAPACITY: ordered stagger evidence memory");
         if(ok)receipt_scan_candidate(candidate);
         if(ok)ok=assembly_versions_immutable(call->before,candidate);
     }
@@ -181,6 +194,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     AppBatchCandidateCall call={&j,operations,count,operation,&transaction->before,&order};
     bool ok=app_world_candidate_evaluate(transaction,app_batch_candidate_apply,&call)==GEO_CANDIDATE_OK;
     if(ok&&!app_world_candidate_seal(transaction)){ok=false;eng_fail("I8: candidate seal failed; World unchanged");}
+    if(!ok)app_world_candidate_clear_stagger(transaction);
     char *stage_label=(char *)label;reference_stage(transaction,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
     g_deleted_fields_token=g_preview.token;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
@@ -195,18 +209,18 @@ static void batch_confirm(const char *arg,int kind,const char *token_message,con
 {
     uint32_t token;bool mine=batch_token_kind(kind);
     if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!mine||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN",token_message);return;}
-    if(g_history.grouping||g_preview.revision!=g_definition_revision||!app_world_candidate_current(g_preview.transaction,&g_world)){g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;}
-    if(!assembly_versions_immutable(&g_world,&g_preview.transaction->after)){g_preview.ready=false;eng_bridge_error("INVALID",g_engineering_error);return;}
+    if(g_history.grouping||g_preview.revision!=g_definition_revision||!app_world_candidate_current(g_preview.transaction,&g_world)){g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("STALE",stale_message);return;}
+    if(!assembly_versions_immutable(&g_world,&g_preview.transaction->after)){g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("INVALID",g_engineering_error);return;}
     if(!app_world_candidate_revalidate(g_preview.transaction,&g_world)){
-        g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;
+        g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("INVALID",g_revalidate_error);return;
     }
     bool changed=!world_definitions_equal(&g_world,&g_preview.transaction->after);uint64_t before=g_definition_revision;
     if(changed)history_record(&g_world);
     if(!app_world_candidate_publish(g_preview.transaction,&g_world,true)){
-        if(changed)history_unrecord();g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;
+        if(changed)history_unrecord();g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);eng_bridge_error("STALE",stale_message);return;
     }
     if(changed)++g_definition_revision;
-    g_preview.ready=false;char hash[65];bool hashed=eng_definition_hash(&g_world,hash);
+    g_preview.ready=false;app_world_candidate_clear_stagger(g_preview.transaction);char hash[65];bool hashed=eng_definition_hash(&g_world,hash);
     printf("{\"ok\":true,\"history_changed\":%s,\"revision\":%llu,\"before_revision\":%llu,\"transaction_id\":%u",changed?"true":"false",(unsigned long long)g_definition_revision,(unsigned long long)before,token);
     if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);json_deleted_objects(&g_preview.transaction->before,false);fputs("}\n",stdout);
 }
@@ -214,7 +228,7 @@ static void batch_cancel(const char *arg,int kind,const char *token_message)
 {
     uint32_t token;if(!arg||!parse_u32(arg,&token)){eng_bridge_error("TOKEN",token_message);return;}
     bool mine=batch_token_kind(kind);
-    bool cancelled=g_preview.ready&&mine&&g_preview.token==token;if(cancelled){g_preview.ready=false;app_candidate_discard(g_preview.transaction->control);}
+    bool cancelled=g_preview.ready&&mine&&g_preview.token==token;if(cancelled){g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);}
     printf("{\"ok\":true,\"cancelled\":%s,\"revision\":%llu}\n",cancelled?"true":"false",(unsigned long long)g_definition_revision);
 }
 static void cmd_engineering_preview(const char *path)

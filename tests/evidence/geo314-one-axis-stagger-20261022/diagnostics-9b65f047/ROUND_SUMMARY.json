@@ -1,0 +1,122 @@
+{
+  "r1-inner": {
+    "source_sha": "9b65f047d5fd470cdc89ce45e613d06af493b616",
+    "exit_code": 1,
+    "outer_process_exit": null,
+    "source_before": {
+      "head": "9b65f047d5fd470cdc89ce45e613d06af493b616",
+      "status": ""
+    },
+    "source_after": null,
+    "steps": [
+      [
+        "precheck",
+        1
+      ],
+      [
+        "full-ledger",
+        2
+      ]
+    ],
+    "errors": [
+      "Traceback (most recent call last):\n  File \"/workspace/geo261-environment/run_followup_core_acceptance.py\", line 76, in <module>\n    row, _, _ = recorder.run(argv, cwd=repo, timeout=None, check=False, source_sha=args.sha, source_variant='clean-fixed-source')\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py\", line 10, in run\n    target=self.out/'subcommands'/f'{len(self.rows)+1:06d}';target.mkdir(parents=True)\n                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1311, in mkdir\n    os.mkdir(self, mode)\nOSError: [Errno 28] No space left on device: '/workspace/geo314-core-regenerate-s/subcommands/000008'\n",
+      "Traceback (most recent call last):\n  File \"/workspace/geo261-environment/run_followup_core_acceptance.py\", line 91, in <module>\n    report['source_after'] = state()\n                             ^^^^^^^\n  File \"/workspace/geo261-environment/run_followup_core_acceptance.py\", line 53, in state\n    head = recorder.run(['git', 'rev-parse', 'HEAD'], cwd=repo, timeout=30)[1].decode().strip()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/geo261-environment/final-f-contact-checker-proof-tools/capture.py\", line 10, in run\n    target=self.out/'subcommands'/f'{len(self.rows)+1:06d}';target.mkdir(parents=True)\n                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1311, in mkdir\n    os.mkdir(self, mode)\nOSError: [Errno 28] No space left on device: '/workspace/geo314-core-regenerate-s/subcommands/000008'\n"
+    ],
+    "record_count": 78,
+    "verdict_counts": {
+      "killed": 68,
+      "equivalent": 4,
+      "crashed": 1,
+      "retired": 3,
+      "blocked": 2
+    }
+  },
+  "r1-outer": {
+    "source_sha": "9b65f047d5fd470cdc89ce45e613d06af493b616",
+    "exit_code": null,
+    "outer_process_exit": 1,
+    "source_before": null,
+    "source_after": null,
+    "steps": [],
+    "errors": []
+  },
+  "environment-retry-inner": {
+    "source_sha": "9b65f047d5fd470cdc89ce45e613d06af493b616",
+    "exit_code": 1,
+    "outer_process_exit": null,
+    "source_before": {
+      "head": "9b65f047d5fd470cdc89ce45e613d06af493b616",
+      "status": ""
+    },
+    "source_after": {
+      "head": "9b65f047d5fd470cdc89ce45e613d06af493b616",
+      "status": ""
+    },
+    "steps": [
+      [
+        "before-head",
+        0
+      ],
+      [
+        "before-status",
+        0
+      ],
+      [
+        "scratch-clone",
+        0
+      ],
+      [
+        "scratch-sparse",
+        0
+      ],
+      [
+        "scratch-checkout",
+        0
+      ],
+      [
+        "scratch-identity",
+        0
+      ],
+      [
+        "precheck-partial-r1",
+        2
+      ],
+      [
+        "original-bridge-ids",
+        1
+      ],
+      [
+        "strict-checkafter",
+        1
+      ],
+      [
+        "after-head",
+        0
+      ],
+      [
+        "after-status",
+        0
+      ]
+    ],
+    "errors": [
+      "Traceback (most recent call last):\n  File \"/workspace/geo314-work/recover_ledger_s_environment.py\", line 151, in main\n    report['all_nonretired_execution_head_equal_source'] = all(row['execution']['head'] == SOURCE for row in final.values() if row['verdict'] != 'retired')\n                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/geo314-work/recover_ledger_s_environment.py\", line 151, in <genexpr>\n    report['all_nonretired_execution_head_equal_source'] = all(row['execution']['head'] == SOURCE for row in final.values() if row['verdict'] != 'retired')\n                                                               ~~~^^^^^^^^^^^^^\nKeyError: 'execution'\n"
+    ],
+    "record_count": 100,
+    "verdict_counts": {
+      "killed": 91,
+      "equivalent": 4,
+      "invalid": 1,
+      "crashed": 1,
+      "retired": 3
+    }
+  },
+  "environment-retry-outer": {
+    "source_sha": "9b65f047d5fd470cdc89ce45e613d06af493b616",
+    "exit_code": null,
+    "outer_process_exit": 1,
+    "source_before": null,
+    "source_after": null,
+    "steps": [],
+    "errors": []
+  }
+}

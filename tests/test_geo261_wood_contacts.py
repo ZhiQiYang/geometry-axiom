@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from functools import lru_cache
 import hashlib
+import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -26,6 +28,26 @@ MODULE = ROOT / "geometry-templates/woodworking/native"
 BASELINE = "c94c11e193d1a96b658ebd50ff5b57759b295e5b"
 FIXTURE = ROOT / "tests/geo261_contacts_legacy_fixture.txt"
 FIXTURE_SHA256 = "ced6f5b6b2eaa87b77f1f289426eb09455a1141a92a0ad7f6225b4c6df9a475a"
+
+
+def record_native_execution(test, command, result, *, case, phase, control=None, assertion=None):
+    """Optionally preserve the original subprocess result; never change the oracle."""
+    target = os.environ.get("GEO299316_EXECUTION_LOG")
+    if not target:
+        return
+    record = {
+        "test": test, "command": command, "cwd": os.getcwd(), "case": case,
+        "phase": phase, "control": control, "expected_assertion": assertion,
+        "source_sha": os.environ.get("GITHUB_SHA"),
+        "executable_sha256": hashlib.sha256(Path(command[0]).read_bytes()).hexdigest(),
+        "environment": {name: os.environ.get(name) for name in
+                        ("PATH", "LANG", "LC_ALL", "TMPDIR", "CC", "CFLAGS", "CPPFLAGS", "LDFLAGS",
+                         "GITHUB_SHA", "PYTHONOPTIMIZE", "PYTHONDONTWRITEBYTECODE")},
+        "actual_exit": result.returncode, "stdout": result.stdout, "stderr": result.stderr,
+        "capture_mode": "original subprocess text stdout/stderr; executable raw bytes are hashed",
+    }
+    with Path(target).open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 
 def without_comments(source):
@@ -121,8 +143,17 @@ class WoodContactSourcePreservation(unittest.TestCase):
     def test_policy_blocks_preserve_frozen_product_decisions_and_error_text(self):
         source = (MODULE / "contacts.c").read_text(encoding="utf-8")
         span, contact = legacy_blocks()
+        # I22 W (#299) deliberately extends the V_EXTENSION wording. The frozen decision (the guard) and the
+        # frozen wording (as exact literal prefix pieces) must survive unchanged; the added fields are pinned
+        # by the span/buffer/equivalence cases of geo261_contacts_harness.c and by the controls below.
+        with self.subTest(function="wood_member_span_extension_check"):
+            actual = definition(source, "wood_member_span_extension_check")
+            body = tokens(actual[actual.index("{") :])
+            guard = tokens(span[: span.index("{")])
+            self.assertEqual(guard, body[1 : 1 + len(guard)])
+            for literal in (item for item in tokens(span) if item.startswith('"')):
+                self.assertIn(literal, body)
         expected = {
-            "wood_member_span_extension_check": "{" + span + " return true; }",
             "wood_member_end_contact_check": "{" + contact.replace("continue;", "return true;") + " return true; }",
         }
         for name, body in expected.items():
@@ -157,8 +188,10 @@ class WoodContacts(unittest.TestCase):
         cls.judge_object = build.compile(judge, "wood-contacts-frozen")
         cls.exe = build.link("wood-contacts-client", [cls.client_object, cls.judge_object, build.wood_contacts_object])
 
-    def case(self, name, exe=None):
-        result = subprocess.run([str(exe or self.exe), name], capture_output=True, text=True, timeout=10)
+    def case(self, name, exe=None, *, phase="positive", control=None, assertion=None):
+        command = [str(exe or self.exe), name]
+        result = subprocess.run(command, capture_output=True, text=True, timeout=10)
+        record_native_execution(self.id(), command, result, case=name, phase=phase, control=control, assertion=assertion)
         self.assertIn(result.returncode, (0, 1), "Crash/setup failure is not a contact-policy verdict: " + result.stderr)
         if result.returncode == 1:
             self.assertRegex(result.stderr, r"ASSERT:[a-z0-9-]+")
@@ -200,6 +233,12 @@ class WoodContacts(unittest.TestCase):
             ("span-low", "wood_member_span_extension_check", "span_lo < edge_lo", "false", "span", "span-low-refusal"),
             ("span-high", "wood_member_span_extension_check", "span_hi > edge_hi", "false", "span", "span-high-refusal"),
             ("span-error", "wood_member_span_extension_check", "err != NULL", "false", "span", "span-error-exact"),
+            ("span-edge-id", "wood_member_span_extension_check", "(unsigned)self->id, edge_index,", "(unsigned)self->id, 0,", "span", "span-error-exact"),
+            ("span-edge-interval", "wood_member_span_extension_check", "(long long)edge_lo, (long long)edge_hi, low_note, high_note);", "(long long)span_lo, (long long)edge_hi, low_note, high_note);", "span", "span-error-exact"),
+            ("span-low-clause", "wood_member_span_extension_check", "if (edge_lo > span_lo) {", "if (0) {", "span", "span-error-exact"),
+            ("span-high-clause", "wood_member_span_extension_check", "if (edge_hi < span_hi) {", "if (0) {", "span", "span-high-error-exact"),
+            ("span-low-always", "wood_member_span_extension_check", "if (edge_lo > span_lo) {", "if (1) {", "span", "span-high-error-exact"),
+            ("span-high-always", "wood_member_span_extension_check", "if (edge_hi < span_hi) {", "if (1) {", "span", "span-error-exact"),
             ("outline-kind", "wood_member_end_contact_check", "f->kind == WOOD_STOP_OUTLINE_EDGE", "false", "kinds", "outline-primary-refusal"),
             ("outline-role", "wood_member_end_contact_check", "self->role != WOOD_MEMBER_ROLE_BOUNDARY", "false", "kinds", "outline-primary-refusal"),
             ("member-kind", "wood_member_end_contact_check", "f->kind == WOOD_STOP_MEMBER_SIDE", "true", "kinds", "hole-accepted"),
@@ -215,12 +254,12 @@ class WoodContacts(unittest.TestCase):
         )
         for name, function, before, after, case, assertion in controls:
             with self.subTest(guard=name):
-                self.assertEqual(0, self.case(case).returncode)
+                self.assertEqual(0, self.case(case, phase="baseline", control=name, assertion=assertion).returncode)
                 mutant = self.mutant(name, function, before, after)
-                result = self.case(case, mutant)
+                result = self.case(case, mutant, phase="mutant", control=name, assertion=assertion)
                 self.assertEqual(1, result.returncode, "Contact-policy mutation survived: " + name)
                 self.assertIn("ASSERT:" + assertion, result.stderr)
-                self.assertEqual(0, self.case(case).returncode)
+                self.assertEqual(0, self.case(case, phase="restored", control=name, assertion=assertion).returncode)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 /* I8/I8a: one atomic entry point shared by file parser, CLI, GDI and bridge. */
 typedef struct {
     bool ready, valid;
-    bool engineering_batch, assembly_batch, profile_batch, finish_batch;
+    bool engineering_batch, assembly_batch, profile_batch, finish_batch, definition_import;
     AsmDiagnostic assembly_diagnostic;
     uint64_t revision;
     uint32_t token;
@@ -486,7 +486,7 @@ static void reference_stage(AppWorldCandidate *transaction,char **tokens,int cou
     g_preview.transaction=transaction;
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
     g_preview.assembly_diagnostic=(AsmDiagnostic){0};
-    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.revision=g_definition_revision;
+    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.definition_import=false; g_preview.revision=g_definition_revision;
     g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
@@ -571,27 +571,27 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
         g_preview.ready=false;
-        if(g_preview.transaction)app_candidate_discard(g_preview.transaction->control);
+        if(g_preview.transaction)app_world_candidate_discard(g_preview.transaction);
         return true;
     }
     if (!strcmp(tokens[0],"confirm")) {
         uint32_t token;
-        if (count!=2 || !parse_u32(tokens[1],&token) || !g_preview.ready || token!=g_preview.token || !g_preview.valid || g_preview.engineering_batch) {
+        if (count!=2 || !parse_u32(tokens[1],&token) || !g_preview.ready || token!=g_preview.token || !g_preview.valid || g_preview.engineering_batch || g_preview.definition_import) {
             scene_error(path,line_no,"I8a: missing/invalid preview token; cannot apply"); return false;
         }
         /* Canvas layout does not invalidate geometry approval (D12/I14). */
         if (g_preview.revision!=g_definition_revision || !app_world_candidate_current(g_preview.transaction,world)) {
-            g_preview.ready=false;
+            g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);
             scene_error(path,line_no,"I8a: preview is stale; preview again against the current world"); return false;
         }
         if(!app_world_candidate_revalidate(g_preview.transaction,world)){
-            g_preview.ready=false;scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
+            g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);scene_error(path,line_no,g_revalidate_error[0]?g_revalidate_error:"I8: invalid definition/reference; World unchanged");return false;
         }
         bool changed=!world_definitions_equal(world,&g_preview.transaction->after);
         if(!app_world_candidate_publish(g_preview.transaction,world,true)){
-            g_preview.ready=false;scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;
+            g_preview.ready=false;app_world_candidate_discard(g_preview.transaction);scene_error(path,line_no,"I8a: preview is stale; preview again against the current world");return false;
         }
-        g_preview.ready=false;if(changed&&!g_parsing_scene_file)++g_definition_revision;
+        g_preview.ready=false;app_world_candidate_clear_stagger(g_preview.transaction);if(changed&&!g_parsing_scene_file)++g_definition_revision;
         return true;
     }
     bool explicit_preview=!strcmp(tokens[0],"preview");

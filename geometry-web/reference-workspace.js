@@ -34,7 +34,7 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -430,8 +430,8 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |definition-import-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|definition-import-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -572,7 +572,7 @@ const ReferenceWorkspace = (() => {
   function setFeatureAttachment(kind, value, expectedContextToken, options = {}) {
     P.Features.assertKind(kind);
     if(kind===P.Features.CASE_KIND && options.caseAdmission!==caseCommitKey)throw new Error("規則案例必須先完成隔離資料驗證，再原子保留。");
-    const groupedRoom = kind === P.Features.ROOM_KIND && options.recordHistory === false;
+    const groupedRoom = (kind === P.Features.ROOM_KIND || kind === P.Features.ROOM_CANDIDATE_KIND) && options.recordHistory === false;
     if (groupedRoom) {
       assertRoomTransaction(options.roomLease);
       if (!roomTransaction.group || history.group !== roomTransaction.group || !history.group.dirty)
@@ -589,9 +589,10 @@ const ReferenceWorkspace = (() => {
         throw new Error("舊網格草稿介面不能取代集合或失效草稿。");
     }
     const proposal = featureProposal(kind,value,kind===P.Features.GRID_KIND&&options.gridWrite===gridDraftWrite&&options.storedGrid===true), previous = readFeatureAttachment(kind);
+    if(kind===P.Features.Cutting.KIND)P.Features.Cutting.transition(previous,value);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.Cutting.KIND ? "裁切設定" : kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -1375,7 +1376,14 @@ const ReferenceWorkspace = (() => {
     const bytes=await P.pack(r.text,m,data,fflate); assertCurrent();assertSnapshot(stamp,transactionOwner);
     return {bytes,stamp,scene:r.text,nativeRevision:r.revision??null};
   }
-  async function exportBytes() { return (await exportSnapshot()).bytes; }
+  function flushRoomCandidates() {
+    try { window.RoomCollectionWorkspace?.flushCandidates?.(); return null; }
+    catch (error) {
+      const warning="房間候選草稿未能寫入；檔案仍保留先前的草稿或沒有草稿。";
+      setStatus(warning);return warning;
+    }
+  }
+  async function exportBytes() { flushRoomCandidates(); return (await exportSnapshot()).bytes; }
   async function readScenarioProject(assertCurrent=()=>{},afterFlush=()=>{}) {
     const {bytes,stamp}=await exportSnapshot(context(),false,assertCurrent,afterFlush);assertCurrent();
     const project=await P.unpack(bytes,fflate);assertCurrent();assertSnapshot(stamp);
@@ -1635,6 +1643,7 @@ const ReferenceWorkspace = (() => {
   }
   async function freezeScenarioProject() {
     if(!scenarioContext()||scenarioFreeze)throw new Error("試改尚未就緒或已在保全中。");
+    flushRoomCandidates();
     window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertSaveReady();
     const owner=beginSceneTransaction(),session=connection.session,token=uuid();busy=true;busyLabel="正在凍結完整試改資料…";present();
     try{
@@ -1659,6 +1668,7 @@ const ReferenceWorkspace = (() => {
   }
   async function finishScenarioEditor(catalog,sources,expected,assertCurrent=()=>{}) {
     assertScenarioJournalReady();assertCurrent();
+    flushRoomCandidates();
     window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertCurrent.afterFlush?.();assertCurrent();assertSaveReady();
     const ticket=validateScenarioTicket(expected);
     if(ticket?.phase!=="active")throw new Error("試改尚未完整開啟，不能完成。");
@@ -1711,6 +1721,8 @@ const ReferenceWorkspace = (() => {
   }
   async function save() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
+    const roomCandidateWarning=flushRoomCandidates();
+    const reportSave=message=>setStatus(roomCandidateWarning?message+" "+roomCandidateWarning:message);
     window.AssemblyWorkspace?.flush();
     window.InfiniteGridWorkspace?.flush();
     const shellState=window.WorkspaceShell?.saveState();
@@ -1729,12 +1741,13 @@ const ReferenceWorkspace = (() => {
       if(handle){const writable=await handle.createWritable();try{await writable.write(bytes);await writable.close();}catch(e){await writable.abort().catch(()=>{});throw e;}
         c.provenance.lastSavedAt=new Date().toISOString();
         if (unchanged(stamp)) {
-          c.dirty=false;c.modelsDirty=false;c.faceProjectionsDirty=false;c.saved=true;c.downloaded=false;setStatus("✓ 專案已保存，包含場景、工程來源與草稿、參考資料及空間模型");
+          // A valid file was saved, but failed candidate synchronization leaves input unsaved.
+          c.dirty=!!roomCandidateWarning;c.modelsDirty=false;c.faceProjectionsDirty=false;c.saved=true;c.downloaded=false;reportSave("✓ 專案已保存，包含場景、工程來源與草稿、參考資料及空間模型");
         } else {
           c.dirty=true;c.downloaded=false;
-          setStatus(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
+          reportSave(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
         }}
-      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;c.provenance.lastDownloadAt=new Date().toISOString();setStatus("已產生專案下載；請確認下載完成後再關閉。");}
+      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;if(roomCandidateWarning)c.dirty=true;c.provenance.lastDownloadAt=new Date().toISOString();reportSave("已產生專案下載；請確認下載完成後再關閉。");}
     } finally {busy=false;busyLabel="";busyShort="處理中";window.InfiniteGridWorkspace?.setProjectBusy(false);present();scheduleRecovery();}
   }
   function sameModelData(a, b) {
@@ -1932,7 +1945,7 @@ const ReferenceWorkspace = (() => {
       token=candidate.token;
       assertWritableLease();assertCurrent();
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
-      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
+      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities,{cutting:true}));
       P.validateProjectCapabilities(candidate.required_capabilities);
       const policy=P.formatPolicy(manifest.format);
       if (policy.engineeringCandidate) {

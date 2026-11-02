@@ -1,0 +1,171 @@
+{
+  "schema": "geo323-F9-PUBLIC-collection-actual-adversarial-peer/1",
+  "created_utc": "2026-10-25T14:32:37.503025+00:00",
+  "exit_code": 0,
+  "blocking_findings": [],
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "collector_sha256": "529d363cc5d07dc0cca155c98dc028d0bff1dcdd27d29d7b192bee85d9d8cfdb",
+  "checks": [
+    {
+      "check": "producer actual159/0 pin",
+      "passed": true
+    },
+    {
+      "check": "actual checker01934 pin",
+      "passed": true
+    },
+    {
+      "check": "original checker terminal geo323-F9-PUBLIC-actual-v2-read-original-20261025",
+      "passed": true
+    },
+    {
+      "check": "original result geo323-F9-PUBLIC-actual-v2-read-original-20261025",
+      "passed": true
+    },
+    {
+      "check": "original request→terminal geo323-F9-PUBLIC-actual-v2-read-original-20261025",
+      "passed": true
+    },
+    {
+      "check": "original full stream geo323-F9-PUBLIC-actual-v2-read-original-20261025stdout",
+      "passed": true
+    },
+    {
+      "check": "original full stream geo323-F9-PUBLIC-actual-v2-read-original-20261025stderr",
+      "passed": true
+    },
+    {
+      "check": "original new checker terminal matches actual report",
+      "passed": true
+    },
+    {
+      "check": "original checker terminal geo323-F9-PUBLIC-actual-read-original-20261025",
+      "passed": true
+    },
+    {
+      "check": "original result geo323-F9-PUBLIC-actual-read-original-20261025",
+      "passed": true
+    },
+    {
+      "check": "original request→terminal geo323-F9-PUBLIC-actual-read-original-20261025",
+      "passed": true
+    },
+    {
+      "check": "original full stream geo323-F9-PUBLIC-actual-read-original-20261025stdout",
+      "passed": true
+    },
+    {
+      "check": "original full stream geo323-F9-PUBLIC-actual-read-original-20261025stderr",
+      "passed": true
+    },
+    {
+      "check": "prior schemaerror preserved",
+      "passed": true
+    },
+    {
+      "check": "original wrappedhost0 preserved",
+      "passed": true
+    },
+    {
+      "check": "independent approved SHM result+part4 hash7/0",
+      "passed": true
+    },
+    {
+      "check": "31 retained28regular3literal links",
+      "passed": true
+    },
+    {
+      "check": "four reused exact not relabeled new roundtrip",
+      "passed": true
+    },
+    {
+      "check": "oldR8 red and no rerun",
+      "passed": true
+    },
+    {
+      "check": "privacy replay and delivery false intact",
+      "passed": true
+    }
+  ],
+  "producer_actual_checks": 159,
+  "producer_actual_exit": 0,
+  "independent_approved_SHM_checks": 7,
+  "part4": {
+    "bytes": 467826,
+    "sha256": "5469298a36389c94f423e21e8f989d018679bf3a6794f5605d0f5b8307919037",
+    "retained_members": 31,
+    "retained_regular_members": 28,
+    "retained_literal_ELF_symlinks": 3,
+    "removed_auxiliary_profile_members": 1,
+    "retained_regular_bytes": 6429790
+  },
+  "four_other_parts_reused_exact": [
+    1,
+    2,
+    3,
+    5
+  ],
+  "static_actual_checker_review": [
+    "v2僅修固定host包裝schema actual_tool_result.exit_code及其原output/source/path核，原首輪KeyError1/615c與全部原流保留；沒有改collector或重跑subject。",
+    "完整part4私32→public31精確差集與原order；每保留member的type/mode/mtime/uid/gid/uname/gname/linkname/size一致，28regular全bytes/hash、3literal links0size、gzip EOF/CRC完整核。",
+    "其他四包只重核完整archivehash並引用既有actual，不重新tar roundtrip；沒有冒稱全部五包本次重封。",
+    "原collector CLI argv/stdin/fullstdoutstderr/hash、PRIVATE RESULT、new PUBLIC RESULT、fixed metadata及budget皆核；scope700+12命令保留承接已審selection，不重掃700CLI。",
+    "本peer正式require_escalated獨立讀原PUBLIC RESULT與新part4完整rawhash，相符；未再untar或讀真profilebody。"
+  ],
+  "prior_checker_error": {
+    "exit_code": 1,
+    "cause": "Read-only v1 checker looked for host top-level exit_code; actual host has pinned actual_tool_result wrapper",
+    "artifact": "/workspace/geo323-F9-PUBLIC-actual-read-original-20261025/RESULT.json",
+    "preserved": true,
+    "collector_or_subject_rerun": false
+  },
+  "storage_is_volatile": true,
+  "published": false,
+  "remote_hash_verified": false,
+  "delivered": false,
+  "original_R8_outer_exit": 1,
+  "full_auxiliary_API_raw_public": false,
+  "authority_full_input_replay_publicly_self_contained": false,
+  "limits": [
+    "本peer未重解PUBLICtar或再次掃原formal700CLI/五包；讀producer checker程式與其原c387 terminal/streams，另獨立只核newpart4完整rawhash及RESULT。",
+    "任何SHM存取均正式require_escalated批准，只讀；未寫SHM、不recollect、不跑Git/產品/性能/R8。",
+    "未審或執publication manifest generator，正常push與遠端全bytes/hash仍待root；這是PUBLIC本地收件actual0，不是交付或formal全綠。"
+  ],
+  "pins": [
+    {
+      "path": "/workspace/geo323-F9-PUBLIC-collection-actual-v2-20261025/REVIEW.json",
+      "bytes": 7304,
+      "sha256": "2fcdad49dda6102997616c7e49baa8663b6a54c198e81694cfb7edf9a81bb660"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/check_public_actual_v2.py",
+      "bytes": 9922,
+      "sha256": "01934eaf489b4b607aa4a7d16eeb5c9334e14ce744fe47ef0f1f521f74147d6f"
+    },
+    {
+      "path": "/workspace/geo323-F9-public-comparison-preparation-v2-20261025/check_public_actual.py",
+      "bytes": 9068,
+      "sha256": "615c85f8a6db225987f00f9284ef7aa35ac0506fd089957995ecd4ea2ba5459d"
+    },
+    {
+      "path": "/workspace/geo323-F9-PUBLIC-actual-v2-read-original-20261025/RESULT.json",
+      "bytes": 2755,
+      "sha256": "fe5da0e4d2e73aa072e976c75db378aa83209a7fedfacf81e34c2c8009f808d7"
+    },
+    {
+      "path": "/workspace/geo323-F9-PUBLIC-actual-read-original-20261025/RESULT.json",
+      "bytes": 2706,
+      "sha256": "8c6d443aba18db7fd9c02739f7a6ebf9a358d7b7acf50cf08b0679d240c5fcc9"
+    },
+    {
+      "path": "/workspace/geo323-F9-PUBLIC-actual-peer-6h6cb92w/APPROVED_READ_ORIGINAL.json",
+      "bytes": 2527,
+      "sha256": "2ce193343ad13226bf773698bbbf197a8b03e454888316a0528390e011ee5f93"
+    },
+    {
+      "path": "/workspace/geo323-F9-PUBLIC-collection-EXEC_FINAL-20261025.json",
+      "bytes": 546,
+      "sha256": "c22a1520d99ee284c66f0dd1c8d8f6eebe62c4d7e69af1c0c3c0d8cacf298533"
+    }
+  ]
+}

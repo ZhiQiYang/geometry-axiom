@@ -1,0 +1,265 @@
+{
+  "reviewer": "/root/h_init_actual_review",
+  "reviewed_utc": "2026-10-25T06:42:36.959183+00:00",
+  "source_sha": "2c4635577a8fcb11e88b346547f7bb1c7b739fb7",
+  "checks": 62,
+  "failures": [],
+  "exit": 0,
+  "details": [
+    {
+      "passed": true,
+      "label": "fixed candidate pin"
+    },
+    {
+      "passed": true,
+      "label": "original publisher pin"
+    },
+    {
+      "passed": true,
+      "label": "old parameter present /tmp/geo323-provider-hint-private-work-20261024"
+    },
+    {
+      "passed": true,
+      "label": "old parameter present /tmp/geo323-provider-hint-prbody-work-20261024"
+    },
+    {
+      "passed": true,
+      "label": "old parameter present 1449d430d1c4734bb1bc3a9f91f3851c845cc0f3"
+    },
+    {
+      "passed": true,
+      "label": "old parameter present codex/train337-provider-hint-20261024"
+    },
+    {
+      "passed": true,
+      "label": "old parameter present evidence/geo323-provider-hint-1449d430"
+    },
+    {
+      "passed": true,
+      "label": "old parameter present Record provider hint proof and related source validation"
+    },
+    {
+      "passed": true,
+      "label": "old parameter present Document provider hint current validation state"
+    },
+    {
+      "passed": true,
+      "label": "exact seven substitutions no workflow change"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard need(not OUT.exists()and not BODYROOT.exists()"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard free>=64*1024*1024"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard manifest['source_sha']==S"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard manifest['prefix']==PREFIX"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard name.startswith(PREFIX+'/')"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard sha(Path(item['local']).read_bytes())==item['sha256']"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard template.count(b'__EVIDENCE_SHA__')==1"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard sha(template)==manifest['body_sha256']"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'owned branch'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'clean before E'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'remote source still S'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'fresh owned body remote branch'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'new exact evidence leaf'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'copied evidence bytes'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'exact stage allowlist'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'ordinary E parent S'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'published evidence exact blob'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'remoteE'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'body only'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'ordinary D parent E'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'exact finalbody'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'remoteD'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'original E checkout remains clean'"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'force_push':False"
+    },
+    {
+      "passed": true,
+      "label": "retained publication guard 'product_tests_reexecuted':False"
+    },
+    {
+      "passed": true,
+      "label": "normal explicit owned pushes"
+    },
+    {
+      "passed": true,
+      "label": "no rewrite/reset/clean"
+    },
+    {
+      "passed": true,
+      "label": "owned codex branches only"
+    },
+    {
+      "passed": true,
+      "label": "unique S evidence prefix"
+    },
+    {
+      "passed": true,
+      "label": "one evidence placeholder"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body 2c4635577a8fcb11e88b346547f7bb1c7b739fb7"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body 14/14"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body 0/1/0"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body O0"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body O2"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body N16"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body 255168"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body 未跑"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped body ELF"
+    },
+    {
+      "passed": true,
+      "label": "no readiness claim body"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress 2c4635577a8fcb11e88b346547f7bb1c7b739fb7"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress 14/14"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress 0／1／0"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress O0"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress O2"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress N16"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress 255168"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress 未執行"
+    },
+    {
+      "passed": true,
+      "label": "truthful scoped progress ELF"
+    },
+    {
+      "passed": true,
+      "label": "no readiness claim progress"
+    },
+    {
+      "passed": true,
+      "label": "audit count correctly scoped"
+    },
+    {
+      "passed": true,
+      "label": "documented original launcher exists"
+    }
+  ],
+  "bindings": {
+    "publish.py": "f156da31e3264fb710017a22d33bec5155a29c158b93a072e8b91a161e6d6f80",
+    "PUBLICATION_TOOL.json": "6fe8f38cc4cebfb9fff647cfe4d29d15ea5b659cb379bb80d99c65e35fc84f7a",
+    "PR_BODY.template.md": "9c061ec299cbab0ded3c7f0190d4ded5f2bf854d3fb3cf4b0467033ab06cd067",
+    "PROGRESS.md": "fb8d6901511e19602089fadff329872ed4be9e07d43f00cdc1ee1d6b3671db82"
+  },
+  "scope": "publisher code and wording static review; future manifest/publication actual not yet accepted"
+}

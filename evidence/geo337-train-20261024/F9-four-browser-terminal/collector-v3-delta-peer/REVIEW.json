@@ -1,0 +1,159 @@
+{
+  "schema": "F9-four-browser-collector-v3-terminal-envelope-delta-peer/1",
+  "utc": "2026-10-25T14:21:03.580822+00:00",
+  "exit_code": 0,
+  "checks": 71,
+  "collector_sha256": "813a770b414c6b57f4ffde568e6242614ed3bf28287a3e487ed9811f1113d741",
+  "launcher_sha256": "d50cfaa1bd6f9377fc44149dc51f6a365a50de0f4999addfbfb6f6c597b17545",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "pins_sha256": "e085381652237f0e7d1d82654fa5bd3b70d057d20cf9d3192e99e8c0586f69bf",
+  "terminal_pins_sha256": "37453a0a48043e206127a591c5b6c02c13c535cd4150c7890aa63d312b5face0",
+  "base_static_peer_sha256": "20656a593aacf54237b377cd23bc463dc1df9cb5e67eca3d1cb10d26de807f71",
+  "blocking_findings": [],
+  "true_preparation_host_shapes": {
+    "direct": 4,
+    "yielded": 4
+  },
+  "terminal_bindings_checked": [
+    {
+      "job": "documents",
+      "phase": "formal",
+      "actual_exit": 0
+    },
+    {
+      "job": "documents",
+      "phase": "plan",
+      "actual_exit": 0
+    },
+    {
+      "job": "documents",
+      "phase": "materialize",
+      "actual_exit": 0
+    },
+    {
+      "job": "grid",
+      "phase": "formal",
+      "actual_exit": 0
+    },
+    {
+      "job": "grid",
+      "phase": "plan",
+      "actual_exit": 0
+    },
+    {
+      "job": "grid",
+      "phase": "materialize",
+      "actual_exit": 0
+    },
+    {
+      "job": "space",
+      "phase": "formal",
+      "actual_exit": 0
+    },
+    {
+      "job": "space",
+      "phase": "plan",
+      "actual_exit": 0
+    },
+    {
+      "job": "space",
+      "phase": "materialize",
+      "actual_exit": 0
+    },
+    {
+      "job": "timber",
+      "phase": "formal",
+      "actual_exit": 0
+    },
+    {
+      "job": "timber",
+      "phase": "plan",
+      "actual_exit": 0
+    },
+    {
+      "job": "timber",
+      "phase": "materialize",
+      "actual_exit": 0
+    }
+  ],
+  "limits": [
+    "Exact adapter-only delta reviewed against previously accepted78/0; archive scope/algorithm/10-15-15-20limits are byte-identical outside the small adapter block.",
+    "Twelve closed WS host originals read; no SHM/NATIVE access, product execution, archive creation or guard rerun.",
+    "Four direct plan and four yielded materialize originals are normalized without dropping exit/job/phase/result identity checks.",
+    "This static acceptance is not collector execution or product pass; root still binds exact inputs/peer and closed no-more-writes lease and obtains formal execution approval.",
+    "Original binder KeyError1 remains historical; no original bytes changed."
+  ],
+  "checks_list": [
+    "v3pins fixed",
+    "original78/0 accepted",
+    "collect_four_browser_terminal_v3.py exact",
+    "launch_four_job_collection_v3.py exact",
+    "V2_TO_V3.diff exact",
+    "basecollector exact",
+    "v3 AST parsed only",
+    "only terminal adapter block changed",
+    "adapter set(terminal)=={'session_id','actual_tool_result'}",
+    "adapter type(terminal['session_id']) is int",
+    "adapter actual=terminal['actual_tool_result']",
+    "adapter else: actual=terminal",
+    "adapter type(actual['exit_code']) is int and actual['exit_code']==0",
+    "adapter original['job']==job and original['phase']==phase",
+    "adapter type(original['original_exit']) is int and original['original_exit']==0",
+    "adapter original['result']==str(OWN/'host'/(job+'-'+phase)/'RESULT.json')",
+    "original launcher exact",
+    "launcher only toolpath and pin",
+    "launcher AST no execution",
+    "exact terminal12binding",
+    "four jobs exact",
+    "original host exact hash and bytes",
+    "formal0 source identity",
+    "formal exactterminalpin",
+    "original host exact hash and bytes",
+    "true prep actual integer0",
+    "prep exact job phase result identity",
+    "prep exact pin",
+    "original host exact hash and bytes",
+    "real yielded envelope",
+    "true prep actual integer0",
+    "prep exact job phase result identity",
+    "prep exact pin",
+    "original host exact hash and bytes",
+    "formal0 source identity",
+    "formal exactterminalpin",
+    "original host exact hash and bytes",
+    "true prep actual integer0",
+    "prep exact job phase result identity",
+    "prep exact pin",
+    "original host exact hash and bytes",
+    "real yielded envelope",
+    "true prep actual integer0",
+    "prep exact job phase result identity",
+    "prep exact pin",
+    "original host exact hash and bytes",
+    "formal0 source identity",
+    "formal exactterminalpin",
+    "original host exact hash and bytes",
+    "true prep actual integer0",
+    "prep exact job phase result identity",
+    "prep exact pin",
+    "original host exact hash and bytes",
+    "real yielded envelope",
+    "true prep actual integer0",
+    "prep exact job phase result identity",
+    "prep exact pin",
+    "original host exact hash and bytes",
+    "formal0 source identity",
+    "formal exactterminalpin",
+    "original host exact hash and bytes",
+    "true prep actual integer0",
+    "prep exact job phase result identity",
+    "prep exact pin",
+    "original host exact hash and bytes",
+    "real yielded envelope",
+    "true prep actual integer0",
+    "prep exact job phase result identity",
+    "prep exact pin",
+    "both original host shapes present",
+    "original job timing unchanged"
+  ]
+}

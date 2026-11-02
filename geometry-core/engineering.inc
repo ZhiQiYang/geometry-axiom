@@ -71,8 +71,12 @@ static bool eng_put_application(World *w,GeoJson *j,int t)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_put_application(&c,j,t);}
 static bool eng_target_context(const World *w,const EngTarget *t,uint32_t *pid,int *role)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_target_context(&c,t,pid,role);}
+static bool eng_resolve_terminal(World *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,Coord *value,char *path,size_t cap,EngTerminal *terminal)
+{WoodEngineeringContext c=app_eng_context(w);return wood_eng_resolve_terminal(&c,s,target,pid,role,value,path,cap,terminal);}
 static bool eng_resolve(World *w,const EngDimensionSource *s,const EngTarget *target,uint32_t pid,int role,Coord *value,char *path,size_t cap)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_resolve(&c,s,target,pid,role,value,path,cap);}
+static bool eng_effective_terminal(World *w,const EngBinding *b,Coord *value,char *path,size_t cap,EngTerminal *terminal)
+{WoodEngineeringContext c=app_eng_context(w);return wood_eng_effective_terminal(&c,b,value,path,cap,terminal);}
 static bool eng_effective(World *w,const EngBinding *b,Coord *value,char *path,size_t cap)
 {WoodEngineeringContext c=app_eng_context(w);return wood_eng_effective(&c,b,value,path,cap);}
 static void engineering_drop_owned(World *w,const char *kind,uint32_t id)

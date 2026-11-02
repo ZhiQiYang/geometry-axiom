@@ -234,6 +234,155 @@ class Region:
         return [(o[i], o[(i + 1) % len(o)]) for i in range(len(o))]
 
 
+READING_A_ORDINARY = "ordinary"
+READING_A_PARTIAL = "partial"
+READING_A_BARE_RC = "bare_rc"
+
+
+def _reading_a_build_end(reg, timber, timbers, k, at):
+    """建構端按自己保存的外牆邊與料件重算閱讀 A；不呼叫 C8。
+
+    oracle 的 Region 是同一承載面、全 FIXED 的模型；FREE 與異承載面
+    由原生 W 的具型別事實判斷，不能由這個模型冒稱已驗。
+    """
+    if timber["kind"] != "boundary" or not timber.get("outer") or timber.get("core_role", "boundary") != "boundary":
+        return READING_A_ORDINARY
+    r = timber["rect"]
+    span, cross = rng(r, k), rng(r, 1 - k)
+    edge = timber.get("edge")
+    if not edge or len(edge) != 2 or leftover(r, reg.rects()):
+        return READING_A_ORDINARY
+    if not (span[0] <= edge[0] < edge[1] <= span[1]):
+        return READING_A_ORDINARY
+    if not ((at == span[0] == edge[0]) or (at == span[1] == edge[1])):
+        return READING_A_ORDINARY
+    covered, lined = [], []
+    for q in timbers:
+        if q is timber:
+            continue
+        qs, qc = rng(q["rect"], k), rng(q["rect"], 1 - k)
+        if (qs[1] if at == span[0] else qs[0]) == at:
+            covered.append((max(cross[0], qc[0]), min(cross[1], qc[1])))
+        elif (qs[0] if at == span[0] else qs[1]) == at:
+            lined += iv_subtract([qc], [cross])  # 同一側貼在這個平面 RC 上的料；本料端面那段不算
+    covered = iv_norm(covered)
+    if not covered:
+        return READING_A_ORDINARY
+    width = cross[1] - cross[0]
+    for ring in reg.rings:
+        rc = []
+        for i, p0 in enumerate(ring):
+            p1 = ring[(i + 1) % len(ring)]
+            if p0[k] == p1[k] == at:
+                rc.append(tuple(sorted((p0[1 - k], p1[1 - k]))))
+        for lo, hi in iv_norm(rc):
+            exposed = (max(lo, cross[0]), min(hi, cross[1]))
+            if hi - lo < width or exposed[0] >= exposed[1]:
+                continue
+            # 放不放得下料寬，量的是這面 RC 上還沒貼料的那一段（決策佇列 2026-10-23 #318 RC 面量法）：
+            # 裸露的端面所在那段未貼料 RC 不短於料寬才拒絕；其餘已貼料、只剩端面後面塞不進料的，照短 RC 放行
+            unlined = iv_subtract([(lo, hi)], lined)
+            for bare in iv_subtract([exposed], covered):
+                if any(b - a >= width and a < bare[1] and bare[0] < b for a, b in unlined):
+                    return READING_A_BARE_RC
+    return READING_A_PARTIAL
+
+
+def reading_a_boundary_limits(reg, timbers, limits, k):
+    """只更新例外三固定端點；其他核心限制與其料件綁定照留。"""
+    decisions = {}
+    for timber in timbers:
+        if timber["kind"] != "boundary" or not timber.get("outer"):
+            continue
+        for at in rng(timber["rect"], k):
+            decisions[(id(timber), at)] = _reading_a_build_end(reg, timber, timbers, k, at)
+    out = []
+    for record in limits:
+        decision = decisions.get((id(record["_t"]), record["end"]), READING_A_ORDINARY)
+        if record["code"] == "CORE_LIMIT_BOUNDARY_END_FREE" and decision == READING_A_PARTIAL:
+            continue
+        out.append(record)
+    for timber in timbers:
+        for at in rng(timber["rect"], k):
+            if decisions.get((id(timber), at)) == READING_A_BARE_RC:
+                out.append(dict(code="CORE_LIMIT_BOUNDARY_END_RC", _t=timber, end=at,
+                                check="C8_I19_BOUNDARY_END",
+                                why="I19 例外三：放得下本料寬的 RC 真面仍有裸露，須先貼角材"))
+    return out
+
+
+def reading_a_has_bare_rc(reg, k, at, side, contacts, lined=()):
+    """C8 的 RC 原面判準；contacts 是已驗過的正長度角材接觸區間。
+
+    lined 是同一側已貼在這個平面 RC 上的料（已扣掉本料端面那段）。裸露段往兩邊延伸到
+    最近的已貼料或 RC 面盡頭，這段未貼料的 RC 不短於料寬才算放得下料（決策佇列 2026-10-23 #318 RC 面量法）。
+    """
+    width = side[1] - side[0]
+    for ring in reg.rings:
+        plane = []
+        for i, p0 in enumerate(ring):
+            p1 = ring[(i + 1) % len(ring)]
+            if p0[k] == p1[k] == at:
+                plane.append(tuple(sorted((p0[1 - k], p1[1 - k]))))
+        for lo, hi in iv_norm(plane):
+            intersection = (max(lo, side[0]), min(hi, side[1]))
+            if hi - lo >= width and intersection[0] < intersection[1]:
+                for bare_lo, bare_hi in iv_subtract([intersection], contacts):
+                    run_lo = max([lo] + [b for a, b in lined if b <= bare_lo])
+                    run_hi = min([hi] + [a for a, b in lined if a >= bare_hi])
+                    if run_hi - run_lo >= width:
+                        return True
+    return False
+
+
+def reading_a_end_admission(reg, timber, timbers, k, at):
+    """C8 獨立從外輪廓／料件幾何判例外三，不信建構 edge/outer 宣告。"""
+    if timber["kind"] != "boundary" or timber.get("core_role", "boundary") != "boundary":
+        return READING_A_ORDINARY
+    rect = timber["rect"]
+    span, side = rng(rect, k), rng(rect, 1 - k)
+    if at not in span or side[1] <= side[0] or leftover(rect, reg.rects()):
+        return READING_A_ORDINARY
+    best = None
+    for p0, p1 in reg.outer_edges():
+        if p0[1 - k] != p1[1 - k] or p0[1 - k] not in side:
+            continue
+        lo, hi = sorted((p0[k], p1[k]))
+        amount = min(span[1], hi) - max(span[0], lo)
+        if amount <= 0:
+            continue
+        covers = span[0] <= lo and hi <= span[1]
+        if best is None or (covers and not best[2]) or (covers == best[2] and amount > best[3]):
+            best = (lo, hi, covers, amount)
+    if best is None or not best[2] or not ((at == span[0] == best[0]) or (at == span[1] == best[1])):
+        return READING_A_ORDINARY
+    contacts, lined = [], []
+    for other in timbers:
+        if other is timber:
+            continue
+        longitudinal = rng(other["rect"], k)
+        transverse = rng(other["rect"], 1 - k)
+        if (longitudinal[0] if at == span[0] else longitudinal[1]) == at:
+            # 同一側、貼在端面平面 RC 上的料；和本料寬向重疊的部分是碰撞，不拿來縮短裸露段
+            lined.extend(part for part in ((transverse[0], min(transverse[1], side[0])),
+                                           (max(transverse[0], side[1]), transverse[1])) if part[1] > part[0])
+            continue
+        if (longitudinal[1] if at == span[0] else longitudinal[0]) != at:
+            continue
+        lo, hi = max(side[0], transverse[0]), min(side[1], transverse[1])
+        if hi > lo:
+            contacts.append((lo, hi))
+    contacts = iv_norm(contacts)
+    if not contacts:
+        return READING_A_ORDINARY
+    # 先量 RC 原連續面，才取端面交集、扣角材。不能拿 13 mm 餘隙
+    # 冒充 100 mm 真面；相鄰共線頂點不能把 30 mm 拆成 15+15。
+    # 再扣同一側已貼的料：真面上沒貼料的那段才是放不放得下料寬的長度。
+    if reading_a_has_bare_rc(reg, k, at, side, contacts, lined):
+        return READING_A_BARE_RC
+    return READING_A_PARTIAL
+
+
 # ---------------------------------------------------------------- 縫
 def seam_centers(lo, hi, start, ps, g, w, mut, local=None):
     """從起鋪側整片鋪,回傳縫中心(世界座標)。G6、G7。
@@ -1160,6 +1309,9 @@ def build(room, layout, p, mut=frozenset(), _p182=None):
                         core_limits.append(dict(code="CORE_LIMIT_EXTENSION_END_FREE", _t=t, end=endv, check="C8_EXTENSION_END_FREE",
                                                 why=f"邊界材 {list(t['rect'])} 越過凹角的延伸段停在 {endv},端面有 {rng(free_[0], b)} 懸空;"
                                                     f"物理上側面固定、端面懸空不影響承接,核心 I22 要延伸段的端面頂到料或牆"))
+    # I19 例外三必按完整輸出重新算；前面凹角試延伸時仍保留原宣告，
+    # 只有最後真的有正長度角材接觸、且沒有裸長 RC 面時才能撤掉它。
+    core_limits[:] = reading_a_boundary_limits(reg, timbers, core_limits, a)
     uniq_ = {}  # 角材編號到這裡已經定了;同一支料同一個端面同一個碼只留一筆
     for c in core_limits:
         c["id"] = c.pop("_t")["id"]
@@ -1952,6 +2104,12 @@ def check(res, p, _cand=False):
             if (at == lo and lo < pe[0]) or (at == hi and hi > pe[1]):
                 if any(leftover(q, [s["rect"] for s in others]) for q in indoor):
                     fails.append(dict(check="C8_EXTENSION_END_FREE", id=t["id"], end=at))
+                continue
+            admission = reading_a_end_admission(reg, t, res["timbers"], a, at)
+            if admission == READING_A_PARTIAL:
+                continue
+            if admission == READING_A_BARE_RC:
+                fails.append(dict(check="C8_I19_BOUNDARY_END", id=t["id"], end=at, reason="bare_rc_fits_width"))
                 continue
             bad = [s["id"] for s in others if s["kind"] != "boundary" and any(overlap(q, s["rect"]) for q in indoor)]
             free = any(leftover(q, [s["rect"] for s in others if s["kind"] == "boundary"]) for q in indoor)

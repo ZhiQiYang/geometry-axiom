@@ -1,0 +1,57 @@
+{
+  "state": "PREPARATION_ONLY",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "active_collector": "collect_four_browser_terminal_v2.py",
+  "active_launcher": "launch_four_job_collection.py",
+  "terminal_inputs": "UNBOUND; root must supply exact four host/plan/materialize final pins after completion",
+  "files": {
+    "ASSEMBLY_TO_FOUR_JOB.diff": {
+      "bytes": 16215,
+      "sha256": "023d4f41202ee26c2b3650fa73ecdf38a4113d892183bcda712ac227816ea8b5"
+    },
+    "DELTA_PREPARATION.json": {
+      "bytes": 434,
+      "sha256": "71276f4c4eda2cf2e197ac3ed58cee779db51a5c1a4583c58abfb79fe5fa91f4"
+    },
+    "FOUR_JOB_V1_TO_V2.diff": {
+      "bytes": 6564,
+      "sha256": "a14fab92d21a9dbcf70e44d9239f4e31b28058d6a34b2ad8fa1361dd74cd62fb"
+    },
+    "README.md": {
+      "bytes": 2699,
+      "sha256": "6f47c2138ce0b3a5df0e4e365ec531e1666465f965f9f10634355d5ab306fc21"
+    },
+    "SCOPE.pending-final.json": {
+      "bytes": 3447,
+      "sha256": "d00408910e36039fa95db3ab6ff6c2ed2312b7d3ae33ee955b3252224e798d51"
+    },
+    "V2_PREPARATION.json": {
+      "bytes": 393,
+      "sha256": "ea29f5527cbb33af95e61d8189a2a2866995ab78ad2ee17dcbb0140c9b16059f"
+    },
+    "collect_four_browser_terminal.py": {
+      "bytes": 16922,
+      "sha256": "fee55afbf8fc480704c94478bc0572e070661eab28c7e2e10d79051707818c69"
+    },
+    "collect_four_browser_terminal_v2.py": {
+      "bytes": 17731,
+      "sha256": "7675c2af1de19a193195267245f57b10192a4a684cfd54654dd1d4cf3539da25"
+    },
+    "launch_four_job_collection.py": {
+      "bytes": 4498,
+      "sha256": "c7bcd2e95400aa6a18babfdaca7f68ad67f1cf8537ac58a57802cac8b1ae42d7"
+    },
+    "prepare_failure_preserving_delta.py": {
+      "bytes": 4372,
+      "sha256": "8e4957da24d22543431c864c9a897d4314192ffe4e67376ccb5cf3a63c7f1ac3"
+    },
+    "prepare_four_job_delta.py": {
+      "bytes": 5814,
+      "sha256": "039b35d2fd4b5b62f63d0f86323bde9a3a54241d010399672efc11b600cefce0"
+    }
+  },
+  "collector_executed": false,
+  "product_rerun": false,
+  "SHM_access_for_this_preparation": false,
+  "static_validation": "AST only; archive algorithm identical to original assembly except four scopes and4xmetadata budget"
+}

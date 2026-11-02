@@ -90,9 +90,14 @@ GEO-219 實際減項：移除新建 ready 與 Resume-ready 分支在同一 `#sce
 `#faceLayerList` 的 `[data-timber-id]` 列保留定位／選取與刪除；料單控制及完成尺寸移入構件→角材的唯一 `#faceTimberSchedule`，不另建清單工作區。
 `[data-schedule-timber]` 是可鍵盤操作的定位按鈕，`aria-pressed` 與畫布角材選取同步。
 `#timberScheduleScope` 明選承載面全部或當次選取的 ID 集合；`#timberScheduleUnit` 只格式化 mm/cm；
-`#timberScheduleOrder` 按身分或完成長度排序。`#timberScheduleCSV` 導出同一集合的精確 mm，
+`#timberScheduleOrder` 合併為「料單檢視」：`id`／`length` 按身分或完成長度排序，`cutting` 開啟裁切並加入當次範圍。`#timberScheduleCSV` 導出同一集合的精確 mm，
 `#timberScheduleStatus` 顯示正式件數／失效原因。來源細節在 `.timber-schedule-source` 展開。
 數據契約與剩餘追溯限制見 [TIMBER-SCHEDULE.md](TIMBER-SCHEDULE.md)。
+
+## 裁切、宣告餘料與採購（#47 K1）
+
+`#cuttingDialog` 是上述合併選單開啟的對話框；沒有新增常駐工具列。`#cuttingGlobals`、`#cuttingStocks`、`#cuttingRemnants` 保存明示整數 mm 設定，`#cuttingSave` 原子驗證並記一筆「裁切設定」歷史；未填欄位保持未設定。`#cuttingScopes` 是當次 session 的需求範圍，可移除、跨面加入；切專案清空。
+`#cuttingCalculate` 唯讀求方案，`#cuttingPlan` 顯示採購支數、件區間、下刀與剩料分類；`#cuttingUnit`／`#cuttingOrder` 只改顯示。`#cuttingExport` 只有 COMPLETE 能匯出，且重新驗證世界、設定、範圍及 context。`#cuttingStatus` 按需顯示狀態／拒絕理由；只有一塊常駐操作說明。資料、P-047 及能力契約見 [CUTTING-PLAN.md](CUTTING-PLAN.md)。
 
 ## 保存模型角材快照料單（#47 GEO-241）
 

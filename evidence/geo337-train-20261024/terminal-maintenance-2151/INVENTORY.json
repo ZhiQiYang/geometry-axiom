@@ -1,0 +1,1561 @@
+{
+  "created": "2026-10-23T21:53:19.373589+00:00",
+  "source_context": "791e53d72fc0ed34331c193132ca0db4f3734a8a",
+  "purpose": "Complete original execution receipts, exact cache/code scopes, tool source and independent peers; no original input removed by publication. Maintenance results are not product acceptance.",
+  "files": [
+    {
+      "path": "/tmp/train337-adversarial/ORDINARY_CODE_1229_RETIREMENT_ACTUAL_PEER.json",
+      "member": "tmp/train337-adversarial/ORDINARY_CODE_1229_RETIREMENT_ACTUAL_PEER.json",
+      "bytes": 253435,
+      "sha256": "dc7cf91fc96b8b993250419e0d3f209a524aa0df117bde93e2a86a385d6918b7"
+    },
+    {
+      "path": "/tmp/train337-adversarial/ORDINARY_CODE_1229_RETIREMENT_STATIC_PEER.json",
+      "member": "tmp/train337-adversarial/ORDINARY_CODE_1229_RETIREMENT_STATIC_PEER.json",
+      "bytes": 191921,
+      "sha256": "5260ac604eddf4dee14326b965c03a9c01be78fb3c79efaa0f988145fe6a3a1f"
+    },
+    {
+      "path": "/tmp/train337-adversarial/TERMINAL_13_PMA_ACTUAL_PEER.json",
+      "member": "tmp/train337-adversarial/TERMINAL_13_PMA_ACTUAL_PEER.json",
+      "bytes": 6288,
+      "sha256": "e3f9e4f14b5ec3f6ee703926e746847972b72c0f9aa5d90613f0604923fdeef7"
+    },
+    {
+      "path": "/tmp/train337-adversarial/TERMINAL_13_PMA_EXECUTOR_STATIC_PEER.json",
+      "member": "tmp/train337-adversarial/TERMINAL_13_PMA_EXECUTOR_STATIC_PEER.json",
+      "bytes": 2701,
+      "sha256": "9658c7a478162c9bf735c679a3e9c6d9e2dee2c05e18da7ff1ad34df8085cf06"
+    },
+    {
+      "path": "/tmp/train337-adversarial/TERMINAL_CHROME_METRICS_COMPONENT_SCOPE_PEER.json",
+      "member": "tmp/train337-adversarial/TERMINAL_CHROME_METRICS_COMPONENT_SCOPE_PEER.json",
+      "bytes": 108870,
+      "sha256": "34e3991d489e0d4bb6f61438d838b277410eb803c55501aa88badcb2614b2376"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-20261023/CONSUMERS.json",
+      "member": "workspace/cache-terminal-metrics-execution-20261023/CONSUMERS.json",
+      "bytes": 2640,
+      "sha256": "0d3e60d64bd6f3eb8f70b1ac0237084fe52a91d870be7235eaf8f97824cb13d1"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-20261023/RESULT.json",
+      "member": "workspace/cache-terminal-metrics-execution-20261023/RESULT.json",
+      "bytes": 2572,
+      "sha256": "0ee2ac32922466cb1d1a70738b4c889aea35732eac11cb0cfcd502cae62ba858"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-launch-20261023/launch-context.json",
+      "member": "workspace/cache-terminal-metrics-execution-launch-20261023/launch-context.json",
+      "bytes": 401,
+      "sha256": "18ef3ff4e8f67acb320edce29d4a996664f96999b361df052dbb00fd30adde08"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-launch-20261023/receipt.json",
+      "member": "workspace/cache-terminal-metrics-execution-launch-20261023/receipt.json",
+      "bytes": 2043,
+      "sha256": "ce1422b7ec43724dc92b16d56a0ae501db36984db95a72a1a318dee6c9cdc331"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/request.json",
+      "member": "workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/request.json",
+      "bytes": 1529,
+      "sha256": "39affdb7921ed754340747f6b9a9b2cd171bd9b63995317e2cfca955403c4f98"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/result.json",
+      "member": "workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/result.json",
+      "bytes": 1781,
+      "sha256": "14e84086b989e985bef2e0ad78a8342db37874398559e8aa4b1da40d795f96b6"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/stderr.bin",
+      "member": "workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/stdin.bin",
+      "member": "workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/stdout.bin",
+      "member": "workspace/cache-terminal-metrics-execution-launch-20261023/subcommands/000001/stdout.bin",
+      "bytes": 1279,
+      "sha256": "c1932165ad4739fc0c8f9b169e60b2ce74b927acff9e32a926fbea0f9a64ee6f"
+    },
+    {
+      "path": "/workspace/cache-terminal-metrics-execution-launch-20261023/subcommands.json",
+      "member": "workspace/cache-terminal-metrics-execution-launch-20261023/subcommands.json",
+      "bytes": 1867,
+      "sha256": "a6e82c03ac74c25f8acc5c0768685675d769ef201edfc0afdd2a18e5f695dd71"
+    },
+    {
+      "path": "/workspace/cache-terminal-preflight-20261023/METRICS_COMPONENT_PLAN.json",
+      "member": "workspace/cache-terminal-preflight-20261023/METRICS_COMPONENT_PLAN.json",
+      "bytes": 308428,
+      "sha256": "fd32c86a7a388b4066e4a54c13ed2884e00e82adfc18f33f127f3c9a8fc52e23"
+    },
+    {
+      "path": "/workspace/clear_terminal_browser_metrics_spares.py",
+      "member": "workspace/clear_terminal_browser_metrics_spares.py",
+      "bytes": 6774,
+      "sha256": "ec607be081c5e57336af8bee03addaecf8a614178a29b1a9f35115771c64639b"
+    },
+    {
+      "path": "/workspace/clear_terminal_chrome_caches.py",
+      "member": "workspace/clear_terminal_chrome_caches.py",
+      "bytes": 6666,
+      "sha256": "c51b4da96fc8ce88043484d3072a870fd725a18b00e6288e12144c399069e847"
+    },
+    {
+      "path": "/workspace/launch_ordinary_code_retirement.py",
+      "member": "workspace/launch_ordinary_code_retirement.py",
+      "bytes": 1720,
+      "sha256": "8d50e782cd19785c6da74799996ca576483f9ad887a1d27b7e5f9444113ee477"
+    },
+    {
+      "path": "/workspace/launch_terminal_metrics_retirement.py",
+      "member": "workspace/launch_terminal_metrics_retirement.py",
+      "bytes": 1672,
+      "sha256": "67e01d0a8dfa806637e3ea3061f8e5198b65306317456c179592d9a6fab389e5"
+    },
+    {
+      "path": "/workspace/old-code-ae74-preflight-20261023/CANDIDATES.json",
+      "member": "workspace/old-code-ae74-preflight-20261023/CANDIDATES.json",
+      "bytes": 79850,
+      "sha256": "1bcc5033256ac97754a1b24ecf5cbeee127015c19a4556404f08333507912585"
+    },
+    {
+      "path": "/workspace/old-code-ae74-preflight-20261023/SUMMARY.json",
+      "member": "workspace/old-code-ae74-preflight-20261023/SUMMARY.json",
+      "bytes": 2290,
+      "sha256": "5d3ab92b2e3040a69930e6ee4cf114b15fe507f3cb7727feb28d4f88f7fa1441"
+    },
+    {
+      "path": "/workspace/old-code-checkout-preflight-20261023/CANDIDATES.json",
+      "member": "workspace/old-code-checkout-preflight-20261023/CANDIDATES.json",
+      "bytes": 503240,
+      "sha256": "692b8c032f2f5790622354f85ce1490955525218808b6b4413cb254cf0ed4e10"
+    },
+    {
+      "path": "/workspace/old-code-checkout-preflight-20261023/SUMMARY.json",
+      "member": "workspace/old-code-checkout-preflight-20261023/SUMMARY.json",
+      "bytes": 2937,
+      "sha256": "192027e2c6524920cfa5772a3ee1978fb8e446ac3da453d9a4d543109c46b8d6"
+    },
+    {
+      "path": "/workspace/old-code-checkout-workspace-preflight-20261023/CANDIDATES.json",
+      "member": "workspace/old-code-checkout-workspace-preflight-20261023/CANDIDATES.json",
+      "bytes": 504413,
+      "sha256": "98b2ac7c4cf3504737492c9d76bc21a6f71281a1adec2a9332460321858303e1"
+    },
+    {
+      "path": "/workspace/old-code-checkout-workspace-preflight-20261023/P52_FINAL_SOURCE_SUMMARY.json",
+      "member": "workspace/old-code-checkout-workspace-preflight-20261023/P52_FINAL_SOURCE_SUMMARY.json",
+      "bytes": 2365,
+      "sha256": "865c8176e6802c41607d4264d67ec455aed592f6ffb38eb9154e3b5d897d4588"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/BEFORE.json",
+      "member": "workspace/ordinary-code-retirement-20261023/BEFORE.json",
+      "bytes": 1199,
+      "sha256": "e38edf83fc55490296cd6c7049cca93d9566779753653550281f093995530f92"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/CONSUMERS.json",
+      "member": "workspace/ordinary-code-retirement-20261023/CONSUMERS.json",
+      "bytes": 2640,
+      "sha256": "6cec531f62b350fb9f2a7dfcdafe9cddcb7c36c6db96cd282a75ad56409651fa"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/RESULT.json",
+      "member": "workspace/ordinary-code-retirement-20261023/RESULT.json",
+      "bytes": 314977,
+      "sha256": "d8ec58f94595d7bd10f89d3ba2a66fee3d5dd8141fe644bcbe5788dc6fb62e30"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000001/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000001/request.json",
+      "bytes": 1468,
+      "sha256": "f7b51f7113a7ebf7ce77942bdfdc40ea299c2464129b7aa7af999e9f4fcde073"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000001/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000001/result.json",
+      "bytes": 1719,
+      "sha256": "d36a13f8315434614829ae2b1bc234eedcbd690ea7f202f03558dc74dc957238"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000001/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000001/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000001/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "a8fe530e41901c77f48069b54b2b576de15cf187de387209dc21efd247224730"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000002/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000002/request.json",
+      "bytes": 1474,
+      "sha256": "91c6ba8b4d5b64dcc686d493c6a8b7d6bceec08bee0daf131679f196ca1ba9b6"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000002/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000002/result.json",
+      "bytes": 1725,
+      "sha256": "9f6f00c391c9c517e2bc6a1ce4dc7e44e4b0c0cf3dc48f760c123f8bab059d11"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000002/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000002/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000002/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000002/stdout.bin",
+      "bytes": 41,
+      "sha256": "c3865bb1d56b102e470695c631872574e5f28922328a4a81391d50e0d3b1c068"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000003/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000003/request.json",
+      "bytes": 1514,
+      "sha256": "d826d9f8dbae0e2ac9243aa93bbc79a22126ecdd400d1ccfd7a65f1b59d34342"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000003/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000003/result.json",
+      "bytes": 1763,
+      "sha256": "bc6288d250f64f78e1c8c3ea4b017c2ae1edf8a5ce684f4875819abda6df9588"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000003/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000003/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000003/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000003/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000004/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000004/request.json",
+      "bytes": 1524,
+      "sha256": "bba7d168b4ec172791b3411838650d2e2cabd40c88c0bff9a3c740a1ae2646a3"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000004/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000004/result.json",
+      "bytes": 1774,
+      "sha256": "60bb36842ba46a42bb136dc86072defc411be7dc55ba568f81b0bd91ee3a22f0"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000004/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000004/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000004/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000004/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000005/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000005/request.json",
+      "bytes": 1486,
+      "sha256": "78d06e406ddc0c8aa19c619dc4ac94a678d79f40976672f0ad13e6596793b44f"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000005/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000005/result.json",
+      "bytes": 1736,
+      "sha256": "aa9d185836bd5af639f2cea7ef4b8b480cce1391ef8d8a594e0605189b78f062"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000005/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000005/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000005/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000005/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000006/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000006/request.json",
+      "bytes": 1480,
+      "sha256": "7fe229baf8fded4de557c10e8bc827ffd11ccfc777b1e1e1a8dc06485bfef014"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000006/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000006/result.json",
+      "bytes": 1735,
+      "sha256": "51d3a11e507919575a5b8a4087845997cc721646f41312b517eedb7322454993"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000006/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000006/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000006/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000006/stdout.bin",
+      "bytes": 3841770,
+      "sha256": "96163481759508bfd6a4c3063f2597e81f2bf240f04540d0153e5133ae320a6d"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000007/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000007/request.json",
+      "bytes": 1517,
+      "sha256": "d5ee996eb87952b84ac9b6f65a3ff1399848f5f1f2e867285e3ea6d1cb8dd4c5"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000007/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000007/result.json",
+      "bytes": 1768,
+      "sha256": "13ffc47eed2e9b49b8d30b9010a8471dfbcd65e94735ea1f5976fc80bd182a9f"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000007/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000007/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000007/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000007/stdout.bin",
+      "bytes": 36,
+      "sha256": "65cb2641d7a750abaf01a710537424ad725a06e54a3b01ff3b897277ae1e8b60"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000008/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000008/request.json",
+      "bytes": 1475,
+      "sha256": "1a87cf8fc7edb0f97261c677d166b80ebc7f57f231c09b5464c55ab5bc32b540"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000008/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000008/result.json",
+      "bytes": 1729,
+      "sha256": "c1cbfe42a3801f8bf70bdd5c6bf39b8f9477456e8b614a0fa608cc9f25d3f714"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000008/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000008/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000008/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000008/stdin.bin",
+      "bytes": 14555,
+      "sha256": "4fa3f4acfb3de09fbcdff6ba1e0ac645cefe8c83c7a053b7c58a64aace6e0e53"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000008/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000008/stdout.bin",
+      "bytes": 18234,
+      "sha256": "4e05666c5510f96f41fef14fbf2e92540e6c4067dc8c39a1f7d644db64e16688"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000009/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000009/request.json",
+      "bytes": 1472,
+      "sha256": "4a06b2f757c14c83733d28ec7a91df2fc5e221960c116dd5bace923bfb711049"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000009/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000009/result.json",
+      "bytes": 1723,
+      "sha256": "e1fbff6803059bbed84d97a7869e69e80b02fd44622d83b5e22701bba0052a3d"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000009/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000009/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000009/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000009/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000009/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000009/stdout.bin",
+      "bytes": 41,
+      "sha256": "420e36b66ea72e36b6da1a058c7bab94c58edf7690021f04fbc9f7e45aa53222"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000010/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000010/request.json",
+      "bytes": 1479,
+      "sha256": "e181db16b0e71b53ff9f0f9efeef13422cb5625309e478c81b509ed4ab7c7750"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000010/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000010/result.json",
+      "bytes": 1730,
+      "sha256": "b8f9811eb085664cfe7f03717d50dc75e6e9b1a34fd2d3af1edce010667f8b55"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000010/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000010/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000010/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000010/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000010/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000010/stdout.bin",
+      "bytes": 41,
+      "sha256": "715c251f51b1c7357a48419fa9450a7c7ef2fb67ed0b597bb031c3f35d05232d"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000011/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000011/request.json",
+      "bytes": 1519,
+      "sha256": "69a0d733f68bbfdfcd517f6028ab82ba688896a340cf63ae684ad59694e35179"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000011/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000011/result.json",
+      "bytes": 1769,
+      "sha256": "15e3e0bac58e45ce94040d89b0e1371a9c319253a98017715397fbd053c31e3e"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000011/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000011/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000011/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000011/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000011/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000011/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000012/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000012/request.json",
+      "bytes": 1529,
+      "sha256": "955f921f69bf00fcb61cb34accbf6b388d0c829d5a429f48995e8cc1827535be"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000012/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000012/result.json",
+      "bytes": 1778,
+      "sha256": "6de2a14bb3fa566e486c3691487120cce74bdcd9308c97738dbe12956565821e"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000012/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000012/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000012/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000012/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000012/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000012/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000013/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000013/request.json",
+      "bytes": 1491,
+      "sha256": "dbf8331c5d33412116b61facff606edb94761e90a73a1523c7e60140f102c2be"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000013/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000013/result.json",
+      "bytes": 1741,
+      "sha256": "577e03cf21dc715ae783ec82ceda9fd2b180f608df75d4736bfe2ff0dbe5a621"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000013/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000013/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000013/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000013/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000013/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000013/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000014/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000014/request.json",
+      "bytes": 1485,
+      "sha256": "b110848254fe2e31c0bb513b1aa9e4f5e461cd91070f928b0dad0f07400d62e9"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000014/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000014/result.json",
+      "bytes": 1741,
+      "sha256": "4b103e243b4b628d6e821fef2e91ae870ca9ef58c4631947e4e07e96c23e1c82"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000014/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000014/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000014/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000014/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000014/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000014/stdout.bin",
+      "bytes": 3855475,
+      "sha256": "87f35d92a263c0794fc1b57b4444d09a371f74d05d790482fe4eb78a62cdebfe"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000015/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000015/request.json",
+      "bytes": 1522,
+      "sha256": "d5fdba54d8f0beee61fd705a41f945902a0cf06fc40d7d6560973384e1958a2f"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000015/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000015/result.json",
+      "bytes": 1773,
+      "sha256": "574beae7bffcd869979d4fe77078d01d11768bc25ead2faa0dd4010bc98aef1b"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000015/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000015/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000015/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000015/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000015/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000015/stdout.bin",
+      "bytes": 41,
+      "sha256": "dcdc25bc6fec53ab8a92fb8e1f74ec1763832e06625c9e6d6ba928cc7b5ce999"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000016/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000016/request.json",
+      "bytes": 1480,
+      "sha256": "5c125928de9051054cb2337a9bacd5b2933ce747202bec43ccf5c76171c2ab43"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000016/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000016/result.json",
+      "bytes": 1733,
+      "sha256": "e26e8f72aab305d8902f60341d7e53b66d12fbf7f34d8f0d9098ced64508274a"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000016/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000016/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000016/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000016/stdin.bin",
+      "bytes": 14555,
+      "sha256": "307cfe746f4ce7ddd412812bbc180013f53ee939813a0c4e6dbae86f5428a21e"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000016/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000016/stdout.bin",
+      "bytes": 18234,
+      "sha256": "f6642647ddb4431a9413118f2cc4715ed5418c3735794fa6037111db1e0afc9f"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000017/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000017/request.json",
+      "bytes": 1505,
+      "sha256": "5a9c55aea61a5a5b49f3d999ebd4d8f7d092676c743810b3d3b0051d3af62276"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000017/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000017/result.json",
+      "bytes": 1756,
+      "sha256": "0e5f62bd53bd0e7c317b3b5c5cdca3cdc500d7bedec4144f09994f127f274235"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000017/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000017/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000017/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000017/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000017/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000017/stdout.bin",
+      "bytes": 41,
+      "sha256": "264694734ec89046885e1190d10cf573924e04f02cb0f1d21dfb61541d3adfdf"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000018/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000018/request.json",
+      "bytes": 1513,
+      "sha256": "a152bbada1dc5bc3cc1ca236952a9617d6713a6409b48e3882c77eae3affeba4"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000018/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000018/result.json",
+      "bytes": 1764,
+      "sha256": "c8b47d66166f33e8c4dddf91524b42cb4c44517cde2db32be1f85e498306555f"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000018/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000018/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000018/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000018/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000018/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000018/stdout.bin",
+      "bytes": 41,
+      "sha256": "889bcc03aafee0804331323b713c485af3e8324a1378e1d8e0473568df2d3ffd"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000019/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000019/request.json",
+      "bytes": 1552,
+      "sha256": "9311cd3e151183c630bdeec732b486da04b5e9e2dfce9f9f36ce27689f80cf79"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000019/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000019/result.json",
+      "bytes": 1801,
+      "sha256": "52fe027073039b2e23d21b6a59c3d82ccf8fdcc26f0953c0e8c2604c47a57c9c"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000019/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000019/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000019/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000019/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000019/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000019/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000020/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000020/request.json",
+      "bytes": 1563,
+      "sha256": "4d7802c8a9381e7db610656ab224e3883b0672f503f8ceac3c4f5cc34a1de4bf"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000020/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000020/result.json",
+      "bytes": 1811,
+      "sha256": "f7b6eb9a3faec64362c355d5c3a78b08f4a68e1d1a42181d7e2f53603823aa68"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000020/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000020/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000020/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000020/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000020/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000020/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000021/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000021/request.json",
+      "bytes": 1525,
+      "sha256": "5534c5c0ed92a5e96db3bc8b06dd69a63a6493f78fc6a21d40b6ec57452045b5"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000021/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000021/result.json",
+      "bytes": 1774,
+      "sha256": "3fa4f9a336838630d738f8576e9d0d0d7ef73724d480ed96bb50e1359b77abd4"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000021/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000021/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000021/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000021/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000021/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000021/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000022/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000022/request.json",
+      "bytes": 1519,
+      "sha256": "8d59f769605173b52d8e09cb74f5b77ad15a00bfbb5afe574dd9dcc7f43d12b9"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000022/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000022/result.json",
+      "bytes": 1775,
+      "sha256": "dc49eb0fe97b82715fcd6f31c8dce3597c3f545f336fd3f0f7204669c82366ec"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000022/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000022/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000022/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000022/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000022/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000022/stdout.bin",
+      "bytes": 3890741,
+      "sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000023/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000023/request.json",
+      "bytes": 1556,
+      "sha256": "966450d0abf16c0fdf9eed46c055b5d3664679499cb1f0185028c245bbc2dc8a"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000023/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000023/result.json",
+      "bytes": 1806,
+      "sha256": "7cb179328ad2eb28b5bdfc0ac6830fc5359d537785a62a93c20dbb026d5970f0"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000023/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000023/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000023/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000023/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000023/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000023/stdout.bin",
+      "bytes": 75,
+      "sha256": "cafacdddd6bf6288b75dfe497314fe35864f69ccf58abdd010655ca000855c5b"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000024/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000024/request.json",
+      "bytes": 1514,
+      "sha256": "e812fd66546a4930446dcc63f4e2380b577a7e34dcc11226fa610bf9808a797c"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000024/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000024/result.json",
+      "bytes": 1768,
+      "sha256": "cb9def4a9850178af2b2c83d1a9d421976f513e774be72675474888e96dfa103"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000024/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000024/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000024/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000024/stdin.bin",
+      "bytes": 14555,
+      "sha256": "50cc259490228e41c703b83bc8ca2cc01fb851f9a0f13b5e60ed5c163835ddf9"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000024/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000024/stdout.bin",
+      "bytes": 18236,
+      "sha256": "0d5150e9ca40ae94f59224cbeaca8e27b0e39af5deb99161a73e08f9acc231aa"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000025/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000025/request.json",
+      "bytes": 1476,
+      "sha256": "53ed3becbe95a590fa6819656a204cda694df9faef0bdc122f99a7d69c95c047"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000025/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000025/result.json",
+      "bytes": 1726,
+      "sha256": "68994127f4bdc8eeb74c6da105ae0c25d3b1ba91f8b373324cfced0a37eafaac"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000025/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000025/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000025/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000025/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000025/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000025/stdout.bin",
+      "bytes": 41,
+      "sha256": "4889fdc8d1ef057ba9f941cc17dddbd9923ea69f265bb72c70e87e3fdf939277"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000026/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000026/request.json",
+      "bytes": 1482,
+      "sha256": "6cc7f8cb0046b548c3dfc1040c453c100f24c016659aa16b32fa79ba6749e902"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000026/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000026/result.json",
+      "bytes": 1733,
+      "sha256": "425acb7d55a01a3d3b6b72ff3e9db585bb87a958e0463735cc107c6e4b2ed415"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000026/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000026/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000026/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000026/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000026/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000026/stdout.bin",
+      "bytes": 41,
+      "sha256": "f8179fc9e6205ed5490b79da02d91a05e2bfd3f71f99c442dbd0e0eceaea8479"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000027/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000027/request.json",
+      "bytes": 1522,
+      "sha256": "c5dbc2baeff49ba1348de29f2c4d1dc9e51c97974539b45e780c7cbf5c89f354"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000027/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000027/result.json",
+      "bytes": 1772,
+      "sha256": "b652f78c83c205715a10d2ca5958954a720787640d45b8d99c34dc9d06f4aac9"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000027/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000027/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000027/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000027/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000027/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000027/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000028/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000028/request.json",
+      "bytes": 1532,
+      "sha256": "0002a3d34bc0179992be18b93a82cff288103c9d9d7e15c5af22f2eea7cf514f"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000028/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000028/result.json",
+      "bytes": 1782,
+      "sha256": "2365f775c262343a032514aa88a2bc2fb4bd081dffc6da492556be86d8c477d8"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000028/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000028/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000028/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000028/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000028/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000028/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000029/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000029/request.json",
+      "bytes": 1494,
+      "sha256": "ecd5c5adc690066159c65db4f777ab3e3839cfadc3d03e73aa8da4885c58c3aa"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000029/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000029/result.json",
+      "bytes": 1743,
+      "sha256": "eef4589ee0a29b65bf0907c6a5e75c8cb71a3f577f93ce5579d14cd59ea2bdb2"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000029/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000029/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000029/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000029/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000029/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000029/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000030/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000030/request.json",
+      "bytes": 1488,
+      "sha256": "5b0523bf13b1e577ca2f7d8fb3685c0e06d7e705dd930abc81472e35c725abe3"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000030/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000030/result.json",
+      "bytes": 1742,
+      "sha256": "773b6255dda344e714e5445ec310ab916b6538d2ccebdc323b6638a5a0280c35"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000030/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000030/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000030/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000030/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000030/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000030/stdout.bin",
+      "bytes": 4135986,
+      "sha256": "edccabb2787ca84f0133f6b66bd369d80d5640304d3d3eb428a9b50ada7b8aa7"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000031/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000031/request.json",
+      "bytes": 1525,
+      "sha256": "082663c4a22f5f73ebc4d223e67c7829e7f530c40920a2612988127077d1b563"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000031/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000031/result.json",
+      "bytes": 1776,
+      "sha256": "266e74838d3ce66bfa4b8269b60453f3afc3c5061cf4f61083a1d7df30742ed5"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000031/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000031/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000031/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000031/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000031/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000031/stdout.bin",
+      "bytes": 80,
+      "sha256": "c86db12daef1b1ddef7b3e498f4f796df163654c18f3ba5bb1d4a0af53ebaf16"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000032/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000032/request.json",
+      "bytes": 1481,
+      "sha256": "6f07d19f7648f67b34b2f12f05f164d9f6d4f939d38b10ad1f94c3aaa00d105c"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000032/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000032/result.json",
+      "bytes": 1734,
+      "sha256": "f218836595a58c85ce5565b5a176a0fb3ad15717d8e752ed847d3aaac764d93a"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000032/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000032/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000032/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000032/stdin.bin",
+      "bytes": 6724,
+      "sha256": "0b6bce63e29e44371cd239da0cfd0ab3c27f591f00da6ff82339f905b9af3938"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000032/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000032/stdout.bin",
+      "bytes": 8396,
+      "sha256": "4f3239259cdaaca838a4f03f538a57c8d54c5756244b34811ec2ce0865851644"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000033/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000033/request.json",
+      "bytes": 1514,
+      "sha256": "35acb52bde2094ce9d0c0b1f494ed72215653e6730844f0129bf30c006c8d999"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000033/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000033/result.json",
+      "bytes": 1768,
+      "sha256": "dd8ab2d24408eed6faf905f5127fe76729bb92bd3a823ee716910f2169395de1"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000033/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000033/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000033/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000033/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000033/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000033/stdout.bin",
+      "bytes": 15524,
+      "sha256": "e3b8b763a223cd9f3df108025f4b92f06560cb0f93d21c415ece12a9297f079b"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000034/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000034/request.json",
+      "bytes": 1479,
+      "sha256": "41721bd09230279764157d9876522a1e882907a2f1ddd2933102e639b8150526"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000034/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000034/result.json",
+      "bytes": 1734,
+      "sha256": "28bd9181653adfb370d9cff83fecf9d89324de6624928b329a6f705c9dafaa81"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000034/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000034/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000034/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000034/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000034/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000034/stdout.bin",
+      "bytes": 3841770,
+      "sha256": "96163481759508bfd6a4c3063f2597e81f2bf240f04540d0153e5133ae320a6d"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000035/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000035/request.json",
+      "bytes": 1467,
+      "sha256": "2cde636ef1b6cab3d26f9964c35adf6da720f5ecf36c84ea5b896506934f016d"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000035/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000035/result.json",
+      "bytes": 1718,
+      "sha256": "0b1ab3ae232a658dd2ee2024daeaf66e92c60eb0baf3e29c32f5af09bd53b456"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000035/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000035/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000035/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000035/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000035/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000035/stdout.bin",
+      "bytes": 41,
+      "sha256": "a8fe530e41901c77f48069b54b2b576de15cf187de387209dc21efd247224730"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000036/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000036/request.json",
+      "bytes": 1519,
+      "sha256": "47f20199912787f635a08a7b275cce52d767425e95f724b1c72528ad5893e424"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000036/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000036/result.json",
+      "bytes": 1773,
+      "sha256": "aae87580ba7832c9ff3bfd003fc33bc9a6bb47476dd359a0019e18399895e51c"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000036/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000036/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000036/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000036/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000036/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000036/stdout.bin",
+      "bytes": 15524,
+      "sha256": "e3b8b763a223cd9f3df108025f4b92f06560cb0f93d21c415ece12a9297f079b"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000037/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000037/request.json",
+      "bytes": 1484,
+      "sha256": "607cf4d0dd5dc81510855f91bd71ca4ec50ebe3dd8309b6f679f4a948fd1cbb4"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000037/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000037/result.json",
+      "bytes": 1739,
+      "sha256": "ebd7417c8882e4360cab3a813c31e5c21c29a4c9eaa49ddf850f65204f788123"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000037/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000037/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000037/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000037/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000037/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000037/stdout.bin",
+      "bytes": 3855475,
+      "sha256": "87f35d92a263c0794fc1b57b4444d09a371f74d05d790482fe4eb78a62cdebfe"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000038/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000038/request.json",
+      "bytes": 1473,
+      "sha256": "ef0c3db96957a9cd02b824bc69ed8b14ac4b092e6330e9c93db57151fde8e444"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000038/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000038/result.json",
+      "bytes": 1723,
+      "sha256": "966360ec0c027b503ebc9731cc6a5b025e078f465c553b36882f76bda349e95e"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000038/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000038/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000038/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000038/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000038/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000038/stdout.bin",
+      "bytes": 41,
+      "sha256": "420e36b66ea72e36b6da1a058c7bab94c58edf7690021f04fbc9f7e45aa53222"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000039/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000039/request.json",
+      "bytes": 1553,
+      "sha256": "0966ed52b35384769f72463d7dae6bc62a46b41b199c0a810bf8f240ffd6a7de"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000039/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000039/result.json",
+      "bytes": 1807,
+      "sha256": "a144e5293c0d24449acb7ec73f9fa4ca7b904d4efcb7adef03686628a7b4d05a"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000039/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000039/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000039/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000039/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000039/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000039/stdout.bin",
+      "bytes": 15524,
+      "sha256": "e3b8b763a223cd9f3df108025f4b92f06560cb0f93d21c415ece12a9297f079b"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000040/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000040/request.json",
+      "bytes": 1519,
+      "sha256": "4628f1855fdeafbd6c58584a5438a586c90063352e3fb0c47b0659ed085d9bd8"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000040/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000040/result.json",
+      "bytes": 1775,
+      "sha256": "1799b23bc06b633b94a809a6d4da26d88f877573005d83a354740d27f5115bda"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000040/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000040/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000040/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000040/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000040/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000040/stdout.bin",
+      "bytes": 3890741,
+      "sha256": "41e0e47b1b7f6b166c56b9983b8ac64893272ffd0525a112d9c52fddef8b4f6d"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000041/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000041/request.json",
+      "bytes": 1507,
+      "sha256": "b4c2eb7a9394e8c6bc0c1720b926e3f2c2878226700585f36822780600af0d42"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000041/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000041/result.json",
+      "bytes": 1758,
+      "sha256": "104bd435adf216b41c4b78d32dd2a6de9aab99e639201555ef7820108faf4edd"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000041/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000041/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000041/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000041/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000041/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000041/stdout.bin",
+      "bytes": 41,
+      "sha256": "264694734ec89046885e1190d10cf573924e04f02cb0f1d21dfb61541d3adfdf"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000042/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000042/request.json",
+      "bytes": 1522,
+      "sha256": "e7e84d02473596179a676bede1642ce1c4a8be2fe0282354a06345dc7c6545c2"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000042/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000042/result.json",
+      "bytes": 1774,
+      "sha256": "e74559ffa93c2af26cde7f7f80c628c69e6a73a07fa656576fff4b99eae8cbe0"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000042/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000042/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000042/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000042/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000042/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000042/stdout.bin",
+      "bytes": 7501,
+      "sha256": "38bd1d4b211d67e325ebaa3421c2b9524d01084b072db78afd0a8b49eabeabae"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000043/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000043/request.json",
+      "bytes": 1487,
+      "sha256": "0122284b01c4c527ccb8dd40647085be50c30e1c811e9bf2536adcbc159684e5"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000043/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000043/result.json",
+      "bytes": 1743,
+      "sha256": "b4930bf1e0bac5271b7ca30c37d238f102fd1aa9ddb874411df816c77034dde9"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000043/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000043/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000043/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000043/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000043/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000043/stdout.bin",
+      "bytes": 4135986,
+      "sha256": "edccabb2787ca84f0133f6b66bd369d80d5640304d3d3eb428a9b50ada7b8aa7"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000044/request.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000044/request.json",
+      "bytes": 1476,
+      "sha256": "40edea06fa40a90607773f032fd4e12a772c227c7612a2e3e7bfa636c5aeecf8"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000044/result.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000044/result.json",
+      "bytes": 1727,
+      "sha256": "f5b5af8646b9b27b958e530428997b71dfdfbe52184f085d51fdbdd0f41b143a"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000044/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000044/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000044/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000044/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands/000044/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands/000044/stdout.bin",
+      "bytes": 41,
+      "sha256": "4889fdc8d1ef057ba9f941cc17dddbd9923ea69f265bb72c70e87e3fdf939277"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-20261023/subcommands.json",
+      "member": "workspace/ordinary-code-retirement-20261023/subcommands.json",
+      "bytes": 80990,
+      "sha256": "55fea803f7c9eceae0e216fc49d8a9af448ebf2129ce4d7127a92053817f410d"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-launch-20261023/launch-context.json",
+      "member": "workspace/ordinary-code-retirement-launch-20261023/launch-context.json",
+      "bytes": 467,
+      "sha256": "e92dabae98332bd7bc165851c77cdec53438ba0c766fcebd6eaeb39991185be2"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-launch-20261023/receipt.json",
+      "member": "workspace/ordinary-code-retirement-launch-20261023/receipt.json",
+      "bytes": 2026,
+      "sha256": "86785a486d6dad9f8f69126b7e41a00cab13a3a4869bafaf96b0b1fc137649b6"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/request.json",
+      "member": "workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/request.json",
+      "bytes": 1511,
+      "sha256": "5cbc32c5e59a1446e998a9254b5c4afd90de9ea8dc15ecf0aa7e7fd9c18b30bd"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/result.json",
+      "member": "workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/result.json",
+      "bytes": 1764,
+      "sha256": "a3405c216347f516f027db28fcca0b16a52413fdc61699b30894b42eb597f43c"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/stderr.bin",
+      "member": "workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/stdin.bin",
+      "member": "workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/stdout.bin",
+      "member": "workspace/ordinary-code-retirement-launch-20261023/subcommands/000001/stdout.bin",
+      "bytes": 1560,
+      "sha256": "bbb45eee5001918a188c1c093ee6ef9a5c07e296e330e6f6060f046ab8faf2f0"
+    },
+    {
+      "path": "/workspace/ordinary-code-retirement-launch-20261023/subcommands.json",
+      "member": "workspace/ordinary-code-retirement-launch-20261023/subcommands.json",
+      "bytes": 1850,
+      "sha256": "226ff4fc9b80b10f780ad5e68e236d523db865a893ad839d5ed4dde90c37ff86"
+    },
+    {
+      "path": "/workspace/retire_completed_code_checkouts.py",
+      "member": "workspace/retire_completed_code_checkouts.py",
+      "bytes": 8249,
+      "sha256": "92188ff404f3d0e226924f916e94f21c2357c20bfdc291f299ad9497fb6589c0"
+    }
+  ]
+}
