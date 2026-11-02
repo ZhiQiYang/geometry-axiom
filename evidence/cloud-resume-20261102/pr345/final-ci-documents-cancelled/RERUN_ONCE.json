@@ -1,0 +1,16 @@
+{
+  "at": "2026-11-02T11:52:55.531350+00:00",
+  "command": [
+    "gh",
+    "api",
+    "repos/ZhiQiYang/geometry-axiom/actions/jobs/125251333430/rerun",
+    "--method",
+    "POST"
+  ],
+  "exit": 1,
+  "head": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+  "run": 41437638054,
+  "originalJob": 125251333430,
+  "reason": "Original job cancelled during Git fetch before native/browser started. Preserve all original logs, unchanged original timeouts; only this environment-failed job requested.",
+  "attempts": 1
+}

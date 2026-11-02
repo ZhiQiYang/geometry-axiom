@@ -1,0 +1,688 @@
+{
+  "scope": "Outside documents utility. Existing PR338-specific recovery workflow deliberately uses root evidence; retain it unchanged. No old payload member was opened.",
+  "entry": "evidence/pr338-b1-recovery-20261102/recovery_audit.py",
+  "selectors": [
+    "evidence/pr338-b1-recovery-20261102/",
+    "evidence/geo337-train-20261024/review-unblock-20261029/B1_STATUS.json",
+    "evidence/geo337-train-20261024/full-R8-five-stage-raw/ORIGINAL_R8_FIVE_STAGE_RAW.tar.gz",
+    "evidence/geo337-train-20261024/full-R8-five-stage-raw/EXCLUDED_ELF_PAYLOADS.json",
+    "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/",
+    "evidence/pr338-b2-closure-20261029/"
+  ],
+  "selectedLeafCount": 84,
+  "selectedLeaves": [
+    {
+      "path": "evidence/geo337-train-20261024/full-R8-five-stage-raw/EXCLUDED_ELF_PAYLOADS.json",
+      "blob": "15810e8eea3914b4686e1546af2eb76a47d58eaa",
+      "bytes": 2398,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/full-R8-five-stage-raw/EXCLUDED_ELF_PAYLOADS.json"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/full-R8-five-stage-raw/ORIGINAL_R8_FIVE_STAGE_RAW.tar.gz",
+      "blob": "0aaa8e61ddbffbec5e1771a1960b3d5d1e5238aa",
+      "bytes": 31362296,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/full-R8-five-stage-raw/ORIGINAL_R8_FIVE_STAGE_RAW.tar.gz"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/COPY_METADATA_PROOF.initial-summary.json",
+      "blob": "06e0557f79e2310fd5021ed5c50f22b397f81d43",
+      "bytes": 2328,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/COPY_METADATA_PROOF.json",
+      "blob": "025ea67edaf5abdbfcb4e2694f8cd1cd56ad1afe",
+      "bytes": 2679,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/COUNTERFACTUAL.json",
+      "blob": "a1d9a8952e13d03ce724e81082a29aa52181a303",
+      "bytes": 5641,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/METADATA_PROOF.json",
+      "blob": "380ed9bcc5ced03de863b8dd7121c911b9c943a3",
+      "bytes": 1906,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/ORIGINAL_TO_F8_TOOL.diff",
+      "blob": "c8b6dd74867e697d2a2d70a691fca63f3943a27f",
+      "bytes": 5228,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/PREPARATION.json",
+      "blob": "0e1d3507740089f715a248b42aef16d5fb313e4a",
+      "bytes": 8251,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/R8_ELF_COPY_BINDINGS.json",
+      "blob": "2bdafa48b73882eec1dd928e21646aa594bbabec",
+      "bytes": 1673,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/README.md",
+      "blob": "6580c19408cd997c142b07e94f502662b4adac74",
+      "bytes": 2841,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/V1_TO_V2_COPY_ONLY.diff",
+      "blob": "195c481b0cc28525b1ee0e4496dfb7dadf3dd955",
+      "bytes": 4766,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/check_copy_metadata.py",
+      "blob": "9545a4ce06ac76d37bc40fb2c2e8ec07e4811f40",
+      "bytes": 1241,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/check_metadata.py",
+      "blob": "04398e79a6c8c90b74335847c2628e63fb4cbf52",
+      "bytes": 988,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/copy_r8_elf.py",
+      "blob": "c16dee2e80c571f783a908edadb1bf845ae359fb",
+      "bytes": 3409,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/memo_variant.py",
+      "blob": "78260d00d953b51711ceaef2141edb81ac15c667",
+      "bytes": 4666,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/F7-geometry-app__native__reference_sources.inc",
+      "blob": "a3191419d0a847a362308ac22e44d289c9ba2d61",
+      "bytes": 63190,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/F7-geometry-core__references.inc",
+      "blob": "22708285f6b0f531dcce07eecd6c73aea64ab2d9",
+      "bytes": 64355,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/F8-geometry-app__native__reference_sources.inc",
+      "blob": "a3191419d0a847a362308ac22e44d289c9ba2d61",
+      "bytes": 63190,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/F8-geometry-core__references.inc",
+      "blob": "ec7e4700f014bc7a84285bbd70ce8d2ed480c874",
+      "bytes": 64400,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/H-geometry-app__native__reference_sources.inc",
+      "blob": "3def72e93ea363feb914729ced3f046ee4a294ab",
+      "bytes": 62346,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/H-geometry-core__references.inc",
+      "blob": "b60bb484b8263ee9b0cb869c47af5cb8a0c0503b",
+      "bytes": 64152,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-fixed.stderr.bin",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-fixed.stdout.bin",
+      "blob": "24c392fd2aa3bdb0e46a854db11da7e121a54b14",
+      "bytes": 899,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-fixture-fixed/synthetic-copy",
+      "blob": "062fcc4c9ed08a6ceeece901d8840fc22e7c3ea3",
+      "bytes": 504,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-fixture-fixed/synthetic-original",
+      "blob": "062fcc4c9ed08a6ceeece901d8840fc22e7c3ea3",
+      "bytes": 504,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-fixture-restored/synthetic-copy",
+      "blob": "062fcc4c9ed08a6ceeece901d8840fc22e7c3ea3",
+      "bytes": 504,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-fixture-restored/synthetic-original",
+      "blob": "062fcc4c9ed08a6ceeece901d8840fc22e7c3ea3",
+      "bytes": 504,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-fixture-withdraw-copy-to-hardlink/synthetic-copy",
+      "blob": "062fcc4c9ed08a6ceeece901d8840fc22e7c3ea3",
+      "bytes": 504,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-fixture-withdraw-copy-to-hardlink/synthetic-original",
+      "blob": "062fcc4c9ed08a6ceeece901d8840fc22e7c3ea3",
+      "bytes": 504,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-restored.stderr.bin",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-restored.stdout.bin",
+      "blob": "c935d2ff4f8d729708d3af1c724de2af651bd96b",
+      "bytes": 905,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-withdraw-copy-to-hardlink.stderr.bin",
+      "blob": "362224b78e479c64448c37e5fbb0168413ac933d",
+      "bytes": 539,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/copy-withdraw-copy-to-hardlink.stdout.bin",
+      "blob": "59de8a2668cc8dac20e3d9062f783b99f037028b",
+      "bytes": 121,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/fixed.stderr.bin",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/fixed.stdout.bin",
+      "blob": "1c0945faeb0744baf1b2f5138317f605d031b142",
+      "bytes": 754,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/restored.stderr.bin",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/restored.stdout.bin",
+      "blob": "1c0945faeb0744baf1b2f5138317f605d031b142",
+      "bytes": 754,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/withdraw-local-init-preservation.stderr.bin",
+      "blob": "bd4942ab24990f8e34c6da14ddcf999e0812a6cc",
+      "bytes": 335,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/withdraw-local-init-preservation.stdout.bin",
+      "blob": "3a6b34c92132ec1d91126bb3b459a8a76de26023",
+      "bytes": 118,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/withdrawn-geometry-app__native__reference_sources.inc",
+      "blob": "3def72e93ea363feb914729ced3f046ee4a294ab",
+      "bytes": 62346,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/metadata/withdrawn-geometry-core__references.inc",
+      "blob": "9151b432a50f86cb6df58d727b198f4da4aeacb4",
+      "bytes": 64197,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/patches/historical-memo-added.patch",
+      "blob": "0b85451f8d127a1d2412ca77b806f88062d67936",
+      "bytes": 3587,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/patches/local-init-retained.patch",
+      "blob": "fa5cf72d7e57ed201e5f37b9145ad4cb171e34ef",
+      "bytes": 722,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/patches/restored.patch",
+      "blob": "a492b7d2b37dbf05adf43e005a7d6dd122aa7320",
+      "bytes": 3535,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/patches/withdrawn.patch",
+      "blob": "1f9b3d78e64b953187e66c704dae0eb441259e27",
+      "bytes": 3539,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/run.py",
+      "blob": "c68fe47e89ecdd36ad29a288497895b8e21390e0",
+      "bytes": 13532,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/"
+      ]
+    },
+    {
+      "path": "evidence/geo337-train-20261024/review-unblock-20261029/B1_STATUS.json",
+      "blob": "a7444a37ff16d4f624083db893c3ede59af3ac78",
+      "bytes": 2761,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/geo337-train-20261024/review-unblock-20261029/B1_STATUS.json"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b1-recovery-20261102/README.md",
+      "blob": "4497fa07855ebef7e7ee2c40aac1685dc0fa2baf",
+      "bytes": 4275,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b1-recovery-20261102/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b1-recovery-20261102/recovery_audit.py",
+      "blob": "605c87a1bc98b061fb514719003cdee1b977a6f3",
+      "bytes": 14286,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b1-recovery-20261102/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/AUDIT_RUN.json",
+      "blob": "dfaea397c8af204baafad0931ee02d1455c2f9e0",
+      "bytes": 1136,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/B2.md",
+      "blob": "1a0cf14de9e02e7dc7d18ab070509f3a4685eece",
+      "bytes": 13824,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/B2_CLOSURE.json",
+      "blob": "ffcf999f0380ac32c45d087fb873649b0940ae56",
+      "bytes": 3358392,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/B2_COMMAND_BINDINGS.json",
+      "blob": "b107275e6efd42659713bac027547c405c225a94",
+      "bytes": 530352,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/B2_FALLBACK_HEADERS.json",
+      "blob": "17ac5a9ef4394a15536fb2eabbfb5382105b4df6",
+      "bytes": 63682,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/DELIVERY_MANIFEST.json",
+      "blob": "bf37edc31ce225d94cdf0a15ef8b69eac6b6e5f2",
+      "bytes": 5357,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt1.exit",
+      "blob": "d00491fd7e5bb6fa28c517a0bb32b8b506539d4d",
+      "bytes": 2,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt1.stderr",
+      "blob": "4a7ee153607271b7734cf66f688046611f810bf6",
+      "bytes": 851,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt1.stdout",
+      "blob": "3842666e71f95761ee9e91cb2b9f239921507be6",
+      "bytes": 231,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt2.exit",
+      "blob": "d00491fd7e5bb6fa28c517a0bb32b8b506539d4d",
+      "bytes": 2,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt2.stderr",
+      "blob": "a4f2af3c15c8baba78fac453f53fa7c8a5a48fce",
+      "bytes": 571,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt2.stdout",
+      "blob": "3842666e71f95761ee9e91cb2b9f239921507be6",
+      "bytes": 231,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt3.exit",
+      "blob": "d00491fd7e5bb6fa28c517a0bb32b8b506539d4d",
+      "bytes": 2,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt3.stderr",
+      "blob": "d001c25e238b7e20e042163ea11be45894fff92a",
+      "bytes": 684,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit-attempt3.stdout",
+      "blob": "5a6b00740753d1ef53641d72020ac0e17ea76ff3",
+      "bytes": 411,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit.exit",
+      "blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit.stderr",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit.stdout",
+      "blob": "3d7786fcc5943600ba63511294a9a503f0c1fc72",
+      "bytes": 552,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit_b2.py",
+      "blob": "8485ae4ee4cae4dbd143b0df9cce5ab5a1a583ec",
+      "bytes": 21082,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit_bindings.py",
+      "blob": "2e0b4167c07a909f2072b6cf625421f042588743",
+      "bytes": 7269,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/audit_fallback_headers.py",
+      "blob": "08777b41e314726f8a34c4163ed0a5ace0640c6f",
+      "bytes": 2338,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/bindings.exit",
+      "blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/bindings.stderr",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/bindings.stdout",
+      "blob": "b4997743b947e7ae9234e587b5a3b03077ccdc7f",
+      "bytes": 379,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/fallback.exit",
+      "blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/fallback.stderr",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/fallback.stdout",
+      "blob": "f79b54fab68b87d44093dbea006f4a4cf4a8559d",
+      "bytes": 292,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/load_originals.py",
+      "blob": "41a68524eb0257c4db30a1c480c20abca9236b54",
+      "bytes": 1070,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/prepare_supplement_inputs.py",
+      "blob": "8208b218db1a5c57086df69e2c3831bf7c099c24",
+      "bytes": 1198,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/supplement/F8-dependencies.exit",
+      "blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/supplement/F8-dependencies.stderr",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/supplement/F8-dependencies.stdout",
+      "blob": "179bb17732799c651e8625a4b567d7fef3dbfe5e",
+      "bytes": 27288,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/supplement/base-dependencies.exit",
+      "blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/supplement/base-dependencies.stderr",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    },
+    {
+      "path": "evidence/pr338-b2-closure-20261029/supplement/base-dependencies.stdout",
+      "blob": "7ec2cbc3f591c77cf77920424619206b52010a4c",
+      "bytes": 27532,
+      "selectedByExistingRecoveryWorkflow": [
+        "evidence/pr338-b2-closure-20261029/"
+      ]
+    }
+  ],
+  "unknown": "Selector descendants are conservatively retained per original workflow, not each asserted individually necessary. Full internal recovery-script dependency audit is outside documents-only scope."
+}

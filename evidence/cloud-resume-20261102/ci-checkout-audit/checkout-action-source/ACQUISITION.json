@@ -1,0 +1,49 @@
+{
+  "at": "2026-11-02T11:59:07.239447+00:00",
+  "pinnedRef": "11bd71901bbe5b1630ceea73d27597364c9af683",
+  "scope": "Original public action source only; no repository checkout or product/data payload fetch",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/action.yml",
+      "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/action.yml",
+      "httpStatus": 200,
+      "bytes": 4593,
+      "sha256": "5349b6eea0a1797a9a993c48db9d95b33d27ee1b6227ceced0c9cbf8e655c939"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/git-command-manager.ts",
+      "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/src/git-command-manager.ts",
+      "httpStatus": 200,
+      "bytes": 18083,
+      "sha256": "70fa506e9131d6d14928c01e6854a70595c78ce701b80489b884e7c821a31b19"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/git-source-provider.ts",
+      "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/src/git-source-provider.ts",
+      "httpStatus": 200,
+      "bytes": 11050,
+      "sha256": "b1bf57713d94302decc7f440a1cd7daa24f205ddf677c52debeb654a5565d1a7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/input-helper.ts",
+      "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/src/input-helper.ts",
+      "httpStatus": 200,
+      "bytes": 5331,
+      "sha256": "39db5db45de014e85adbfbb47b1cfef148550c48579df403b1256bd23b2566c3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/retry-helper.ts",
+      "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/src/retry-helper.ts",
+      "httpStatus": 200,
+      "bytes": 1588,
+      "sha256": "bf914b0bab34653fecb321d02f20cd96cdeef71d70857dbfe8278f23ad41b4af"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/dist/index.js",
+      "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/dist/index.js",
+      "httpStatus": 200,
+      "bytes": 1348912,
+      "sha256": "9a320e563c4dc21e2291453f0c922906ef8d98cbf4961dfadb2eb4f1a0fcc15e"
+    }
+  ]
+}

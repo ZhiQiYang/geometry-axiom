@@ -1,0 +1,15 @@
+# Replace only the single checkout inside jobs.browser.steps.
+# Leave native/native-complete and mutation-evidence.yml checkouts unchanged.
+- uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+  if: ${{ matrix.suite != 'documents' }}
+  with:
+    persist-credentials: false
+- uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+  if: ${{ matrix.suite == 'documents' }}
+  with:
+    persist-credentials: false
+    filter: blob:none
+    sparse-checkout-cone-mode: false
+    sparse-checkout: |
+      /*
+      !/evidence/

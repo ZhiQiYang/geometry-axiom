@@ -1,0 +1,20 @@
+✔ T12 strict settings refuse values without rounding, clamping, ignored keys or defaults (7.187725ms)
+✔ T12b referenced stock section/material locked, but name and new-stock trims editable (1.053411ms)
+✔ T18 settings capacities reject edit rather than truncating (2.279728ms)
+✔ T20 a referenced stock cannot be deleted alone; deleting its remnants atomically is allowed (0.380653ms)
+✔ key allocation remains exhausted or monotonic; deleted keys cannot be reused (0.717132ms)
+✔ P-047(a)(b) remnant undo/redo restore only the edit while counters never rewind (1.815608ms)
+✔ P-047(c) unrelated local/core restoration does not change remnant declaration or highwater (1.058101ms)
+✔ P-047 absent attachment undo preserves consumed keys, and different contexts remain independent (0.645198ms)
+✔ T17 archive roundtrip retains settings and highwater but no plan, scope or World declaration (26.59304ms)
+✔ T17b old project format, missing capability and unknown schema refuse import before changing project (22.868629ms)
+✔ cutting record obeys existing finite plain JSON gate including getters and oversized escaped bytes (0.947685ms)
+✔ cutting format keeps existing native section capability admission independently of project metadata (7.016825ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 144.232582

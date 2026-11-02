@@ -1,0 +1,304 @@
+﻿2026-11-02T11:52:44.8811193Z Current runner version: '2.338.2'
+2026-11-02T11:52:44.8836203Z ##[group]Runner Image Provisioner
+2026-11-02T11:52:44.8837106Z Hosted Compute Agent
+2026-11-02T11:52:44.8837719Z Version: 20261021.618
+2026-11-02T11:52:44.8838530Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-02T11:52:44.8839269Z Build Date: 2026-10-21T00:45:21Z
+2026-11-02T11:52:44.8840055Z Worker ID: {480bb555-66b9-4e83-8b26-00bd6b24fb99}
+2026-11-02T11:52:44.8840824Z Region: westus
+2026-11-02T11:52:44.8841385Z Cloud: Azure
+2026-11-02T11:52:44.8842255Z ##[endgroup]
+2026-11-02T11:52:44.8844135Z ##[group]Operating System
+2026-11-02T11:52:44.8844786Z Ubuntu
+2026-11-02T11:52:44.8845475Z 24.04.5
+2026-11-02T11:52:44.8846003Z LTS
+2026-11-02T11:52:44.8846658Z ##[endgroup]
+2026-11-02T11:52:44.8847223Z ##[group]Runner Image
+2026-11-02T11:52:44.8847818Z Image: ubuntu-24.04
+2026-11-02T11:52:44.8848498Z Version: 20261025.353.1
+2026-11-02T11:52:44.8849800Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-02T11:52:44.8851727Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-02T11:52:44.8852719Z ##[endgroup]
+2026-11-02T11:52:44.8853915Z ##[group]GITHUB_TOKEN Permissions
+2026-11-02T11:52:44.8855850Z Contents: read
+2026-11-02T11:52:44.8856589Z Metadata: read
+2026-11-02T11:52:44.8857176Z ##[endgroup]
+2026-11-02T11:52:44.8859287Z Secret source: Actions
+2026-11-02T11:52:44.8860339Z Cache mode: write
+2026-11-02T11:52:44.8861088Z Prepare workflow directory
+2026-11-02T11:52:44.9265911Z Prepare all required actions
+2026-11-02T11:52:44.9316806Z Getting action download info
+2026-11-02T11:52:45.2769191Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-02T11:52:45.4093206Z Download action repository 'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2026-11-02T11:52:45.8076078Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-02T11:52:46.0156132Z Complete job name: native complete coverage
+2026-11-02T11:52:46.1111669Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-02T11:52:46.1113597Z with:
+2026-11-02T11:52:46.1114544Z   persist-credentials: false
+2026-11-02T11:52:46.1115684Z   repository: ZhiQiYang/geometry-axiom
+2026-11-02T11:52:46.1124155Z   token: ***
+2026-11-02T11:52:46.1125063Z   ssh-strict: true
+2026-11-02T11:52:46.1125885Z   ssh-user: git
+2026-11-02T11:52:46.1126663Z   clean: true
+2026-11-02T11:52:46.1127519Z   sparse-checkout-cone-mode: true
+2026-11-02T11:52:46.1128619Z   fetch-depth: 1
+2026-11-02T11:52:46.1129472Z   fetch-tags: false
+2026-11-02T11:52:46.1130300Z   show-progress: true
+2026-11-02T11:52:46.1130849Z   lfs: false
+2026-11-02T11:52:46.1131308Z   submodules: false
+2026-11-02T11:52:46.1132183Z   set-safe-directory: true
+2026-11-02T11:52:46.1133276Z ##[endgroup]
+2026-11-02T11:52:46.4792237Z Syncing repository: ZhiQiYang/geometry-axiom
+2026-11-02T11:52:46.4795207Z ##[group]Getting Git version info
+2026-11-02T11:52:46.4796538Z Working directory is '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T11:52:46.4798282Z [command]/usr/bin/git version
+2026-11-02T11:52:46.4934382Z git version 2.56.0
+2026-11-02T11:52:46.4960458Z ##[endgroup]
+2026-11-02T11:52:46.4978537Z Temporarily overriding HOME='/home/runner/work/_temp/f48db4a4-b06e-4e41-ae5c-f253e28bf1cd' before making global git config changes
+2026-11-02T11:52:46.4983562Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T11:52:46.4987998Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T11:52:46.5052535Z Deleting the contents of '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T11:52:46.5059028Z ##[group]Initializing the repository
+2026-11-02T11:52:46.5064573Z [command]/usr/bin/git init /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T11:52:46.5201274Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-02T11:52:46.5205508Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-02T11:52:46.5209189Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-02T11:52:46.5212732Z hint: call:
+2026-11-02T11:52:46.5214614Z hint:
+2026-11-02T11:52:46.5216801Z hint: 	git config --global init.defaultBranch <name>
+2026-11-02T11:52:46.5219215Z hint:
+2026-11-02T11:52:46.5221823Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-02T11:52:46.5225912Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-02T11:52:46.5229098Z hint:
+2026-11-02T11:52:46.5230846Z hint: 	git branch -m <name>
+2026-11-02T11:52:46.5233371Z hint:
+2026-11-02T11:52:46.5235980Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-02T11:52:46.5240428Z Initialized empty Git repository in /home/runner/work/geometry-axiom/geometry-axiom/.git/
+2026-11-02T11:52:46.5247915Z [command]/usr/bin/git remote add origin https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T11:52:46.5313070Z ##[endgroup]
+2026-11-02T11:52:46.5316108Z ##[group]Disabling automatic garbage collection
+2026-11-02T11:52:46.5326788Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-02T11:52:46.5358772Z ##[endgroup]
+2026-11-02T11:52:46.5361952Z ##[group]Setting up auth
+2026-11-02T11:52:46.5366404Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T11:52:46.5412571Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T11:52:46.5916713Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T11:52:46.5965023Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T11:52:46.6209837Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-02T11:52:46.6262770Z ##[endgroup]
+2026-11-02T11:52:46.6265447Z ##[group]Fetching the repository
+2026-11-02T11:52:46.6277274Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +27feb429dd4690097bb3d330b2fbbc62c3619636:refs/remotes/pull/340/merge
+2026-11-02T11:54:16.3790248Z From https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T11:54:16.3792256Z  * [new ref]           27feb429dd4690097bb3d330b2fbbc62c3619636 -> pull/340/merge
+2026-11-02T11:54:16.3797907Z ##[endgroup]
+2026-11-02T11:54:16.3798779Z ##[group]Determining the checkout info
+2026-11-02T11:54:16.3799840Z ##[endgroup]
+2026-11-02T11:54:16.3801338Z [command]/usr/bin/git sparse-checkout disable
+2026-11-02T11:54:16.3863849Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-02T11:54:16.3909085Z ##[group]Checking out the ref
+2026-11-02T11:54:16.3915070Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/340/merge
+2026-11-02T11:54:17.9473599Z Updating files:  14% (5422/38720)
+2026-11-02T11:54:18.4546950Z Updating files:  15% (5808/38720)
+2026-11-02T11:54:18.7772343Z Updating files:  15% (6089/38720)
+2026-11-02T11:54:18.9418410Z Updating files:  16% (6196/38720)
+2026-11-02T11:54:18.9877962Z Updating files:  17% (6583/38720)
+2026-11-02T11:54:19.0048830Z Updating files:  18% (6970/38720)
+2026-11-02T11:54:19.0240173Z Updating files:  19% (7357/38720)
+2026-11-02T11:54:19.0429431Z Updating files:  20% (7744/38720)
+2026-11-02T11:54:19.0898767Z Updating files:  21% (8132/38720)
+2026-11-02T11:54:19.1259593Z Updating files:  22% (8519/38720)
+2026-11-02T11:54:19.2828508Z Updating files:  23% (8906/38720)
+2026-11-02T11:54:19.3690733Z Updating files:  24% (9293/38720)
+2026-11-02T11:54:19.4121166Z Updating files:  25% (9680/38720)
+2026-11-02T11:54:19.4372947Z Updating files:  26% (10068/38720)
+2026-11-02T11:54:19.4438603Z Updating files:  26% (10407/38720)
+2026-11-02T11:54:19.4722024Z Updating files:  27% (10455/38720)
+2026-11-02T11:54:19.5106614Z Updating files:  28% (10842/38720)
+2026-11-02T11:54:19.6676894Z Updating files:  29% (11229/38720)
+2026-11-02T11:54:19.6852573Z Updating files:  30% (11616/38720)
+2026-11-02T11:54:19.7005742Z Updating files:  31% (12004/38720)
+2026-11-02T11:54:19.7342905Z Updating files:  32% (12391/38720)
+2026-11-02T11:54:19.7566224Z Updating files:  33% (12778/38720)
+2026-11-02T11:54:19.9283232Z Updating files:  34% (13165/38720)
+2026-11-02T11:54:20.4839541Z Updating files:  35% (13552/38720)
+2026-11-02T11:54:20.5482734Z Updating files:  35% (13900/38720)
+2026-11-02T11:54:20.6191812Z Updating files:  36% (13940/38720)
+2026-11-02T11:54:20.8622861Z Updating files:  37% (14327/38720)
+2026-11-02T11:54:20.8893363Z Updating files:  38% (14714/38720)
+2026-11-02T11:54:20.9834317Z Updating files:  39% (15101/38720)
+2026-11-02T11:54:21.0107428Z Updating files:  40% (15488/38720)
+2026-11-02T11:54:21.0353574Z Updating files:  41% (15876/38720)
+2026-11-02T11:54:21.0524952Z Updating files:  42% (16263/38720)
+2026-11-02T11:54:21.5186085Z Updating files:  43% (16650/38720)
+2026-11-02T11:54:21.5636527Z Updating files:  43% (16784/38720)
+2026-11-02T11:54:21.5938969Z Updating files:  44% (17037/38720)
+2026-11-02T11:54:21.9380315Z Updating files:  45% (17424/38720)
+2026-11-02T11:54:22.0198414Z Updating files:  46% (17812/38720)
+2026-11-02T11:54:22.0592580Z Updating files:  47% (18199/38720)
+2026-11-02T11:54:22.0795320Z Updating files:  48% (18586/38720)
+2026-11-02T11:54:22.1290876Z Updating files:  49% (18973/38720)
+2026-11-02T11:54:22.1800887Z Updating files:  50% (19360/38720)
+2026-11-02T11:54:22.3036640Z Updating files:  51% (19748/38720)
+2026-11-02T11:54:22.3814870Z Updating files:  52% (20135/38720)
+2026-11-02T11:54:22.4368764Z Updating files:  53% (20522/38720)
+2026-11-02T11:54:22.4681862Z Updating files:  53% (20707/38720)
+2026-11-02T11:54:22.5576873Z Updating files:  54% (20909/38720)
+2026-11-02T11:54:22.6068037Z Updating files:  55% (21296/38720)
+2026-11-02T11:54:22.6560584Z Updating files:  56% (21684/38720)
+2026-11-02T11:54:22.7046269Z Updating files:  57% (22071/38720)
+2026-11-02T11:54:22.7494006Z Updating files:  58% (22458/38720)
+2026-11-02T11:54:22.8215507Z Updating files:  59% (22845/38720)
+2026-11-02T11:54:22.8390378Z Updating files:  60% (23232/38720)
+2026-11-02T11:54:22.8908273Z Updating files:  61% (23620/38720)
+2026-11-02T11:54:22.9349056Z Updating files:  62% (24007/38720)
+2026-11-02T11:54:22.9734516Z Updating files:  63% (24394/38720)
+2026-11-02T11:54:23.0148512Z Updating files:  64% (24781/38720)
+2026-11-02T11:54:23.0779045Z Updating files:  65% (25168/38720)
+2026-11-02T11:54:23.1755721Z Updating files:  66% (25556/38720)
+2026-11-02T11:54:23.2243678Z Updating files:  67% (25943/38720)
+2026-11-02T11:54:23.3177083Z Updating files:  68% (26330/38720)
+2026-11-02T11:54:23.4197589Z Updating files:  69% (26717/38720)
+2026-11-02T11:54:23.4360788Z Updating files:  70% (27104/38720)
+2026-11-02T11:54:23.4947388Z Updating files:  70% (27224/38720)
+2026-11-02T11:54:23.5710489Z Updating files:  71% (27492/38720)
+2026-11-02T11:54:23.6439916Z Updating files:  72% (27879/38720)
+2026-11-02T11:54:23.6712551Z Updating files:  73% (28266/38720)
+2026-11-02T11:54:23.7549455Z Updating files:  74% (28653/38720)
+2026-11-02T11:54:23.7960820Z Updating files:  75% (29040/38720)
+2026-11-02T11:54:23.8460610Z Updating files:  76% (29428/38720)
+2026-11-02T11:54:23.8764094Z Updating files:  77% (29815/38720)
+2026-11-02T11:54:23.8991814Z Updating files:  78% (30202/38720)
+2026-11-02T11:54:23.9129110Z Updating files:  79% (30589/38720)
+2026-11-02T11:54:24.0114225Z Updating files:  80% (30976/38720)
+2026-11-02T11:54:24.2266705Z Updating files:  81% (31364/38720)
+2026-11-02T11:54:24.2435926Z Updating files:  82% (31751/38720)
+2026-11-02T11:54:24.2711910Z Updating files:  83% (32138/38720)
+2026-11-02T11:54:24.3019235Z Updating files:  84% (32525/38720)
+2026-11-02T11:54:24.3461852Z Updating files:  85% (32912/38720)
+2026-11-02T11:54:24.4360663Z Updating files:  86% (33300/38720)
+2026-11-02T11:54:24.4417265Z Updating files:  86% (33574/38720)
+2026-11-02T11:54:24.4787024Z Updating files:  87% (33687/38720)
+2026-11-02T11:54:24.5577720Z Updating files:  88% (34074/38720)
+2026-11-02T11:54:24.5778143Z Updating files:  89% (34461/38720)
+2026-11-02T11:54:24.6516452Z Updating files:  90% (34848/38720)
+2026-11-02T11:54:24.6918677Z Updating files:  91% (35236/38720)
+2026-11-02T11:54:24.7292380Z Updating files:  92% (35623/38720)
+2026-11-02T11:54:24.7716783Z Updating files:  93% (36010/38720)
+2026-11-02T11:54:24.8079466Z Updating files:  94% (36397/38720)
+2026-11-02T11:54:24.8430199Z Updating files:  95% (36784/38720)
+2026-11-02T11:54:24.9096498Z Updating files:  96% (37172/38720)
+2026-11-02T11:54:25.0250940Z Updating files:  97% (37559/38720)
+2026-11-02T11:54:25.0433201Z Updating files:  98% (37946/38720)
+2026-11-02T11:54:25.0790345Z Updating files:  99% (38333/38720)
+2026-11-02T11:54:25.0790940Z Updating files: 100% (38720/38720)
+2026-11-02T11:54:25.0791701Z Updating files: 100% (38720/38720), done.
+2026-11-02T11:54:25.4792936Z Note: switching to 'refs/remotes/pull/340/merge'.
+2026-11-02T11:54:25.4793515Z 
+2026-11-02T11:54:25.4793947Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-02T11:54:25.4794951Z changes and commit them, and you can discard any commits you make in this
+2026-11-02T11:54:25.4795886Z state without impacting any branches by switching back to a branch.
+2026-11-02T11:54:25.4796354Z 
+2026-11-02T11:54:25.4796646Z If you want to create a new branch to retain commits you create, you may
+2026-11-02T11:54:25.4797356Z do so (now or later) by using -c with the switch command. Example:
+2026-11-02T11:54:25.4797757Z 
+2026-11-02T11:54:25.4797922Z   git switch -c <new-branch-name>
+2026-11-02T11:54:25.4798196Z 
+2026-11-02T11:54:25.4798378Z Or undo this operation with:
+2026-11-02T11:54:25.4798637Z 
+2026-11-02T11:54:25.4798767Z   git switch -
+2026-11-02T11:54:25.4798963Z 
+2026-11-02T11:54:25.4799596Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-02T11:54:25.4800124Z 
+2026-11-02T11:54:25.4800712Z HEAD is now at 27feb429 Merge edf556eedc204bb285fb4504e246e4310f4e1e88 into e02057b4c725d6f03ae52c3bc30776bf9442b0cf
+2026-11-02T11:54:25.5397460Z ##[endgroup]
+2026-11-02T11:54:25.5458235Z [command]/usr/bin/git log -1 --format=%H
+2026-11-02T11:54:25.5495720Z 27feb429dd4690097bb3d330b2fbbc62c3619636
+2026-11-02T11:54:25.5510476Z ##[group]Removing auth
+2026-11-02T11:54:25.5516510Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T11:54:25.5567377Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T11:54:25.5905482Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T11:54:25.5947347Z http.https://github.com/.extraheader
+2026-11-02T11:54:25.5972113Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-02T11:54:25.6008065Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T11:54:25.6340877Z ##[endgroup]
+2026-11-02T11:54:25.6612740Z ##[group]Run python3 -B tests/native_sharding_mutation_check.py --output '/home/runner/work/_temp/native-sharding-proof'
+2026-11-02T11:54:25.6613739Z [36;1mpython3 -B tests/native_sharding_mutation_check.py --output '/home/runner/work/_temp/native-sharding-proof'[0m
+2026-11-02T11:54:25.6638796Z shell: /usr/bin/bash -e {0}
+2026-11-02T11:54:25.6639072Z ##[endgroup]
+2026-11-02T11:54:26.0981808Z {"passed": true, "baseline_mutant_restored_exit": [0, 1, 0], "rows": [{"label": "baseline", "exit": 0, "tests": 1, "failures": 0, "errors": 0, "skips": 0, "failure_ids": [], "assertion_failure": true, "removed": []}, {"label": "removed", "exit": 1, "tests": 1, "failures": 1, "errors": 0, "skips": 0, "failure_ids": ["test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once"], "assertion_failure": true, "removed": ["c:integrity"]}, {"label": "restored", "exit": 0, "tests": 1, "failures": 0, "errors": 0, "skips": 0, "failure_ids": [], "assertion_failure": true, "removed": []}]}
+2026-11-02T11:54:26.1116119Z ##[group]Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+2026-11-02T11:54:26.1116552Z with:
+2026-11-02T11:54:26.1116765Z   pattern: native-shard-*
+2026-11-02T11:54:26.1117039Z   path: /home/runner/work/_temp/native-shards
+2026-11-02T11:54:26.1117335Z   merge-multiple: true
+2026-11-02T11:54:26.1117599Z   repository: ZhiQiYang/geometry-axiom
+2026-11-02T11:54:26.1117872Z   run-id: 41438184818
+2026-11-02T11:54:26.1118105Z ##[endgroup]
+2026-11-02T11:54:26.2963087Z (node:2386) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-02T11:54:26.2964616Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-02T11:54:26.5785161Z Found 9 artifact(s)
+2026-11-02T11:54:26.5786191Z Filtering artifacts by pattern 'native-shard-*'
+2026-11-02T11:54:26.5808764Z Preparing to download the following artifacts:
+2026-11-02T11:54:26.5810125Z - native-shard-2 (ID: 13139695235, Size: 4333, Expected Digest: sha256:47a31314fac8c436e784946ebbe772cba53acb29693c4a49b6d9073dc5bf06eb)
+2026-11-02T11:54:26.5811304Z - native-shard-3 (ID: 13138253227, Size: 4280, Expected Digest: sha256:7ede61338c05df0bd98d83506fcff9e10bc54974c3ba528d94f6b2a88dd63f37)
+2026-11-02T11:54:26.5812706Z - native-shard-1 (ID: 13137403760, Size: 4326, Expected Digest: sha256:b3f77dd80123fd5a4c4c19ccfa9c092d50b057d395fb1b69a1fa96bcad2e27e2)
+2026-11-02T11:54:26.8493265Z Redirecting to blob download url: https://productionresultssa11.blob.core.windows.net/actions-results/b36480c8-e034-87cd-ba66-dda097301775/workflow-job-run-812b1692-308c-53b3-b9b5-08063dff6e48/artifacts/0eb834a3efaee9c98b4e6cf530218522f74828fde300baf0c71e269160e98321.zip
+2026-11-02T11:54:26.8495597Z Starting download of artifact to: /home/runner/work/_temp/native-shards
+2026-11-02T11:54:26.9975958Z Redirecting to blob download url: https://productionresultssa11.blob.core.windows.net/actions-results/b36480c8-e034-87cd-ba66-dda097301775/workflow-job-run-2d789848-4f72-520b-b273-3cc7be047e2b/artifacts/f3cef92f784cd6bcda38dfe01c251c8078d5427ee8e171b75b270612259767c4.zip
+2026-11-02T11:54:26.9977621Z Starting download of artifact to: /home/runner/work/_temp/native-shards
+2026-11-02T11:54:26.9992864Z Redirecting to blob download url: https://productionresultssa11.blob.core.windows.net/actions-results/b36480c8-e034-87cd-ba66-dda097301775/workflow-job-run-4eaf3298-f1e5-5d45-a323-241b59f26e41/artifacts/8cf050020e8105288d925b94b9b83012b3a7b956186057ecef84923c1b6aa9b5.zip
+2026-11-02T11:54:26.9995209Z Starting download of artifact to: /home/runner/work/_temp/native-shards
+2026-11-02T11:54:27.1355610Z (node:2386) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-02T11:54:27.1415764Z SHA256 digest of downloaded artifact is 47a31314fac8c436e784946ebbe772cba53acb29693c4a49b6d9073dc5bf06eb
+2026-11-02T11:54:27.1416364Z Artifact download completed successfully.
+2026-11-02T11:54:27.2776670Z SHA256 digest of downloaded artifact is b3f77dd80123fd5a4c4c19ccfa9c092d50b057d395fb1b69a1fa96bcad2e27e2
+2026-11-02T11:54:27.2777294Z Artifact download completed successfully.
+2026-11-02T11:54:27.2959703Z SHA256 digest of downloaded artifact is 7ede61338c05df0bd98d83506fcff9e10bc54974c3ba528d94f6b2a88dd63f37
+2026-11-02T11:54:27.2960854Z Artifact download completed successfully.
+2026-11-02T11:54:27.2962282Z Total of 3 artifact(s) downloaded
+2026-11-02T11:54:27.2969353Z Download artifact has finished successfully
+2026-11-02T11:54:27.3146034Z ##[group]Run python3 -B tests/native_shard_receipts.py --input '/home/runner/work/_temp/native-shards' --parts 3 --output '/home/runner/work/_temp/native-complete.json'
+2026-11-02T11:54:27.3147241Z [36;1mpython3 -B tests/native_shard_receipts.py --input '/home/runner/work/_temp/native-shards' --parts 3 --output '/home/runner/work/_temp/native-complete.json'[0m
+2026-11-02T11:54:27.3167836Z shell: /usr/bin/bash -e {0}
+2026-11-02T11:54:27.3168118Z ##[endgroup]
+2026-11-02T11:54:27.3893516Z {"passed": true, "commit_sha": "27feb429dd4690097bb3d330b2fbbc62c3619636", "parts": 3, "suite_count": 237, "executed_suites": 237, "union_equals_full_registry": true, "overlap": [], "counted_tests": 5421, "counted_passed": 5420, "allowed_skips": 1, "shard_suites": {"1": 79, "2": 79, "3": 79}, "expected_sha256": "cf69410538f68df168031c2ee1bf5ff32649f871f4e62b5d59ecb18456649554", "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"}
+2026-11-02T11:54:27.4039884Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-02T11:54:27.4040330Z with:
+2026-11-02T11:54:27.4040551Z   name: native-complete-coverage
+2026-11-02T11:54:27.4041077Z   path: /home/runner/work/_temp/native-sharding-proof/
+/home/runner/work/_temp/native-complete.json
+
+2026-11-02T11:54:27.4042019Z   if-no-files-found: error
+2026-11-02T11:54:27.4042352Z   retention-days: 14
+2026-11-02T11:54:27.4042592Z   compression-level: 6
+2026-11-02T11:54:27.4042826Z   overwrite: false
+2026-11-02T11:54:27.4043067Z   include-hidden-files: false
+2026-11-02T11:54:27.4043332Z ##[endgroup]
+2026-11-02T11:54:27.5893916Z (node:2401) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-02T11:54:27.5895701Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-02T11:54:27.6054377Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-02T11:54:27.6057840Z The least common ancestor is /home/runner/work/_temp. This will be the root directory of the artifact
+2026-11-02T11:54:27.6059867Z With the provided path, there will be 8 files uploaded
+2026-11-02T11:54:27.6065989Z Artifact name is valid!
+2026-11-02T11:54:27.6067108Z Root directory input is valid!
+2026-11-02T11:54:28.0036389Z Beginning upload of artifact content to blob storage
+2026-11-02T11:54:28.0389650Z (node:2401) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-02T11:54:28.3140102Z Uploaded bytes 2873
+2026-11-02T11:54:28.3921949Z Finished uploading artifact content to blob storage!
+2026-11-02T11:54:28.3923462Z SHA256 digest of uploaded artifact zip is 7ccf0d4e2b7ca3a854271a5ae9435781321fd697dd91cca417f5387482690bfd
+2026-11-02T11:54:28.3925387Z Finalizing artifact upload
+2026-11-02T11:54:29.2929037Z Artifact native-complete-coverage.zip successfully finalized. Artifact ID 13138596435
+2026-11-02T11:54:29.2930373Z Artifact native-complete-coverage has been successfully uploaded! Final size is 2873 bytes. Artifact ID is 13138596435
+2026-11-02T11:54:29.2937413Z Artifact download URL: https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41438184818/artifacts/13138596435
+2026-11-02T11:54:29.3150861Z Post job cleanup.
+2026-11-02T11:54:29.4057911Z [command]/usr/bin/git version
+2026-11-02T11:54:29.4133679Z git version 2.56.0
+2026-11-02T11:54:29.4178147Z Temporarily overriding HOME='/home/runner/work/_temp/3d18aeac-8c32-4509-aa92-03c51c5f9134' before making global git config changes
+2026-11-02T11:54:29.4180272Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T11:54:29.4185955Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T11:54:29.4234737Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T11:54:29.4277277Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T11:54:29.4642580Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T11:54:29.4702570Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T11:54:29.5254120Z Cleaning up orphan processes
+2026-11-02T11:54:29.5742725Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

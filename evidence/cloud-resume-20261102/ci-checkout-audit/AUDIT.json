@@ -1,0 +1,190 @@
+{
+  "schema": "geometry-ci-documents-checkout-static-audit/1",
+  "at": "2026-11-02T12:16:23.767786+00:00",
+  "status": "PASS_STATIC_INPUT_PRESERVATION_DOCUMENTS_ONLY",
+  "sourceF": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+  "currentOriginMain": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "scopeDecision": "Only browser matrix.suite==documents uses non-cone sparse checkout plus blob:none excluding anchored root/evidence. All other browser/native/#366 checkout behavior, helper sources and deadlines remain unchanged.",
+  "sourceAndBranchModified": false,
+  "testsBuildsBrowserNativeOrNewCheckoutExecuted": false,
+  "jobFacts": {
+    "run": 41437638054,
+    "job": 125251333430,
+    "head_sha": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+    "name": "browser (documents)",
+    "conclusion": "cancelled",
+    "started_at": "2026-11-02T11:32:32Z",
+    "completed_at": "2026-11-02T11:42:49Z",
+    "wholeJobSeconds": 617.0,
+    "checkoutSeconds": 612.0,
+    "fetchObserved": "git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d917902400dc18294191a6c50aa990178fe279a0:refs/remotes/pull/345/merge",
+    "fetchHadBlobFilter": false,
+    "cancellationMessage": "The operation was canceled.",
+    "buildFontInstallAndBrowserStepConclusions": {
+      "Build current native executables": "skipped",
+      "Install Chinese fonts for visual verification": "skipped",
+      "Run actual browser regression group": "skipped"
+    },
+    "notA47CheckProductFailure": true,
+    "noNewRerunOrCancelByPeer": true
+  },
+  "timeoutConclusion": {
+    "actualWorkflowField": "jobs.browser.timeout-minutes: ${{ matrix.timeout }}",
+    "actualDocumentsMatrixTimeoutMinutes": 10,
+    "not15Minutes": true,
+    "checkoutActionOwn10MinuteGitFetchTimerEstablished": false,
+    "originalActionCallPath": [
+      "src/git-command-manager.ts:254-296 fetch constructs options then execGit",
+      "src/git-command-manager.ts:507-542 execGit passes cwd/env/silent/ignoreReturnCode/listeners, no deadline",
+      "dist/index.js:4676-4685 clones delay10000 default;4885-4945 schedules it only after processExited while waiting stdio closure"
+    ],
+    "tenSecondStdIODelayIsNotTenMinuteFetchTimer": true,
+    "knownVsUnknown": "The observed617-second cancelled job is compatible with its configured10-minute whole-job budget. The log/API do not separately identify the exact cancellation initiator; do not claim a checkout-owned10-minute timer or prove another cause.",
+    "deadlineChangeRecommended": false
+  },
+  "originalActionSupport": {
+    "pinnedAction": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+    "sourceAcquisition": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/ACQUISITION.json",
+    "sourceFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/action.yml",
+        "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/action.yml",
+        "httpStatus": 200,
+        "bytes": 4593,
+        "sha256": "5349b6eea0a1797a9a993c48db9d95b33d27ee1b6227ceced0c9cbf8e655c939"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/git-command-manager.ts",
+        "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/src/git-command-manager.ts",
+        "httpStatus": 200,
+        "bytes": 18083,
+        "sha256": "70fa506e9131d6d14928c01e6854a70595c78ce701b80489b884e7c821a31b19"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/git-source-provider.ts",
+        "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/src/git-source-provider.ts",
+        "httpStatus": 200,
+        "bytes": 11050,
+        "sha256": "b1bf57713d94302decc7f440a1cd7daa24f205ddf677c52debeb654a5565d1a7"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/input-helper.ts",
+        "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/src/input-helper.ts",
+        "httpStatus": 200,
+        "bytes": 5331,
+        "sha256": "39db5db45de014e85adbfbb47b1cfef148550c48579df403b1256bd23b2566c3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/retry-helper.ts",
+        "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/src/retry-helper.ts",
+        "httpStatus": 200,
+        "bytes": 1588,
+        "sha256": "bf914b0bab34653fecb321d02f20cd96cdeef71d70857dbfe8278f23ad41b4af"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/dist/index.js",
+        "file": "/tmp/geometry-resume-20261102/ci-checkout-audit/checkout-action-source/dist/index.js",
+        "httpStatus": 200,
+        "bytes": 1348912,
+        "sha256": "9a320e563c4dc21e2291453f0c922906ef8d98cbf4961dfadb2eb4f1a0fcc15e"
+      }
+    ],
+    "filterAndSparseCanCoexistInActualCode": true,
+    "proof": [
+      "src/git-source-provider.ts:166-169 passes explicit filter; otherwise sparse defaults to blob:none",
+      "src/git-source-provider.ts:214-225 independently installs sparse patterns before checkout",
+      "src/git-command-manager.ts:189-203 writes non-cone patterns to Git sparse-checkout file",
+      "action.yml declares filter/sparse-checkout/sparse-checkout-cone-mode inputs"
+    ],
+    "noAuthenticationOrSecurityChange": "persist-credentials:false retained on both mutually exclusive steps; original token/ref/fetch-depth defaults remain as before"
+  },
+  "documentInputs": {
+    "report": "/tmp/geometry-resume-20261102/ci-checkout-audit/DOCUMENTS_INPUT_PRESERVATION.json",
+    "sha256": "dae3b51c3eb6408425e77e59d19ee03046fff74062ed1004ef9ff43455fca8f6",
+    "strictCheckCount": 47,
+    "literalLocalRequireOverapproximation": 55,
+    "missingLocalRequires": [],
+    "runtimeSourceCount": 740,
+    "staticRouteCount": 351,
+    "catalogRoutes": 8,
+    "catalogMeaning": "Five documents including canonical reader plus three existing examples; every actual file preserved",
+    "nativeBuildNames": [
+      "core",
+      "bridge",
+      "model-base"
+    ],
+    "nativeBuildInputsEach": 195,
+    "rootEvidencePrimaryDependenciesFound": [],
+    "rootEvidenceLeavesToWhitelistForThisDocumentsOnlyJob": [],
+    "allActualDiskFixtures": "Reference PDF is generated by retained tests/reference_pdf_fixture.js. Markdown, notes and case PNG/PDF/JSON are generated at TEMP/in browser by original test; no real case archives read.",
+    "staticOutcome": "Every audited document/native/runtime/catalog/vendor/require input is outside evidence/ and retained by /* plus !/evidence/; tests/evidence, tests/release-evidence and geometry-core/domain-decoupling/evidence are retained because the negative pattern is root-anchored."
+  },
+  "rootEvidenceSize": {
+    "metadataOnly": true,
+    "tree": "1b0fc9651571b175810d253058108893b8a2798c",
+    "truncated": false,
+    "blobs": 17742,
+    "logicalBlobBytes": 2659549972,
+    "uniqueBlobBytes": 2406513375,
+    "responseBytes": 6571938,
+    "responseSha256": "63536560f5594e8d2f37bfde02b7c29e497811442950c7330331c40121e2f750",
+    "notWireTransferMeasurement": true
+  },
+  "proposedConfig": {
+    "snippet": "/tmp/geometry-resume-20261102/ci-checkout-audit/DOCUMENTS_ONLY_CHECKOUT_SNIPPET.yml",
+    "sha256": "7e7788996d2b297a6806b4084495e5da9552b8d6fd4fe16727c7d15ea32b546c",
+    "trueMatrixField": "matrix.suite",
+    "conditions": [
+      "matrix.suite == documents",
+      "matrix.suite != documents"
+    ],
+    "onlyDocumentsSparsePattern": [
+      "/*",
+      "!/evidence/"
+    ],
+    "filter": "blob:none",
+    "coneMode": false,
+    "persistCredentials": false,
+    "unchanged": [
+      "documents timeout10",
+      "native3 shards timeout35",
+      "other browser suite timeouts",
+      "max-parallel2 and fail-fastfalse",
+      "mandatory fonts and original apt retry/timeouts",
+      "npm native build",
+      "actual original47-check Node command and its fail/asset/exception checks",
+      "native237 registry/expected/shards",
+      "all #366 checkout/execute/verifier/helper behavior",
+      "assertions/golden/skip/freshness policy"
+    ]
+  },
+  "followupNotInThisPatch": [
+    {
+      "topic": "Global root/evidence exclusion",
+      "facts": "PR338 recovery workflow expressly checks out root evidence and runs recovery_audit.py there. Preserve existing selectors/entry.",
+      "leafMetadata": "/tmp/geometry-resume-20261102/ci-checkout-audit/FOLLOWUP_PR338_REQUIRED_ROOT_SELECTION.json",
+      "selectedLeaves": 84,
+      "noPayloadRead": true
+    },
+    {
+      "topic": "#366 bridge scratch clone",
+      "facts": "tests/mutation_bridge.py:480-482 local --shared --no-checkout clone then /* !/tests/evidence !/tests/release-evidence still requests root/evidence; top-only exclusion must not be assumed to fix that path. It may request unavailable blobs or cause lazy fetch; exact partial-clone child behavior was not executed.",
+      "guard": "tests/mutate.py:1271-1276 tool_hash includes whole mutation_bridge.py. Changing it invalidates existing execution hashes; no exemption recommended.",
+      "decision": "Leave helper and #366 workflow unchanged in documents utility."
+    }
+  ],
+  "existingNativeCoverageInventory": {
+    "report": "/tmp/geometry-resume-20261102/ci-checkout-audit/NATIVE_REGISTRY_INPUTS.json",
+    "expectedSuites": 237,
+    "primaryEntryFiles": 285,
+    "notRuntimePassEvidence": true
+  },
+  "unknownsAndLimits": [
+    "No sparse checkout was actually performed and no browser/test/build was run; future original CI must still complete all47 checks with original10-minute job bound and original mandatory steps.",
+    "No guarantee of checkout duration: retained nested historical fixture collections remain retained, network/pack transfer time was not measured, and logical root blob bytes are not wire bytes.",
+    "Exact cancellation initiator is not visible in provided job log/API; configured10-minute job bound is known, checkout-owned10-minute timer is not established.",
+    "No unresolved local require or canonical documents fixture dependency under root/evidence was found in the frozen47-case closure. Arbitrary future user data/source changes are outside this audit.",
+    "The first broad absolute-path rg exclusions did not apply and traversed retained nested evidence inventories. Those historical hits were discarded. Conclusions use the constrained891 active-code file list, original pure input enumerators and direct documents source; no archive contents or missing Git blobs were fetched."
+  ],
+  "requiredNextVerification": "Root may prepare the single workflow utility change with these mutually exclusive actual matrix.suite predicates. Keep failed original checkout raw and any rerun failures. Only the real original47-check documents CI at the new utility source can establish execution/pass; do not relabel F or change any deadlines."
+}

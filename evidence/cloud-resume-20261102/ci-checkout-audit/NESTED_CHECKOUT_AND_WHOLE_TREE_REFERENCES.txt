@@ -1,0 +1,28 @@
+tests/k2a_receipt_mutate.py:29:    shutil.copytree(root/'geometry-core',directory/'geometry-core',dirs_exist_ok=True)
+tests/mutation_bridge.py:480:        subprocess.run(["git", "clone", "--shared", "--no-checkout", str(root), str(work)], check=True, env=env)
+tests/test_geometry_host_native.py:351:                shutil.copytree(ROOT / package, copied / package,
+tests/k2a_lifecycle_mutate.py:16: shutil.copytree(root/'geometry-web/vendor/fflate',d/'geometry-web/vendor/fflate',dirs_exist_ok=True)
+tests/k2a_lifecycle_mutate.py:17: shutil.copytree(root/'tests/fixtures',d/'tests/fixtures',dirs_exist_ok=True);shutil.copy2(root/'tests'/judge,d/'tests'/judge)
+tests/test_rectangular_bridge.py:37:                shutil.copytree(ROOT/source,cls.library/package,ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_rectangular_bridge.py:42:                           for path in sorted(cls.build.source_root.rglob("*")) if path.is_file()]
+tests/test_geo314_commit_paths.py:294:        added = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "--", "geometry-core/kernel"],
+tests/test_geometry_kernel_runtime.py:294:                shutil.copytree(ROOT / package, copied / package,
+tests/test_geometry_kernel_runtime.py:407:                shutil.copytree(ROOT / package, copied / package, ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_geo261_mutation_migration.py:73:        disk = {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+tests/test_geo261_mutation_migration.py:78:                                for p in self.root.rglob("*") if p.is_file()})
+tests/test_geometry_host_sources.py:657:                shutil.copytree(ROOT / package, copied / package,
+tests/test_geometry_host_sources.py:996:                shutil.copytree(ROOT / package, copied / package,
+tests/test_rectangular_template.py:42:            actual = {str(path.relative_to(root)).replace("\\", "/") for path in root.rglob("*") if path.is_file()}
+tests/test_geometry_kernel_isolation.py:51:        shutil.copytree(ROOT / "geometry-core/geometry_kernel", root / "geometry_kernel", ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_geometry_kernel_isolation.py:81:                shutil.copytree(ROOT / "geometry-core/modeling", root / "modeling", ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_geometry_kernel_isolation.py:82:                shutil.copytree(ROOT / "geometry-app/geometry_app", root / "geometry_app", ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_geometry_kernel_isolation.py:83:                shutil.copytree(ROOT / "geometry-templates/woodworking/geometry_woodworking", root / "geometry_woodworking", ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_geometry_source_runtime.py:277:                shutil.copytree(ROOT / package, copied / package, ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_rectangular_python.py:193:            shutil.copytree(ROOT/"geometry-core/geometry_kernel",copied/"geometry_kernel",ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_rectangular_python.py:194:            shutil.copytree(ROOT/"geometry-templates/rectangular-grid/geometry_rectangular",copied/"geometry_rectangular",ignore=shutil.ignore_patterns("__pycache__"))
+tests/test_rectangular_python.py:235:                shutil.copytree(ROOT/package,copied/package,ignore=shutil.ignore_patterns("__pycache__"))
+tests/k2a_mutate.py:44: shutil.copytree(root/'geometry-web/vendor/fflate',directory/'geometry-web/vendor/fflate',dirs_exist_ok=True)
+tests/k2a_mutate.py:46: shutil.copytree(root/'tests/fixtures',directory/'tests/fixtures',dirs_exist_ok=True)
+tests/section_profile_mutation_check.py:342:    for path in sorted(p for p in root.rglob('*') if p.is_file() and '__pycache__' not in p.parts):
+tests/test_architecture_contract.py:1253:        before = {p.relative_to(self.root).as_posix(): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+tests/test_architecture_contract.py:1255:        after = {p.relative_to(self.root).as_posix(): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}

@@ -1,0 +1,240 @@
+﻿2026-11-02T10:40:59.3281112Z Current runner version: '2.338.2'
+2026-11-02T10:40:59.3307318Z ##[group]Runner Image Provisioner
+2026-11-02T10:40:59.3308354Z Hosted Compute Agent
+2026-11-02T10:40:59.3308994Z Version: 20261021.618
+2026-11-02T10:40:59.3309621Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-02T10:40:59.3310838Z Build Date: 2026-10-21T00:45:21Z
+2026-11-02T10:40:59.3311569Z Worker ID: {85c3d7b2-2cb0-456c-9ebf-32853eeb875e}
+2026-11-02T10:40:59.3312333Z Region: westus2
+2026-11-02T10:40:59.3312946Z Cloud: Azure
+2026-11-02T10:40:59.3313487Z ##[endgroup]
+2026-11-02T10:40:59.3315123Z ##[group]Operating System
+2026-11-02T10:40:59.3315762Z Ubuntu
+2026-11-02T10:40:59.3316347Z 24.04.5
+2026-11-02T10:40:59.3316921Z LTS
+2026-11-02T10:40:59.3317442Z ##[endgroup]
+2026-11-02T10:40:59.3318038Z ##[group]Runner Image
+2026-11-02T10:40:59.3318644Z Image: ubuntu-24.04
+2026-11-02T10:40:59.3319193Z Version: 20261025.353.1
+2026-11-02T10:40:59.3321023Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-02T10:40:59.3322790Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-02T10:40:59.3323774Z ##[endgroup]
+2026-11-02T10:40:59.3324990Z ##[group]GITHUB_TOKEN Permissions
+2026-11-02T10:40:59.3326962Z Contents: read
+2026-11-02T10:40:59.3327563Z Metadata: read
+2026-11-02T10:40:59.3328278Z ##[endgroup]
+2026-11-02T10:40:59.3330859Z Secret source: Actions
+2026-11-02T10:40:59.3331939Z Cache mode: write
+2026-11-02T10:40:59.3332685Z Prepare workflow directory
+2026-11-02T10:40:59.3749340Z Prepare all required actions
+2026-11-02T10:40:59.3799391Z Getting action download info
+2026-11-02T10:40:59.7038514Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-02T10:40:59.8862022Z Complete job name: plan
+2026-11-02T10:41:00.0027736Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-02T10:41:00.0028934Z with:
+2026-11-02T10:41:00.0029419Z   persist-credentials: false
+2026-11-02T10:41:00.0029996Z   ref: aca3d2a5f604848b159a0e5cdd3d3f55fcad190f
+2026-11-02T10:41:00.0030834Z   repository: ZhiQiYang/geometry-axiom
+2026-11-02T10:41:00.0034645Z   token: ***
+2026-11-02T10:41:00.0035077Z   ssh-strict: true
+2026-11-02T10:41:00.0035553Z   ssh-user: git
+2026-11-02T10:41:00.0035982Z   clean: true
+2026-11-02T10:41:00.0036430Z   sparse-checkout-cone-mode: true
+2026-11-02T10:41:00.0036967Z   fetch-depth: 1
+2026-11-02T10:41:00.0037405Z   fetch-tags: false
+2026-11-02T10:41:00.0037865Z   show-progress: true
+2026-11-02T10:41:00.0038324Z   lfs: false
+2026-11-02T10:41:00.0038749Z   submodules: false
+2026-11-02T10:41:00.0039204Z   set-safe-directory: true
+2026-11-02T10:41:00.0039956Z ##[endgroup]
+2026-11-02T10:41:00.3147391Z Syncing repository: ZhiQiYang/geometry-axiom
+2026-11-02T10:41:00.3149566Z ##[group]Getting Git version info
+2026-11-02T10:41:00.3150889Z Working directory is '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T10:41:00.3152220Z [command]/usr/bin/git version
+2026-11-02T10:41:00.3255151Z git version 2.56.0
+2026-11-02T10:41:00.3281997Z ##[endgroup]
+2026-11-02T10:41:00.3298662Z Temporarily overriding HOME='/home/runner/work/_temp/5095e3c5-6517-4328-9740-9c21f8a984c1' before making global git config changes
+2026-11-02T10:41:00.3301633Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T10:41:00.3305064Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:41:00.3361543Z Deleting the contents of '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T10:41:00.3367088Z ##[group]Initializing the repository
+2026-11-02T10:41:00.3384121Z [command]/usr/bin/git init /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:41:00.3509706Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-02T10:41:00.3512843Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-02T10:41:00.3515205Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-02T10:41:00.3516771Z hint: call:
+2026-11-02T10:41:00.3517594Z hint:
+2026-11-02T10:41:00.3518640Z hint: 	git config --global init.defaultBranch <name>
+2026-11-02T10:41:00.3519720Z hint:
+2026-11-02T10:41:00.3521087Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-02T10:41:00.3522842Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-02T10:41:00.3524166Z hint:
+2026-11-02T10:41:00.3524986Z hint: 	git branch -m <name>
+2026-11-02T10:41:00.3525958Z hint:
+2026-11-02T10:41:00.3527087Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-02T10:41:00.3529369Z Initialized empty Git repository in /home/runner/work/geometry-axiom/geometry-axiom/.git/
+2026-11-02T10:41:00.3536127Z [command]/usr/bin/git remote add origin https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T10:41:00.3594473Z ##[endgroup]
+2026-11-02T10:41:00.3596260Z ##[group]Disabling automatic garbage collection
+2026-11-02T10:41:00.3599533Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-02T10:41:00.3651026Z ##[endgroup]
+2026-11-02T10:41:00.3651905Z ##[group]Setting up auth
+2026-11-02T10:41:00.3652756Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:41:00.3697117Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:41:00.4163710Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:41:00.4209488Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:41:00.4472842Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-02T10:41:00.4526458Z ##[endgroup]
+2026-11-02T10:41:00.4527400Z ##[group]Fetching the repository
+2026-11-02T10:41:00.4539099Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin aca3d2a5f604848b159a0e5cdd3d3f55fcad190f
+2026-11-02T10:42:11.8650065Z From https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T10:42:11.8651126Z  * branch              aca3d2a5f604848b159a0e5cdd3d3f55fcad190f -> FETCH_HEAD
+2026-11-02T10:42:11.8655041Z ##[endgroup]
+2026-11-02T10:42:11.8655827Z ##[group]Determining the checkout info
+2026-11-02T10:42:11.8658474Z ##[endgroup]
+2026-11-02T10:42:11.8665979Z [command]/usr/bin/git sparse-checkout disable
+2026-11-02T10:42:11.8730126Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-02T10:42:11.8776344Z ##[group]Checking out the ref
+2026-11-02T10:42:11.8781202Z [command]/usr/bin/git checkout --progress --force aca3d2a5f604848b159a0e5cdd3d3f55fcad190f
+2026-11-02T10:42:13.4248071Z Updating files:  14% (5422/38720)
+2026-11-02T10:42:13.9287714Z Updating files:  15% (5808/38720)
+2026-11-02T10:42:14.2453905Z Updating files:  15% (6089/38720)
+2026-11-02T10:42:14.4117876Z Updating files:  16% (6196/38720)
+2026-11-02T10:42:14.4563318Z Updating files:  17% (6583/38720)
+2026-11-02T10:42:14.4709627Z Updating files:  18% (6970/38720)
+2026-11-02T10:42:14.5156767Z Updating files:  19% (7357/38720)
+2026-11-02T10:42:14.5339112Z Updating files:  20% (7744/38720)
+2026-11-02T10:42:14.5804342Z Updating files:  21% (8132/38720)
+2026-11-02T10:42:14.6153934Z Updating files:  22% (8519/38720)
+2026-11-02T10:42:14.7717640Z Updating files:  23% (8906/38720)
+2026-11-02T10:42:14.8574755Z Updating files:  24% (9293/38720)
+2026-11-02T10:42:14.8948846Z Updating files:  25% (9680/38720)
+2026-11-02T10:42:14.9238732Z Updating files:  26% (10068/38720)
+2026-11-02T10:42:14.9239936Z Updating files:  27% (10455/38720)
+2026-11-02T10:42:14.9491960Z Updating files:  27% (10456/38720)
+2026-11-02T10:42:14.9862872Z Updating files:  28% (10842/38720)
+2026-11-02T10:42:15.1426892Z Updating files:  29% (11229/38720)
+2026-11-02T10:42:15.1633766Z Updating files:  30% (11616/38720)
+2026-11-02T10:42:15.1786417Z Updating files:  31% (12004/38720)
+2026-11-02T10:42:15.2119312Z Updating files:  32% (12391/38720)
+2026-11-02T10:42:15.2321879Z Updating files:  33% (12778/38720)
+2026-11-02T10:42:15.3966506Z Updating files:  34% (13165/38720)
+2026-11-02T10:42:15.9461694Z Updating files:  35% (13552/38720)
+2026-11-02T10:42:16.0091912Z Updating files:  35% (13900/38720)
+2026-11-02T10:42:16.0806882Z Updating files:  36% (13940/38720)
+2026-11-02T10:42:16.3203507Z Updating files:  37% (14327/38720)
+2026-11-02T10:42:16.3469650Z Updating files:  38% (14714/38720)
+2026-11-02T10:42:16.4411415Z Updating files:  39% (15101/38720)
+2026-11-02T10:42:16.4682511Z Updating files:  40% (15488/38720)
+2026-11-02T10:42:16.4933422Z Updating files:  41% (15876/38720)
+2026-11-02T10:42:16.5098914Z Updating files:  42% (16263/38720)
+2026-11-02T10:42:16.9666807Z Updating files:  43% (16650/38720)
+2026-11-02T10:42:17.0085778Z Updating files:  43% (16784/38720)
+2026-11-02T10:42:17.0390147Z Updating files:  44% (17037/38720)
+2026-11-02T10:42:17.1983830Z Updating files:  45% (17424/38720)
+2026-11-02T10:42:17.2565763Z Updating files:  46% (17812/38720)
+2026-11-02T10:42:17.2945448Z Updating files:  47% (18199/38720)
+2026-11-02T10:42:17.3144319Z Updating files:  48% (18586/38720)
+2026-11-02T10:42:17.3639082Z Updating files:  49% (18973/38720)
+2026-11-02T10:42:17.4152240Z Updating files:  50% (19360/38720)
+2026-11-02T10:42:17.7228699Z Updating files:  51% (19748/38720)
+2026-11-02T10:42:17.8004606Z Updating files:  52% (20135/38720)
+2026-11-02T10:42:17.8849734Z Updating files:  53% (20522/38720)
+2026-11-02T10:42:17.9271430Z Updating files:  54% (20909/38720)
+2026-11-02T10:42:17.9725300Z Updating files:  54% (21041/38720)
+2026-11-02T10:42:18.0204374Z Updating files:  55% (21296/38720)
+2026-11-02T10:42:18.0704983Z Updating files:  56% (21684/38720)
+2026-11-02T10:42:18.1166651Z Updating files:  57% (22071/38720)
+2026-11-02T10:42:18.1602779Z Updating files:  58% (22458/38720)
+2026-11-02T10:42:18.2287376Z Updating files:  59% (22845/38720)
+2026-11-02T10:42:18.2463867Z Updating files:  60% (23232/38720)
+2026-11-02T10:42:18.2802440Z Updating files:  61% (23620/38720)
+2026-11-02T10:42:18.3245408Z Updating files:  62% (24007/38720)
+2026-11-02T10:42:18.3625809Z Updating files:  63% (24394/38720)
+2026-11-02T10:42:18.4027953Z Updating files:  64% (24781/38720)
+2026-11-02T10:42:18.4644646Z Updating files:  65% (25168/38720)
+2026-11-02T10:42:18.5631642Z Updating files:  66% (25556/38720)
+2026-11-02T10:42:18.6064485Z Updating files:  67% (25943/38720)
+2026-11-02T10:42:18.6976191Z Updating files:  68% (26330/38720)
+2026-11-02T10:42:18.7991900Z Updating files:  69% (26717/38720)
+2026-11-02T10:42:18.8718287Z Updating files:  70% (27104/38720)
+2026-11-02T10:42:18.9229049Z Updating files:  71% (27492/38720)
+2026-11-02T10:42:18.9497225Z Updating files:  71% (27797/38720)
+2026-11-02T10:42:19.0240808Z Updating files:  72% (27879/38720)
+2026-11-02T10:42:19.0522670Z Updating files:  73% (28266/38720)
+2026-11-02T10:42:19.1079067Z Updating files:  74% (28653/38720)
+2026-11-02T10:42:19.1491785Z Updating files:  75% (29040/38720)
+2026-11-02T10:42:19.1986303Z Updating files:  76% (29428/38720)
+2026-11-02T10:42:19.2286984Z Updating files:  77% (29815/38720)
+2026-11-02T10:42:19.2513538Z Updating files:  78% (30202/38720)
+2026-11-02T10:42:19.2649266Z Updating files:  79% (30589/38720)
+2026-11-02T10:42:19.3667375Z Updating files:  80% (30976/38720)
+2026-11-02T10:42:19.5852666Z Updating files:  81% (31364/38720)
+2026-11-02T10:42:19.6019424Z Updating files:  82% (31751/38720)
+2026-11-02T10:42:19.6297955Z Updating files:  83% (32138/38720)
+2026-11-02T10:42:19.6597148Z Updating files:  84% (32525/38720)
+2026-11-02T10:42:19.7040668Z Updating files:  85% (32912/38720)
+2026-11-02T10:42:19.7990659Z Updating files:  86% (33300/38720)
+2026-11-02T10:42:19.9042883Z Updating files:  87% (33687/38720)
+2026-11-02T10:42:19.9233096Z Updating files:  88% (34074/38720)
+2026-11-02T10:42:19.9836961Z Updating files:  88% (34161/38720)
+2026-11-02T10:42:20.0033312Z Updating files:  89% (34461/38720)
+2026-11-02T10:42:20.0785645Z Updating files:  90% (34848/38720)
+2026-11-02T10:42:20.1187029Z Updating files:  91% (35236/38720)
+2026-11-02T10:42:20.1568005Z Updating files:  92% (35623/38720)
+2026-11-02T10:42:20.1975695Z Updating files:  93% (36010/38720)
+2026-11-02T10:42:20.2341510Z Updating files:  94% (36397/38720)
+2026-11-02T10:42:20.2665849Z Updating files:  95% (36784/38720)
+2026-11-02T10:42:20.3338054Z Updating files:  96% (37172/38720)
+2026-11-02T10:42:20.4485834Z Updating files:  97% (37559/38720)
+2026-11-02T10:42:20.4667809Z Updating files:  98% (37946/38720)
+2026-11-02T10:42:20.5022107Z Updating files:  99% (38333/38720)
+2026-11-02T10:42:20.5023069Z Updating files: 100% (38720/38720)
+2026-11-02T10:42:20.5023850Z Updating files: 100% (38720/38720), done.
+2026-11-02T10:42:20.5731816Z Note: switching to 'aca3d2a5f604848b159a0e5cdd3d3f55fcad190f'.
+2026-11-02T10:42:20.5732688Z 
+2026-11-02T10:42:20.5733032Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-02T10:42:20.5733859Z changes and commit them, and you can discard any commits you make in this
+2026-11-02T10:42:20.5734655Z state without impacting any branches by switching back to a branch.
+2026-11-02T10:42:20.5735130Z 
+2026-11-02T10:42:20.5735436Z If you want to create a new branch to retain commits you create, you may
+2026-11-02T10:42:20.5736176Z do so (now or later) by using -c with the switch command. Example:
+2026-11-02T10:42:20.5736619Z 
+2026-11-02T10:42:20.5736789Z   git switch -c <new-branch-name>
+2026-11-02T10:42:20.5737082Z 
+2026-11-02T10:42:20.5737252Z Or undo this operation with:
+2026-11-02T10:42:20.5737503Z 
+2026-11-02T10:42:20.5737644Z   git switch -
+2026-11-02T10:42:20.5738136Z 
+2026-11-02T10:42:20.5738495Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-02T10:42:20.5739016Z 
+2026-11-02T10:42:20.5739578Z HEAD is now at aca3d2a5 Merge remote-tracking branch 'origin/main' into codex/kernel-main-convergence-20261102
+2026-11-02T10:42:20.6422068Z ##[endgroup]
+2026-11-02T10:42:20.6478141Z [command]/usr/bin/git log -1 --format=%H
+2026-11-02T10:42:20.6521048Z aca3d2a5f604848b159a0e5cdd3d3f55fcad190f
+2026-11-02T10:42:20.6531963Z ##[group]Removing auth
+2026-11-02T10:42:20.6536122Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:42:20.6586429Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:42:20.6926575Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:42:20.6963515Z http.https://github.com/.extraheader
+2026-11-02T10:42:20.6974873Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-02T10:42:20.7356652Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:42:20.7689827Z ##[endgroup]
+2026-11-02T10:42:20.7974119Z ##[group]Run python3 .github/scripts/mutation_evidence.py plan >> "$GITHUB_OUTPUT"
+2026-11-02T10:42:20.7974815Z [36;1mpython3 .github/scripts/mutation_evidence.py plan >> "$GITHUB_OUTPUT"[0m
+2026-11-02T10:42:20.7998392Z shell: /usr/bin/bash -e {0}
+2026-11-02T10:42:20.7998660Z ##[endgroup]
+2026-11-02T10:42:20.9166290Z Post job cleanup.
+2026-11-02T10:42:21.0079980Z [command]/usr/bin/git version
+2026-11-02T10:42:21.0127993Z git version 2.56.0
+2026-11-02T10:42:21.0220876Z Temporarily overriding HOME='/home/runner/work/_temp/cdc97896-b84a-45b6-b844-0bf4de287cf8' before making global git config changes
+2026-11-02T10:42:21.0222193Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T10:42:21.0224068Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:42:21.0264091Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:42:21.0312163Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:42:21.0688951Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:42:21.0754580Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:42:21.1262484Z Evaluate and set job outputs
+2026-11-02T10:42:21.1268942Z Set output 'matrix'
+2026-11-02T10:42:21.1271387Z Cleaning up orphan processes
+2026-11-02T10:42:21.1674984Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

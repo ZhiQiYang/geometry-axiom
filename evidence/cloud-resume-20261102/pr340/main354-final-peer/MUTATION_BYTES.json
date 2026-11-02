@@ -1,0 +1,324 @@
+{
+  "status": "PASS",
+  "auditExitCode": 0,
+  "checkCount": 3227,
+  "problems": [],
+  "source": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+  "run": 41430549123,
+  "event": "workflow_dispatch",
+  "attempt": 1,
+  "realSuccessJobs": 10,
+  "outerZipBytesFullyRead": 98693335,
+  "zipCount": 9,
+  "zipMembersFullyRead": 39,
+  "zips": [
+    {
+      "id": 13136595872,
+      "name": "mutation-complete-evidence",
+      "bytes": 1621388,
+      "sha256": "43bb174d1b4a786afe1ac8591dfbad67cfd298cf74067cc52b9f10bece6d8c7a",
+      "members": 2
+    },
+    {
+      "id": 13135612486,
+      "name": "mutation-shard-bridge-1",
+      "bytes": 21926996,
+      "sha256": "89780b09fabe81acaf82ffa78fe8d79a5f70f8b04f17f95a29041661024dfd83",
+      "members": 4
+    },
+    {
+      "id": 13135518393,
+      "name": "mutation-shard-bridge-3",
+      "bytes": 20740142,
+      "sha256": "d1de3e0d8c4bf97198718a0ddb20118042731236dd10784142c703259c87bf6d",
+      "members": 4
+    },
+    {
+      "id": 13134989503,
+      "name": "mutation-shard-bridge-2",
+      "bytes": 21961645,
+      "sha256": "77c10481137fff77bc500c2077c817680bc74e837002063c41e34469837398c1",
+      "members": 4
+    },
+    {
+      "id": 13134787618,
+      "name": "mutation-shard-core-1",
+      "bytes": 8664972,
+      "sha256": "6105b39318bf9d900054288269b153288e05006e1e794f8c724014e85e95b25d",
+      "members": 4
+    },
+    {
+      "id": 13134148912,
+      "name": "mutation-shard-core-3",
+      "bytes": 7300194,
+      "sha256": "c0ebc5d4b81f79edaabea30d89ef3f6bd6eb1e4c6201824c14113890a7c5dda1",
+      "members": 4
+    },
+    {
+      "id": 13133829331,
+      "name": "mutation-shard-core-4",
+      "bytes": 7754680,
+      "sha256": "1dae2c68f6830d0bc83101cd982f8e5af88dfcb93dd6aefdaa2e75bf51be0b43",
+      "members": 4
+    },
+    {
+      "id": 13133538430,
+      "name": "pr357-architecture-refresh",
+      "bytes": 54108,
+      "sha256": "ab90d8ab45e9d78c08f5b9d532c3f8e028a8bdc13f7d235a683afea916033d6e",
+      "members": 9
+    },
+    {
+      "id": 13133419821,
+      "name": "mutation-shard-core-2",
+      "bytes": 8669210,
+      "sha256": "a63ce6a6d0b5a3320951cd8b1c84dedbb5ccc22bdd97cbaf7a824428f017fbf4",
+      "members": 4
+    }
+  ],
+  "nestedCacheRegularFilesFullyRead": 905,
+  "nestedCacheUncompressedBytesFullyHashed": 195637051,
+  "executedBinaryReferencesChecked": 293,
+  "bridgeBuildAndTestRawStreamReferencesChecked": 636,
+  "shards": [
+    {
+      "name": "bridge-1",
+      "ids": [
+        "M61",
+        "M64",
+        "M67",
+        "M70",
+        "M79",
+        "M85",
+        "M99",
+        "M102",
+        "M105",
+        "M108",
+        "M111",
+        "M114",
+        "M117",
+        "M120",
+        "M141",
+        "M144",
+        "M147",
+        "M150"
+      ],
+      "fullyHashedCacheFiles": 259,
+      "fullyHashedUncompressedBytes": 44110077,
+      "memberMapSha256": "6561da77c1136c045bf93bd13fada48aef6723fa0a2690d2d56c7b3ce4a13f7f",
+      "negativeCacheProbe": {
+        "id": "M61",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      }
+    },
+    {
+      "name": "bridge-2",
+      "ids": [
+        "M62",
+        "M65",
+        "M68",
+        "M78",
+        "M80",
+        "M82",
+        "M100",
+        "M103",
+        "M106",
+        "M109",
+        "M112",
+        "M115",
+        "M118",
+        "M121",
+        "M142",
+        "M145",
+        "M148",
+        "M151"
+      ],
+      "fullyHashedCacheFiles": 259,
+      "fullyHashedUncompressedBytes": 44302404,
+      "memberMapSha256": "ca48de3b2ba3783c4f8f5da9dbf51f5dc8937ba2c9cb6b84df8ac1733f2a8d09",
+      "negativeCacheProbe": {
+        "id": "M62",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      }
+    },
+    {
+      "name": "bridge-3",
+      "ids": [
+        "M63",
+        "M66",
+        "M69",
+        "M84",
+        "M81",
+        "M83",
+        "M101",
+        "M104",
+        "M107",
+        "M110",
+        "M113",
+        "M116",
+        "M119",
+        "M140",
+        "M143",
+        "M146",
+        "M149"
+      ],
+      "fullyHashedCacheFiles": 245,
+      "fullyHashedUncompressedBytes": 41737857,
+      "memberMapSha256": "c8345f127e3259a508db0620fbf3a0cac5c57bb665a580dea906c0105a667ef5",
+      "negativeCacheProbe": {
+        "id": "M63",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      }
+    },
+    {
+      "name": "core-1",
+      "ids": [
+        "M01",
+        "M05",
+        "M59",
+        "M11",
+        "M98",
+        "M17",
+        "M21",
+        "M25",
+        "M29",
+        "M57",
+        "M56",
+        "M33",
+        "M37",
+        "M71",
+        "M75",
+        "M87",
+        "M91",
+        "M95"
+      ],
+      "fullyHashedCacheFiles": 38,
+      "fullyHashedUncompressedBytes": 17524531,
+      "memberMapSha256": "e76763ac5767422a5df90fea5451d0545c3e40478e650734a6b7abbf3cee4e5b",
+      "negativeCacheProbe": {
+        "id": "M01",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      }
+    },
+    {
+      "name": "core-2",
+      "ids": [
+        "M02",
+        "M06",
+        "M60",
+        "M12",
+        "M14",
+        "M18",
+        "M22",
+        "M26",
+        "M30",
+        "M58",
+        "M53",
+        "M34",
+        "M38",
+        "M72",
+        "M76",
+        "M88",
+        "M92",
+        "M96"
+      ],
+      "fullyHashedCacheFiles": 38,
+      "fullyHashedUncompressedBytes": 17524659,
+      "memberMapSha256": "26a4abfe237cbb96f6861afb0bea85c29424a1ac8707e4a66ba2243ff54bb490",
+      "negativeCacheProbe": {
+        "id": "M02",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      }
+    },
+    {
+      "name": "core-3",
+      "ids": [
+        "M03",
+        "M07",
+        "M09",
+        "M13",
+        "M15",
+        "M19",
+        "M23",
+        "M27",
+        "M31",
+        "M51",
+        "M54",
+        "M35",
+        "M39",
+        "M73",
+        "M77",
+        "M89",
+        "M93"
+      ],
+      "fullyHashedCacheFiles": 32,
+      "fullyHashedUncompressedBytes": 14757582,
+      "memberMapSha256": "138f2762268348a8dc31ebe601356e1d974c233fd7b5b98a6347bcb23e145ff3",
+      "negativeCacheProbe": {
+        "id": "M03",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      }
+    },
+    {
+      "name": "core-4",
+      "ids": [
+        "M04",
+        "M08",
+        "M10",
+        "M97",
+        "M16",
+        "M20",
+        "M24",
+        "M28",
+        "M32",
+        "M52",
+        "M55",
+        "M36",
+        "M40",
+        "M74",
+        "M86",
+        "M90",
+        "M94"
+      ],
+      "fullyHashedCacheFiles": 34,
+      "fullyHashedUncompressedBytes": 15679941,
+      "memberMapSha256": "dea4a02d903b972d20fd0652422403af5bfece9d5c09d98ae7e78de5ccee4e37",
+      "negativeCacheProbe": {
+        "id": "M04",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      }
+    }
+  ],
+  "fullNewLedgerSha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef",
+  "originalVerifier": {
+    "actualExit": 0,
+    "elapsedSeconds": 25.360026439011563,
+    "outputsByteEqualOfficial": true,
+    "reexecutedByThisPeer": false
+  },
+  "coverage": "Full archive/cache byte read and hash, not sampling. All actual referenced core/bridge ELF+sidecar identities and bridge raw stream references checked. No ELF/product/verifier executed.",
+  "limits": [
+    "Core generated_source_sha256 flattening was not independently reimplemented; root original verifier0 covers that separate algorithm. Source/include/mutation/oracle hashes checked independently inMUTATION_STATIC_IDENTITY.json.",
+    "Seven bad-cache strict1 outcomes are source-bound original manifest receipts; separate mutation-job Actions logs/probe stdout are absent from supplied folder. Source producer only writes them after its0/1/0 protocol; peer did not run a new probe.",
+    "FreshM artifact regeneration and oldtrackedM ledger validity/adoption are separate. LaterF derivation is handled separately."
+  ],
+  "checkerDiagnostic": "Earlier read-only AST data decoder lacked static list slicing and stopped before cache processing withKeyErrorM79; added safe slice decoding. No original producer or product was rerun. First reviewer bridge-outcome branch assumed every bridge record killed; M110 is the existing declared equivalent and its original mutant passes. Corrected to preserve the actual5equivalent classification, without changing originals or rerunning anything.",
+  "M110DeclaredEquivalentOutcome": {
+    "verdict": "equivalent",
+    "actualMutantExit": 0,
+    "mutantFailures": [],
+    "baselineRestoredExits": [
+      0,
+      0
+    ],
+    "scope": "Original declared equivalent, counted among5equivalent, never counted killed."
+  },
+  "supersededReviewerAssertionCount": 1
+}

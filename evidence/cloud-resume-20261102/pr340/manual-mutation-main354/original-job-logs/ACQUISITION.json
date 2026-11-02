@@ -1,0 +1,137 @@
+{
+  "at": "2026-11-02T11:56:02.052015+00:00",
+  "exit": 0,
+  "scope": "Original complete Actions job logs, including original strict negative cache check output not in execution.log; no test rerun.",
+  "requests": [
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125227744605/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125227744605.log",
+      "http_status": 200,
+      "bytes": 318773,
+      "sha256": "5d5910e7a96cd0b731081f634f0da3484f4e17098414ee244a9e7406ba898b24",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125227744605,
+        "name": "Verify merged architecture with original commands"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125228398501/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125228398501.log",
+      "http_status": 200,
+      "bytes": 17747,
+      "sha256": "b5844e65408ab307065d6bf6600f142a978f15304c53c32d5494522d6c009e03",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125228398501,
+        "name": "plan"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125229041238/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041238.log",
+      "http_status": 200,
+      "bytes": 28929,
+      "sha256": "5e69e02176cbdc1e9c954038fcd62dc4f8f758c758c364cdb40de5c0f88a47e9",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125229041238,
+        "name": "mutation (core-2)"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125229041291/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041291.log",
+      "http_status": 200,
+      "bytes": 29801,
+      "sha256": "527277b22445ca5f76d3e9825e0e1c3c3a1435c1cdb71abdf2eaf28c5fad8257",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125229041291,
+        "name": "mutation (core-1)"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125229041321/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041321.log",
+      "http_status": 200,
+      "bytes": 28335,
+      "sha256": "3a4ab6d23096b1ce6b26ae76ac11f4ea8f1ed2589484cf6ebc9f3d71e053cd2b",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125229041321,
+        "name": "mutation (core-3)"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125229041325/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041325.log",
+      "http_status": 200,
+      "bytes": 24307,
+      "sha256": "3a5b22add8a888c5ee62f69f3e8948b82e8293dca804fe8173573b804e72f275",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125229041325,
+        "name": "mutation (bridge-3)"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125229041360/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041360.log",
+      "http_status": 200,
+      "bytes": 24357,
+      "sha256": "309b7365fffcbc16a88b12ebac16d9a67418685f109429da7f853dc7c051a28f",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125229041360,
+        "name": "mutation (bridge-2)"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125229041371/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041371.log",
+      "http_status": 200,
+      "bytes": 24598,
+      "sha256": "7ea852043eb9469c8ade105b0037977ff870583d54ea09f23f7afa496912ffd3",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125229041371,
+        "name": "mutation (bridge-1)"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125229041380/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041380.log",
+      "http_status": 200,
+      "bytes": 31077,
+      "sha256": "7b40919a1fe3c2026b7fbe1f9e8295172eed2fb3e7f700c1decb2ddea133cea0",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125229041380,
+        "name": "mutation (core-4)"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125243170395/logs",
+      "file": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125243170395.log",
+      "http_status": 200,
+      "bytes": 31753,
+      "sha256": "1ebf31eb2bd66d2c51f86570e70ce0650d1195f8637cbc93c42c376349b1000e",
+      "content_type": "text/plain",
+      "pr": "pr340",
+      "job": {
+        "id": 125243170395,
+        "name": "Verify complete mutation evidence"
+      }
+    }
+  ]
+}

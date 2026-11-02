@@ -1,0 +1,322 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "checkCount": 32,
+  "problems": [],
+  "M": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+  "F": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "FsoleParentM": true,
+  "changedGitEntries": [
+    ":100644 100644 ce43fb73e9993cbaa8714c52852109e160584ade cd546fc08717413e685cb5fc325f4a52a95b6446 M\tgeometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    ":100644 100644 b951e60cc8d12845940aedbd5a42d1c4e81f897b 8201aa802c48085e19f8eccce18de971e63454a1 M\tgeometry-core/domain-decoupling/product-architecture-receipt.json",
+    ":100644 100644 aa39cedf5116abd67e868fa5fb7b0d555bf89aaf 8e7cc71fabe47d9ae5efdcfc24828f1317fe80f9 M\ttests/mutants_results.json"
+  ],
+  "exactChangedPaths": [
+    "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+    "geometry-core/domain-decoupling/product-architecture-receipt.json",
+    "tests/mutants_results.json"
+  ],
+  "officialAdoptions": [
+    {
+      "path": "tests/mutants_results.json",
+      "Msha256": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+      "Fsha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef",
+      "officialSource": "/dev/shm/geometry-pr340-mutation-raw-20261102/original-verifier-replay/mutants_results.json",
+      "exactBytes": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "Msha256": "98599a76ddb51348b9af80a2f2b889de90cfd475bab803ee746f85005ac224ca",
+      "Fsha256": "d5122be829cb753cba2cb6efaa6ee5aec5887c86a2923591cdcb5a58615343d3",
+      "officialSource": "/dev/shm/geometry-pr340-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/PRODUCT-ARCHITECTURE.md",
+      "exactBytes": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-scan.json",
+      "Msha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "Fsha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "officialSource": "/dev/shm/geometry-pr340-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/product-architecture-scan.json",
+      "exactBytes": true
+    },
+    {
+      "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "Msha256": "8233f4190041dd8c5e412615bc44ec1aca4f35a12d32ff3b7d47e707e5aef9f9",
+      "Fsha256": "cb0d96b54896c89a380243b410f659261e97364808dbc9a7821cc33bf416fbf0",
+      "officialSource": "/dev/shm/geometry-pr340-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/product-architecture-receipt.json",
+      "exactBytes": true
+    }
+  ],
+  "originalFChecks": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+      "exit": 0,
+      "stdoutSha256": "efca22db4f9fc05f07e5bde95965ac2058c36c11c902150083328139866a56d8",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+      "exit": 0,
+      "stdoutSha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+      "exit": 0,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "2d2ccdc9bff56a753082b65d40b39879c496a8fd6a472664254ad58c24696375"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+      "exit": 0,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "5f81f4a4de150591557037922716540762de0a0c02d847f560b49000af00cf94"
+    }
+  ],
+  "trackedLedger": {
+    "sha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef",
+    "activeExecutionHead": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+    "activeCount": 120,
+    "retiredCount": 3,
+    "executionRelabeledF": false
+  },
+  "architectureGeneratedReceipt": {
+    "sourceHead": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+    "runId": "41430549123",
+    "runAttempt": "1",
+    "inputCount": 610,
+    "inputLfClosureSha256": "bcdc99f891253243da12883b6ab8cd0f7cd3fe97baf9c46d4a192e7bd07b41fc"
+  },
+  "sourceTestJudgePolicyUnchanged": true,
+  "newFullMutationRun": false,
+  "FCI": "PENDING_OR_UNVERIFIED; newF CI not polled by peer; M20green remainsM only.",
+  "publication": "Saved root FF push stderr retained; peer did not make a fresh remote ref/API readback.",
+  "requirementBoundary": "Fresh full ledger regeneration atM and exact tracked adoption atF are both now separately evidenced; no artifact-only adoption exemption is used. Public durableE/currentF CI acceptance remains separate.",
+  "gitReads": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "-s",
+        "--format=%P",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88"
+      ],
+      "exitCode": 0,
+      "bytes": 41,
+      "sha256": "95c677457a214d8b0e1fbe757f4d21d2d0ed88036301907935a46a0a61a05634",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "diff",
+        "--raw",
+        "--no-abbrev",
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88"
+      ],
+      "exitCode": 0,
+      "bytes": 446,
+      "sha256": "db0e8375c10150a56b3d5c49aab0a736548b78957729256e6c7829cb18e4b390",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f:tests/mutants_results.json"
+      ],
+      "exitCode": 0,
+      "bytes": 11347298,
+      "sha256": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88:tests/mutants_results.json"
+      ],
+      "exitCode": 0,
+      "bytes": 11347298,
+      "sha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f:geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+      ],
+      "exitCode": 0,
+      "bytes": 811,
+      "sha256": "98599a76ddb51348b9af80a2f2b889de90cfd475bab803ee746f85005ac224ca",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88:geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md"
+      ],
+      "exitCode": 0,
+      "bytes": 811,
+      "sha256": "d5122be829cb753cba2cb6efaa6ee5aec5887c86a2923591cdcb5a58615343d3",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f:geometry-core/domain-decoupling/product-architecture-scan.json"
+      ],
+      "exitCode": 0,
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88:geometry-core/domain-decoupling/product-architecture-scan.json"
+      ],
+      "exitCode": 0,
+      "bytes": 134601,
+      "sha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f:geometry-core/domain-decoupling/product-architecture-receipt.json"
+      ],
+      "exitCode": 0,
+      "bytes": 105107,
+      "sha256": "8233f4190041dd8c5e412615bc44ec1aca4f35a12d32ff3b7d47e707e5aef9f9",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88:geometry-core/domain-decoupling/product-architecture-receipt.json"
+      ],
+      "exitCode": 0,
+      "bytes": 105107,
+      "sha256": "cb0d96b54896c89a380243b410f659261e97364808dbc9a7821cc33bf416fbf0",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f:geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exitCode": 0,
+      "bytes": 224403,
+      "sha256": "84b64977c3fa0dd22cc60da4ad027657dd6e1ecd0e370cb363c2512a8886a0ee",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88:geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "exitCode": 0,
+      "bytes": 224403,
+      "sha256": "84b64977c3fa0dd22cc60da4ad027657dd6e1ecd0e370cb363c2512a8886a0ee",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88:tests/mutants_results.json"
+      ],
+      "exitCode": 0,
+      "bytes": 11347298,
+      "sha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88:geometry-core/domain-decoupling/product-architecture-receipt.json"
+      ],
+      "exitCode": 0,
+      "bytes": 105107,
+      "sha256": "cb0d96b54896c89a380243b410f659261e97364808dbc9a7821cc33bf416fbf0",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/tmp/geometry-pr340-20261102",
+        "show",
+        "edf556eedc204bb285fb4504e246e4310f4e1e88:tests/mutants_results.json"
+      ],
+      "exitCode": 0,
+      "bytes": 11347298,
+      "sha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef",
+      "stderr": ""
+    }
+  ],
+  "sourceOrOriginalChangesByPeer": []
+}

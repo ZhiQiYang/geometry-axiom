@@ -1,0 +1,868 @@
+geometry-app/native/stagger_facts.inc:2: * candidate evidence, never World definitions, dump records, or history. Each
+.github/workflows/pr338-b1-recovery-audit.yml:7:      - evidence/pr338-b1-recovery-20261102/**
+.github/workflows/pr338-b1-recovery-audit.yml:25:            /evidence/pr338-b1-recovery-20261102/
+.github/workflows/pr338-b1-recovery-audit.yml:26:            /evidence/geo337-train-20261024/review-unblock-20261029/B1_STATUS.json
+.github/workflows/pr338-b1-recovery-audit.yml:27:            /evidence/geo337-train-20261024/full-R8-five-stage-raw/ORIGINAL_R8_FIVE_STAGE_RAW.tar.gz
+.github/workflows/pr338-b1-recovery-audit.yml:28:            /evidence/geo337-train-20261024/full-R8-five-stage-raw/EXCLUDED_ELF_PAYLOADS.json
+.github/workflows/pr338-b1-recovery-audit.yml:29:            /evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/
+.github/workflows/pr338-b1-recovery-audit.yml:30:            /evidence/pr338-b2-closure-20261029/
+.github/workflows/pr338-b1-recovery-audit.yml:34:        run: python3 evidence/pr338-b1-recovery-20261102/recovery_audit.py --out "$RUNNER_TEMP/pr338-b1-recovery"
+geometry-core/framing-template/oracle/reading_a_cases.py:31:    """Missing cases and changed verdicts remain separate evidence."""
+geometry-core/modeling/__init__.py:348:    # package with our own generator and diagnostic evidence.
+geometry-core/modeling/__init__.py:378:            raise ModelError("INVALID", "SNAPSHOT_MISMATCH", "I31", "Empty roots require EMPTY_RESULT evidence")
+geometry-core/rule_cases/executor.py:228:    # Human messages are preserved as evidence but never influence verdicts.
+geometry-core/rule_cases/executor.py:274:    """Bound retained JSON before copying, and require actual evidence for green.
+geometry-core/rule_cases/executor.py:370:            raise ReceiptValidationError("Passed receipt lacks native evidence")
+geometry-core/rule_cases/executor.py:374:                raise ReceiptValidationError("Passed receipt lacks dump evidence")
+geometry-core/rule_cases/executor.py:385:            raise ReceiptValidationError("Passed negative receipt lacks exact rejection evidence")
+geometry-core/rule_cases/executor.py:407:        raise ReceiptValidationError("Passed receipt has invalid typed evidence") from error
+geometry-core/rule_cases/executor.py:409:        raise ReceiptValidationError("Passed receipt has malformed native evidence") from error
+geometry-core/rule_cases/executor.py:413:    """Copy a retained receipt; changed exact domains become stale without losing evidence."""
+geometry-web/async_reply_ui_test.js:9:  const evidence = { phase: 'armed', caller: null, command: null, matched: false };
+geometry-web/async_reply_ui_test.js:11:  scope.__editBoundaryGate = evidence;
+geometry-web/async_reply_ui_test.js:17:    const targeted = evidence.phase === 'armed' && String(args[0]) === '/api' &&
+geometry-web/async_reply_ui_test.js:21:      evidence.phase = 'requested'; evidence.caller = caller; evidence.command = command; evidence.matched = true;
+geometry-web/async_reply_ui_test.js:30:          evidence.phase = 'held'; scope.__editBoundaryHeld = true;
+geometry-web/async_reply_ui_test.js:32:          evidence.phase = 'released'; scope.__editBoundaryHeld = false;
+geometry-web/async_reply_ui_test.js:38:      if (targeted) evidence.phase = 'failed';
+geometry-web/async_reply_ui_test.js:46:  const evidence = { phase: 'armed', caller: null, command: null, matched: false };
+geometry-web/async_reply_ui_test.js:48:  scope.__handleProjectionGate = evidence;
+geometry-web/async_reply_ui_test.js:54:    const targeted = evidence.phase === 'armed' && String(args[0]) === '/api' &&
+geometry-web/async_reply_ui_test.js:58:      evidence.phase = 'requested'; evidence.caller = caller; evidence.command = command; evidence.matched = true;
+geometry-web/async_reply_ui_test.js:67:          evidence.phase = 'held'; scope.__handleProjectionHeld = true;
+geometry-web/async_reply_ui_test.js:69:          evidence.phase = 'released'; scope.__handleProjectionHeld = false;
+geometry-web/async_reply_ui_test.js:75:      if (targeted) evidence.phase = 'failed';
+geometry-web/cdp_confirmation_gate.js:5:  const evidence = { phase: 'armed', caller: null, command: null, matched: false };
+geometry-web/cdp_confirmation_gate.js:7:  scope.__flowProjectionGate = evidence;
+geometry-web/cdp_confirmation_gate.js:14:    const targeted = evidence.phase === 'armed' && String(args[0]) === '/api' && command === 'dump' &&
+geometry-web/cdp_confirmation_gate.js:18:      evidence.phase = 'requested'; evidence.caller = caller; evidence.command = command; evidence.matched = true;
+geometry-web/cdp_confirmation_gate.js:27:          evidence.phase = 'held'; scope.__flowProjectionHeld = true;
+geometry-web/cdp_confirmation_gate.js:29:          evidence.phase = 'released'; scope.__flowProjectionHeld = false;
+geometry-web/cdp_confirmation_gate.js:35:      if (targeted) evidence.phase = 'failed';
+geometry-web/document-cases.js:234:    // Used only to keep session notes separate, never as evidence of file integrity.
+geometry-web/document-cases.js:326:      const section = el('details', 'doc-case-evidence');
+geometry-web/document-cases.js:368:      const metadata = el('details', 'doc-case-asset-evidence'); metadata.append(el('summary', '', '這張素材的證據與來源'));
+geometry-web/edge_draft_redraw_test.js:26:  const evidence = { phase: 'armed', caller: null, command: null, matched: false };
+geometry-web/edge_draft_redraw_test.js:28:  scope.__edgeCommitGate = evidence;
+geometry-web/edge_draft_redraw_test.js:34:    const targeted = evidence.phase === 'armed' && String(args[0]) === '/api' &&
+geometry-web/edge_draft_redraw_test.js:38:      evidence.phase = 'requested'; evidence.caller = caller; evidence.command = command; evidence.matched = true;
+geometry-web/edge_draft_redraw_test.js:47:          evidence.phase = 'held'; scope.__edgeCommitHeld = true;
+geometry-web/edge_draft_redraw_test.js:49:          evidence.phase = 'released'; scope.__edgeCommitHeld = false;
+geometry-web/edge_draft_redraw_test.js:55:      if (targeted) evidence.phase = 'failed';
+geometry-web/evidence-links-app.js:48:    root?.querySelector('[data-evidence-located]')?.remove();
+geometry-web/evidence-links-app.js:106:      const host=document.querySelector('#refRecordDetails [data-evidence-host]');installReference(host);
+geometry-web/evidence-links-app.js:108:      const target=document.querySelector('#paramUsage [data-parameter-evidence-host]');
+geometry-web/evidence-links-app.js:114:    const host=document.getElementById(id);if(host)new MutationObserver(records=>{if(records.some(r=>!r.target.closest?.('[data-evidence-links],[data-parameter-evidence-host]')))queue();}).observe(host,{childList:true,subtree:true});
+geometry-web/evidence-links-app.js:116:  for(const name of ['project-local-history','geometry-definition-changed','evidence-links-changed','space-models-changed'])window.addEventListener(name,()=>{
+geometry-web/evidence-links-app.js:117:    if(name!=='evidence-links-changed'){referenceUI?.cancel();refreshReference=true;}parameterHost=null;queue();
+geometry-web/evidence-links.js:5:  const KIND='evidence-links',SCHEMA='geometry-evidence-links/1',COORDINATES='pdf-viewport-scale-1-y-down';
+geometry-web/grid_definition_interaction_browser_test.py:26:assert out != Path(tempfile.gettempdir()).resolve() and out.is_relative_to(Path(tempfile.gettempdir()).resolve()), 'Dedicated TEMP evidence directory required'
+geometry-web/grid_raw_provenance_browser_test.py:149:                        check(label + ' native delete/recreate changes actual field evidence', field_pin(page) != saved_pin)
+geometry-web/grid_raw_provenance_browser_test.py:206:                    check(label + ' explicit reselection records the selected current field evidence',
+geometry-web/evidence_links_integration_test.js:32:  async function face(){await ev(async()=>{await enterFocus('face',1);fiShowTab('underlay');});await page.waitForSelector('#refRecordDetails',{state:'attached'});if(width<=680)await ev(()=>openPanel('right',document.getElementById('workspaceToggleRight')));await ev(()=>document.getElementById('refRe [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:39:    await ev(()=>document.getElementById('refRecordDetails').open=true);await page.waitForSelector('[data-evidence-target]');
+geometry-web/evidence_links_integration_test.js:42:    await page.locator('[data-evidence-select]').click();
+geometry-web/evidence_links_integration_test.js:49:    await page.locator('[data-evidence-target]').selectOption('0:0');
+geometry-web/evidence_links_integration_test.js:50:    await page.locator('[data-evidence-input="drawing-text"]').fill('<img src=x onerror=window.__unsafe=true> drawing');
+geometry-web/evidence_links_integration_test.js:51:    await page.locator('[data-evidence-input="drawing-value"]').fill('915/2');await page.locator('[data-evidence-input="drawing-unit"]').selectOption('mm');
+geometry-web/evidence_links_integration_test.js:52:    await page.locator('[data-evidence-input="measurement-value"]').fill('460.125');await page.locator('[data-evidence-input="measurement-unit"]').selectOption('mm');
+geometry-web/evidence_links_integration_test.js:53:    await page.locator('[data-evidence-save]').click();await page.waitForSelector('[data-evidence-id]');
+geometry-web/evidence_links_integration_test.js:59:  check(width+' actual scripts and meaningful UI loaded',!!await page.title()&&await page.locator('[data-evidence-target]').count()===1);
+geometry-web/evidence_links_integration_test.js:61:  await region();await page.locator('[data-evidence-cancel]').click();check(width+' rectangle cancel is zero attachment/history/native writes',await bundle()===null&&await ev(()=>ReferenceWorkspace.history.undo.length)===beforeCount&&JSON.stringify(await native())===JSON.stringify(original));
+geometry-web/evidence_links_integration_test.js:64:  check(width+' drawing/measurement/native exact rational kept separate and text safe',saved.links[0].observations.drawing.rawValue==='915/2'&&saved.links[0].observations.measurement.rawValue==='460.125'&&await page.locator('[data-evidence-value="model"]').innerText()==='915/2 mm'&&!await ev(()=>win [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:65:  await page.locator('[data-evidence-reviewed]').check();await page.waitForSelector('[data-evidence-status="confirmed-content"]');
+geometry-web/evidence_links_integration_test.js:67:  await ev(async()=>{await apiRequest('line undo');});await page.waitForFunction(()=>!document.querySelector('[data-evidence-reviewed]')?.checked);check(width+' single undo restores unchecked evidence',!(await bundle()).links[0].humanConfirmation);
+geometry-web/evidence_links_integration_test.js:68:  await ev(async()=>{await apiRequest('line redo');});await page.waitForSelector('[data-evidence-status="needs-reassociation"]');check(width+' redo preserves historical confirmation and requires reassociation',!!(await bundle()).links[0].humanConfirmation&&await page.locator('[data-evidence-status=" [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:69:  await page.locator('[data-evidence-rebind-target]').selectOption('0:0');await page.locator('[data-evidence-rebind]').click();await page.waitForSelector('[data-evidence-status="unchecked"]');await page.locator('[data-evidence-reviewed]').check();await page.waitForSelector('[data-evidence-status="co [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:70:  await page.screenshot({path:path.join(out,width+'-evidence.png'),fullPage:false});
+geometry-web/evidence_links_integration_test.js:72:  check(width+' genuine downloaded ZIP uses /12 and exact original PDF once',m.format==='geometry-canvas/12'&&m.requiredCapabilities.includes('geometry-evidence-links/1')&&m.sources.length===1&&Buffer.from(entries[m.sources[0].path]).equals(fixture()));
+geometry-web/evidence_links_integration_test.js:75:  await open(archive);check(width+' real file chooser restores full bundle/document/scope in new context',JSON.stringify(await bundle())===JSON.stringify(m.featureAttachments.records.find(r=>r.kind==='evidence-links').value));
+geometry-web/evidence_links_integration_test.js:76:  await face();check(width+' reopened historical review requires manual field reassociation',await page.locator('[data-evidence-status="needs-reassociation"]').count()===1&&await page.locator('[data-evidence-reviewed]').isDisabled());
+geometry-web/evidence_links_integration_test.js:77:  await page.locator('[data-evidence-rebind-target]').selectOption('0:0');await page.locator('[data-evidence-rebind]').click();await page.waitForSelector('[data-evidence-status="unchecked"]');
+geometry-web/evidence_links_integration_test.js:78:  await page.locator('[data-evidence-locate-target]').click();await page.waitForSelector('#paramUsage',{state:'attached'});await ev(()=>document.getElementById('paramUsage').open=true);await page.waitForSelector('[data-parameter-evidence-locate]');
+geometry-web/evidence_links_integration_test.js:79:  check(width+' source-to-field guarded navigation uses existing parameter disclosure',await page.locator('[data-param-field="0"]').count()===1&&await page.locator('[data-parameter-evidence]').count()===1);
+geometry-web/evidence_links_integration_test.js:80:  await page.locator('[data-parameter-evidence-locate]').click();
+geometry-web/evidence_links_integration_test.js:89:    const located=await ev(async()=>{const link=ReferenceWorkspace.readFeatureAttachment(EvidenceLinks.KIND).links[0],p=ReferenceWorkspace.group(1).pages[0];delete p.src;p.rot=270;p.crop=[10,15,p.imgW-20,p.imgH-30];ReferenceWorkspace.changed(1,true);const result=await EvidenceLinksApp.getController( [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:114:      const after=await ev(()=>JSON.stringify({state:ReferenceWorkspace.getProjectState(),active:ReferenceWorkspace.active(1)?.id??null,camera:[fe.panX,fe.panY,fe.zoom],modal:document.getElementById('referenceDialog').open,paint:document.querySelector('[data-evidence-located]')?.getAttribute('points [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:116:      check(stage+' '+mode+' supersession has zero late navigation/fit/paint',!result.ok&&await ev(after=>after===JSON.stringify({state:ReferenceWorkspace.getProjectState(),active:ReferenceWorkspace.active(1)?.id??null,camera:[fe.panX,fe.panY,fe.zoom],modal:document.getElementById('referenceDialog') [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:123:    await ev(()=>document.getElementById('refRecordDetails').open=true);await page.waitForSelector('[data-evidence-status="source-changed"]');
+geometry-web/evidence_links_integration_test.js:124:    check('same filename replacement retains old observations but blocks review/locate',await page.locator('[data-evidence-reviewed]').isDisabled()&&(await bundle()).links[0].observations.drawing.rawValue==='915/2');
+geometry-web/evidence_links_integration_test.js:129:      ['unknown-schema',m=>m.featureAttachments.records[0].value.schema='geometry-evidence-links/999'],
+geometry-web/evidence_links_integration_test.js:139:  await face();await parameter(true);await page.waitForSelector('[data-evidence-status="target-missing"]');
+geometry-web/evidence_links_integration_test.js:141:  await parameter();await face();check(width+' exact ID recreation never inherits identity lease',await page.locator('[data-evidence-status="needs-reassociation"]').count()===1);
+geometry-web/evidence_links_integration_test.js:142:  // Evidence-only closure: remove reference linkage, save original source, and
+geometry-web/evidence_links_integration_test.js:144:  await ev(()=>{ReferenceWorkspace.remove(1);});const only=await save('evidence-only'),onlyEntries=zip.unzipSync(fs.readFileSync(only)),onlyManifest=JSON.parse(Buffer.from(onlyEntries['manifest.json']).toString());
+geometry-web/evidence_links_integration_test.js:145:  check(width+' evidence-only source survives removal from all face references',onlyManifest.faces.length===0&&onlyManifest.sources.length===1&&Buffer.from(onlyEntries[onlyManifest.sources[0].path]).equals(fixture()));
+geometry-web/evidence_links_integration_test.js:147:  await ev(()=>{resetSceneFocus();drawObjects();selectObject('parameter',0);document.getElementById('paramUsage').open=true;});await page.waitForSelector('[data-parameter-evidence-locate]');
+geometry-web/evidence_links_integration_test.js:148:  await page.locator('[data-parameter-evidence-locate]').click();await page.waitForFunction(()=>document.getElementById('referenceDialog').open);check(width+' evidence-only source locates after real ZIP reopen',await page.locator('#refPagePreview img').count()===1);await page.locator('#refClose').cl [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:156:    check(width+' real core-history fallback '+direction+' keeps scoped evidence and original PDF ZIP',await ev(scope=>ReferenceWorkspace.getProjectState().id===scope,fallbackScope)&&JSON.stringify(await bundle())===JSON.stringify(fallbackBundle)&&m.sources.length===1&&Buffer.from(packed[m.sources[0 [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:159:  check(width+' core-history fallback ZIP reopens scoped evidence and PDF in fresh context',JSON.stringify(await bundle())===JSON.stringify(fallbackBundle)&&await ev(({scope,hash})=>ReferenceWorkspace.getProjectState().id===scope&&ReferenceWorkspace.context().sources.get(hash).bytes.length>0,{scope: [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:165:  await open(archive);await face();await page.locator('[data-evidence-rebind-target]').selectOption('0:0');await page.locator('[data-evidence-rebind]').click();await page.waitForSelector('[data-evidence-status="unchecked"]');await page.locator('[data-evidence-reviewed]').check();await page.waitForSe [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:166:  await page.locator('[data-evidence-input="drawing-note"]').fill('unfinished authored note');await ev(()=>window.__evidenceHost=document.querySelector('[data-evidence-links]'));
+geometry-web/evidence_links_integration_test.js:168:  check(width+' native event updates the unchanged source disclosure without manual refresh',await ev(()=>window.__evidenceHost===document.querySelector('[data-evidence-links]'))&&await page.locator('[data-evidence-value="model"]').innerText()==='458 mm'&&await page.locator('[data-evidence-status="n [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:169:  check(width+' native refresh preserves unsaved exact observation input',await page.locator('[data-evidence-input="drawing-note"]').inputValue()==='unfinished authored note');
+geometry-web/evidence_links_integration_test.js:170:  await parameter(true,'',false);await page.waitForSelector('[data-evidence-status="target-missing"]');check(width+' native delete event clears visible current value and prior confirmation',await page.locator('[data-evidence-value="model"]').innerText()==='無現行正式值'&&!await page.locator('[data-evidenc [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:171:  await parameter(false,'459',false);await page.waitForSelector('[data-evidence-status="needs-reassociation"]');check(width+' native recreation exposes explicit current-field reassociation',await page.locator('[data-evidence-rebind-target] option[value="0:0"]').count()===1&&await page.locator('[data [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:172:  // Calibrated source is synthetic setup; adoption and evidence use actual UI.
+geometry-web/evidence_links_integration_test.js:175:  check(width+' shared-room original source exposes the same evidence disclosure',await page.locator('#refRecordDetails [data-evidence-host]').count()===1);
+geometry-web/evidence_links_integration_test.js:182:  check(width+' shared-room and evidence ZIP keeps one original PDF and no legacy calibration shadow',sharedManifest.faces.length===0&&sharedManifest.sources.length===1&&sharedManifest.featureAttachments.records.some(r=>r.kind==='source-rooms')&&sharedManifest.featureAttachments.records.find(r=>r.ki [... omitted end of long line]
+geometry-web/evidence_links_integration_test.js:184:  check(width+' shared source ZIP reopens evidence in existing source disclosure',await page.locator('[data-evidence-id]').count()===2&&await page.locator('#roomNew').count()===1);
+geometry-web/evidence_links_integration_test.js:185:  await page.locator('[data-evidence-rebind-target]').last().selectOption('0:0');await page.locator('[data-evidence-rebind]').last().click();await page.waitForFunction(()=>[...document.querySelectorAll('[data-evidence-status]')].some(n=>n.dataset.evidenceStatus==='unchecked'));
+geometry-web/evidence_links_integration_test.js:186:  await page.locator('[data-evidence-reviewed]').last().check();await page.waitForSelector('[data-evidence-status="confirmed-content"]');
+geometry-web/evidence_links_integration_test.js:187:  await page.locator('[data-evidence-locate]').last().click();await page.waitForFunction(()=>!!document.querySelector('[data-evidence-located]'));
+geometry-web/evidence_links_integration_test.js:188:  await page.waitForSelector('[data-evidence-status="confirmed-content"]');
+geometry-web/evidence_links_integration_test.js:189:  check(width+' shared source reassociation/review uses guarded original-page canvas locator',await page.locator('[data-evidence-status="confirmed-content"]').count()===1&&await page.locator('[data-evidence-located]').count()===1);
+geometry-web/model_update_browser_check.js:43:  const check = (name, condition, evidence) => {
+geometry-web/model_update_browser_check.js:44:    assert.equal(condition, true, name + (evidence ? ': ' + JSON.stringify(evidence) : ''));
+geometry-web/model_update_browser_check.js:45:    checks.push({name, passed: true, ...(evidence ? {evidence} : {})});
+geometry-web/model_update_browser_check.js:297:    fs.writeFileSync(path.join(output, 'evidence.json'), JSON.stringify({url, title, execution, completed:true, browser: 'Playwright Chromium',
+geometry-web/parameters.js:645:        <div data-parameter-evidence-host></div>
+geometry-web/room-collection-workspace.js:262:  function historyHTML(data, planeId, evidence = false) {
+geometry-web/room-collection-workspace.js:264:    if (!entries.length && !evidence) return "";
+geometry-web/room-collection-workspace.js:265:    return `<details class="ref-section"${evidence ? ' id="refRecordDetails"' : ''}${entries.length ? ` data-room-source-history="${planeId}"` : ''}><summary>原頁歷史紀錄與核對（${entries.length}）</summary>` +
+geometry-web/room-collection-workspace.js:267:      (evidence ? '<div data-evidence-host></div>' : '') + '</details>';
+geometry-web/room-outline.js:199:    // A frame inside another enclosed component is an obstacle, not evidence
+geometry-web/reference-workspace.js:30:  const E = P.Features.Evidence, preparedReferences = new WeakMap(), preparedFeatures = new WeakMap(), caseCommitKey = Object.freeze({});
+geometry-web/reference-workspace.js:597:    if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
+geometry-web/reference-workspace.js:986:      // Existing PDF preview, now in read-only evidence mode. No native face,
+geometry-web/reference-workspace.js:987:      // source linkage or saved calibration is invented for unlinked evidence.
+geometry-web/reference-workspace.js:990:        crop:[...region],zoom:"page",ready:true,evidence:true,render:prepared.pageRender};sequence++;
+geometry-web/reference-workspace.js:1019:    // changes. This placeholder is never published or used as source evidence.
+geometry-web/reference-workspace.js:1072:    const evidence = attachments && P.Features.evidenceLinks(attachments,c.sources,c.id);
+geometry-web/reference-workspace.js:1073:    if (!evidence) return;
+geometry-web/reference-workspace.js:1075:    try { await E.validateSourceClosure(evidence, {
+geometry-web/reference-workspace.js:1125:    return html.replace('</p></details>', '</p><div data-evidence-host></div></details>');
+geometry-web/reference-workspace.js:1213:    if (busy || !modal || modal.evidence || !Number.isInteger(modal.count) || !Number.isInteger(number) || number < 1 || number > modal.count) return;
+geometry-web/reference-workspace.js:1260:    if (!modal?.ready || modal.evidence || busy) return;
+geometry-web/reference-workspace.js:1297:    if (modal?.evidence) {
+geometry-web/reference-workspace.js:2106:    document.getElementById("refResetCrop").onclick=()=>{if(modal?.ready&&!modal.evidence){modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
+geometry-web/reference-workspace.js:2110:    preview.onpointerdown=e=>{if(!modal?.ready||modal.evidence||e.button!==0)return;e.preventDefault();modal.drag=cropPoint(e);preview.setPointerCapture(e.pointerId);};
+geometry-web/reference-workspace.js:2112:    preview.onpointerup=()=>{if(modal&&!modal.evidence){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
+geometry-web/source_inspector_browser_check.js:47:    check('save/reopen retains content evidence without inventing durable lineage',(await model.innerText()).includes('物件延續性未知'));
+geometry-web/rule_case_workbench_adapter.py:193:    # Existing core guard bounds bytes/nodes/depth and native pass evidence for
+geometry-web/rule_case_workbench_adapter.py:258:freshness facts, never signatures or evidence that this adapter executed it.
+geometry-web/rule_case_workbench_adapter.py:279:        # Validate evidence against the recorded contract first, then assess drift.
+geometry-web/uiux_review_test.js:3: * response is mocked. All evidence is written outside the checkout.
+geometry-web/uiux_review_test.js:8:  const evidence=scope.__parameterSettlementGate={phase:'armed',claimed:0,held:0,confirmations:0,commands,events};
+geometry-web/uiux_review_test.js:17:    if(command){commands.push(command);if(command.startsWith('engineering-confirm '))evidence.confirmations++;}
+geometry-web/uiux_review_test.js:21:    const targeted=evidence.phase==='armed'&&command==='objects'&&caller.includes('/parameters.js:')&&
+geometry-web/uiux_review_test.js:23:    if(targeted){evidence.phase='requested';evidence.claimed++;evidence.caller=caller;}
+geometry-web/uiux_review_test.js:26:      const data=await json();evidence.nativeOK=data.ok===true;evidence.phase='held';evidence.held++;
+geometry-web/uiux_review_test.js:29:      await settled;evidence.held--;evidence.phase='released';return data;
+geometry-web/uiux_review_test.js:34:  evidence.snapshot=()=>({phase:evidence.phase,claimed:evidence.claimed,held:evidence.held,nativeOK:evidence.nativeOK,caller:evidence.caller,
+geometry-web/uiux_review_test.js:36:    confirmations:evidence.confirmations,events:events.slice(),sameOwner:!!owner&&owner.context===ReferenceWorkspace.context()&&owner.frame===ReferenceWorkspace.history.frame&&owner.focus===oc.focus&&owner.edit===oc.edit&&owner.navigation===oc.navigationSequence,
+geometry-web/uiux_review_test.js:39:  evidence.release=release;
+geometry-web/uiux_review_test.js:40:  evidence.cleanup=()=>{release();if(scope.fetch===intercepted)scope.fetch=original;scope.removeEventListener('pointerdown',observe,true);scope.removeEventListener('keydown',observe,true);};
+geometry-web/space_model_test.js:26:  const evidence = { phase: 'armed', context, caller: null, claimed: 0, held: 0, nativeOK: false, ignored: [] };
+geometry-web/space_model_test.js:27:  scope.__sourceDumpGate = evidence;
+geometry-web/space_model_test.js:37:    const targeted = evidence.phase === 'armed' && dump &&
+geometry-web/space_model_test.js:40:      evidence.phase = 'requested'; evidence.caller = caller; evidence.claimed++;
+geometry-web/space_model_test.js:42:    } else if (dump) evidence.ignored.push(caller);
+geometry-web/space_model_test.js:50:            evidence.nativeOK = data.ok === true;
+geometry-web/space_model_test.js:51:            evidence.phase = 'held'; evidence.held++;
+geometry-web/space_model_test.js:54:            evidence.held--; evidence.phase = 'released';
+geometry-web/space_model_test.js:57:          } catch (error) { evidence.phase = 'failed'; throw error; }
+geometry-web/space_model_test.js:62:      if (targeted) evidence.phase = 'failed';
+geometry-web/space_model_test.js:746:      const evidence=await evaluate(`({gate:window.__sourceDumpGate,context:ReferenceWorkspace.context().id,snapshot:SpaceModelWorkspace.snapshot(),open:document.querySelector('#smWorkspace').open})`);
+geometry-web/space_model_test.js:747:      console.log('SOURCE_LOAD_GATE',JSON.stringify({closeFirst,...evidence}));
+geometry-web/space_model_test.js:748:      if(evidence.gate?.phase!=='held'||evidence.gate.claimed!==1||evidence.gate.held!==1||!evidence.gate.nativeOK||
+geometry-web/space_model_test.js:749:        !/(?:^|\n)\s*at (?:async )?(?:Object\.)?openCurrentFace\s*\(/.test(evidence.gate.caller||'')||
+geometry-web/space_model_test.js:750:        evidence.context!==evidence.gate.context||evidence.snapshot.phase!=='loading'||evidence.snapshot.sourceKind!==null||!evidence.open)
+geometry-web/space_model_test.js:751:        throw Error('Original-context source load was not exclusively held: '+JSON.stringify(evidence));
+geometry-web/work-manager/static/app.js:417:    const evidence = array(task.evidence ?? task.last_verified_evidence);
+geometry-web/work-manager/static/app.js:418:    if (!evidence.length) { section.append(el("p", "subtle", "尚無驗證證據，完成狀態待核。")); return section; }
+geometry-web/work-manager/static/app.js:420:    for (const item of evidence) {
+geometry-web/work-manager/static/app.js:810:      && optionalArray(task.evidence, object)
+geometry-web/work-manager/screenshot.py:30:    evidence = {"url": args.url, "screenshots": [], "errors": []}
+geometry-web/work-manager/screenshot.py:36:                page.on("pageerror", lambda error: evidence["errors"].append(str(error)))
+geometry-web/work-manager/screenshot.py:47:                evidence["screenshots"].append({"path": str(output), **identity})
+geometry-web/work-manager/screenshot.py:52:    output.write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+geometry-web/work-manager/screenshot.py:54:    print(json.dumps(evidence, ensure_ascii=False, indent=2))
+geometry-web/work-manager/screenshot.py:55:    return 1 if evidence["errors"] else 0
+geometry-web/work-manager/test_acceptance.py:75:def evidence(criterion="behavior", sha=HEAD_A, **updates):
+geometry-web/work-manager/test_acceptance.py:77:        "id": f"qa-evidence:{criterion}:{sha}",
+geometry-web/work-manager/test_acceptance.py:83:        "url": "https://example.invalid/synthetic-evidence",
+geometry-web/work-manager/test_acceptance.py:281:        self.ingest(task_event(), result_event(evidence=[evidence()], pr=pr(merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:288:        self.ingest(task_event(head_sha=HEAD_B), result_event(evidence=[evidence(sha=HEAD_B)], pr=pr(sha=HEAD_B, merged=True, review="approved", merged_head_sha=HEAD_A)))
+geometry-web/work-manager/test_acceptance.py:292:        self.ingest(task_event(head_sha=None), result_event(evidence=[evidence(sha=None)], pr=pr(sha=None, merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:296:        self.ingest(task_event(required_acceptance=["behavior", "integration"]), result_event(evidence=[evidence()], pr=pr(merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:300:        self.ingest(task_event(required_acceptance=[]), result_event(evidence=[evidence()], pr=pr(merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:304:        self.ingest(task_event(), result_event(evidence=[evidence(expires_at=at(15))], pr=pr(merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:309:        self.ingest(task_event(), result_event(evidence=[evidence()], pr=pr(merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:311:        failed = evidence(id="qa-later-failure", timestamp=at(15), result="failed")
+geometry-web/work-manager/test_acceptance.py:312:        update = result_event(version=2, evidence=[failed])
+geometry-web/work-manager/test_acceptance.py:323:                self.ingest(task_event(version=version), result_event(version=version, evidence=[evidence(id=f"qa-ci-attempt-{version}", kind="ci", **updates)], pr=pr(merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:329:            {"evidence": [evidence(id="qa-malformed-ci-proof", kind="ci", runner_id=123, steps=[{}])], "pr": pr(merged=True, review="approved")},
+geometry-web/work-manager/test_acceptance.py:330:            {"evidence": [evidence(id="qa-malformed-pr-ci-proof")], "pr": pr(merged=True, review="approved", ci=[{"name": "synthetic-ci", "sha": HEAD_A, "status": "completed", "conclusion": "success", "runner_id": 123, "steps": [{}]}])},
+geometry-web/work-manager/test_acceptance.py:347:                result = result_event(evidence=[evidence()], pr=pr(merged=True, review="approved"))
+geometry-web/work-manager/test_acceptance.py:355:        self.ingest(task_event(), assignment_event(status="blocked"), result_event(evidence=[evidence()], pr=pr(merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:367:        self.ingest(task_event(), assignment_event(status="stopped"), result_event(evidence=[evidence()], pr=pr()))
+geometry-web/work-manager/test_acceptance.py:373:        self.ingest(task_event(), assignment_event(), result_event(execution_status="finished", evidence=[evidence()]))
+geometry-web/work-manager/test_acceptance.py:418:        self.ingest(task_event(approval_constraints=[{"action": "publish", "status": "denied", "reason": "Synthetic explicit hold"}]), result_event(evidence=[evidence()], pr=pr(merged=True, review="approved")))
+geometry-web/work-manager/test_acceptance.py:489:        payload = snapshot([result_event(execution_status="finished", evidence=[evidence()], pr=pr())], 2)
+geometry-web/work-manager/test_legacy_upgrade.py:66:    result = {"pr": pr(), "evidence": [proof()]}
+geometry-web/work-manager/test_legacy_upgrade.py:69:        result["evidence"][0].update(kind="ci", runner_id=123, steps=[bad_step])
+geometry-web/work-manager/test_legacy_upgrade.py:74:        result["evidence"] = [proof("failed"), proof("passed")]
+geometry-web/work-manager/test_legacy_upgrade.py:210:            self.assertEqual([item["result"] for item in json.loads(raw)["data"]["evidence"]], ["failed", "passed"])
+tests/_unittest_runner.py:220:        # trusted program. Aggregate evidence must verify every native override.
+tests/bridge_mutation_oracle.py:52:    `bridge_returncode` is the one exit status all the evidence agrees on; None when there is none or they disagree.
+geometry-web/work-manager/test_adapter_independent.py:75:                    "evidence": [{"id": "adapter-proof", "criterion": "behavior", "kind": "test",
+geometry-web/work-manager/test_adapter_independent.py:177:                    "required_acceptance", "evidence", "assignment_history", "next_action_pin"):
+geometry-web/work-manager/test_adapter_independent.py:193:        for key in ("pr", "evidence", "next_action_pin", "delivery_status"):
+tests/diagnostics/binaries_ctime_probe.py:2:"""Collect #212 evidence without replacing or changing its unittest body.
+tests/diagnostics/binaries_ctime_probe.py:6:  python3 tests/diagnostics/binaries_ctime_probe.py --output /tmp/ctime-evidence
+tests/diagnostics/binaries_ctime_probe.py:13:2: incomplete/invalid evidence, skipped cases, or an infrastructure error.
+tests/diagnostics/binaries_ctime_probe.py:345:        print('Evidence incomplete: ' + message, file=sys.stderr, flush=True)
+tests/diagnostics/binaries_ctime_probe.py:355:    parser.add_argument('--output', type=Path, required=True, help='new or empty evidence directory')
+tests/diagnostics/binaries_ctime_probe.py:357:    parser.add_argument('--allow-non-linux', action='store_true', help='plumbing only; results are not Linux evidence')
+tests/diagnostics/binaries_ctime_probe.py:367:            parser.error('--output must be a new or empty directory; evidence is never overwritten')
+geometry-web/work-manager/test_store.py:122:    def evidence(self, identity, result="passed", **updates):
+geometry-web/work-manager/test_store.py:123:        evidence = {"id": identity, "criterion": "behavior", "kind": "test",
+geometry-web/work-manager/test_store.py:125:        evidence.update(updates)
+geometry-web/work-manager/test_store.py:126:        return evidence
+geometry-web/work-manager/test_store.py:128:    def result(self, evidence):
+geometry-web/work-manager/test_store.py:129:        return self.event("result", {"evidence": evidence, "pr": {
+geometry-web/work-manager/test_store.py:136:            self.evidence("a-failure", result="failed"), self.evidence("z-pass")]))
+geometry-web/work-manager/test_store.py:143:        self.ingest(self.task(), self.result([self.evidence("ci-claim", kind="ci",
+geometry-web/work-manager/test_store.py:150:        old = self.result([self.evidence("old-head-proof")])
+geometry-web/work-manager/test_store.py:162:        self.assertEqual(current["evidence"][0]["effective_result"], "unknown")
+geometry-web/work-manager/test_store.py:169:        result = self.result([self.evidence("synthetic-merge-test", kind="postmerge_test", sha=merge_commit)])
+geometry-web/work-manager/test_store.py:174:        self.assertEqual(task["evidence"][0]["sha"], merge_commit)
+geometry-web/work-manager/test_store.py:175:        self.assertEqual(task["evidence"][0]["bound_head_sha"], HEAD)
+geometry-web/work-manager/test_store.py:176:        self.assertEqual(task["evidence"][0]["validity"], "merged_commit")
+geometry-web/work-manager/test_store.py:179:        result = self.result([self.evidence("wrong-merge-proof", kind="postmerge_test", sha="b" * 40)])
+geometry-web/work-manager/test_store.py:183:        self.assertEqual(self.view()["evidence"][0]["validity"], "stale")
+geometry-web/work-manager/test_store.py:184:        second = self.result([self.evidence("unmerged-postmerge-proof", kind="postmerge_test", sha=HEAD)])
+geometry-web/work-manager/test_store.py:191:        result = self.result([self.evidence("generic-merge-alias", sha="b" * 40)])
+geometry-web/work-manager/test_store.py:194:        self.assertEqual(self.view()["evidence"][0]["effective_result"], "unknown")
+geometry-web/work-manager/test_store.py:199:        result = self.result([self.evidence("local-tree-proof", kind="local_test", sha=tested,
+geometry-web/work-manager/test_store.py:204:        self.assertEqual(task["evidence"][0]["sha"], tested)
+geometry-web/work-manager/test_store.py:205:        self.assertEqual(task["evidence"][0]["validity"], "tree_equivalent")
+geometry-web/work-manager/test_store.py:210:            self.evidence("mapped-proof", kind="local_test", sha="b" * 40,
+geometry-web/work-manager/test_store.py:222:                proof = self.evidence("not-local-proof", kind=kind, sha="b" * 40,
+geometry-web/work-manager/test_store.py:228:                self.assertEqual(self.view(task_id)["evidence"][0]["effective_result"], "unknown")
+geometry-web/work-manager/test_store.py:243:        result = self.result([self.evidence("approved-proof")])
+geometry-web/work-manager/test_store.py:267:        review = self.result([self.evidence("review-proof")])
+geometry-web/work-manager/test_store.py:454:                result = self.result([self.evidence("stable-proof")])
+geometry-web/work-manager/test_store.py:464:        result = self.result([self.evidence("proof")])
+geometry-web/work-manager/test_store.py:474:        result = self.result([self.evidence("proof")])
+tests/diagnostics/test_binaries_ctime_probe.py:141:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:152:            sentinel.write_text('preserve evidence')
+tests/diagnostics/test_binaries_ctime_probe.py:159:                self.assertEqual(sentinel.read_text(), 'preserve evidence')
+tests/diagnostics/test_binaries_ctime_probe.py:163:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:181:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:198:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:206:            self.assertIn('Evidence incomplete', diagnostic.getvalue())
+tests/diagnostics/test_binaries_ctime_probe.py:210:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:214:                (destination / 'partial.txt').write_text('partial evidence')
+tests/diagnostics/test_binaries_ctime_probe.py:224:            self.assertEqual((output / 'partial.txt').read_text(), 'partial evidence')
+tests/diagnostics/test_binaries_ctime_probe.py:233:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:251:            self.assertIn('Evidence incomplete', diagnostic.getvalue())
+geometry-app/native/world_candidate.inc:34:/* Ordered I24 evidence is owned by this candidate, outside World/history and
+tests/fixtures/domain-decoupling-main-a898ad6e/producer.py:28:        raise SystemExit("Output exists; preserve it and choose a fresh evidence directory")
+tests/fixtures/domain-decoupling-main-a898ad6e/producer.py:73:    evidence = {"producer_commit": PRODUCER, "axiom_version": list(VERSION),
+tests/fixtures/domain-decoupling-main-a898ad6e/producer.py:81:        evidence["source_sha256"][relative] = hashlib.sha256((root / relative).read_bytes()).hexdigest()
+tests/fixtures/domain-decoupling-main-a898ad6e/producer.py:85:        evidence["fixtures"][name] = {"sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+tests/fixtures/domain-decoupling-main-a898ad6e/producer.py:109:    (out / "producer-receipt.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+tests/fixtures/domain-decoupling-main-a898ad6e/producer.py:110:    print(json.dumps(evidence, ensure_ascii=False, indent=2), flush=True)
+tests/geometry_kernel_receipt.py:34:# in a new preset rather than silently rewriting an earlier evidence command.
+tests/integration/q38_save_roundtrip.py:31:assert not OUT.exists() or not any(OUT.iterdir()), "Evidence directory must be new or empty"
+tests/integration/model_library_history_browser.py:37:assert not OUT.exists() or not any(OUT.iterdir()), 'Evidence output must be new or empty.'
+tests/integration/model_library_history_browser.py:64:        'New bounded acceptance only; does not recreate missing historical 10/155-case evidence.',
+tests/integration/model_library_history_browser.py:97:        operation:ReferenceWorkspace.getModelOperationState(),evidence:ReferenceWorkspace.getEvidenceState()};""")
+tests/integration/model_library_history_browser.py:259:                  held['evidence']['blocked'] and js(page, 'return __mhGate.native.ok===true;'))
+tests/integration/wp60_actual_owner_adapter.js:15:const evidence=[];
+tests/integration/wp60_actual_owner_adapter.js:24:  evidence.push({name:'native-freshness',binaries:JSON.parse(freshness.stdout)});
+tests/integration/wp60_actual_owner_adapter.js:26:  assert.ok(output.startsWith(os.tmpdir()+path.sep),'Evidence and feedback must stay in TEMP');
+tests/integration/wp60_actual_owner_adapter.js:42:  evidence.push({name:'runtime',...runtime});
+tests/integration/wp60_actual_owner_adapter.js:53:  if(output){fs.writeFileSync(path.join(output,'service.log'),serverLog);fs.writeFileSync(path.join(output,'evidence.json'),JSON.stringify({entry:'tests/integration/issue77_attachment_owner.js',adapter:__filename,evidence},null,2));}
+tests/integration/wp60_actual_owner_adapter.js:95:      evidence.push({name,format,status:'pass',...result});console.log('OWNER '+name+' /'+format+' '+JSON.stringify(result));
+tests/mutate.py:608:         old="if(ok&&!app_stagger_record_step(candidate,&stagger_before))ok=eng_fail(\"UNSUPPORTED/CAPACITY: ordered stagger evidence memory\");",
+tests/mutate.py:609:         new="if(false)ok=eng_fail(\"UNSUPPORTED/CAPACITY: ordered stagger evidence memory\");",
+tests/mutate.py:1215:    evidence = rec.get("execution")
+tests/mutate.py:1216:    if not isinstance(evidence, dict):
+tests/mutate.py:1219:        if evidence["schema"] != "geometry-mutation-execution/1":
+tests/mutate.py:1222:            if not re.fullmatch(r"[0-9a-f]{64}", evidence[key]):
+tests/mutate.py:1224:        if evidence["tool_sha256"] != tool_hash():
+tests/mutate.py:1226:        if not re.fullmatch(r"[0-9a-f]{40}", evidence["head"]):
+tests/mutate.py:1228:        if evidence["compile_command"] != portable_compile_command():
+tests/mutate.py:1230:            if evidence["platform"] == os.name:
+tests/mutate.py:1232:        if evidence["platform"] == os.name and evidence["compile_sha256"] != compile_hash():
+tests/mutate.py:1234:        if evidence["test_command"] != ["<python>", "tests/run_tests.py", "<binary>"]:
+tests/mutate.py:1236:        if evidence["compile_exit_code"] != 0:
+tests/mutate.py:1238:        if classify_test_run(receipt_process(evidence["baseline"]))[0] != "survived":
+tests/mutate.py:1241:        for item in evidence["attempts"]:
+tests/mutate.py:1257:        if evidence["platform"] == os.name:
+tests/mutate.py:1260:                                 or _file_sha(exe) != evidence["exe_sha256"]):
+tests/mutate.py:1264:                                      or _file_sha(baseline) != evidence["baseline_exe_sha256"]):
+tests/room_outline_worker_browser.js:192:    check(name+': evidence records deliberate delivery after real termination',accepted.workers.find(w=>w.id===old).deliveredAfterTerminate===true,accepted.workers);
+tests/run_tests.py:295:    # not evidence that the requested geometric rule rejected this scene.
+tests/section_profile_mutation_check.py:6:tests/release-evidence/20261010-q38-i44/ac16-per-case-red-tests.md: AC23 had no named killer; AC04-AC06 and AC24
+tests/section_profile_mutation_check.py:56:the selection and exception-evidence guards are covered by tests/test_section_profile_mutation_check.py.
+tests/section_profile_mutation_check.py:459:def evidence_problem(code, evidence):
+tests/section_profile_mutation_check.py:463:    if not isinstance(evidence, dict) or set(evidence) != fields:
+tests/section_profile_mutation_check.py:465:    if evidence['schema'] != 'section-profile-exceptions/1':
+tests/section_profile_mutation_check.py:468:        values = evidence[key]
+tests/section_profile_mutation_check.py:471:    if not evidence['requested'] or evidence['requested'] != evidence['executed']:
+tests/section_profile_mutation_check.py:474:    if any(type(evidence[k]) is not int or evidence[k] < 0 for k in counts):
+tests/section_profile_mutation_check.py:476:    if evidence['tests_run'] != len(evidence['executed']):
+tests/section_profile_mutation_check.py:478:    if any(evidence[k] for k in ('skipped', 'expected_failures', 'unexpected_successes')):
+tests/section_profile_mutation_check.py:480:    events = evidence['events']
+tests/section_profile_mutation_check.py:487:        if not isinstance(event['test_id'], str) or event['test_id'] not in evidence['executed']:
+tests/section_profile_mutation_check.py:500:    if any(evidence[k] != sum(e['kind']==kind for e in events) for k,kind in (('failures','failure'),('errors','error'))):
+tests/section_profile_mutation_check.py:503:    if set(evidence['passed']) != set(evidence['executed']) - failed_ids:
+tests/section_profile_mutation_check.py:510:def save_log(identifier, log, evidence):
+tests/section_profile_mutation_check.py:513:        (LOG_DIR / (identifier + '.exceptions.json')).write_text(json.dumps(evidence, ensure_ascii=False, indent=2), encoding='utf-8')
+tests/section_profile_mutation_check.py:540:def verdict(case, code, log, evidence=None):
+tests/section_profile_mutation_check.py:541:    save_log(case['id'], log, evidence)
+tests/section_profile_mutation_check.py:542:    record = {'exit': code, 'exception_evidence': evidence, 'failed': []}
+tests/section_profile_mutation_check.py:543:    problem = evidence_problem(code, evidence)
+tests/section_profile_mutation_check.py:547:        events = evidence['events']
+tests/section_profile_mutation_check.py:582:        code, log, evidence = run_native(exe, None if explore else case['tests'])
+tests/section_profile_mutation_check.py:586:    record.update(verdict(case, code, log, evidence))
+tests/section_profile_mutation_check.py:628:        code, log, evidence = run_model(tree, str(adapter), None if explore else case['tests'])
+tests/section_profile_mutation_check.py:634:    record.update(verdict(case, code, log, evidence))
+tests/section_profile_mutation_check.py:728:            code, log, evidence = run_native(baseline, None)
+tests/section_profile_mutation_check.py:730:                                       exception_evidence=evidence)
+tests/section_profile_mutation_check.py:731:            save_log('native-baseline', log, evidence)
+tests/section_profile_mutation_check.py:733:            if code != 0 or evidence_problem(code, evidence) is not None:
+tests/section_profile_mutation_check.py:746:            code, log, evidence = run_model(model_tree, model_base, None)
+tests/section_profile_mutation_check.py:749:                                      exception_evidence=evidence)
+tests/section_profile_mutation_check.py:750:            save_log('model-baseline', log, evidence)
+tests/section_profile_mutation_check.py:752:            if code != 0 or evidence_problem(code, evidence) is not None:
+geometry-templates/woodworking/native/grid_application.c:243: * exception. Different sources without ordered evidence compare their values. */
+geometry-templates/woodworking/native/grid_application.c:248:     * card changed. When this axis has ordered evidence, attribute the changed
+tests/test_evidence_link_native.py:5:evidence adapter tests. All test definitions are authored here, with no PDF data.
+tests/test_evidence_link_native.py:37:        self.temp = tempfile.TemporaryDirectory(prefix="geometry-evidence-native-")
+tests/test_evidence_link_native.py:89:          const E = require('./geometry-web/evidence-links.js');
+tests/test_evidence_link_native.py:101:          const link = graph => ({evidenceId:'authored-evidence',document,region:[30,40,80,25],
+tests/test_evidence_link_native.py:107:        self.assertIn("native evidence assertions passed", result.stdout)
+tests/test_evidence_link_native.py:137:              locateDocument:async()=>{},uuid:()=> 'authored-evidence',
+tests/test_evidence_link_native.py:143:            await controller.setReviewed('authored-evidence',true);
+tests/test_evidence_link_native.py:150:            console.log('native evidence assertions passed');
+tests/test_evidence_link_native.py:174:          const evidence=link(input.before);
+tests/test_evidence_link_native.py:177:          assert.equal(E.assess(evidence,prior,{identityKnown:true}).canConfirm,true);
+tests/test_evidence_link_native.py:178:          assert.deepEqual(E.assess(evidence,changed,{identityKnown:true}),
+tests/test_evidence_link_native.py:180:          assert.notEqual(evidence.target.definitionPin,changed.target.definitionPin);
+tests/test_evidence_link_native.py:181:          assert.equal(evidence.observations.drawing.rawValue,'915/2');
+tests/test_evidence_link_native.py:183:          console.log('native evidence assertions passed');
+tests/test_evidence_link_native.py:211:          const evidence=link(input.before);
+tests/test_evidence_link_native.py:212:          evidence.humanConfirmation={documentHash:document.sourceHash,
+tests/test_evidence_link_native.py:213:            targetPin:evidence.target.definitionPin,confirmedAt:'2026-10-04T00:00:00.000Z'};
+tests/test_evidence_link_native.py:215:          assert.deepEqual(evidence.target,current.target);
+tests/test_evidence_link_native.py:217:          assert.deepEqual(E.assess(evidence,current),{status:'needs-reassociation',canConfirm:false});
+tests/test_evidence_link_native.py:219:          console.log('native evidence assertions passed');
+tests/test_feedback_store.py:130:        evidence = orphan / "world.scene"
+tests/test_feedback_store.py:131:        evidence.write_bytes(b"original user evidence")
+tests/test_feedback_store.py:134:        self.assertEqual(evidence.read_bytes(), b"original user evidence")
+tests/test_feedback_store.py:142:        evidence = (orphan / "events.jsonl").read_bytes()
+tests/test_feedback_store.py:143:        self.assertIn(b"button#btnUndo", evidence)
+tests/test_feedback_store.py:146:        self.assertEqual((orphan / "events.jsonl").read_bytes(), evidence)
+tests/test_document_cases.js:67:      license_evidence_url: 'https://example.invalid/evidence', license_evidence: 'Synthetic license evidence',
+tests/test_document_cases.js:147:  for (const text of ['Synthetic page extraction', 'Synthetic PNG render', '<script>literal description</script>', 'Synthetic author', 'Synthetic license evidence', '28']) {
+tests/test_document_cases.js:152:  for (const suffix of ['license', 'evidence']) {
+tests/test_domain_decoupling_proposal.py:3:This is a proposal-integrity gate, not evidence that domain decoupling exists.
+tests/test_domain_decoupling_proposal.py:51:    """Only checkout CRLF is insignificant; all other bytes remain evidence."""
+tests/test_domain_decoupling_proposal.py:295:        self.assertEqual(untouched, self.data, "validation must not rewrite evidence")
+tests/test_domain_decoupling_proposal.py:407:        # historical before evidence while still claiming the same base commit.
+tests/test_domain_decoupling_proposal.py:483:                    self.assertTrue(before.endswith("\n"), "source section trailing LF is evidence")
+tests/test_engineering_json.py:133:        # environment failure, never evidence that malformed JSON was rejected.
+tests/test_evidence_project_store.js:4:const P=require('../geometry-web/project-store.js'), E=require('../geometry-web/evidence-links.js');
+tests/test_evidence_project_store.js:8:  const evidence={schema:E.SCHEMA,links:[{evidenceId:'evidence-0',document:{sourceHash:hash,referencePageId:'page-0',page:1,coordinateSpace:E.COORDINATES,pageWidth:300,pageHeight:200,rotationBasis:0,cropBasis:[0,0,300,200]},region:[10,20,80,40],target:{projectScope:'project-a',kind:'parameter-field' [... omitted end of long line]
+tests/test_evidence_project_store.js:9:  const manifest={projectId:'project-a',name:'authored',faces:[],sources:[{id:hash,hash,name:'same.pdf',type:'application/pdf',size:bytes.length,path:'sources/'+hash}],featureAttachments:{schema:P.Features.SCHEMA,records:[{kind:E.KIND,schema:E.SCHEMA,value:evidence}]}};
+tests/test_evidence_project_store.js:10:  return {manifest,evidence,hash,bytes,sources:new Map([[hash,bytes]])};
+tests/test_evidence_project_store.js:12:test('formal evidence-only ZIP keeps original PDF, exact observations and editor capability in unused format12',async()=>{
+tests/test_evidence_project_store.js:16:  assert.deepEqual(loaded.manifest.featureAttachments.records[0].value,f.evidence);
+tests/test_evidence_project_store.js:21:test('evidence requires original PDF metadata, project scope and strict registered shape',async()=>{
+tests/test_evidence_project_store.js:22:  for(const change of [m=>m.sources=[],m=>m.sources[0].type='image/png',m=>m.featureAttachments.records[0].value.links[0].target.projectScope='other',m=>m.featureAttachments.records[0].value.schema='geometry-evidence-links/999',m=>m.featureAttachments.records[0].value.links[0].region=[290,0,80,40],m [... omitted end of long line]
+tests/test_evidence_project_store.js:26:test('evidence capability/version stripping and unknown kinds reject before import',async()=>{
+tests/test_evidence_project_store.js:28:  for(const change of [m=>m.format='geometry-canvas/11',m=>m.format='geometry-canvas/10',m=>m.format='geometry-canvas/999',m=>m.requiredCapabilities=[],m=>m.requiredCapabilities=['geometry-evidence-links/999'],m=>delete m.featureAttachments,m=>m.featureAttachments.records[0].kind='future-evidence']) [... omitted end of long line]
+tests/test_evidence_project_store.js:34:  assert.deepEqual(P.validateEvidenceTargets(f.manifest,graph),[{evidenceId:'evidence-0',status:'needs-reassociation',definitionMatches:true}]);
+tests/test_evidence_project_store.js:41:  f.bytes.fill(0);f.evidence.links[0].observations.drawing.rawValue='caller changed';
+tests/test_evidence_project_store.js:44:test('evidence coexistence with real subdivision scene uses /12 and keeps required native marker',async()=>{
+tests/test_evidence_project_store.js:50:test('core-only history fallback preserves evidence scope and original source closure through undo/redo and ZIP',async()=>{
+tests/test_geo314_ordered_facts.py:1:"""Actual H candidate evidence, seals and confirmation, with normal-ASSERT controls.
+tests/test_geo314_ordered_facts.py:157:        self.pass_case("confirm-evidence")
+tests/test_geo314_ordered_facts.py:177:        self.control("confirm-drops-facts", "confirm-evidence", "ordered-confirm-retains-evidence", [
+tests/test_geo314_ordered_facts.py:186:        self.control("failure-keeps-facts", "failure", "ordered-failed-preview-clears-evidence", [
+tests/test_geo261_graph_product.py:63:        fixture = ROOT / 'tests/release-evidence/20261008-cloud-closeout/contracts/grid-final/grid-rule-timber.scene'
+tests/test_grid_rule_reader_browser.js:22:  const original=await P.unpack(new Uint8Array(fs.readFileSync(path.join(root,'geometry-web/docs/evidence/issue48-34a6222-20261005/archives/1280-full.gcanvas'))),zip);
+tests/test_grid_rule_reader_browser.js:26:  const loaded=await P.unpack(bytes,zip);check('fixture is genuine /13 raw/native/evidence ZIP',loaded.manifest.format===P.GRID_RULE_FORMAT&&loaded.manifest.requiredCapabilities.includes(F.GRID_RULE_SCHEMA)&&loaded.manifest.requiredCapabilities.includes(P.SUBDIVISION_CAPABILITY)&&loaded.manifest.req [... omitted end of long line]
+tests/test_grid_rule_reader_browser.js:51:      check(mode+' uses canonical/evidence guard and reports rejection',network.snapshots===(mode==='missing-canonical'?0:1)&&!!message&&!message.includes('已開啟'));
+tests/test_grid_rule_reader_browser.js:57:    check('valid /13 executes real detached evidence snapshot',await page.evaluate(()=>window.__validReader.snapshots===1));
+tests/test_grid_rule_reader_browser.js:60:    check('valid /13 preserves evidence and original source bytes',await page.evaluate(()=>!!ReferenceWorkspace.readFeatureAttachment('evidence-links'))&&accepted.raw.length===loaded.manifest.featureAttachments.records.length);
+tests/test_grid_rule_reader_browser.js:62:    check('formal Save retains /13 model collections, raw/evidence/source closure and native',roundtrip.manifest.format===P.GRID_RULE_FORMAT&&roundtrip.scene===accepted.scene&&roundtrip.manifest.models.length===loaded.manifest.models.length&&roundtrip.manifest.faceProjections.length===loaded.manifes [... omitted end of long line]
+tests/test_issue77_recovery_browser.js:4: * An optional adapter is prototype evidence; no adapter exercises formal owner wiring.
+tests/test_issue77_recovery_browser.js:14:const evidence = process.env.GEOMETRY_ISSUE77_RECOVERY_SCREENSHOTS || path.join(os.tmpdir(), "issue77-recovery-evidence");
+tests/test_issue77_recovery_browser.js:15:fs.mkdirSync(evidence, {recursive: true});
+tests/test_issue77_recovery_browser.js:119:    await page.screenshot({path:path.join(evidence,"known-stale-rollback-blocked.png")});
+tests/test_issue77_recovery_browser.js:131:    await page.screenshot({path:path.join(evidence,"known-stale-rollback-failure.png")});throw error;
+tests/test_issue77_recovery_browser.js:151:    await page.screenshot({path:path.join(evidence,"known-stale-cancel-blocked.png")});
+tests/test_issue77_recovery_browser.js:160:  } catch(error) {await page.screenshot({path:path.join(evidence,"known-stale-cancel-failure.png")});throw error;}
+tests/test_issue77_recovery_browser.js:187:        if(target==="history-end") await page.screenshot({path:path.join(evidence,"end-lost-reply.png")});
+tests/test_issue77_recovery_browser.js:201:          await page.screenshot({path:path.join(evidence,"end-recovered-select.png")});
+tests/test_issue77_recovery_browser.js:217:          await page.screenshot({path:path.join(evidence,"mobile-recovered-room-entry.png")});
+tests/test_issue77_recovery_browser.js:225:        await page.screenshot({path:path.join(evidence,target+"-failure.png")});
+tests/test_issue77_recovery_browser.js:233:    console.log(JSON.stringify({checks,evidence,browser:"Chromium via Playwright; Browser plugin unavailable",viewports:["1440x1000","390x844"],ownerAdapter:process.env.GEOMETRY_ISSUE77_BROWSER_ADAPTER || "official owner API",iOS:"not tested"}));
+tests/test_k4_evidence.js:32:      GEOMETRY_FEEDBACK_DIR: path.join(os.tmpdir(), 'k4-evidence-unit-feedback'),
+tests/test_k4_evidence.js:33:      GEOMETRY_K4_EVIDENCE: path.join(os.tmpdir(), 'k4-evidence-unit'),
+tests/test_reference_workspace_races.js:154:  const bytes=fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas'));
+tests/test_reference_workspace_races.js:165:  const {w}=await fixture(),old=new Uint8Array(fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas'))),opened=await P.unpack(old,zip);
+tests/test_reference_workspace_races.js:273:test('registered evidence setter uses original source metadata, one history and synchronous native busy guard',async()=>{
+tests/test_reference_workspace_races.js:274:  const f=await fixture(),E=P.Features.Evidence,p=f.w.active(1),token=f.w.getProjectState().contextToken;
+tests/test_reference_workspace_races.js:275:  const link={evidenceId:'evidence-0',document:E.documentFromReference(p,f.source),region:[10,20,30,40],target:{projectScope:f.w.context().id,kind:'parameter-field',parameterId:0,fieldId:0,definitionPin:'b'.repeat(64),incarnation:null},observations:{drawing:{rawText:'915/2',rawValue:'915/2',unit:'mm [... omitted end of long line]
+tests/test_reference_workspace_races.js:288:  const E=P.Features.Evidence,p=f.w.group(1).pages[1],d=E.documentFromReference(p,f.source),before=f.w.getProjectState();let cancelled=false;
+tests/test_reference_workspace_races.js:295:  const f=await fixture(),p=f.w.active(1),d=P.Features.Evidence.documentFromReference(p,f.source),before=f.w.getProjectState();
+tests/test_reference_workspace_races.js:307:function evidenceEnvelope(f){const E=P.Features.Evidence;return {schema:P.Features.SCHEMA,records:[{kind:E.KIND,schema:E.SCHEMA,value:{schema:E.SCHEMA,links:[{evidenceId:'resource',document:E.documentFromReference(f.w.active(1),f.source),region:[10,20,30,40],target:{projectScope:f.w.context().id,kin [... omitted end of long line]
+tests/test_reference_workspace_races.js:308:test('repeated evidence exports release every detached PDF while keeping the live reader document',async()=>{
+tests/test_reference_workspace_races.js:310:  f.w.setFeatureAttachment(P.Features.Evidence.KIND,envelope.records[0].value,f.w.getProjectState().contextToken);
+tests/test_reference_workspace_races.js:313:test('evidence page rejection releases detached validation handles without closing the live PDF',async()=>{
+tests/test_reference_workspace_races.js:1214:    'the unmodified native pass evidence must be accepted with unchanged data and trust');
+tests/test_reference_workspace_races.js:1216:    {ok:true,error:'core rejected original native pass evidence'},
+tests/test_reference_workspace_races.js:1220:    {ok:true,data,trust:'historical-unverified',error:'core rejected original native pass evidence'},
+tests/test_reference_workspace_races.js:1237:    " result={'ok':False,'error':'core rejected original native pass evidence','rejectionType':type(error).__name__}\n"+
+tests/test_reference_workspace_races.js:1246:    result.error==='core rejected original native pass evidence'))throw new Error('Invalid native case preparation result');
+tests/test_scenario_review_native.js:164:    const evidence=await native({manifest:downgraded.manifest,scene:downgraded.scene});
+tests/test_scenario_review_native.js:165:    assert.equal(evidence.ok,true,'Engine-only verification intentionally cannot establish portable reader format');
+tests/test_scenario_review_native.js:166:    assert.ok(evidence.requiredCapabilities.includes(original.manifest.requiredCapabilities.find(c=>
+tests/test_scenario_review_native.js:173:    assert.equal(calls(),count,'Portable format failure must be resolved before trusting native evidence');
+tests/test_section_profile_mutation_check.py:2:"""Selection guards and adversarial exception-evidence checks for the section-profile mutation gate.
+tests/test_section_profile_mutation_check.py:107:        evidence = self.receipt(events) if receipt is None else receipt
+tests/test_section_profile_mutation_check.py:113:        if 'evidence' in inspect.signature(gate.verdict).parameters:
+tests/test_section_profile_mutation_check.py:114:            return gate.verdict(self.case, code, log, evidence)
+tests/test_section_profile_mutation_check.py:155:        evidence = self.receipt([e]); evidence['errors']=1
+tests/test_section_profile_mutation_check.py:156:        self.assertNotEqual(self.judge([e], receipt=evidence)['verdict'], 'killed')
+tests/test_section_profile_mutation_check.py:162:                evidence=self.receipt([e]); evidence['executed']=names
+tests/test_section_profile_mutation_check.py:163:                self.assertNotEqual(self.judge([e], receipt=evidence)['verdict'], 'killed')
+tests/test_section_profile_mutation_check.py:188:        e=self.event(self.cause); evidence=self.receipt([e]); evidence['skipped']=1
+tests/test_section_profile_mutation_check.py:189:        self.assertNotEqual(self.judge([e], receipt=evidence)['verdict'], 'killed')
+tests/test_section_profile_mutation_check.py:208:            code,log,evidence=gate.run_child(['fixture.Fixture.'+name],Path(tmp),dict(os.environ),timeout=10)
+tests/test_section_profile_mutation_check.py:210:        self.assertIsNone(gate.evidence_problem(code,evidence))
+tests/test_section_profile_mutation_check.py:211:        return evidence
+tests/test_section_profile_mutation_check.py:214:        evidence=self.run_fixture('test_multiline')
+tests/test_section_profile_mutation_check.py:215:        e=evidence['events'][0]
+tests/test_section_profile_mutation_check.py:236:        evidence=self.run_fixture('test_subtests')
+tests/test_section_profile_mutation_check.py:237:        self.assertEqual((evidence['tests_run'],evidence['failures'],evidence['errors']),(1,1,1))
+tests/test_section_profile_mutation_check.py:238:        self.assertEqual([e['kind'] for e in evidence['events']],['failure','error'])
+tests/test_section_profile_mutation_check.py:239:        self.assertEqual(len({e['subtest_id'] for e in evidence['events']}),2)
+tests/test_section_profile_mutation_check.py:240:        self.assertEqual({e['test_id'] for e in evidence['events']},{'fixture.Fixture.test_subtests'})
+tests/test_section_profile_mutation_check.py:247:            evidence=gate.read_evidence(path,['fixture.test'])
+tests/test_section_profile_mutation_check.py:248:            self.assertIn('duplicate JSON key',evidence['invalid_receipt'])
+tests/test_section_profile_mutation_check.py:249:            self.assertIsNotNone(gate.evidence_problem(1,evidence))
+tests/test_shared_room_display.js:58:test('shared basis change and same-ID retirement preserve separate view data and historical evidence',async()=>{
+tests/test_workspace_shell_history.js:154: const state={source:null,readonly:false,createdId:null,phase:'empty',editing:null,projectionPending:false,viewerLoading:false},model={blocked:false,revision:0},evidence={blocked:false,session:'s1',nativeRevision:1};
+tests/test_workspace_shell_history.js:156:  contextToken:identity(history.frame)+':'+evidence.session,undo:identity(history.undo.at(-1)),redo:identity(history.redo.at(-1))});
+tests/test_workspace_shell_history.js:159:  fe:{draft:{pts:[]},ulCalib:null,ulDrag:null,work:null},ReferenceWorkspace:{getModelOperationState:operation,getEvidenceState:()=>({...evidence,contextToken:identity(history.frame),blocked:evidence.blocked||operation().blocked}),getProjectInfo:()=>({editingBlocked:false}),history,context:()=>histor [... omitted end of long line]
+tests/test_workspace_shell_history.js:162: return {sandbox,state,model,evidence,window,panel,dialog,history,calls,makeContext};
+tests/test_workspace_shell_history.js:172:test('library admission includes native-pending evidence gate and source owner token changes',async()=>{
+tests/test_workspace_shell_history.js:173: const f=spaceFixture();let s=f.sandbox.libraryHistoryState();assert.equal(s.blocked,false);f.evidence.blocked=true;assert.equal(f.sandbox.libraryHistoryState().blocked,true);f.evidence.blocked=false;
+tests/test_workspace_shell_history.js:212: const f=spaceFixture();f.model.blocked=true;f.evidence.blocked=true;
+tests/test_workspace_shell_history.js:246:  if(change==='session')f.evidence.session='s2';
+tests/test_workspace_shell_history.js:252:  else if(change==='blocked')f.evidence.blocked=true;
+tests/test_grid_drafts_lifecycle_capacity.js:13: test('B1 previous collection writer ZIP retains a full-size orphan draft on cold read and re-save',async()=>{const P=require('../geometry-web/project-store.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js'),fs=require('node:fs'),path=require('node:path'),old=fs.readFileSync(path.join(__ [... omitted end of long line]
+tests/test_grid_drafts_lifecycle_capacity.js:14: test('B1 legacy near-limit ZIP reads and re-saves without reserving new admission bytes',async()=>{const P=require('../geometry-web/project-store.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js'),fs=require('node:fs'),path=require('node:path');const old=fs.readFileSync(path.join(__dirn [... omitted end of long line]
+tests/test_grid_rule_draft.js:73:test('native rules, raw editor and evidence-only PDF coexist without candidate copies or lost sources',async()=>{
+tests/test_grid_rule_draft.js:80:  const bytes=require('./reference_pdf_fixture.js')(),hash=await P.sha(bytes),E=F.Evidence;
+tests/test_grid_rule_draft.js:81:  const evidence={schema:E.SCHEMA,links:[{evidenceId:'authored-rule-evidence',document:{sourceHash:hash,referencePageId:'authored-page',page:1,coordinateSpace:E.COORDINATES,pageWidth:300,pageHeight:200,rotationBasis:0,cropBasis:[0,0,300,200]},region:[10,20,80,40],target:{projectScope:manifest().proj [... omitted end of long line]
+tests/test_grid_rule_draft.js:82:  const attachments=envelope(draft());attachments.records.push(F.record(E.KIND,evidence));
+tests/test_grid_rule_lines.js:146:test('evidence drift invalidates the current exact owner even before a replacement exists',async()=>{
+geometry-web/evidence_links_browser_check.js:11:const output=process.env.GEOMETRY_EVIDENCE_TEST_DIR||path.join(os.tmpdir(),'geometry-evidence-tests','browser');
+geometry-web/evidence_links_browser_check.js:18:    const stream=`0 0 0 RG 1 w 20 30 90 70 re S BT /F1 12 Tf 20 160 Td (Authored evidence ${changed?'458':'457.5'} mm) Tj ET`;
+geometry-web/evidence_links_browser_check.js:40:    await page.evaluate(async bytes=>{window.__evidenceSource=await ReferenceWorkspace.sourceFromFile(new File([new Uint8Array(bytes)],'authored-evidence.pdf',{type:'application/pdf'}));window.__evidenceSources=window.__evidenceSources||new Map();__evidenceSources.set(__evidenceSource.meta.id,__evid [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:112:    },reuseController);await page.locator(expectRejected?'[data-evidence-error]':'[data-evidence-target]').waitFor();
+geometry-web/evidence_links_browser_check.js:115:    await page.locator('[data-evidence-select]').click();
+geometry-web/evidence_links_browser_check.js:124:    await page.locator('[data-evidence-target]').selectOption('0:0');
+geometry-web/evidence_links_browser_check.js:125:    await page.locator('[data-evidence-input="drawing-text"]').fill('<img src=x onerror=window.__unsafe=true> drawing');
+geometry-web/evidence_links_browser_check.js:126:    await page.locator('[data-evidence-input="drawing-value"]').fill('457.5');await page.locator('[data-evidence-input="drawing-unit"]').selectOption('mm');
+geometry-web/evidence_links_browser_check.js:127:    await page.locator('[data-evidence-input="measurement-value"]').fill('458.25');await page.locator('[data-evidence-input="measurement-unit"]').selectOption('mm');
+geometry-web/evidence_links_browser_check.js:128:    const count=await page.evaluate(()=>__evidenceBackend.links.length);await page.locator('[data-evidence-save]').click();await page.waitForFunction(n=>__evidenceBackend.links.length===n+1,count);await page.waitForFunction(()=>document.querySelectorAll('[data-evidence-id]').length===__evidenceBacke [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:132:    if(mode==='hash')await page.evaluate(async bytes=>{const source=await ReferenceWorkspace.sourceFromFile(new File([new Uint8Array(bytes)],'authored-evidence.pdf',{type:'application/pdf'}));__evidenceSources.set(source.meta.id,source);window.__evidenceReplacement=source;},Array.from(fixture(true)) [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:145:    await page.route('**/evidence-links-app.js',route=>route.fulfill({contentType:'application/javascript',body:'/* isolated EvidenceLinksUI adapter harness */'}));
+geometry-web/evidence_links_browser_check.js:148:    await page.addScriptTag({path:path.join(__dirname,'evidence-links.js')});await page.addScriptTag({path:path.join(__dirname,'evidence-links-ui.js')});
+geometry-web/evidence_links_browser_check.js:152:      check(`${type} actual app source is rejected before controller add or attachment write`,await page.evaluate(type=>{const p=ReferenceWorkspace.active(1),source=__evidenceSources.get(p.sourceId);let rejected=false;try{EvidenceLinks.documentFromReference(p,source);}catch(e){rejected=e.code==='EVI [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:160:        if(number===1&&rotation===0){const stayed=await page.evaluate(()=>{const old=JSON.stringify(__evidenceUI.snapshot().region);fe.zoom*=1.25;fe.panX+=17;fe.panY-=11;feApply();const polygon=document.querySelector('[data-evidence-region]'),points=polygon.points,rect=__evidenceUI.snapshot().region [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:164:    check('drawing measurement and current native model are separate and safe text',await page.evaluate(()=>{const last=document.querySelector('[data-evidence-id]:last-child');return last.querySelector('[data-evidence-value="drawing"]').textContent.includes('457.5 mm')&&last.querySelector('[data-evi [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:165:    const beforeReview=await native();await page.locator('[data-evidence-reviewed]').last().check();await page.waitForFunction(()=>__evidenceBackend.links.at(-1).humanConfirmation!==null);assert.deepEqual(await native(),beforeReview);check('human review writes confirmation without a native mutation' [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:167:    await mount(true);const beforeLocate=await native();await page.evaluate(()=>{const p=ReferenceWorkspace.group(1).pages.find(p=>p.id===__evidenceBackend.links.at(-1).document.referencePageId);delete p.src;window.__evidenceColdSuccessCounts={...__evidenceLocateCounters};});await page.locator('[dat [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:170:    await page.locator('[data-evidence-id]').last().scrollIntoViewIfNeeded();await page.screenshot({path:path.join(output,'desktop.png')});
+geometry-web/evidence_links_browser_check.js:172:    await mount();check('reopened identical typed IDs retain observations but require explicit reassociation',await page.locator('[data-evidence-status="needs-reassociation"]').count()>0&&await page.locator('[data-evidence-reviewed]').last().isDisabled());
+geometry-web/evidence_links_browser_check.js:173:    await page.locator('[data-evidence-rebind-target]').last().selectOption('0:0');await page.locator('[data-evidence-rebind]').last().click();await page.waitForFunction(()=>!document.querySelector('[data-evidence-id]:last-child [data-evidence-reviewed]').disabled);check('explicit field zero reassoc [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:174:    const rejectedBefore=await native();await page.evaluate(()=>window.__evidenceRejectWrite=true);await page.locator('[data-evidence-reviewed]').last().check();await page.locator('[data-evidence-message]').filter({hasText:'Injected shared busy rejection'}).waitFor();check('rejected annotation revie [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:175:    await parameter('457.5',true);await parameter();await page.evaluate(()=>__evidenceUI.refresh());check('actual delete and same-name same-ID recreation is unknown despite same native definition',await page.locator('[data-evidence-status="needs-reassociation"]').count()>0&&await page.locator('[data [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:178:    const cancelled=await page.locator('[data-evidence-message]').textContent();await page.evaluate(async()=>{const h=__evidenceHold;window.__evidenceHold=null;h.resolve();await __evidencePending;});
+geometry-web/evidence_links_browser_check.js:179:    check('cancelled late native reads do not repaint or write annotations',await page.locator('[data-evidence-message]').textContent()===cancelled&&await page.evaluate(()=>__evidenceBackend.links.length===16));
+geometry-web/evidence_links_browser_check.js:184:    await mount();check('recorded source replacement requires review and keeps conflicting observations',await page.locator('[data-evidence-status="source-changed"]').count()===4&&await page.locator('[data-evidence-reviewed]:disabled').count()===16);
+geometry-web/evidence_links_browser_check.js:189:    const rejectedRegion=await selectRegion();await page.locator('[data-evidence-target]').selectOption('0:0');await page.locator('[data-evidence-input="drawing-value"]').fill('457.5');const beforeRejectedAdd=await native();await page.evaluate(()=>window.__evidenceRejectWrite=true);await page.locato [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:190:    await selectRegion();await page.locator('[data-evidence-target]').selectOption('0:0');await page.locator('[data-evidence-input="drawing-value"]').fill('cancelled 459');
+geometry-web/evidence_links_browser_check.js:191:    const beforeCancel=await native();await page.evaluate(()=>{let resolve;window.__evidenceHold={promise:new Promise(r=>resolve=r),resolve:()=>resolve()};});await page.locator('[data-evidence-save]').click();await page.locator('[data-evidence-cancel]').click();await page.evaluate(async()=>{const ho [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:192:    check('cancelled late creation cannot commit annotations and controls recover',await page.evaluate(()=>__evidenceBackend.links.length===16)&&await page.locator('[data-evidence-input="drawing-value"]').isEnabled());assert.deepEqual(await native(),beforeCancel);
+geometry-web/evidence_links_browser_check.js:194:    const mobileBefore=await native();await page.evaluate(()=>{const p=ReferenceWorkspace.active(1),svg=document.getElementById('faceEditorSvg'),mm=feUlImgToMm(p,65,65);fe.zoom=.12;fe.panX=svg.clientWidth/2-mm[0]*fe.zoom;fe.panY=svg.clientHeight/2-mm[1]*fe.zoom;feApplyZoom();__evidenceUI.redraw();}) [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:195:    await page.locator('[data-evidence-id]').last().scrollIntoViewIfNeeded();await page.screenshot({path:path.join(output,'mobile.png')});check('390px merged reference disclosure stays inside viewport',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1&&[...document.querySele [... omitted end of long line]
+geometry-web/evidence_links_browser_check.js:196:    const oldContext=await page.evaluate(()=>ReferenceWorkspace.getProjectState().contextToken),oldBackend=await page.evaluate(()=>JSON.stringify(__evidenceBackend));await page.evaluate(()=>{let resolve;window.__evidenceHold={promise:new Promise(r=>resolve=r),resolve:()=>resolve()};window.__evidence [... omitted end of long line]
+tests/test_issue123_create_feedback_browser.py:3:Run with --url http://127.0.0.1:<test-port>/ --out /tmp/<evidence>.
+tests/test_issue116_canvases_browser.js:13: * Requires an explicitly isolated service and TEMP feedback/evidence directories (same rules as
+tests/test_issue116_canvases_browser.js:33:const evidence=process.env.GEOMETRY_K4_EVIDENCE || path.join(os.tmpdir(),'geometry-tests','issue116-k4-evidence');
+tests/test_issue116_canvases_browser.js:34:if(!path.resolve(evidence).startsWith(os.tmpdir()+path.sep))throw Error('Evidence must stay under TEMP');
+tests/test_issue116_canvases_browser.js:35:fs.mkdirSync(evidence,{recursive:true});
+tests/test_issue116_canvases_browser.js:54:  fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify(result,null,2));
+tests/test_issue116_canvases_browser.js:194:    fs.writeFileSync(path.join(evidence,'menu-snapshots.json'),snapshotJson);
+tests/test_issue116_canvases_browser.js:197:    fs.writeFileSync(path.join(evidence,'menu-snapshots.sha256'),snapshotHash+'\n');
+tests/test_issue116_canvases_browser.js:390:  // An intentional failed settlement already contains all evidence. A genuine abort
+tests/test_issue77_exit_browser.js:14:const evidence=process.env.GEOMETRY_ISSUE77_EXIT_SCREENSHOTS || path.join(os.tmpdir(),'issue77-exit-browser-evidence');
+tests/test_issue77_exit_browser.js:15:fs.mkdirSync(evidence,{recursive:true});
+tests/test_issue77_exit_browser.js:71:      if(exit==='Back' && pointCount===4)await page.screenshot({path:path.join(evidence,'four-point-draft-before-back.png')});
+tests/test_issue77_exit_browser.js:91:    await page.screenshot({path:path.join(evidence,'other-face-after-room-exit.png')});
+tests/test_issue77_exit_browser.js:93:    console.log(JSON.stringify({checks,evidence,url,viewport:'1440x1000',browser:'Chromium via Playwright; Browser plugin not available',
+geometry-web/feature-attachments.js:4:    typeof module === "object" && module.exports ? require("./evidence-links.js") : root.EvidenceLinks,
+geometry-web/feature-attachments.js:9:})(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms, Evidence, Cases, Cutting) {
+geometry-web/feature-attachments.js:306:    } else if (record.kind === Evidence.KIND && record.schema === Evidence.SCHEMA) {
+geometry-web/feature-attachments.js:307:      Evidence.validate(record.value);
+geometry-web/feature-attachments.js:326:  function assertKind(kind) { if (![GRID_KIND, ROOM_KIND, Evidence.KIND, CASE_KIND, Cutting.KIND].includes(kind)) fail("功能附件種類不支援。"); }
+geometry-web/feature-attachments.js:334:    record.kind === Evidence.KIND ? [Evidence.SCHEMA] : record.kind === CASE_KIND ? [CASE_SCHEMA] : record.kind === Cutting.KIND ? [Cutting.CAPABILITY] :
+geometry-web/feature-attachments.js:339:    const value = envelope.records.find(record => record.kind === Evidence.KIND)?.value || null;
+geometry-web/feature-attachments.js:360:    const rooms = sourceRooms(envelope), evidence = evidenceLinks(envelope);
+geometry-web/feature-attachments.js:362:      ...(evidence ? Evidence.references(evidence).sources : [])])];
+geometry-web/feature-attachments.js:371:  return {ReferenceDisplay:Rooms.Display,Evidence,Cases,Cutting,CASE_KIND,CASE_SCHEMA, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, ROOM_DISPLAY_SCHEMA, ROOM_DISPLAY_CAPABILITY, MAX_ [... omitted end of long line]
+geometry-web/feedback_store.py:59:    # Failed writes may contain original user evidence. Keep those directories
+tests/test_modeling_runtime.py:580:        with self.subTest(status="missing omitted-root evidence"):
+geometry-web/grid-system-workspace.js:61:      const evidence=JSON.stringify(ReferenceWorkspace.getEvidenceState());
+geometry-web/grid-system-workspace.js:65:      if(JSON.stringify(rawValue(s))!==raw||JSON.stringify(ReferenceWorkspace.getEvidenceState())!==evidence)throw Error('選取期間草稿或現況已改變，請重新選取。');
+geometry-web/grid-system-workspace.js:83:    // Serialization preserves owned selection evidence. Merely opening or
+geometry-web/grid-system-workspace.js:440:    // capture, restore and unknown-enum evidence behave like a <select>.
+tests/test_mutation_freshness.py:55:        evidence = dict(schema='geometry-mutation-execution/1', head='a' * 40, platform=os.name,
+tests/test_mutation_freshness.py:66:                                  execution=evidence)
+tests/test_mutation_freshness.py:393:            evidence = {"schema": "geometry-bridge-mutation-execution/1", "head": "a" * 40,
+tests/test_mutation_freshness.py:404:                                        killed_by=[method], execution=evidence)
+tests/test_mutation_freshness.py:979:                                 '%s: a death needs the one exit status all the evidence agrees on' % label)
+tests/test_mutation_freshness.py:1204:    # ---- the ledger side: --check accepts a crashed bridge record only on the core's evidence ----
+tests/test_mutation_freshness.py:1245:            evidence = {"schema": "geometry-bridge-mutation-execution/1", "head": 'a' * 40, "platform": os.name,
+tests/test_mutation_freshness.py:1255:                evidence["mutant_attempts"] = attempts
+tests/test_mutation_freshness.py:1257:                                     execution=evidence, **fields)
+tests/test_rule_case_executor.py:239:        # historical evidence, never a substitute for this head's live result.
+tests/test_rule_case_executor.py:273:        with self.assertRaisesRegex(ReceiptValidationError, "exact rejection evidence"):
+tests/test_rule_case_executor.py:504:                    ReceiptValidationError, "exact rejection evidence"):
+tests/test_rule_case_workbench_http.py:4:Optional GEOMETRY_RULE_CASE_EVIDENCE_DIR writes synthetic raw evidence to TEMP.
+tests/test_rule_case_workbench_http.py:136:        # Fabricated process metadata cannot authenticate consistent evidence.
+tests/test_scenario_workflow_browser.js:38:   await page.locator('#referenceFile').setInputFiles({name:'authored-evidence.pdf',mimeType:'application/pdf',buffer:pdfFixture()});
+tests/test_scenario_workflow_browser.js:43:   await page.locator('[data-evidence-select]').click();
+tests/test_scenario_workflow_browser.js:47:   await page.locator('[data-evidence-target]').selectOption('1:1');
+tests/test_scenario_workflow_browser.js:48:   await page.locator('[data-evidence-input="drawing-text"]').fill('Authored 200 mm');
+tests/test_scenario_workflow_browser.js:49:   await page.locator('[data-evidence-input="drawing-value"]').fill('200');await page.locator('[data-evidence-input="drawing-unit"]').selectOption('mm');
+tests/test_scenario_workflow_browser.js:50:   await page.locator('[data-evidence-save]').click();await page.waitForSelector('[data-evidence-id]');
+tests/test_scenario_workflow_browser.js:52:   check('manual PDF region and explicit parameter field become evidence-only source',await page.evaluate(()=>ReferenceWorkspace.readFeatureAttachment(EvidenceLinks.KIND).links[0].target.fieldId===1&&!ReferenceWorkspace.active(1)));
+tests/test_scenario_workflow_browser.js:86:   check('root and both complete scenarios preserve one exact evidence-only PDF',manifest.faces.length===0&&manifest.sources.length===1&&Buffer.from(entries[manifest.sources[0].path]).equals(pdfFixture())&&manifest.scenarioCatalog.scenarios.every(s=>s.snapshot.projectManifest.faces.length===0&&s.sna [... omitted end of long line]
+tests/test_scenario_verify.py:332:                                               "message": "Original generator evidence"}]
+tests/test_scenario_verify.py:349:        evidence = {"root": deepcopy(model["result"]["space"]["request"]["roots"][0]),
+tests/test_scenario_verify.py:352:        model["result"]["diagnostics"] = [deepcopy(evidence)]
+tests/test_scenario_verify.py:353:        model["result"]["summary"]["wall_diagnostics"] = [deepcopy(evidence)]
+tests/test_scenario_verify.py:356:        self.assertEqual(value["manifest"]["models"][0]["result"]["diagnostics"], [evidence])
+tests/test_scenario_verify.py:357:        self.assertEqual(value["manifest"]["models"][0]["result"]["summary"]["wall_diagnostics"], [evidence])
+geometry-web/room_outline_test.js:146:  check('local point insertion restores real notch concavity and clears old dimension evidence/review',await read(`!RoomOutlineWorkspace.snapshot().reviewed&&RoomOutlineWorkspace.snapshot().dimensions.length===0&&RoomOutlineWorkspace.snapshot().points.length===8&&!RoomOutline.contains(RoomOutlineWor [... omitted end of long line]
+tests/test_geometry_host_sources.py:3:The envelopes are synthetic protocol fixtures, not native execution evidence.
+tests/test_woodworking_frontend.js:121:test('click-role policy distinguishes outer edges, reference lines and conflicting evidence', () => {
+tests/test_woodworking_frontend.js:130:test('role controls preserve the custom-role exception and retain uncertain evidence', () => {
+tests/test_woodworking_frontend.js:143:test('subgrid warnings preserve missing, conflicting and parallel actual-support evidence', () => {
+tests/test_issue116_browser.js:2: * TEMP feedback/evidence directories. No production service is ever reset.
+tests/test_issue116_browser.js:12:const evidence=process.env.GEOMETRY_ISSUE116_EVIDENCE || path.join(os.tmpdir(),'geometry-tests','issue116-evidence');
+tests/test_issue116_browser.js:13:if(!path.resolve(evidence).startsWith(os.tmpdir()+path.sep))throw Error('Evidence must stay under TEMP');
+tests/test_issue116_browser.js:14:fs.mkdirSync(evidence,{recursive:true});
+tests/test_issue116_browser.js:40:async function shot(page,name){await page.screenshot({path:path.join(evidence,name+'.png')});}
+tests/test_issue116_browser.js:83:    const saved=path.join(evidence,'verified-notch.gcanvas');await download.saveAs(saved);
+tests/test_issue116_browser.js:199:    fs.writeFileSync(path.join(evidence,'result.json'),JSON.stringify({checks,records,errors,evidence,viewport:'1440x900',density:1,runtime:runtime.version},null,2));
+tests/test_issue116_browser.js:200:    console.log(JSON.stringify({checks,evidence,runtime:runtime.version}));
+geometry-web/work-manager/test_adapter.py:51:                    "evidence": [{"id": "synthetic-proof", "criterion": "behavior", "kind": "test", "timestamp": stamp(-2), "sha": HEAD, "result": "passed"}]}}
+geometry-web/work-manager/test_adapter.py:74:        self.assertEqual(task["evidence"][0]["id"], "synthetic-proof")
+tests/test_issue77_browser.js:9:const evidence = process.env.GEOMETRY_ISSUE77_SCREENSHOTS || path.join(os.tmpdir(), "issue77-browser-evidence");
+tests/test_issue77_browser.js:11:fs.mkdirSync(evidence, {recursive: true});
+tests/test_issue77_browser.js:70:    await page.screenshot({path:path.join(evidence,"desktop-two-rooms.png")});
+tests/test_issue77_browser.js:118:    await reopened.screenshot({path:path.join(evidence,"mobile-room-list.png")});
+tests/test_issue77_browser.js:123:    console.log(JSON.stringify({checks,evidence,viewports:["1440x1000","390x844"],browser:"Chromium via Playwright; Browser plugin unavailable",ownerAdapter:process.env.GEOMETRY_ISSUE77_BROWSER_ADAPTER || "official owner API",iOS:"not tested"}));
+tests/test_issue77_remove_browser.js:1:/* Real UI regression for shared-source removal with retained legacy evidence. */
+tests/test_issue77_remove_browser.js:9:const evidence=process.env.GEOMETRY_ISSUE77_REMOVE_SCREENSHOTS||path.join(os.tmpdir(),'issue77-remove-evidence');
+tests/test_issue77_remove_browser.js:10:fs.mkdirSync(evidence,{recursive:true});
+tests/test_issue77_remove_browser.js:40:        [{id:'evidence-'+index,label:'保留紀錄 '+index,location:'自製 unrelated legacy page '+index,datum:'測試基準',unit:'mm',value:index?null:2500}],null));
+tests/test_issue77_remove_browser.js:55:    check(await snapshot(page),before,'manual draw-step cancellation preserves retained evidence');
+tests/test_issue77_remove_browser.js:61:    check(await snapshot(page),before,'rejected public remove leaves complete evidence unchanged');
+tests/test_issue77_remove_browser.js:77:    check((await snapshot(page)).pages,before.pages,'valid import to another face preserves all unrelated retained evidence');
+tests/test_issue77_remove_browser.js:163:    await page.screenshot({path:path.join(evidence,'mobile-source-overview.png')});
+tests/test_issue77_remove_browser.js:165:    console.log(JSON.stringify({checks,evidence,browser:'Chromium actual UI',ownerAdapter:process.env.GEOMETRY_ISSUE77_BROWSER_ADAPTER||'official owner API',privateAssets:false}));
+tests/test_geo314_commit_paths.py:1:"""I24 host route inventory and retained ordered-evidence wiring.
+tests/test_geo314_commit_paths.py:325:        # Evidence fields belong only to the H sidecar, its collector and the
+tests/test_geo314_commit_paths.py:330:                         evidence_sources, "ordered evidence must not enter World definitions, dump, or history")
+geometry-web/work-manager/test_review_regressions.py:81:                    "evidence": [proof(head=head)]}))
+geometry-web/work-manager/test_review_regressions.py:104:                            event("result", {"evidence": [proof(identity=f"proof-{action}")],
+geometry-web/work-manager/test_review_regressions.py:113:                    event("result", {"pr": pull_request(review="pending"), "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:127:        for location in ("evidence", "pr"):
+geometry-web/work-manager/test_review_regressions.py:132:                data = {"pr": pull_request(merged=True), "evidence": [proof()]}
+geometry-web/work-manager/test_review_regressions.py:133:                if location == "evidence":
+geometry-web/work-manager/test_review_regressions.py:134:                    data["evidence"] = [proof(kind="ci", runner_id=123, steps=[bad_step])]
+geometry-web/work-manager/test_review_regressions.py:153:        self.ingest(task(), event("result", {"pr": pull_request(), "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:157:                                 "evidence": [proof(identity="new-head-proof", head=HEAD_B, minutes=1)]},
+geometry-web/work-manager/test_review_regressions.py:170:        self.ingest(task(), event("result", {"pr": unpinned, "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:179:            self.ingest(event("result", {"pr": pull_request(merged=True), "evidence": [failed, passed]}))
+geometry-web/work-manager/test_review_regressions.py:183:        self.ingest(task(), event("result", {"evidence": [proof(result="failed")]}))
+geometry-web/work-manager/test_review_regressions.py:186:            self.ingest(event("result", {"pr": pull_request(merged=True), "evidence": [proof()]}, version=2))
+geometry-web/work-manager/test_review_regressions.py:191:                    "evidence": [proof(identity="current-b-proof", head=HEAD_B)]}))
+geometry-web/work-manager/test_review_regressions.py:194:        self.ingest(event("result", {"evidence": [proof(identity="later-stale-a-proof", head=HEAD_A, minutes=1)]},
+geometry-web/work-manager/test_review_regressions.py:201:        self.assertEqual(len(after["evidence"]), 2, "stale evidence remains in audit history")
+geometry-web/work-manager/test_review_regressions.py:204:        self.ingest(task(), event("result", {"pr": pull_request(merged=True), "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:216:                    event("result", {"pr": pull_request(merged=True), "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:222:                    "evidence": [proof(head=HEAD_B)]}))
+geometry-web/work-manager/test_review_regressions.py:233:                                         "evidence": [proof(head=HEAD_B)]})
+geometry-web/work-manager/test_review_regressions.py:247:        self.ingest(event("result", {"evidence": [stale]}, version=3, when=stamp(3)), minutes=3)
+geometry-web/work-manager/test_review_regressions.py:255:        self.ingest(task(head_sha=HEAD_B), event("result", {"pr": pull_request(head=HEAD_B), "evidence": []}))
+geometry-web/work-manager/test_review_regressions.py:263:        self.ingest(event("result", {"evidence": [proof(identity="only-old-head-proof", head=HEAD_A, minutes=2)]},
+geometry-web/work-manager/test_review_regressions.py:270:        self.assertEqual(len(current["evidence"]), 1, "old-head proof is retained as history")
+geometry-web/work-manager/test_review_regressions.py:276:                      "evidence": [proof(identity="reviewed-b-proof", head=HEAD_B, minutes=2)]}, when=stamp(2))
+geometry-web/work-manager/test_review_regressions.py:288:        self.ingest(event("result", {"evidence": [failed]}, version=3, when=stamp(2)), minutes=2)
+geometry-web/work-manager/test_review_regressions.py:331:        self.ingest(task(), event("result", {"pr": pull_request(), "evidence": [same, copy.deepcopy(same)]}))
+geometry-web/work-manager/test_review_regressions.py:333:        self.assertEqual(len(current["evidence"]), 1)
+geometry-web/work-manager/test_review_regressions.py:335:        self.ingest(event("result", {"evidence": [copy.deepcopy(same)]}, version=2, when=stamp(1)), minutes=1)
+geometry-web/work-manager/test_review_regressions.py:336:        self.assertEqual(len(self.view()["evidence"]), 1)
+geometry-web/work-manager/test_review_regressions.py:343:            self.ingest(event("result", {"evidence": [proof(result="failed")]}, version=1),
+geometry-web/work-manager/test_review_regressions.py:344:                        event("result", {"evidence": [proof(result="passed")]}, version=2))
+geometry-web/work-manager/test_review_regressions.py:349:                    event("result", {"evidence": [proof(result="failed")]}, task="FIRST"),
+geometry-web/work-manager/test_review_regressions.py:350:                    event("result", {"evidence": [proof(result="passed")]}, task="SECOND"))
+.github/workflows/mutation-evidence.yml:1:name: Mutation evidence
+.github/workflows/mutation-evidence.yml:7:      - .github/workflows/mutation-evidence.yml
+.github/workflows/mutation-evidence.yml:9:      - tests/MUTATION-EVIDENCE.md
+.github/workflows/mutation-evidence.yml:16:  group: geometry-mutation-evidence-${{ github.ref }}
+.github/workflows/mutation-evidence.yml:31:      - name: Preserve fresh derived architecture evidence and raw failures
+.github/workflows/mutation-evidence.yml:74:          python3 .github/scripts/mutation_evidence.py run --shard "$SHARD" --out "$RUNNER_TEMP/mutation-evidence"
+.github/workflows/mutation-evidence.yml:81:            ${{ runner.temp }}/mutation-evidence/manifest.json
+.github/workflows/mutation-evidence.yml:82:            ${{ runner.temp }}/mutation-evidence/mutants_results.json
+.github/workflows/mutation-evidence.yml:83:            ${{ runner.temp }}/mutation-evidence/cache.tar.gz
+.github/workflows/mutation-evidence.yml:84:            ${{ runner.temp }}/mutation-evidence/execution.log
+.github/workflows/mutation-evidence.yml:89:    name: Verify complete mutation evidence
+.github/workflows/mutation-evidence.yml:115:          name: mutation-complete-evidence
+geometry-app/geometry_app/model_sources.py:6:complete and the transport has frozen source-matched integration evidence.
+tests/test_release_gate.py:2:"""Negative evidence tests for release_gate's command receipts and identity checks."""
+tests/test_release_gate.py:25:        self.output = self.base / "evidence"
+tests/test_release_gate.py:66:        self.assertFalse(result["evidence"]["completionVerified"])
+tests/test_release_gate.py:67:        self.assertEqual(result["evidence"]["scope"], "command-only")
+tests/test_release_gate.py:122:        marker.write_bytes(b"previous evidence")
+tests/test_release_gate.py:125:        self.assertEqual(marker.read_bytes(), b"previous evidence")
+tests/test_release_gate.py:128:        self.output = self.root / "evidence"
+tests/test_release_gate.py:141:        self.assertTrue(result["evidence"]["completionVerified"])
+tests/test_release_gate.py:142:        self.assertEqual(result["evidence"]["scope"]["mode"], "full")
+tests/test_release_gate.py:160:        self.assertEqual(result["evidence"]["scope"]["mode"], "partial")
+tests/test_scenario_project_store.js:3:const P=require('../geometry-web/project-store.js'),S=require('../geometry-web/scenario-snapshots.js'),E=require('../geometry-web/evidence-links.js');
+tests/test_scenario_project_store.js:7:  const bytes=new TextEncoder().encode('repo-authored evidence-only original PDF bytes'),hash=await P.sha(bytes),scene='reset\n';
+tests/test_scenario_project_store.js:8:  const evidence={schema:E.SCHEMA,links:[{evidenceId:'evidence-0',document:{sourceHash:hash,referencePageId:'page-0',page:1,coordinateSpace:E.COORDINATES,pageWidth:300,pageHeight:200,rotationBasis:0,cropBasis:[0,0,300,200]},region:[10,20,80,40],target:{projectScope:'project-a',kind:'parameter-field' [... omitted end of long line]
+tests/test_scenario_project_store.js:10:  const leaf=await P.unpack(await P.pack(scene,{projectId:'project-a',name:'A',faces:[],sources:[meta],featureAttachments:{schema:P.Features.SCHEMA,records:[{kind:E.KIND,schema:E.SCHEMA,value:evidence}]}},new Map([[hash,bytes]]),zip),zip);
+tests/test_scenario_project_store.js:16:test('formal /14 ZIP deduplicates evidence-only original assets and preserves complete independent leaf projects',async()=>{
+tests/test_section_profile_browser.js:5:if(!url||!out||!path.isAbsolute(out)||out.startsWith(root+path.sep)||!process.env.GEOMETRY_FEEDBACK_DIR)throw Error('Explicit isolated URL, feedback directory and evidence path outside repo required');
+tests/test_section_profile_browser.js:7:if(fs.existsSync(out)&&fs.readdirSync(out).length)throw Error('Evidence directory must be new');fs.mkdirSync(out,{recursive:true});
+tests/mutation_bridge.py:183:    `crashed` needs repeated evidence; it is only produced by judge_trials()."""
+tests/mutation_bridge.py:481:        subprocess.run(["git", "sparse-checkout", "set", "--no-cone", "/*", "!/tests/evidence/", "!/tests/release-evidence/"], cwd=work, check=True, env=env)
+tests/mutation_bridge.py:501:        evidence = {"schema": "geometry-bridge-mutation-execution/1", "head": head, "platform": os.name,
+tests/mutation_bridge.py:508:            evidence.update(mutant_build=b, mutant_identity=identity)
+tests/mutation_bridge.py:511:            evidence["mutant"] = trials[-1]
+tests/mutation_bridge.py:513:                evidence["mutant_attempts"] = trials
+tests/mutation_bridge.py:514:            if _identity(work, folder / "bridge-mutant") != identity or oracle_hash(m, work) != judge or mt.tool_hash() != evidence["tool_sha256"]:
+tests/mutation_bridge.py:522:            path.write_bytes(fixed); evidence["byte_restored"] = path.read_bytes() == fixed
+tests/mutation_bridge.py:528:            evidence.update(restored_build=b, restored_identity=identity, restored=restored)
+tests/mutation_bridge.py:541:        rec = mt.make_record(m, src, verdict, reason, today, judge, killed_by=killers, crashed_on=crashed_on, execution=evidence)
+tests/mutation_bridge.py:543:            rec = mt.make_record(m, src, "blocked", ";".join(execution_problems(mt, m, rec, verdict, src)), today, judge, execution=evidence)
+tests/release_gate.py:5:         --output /tmp/new-evidence-directory -- node geometry-web/cdp_test.js
+tests/release_gate.py:296:                evidence, problems = inspect_result(log, receipt["kind"], root, url)
+tests/release_gate.py:297:                receipt["evidence"] = evidence
+tests/run_all.py:366:    'tests/test_grid_rule_reader_browser.js': 'Required isolated /13 formal reader UI/native gate: canonical candidate, evidence snapshot, zero-confirm rejection and actual ZIP Save; see INTEGRATION-GATES.md',
+tests/run_all.py:367:    'tests/test_issue116_browser.js': 'Required isolated native/browser B-menu gate, full Save/reopen and visual evidence; see INTEGRATION-GATES.md',
+tests/test_domain_decoupling_compatibility.py:5:evidence. Source subdivision remains unsupported by this model executor.
+tests/test_assembly_native_diagnostics.py:1:"""Typed evidence from existing native assembly refusals; no message parsing."""
+tests/test_assembly_native_diagnostics.py:18:    def evidence(self, operations, code, clause, ref=None):
+tests/test_assembly_native_diagnostics.py:42:                    self.evidence([{"op": "put-parameter", "value": param},
+tests/test_assembly_native_diagnostics.py:52:                self.evidence([{"op": "put-parameter", "value": param},
+tests/test_assembly_native_diagnostics.py:59:        self.evidence([{"op": "put-binding", "value": bound}], "ASSEMBLY_INVALID", "I40/I41")
+tests/test_assembly_native_diagnostics.py:61:        self.evidence([{"op": "put-parameter", "value": param}, {"op": "put-binding", "value": bound}],
+tests/test_assembly_native_diagnostics.py:70:        self.evidence([{"op": "publish-rule", "value": changed}], "RULE_VERSION_IMMUTABLE", "D32", ref)
+tests/test_assembly_native_diagnostics.py:71:        self.evidence([{"op": "delete-rule", "id": 17, "version": 1},
+tests/test_assembly_native_diagnostics.py:79:        self.evidence([{"op": "put-parameter", "value": first}, {"op": "put-parameter", "value": second},
+tests/test_assembly_native_diagnostics.py:86:        self.evidence([{"op": "put-parameter", "value": param}, {"op": "put-binding", "value": bound}],
+tests/test_assembly_native_diagnostics.py:98:        self.evidence([{"op": "publish-rule", "value": changed}], "RULE_VERSION_IMMUTABLE", "D32",
+tests/test_assembly_native_diagnostics.py:105:        self.evidence([{"op": "publish-rule", "value": changed}], "RULE_VERSION_IMMUTABLE", "D32",
+tests/test_assembly_native_diagnostics.py:111:        self.evidence([{"op": "put-binding", "value": bound}], "ASSEMBLY_INVALID", "I40/I41")
+tests/test_assembly_native_diagnostics.py:116:        invalid = self.evidence([{"op": "put-parameter", "value": param}, {"op": "put-binding", "value": bound}],
+tests/test_engineering_core.py:84:        # D28: equal numeric caches are not evidence that the requested
+tests/test_engineering_project_store.js:280:    // Independent evidence: the native redo still exists. It must not be sent
+tests/test_evidence_links.js:5:const E=require('../geometry-web/evidence-links.js');
+tests/test_evidence_links.js:13:const link=()=>({evidenceId:'evidence-0',document:doc(),region:[30,40,80,25],target:target(),observations:obs(),humanConfirmation:null});
+tests/test_evidence_links.js:19:  const options={readFeatureAttachment:k=>{assert.equal(k,E.KIND);return copy(state.attachment);},setFeatureAttachment:(k,v,token)=>{assert.equal(k,E.KIND);assert.equal(token,state.stamp.contextToken);state.attachment=copy(v);state.writes++;state.stamp.revision++;},getStamp:()=>copy(state.stamp),rea [... omitted end of long line]
+tests/test_evidence_links.js:25:  const v=bundle();assert.equal(E.validate(v),true);v.links.push({...link(),evidenceId:'evidence-1'});
+tests/test_evidence_links.js:31:  for(const mutate of [v=>v.schema='geometry-evidence-links/999',v=>v.links[0].target.kind='boundary',v=>v.links[0].target.fieldId=-1,v=>v.links[0].target.parameterId=2**32,v=>v.links[0].target.incarnation='invented',v=>v.links[0].document.sourceHash='same.pdf',v=>v.links[0].document.page=0,v=>v.lin [... omitted end of long line]
+tests/test_evidence_links.js:123:  const pending=c.locate('evidence-0');navigation++;gate.resolve();
+tests/test_cutting_layering.js:186: const evidence=process.env.GEOMETRY_CUTTING_MUTATION_EVIDENCE;
+tests/test_cutting_layering.js:188: const save=(name,body)=>{if(evidence){fs.mkdirSync(evidence,{recursive:true});fs.writeFileSync(path.join(evidence,name),body);}};
+tests/test_geo261_mutation_migration.py:244:        # submission rules and ordered-evidence guards at their actual owners.
+tests/geo261_grid_application_harness.c:288:        "stagger-ordered-repoint-after-card-edit","stagger-ordered-unresolved-is-not-evidence",
+tests/geo198/refresh_mutations.py:22:    evidence = Path(sys.argv[1]).resolve()
+tests/geo198/refresh_mutations.py:23:    evidence.mkdir(parents=True,exist_ok=True)
+tests/geo198/refresh_mutations.py:31:        log_file = evidence/f'worker-{index}.log'
+tests/geo198/refresh_mutations.py:49:    (evidence/'workers.json').write_text(json.dumps([row for row,_ in rows],indent=2)+'\n')
+tests/geo261_adoption_mutations.py:2:"""Reproduce GEO-261 adoption gate guard-removal evidence without editing the repo.
+tests/geo261_adoption_mutations.py:26:Runner exit 1 means an evidence/contract failure; exit 2 means an environment
+tests/geo261_adoption_mutations.py:218:        parser.error("--out must be a new or empty directory; existing evidence is never overwritten")
+tests/geo261_adoption_mutations.py:225:        "schema": "geo261-adoption-mutation-evidence/1",
+tests/geo261_adoption_mutations.py:302:        report["failure"] = f"evidence contract error: {type(error).__name__}: {error}"
+tests/diagnostics/request_wait_segments/check_counterexamples.py:1:"""Run M1 counterexamples against old/new analyzers without altering raw evidence.
+tests/diagnostics/ui209_correct_returns.py:17:EVIDENCE = ROOT / 'tests/evidence/ui209-recovery-20261013'
+tests/diagnostics/ui209_correct_returns.py:38:    parser.add_argument('--archive', type=Path, default=EVIDENCE / 'raw.tar.xz')
+tests/diagnostics/ui209_correct_returns.py:39:    parser.add_argument('--manifest', type=Path, default=EVIDENCE / 'manifest.json')
+tests/diagnostics/ui209_correct_returns.py:40:    parser.add_argument('--summary', type=Path, default=EVIDENCE / 'summary.json')
+tests/diagnostics/ui209_correct_returns.py:139:              'limits': 'Historical raw/summary remain unchanged. Ambiguous old labels fail closed; unobserved exits are only a static map. No new UI recovery, timing, or WSL evidence.'}
+tests/geo314_stagger_facts_harness.c:102:    CHECK(app_world_candidate_revalidate(owner,&g_world),"ordered-confirm-retains-evidence");
+tests/geo314_stagger_facts_harness.c:117:    CHECK(!g_preview.ready&&ordered_empty(owner),"ordered-cancel-or-stale-clears-retained-evidence");
+tests/geo314_stagger_facts_harness.c:129:    CHECK(ordered_empty(owner),"ordered-success-clears-retained-evidence");
+tests/geo314_stagger_facts_harness.c:135:        "ordered-evidence-never-serializes");
+tests/geo314_stagger_facts_harness.c:145:    AppWorldCandidate *fresh=app_world_candidate_create(&g_world);CHECK(ordered_empty(fresh),"ordered-history-and-new-candidate-have-no-evidence");
+tests/geo314_stagger_facts_harness.c:150:    AppWorldCandidate *owner=g_preview.transaction;CHECK(owner->stagger_facts,"ordered-dispose-has-owned-evidence");
+tests/geo314_stagger_facts_harness.c:155:        "ordered-dispose-clears-evidence-before-pooling");return 0;
+tests/geo314_stagger_facts_harness.c:185:        CHECK(ordered_empty(g_preview.transaction),"ordered-failed-preview-clears-evidence");
+tests/geo314_stagger_facts_harness.c:194:        else if(!strcmp(kind,"confirm-evidence"))result=ordered_confirm_evidence();
+tests/runner_classification/verify.py:243:    parser.add_argument('--out', type=Path, required=True, help='new directory; existing evidence is never overwritten')
+geometry-web/project-store.js:21:  const EVIDENCE_FORMAT = "geometry-canvas/12", EVIDENCE_CAPABILITY = Features.Evidence.SCHEMA;
+geometry-web/project-store.js:140:      const target = Features.Evidence.targetFromNode(manifest.projectId,node);
+geometry-web/project-store.js:327:    const evidence = manifest.featureAttachments && Features.evidenceLinks(manifest.featureAttachments);
+geometry-web/project-store.js:328:    if (manifest.format === EVIDENCE_FORMAT && (!evidence || !manifest.requiredCapabilities?.includes(EVIDENCE_CAPABILITY)) ||
+geometry-web/project-store.js:329:        (evidence || manifest.requiredCapabilities?.includes(EVIDENCE_CAPABILITY)) && ![EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT, CASE_FORMAT, SECTION_FORMAT, GRID_DRAFTS_FORMAT, CARD_FORMAT].includes(manifest.format))
+geometry-web/projection_close_probe.js:56:  const evidence = {phase: 'armed', claimed: 0, nativeOK: false, caller: null};
+geometry-web/projection_close_probe.js:59:  window.__projectionSourceGate = evidence;
+geometry-web/projection_close_probe.js:64:    const targeted = evidence.phase === 'armed' && String(args[0]) === '/api' && command === 'surfaces' &&
+geometry-web/projection_close_probe.js:67:      evidence.phase = 'requested'; evidence.claimed++; evidence.caller = caller;
+geometry-web/projection_close_probe.js:74:        const data = await json(); evidence.nativeOK = data.ok === true; evidence.phase = 'held';
+geometry-web/projection_close_probe.js:75:        await gate; evidence.phase = 'released'; return data;
+geometry-web/projection_close_probe.js:90:    const evidence = [];
+geometry-web/projection_close_probe.js:151:        evidence.push({phase, held, overlap, delivery, reopened, saved});
+geometry-web/projection_close_probe.js:180:      record({kind:'controlled delivery of real native close callbacks; not natural recurrence of an earlier failure',cases:evidence,tail});
+geometry-web/cdp_test.js:239:// earlier toast or replace toast()/its timers; retain evidence after expiry.
+geometry-web/work-manager/store.py:25:RESULT_FIELDS = {"evidence", "pr", "pr_metadata", "head_sha", "execution_status", "owner_thread", "summary", "completed_actions"}
+geometry-web/work-manager/store.py:276:def _validate_evidence(evidence):
+geometry-web/work-manager/store.py:277:    _object(evidence, "evidence", {"id", "criterion", "kind", "timestamp", "sha", "result", "url",
+geometry-web/work-manager/store.py:281:        _string(evidence[key], f"evidence {key}")
+geometry-web/work-manager/store.py:282:    timestamp(evidence["timestamp"], "evidence timestamp")
+geometry-web/work-manager/store.py:283:    _sha(evidence["sha"], "evidence SHA")
+geometry-web/work-manager/store.py:284:    _enum(evidence["result"], {"passed", "failed", "unknown"}, "evidence result")
+geometry-web/work-manager/store.py:286:        if key in evidence:
+geometry-web/work-manager/store.py:287:            _sha(evidence[key], f"evidence {key}")
+geometry-web/work-manager/store.py:288:    if "expires_at" in evidence:
+geometry-web/work-manager/store.py:289:        timestamp(evidence["expires_at"], "evidence expires_at")
+geometry-web/work-manager/store.py:290:    if "url" in evidence:
+geometry-web/work-manager/store.py:291:        _url(evidence["url"], "evidence URL")
+geometry-web/work-manager/store.py:292:    if "runner_id" in evidence:
+geometry-web/work-manager/store.py:293:        _integer(evidence["runner_id"], "evidence runner_id", 0)
+geometry-web/work-manager/store.py:294:    if "steps" in evidence:
+geometry-web/work-manager/store.py:295:        _validate_steps(evidence["steps"])
+geometry-web/work-manager/store.py:296:    if "summary" in evidence:
+geometry-web/work-manager/store.py:297:        _string(evidence["summary"], "evidence summary")
+geometry-web/work-manager/store.py:371:        if "evidence" in data:
+geometry-web/work-manager/store.py:372:            if not isinstance(data["evidence"], list):
+geometry-web/work-manager/store.py:373:                raise ValidationError("evidence must be an array")
+geometry-web/work-manager/store.py:374:            for evidence in data["evidence"]:
+geometry-web/work-manager/store.py:375:                _validate_evidence(evidence)
+geometry-web/work-manager/store.py:455:    """An asserted success and nonempty container are not execution evidence."""
+geometry-web/work-manager/store.py:484:def evidence_binding(evidence, task):
+geometry-web/work-manager/store.py:487:    if not evidence.get("sha") or not task["head_sha"]:
+geometry-web/work-manager/store.py:489:    if evidence["kind"] == "postmerge_test":
+geometry-web/work-manager/store.py:491:                and same_sha(pr.get("merge_commit_sha"), evidence["sha"]) else "stale")
+geometry-web/work-manager/store.py:492:    if same_sha(evidence["sha"], task["head_sha"]):
+geometry-web/work-manager/store.py:494:    if (evidence["kind"] == "local_test"
+geometry-web/work-manager/store.py:495:            and same_sha(evidence.get("tree_sha"), task.get("head_tree_sha"))
+geometry-web/work-manager/store.py:496:            and same_sha(evidence.get("equivalent_head_sha"), task["head_sha"])):
+geometry-web/work-manager/store.py:591:    applicable_ids = {evidence["id"] for evidence in task["evidence"]
+geometry-web/work-manager/store.py:592:                      if evidence["applicable_to_current_head"]}
+geometry-web/work-manager/store.py:596:        key: evidence.get(key) for key in ("criterion", "kind", "sha", "tree_sha",
+geometry-web/work-manager/store.py:598:    } for evidence in task["evidence"] if evidence["id"] in selected_ids]
+geometry-web/work-manager/store.py:622:    # Keep existing receipt pins unchanged when old records have no run evidence.
+geometry-web/work-manager/store.py:874:                for evidence in event["data"].get("evidence", []):
+geometry-web/work-manager/store.py:875:                    identity = (event["task_id"], evidence["id"])
+geometry-web/work-manager/store.py:876:                    encoded = canonical(evidence)
+geometry-web/work-manager/store.py:966:            for evidence in json.loads(row["payload"])["data"].get("evidence", []):
+geometry-web/work-manager/store.py:967:                evidence_identities[(row["task_id"], evidence["id"])] = canonical(evidence)
+geometry-web/work-manager/store.py:969:            for evidence in event["data"].get("evidence", []):
+geometry-web/work-manager/store.py:970:                identity = (event["task_id"], evidence["id"])
+geometry-web/work-manager/store.py:971:                encoded_evidence = canonical(evidence)
+geometry-web/work-manager/store.py:1094:                "pr": None, "evidence": [], "assignment_history": [], "source_ids": [],
+geometry-web/work-manager/store.py:1128:                for item in data.get("evidence", []):
+geometry-web/work-manager/store.py:1197:            task["evidence"] = sorted(evidence_by_task.get(task["id"], {}).values(),
+geometry-web/work-manager/store.py:1202:            for evidence in task["evidence"]:
+geometry-web/work-manager/store.py:1203:                binding = evidence_binding(evidence, task)
+geometry-web/work-manager/store.py:1206:                if applicable and evidence.get("expires_at") and timestamp(evidence["expires_at"]) <= now:
+geometry-web/work-manager/store.py:1208:                elif applicable and timestamp(evidence["timestamp"]) > now:
+geometry-web/work-manager/store.py:1210:                elif applicable and evidence["kind"] in {"ci", "ci_job", "github_actions"}:
+geometry-web/work-manager/store.py:1211:                    step_result = ci_steps_result(evidence.get("runner_id"), evidence.get("steps"))
+geometry-web/work-manager/store.py:1214:                evidence["binding_kind"] = binding
+geometry-web/work-manager/store.py:1215:                evidence["applicable_to_current_head"] = applicable
+geometry-web/work-manager/store.py:1216:                evidence["bound_head_sha"] = task["head_sha"] if applicable else None
+geometry-web/work-manager/store.py:1217:                evidence["validity"] = validity
+geometry-web/work-manager/store.py:1218:                evidence["effective_result"] = ("failed" if validity == "ci_failed" else
+geometry-web/work-manager/store.py:1219:                                                  evidence["result"] if validity in VALID_BINDINGS else "unknown")
+geometry-web/work-manager/store.py:1220:                previous = latest_by_criterion.get(evidence["criterion"])
+geometry-web/work-manager/store.py:1223:                if previous is None or rank(evidence) >= rank(previous):
+geometry-web/work-manager/store.py:1224:                    latest_by_criterion[evidence["criterion"]] = evidence
+geometry-web/work-manager/store.py:1225:            valid_attempts = [e for e in task["evidence"] if e["validity"] in VALID_BINDINGS | {"ci_failed"}]
+geometry-web/work-manager/store.py:1235:            if any(e["validity"] in {"stale", "expired", "future"} for e in task["evidence"]):
+geometry-web/work-manager/store.py:1237:            if any(e["validity"] == "not_run" for e in task["evidence"]):
+geometry-web/work-manager/store.py:1518:                raise ValidationError("record is older than current task evidence; import as history instead")
+geometry-web/work-manager/store.py:1526:                    raise ValidationError("completed task cannot be assigned without new task evidence")
+geometry-web/rule-case-host.js:6:  const stamp=()=>({evidence:W.getEvidenceState(),frame:W.getModelOperationState().frame,runtime:pageRuntimeVersion});
+geometry-web/rule-case-host.js:7:  const same=(a,b)=>a.frame===b.frame&&a.runtime===b.runtime&&JSON.stringify(a.evidence)===JSON.stringify(b.evidence);
+geometry-web/rule-case-host.js:30:    close();const original=stamp();if(original.evidence.blocked||original.evidence.nativeRevision===null)throw new Error('請先完成目前操作，再開啟規則案例。');
+geometry-web/rule-case-host.js:32:    const guard=()=>{if(owner.retired||active!==owner||!same(original,stamp())||stamp().evidence.blocked)throw new Error('原始專案或案例操作已退休，未提交晚到結果。');};
+geometry-web/rule-case-host.js:33:    owner.observe=()=>{if(!same(original,stamp())||stamp().evidence.blocked)retire(owner);};
+geometry-web/rule-case-host.js:40:      if(!response.ok||status.ok!==true||status.session!==original.evidence.session||status.runtime!==original.runtime)throw new Error('所選案例服務已變更。');
+geometry-web/rule-case-host.js:41:      owner.context={projectId:original.evidence.projectScope,generation:status.sequence,contextToken:original.evidence.contextToken};
+geometry-web/rule-case-host.js:43:        session:original.evidence.session,runtime:original.runtime,revision:original.evidence.nativeRevision,context:owner.context};
+geometry-web/scenario_verify.py:475:    # Wall diagnostics are evidence from the original conforming producer;
+geometry-web/scenario_verify.py:512:    """Return evidence only, without installing the candidate or moving undo.
+geometry-web/source-plane.js:2: * remain historical evidence, never editable geometry or current acceptance. */
+geometry-web/space-workspace.js:190:    const operation = ReferenceWorkspace.getModelOperationState?.(), evidence = ReferenceWorkspace.getEvidenceState?.();
+geometry-web/space-workspace.js:201:      libraryLease.contextToken !== operation?.contextToken || libraryLease.session !== evidence?.session;
+geometry-web/space-workspace.js:202:    const blocked = staleOwner || !operation || !evidence || operation.blocked || evidence.blocked || project?.editingBlocked || pendingDraft || building ||
+geometry-web/space-workspace.js:205:    const owner = operation && evidence ? JSON.stringify([operation.contextToken, operation.frame, operation.revision, operation.undo, operation.redo,
+geometry-web/space-workspace.js:206:      evidence.contextToken, evidence.session, evidence.nativeRevision]) : null;
+geometry-web/space-workspace.js:211:    const operation = ReferenceWorkspace.getModelOperationState?.(), evidence = ReferenceWorkspace.getEvidenceState?.();
+geometry-web/space-workspace.js:212:    return operation && evidence ? {context:ReferenceWorkspace.context(), frame:operation.frame, contextToken:operation.contextToken, session:evidence.session} : null;
+geometry-web/grid_portable_browser_test.py:30:assert out!=Path(tempfile.gettempdir()).resolve() and out.is_relative_to(Path(tempfile.gettempdir()).resolve()),'Evidence must use a dedicated directory below TEMP'
+geometry-web/evidence-links-ui.js:16:    function captureInput(){return {target:targetSelect?.value||'',fields:[...section.querySelectorAll('[data-evidence-input]')].filter(n=>!n.dataset.evidenceInput.startsWith('region-')).map(n=>[n.dataset.evidenceInput,n.value])};}
+geometry-web/evidence-links-ui.js:17:    function restoreInput(raw){if(!raw)return;for(const [key,value]of raw.fields){const input=[...section.querySelectorAll('[data-evidence-input]')].find(n=>n.dataset.evidenceInput===key);if(input)input.value=value;}if(targetSelect&&[...targetSelect.options].some(o=>o.value===raw.target))targetSelec [... omitted end of long line]
+geometry-web/evidence-links-ui.js:28:    function cancel(){++sequence;controller.cancel();busy=false;resetRegion();tell('已取消，證據與正式模型保持原狀。');section.querySelectorAll('input,select,[data-evidence-locate],[data-evidence-rebind]').forEach(n=>n.disabled=false);section.querySelectorAll('[data-evidence-reviewed]').forEach(n=>{n.disabled=n.dat [... omitted end of long line]
+geometry-web/evidence-links-ui.js:39:    function labelInput(parent,text,key,max=2000){const label=element('label',text);label.style.cssText='display:block;min-width:0';const input=element('input',null,{'data-evidence-input':key,maxlength:max});input.style.cssText='display:block;width:100%;min-width:0;box-sizing:border-box';label.appen [... omitted end of long line]
+geometry-web/evidence-links-ui.js:43:      const unitLabel=element('label','原單位'),unit=element('select',null,{'data-evidence-input':kind+'-unit'});unit.style.cssText='max-width:100%;margin-left:8px';
+geometry-web/evidence-links-ui.js:48:      const input=k=>form.querySelector(`[data-evidence-input="${kind}-${k}"]`).value;
+geometry-web/evidence-links-ui.js:59:      finally{if(request===sequence){busy=false;section.querySelectorAll('input,select').forEach(n=>n.disabled=false);if(start)start.disabled=!selection;if(save)save.disabled=!region;section.querySelectorAll('[data-evidence-locate],[data-evidence-rebind]').forEach(n=>n.disabled=false);section.queryS [... omitted end of long line]
+geometry-web/evidence-links-ui.js:64:        const article=element('article',null,{'data-evidence-id':link.evidenceId});article.style.cssText='min-width:0;border-top:1px solid #ccc;padding:10px 0';
+geometry-web/evidence-links-ui.js:67:        article.append(element('p',statusText[link.status]||'需重新核對',{'data-evidence-status':link.status}));
+geometry-web/evidence-links-ui.js:70:          values.append(element('dt',title));const cell=element('dd',text,{'data-evidence-value':key});cell.style.cssText='margin:2px 0 10px';values.append(cell);
+geometry-web/evidence-links-ui.js:72:        const locate=element('button','定位原頁範圍',{type:'button','data-evidence-locate':link.evidenceId});locate.className='btn';
+geometry-web/evidence-links-ui.js:74:        if(locateTarget){const target=element('button','定位參數欄位',{type:'button','data-evidence-locate-target':link.evidenceId});target.className='btn';target.disabled=['target-missing','needs-reassociation'].includes(link.status);target.addEventListener('click',()=>act(()=>locateTarget(link.evidenceI [... omitted end of long line]
+geometry-web/evidence-links-ui.js:76:        const reviewed=element('input',null,{type:'checkbox','data-evidence-reviewed':link.evidenceId});reviewed.checked=link.status==='confirmed-content';reviewed.disabled=!link.canConfirm;reviewed.dataset.canConfirm=String(link.canConfirm);
+geometry-web/evidence-links-ui.js:79:          const select=element('select',null,{'aria-label':'重新指定參數欄位','data-evidence-rebind-target':link.evidenceId});select.style.cssText='display:block;max-width:100%;width:100%;margin:8px 0';targetOptions(select);article.append(select);
+geometry-web/evidence-links-ui.js:80:          const rebind=element('button','明選欄位重新關聯',{type:'button','data-evidence-rebind':link.evidenceId});rebind.className='btn';
+geometry-web/evidence-links-ui.js:88:      message=element('p','框選原 PDF 區域，手動記錄圖面與現場值；核對只更新此紀錄。',{'data-evidence-message':'',role:'status'});section.append(message);
+geometry-web/evidence-links-ui.js:89:      form=element('div',null,{'data-evidence-form':''});section.append(form);
+geometry-web/evidence-links-ui.js:90:      const label=element('label','指定參數欄位');targetSelect=element('select',null,{'aria-label':'指定參數欄位','data-evidence-target':''});targetSelect.style.cssText='display:block;width:100%;min-width:0;max-width:100%';targetOptions(targetSelect);label.append(targetSelect);form.append(label); [... omitted end of long line]
+geometry-web/evidence-links-ui.js:91:      const modelLabel=element('p','正式模型值：');model=element('output','無現行正式值',{'data-evidence-current-model':''});modelLabel.append(model);form.append(modelLabel);targetSelect.addEventListener('change',updateModel);
+geometry-web/evidence-links-ui.js:94:      start=element('button','在原頁框選區域',{type:'button','data-evidence-select':''});start.className='btn';start.disabled=!canvas||!selection.document;
+geometry-web/evidence-links-ui.js:96:      save=element('button','保存證據連結',{type:'button','data-evidence-save':''});save.className='btn';save.disabled=true;
+geometry-web/evidence-links-ui.js:100:      cancelButton=element('button','取消',{type:'button','data-evidence-cancel':''});cancelButton.className='btn';cancelButton.addEventListener('click',cancel);actions.append(start,save,cancelButton);form.append(actions);
+geometry-web/evidence-links-ui.js:101:      regionFields=element('fieldset',null,{'data-evidence-region-controls':''});regionFields.hidden=true;regionFields.style.cssText='min-width:0';regionFields.append(element('legend','調整原頁框選範圍'));
+geometry-web/evidence-links-ui.js:105:          const rect=[0,1,2,3].map(i=>Number(regionFields.querySelector(`[data-evidence-input="region-${i}"]`).value)),d=selection.document;
+geometry-web/evidence-links-ui.js:110:      list=element('div',null,{'data-evidence-list':''});section.append(list);renderLinks();
+geometry-web/evidence-links-ui.js:121:      }catch(error){if(request===sequence&&live(initial)){section.replaceChildren(element('p',error.message||'證據來源尚未讀取。',{'data-evidence-error':''}));}return false;}
+geometry-web/evidence-links-ui.js:140:      region.forEach((n,i)=>regionFields.querySelector(`[data-evidence-input="region-${i}"]`).value=String(n));
+geometry-web/engineering_bridge.inc:155:        if(!app_stagger_snapshot(candidate,&stagger_before)){ok=eng_fail("UNSUPPORTED/CAPACITY: ordered stagger evidence memory");break;}
+geometry-web/engineering_bridge.inc:157:        if(ok&&!app_stagger_record_step(candidate,&stagger_before))ok=eng_fail("UNSUPPORTED/CAPACITY: ordered stagger evidence memory");
+geometry-web/work-manager/test_coverage.py:92:            event("result", {"pr": pull_request(merged=True), "evidence": [proof("group-proof")]}, task="GROUP"),
+geometry-web/work-manager/test_coverage.py:93:            event("result", {"pr": pull_request(merged=True), "evidence": [proof("child-proof")]}, task="CHILD"),
+geometry-web/work-manager/test_coverage.py:134:            event("result", {"pr": pull_request(merged=True), "evidence": [proof("done-proof")]}, task="DONE"),
+geometry-web/work-manager/test_coverage.py:136:            event("result", {"pr": pull_request(), "evidence": [proof("review-proof")]}, task="REVIEW"),
+geometry-web/work-manager/test_coverage.py:157:            for key in ("execution_status", "delivery_status", "owner_thread", "evidence", "next_action_pin"):
+geometry-web/work-manager/test_coverage.py:167:            event("result", {"pr": pull_request(number=5001, url=url), "evidence": [proof()]}, task="FIRST"),
+tests/geo261_frontend_mutations.py:37:    'geometry-web/evidence-links.js',
+tests/geo261_frontend_mutations.py:178:        raise RuntimeError('checkout changed during mutation evidence capture')
+tests/geo198/base_reader.py:15:    evidence = Path(sys.argv[1]).resolve()
+tests/geo198/base_reader.py:16:    evidence.mkdir(parents=True,exist_ok=True)
+tests/geo198/base_reader.py:30:        (evidence/'identity.json').write_text(json.dumps(identity,ensure_ascii=False,indent=2)+'\n')
+tests/geo198/base_reader.py:32:                '--json-out',str(evidence/'result.json'),'--log',str(evidence/'reader.log')]
+tests/geo198/base_reader.py:34:        (evidence/'runner.log').write_text(proc.stdout+proc.stderr)

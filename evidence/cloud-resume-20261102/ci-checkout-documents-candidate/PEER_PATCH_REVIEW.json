@@ -1,0 +1,236 @@
+{
+  "schema": "geometry-static-workflow-patch-peer/1",
+  "utc": "2026-11-02T12:18:11.390270+00:00",
+  "status": "PASS_STATIC_PATCH_ONLY_DEPENDENCY_AUDIT_PENDING",
+  "auditExitCode": 0,
+  "checkCount": 19,
+  "checks": [
+    {
+      "name": "before bytes match PREPARATION",
+      "pass": true
+    },
+    {
+      "name": "candidate bytes match PREPARATION",
+      "pass": true
+    },
+    {
+      "name": "patch bytes match PREPARATION",
+      "pass": true
+    },
+    {
+      "name": "exact baseline fixed Git blob is available without lazy fetch",
+      "pass": true
+    },
+    {
+      "name": "PATCH is complete exact single-file unified diff",
+      "pass": true
+    },
+    {
+      "name": "one browser step inserted",
+      "pass": true
+    },
+    {
+      "name": "original checkout pin retained",
+      "pass": true
+    },
+    {
+      "name": "fixed mutually exclusive matrix.suite selectors",
+      "pass": true
+    },
+    {
+      "name": "non-document checkout original settings exactly preserved",
+      "pass": true
+    },
+    {
+      "name": "document checkout contains only declared exact options",
+      "pass": true
+    },
+    {
+      "name": "all following browser steps exact preserved in order",
+      "pass": true
+    },
+    {
+      "name": "whole workflow semantic equality after restoring checkout pair",
+      "pass": true
+    },
+    {
+      "name": "native job exact unchanged",
+      "pass": true
+    },
+    {
+      "name": "native-complete job exact unchanged",
+      "pass": true
+    },
+    {
+      "name": "top-level events permissions concurrency exact unchanged",
+      "pass": true
+    },
+    {
+      "name": "no new workflow job added",
+      "pass": true
+    },
+    {
+      "name": "six literal original matrix suites each select exactly one checkout",
+      "pass": true
+    },
+    {
+      "name": "documents whole-job timeout remains10 not checkout timeout",
+      "pass": true
+    },
+    {
+      "name": "post-checkout original build font browser server upload step objects preserved",
+      "pass": true
+    }
+  ],
+  "problems": [],
+  "fixedBase": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "path": ".github/workflows/integration-tests.yml",
+  "inputs": {
+    "before": {
+      "path": "/tmp/geometry-resume-20261102/ci-checkout-documents-candidate/integration-tests.before.yml",
+      "bytes": 8710,
+      "sha256": "feef73e7602c0f276a8e0436fc89f320ac60c3a4af4fa7921c803ae989c8a71f"
+    },
+    "candidate": {
+      "path": "/tmp/geometry-resume-20261102/ci-checkout-documents-candidate/integration-tests.candidate.yml",
+      "bytes": 9113,
+      "sha256": "2425ac0a1b09153a188dee1c121e914dd89fc2dea7e90fe48dde6a0fed8f0b02"
+    },
+    "patch": {
+      "path": "/tmp/geometry-resume-20261102/ci-checkout-documents-candidate/PATCH.diff",
+      "bytes": 936,
+      "sha256": "b677cc0e1630792ad50c96b3ab7f81f7caf2a89485a5d82b3b5780e506bd8f68"
+    },
+    "preparation": {
+      "path": "/tmp/geometry-resume-20261102/ci-checkout-documents-candidate/PREPARATION.json",
+      "bytes": 1520,
+      "sha256": "00f8b43771a52162688a5ac66f0d6bba1b9d31c8397f236d7159fe5f98e48f45"
+    }
+  },
+  "originalGitBlobRead": {
+    "argv": [
+      "git",
+      "-C",
+      "/tmp/geometry-pr340-20261102",
+      "show",
+      "e02057b4c725d6f03ae52c3bc30776bf9442b0cf:.github/workflows/integration-tests.yml"
+    ],
+    "exitCode": 0,
+    "lazyFetchDisabled": true,
+    "matchesBeforeBytes": true,
+    "stderr": ""
+  },
+  "selectorEvaluation": {
+    "language": "GitHub step if expressions are implicitly evaluated; no expression delimiter is required for these equality expressions.",
+    "source": "Both operands compare the fixed literal matrix.suite against literal documents; no shell/eval or user-controlled interpolation is added.",
+    "truthTable": [
+      {
+        "suite": "assembly",
+        "timeoutMinutes": 15,
+        "enabledOriginalCheckout": true,
+        "enabledSparseCheckout": false,
+        "effectiveCheckoutCount": 1
+      },
+      {
+        "suite": "documents",
+        "timeoutMinutes": 10,
+        "enabledOriginalCheckout": false,
+        "enabledSparseCheckout": true,
+        "effectiveCheckoutCount": 1
+      },
+      {
+        "suite": "grid",
+        "timeoutMinutes": 15,
+        "enabledOriginalCheckout": true,
+        "enabledSparseCheckout": false,
+        "effectiveCheckoutCount": 1
+      },
+      {
+        "suite": "canvas",
+        "timeoutMinutes": 35,
+        "enabledOriginalCheckout": true,
+        "enabledSparseCheckout": false,
+        "effectiveCheckoutCount": 1
+      },
+      {
+        "suite": "space",
+        "timeoutMinutes": 15,
+        "enabledOriginalCheckout": true,
+        "enabledSparseCheckout": false,
+        "effectiveCheckoutCount": 1
+      },
+      {
+        "suite": "timber",
+        "timeoutMinutes": 20,
+        "enabledOriginalCheckout": true,
+        "enabledSparseCheckout": false,
+        "effectiveCheckoutCount": 1
+      }
+    ]
+  },
+  "preservedBoundaries": {
+    "matrix": true,
+    "environment": true,
+    "allOriginalPostCheckoutSteps": true,
+    "nativeAndNativeComplete": true,
+    "otherWorkflowFilesInPatch": false,
+    "allTimeouts": true,
+    "checkoutActionPin": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+    "persistCredentials": "false on both routes",
+    "topLevelPermissions": {
+      "contents": "read"
+    },
+    "workflowEvents": {
+      "pull_request": "",
+      "push": {
+        "branches": [
+          "main"
+        ]
+      }
+    },
+    "branchSourceChangedByPeer": false
+  },
+  "sparseSemantics": {
+    "mode": "non-cone",
+    "patterns": [
+      "/*",
+      "!/evidence/"
+    ],
+    "effect": "Include the repository root and its recursive content except the root evidence/ subtree. Nested directories named evidence remain included.",
+    "filter": "blob:none requests a partial clone; it does not by itself limit the worktree, nor guarantee later reads never fetch an excluded blob.",
+    "actionPrimarySource": [
+      {
+        "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/git-source-provider.ts",
+        "bytes": 11050,
+        "sha256": "b1bf57713d94302decc7f440a1cd7daa24f205ddf677c52debeb654a5565d1a7",
+        "observedLines": "166-169 choose fetch filter;214-225 independently select and apply sparse checkout even when settings.filter is set."
+      },
+      {
+        "url": "https://raw.githubusercontent.com/actions/checkout/11bd71901bbe5b1630ceea73d27597364c9af683/src/git-command-manager.ts",
+        "bytes": 18083,
+        "sha256": "70fa506e9131d6d14928c01e6854a70595c78ce701b80489b884e7c821a31b19",
+        "observedLines": "189 onward configures core.sparseCheckout and writes non-cone patterns to git info/sparse-checkout."
+      }
+    ],
+    "sourceInterpretation": "Pinned implementation configures the explicit fetch filter and later applies sparse checkout separately; filter does not skip the later sparse setup."
+  },
+  "notIndependentlyVerified": [
+    "Actual documents build/runtime/fixture dependency closure on root evidence/ (assigned to another peer).",
+    "Any measured checkout duration, disk reduction, successful CI run, or absence of future cancellation.",
+    "Applicability to a future target SHA beyond this exact baseline."
+  ],
+  "incidentBoundary": "The earlier documents cancellation and job API403 do not independently prove an action-level checkout timer or credentials fault. The retained10-minute setting is the entire documents job timeout. No causal claim is approved here.",
+  "publicationGate": "Static selector/diff preservation passes. Do not label this patch ready for publication until the separately assigned dependency closure is accepted; CI behavior remains UNRUN.",
+  "peerActions": {
+    "readOnlyGitBlobReads": 1,
+    "productTests": 0,
+    "builds": 0,
+    "chromeRuns": 0,
+    "ciRuns": 0,
+    "productSourceChanges": 0,
+    "commits": 0,
+    "pushes": 0,
+    "prs": 0,
+    "reportOnlyWritten": "/tmp/geometry-resume-20261102/ci-checkout-documents-candidate/PEER_PATCH_REVIEW.json"
+  }
+}

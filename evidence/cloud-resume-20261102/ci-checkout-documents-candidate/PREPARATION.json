@@ -1,0 +1,55 @@
+{
+  "at": "2026-11-02T12:09:04.060411+00:00",
+  "base": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+  "sourcePath": ".github/workflows/integration-tests.yml",
+  "sourceBeforeSha256": "feef73e7602c0f276a8e0436fc89f320ac60c3a4af4fa7921c803ae989c8a71f",
+  "candidateSha256": "2425ac0a1b09153a188dee1c121e914dd89fc2dea7e90fe48dde6a0fed8f0b02",
+  "patchSha256": "b677cc0e1630792ad50c96b3ab7f81f7caf2a89485a5d82b3b5780e506bd8f68",
+  "status": "LOCAL_PATCH_ONLY_AWAITING_DEPENDENCY_AUDIT",
+  "onlyBrowserCheckoutPairChanged": true,
+  "matrixEnvironmentStepsDeadlinesCredentialsPermissionsUnchanged": true,
+  "selectorKey": "matrix.suite",
+  "rows": [
+    {
+      "suite": "assembly",
+      "timeoutUnchanged": 15,
+      "checkoutCount": 1,
+      "sparseUsed": false
+    },
+    {
+      "suite": "documents",
+      "timeoutUnchanged": 10,
+      "checkoutCount": 1,
+      "sparseUsed": true
+    },
+    {
+      "suite": "grid",
+      "timeoutUnchanged": 15,
+      "checkoutCount": 1,
+      "sparseUsed": false
+    },
+    {
+      "suite": "canvas",
+      "timeoutUnchanged": 35,
+      "checkoutCount": 1,
+      "sparseUsed": false
+    },
+    {
+      "suite": "space",
+      "timeoutUnchanged": 15,
+      "checkoutCount": 1,
+      "sparseUsed": false
+    },
+    {
+      "suite": "timber",
+      "timeoutUnchanged": 20,
+      "checkoutCount": 1,
+      "sparseUsed": false
+    }
+  ],
+  "nativeMutationHelperOrWorkflowChanged": false,
+  "branchCreated": false,
+  "committed": false,
+  "published": false,
+  "testsOrCIExecuted": false
+}

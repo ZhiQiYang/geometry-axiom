@@ -1,0 +1,563 @@
+{
+  "schema": "geometry-pr340-original-badcache-log-peer-supplement/1",
+  "utc": "2026-11-02T12:15:02.576386+00:00",
+  "status": "PASS",
+  "auditExitCode": 0,
+  "checkCount": 67,
+  "problems": [],
+  "supplementsOriginalReview": {
+    "path": "/tmp/geometry-resume-20261102/pr340/main354-final-peer/REVIEW.json",
+    "sha256": "b58931c30738c7a58de513c6ade174bd2ab58bf9361eab7c4caadd3a78bb3abf",
+    "originalReviewUnmodified": true
+  },
+  "source": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+  "run": 41430549123,
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "availableManualLogCount": 10,
+  "earlierIntegrationLogCount": 10,
+  "scopeClarification": "This supplied directory has10manual mutation-workflow job logs; together with earlier10integration job logs these coverM20CIjobs. It does not have20mutation jobs.",
+  "allManualOriginalLogs": [
+    {
+      "job": "Verify merged architecture with original commands",
+      "id": 125227744605,
+      "bytes": 318773,
+      "sha256": "5d5910e7a96cd0b731081f634f0da3484f4e17098414ee244a9e7406ba898b24",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "plan",
+      "id": 125228398501,
+      "bytes": 17747,
+      "sha256": "b5844e65408ab307065d6bf6600f142a978f15304c53c32d5494522d6c009e03",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "mutation (core-2)",
+      "id": 125229041238,
+      "bytes": 28929,
+      "sha256": "5e69e02176cbdc1e9c954038fcd62dc4f8f758c758c364cdb40de5c0f88a47e9",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "mutation (core-1)",
+      "id": 125229041291,
+      "bytes": 29801,
+      "sha256": "527277b22445ca5f76d3e9825e0e1c3c3a1435c1cdb71abdf2eaf28c5fad8257",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "mutation (core-3)",
+      "id": 125229041321,
+      "bytes": 28335,
+      "sha256": "3a4ab6d23096b1ce6b26ae76ac11f4ea8f1ed2589484cf6ebc9f3d71e053cd2b",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "mutation (bridge-3)",
+      "id": 125229041325,
+      "bytes": 24307,
+      "sha256": "3a5b22add8a888c5ee62f69f3e8948b82e8293dca804fe8173573b804e72f275",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "mutation (bridge-2)",
+      "id": 125229041360,
+      "bytes": 24357,
+      "sha256": "309b7365fffcbc16a88b12ebac16d9a67418685f109429da7f853dc7c051a28f",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "mutation (bridge-1)",
+      "id": 125229041371,
+      "bytes": 24598,
+      "sha256": "7ea852043eb9469c8ade105b0037977ff870583d54ea09f23f7afa496912ffd3",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "mutation (core-4)",
+      "id": 125229041380,
+      "bytes": 31077,
+      "sha256": "7b40919a1fe3c2026b7fbe1f9e8295172eed2fb3e7f700c1decb2ddea133cea0",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    },
+    {
+      "job": "Verify complete mutation evidence",
+      "id": 125243170395,
+      "bytes": 31753,
+      "sha256": "1ebf31eb2bd66d2c51f86570e70ce0650d1195f8637cbc93c42c376349b1000e",
+      "checkout": [
+        "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+      ]
+    }
+  ],
+  "badcacheGroups": [
+    {
+      "shard": "bridge-1",
+      "jobId": 125229041371,
+      "logPath": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041371.log",
+      "logSha256": "7ea852043eb9469c8ade105b0037977ff870583d54ea09f23f7afa496912ffd3",
+      "probeId": "M61",
+      "sourceBoundManifestStrictExit": 1,
+      "originalStrictStateSequence": [
+        {
+          "line": 254,
+          "utc": "2026-11-02T11:12:33.6138482Z",
+          "raw": "殺死 killed 18 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 18,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 257,
+          "utc": "2026-11-02T11:12:33.6140183Z",
+          "raw": "殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 1 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 17,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 1,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 261,
+          "utc": "2026-11-02T11:12:33.6142382Z",
+          "raw": "殺死 killed 18 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 18,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        }
+      ],
+      "actualStaleReasonLine": {
+        "line": 258,
+        "utc": "2026-11-02T11:12:33.6140843Z",
+        "raw": "  STALE M61(原 killed):bridge executable artifact changed"
+      },
+      "returnCodeMeaning": "Original source-bound supervisor strict-check calls are0/1/0; negative manifest strict_exit1 and final successful step0 agree with actual raw stale0→1→0. These are not three separate OS-process executions."
+    },
+    {
+      "shard": "bridge-2",
+      "jobId": 125229041360,
+      "logPath": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041360.log",
+      "logSha256": "309b7365fffcbc16a88b12ebac16d9a67418685f109429da7f853dc7c051a28f",
+      "probeId": "M62",
+      "sourceBoundManifestStrictExit": 1,
+      "originalStrictStateSequence": [
+        {
+          "line": 254,
+          "utc": "2026-11-02T11:14:22.5844747Z",
+          "raw": "殺死 killed 18 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 18,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 257,
+          "utc": "2026-11-02T11:14:22.5847356Z",
+          "raw": "殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 1 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 17,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 1,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 261,
+          "utc": "2026-11-02T11:14:22.5851180Z",
+          "raw": "殺死 killed 18 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 18,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        }
+      ],
+      "actualStaleReasonLine": {
+        "line": 258,
+        "utc": "2026-11-02T11:14:22.5848468Z",
+        "raw": "  STALE M62(原 killed):bridge executable artifact changed"
+      },
+      "returnCodeMeaning": "Original source-bound supervisor strict-check calls are0/1/0; negative manifest strict_exit1 and final successful step0 agree with actual raw stale0→1→0. These are not three separate OS-process executions."
+    },
+    {
+      "shard": "bridge-3",
+      "jobId": 125229041325,
+      "logPath": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041325.log",
+      "logSha256": "3a5b22add8a888c5ee62f69f3e8948b82e8293dca804fe8173573b804e72f275",
+      "probeId": "M63",
+      "sourceBoundManifestStrictExit": 1,
+      "originalStrictStateSequence": [
+        {
+          "line": 253,
+          "utc": "2026-11-02T11:14:07.4738944Z",
+          "raw": "殺死 killed 16 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 16,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 256,
+          "utc": "2026-11-02T11:14:07.4741011Z",
+          "raw": "殺死 killed 15 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 1 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 15,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 1,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 260,
+          "utc": "2026-11-02T11:14:07.4743085Z",
+          "raw": "殺死 killed 16 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 16,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        }
+      ],
+      "actualStaleReasonLine": {
+        "line": 257,
+        "utc": "2026-11-02T11:14:07.4741653Z",
+        "raw": "  STALE M63(原 killed):bridge executable artifact changed"
+      },
+      "returnCodeMeaning": "Original source-bound supervisor strict-check calls are0/1/0; negative manifest strict_exit1 and final successful step0 agree with actual raw stale0→1→0. These are not three separate OS-process executions."
+    },
+    {
+      "shard": "core-1",
+      "jobId": 125229041291,
+      "logPath": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041291.log",
+      "logSha256": "527277b22445ca5f76d3e9825e0e1c3c3a1435c1cdb71abdf2eaf28c5fad8257",
+      "probeId": "M01",
+      "sourceBoundManifestStrictExit": 1,
+      "originalStrictStateSequence": [
+        {
+          "line": 277,
+          "utc": "2026-11-02T10:54:55.2006040Z",
+          "raw": "殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 17,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 280,
+          "utc": "2026-11-02T10:54:55.2008010Z",
+          "raw": "殺死 killed 16 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 1 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 16,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 1,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 284,
+          "utc": "2026-11-02T10:54:55.2010850Z",
+          "raw": "殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 17,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        }
+      ],
+      "actualStaleReasonLine": {
+        "line": 281,
+        "utc": "2026-11-02T10:54:55.2008821Z",
+        "raw": "  STALE M01(原 killed):execution receipt invalid: cached binary differs from executed receipt"
+      },
+      "returnCodeMeaning": "Original source-bound supervisor strict-check calls are0/1/0; negative manifest strict_exit1 and final successful step0 agree with actual raw stale0→1→0. These are not three separate OS-process executions."
+    },
+    {
+      "shard": "core-2",
+      "jobId": 125229041238,
+      "logPath": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041238.log",
+      "logSha256": "5e69e02176cbdc1e9c954038fcd62dc4f8f758c758c364cdb40de5c0f88a47e9",
+      "probeId": "M02",
+      "sourceBoundManifestStrictExit": 1,
+      "originalStrictStateSequence": [
+        {
+          "line": 277,
+          "utc": "2026-11-02T10:54:49.6878141Z",
+          "raw": "殺死 killed 18 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 18,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 280,
+          "utc": "2026-11-02T10:54:49.6880454Z",
+          "raw": "殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 1 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 17,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 1,
+            "blocked": 0,
+            "retired": 0
+          }
+        },
+        {
+          "line": 284,
+          "utc": "2026-11-02T10:54:49.6884049Z",
+          "raw": "殺死 killed 18 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0",
+          "counts": {
+            "killed": 18,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 0,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 0
+          }
+        }
+      ],
+      "actualStaleReasonLine": {
+        "line": 281,
+        "utc": "2026-11-02T10:54:49.6881773Z",
+        "raw": "  STALE M02(原 killed):execution receipt invalid: cached binary differs from executed receipt"
+      },
+      "returnCodeMeaning": "Original source-bound supervisor strict-check calls are0/1/0; negative manifest strict_exit1 and final successful step0 agree with actual raw stale0→1→0. These are not three separate OS-process executions."
+    },
+    {
+      "shard": "core-3",
+      "jobId": 125229041321,
+      "logPath": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041321.log",
+      "logSha256": "3a4ab6d23096b1ce6b26ae76ac11f4ea8f1ed2589484cf6ebc9f3d71e053cd2b",
+      "probeId": "M03",
+      "sourceBoundManifestStrictExit": 1,
+      "originalStrictStateSequence": [
+        {
+          "line": 273,
+          "utc": "2026-11-02T10:53:07.4820984Z",
+          "raw": "殺死 killed 13 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 2 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 2",
+          "counts": {
+            "killed": 13,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 2,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 2
+          }
+        },
+        {
+          "line": 276,
+          "utc": "2026-11-02T10:53:07.4824086Z",
+          "raw": "殺死 killed 12 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 2 / 無效 invalid 0 / 過期 stale 1 / 受阻 blocked 0 / 退役 retired 2",
+          "counts": {
+            "killed": 12,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 2,
+            "invalid": 0,
+            "stale": 1,
+            "blocked": 0,
+            "retired": 2
+          }
+        },
+        {
+          "line": 280,
+          "utc": "2026-11-02T10:53:07.4827759Z",
+          "raw": "殺死 killed 13 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 2 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 2",
+          "counts": {
+            "killed": 13,
+            "crashed": 0,
+            "survived": 0,
+            "equivalent": 2,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 2
+          }
+        }
+      ],
+      "actualStaleReasonLine": {
+        "line": 277,
+        "utc": "2026-11-02T10:53:07.4825574Z",
+        "raw": "  STALE M03(原 killed):execution receipt invalid: cached binary differs from executed receipt"
+      },
+      "returnCodeMeaning": "Original source-bound supervisor strict-check calls are0/1/0; negative manifest strict_exit1 and final successful step0 agree with actual raw stale0→1→0. These are not three separate OS-process executions."
+    },
+    {
+      "shard": "core-4",
+      "jobId": 125229041380,
+      "logPath": "/tmp/geometry-resume-20261102/pr340/manual-mutation-main354/original-job-logs/125229041380.log",
+      "logSha256": "7b40919a1fe3c2026b7fbe1f9e8295172eed2fb3e7f700c1decb2ddea133cea0",
+      "probeId": "M04",
+      "sourceBoundManifestStrictExit": 1,
+      "originalStrictStateSequence": [
+        {
+          "line": 277,
+          "utc": "2026-11-02T10:51:12.5353991Z",
+          "raw": "殺死 killed 14 / 崩潰 crashed 1 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 1",
+          "counts": {
+            "killed": 14,
+            "crashed": 1,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 1
+          }
+        },
+        {
+          "line": 281,
+          "utc": "2026-11-02T10:51:12.5357476Z",
+          "raw": "殺死 killed 13 / 崩潰 crashed 1 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 1 / 受阻 blocked 0 / 退役 retired 1",
+          "counts": {
+            "killed": 13,
+            "crashed": 1,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 1,
+            "blocked": 0,
+            "retired": 1
+          }
+        },
+        {
+          "line": 286,
+          "utc": "2026-11-02T10:51:12.5361059Z",
+          "raw": "殺死 killed 14 / 崩潰 crashed 1 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 1",
+          "counts": {
+            "killed": 14,
+            "crashed": 1,
+            "survived": 0,
+            "equivalent": 1,
+            "invalid": 0,
+            "stale": 0,
+            "blocked": 0,
+            "retired": 1
+          }
+        }
+      ],
+      "actualStaleReasonLine": {
+        "line": 282,
+        "utc": "2026-11-02T10:51:12.5358231Z",
+        "raw": "  STALE M04(原 killed):execution receipt invalid: cached binary differs from executed receipt"
+      },
+      "returnCodeMeaning": "Original source-bound supervisor strict-check calls are0/1/0; negative manifest strict_exit1 and final successful step0 agree with actual raw stale0→1→0. These are not three separate OS-process executions."
+    }
+  ],
+  "closedEarlierBoundary": "The original REVIEW limitation about missing complete manual-mutation Actions/probe logs is now supplied for all7 groups. Raw exact expected stale causes and restored tallies were read, not inferred only from manifest.",
+  "executedByPeer": [],
+  "originalFilesChanged": [],
+  "originalStrictCallSourceProof": {
+    "argv": [
+      "git",
+      "-C",
+      "/tmp/geometry-pr340-20261102",
+      "show",
+      "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f:.github/scripts/mutation_evidence.py"
+    ],
+    "exitCode": 0,
+    "sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+    "lazyFetchDisabled": true,
+    "locations": {
+      "positiveAndRestoredEnforce0": "109-117",
+      "negativeEnforces1AndRestoresBytesInFinally": "120-142",
+      "orderedBaselineNegativeRestoreCalls": "170-174"
+    },
+    "interpretation": "Successful original shard step plus these exact source guards, all three raw tallies, and manifest strict_exit1 bind same-process check return0→1→0. The log does not independently emit three child process exit statuses."
+  },
+  "peerExecutionScope": "Only static text/JSON/hash readers and no-lazy-fetch Git blob reads were executed. No product, mutation, verifier, build, native or browser command was rerun."
+}

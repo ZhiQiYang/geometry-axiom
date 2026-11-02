@@ -1,0 +1,327 @@
+﻿2026-11-02T10:53:12.2003271Z Current runner version: '2.338.2'
+2026-11-02T10:53:12.2039862Z ##[group]Runner Image Provisioner
+2026-11-02T10:53:12.2041492Z Hosted Compute Agent
+2026-11-02T10:53:12.2042560Z Version: 20261021.618
+2026-11-02T10:53:12.2043660Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-02T10:53:12.2044974Z Build Date: 2026-10-21T00:45:21Z
+2026-11-02T10:53:12.2046727Z Worker ID: {06142363-d417-428a-adba-9d8b98ad4a1a}
+2026-11-02T10:53:12.2047940Z Region: eastus
+2026-11-02T10:53:12.2048914Z Cloud: Azure
+2026-11-02T10:53:12.2049809Z ##[endgroup]
+2026-11-02T10:53:12.2052246Z ##[group]Operating System
+2026-11-02T10:53:12.2053364Z Ubuntu
+2026-11-02T10:53:12.2054225Z 24.04.5
+2026-11-02T10:53:12.2055152Z LTS
+2026-11-02T10:53:12.2056332Z ##[endgroup]
+2026-11-02T10:53:12.2057368Z ##[group]Runner Image
+2026-11-02T10:53:12.2058533Z Image: ubuntu-24.04
+2026-11-02T10:53:12.2059449Z Version: 20261025.353.1
+2026-11-02T10:53:12.2061923Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-02T10:53:12.2064740Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-02T10:53:12.2067444Z ##[endgroup]
+2026-11-02T10:53:12.2069406Z ##[group]GITHUB_TOKEN Permissions
+2026-11-02T10:53:12.2072550Z Contents: read
+2026-11-02T10:53:12.2073472Z Metadata: read
+2026-11-02T10:53:12.2074486Z ##[endgroup]
+2026-11-02T10:53:12.2078105Z Secret source: Actions
+2026-11-02T10:53:12.2079788Z Cache mode: write
+2026-11-02T10:53:12.2081227Z Prepare workflow directory
+2026-11-02T10:53:12.2530982Z Prepare all required actions
+2026-11-02T10:53:12.2580965Z Getting action download info
+2026-11-02T10:53:12.4376061Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-02T10:53:12.5838234Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-02T10:53:12.8031987Z Complete job name: mutation (core-1)
+2026-11-02T10:53:12.8964372Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-02T10:53:12.8965714Z with:
+2026-11-02T10:53:12.8966201Z   persist-credentials: false
+2026-11-02T10:53:12.8966849Z   ref: de3a56cfadecf575f8e7860cbfdafdac2af0a883
+2026-11-02T10:53:12.8967484Z   repository: ZhiQiYang/geometry-axiom
+2026-11-02T10:53:12.8971326Z   token: ***
+2026-11-02T10:53:12.8971763Z   ssh-strict: true
+2026-11-02T10:53:12.8972207Z   ssh-user: git
+2026-11-02T10:53:12.8972639Z   clean: true
+2026-11-02T10:53:12.8973086Z   sparse-checkout-cone-mode: true
+2026-11-02T10:53:12.8973624Z   fetch-depth: 1
+2026-11-02T10:53:12.8974053Z   fetch-tags: false
+2026-11-02T10:53:12.8974499Z   show-progress: true
+2026-11-02T10:53:12.8974946Z   lfs: false
+2026-11-02T10:53:12.8975364Z   submodules: false
+2026-11-02T10:53:12.8976340Z   set-safe-directory: true
+2026-11-02T10:53:12.8977180Z ##[endgroup]
+2026-11-02T10:53:13.1822324Z Syncing repository: ZhiQiYang/geometry-axiom
+2026-11-02T10:53:13.1826217Z ##[group]Getting Git version info
+2026-11-02T10:53:13.1827764Z Working directory is '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T10:53:13.1829655Z [command]/usr/bin/git version
+2026-11-02T10:53:13.1932980Z git version 2.56.0
+2026-11-02T10:53:13.1958918Z ##[endgroup]
+2026-11-02T10:53:13.1984504Z Temporarily overriding HOME='/home/runner/work/_temp/d27b5ede-c092-45a4-ba37-44face0cd123' before making global git config changes
+2026-11-02T10:53:13.1987341Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T10:53:13.1990299Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:53:13.2057019Z Deleting the contents of '/home/runner/work/geometry-axiom/geometry-axiom'
+2026-11-02T10:53:13.2059716Z ##[group]Initializing the repository
+2026-11-02T10:53:13.2061325Z [command]/usr/bin/git init /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T10:53:13.2211487Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-02T10:53:13.2214488Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-02T10:53:13.2217145Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-02T10:53:13.2218704Z hint: call:
+2026-11-02T10:53:13.2219542Z hint:
+2026-11-02T10:53:13.2220421Z hint: 	git config --global init.defaultBranch <name>
+2026-11-02T10:53:13.2221523Z hint:
+2026-11-02T10:53:13.2222605Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-02T10:53:13.2224143Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-02T10:53:13.2225728Z hint:
+2026-11-02T10:53:13.2226765Z hint: 	git branch -m <name>
+2026-11-02T10:53:13.2227739Z hint:
+2026-11-02T10:53:13.2228611Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-02T10:53:13.2230987Z Initialized empty Git repository in /home/runner/work/geometry-axiom/geometry-axiom/.git/
+2026-11-02T10:53:13.2248365Z [command]/usr/bin/git remote add origin https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T10:53:13.2319340Z ##[endgroup]
+2026-11-02T10:53:13.2321197Z ##[group]Disabling automatic garbage collection
+2026-11-02T10:53:13.2326783Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-02T10:53:13.2378957Z ##[endgroup]
+2026-11-02T10:53:13.2381111Z ##[group]Setting up auth
+2026-11-02T10:53:13.2387358Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:53:13.2434995Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:53:13.2979964Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:53:13.3049884Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:53:13.3338502Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-02T10:53:13.3393533Z ##[endgroup]
+2026-11-02T10:53:13.3394595Z ##[group]Fetching the repository
+2026-11-02T10:53:13.3406621Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin de3a56cfadecf575f8e7860cbfdafdac2af0a883
+2026-11-02T10:54:07.6935954Z From https://github.com/ZhiQiYang/geometry-axiom
+2026-11-02T10:54:07.6937103Z  * branch              de3a56cfadecf575f8e7860cbfdafdac2af0a883 -> FETCH_HEAD
+2026-11-02T10:54:07.6950611Z ##[endgroup]
+2026-11-02T10:54:07.6951636Z ##[group]Determining the checkout info
+2026-11-02T10:54:07.6956978Z ##[endgroup]
+2026-11-02T10:54:07.6957677Z [command]/usr/bin/git sparse-checkout disable
+2026-11-02T10:54:07.7042443Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-02T10:54:07.7087072Z ##[group]Checking out the ref
+2026-11-02T10:54:07.7093152Z [command]/usr/bin/git checkout --progress --force de3a56cfadecf575f8e7860cbfdafdac2af0a883
+2026-11-02T10:54:09.2679902Z Updating files:  14% (5422/38716)
+2026-11-02T10:54:09.7741143Z Updating files:  15% (5808/38716)
+2026-11-02T10:54:10.0940447Z Updating files:  15% (6089/38716)
+2026-11-02T10:54:10.2612796Z Updating files:  16% (6195/38716)
+2026-11-02T10:54:10.3055684Z Updating files:  17% (6582/38716)
+2026-11-02T10:54:10.3207738Z Updating files:  18% (6969/38716)
+2026-11-02T10:54:10.3657178Z Updating files:  19% (7357/38716)
+2026-11-02T10:54:10.3843109Z Updating files:  20% (7744/38716)
+2026-11-02T10:54:10.4311359Z Updating files:  21% (8131/38716)
+2026-11-02T10:54:10.4694922Z Updating files:  22% (8518/38716)
+2026-11-02T10:54:10.6288675Z Updating files:  23% (8905/38716)
+2026-11-02T10:54:10.7272824Z Updating files:  24% (9292/38716)
+2026-11-02T10:54:10.7615800Z Updating files:  25% (9679/38716)
+2026-11-02T10:54:10.7637434Z Updating files:  25% (10004/38716)
+2026-11-02T10:54:10.7861315Z Updating files:  26% (10067/38716)
+2026-11-02T10:54:10.8099553Z Updating files:  27% (10454/38716)
+2026-11-02T10:54:10.8475966Z Updating files:  28% (10841/38716)
+2026-11-02T10:54:11.0108738Z Updating files:  29% (11228/38716)
+2026-11-02T10:54:11.0287675Z Updating files:  30% (11615/38716)
+2026-11-02T10:54:11.0463438Z Updating files:  31% (12002/38716)
+2026-11-02T10:54:11.0840070Z Updating files:  32% (12390/38716)
+2026-11-02T10:54:11.1094131Z Updating files:  33% (12777/38716)
+2026-11-02T10:54:11.2782276Z Updating files:  34% (13164/38716)
+2026-11-02T10:54:11.9180901Z Updating files:  35% (13551/38716)
+2026-11-02T10:54:12.4041749Z Updating files:  35% (13682/38716)
+2026-11-02T10:54:12.4758843Z Updating files:  36% (13938/38716)
+2026-11-02T10:54:12.7185336Z Updating files:  37% (14325/38716)
+2026-11-02T10:54:12.7456876Z Updating files:  38% (14713/38716)
+2026-11-02T10:54:12.7620511Z Updating files:  39% (15100/38716)
+2026-11-02T10:54:12.8426993Z Updating files:  39% (15432/38716)
+2026-11-02T10:54:12.8697959Z Updating files:  40% (15487/38716)
+2026-11-02T10:54:12.8946647Z Updating files:  41% (15874/38716)
+2026-11-02T10:54:12.9110180Z Updating files:  42% (16261/38716)
+2026-11-02T10:54:13.4121726Z Updating files:  43% (16648/38716)
+2026-11-02T10:54:13.4424291Z Updating files:  44% (17036/38716)
+2026-11-02T10:54:13.6037241Z Updating files:  45% (17423/38716)
+2026-11-02T10:54:13.6627640Z Updating files:  46% (17810/38716)
+2026-11-02T10:54:13.7008896Z Updating files:  47% (18197/38716)
+2026-11-02T10:54:13.7207315Z Updating files:  48% (18584/38716)
+2026-11-02T10:54:13.7682267Z Updating files:  49% (18971/38716)
+2026-11-02T10:54:13.7703530Z Updating files:  49% (19329/38716)
+2026-11-02T10:54:13.8226867Z Updating files:  50% (19358/38716)
+2026-11-02T10:54:13.9453434Z Updating files:  51% (19746/38716)
+2026-11-02T10:54:14.0228485Z Updating files:  52% (20133/38716)
+2026-11-02T10:54:14.1080273Z Updating files:  53% (20520/38716)
+2026-11-02T10:54:14.1936375Z Updating files:  54% (20907/38716)
+2026-11-02T10:54:14.2416022Z Updating files:  55% (21294/38716)
+2026-11-02T10:54:14.2913540Z Updating files:  56% (21681/38716)
+2026-11-02T10:54:14.3369555Z Updating files:  57% (22069/38716)
+2026-11-02T10:54:14.3804498Z Updating files:  58% (22456/38716)
+2026-11-02T10:54:14.4496881Z Updating files:  59% (22843/38716)
+2026-11-02T10:54:14.4672262Z Updating files:  60% (23230/38716)
+2026-11-02T10:54:14.5011797Z Updating files:  61% (23617/38716)
+2026-11-02T10:54:14.5452799Z Updating files:  62% (24004/38716)
+2026-11-02T10:54:14.5835094Z Updating files:  63% (24392/38716)
+2026-11-02T10:54:14.6235013Z Updating files:  64% (24779/38716)
+2026-11-02T10:54:14.6965054Z Updating files:  65% (25166/38716)
+2026-11-02T10:54:14.7626552Z Updating files:  66% (25553/38716)
+2026-11-02T10:54:14.7896566Z Updating files:  66% (25897/38716)
+2026-11-02T10:54:14.8327640Z Updating files:  67% (25940/38716)
+2026-11-02T10:54:14.9246214Z Updating files:  68% (26327/38716)
+2026-11-02T10:54:15.0444049Z Updating files:  69% (26715/38716)
+2026-11-02T10:54:15.1161190Z Updating files:  70% (27102/38716)
+2026-11-02T10:54:15.1970412Z Updating files:  71% (27489/38716)
+2026-11-02T10:54:15.2720535Z Updating files:  72% (27876/38716)
+2026-11-02T10:54:15.3002143Z Updating files:  73% (28263/38716)
+2026-11-02T10:54:15.3553379Z Updating files:  74% (28650/38716)
+2026-11-02T10:54:15.3967047Z Updating files:  75% (29037/38716)
+2026-11-02T10:54:15.4504836Z Updating files:  76% (29425/38716)
+2026-11-02T10:54:15.4807195Z Updating files:  77% (29812/38716)
+2026-11-02T10:54:15.5035970Z Updating files:  78% (30199/38716)
+2026-11-02T10:54:15.5174354Z Updating files:  79% (30586/38716)
+2026-11-02T10:54:15.6176247Z Updating files:  80% (30973/38716)
+2026-11-02T10:54:15.7678326Z Updating files:  81% (31360/38716)
+2026-11-02T10:54:15.8468243Z Updating files:  81% (31505/38716)
+2026-11-02T10:54:15.8635788Z Updating files:  82% (31748/38716)
+2026-11-02T10:54:15.8911063Z Updating files:  83% (32135/38716)
+2026-11-02T10:54:15.9207248Z Updating files:  84% (32522/38716)
+2026-11-02T10:54:15.9644456Z Updating files:  85% (32909/38716)
+2026-11-02T10:54:16.0683998Z Updating files:  86% (33296/38716)
+2026-11-02T10:54:16.1051654Z Updating files:  87% (33683/38716)
+2026-11-02T10:54:16.1843289Z Updating files:  88% (34071/38716)
+2026-11-02T10:54:16.2039493Z Updating files:  89% (34458/38716)
+2026-11-02T10:54:16.2793476Z Updating files:  90% (34845/38716)
+2026-11-02T10:54:16.3214376Z Updating files:  91% (35232/38716)
+2026-11-02T10:54:16.3594953Z Updating files:  92% (35619/38716)
+2026-11-02T10:54:16.4003506Z Updating files:  93% (36006/38716)
+2026-11-02T10:54:16.4338925Z Updating files:  94% (36394/38716)
+2026-11-02T10:54:16.4713452Z Updating files:  95% (36781/38716)
+2026-11-02T10:54:16.5384414Z Updating files:  96% (37168/38716)
+2026-11-02T10:54:16.6589360Z Updating files:  97% (37555/38716)
+2026-11-02T10:54:16.6770313Z Updating files:  98% (37942/38716)
+2026-11-02T10:54:16.7126859Z Updating files:  99% (38329/38716)
+2026-11-02T10:54:16.7127611Z Updating files: 100% (38716/38716)
+2026-11-02T10:54:16.7128184Z Updating files: 100% (38716/38716), done.
+2026-11-02T10:54:16.9112846Z Note: switching to 'de3a56cfadecf575f8e7860cbfdafdac2af0a883'.
+2026-11-02T10:54:16.9113360Z 
+2026-11-02T10:54:16.9113686Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-02T10:54:16.9114506Z changes and commit them, and you can discard any commits you make in this
+2026-11-02T10:54:16.9115292Z state without impacting any branches by switching back to a branch.
+2026-11-02T10:54:16.9116063Z 
+2026-11-02T10:54:16.9116369Z If you want to create a new branch to retain commits you create, you may
+2026-11-02T10:54:16.9116864Z do so (now or later) by using -c with the switch command. Example:
+2026-11-02T10:54:16.9117125Z 
+2026-11-02T10:54:16.9117239Z   git switch -c <new-branch-name>
+2026-11-02T10:54:16.9117412Z 
+2026-11-02T10:54:16.9117518Z Or undo this operation with:
+2026-11-02T10:54:16.9117676Z 
+2026-11-02T10:54:16.9117760Z   git switch -
+2026-11-02T10:54:16.9118226Z 
+2026-11-02T10:54:16.9118446Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-02T10:54:16.9118750Z 
+2026-11-02T10:54:16.9119132Z HEAD is now at de3a56cf Merge commit 'e02057b4c725d6f03ae52c3bc30776bf9442b0cf' into codex/issue214-main-convergence-20261102
+2026-11-02T10:54:16.9681084Z ##[endgroup]
+2026-11-02T10:54:16.9740906Z [command]/usr/bin/git log -1 --format=%H
+2026-11-02T10:54:16.9782793Z de3a56cfadecf575f8e7860cbfdafdac2af0a883
+2026-11-02T10:54:16.9798327Z ##[group]Removing auth
+2026-11-02T10:54:16.9809608Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T10:54:16.9858337Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T10:54:17.0204391Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T10:54:17.0245110Z http.https://github.com/.extraheader
+2026-11-02T10:54:17.0254416Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-02T10:54:17.0305277Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T10:54:17.0650563Z ##[endgroup]
+2026-11-02T10:54:17.0891261Z ##[group]Run ulimit -s 16384
+2026-11-02T10:54:17.0891648Z [36;1mulimit -s 16384[0m
+2026-11-02T10:54:17.0892207Z [36;1mpython3 .github/scripts/mutation_evidence.py run --shard "$SHARD" --out "$RUNNER_TEMP/mutation-evidence"[0m
+2026-11-02T10:54:17.0917435Z shell: /usr/bin/bash -e {0}
+2026-11-02T10:54:17.0917715Z env:
+2026-11-02T10:54:17.0917914Z   SHARD: core-1
+2026-11-02T10:54:17.0918138Z ##[endgroup]
+2026-11-02T10:54:18.1610433Z Mutation scope: partial M01, M05, M59, M11, M98, M17, M21, M25, M29, M57, M56, M33, M37, M71, M75, M87, M91, M95
+2026-11-02T10:54:36.2092478Z BASELINE exe 已重編
+2026-11-02T10:54:57.5654226Z BASELINE OK: 166/166 全過(未變異原始碼)
+2026-11-02T10:55:13.9489885Z M01  exe 已重編
+2026-11-02T10:55:35.0812363Z M01  KILLED    I5：邊上判定:含端點改嚴格(端點不在邊上)  <- _ax_i5_collinear_vertex_rect_corner.scene: FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊
+2026-11-02T10:55:51.3654741Z M05  exe 已重編
+2026-11-02T10:56:07.1301930Z M05  KILLED    I5：直立邊在矩形邊界上也算穿入(<= 改 <)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距
+2026-11-02T10:56:23.4174405Z M59  exe 已重編
+2026-11-02T10:56:44.7165342Z M59  KILLED    I5：拿掉「矩形中心必須在環內」檢查(凹槽內四角貼壁的矩形放行)  <- _ax_i5_notch_cell_corners_on_ring.scene: FAIL 應拒絕但接受 (L=['20'])
+2026-11-02T10:57:01.1839799Z M11  exe 已重編
+2026-11-02T10:57:21.9073251Z M11  KILLED    I5：停用孔完全罩住矩形的精確中心檢查（孔內矩形錯誤放行）  <- _test_hole_auto.scene: FAIL 應接受但拒絕: <repo>/_test_hole_auto.scene:15: V_CUT_PRIORITY：角材 2 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC
+2026-11-02T10:57:38.4999423Z M98  exe 已重編
+2026-11-02T10:57:59.8364596Z M98  KILLED    I11：W 最終世界重驗的兩兩檢查拿掉「只比同承載面」過濾(world_validation.c)；同上場景必轉紅  <- _i11_two_surfaces_same_uv_accept.scene: FAIL 應接受但拒絕: <repo>/_i11_two_surfaces_same_uv_accept.scene:14: 場景重驗失敗
+2026-11-02T10:58:16.4186037Z M17  exe 已重編
+2026-11-02T10:58:32.1227215Z M17  KILLED    D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: R6/I5/I6 timber 80: 跨距起點沒有擋面（端面懸空）
+2026-11-02T10:58:48.8703117Z M21  exe 已重編
+2026-11-02T10:59:09.9867191Z M21  KILLED    R6(d)：拿掉「終點必須有擋面」檢查  <- _edge_straddle.scene: FAIL 錯誤不符: 期望含「端面懸空」實得「<repo>/_edge_straddle.scene:7: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+2026-11-02T10:59:26.7849092Z M25  exe 已重編
+2026-11-02T10:59:48.1029990Z M25  KILLED    R6(c)：跨距歧義放行:多區間自動選第一段  <- _test_ambiguous.scene: FAIL 錯誤不符: 期望含「跨距歧義」實得「<repo>/_test_ambiguous.scene:10: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+2026-11-02T11:00:04.8384542Z M29  exe 已重編
+2026-11-02T11:00:24.2890954Z M29  KILLED    I13：外輪廓材料側反轉(footprint 長到面外)  <- _demo_ceiling.scene: FAIL 應接受但拒絕: <repo>/_demo_ceiling.scene:33: R6/I5/I6 timber 2: 中線上沒有任何合法跨距
+2026-11-02T11:00:40.6974693Z M57  exe 已重編
+2026-11-02T11:01:01.6134007Z M57  KILLED    R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:17: R6/I5/I6 timber 3: between 指名的擋面是自由邊（頂到空氣）
+2026-11-02T11:01:17.9186572Z M56  exe 已重編
+2026-11-02T11:01:39.1249840Z M56  EQUIVALENT I23：I23(b) 不再檢查被錨定的索引是否仍推導得出  <- 等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。
+2026-11-02T11:01:55.6356026Z M33  exe 已重編
+2026-11-02T11:02:16.0220696Z M33  KILLED    I13：at-grid 軸向守門員反轉  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:13: I13/I23 timber 1: missing grid or face/axis mismatch (垂直)
+2026-11-02T11:02:32.3936786Z M37  exe 已重編
+2026-11-02T11:02:47.6199235Z M37  KILLED    I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)  <- subgrid-local.scene: FAIL 應接受但拒絕: <repo>/subgrid-local.scene:7: 場景重驗失敗
+2026-11-02T11:03:03.7152989Z M71  exe 已重編
+2026-11-02T11:03:24.1343431Z M71  KILLED    R7/#198 A：以 bbox 冒充單 slab 的多段交集  <- _ax_r7_notch_disconnected.scene: FAIL 錯誤不符: 期望含「R7: 投影接觸非單一矩形」實得「<repo>/_ax_r7_notch_disconnected.scene:4: 套用投影後有物件失效（輪廓退化/空間成員衝突）」
+2026-11-02T11:03:40.4203287Z M75  exe 已重編
+2026-11-02T11:04:01.2310453Z M75  KILLED    R14/R15/#202：未裁切 strip 提前成功、忽略其餘項及選片  <- _ax_r15_uncut_strip_missing_item.scene: FAIL 應拒絕但接受 (L=[])
+2026-11-02T11:04:17.5235047Z M87  exe 已重編
+2026-11-02T11:04:38.2924831Z M87  KILLED    I22/S1：拿掉「非 boundary 角材的 footprint 不得超出定位邊」的拒絕(V_EXTENSION)；primary 整支穿過凹角的 _s1_p8 必轉紅  <- _role_priority_mutant.scene: FAIL 錯誤不符: 期望含「V_EXTENSION：非 boundary 角材（1）」實得「<repo>/_role_priority_mutant.scene:8: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」
+2026-11-02T11:04:54.8517513Z M91  exe 已重編
+2026-11-02T11:05:15.8173437Z M91  KILLED    I22/#299：V_EXTENSION 訊息拿掉定位邊區間 [edge_lo,edge_hi] mm；p8、p8b 必轉紅  <- _s1_p8_l_room_primary_through_reflex_extension.scene: FAIL 錯誤不符: 期望含「V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍」且含「定位邊 e3 [3000,4800] mm」且含「低端超出 [27,3000] mm」且不含「高端超出」實得「<repo>/_s1_p8_l_room_primary_through_reflex_extension.scene:15: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e3，低端超出 [27,3000] mm」
+2026-11-02T11:05:31.8511933Z M95  exe 已重編
+2026-11-02T11:05:52.1747131Z M95  KILLED    I22/#299：V_EXTENSION 訊息的「高端超出」不論有沒有超出都印(多印一段假區間)；_s1_p8 的 error_not 必轉紅  <- _s1_p8_l_room_primary_through_reflex_extension.scene: FAIL 錯誤不符: 期望含「V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍」且含「定位邊 e3 [3000,4800] mm」且含「低端超出 [27,3000] mm」且不含「高端超出」實得「<repo>/_s1_p8_l_room_primary_through_reflex_extension.scene:15: V_EXTENSION：非 boundary 角材（3）的 footprint 超出定位邊範圍——定位邊 e3 [3000,4800] mm，低端超出 [27,3000] mm，高端超出 [4800,4773] mm」
+2026-11-02T11:05:53.6472399Z 
+2026-11-02T11:05:53.6473713Z 本次 18:殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+2026-11-02T11:05:53.6475184Z 歷次紀錄(不是本次覆蓋)18:殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0 / 未跑 unrun 52
+2026-11-02T11:05:53.6476586Z   (過期明細用 --check 列出)
+2026-11-02T11:05:55.1825945Z 本次 18:殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+2026-11-02T11:06:04.8957753Z 結果檔 /home/runner/work/_temp/mutation-evidence/mutants_results.json
+2026-11-02T11:06:04.8958575Z 變異表 18 筆,紀錄 18 筆
+2026-11-02T11:06:04.8959514Z 殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+2026-11-02T11:06:04.8960660Z 結果檔 /home/runner/work/_temp/mutation-evidence/mutants_results.json
+2026-11-02T11:06:04.8961856Z 變異表 18 筆,紀錄 18 筆
+2026-11-02T11:06:04.8962772Z 殺死 killed 16 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 1 / 受阻 blocked 0 / 退役 retired 0
+2026-11-02T11:06:04.8964351Z   STALE M01(原 killed):execution receipt invalid: cached binary differs from executed receipt
+2026-11-02T11:06:04.8966099Z 結果檔 /home/runner/work/_temp/mutation-evidence/mutants_results.json
+2026-11-02T11:06:04.8966685Z 變異表 18 筆,紀錄 18 筆
+2026-11-02T11:06:04.8967422Z 殺死 killed 17 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 1 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0
+2026-11-02T11:06:04.9179827Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-02T11:06:04.9180259Z with:
+2026-11-02T11:06:04.9180470Z   name: mutation-shard-core-1
+2026-11-02T11:06:04.9181414Z   path: /home/runner/work/_temp/mutation-evidence/manifest.json
+/home/runner/work/_temp/mutation-evidence/mutants_results.json
+/home/runner/work/_temp/mutation-evidence/cache.tar.gz
+/home/runner/work/_temp/mutation-evidence/execution.log
+
+2026-11-02T11:06:04.9182412Z   if-no-files-found: error
+2026-11-02T11:06:04.9182644Z   retention-days: 30
+2026-11-02T11:06:04.9182861Z   compression-level: 6
+2026-11-02T11:06:04.9183077Z   overwrite: false
+2026-11-02T11:06:04.9183292Z   include-hidden-files: false
+2026-11-02T11:06:04.9183538Z ##[endgroup]
+2026-11-02T11:06:05.1001537Z (node:5865) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-02T11:06:05.1002928Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-02T11:06:05.1072557Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-02T11:06:05.1076208Z The least common ancestor is /home/runner/work/_temp/mutation-evidence. This will be the root directory of the artifact
+2026-11-02T11:06:05.1077364Z With the provided path, there will be 4 files uploaded
+2026-11-02T11:06:05.1086166Z Artifact name is valid!
+2026-11-02T11:06:05.1086880Z Root directory input is valid!
+2026-11-02T11:06:05.3421678Z Beginning upload of artifact content to blob storage
+2026-11-02T11:06:05.6652954Z (node:5865) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-02T11:06:05.8316092Z Uploaded bytes 8388608
+2026-11-02T11:06:05.8579632Z Uploaded bytes 8665001
+2026-11-02T11:06:05.8766293Z Finished uploading artifact content to blob storage!
+2026-11-02T11:06:05.8767534Z SHA256 digest of uploaded artifact zip is ab2eab35207cbb8d7824ad3f70d372ea29bf1cf0454c0435bba2bd5c4e988a8a
+2026-11-02T11:06:05.8768552Z Finalizing artifact upload
+2026-11-02T11:06:06.2957357Z Artifact mutation-shard-core-1.zip successfully finalized. Artifact ID 13134974110
+2026-11-02T11:06:06.2959556Z Artifact mutation-shard-core-1 has been successfully uploaded! Final size is 8665001 bytes. Artifact ID is 13134974110
+2026-11-02T11:06:06.2966666Z Artifact download URL: https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41431971663/artifacts/13134974110
+2026-11-02T11:06:06.3237004Z Post job cleanup.
+2026-11-02T11:06:06.4179095Z [command]/usr/bin/git version
+2026-11-02T11:06:06.4218428Z git version 2.56.0
+2026-11-02T11:06:06.4267455Z Temporarily overriding HOME='/home/runner/work/_temp/5d3fc549-c7d8-4376-bb58-e7c25d4f450e' before making global git config changes
+2026-11-02T11:06:06.4269101Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T11:06:06.4274207Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T11:06:06.4326793Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T11:06:06.4386719Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T11:06:06.4797431Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T11:06:06.4850761Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T11:06:06.5472748Z Cleaning up orphan processes
+2026-11-02T11:06:06.5986935Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

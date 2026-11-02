@@ -1,0 +1,116 @@
+{
+  "id": 125251333430,
+  "run_id": 41437638054,
+  "workflow_name": "Geometry integration",
+  "head_branch": "codex/issue214-http-fixture-20261024",
+  "run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/41437638054",
+  "run_attempt": 1,
+  "node_id": "CR_kwDOUfdcjM8AAAAdKY-tNg",
+  "head_sha": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+  "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/125251333430",
+  "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41437638054/job/125251333430",
+  "status": "completed",
+  "conclusion": "cancelled",
+  "created_at": "2026-11-02T11:32:30Z",
+  "started_at": "2026-11-02T11:32:32Z",
+  "completed_at": "2026-11-02T11:42:49Z",
+  "name": "browser (documents)",
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 1,
+      "started_at": "2026-11-02T11:32:33Z",
+      "completed_at": "2026-11-02T11:32:34Z"
+    },
+    {
+      "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "number": 2,
+      "started_at": "2026-11-02T11:32:34Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Build current native executables",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 3,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Install Chinese fonts for visual verification",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 4,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Run actual browser regression group",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 5,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Preserve canvas wait trace",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 6,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Preserve assembly authoring screenshots",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 7,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Preserve grid trial screenshots",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 8,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Preserve document reader screenshots",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 9,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 18,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:46Z"
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 19,
+      "started_at": "2026-11-02T11:42:46Z",
+      "completed_at": "2026-11-02T11:42:47Z"
+    }
+  ],
+  "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/125251333430",
+  "labels": [
+    "ubuntu-latest"
+  ],
+  "runner_id": 1000011238,
+  "runner_name": "GitHub Actions 1000011238",
+  "runner_group_id": 0,
+  "runner_group_name": "GitHub Actions"
+}

@@ -1,3 +1,16 @@
+# CURRENT 2026-11-02T12:19:38.193187+00:00 — #340 F驗收齊，交最新審查
+
+**#340 VALIDATED-WAITING-REVIEW**：公開F edf556eedc204bb285fb4504e246e4310f4e1e88、正式integration41438184818全部10success，真execution27feb429dd4690097bb3d330b2fbbc62c3619636與F同tree；12原ZIP＋10原log已全核。原native237/5420pass/1GDI，原聚合CLI0且summary逐byte同官方；fullcanvas2286/86golden、0fail/skip、其他5browser成功。原M#36610綠/123fresh＋7badcache真0/1/0、F精確採入與原check/架構三0全部有獨立peer。最新當前F的【ChatGPT 審查】尚待，**不是main合併批准，不先冒READY-TO-MERGE**；root將正文/完整SHA同步並轉待審，請本機Claude待可合再合。
+
+#345 F f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12仍待integration41437638054真終態；單documents取消在fetch、無build/browser結果，whole-job原10min，原logs已保留。單job rerun因整run仍活回403 state，不是認證失效、不取消其他活job。run完成後只重跑這個環境項，保所有原時限。
+
+**documents取件小修已完成雙peer靜態審查，尚未提交/PR/CI**：只matrix.suite documents的checkout排根/evidence，blob:none/non-cone；55require/740runtime/351route/8catalog/3native×195inputs與47原check全保。其他5browser、native/#366/helper、所有時限/credentials/權限原樣。根proof metadata17742 blobs/2.659GB logical，不當wire量或實測速度。helper內層與B1特用rootleaves另列，這次不碰mutation_bridge（會改tool_hash）。候選patch936B，未把靜態PASS說真CI通過；下一步獨立utilitybranch draft作真47/10minCI，避免與F源碼競寫。
+
+#367D standalone全驗仍draft等上游/main整合；341 bench仍UNRUN，等340由本機合main後才正式下一張。所有原紅與完整cache原件均持久，未mainmerge／force/rebase／改SSOT／增額資源。
+
+---
+歷史以下不作現在ready／head
+
 # CURRENT 2026-11-02T11:43Z — 新原件已實際採入並持久交付
 
 #340 current F=edf556eedc204bb285fb4504e246e4310f4e1e88；#345 current F=f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12。兩者都已把各自原#366整份新ledger和新report/receipt exact bytes採入trackedfiles、普通FF推送，原F check與架構三條全0。實際M→F各只有3Git葉；scan原本byte同、manifest policy未動。120執行仍各自M aca3d2a...／de3a56...，沒有改寫成F。新F integration已自動啟：340 run41438184818、345 run41437638054，**未收終態不可標全綠**；M全20綠保留execution。

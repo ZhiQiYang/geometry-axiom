@@ -1,0 +1,111 @@
+geometry-web/work-manager/test_adapter_independent.py:75:                    "evidence": [{"id": "adapter-proof", "criterion": "behavior", "kind": "test",
+geometry-web/work-manager/test_adapter_independent.py:177:                    "required_acceptance", "evidence", "assignment_history", "next_action_pin"):
+geometry-web/work-manager/test_adapter_independent.py:193:        for key in ("pr", "evidence", "next_action_pin", "delivery_status"):
+geometry-web/work-manager/test_store.py:129:        return self.event("result", {"evidence": evidence, "pr": {
+geometry-web/work-manager/test_store.py:162:        self.assertEqual(current["evidence"][0]["effective_result"], "unknown")
+geometry-web/work-manager/test_store.py:174:        self.assertEqual(task["evidence"][0]["sha"], merge_commit)
+geometry-web/work-manager/test_store.py:175:        self.assertEqual(task["evidence"][0]["bound_head_sha"], HEAD)
+geometry-web/work-manager/test_store.py:176:        self.assertEqual(task["evidence"][0]["validity"], "merged_commit")
+geometry-web/work-manager/test_store.py:183:        self.assertEqual(self.view()["evidence"][0]["validity"], "stale")
+geometry-web/work-manager/test_store.py:194:        self.assertEqual(self.view()["evidence"][0]["effective_result"], "unknown")
+geometry-web/work-manager/test_store.py:204:        self.assertEqual(task["evidence"][0]["sha"], tested)
+geometry-web/work-manager/test_store.py:205:        self.assertEqual(task["evidence"][0]["validity"], "tree_equivalent")
+geometry-web/work-manager/test_store.py:228:                self.assertEqual(self.view(task_id)["evidence"][0]["effective_result"], "unknown")
+tests/integration/model_library_history_browser.py:259:                  held['evidence']['blocked'] and js(page, 'return __mhGate.native.ok===true;'))
+tests/test_grid_rule_reader_browser.js:22:  const original=await P.unpack(new Uint8Array(fs.readFileSync(path.join(root,'geometry-web/docs/evidence/issue48-34a6222-20261005/archives/1280-full.gcanvas'))),zip);
+tests/test_grid_rule_reader_browser.js:62:    check('formal Save retains /13 model collections, raw/evidence/source closure and native',roundtrip.manifest.format===P.GRID_RULE_FORMAT&&roundtrip.scene===accepted.scene&&roundtrip.manifest.models.length===loaded.manifest.models.length&&roundtrip.manifest.faceProjections.length===loaded.manifest.faceProjections.length&&JSON.stringify(roundtrip.manifest.featureAttachments.records.find(r=>r.kind===F.GRID_KIND).value)===JSON.stringify(raw)&&[...loaded.sources].every(([key,bytes])=>Buffer.from( [... omitted end of long line]
+tests/test_reference_workspace_races.js:154:  const bytes=fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-collection-capacity-20261012/legacy6a-with-scene.gcanvas'));
+tests/test_reference_workspace_races.js:165:  const {w}=await fixture(),old=new Uint8Array(fs.readFileSync(require('node:path').join(__dirname,'evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas'))),opened=await P.unpack(old,zip);
+tests/test_section_profile_mutation_check.py:113:        if 'evidence' in inspect.signature(gate.verdict).parameters:
+tests/mutation_bridge.py:481:        subprocess.run(["git", "sparse-checkout", "set", "--no-cone", "/*", "!/tests/evidence/", "!/tests/release-evidence/"], cwd=work, check=True, env=env)
+tests/release_gate.py:297:                receipt["evidence"] = evidence
+geometry-web/work-manager/test_adapter.py:51:                    "evidence": [{"id": "synthetic-proof", "criterion": "behavior", "kind": "test", "timestamp": stamp(-2), "sha": HEAD, "result": "passed"}]}}
+geometry-web/work-manager/test_adapter.py:74:        self.assertEqual(task["evidence"][0]["id"], "synthetic-proof")
+.github/workflows/pr338-b1-recovery-audit.yml:25:            /evidence/pr338-b1-recovery-20261102/
+.github/workflows/pr338-b1-recovery-audit.yml:26:            /evidence/geo337-train-20261024/review-unblock-20261029/B1_STATUS.json
+.github/workflows/pr338-b1-recovery-audit.yml:27:            /evidence/geo337-train-20261024/full-R8-five-stage-raw/ORIGINAL_R8_FIVE_STAGE_RAW.tar.gz
+.github/workflows/pr338-b1-recovery-audit.yml:28:            /evidence/geo337-train-20261024/full-R8-five-stage-raw/EXCLUDED_ELF_PAYLOADS.json
+.github/workflows/pr338-b1-recovery-audit.yml:29:            /evidence/geo337-train-20261024/prepared-during-F8/memo-copy-v2/tools/
+.github/workflows/pr338-b1-recovery-audit.yml:30:            /evidence/pr338-b2-closure-20261029/
+geometry-web/work-manager/test_review_regressions.py:81:                    "evidence": [proof(head=head)]}))
+geometry-web/work-manager/test_review_regressions.py:104:                            event("result", {"evidence": [proof(identity=f"proof-{action}")],
+geometry-web/work-manager/test_review_regressions.py:113:                    event("result", {"pr": pull_request(review="pending"), "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:127:        for location in ("evidence", "pr"):
+geometry-web/work-manager/test_review_regressions.py:132:                data = {"pr": pull_request(merged=True), "evidence": [proof()]}
+geometry-web/work-manager/test_review_regressions.py:133:                if location == "evidence":
+geometry-web/work-manager/test_review_regressions.py:134:                    data["evidence"] = [proof(kind="ci", runner_id=123, steps=[bad_step])]
+geometry-web/work-manager/test_review_regressions.py:153:        self.ingest(task(), event("result", {"pr": pull_request(), "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:157:                                 "evidence": [proof(identity="new-head-proof", head=HEAD_B, minutes=1)]},
+geometry-web/work-manager/test_review_regressions.py:170:        self.ingest(task(), event("result", {"pr": unpinned, "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:179:            self.ingest(event("result", {"pr": pull_request(merged=True), "evidence": [failed, passed]}))
+geometry-web/work-manager/test_review_regressions.py:183:        self.ingest(task(), event("result", {"evidence": [proof(result="failed")]}))
+geometry-web/work-manager/test_review_regressions.py:186:            self.ingest(event("result", {"pr": pull_request(merged=True), "evidence": [proof()]}, version=2))
+geometry-web/work-manager/test_review_regressions.py:191:                    "evidence": [proof(identity="current-b-proof", head=HEAD_B)]}))
+geometry-web/work-manager/test_review_regressions.py:194:        self.ingest(event("result", {"evidence": [proof(identity="later-stale-a-proof", head=HEAD_A, minutes=1)]},
+geometry-web/work-manager/test_review_regressions.py:201:        self.assertEqual(len(after["evidence"]), 2, "stale evidence remains in audit history")
+geometry-web/work-manager/test_review_regressions.py:204:        self.ingest(task(), event("result", {"pr": pull_request(merged=True), "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:216:                    event("result", {"pr": pull_request(merged=True), "evidence": [proof()]}))
+geometry-web/work-manager/test_review_regressions.py:222:                    "evidence": [proof(head=HEAD_B)]}))
+geometry-web/work-manager/test_review_regressions.py:233:                                         "evidence": [proof(head=HEAD_B)]})
+geometry-web/work-manager/test_review_regressions.py:247:        self.ingest(event("result", {"evidence": [stale]}, version=3, when=stamp(3)), minutes=3)
+geometry-web/work-manager/test_review_regressions.py:255:        self.ingest(task(head_sha=HEAD_B), event("result", {"pr": pull_request(head=HEAD_B), "evidence": []}))
+geometry-web/work-manager/test_review_regressions.py:263:        self.ingest(event("result", {"evidence": [proof(identity="only-old-head-proof", head=HEAD_A, minutes=2)]},
+geometry-web/work-manager/test_review_regressions.py:270:        self.assertEqual(len(current["evidence"]), 1, "old-head proof is retained as history")
+geometry-web/work-manager/test_review_regressions.py:276:                      "evidence": [proof(identity="reviewed-b-proof", head=HEAD_B, minutes=2)]}, when=stamp(2))
+geometry-web/work-manager/test_review_regressions.py:288:        self.ingest(event("result", {"evidence": [failed]}, version=3, when=stamp(2)), minutes=2)
+geometry-web/work-manager/test_review_regressions.py:331:        self.ingest(task(), event("result", {"pr": pull_request(), "evidence": [same, copy.deepcopy(same)]}))
+geometry-web/work-manager/test_review_regressions.py:333:        self.assertEqual(len(current["evidence"]), 1)
+geometry-web/work-manager/test_review_regressions.py:335:        self.ingest(event("result", {"evidence": [copy.deepcopy(same)]}, version=2, when=stamp(1)), minutes=1)
+geometry-web/work-manager/test_review_regressions.py:336:        self.assertEqual(len(self.view()["evidence"]), 1)
+geometry-web/work-manager/test_review_regressions.py:343:            self.ingest(event("result", {"evidence": [proof(result="failed")]}, version=1),
+geometry-web/work-manager/test_review_regressions.py:344:                        event("result", {"evidence": [proof(result="passed")]}, version=2))
+geometry-web/work-manager/test_review_regressions.py:349:                    event("result", {"evidence": [proof(result="failed")]}, task="FIRST"),
+geometry-web/work-manager/test_review_regressions.py:350:                    event("result", {"evidence": [proof(result="passed")]}, task="SECOND"))
+tests/diagnostics/ui209_correct_returns.py:17:EVIDENCE = ROOT / 'tests/evidence/ui209-recovery-20261013'
+geometry-web/work-manager/test_acceptance.py:329:            {"evidence": [evidence(id="qa-malformed-ci-proof", kind="ci", runner_id=123, steps=[{}])], "pr": pr(merged=True, review="approved")},
+geometry-web/work-manager/test_acceptance.py:330:            {"evidence": [evidence(id="qa-malformed-pr-ci-proof")], "pr": pr(merged=True, review="approved", ci=[{"name": "synthetic-ci", "sha": HEAD_A, "status": "completed", "conclusion": "success", "runner_id": 123, "steps": [{}]}])},
+tests/test_grid_drafts_lifecycle_capacity.js:13: test('B1 previous collection writer ZIP retains a full-size orphan draft on cold read and re-save',async()=>{const P=require('../geometry-web/project-store.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js'),fs=require('node:fs'),path=require('node:path'),old=fs.readFileSync(path.join(__dirname,'evidence/k2a-collection-capacity-20261012/legacy6a.gcanvas')),original=JSON.parse(new TextDecoder().decode(zip.unzipSync(old)['manifest.json']));let opened;await assert.doesNotReject(async()= [... omitted end of long line]
+tests/test_grid_drafts_lifecycle_capacity.js:14: test('B1 legacy near-limit ZIP reads and re-saves without reserving new admission bytes',async()=>{const P=require('../geometry-web/project-store.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js'),fs=require('node:fs'),path=require('node:path');const old=fs.readFileSync(path.join(__dirname,'evidence/k2a-boundary-review-20261012/legacy/base49-capacity.gcanvas'));let opened;await assert.doesNotReject(async()=>{opened=await P.unpack(new Uint8Array(old),zip);},/容量|上限/);assert.equal(byte [... omitted end of long line]
+geometry-web/work-manager/test_legacy_upgrade.py:66:    result = {"pr": pr(), "evidence": [proof()]}
+geometry-web/work-manager/test_legacy_upgrade.py:69:        result["evidence"][0].update(kind="ci", runner_id=123, steps=[bad_step])
+geometry-web/work-manager/test_legacy_upgrade.py:74:        result["evidence"] = [proof("failed"), proof("passed")]
+geometry-web/work-manager/test_legacy_upgrade.py:210:            self.assertEqual([item["result"] for item in json.loads(raw)["data"]["evidence"]], ["failed", "passed"])
+tests/diagnostics/test_binaries_ctime_probe.py:141:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:163:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:181:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:198:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:210:            output = Path(directory) / 'evidence'
+tests/diagnostics/test_binaries_ctime_probe.py:233:            output = Path(directory) / 'evidence'
+tests/test_document_cases.js:152:  for (const suffix of ['license', 'evidence']) {
+tests/test_geo261_graph_product.py:63:        fixture = ROOT / 'tests/release-evidence/20261008-cloud-closeout/contracts/grid-final/grid-rule-timber.scene'
+geometry-web/work-manager/store.py:25:RESULT_FIELDS = {"evidence", "pr", "pr_metadata", "head_sha", "execution_status", "owner_thread", "summary", "completed_actions"}
+geometry-web/work-manager/store.py:277:    _object(evidence, "evidence", {"id", "criterion", "kind", "timestamp", "sha", "result", "url",
+geometry-web/work-manager/store.py:371:        if "evidence" in data:
+geometry-web/work-manager/store.py:372:            if not isinstance(data["evidence"], list):
+geometry-web/work-manager/store.py:374:            for evidence in data["evidence"]:
+geometry-web/work-manager/store.py:591:    applicable_ids = {evidence["id"] for evidence in task["evidence"]
+geometry-web/work-manager/store.py:598:    } for evidence in task["evidence"] if evidence["id"] in selected_ids]
+geometry-web/work-manager/store.py:874:                for evidence in event["data"].get("evidence", []):
+geometry-web/work-manager/store.py:966:            for evidence in json.loads(row["payload"])["data"].get("evidence", []):
+geometry-web/work-manager/store.py:969:            for evidence in event["data"].get("evidence", []):
+geometry-web/work-manager/store.py:1094:                "pr": None, "evidence": [], "assignment_history": [], "source_ids": [],
+geometry-web/work-manager/store.py:1128:                for item in data.get("evidence", []):
+geometry-web/work-manager/store.py:1197:            task["evidence"] = sorted(evidence_by_task.get(task["id"], {}).values(),
+geometry-web/work-manager/store.py:1202:            for evidence in task["evidence"]:
+geometry-web/work-manager/store.py:1225:            valid_attempts = [e for e in task["evidence"] if e["validity"] in VALID_BINDINGS | {"ci_failed"}]
+geometry-web/work-manager/store.py:1235:            if any(e["validity"] in {"stale", "expired", "future"} for e in task["evidence"]):
+geometry-web/work-manager/store.py:1237:            if any(e["validity"] == "not_run" for e in task["evidence"]):
+tests/section_profile_mutation_check.py:6:tests/release-evidence/20261010-q38-i44/ac16-per-case-red-tests.md: AC23 had no named killer; AC04-AC06 and AC24
+geometry-web/work-manager/test_coverage.py:92:            event("result", {"pr": pull_request(merged=True), "evidence": [proof("group-proof")]}, task="GROUP"),
+geometry-web/work-manager/test_coverage.py:93:            event("result", {"pr": pull_request(merged=True), "evidence": [proof("child-proof")]}, task="CHILD"),
+geometry-web/work-manager/test_coverage.py:134:            event("result", {"pr": pull_request(merged=True), "evidence": [proof("done-proof")]}, task="DONE"),
+geometry-web/work-manager/test_coverage.py:136:            event("result", {"pr": pull_request(), "evidence": [proof("review-proof")]}, task="REVIEW"),
+geometry-web/work-manager/test_coverage.py:157:            for key in ("execution_status", "delivery_status", "owner_thread", "evidence", "next_action_pin"):
+geometry-web/work-manager/test_coverage.py:167:            event("result", {"pr": pull_request(number=5001, url=url), "evidence": [proof()]}, task="FIRST"),
+tests/test_release_gate.py:25:        self.output = self.base / "evidence"
+tests/test_release_gate.py:66:        self.assertFalse(result["evidence"]["completionVerified"])
+tests/test_release_gate.py:67:        self.assertEqual(result["evidence"]["scope"], "command-only")
+tests/test_release_gate.py:128:        self.output = self.root / "evidence"
+tests/test_release_gate.py:141:        self.assertTrue(result["evidence"]["completionVerified"])
+tests/test_release_gate.py:142:        self.assertEqual(result["evidence"]["scope"]["mode"], "full")
+tests/test_release_gate.py:160:        self.assertEqual(result["evidence"]["scope"]["mode"], "partial")

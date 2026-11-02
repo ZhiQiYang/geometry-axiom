@@ -1,0 +1,394 @@
+{
+  "schema": "geometry-pr340-main354-final-independent-peer/1",
+  "utc": "2026-11-02T11:53:19.185373+00:00",
+  "status": "PASS_M_ORIGINALS_AND_F_EXACT_ADOPTION_F_CI_UNVERIFIED",
+  "auditExitCode": 0,
+  "problems": {},
+  "M": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+  "MTree": "26ef5dfd1c6f838887a30c9968021e513e2dc460",
+  "F": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "MOriginalCI": {
+    "integrationRun": 41430557786,
+    "integrationAttempt": 1,
+    "integrationApiHead": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+    "integrationTrueExecution": "afa52541ef2bcdd00e184e0f5d0d5e33874610ed",
+    "integrationTreeEqualsM": true,
+    "manualMutationRun": 41430549123,
+    "manualMutationEvent": "workflow_dispatch",
+    "manualMutationAttempt": 1,
+    "manualMutationTrueExecution": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+    "realRunnerAndStepsSuccessJobs": 20,
+    "scope": "M20original jobs are green. They are not F CI executions."
+  },
+  "integrationEvidence": {
+    "nativeSuites": 237,
+    "nativeCounted": 5421,
+    "nativePassed": 5420,
+    "nativeAllowedGdiSkip": 1,
+    "nativeOfficialSummaryByteEqualToOriginalCliReplay": true,
+    "pythonRawJsonReportsCompared": 196,
+    "nodeStandardFootersCompared": 31,
+    "officialNativeZipMembersFullyChecked": 641,
+    "fullCanvas": {
+      "completed": true,
+      "passed": 2286,
+      "failed": 0,
+      "skipped": [],
+      "sections": 86,
+      "golden": "All exactM currentgolden sections matched, not borrowedD universe"
+    },
+    "otherBrowserCanonical": [
+      {
+        "job": "browser (documents)",
+        "marker": "DOCUMENTS_RESULT",
+        "passed": 47,
+        "failed": 0,
+        "scope": null,
+        "logLine": 452
+      },
+      {
+        "job": "browser (timber)",
+        "marker": "SPACE_RESULT",
+        "passed": 79,
+        "failed": 0,
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_TIMBER_ONLY"
+          ],
+          "included": [
+            "timber-material",
+            "timber-source-guards",
+            "font-layout"
+          ],
+          "omitted": [
+            "space-height-library",
+            "projection-lifecycle",
+            "projection-placement",
+            "space-flow",
+            "projection-close"
+          ],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback"
+        },
+        "logLine": 492
+      },
+      {
+        "job": "browser (grid)",
+        "marker": "CDP_RESULT",
+        "passed": 356,
+        "failed": 0,
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_GRID_SYSTEM_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback",
+          "browserProfile": "/tmp/geometry-cdp-v8pLL3",
+          "cdpPort": 9334,
+          "browserPid": 2860
+        },
+        "logLine": 1172
+      },
+      {
+        "job": "browser (space)",
+        "marker": "SPACE_RESULT",
+        "passed": 242,
+        "failed": 0,
+        "scope": {
+          "mode": "full-space-suite",
+          "filters": [],
+          "included": [
+            "space-height-library",
+            "projection-lifecycle",
+            "projection-placement",
+            "font-layout",
+            "space-flow",
+            "projection-close"
+          ],
+          "omitted": [
+            "timber-material",
+            "timber-source-guards"
+          ],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback"
+        },
+        "logLine": 665
+      },
+      {
+        "job": "browser (assembly)",
+        "marker": "CDP_RESULT",
+        "passed": 150,
+        "failed": 0,
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_ASSEMBLY_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback",
+          "browserProfile": "/tmp/geometry-cdp-hkJ91b",
+          "cdpPort": 9367,
+          "browserPid": 2658
+        },
+        "logLine": 594
+      }
+    ],
+    "allTenFullJobLogsReadHashedAndCheckoutBound": true
+  },
+  "mutationEvidence": {
+    "fullRegenerationAtMVerified": true,
+    "newFullLedgerSha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef",
+    "definitions": 123,
+    "active": 120,
+    "allActiveExecutionHead": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+    "counts": {
+      "killed": 114,
+      "equivalent": 5,
+      "retired": 3,
+      "crashed": 1
+    },
+    "all7ShardAssignmentsDisjointExactCurrentTable": true,
+    "all9OfficialZipBytesReadAndHashed": 98693335,
+    "allNestedCacheRegularFilesReadAndHashed": 905,
+    "allNestedUncompressedBytesReadAndHashed": 195637051,
+    "executedElfIdentityReferencesChecked": 293,
+    "bridgeOriginalRawStreamReferencesChecked": 636,
+    "sevenOriginalBadcacheStrict1ReceiptsChecked": true,
+    "sourceIncludeFiles": 185,
+    "sourceIncludeClosureSha256": "90aa6ffbdcf3c4f2a8e126d154a9d4eda8fa584863275818aefbf075a4424283",
+    "originalCoreOracleScenes": 166,
+    "bridgeJudgeFiles": 524,
+    "bridgeRestoredMethods": 43,
+    "rootOriginalVerifierActualExit": 0,
+    "rootOriginalVerifierSeconds": 25.360026439011563,
+    "rootOriginalVerifierSummaryAndLedgerByteEqualOfficial": true,
+    "peerVerifierReruns": 0,
+    "M110": "Preserved original declared equivalent with actual mutant0, not counted killed."
+  },
+  "MTrackedLedgerSnapshot": {
+    "sha256": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+    "120ExecutionHead": "5e3e3b38de849d0b99723a1737a4d573f92536ce",
+    "all123CurrentInputStatusFieldsEqualNewLedger": true,
+    "sourceOracleDefinitionHashesIndependentlyRecomputedAtCurrentInputs": true,
+    "new140c09WasTrackedAtM": false
+  },
+  "architectureEvidence": {
+    "status": "PASS",
+    "reviewer": "/root/pr366_evidence/tool_review",
+    "scope": "Delegated independent read-only exact architecture artifact/source audit; no file edits, verifier/tests/fetch/ELF executions.",
+    "source": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+    "run": 41430549123,
+    "attempt": 1,
+    "job": 125227744605,
+    "zip": {
+      "id": 13133538430,
+      "bytes": 54108,
+      "sha256": "ab90d8ab45e9d78c08f5b9d532c3f8e028a8bdc13f7d235a683afea916033d6e",
+      "apiDigestExact": true,
+      "regularUniqueMembers": 9,
+      "allCRCAndExtractedBytesExact": true
+    },
+    "schemas": {
+      "trackedManifest": "geometry-architecture/1",
+      "newReceipt": "geometry-architecture-ci-receipt/1",
+      "scan": "Original five-field generated scan format checked"
+    },
+    "sourceClosure": {
+      "exactNamedMBlobsRead": 619,
+      "gitMethod": "GIT_NO_LAZY_FETCH=1 git cat-file --batch",
+      "gitExitCode": 0,
+      "missingBlobs": 0,
+      "receiptInputs": 610,
+      "all610LfHashesExact": true,
+      "inputLfClosureSha256": "bcdc99f891253243da12883b6ab8cd0f7cd3fe97baf9c46d4a192e7bd07b41fc",
+      "owned": 339,
+      "exclusions": 271,
+      "edges": 812,
+      "diagnostics": 0,
+      "ownedLayers": {
+        "H": 195,
+        "K": 70,
+        "W": 68,
+        "vendor": 6
+      }
+    },
+    "originalThreeCommands": {
+      "scannerCliExit": 0,
+      "architectureUnitExit": 0,
+      "architectureTests": 205,
+      "architectureEachOkLines": 205,
+      "productArchitectureExit": 0,
+      "productTests": 22,
+      "unittestRawOK": true,
+      "skip": 0,
+      "allSixRawHashesMatchReceipt": true
+    },
+    "canonicalSha256": {
+      "manifestLf": "84b64977c3fa0dd22cc60da4ad027657dd6e1ecd0e370cb363c2512a8886a0ee",
+      "scanAndCliStdout": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+      "newReceipt": "cb0d96b54896c89a380243b410f659261e97364808dbc9a7821cc33bf416fbf0",
+      "newReport": "d5122be829cb753cba2cb6efaa6ee5aec5887c86a2923591cdcb5a58615343d3"
+    },
+    "MTrackedSnapshot": {
+      "trackedReceiptReportSourceHead": "64114fb64a3ef948fb9c8d2f39487084cd125476",
+      "trackedReceiptReportRun": "41360662228",
+      "trackedScanByteEqualsNewScan": true,
+      "meaning": "M official new generated receipt/report were not yet M tracked outputs; later exact F adoption is reviewed separately."
+    },
+    "limits": [
+      "Complete architecture Actions job log not supplied. Official ZIP six original command streams, receipt and saved jobs API were checked.",
+      "No new whole-repository unregistered-source enumeration was performed; receipt all610 named inputs and manifest/judge/scanner sources were checked against exactM blobs.",
+      "No original architecture CLI/test was executed by peer."
+    ]
+  },
+  "FAdoption": {
+    "soleParent": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+    "changedOnly": [
+      "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+      "geometry-core/domain-decoupling/product-architecture-receipt.json",
+      "tests/mutants_results.json"
+    ],
+    "all4OfficialPayloadObjectsExactBytes": [
+      {
+        "path": "tests/mutants_results.json",
+        "Msha256": "1a6b09ac7ed560be994615ecfc36e5129b79d3036c9f73fc0241f18ef767da79",
+        "Fsha256": "140c09ce899cb5b35df82b9b3f854e4a01f3557a8d06b3f41d37c891d37b72ef",
+        "officialSource": "/dev/shm/geometry-pr340-mutation-raw-20261102/original-verifier-replay/mutants_results.json",
+        "exactBytes": true
+      },
+      {
+        "path": "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "Msha256": "98599a76ddb51348b9af80a2f2b889de90cfd475bab803ee746f85005ac224ca",
+        "Fsha256": "d5122be829cb753cba2cb6efaa6ee5aec5887c86a2923591cdcb5a58615343d3",
+        "officialSource": "/dev/shm/geometry-pr340-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/PRODUCT-ARCHITECTURE.md",
+        "exactBytes": true
+      },
+      {
+        "path": "geometry-core/domain-decoupling/product-architecture-scan.json",
+        "Msha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+        "Fsha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+        "officialSource": "/dev/shm/geometry-pr340-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/product-architecture-scan.json",
+        "exactBytes": true
+      },
+      {
+        "path": "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "Msha256": "8233f4190041dd8c5e412615bc44ec1aca4f35a12d32ff3b7d47e707e5aef9f9",
+        "Fsha256": "cb0d96b54896c89a380243b410f659261e97364808dbc9a7821cc33bf416fbf0",
+        "officialSource": "/dev/shm/geometry-pr340-mutation-raw-20261102/extracted/other/pr357-architecture-refresh/product-architecture-receipt.json",
+        "exactBytes": true
+      }
+    ],
+    "scanWasAlreadyIdentical": true,
+    "entireOtherGitTreeEntriesEqualM": true,
+    "sourceTestsJudgesManifestPolicyUnchanged": true,
+    "ledger120ExecutionHeadRemainsM": true,
+    "architectureReceiptSourceHeadRemainsM": true,
+    "originalFChecksExitSequence": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "originalFCommands": [
+      {
+        "command": [
+          "python3",
+          "-B",
+          "tests/mutate.py",
+          "--check"
+        ],
+        "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+        "exit": 0,
+        "stdoutSha256": "efca22db4f9fc05f07e5bde95965ac2058c36c11c902150083328139866a56d8",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": [
+          "python3",
+          "-B",
+          "tests/architecture_contract.py",
+          "--root",
+          ".",
+          "--manifest",
+          "geometry-core/domain-decoupling/product-architecture.json"
+        ],
+        "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+        "exit": 0,
+        "stdoutSha256": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": [
+          "python3",
+          "-B",
+          "tests/test_architecture_contract.py"
+        ],
+        "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+        "exit": 0,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "2d2ccdc9bff56a753082b65d40b39879c496a8fd6a472664254ad58c24696375"
+      },
+      {
+        "command": [
+          "python3",
+          "-B",
+          "tests/test_product_architecture.py"
+        ],
+        "head": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+        "exit": 0,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "5f81f4a4de150591557037922716540762de0a0c02d847f560b49000af00cf94"
+      }
+    ],
+    "FNewCI": "PENDING_OR_NOT_VERIFIED_HERE; do not promoteM20green toF.",
+    "secondFull123ProductionPerformed": false
+  },
+  "userRegeneratedLedgerRequirement": {
+    "regenerationAtM": "Verified complete actual123-record generation with120active executions atM,7fresh source-bound shards and official cache/raw receipts.",
+    "MTrackedAdoption": "Not done at original M snapshot; old1a6 ledger still had valid unchanged input/status closure. No artifact-only exemption was assumed.",
+    "FTrackedAdoption": "Now independently verified exact140c09 official full payload plus new official architecture report/receipt atF; all120 actual executions remainM.",
+    "remainingDelivery": "Independent durable raw/cache E publication and F new required-CI acceptance remain separate work owned byroot; this report does not infer their completion."
+  },
+  "verificationBoundary": {
+    "sampling": false,
+    "archiveAndCachePayloadBytes": "Fully streamed/hash checked, including all ELF bytes; no downloaded executable was run.",
+    "coreGeneratedSourceFingerprint": "Not independently re-expanded; root original strict verifier0 covers that algorithm. Source, include, definition, oracle and actual ELF/sidecar bytes independently checked.",
+    "sevenBadcacheRaw": "Seven source-bound manifest outcomes strict1 checked. Separate full manual-mutation Actions job logs/probe stdout absent; no claim of independently reading missing probe stdout.",
+    "architectureJobLog": "Full architecture job Actions log absent; original3command raw streams/receipt/API steps and all610 inputs verified.",
+    "actualInputVsHistoricalExecution": "Old tracked M executions, new M raw executions and F metadata adoption remain separate source identities.",
+    "peerExecutedProductBuildChromeElfOrOriginalVerifier": false,
+    "peerFetchOrDownload": false,
+    "peerOriginalFileOrSourceEdits": false
+  },
+  "componentReports": {
+    "ARCHITECTURE_DETAIL.json": {
+      "bytes": 2660,
+      "sha256": "383d432af817aca77895f492126f50433c625c61e1701b5cb22cddf35f037028"
+    },
+    "F_ADOPTION_DETAIL.json": {
+      "bytes": 10924,
+      "sha256": "0c1e843ae34d69eca75152b8651fbf368f6e194658651206f56ff1d36e595955"
+    },
+    "INTEGRATION_DETAIL.json": {
+      "bytes": 16957,
+      "sha256": "24ce8c6853ef7c16674676ce2aef01e0fc2975b52c1015d1f79a25af66ce265c"
+    },
+    "MUTATION_BYTES.json": {
+      "bytes": 8850,
+      "sha256": "28943b22499c9ec85671973d2953787535c5c31ffc6f778b0ab47fd05a0a3445"
+    },
+    "MUTATION_STATIC_IDENTITY.json": {
+      "bytes": 4637,
+      "sha256": "94ccfdd0ad62c4ad5995ee0d6851e2a5ebe676101dfd8e33c319ba60220bf7d7"
+    }
+  },
+  "readOnlyCheckerDiagnostics": [
+    "Initial literal-only AST reader lacked list-slice support; corrected safe AST data decoding before cache processing.",
+    "Initial bridge loop wrongly assumed every bridge record killed; existing M110equivalent is now explicitly checked as0.",
+    "Initial integration audit formatting SyntaxError was corrected before its read-only audit ran. These reviewer issues did not alter originals or trigger producer/verifier/product reruns."
+  ]
+}

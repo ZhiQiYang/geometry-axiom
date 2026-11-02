@@ -1,0 +1,221 @@
+name: Geometry integration
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geometry-integration-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    name: native (${{ matrix.shard }}/3)
+    runs-on: ubuntu-latest
+    # 2026-11-02 使用者同意P-186改為實測耗時平衡的三片；每片仍35分鐘。
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        shard: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Build and run assigned non-browser suites
+        run: |
+          ulimit -s 16384
+          python3 tests/run_all.py --build --shard '${{ matrix.shard }}/3' --report '${{ runner.temp }}/native-shard-${{ matrix.shard }}/shard-${{ matrix.shard }}.json'
+      - name: Preserve original shard receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/native-shard-${{ matrix.shard }}/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Preserve original suite logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-logs-${{ matrix.shard }}
+          path: /tmp/geometry-tests/run_all-logs/
+          if-no-files-found: error
+          retention-days: 14
+
+  native-complete:
+    name: native complete coverage
+    runs-on: ubuntu-latest
+    needs: native
+    if: always()
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Prove real coverage test kills a removed suite
+        run: python3 -B tests/native_sharding_mutation_check.py --output '${{ runner.temp }}/native-sharding-proof'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: native-shard-*
+          path: ${{ runner.temp }}/native-shards
+          merge-multiple: true
+      - name: Verify complete disjoint actual execution
+        run: python3 -B tests/native_shard_receipts.py --input '${{ runner.temp }}/native-shards' --parts 3 --output '${{ runner.temp }}/native-complete.json'
+      - name: Preserve coverage and mutation proof
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-complete-coverage
+          path: |
+            ${{ runner.temp }}/native-sharding-proof/
+            ${{ runner.temp }}/native-complete.json
+          if-no-files-found: error
+          retention-days: 14
+
+  browser:
+    name: browser (${{ matrix.suite }})
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.timeout }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - suite: assembly
+            timeout: 15
+          - suite: documents
+            timeout: 10
+          - suite: grid
+            timeout: 15
+          - suite: canvas
+            timeout: 35
+          - suite: space
+            timeout: 15
+          - suite: timber
+            timeout: 20
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_BROWSER_SUITE: ${{ matrix.suite }}
+      GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+      GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        if: matrix.suite != 'documents'
+        with:
+          persist-credentials: false
+      - name: Checkout document job primary sources
+        if: matrix.suite == 'documents'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/evidence/
+      - name: Build current native executables
+        run: npm run build
+      - name: Install Chinese fonts for visual verification
+        # Bound stalled mirror connections; keep CJK installation mandatory.
+        run: |
+          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+          sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y --no-install-recommends fonts-noto-cjk
+      - name: Run actual browser regression group
+        shell: bash
+        run: |
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          # WSL canvas wait trace
+          # Clear inherited flags for all other jobs.
+          unset GEOMETRY_WAIT_TRACE
+          unset GEOMETRY_WAIT_TRACE_RUN_ID
+          case "$GEOMETRY_BROWSER_SUITE:$(uname -r)" in
+            canvas:*[Mm]icrosoft*) export GEOMETRY_WAIT_TRACE=1 ;;
+          esac
+          if [ "${GEOMETRY_WAIT_TRACE-}" = 1 ]; then
+            export GEOMETRY_WAIT_TRACE_RUN_ID="$(python3 geometry-web/prepare_wait_trace.py)"
+          fi
+          if [ -n "${GITHUB_ENV-}" ]; then
+            printf 'GEOMETRY_WAIT_TRACE=%s\n' "${GEOMETRY_WAIT_TRACE-}" >> "$GITHUB_ENV"
+          fi
+          python3 -u geometry-web/start_local.py --port 18839 > /tmp/geometry-integration-server.log 2>&1 &
+          server=$!
+          cleanup() {
+            original_status=$?
+            set +e
+            kill "$server" 2>/dev/null || true
+            wait "$server" 2>/dev/null || true
+            if [ "$GEOMETRY_BROWSER_SUITE" = canvas ]; then
+              python3 geometry-web/archive_wait_trace.py /tmp/geometry-wait-trace-artifact
+              archive_status=$?
+              if [ "$original_status" -eq 0 ] && [ "$archive_status" -ne 0 ]; then original_status=$archive_status; fi
+            fi
+            exit "$original_status"
+          }
+          trap cleanup EXIT
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server" 2>/dev/null; then
+              cat /tmp/geometry-integration-server.log
+              exit 1
+            fi
+            if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          python3 geometry-web/runtime_version.py --probe 18839
+          # Independent matrix jobs expose each result promptly. They use
+          # separate runners/servers and do not cancel siblings on failure.
+          # The full canvas run retains its strict golden comparison.
+          set +e
+          case "$GEOMETRY_BROWSER_SUITE" in
+            assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;
+            grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;
+            canvas) node geometry-web/cdp_test.js ;;
+            space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;
+            timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;
+            documents) GEOMETRY_CDP_PORT=9366 node geometry-web/documents_browser_test.js ;;
+            *) echo "Unknown browser suite"; exit 2 ;;
+          esac
+          status=$?
+          cat /tmp/geometry-integration-server.log
+          exit "$status"
+      - name: Preserve canvas wait trace
+        if: always() && matrix.suite == 'canvas'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: canvas-wait-trace
+          path: /tmp/geometry-wait-trace-artifact/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Preserve assembly authoring screenshots
+        if: always() && matrix.suite == 'assembly'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: assembly-review-screens
+          path: /tmp/geometry-tests/assembly-*.png
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Preserve grid trial screenshots
+        if: always() && (matrix.suite == 'grid' || matrix.suite == 'canvas')
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: grid-trial-screens-${{ matrix.suite }}
+          path: /tmp/geometry-grid-screens/grid-trial-*.png
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Preserve document reader screenshots
+        if: always() && matrix.suite == 'documents'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: document-reader-screens
+          path: /tmp/geometry-document-screens/*.png
+          if-no-files-found: ignore
+          retention-days: 7

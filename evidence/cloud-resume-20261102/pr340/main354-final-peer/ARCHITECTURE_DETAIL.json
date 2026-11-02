@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/pr366_evidence/tool_review",
+  "scope": "Delegated independent read-only exact architecture artifact/source audit; no file edits, verifier/tests/fetch/ELF executions.",
+  "source": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+  "run": 41430549123,
+  "attempt": 1,
+  "job": 125227744605,
+  "zip": {
+    "id": 13133538430,
+    "bytes": 54108,
+    "sha256": "ab90d8ab45e9d78c08f5b9d532c3f8e028a8bdc13f7d235a683afea916033d6e",
+    "apiDigestExact": true,
+    "regularUniqueMembers": 9,
+    "allCRCAndExtractedBytesExact": true
+  },
+  "schemas": {
+    "trackedManifest": "geometry-architecture/1",
+    "newReceipt": "geometry-architecture-ci-receipt/1",
+    "scan": "Original five-field generated scan format checked"
+  },
+  "sourceClosure": {
+    "exactNamedMBlobsRead": 619,
+    "gitMethod": "GIT_NO_LAZY_FETCH=1 git cat-file --batch",
+    "gitExitCode": 0,
+    "missingBlobs": 0,
+    "receiptInputs": 610,
+    "all610LfHashesExact": true,
+    "inputLfClosureSha256": "bcdc99f891253243da12883b6ab8cd0f7cd3fe97baf9c46d4a192e7bd07b41fc",
+    "owned": 339,
+    "exclusions": 271,
+    "edges": 812,
+    "diagnostics": 0,
+    "ownedLayers": {
+      "H": 195,
+      "K": 70,
+      "W": 68,
+      "vendor": 6
+    }
+  },
+  "originalThreeCommands": {
+    "scannerCliExit": 0,
+    "architectureUnitExit": 0,
+    "architectureTests": 205,
+    "architectureEachOkLines": 205,
+    "productArchitectureExit": 0,
+    "productTests": 22,
+    "unittestRawOK": true,
+    "skip": 0,
+    "allSixRawHashesMatchReceipt": true
+  },
+  "canonicalSha256": {
+    "manifestLf": "84b64977c3fa0dd22cc60da4ad027657dd6e1ecd0e370cb363c2512a8886a0ee",
+    "scanAndCliStdout": "a07ca4af7eb62d0e95f9cd795db9f662ee502cddbc181496a797320f961540b6",
+    "newReceipt": "cb0d96b54896c89a380243b410f659261e97364808dbc9a7821cc33bf416fbf0",
+    "newReport": "d5122be829cb753cba2cb6efaa6ee5aec5887c86a2923591cdcb5a58615343d3"
+  },
+  "MTrackedSnapshot": {
+    "trackedReceiptReportSourceHead": "64114fb64a3ef948fb9c8d2f39487084cd125476",
+    "trackedReceiptReportRun": "41360662228",
+    "trackedScanByteEqualsNewScan": true,
+    "meaning": "M official new generated receipt/report were not yet M tracked outputs; later exact F adoption is reviewed separately."
+  },
+  "limits": [
+    "Complete architecture Actions job log not supplied. Official ZIP six original command streams, receipt and saved jobs API were checked.",
+    "No new whole-repository unregistered-source enumeration was performed; receipt all610 named inputs and manifest/judge/scanner sources were checked against exactM blobs.",
+    "No original architecture CLI/test was executed by peer."
+  ]
+}

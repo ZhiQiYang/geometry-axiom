@@ -1,0 +1,580 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "checkCount": 2296,
+  "problems": [],
+  "run": 41430557786,
+  "attempt": 1,
+  "apiHead": "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f",
+  "actualExecution": "afa52541ef2bcdd00e184e0f5d0d5e33874610ed",
+  "parents": [
+    "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "aca3d2a5f604848b159a0e5cdd3d3f55fcad190f"
+  ],
+  "tree": "26ef5dfd1c6f838887a30c9968021e513e2dc460",
+  "jobs": [
+    {
+      "name": "native (2/3)",
+      "id": 125227767380,
+      "runner": "GitHub Actions 1000011195",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 46034,
+      "logSha256": "b8d04ce5e15cf80cd5e4eb6af21faf7736de9f31e079345cefc0ddc8294a5dce"
+    },
+    {
+      "name": "browser (canvas)",
+      "id": 125227767768,
+      "runner": "GitHub Actions 1000011208",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 748754,
+      "logSha256": "aabf85e1af2b010a4dba49e39c81b0144d835c57199f4445b89aecd202ffd117"
+    },
+    {
+      "name": "browser (documents)",
+      "id": 125227767789,
+      "runner": "GitHub Actions 1000011196",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 39706,
+      "logSha256": "4d4f861d51283fa37b079a0e795cbbbf9b061323a8184f9163e7735ed5f492d9"
+    },
+    {
+      "name": "native (1/3)",
+      "id": 125227767840,
+      "runner": "GitHub Actions 1000011197",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 45618,
+      "logSha256": "62f3ec47a7456c280a4fd1fb2b3575cfd5368b347c669d70bc8a04b7a7ec236d"
+    },
+    {
+      "name": "browser (timber)",
+      "id": 125227767879,
+      "runner": "GitHub Actions 1000011222",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 44957,
+      "logSha256": "1966487898ac132ab89a273884e626f7cefb9bc5acc1a0bbb1b2e9efbe795c2f"
+    },
+    {
+      "name": "native (3/3)",
+      "id": 125227767896,
+      "runner": "GitHub Actions 1000011198",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 45479,
+      "logSha256": "796b994410136aa3e0b53123d16e774b9a55f8a398b136189edce4a510320897"
+    },
+    {
+      "name": "browser (grid)",
+      "id": 125227767991,
+      "runner": "GitHub Actions 1000011202",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 372112,
+      "logSha256": "1b24128cc347e4257a155d53652f14789eb359077ae4eac36a5b7c4dfcd32d84"
+    },
+    {
+      "name": "browser (space)",
+      "id": 125227768059,
+      "runner": "GitHub Actions 1000011211",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 66068,
+      "logSha256": "92989663efb44e4a40db68f5efd67ae0845ad603e848bda46a36c9270f3f53fc"
+    },
+    {
+      "name": "browser (assembly)",
+      "id": 125227768336,
+      "runner": "GitHub Actions 1000011199",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 62440,
+      "logSha256": "fdb687c3faafb922e7392f40014e63db8495b93e2cbbe1e70fe7a64629f9a5cf"
+    },
+    {
+      "name": "native complete coverage",
+      "id": 125235090782,
+      "runner": "GitHub Actions 1000011223",
+      "execution": [
+        "afa52541ef2bcdd00e184e0f5d0d5e33874610ed"
+      ],
+      "logBytes": 25863,
+      "logSha256": "100afd0cb547f7024246c84944fe68b24d6dff3109ff45c46dc6d95bcbaa628d"
+    }
+  ],
+  "native": {
+    "independentSummary": {
+      "passed": true,
+      "commit_sha": "afa52541ef2bcdd00e184e0f5d0d5e33874610ed",
+      "parts": 3,
+      "suite_count": 237,
+      "executed_suites": 237,
+      "union_equals_full_registry": true,
+      "overlap": [],
+      "counted_tests": 5421,
+      "counted_passed": 5420,
+      "allowed_skips": 1,
+      "shard_suites": {
+        "1": 79,
+        "2": 79,
+        "3": 79
+      },
+      "expected_sha256": "cf69410538f68df168031c2ee1bf5ff32649f871f4e62b5d59ecb18456649554",
+      "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+    },
+    "originalCLISummaryByteEqual": true,
+    "allPerSuiteRawFiles": 237,
+    "pythonRawJsonReports": 196,
+    "nodeStandardFooters": 31,
+    "officialZIPs": [
+      {
+        "name": "native-logs-2",
+        "bytes": 69563,
+        "sha256": "4fd02cbd9803aebe08401dac3fbb7ea90d6ff6c8a9f0aaf444e532ee69ada246",
+        "members": 208
+      },
+      {
+        "name": "native-shard-1",
+        "bytes": 4326,
+        "sha256": "7a1c949d3ccf29f9d4851460712ceae5f5b1bfe86223321109c010dd052eae34",
+        "members": 1
+      },
+      {
+        "name": "native-logs-3",
+        "bytes": 99755,
+        "sha256": "035cc5015596c8c7c4ba829c6c75777bda27ee93cdd4e9020c6270c1236de43f",
+        "members": 211
+      },
+      {
+        "name": "native-shard-2",
+        "bytes": 4341,
+        "sha256": "e833bc30bad4ba8c76fb3c7384a1eb90ae22757e40b69afe76d8e8222940ce83",
+        "members": 1
+      },
+      {
+        "name": "native-shard-3",
+        "bytes": 4277,
+        "sha256": "f5a4cced4fac4ead41426e3287712c0a80dfcd47aef35044751fba6326d8daa4",
+        "members": 1
+      },
+      {
+        "name": "native-complete-coverage",
+        "bytes": 2872,
+        "sha256": "1be6e8e36ca851b5654cec212311da8f9b88b588b2af42e9fb7c9f6550298790",
+        "members": 8
+      },
+      {
+        "name": "native-logs-1",
+        "bytes": 60705,
+        "sha256": "66eaaa9bbd0baf2e59657de7939ebc25cebb9a8bd17b1126e0b87c08c1280e60",
+        "members": 211
+      }
+    ],
+    "officialMembers": 641
+  },
+  "browser": [
+    {
+      "job": "browser (canvas)",
+      "marker": "CDP_RESULT",
+      "logLine": 3220,
+      "result": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "full",
+          "filters": [],
+          "modifiers": [],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback",
+          "browserProfile": "/tmp/geometry-cdp-wfIxa4",
+          "cdpPort": 9333,
+          "browserPid": 2647
+        },
+        "firstTransportFailure": {
+          "source": "api-result",
+          "transport": true,
+          "command": "surfaces",
+          "requestedAt": "2026-11-02T10:53:21.376Z",
+          "requestedMonotonic": 564.5,
+          "failedAt": "2026-11-02T10:53:21.376Z",
+          "failedMonotonic": 564.7000000000698,
+          "error": "服務未回傳場景資料，請確認網址後重試。",
+          "sessionId": null,
+          "step": "=== P53. 連線錯誤、重新載入與重試 ==="
+        },
+        "firstNetworkFailure": {
+          "url": "http://127.0.0.1:18839/api",
+          "requestId": "2741.7880",
+          "sessionId": null,
+          "method": "POST",
+          "postData": "{\"cmd\":\"line spec receipt_probe 10\",\"requestId\":\"cf37d6c1-657f-413c-826e-73ad15ffa8cc\",\"session\":\"46ac9b485db7438c8ca719923ab7e79c\",\"ack\":[\"713b6a59-70ed-4683-8751-a9c5e995dc01\"]}",
+          "step": "=== P57–P61. PDF 與專案保存(GEO-198) ===",
+          "requestedAt": "2026-11-02T10:53:31.600Z",
+          "requestedMonotonic": 605.842067,
+          "event": "Network.loadingFailed",
+          "failedAt": "2026-11-02T10:53:46.600Z",
+          "failedMonotonic": 620.842233,
+          "errorText": "net::ERR_ABORTED",
+          "status": null,
+          "canceled": true
+        },
+        "completed": true,
+        "passedAssertions": 2286,
+        "failedAssertions": 0,
+        "skipped": [],
+        "sections": {
+          "1": 14,
+          "2": 3,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 0,
+          "9": 12,
+          "10": 0,
+          "Setup": 0,
+          "P3": 14,
+          "P4": 11,
+          "P5": 2,
+          "P6": 4,
+          "P7": 54,
+          "P8": 116,
+          "P9": 9,
+          "P10": 9,
+          "P11": 12,
+          "P12": 8,
+          "P13": 4,
+          "P14": 16,
+          "P15": 6,
+          "P16": 10,
+          "P17": 11,
+          "P18": 20,
+          "P19": 17,
+          "BF2": 5,
+          "BF3": 1,
+          "BF4": 9,
+          "P20": 10,
+          "P21": 4,
+          "P22": 45,
+          "P32": 34,
+          "P33": 9,
+          "P34": 7,
+          "P35": 14,
+          "P36": 2,
+          "P37": 19,
+          "P38": 13,
+          "P39": 8,
+          "P40": 4,
+          "P41": 3,
+          "P42": 12,
+          "P43": 12,
+          "P44": 19,
+          "P45": 2,
+          "P46": 7,
+          "P47": 9,
+          "P48": 14,
+          "P49": 17,
+          "P50": 33,
+          "P51": 13,
+          "P52": 43,
+          "P53": 28,
+          "P57": 56,
+          "P62": 38,
+          "P63": 18,
+          "P64": 24,
+          "P65": 5,
+          "P66": 4,
+          "P68": 36,
+          "P69": 160,
+          "P67": 96,
+          "P70": 121,
+          "P71": 9,
+          "P78": 23,
+          "P87": 60,
+          "P88": 143,
+          "P72": 52,
+          "P72B": 50,
+          "P73": 69,
+          "P74": 52,
+          "P75": 37,
+          "P76": 87,
+          "P77": 134,
+          "P82": 16,
+          "P80": 23,
+          "P89": 19,
+          "P81": 14,
+          "P85": 31,
+          "P79": 87,
+          "P84": 33,
+          "P83": 16,
+          "P86": 20
+        },
+        "goldenCompare": "matched",
+        "uncaughtBrowserExceptions": 1,
+        "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+      }
+    },
+    {
+      "job": "browser (documents)",
+      "marker": "DOCUMENTS_RESULT",
+      "logLine": 452,
+      "result": {
+        "passedAssertions": 47,
+        "failedAssertions": 0,
+        "screenshots": "/tmp/geometry-document-screens",
+        "viewport": [
+          1400,
+          900,
+          390,
+          844
+        ],
+        "coverage": "Trusted pointer/keyboard navigation plus synthetic file fixtures; PDF page rendering and safe Markdown checks."
+      }
+    },
+    {
+      "job": "browser (timber)",
+      "marker": "SPACE_RESULT",
+      "logLine": 492,
+      "result": {
+        "schema": "geometry-space-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_TIMBER_ONLY"
+          ],
+          "included": [
+            "timber-material",
+            "timber-source-guards",
+            "font-layout"
+          ],
+          "omitted": [
+            "space-height-library",
+            "projection-lifecycle",
+            "projection-placement",
+            "space-flow",
+            "projection-close"
+          ],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback"
+        },
+        "completed": true,
+        "groups": {
+          "setup": {
+            "expected": 2,
+            "passed": 2,
+            "failed": 0,
+            "completed": true
+          },
+          "timber-material": {
+            "expected": 48,
+            "passed": 48,
+            "failed": 0,
+            "completed": true
+          },
+          "timber-source-guards": {
+            "expected": 8,
+            "passed": 8,
+            "failed": 0,
+            "completed": true
+          },
+          "font-layout": {
+            "expected": 19,
+            "passed": 19,
+            "failed": 0,
+            "completed": true
+          },
+          "browser-health": {
+            "expected": 2,
+            "passed": 2,
+            "failed": 0,
+            "completed": true
+          }
+        },
+        "completenessProblems": [],
+        "passed": 79,
+        "failed": 0,
+        "exceptions": [],
+        "consoleErrors": []
+      }
+    },
+    {
+      "job": "browser (grid)",
+      "marker": "CDP_RESULT",
+      "logLine": 1172,
+      "result": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_GRID_SYSTEM_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback",
+          "browserProfile": "/tmp/geometry-cdp-v8pLL3",
+          "cdpPort": 9334,
+          "browserPid": 2860
+        },
+        "firstTransportFailure": null,
+        "firstNetworkFailure": null,
+        "completed": true,
+        "passedAssertions": 356,
+        "failedAssertions": 0,
+        "skipped": [],
+        "sections": {
+          "P70": 121,
+          "P71": 9,
+          "P78": 23,
+          "P87": 60,
+          "P88": 143
+        },
+        "goldenCompare": "not compared (partial mode)",
+        "uncaughtBrowserExceptions": 0,
+        "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+      }
+    },
+    {
+      "job": "browser (space)",
+      "marker": "SPACE_RESULT",
+      "logLine": 665,
+      "result": {
+        "schema": "geometry-space-result/1",
+        "scope": {
+          "mode": "full-space-suite",
+          "filters": [],
+          "included": [
+            "space-height-library",
+            "projection-lifecycle",
+            "projection-placement",
+            "font-layout",
+            "space-flow",
+            "projection-close"
+          ],
+          "omitted": [
+            "timber-material",
+            "timber-source-guards"
+          ],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback"
+        },
+        "completed": true,
+        "groups": {
+          "setup": {
+            "expected": 2,
+            "passed": 2,
+            "failed": 0,
+            "completed": true
+          },
+          "space-height-library": {
+            "expected": 112,
+            "passed": 112,
+            "failed": 0,
+            "completed": true
+          },
+          "projection-lifecycle": {
+            "expected": 18,
+            "passed": 18,
+            "failed": 0,
+            "completed": true
+          },
+          "projection-placement": {
+            "expected": 36,
+            "passed": 36,
+            "failed": 0,
+            "completed": true
+          },
+          "font-layout": {
+            "expected": 19,
+            "passed": 19,
+            "failed": 0,
+            "completed": true
+          },
+          "space-flow": {
+            "expected": 39,
+            "passed": 39,
+            "failed": 0,
+            "completed": true
+          },
+          "projection-close": {
+            "expected": 14,
+            "passed": 14,
+            "failed": 0,
+            "completed": true
+          },
+          "browser-health": {
+            "expected": 2,
+            "passed": 2,
+            "failed": 0,
+            "completed": true
+          }
+        },
+        "completenessProblems": [],
+        "passed": 242,
+        "failed": 0,
+        "exceptions": [],
+        "consoleErrors": []
+      }
+    },
+    {
+      "job": "browser (assembly)",
+      "marker": "CDP_RESULT",
+      "logLine": 594,
+      "result": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_ASSEMBLY_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:18839/",
+          "feedbackDirectory": "/tmp/geometry-integration-feedback",
+          "browserProfile": "/tmp/geometry-cdp-hkJ91b",
+          "cdpPort": 9367,
+          "browserPid": 2658
+        },
+        "firstTransportFailure": {
+          "source": "api-result",
+          "transport": true,
+          "command": "assembly-confirm 13",
+          "requestedAt": "2026-11-02T10:42:17.028Z",
+          "requestedMonotonic": 38918.5,
+          "failedAt": "2026-11-02T10:42:17.134Z",
+          "failedMonotonic": 39024.5,
+          "error": "Injected lost success response",
+          "sessionId": null,
+          "step": "=== P77 review #33 #35 #36 #37 ==="
+        },
+        "firstNetworkFailure": null,
+        "completed": true,
+        "passedAssertions": 150,
+        "failedAssertions": 0,
+        "skipped": [],
+        "sections": {
+          "P77": 134,
+          "P82": 16
+        },
+        "goldenCompare": "not compared (partial mode)",
+        "uncaughtBrowserExceptions": 0,
+        "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+      }
+    }
+  ],
+  "limits": [
+    "All10 saved full Actions logs read and bound to actual checkout; browser original canonical results parsed without rerunning product assertions or screenshot visual review.",
+    "This peer did not run original native verifier. M20green is not F CI status."
+  ],
+  "checkerDiagnostic": "Initial read-only inline integration audit had a Python formatting SyntaxError before any execution; corrected producer only, no original data or product changed."
+}

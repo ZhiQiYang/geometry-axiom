@@ -1,0 +1,27 @@
+✔ 120 same-frame moves make one request at the final point (5.019426ms)
+✔ slow bridge has one in-flight hover and one latest queued point (1.98235ms)
+✔ leaving before a frame prevents dispatch (1.345809ms)
+✔ late leave reply cannot resurrect hover; selection stays visible (2.891853ms)
+✔ moving outside all views supersedes an in-flight pick (1.366738ms)
+✔ scene change before dispatch and during response invalidates hover (1.393899ms)
+✔ view transforms, hidden canvas and changed history reject stale replies (6.339026ms)
+✔ pointerdown uses the exact point directly and supersedes hover (1.852719ms)
+✔ pointercancel drops hover and cancels the exact drag transaction (1.45857ms)
+✔ failed or thrown hover releases queue and preserves selection (2.402166ms)
+✔ shared main/projection queue coalesces and strips local begin/end ops (2.528934ms)
+✔ projection leave, detach, collapse, transform and focus invalidate responses (8.002971ms)
+✔ projection down/up remains exact and a late hover cannot repaint a drag (1.409579ms)
+✔ geometry change cancels queued reads without sending or replaying mutation (1.003137ms)
+✔ throwing current or apply callbacks are reported and do not wedge the queue (3.292042ms)
+✔ definition and scene changes clear already displayed hover and readout (2.317468ms)
+✔ render clears displayed hover while keeping selected highlight (1.219052ms)
+✔ projection collapse clears displayed hover and cancels its outstanding read (1.389801ms)
+✔ context replacement clears displayed projection overlay (1.231856ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 126.217291
