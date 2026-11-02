@@ -58,6 +58,7 @@ PY_NEEDS = {
     'test_geo314_ordered_facts': [],
     'test_architecture_contract': [],
     'test_product_architecture': [],
+    'test_canvas_evidence': [],
     'test_assembly_capacity': ['bridge'],
     'test_assembly_candidate_impact': ['bridge'],
     'test_assembly_parameter_refs': ['bridge'],
@@ -309,6 +310,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:canvas_shards': 'tests/test_canvas_shards.js',
     'node:connection_recovery': 'tests/test_connection_recovery.js',
     'node:draw_annotation': 'tests/test_draw_annotation.js',
     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
