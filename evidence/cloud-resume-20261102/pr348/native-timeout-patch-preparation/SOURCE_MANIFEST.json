@@ -1,0 +1,236 @@
+{
+  "schema": "geometry-pr348-timeout-preparation-manifest/1",
+  "createdUTC": "2026-11-02T13:54:41.836849+00:00",
+  "PR348Head": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+  "main": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+  "sourceLeafPaths": [
+    "geometry-templates/woodworking/native/contact_world.c",
+    "tests/geo300_contact_order_fast_harness.c",
+    "tests/test_geo261_native_kernel.py",
+    "tests/test_geo261_timber_capacity_host.py",
+    "tests/test_geo300_contact_order_fast.py"
+  ],
+  "fileCount": 43,
+  "totalBytes": 644889,
+  "files": [
+    {
+      "path": "ACQUISITION_METADATA.json",
+      "bytes": 974,
+      "sha256": "34a56f92fa7daf8b9eb9e3d0b505310071bf7ccd3564362381acf02a84ba3a04"
+    },
+    {
+      "path": "ADDITIONAL_VERIFICATION.json",
+      "bytes": 1525,
+      "sha256": "97a65e4465bf7204f83b50792e93cca3751c51c149eeacb1467d49bbac90cf9d"
+    },
+    {
+      "path": "ADOPTION_PLAN.md",
+      "bytes": 3557,
+      "sha256": "26307e1bc31106b02c60c59f52ad12475fcab99addfe237545265d6f0030913a"
+    },
+    {
+      "path": "ADOPTION_PREPARATION.json",
+      "bytes": 15603,
+      "sha256": "07305a4c0580deab6a470bf096afd1162484cd2875de1d1c75dc0211a6181362"
+    },
+    {
+      "path": "COMMENT_INDEX.json",
+      "bytes": 2810,
+      "sha256": "a75b585d764397da280324d6f2223e9382bb965fbf3da77f3bc7c23ee16760f3"
+    },
+    {
+      "path": "HUNK_ANALYSIS.json",
+      "bytes": 12366,
+      "sha256": "0ee295e477940dc0a1bb797aa49b9148342e0f94b04b0c0c33fc373ef86b1cb5"
+    },
+    {
+      "path": "MAIN_FCA3_COMMIT.json",
+      "bytes": 185,
+      "sha256": "e27fc0078f9d1134392e7db62603bc565a4a0fbf897ae7754b05368052640660"
+    },
+    {
+      "path": "MAIN_TESTS_TREE_NAMES.txt",
+      "bytes": 14449,
+      "sha256": "ddd6b2034c8b59d338670845a4e80865af5643c078a79d85865397eb13fec891"
+    },
+    {
+      "path": "MAIN_TESTS_TREE_QUERY.json",
+      "bytes": 302,
+      "sha256": "d573c64a614a40442e9a8203572d4820cebbf4f4b2570a317dbb17e87bcb5a43"
+    },
+    {
+      "path": "PATCH_IDENTITY.json",
+      "bytes": 977,
+      "sha256": "0dd83705d3e344b5169fbead26388c00825579be3318546e9aa1e4d82d93face"
+    },
+    {
+      "path": "PR348.json",
+      "bytes": 26732,
+      "sha256": "8216fa5185090df8311faa3b5eab9f907d1610b7dc24cbe9357ded4fe8d7d7cf"
+    },
+    {
+      "path": "PR348_BODY.md",
+      "bytes": 10326,
+      "sha256": "cbf2733ad1283f322fc7fe77ca02b9c0767f52f7b7c4cfa762add2838e2751c0"
+    },
+    {
+      "path": "PR348_COMMENTS.json",
+      "bytes": 114033,
+      "sha256": "eafc43bdce85dabe54b155f3b7c253098ef262c8c7e960c141f7dea3634c2ae4"
+    },
+    {
+      "path": "SOURCE_API_ACQUISITION.json",
+      "bytes": 4473,
+      "sha256": "daacbd5d71d545f2bc98c3760324c98edfe64ccc8faa029b0214f15a74bc69c7"
+    },
+    {
+      "path": "SOURCE_READS.json",
+      "bytes": 7257,
+      "sha256": "22a4ed79cbf5ef876610f0cbdb363ee1e9928725a307354ce23035b6637432fb"
+    },
+    {
+      "path": "api-source/geometry-templates__woodworking__native__contact_world.c.json",
+      "bytes": 38417,
+      "sha256": "95e8a16c43a4a44d796a3a7862844b121daf532e54ee6ad2b63dd699de6a7b61"
+    },
+    {
+      "path": "api-source/tests__geo300_contact_order_fast_harness.c.json",
+      "bytes": 17437,
+      "sha256": "f3deee9fa7ed7c51a74f76679b34296403b827631249a5351141d7f38b718076"
+    },
+    {
+      "path": "api-source/tests__test_geo261_native_kernel.py.json",
+      "bytes": 39382,
+      "sha256": "1c7d88cc513583ecac9e522c19282a2f14662c0360f483a7473aa3d0065631f0"
+    },
+    {
+      "path": "api-source/tests__test_geo261_timber_capacity_host.py.json",
+      "bytes": 45841,
+      "sha256": "8095d407ca556c2676912561df67526dd6d5c06ffb499775fb0f91cabf29ced1"
+    },
+    {
+      "path": "api-source/tests__test_geo300_contact_order_fast.py.json",
+      "bytes": 8272,
+      "sha256": "441648582ba3081e66467e75e6f55aee3e15a6afe3f84692032e5249b08c7643"
+    },
+    {
+      "path": "comment-6412053022.md",
+      "bytes": 2285,
+      "sha256": "f87e37bc78dcbecdc16d2bc8e3432612d097bf34bdf05a163a3d3afa711aec83"
+    },
+    {
+      "path": "comment-6479358846.md",
+      "bytes": 7144,
+      "sha256": "caf2b39f589c70b4fb7f605e3325093250421f1513cfd3081ff6c05d8e64c689"
+    },
+    {
+      "path": "comment-6488294270.md",
+      "bytes": 29396,
+      "sha256": "81df7cb429a084ea712b1b2ca15084aab864452c87ac81ae3d314160c456fd57"
+    },
+    {
+      "path": "comment-6502508121.md",
+      "bytes": 5491,
+      "sha256": "699ec5022ad35b5b9d0d6400595b9d96e93c06e6e67b552317e851ed6b2ecb4d"
+    },
+    {
+      "path": "comment-6541456677.md",
+      "bytes": 869,
+      "sha256": "26c16d7bde5a0e72f1eb6dc4ee544a37407bbc64121d8a97a26e954585ebf95d"
+    },
+    {
+      "path": "comment-6541610726.md",
+      "bytes": 2110,
+      "sha256": "a89d818203231f071e500111bc64c4926e9f4fbdb1c3b233015ea0edeb9e5f18"
+    },
+    {
+      "path": "comment-6562374661.md",
+      "bytes": 45397,
+      "sha256": "ce67285305a18bdde026adf20269ec97a4c54414cbcde446d05e9bc661f69cfb"
+    },
+    {
+      "path": "dot-pr348-V1.patch",
+      "bytes": 25791,
+      "sha256": "6d565611531ab061b051115e762250d14439608578c07b23080dd93c2364e019"
+    },
+    {
+      "path": "source/main-fca3/geometry-templates/woodworking/native/contact_world.c",
+      "bytes": 26976,
+      "sha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b"
+    },
+    {
+      "path": "source/main-fca3/tests/geo300_contact_order_fast_harness.c.NOT_AVAILABLE.json",
+      "bytes": 345,
+      "sha256": "960100f1aa86c62692e9cafb8d57570ace1fcf0d765c2fdd2d10458083495aed"
+    },
+    {
+      "path": "source/main-fca3/tests/test_geo261_native_kernel.py",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    {
+      "path": "source/main-fca3/tests/test_geo261_timber_capacity_host.py.NOT_AVAILABLE.json",
+      "bytes": 345,
+      "sha256": "2ee80957cf36a58edb573dd7ac8461c38d302c75f519cb4a61107b67156b896c"
+    },
+    {
+      "path": "source/main-fca3/tests/test_geo300_contact_order_fast.py.NOT_AVAILABLE.json",
+      "bytes": 341,
+      "sha256": "21f7717b896f0474f29b434b57b4c19282f17dc698368bfc072018f943d7c544"
+    },
+    {
+      "path": "source/pr348/geometry-templates/woodworking/native/contact_world.c",
+      "bytes": 26965,
+      "sha256": "098e507656cbdc33db4e8b1be840e97c6145418f5740c7b798f95f89f9e7cf59"
+    },
+    {
+      "path": "source/pr348/geometry-templates/woodworking/native/contact_world.c.NOT_AVAILABLE.json",
+      "bytes": 369,
+      "sha256": "3bf2b084f175ff05c5545873c126c4c622406925bcb32f8a29f63d9109d92c6c"
+    },
+    {
+      "path": "source/pr348/tests/geo300_contact_order_fast_harness.c",
+      "bytes": 11776,
+      "sha256": "8185273c7d708102173cc495b56d4389dd8745a286b34e53ed5aa8a605d707b6"
+    },
+    {
+      "path": "source/pr348/tests/geo300_contact_order_fast_harness.c.NOT_AVAILABLE.json",
+      "bytes": 345,
+      "sha256": "6c6bdc4acea22323145a19e9f426ee4a68c1f244fa0211a62f938a4466e53279"
+    },
+    {
+      "path": "source/pr348/tests/test_geo261_native_kernel.py",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7"
+    },
+    {
+      "path": "source/pr348/tests/test_geo261_native_kernel.py.NOT_AVAILABLE.json",
+      "bytes": 331,
+      "sha256": "c6b2dcf5ff05305c279d2b285d8f96032ed68f532c207d0e6ef94d014209bf10"
+    },
+    {
+      "path": "source/pr348/tests/test_geo261_timber_capacity_host.py",
+      "bytes": 32394,
+      "sha256": "a6b503157d857ddcd517aecbad97c8b9a295900167372a250baaa135ab44d507"
+    },
+    {
+      "path": "source/pr348/tests/test_geo261_timber_capacity_host.py.NOT_AVAILABLE.json",
+      "bytes": 345,
+      "sha256": "4963559a49bcd9b3fa22b3ce7bb0e53b742d58940d5becb76eb5421ad8349e91"
+    },
+    {
+      "path": "source/pr348/tests/test_geo300_contact_order_fast.py",
+      "bytes": 5135,
+      "sha256": "960f7cf3bbabedcafdb1f8bd8d9a7f5bb03394f30a4424bbd909bccc39709182"
+    },
+    {
+      "path": "source/pr348/tests/test_geo300_contact_order_fast.py.NOT_AVAILABLE.json",
+      "bytes": 341,
+      "sha256": "17db5c4efd9af8bfee90f63db336a79f959d2e91c3d2013da8fbdd920247b958"
+    }
+  ],
+  "excluded": [
+    "SOURCE_MANIFEST.json self-reference",
+    "SOURCE_MANIFEST.sha256 sidecar"
+  ]
+}

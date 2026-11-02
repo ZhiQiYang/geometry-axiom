@@ -1,0 +1,19 @@
+test_stagger_commit_decision_table_and_ordered_sources (tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources) ... FAIL
+
+======================================================================
+FAIL: test_stagger_commit_decision_table_and_ordered_sources (tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo261_wood_grid_application.py", line 101, in test_stagger_commit_decision_table_and_ordered_sources
+    self.assertEqual(0, self.case("stagger-commit"))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo261_wood_grid_application.py", line 39, in case
+    self.assertEqual(1 if marker else 0, result.returncode, name + ": " + result.stderr)
+AssertionError: 0 != 1 : stagger-commit: ASSERT:stagger-ordered-chain-is-contiguous
+
+
+----------------------------------------------------------------------
+Ran 1 test in 3.126s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"], "started": ["tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources"], "total": 1, "failures": [{"test": "tests.test_geo261_wood_grid_application.WoodGridApplication.test_stagger_commit_decision_table_and_ordered_sources", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo261_wood_grid_application.py\", line 101, in test_stagger_commit_decision_table_and_ordered_sources\n    self.assertEqual(0, self.case(\"stagger-commit\"))\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo261_wood_grid_application.py\", line 39, in case\n    self.assertEqual(1 if marker else 0, result.returncode, name + \": \" + result.stderr)\nAssertionError: 0 != 1 : stagger-commit: ASSERT:stagger-ordered-chain-is-contiguous\n\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

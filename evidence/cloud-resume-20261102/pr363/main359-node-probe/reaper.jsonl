@@ -1,0 +1,5 @@
+{"event": "enabled", "pid": 534804, "subreaper": 1, "policy": "Never signal children; waitpid WNOHANG only on adopted direct children excluding the Popen main child.", "utc": "2026-11-02T14:30:29.721164+00:00"}
+{"event": "reaped-adopted-child", "pid": 535018, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T14:31:27.980740+00:00"}
+{"event": "reaped-adopted-child", "pid": 535470, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T14:31:44.539345+00:00"}
+{"event": "reaped-adopted-child", "pid": 536307, "observedState": "terminated-exit-peek", "waitStatus": 0, "exitCode": 0, "utc": "2026-11-02T14:32:41.882827+00:00"}
+{"event": "main-exit-observed-by-Popen", "pid": 534831, "exitCode": 1, "utc": "2026-11-02T14:33:32.878409+00:00"}

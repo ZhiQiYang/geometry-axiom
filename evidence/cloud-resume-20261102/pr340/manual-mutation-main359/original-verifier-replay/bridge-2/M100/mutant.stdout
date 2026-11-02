@@ -1,0 +1,62 @@
+test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) ... 
+  test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='direct') ... FAIL
+  test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='param') ... FAIL
+  test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='card') ... FAIL
+  test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='panel') ... FAIL
+  test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='bound') ... FAIL
+
+======================================================================
+FAIL: test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='direct')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically
+    self.legacy(kind)
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 160, in legacy
+    self.assertTrue(loaded["ok"], loaded)
+AssertionError: False is not true : {'ok': False, 'error': 'line 1: I24: 網格系統 0 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}
+
+======================================================================
+FAIL: test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='param')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically
+    self.legacy(kind)
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 160, in legacy
+    self.assertTrue(loaded["ok"], loaded)
+AssertionError: False is not true : {'ok': False, 'error': 'line 7: I24: 網格系統 0 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}
+
+======================================================================
+FAIL: test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='card')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically
+    self.legacy(kind)
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 160, in legacy
+    self.assertTrue(loaded["ok"], loaded)
+AssertionError: False is not true : {'ok': False, 'error': 'line 8: I24: 網格系統 4 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}
+
+======================================================================
+FAIL: test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='panel')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically
+    self.legacy(kind)
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 160, in legacy
+    self.assertTrue(loaded["ok"], loaded)
+AssertionError: False is not true : {'ok': False, 'error': 'line 1: I24: 網格系統 0 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}
+
+======================================================================
+FAIL: test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically) (kind='bound')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically
+    self.legacy(kind)
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 160, in legacy
+    self.assertTrue(loaded["ok"], loaded)
+AssertionError: False is not true : {'ok': False, 'error': 'line 4: I24: 網格系統 5 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}
+
+----------------------------------------------------------------------
+Ran 1 test in 5.263s
+
+FAILED (failures=5)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically"], "started": ["tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically"], "total": 1, "failures": [{"test": "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='direct')", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically\n    self.legacy(kind)\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 160, in legacy\n    self.assertTrue(loaded[\"ok\"], loaded)\nAssertionError: False is not true : {'ok': False, 'error': 'line 1: I24: 網格系統 0 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}\n", "kind": "assertion"}, {"test": "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='param')", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically\n    self.legacy(kind)\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 160, in legacy\n    self.assertTrue(loaded[\"ok\"], loaded)\nAssertionError: False is not true : {'ok': False, 'error': 'line 7: I24: 網格系統 0 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}\n", "kind": "assertion"}, {"test": "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='card')", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically\n    self.legacy(kind)\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 160, in legacy\n    self.assertTrue(loaded[\"ok\"], loaded)\nAssertionError: False is not true : {'ok': False, 'error': 'line 8: I24: 網格系統 4 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}\n", "kind": "assertion"}, {"test": "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='panel')", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically\n    self.legacy(kind)\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 160, in legacy\n    self.assertTrue(loaded[\"ok\"], loaded)\nAssertionError: False is not true : {'ok': False, 'error': 'line 1: I24: 網格系統 0 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}\n", "kind": "assertion"}, {"test": "tests.test_geo314_stagger_commit.StaggerCommit.test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically (kind='bound')", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 456, in test_L1_all_frozen_legacy_modes_load_and_dump_byte_identically\n    self.legacy(kind)\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 160, in legacy\n    self.assertTrue(loaded[\"ok\"], loaded)\nAssertionError: False is not true : {'ok': False, 'error': 'line 4: I24: 網格系統 5 的 u、v 兩軸都設了相位差。同一份網格只能有一軸錯開（D10b）；請只保留一軸的 stagger', 'status': 'INVALID', 'code': 'SCENE_INVALID'}\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

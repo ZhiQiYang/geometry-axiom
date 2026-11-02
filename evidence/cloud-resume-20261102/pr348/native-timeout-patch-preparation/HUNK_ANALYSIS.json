@@ -1,0 +1,306 @@
+{
+  "method": "只在記憶體解析unified diff與AST，不呼叫git apply、不寫候選source、不跑測試。",
+  "uniqueSourceLeafCount": 5,
+  "rows": [
+    {
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "patchOldBlobPrefix": "c8fa6cd9",
+      "patchNewBlobPrefix": "de0a2453",
+      "pr348Blob": "c8fa6cd9c580ec435f991ab2cadf8afdd628bc9d",
+      "hypotheticalPatchedBlob": "de0a245308785d4f5cb9e5da0bfad59a74f41507",
+      "hypotheticalPatchedSha256": "187e05892b1fd828aa43d3c67f5eb549392415a10d6a7b97c62db081f7a9fac3",
+      "hunks": [
+        {
+          "header": "@@ -174,16 +174,69 @@ static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodS",
+          "oldStart": 174,
+          "oldCount": 16,
+          "newStart": 174,
+          "newCount": 69,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": 0,
+          "mainNewBlockOccurrences": 0
+        }
+      ],
+      "pr348CandidateAlreadyIncluded": false,
+      "mainPresent": true,
+      "mainAlreadyExactCandidate": false,
+      "mainExactPr348Base": false,
+      "mainAllOldHunkBlocksMatch": false,
+      "patchWasAppliedToAnyFile": false
+    },
+    {
+      "path": "tests/geo300_contact_order_fast_harness.c",
+      "patchOldBlobPrefix": "f0c2cee1",
+      "patchNewBlobPrefix": "b1392ce7",
+      "pr348Blob": "f0c2cee122e2e799e294f3876419af2623f49937",
+      "hypotheticalPatchedBlob": "b1392ce7fef38ecc43337e295d5fbe479c7a143b",
+      "hypotheticalPatchedSha256": "8b2726982c0b1e1d8a3ebfaf877a831d7151b5ccdae3464a35b2c3c78be0f284",
+      "hunks": [
+        {
+          "header": "@@ -8,6 +8,9 @@",
+          "oldStart": 8,
+          "oldCount": 6,
+          "newStart": 8,
+          "newCount": 9,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -108,14 +111,15 @@ static void loop_init(WoodBoundaryLoop *loop,GeoCoord u,GeoCoord v,GeoCoord side",
+          "oldStart": 108,
+          "oldCount": 14,
+          "newStart": 111,
+          "newCount": 15,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -127,13 +131,20 @@ static int verify(const char *label,const char *assertion,const WoodContactWorld",
+          "oldStart": 127,
+          "oldCount": 13,
+          "newStart": 131,
+          "newCount": 20,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -197,7 +208,113 @@ static int full_capacity(void)",
+          "oldStart": 197,
+          "oldCount": 7,
+          "newStart": 208,
+          "newCount": 113,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -207,5 +324,6 @@ int main(int argc,char **argv)",
+          "oldStart": 207,
+          "oldCount": 5,
+          "newStart": 324,
+          "newCount": 6,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        }
+      ],
+      "pr348CandidateAlreadyIncluded": false,
+      "mainPresent": false,
+      "mainAlreadyExactCandidate": false,
+      "mainExactPr348Base": false,
+      "mainAllOldHunkBlocksMatch": false,
+      "patchWasAppliedToAnyFile": false,
+      "mainAbsentInTreeMetadata": true
+    },
+    {
+      "path": "tests/test_geo261_native_kernel.py",
+      "patchOldBlobPrefix": "2ce343c1",
+      "patchNewBlobPrefix": "f851d30a",
+      "pr348Blob": "2ce343c1f56d649b2b479a5dbd4200b705955dcf",
+      "hypotheticalPatchedBlob": "f851d30a8120f1f1c5e1b6a09dbf92ed4df4922d",
+      "hypotheticalPatchedSha256": "7727e2ab9b02484baec3e8e78e22fa4e1fae0599eac9bccc54fe722b489c0c95",
+      "hunks": [
+        {
+          "header": "@@ -30,13 +30,14 @@ from tests import test_engineering_json as existing_codec",
+          "oldStart": 30,
+          "oldCount": 13,
+          "newStart": 30,
+          "newCount": 14,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": 1,
+          "mainNewBlockOccurrences": 0
+        },
+        {
+          "header": "@@ -167,14 +168,14 @@ class NativeBuild:",
+          "oldStart": 167,
+          "oldCount": 14,
+          "newStart": 168,
+          "newCount": 14,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": 1,
+          "mainNewBlockOccurrences": 0
+        }
+      ],
+      "pr348CandidateAlreadyIncluded": false,
+      "mainPresent": true,
+      "mainAlreadyExactCandidate": false,
+      "mainExactPr348Base": true,
+      "mainAllOldHunkBlocksMatch": true,
+      "patchWasAppliedToAnyFile": false,
+      "testMethodsBefore": [
+        "test_codec_negative_control_changes_both_kernel_and_product",
+        "test_cross_cancellation_precedes_checked_multiplication",
+        "test_exact_negative_control_changes_both_kernel_and_product",
+        "test_fractional_arithmetic_matches_independent_fraction_oracle",
+        "test_overflow_unit_failures_preserve_output",
+        "test_public_normalization_rejects_invalid_values"
+      ],
+      "testMethodsAfter": [
+        "test_codec_negative_control_changes_both_kernel_and_product",
+        "test_cross_cancellation_precedes_checked_multiplication",
+        "test_exact_negative_control_changes_both_kernel_and_product",
+        "test_fractional_arithmetic_matches_independent_fraction_oracle",
+        "test_overflow_unit_failures_preserve_output",
+        "test_public_normalization_rejects_invalid_values"
+      ],
+      "testMethodASTAllIdentical": true
+    },
+    {
+      "path": "tests/test_geo261_timber_capacity_host.py",
+      "patchOldBlobPrefix": "882a0b8e",
+      "patchNewBlobPrefix": "0cd77284",
+      "pr348Blob": "882a0b8ea3fd18b57718e33e3f551a0f320207d9",
+      "hypotheticalPatchedBlob": "0cd77284f7e69e59ecbaaf6608ab9d62e5c21c4b",
+      "hypotheticalPatchedSha256": "02a1bb94ab396fad348c2c84639f6e34378855b457e9797f4f9edebd33613084",
+      "hunks": [
+        {
+          "header": "@@ -4,6 +4,7 @@ Compile-contract controls are intentionally separate from runtime assertion",
+          "oldStart": 4,
+          "oldCount": 6,
+          "newStart": 4,
+          "newCount": 7,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -17,7 +18,7 @@ ROOT=Path(__file__).resolve().parents[1]",
+          "oldStart": 17,
+          "oldCount": 7,
+          "newStart": 18,
+          "newCount": 7,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -28,6 +29,15 @@ GRAMMAR_ERROR=\"欄位數不對\"",
+          "oldStart": 28,
+          "oldCount": 6,
+          "newStart": 29,
+          "newCount": 15,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        }
+      ],
+      "pr348CandidateAlreadyIncluded": false,
+      "mainPresent": false,
+      "mainAlreadyExactCandidate": false,
+      "mainExactPr348Base": false,
+      "mainAllOldHunkBlocksMatch": false,
+      "patchWasAppliedToAnyFile": false,
+      "mainAbsentInTreeMetadata": true,
+      "testMethodsBefore": [
+        "test_actual_host_independent_admission_storage_and_scratch_values",
+        "test_each_real_declaration_retains_legacy_64_and_admits_up_to_512",
+        "test_full_capacity_redeclaration_replay_and_rejected_edit_preserve_history",
+        "test_placed_history_uses_current_preview_token_and_one_undo",
+        "test_real_bridge_guard_withdrawal_uses_safe_incomplete_declaration_then_restores",
+        "test_real_host_compile_contract_rejects_each_drifted_capacity",
+        "test_real_placed_512_sequential_replay_and_safe_513_history",
+        "test_real_placed_64_and_512_load_dump_and_canonical_replay"
+      ],
+      "testMethodsAfter": [
+        "test_actual_host_independent_admission_storage_and_scratch_values",
+        "test_each_real_declaration_retains_legacy_64_and_admits_up_to_512",
+        "test_full_capacity_redeclaration_replay_and_rejected_edit_preserve_history",
+        "test_placed_history_uses_current_preview_token_and_one_undo",
+        "test_real_bridge_guard_withdrawal_uses_safe_incomplete_declaration_then_restores",
+        "test_real_host_compile_contract_rejects_each_drifted_capacity",
+        "test_real_placed_512_sequential_replay_and_safe_513_history",
+        "test_real_placed_64_and_512_load_dump_and_canonical_replay"
+      ],
+      "testMethodASTAllIdentical": true
+    },
+    {
+      "path": "tests/test_geo300_contact_order_fast.py",
+      "patchOldBlobPrefix": "c751e98d",
+      "patchNewBlobPrefix": "4a92c7bc",
+      "pr348Blob": "c751e98d17f973a501852836c6ff471de05124ad",
+      "hypotheticalPatchedBlob": "4a92c7bc4c2298e9532082e07ec707a7a415d695",
+      "hypotheticalPatchedSha256": "16d58adee9c188522355c98910f91e025a000c98aebb7f561a77f16e68dc849b",
+      "hunks": [
+        {
+          "header": "@@ -1,4 +1,4 @@",
+          "oldStart": 1,
+          "oldCount": 4,
+          "newStart": 1,
+          "newCount": 4,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -28,13 +28,22 @@ class ContactOrderFastPath(unittest.TestCase):",
+          "oldStart": 28,
+          "oldCount": 13,
+          "newStart": 28,
+          "newCount": 22,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -76,10 +85,18 @@ uint64_t geo300_sort_comparisons(void){return geo300_member_sort_comparisons;}",
+          "oldStart": 76,
+          "oldCount": 10,
+          "newStart": 85,
+          "newCount": 18,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -88,7 +105,7 @@ uint64_t geo300_sort_comparisons(void){return geo300_member_sort_comparisons;}",
+          "oldStart": 88,
+          "oldCount": 7,
+          "newStart": 105,
+          "newCount": 7,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        },
+        {
+          "header": "@@ -98,10 +115,32 @@ uint64_t geo300_sort_comparisons(void){return geo300_member_sort_comparisons;}",
+          "oldStart": 98,
+          "oldCount": 10,
+          "newStart": 115,
+          "newCount": 32,
+          "pr348OldContextExact": true,
+          "mainOldBlockOccurrences": null,
+          "mainNewBlockOccurrences": null
+        }
+      ],
+      "pr348CandidateAlreadyIncluded": false,
+      "mainPresent": false,
+      "mainAlreadyExactCandidate": false,
+      "mainExactPr348Base": false,
+      "mainAllOldHunkBlocksMatch": false,
+      "patchWasAppliedToAnyFile": false,
+      "mainAbsentInTreeMetadata": true,
+      "testMethodsBefore": [
+        "test_boundary_capacity_filter_duplicate_and_degenerate_cases",
+        "test_equal_order_retains_declaration_and_side_stability",
+        "test_full_member_capacity_matches_original_collector",
+        "test_inversions_keep_original_full_width_stable_sort",
+        "test_sorted_full_uint64_fields_match_original_without_merge",
+        "test_unconditional_skip_fails_named_unsorted_bytes_assertion",
+        "test_withdrawal_preserves_bytes_but_fails_named_work_assertion"
+      ],
+      "testMethodsAfter": [
+        "test_boundary_capacity_filter_duplicate_and_degenerate_cases",
+        "test_equal_order_retains_declaration_and_side_stability",
+        "test_full_member_capacity_matches_original_collector",
+        "test_inversions_keep_original_full_width_stable_sort",
+        "test_sorted_full_uint64_fields_match_original_without_merge",
+        "test_unconditional_skip_fails_named_unsorted_bytes_assertion",
+        "test_withdrawal_preserves_bytes_but_fails_named_work_assertion"
+      ],
+      "testMethodASTAllIdentical": false
+    }
+  ]
+}

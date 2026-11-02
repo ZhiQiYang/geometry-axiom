@@ -1,0 +1,23 @@
+{
+  "commentID": 6562374661,
+  "commentURL": "https://github.com/ZhiQiYang/geometry-axiom/pull/348#issuecomment-6562374661",
+  "createdUTC": "2026-11-01T18:54:09Z",
+  "updatedUTC": "2026-11-01T18:54:09Z",
+  "commentFile": "comment-6562374661.md",
+  "commentSha256": "ce67285305a18bdde026adf20269ec97a4c54414cbcde446d05e9bc661f69cfb",
+  "candidate": "V1",
+  "file": "dot-pr348-V1.patch",
+  "bytes": 25791,
+  "sha256": "6d565611531ab061b051115e762250d14439608578c07b23080dd93c2364e019",
+  "exactPublishedBytes": true,
+  "sourceBase": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+  "V0ExecutionPatchDigest": "2d30a71789db781e35c8fa10170c489483201e7d6a7759bfe9d4342679313e18",
+  "V1FullNativeRerun": "UNRUN",
+  "changedPaths": [
+    "geometry-templates/woodworking/native/contact_world.c",
+    "tests/geo300_contact_order_fast_harness.c",
+    "tests/test_geo261_native_kernel.py",
+    "tests/test_geo261_timber_capacity_host.py",
+    "tests/test_geo300_contact_order_fast.py"
+  ]
+}

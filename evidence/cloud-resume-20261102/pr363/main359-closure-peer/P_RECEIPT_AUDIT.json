@@ -1,0 +1,341 @@
+{
+  "P": "c2eb5edc99d2880a65583f46085617d99a6f191b",
+  "checks": [
+    {
+      "check": "fixedP input geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "check": "fixedP input geometry-web/reference-workspace.js",
+      "passed": true
+    },
+    {
+      "check": "fixedP input geometry-web/feature-attachments.js",
+      "passed": true
+    },
+    {
+      "check": "fixedP input geometry-web/cutting-settings.js",
+      "passed": true
+    },
+    {
+      "check": "fixedP input geometry-web/scenario-catalog.js",
+      "passed": true
+    },
+    {
+      "check": "fixedP input geometry-web/vendor/fflate/umd/index.js",
+      "passed": true
+    },
+    {
+      "check": "fixedP input tests/diagnostics/r06_main359_merge_contract.cjs",
+      "passed": true
+    },
+    {
+      "check": "fixed actual raw TAP/receipt",
+      "passed": true
+    },
+    {
+      "check": "fixed original node command",
+      "passed": true
+    },
+    {
+      "check": "fixed full eight cases",
+      "passed": true
+    },
+    {
+      "check": "drop-pfh-reader actual raw TAP/receipt",
+      "passed": true
+    },
+    {
+      "check": "drop-pfh-reader original node command",
+      "passed": true
+    },
+    {
+      "check": "drop-pfh-reader named assertion",
+      "passed": true
+    },
+    {
+      "check": "drop-workspace-cutting-option actual raw TAP/receipt",
+      "passed": true
+    },
+    {
+      "check": "drop-workspace-cutting-option original node command",
+      "passed": true
+    },
+    {
+      "check": "drop-workspace-cutting-option named assertion",
+      "passed": true
+    },
+    {
+      "check": "advertise-cutting-without-optin actual raw TAP/receipt",
+      "passed": true
+    },
+    {
+      "check": "advertise-cutting-without-optin original node command",
+      "passed": true
+    },
+    {
+      "check": "advertise-cutting-without-optin named assertion",
+      "passed": true
+    },
+    {
+      "check": "restored actual raw TAP/receipt",
+      "passed": true
+    },
+    {
+      "check": "restored original node command",
+      "passed": true
+    },
+    {
+      "check": "restored full eight cases",
+      "passed": true
+    },
+    {
+      "check": "drop-pfh-reader exact single source-copy withdrawal",
+      "passed": true
+    },
+    {
+      "check": "drop-workspace-cutting-option exact single source-copy withdrawal",
+      "passed": true
+    },
+    {
+      "check": "advertise-cutting-without-optin exact single source-copy withdrawal",
+      "passed": true
+    },
+    {
+      "check": "51 existing contract raw output",
+      "passed": true
+    },
+    {
+      "check": "compile only receipt/binary hash",
+      "passed": true
+    },
+    {
+      "check": "preflight catalog identity",
+      "passed": true
+    },
+    {
+      "check": "39 cases /42 reported one anchors",
+      "passed": true
+    }
+  ],
+  "checkCount": 29,
+  "failures": [],
+  "fixedInputs": [
+    {
+      "path": "geometry-web/project-store.js",
+      "bytes": 92553,
+      "sha256": "3cb044a0d893f70e0fcd13facfc735dae7c198cbc3a10cb75f61dd1b63bb8c89",
+      "gitBlob": "e1a9cac25c8a9249e020471510df5a73932a7609",
+      "behaviourReviewed": true
+    },
+    {
+      "path": "geometry-web/reference-workspace.js",
+      "bytes": 165170,
+      "sha256": "970c83f03353aa9bd4e0818bce85b9ec3102c5cca352f8ea67548e5b3a497277",
+      "gitBlob": "bcc90bd8a6cc9f6b40e581a97def17859ce11397",
+      "behaviourReviewed": true
+    },
+    {
+      "path": "geometry-web/feature-attachments.js",
+      "bytes": 26602,
+      "sha256": "6720cc410f46302ca81cc6d5aa276aaaf19a43c303e3583995b556852b74384b",
+      "gitBlob": "a01f470f16c3f4babd25afc97b4aa3d823da8b0a",
+      "behaviourReviewed": false
+    },
+    {
+      "path": "geometry-web/cutting-settings.js",
+      "bytes": 3983,
+      "sha256": "e04ea4d5b4f3242d80dfe04bab7f2f4c5a30ac2901428aa84a95a6886d1f7c92",
+      "gitBlob": "17e12213c323257ec7e916ba7c44719dbbc9b300",
+      "behaviourReviewed": false
+    },
+    {
+      "path": "geometry-web/scenario-catalog.js",
+      "bytes": 7752,
+      "sha256": "013940df8c3e841a8803455ee1f7b894ac29f873a151cf4cf880b6dbec26dcf1",
+      "gitBlob": "b0ef33f08ddc20bb33c5a0b278a1a395037a5724",
+      "behaviourReviewed": false
+    },
+    {
+      "path": "geometry-web/vendor/fflate/umd/index.js",
+      "bytes": 33044,
+      "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83",
+      "gitBlob": "df762372e3ff721a72a8e9b5cf1e58f2f3ee4ea8",
+      "behaviourReviewed": false
+    },
+    {
+      "path": "tests/diagnostics/r06_main359_merge_contract.cjs",
+      "bytes": 10698,
+      "sha256": "a22a8ad0f775afc17fc97bf54fc21fb4808608a7e23293302cf943db8c50a951",
+      "gitBlob": "250fcea8ca853e8dec4275259371c62a71efc1d4",
+      "behaviourReviewed": true
+    }
+  ],
+  "controls": [
+    {
+      "phase": "fixed",
+      "request": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/fixed/REQUEST.json",
+      "result": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/fixed/RESULT.json",
+      "actualExit": 0,
+      "rawCounts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "namedFailures": [],
+      "stdout": {
+        "bytes": 1408,
+        "sha256": "a8dcc235e746f894b687ec81367b8785dbbc8dbaec15d53306c4b301c110f6c2"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "drop-pfh-reader",
+      "request": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/drop-pfh-reader/REQUEST.json",
+      "result": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/drop-pfh-reader/RESULT.json",
+      "actualExit": 1,
+      "rawCounts": {
+        "tests": 8,
+        "pass": 6,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "namedFailures": [
+        "R06_MAIN359_PFH_AND_CUTTING_ARCHIVE",
+        "R06_MAIN359_PREPARE_FORWARDS_BOTH_CONTRACTS"
+      ],
+      "stdout": {
+        "bytes": 3782,
+        "sha256": "1728a65eff2c2430a27668356b7488a3cda2d9a73d84ff7543213c703b5e6b31"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "drop-workspace-cutting-option",
+      "request": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/drop-workspace-cutting-option/REQUEST.json",
+      "result": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/drop-workspace-cutting-option/RESULT.json",
+      "actualExit": 1,
+      "rawCounts": {
+        "tests": 8,
+        "pass": 7,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "namedFailures": [
+        "R06_MAIN359_PREPARE_FORWARDS_BOTH_CONTRACTS"
+      ],
+      "stdout": {
+        "bytes": 2306,
+        "sha256": "3565bc86e8331f5b30cf7576a6d8a655c1605e11c8c4179c7c40653f5ea2d20f"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "advertise-cutting-without-optin",
+      "request": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/advertise-cutting-without-optin/REQUEST.json",
+      "result": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/advertise-cutting-without-optin/RESULT.json",
+      "actualExit": 1,
+      "rawCounts": {
+        "tests": 8,
+        "pass": 6,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "namedFailures": [
+        "R06_MAIN359_CUTTING_OPTIN_REMAINS_EXPLICIT",
+        "R06_MAIN359_PFH_AND_CUTTING_ARCHIVE"
+      ],
+      "stdout": {
+        "bytes": 2633,
+        "sha256": "85af4cec69f10e83394b77301b07cf7b5b80c9331d69a1eeec00cda48a6f73c9"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "restored",
+      "request": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/restored/REQUEST.json",
+      "result": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/private-controls/restored/RESULT.json",
+      "actualExit": 0,
+      "rawCounts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "namedFailures": [],
+      "stdout": {
+        "bytes": 1409,
+        "sha256": "b7957c3c732bb72fd240e0e093c116696816d1abdb121d06f36a9ba78ae61395"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "existingContracts": {
+    "counts": {
+      "tests": 51,
+      "pass": 51,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "exit": 0,
+    "request": "/tmp/geometry-resume-20261102/pr363/main359-private-integration/contracts-baseline/REQUEST.json",
+    "sourceAttribution": "pre-commit merge WT executed; REQUEST未列完整逐input SHA。只保留原執行身份，未冒稱它是新P完整aggregate producer。"
+  },
+  "compile": {
+    "request": {
+      "argv": [
+        "cc",
+        "-std=c11",
+        "-O2",
+        "geometry-web/web_bridge.c",
+        "-lm",
+        "-o",
+        "/tmp/geometry-resume-20261102/pr363/main359-private-integration/compile/bridge"
+      ],
+      "cwd": "/tmp/geometry-r06-main359-integration-20261102",
+      "sourceP": "c2eb5edc99d2880a65583f46085617d99a6f191b",
+      "utc": "2026-11-02T14:11:54.462859+00:00",
+      "timeoutSeconds": 300,
+      "flagsBasis": "Original tests/binaries.py bridge Binary.posix_flags and source command. Only output destination is private; no shared /tmp/geometry-tests writes and no smoke execution.",
+      "stackBytes": 16777216
+    },
+    "result": {
+      "exit": 0,
+      "seconds": 24.062383788987063,
+      "utc": "2026-11-02T14:12:18.525405+00:00",
+      "binaryExecuted": false,
+      "sharedBinaryCacheModified": false,
+      "binary": {
+        "bytes": 1220520,
+        "sha256": "936a6049cd9b844be7130599a1661b0c02c94db0df91bbc45cddd2a6a0af75c2"
+      }
+    },
+    "ELFReadForHashOnly": true,
+    "executedByPeer": false
+  },
+  "preflight": "只核固定catalog hash、39/42及已保存single-match紀錄；不是39mutants已執行或kill證明。",
+  "diagnosticScope": "原八case使用真archive/project module及抽取workspace function；HTTP/native candidate/lease是假transport。freshProject是Node新module，不是Chrome/native冷重開。",
+  "initialDiagnosticScope": "diagnostic-initial input test SHA d18a4c9f...與最終P測試a22a8ad0...不同；未把早期結果移標為最終8case，最終依fixed/restored原流。"
+}

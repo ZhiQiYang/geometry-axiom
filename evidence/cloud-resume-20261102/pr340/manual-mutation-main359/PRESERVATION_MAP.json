@@ -1,0 +1,53 @@
+{
+  "meaning": "Original nine official ZIPs preserve all inner cache.tar.gz and all executed binary bytes. Cache tar is not duplicated outside each original ZIP. ARTIFACT_BYTES.json records every ZIP member hash; manifest/execution.log/ledgers/architecture are also readable. Downloaded binaries were not executed.",
+  "sourceM": "abbf1465e4617110f16892ba3925b20615345177",
+  "run": 41453934297,
+  "officialOriginalZips": [
+    {
+      "path": "official-zips/13145886977.zip",
+      "bytes": 54423,
+      "sha256": "f8d0a8eedf6b2b79d8d1c0560b6b7da7e4466a9268edcf0ae30a31b85ab02856"
+    },
+    {
+      "path": "official-zips/13146772686.zip",
+      "bytes": 8669656,
+      "sha256": "189ee95c98cca536eac169a30202b97d6413de7b9365684e058d7af369b36e92"
+    },
+    {
+      "path": "official-zips/13146996180.zip",
+      "bytes": 8665328,
+      "sha256": "6c7c511964bcb1912aa75b7c2ae47ea0a03d45043a7ab22a6eadff65c14d1633"
+    },
+    {
+      "path": "official-zips/13147052029.zip",
+      "bytes": 7300516,
+      "sha256": "e339b12f79fe4a048dc7ae40753c5634f189093d5db4cef560996d570fd2323c"
+    },
+    {
+      "path": "official-zips/13147205239.zip",
+      "bytes": 7754933,
+      "sha256": "535e6fa62d3242206b2be5fa93a62add165301a69518eb56027c2e39c8ba97b1"
+    },
+    {
+      "path": "official-zips/13147833616.zip",
+      "bytes": 22555496,
+      "sha256": "c1773e26a653e68f504cd383849bb184f5764280b1ed59b6a3eeda9fb7e08fd9"
+    },
+    {
+      "path": "official-zips/13147923354.zip",
+      "bytes": 1626354,
+      "sha256": "9406857b0e6fd09acfe7b6ffc347aa8e8391c17a76a9aaa452de2658ba9ae7ab"
+    },
+    {
+      "path": "official-zips/13148471110.zip",
+      "bytes": 22521637,
+      "sha256": "53569a4e6936e4f0b1b4994879209aac14619654562e4788fdb62784d66d13c3"
+    },
+    {
+      "path": "official-zips/13148706623.zip",
+      "bytes": 21305700,
+      "sha256": "c337841f33d0d9754f206d2dd018d6d9153493ebbebf41e2764fdcd739e3cabf"
+    }
+  ],
+  "totalZipBytes": 100454043
+}

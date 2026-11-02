@@ -1,0 +1,12 @@
+{
+  "command": [
+    "git",
+    "-C",
+    "/tmp/geometry-live-20261102",
+    "cat-file",
+    "blob",
+    "86c8f0bbe68275e2948d3b1959207aba4225e0c7:tests/geo300_contact_order_fast_harness.c"
+  ],
+  "exit": 128,
+  "stderr": "fatal: path 'tests/geo300_contact_order_fast_harness.c' does not exist in '86c8f0bbe68275e2948d3b1959207aba4225e0c7'\n"
+}

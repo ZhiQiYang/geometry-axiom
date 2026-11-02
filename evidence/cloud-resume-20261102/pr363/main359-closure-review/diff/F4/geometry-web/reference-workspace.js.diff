@@ -1,0 +1,27 @@
+--- base/geometry-web/reference-workspace.js
++++ F4/geometry-web/reference-workspace.js
+@@ -1922,7 +1922,7 @@
+     if(!response.ok || (await response.json()).ok!==true)throw new Error("無法確認專案候選已取消；目前場景未被替換。");
+   }
+   async function prepareProjectScene(text,manifest,assertCurrent) {
+-    let token=null;
++    let token=null;const preparedNativeRevision=nativeRevision;
+     try {
+       const response=await fetch("/upload/prepare",{method:"POST",body:text,signal:AbortSignal.timeout(30000)});
+       if(!response.ok)throw new Error("目前服務無法驗證專案，未變更目前專案。");
+@@ -1932,7 +1932,14 @@
+       token=candidate.token;
+       assertWritableLease();assertCurrent();
+       P.validateProjectObjectRefs(manifest,candidate.final_objects);
+-      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
++      const hostRecordProfile=manifest.requiredCapabilities?.includes('panel-fill/1')&&candidate.native_capabilities?.includes('panel-fill-native/1')?
++        await apiRequest('panel-fill-read'):null;
++      assertWritableLease();assertCurrent();
++      if(hostRecordProfile&&(!Number.isSafeInteger(hostRecordProfile.revision)||
++         preparedNativeRevision!==null&&hostRecordProfile.revision!==preparedNativeRevision||
++         nativeRevision!==null&&nativeRevision>hostRecordProfile.revision))
++        throw new Error('原生來源在讀取衍生承載面能力期間已變更，請重新開啟專案。');
++      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities,candidate.native_capabilities,manifest,candidate.final_scene,hostRecordProfile));
+       P.validateProjectCapabilities(candidate.required_capabilities);
+       const policy=P.formatPolicy(manifest.format);
+       if (policy.engineeringCandidate) {

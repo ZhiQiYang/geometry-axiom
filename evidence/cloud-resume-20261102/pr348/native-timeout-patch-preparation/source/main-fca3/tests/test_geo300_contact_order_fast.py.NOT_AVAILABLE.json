@@ -1,0 +1,12 @@
+{
+  "command": [
+    "git",
+    "-C",
+    "/tmp/geometry-live-20261102",
+    "cat-file",
+    "blob",
+    "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d:tests/test_geo300_contact_order_fast.py"
+  ],
+  "exit": 128,
+  "stderr": "fatal: path 'tests/test_geo300_contact_order_fast.py' does not exist in 'fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d'\n"
+}

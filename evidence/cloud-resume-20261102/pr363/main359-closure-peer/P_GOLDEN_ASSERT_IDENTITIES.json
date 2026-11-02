@@ -1,0 +1,988 @@
+{
+  "fixedRefs": {
+    "base": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+    "F4": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+    "main": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+    "P": "c2eb5edc99d2880a65583f46085617d99a6f191b"
+  },
+  "goldenRows": [
+    {
+      "key": "1",
+      "base": 14,
+      "F4": 14,
+      "main": 14,
+      "P": 14,
+      "expectedThreeWay": 14,
+      "exact": true
+    },
+    {
+      "key": "10",
+      "base": 0,
+      "F4": 0,
+      "main": 0,
+      "P": 0,
+      "expectedThreeWay": 0,
+      "exact": true
+    },
+    {
+      "key": "2",
+      "base": 3,
+      "F4": 3,
+      "main": 3,
+      "P": 3,
+      "expectedThreeWay": 3,
+      "exact": true
+    },
+    {
+      "key": "3",
+      "base": 1,
+      "F4": 1,
+      "main": 1,
+      "P": 1,
+      "expectedThreeWay": 1,
+      "exact": true
+    },
+    {
+      "key": "4",
+      "base": 1,
+      "F4": 1,
+      "main": 1,
+      "P": 1,
+      "expectedThreeWay": 1,
+      "exact": true
+    },
+    {
+      "key": "5",
+      "base": 1,
+      "F4": 1,
+      "main": 1,
+      "P": 1,
+      "expectedThreeWay": 1,
+      "exact": true
+    },
+    {
+      "key": "6",
+      "base": 1,
+      "F4": 1,
+      "main": 1,
+      "P": 1,
+      "expectedThreeWay": 1,
+      "exact": true
+    },
+    {
+      "key": "7",
+      "base": 1,
+      "F4": 1,
+      "main": 1,
+      "P": 1,
+      "expectedThreeWay": 1,
+      "exact": true
+    },
+    {
+      "key": "8",
+      "base": 0,
+      "F4": 0,
+      "main": 0,
+      "P": 0,
+      "expectedThreeWay": 0,
+      "exact": true
+    },
+    {
+      "key": "9",
+      "base": 12,
+      "F4": 12,
+      "main": 12,
+      "P": 12,
+      "expectedThreeWay": 12,
+      "exact": true
+    },
+    {
+      "key": "BF2",
+      "base": 5,
+      "F4": 5,
+      "main": 5,
+      "P": 5,
+      "expectedThreeWay": 5,
+      "exact": true
+    },
+    {
+      "key": "BF3",
+      "base": 1,
+      "F4": 1,
+      "main": 1,
+      "P": 1,
+      "expectedThreeWay": 1,
+      "exact": true
+    },
+    {
+      "key": "BF4",
+      "base": 9,
+      "F4": 9,
+      "main": 9,
+      "P": 9,
+      "expectedThreeWay": 9,
+      "exact": true
+    },
+    {
+      "key": "P10",
+      "base": 9,
+      "F4": 9,
+      "main": 9,
+      "P": 9,
+      "expectedThreeWay": 9,
+      "exact": true
+    },
+    {
+      "key": "P11",
+      "base": 12,
+      "F4": 12,
+      "main": 12,
+      "P": 12,
+      "expectedThreeWay": 12,
+      "exact": true
+    },
+    {
+      "key": "P12",
+      "base": 8,
+      "F4": 8,
+      "main": 8,
+      "P": 8,
+      "expectedThreeWay": 8,
+      "exact": true
+    },
+    {
+      "key": "P13",
+      "base": 4,
+      "F4": 4,
+      "main": 4,
+      "P": 4,
+      "expectedThreeWay": 4,
+      "exact": true
+    },
+    {
+      "key": "P14",
+      "base": 16,
+      "F4": 16,
+      "main": 16,
+      "P": 16,
+      "expectedThreeWay": 16,
+      "exact": true
+    },
+    {
+      "key": "P15",
+      "base": 6,
+      "F4": 6,
+      "main": 6,
+      "P": 6,
+      "expectedThreeWay": 6,
+      "exact": true
+    },
+    {
+      "key": "P16",
+      "base": 10,
+      "F4": 10,
+      "main": 10,
+      "P": 10,
+      "expectedThreeWay": 10,
+      "exact": true
+    },
+    {
+      "key": "P17",
+      "base": 11,
+      "F4": 11,
+      "main": 11,
+      "P": 11,
+      "expectedThreeWay": 11,
+      "exact": true
+    },
+    {
+      "key": "P18",
+      "base": 20,
+      "F4": 20,
+      "main": 20,
+      "P": 20,
+      "expectedThreeWay": 20,
+      "exact": true
+    },
+    {
+      "key": "P19",
+      "base": 17,
+      "F4": 17,
+      "main": 17,
+      "P": 17,
+      "expectedThreeWay": 17,
+      "exact": true
+    },
+    {
+      "key": "P20",
+      "base": 10,
+      "F4": 10,
+      "main": 10,
+      "P": 10,
+      "expectedThreeWay": 10,
+      "exact": true
+    },
+    {
+      "key": "P21",
+      "base": 4,
+      "F4": 4,
+      "main": 4,
+      "P": 4,
+      "expectedThreeWay": 4,
+      "exact": true
+    },
+    {
+      "key": "P22",
+      "base": 45,
+      "F4": 45,
+      "main": 45,
+      "P": 45,
+      "expectedThreeWay": 45,
+      "exact": true
+    },
+    {
+      "key": "P3",
+      "base": 14,
+      "F4": 14,
+      "main": 14,
+      "P": 14,
+      "expectedThreeWay": 14,
+      "exact": true
+    },
+    {
+      "key": "P32",
+      "base": 34,
+      "F4": 34,
+      "main": 34,
+      "P": 34,
+      "expectedThreeWay": 34,
+      "exact": true
+    },
+    {
+      "key": "P33",
+      "base": 9,
+      "F4": 9,
+      "main": 9,
+      "P": 9,
+      "expectedThreeWay": 9,
+      "exact": true
+    },
+    {
+      "key": "P34",
+      "base": 7,
+      "F4": 7,
+      "main": 7,
+      "P": 7,
+      "expectedThreeWay": 7,
+      "exact": true
+    },
+    {
+      "key": "P35",
+      "base": 14,
+      "F4": 14,
+      "main": 14,
+      "P": 14,
+      "expectedThreeWay": 14,
+      "exact": true
+    },
+    {
+      "key": "P359",
+      "base": null,
+      "F4": null,
+      "main": 24,
+      "P": 24,
+      "expectedThreeWay": 24,
+      "exact": true
+    },
+    {
+      "key": "P36",
+      "base": 2,
+      "F4": 2,
+      "main": 2,
+      "P": 2,
+      "expectedThreeWay": 2,
+      "exact": true
+    },
+    {
+      "key": "P37",
+      "base": 19,
+      "F4": 19,
+      "main": 19,
+      "P": 19,
+      "expectedThreeWay": 19,
+      "exact": true
+    },
+    {
+      "key": "P38",
+      "base": 13,
+      "F4": 13,
+      "main": 13,
+      "P": 13,
+      "expectedThreeWay": 13,
+      "exact": true
+    },
+    {
+      "key": "P39",
+      "base": 8,
+      "F4": 8,
+      "main": 8,
+      "P": 8,
+      "expectedThreeWay": 8,
+      "exact": true
+    },
+    {
+      "key": "P4",
+      "base": 11,
+      "F4": 11,
+      "main": 11,
+      "P": 11,
+      "expectedThreeWay": 11,
+      "exact": true
+    },
+    {
+      "key": "P40",
+      "base": 4,
+      "F4": 4,
+      "main": 4,
+      "P": 4,
+      "expectedThreeWay": 4,
+      "exact": true
+    },
+    {
+      "key": "P41",
+      "base": 3,
+      "F4": 3,
+      "main": 3,
+      "P": 3,
+      "expectedThreeWay": 3,
+      "exact": true
+    },
+    {
+      "key": "P42",
+      "base": 12,
+      "F4": 12,
+      "main": 12,
+      "P": 12,
+      "expectedThreeWay": 12,
+      "exact": true
+    },
+    {
+      "key": "P43",
+      "base": 12,
+      "F4": 12,
+      "main": 12,
+      "P": 12,
+      "expectedThreeWay": 12,
+      "exact": true
+    },
+    {
+      "key": "P44",
+      "base": 19,
+      "F4": 19,
+      "main": 19,
+      "P": 19,
+      "expectedThreeWay": 19,
+      "exact": true
+    },
+    {
+      "key": "P45",
+      "base": 2,
+      "F4": 2,
+      "main": 2,
+      "P": 2,
+      "expectedThreeWay": 2,
+      "exact": true
+    },
+    {
+      "key": "P46",
+      "base": 7,
+      "F4": 7,
+      "main": 7,
+      "P": 7,
+      "expectedThreeWay": 7,
+      "exact": true
+    },
+    {
+      "key": "P47",
+      "base": 9,
+      "F4": 9,
+      "main": 9,
+      "P": 9,
+      "expectedThreeWay": 9,
+      "exact": true
+    },
+    {
+      "key": "P48",
+      "base": 14,
+      "F4": 14,
+      "main": 14,
+      "P": 14,
+      "expectedThreeWay": 14,
+      "exact": true
+    },
+    {
+      "key": "P49",
+      "base": 17,
+      "F4": 17,
+      "main": 17,
+      "P": 17,
+      "expectedThreeWay": 17,
+      "exact": true
+    },
+    {
+      "key": "P5",
+      "base": 2,
+      "F4": 2,
+      "main": 2,
+      "P": 2,
+      "expectedThreeWay": 2,
+      "exact": true
+    },
+    {
+      "key": "P50",
+      "base": 33,
+      "F4": 33,
+      "main": 33,
+      "P": 33,
+      "expectedThreeWay": 33,
+      "exact": true
+    },
+    {
+      "key": "P51",
+      "base": 13,
+      "F4": 13,
+      "main": 13,
+      "P": 13,
+      "expectedThreeWay": 13,
+      "exact": true
+    },
+    {
+      "key": "P52",
+      "base": 43,
+      "F4": 43,
+      "main": 43,
+      "P": 43,
+      "expectedThreeWay": 43,
+      "exact": true
+    },
+    {
+      "key": "P53",
+      "base": 28,
+      "F4": 28,
+      "main": 28,
+      "P": 28,
+      "expectedThreeWay": 28,
+      "exact": true
+    },
+    {
+      "key": "P57",
+      "base": 56,
+      "F4": 56,
+      "main": 56,
+      "P": 56,
+      "expectedThreeWay": 56,
+      "exact": true
+    },
+    {
+      "key": "P6",
+      "base": 4,
+      "F4": 4,
+      "main": 4,
+      "P": 4,
+      "expectedThreeWay": 4,
+      "exact": true
+    },
+    {
+      "key": "P62",
+      "base": 38,
+      "F4": 38,
+      "main": 38,
+      "P": 38,
+      "expectedThreeWay": 38,
+      "exact": true
+    },
+    {
+      "key": "P63",
+      "base": 18,
+      "F4": 18,
+      "main": 18,
+      "P": 18,
+      "expectedThreeWay": 18,
+      "exact": true
+    },
+    {
+      "key": "P64",
+      "base": 24,
+      "F4": 24,
+      "main": 24,
+      "P": 24,
+      "expectedThreeWay": 24,
+      "exact": true
+    },
+    {
+      "key": "P65",
+      "base": 5,
+      "F4": 5,
+      "main": 5,
+      "P": 5,
+      "expectedThreeWay": 5,
+      "exact": true
+    },
+    {
+      "key": "P66",
+      "base": 4,
+      "F4": 4,
+      "main": 4,
+      "P": 4,
+      "expectedThreeWay": 4,
+      "exact": true
+    },
+    {
+      "key": "P67",
+      "base": 96,
+      "F4": 96,
+      "main": 96,
+      "P": 96,
+      "expectedThreeWay": 96,
+      "exact": true
+    },
+    {
+      "key": "P68",
+      "base": 36,
+      "F4": 36,
+      "main": 36,
+      "P": 36,
+      "expectedThreeWay": 36,
+      "exact": true
+    },
+    {
+      "key": "P69",
+      "base": 160,
+      "F4": 160,
+      "main": 160,
+      "P": 160,
+      "expectedThreeWay": 160,
+      "exact": true
+    },
+    {
+      "key": "P7",
+      "base": 54,
+      "F4": 54,
+      "main": 54,
+      "P": 54,
+      "expectedThreeWay": 54,
+      "exact": true
+    },
+    {
+      "key": "P70",
+      "base": 121,
+      "F4": 121,
+      "main": 121,
+      "P": 121,
+      "expectedThreeWay": 121,
+      "exact": true
+    },
+    {
+      "key": "P71",
+      "base": 9,
+      "F4": 9,
+      "main": 9,
+      "P": 9,
+      "expectedThreeWay": 9,
+      "exact": true
+    },
+    {
+      "key": "P72",
+      "base": 52,
+      "F4": 52,
+      "main": 52,
+      "P": 52,
+      "expectedThreeWay": 52,
+      "exact": true
+    },
+    {
+      "key": "P72B",
+      "base": 50,
+      "F4": 50,
+      "main": 50,
+      "P": 50,
+      "expectedThreeWay": 50,
+      "exact": true
+    },
+    {
+      "key": "P73",
+      "base": 69,
+      "F4": 69,
+      "main": 69,
+      "P": 69,
+      "expectedThreeWay": 69,
+      "exact": true
+    },
+    {
+      "key": "P74",
+      "base": 52,
+      "F4": 52,
+      "main": 52,
+      "P": 52,
+      "expectedThreeWay": 52,
+      "exact": true
+    },
+    {
+      "key": "P75",
+      "base": 37,
+      "F4": 37,
+      "main": 37,
+      "P": 37,
+      "expectedThreeWay": 37,
+      "exact": true
+    },
+    {
+      "key": "P76",
+      "base": 87,
+      "F4": 87,
+      "main": 87,
+      "P": 87,
+      "expectedThreeWay": 87,
+      "exact": true
+    },
+    {
+      "key": "P77",
+      "base": 134,
+      "F4": 134,
+      "main": 134,
+      "P": 134,
+      "expectedThreeWay": 134,
+      "exact": true
+    },
+    {
+      "key": "P78",
+      "base": 23,
+      "F4": 23,
+      "main": 23,
+      "P": 23,
+      "expectedThreeWay": 23,
+      "exact": true
+    },
+    {
+      "key": "P79",
+      "base": 87,
+      "F4": 87,
+      "main": 87,
+      "P": 87,
+      "expectedThreeWay": 87,
+      "exact": true
+    },
+    {
+      "key": "P8",
+      "base": 116,
+      "F4": 116,
+      "main": 116,
+      "P": 116,
+      "expectedThreeWay": 116,
+      "exact": true
+    },
+    {
+      "key": "P80",
+      "base": 23,
+      "F4": 23,
+      "main": 23,
+      "P": 23,
+      "expectedThreeWay": 23,
+      "exact": true
+    },
+    {
+      "key": "P81",
+      "base": 14,
+      "F4": 14,
+      "main": 14,
+      "P": 14,
+      "expectedThreeWay": 14,
+      "exact": true
+    },
+    {
+      "key": "P82",
+      "base": 16,
+      "F4": 16,
+      "main": 16,
+      "P": 16,
+      "expectedThreeWay": 16,
+      "exact": true
+    },
+    {
+      "key": "P83",
+      "base": 16,
+      "F4": 16,
+      "main": 16,
+      "P": 16,
+      "expectedThreeWay": 16,
+      "exact": true
+    },
+    {
+      "key": "P84",
+      "base": 33,
+      "F4": 33,
+      "main": 33,
+      "P": 33,
+      "expectedThreeWay": 33,
+      "exact": true
+    },
+    {
+      "key": "P85",
+      "base": 31,
+      "F4": 31,
+      "main": 31,
+      "P": 31,
+      "expectedThreeWay": 31,
+      "exact": true
+    },
+    {
+      "key": "P86",
+      "base": 20,
+      "F4": 20,
+      "main": 20,
+      "P": 20,
+      "expectedThreeWay": 20,
+      "exact": true
+    },
+    {
+      "key": "P87",
+      "base": 60,
+      "F4": 60,
+      "main": 60,
+      "P": 60,
+      "expectedThreeWay": 60,
+      "exact": true
+    },
+    {
+      "key": "P88",
+      "base": 143,
+      "F4": 143,
+      "main": 143,
+      "P": 143,
+      "expectedThreeWay": 143,
+      "exact": true
+    },
+    {
+      "key": "P89",
+      "base": null,
+      "F4": null,
+      "main": 19,
+      "P": 19,
+      "expectedThreeWay": 19,
+      "exact": true
+    },
+    {
+      "key": "P9",
+      "base": 9,
+      "F4": 9,
+      "main": 9,
+      "P": 9,
+      "expectedThreeWay": 9,
+      "exact": true
+    },
+    {
+      "key": "R06",
+      "base": null,
+      "F4": 50,
+      "main": null,
+      "P": 50,
+      "expectedThreeWay": 50,
+      "exact": true
+    },
+    {
+      "key": "Setup",
+      "base": 0,
+      "F4": 0,
+      "main": 0,
+      "P": 0,
+      "expectedThreeWay": 0,
+      "exact": true
+    }
+  ],
+  "goldenErrors": [],
+  "goldenSummary": {
+    "base": {
+      "total": 2267,
+      "sections": 85,
+      "sum": 2267
+    },
+    "F4": {
+      "total": 2317,
+      "sections": 86,
+      "sum": 2317
+    },
+    "main": {
+      "total": 2310,
+      "sections": 87,
+      "sum": 2310
+    },
+    "P": {
+      "total": 2360,
+      "sections": 88,
+      "sum": 2360
+    }
+  },
+  "nodeExpectedRows": {
+    "base": {
+      "mode": "count",
+      "unit": "node test",
+      "count": 737
+    },
+    "F4": {
+      "mode": "count",
+      "count": 756,
+      "unit": "node test"
+    },
+    "main": {
+      "mode": "count",
+      "unit": "node test",
+      "count": 740
+    },
+    "P": {
+      "mode": "count",
+      "unit": "node test",
+      "count": 740
+    }
+  },
+  "nodeExpectedStatus": "P保留main740，未將其稱P真producer結果；原完整producer pending root。",
+  "oldTestBlobIdentities": [
+    {
+      "path": "geometry-web/assembly_bay_repeat_test.js",
+      "base": null,
+      "F4": "101d79abeaa56ac324f43eafbe9b217b5d1c44c0",
+      "main": null,
+      "P": "101d79abeaa56ac324f43eafbe9b217b5d1c44c0",
+      "exactParentBlob": "F4"
+    },
+    {
+      "path": "geometry-web/cdp_bay_repeat_io.js",
+      "base": null,
+      "F4": "d1e52a6d5681db8a108b1f3c6745ccd323309033",
+      "main": null,
+      "P": "d1e52a6d5681db8a108b1f3c6745ccd323309033",
+      "exactParentBlob": "F4"
+    },
+    {
+      "path": "tests/bay_repeat_mutation_check.py",
+      "base": null,
+      "F4": "818e3a03d43fa6077714c690b41ad2ad98d82a5e",
+      "main": null,
+      "P": "818e3a03d43fa6077714c690b41ad2ad98d82a5e",
+      "exactParentBlob": "F4"
+    },
+    {
+      "path": "tests/bay_repeat_mutations.json",
+      "base": null,
+      "F4": "b38ee8803f86fbd30f4c4539b35587907a1fc19a",
+      "main": null,
+      "P": "b38ee8803f86fbd30f4c4539b35587907a1fc19a",
+      "exactParentBlob": "F4"
+    },
+    {
+      "path": "tests/mutate_k1_terminal.py",
+      "base": null,
+      "F4": null,
+      "main": "2c173a530d376e0ec5331fc5573ca06872b1782d",
+      "P": "2c173a530d376e0ec5331fc5573ca06872b1782d",
+      "exactParentBlob": "main"
+    },
+    {
+      "path": "tests/test_assembly_bay_repeat.py",
+      "base": null,
+      "F4": "2fe853b61937fd4b9b23068bdaa83d30de85f8b7",
+      "main": null,
+      "P": "2fe853b61937fd4b9b23068bdaa83d30de85f8b7",
+      "exactParentBlob": "F4"
+    },
+    {
+      "path": "tests/test_assembly_project_store.js",
+      "base": "0294b7ae9bd4504b8906ada1a4edf9468b1426d8",
+      "F4": "2601c6d9cf8c3fb8a78127a6a1a7a69451b5d7b7",
+      "main": "0294b7ae9bd4504b8906ada1a4edf9468b1426d8",
+      "P": "2601c6d9cf8c3fb8a78127a6a1a7a69451b5d7b7",
+      "exactParentBlob": "F4"
+    },
+    {
+      "path": "tests/test_assembly_workspace.js",
+      "base": "3b762890330af9a6ccf3b1bf5fb30e187efad072",
+      "F4": "1f2561b139c19a3f7d873864091ea88bf5f615ff",
+      "main": "3b762890330af9a6ccf3b1bf5fb30e187efad072",
+      "P": "1f2561b139c19a3f7d873864091ea88bf5f615ff",
+      "exactParentBlob": "F4"
+    },
+    {
+      "path": "tests/test_cutting_owner.js",
+      "base": null,
+      "F4": null,
+      "main": "fb68e5f0f86baa82044d609ab2b94a21d4c60154",
+      "P": "fb68e5f0f86baa82044d609ab2b94a21d4c60154",
+      "exactParentBlob": "main"
+    },
+    {
+      "path": "tests/test_cutting_project_store.js",
+      "base": null,
+      "F4": null,
+      "main": "89eeca3a3405211f567107212d8a28a1308f1782",
+      "P": "89eeca3a3405211f567107212d8a28a1308f1782",
+      "exactParentBlob": "main"
+    },
+    {
+      "path": "tests/test_cutting_session.js",
+      "base": null,
+      "F4": null,
+      "main": "06aff7ca68aeb676dd81d89b20317bfe5ecaab5f",
+      "P": "06aff7ca68aeb676dd81d89b20317bfe5ecaab5f",
+      "exactParentBlob": "main"
+    },
+    {
+      "path": "tests/test_definition_import.js",
+      "base": null,
+      "F4": null,
+      "main": "bde5f47e8e552c673527e3d181faca213332a90a",
+      "P": "bde5f47e8e552c673527e3d181faca213332a90a",
+      "exactParentBlob": "main"
+    },
+    {
+      "path": "tests/test_definition_import.py",
+      "base": null,
+      "F4": null,
+      "main": "9090029b06e02643ae366bf9396af33f96925980",
+      "P": "9090029b06e02643ae366bf9396af33f96925980",
+      "exactParentBlob": "main"
+    },
+    {
+      "path": "tests/test_definition_import_transport.py",
+      "base": null,
+      "F4": null,
+      "main": "64e9555857b0eb8c8a1bdd55c403434eb09ddf51",
+      "P": "64e9555857b0eb8c8a1bdd55c403434eb09ddf51",
+      "exactParentBlob": "main"
+    },
+    {
+      "path": "tests/test_reference_workspace_races.js",
+      "base": "216559e63b1959532551e9d01d530d2ad95c0f64",
+      "F4": "a2125e748ef468720dd49770f708259f8d4cd10d",
+      "main": "216559e63b1959532551e9d01d530d2ad95c0f64",
+      "P": "a2125e748ef468720dd49770f708259f8d4cd10d",
+      "exactParentBlob": "F4"
+    },
+    {
+      "path": "tests/test_timber_schedule.js",
+      "base": "1cf5a55d556b76746f0c0ef10192249c897a221c",
+      "F4": "1cf5a55d556b76746f0c0ef10192249c897a221c",
+      "main": "1cf5a55d556b76746f0c0ef10192249c897a221c",
+      "P": "1cf5a55d556b76746f0c0ef10192249c897a221c",
+      "exactParentBlob": "F4"
+    }
+  ],
+  "sourceBodyReadForTests": false,
+  "preflightMetadata": {
+    "cases": 39,
+    "patches": 42,
+    "uniqueCases": 39,
+    "allReportedSingleAnchor": true,
+    "problems": [],
+    "executedMutants": false
+  },
+  "peerParserNote": "初次metadata整理誤將paths字串當dict，已修正；非產品或測試執行。"
+}

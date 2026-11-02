@@ -1,0 +1,21 @@
+Cloning into '/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo'...
+HEAD is now at abbf1465 Merge current main with definition import into kernel validation
+M61 KILLED D60/K2a：恢復已刪卡片鍵保留，令無引用同鍵重建轉紅
+M64 KILLED I38：引用處理錯看第一次而非最後一次欄位刪除
+M67 KILLED I8a/P129：預覽誤用第一次刪除的處理資訊
+M70 KILLED P142/P150：來源只刪未重建時停用最後有效27快取
+M79 KILLED I38/P142-B2：整卡網格引用者不列入共用 parameter_uses
+M85 KILLED I38/D29/P142-S1：網格系統引用的參數卡片已刪除時，H 座標解析器回報成功並保留快取長度（病因只限卡片不存在；缺欄位、單位、座標範圍超限仍拒絕）。來源圖對參數來源的二次檢查仍會拒絕，但診斷失去 I38 MISSING 與 grid／card／field 身分
+M99 KILLED I24/#314 MS1：移除整份提交比較，互動新雙軸應由具名拒絕斷言抓住
+M102 KILLED I24/#314 MS4：移除舊雙軸改值M2拒絕
+M105 KILLED I24/#314 MS7：只比較u而漏驗v改值
+M108 KILLED I24/#314 MP1：漏接互動archive提交前基線，預覽必須先擋新雙軸
+M111 KILLED I24/#314 MP4：固定default程式加入雙軸定義，原靜態變更警報必轉紅
+M114 KILLED I24/#314 ordered：丟掉操作順序不能從final store猜例外
+M117 KILLED I24/#314 ordered：confirm重驗丟掉retainedfacts，500正例應轉紅
+M120 KILLED I24/#314 ordered：失敗preview未清除候選有序證據，正常ownership ASSERT必轉紅
+M141 KILLED I19/R6/#318 閱讀A：real-rc-width；撤回須抓到 exact-width-rc-feature-refused
+M144 KILLED I19/R6/#318 閱讀A：collector-partial；撤回須抓到 collector-partial-without-fullwidth
+M147 KILLED I19/R6/#318 閱讀A：revalidate-partial；撤回須抓到 r6e-accepts-partial-without-fullwidth-recheck
+M150 KILLED I19/#318：裸RC拒絕不用既有V_CUT_PRIORITY碼會誤歸I20，具名I19診斷斷言須轉紅
+本次 18:殺死 killed 18 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 0 / 受阻 blocked 0 / 退役 retired 0

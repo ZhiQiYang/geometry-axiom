@@ -1,0 +1,63 @@
+{
+  "utc": "2026-11-02T13:45:54.256693+00:00",
+  "requestedOwner": "root/r06_main359_closure read-only",
+  "productWriter": "root; no agent source edits",
+  "worktrees": [
+    {
+      "root": "/tmp/geometry-pr363-20261102",
+      "head": {
+        "exit": 0,
+        "stdout": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4\n",
+        "stderr": ""
+      },
+      "branch": {
+        "exit": 0,
+        "stdout": "codex/r06-review-fixes-20261102\n",
+        "stderr": ""
+      },
+      "status": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "root": "/tmp/geometry-pr340-20261102",
+      "head": {
+        "exit": 0,
+        "stdout": "abbf1465e4617110f16892ba3925b20615345177\n",
+        "stderr": ""
+      },
+      "branch": {
+        "exit": 0,
+        "stdout": "codex/kernel-main-convergence-20261102\n",
+        "stderr": ""
+      },
+      "status": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "root": "/tmp/geometry-live-20261102",
+      "head": {
+        "exit": 128,
+        "stdout": "HEAD\n",
+        "stderr": "fatal: ambiguous argument 'HEAD': unknown revision or path not in the working tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n"
+      },
+      "branch": {
+        "exit": 0,
+        "stdout": "cloud-resume\n",
+        "stderr": ""
+      },
+      "status": {
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    }
+  ],
+  "relatedProcessObservation": " 529467     474       00:00 /bin/bash -lc python3 - <<'PY' from pathlib import Path import subprocess,json,os,datetime out=Path('/tmp/geometry-resume-20261102/pr363/main359-closure-review');out.mkdir(exist_ok=True) env=dict(os.environ,GIT_NO_LAZY_FETCH='1',GIT_OPTIONAL_LOCKS='0') roots=['/tmp/geometry-pr363-20261102','/tmp/geometry-pr340-20261102','/tmp/geometry-live-20261102'] rows=[] for root in roots:  row={'root':root}  for name,args in [('head',['rev-parse','HEAD']),('branch',['branch','--show-current']),('status',['status','--porcelain=v1','--untracked-files=all'])]:   r=subprocess.run(['git','-C',root,*args],env=env,capture_output=True);row[name]={'exit':r.returncode,'stdout':r.stdout.decode(),'stderr':r.stderr.decode()}  rows.append(row) r=subprocess.run(['ps','-eo','pid,ppid,etime,args'],capture_output=True,text=True);filtered='\\n'.join(s for s in r.stdout.splitlines() if any(x in s for x in ['geometry-pr363','pr363','r06','geometry-pr340','pr341'])) (out/'OWNER_PRECHECK.json').write_text(json.dumps({'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'requestedOwner':'root/r06_main359_closure read-only','productWriter':'root; no agent source edits','worktrees':rows,'relatedProcessObservation':filtered,'noProductExecution':True},ensure_ascii=False,indent=2)+'\\n') print(json.dumps(rows,ensure_ascii=False));print(filtered[:1200]) PY",
+  "noProductExecution": true
+}

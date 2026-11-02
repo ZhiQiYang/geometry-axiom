@@ -1,0 +1,39 @@
+{
+  "sourceLeafBudget": 5,
+  "usedUniquePaths": [
+    "geometry-templates/woodworking/native/contact_world.c",
+    "tests/geo300_contact_order_fast_harness.c",
+    "tests/test_geo261_native_kernel.py",
+    "tests/test_geo261_timber_capacity_host.py",
+    "tests/test_geo300_contact_order_fast.py"
+  ],
+  "additionalNotRead": [
+    {
+      "paths": [
+        "current_geometry.c",
+        "geometry-core/references.inc",
+        "geometry-app/native/reference_sources.inc"
+      ],
+      "why": "dot原留言L14逐次重驗、全member pairs與依賴登記呼叫鏈；本輪受5leaf上限限制，未另讀其新main/348固定source。",
+      "status": "額外待核，不從留言推成新main已驗根因。"
+    },
+    {
+      "paths": [
+        "tests/run_all.py",
+        "tests/run_all.expected.json",
+        "tests/mutate.py",
+        "tests/mutants_results.json"
+      ],
+      "why": "registry/expected strict census及新C include closure的ledger；dot E歷史記120stale與舊expected缺口，不等於目前main狀態。",
+      "status": "UNRUN／待最終合流source固定後原流程處理；不手工改expected或ledgerhash結案。"
+    },
+    {
+      "paths": [
+        "architecture manifest/policy/四份derived輸出及原三裁判",
+        "NativeBuild其他消費者／copy_product_closure／geo300_scene_generator"
+      ],
+      "why": "原合流source closure、測試編譯模式與架構輸入來源需全量追溯；這輪不擴讀。",
+      "status": "UNRUN／額外待核。"
+    }
+  ]
+}

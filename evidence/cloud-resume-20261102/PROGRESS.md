@@ -1,3 +1,18 @@
+# CURRENT 2026-11-02T14:48:32.223917+00:00 — 新正式原件已交付，沒有停止
+
+**#340新最終F e193f6c08265ed784242155b98e2152b70309183 已普通FF推送核遠端**。parent M abbf1465e4617110f16892ba3925b20615345177一般merge精確main fca3；M正式20 CI全success、原native CLI0/summary逐byte官方、240suite5448pass1GDI、fullcanvas2310/87golden與五browser全0。#366 manual41453934297九原ZIP/所有cache二進位真bytes已交付，原verifier0／26.723670871s；123=114k1crashed5eq3ret其餘全0，120execution仍M、ledger0646f1e2c90a3aa01779c86bec7a4b1928158200e2b93b716b7bbecbf1a691fa。F恰4derived official葉（ledger/scan/report/receipt），原check0＋architecture三0（205/22），primary product/test/judge/policy全同M；新F integration41463769178尚未收終態、仍draft。首次push真正原因是NO_LAZY_FETCH下缺promised blob72a42...，sideband斷只是表象，並非已證網路/認證問題；原件保、一次一般push retry成功，沒有force或改安全。sourceM與F執行身份分開。
+
+**#363新main交會真缺口已修出候選並交peer151 PASS**：P c2eb5edc99d2880a65583f46085617d99a6f191b，codex/r06-main359-integration-20261102已普通push供#366重產，非原PR head；原PR F4仍7a876...，已draft以免舊可合被誤套新main。14衝突保PFH finite profile、K1 cutting explicit opt-in、R08保存/history；P八診斷三具名撤回0/1/1/1/0、原C compile0，fullUI/native World仍UNRUN。原run_all --build --only node:tests-js真759/759、0fail/skip，原outer1只因expected740→實得759，保原red，不手算expected、不充fullcensus。P原check120stale/3ret已保；#366新全量41461882643正在跑，源碼已凍，fresh ledger之前原update-expected的exit-only gate不合法，故先讓真正Node診斷完成而不繞過裁判。之後採原ledger再完整原producer產數（JSON不是該mutation judge閉包，仍以採入後check裁決），必要正式fresh browser/native/CI仍待。P原件1313278B已交付，沒有把51 precommit raw或F4CI移標新P。
+
+**#341 private pilot真一次24child exit0，0.451648143秒，所有raw保留**。D密集C pair8509、inactive8127，Rf/Rj pair382；C少126 memmove/390096B但單點wall16.855µs比Rf14.481/Rj13.490µs慢，不宣稱改善。U/S走343 index不能補standalone341B1；X工作同而wall不同；RSS24筆42308KiB只driver-end，儲存差異UNMEASURABLE。peer447 checks/122raw全符、R2 seal5044e6b39de80072660d5f33c6a4c153bede940c9194bb5db7fb31713aa84c51。新private product candidate正在做live-successor跳失效witness的等價修補與untimed反證，**沒有追加性能抽樣，正式B1/R16/512仍未驗**；額外stack/storage如實列，不拿同RSS稱零。
+
+**#368已完成正文同步/交最新審查**：source U b2432c9e...不變，prbody c66c244d401c43449e9e3db356cfd3db378362bf，comment6578930056/API逐byte同；正式10CI／1810checks／native237/5420+1/full2286/86/doc47皆固定舊e020 actual310bebb，未冒新mainfca3。仍draft。#348 dot11/1 V1五leaf精確採入計畫已存：新main collector介面不同不可整包覆，NativeBuild可精確移植，其餘待逐鏈；原H7有效不重跑，R16紅不洗。
+
+#339已merged，340當前F CI/審查可合並由本機合main後才341正式開始；其餘342/343/346/347/348及355UI15依序。R03只有scope/peer372，不提前實作越PF前置；#367 D全部獨立驗證有效、draft等新main/上游組合。沒有mainmerge/rebase/force/SSOT更改，未刪原件。
+
+---
+以下歷史不作目前head/活程序
+
 # CURRENT 2026-11-02T13:40:11.122823+00:00 — 新 main 合流已實作，原件持續交付
 
 **#340 新 current source abbf1465e4617110f16892ba3925b20615345177** 已一般 merge main fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d（本機合 #359 R08）。唯一 ledger conflict 採新 main 原 bytes，原 check 真0/stale0；相對新 main 17歷史 evidence＋2份待重產架構衍生檔，產品/tests/judge/expected/manifest全同。新 source #366 run41453934297與 integration41453943080 已各一次啟動，**尚未收終態**；前輪 edf 的正式10綠與原 full ledger/cache 有效但不移標新來源。目前draft，正文/prbody9e54a67e800d06c700c9d46e7d47f8e3ae5110a2及comment6578557252已精確回讀。

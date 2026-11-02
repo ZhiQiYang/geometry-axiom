@@ -1,0 +1,1060 @@
+{
+  "schema": "geometry-r06-main359-closure-peer/1",
+  "createdUTC": "2026-11-02T14:13:14.229374+00:00",
+  "stage": "固定report第一階段只讀交叉審查；writer新private P/patch尚未提供，未審其解衝結果。",
+  "inputs": {
+    "directory": "/tmp/geometry-resume-20261102/pr363/main359-closure-review",
+    "reportSha256": "3237f87a82615f40eb3189d0df7bd92b42fdaff5c1ffbcbf40ee93eda2032f85",
+    "base": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+    "F4": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+    "main359": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d"
+  },
+  "verdict": "主要reader／PF-H／K1／R08交會結論成立；一項函式定位勘誤、一項43上限措辭修正及三組具名末核補強。未建立新的合流產品矛盾，也未核收新closure/runtime。",
+  "sourceContradictions": [],
+  "findings": [
+    {
+      "id": "E1",
+      "kind": "確定報告勘誤",
+      "priority": "P3",
+      "target": "REPORT.md:20",
+      "finding": "wood_assembly_sources_matches不存在；實為wood_assembly_sources_bind。last_terminal身分比較的合流結論正確。",
+      "evidence": [
+        {
+          "path": "source/main359/geometry-templates/woodworking/native/assembly_sources.c",
+          "lines": [
+            322,
+            326
+          ]
+        },
+        {
+          "path": "source/F4/geometry-templates/woodworking/native/assembly_sources.c",
+          "lines": [
+            410,
+            414
+          ]
+        }
+      ],
+      "requiredAction": "原報告函式名稱改為wood_assembly_sources_bind，末核仍確認該bind的callback身分比較。"
+    },
+    {
+      "id": "E2",
+      "kind": "措辭精度",
+      "priority": "P3",
+      "target": "REPORT.md:13",
+      "finding": "「43個有限原生子能力」容易被讀為43種已支援能力。source是nativeCapabilities/nativeProfiles清單最多43項；native reader採納的是明列子集合，並另有一個特定PF-H profile認證分支。",
+      "evidence": [
+        {
+          "path": "source/F4/geometry-web/project-store.js",
+          "lines": [
+            312,
+            316,
+            339,
+            341,
+            347
+          ]
+        }
+      ],
+      "requiredAction": "改稱「能力與profile清單各至多43項，保留有限reader子集與PF-H source-only認證」。不新增白名單或額外能力。"
+    },
+    {
+      "id": "V1",
+      "kind": "固定報告最小驗收需具名補強",
+      "priority": "P2",
+      "target": "REPORT.md:14及最小正式驗收第3項",
+      "finding": "R08不只有import-confirm lifecycle；同一project-store新增readForImport→unpack與其export。若只修reader參數及confirm regex，這個公開入口仍可能在合流時遺失。",
+      "evidence": [
+        {
+          "path": "source/main359/geometry-web/project-store.js",
+          "lines": [
+            758,
+            759,
+            760,
+            983
+          ]
+        }
+      ],
+      "requiredAction": "private P末核明列readForImport實作與export；保留R08既有支持格式的read/preview/confirm正例與不支持格式零寫入反例。未授權的R06/PF-H匯入支援不得由reader放寬。"
+    },
+    {
+      "id": "V2",
+      "kind": "固定報告最小驗收需具名補強",
+      "priority": "P2",
+      "target": "最小正式驗收第3項K1 cutting",
+      "finding": "cutting capability opt-in與fresh reopen不足以證明K1 ContextHistory.restore高水位、裁切設定action、transition守門仍在。這些是已保存main兩leaf的實質增量。",
+      "evidence": [
+        {
+          "path": "source/main359/geometry-web/project-store.js",
+          "lines": [
+            768,
+            784,
+            789,
+            791,
+            802,
+            803
+          ]
+        },
+        {
+          "path": "source/main359/geometry-web/reference-workspace.js",
+          "lines": [
+            593,
+            596
+          ]
+        }
+      ],
+      "requiredAction": "末核保留WeakMap按context隔離、同context非裁切歷史維持目前cutting、裁切歷史恢復宣告但counter highwater不回退，以及transition在寫入前執行；列正反案例。"
+    },
+    {
+      "id": "V3",
+      "kind": "固定報告最小驗收需具名補強",
+      "priority": "P2",
+      "target": "native transaction／terminal／bay驗收計畫",
+      "finding": "報告已列相關source邊界，仍應把跨功能失配作成具名反例：普通confirm吃import token、import後R06 preview未清flag、僅terminal callback身分不同、direct snapshot借ambient terminal、13/21-byte key前綴alias。",
+      "evidence": [
+        {
+          "path": "source/main359/geometry-core/transactions.inc",
+          "lines": [
+            489,
+            579
+          ]
+        },
+        {
+          "path": "source/F4/geometry-core/transactions.inc",
+          "lines": [
+            771
+          ]
+        },
+        {
+          "path": "source/main359/geometry-templates/woodworking/native/assembly_sources.c",
+          "lines": [
+            322,
+            326
+          ]
+        },
+        {
+          "path": "source/main359/geometry-app/native/reference_sources.inc",
+          "lines": [
+            204,
+            211
+          ]
+        },
+        {
+          "path": "source/F4/geometry-templates/woodworking/native/assembly_sources.c",
+          "lines": [
+            23,
+            46,
+            366,
+            383
+          ]
+        },
+        {
+          "path": "source/F4/geometry-app/native/reference_sources.inc",
+          "lines": [
+            330,
+            334
+          ]
+        }
+      ],
+      "requiredAction": "以原功能規格保留正反與零World/history/revision變更；原測試source未讀，不能因此聲稱既存suite漏測。"
+    }
+  ],
+  "staticCheckCount": 68,
+  "staticFailures": [],
+  "sourceScope": {
+    "uniqueLeaves": 6,
+    "versions": 18,
+    "bytes": 1250221,
+    "frozenManifestFiles": 38,
+    "allSourceGitIdentitiesExact": true,
+    "newMetadataRequests": 0,
+    "newSourceLeavesBeyondSix": 0
+  },
+  "sourceIdentities": [
+    {
+      "version": "base",
+      "ref": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "path": "geometry-templates/woodworking/native/assembly_sources.c",
+      "gitBlob": "236a327004119919c374fb18454bc3c5d8bf38df",
+      "bytes": 35784,
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-templates/woodworking/native/assembly_sources.c",
+      "computedGitBlob": "236a327004119919c374fb18454bc3c5d8bf38df",
+      "fixedRefBlob": "236a327004119919c374fb18454bc3c5d8bf38df"
+    },
+    {
+      "version": "F4",
+      "ref": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "path": "geometry-templates/woodworking/native/assembly_sources.c",
+      "gitBlob": "111f19af458a214673a45ca8d7bb4d84dd811c7c",
+      "bytes": 48082,
+      "sha256": "1f52220464674e151babe764007e4a12caeb8b02cf75fbc38e1a4023babd05ac",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-templates/woodworking/native/assembly_sources.c",
+      "computedGitBlob": "111f19af458a214673a45ca8d7bb4d84dd811c7c",
+      "fixedRefBlob": "111f19af458a214673a45ca8d7bb4d84dd811c7c"
+    },
+    {
+      "version": "main359",
+      "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "geometry-templates/woodworking/native/assembly_sources.c",
+      "gitBlob": "d49af783d067447e23daf71d28ac882510ad93f0",
+      "bytes": 35820,
+      "sha256": "08a414ea5917b72497171a42276991a83cd86305675dd88976c3357fda332451",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-templates/woodworking/native/assembly_sources.c",
+      "computedGitBlob": "d49af783d067447e23daf71d28ac882510ad93f0",
+      "fixedRefBlob": "d49af783d067447e23daf71d28ac882510ad93f0"
+    },
+    {
+      "version": "base",
+      "ref": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "path": "geometry-app/native/reference_sources.inc",
+      "gitBlob": "a3191419d0a847a362308ac22e44d289c9ba2d61",
+      "bytes": 63190,
+      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-app/native/reference_sources.inc",
+      "computedGitBlob": "a3191419d0a847a362308ac22e44d289c9ba2d61",
+      "fixedRefBlob": "a3191419d0a847a362308ac22e44d289c9ba2d61"
+    },
+    {
+      "version": "F4",
+      "ref": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "path": "geometry-app/native/reference_sources.inc",
+      "gitBlob": "559fd67f44aeed84a0384a362029d09b1d930162",
+      "bytes": 74905,
+      "sha256": "78a1fbb56b8ee1d3fd8ae41ab546831513b4675dab3f9a962df96c14fc820f08",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-app/native/reference_sources.inc",
+      "computedGitBlob": "559fd67f44aeed84a0384a362029d09b1d930162",
+      "fixedRefBlob": "559fd67f44aeed84a0384a362029d09b1d930162"
+    },
+    {
+      "version": "main359",
+      "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "geometry-app/native/reference_sources.inc",
+      "gitBlob": "c438b964a7ac2991951e37c876adb42f26d8cc79",
+      "bytes": 63222,
+      "sha256": "f8ce3c1828ac0e9795dc8240bd64777a4128d04ed058d647a5fe190c065eecea",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-app/native/reference_sources.inc",
+      "computedGitBlob": "c438b964a7ac2991951e37c876adb42f26d8cc79",
+      "fixedRefBlob": "c438b964a7ac2991951e37c876adb42f26d8cc79"
+    },
+    {
+      "version": "base",
+      "ref": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "path": "geometry-web/assembly_bridge.inc",
+      "gitBlob": "7fcab13702e23501c006d0d1d9751b6bcfaf8554",
+      "bytes": 5532,
+      "sha256": "e9927fb3da3878c71df2386bb3e86152df9e0853d2a770e46642011fd623081b",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-web/assembly_bridge.inc",
+      "computedGitBlob": "7fcab13702e23501c006d0d1d9751b6bcfaf8554",
+      "fixedRefBlob": "7fcab13702e23501c006d0d1d9751b6bcfaf8554"
+    },
+    {
+      "version": "F4",
+      "ref": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "path": "geometry-web/assembly_bridge.inc",
+      "gitBlob": "63ffa381173495518aab38f4d7b46737949418db",
+      "bytes": 6390,
+      "sha256": "b0ad7d403c6ee39fc6b4aefbee659d92bb941c04e32b231153f370419b845e2d",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-web/assembly_bridge.inc",
+      "computedGitBlob": "63ffa381173495518aab38f4d7b46737949418db",
+      "fixedRefBlob": "63ffa381173495518aab38f4d7b46737949418db"
+    },
+    {
+      "version": "main359",
+      "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "geometry-web/assembly_bridge.inc",
+      "gitBlob": "0bddeb1e1ce30f6462eb0b5be0b4b751764b3ec8",
+      "bytes": 5657,
+      "sha256": "b04c9a15827973b71726172f171143fff07841ca09587c6946650339256b679d",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-web/assembly_bridge.inc",
+      "computedGitBlob": "0bddeb1e1ce30f6462eb0b5be0b4b751764b3ec8",
+      "fixedRefBlob": "0bddeb1e1ce30f6462eb0b5be0b4b751764b3ec8"
+    },
+    {
+      "version": "base",
+      "ref": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "path": "geometry-web/project-store.js",
+      "gitBlob": "961088f6fe27433f95f9e425d333a90352cd59dd",
+      "bytes": 82418,
+      "sha256": "388346e5cbb5c3e9a8395e781d42fc86c5db2d0a78dfb1619a69ef29ae484e37",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-web/project-store.js",
+      "computedGitBlob": "961088f6fe27433f95f9e425d333a90352cd59dd",
+      "fixedRefBlob": "961088f6fe27433f95f9e425d333a90352cd59dd"
+    },
+    {
+      "version": "F4",
+      "ref": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "path": "geometry-web/project-store.js",
+      "gitBlob": "2d32f2ac8e6eb359a10246c674cf612e653121b6",
+      "bytes": 90360,
+      "sha256": "a2ecd951b190781e63c322b2ec6e09527748e610d7ab0cbf63b1089eb4904919",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-web/project-store.js",
+      "computedGitBlob": "2d32f2ac8e6eb359a10246c674cf612e653121b6",
+      "fixedRefBlob": "2d32f2ac8e6eb359a10246c674cf612e653121b6"
+    },
+    {
+      "version": "main359",
+      "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "geometry-web/project-store.js",
+      "gitBlob": "eae50b4c2c5cdee1f0cf085918ccdde71625d6cc",
+      "bytes": 84168,
+      "sha256": "788479b5ec6dddd1982e99bd1e6a3cc8217e579be83cd023edf49b4a7eb571f1",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-web/project-store.js",
+      "computedGitBlob": "eae50b4c2c5cdee1f0cf085918ccdde71625d6cc",
+      "fixedRefBlob": "eae50b4c2c5cdee1f0cf085918ccdde71625d6cc"
+    },
+    {
+      "version": "base",
+      "ref": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "path": "geometry-web/reference-workspace.js",
+      "gitBlob": "435e95f5971454c9f0cad87e865359b7c13f7a47",
+      "bytes": 164205,
+      "sha256": "60a84da109f6c55dd321b1af76d1c54da085efb2b1fe07137bb631afcc55591f",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-web/reference-workspace.js",
+      "computedGitBlob": "435e95f5971454c9f0cad87e865359b7c13f7a47",
+      "fixedRefBlob": "435e95f5971454c9f0cad87e865359b7c13f7a47"
+    },
+    {
+      "version": "F4",
+      "ref": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "path": "geometry-web/reference-workspace.js",
+      "gitBlob": "ba2582673033f804d924681590d66fdfa9c24db9",
+      "bytes": 164938,
+      "sha256": "5939bfebb9401f2bd916bcb8d08614674183574331f404dee3d0e7501e5fe853",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-web/reference-workspace.js",
+      "computedGitBlob": "ba2582673033f804d924681590d66fdfa9c24db9",
+      "fixedRefBlob": "ba2582673033f804d924681590d66fdfa9c24db9"
+    },
+    {
+      "version": "main359",
+      "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "geometry-web/reference-workspace.js",
+      "gitBlob": "f050172a642d5af27798ca97df3d210f9f121b8c",
+      "bytes": 164437,
+      "sha256": "8048e95d36912d214a9a77175b25595c98137f16ea747463c7136192dc12cef3",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-web/reference-workspace.js",
+      "computedGitBlob": "f050172a642d5af27798ca97df3d210f9f121b8c",
+      "fixedRefBlob": "f050172a642d5af27798ca97df3d210f9f121b8c"
+    },
+    {
+      "version": "base",
+      "ref": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
+      "path": "geometry-core/transactions.inc",
+      "gitBlob": "6ebf89222c78240fee4c96872ad4caf7537594a8",
+      "bytes": 53668,
+      "sha256": "669dca3b7ce1d2e7704b5220ec2707800251f96fbbc88e95cd7683ba8f73ba01",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-core/transactions.inc",
+      "computedGitBlob": "6ebf89222c78240fee4c96872ad4caf7537594a8",
+      "fixedRefBlob": "6ebf89222c78240fee4c96872ad4caf7537594a8"
+    },
+    {
+      "version": "F4",
+      "ref": "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+      "path": "geometry-core/transactions.inc",
+      "gitBlob": "2a1de7be71f0bd5e8a09f638c29fb0bff2f857bb",
+      "bytes": 53692,
+      "sha256": "62ec94b5d9fe0d0b0a1c3fe6977a9e97d9413c53978148d4c5d8c8ab93686f13",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-core/transactions.inc",
+      "computedGitBlob": "2a1de7be71f0bd5e8a09f638c29fb0bff2f857bb",
+      "fixedRefBlob": "2a1de7be71f0bd5e8a09f638c29fb0bff2f857bb"
+    },
+    {
+      "version": "main359",
+      "ref": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "geometry-core/transactions.inc",
+      "gitBlob": "7d217db56c7aa648a42bebc08f53ad65caf3b985",
+      "bytes": 53753,
+      "sha256": "961445bed925a98ea29d0f2948fd4f2198c53dd2ccc0681f5561bf776a368f50",
+      "via": "existing-local-git-object",
+      "savedPath": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-core/transactions.inc",
+      "computedGitBlob": "7d217db56c7aa648a42bebc08f53ad65caf3b985",
+      "fixedRefBlob": "7d217db56c7aa648a42bebc08f53ad65caf3b985"
+    }
+  ],
+  "requiredPositiveNegativeChecks": [
+    {
+      "id": "PFH",
+      "positive": "真R06 /19 source／草稿、panel-fill-native/1、complete:false與三種records、engineering/parameters完整時維持有限PF-H source-only replay。",
+      "negative": "缺profile、錯schema/capability/complete、records缺漏/多餘、非array profiles或超43、非R06 repeat定義不得擴充PF-H能力。",
+      "source": "F4 project-store.js:339–353",
+      "status": "UNRUN"
+    },
+    {
+      "id": "CUTTING",
+      "positive": "明確opt-in reader廣告cutting、K1保存及fresh reopen；有效R06+cutting共存。",
+      "negative": "省略或false opt-in不得隱式廣告cutting；PF-H認證不得被cutting flag替代。",
+      "source": "main359 project-store.js:298–301; reference-workspace.js:1936",
+      "status": "UNRUN"
+    },
+    {
+      "id": "LEASE",
+      "positive": "相同current/writable lease與revision的profile read後可走候選。",
+      "negative": "profile read晚到、revision不整數/不符或服務已有新revision，取消既有候選且現World/本地context/history零變更。",
+      "source": "F4 reference-workspace.js:1924–1967",
+      "status": "UNRUN"
+    },
+    {
+      "id": "R08-READER",
+      "positive": "readForImport保留unpack及manifest/scene/sources輸出與export；原R08已支持格式可走原入口。",
+      "negative": "未宣告支持的R06/PF-H匯入格式仍有限拒絕；不能用readForImport或PF-H reader認證偷偷擴匯入產品契約。",
+      "source": "main359 project-store.js:758–761,983",
+      "status": "UNRUN"
+    },
+    {
+      "id": "R08-HISTORY",
+      "positive": "正常import-confirm完整pending／notifySceneChange／dirty／一次core history。",
+      "negative": "preview/failure/cancel與history_changed:false不新增history/dirty；舊lease回覆不能改新context。",
+      "source": "main359 project-store.js:894,914; reference-workspace.js:37,433–434",
+      "status": "UNRUN"
+    },
+    {
+      "id": "K1-HISTORY",
+      "positive": "切換context、裁切設定Undo/Redo保留各自counter highwater；R06/native歷史與cutting宣告按原owner規則共存。",
+      "negative": "非裁切歷史不得回滾同context目前cutting；counter不可復用；錯誤transition在history/context改寫前拒絕。",
+      "source": "main359 project-store.js:784–803; reference-workspace.js:593–596",
+      "status": "UNRUN"
+    },
+    {
+      "id": "IMPORT-TOKEN",
+      "positive": "import及一般/R06 preview各自正確confirm；一般preview重置definition_import。",
+      "negative": "普通confirm拒import token，World/history/revision零寫入；不得帶殘留import flag進入R06 confirm。",
+      "source": "main359 transactions.inc:489,579; F4 transactions.inc:771",
+      "status": "UNRUN"
+    },
+    {
+      "id": "TERMINAL",
+      "positive": "一致的engineering last_terminal callback可bind並保留bridge terminal JSON與bay輸出。",
+      "negative": "只改callback身分必須拒bind；direct use_current_values snapshot的NULL terminal不得呼叫ambient callback。",
+      "source": "main359 assembly_sources.c:322–326; reference_sources.inc:204–211; assembly_bridge.inc:15–17",
+      "status": "UNRUN"
+    },
+    {
+      "id": "BAY-R41",
+      "positive": "13/21-byte key與key_size、at.edgeKey來源roundtrip、R41 derived outer resolver正確。",
+      "negative": "同前綴不同長度或錯key拒絕，不跨來源alias、不擴PF-H產品能力。",
+      "source": "F4 assembly_sources.c:23–46,366,383; reference_sources.inc:330–334",
+      "status": "UNRUN"
+    }
+  ],
+  "additionalNotRead": [
+    {
+      "paths": [
+        "geometry-web/definition-import.js",
+        "geometry-web/definition_import_bridge.inc",
+        "geometry-web/scenario-integration.js",
+        "geometry-web/scenario-snapshots.js"
+      ],
+      "basis": "既有tree metadata，未讀第7leaf。",
+      "need": "R08實際呼叫者／匯入格式白名單與R06 scenario/reader完整caller盤點，屬額外有界待核。"
+    },
+    {
+      "paths": [
+        "tests/test_definition_import.js",
+        "tests/test_definition_import.py",
+        "tests/test_definition_import_transport.py",
+        "tests/test_cutting_project_store.js",
+        "tests/test_cutting_owner.js",
+        "tests/test_cutting_session.js",
+        "tests/mutate_k1_terminal.py"
+      ],
+      "basis": "既有tree metadata，未讀測試source或原正反執行原件。",
+      "need": "原R08/K1 suites及具名反例的實際coverage需最終owner核；不能將本報告建議當既存漏測證明。"
+    },
+    {
+      "paths": [
+        "BACKLOG.md",
+        "geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md",
+        "geometry-core/domain-decoupling/product-architecture-receipt.json",
+        "geometry-core/domain-decoupling/product-architecture-scan.json",
+        "geometry-core/domain-decoupling/product-architecture.json",
+        "geometry-templates/woodworking/native/grid_sources.c",
+        "geometry-web/cdp_sections.golden.json",
+        "geometry-web/cdp_test.js",
+        "geometry-web/docs/DOM-CONTRACT.md",
+        "geometry-web/engineering_bridge.inc",
+        "geometry-web/index.html",
+        "geometry-web/scenario_verify.py",
+        "geometry-web/timber-schedule.js",
+        "geometry-web/web_bridge.c",
+        "tests/mutants_results.json",
+        "tests/run_all.expected.json",
+        "tests/run_all.py",
+        "tests/test_rule_case_workbench_http.py",
+        "tests/test_woodworking_frontend.js"
+      ],
+      "basis": "另外19個雙側交會path只有metadata。",
+      "need": "native末端context/capability/timberCSV/R41/scenario/registry/expected/golden/architecture等其餘衝突不作blanket PASS。"
+    }
+  ],
+  "privatePBoundedFinalReviewPlan": [
+    "只讀writer固定P SHA與新增patch/diff，不檢查活躍未凍工作樹。",
+    "先核readerCapabilities新契約與prepareProjectScene呼叫同步，保留array/max43/profile/records/revision及cutting opt-in；拒絕寬鬆的形參兼容旁路。",
+    "同兩web leaf核readForImport/export、ContextHistory highwater/transition、import-confirm no-op及pending/dirty/history分支。",
+    "同四native leaf核bind last_terminal、direct NULL、terminal JSON與bay mapping、key_size/R41及definition_import reset/普通confirm拒import token。",
+    "其他衝突只列owner待核，不擴展本階段六leafclosure。",
+    "Node expected740仍待原producer；golden舊section精確union、registry/expected及arch/ledger未在六leaf內重核，不能視為已驗結果。"
+  ],
+  "limits": [
+    "未修改writer source/branch，未merge/checkout/push；唯一新輸出本peer目錄。",
+    "未執行native／編譯／幾何／Chrome／產品／下載ELF／任何suite；只hash／文字／Git metadata核對。",
+    "原F4 12 CI及修前紅燈維持原execution；沒有重開其已核歷史，也不移標成新P。",
+    "未讀原R08/K1/R06測試source或動態原件；V1–V3是本固定report驗收計畫的具名補強，不是既存suite漏測判定。",
+    "35min／既有gates/limits/golden/skip政策不改，無新門檻或能力擴張。",
+    "性能窗口期間父子均在無活程序安全點QUIET；收到root RESUME後才繼續。"
+  ],
+  "delegatedReview": {
+    "agent": "/root/final_ci_peer/r06_native_merge_boundaries",
+    "scope": "同四native leaf／12版499695B",
+    "result": "無新產品矛盾；bind函式名勘誤及具名token／terminal／R41正反補強。",
+    "note": "協作子代理唯讀回覆，非新runtime收據。"
+  },
+  "checks": [
+    {
+      "group": "frozen_manifest",
+      "check": "CLOSURE_CLASSIFICATION.json",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "F4ToMain.raw",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "OWNER_PRECHECK.json",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "REPORT.md",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "SOURCE_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "TREE_COMPARISON.json",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "baseToF4.raw",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "baseToMain.raw",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/F4/geometry-app/native/reference_sources.inc.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/F4/geometry-core/transactions.inc.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/F4/geometry-templates/woodworking/native/assembly_sources.c.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/F4/geometry-web/assembly_bridge.inc.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/F4/geometry-web/project-store.js.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/F4/geometry-web/reference-workspace.js.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/main359/geometry-app/native/reference_sources.inc.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/main359/geometry-core/transactions.inc.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/main359/geometry-templates/woodworking/native/assembly_sources.c.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/main359/geometry-web/assembly_bridge.inc.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/main359/geometry-web/project-store.js.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "diff/main359/geometry-web/reference-workspace.js.diff",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/F4/geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/F4/geometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/F4/geometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/F4/geometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/F4/geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/F4/geometry-web/reference-workspace.js",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/base/geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/base/geometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/base/geometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/base/geometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/base/geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/base/geometry-web/reference-workspace.js",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/main359/geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/main359/geometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/main359/geometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/main359/geometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/main359/geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "group": "frozen_manifest",
+      "check": "source/main359/geometry-web/reference-workspace.js",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "base:geometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "F4:geometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "main359:geometry-templates/woodworking/native/assembly_sources.c",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "base:geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "F4:geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "main359:geometry-app/native/reference_sources.inc",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "base:geometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "F4:geometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "main359:geometry-web/assembly_bridge.inc",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "base:geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "F4:geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "main359:geometry-web/project-store.js",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "base:geometry-web/reference-workspace.js",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "F4:geometry-web/reference-workspace.js",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "main359:geometry-web/reference-workspace.js",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "base:geometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "F4:geometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "group": "source_git_identity",
+      "check": "main359:geometry-core/transactions.inc",
+      "passed": true
+    },
+    {
+      "group": "scope",
+      "check": "six unique source paths /18 versions",
+      "passed": true
+    },
+    {
+      "group": "scope",
+      "check": "1250221 exact source bytes",
+      "passed": true
+    },
+    {
+      "group": "tree_metadata",
+      "check": "25 simultaneous changes exact",
+      "passed": true
+    },
+    {
+      "group": "reader",
+      "check": "F4 strict profile array max43 and source-only checks",
+      "passed": true
+    },
+    {
+      "group": "reader",
+      "check": "main cutting explicit opt-in",
+      "passed": true
+    },
+    {
+      "group": "reader",
+      "check": "F4 raw profiles/revision lease wiring",
+      "passed": true
+    },
+    {
+      "group": "R08",
+      "check": "readForImport and export added on main",
+      "passed": true
+    },
+    {
+      "group": "R08",
+      "check": "import-confirm lifecycle/no-history main additions",
+      "passed": true
+    },
+    {
+      "group": "K1",
+      "check": "history highwater and typed cutting edit main additions",
+      "passed": true
+    },
+    {
+      "group": "native",
+      "check": "actual assembly bind name and terminal identity",
+      "passed": true
+    },
+    {
+      "group": "native",
+      "check": "direct snapshot disables terminal callback",
+      "passed": true
+    },
+    {
+      "group": "native",
+      "check": "R08 import flag reset and confirm guard",
+      "passed": true
+    }
+  ],
+  "frozenInputs": [
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/CLOSURE_CLASSIFICATION.json",
+      "bytes": 8419,
+      "sha256": "9406c10097f77e4d7575a95e9b48fd1e2880d5d04159c28b8a7640d8aed30307"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/F4ToMain.raw",
+      "bytes": 18727,
+      "sha256": "092d16e87eeb2e9f5898e39bf562eda0c55c1220ac2e2910684c00846b63a4de"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/OWNER_PRECHECK.json",
+      "bytes": 2951,
+      "sha256": "40721241c0878ea1f09e1fb71e1edaeb919e3906b28f41b55c338656c3f93a58"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/REPORT.md",
+      "bytes": 6100,
+      "sha256": "3237f87a82615f40eb3189d0df7bd92b42fdaff5c1ffbcbf40ee93eda2032f85"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/SOURCE_MANIFEST.json",
+      "bytes": 6633,
+      "sha256": "c0a7e3b99b898ee67f1019d4c8a9bb2b7ea00be007649f8829b91c9d828f9d88"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/TREE_COMPARISON.json",
+      "bytes": 43480,
+      "sha256": "f403092a76f26b0804ad34e44b49e1931d0dd783f016e91eab950aeef1611147"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/baseToF4.raw",
+      "bytes": 9522,
+      "sha256": "90da17b81642efb97e508f5211596160d2f280d1671588e87f59edf292eabcec"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/baseToMain.raw",
+      "bytes": 12609,
+      "sha256": "bcd60279d57041bb41db2e0395671eb3f510f83a794d8784eaef16393aa847ef"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/F4/geometry-app/native/reference_sources.inc.diff",
+      "bytes": 13629,
+      "sha256": "171bdbde260d62c645b082ed4977a91ddd84b1d5ff0f299e9703c5fa6f9b4732"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/F4/geometry-core/transactions.inc.diff",
+      "bytes": 817,
+      "sha256": "7ce5c82e1c2867b5d0ede7e7a6f26f4c4c317b445227ea74d7314e4df01e462a"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/F4/geometry-templates/woodworking/native/assembly_sources.c.diff",
+      "bytes": 24759,
+      "sha256": "8cf5e662492c66618809ef9aa1a2b0edd22783c93fb1cdfda3375a2e939bcc4b"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/F4/geometry-web/assembly_bridge.inc.diff",
+      "bytes": 4534,
+      "sha256": "1ad6efd4dabef3c08c5396921cbbcf87522dd68f890e27b53f612adc54993bfb"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/F4/geometry-web/project-store.js.diff",
+      "bytes": 44724,
+      "sha256": "b7d8fed8ff668a9ea0da9765f2ff0738f40d88ad560d1d05b65a608693f63c76"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/F4/geometry-web/reference-workspace.js.diff",
+      "bytes": 1851,
+      "sha256": "8fc44edf93bfb633a993c3a73c4dae48294b5fc5c05807f619c7925aa1c3d6c5"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/main359/geometry-app/native/reference_sources.inc.diff",
+      "bytes": 1177,
+      "sha256": "c0b0bf03bff3fdb48ef82fd2c7d28d7a5c2fc84710eea3eaa5699357510ae8d9"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/main359/geometry-core/transactions.inc.diff",
+      "bytes": 1879,
+      "sha256": "23b24e93a525965f75ce27b24b84e036f961677c76500ce7d084cc25c25c92d0"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/main359/geometry-templates/woodworking/native/assembly_sources.c.diff",
+      "bytes": 2691,
+      "sha256": "8b213cbf9660d00049d5735be6f48aff5704253e4120ba8e85932231d63dfa5c"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/main359/geometry-web/assembly_bridge.inc.diff",
+      "bytes": 1401,
+      "sha256": "7fca31fec8e46f07a24bb2d3453d8b930d5aa2c6da393c8726db62c481c8dfb7"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/main359/geometry-web/project-store.js.diff",
+      "bytes": 8706,
+      "sha256": "1c6dd77a7d31c6ab8be4534f21f225c5c220e0ecdad1f2aa29bd229bb0d56696"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/diff/main359/geometry-web/reference-workspace.js.diff",
+      "bytes": 3887,
+      "sha256": "33a047788eeaf80eebd6a382d6768f7f0054aa14aabb20bcc00c413f0b62066b"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-app/native/reference_sources.inc",
+      "bytes": 74905,
+      "sha256": "78a1fbb56b8ee1d3fd8ae41ab546831513b4675dab3f9a962df96c14fc820f08"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-core/transactions.inc",
+      "bytes": 53692,
+      "sha256": "62ec94b5d9fe0d0b0a1c3fe6977a9e97d9413c53978148d4c5d8c8ab93686f13"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-templates/woodworking/native/assembly_sources.c",
+      "bytes": 48082,
+      "sha256": "1f52220464674e151babe764007e4a12caeb8b02cf75fbc38e1a4023babd05ac"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-web/assembly_bridge.inc",
+      "bytes": 6390,
+      "sha256": "b0ad7d403c6ee39fc6b4aefbee659d92bb941c04e32b231153f370419b845e2d"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-web/project-store.js",
+      "bytes": 90360,
+      "sha256": "a2ecd951b190781e63c322b2ec6e09527748e610d7ab0cbf63b1089eb4904919"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/F4/geometry-web/reference-workspace.js",
+      "bytes": 164938,
+      "sha256": "5939bfebb9401f2bd916bcb8d08614674183574331f404dee3d0e7501e5fe853"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-app/native/reference_sources.inc",
+      "bytes": 63190,
+      "sha256": "77c03a865a39f6ab0e0eff7005d04ccf91d36db92c9f218ed69630f28be9bd56"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-core/transactions.inc",
+      "bytes": 53668,
+      "sha256": "669dca3b7ce1d2e7704b5220ec2707800251f96fbbc88e95cd7683ba8f73ba01"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-templates/woodworking/native/assembly_sources.c",
+      "bytes": 35784,
+      "sha256": "086b26621fe38bd4bb91259cf3a4867669bcfb0ce6dad5f5ad75995f19d1734a"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-web/assembly_bridge.inc",
+      "bytes": 5532,
+      "sha256": "e9927fb3da3878c71df2386bb3e86152df9e0853d2a770e46642011fd623081b"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-web/project-store.js",
+      "bytes": 82418,
+      "sha256": "388346e5cbb5c3e9a8395e781d42fc86c5db2d0a78dfb1619a69ef29ae484e37"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/base/geometry-web/reference-workspace.js",
+      "bytes": 164205,
+      "sha256": "60a84da109f6c55dd321b1af76d1c54da085efb2b1fe07137bb631afcc55591f"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-app/native/reference_sources.inc",
+      "bytes": 63222,
+      "sha256": "f8ce3c1828ac0e9795dc8240bd64777a4128d04ed058d647a5fe190c065eecea"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-core/transactions.inc",
+      "bytes": 53753,
+      "sha256": "961445bed925a98ea29d0f2948fd4f2198c53dd2ccc0681f5561bf776a368f50"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-templates/woodworking/native/assembly_sources.c",
+      "bytes": 35820,
+      "sha256": "08a414ea5917b72497171a42276991a83cd86305675dd88976c3357fda332451"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-web/assembly_bridge.inc",
+      "bytes": 5657,
+      "sha256": "b04c9a15827973b71726172f171143fff07841ca09587c6946650339256b679d"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-web/project-store.js",
+      "bytes": 84168,
+      "sha256": "788479b5ec6dddd1982e99bd1e6a3cc8217e579be83cd023edf49b4a7eb571f1"
+    },
+    {
+      "path": "/tmp/geometry-resume-20261102/pr363/main359-closure-review/source/main359/geometry-web/reference-workspace.js",
+      "bytes": 164437,
+      "sha256": "8048e95d36912d214a9a77175b25595c98137f16ea747463c7136192dc12cef3"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+--- /tmp/geometry-resume-20261102/pr340/manual-mutation-main354/collect_original_evidence.py
++++ /dev/shm/geometry-pr340-main359-mutation-raw-20261102/collect_original_evidence.py
+@@ -16,8 +16,8 @@
+ 
+ OUT = Path(__file__).resolve().parent
+ SOURCE = Path('/tmp/geometry-pr340-20261102')
+-HEAD = 'aca3d2a5f604848b159a0e5cdd3d3f55fcad190f'
+-RUN = 41430549123
++HEAD = 'abbf1465e4617110f16892ba3925b20615345177'
++RUN = 41453934297
+ BASE = 'https://api.github.com/repos/ZhiQiYang/geometry-axiom'
+ spec = importlib.util.spec_from_file_location('existing_read_only_acquisition',
+     '/tmp/geometry-resume-20261102/ci-followup/pr344-E503cfc59/acquire_evidence.py')

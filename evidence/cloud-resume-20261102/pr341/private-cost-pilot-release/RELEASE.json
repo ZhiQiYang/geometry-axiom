@@ -1,0 +1,29 @@
+{
+  "utc": "2026-11-02T14:06:10.730932+00:00",
+  "release": "ONE_PRIVATE_PILOT_ONLY",
+  "fixedSource": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "externallyHeldSealSha256": "5044e6b39de80072660d5f33c6a4c153bede940c9194bb5db7fb31713aa84c51",
+  "maximumChildInvocations": 24,
+  "replicatesPerGroupMode": 1,
+  "launchCutoffSeconds": 30,
+  "originalSubjectTimeoutSeconds": 20,
+  "maximumWindowSeconds": 60,
+  "stackBytes": 16777216,
+  "rootReadPlanAndR2Launcher": true,
+  "independentPeerSha256": "00f2a508044aa1aabefcf1b5a0f935ea40fb5772ea45c834627943fc8c683bee",
+  "quietAcks": [
+    "r06_main359_closure",
+    "final_ci_peer",
+    "final_ci_peer/r06_native_merge_boundaries"
+  ],
+  "otherUtilityWriter": "Completed; no live execution in team status",
+  "availableBytes": {
+    "/tmp": 719781888,
+    "/dev/shm": 10314219520
+  },
+  "memoryCurrent": 26953424896,
+  "memoryMax": 34359738368,
+  "rootWillAvoidOtherCLIUntilWindowClosed": true,
+  "noRetriesOrExtraSamples": true,
+  "formalB1R16And512Acceptance": "NOT_AUTHORIZED_BY_THIS_DIAGNOSTIC"
+}

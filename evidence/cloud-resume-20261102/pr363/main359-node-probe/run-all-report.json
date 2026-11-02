@@ -1,0 +1,39 @@
+{
+  "schema": "geometry-native-shard/1",
+  "shard": null,
+  "commit_sha": "c2eb5edc99d2880a65583f46085617d99a6f191b",
+  "universe": [
+    "node:tests-js"
+  ],
+  "selected": [
+    "node:tests-js"
+  ],
+  "rows": [
+    {
+      "name": "node:tests-js",
+      "counted": true,
+      "total": 759,
+      "passed": 759,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 139.76011443138123,
+      "ran": true,
+      "process_exit_code": 0,
+      "allowed_skips": 0,
+      "env_problem": false,
+      "crashed": false,
+      "expected_problem": "預期 740、實得 759（node test；新增／減少 test 後須明確 --update-expected）"
+    }
+  ],
+  "exit_code": 1,
+  "seconds": 183.07298701402033,
+  "registry_errors": [],
+  "expected_problems": [
+    [
+      "node:tests-js",
+      "預期 740、實得 759（node test；新增／減少 test 後須明確 --update-expected）"
+    ]
+  ],
+  "expected_sha256": "7576cc3a2eed942ca63138a29d464f2ab5a75ee611b345a0f5de2861c5247337",
+  "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+}

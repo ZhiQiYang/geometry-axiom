@@ -1,0 +1,1594 @@
+{
+  "schema": "geometry-pr341-private-pilot-owner-summary/1",
+  "utc": "2026-11-02T14:12:39.341496+00:00",
+  "status": "COMPLETE_PRIVATE_DIAGNOSTIC_NOT_B1",
+  "fixedSource": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "sealSha256": "5044e6b39de80072660d5f33c6a4c153bede940c9194bb5db7fb31713aa84c51",
+  "releaseSha256": "b335fa900b5079fd7b8316c74ccf2c151821af7b21196ba44b1a20b764c1b425",
+  "rawResult": {
+    "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/RESULT.json",
+    "sha256": "0a9b5c08bee30005fe617e7b271d78957e8cc24d91c6e8281e892e812211f0b8"
+  },
+  "window": {
+    "elapsedSupervisorNs": 451648143,
+    "childInvocations": 24,
+    "allTrueExit0": true,
+    "timeouts": 0,
+    "unrun": 0,
+    "problems": [],
+    "within60Seconds": true
+  },
+  "audit": {
+    "staticPostReadChecks": 271,
+    "allPass": true,
+    "checks": [
+      {
+        "name": "one approved release binds exact source/seal/24/20/16MiB",
+        "pass": true
+      },
+      {
+        "name": "complete source-bound24 result without problem or unrun",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest WINDOW_CLOSED.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest PRE_EXECUTION.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 23-X-R_fallback-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 23-X-R_fallback-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 23-X-R_fallback-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 23-X-R_fallback-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 23-X-R_fallback-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 22-X-R_fallback-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 22-X-R_fallback-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 22-X-R_fallback-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 22-X-R_fallback-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 22-X-R_fallback-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 21-X-R_joint-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 21-X-R_joint-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 21-X-R_joint-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 21-X-R_joint-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 21-X-R_joint-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 20-X-R_joint-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 20-X-R_joint-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 20-X-R_joint-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 20-X-R_joint-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 20-X-R_joint-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 19-X-C-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 19-X-C-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 19-X-C-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 19-X-C-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 19-X-C-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 18-X-C-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 18-X-C-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 18-X-C-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 18-X-C-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 18-X-C-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 17-D-R_fallback-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 17-D-R_fallback-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 17-D-R_fallback-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 17-D-R_fallback-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 17-D-R_fallback-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 16-D-R_fallback-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 16-D-R_fallback-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 16-D-R_fallback-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 16-D-R_fallback-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 16-D-R_fallback-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 15-D-C-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 15-D-C-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 15-D-C-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 15-D-C-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 15-D-C-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 14-D-C-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 14-D-C-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 14-D-C-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 14-D-C-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 14-D-C-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 13-D-R_joint-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 13-D-R_joint-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 13-D-R_joint-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 13-D-R_joint-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 13-D-R_joint-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 12-D-R_joint-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 12-D-R_joint-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 12-D-R_joint-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 12-D-R_joint-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 12-D-R_joint-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 11-S-C-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 11-S-C-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 11-S-C-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 11-S-C-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 11-S-C-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 10-S-C-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 10-S-C-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 10-S-C-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 10-S-C-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 10-S-C-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 09-S-R_joint-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 09-S-R_joint-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 09-S-R_joint-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 09-S-R_joint-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 09-S-R_joint-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 08-S-R_joint-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 08-S-R_joint-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 08-S-R_joint-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 08-S-R_joint-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 08-S-R_joint-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 07-S-R_fallback-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 07-S-R_fallback-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 07-S-R_fallback-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 07-S-R_fallback-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 07-S-R_fallback-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 06-S-R_fallback-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 06-S-R_fallback-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 06-S-R_fallback-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 06-S-R_fallback-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 06-S-R_fallback-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 05-U-R_joint-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 05-U-R_joint-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 05-U-R_joint-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 05-U-R_joint-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 05-U-R_joint-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 04-U-R_joint-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 04-U-R_joint-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 04-U-R_joint-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 04-U-R_joint-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 04-U-R_joint-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 03-U-R_fallback-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 03-U-R_fallback-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 03-U-R_fallback-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 03-U-R_fallback-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 03-U-R_fallback-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 02-U-R_fallback-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 02-U-R_fallback-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 02-U-R_fallback-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 02-U-R_fallback-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 02-U-R_fallback-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 01-U-C-work/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 01-U-C-work/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 01-U-C-work/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 01-U-C-work/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 01-U-C-work/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 00-U-C-timed/OUTCOME.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 00-U-C-timed/execution.json",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 00-U-C-timed/stderr",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 00-U-C-timed/stdout",
+        "pass": true
+      },
+      {
+        "name": "producer raw digest 00-U-C-timed/REQUEST.json",
+        "pass": true
+      },
+      {
+        "name": "0 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "0 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "0 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "0 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "0 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "0 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "1 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "1 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "1 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "1 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "1 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "1 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "2 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "2 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "2 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "2 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "2 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "2 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "3 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "3 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "3 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "3 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "3 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "3 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "4 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "4 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "4 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "4 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "4 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "4 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "5 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "5 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "5 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "5 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "5 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "5 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "6 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "6 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "6 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "6 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "6 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "6 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "7 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "7 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "7 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "7 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "7 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "7 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "8 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "8 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "8 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "8 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "8 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "8 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "9 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "9 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "9 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "9 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "9 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "9 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "10 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "10 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "10 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "10 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "10 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "10 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "11 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "11 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "11 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "11 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "11 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "11 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "12 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "12 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "12 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "12 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "12 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "12 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "13 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "13 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "13 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "13 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "13 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "13 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "14 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "14 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "14 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "14 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "14 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "14 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "15 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "15 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "15 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "15 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "15 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "15 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "16 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "16 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "16 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "16 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "16 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "16 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "17 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "17 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "17 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "17 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "17 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "17 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "18 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "18 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "18 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "18 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "18 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "18 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "19 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "19 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "19 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "19 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "19 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "19 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "20 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "20 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "20 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "20 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "20 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "20 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "21 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "21 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "21 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "21 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "21 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "21 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "22 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "22 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "22 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "22 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "22 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "22 primary timed binary has no work output",
+        "pass": true
+      },
+      {
+        "name": "23 fixed schedule exact",
+        "pass": true
+      },
+      {
+        "name": "23 original argv cwd env20s16MiB",
+        "pass": true
+      },
+      {
+        "name": "23 true original/observed normal0",
+        "pass": true
+      },
+      {
+        "name": "23 actual call stack and unmodified literal nine-field oracle",
+        "pass": true
+      },
+      {
+        "name": "23 complete sole raw metrics JSON",
+        "pass": true
+      },
+      {
+        "name": "23 work actual route and removal accounting",
+        "pass": true
+      },
+      {
+        "name": "each recipe exact disjoint-mode and three-variant output equality",
+        "pass": true
+      },
+      {
+        "name": "U/S C and Rf complete work vectors exact",
+        "pass": true
+      },
+      {
+        "name": "X all variants complete work vectors exact",
+        "pass": true
+      }
+    ]
+  },
+  "outputCanonicalHashes": {
+    "U": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd",
+    "S": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d",
+    "D": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056",
+    "X": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+  },
+  "timedSamples": [
+    {
+      "recipe": "U",
+      "variant": "C",
+      "collector_wall_ns": 35343,
+      "collector_user_us": 41,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 41,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.001187,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 2019845,
+      "face_size_bytes": 48,
+      "stdout_sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "recipe": "U",
+      "variant": "R_fallback",
+      "collector_wall_ns": 34351,
+      "collector_user_us": 39,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 39,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.0009979999999999998,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 1546795,
+      "face_size_bytes": 48,
+      "stdout_sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "recipe": "U",
+      "variant": "R_joint",
+      "collector_wall_ns": 101239,
+      "collector_user_us": 111,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 111,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.001532,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 3946742,
+      "face_size_bytes": 48,
+      "stdout_sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "recipe": "S",
+      "variant": "R_fallback",
+      "collector_wall_ns": 33429,
+      "collector_user_us": 39,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 39,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.0009910000000000006,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 1869051,
+      "face_size_bytes": 48,
+      "stdout_sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "recipe": "S",
+      "variant": "R_joint",
+      "collector_wall_ns": 105426,
+      "collector_user_us": 111,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 111,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.002003999999999999,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 3695390,
+      "face_size_bytes": 48,
+      "stdout_sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "recipe": "S",
+      "variant": "C",
+      "collector_wall_ns": 34100,
+      "collector_user_us": 40,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 40,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.0011619999999999998,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 1859127,
+      "face_size_bytes": 48,
+      "stdout_sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "recipe": "D",
+      "variant": "R_joint",
+      "collector_wall_ns": 13490,
+      "collector_user_us": 0,
+      "collector_system_us": 18,
+      "collector_cpu_total_us": 18,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.0,
+      "whole_child_system_seconds": 0.000981,
+      "supervisor_wall_ns": 1506536,
+      "face_size_bytes": 48,
+      "stdout_sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "recipe": "D",
+      "variant": "C",
+      "collector_wall_ns": 16855,
+      "collector_user_us": 22,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 22,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.0011230000000000007,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 1655401,
+      "face_size_bytes": 48,
+      "stdout_sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "recipe": "D",
+      "variant": "R_fallback",
+      "collector_wall_ns": 14481,
+      "collector_user_us": 21,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 21,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.0014000000000000002,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 1820851,
+      "face_size_bytes": 48,
+      "stdout_sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "recipe": "X",
+      "variant": "C",
+      "collector_wall_ns": 21269608,
+      "collector_user_us": 21278,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 21278,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.022386,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 32245096,
+      "face_size_bytes": 48,
+      "stdout_sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    },
+    {
+      "recipe": "X",
+      "variant": "R_joint",
+      "collector_wall_ns": 24338132,
+      "collector_user_us": 24211,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 24211,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.025610999999999995,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 32447675,
+      "face_size_bytes": 48,
+      "stdout_sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    },
+    {
+      "recipe": "X",
+      "variant": "R_fallback",
+      "collector_wall_ns": 22963481,
+      "collector_user_us": 22973,
+      "collector_system_us": 0,
+      "collector_cpu_total_us": 22973,
+      "driver_end_maxrss_kib": 42308,
+      "whole_child_user_seconds": 0.024199,
+      "whole_child_system_seconds": 0.0,
+      "supervisor_wall_ns": 32536001,
+      "face_size_bytes": 48,
+      "stdout_sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    }
+  ],
+  "workSamples": [
+    {
+      "recipe": "U",
+      "variant": "C",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 1027,
+      "earlier_calls": 190,
+      "plane_compare_calls": 448,
+      "member_index_before_calls": 448,
+      "indexed_calls": 1,
+      "bitmap_init_writes": 128,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 0,
+      "full_cover_checks": 0,
+      "duplicate_removals": 0,
+      "compaction_scans": 128,
+      "compaction_moves": 0,
+      "memmove_calls": 0,
+      "memmove_bytes": 0,
+      "fenwick_insert_nodes": 126,
+      "fenwick_query_nodes": 128
+    },
+    {
+      "recipe": "U",
+      "variant": "R_fallback",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 1027,
+      "earlier_calls": 190,
+      "plane_compare_calls": 448,
+      "member_index_before_calls": 448,
+      "indexed_calls": 1,
+      "bitmap_init_writes": 128,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 0,
+      "full_cover_checks": 0,
+      "duplicate_removals": 0,
+      "compaction_scans": 128,
+      "compaction_moves": 0,
+      "memmove_calls": 0,
+      "memmove_bytes": 0,
+      "fenwick_insert_nodes": 126,
+      "fenwick_query_nodes": 128
+    },
+    {
+      "recipe": "U",
+      "variant": "R_joint",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 8383,
+      "earlier_calls": 0,
+      "plane_compare_calls": 0,
+      "member_index_before_calls": 0,
+      "indexed_calls": 0,
+      "bitmap_init_writes": 0,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 16384,
+      "full_cover_checks": 0,
+      "duplicate_removals": 0,
+      "compaction_scans": 0,
+      "compaction_moves": 0,
+      "memmove_calls": 0,
+      "memmove_bytes": 0,
+      "fenwick_insert_nodes": 0,
+      "fenwick_query_nodes": 0
+    },
+    {
+      "recipe": "S",
+      "variant": "R_fallback",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 1027,
+      "earlier_calls": 190,
+      "plane_compare_calls": 449,
+      "member_index_before_calls": 448,
+      "indexed_calls": 1,
+      "bitmap_init_writes": 128,
+      "active_clears": 2,
+      "inactive_skips": 0,
+      "pair_visits": 0,
+      "full_cover_checks": 0,
+      "duplicate_removals": 2,
+      "compaction_scans": 128,
+      "compaction_moves": 0,
+      "memmove_calls": 0,
+      "memmove_bytes": 0,
+      "fenwick_insert_nodes": 128,
+      "fenwick_query_nodes": 128
+    },
+    {
+      "recipe": "S",
+      "variant": "R_joint",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 8383,
+      "earlier_calls": 4,
+      "plane_compare_calls": 0,
+      "member_index_before_calls": 0,
+      "indexed_calls": 0,
+      "bitmap_init_writes": 0,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 16379,
+      "full_cover_checks": 2,
+      "duplicate_removals": 2,
+      "compaction_scans": 0,
+      "compaction_moves": 0,
+      "memmove_calls": 2,
+      "memmove_bytes": 48,
+      "fenwick_insert_nodes": 0,
+      "fenwick_query_nodes": 0
+    },
+    {
+      "recipe": "S",
+      "variant": "C",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 1027,
+      "earlier_calls": 190,
+      "plane_compare_calls": 449,
+      "member_index_before_calls": 448,
+      "indexed_calls": 1,
+      "bitmap_init_writes": 128,
+      "active_clears": 2,
+      "inactive_skips": 0,
+      "pair_visits": 0,
+      "full_cover_checks": 0,
+      "duplicate_removals": 2,
+      "compaction_scans": 128,
+      "compaction_moves": 0,
+      "memmove_calls": 0,
+      "memmove_bytes": 0,
+      "fenwick_insert_nodes": 128,
+      "fenwick_query_nodes": 128
+    },
+    {
+      "recipe": "D",
+      "variant": "R_joint",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 382,
+      "earlier_calls": 126,
+      "plane_compare_calls": 0,
+      "member_index_before_calls": 0,
+      "indexed_calls": 0,
+      "bitmap_init_writes": 0,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 382,
+      "full_cover_checks": 126,
+      "duplicate_removals": 126,
+      "compaction_scans": 0,
+      "compaction_moves": 0,
+      "memmove_calls": 126,
+      "memmove_bytes": 390096,
+      "fenwick_insert_nodes": 0,
+      "fenwick_query_nodes": 0
+    },
+    {
+      "recipe": "D",
+      "variant": "C",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 382,
+      "earlier_calls": 126,
+      "plane_compare_calls": 0,
+      "member_index_before_calls": 0,
+      "indexed_calls": 0,
+      "bitmap_init_writes": 128,
+      "active_clears": 126,
+      "inactive_skips": 8127,
+      "pair_visits": 8509,
+      "full_cover_checks": 126,
+      "duplicate_removals": 126,
+      "compaction_scans": 128,
+      "compaction_moves": 2,
+      "memmove_calls": 0,
+      "memmove_bytes": 0,
+      "fenwick_insert_nodes": 0,
+      "fenwick_query_nodes": 0
+    },
+    {
+      "recipe": "D",
+      "variant": "R_fallback",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 128,
+      "order_calls": 382,
+      "earlier_calls": 126,
+      "plane_compare_calls": 0,
+      "member_index_before_calls": 0,
+      "indexed_calls": 0,
+      "bitmap_init_writes": 0,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 382,
+      "full_cover_checks": 126,
+      "duplicate_removals": 126,
+      "compaction_scans": 0,
+      "compaction_moves": 0,
+      "memmove_calls": 126,
+      "memmove_bytes": 390096,
+      "fenwick_insert_nodes": 0,
+      "fenwick_query_nodes": 0
+    },
+    {
+      "recipe": "X",
+      "variant": "C",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 2434,
+      "order_calls": 7300,
+      "earlier_calls": 2432,
+      "plane_compare_calls": 0,
+      "member_index_before_calls": 0,
+      "indexed_calls": 0,
+      "bitmap_init_writes": 0,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 7300,
+      "full_cover_checks": 2432,
+      "duplicate_removals": 2432,
+      "compaction_scans": 0,
+      "compaction_moves": 0,
+      "memmove_calls": 2432,
+      "memmove_bytes": 142126080,
+      "fenwick_insert_nodes": 0,
+      "fenwick_query_nodes": 0
+    },
+    {
+      "recipe": "X",
+      "variant": "R_joint",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 2434,
+      "order_calls": 7300,
+      "earlier_calls": 2432,
+      "plane_compare_calls": 0,
+      "member_index_before_calls": 0,
+      "indexed_calls": 0,
+      "bitmap_init_writes": 0,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 7300,
+      "full_cover_checks": 2432,
+      "duplicate_removals": 2432,
+      "compaction_scans": 0,
+      "compaction_moves": 0,
+      "memmove_calls": 2432,
+      "memmove_bytes": 142126080,
+      "fenwick_insert_nodes": 0,
+      "fenwick_query_nodes": 0
+    },
+    {
+      "recipe": "X",
+      "variant": "R_fallback",
+      "face_size_bytes": 48,
+      "collector_calls": 1,
+      "admitted_faces": 2434,
+      "order_calls": 7300,
+      "earlier_calls": 2432,
+      "plane_compare_calls": 0,
+      "member_index_before_calls": 0,
+      "indexed_calls": 0,
+      "bitmap_init_writes": 0,
+      "active_clears": 0,
+      "inactive_skips": 0,
+      "pair_visits": 7300,
+      "full_cover_checks": 2432,
+      "duplicate_removals": 2432,
+      "compaction_scans": 0,
+      "compaction_moves": 0,
+      "memmove_calls": 2432,
+      "memmove_bytes": 142126080,
+      "fenwick_insert_nodes": 0,
+      "fenwick_query_nodes": 0
+    }
+  ],
+  "interpretation": {
+    "U_S": "C/Rf work vectors exactly equal and both execute343 indexed route; measured one-point time differences cannot establish standalone341 benefit. Rj is joint341+343 pipeline withdrawal retaining unique bookkeeping.",
+    "D": "C eliminates126memmoves/390096bytes but records8509pair visits and8127inactive skips versus382pair visits in Rf/Rj. C wall16855ns exceeds Rf14481ns/Rj13490ns in this single uninstrumented observation; do not hide this unfavorable point or infer significance.",
+    "X": "All work vectors exactly equal; single-point wall differs21269608/22963481/24338132ns for C/Rf/Rj. This is a null-path/noise control, not evidence of a new path benefit.",
+    "memory": "All24 driver-end OS high-water readings equal42308KiB. Collector/bitmap storage difference is UNMEASURABLE in this run; no isolated allocation/peak-after-exit or zero-storage claim.",
+    "resolution": "One observation per variant/recipe/mode, no warmup/calibration/repeat. CPU includes bracket/timer overhead; preserve zero/noise/regressions without significance or speed threshold."
+  },
+  "scopeLimits": [
+    "Formal B1/R16/512World/newmain acceptance remain UNVERIFIED.",
+    "Current U/S64 unique do not cover341 no/low-duplicate nonindexed fallback overhead. Future65-fact helper recipe after final340 freeze remains UNRUN and was not added.",
+    "Full14methods/41controls and restored-C are not rerun or newly certified by this pilot.",
+    "X1217facts/2434faces is only the original public-helper buffer contract; World remains64/8.",
+    "No attempts beyond the approved24, no best-of selection, retries, recalibration, source or branch edits."
+  ],
+  "parentNotifiedWindowClosedBeforeOwnerPostAnalysis": true,
+  "rawFileCount": 123,
+  "rawBytes": 145712
+}

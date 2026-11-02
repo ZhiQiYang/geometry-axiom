@@ -1,0 +1,15 @@
+test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation (tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation) ... FAIL
+
+======================================================================
+FAIL: test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation (tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py", line 327, in test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation
+    self.assertTrue(self.command("engineering-confirm " + str(preview["token"]))["ok"],
+AssertionError: False is not true : confirmation must retain the exact ordered source facts
+
+----------------------------------------------------------------------
+Ran 1 test in 5.240s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"], "started": ["tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation"], "total": 1, "failures": [{"test": "tests.test_geo314_stagger_commit.StaggerCommit.test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_stagger_commit.py\", line 327, in test_Q3_parameter_then_same_value_unbind_survives_preview_and_confirmation\n    self.assertTrue(self.command(\"engineering-confirm \" + str(preview[\"token\"]))[\"ok\"],\nAssertionError: False is not true : confirmation must retain the exact ordered source facts\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

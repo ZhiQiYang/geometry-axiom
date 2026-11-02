@@ -1,0 +1,15 @@
+test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles (tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles) ... FAIL
+
+======================================================================
+FAIL: test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles (tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo318_reading_a_native.py", line 59, in test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles
+    self.assertEqual(0,self.case("eligibility").returncode)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 3.056s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles"], "started": ["tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles"], "total": 1, "failures": [{"test": "tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo318_reading_a_native.py\", line 59, in test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles\n    self.assertEqual(0,self.case(\"eligibility\").returncode)\nAssertionError: 0 != 1\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

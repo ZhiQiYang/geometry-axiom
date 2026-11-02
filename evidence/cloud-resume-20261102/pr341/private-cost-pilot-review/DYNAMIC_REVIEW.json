@@ -1,0 +1,2587 @@
+{
+  "schema": "geometry-pr341-one-pilot-dynamic-peer/1",
+  "utc": "2026-11-02T14:15:05.385200+00:00",
+  "status": "PASS_ONE_PRIVATE_DIAGNOSTIC_RAW_REVIEW_NOT_B1",
+  "fixedSource": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "sealSha256": "5044e6b39de80072660d5f33c6a4c153bede940c9194bb5db7fb31713aa84c51",
+  "scope": "Read-only review of one existing24-child R2 raw cohort. Standard-library JSON/hash/field comparisons only; no checker CLI/tool import, binary/build/suite/sample execution and no rewrite of producer files or previous v1/v2 evidence.",
+  "rootRelease": {
+    "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-release/RELEASE.json",
+    "sha256": "b335fa900b5079fd7b8316c74ccf2c151821af7b21196ba44b1a20b764c1b425",
+    "priorPeerSha256": "00f2a508044aa1aabefcf1b5a0f935ea40fb5772ea45c834627943fc8c683bee",
+    "releaseUTC": "2026-11-02T14:06:10.730932+00:00"
+  },
+  "canonicalEvidence": {
+    "result": {
+      "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/RESULT.json",
+      "sha256": "0a9b5c08bee30005fe617e7b271d78957e8cc24d91c6e8281e892e812211f0b8"
+    },
+    "preExecution": {
+      "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/PRE_EXECUTION.json",
+      "sha256": "373d54435f9bbd57767293cfd3f4ec1284d2cce38cd87a2a41b923c154273538"
+    },
+    "windowClosed": {
+      "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/WINDOW_CLOSED.json",
+      "sha256": "e2c80c8297a4ad587faec21366f6845316e0513438cf3a32aab9e530ae49a10d",
+      "elapsedSupervisorNs": 451648143
+    },
+    "R2SealCurrentSha256": "5044e6b39de80072660d5f33c6a4c153bede940c9194bb5db7fb31713aa84c51"
+  },
+  "readbackChecks": {
+    "passed": 447,
+    "total": 447,
+    "checks": {
+      "release_fixed_source_and_exact_R2": true,
+      "release_binds_prior_peer": true,
+      "R2_seal_original_bytes_still_exact": true,
+      "preexecution_exact_identity_and_limits": true,
+      "release_before_preexecution": true,
+      "complete_result_identity_and_no_retry_schedule": true,
+      "postwindow_identity_producer_attestation": true,
+      "window_count_duration_budget": true,
+      "schedule_00_exact": true,
+      "leaf_00_exact_five_regular_raw": true,
+      "argv_00_exact_across_all_raw": true,
+      "request_00_env_cwd_timeout_stack": true,
+      "actual_00_real_zero_no_timeout": true,
+      "stderr_00_one_complete_metrics_no_other_error": true,
+      "metrics_00_exact_raw_not_summary_only": true,
+      "metrics_00_call_count_stack_abi": true,
+      "stdout_00_header_return_count_tail": true,
+      "stdout_00_independent_nine_field_literal_oracle": true,
+      "wholechild_00_cpu_wall_nonnegative_finite": true,
+      "timed_00_uninstrumented_fields": true,
+      "schedule_01_exact": true,
+      "leaf_01_exact_five_regular_raw": true,
+      "argv_01_exact_across_all_raw": true,
+      "request_01_env_cwd_timeout_stack": true,
+      "actual_01_real_zero_no_timeout": true,
+      "stderr_01_one_complete_metrics_no_other_error": true,
+      "metrics_01_exact_raw_not_summary_only": true,
+      "metrics_01_call_count_stack_abi": true,
+      "stdout_01_header_return_count_tail": true,
+      "stdout_01_independent_nine_field_literal_oracle": true,
+      "wholechild_01_cpu_wall_nonnegative_finite": true,
+      "work_01_only_counters_no_timing": true,
+      "work_01_route_and_removal_accounting": true,
+      "schedule_02_exact": true,
+      "leaf_02_exact_five_regular_raw": true,
+      "argv_02_exact_across_all_raw": true,
+      "request_02_env_cwd_timeout_stack": true,
+      "actual_02_real_zero_no_timeout": true,
+      "stderr_02_one_complete_metrics_no_other_error": true,
+      "metrics_02_exact_raw_not_summary_only": true,
+      "metrics_02_call_count_stack_abi": true,
+      "stdout_02_header_return_count_tail": true,
+      "stdout_02_independent_nine_field_literal_oracle": true,
+      "wholechild_02_cpu_wall_nonnegative_finite": true,
+      "timed_02_uninstrumented_fields": true,
+      "schedule_03_exact": true,
+      "leaf_03_exact_five_regular_raw": true,
+      "argv_03_exact_across_all_raw": true,
+      "request_03_env_cwd_timeout_stack": true,
+      "actual_03_real_zero_no_timeout": true,
+      "stderr_03_one_complete_metrics_no_other_error": true,
+      "metrics_03_exact_raw_not_summary_only": true,
+      "metrics_03_call_count_stack_abi": true,
+      "stdout_03_header_return_count_tail": true,
+      "stdout_03_independent_nine_field_literal_oracle": true,
+      "wholechild_03_cpu_wall_nonnegative_finite": true,
+      "work_03_only_counters_no_timing": true,
+      "work_03_route_and_removal_accounting": true,
+      "schedule_04_exact": true,
+      "leaf_04_exact_five_regular_raw": true,
+      "argv_04_exact_across_all_raw": true,
+      "request_04_env_cwd_timeout_stack": true,
+      "actual_04_real_zero_no_timeout": true,
+      "stderr_04_one_complete_metrics_no_other_error": true,
+      "metrics_04_exact_raw_not_summary_only": true,
+      "metrics_04_call_count_stack_abi": true,
+      "stdout_04_header_return_count_tail": true,
+      "stdout_04_independent_nine_field_literal_oracle": true,
+      "wholechild_04_cpu_wall_nonnegative_finite": true,
+      "timed_04_uninstrumented_fields": true,
+      "schedule_05_exact": true,
+      "leaf_05_exact_five_regular_raw": true,
+      "argv_05_exact_across_all_raw": true,
+      "request_05_env_cwd_timeout_stack": true,
+      "actual_05_real_zero_no_timeout": true,
+      "stderr_05_one_complete_metrics_no_other_error": true,
+      "metrics_05_exact_raw_not_summary_only": true,
+      "metrics_05_call_count_stack_abi": true,
+      "stdout_05_header_return_count_tail": true,
+      "stdout_05_independent_nine_field_literal_oracle": true,
+      "wholechild_05_cpu_wall_nonnegative_finite": true,
+      "work_05_only_counters_no_timing": true,
+      "work_05_route_and_removal_accounting": true,
+      "schedule_06_exact": true,
+      "leaf_06_exact_five_regular_raw": true,
+      "argv_06_exact_across_all_raw": true,
+      "request_06_env_cwd_timeout_stack": true,
+      "actual_06_real_zero_no_timeout": true,
+      "stderr_06_one_complete_metrics_no_other_error": true,
+      "metrics_06_exact_raw_not_summary_only": true,
+      "metrics_06_call_count_stack_abi": true,
+      "stdout_06_header_return_count_tail": true,
+      "stdout_06_independent_nine_field_literal_oracle": true,
+      "wholechild_06_cpu_wall_nonnegative_finite": true,
+      "timed_06_uninstrumented_fields": true,
+      "schedule_07_exact": true,
+      "leaf_07_exact_five_regular_raw": true,
+      "argv_07_exact_across_all_raw": true,
+      "request_07_env_cwd_timeout_stack": true,
+      "actual_07_real_zero_no_timeout": true,
+      "stderr_07_one_complete_metrics_no_other_error": true,
+      "metrics_07_exact_raw_not_summary_only": true,
+      "metrics_07_call_count_stack_abi": true,
+      "stdout_07_header_return_count_tail": true,
+      "stdout_07_independent_nine_field_literal_oracle": true,
+      "wholechild_07_cpu_wall_nonnegative_finite": true,
+      "work_07_only_counters_no_timing": true,
+      "work_07_route_and_removal_accounting": true,
+      "schedule_08_exact": true,
+      "leaf_08_exact_five_regular_raw": true,
+      "argv_08_exact_across_all_raw": true,
+      "request_08_env_cwd_timeout_stack": true,
+      "actual_08_real_zero_no_timeout": true,
+      "stderr_08_one_complete_metrics_no_other_error": true,
+      "metrics_08_exact_raw_not_summary_only": true,
+      "metrics_08_call_count_stack_abi": true,
+      "stdout_08_header_return_count_tail": true,
+      "stdout_08_independent_nine_field_literal_oracle": true,
+      "wholechild_08_cpu_wall_nonnegative_finite": true,
+      "timed_08_uninstrumented_fields": true,
+      "schedule_09_exact": true,
+      "leaf_09_exact_five_regular_raw": true,
+      "argv_09_exact_across_all_raw": true,
+      "request_09_env_cwd_timeout_stack": true,
+      "actual_09_real_zero_no_timeout": true,
+      "stderr_09_one_complete_metrics_no_other_error": true,
+      "metrics_09_exact_raw_not_summary_only": true,
+      "metrics_09_call_count_stack_abi": true,
+      "stdout_09_header_return_count_tail": true,
+      "stdout_09_independent_nine_field_literal_oracle": true,
+      "wholechild_09_cpu_wall_nonnegative_finite": true,
+      "work_09_only_counters_no_timing": true,
+      "work_09_route_and_removal_accounting": true,
+      "schedule_10_exact": true,
+      "leaf_10_exact_five_regular_raw": true,
+      "argv_10_exact_across_all_raw": true,
+      "request_10_env_cwd_timeout_stack": true,
+      "actual_10_real_zero_no_timeout": true,
+      "stderr_10_one_complete_metrics_no_other_error": true,
+      "metrics_10_exact_raw_not_summary_only": true,
+      "metrics_10_call_count_stack_abi": true,
+      "stdout_10_header_return_count_tail": true,
+      "stdout_10_independent_nine_field_literal_oracle": true,
+      "wholechild_10_cpu_wall_nonnegative_finite": true,
+      "timed_10_uninstrumented_fields": true,
+      "schedule_11_exact": true,
+      "leaf_11_exact_five_regular_raw": true,
+      "argv_11_exact_across_all_raw": true,
+      "request_11_env_cwd_timeout_stack": true,
+      "actual_11_real_zero_no_timeout": true,
+      "stderr_11_one_complete_metrics_no_other_error": true,
+      "metrics_11_exact_raw_not_summary_only": true,
+      "metrics_11_call_count_stack_abi": true,
+      "stdout_11_header_return_count_tail": true,
+      "stdout_11_independent_nine_field_literal_oracle": true,
+      "wholechild_11_cpu_wall_nonnegative_finite": true,
+      "work_11_only_counters_no_timing": true,
+      "work_11_route_and_removal_accounting": true,
+      "schedule_12_exact": true,
+      "leaf_12_exact_five_regular_raw": true,
+      "argv_12_exact_across_all_raw": true,
+      "request_12_env_cwd_timeout_stack": true,
+      "actual_12_real_zero_no_timeout": true,
+      "stderr_12_one_complete_metrics_no_other_error": true,
+      "metrics_12_exact_raw_not_summary_only": true,
+      "metrics_12_call_count_stack_abi": true,
+      "stdout_12_header_return_count_tail": true,
+      "stdout_12_independent_nine_field_literal_oracle": true,
+      "wholechild_12_cpu_wall_nonnegative_finite": true,
+      "timed_12_uninstrumented_fields": true,
+      "schedule_13_exact": true,
+      "leaf_13_exact_five_regular_raw": true,
+      "argv_13_exact_across_all_raw": true,
+      "request_13_env_cwd_timeout_stack": true,
+      "actual_13_real_zero_no_timeout": true,
+      "stderr_13_one_complete_metrics_no_other_error": true,
+      "metrics_13_exact_raw_not_summary_only": true,
+      "metrics_13_call_count_stack_abi": true,
+      "stdout_13_header_return_count_tail": true,
+      "stdout_13_independent_nine_field_literal_oracle": true,
+      "wholechild_13_cpu_wall_nonnegative_finite": true,
+      "work_13_only_counters_no_timing": true,
+      "work_13_route_and_removal_accounting": true,
+      "schedule_14_exact": true,
+      "leaf_14_exact_five_regular_raw": true,
+      "argv_14_exact_across_all_raw": true,
+      "request_14_env_cwd_timeout_stack": true,
+      "actual_14_real_zero_no_timeout": true,
+      "stderr_14_one_complete_metrics_no_other_error": true,
+      "metrics_14_exact_raw_not_summary_only": true,
+      "metrics_14_call_count_stack_abi": true,
+      "stdout_14_header_return_count_tail": true,
+      "stdout_14_independent_nine_field_literal_oracle": true,
+      "wholechild_14_cpu_wall_nonnegative_finite": true,
+      "timed_14_uninstrumented_fields": true,
+      "schedule_15_exact": true,
+      "leaf_15_exact_five_regular_raw": true,
+      "argv_15_exact_across_all_raw": true,
+      "request_15_env_cwd_timeout_stack": true,
+      "actual_15_real_zero_no_timeout": true,
+      "stderr_15_one_complete_metrics_no_other_error": true,
+      "metrics_15_exact_raw_not_summary_only": true,
+      "metrics_15_call_count_stack_abi": true,
+      "stdout_15_header_return_count_tail": true,
+      "stdout_15_independent_nine_field_literal_oracle": true,
+      "wholechild_15_cpu_wall_nonnegative_finite": true,
+      "work_15_only_counters_no_timing": true,
+      "work_15_route_and_removal_accounting": true,
+      "schedule_16_exact": true,
+      "leaf_16_exact_five_regular_raw": true,
+      "argv_16_exact_across_all_raw": true,
+      "request_16_env_cwd_timeout_stack": true,
+      "actual_16_real_zero_no_timeout": true,
+      "stderr_16_one_complete_metrics_no_other_error": true,
+      "metrics_16_exact_raw_not_summary_only": true,
+      "metrics_16_call_count_stack_abi": true,
+      "stdout_16_header_return_count_tail": true,
+      "stdout_16_independent_nine_field_literal_oracle": true,
+      "wholechild_16_cpu_wall_nonnegative_finite": true,
+      "timed_16_uninstrumented_fields": true,
+      "schedule_17_exact": true,
+      "leaf_17_exact_five_regular_raw": true,
+      "argv_17_exact_across_all_raw": true,
+      "request_17_env_cwd_timeout_stack": true,
+      "actual_17_real_zero_no_timeout": true,
+      "stderr_17_one_complete_metrics_no_other_error": true,
+      "metrics_17_exact_raw_not_summary_only": true,
+      "metrics_17_call_count_stack_abi": true,
+      "stdout_17_header_return_count_tail": true,
+      "stdout_17_independent_nine_field_literal_oracle": true,
+      "wholechild_17_cpu_wall_nonnegative_finite": true,
+      "work_17_only_counters_no_timing": true,
+      "work_17_route_and_removal_accounting": true,
+      "schedule_18_exact": true,
+      "leaf_18_exact_five_regular_raw": true,
+      "argv_18_exact_across_all_raw": true,
+      "request_18_env_cwd_timeout_stack": true,
+      "actual_18_real_zero_no_timeout": true,
+      "stderr_18_one_complete_metrics_no_other_error": true,
+      "metrics_18_exact_raw_not_summary_only": true,
+      "metrics_18_call_count_stack_abi": true,
+      "stdout_18_header_return_count_tail": true,
+      "stdout_18_independent_nine_field_literal_oracle": true,
+      "wholechild_18_cpu_wall_nonnegative_finite": true,
+      "timed_18_uninstrumented_fields": true,
+      "schedule_19_exact": true,
+      "leaf_19_exact_five_regular_raw": true,
+      "argv_19_exact_across_all_raw": true,
+      "request_19_env_cwd_timeout_stack": true,
+      "actual_19_real_zero_no_timeout": true,
+      "stderr_19_one_complete_metrics_no_other_error": true,
+      "metrics_19_exact_raw_not_summary_only": true,
+      "metrics_19_call_count_stack_abi": true,
+      "stdout_19_header_return_count_tail": true,
+      "stdout_19_independent_nine_field_literal_oracle": true,
+      "wholechild_19_cpu_wall_nonnegative_finite": true,
+      "work_19_only_counters_no_timing": true,
+      "work_19_route_and_removal_accounting": true,
+      "schedule_20_exact": true,
+      "leaf_20_exact_five_regular_raw": true,
+      "argv_20_exact_across_all_raw": true,
+      "request_20_env_cwd_timeout_stack": true,
+      "actual_20_real_zero_no_timeout": true,
+      "stderr_20_one_complete_metrics_no_other_error": true,
+      "metrics_20_exact_raw_not_summary_only": true,
+      "metrics_20_call_count_stack_abi": true,
+      "stdout_20_header_return_count_tail": true,
+      "stdout_20_independent_nine_field_literal_oracle": true,
+      "wholechild_20_cpu_wall_nonnegative_finite": true,
+      "timed_20_uninstrumented_fields": true,
+      "schedule_21_exact": true,
+      "leaf_21_exact_five_regular_raw": true,
+      "argv_21_exact_across_all_raw": true,
+      "request_21_env_cwd_timeout_stack": true,
+      "actual_21_real_zero_no_timeout": true,
+      "stderr_21_one_complete_metrics_no_other_error": true,
+      "metrics_21_exact_raw_not_summary_only": true,
+      "metrics_21_call_count_stack_abi": true,
+      "stdout_21_header_return_count_tail": true,
+      "stdout_21_independent_nine_field_literal_oracle": true,
+      "wholechild_21_cpu_wall_nonnegative_finite": true,
+      "work_21_only_counters_no_timing": true,
+      "work_21_route_and_removal_accounting": true,
+      "schedule_22_exact": true,
+      "leaf_22_exact_five_regular_raw": true,
+      "argv_22_exact_across_all_raw": true,
+      "request_22_env_cwd_timeout_stack": true,
+      "actual_22_real_zero_no_timeout": true,
+      "stderr_22_one_complete_metrics_no_other_error": true,
+      "metrics_22_exact_raw_not_summary_only": true,
+      "metrics_22_call_count_stack_abi": true,
+      "stdout_22_header_return_count_tail": true,
+      "stdout_22_independent_nine_field_literal_oracle": true,
+      "wholechild_22_cpu_wall_nonnegative_finite": true,
+      "timed_22_uninstrumented_fields": true,
+      "schedule_23_exact": true,
+      "leaf_23_exact_five_regular_raw": true,
+      "argv_23_exact_across_all_raw": true,
+      "request_23_env_cwd_timeout_stack": true,
+      "actual_23_real_zero_no_timeout": true,
+      "stderr_23_one_complete_metrics_no_other_error": true,
+      "metrics_23_exact_raw_not_summary_only": true,
+      "metrics_23_call_count_stack_abi": true,
+      "stdout_23_header_return_count_tail": true,
+      "stdout_23_independent_nine_field_literal_oracle": true,
+      "wholechild_23_cpu_wall_nonnegative_finite": true,
+      "work_23_only_counters_no_timing": true,
+      "work_23_route_and_removal_accounting": true,
+      "one_common_cohort_deadline": true,
+      "sum_observed_exact24": true,
+      "supervisor_spans_inside_cohort": true,
+      "six_outputs_exact_U": true,
+      "six_outputs_exact_S": true,
+      "six_outputs_exact_D": true,
+      "six_outputs_exact_X": true,
+      "retained343_C_Rf_work_identical_U": true,
+      "retained343_C_Rf_work_identical_S": true,
+      "X_all_three_work_vectors_identical": true,
+      "D_closed_form_active_scans_skips_and_remaining_visits": true,
+      "D_closed_form_deletion_compaction_and_bytes": true,
+      "X_closed_form_legacy_public_fallback": true,
+      "all24_RSS_same_including_work": true,
+      "raw122_exact_inventory_no_missing_or_extra": true,
+      "rawhash_00-U-C-timed/OUTCOME.json": true,
+      "rawhash_00-U-C-timed/REQUEST.json": true,
+      "rawhash_00-U-C-timed/execution.json": true,
+      "rawhash_00-U-C-timed/stderr": true,
+      "rawhash_00-U-C-timed/stdout": true,
+      "rawhash_01-U-C-work/OUTCOME.json": true,
+      "rawhash_01-U-C-work/REQUEST.json": true,
+      "rawhash_01-U-C-work/execution.json": true,
+      "rawhash_01-U-C-work/stderr": true,
+      "rawhash_01-U-C-work/stdout": true,
+      "rawhash_02-U-R_fallback-timed/OUTCOME.json": true,
+      "rawhash_02-U-R_fallback-timed/REQUEST.json": true,
+      "rawhash_02-U-R_fallback-timed/execution.json": true,
+      "rawhash_02-U-R_fallback-timed/stderr": true,
+      "rawhash_02-U-R_fallback-timed/stdout": true,
+      "rawhash_03-U-R_fallback-work/OUTCOME.json": true,
+      "rawhash_03-U-R_fallback-work/REQUEST.json": true,
+      "rawhash_03-U-R_fallback-work/execution.json": true,
+      "rawhash_03-U-R_fallback-work/stderr": true,
+      "rawhash_03-U-R_fallback-work/stdout": true,
+      "rawhash_04-U-R_joint-timed/OUTCOME.json": true,
+      "rawhash_04-U-R_joint-timed/REQUEST.json": true,
+      "rawhash_04-U-R_joint-timed/execution.json": true,
+      "rawhash_04-U-R_joint-timed/stderr": true,
+      "rawhash_04-U-R_joint-timed/stdout": true,
+      "rawhash_05-U-R_joint-work/OUTCOME.json": true,
+      "rawhash_05-U-R_joint-work/REQUEST.json": true,
+      "rawhash_05-U-R_joint-work/execution.json": true,
+      "rawhash_05-U-R_joint-work/stderr": true,
+      "rawhash_05-U-R_joint-work/stdout": true,
+      "rawhash_06-S-R_fallback-timed/OUTCOME.json": true,
+      "rawhash_06-S-R_fallback-timed/REQUEST.json": true,
+      "rawhash_06-S-R_fallback-timed/execution.json": true,
+      "rawhash_06-S-R_fallback-timed/stderr": true,
+      "rawhash_06-S-R_fallback-timed/stdout": true,
+      "rawhash_07-S-R_fallback-work/OUTCOME.json": true,
+      "rawhash_07-S-R_fallback-work/REQUEST.json": true,
+      "rawhash_07-S-R_fallback-work/execution.json": true,
+      "rawhash_07-S-R_fallback-work/stderr": true,
+      "rawhash_07-S-R_fallback-work/stdout": true,
+      "rawhash_08-S-R_joint-timed/OUTCOME.json": true,
+      "rawhash_08-S-R_joint-timed/REQUEST.json": true,
+      "rawhash_08-S-R_joint-timed/execution.json": true,
+      "rawhash_08-S-R_joint-timed/stderr": true,
+      "rawhash_08-S-R_joint-timed/stdout": true,
+      "rawhash_09-S-R_joint-work/OUTCOME.json": true,
+      "rawhash_09-S-R_joint-work/REQUEST.json": true,
+      "rawhash_09-S-R_joint-work/execution.json": true,
+      "rawhash_09-S-R_joint-work/stderr": true,
+      "rawhash_09-S-R_joint-work/stdout": true,
+      "rawhash_10-S-C-timed/OUTCOME.json": true,
+      "rawhash_10-S-C-timed/REQUEST.json": true,
+      "rawhash_10-S-C-timed/execution.json": true,
+      "rawhash_10-S-C-timed/stderr": true,
+      "rawhash_10-S-C-timed/stdout": true,
+      "rawhash_11-S-C-work/OUTCOME.json": true,
+      "rawhash_11-S-C-work/REQUEST.json": true,
+      "rawhash_11-S-C-work/execution.json": true,
+      "rawhash_11-S-C-work/stderr": true,
+      "rawhash_11-S-C-work/stdout": true,
+      "rawhash_12-D-R_joint-timed/OUTCOME.json": true,
+      "rawhash_12-D-R_joint-timed/REQUEST.json": true,
+      "rawhash_12-D-R_joint-timed/execution.json": true,
+      "rawhash_12-D-R_joint-timed/stderr": true,
+      "rawhash_12-D-R_joint-timed/stdout": true,
+      "rawhash_13-D-R_joint-work/OUTCOME.json": true,
+      "rawhash_13-D-R_joint-work/REQUEST.json": true,
+      "rawhash_13-D-R_joint-work/execution.json": true,
+      "rawhash_13-D-R_joint-work/stderr": true,
+      "rawhash_13-D-R_joint-work/stdout": true,
+      "rawhash_14-D-C-timed/OUTCOME.json": true,
+      "rawhash_14-D-C-timed/REQUEST.json": true,
+      "rawhash_14-D-C-timed/execution.json": true,
+      "rawhash_14-D-C-timed/stderr": true,
+      "rawhash_14-D-C-timed/stdout": true,
+      "rawhash_15-D-C-work/OUTCOME.json": true,
+      "rawhash_15-D-C-work/REQUEST.json": true,
+      "rawhash_15-D-C-work/execution.json": true,
+      "rawhash_15-D-C-work/stderr": true,
+      "rawhash_15-D-C-work/stdout": true,
+      "rawhash_16-D-R_fallback-timed/OUTCOME.json": true,
+      "rawhash_16-D-R_fallback-timed/REQUEST.json": true,
+      "rawhash_16-D-R_fallback-timed/execution.json": true,
+      "rawhash_16-D-R_fallback-timed/stderr": true,
+      "rawhash_16-D-R_fallback-timed/stdout": true,
+      "rawhash_17-D-R_fallback-work/OUTCOME.json": true,
+      "rawhash_17-D-R_fallback-work/REQUEST.json": true,
+      "rawhash_17-D-R_fallback-work/execution.json": true,
+      "rawhash_17-D-R_fallback-work/stderr": true,
+      "rawhash_17-D-R_fallback-work/stdout": true,
+      "rawhash_18-X-C-timed/OUTCOME.json": true,
+      "rawhash_18-X-C-timed/REQUEST.json": true,
+      "rawhash_18-X-C-timed/execution.json": true,
+      "rawhash_18-X-C-timed/stderr": true,
+      "rawhash_18-X-C-timed/stdout": true,
+      "rawhash_19-X-C-work/OUTCOME.json": true,
+      "rawhash_19-X-C-work/REQUEST.json": true,
+      "rawhash_19-X-C-work/execution.json": true,
+      "rawhash_19-X-C-work/stderr": true,
+      "rawhash_19-X-C-work/stdout": true,
+      "rawhash_20-X-R_joint-timed/OUTCOME.json": true,
+      "rawhash_20-X-R_joint-timed/REQUEST.json": true,
+      "rawhash_20-X-R_joint-timed/execution.json": true,
+      "rawhash_20-X-R_joint-timed/stderr": true,
+      "rawhash_20-X-R_joint-timed/stdout": true,
+      "rawhash_21-X-R_joint-work/OUTCOME.json": true,
+      "rawhash_21-X-R_joint-work/REQUEST.json": true,
+      "rawhash_21-X-R_joint-work/execution.json": true,
+      "rawhash_21-X-R_joint-work/stderr": true,
+      "rawhash_21-X-R_joint-work/stdout": true,
+      "rawhash_22-X-R_fallback-timed/OUTCOME.json": true,
+      "rawhash_22-X-R_fallback-timed/REQUEST.json": true,
+      "rawhash_22-X-R_fallback-timed/execution.json": true,
+      "rawhash_22-X-R_fallback-timed/stderr": true,
+      "rawhash_22-X-R_fallback-timed/stdout": true,
+      "rawhash_23-X-R_fallback-work/OUTCOME.json": true,
+      "rawhash_23-X-R_fallback-work/REQUEST.json": true,
+      "rawhash_23-X-R_fallback-work/execution.json": true,
+      "rawhash_23-X-R_fallback-work/stderr": true,
+      "rawhash_23-X-R_fallback-work/stdout": true,
+      "rawhash_PRE_EXECUTION.json": true,
+      "rawhash_WINDOW_CLOSED.json": true,
+      "result_only_expected_additional_topfile": true,
+      "allraw_status_no_significance_claim": true
+    }
+  },
+  "rawInventory": [
+    {
+      "path": "00-U-C-timed/OUTCOME.json",
+      "bytes": 623,
+      "sha256": "6fece460622ea64d579ab68971fa9f44b1c56e14e7b0f227c9f31fb8d78d2b3d"
+    },
+    {
+      "path": "00-U-C-timed/REQUEST.json",
+      "bytes": 552,
+      "sha256": "f5d8752f807f63de6b412c4e4497a18eacb6660f632fe957a5111162b6a11016"
+    },
+    {
+      "path": "00-U-C-timed/execution.json",
+      "bytes": 265,
+      "sha256": "15f713b11cf0ee6cf9c76c9e0a799d754a110be858590aa52347817983145306"
+    },
+    {
+      "path": "00-U-C-timed/stderr",
+      "bytes": 212,
+      "sha256": "f56adca45a31f5fc17a67d4bbc33358907822fff8640cf3e96db4ba64f9a43c6"
+    },
+    {
+      "path": "00-U-C-timed/stdout",
+      "bytes": 3746,
+      "sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "path": "01-U-C-work/OUTCOME.json",
+      "bytes": 635,
+      "sha256": "4c01c3b8b681a6a6dd7545c7ffa5d446ec11f235b75061403589a85e9d61386f"
+    },
+    {
+      "path": "01-U-C-work/REQUEST.json",
+      "bytes": 551,
+      "sha256": "f812a56952e679db0580189594a64baf08e7c3abe42f6fe42b780a1a4c229d1c"
+    },
+    {
+      "path": "01-U-C-work/execution.json",
+      "bytes": 264,
+      "sha256": "16e0a208676971675573447c0bb4c0f21702a72682cd672fce68cea2e9e91106"
+    },
+    {
+      "path": "01-U-C-work/stderr",
+      "bytes": 624,
+      "sha256": "fff457f84e72a06f27330dc7cb571b931c0eb5cbb4ddf897abf311a182be61b3"
+    },
+    {
+      "path": "01-U-C-work/stdout",
+      "bytes": 3746,
+      "sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "path": "02-U-R_fallback-timed/OUTCOME.json",
+      "bytes": 645,
+      "sha256": "f654c037050efadce8b3cc5da2435b95dc3a8696347ee4697c07deb12552be91"
+    },
+    {
+      "path": "02-U-R_fallback-timed/REQUEST.json",
+      "bytes": 561,
+      "sha256": "1cad9b4accfed27ddf8028493ddd469927877601f186e367a5a07f9461f378b4"
+    },
+    {
+      "path": "02-U-R_fallback-timed/execution.json",
+      "bytes": 274,
+      "sha256": "6778b0366d1b1dbf2d60730d2cd0665880b9488deeef0ee3bc7ab71c1512cc06"
+    },
+    {
+      "path": "02-U-R_fallback-timed/stderr",
+      "bytes": 212,
+      "sha256": "162545a4835b650f9f2f0891dbf40256a24d64110a561174060edc71958dd56a"
+    },
+    {
+      "path": "02-U-R_fallback-timed/stdout",
+      "bytes": 3746,
+      "sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "path": "03-U-R_fallback-work/OUTCOME.json",
+      "bytes": 644,
+      "sha256": "bdde0773b2959a9e41966b2cbc66bb47d7b8487c1e610bf736a9ebc82bc78acf"
+    },
+    {
+      "path": "03-U-R_fallback-work/REQUEST.json",
+      "bytes": 560,
+      "sha256": "ab45524db6b3b4459ca6cffc894f67ea1bf12ed19b170422104b629753e71296"
+    },
+    {
+      "path": "03-U-R_fallback-work/execution.json",
+      "bytes": 273,
+      "sha256": "8bad4760b3e0b13abaa8ac408306c27c16cfd1580bb8b1cafa8c89b5f1f3b703"
+    },
+    {
+      "path": "03-U-R_fallback-work/stderr",
+      "bytes": 624,
+      "sha256": "fff457f84e72a06f27330dc7cb571b931c0eb5cbb4ddf897abf311a182be61b3"
+    },
+    {
+      "path": "03-U-R_fallback-work/stdout",
+      "bytes": 3746,
+      "sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "path": "04-U-R_joint-timed/OUTCOME.json",
+      "bytes": 629,
+      "sha256": "8e5f79eaab35d3cc14f48d605dc406375ad55e8798f3c3ee0f118a1a32650a83"
+    },
+    {
+      "path": "04-U-R_joint-timed/REQUEST.json",
+      "bytes": 558,
+      "sha256": "6c7ef17da6ccb2968086ff223b39e5de0f589451dd54a82720de74e0a81f6526"
+    },
+    {
+      "path": "04-U-R_joint-timed/execution.json",
+      "bytes": 271,
+      "sha256": "92bac81268f43a6ed7046d507e59257848e58e0e71ff2237271050c02beebb30"
+    },
+    {
+      "path": "04-U-R_joint-timed/stderr",
+      "bytes": 214,
+      "sha256": "2c77eafcf838c1371901b5d980ec3d60d2dbcaac82d348ca71d2f8bb7bb6f004"
+    },
+    {
+      "path": "04-U-R_joint-timed/stdout",
+      "bytes": 3746,
+      "sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "path": "05-U-R_joint-work/OUTCOME.json",
+      "bytes": 641,
+      "sha256": "a8fc805c4ceffe151883f51f9338f9cc94cd937db8a613ed1b141a2bedf1e12c"
+    },
+    {
+      "path": "05-U-R_joint-work/REQUEST.json",
+      "bytes": 557,
+      "sha256": "52f4931a3c4e46fa69bb3a878121128a09668ad624d5c55f73dfb792978e3895"
+    },
+    {
+      "path": "05-U-R_joint-work/execution.json",
+      "bytes": 270,
+      "sha256": "17c79da6fbda31945f1ed483e1bda5ad0d3467bee891ca3bee5b01b45d25f127"
+    },
+    {
+      "path": "05-U-R_joint-work/stderr",
+      "bytes": 614,
+      "sha256": "4f7cadd388b76f6e272249c6798189981d076e29514132fd6b5207d6b27fe438"
+    },
+    {
+      "path": "05-U-R_joint-work/stdout",
+      "bytes": 3746,
+      "sha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd"
+    },
+    {
+      "path": "06-S-R_fallback-timed/OUTCOME.json",
+      "bytes": 645,
+      "sha256": "505951ed6e816c5f749a990f9fde2a122996b4c07e90574a32152a9c2c697cfd"
+    },
+    {
+      "path": "06-S-R_fallback-timed/REQUEST.json",
+      "bytes": 561,
+      "sha256": "68f7d6d036a205110ecef0c63f796f7d24031677c539839f7ff93ef957dff53e"
+    },
+    {
+      "path": "06-S-R_fallback-timed/execution.json",
+      "bytes": 274,
+      "sha256": "9e53bdd5367f4bc297f2e0df12bd6f5d5c37f53967f7806b0500251fd7a5c6cd"
+    },
+    {
+      "path": "06-S-R_fallback-timed/stderr",
+      "bytes": 212,
+      "sha256": "06a040ceb069926d195b34210425ba0ac850ae77fcc0f7f9f6c41013b51d6381"
+    },
+    {
+      "path": "06-S-R_fallback-timed/stdout",
+      "bytes": 3688,
+      "sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "path": "07-S-R_fallback-work/OUTCOME.json",
+      "bytes": 644,
+      "sha256": "93a1f825fb9ef6f5b3811e5d5302b6a8017f74fba6ba301ab6520c71f086b083"
+    },
+    {
+      "path": "07-S-R_fallback-work/REQUEST.json",
+      "bytes": 560,
+      "sha256": "5b2126150f9332f8ee1b20cb92b930837f58f47b9994f17f2fbfd5a968eba037"
+    },
+    {
+      "path": "07-S-R_fallback-work/execution.json",
+      "bytes": 273,
+      "sha256": "25032b60b6424404b69817e93dea7ad5e13a815eeafa3f11726cde806e4bcb43"
+    },
+    {
+      "path": "07-S-R_fallback-work/stderr",
+      "bytes": 624,
+      "sha256": "ea4b2061e505b2e3f6fa94d0c775c11bb0bfd011cec72ecfbc86560ca4ee89a6"
+    },
+    {
+      "path": "07-S-R_fallback-work/stdout",
+      "bytes": 3688,
+      "sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "path": "08-S-R_joint-timed/OUTCOME.json",
+      "bytes": 641,
+      "sha256": "03671e895b0284862d1675613f8c519745739ac447445faa8c05ddb84a629827"
+    },
+    {
+      "path": "08-S-R_joint-timed/REQUEST.json",
+      "bytes": 558,
+      "sha256": "c604b9ca2f465bfe38bade1692c78db2cc858643cd179f82c287ea5769cb71c1"
+    },
+    {
+      "path": "08-S-R_joint-timed/execution.json",
+      "bytes": 271,
+      "sha256": "75df7bdd75eaae7c8d3c1e2f5224cb62c7a22ea43efd93c684beac6944df8232"
+    },
+    {
+      "path": "08-S-R_joint-timed/stderr",
+      "bytes": 214,
+      "sha256": "e3eaf86dc9776b3868438377f50177be88d15ee8a6f754506c54e89e7eaa206e"
+    },
+    {
+      "path": "08-S-R_joint-timed/stdout",
+      "bytes": 3688,
+      "sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "path": "09-S-R_joint-work/OUTCOME.json",
+      "bytes": 641,
+      "sha256": "ad78c9eeed06b7ac78221fe6f890c9517d561378fe487504a97802e1079682ab"
+    },
+    {
+      "path": "09-S-R_joint-work/REQUEST.json",
+      "bytes": 557,
+      "sha256": "70e1c78370aab88e46e46338127d3957d14ff203d237129d90e606c446631bdc"
+    },
+    {
+      "path": "09-S-R_joint-work/execution.json",
+      "bytes": 270,
+      "sha256": "4ee0f7d865182e89ba111c87921618b750491cc3d8581ba3895b68f483bc7882"
+    },
+    {
+      "path": "09-S-R_joint-work/stderr",
+      "bytes": 615,
+      "sha256": "34b2f5f7fd80f0fa0806703b3d109469ec9918907eb397be3a9c0d904f983c2c"
+    },
+    {
+      "path": "09-S-R_joint-work/stdout",
+      "bytes": 3688,
+      "sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "path": "10-S-C-timed/OUTCOME.json",
+      "bytes": 636,
+      "sha256": "e522ab21ed45805665e3cd4ff6b832bd6e283da0b91468346969ff8bbac3bfe3"
+    },
+    {
+      "path": "10-S-C-timed/REQUEST.json",
+      "bytes": 552,
+      "sha256": "3fe0d66b18cbd5139a23833949f98879185cfb88ff41e3301a55a7d16daefe94"
+    },
+    {
+      "path": "10-S-C-timed/execution.json",
+      "bytes": 265,
+      "sha256": "7756802066ee6bdbfd63cd2a66edd69d333c96161fef930d3dc810eeb09462f8"
+    },
+    {
+      "path": "10-S-C-timed/stderr",
+      "bytes": 212,
+      "sha256": "a13d4b2198175fc4244ff657a8f898554e3dfce660aef5a6832e9b52c288090b"
+    },
+    {
+      "path": "10-S-C-timed/stdout",
+      "bytes": 3688,
+      "sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "path": "11-S-C-work/OUTCOME.json",
+      "bytes": 635,
+      "sha256": "215edc646ab2e5c78186d84bef0cb54533dfaa33a11877e585f40af1b13b05f6"
+    },
+    {
+      "path": "11-S-C-work/REQUEST.json",
+      "bytes": 551,
+      "sha256": "11e94d98590fbb86b0b0ee10a4b1b2ea51a5faa705092d09893f0e111e84312c"
+    },
+    {
+      "path": "11-S-C-work/execution.json",
+      "bytes": 264,
+      "sha256": "d8dcc61703c5a46e39fad170ccfa26e91f7b7ab293c5c52f4798f2bb852f0a4d"
+    },
+    {
+      "path": "11-S-C-work/stderr",
+      "bytes": 624,
+      "sha256": "ea4b2061e505b2e3f6fa94d0c775c11bb0bfd011cec72ecfbc86560ca4ee89a6"
+    },
+    {
+      "path": "11-S-C-work/stdout",
+      "bytes": 3688,
+      "sha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d"
+    },
+    {
+      "path": "12-D-R_joint-timed/OUTCOME.json",
+      "bytes": 629,
+      "sha256": "ff6743f10ad65b33c473b928e84b129c9e2fb5f6fb8f20e3425f93870afcfbd7"
+    },
+    {
+      "path": "12-D-R_joint-timed/REQUEST.json",
+      "bytes": 558,
+      "sha256": "97b801abeba017b6150e21f102f8c0232d25d0b983c67809c102dd8955fbd64c"
+    },
+    {
+      "path": "12-D-R_joint-timed/execution.json",
+      "bytes": 271,
+      "sha256": "6623d17e1b7ebee9e6a4f84a856cac3eb95f5b09c4da14abee852cc530900d23"
+    },
+    {
+      "path": "12-D-R_joint-timed/stderr",
+      "bytes": 210,
+      "sha256": "d93db3e17ffc4ee6f163bdb7b34f6e0b26515b98032fd90feed14aa2ccb7ab62"
+    },
+    {
+      "path": "12-D-R_joint-timed/stdout",
+      "bytes": 76,
+      "sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "path": "13-D-R_joint-work/OUTCOME.json",
+      "bytes": 641,
+      "sha256": "65d7266c3489b0dbfc8af4777674bd17ce7915c9dd06755057cdd01cf5295c68"
+    },
+    {
+      "path": "13-D-R_joint-work/REQUEST.json",
+      "bytes": 557,
+      "sha256": "404b5c0424fb313078706e3292e2b1fa723170fc9426f903ce4932159198dbc5"
+    },
+    {
+      "path": "13-D-R_joint-work/execution.json",
+      "bytes": 270,
+      "sha256": "20072670803fbf46d83325b3969b73ca400380d0e450d26d7093c671e7ffb9ab"
+    },
+    {
+      "path": "13-D-R_joint-work/stderr",
+      "bytes": 622,
+      "sha256": "96ed50bb815b8a7772970b00ae649781b9503624250230467b2a9bbde1d0d286"
+    },
+    {
+      "path": "13-D-R_joint-work/stdout",
+      "bytes": 76,
+      "sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "path": "14-D-C-timed/OUTCOME.json",
+      "bytes": 636,
+      "sha256": "0b1357ddab8ab117dca5974c610963bc21d82091cf3d301293c05827d032d990"
+    },
+    {
+      "path": "14-D-C-timed/REQUEST.json",
+      "bytes": 552,
+      "sha256": "ea1c701d06081353f2f2b7cd7db3e974df216cf843dd9cc57445b97e50080409"
+    },
+    {
+      "path": "14-D-C-timed/execution.json",
+      "bytes": 265,
+      "sha256": "104f40163f9ff2fde774e34a539b9f35ee0f9e13470cbe93b3277674c3f1c571"
+    },
+    {
+      "path": "14-D-C-timed/stderr",
+      "bytes": 210,
+      "sha256": "da73dcde30be5b171ab6e6a553e7c86d958c4cbf766a6491d470adb50bc92b1b"
+    },
+    {
+      "path": "14-D-C-timed/stdout",
+      "bytes": 76,
+      "sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "path": "15-D-C-work/OUTCOME.json",
+      "bytes": 635,
+      "sha256": "632857b9981bb3aee9cf24daffa92a680074c9c33f82ec2e79a2fc9a0d6d4920"
+    },
+    {
+      "path": "15-D-C-work/REQUEST.json",
+      "bytes": 551,
+      "sha256": "7a4929bf6db0cbd9932ad9ee506c1f4ac80f4b36c19350b839034ef4b1aed8ea"
+    },
+    {
+      "path": "15-D-C-work/execution.json",
+      "bytes": 264,
+      "sha256": "ddf71f04ae450cd0790977a222d15e83e578ef98d51daa56c46ccfea6dbd8283"
+    },
+    {
+      "path": "15-D-C-work/stderr",
+      "bytes": 625,
+      "sha256": "2840f2dbbd1c3748eaac0561a2da67b8ac97e04fcdd3059716dd83104b8f65ad"
+    },
+    {
+      "path": "15-D-C-work/stdout",
+      "bytes": 76,
+      "sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "path": "16-D-R_fallback-timed/OUTCOME.json",
+      "bytes": 645,
+      "sha256": "9de34bd050830d167cb2cdf3843261115bc85670c13f5f3b8608b4a1121921de"
+    },
+    {
+      "path": "16-D-R_fallback-timed/REQUEST.json",
+      "bytes": 561,
+      "sha256": "b2d4d5b448884a434b1db27582712f9a5298baa8f4c5861e6a9e3523394b3729"
+    },
+    {
+      "path": "16-D-R_fallback-timed/execution.json",
+      "bytes": 274,
+      "sha256": "1baa567fe9a9011124a0869d84e89108eb6e37962c08428e84df8ef10244cfd1"
+    },
+    {
+      "path": "16-D-R_fallback-timed/stderr",
+      "bytes": 210,
+      "sha256": "ea7204d9581b38a54e20948b3e8473dcbea38e4a1ca3cebe6c41505d13b44fd2"
+    },
+    {
+      "path": "16-D-R_fallback-timed/stdout",
+      "bytes": 76,
+      "sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "path": "17-D-R_fallback-work/OUTCOME.json",
+      "bytes": 644,
+      "sha256": "1f7217b309d61a9ccc06d7a16ce06096fdd4058fbf1de38b50a0faef73a104cb"
+    },
+    {
+      "path": "17-D-R_fallback-work/REQUEST.json",
+      "bytes": 560,
+      "sha256": "351a5a69f75f5cc2369513a088de90c76d73d756edc2a9b77d9e76683a3a18af"
+    },
+    {
+      "path": "17-D-R_fallback-work/execution.json",
+      "bytes": 273,
+      "sha256": "3d9d7b5ee567fb3982ab681cf2570aeb5fa96fa296a02335f8984ae6e1771e6d"
+    },
+    {
+      "path": "17-D-R_fallback-work/stderr",
+      "bytes": 622,
+      "sha256": "96ed50bb815b8a7772970b00ae649781b9503624250230467b2a9bbde1d0d286"
+    },
+    {
+      "path": "17-D-R_fallback-work/stdout",
+      "bytes": 76,
+      "sha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056"
+    },
+    {
+      "path": "18-X-C-timed/OUTCOME.json",
+      "bytes": 624,
+      "sha256": "671a2a2ccaa10d21555c7eb95525f2d45da7b779b25440b13280b3890bdb382f"
+    },
+    {
+      "path": "18-X-C-timed/REQUEST.json",
+      "bytes": 552,
+      "sha256": "05bfdc2e43a6daa6fde9e4f819dbe17634c6f6a021c533c2fd39ad81a2f1ce72"
+    },
+    {
+      "path": "18-X-C-timed/execution.json",
+      "bytes": 266,
+      "sha256": "d0f353e5a67a7d1a75f84839c4eeff3a61b2d2a21d37d50d05bf47fbf127f2f7"
+    },
+    {
+      "path": "18-X-C-timed/stderr",
+      "bytes": 216,
+      "sha256": "74fdbbc0533b740ef9c58237a4b55ce3f4962136557e5a94e007f2aa9f7cdafd"
+    },
+    {
+      "path": "18-X-C-timed/stdout",
+      "bytes": 76,
+      "sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    },
+    {
+      "path": "19-X-C-work/OUTCOME.json",
+      "bytes": 635,
+      "sha256": "5f721f9b86d02887db808c55b4cffa98a401eafe073b9b0f6e0cb98f2c6089ef"
+    },
+    {
+      "path": "19-X-C-work/REQUEST.json",
+      "bytes": 551,
+      "sha256": "3f8b5ec183687c8969d698d7b348fa7f8e18219082871b64d87893ad5f6b226c"
+    },
+    {
+      "path": "19-X-C-work/execution.json",
+      "bytes": 265,
+      "sha256": "9bdda6b200488d054e1d3dd7f8daba8a4a27fda1ed8d1ee7bc731382d782acad"
+    },
+    {
+      "path": "19-X-C-work/stderr",
+      "bytes": 632,
+      "sha256": "483262bf4cabb6d3c86dd2c0058b582a5626e07339f9f2aee52c2725fa304f0a"
+    },
+    {
+      "path": "19-X-C-work/stdout",
+      "bytes": 76,
+      "sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    },
+    {
+      "path": "20-X-R_joint-timed/OUTCOME.json",
+      "bytes": 642,
+      "sha256": "89d97eb556dfc4157ccee951162fe8233393cd426ea22edc3bb63f83b3196bbf"
+    },
+    {
+      "path": "20-X-R_joint-timed/REQUEST.json",
+      "bytes": 558,
+      "sha256": "7a53634b7ac236c5fb7360fe251b2a2a4ae11d77b6739d7f425bf8638a4a994e"
+    },
+    {
+      "path": "20-X-R_joint-timed/execution.json",
+      "bytes": 272,
+      "sha256": "5fb63f139eda14e57e1c96e11941ddedc5f318ce440a572f0c3909b0113eaf51"
+    },
+    {
+      "path": "20-X-R_joint-timed/stderr",
+      "bytes": 216,
+      "sha256": "05438181b9ab50617120c9459284343eab5bd80e32a2dd8f6da49e35859dffd6"
+    },
+    {
+      "path": "20-X-R_joint-timed/stdout",
+      "bytes": 76,
+      "sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    },
+    {
+      "path": "21-X-R_joint-work/OUTCOME.json",
+      "bytes": 629,
+      "sha256": "d5cdf34fe0160bf9ce14f030e2900f7c04eaeb2ba6883c98a78e6cfa690a9744"
+    },
+    {
+      "path": "21-X-R_joint-work/REQUEST.json",
+      "bytes": 557,
+      "sha256": "78c6d5863037278309e1ec3c043bb7d0dc927be3c1320c5d974b27cf9c70b349"
+    },
+    {
+      "path": "21-X-R_joint-work/execution.json",
+      "bytes": 271,
+      "sha256": "3fa2b8a55b330941406358d12bbc2a5aee603742ad671003b2e6238dc6370171"
+    },
+    {
+      "path": "21-X-R_joint-work/stderr",
+      "bytes": 632,
+      "sha256": "483262bf4cabb6d3c86dd2c0058b582a5626e07339f9f2aee52c2725fa304f0a"
+    },
+    {
+      "path": "21-X-R_joint-work/stdout",
+      "bytes": 76,
+      "sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    },
+    {
+      "path": "22-X-R_fallback-timed/OUTCOME.json",
+      "bytes": 633,
+      "sha256": "99d85f2185d258e6fbd917c98fa79776858cbf7ccd0e2b009e827de884aa9bc8"
+    },
+    {
+      "path": "22-X-R_fallback-timed/REQUEST.json",
+      "bytes": 561,
+      "sha256": "9917c88a89465f8567be4533e4766497f4240333e4c171525a0b552106d21682"
+    },
+    {
+      "path": "22-X-R_fallback-timed/execution.json",
+      "bytes": 275,
+      "sha256": "ec8ee5f07d07d2061f1b9fad3c6e41f447695404d7a201f06f145537f5ffe000"
+    },
+    {
+      "path": "22-X-R_fallback-timed/stderr",
+      "bytes": 216,
+      "sha256": "411f81f52340e87862fbd5a9e837e98361b86005cb702391ac74d1d5225c97b4"
+    },
+    {
+      "path": "22-X-R_fallback-timed/stdout",
+      "bytes": 76,
+      "sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    },
+    {
+      "path": "23-X-R_fallback-work/OUTCOME.json",
+      "bytes": 662,
+      "sha256": "4bf1ad2ff086abc9d848b997f03235258a4066feb28f7c20dc3067a065c68a13"
+    },
+    {
+      "path": "23-X-R_fallback-work/REQUEST.json",
+      "bytes": 560,
+      "sha256": "aec09ed439b45d9a0cabd8b704e9795c829f9e435cd1ba842bb2252946b0fc79"
+    },
+    {
+      "path": "23-X-R_fallback-work/execution.json",
+      "bytes": 274,
+      "sha256": "1f8da34e7aafff927c6066a107d761ec376dd5a5a7dc236a4620aabd70886e1b"
+    },
+    {
+      "path": "23-X-R_fallback-work/stderr",
+      "bytes": 632,
+      "sha256": "483262bf4cabb6d3c86dd2c0058b582a5626e07339f9f2aee52c2725fa304f0a"
+    },
+    {
+      "path": "23-X-R_fallback-work/stdout",
+      "bytes": 76,
+      "sha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1"
+    },
+    {
+      "path": "PRE_EXECUTION.json",
+      "bytes": 413,
+      "sha256": "373d54435f9bbd57767293cfd3f4ec1284d2cce38cd87a2a41b923c154273538"
+    },
+    {
+      "path": "WINDOW_CLOSED.json",
+      "bytes": 156,
+      "sha256": "e2c80c8297a4ad587faec21366f6845316e0513438cf3a32aab9e530ae49a10d"
+    }
+  ],
+  "samples": [
+    {
+      "index": 0,
+      "recipe": "U",
+      "variant": "C",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/C-timed",
+        "U"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/00-U-C-timed",
+      "stdoutBytes": 3746,
+      "stdoutSha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd",
+      "stderrBytes": 212,
+      "stderrSha256": "f56adca45a31f5fc17a67d4bbc33358907822fff8640cf3e96db4ba64f9a43c6",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 128,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 35343,
+        "collectorUserUs": 41,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 2019845,
+        "reapedChildUserSeconds": 0.001187,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 1,
+      "recipe": "U",
+      "variant": "C",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/C-work",
+        "U"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/01-U-C-work",
+      "stdoutBytes": 3746,
+      "stdoutSha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd",
+      "stderrBytes": 624,
+      "stderrSha256": "fff457f84e72a06f27330dc7cb571b931c0eb5cbb4ddf897abf311a182be61b3",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 128,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 1027,
+          "earlier_calls": 190,
+          "plane_compare_calls": 448,
+          "member_index_before_calls": 448,
+          "indexed_calls": 1,
+          "bitmap_init_writes": 128,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 0,
+          "full_cover_checks": 0,
+          "duplicate_removals": 0,
+          "compaction_scans": 128,
+          "compaction_moves": 0,
+          "memmove_calls": 0,
+          "memmove_bytes": 0,
+          "fenwick_insert_nodes": 126,
+          "fenwick_query_nodes": 128
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1692832,
+        "reapedChildUserSeconds": 0.0,
+        "reapedChildSystemSeconds": 0.0010360000000000002
+      }
+    },
+    {
+      "index": 2,
+      "recipe": "U",
+      "variant": "R_fallback",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_fallback-timed",
+        "U"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/02-U-R_fallback-timed",
+      "stdoutBytes": 3746,
+      "stdoutSha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd",
+      "stderrBytes": 212,
+      "stderrSha256": "162545a4835b650f9f2f0891dbf40256a24d64110a561174060edc71958dd56a",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 128,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 34351,
+        "collectorUserUs": 39,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1546795,
+        "reapedChildUserSeconds": 0.0009979999999999998,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 3,
+      "recipe": "U",
+      "variant": "R_fallback",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_fallback-work",
+        "U"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/03-U-R_fallback-work",
+      "stdoutBytes": 3746,
+      "stdoutSha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd",
+      "stderrBytes": 624,
+      "stderrSha256": "fff457f84e72a06f27330dc7cb571b931c0eb5cbb4ddf897abf311a182be61b3",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 128,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 1027,
+          "earlier_calls": 190,
+          "plane_compare_calls": 448,
+          "member_index_before_calls": 448,
+          "indexed_calls": 1,
+          "bitmap_init_writes": 128,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 0,
+          "full_cover_checks": 0,
+          "duplicate_removals": 0,
+          "compaction_scans": 128,
+          "compaction_moves": 0,
+          "memmove_calls": 0,
+          "memmove_bytes": 0,
+          "fenwick_insert_nodes": 126,
+          "fenwick_query_nodes": 128
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1855342,
+        "reapedChildUserSeconds": 0.0,
+        "reapedChildSystemSeconds": 0.0011699999999999996
+      }
+    },
+    {
+      "index": 4,
+      "recipe": "U",
+      "variant": "R_joint",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_joint-timed",
+        "U"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/04-U-R_joint-timed",
+      "stdoutBytes": 3746,
+      "stdoutSha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd",
+      "stderrBytes": 214,
+      "stderrSha256": "2c77eafcf838c1371901b5d980ec3d60d2dbcaac82d348ca71d2f8bb7bb6f004",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 128,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 101239,
+        "collectorUserUs": 111,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 3946742,
+        "reapedChildUserSeconds": 0.001532,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 5,
+      "recipe": "U",
+      "variant": "R_joint",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_joint-work",
+        "U"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/05-U-R_joint-work",
+      "stdoutBytes": 3746,
+      "stdoutSha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd",
+      "stderrBytes": 614,
+      "stderrSha256": "4f7cadd388b76f6e272249c6798189981d076e29514132fd6b5207d6b27fe438",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 128,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 8383,
+          "earlier_calls": 0,
+          "plane_compare_calls": 0,
+          "member_index_before_calls": 0,
+          "indexed_calls": 0,
+          "bitmap_init_writes": 0,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 16384,
+          "full_cover_checks": 0,
+          "duplicate_removals": 0,
+          "compaction_scans": 0,
+          "compaction_moves": 0,
+          "memmove_calls": 0,
+          "memmove_bytes": 0,
+          "fenwick_insert_nodes": 0,
+          "fenwick_query_nodes": 0
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 3735019,
+        "reapedChildUserSeconds": 0.0014749999999999997,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 6,
+      "recipe": "S",
+      "variant": "R_fallback",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_fallback-timed",
+        "S"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/06-S-R_fallback-timed",
+      "stdoutBytes": 3688,
+      "stdoutSha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d",
+      "stderrBytes": 212,
+      "stderrSha256": "06a040ceb069926d195b34210425ba0ac850ae77fcc0f7f9f6c41013b51d6381",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 126,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 33429,
+        "collectorUserUs": 39,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1869051,
+        "reapedChildUserSeconds": 0.0009910000000000006,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 7,
+      "recipe": "S",
+      "variant": "R_fallback",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_fallback-work",
+        "S"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/07-S-R_fallback-work",
+      "stdoutBytes": 3688,
+      "stdoutSha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d",
+      "stderrBytes": 624,
+      "stderrSha256": "ea4b2061e505b2e3f6fa94d0c775c11bb0bfd011cec72ecfbc86560ca4ee89a6",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 126,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 1027,
+          "earlier_calls": 190,
+          "plane_compare_calls": 449,
+          "member_index_before_calls": 448,
+          "indexed_calls": 1,
+          "bitmap_init_writes": 128,
+          "active_clears": 2,
+          "inactive_skips": 0,
+          "pair_visits": 0,
+          "full_cover_checks": 0,
+          "duplicate_removals": 2,
+          "compaction_scans": 128,
+          "compaction_moves": 0,
+          "memmove_calls": 0,
+          "memmove_bytes": 0,
+          "fenwick_insert_nodes": 128,
+          "fenwick_query_nodes": 128
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1977031,
+        "reapedChildUserSeconds": 0.0009890000000000003,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 8,
+      "recipe": "S",
+      "variant": "R_joint",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_joint-timed",
+        "S"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/08-S-R_joint-timed",
+      "stdoutBytes": 3688,
+      "stdoutSha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d",
+      "stderrBytes": 214,
+      "stderrSha256": "e3eaf86dc9776b3868438377f50177be88d15ee8a6f754506c54e89e7eaa206e",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 126,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 105426,
+        "collectorUserUs": 111,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 3695390,
+        "reapedChildUserSeconds": 0.002003999999999999,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 9,
+      "recipe": "S",
+      "variant": "R_joint",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_joint-work",
+        "S"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/09-S-R_joint-work",
+      "stdoutBytes": 3688,
+      "stdoutSha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d",
+      "stderrBytes": 615,
+      "stderrSha256": "34b2f5f7fd80f0fa0806703b3d109469ec9918907eb397be3a9c0d904f983c2c",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 126,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 8383,
+          "earlier_calls": 4,
+          "plane_compare_calls": 0,
+          "member_index_before_calls": 0,
+          "indexed_calls": 0,
+          "bitmap_init_writes": 0,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 16379,
+          "full_cover_checks": 2,
+          "duplicate_removals": 2,
+          "compaction_scans": 0,
+          "compaction_moves": 0,
+          "memmove_calls": 2,
+          "memmove_bytes": 48,
+          "fenwick_insert_nodes": 0,
+          "fenwick_query_nodes": 0
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1686212,
+        "reapedChildUserSeconds": 0.0,
+        "reapedChildSystemSeconds": 0.0011449999999999998
+      }
+    },
+    {
+      "index": 10,
+      "recipe": "S",
+      "variant": "C",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/C-timed",
+        "S"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/10-S-C-timed",
+      "stdoutBytes": 3688,
+      "stdoutSha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d",
+      "stderrBytes": 212,
+      "stderrSha256": "a13d4b2198175fc4244ff657a8f898554e3dfce660aef5a6832e9b52c288090b",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 126,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 34100,
+        "collectorUserUs": 40,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1859127,
+        "reapedChildUserSeconds": 0.0011619999999999998,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 11,
+      "recipe": "S",
+      "variant": "C",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/C-work",
+        "S"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/11-S-C-work",
+      "stdoutBytes": 3688,
+      "stdoutSha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d",
+      "stderrBytes": 624,
+      "stderrSha256": "ea4b2061e505b2e3f6fa94d0c775c11bb0bfd011cec72ecfbc86560ca4ee89a6",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 126,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 1027,
+          "earlier_calls": 190,
+          "plane_compare_calls": 449,
+          "member_index_before_calls": 448,
+          "indexed_calls": 1,
+          "bitmap_init_writes": 128,
+          "active_clears": 2,
+          "inactive_skips": 0,
+          "pair_visits": 0,
+          "full_cover_checks": 0,
+          "duplicate_removals": 2,
+          "compaction_scans": 128,
+          "compaction_moves": 0,
+          "memmove_calls": 0,
+          "memmove_bytes": 0,
+          "fenwick_insert_nodes": 128,
+          "fenwick_query_nodes": 128
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1492345,
+        "reapedChildUserSeconds": 0.0008479999999999998,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 12,
+      "recipe": "D",
+      "variant": "R_joint",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_joint-timed",
+        "D"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/12-D-R_joint-timed",
+      "stdoutBytes": 76,
+      "stdoutSha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056",
+      "stderrBytes": 210,
+      "stderrSha256": "d93db3e17ffc4ee6f163bdb7b34f6e0b26515b98032fd90feed14aa2ccb7ab62",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 13490,
+        "collectorUserUs": 0,
+        "collectorSystemUs": 18,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1506536,
+        "reapedChildUserSeconds": 0.0,
+        "reapedChildSystemSeconds": 0.000981
+      }
+    },
+    {
+      "index": 13,
+      "recipe": "D",
+      "variant": "R_joint",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_joint-work",
+        "D"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/13-D-R_joint-work",
+      "stdoutBytes": 76,
+      "stdoutSha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056",
+      "stderrBytes": 622,
+      "stderrSha256": "96ed50bb815b8a7772970b00ae649781b9503624250230467b2a9bbde1d0d286",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 382,
+          "earlier_calls": 126,
+          "plane_compare_calls": 0,
+          "member_index_before_calls": 0,
+          "indexed_calls": 0,
+          "bitmap_init_writes": 0,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 382,
+          "full_cover_checks": 126,
+          "duplicate_removals": 126,
+          "compaction_scans": 0,
+          "compaction_moves": 0,
+          "memmove_calls": 126,
+          "memmove_bytes": 390096,
+          "fenwick_insert_nodes": 0,
+          "fenwick_query_nodes": 0
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 2216880,
+        "reapedChildUserSeconds": 0.0008780000000000003,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 14,
+      "recipe": "D",
+      "variant": "C",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/C-timed",
+        "D"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/14-D-C-timed",
+      "stdoutBytes": 76,
+      "stdoutSha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056",
+      "stderrBytes": 210,
+      "stderrSha256": "da73dcde30be5b171ab6e6a553e7c86d958c4cbf766a6491d470adb50bc92b1b",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 16855,
+        "collectorUserUs": 22,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1655401,
+        "reapedChildUserSeconds": 0.0011230000000000007,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 15,
+      "recipe": "D",
+      "variant": "C",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/C-work",
+        "D"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/15-D-C-work",
+      "stdoutBytes": 76,
+      "stdoutSha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056",
+      "stderrBytes": 625,
+      "stderrSha256": "2840f2dbbd1c3748eaac0561a2da67b8ac97e04fcdd3059716dd83104b8f65ad",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 382,
+          "earlier_calls": 126,
+          "plane_compare_calls": 0,
+          "member_index_before_calls": 0,
+          "indexed_calls": 0,
+          "bitmap_init_writes": 128,
+          "active_clears": 126,
+          "inactive_skips": 8127,
+          "pair_visits": 8509,
+          "full_cover_checks": 126,
+          "duplicate_removals": 126,
+          "compaction_scans": 128,
+          "compaction_moves": 2,
+          "memmove_calls": 0,
+          "memmove_bytes": 0,
+          "fenwick_insert_nodes": 0,
+          "fenwick_query_nodes": 0
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1771618,
+        "reapedChildUserSeconds": 0.0,
+        "reapedChildSystemSeconds": 0.0013379999999999998
+      }
+    },
+    {
+      "index": 16,
+      "recipe": "D",
+      "variant": "R_fallback",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_fallback-timed",
+        "D"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/16-D-R_fallback-timed",
+      "stdoutBytes": 76,
+      "stdoutSha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056",
+      "stderrBytes": 210,
+      "stderrSha256": "ea7204d9581b38a54e20948b3e8473dcbea38e4a1ca3cebe6c41505d13b44fd2",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 14481,
+        "collectorUserUs": 21,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1820851,
+        "reapedChildUserSeconds": 0.0014000000000000002,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 17,
+      "recipe": "D",
+      "variant": "R_fallback",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_fallback-work",
+        "D"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/17-D-R_fallback-work",
+      "stdoutBytes": 76,
+      "stdoutSha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056",
+      "stderrBytes": 622,
+      "stderrSha256": "96ed50bb815b8a7772970b00ae649781b9503624250230467b2a9bbde1d0d286",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 128,
+          "order_calls": 382,
+          "earlier_calls": 126,
+          "plane_compare_calls": 0,
+          "member_index_before_calls": 0,
+          "indexed_calls": 0,
+          "bitmap_init_writes": 0,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 382,
+          "full_cover_checks": 126,
+          "duplicate_removals": 126,
+          "compaction_scans": 0,
+          "compaction_moves": 0,
+          "memmove_calls": 126,
+          "memmove_bytes": 390096,
+          "fenwick_insert_nodes": 0,
+          "fenwick_query_nodes": 0
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 1721970,
+        "reapedChildUserSeconds": 0.0009179999999999987,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 18,
+      "recipe": "X",
+      "variant": "C",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/C-timed",
+        "X"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/18-X-C-timed",
+      "stdoutBytes": 76,
+      "stdoutSha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1",
+      "stderrBytes": 216,
+      "stderrSha256": "74fdbbc0533b740ef9c58237a4b55ce3f4962136557e5a94e007f2aa9f7cdafd",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 21269608,
+        "collectorUserUs": 21278,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 32245096,
+        "reapedChildUserSeconds": 0.022386,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 19,
+      "recipe": "X",
+      "variant": "C",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/C-work",
+        "X"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/19-X-C-work",
+      "stdoutBytes": 76,
+      "stdoutSha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1",
+      "stderrBytes": 632,
+      "stderrSha256": "483262bf4cabb6d3c86dd2c0058b582a5626e07339f9f2aee52c2725fa304f0a",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 2434,
+          "order_calls": 7300,
+          "earlier_calls": 2432,
+          "plane_compare_calls": 0,
+          "member_index_before_calls": 0,
+          "indexed_calls": 0,
+          "bitmap_init_writes": 0,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 7300,
+          "full_cover_checks": 2432,
+          "duplicate_removals": 2432,
+          "compaction_scans": 0,
+          "compaction_moves": 0,
+          "memmove_calls": 2432,
+          "memmove_bytes": 142126080,
+          "fenwick_insert_nodes": 0,
+          "fenwick_query_nodes": 0
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 34216555,
+        "reapedChildUserSeconds": 0.023891999999999997,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 20,
+      "recipe": "X",
+      "variant": "R_joint",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_joint-timed",
+        "X"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/20-X-R_joint-timed",
+      "stdoutBytes": 76,
+      "stdoutSha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1",
+      "stderrBytes": 216,
+      "stderrSha256": "05438181b9ab50617120c9459284343eab5bd80e32a2dd8f6da49e35859dffd6",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 24338132,
+        "collectorUserUs": 24211,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 32447675,
+        "reapedChildUserSeconds": 0.025610999999999995,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 21,
+      "recipe": "X",
+      "variant": "R_joint",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_joint-work",
+        "X"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/21-X-R_joint-work",
+      "stdoutBytes": 76,
+      "stdoutSha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1",
+      "stderrBytes": 632,
+      "stderrSha256": "483262bf4cabb6d3c86dd2c0058b582a5626e07339f9f2aee52c2725fa304f0a",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 2434,
+          "order_calls": 7300,
+          "earlier_calls": 2432,
+          "plane_compare_calls": 0,
+          "member_index_before_calls": 0,
+          "indexed_calls": 0,
+          "bitmap_init_writes": 0,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 7300,
+          "full_cover_checks": 2432,
+          "duplicate_removals": 2432,
+          "compaction_scans": 0,
+          "compaction_moves": 0,
+          "memmove_calls": 2432,
+          "memmove_bytes": 142126080,
+          "fenwick_insert_nodes": 0,
+          "fenwick_query_nodes": 0
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 32138940,
+        "reapedChildUserSeconds": 0.022271,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 22,
+      "recipe": "X",
+      "variant": "R_fallback",
+      "mode": "timed",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_fallback-timed",
+        "X"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/22-X-R_fallback-timed",
+      "stdoutBytes": 76,
+      "stdoutSha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1",
+      "stderrBytes": 216,
+      "stderrSha256": "411f81f52340e87862fbd5a9e837e98361b86005cb702391ac74d1d5225c97b4",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "timed",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": 22963481,
+        "collectorUserUs": 22973,
+        "collectorSystemUs": 0,
+        "work": null
+      },
+      "wholeChild": {
+        "supervisorWallNs": 32536001,
+        "reapedChildUserSeconds": 0.024199,
+        "reapedChildSystemSeconds": 0.0
+      }
+    },
+    {
+      "index": 23,
+      "recipe": "X",
+      "variant": "R_fallback",
+      "mode": "work",
+      "argv": [
+        "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/build/R_fallback-work",
+        "X"
+      ],
+      "rawDirectory": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-results-r2/23-X-R_fallback-work",
+      "stdoutBytes": 76,
+      "stdoutSha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1",
+      "stderrBytes": 632,
+      "stderrSha256": "483262bf4cabb6d3c86dd2c0058b582a5626e07339f9f2aee52c2725fa304f0a",
+      "originalSupervisorExit": 0,
+      "actualProcessReturncode": 0,
+      "timedOut": false,
+      "metrics": {
+        "mode": "work",
+        "probeCalls": 1,
+        "returned": 2,
+        "faceSizeBytes": 48,
+        "stackSoftBytes": 16777216,
+        "driverEndMaxRssKiB": 42308,
+        "collectorWallNs": null,
+        "collectorUserUs": null,
+        "collectorSystemUs": null,
+        "work": {
+          "collector_calls": 1,
+          "admitted_faces": 2434,
+          "order_calls": 7300,
+          "earlier_calls": 2432,
+          "plane_compare_calls": 0,
+          "member_index_before_calls": 0,
+          "indexed_calls": 0,
+          "bitmap_init_writes": 0,
+          "active_clears": 0,
+          "inactive_skips": 0,
+          "pair_visits": 7300,
+          "full_cover_checks": 2432,
+          "duplicate_removals": 2432,
+          "compaction_scans": 0,
+          "compaction_moves": 0,
+          "memmove_calls": 2432,
+          "memmove_bytes": 142126080,
+          "fenwick_insert_nodes": 0,
+          "fenwick_query_nodes": 0
+        }
+      },
+      "wholeChild": {
+        "supervisorWallNs": 32309948,
+        "reapedChildUserSeconds": 0.020033999999999996,
+        "reapedChildSystemSeconds": 0.0043950000000000005
+      }
+    }
+  ],
+  "outputUnion": {
+    "U": {
+      "copies": 6,
+      "returned": 128,
+      "faceRows": 128,
+      "fieldCountPerFace": 9,
+      "stdoutSha256": "1d660e45563c439176d72e3fde300c5234475022b9a9c9b7554189870792cffd",
+      "allThreeVariantsAndModesExact": true
+    },
+    "S": {
+      "copies": 6,
+      "returned": 126,
+      "faceRows": 126,
+      "fieldCountPerFace": 9,
+      "stdoutSha256": "cafe84408b05fc75ff1debd5672d96c2060c2185c6222a81acf5abdb4bcbb25d",
+      "allThreeVariantsAndModesExact": true
+    },
+    "D": {
+      "copies": 6,
+      "returned": 2,
+      "faceRows": 2,
+      "fieldCountPerFace": 9,
+      "stdoutSha256": "c4b054293dfe19aaf3d0ece882af3726fe203513c26d250b395c57b184e9e056",
+      "allThreeVariantsAndModesExact": true
+    },
+    "X": {
+      "copies": 6,
+      "returned": 2,
+      "faceRows": 2,
+      "fieldCountPerFace": 9,
+      "stdoutSha256": "89486f040f76754081a3dc6ad6288975ad15f11312a25f705662650b1b2bb3a1",
+      "allThreeVariantsAndModesExact": true
+    }
+  },
+  "timedValuesUnselected": {
+    "U": {
+      "C": {
+        "collectorWallNs": 35343,
+        "collectorUserUs": 41,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      },
+      "R_fallback": {
+        "collectorWallNs": 34351,
+        "collectorUserUs": 39,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      },
+      "R_joint": {
+        "collectorWallNs": 101239,
+        "collectorUserUs": 111,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      }
+    },
+    "S": {
+      "C": {
+        "collectorWallNs": 34100,
+        "collectorUserUs": 40,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      },
+      "R_fallback": {
+        "collectorWallNs": 33429,
+        "collectorUserUs": 39,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      },
+      "R_joint": {
+        "collectorWallNs": 105426,
+        "collectorUserUs": 111,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      }
+    },
+    "D": {
+      "C": {
+        "collectorWallNs": 16855,
+        "collectorUserUs": 22,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      },
+      "R_fallback": {
+        "collectorWallNs": 14481,
+        "collectorUserUs": 21,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      },
+      "R_joint": {
+        "collectorWallNs": 13490,
+        "collectorUserUs": 0,
+        "collectorSystemUs": 18,
+        "driverEndMaxRssKiB": 42308
+      }
+    },
+    "X": {
+      "C": {
+        "collectorWallNs": 21269608,
+        "collectorUserUs": 21278,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      },
+      "R_fallback": {
+        "collectorWallNs": 22963481,
+        "collectorUserUs": 22973,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      },
+      "R_joint": {
+        "collectorWallNs": 24338132,
+        "collectorUserUs": 24211,
+        "collectorSystemUs": 0,
+        "driverEndMaxRssKiB": 42308
+      }
+    }
+  },
+  "workVectors": {
+    "U": {
+      "C": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 1027,
+        "earlier_calls": 190,
+        "plane_compare_calls": 448,
+        "member_index_before_calls": 448,
+        "indexed_calls": 1,
+        "bitmap_init_writes": 128,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 0,
+        "full_cover_checks": 0,
+        "duplicate_removals": 0,
+        "compaction_scans": 128,
+        "compaction_moves": 0,
+        "memmove_calls": 0,
+        "memmove_bytes": 0,
+        "fenwick_insert_nodes": 126,
+        "fenwick_query_nodes": 128
+      },
+      "R_fallback": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 1027,
+        "earlier_calls": 190,
+        "plane_compare_calls": 448,
+        "member_index_before_calls": 448,
+        "indexed_calls": 1,
+        "bitmap_init_writes": 128,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 0,
+        "full_cover_checks": 0,
+        "duplicate_removals": 0,
+        "compaction_scans": 128,
+        "compaction_moves": 0,
+        "memmove_calls": 0,
+        "memmove_bytes": 0,
+        "fenwick_insert_nodes": 126,
+        "fenwick_query_nodes": 128
+      },
+      "R_joint": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 8383,
+        "earlier_calls": 0,
+        "plane_compare_calls": 0,
+        "member_index_before_calls": 0,
+        "indexed_calls": 0,
+        "bitmap_init_writes": 0,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 16384,
+        "full_cover_checks": 0,
+        "duplicate_removals": 0,
+        "compaction_scans": 0,
+        "compaction_moves": 0,
+        "memmove_calls": 0,
+        "memmove_bytes": 0,
+        "fenwick_insert_nodes": 0,
+        "fenwick_query_nodes": 0
+      }
+    },
+    "S": {
+      "C": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 1027,
+        "earlier_calls": 190,
+        "plane_compare_calls": 449,
+        "member_index_before_calls": 448,
+        "indexed_calls": 1,
+        "bitmap_init_writes": 128,
+        "active_clears": 2,
+        "inactive_skips": 0,
+        "pair_visits": 0,
+        "full_cover_checks": 0,
+        "duplicate_removals": 2,
+        "compaction_scans": 128,
+        "compaction_moves": 0,
+        "memmove_calls": 0,
+        "memmove_bytes": 0,
+        "fenwick_insert_nodes": 128,
+        "fenwick_query_nodes": 128
+      },
+      "R_fallback": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 1027,
+        "earlier_calls": 190,
+        "plane_compare_calls": 449,
+        "member_index_before_calls": 448,
+        "indexed_calls": 1,
+        "bitmap_init_writes": 128,
+        "active_clears": 2,
+        "inactive_skips": 0,
+        "pair_visits": 0,
+        "full_cover_checks": 0,
+        "duplicate_removals": 2,
+        "compaction_scans": 128,
+        "compaction_moves": 0,
+        "memmove_calls": 0,
+        "memmove_bytes": 0,
+        "fenwick_insert_nodes": 128,
+        "fenwick_query_nodes": 128
+      },
+      "R_joint": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 8383,
+        "earlier_calls": 4,
+        "plane_compare_calls": 0,
+        "member_index_before_calls": 0,
+        "indexed_calls": 0,
+        "bitmap_init_writes": 0,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 16379,
+        "full_cover_checks": 2,
+        "duplicate_removals": 2,
+        "compaction_scans": 0,
+        "compaction_moves": 0,
+        "memmove_calls": 2,
+        "memmove_bytes": 48,
+        "fenwick_insert_nodes": 0,
+        "fenwick_query_nodes": 0
+      }
+    },
+    "D": {
+      "C": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 382,
+        "earlier_calls": 126,
+        "plane_compare_calls": 0,
+        "member_index_before_calls": 0,
+        "indexed_calls": 0,
+        "bitmap_init_writes": 128,
+        "active_clears": 126,
+        "inactive_skips": 8127,
+        "pair_visits": 8509,
+        "full_cover_checks": 126,
+        "duplicate_removals": 126,
+        "compaction_scans": 128,
+        "compaction_moves": 2,
+        "memmove_calls": 0,
+        "memmove_bytes": 0,
+        "fenwick_insert_nodes": 0,
+        "fenwick_query_nodes": 0
+      },
+      "R_fallback": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 382,
+        "earlier_calls": 126,
+        "plane_compare_calls": 0,
+        "member_index_before_calls": 0,
+        "indexed_calls": 0,
+        "bitmap_init_writes": 0,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 382,
+        "full_cover_checks": 126,
+        "duplicate_removals": 126,
+        "compaction_scans": 0,
+        "compaction_moves": 0,
+        "memmove_calls": 126,
+        "memmove_bytes": 390096,
+        "fenwick_insert_nodes": 0,
+        "fenwick_query_nodes": 0
+      },
+      "R_joint": {
+        "collector_calls": 1,
+        "admitted_faces": 128,
+        "order_calls": 382,
+        "earlier_calls": 126,
+        "plane_compare_calls": 0,
+        "member_index_before_calls": 0,
+        "indexed_calls": 0,
+        "bitmap_init_writes": 0,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 382,
+        "full_cover_checks": 126,
+        "duplicate_removals": 126,
+        "compaction_scans": 0,
+        "compaction_moves": 0,
+        "memmove_calls": 126,
+        "memmove_bytes": 390096,
+        "fenwick_insert_nodes": 0,
+        "fenwick_query_nodes": 0
+      }
+    },
+    "X": {
+      "C": {
+        "collector_calls": 1,
+        "admitted_faces": 2434,
+        "order_calls": 7300,
+        "earlier_calls": 2432,
+        "plane_compare_calls": 0,
+        "member_index_before_calls": 0,
+        "indexed_calls": 0,
+        "bitmap_init_writes": 0,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 7300,
+        "full_cover_checks": 2432,
+        "duplicate_removals": 2432,
+        "compaction_scans": 0,
+        "compaction_moves": 0,
+        "memmove_calls": 2432,
+        "memmove_bytes": 142126080,
+        "fenwick_insert_nodes": 0,
+        "fenwick_query_nodes": 0
+      },
+      "R_fallback": {
+        "collector_calls": 1,
+        "admitted_faces": 2434,
+        "order_calls": 7300,
+        "earlier_calls": 2432,
+        "plane_compare_calls": 0,
+        "member_index_before_calls": 0,
+        "indexed_calls": 0,
+        "bitmap_init_writes": 0,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 7300,
+        "full_cover_checks": 2432,
+        "duplicate_removals": 2432,
+        "compaction_scans": 0,
+        "compaction_moves": 0,
+        "memmove_calls": 2432,
+        "memmove_bytes": 142126080,
+        "fenwick_insert_nodes": 0,
+        "fenwick_query_nodes": 0
+      },
+      "R_joint": {
+        "collector_calls": 1,
+        "admitted_faces": 2434,
+        "order_calls": 7300,
+        "earlier_calls": 2432,
+        "plane_compare_calls": 0,
+        "member_index_before_calls": 0,
+        "indexed_calls": 0,
+        "bitmap_init_writes": 0,
+        "active_clears": 0,
+        "inactive_skips": 0,
+        "pair_visits": 7300,
+        "full_cover_checks": 2432,
+        "duplicate_removals": 2432,
+        "compaction_scans": 0,
+        "compaction_moves": 0,
+        "memmove_calls": 2432,
+        "memmove_bytes": 142126080,
+        "fenwick_insert_nodes": 0,
+        "fenwick_query_nodes": 0
+      }
+    }
+  },
+  "observations": [
+    {
+      "recipe": "D",
+      "finding": "C reports zero memmove but8509 pair visits including8127 inactive skips, leaving382 effective visits. Rf/Rj each have382 pair visits and126 memmoves/390096bytes. C timed wall16855ns, Rf14481ns, Rj13490ns in this single run. Zero memmove did not yield the lowest observed wall; this is not a significance result."
+    },
+    {
+      "recipe": "U/S",
+      "finding": "C andRf use343 and their complete work vectors are identical within each recipe. Their small wall differences cannot establish341 benefit."
+    },
+    {
+      "recipe": "X",
+      "finding": "All three complete work vectors are identical; observed walls differ: C21269608ns/Rf22963481ns/Rj24338132ns. Keep all values without attributing a mechanism saving."
+    },
+    {
+      "metric": "memory",
+      "finding": "All24driverEndMaxRssKiB values are42308. Collector storage change is UNMEASURABLE under this observation boundary."
+    }
+  ],
+  "limits": [
+    "One observation per variant/recipe/mode cannot establish significance, speedup, regression rate or formal B1/R16 acceptance. Zero/negative differences and CPU quantization are retained; no retry or new sample was taken.",
+    "U/S64 unique use343 in both C andRf; their work vectors are identical and cannot isolate standalone341 no/low-duplicate fallback costs. A65-fact helper proposal is not included or tested.",
+    "Rf retains the active declaration/shared343 frame. Rj withdraws341+343 indexed pipeline jointly while keeping common unique bookkeeping and uncalled helpers.",
+    "X is existing helper caller-buffer2434-face fallback beyond host capacity, not a512-member World or capacity expansion; all three variants use the same legacy work vector.",
+    "RSS42308KiB for all24 is an end-of-driver RUSAGE_SELF reading after oracle/stdout flush and before final stderr/exit. Common process/launch footprint and page/high-water granularity can mask collector storage; collector storage effect is UNMEASURABLE, not zero. No independent final-exit peak sample was taken.",
+    "Collector CPU deltas include clock/read overhead and microsecond quantization. D/R_joint records user0us plus system18us; user0 is not total CPU zero. Whole-child RUSAGE_CHILDREN CPU and supervisor wall include setup/oracle/serialization and remain separate.",
+    "Tail sentinel is evidenced by the unchanged compiled original assertion, real exit0 and raw tail=unchanged marker; raw output does not serialize the memory bytes of that sentinel.",
+    "Post-window full314 identity verification is producer-attested by postWindowInputError=null and sealed launcher flow; per task this peer did not rehash old314 inputs or large binaries. This peer independently rechecked the exact R2 seal bytes and the prior peer SHA bound by root release.",
+    "All24 child original execution/observer exit0 records are independently checked. No separate outer CLI OS receipt is present in the requested raw set; root/owner-reported CLI0 is not recast as independently captured peer evidence.",
+    "Full14 methods/41controls, restored-C, formal B1/R16 and512World remain outside this one pilot; no product completion claim follows."
+  ],
+  "remainingConfirmedEvidenceDefects": [],
+  "newProductOrSampleExecutionsByPeer": 0
+}

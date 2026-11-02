@@ -1,0 +1,12 @@
+{
+  "command": [
+    "git",
+    "-C",
+    "/tmp/geometry-live-20261102",
+    "cat-file",
+    "blob",
+    "86c8f0bbe68275e2948d3b1959207aba4225e0c7:geometry-templates/woodworking/native/contact_world.c"
+  ],
+  "exit": 128,
+  "stderr": "fatal: path 'geometry-templates/woodworking/native/contact_world.c' does not exist in '86c8f0bbe68275e2948d3b1959207aba4225e0c7'\n"
+}

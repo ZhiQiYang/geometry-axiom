@@ -1,0 +1,423 @@
+diff --git a/geometry-templates/woodworking/native/contact_world.c b/geometry-templates/woodworking/native/contact_world.c
+index c8fa6cd9..de0a2453 100644
+--- a/geometry-templates/woodworking/native/contact_world.c
++++ b/geometry-templates/woodworking/native/contact_world.c
+@@ -174,16 +174,69 @@ static bool contact_face_index_covered(const ContactFaceIndex *index,const WoodS
+     }
+     return witness&&contact_prefix_hi(out[witness-1].hi,face);
+ }
++static void contact_plane_maximum_insert(ContactFaceIndex *index,const WoodStopFace *out,size_t face)
++{
++    size_t *value=&index->maximum[index->rank[face]];
++    if(!*value||out[*value-1].hi<out[face].hi||
++       (out[*value-1].hi==out[face].hi&&out[*value-1].lo>out[face].lo))*value=face+1;
++}
++static bool contact_plane_maximum_dedup(const WoodContactWorld *world,const ContactOrderIndex *orders,
++    WoodStopFace *out,size_t count,size_t first,const uint64_t *order,
++    ContactFaceIndex *index,bool *active,size_t *remaining)
++{
++    /* A plane's largest hi is a sufficient witness only when that same real
++     * face also covers lo. Regular rows of timbers usually satisfy this;
++     * an ambiguous witness falls back to the complete prefix index below.
++     * Small queries avoid this setup. Bound both load and collision work so
++     * the speculative path adds O(F), even for adversarial coordinates. */
++    if(count<32||count>WOOD_CONTACT_FACE_CAPACITY/2)return false;
++    size_t slots=count*2,probes=0;
++    memset(index->sorted,0,slots*sizeof *index->sorted);
++    memset(index->maximum,0,slots*sizeof *index->maximum);
++    for(size_t i=0;i<count;++i){
++        if(out[i].lo>=out[i].hi)return false;
++        uint64_t key=(uint64_t)out[i].fixed;
++        key^=key>>33;key*=UINT64_C(0xff51afd7ed558ccd);key^=key>>33;
++        size_t slot=(size_t)(key%slots);
++        while(index->sorted[slot]&&out[index->sorted[slot]-1].fixed!=out[i].fixed){
++            if(++probes>count*8)return false;
++            slot=(slot+1)%slots;
++        }
++        if(!index->sorted[slot])index->sorted[slot]=i+1;
++        index->rank[i]=slot;index->scratch[i]=1;
++    }
++    for(size_t i=0;i<first;++i)contact_plane_maximum_insert(index,out,i);
++    size_t pending=first,survivors=*remaining;
++    for(size_t i=first;i<count;++i){
++        while(pending<i&&contact_earlier(world,orders,out[pending].timber_id,order[i])){
++            if(index->scratch[pending])contact_plane_maximum_insert(index,out,pending);++pending;
++        }
++        size_t witness=index->maximum[index->rank[i]];
++        if(witness&&contact_prefix_hi(out[witness-1].hi,&out[i])){
++            if(!contact_prefix_lo(out[witness-1].lo,&out[i]))return false;
++            index->scratch[i]=0;--survivors;
++        }
++    }
++    /* No deletion becomes visible until the entire query succeeds. A late
++     * ambiguous face therefore cannot corrupt the original fallback. */
++    for(size_t i=first;i<count;++i)active[i]=index->scratch[i]!=0;
++    *remaining=survivors;
++    return true;
++}
+ static void contact_indexed_dedup(const WoodContactWorld *world,const ContactOrderIndex *orders,
+     WoodStopFace *out,size_t count,size_t first,bool *active,size_t *remaining)
+ {
+     ContactFaceIndex index;contact_member_index_sort(world,orders,out,count,first,&index);
++    /* Reuse these immutable orders if the speculative plane pass falls back;
++     * no query performs an extra round of fact lookups. */
++    uint64_t order[WOOD_CONTACT_FACE_CAPACITY];
++    for(size_t i=first;i<count;++i)order[i]=contact_order(world,orders,out[i].timber_id);
++    if(contact_plane_maximum_dedup(world,orders,out,count,first,order,&index,active,remaining))return;
+     contact_face_index_build(&index,out,count);
+     for(size_t i=0;i<first;++i)contact_face_index_insert(&index,out,count,i);
+     size_t pending=first;
+     for(size_t i=first;i<count;++i){
+-        uint64_t order=contact_order(world,orders,out[i].timber_id);
+-        while(pending<i&&contact_earlier(world,orders,out[pending].timber_id,order)){
++        while(pending<i&&contact_earlier(world,orders,out[pending].timber_id,order[i])){
+             if(active[pending])contact_face_index_insert(&index,out,count,pending);++pending;
+         }
+         if(contact_face_index_covered(&index,out,count,&out[i])){active[i]=false;--*remaining;}
+diff --git a/tests/geo300_contact_order_fast_harness.c b/tests/geo300_contact_order_fast_harness.c
+index f0c2cee1..b1392ce7 100644
+--- a/tests/geo300_contact_order_fast_harness.c
++++ b/tests/geo300_contact_order_fast_harness.c
+@@ -8,6 +8,9 @@
+ 
+ extern void geo300_sort_work_reset(void);
+ extern uint64_t geo300_sort_comparisons(void);
++extern uint64_t geo300_prefix_comparisons(void);
++extern uint64_t geo300_plane_successes(void);
++extern uint64_t geo300_plane_hash_probes(void);
+ #define REQUIRE(name,condition) do {if(!(condition)){fprintf(stderr,"ASSERT:%s\n",name);return 1;}} while(0)
+ 
+ static GeoCoord minimum(GeoCoord a,GeoCoord b){return a<b?a:b;}
+@@ -108,14 +111,15 @@ static void loop_init(WoodBoundaryLoop *loop,GeoCoord u,GeoCoord v,GeoCoord side
+     for(size_t i=0;i<4;++i)loop->fixity[i]=i==1?WOOD_STOP_FREE:WOOD_STOP_FIXED;
+ }
+ /* work: zero = no bound, one = no member-sort comparisons, two = fallback used. */
+-static int verify(const char *label,const char *assertion,const WoodContactWorld *world,
+-    const WoodMember *exclude,size_t cap,int work)
++static int verify_work(const char *label,const char *assertion,const WoodContactWorld *world,
++    const WoodMember *exclude,size_t cap,int work,unsigned plane_work)
+ {
+     WoodStopFace actual[WOOD_CONTACT_FACE_CAPACITY],expected[WOOD_CONTACT_FACE_CAPACITY];
+     for(int axis=0;axis<2;++axis){
+         geo300_sort_work_reset();
+         size_t got=wood_contact_collect_stops(world,axis!=0,exclude,cap?actual:NULL,cap);
+         uint64_t comparisons=geo300_sort_comparisons();
++        uint64_t planes=geo300_prefix_comparisons(),commits=geo300_plane_successes(),probes=geo300_plane_hash_probes();
+         size_t want=original_collect(world,axis!=0,exclude,cap?expected:NULL,cap);
+         REQUIRE(assertion,got==want);
+         for(size_t i=0;i<got;++i){
+@@ -127,13 +131,20 @@ static int verify(const char *label,const char *assertion,const WoodContactWorld
+                 REQUIRE(assertion,false);
+             }
+         }
+-        printf("case=%s axis=%d public_faces=%zu field_bytes=equal member_comparisons=%" PRIu64 "\n",
+-            label,axis,got,comparisons);
++        printf("case=%s axis=%d public_faces=%zu field_bytes=equal member_comparisons=%" PRIu64
++            " prefix_comparisons=%" PRIu64 " plane_successes=%" PRIu64 " hash_probes=%" PRIu64 "\n",
++            label,axis,got,comparisons,planes,commits,probes);
+         if(work==1)REQUIRE("contact-order-sorted-no-merge",comparisons==0);
+         if(work==2)REQUIRE("contact-order-unsorted-retains-merge",comparisons>0);
++        if(plane_work&(1u<<axis))REQUIRE("contact-plane-fast-no-prefix-index",commits==1&&planes==0);
++        if(plane_work&(4u<<axis))REQUIRE("contact-plane-fallback-retains-prefix-index",commits==0&&planes>0);
++        if((plane_work&16u)&&axis==0)REQUIRE("contact-plane-collision-budget",probes==world->member_count*2*8+1);
+     }
+     return 0;
+ }
++static int verify(const char *label,const char *assertion,const WoodContactWorld *world,
++    const WoodMember *exclude,size_t cap,int work)
++{return verify_work(label,assertion,world,exclude,cap,work,0);}
+ 
+ static int sorted_cases(bool equal)
+ {
+@@ -197,7 +208,113 @@ static int full_capacity(void)
+     static WoodContactMemberFact facts[WOOD_CONTACT_MEMBER_CAPACITY];
+     facts_init(members,facts,WOOD_CONTACT_MEMBER_CAPACITY);
+     WoodContactWorld world={.placement_id=7,.members=facts,.member_count=WOOD_CONTACT_MEMBER_CAPACITY};
+-    return verify("full-member-capacity","contact-order-capacity-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1);
++    return verify_work("full-member-capacity","contact-order-capacity-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,3);
++}
++static size_t plane_hash(GeoCoord coordinate,size_t slots)
++{
++    uint64_t key=(uint64_t)coordinate;
++    key^=key>>33;key*=UINT64_C(0xff51afd7ed558ccd);key^=key>>33;
++    return (size_t)(key%slots);
++}
++static int plane_cases(const char *mode)
++{
++    enum { MEMBERS=64,FACES=MEMBERS*2 };
++    WoodMember members[MEMBERS];WoodContactMemberFact facts[MEMBERS];
++    facts_init(members,facts,MEMBERS);
++    WoodContactWorld world={.placement_id=7,.members=facts,.member_count=MEMBERS};
++    if(!strcmp(mode,"plane-merge")||!strcmp(mode,"plane-merge-ties")||!strcmp(mode,"plane-merge-rollback")){
++        const char *assertion="contact-plane-merge-byte-oracle";unsigned plane_work=3;
++        facts[0].footprint=(GeoRect2){0,0,100,100};
++        facts[1].footprint=(GeoRect2){0,10,100,90};
++        if(!strcmp(mode,"plane-merge-ties")){
++            assertion="contact-plane-merged-ties-byte-oracle";
++            /* Each equal-order pair remains in its reversed declaration
++             * order after the merge. The earliest pair survives together;
++             * later equal-footprint groups are covered by that real pair. */
++            for(size_t i=0;i<MEMBERS;++i){
++                facts[i].order=UINT64_MAX-(MEMBERS/2-1)+i/2;
++                facts[i].footprint=(GeoRect2){0,0,100,100};
++            }
++        }else if(!strcmp(mode,"plane-merge-rollback")){
++            assertion="contact-plane-merged-rollback-byte-oracle";plane_work=6;
++            /* In placement order, [10,20] is tentatively deleted before
++             * [90,200] makes the later [20,50] query ambiguous on axis 0.
++             * Axis 1 still succeeds, so both outcomes follow a real merge. */
++            facts[1].footprint=(GeoRect2){0,10,100,20};
++            facts[2].footprint=(GeoRect2){0,90,100,200};
++            facts[3].footprint=(GeoRect2){0,20,100,50};
++        }
++        /* Keep each footprint/order/member identity attached while forcing
++         * the entire 128-face suffix through the placement-order merge. */
++        for(size_t i=0;i<MEMBERS/2;++i){
++            WoodContactMemberFact swap=facts[i];facts[i]=facts[MEMBERS-1-i];facts[MEMBERS-1-i]=swap;
++        }
++        return verify_work(mode,assertion,&world,NULL,WOOD_CONTACT_FACE_CAPACITY,2,plane_work);
++    }
++    if(!strcmp(mode,"plane-rows")){
++        for(size_t i=0;i<MEMBERS;++i)facts[i].footprint=(GeoRect2){(GeoCoord)i*100,0,(GeoCoord)i*100+20,10000};
++        if(verify_work("regular-rows","contact-plane-rows-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,3))return 1;
++        members[1].placed=false;facts[2].placement_id=99;facts[3].footprint_valid=false;
++        if(verify_work("filtered-rows-atomic-capacity","contact-plane-filtered-byte-oracle",&world,&members[4],67,1,3))return 1;
++        members[1].placed=true;facts[2].placement_id=7;facts[3].footprint_valid=true;
++        WoodBoundaryRegion boundary={0};boundary.id=40;loop_init(&boundary.outline,0,0,10000);
++        for(size_t i=0;i<boundary.outline.count;++i)boundary.outline.fixity[i]=WOOD_STOP_FREE;
++        world.regions[0]=&boundary;world.region_count=1;
++        return verify_work("free-boundary-prefix","contact-plane-free-boundary-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,3);
++    }
++    if(!strcmp(mode,"plane-ties")){
++        for(size_t i=0;i<MEMBERS;++i){facts[i].footprint=(GeoRect2){0,0,100,100};facts[i].order=UINT64_MAX;}
++        if(verify_work("equal-order-overlap","contact-plane-equal-order-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,3))return 1;
++        facts_init(members,facts,MEMBERS);
++        facts[0].footprint=(GeoRect2){0,50,100,100};facts[0].order=1;
++        facts[1].footprint=(GeoRect2){0,0,100,100};facts[1].order=1;
++        facts[2].footprint=(GeoRect2){0,10,100,90};facts[2].order=2;
++        return verify_work("equal-hi-smaller-lo","contact-plane-tied-witness-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,3);
++    }
++    if(!strcmp(mode,"plane-union")){
++        facts[0].footprint=(GeoRect2){0,0,100,50};facts[0].order=1;
++        facts[1].footprint=(GeoRect2){0,50,100,100};facts[1].order=1;
++        facts[2].footprint=(GeoRect2){0,0,100,100};facts[2].order=2;
++        return verify_work("two-halves-not-one-witness","contact-plane-single-witness-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,6);
++    }
++    if(!strcmp(mode,"plane-rollback")){
++        facts[0].footprint=(GeoRect2){0,0,100,100};
++        facts[1].footprint=(GeoRect2){0,10,100,20};
++        facts[2].footprint=(GeoRect2){0,90,100,200};
++        facts[3].footprint=(GeoRect2){0,20,100,50};
++        return verify_work("late-ambiguity-after-deletion","contact-plane-rollback-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,6);
++    }
++    if(!strcmp(mode,"plane-coordinates")){
++        /* Deliberate hash collision with equal low 32 bits. Full coordinate
++         * equality, not the hash or a truncated coordinate, selects a plane. */
++        const GeoCoord base=17;uint64_t high=1;
++        while(plane_hash(base+(GeoCoord)(high<<32),FACES*2)!=plane_hash(base,FACES*2))++high;
++        GeoCoord shifted=base+(GeoCoord)(high<<32);
++        facts[0].footprint=(GeoRect2){base,0,base+1,100};
++        facts[1].footprint=(GeoRect2){shifted,0,shifted+1,100};
++        if(verify_work("full-width-colliding-planes","contact-plane-full-coordinate-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,1))return 1;
++        facts[0].footprint=(GeoRect2){INT64_MIN+17,INT64_MIN+17,INT64_MIN+18,INT64_MIN+18};
++        facts[1].footprint=(GeoRect2){INT64_MAX-18,INT64_MAX-18,INT64_MAX-17,INT64_MAX-17};
++        return verify_work("signed-coordinate-extremes","contact-plane-full-coordinate-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,3);
++    }
++    if(!strcmp(mode,"plane-collisions")){
++        GeoCoord coordinate=0;
++        for(size_t i=0;i<MEMBERS;++i){
++            while(plane_hash(coordinate,FACES*2)!=0)++coordinate;
++            GeoCoord lo=coordinate++;
++            while(plane_hash(coordinate,FACES*2)!=0)++coordinate;
++            facts[i].footprint=(GeoRect2){lo,0,coordinate++,100};
++        }
++        return verify_work("bounded-hash-fallback","contact-plane-collision-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,22);
++    }
++    if(!strcmp(mode,"plane-degenerate")){
++        facts[0].footprint=(GeoRect2){0,0,100,100};
++        facts[1].footprint=(GeoRect2){0,0,100,0};
++        facts[2].footprint=(GeoRect2){0,100,100,100};
++        facts[3].footprint=(GeoRect2){0,80,100,20};
++        return verify_work("zero-and-reversed-spans","contact-plane-degenerate-byte-oracle",&world,NULL,WOOD_CONTACT_FACE_CAPACITY,1,6);
++    }
++    return 2;
+ }
+ int main(int argc,char **argv)
+ {
+@@ -207,5 +324,6 @@ int main(int argc,char **argv)
+     if(!strcmp(argv[1],"unsorted"))return unsorted_cases();
+     if(!strcmp(argv[1],"edges"))return edge_cases();
+     if(!strcmp(argv[1],"capacity"))return full_capacity();
++    if(!strncmp(argv[1],"plane-",6))return plane_cases(argv[1]);
+     return 2;
+ }
+diff --git a/tests/test_geo261_native_kernel.py b/tests/test_geo261_native_kernel.py
+index 2ce343c1..f851d30a 100644
+--- a/tests/test_geo261_native_kernel.py
++++ b/tests/test_geo261_native_kernel.py
+@@ -30,13 +30,14 @@ from tests import test_engineering_json as existing_codec
+ 
+ 
+ class NativeBuild:
+-    def __init__(self, *, kernel_only=False):
++    def __init__(self, *, kernel_only=False, optimized=False):
+         parent = Path(tempfile.gettempdir()) / "geometry-tests"
+         parent.mkdir(exist_ok=True)
+         self.temp = tempfile.TemporaryDirectory(prefix="geo261-n1a-", dir=parent)
+         atexit.register(self.temp.cleanup)
+         self.work = Path(self.temp.name)
+         self.kernel_only = kernel_only
++        self.optimized = optimized
+         self.kernel = self.work / "isolated-kernel"
+         self.kernel.mkdir()
+         for name in ("types.h", "exact.h", "exact.c", "codec.h", "codec.c", "geometry.h", "geometry.c", "clip.h", "clip.c", "grid.h", "grid.c", "parameters.h", "parameters.c", "parameter_sources.h", "parameter_sources.c", "linear.h", "linear.c", "named_values.h", "named_values.c", "datums.h", "datums.c", "source.h", "source.c", "regions.h", "regions.c", "region_key_sources.h", "region_key_sources.c", "guides.h", "guides.c", "grid_store.h", "grid_store.c", "candidate.h", "candidate.c", "placements.h", "placements.c", "placement_sources.h", "placement_sources.c", "versions.h", "versions.c", "enclosure.h", "enclosure.c", "enclosure_sources.h", "enclosure_sources.c", "document.h", "document.c"):
+@@ -167,14 +168,14 @@ class NativeBuild:
+     def compile(self, source, name, defines=()):
+         out = self.work / (name + (".obj" if self.windows else ".o"))
+         if self.windows:
+-            args = ["cl", "/nologo", "/utf-8", "/Od", "/W3", "/c", "/I" + str(self.kernel), "/Fo:" + str(out)]
++            args = ["cl", "/nologo", "/utf-8", "/O2" if self.optimized else "/Od", "/W3", "/c", "/I" + str(self.kernel), "/Fo:" + str(out)]
+             # Product CLI excludes GDI; codec clients must retain _WIN32 so
+             # their stdout stays binary during base64 round-trip assertions.
+             if source in (ROOT / "geometry-web/web_bridge.c", ROOT / "current_geometry.c", ROOT / "geometry-core/model_base.c"):
+                 args.append("/U_WIN32")
+             args += ["/D" + d for d in defines] + [str(source)]
+         else:
+-            args = [self.cc, "-std=c11", "-O0", "-Werror=implicit-function-declaration", "-I", str(self.kernel)]
++            args = [self.cc, "-std=c11", "-O2" if self.optimized else "-O0", "-Werror=implicit-function-declaration", "-I", str(self.kernel)]
+             args += ["-D" + d for d in defines] + ["-c", str(source), "-o", str(out)]
+         self.run_build(args)
+         return out
+diff --git a/tests/test_geo261_timber_capacity_host.py b/tests/test_geo261_timber_capacity_host.py
+index 882a0b8e..0cd77284 100644
+--- a/tests/test_geo261_timber_capacity_host.py
++++ b/tests/test_geo261_timber_capacity_host.py
+@@ -4,6 +4,7 @@ Compile-contract controls are intentionally separate from runtime assertion
+ kills: a compiler error is accepted only with the intended named typedef.
+ """
+ from pathlib import Path
++from functools import lru_cache
+ import json
+ import shutil
+ import subprocess
+@@ -17,7 +18,7 @@ ROOT=Path(__file__).resolve().parents[1]
+ if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
+ from tests import _bridge
+ from tests import geo300_scene_generator as scene_generator
+-from tests.test_geo261_native_kernel import native
++from tests.test_geo261_native_kernel import NativeBuild
+ from tests.test_geo261_wood_world_validation import copy_product_closure,PRODUCT_DEFINES
+ 
+ CAPACITY_ERROR="角材的數量超過上限"
+@@ -28,6 +29,15 @@ GRAMMAR_ERROR="欄位數不對"
+ INCOMPLETE_DECLARATION="timber 513 27 33"
+ 
+ 
++@lru_cache(maxsize=1)
++def native():
++    # H7 exercises product capacity at the same optimization level as the
++    # shipping registry build. Keep the whole isolated K/W/H link, all 512
++    # placements, fresh replays, controls and deadlines; only this suite opts
++    # in. Other NativeBuild suites retain their original unoptimized controls.
++    return NativeBuild(optimized=True)
++
++
+ def run_placed_dialogue(commands, *, bridge, timeout=600):
+     """One fresh child and one deadline, including the dynamic confirmation.
+ 
+diff --git a/tests/test_geo300_contact_order_fast.py b/tests/test_geo300_contact_order_fast.py
+index c751e98d..4a92c7bc 100644
+--- a/tests/test_geo300_contact_order_fast.py
++++ b/tests/test_geo300_contact_order_fast.py
+@@ -1,4 +1,4 @@
+-"""GEO-300 W sort fast path: original per-face bytes and named work withdrawal.
++"""GEO-300 W contact fast paths: original per-face bytes and named withdrawals.
+ 
+ The oracle in the C client is the original insertion-order/immediate-deletion
+ collector. No elapsed-time threshold or product/test exemption is introduced.
+@@ -28,13 +28,22 @@ class ContactOrderFastPath(unittest.TestCase):
+     @classmethod
+     def instrument(cls, source):
+         source = cls.replace_one(source, "#include <string.h>",
+-                                 "#include <string.h>\nstatic uint64_t geo300_member_sort_comparisons;")
++            "#include <string.h>\nstatic uint64_t geo300_member_sort_comparisons,geo300_plane_comparisons,geo300_plane_commits,geo300_plane_probes;")
+         source = cls.replace_one(source,
+             "    uint64_t left=order[a],right=order[b];",
+             "    ++geo300_member_sort_comparisons;\n    uint64_t left=order[a],right=order[b];")
++        source = cls.replace_one(source, "{return (a>b)-(a<b);}",
++                                 "{++geo300_plane_comparisons;return (a>b)-(a<b);}")
++        source = cls.replace_one(source, "    *remaining=survivors;",
++                                 "    ++geo300_plane_commits;*remaining=survivors;")
++        source = cls.replace_one(source, "            if(++probes>count*8)return false;",
++                                 "            ++geo300_plane_probes;if(++probes>count*8)return false;")
+         return source + """
+-void geo300_sort_work_reset(void){geo300_member_sort_comparisons=0;}
++void geo300_sort_work_reset(void){geo300_member_sort_comparisons=geo300_plane_comparisons=geo300_plane_commits=geo300_plane_probes=0;}
+ uint64_t geo300_sort_comparisons(void){return geo300_member_sort_comparisons;}
++uint64_t geo300_prefix_comparisons(void){return geo300_plane_comparisons;}
++uint64_t geo300_plane_successes(void){return geo300_plane_commits;}
++uint64_t geo300_plane_hash_probes(void){return geo300_plane_probes;}
+ """
+ 
+     @classmethod
+@@ -76,10 +85,18 @@ uint64_t geo300_sort_comparisons(void){return geo300_member_sort_comparisons;}
+     def test_inversions_keep_original_full_width_stable_sort(self):
+         result = self.case("unsorted")
+         self.assertEqual(0, result.returncode, result.stderr)
++        for mode in ("plane-merge", "plane-merge-ties", "plane-merge-rollback"):
++            with self.subTest(mode=mode):
++                result = self.case(mode)
++                self.assertEqual(0, result.returncode, result.stderr)
+ 
+     def test_boundary_capacity_filter_duplicate_and_degenerate_cases(self):
+         result = self.case("edges")
+         self.assertEqual(0, result.returncode, result.stderr)
++        for mode in ("plane-rows", "plane-ties", "plane-union", "plane-rollback", "plane-coordinates", "plane-collisions", "plane-degenerate"):
++            with self.subTest(mode=mode):
++                result = self.case(mode)
++                self.assertEqual(0, result.returncode, result.stderr)
+ 
+     def test_full_member_capacity_matches_original_collector(self):
+         result = self.case("capacity")
+@@ -88,7 +105,7 @@ uint64_t geo300_sort_comparisons(void){return geo300_member_sort_comparisons;}
+     def control(self, source, mode, assertion):
+         baseline = self.case(mode, phase="baseline", assertion=assertion)
+         self.assertEqual(0, baseline.returncode, baseline.stderr)
+-        mutant = self.executable(source, assertion)
++        mutant = self.executable(source, mode + "-" + assertion)
+         withdrawn = self.case(mode, mutant, phase="mutant", assertion=assertion)
+         self.assertEqual(1, withdrawn.returncode, "Control survived: " + assertion)
+         self.assertIn("ASSERT:" + assertion, withdrawn.stderr)
+@@ -98,10 +115,32 @@ uint64_t geo300_sort_comparisons(void){return geo300_member_sort_comparisons;}
+     def test_withdrawal_preserves_bytes_but_fails_named_work_assertion(self):
+         source = self.replace_one(self.source, "    if(ordered)return;", "    if(false&&ordered)return;")
+         self.control(source, "sorted", "contact-order-sorted-no-merge")
++        source = self.replace_one(self.source,
++            "    if(contact_plane_maximum_dedup(world,orders,out,count,first,order,&index,active,remaining))return;",
++            "    if(false&&contact_plane_maximum_dedup(world,orders,out,count,first,order,&index,active,remaining))return;")
++        self.control(source, "plane-rows", "contact-plane-fast-no-prefix-index")
++        source = self.replace_one(self.source,
++            "(out[*value-1].hi==out[face].hi&&out[*value-1].lo>out[face].lo)", "false")
++        self.control(source, "plane-ties", "contact-plane-fast-no-prefix-index")
+ 
+     def test_unconditional_skip_fails_named_unsorted_bytes_assertion(self):
+         source = self.replace_one(self.source, "    if(ordered)return;", "    if(true)return;")
+         self.control(source, "unsorted", "contact-order-unsorted-byte-oracle")
++        controls = (
++            ("if(!contact_prefix_lo(out[witness-1].lo,&out[i]))return false;", "if(false)return false;",
++             "plane-union", "contact-plane-single-witness-byte-oracle"),
++            ("index->scratch[i]=0;--survivors;", "index->scratch[i]=0;--survivors;active[i]=false;--*remaining;",
++             "plane-rollback", "contact-plane-rollback-byte-oracle"),
++            ("out[index->sorted[slot]-1].fixed!=out[i].fixed",
++             "(uint32_t)out[index->sorted[slot]-1].fixed!=(uint32_t)out[i].fixed",
++             "plane-coordinates", "contact-plane-full-coordinate-byte-oracle"),
++            ("for(size_t i=0;i<first;++i)contact_plane_maximum_insert(index,out,i);",
++             "for(size_t i=0;i<first;++i)if(out[i].fixity!=WOOD_STOP_FREE)contact_plane_maximum_insert(index,out,i);",
++             "plane-rows", "contact-plane-free-boundary-byte-oracle"),
++        )
++        for before, after, mode, assertion in controls:
++            with self.subTest(assertion=assertion):
++                self.control(self.replace_one(self.source, before, after), mode, assertion)
+ 
+ 
+ if __name__ == "__main__":

@@ -1,0 +1,11 @@
+--- base/geometry-core/transactions.inc
++++ F4/geometry-core/transactions.inc
+@@ -768,7 +768,7 @@
+     const SectionProfileState *profiles=&world->wood.section_profiles;
+     if(engineering->material_count||engineering->method_count||engineering->application_count||engineering->binding_count||
+        assembly->rule_count||assembly->binding_count||assembly->instance_count||assembly->owner_count||
+-       assembly->generation_required||assembly->loading||profiles->profile_count||profiles->member_count||profiles->run_count){
++       assembly->generation_required||assembly->bay_required||assembly->loading||profiles->profile_count||profiles->member_count||profiles->run_count){
+         frame->fixed_lines=false;return false;
+     }
+     /* The two reference-sensitive additions always use the original inner. */

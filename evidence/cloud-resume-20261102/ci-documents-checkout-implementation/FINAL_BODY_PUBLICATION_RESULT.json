@@ -1,0 +1,176 @@
+{
+  "schema": "geometry-documents-checkout-final-body-delivery/1",
+  "at": "2026-11-02T13:56:33.440214+00:00",
+  "status": "PUBLISHED_EXACT_READBACK_DRAFT_LATEST_REVIEW_REQUESTED",
+  "pr": {
+    "number": 368,
+    "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/368",
+    "draft": true,
+    "head": "b2432c9ea79a6927675883ddde04f629b159be2d",
+    "APIBaseSHA": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "APIObservedMergeCommitSHA": "310bebb505ea04309634279b7025c1849a35d88d"
+  },
+  "bodyBranch": {
+    "oldBodyHead": "479ff4384e94e14ea5ce46ece21fbaab0ae37137",
+    "newBodyHead": "c66c244d401c43449e9e3db356cfd3db378362bf",
+    "bodyBranch": "codex/ci-documents-checkout-20261102-prbody",
+    "bodyFileSha256": "bab4320ea57f6a9f0442d1a6d7ae88a3a93016d62fe4e01b8119cbff6cf59b96",
+    "bodyBytes": 5478,
+    "onlyChangedFile": "PR_BODY.md",
+    "sourceUUnchanged": true,
+    "bodyClean": true,
+    "ordinaryPushVerified": true,
+    "publicBodyURL": "https://github.com/ZhiQiYang/geometry-axiom/blob/c66c244d401c43449e9e3db356cfd3db378362bf/PR_BODY.md"
+  },
+  "bodyVerification": {
+    "at": "2026-11-02T13:53:55.932657+00:00",
+    "prURL": "https://github.com/ZhiQiYang/geometry-axiom/pull/368",
+    "sourceU": "b2432c9ea79a6927675883ddde04f629b159be2d",
+    "draft": true,
+    "observedPRBaseSHA": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "observedPRMergeCommitSHA": "310bebb505ea04309634279b7025c1849a35d88d",
+    "acceptedExecutionStill": "310bebb505ea04309634279b7025c1849a35d88d",
+    "publicBodyHead": "c66c244d401c43449e9e3db356cfd3db378362bf",
+    "publicBodyURL": "https://github.com/ZhiQiYang/geometry-axiom/blob/c66c244d401c43449e9e3db356cfd3db378362bf/PR_BODY.md",
+    "bodyBytes": 5478,
+    "bodySha256": "bab4320ea57f6a9f0442d1a6d7ae88a3a93016d62fe4e01b8119cbff6cf59b96",
+    "localDraftPostedBodyAndPublicFileExact": true,
+    "newCIOrRerun": false
+  },
+  "reviewComment": {
+    "commentID": 6578930056,
+    "commentURL": "https://github.com/ZhiQiYang/geometry-axiom/pull/368#issuecomment-6578930056",
+    "createdAt": "2026-11-02T13:54:39Z",
+    "bodySha256": "63958e42f0112a8f30c88f595bc9a61d402fd5203b5dd6c2430027c427c2ec7e",
+    "bodyBytes": 1614,
+    "postedAndAPIReadbackExact": true,
+    "prefix": "【dot】",
+    "latestReviewRequestedFor": "b2432c9ea79a6927675883ddde04f629b159be2d",
+    "commentsPostedInThisDelivery": 1
+  },
+  "identity": {
+    "sourceU": "b2432c9ea79a6927675883ddde04f629b159be2d",
+    "acceptedExecution": "310bebb505ea04309634279b7025c1849a35d88d",
+    "acceptedExecutionBaseline": "e02057b4c725d6f03ae52c3bc30776bf9442b0cf",
+    "fixedEvidenceE": "59f2cac42862dec39a5d0216b4e1bff0f4b0ccc9",
+    "observedRemoteMain": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+    "remoteMainNotMergedIntoU": true,
+    "laterMainRuntimeValidationClaimed": false,
+    "PRBaseAPIIsObservedSnapshotNotRemoteMainHead": true
+  },
+  "acceptedCIEvidence": {
+    "run": 41447885087,
+    "attempt": 1,
+    "all10JobsSuccess": true,
+    "documentsPass": 47,
+    "documentsFail": 0,
+    "documentsWholeJobSeconds": 105,
+    "documentsOriginalWholeJobMinutes": 10,
+    "nativeSuites": 237,
+    "nativeCountedPasses": 5420,
+    "nativeOriginalGDIAllowedSkip": 1,
+    "canvasFullPassAssertions": 2286,
+    "canvasFailAssertions": 0,
+    "canvasGoldenSectionsMatched": 86,
+    "P38OriginalExpectedException": 1,
+    "officialZIPs": 12,
+    "officialMembers": 667,
+    "jobLogs": 10,
+    "acceptanceChecks": 1810,
+    "acceptanceFailures": [],
+    "acceptancePath": "evidence/cloud-resume-20261102/ci-documents-checkout-final-ci/FINAL_ACCEPTANCE.json",
+    "acceptanceSha256": "9959ad3e4cdcb36a3b0abf93dd402638b2f245a83cf84cad20e3795bb2cf0f38",
+    "archiveManifestSha256": "3c931a5288328c6059e08881499b4344dc958c1e6fa6fd036eec9a808ac7698c",
+    "originalArchiveSha256": "8483a492f4f8f9b1d458e4217e4315eb89a9a4c5b6eb5567f29c9cafc43e31cb"
+  },
+  "scope": {
+    "sourceWorkingTreeClean": true,
+    "bodyWorkingTreeClean": true,
+    "utilitySourceUUnchanged": true,
+    "bodyBranchOnlyChangedFile": "PR_BODY.md",
+    "ordinaryPush": true,
+    "newTestsBuildsChromeOrCIReruns": 0,
+    "archiveRepacked": false,
+    "mergeRebaseForceApprove": false,
+    "credentialsTimeoutPolicyHelperProductTestsChanged": false,
+    "networkPerformanceRatioClaimed": false,
+    "otherBranchRefsObserved": {
+      "refs/heads/codex/kernel-main-convergence-20261102": "abbf1465e4617110f16892ba3925b20615345177",
+      "refs/heads/codex/issue214-main-convergence-20261102": "f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12",
+      "refs/heads/codex/canvas-validation-20261102": "e5b0bc23b04e872a68b066bd5b51d57e2c104943",
+      "refs/heads/codex/canvas-false-control-20261102": "aec3ea1bdcf46f2416dfa7cb79d28221673c315a"
+    },
+    "otherBranchChangesSinceEarlierDelivery": {
+      "refs/heads/codex/kernel-main-convergence-20261102": {
+        "earlierDeliveryHead": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+        "nowObservedHead": "abbf1465e4617110f16892ba3925b20615345177"
+      }
+    },
+    "otherBranchesWrittenByThisOperator": false
+  },
+  "appAttachment": {
+    "priorAttemptRecord": "APP_ATTACH_ATTEMPT.json",
+    "actualResult": "UNAVAILABLE_NO_CALLABLE_APP_ATTACHMENT_TOOL",
+    "attached": false,
+    "backendRequestSent": false
+  },
+  "files": {
+    "PR_BODY_FINAL_DRAFT.md": {
+      "bytes": 5478,
+      "sha256": "bab4320ea57f6a9f0442d1a6d7ae88a3a93016d62fe4e01b8119cbff6cf59b96"
+    },
+    "FINAL_BODY_PLAN.json": {
+      "bytes": 963,
+      "sha256": "b6d163991f76ff88b590a07bc3106d33d5c0768a3d9db2a5d8fab02be95a2051"
+    },
+    "FINAL_BODY_BRANCH_PUBLICATION.json": {
+      "bytes": 536,
+      "sha256": "08c97ebf12661ec3888b093786a6f4ba0606c0b1921c0a2b6f561604bf7a8f5f"
+    },
+    "FINAL_BODY_API_VERIFICATION.json": {
+      "bytes": 768,
+      "sha256": "621d876722902eb5e7037ef1f1262035a5902e361be38657036de01fea0e41ac"
+    },
+    "FINAL_REVIEW_COMMENT.md": {
+      "bytes": 1614,
+      "sha256": "63958e42f0112a8f30c88f595bc9a61d402fd5203b5dd6c2430027c427c2ec7e"
+    },
+    "FINAL_REVIEW_COMMENT_PUBLICATION.json": {
+      "bytes": 443,
+      "sha256": "95a6c2d0e44ddbf514cd911e5bb2875ae50c4ba17034e37e4452dee4009c9783"
+    },
+    "FINAL_REVIEW_COMMENT_API_READBACK.json": {
+      "bytes": 4947,
+      "sha256": "abcb284ac88d06c00a01737ab0e94beec9b2ddd949dd5d0db08bcf951b85049b"
+    },
+    "FINAL_POSTED_PR_READBACK.json": {
+      "bytes": 21711,
+      "sha256": "4c76ab1c9ef67b11fab6ab2c7cb2a53053dc1db312daaeaf9f4d9085e1a158d9"
+    },
+    "FINAL_PUBLIC_BODY_FILE_READBACK.json": {
+      "bytes": 8545,
+      "sha256": "8389d7f58f0be64f63fcbdddb0b502e749ae273b0f1af37e7271a19e7b5984c5"
+    },
+    "FINAL_PUBLICATION_PR_API.json": {
+      "bytes": 21709,
+      "sha256": "9d8e5bd2b8cc86f0db0be63d714cb26bc4cb13522e6638fa93fe3d5b40be7f97"
+    },
+    "FINAL_PUBLICATION_REMOTE_REFS.txt": {
+      "bytes": 242,
+      "sha256": "35ebf5a756e02cc428a745710209c98c6ecdbfd5c51d56516a9ecf7eacc01ed9"
+    },
+    "NEW_MAIN_29_STATIC_INPUT_REVIEW.json": {
+      "bytes": 177135,
+      "sha256": "cff1fdbf5d820f15c86dd77878f9ba138e981ac8fb0e9e7b88c107bbf23efed7"
+    },
+    "APP_ATTACH_ATTEMPT.json": {
+      "bytes": 1622,
+      "sha256": "4bc8b78c483f1c1fa907e40a13943891836dfc5f0a9c662eca82aeee61e584b0"
+    },
+    "FINAL_CHECK_UNRELATED_REF_DELTA.json": {
+      "bytes": 670,
+      "sha256": "81830d5a75a821fb83d30057da00785add56292583e02f8b88d06adb14087dd3"
+    }
+  },
+  "remaining": "Draft remains for latest independent review of fixed U; later main fca3 was not merged or runtime-tested by run41447885087."
+}

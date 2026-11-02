@@ -1,0 +1,188 @@
+{
+  "maxUniqueSourceLeaves": 5,
+  "uniquePaths": [
+    "geometry-templates/woodworking/native/contact_world.c",
+    "tests/geo300_contact_order_fast_harness.c",
+    "tests/test_geo261_native_kernel.py",
+    "tests/test_geo261_timber_capacity_host.py",
+    "tests/test_geo300_contact_order_fast.py"
+  ],
+  "rows": [
+    {
+      "label": "pr348",
+      "commit": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "86c8f0bbe68275e2948d3b1959207aba4225e0c7:geometry-templates/woodworking/native/contact_world.c"
+      ],
+      "exit": 128,
+      "utc": "2026-11-02T13:46:29.743638+00:00",
+      "error_file": "source/pr348/geometry-templates/woodworking/native/contact_world.c.NOT_AVAILABLE.json",
+      "stderr": "fatal: path 'geometry-templates/woodworking/native/contact_world.c' does not exist in '86c8f0bbe68275e2948d3b1959207aba4225e0c7'\n"
+    },
+    {
+      "label": "pr348",
+      "commit": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+      "path": "tests/geo300_contact_order_fast_harness.c",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "86c8f0bbe68275e2948d3b1959207aba4225e0c7:tests/geo300_contact_order_fast_harness.c"
+      ],
+      "exit": 128,
+      "utc": "2026-11-02T13:46:29.746787+00:00",
+      "error_file": "source/pr348/tests/geo300_contact_order_fast_harness.c.NOT_AVAILABLE.json",
+      "stderr": "fatal: path 'tests/geo300_contact_order_fast_harness.c' does not exist in '86c8f0bbe68275e2948d3b1959207aba4225e0c7'\n"
+    },
+    {
+      "label": "pr348",
+      "commit": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+      "path": "tests/test_geo261_native_kernel.py",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "86c8f0bbe68275e2948d3b1959207aba4225e0c7:tests/test_geo261_native_kernel.py"
+      ],
+      "exit": 128,
+      "utc": "2026-11-02T13:46:29.749635+00:00",
+      "error_file": "source/pr348/tests/test_geo261_native_kernel.py.NOT_AVAILABLE.json",
+      "stderr": "fatal: path 'tests/test_geo261_native_kernel.py' does not exist in '86c8f0bbe68275e2948d3b1959207aba4225e0c7'\n"
+    },
+    {
+      "label": "pr348",
+      "commit": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+      "path": "tests/test_geo261_timber_capacity_host.py",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "86c8f0bbe68275e2948d3b1959207aba4225e0c7:tests/test_geo261_timber_capacity_host.py"
+      ],
+      "exit": 128,
+      "utc": "2026-11-02T13:46:29.752055+00:00",
+      "error_file": "source/pr348/tests/test_geo261_timber_capacity_host.py.NOT_AVAILABLE.json",
+      "stderr": "fatal: path 'tests/test_geo261_timber_capacity_host.py' does not exist in '86c8f0bbe68275e2948d3b1959207aba4225e0c7'\n"
+    },
+    {
+      "label": "pr348",
+      "commit": "86c8f0bbe68275e2948d3b1959207aba4225e0c7",
+      "path": "tests/test_geo300_contact_order_fast.py",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "86c8f0bbe68275e2948d3b1959207aba4225e0c7:tests/test_geo300_contact_order_fast.py"
+      ],
+      "exit": 128,
+      "utc": "2026-11-02T13:46:29.754341+00:00",
+      "error_file": "source/pr348/tests/test_geo300_contact_order_fast.py.NOT_AVAILABLE.json",
+      "stderr": "fatal: path 'tests/test_geo300_contact_order_fast.py' does not exist in '86c8f0bbe68275e2948d3b1959207aba4225e0c7'\n"
+    },
+    {
+      "label": "main-fca3",
+      "commit": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "geometry-templates/woodworking/native/contact_world.c",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d:geometry-templates/woodworking/native/contact_world.c"
+      ],
+      "exit": 0,
+      "utc": "2026-11-02T13:46:29.758885+00:00",
+      "file": "source/main-fca3/geometry-templates/woodworking/native/contact_world.c",
+      "bytes": 26976,
+      "sha256": "83fd46c25acead96ebc724f673f405176fdc5463296fd8b3b77b72fd66f7798b",
+      "git_blob": "c111cdce93a149f1854b315191f12713a74fd6ec"
+    },
+    {
+      "label": "main-fca3",
+      "commit": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "tests/geo300_contact_order_fast_harness.c",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d:tests/geo300_contact_order_fast_harness.c"
+      ],
+      "exit": 128,
+      "utc": "2026-11-02T13:46:29.761836+00:00",
+      "error_file": "source/main-fca3/tests/geo300_contact_order_fast_harness.c.NOT_AVAILABLE.json",
+      "stderr": "fatal: path 'tests/geo300_contact_order_fast_harness.c' does not exist in 'fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d'\n"
+    },
+    {
+      "label": "main-fca3",
+      "commit": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "tests/test_geo261_native_kernel.py",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d:tests/test_geo261_native_kernel.py"
+      ],
+      "exit": 0,
+      "utc": "2026-11-02T13:46:29.765243+00:00",
+      "file": "source/main-fca3/tests/test_geo261_native_kernel.py",
+      "bytes": 27740,
+      "sha256": "81518721f7bc1ed3f4c779ab32cd437dd225b2483b3e6358bc7a55930986d4c7",
+      "git_blob": "2ce343c1f56d649b2b479a5dbd4200b705955dcf"
+    },
+    {
+      "label": "main-fca3",
+      "commit": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "tests/test_geo261_timber_capacity_host.py",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d:tests/test_geo261_timber_capacity_host.py"
+      ],
+      "exit": 128,
+      "utc": "2026-11-02T13:46:29.769585+00:00",
+      "error_file": "source/main-fca3/tests/test_geo261_timber_capacity_host.py.NOT_AVAILABLE.json",
+      "stderr": "fatal: path 'tests/test_geo261_timber_capacity_host.py' does not exist in 'fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d'\n"
+    },
+    {
+      "label": "main-fca3",
+      "commit": "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d",
+      "path": "tests/test_geo300_contact_order_fast.py",
+      "command": [
+        "git",
+        "-C",
+        "/tmp/geometry-live-20261102",
+        "cat-file",
+        "blob",
+        "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d:tests/test_geo300_contact_order_fast.py"
+      ],
+      "exit": 128,
+      "utc": "2026-11-02T13:46:29.771885+00:00",
+      "error_file": "source/main-fca3/tests/test_geo300_contact_order_fast.py.NOT_AVAILABLE.json",
+      "stderr": "fatal: path 'tests/test_geo300_contact_order_fast.py' does not exist in 'fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d'\n"
+    }
+  ],
+  "noLazyFetch": true,
+  "noFetch": true
+}

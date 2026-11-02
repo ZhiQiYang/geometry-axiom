@@ -1,0 +1,15 @@
+test_returned_features_real_rc_span_exact_width_and_collinear_faces (tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces) ... FAIL
+
+======================================================================
+FAIL: test_returned_features_real_rc_span_exact_width_and_collinear_faces (tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo318_reading_a_native.py", line 62, in test_returned_features_real_rc_span_exact_width_and_collinear_faces
+    self.assertEqual(0,self.case("features").returncode)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 2.828s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"], "started": ["tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces"], "total": 1, "failures": [{"test": "tests.test_geo318_reading_a_native.ReadingANative.test_returned_features_real_rc_span_exact_width_and_collinear_faces", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo318_reading_a_native.py\", line 62, in test_returned_features_real_rc_span_exact_width_and_collinear_faces\n    self.assertEqual(0,self.case(\"features\").returncode)\nAssertionError: 0 != 1\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

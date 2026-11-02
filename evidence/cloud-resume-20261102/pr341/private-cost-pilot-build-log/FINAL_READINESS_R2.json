@@ -1,0 +1,101 @@
+{
+  "schema": "geometry-pr341-ready-for-one-private-pilot/2",
+  "utc": "2026-11-02T14:05:32.114941+00:00",
+  "status": "READY_FOR_ONE_PILOT_AWAITING_ROOT_EXPLICIT_WINDOW_RELEASE",
+  "fixedSource": "edf556eedc204bb285fb4504e246e4310f4e1e88",
+  "approvedLauncher": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-r2.py",
+  "approvedSeal": {
+    "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/PILOT_SEAL_R2.json",
+    "sha256": "5044e6b39de80072660d5f33c6a4c153bede940c9194bb5db7fb31713aa84c51",
+    "inputCount": 314,
+    "referenceBytes": 38478720
+  },
+  "supersededUnreleasedLauncher": {
+    "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot.py",
+    "sealSha256": "7f31e3ff721958fa108d47f57280a0213f4af60823cedebe50987cb3a74637d4",
+    "originalSnapshotUnchanged": true,
+    "reason": "Separate hash and parse reads could adopt different seal bytes; R2 hashes/parses one raw buffer. No sample ran with either launcher."
+  },
+  "builds": {
+    "originalNativeBuildCompileLinkCount": 18,
+    "allNormalExit0": true,
+    "flags": "Original -std=c11 -O0 -Werror=implicit-function-declaration, original include/link generation; no compiler optimization change.",
+    "perBuildSeconds": 300,
+    "stackBytes": 16777216,
+    "timedObjectsExactlyEqualV1": [
+      {
+        "variant": "C",
+        "pilotObjectSha256": "fe0dc96cf8f043c99b652cb53ec7ace39258f851d1158b7233f1db2f25113a67",
+        "v1ObjectSha256": "fe0dc96cf8f043c99b652cb53ec7ace39258f851d1158b7233f1db2f25113a67",
+        "exactBytesEqual": true
+      },
+      {
+        "variant": "R_fallback",
+        "pilotObjectSha256": "f03c97e6b646a353c6c055ed2a04c45894ce84c13a39820aa4af0fd648992ce5",
+        "v1ObjectSha256": "f03c97e6b646a353c6c055ed2a04c45894ce84c13a39820aa4af0fd648992ce5",
+        "exactBytesEqual": true
+      },
+      {
+        "variant": "R_joint",
+        "pilotObjectSha256": "38009c7c744d7aa97c532991295c1988f45442979eea949cc0cea5c32d7d2ffc",
+        "v1ObjectSha256": "38009c7c744d7aa97c532991295c1988f45442979eea949cc0cea5c32d7d2ffc",
+        "exactBytesEqual": true
+      }
+    ],
+    "timedBinaryCounterSymbolAbsent": true,
+    "staticSymbolReport": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-build-log/STATIC_SYMBOL_CHECK.json",
+    "newDiskBytes": 1617238,
+    "maximumNewDiskBytes": 134217728
+  },
+  "counterReview": {
+    "editsPerVariant": {
+      "C": 17,
+      "R_fallback": 17,
+      "R_joint": 17
+    },
+    "allSourceRoundtripsExact": true,
+    "runtimeEquivalence": "UNRUN until the one approved pilot; original literal oracle and timed/work output comparison remain mandatory."
+  },
+  "independentPeer": {
+    "path": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-review/REVIEW.json",
+    "sha256": "00f2a508044aa1aabefcf1b5a0f935ea40fb5772ea45c834627943fc8c683bee",
+    "status": "PASS_STATIC_PREPARED_ONLY_SAMPLES_UNRUN",
+    "scope": "62materialized +14final seal/guard checks;314/314 exact input hashes including inherited Python; no tool/build/binary/sample reruns."
+  },
+  "schedule": {
+    "groups": 12,
+    "maximumInvocations": 24,
+    "replicatesPerVariantRecipeMode": 1,
+    "rowsFile": "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/SCHEDULE.json",
+    "perSubjectSeconds": 20,
+    "launchCutoffImmediatelyBeforePopenSeconds": 30,
+    "originalCleanupSecondsAtMost": 5,
+    "maximumExclusiveWindowSeconds": 60,
+    "estimatedExecutionSecondsUnder": 5,
+    "estimateIsUnmeasured": true,
+    "noHashBuildPackOrOtherCliDuringWindow": true,
+    "noRetriesWarmupsBestOfOrR8R16Retakes": true
+  },
+  "measurements": "UNRUN; timed collector CLOCK_MONOTONIC/RUSAGE_SELF, separate work vector, fresh-child driver-end RSS and reaped-child CPU/supervisor span. Timer/rusage bracket overhead, page granularity and one-observation noise remain explicit.",
+  "formalB1Gap": "U/S64 unique retain343 in C/Rf, so they do not quantify341 no/low-duplicate fallback bitmap overhead. A separately frozen future65-fact public-helper recipe after final340 source was suggested by root; UNRUN and not added to current24. Rj is341+343 indexed-pipeline joint withdrawal retaining common unique bookkeeping.",
+  "unchangedV1V2AndProductBranches": true,
+  "producedBinaryExecutionsSoFar": 0,
+  "samplesSoFar": 0,
+  "formalB1R16World512AndNewMainAcceptance": "UNVERIFIED",
+  "readyCommandCheck": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-r2.py",
+    "check",
+    "--expected",
+    "5044e6b39de80072660d5f33c6a4c153bede940c9194bb5db7fb31713aa84c51"
+  ],
+  "futureRunCommandAfterRootRelease": [
+    "python",
+    "-B",
+    "/tmp/geometry-resume-20261102/pr341/private-cost-pilot-prepared/pilot-r2.py",
+    "run",
+    "--expected",
+    "5044e6b39de80072660d5f33c6a4c153bede940c9194bb5db7fb31713aa84c51"
+  ]
+}

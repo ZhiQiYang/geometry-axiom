@@ -1,0 +1,40 @@
+test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route (tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route) ... FAIL
+
+======================================================================
+FAIL: test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route (tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_commit_paths.py", line 274, in test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route
+    self.assertEqual(DEFAULT_LINES, rows, "default-fixed-lines-changed: re-review this replacement program")
+AssertionError: Tuples differ: ('surface 1 origin 0 0 2500 u +x v +y outli[268 chars] +n') != ('grid-system 314 name-hex 47 main-along no[367 chars] +n')
+
+First differing element 0:
+'surface 1 origin 0 0 2500 u +x v +y outli[26 chars]3000'
+'grid-system 314 name-hex 47 main-along no[50 chars]r 30'
+
+Second tuple contains 1 additional elements.
+First extra element 9:
+'place 3 on 1 at-line guide 1 +v +n'
+
++ ('grid-system 314 name-hex 47 main-along none u repeat 0 100 stagger 40 v '
++  'repeat 0 100 stagger 30',
+- ('surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+? ^
+
++  'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+? ^
+
+   'timber 1 27 33 role boundary',
+   'place 1 on 1 at-face e0 +u +n',
+   'timber 2 27 33 role boundary',
+   'place 2 on 1 at-face e2 +u +n',
+   'spec 主支中線 500',
+   'guide 1 1 v spec:主支中線',
+   'timber 3 27 33 role primary',
+   'place 3 on 1 at-line guide 1 +v +n') : default-fixed-lines-changed: re-review this replacement program
+
+----------------------------------------------------------------------
+Ran 1 test in 0.128s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route"], "started": ["tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route"], "total": 1, "failures": [{"test": "tests.test_geo314_commit_paths.Geo314CommitPaths.test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo314_commit_paths.py\", line 274, in test_default_fixed_lines_change_alarm_preserves_the_owned_replay_route\n    self.assertEqual(DEFAULT_LINES, rows, \"default-fixed-lines-changed: re-review this replacement program\")\nAssertionError: Tuples differ: ('surface 1 origin 0 0 2500 u +x v +y outli[268 chars] +n') != ('grid-system 314 name-hex 47 main-along no[367 chars] +n')\n\nFirst differing element 0:\n'surface 1 origin 0 0 2500 u +x v +y outli[26 chars]3000'\n'grid-system 314 name-hex 47 main-along no[50 chars]r 30'\n\nSecond tuple contains 1 additional elements.\nFirst extra element 9:\n'place 3 on 1 at-line guide 1 +v +n'\n\n+ ('grid-system 314 name-hex 47 main-along none u repeat 0 100 stagger 40 v '\n+  'repeat 0 100 stagger 30',\n- ('surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',\n? ^\n\n+  'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',\n? ^\n\n   'timber 1 27 33 role boundary',\n   'place 1 on 1 at-face e0 +u +n',\n   'timber 2 27 33 role boundary',\n   'place 2 on 1 at-face e2 +u +n',\n   'spec 主支中線 500',\n   'guide 1 1 v spec:主支中線',\n   'timber 3 27 33 role primary',\n   'place 3 on 1 at-line guide 1 +v +n') : default-fixed-lines-changed: re-review this replacement program\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}

@@ -1,0 +1,58 @@
+{
+  "utc": "2026-11-02T14:15:59.476675+00:00",
+  "status": "PRIVATE_MERGE_CANDIDATE_READY_FOR_ROOT_REVIEW_NOT_FULL_ACCEPTANCE",
+  "branch": "codex/r06-main359-integration-20261102",
+  "head": "c2eb5edc99d2880a65583f46085617d99a6f191b",
+  "parents": [
+    "7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4",
+    "fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d"
+  ],
+  "pushed": false,
+  "writer": "root/r06_main359_closure",
+  "baselineExistingContracts": {
+    "tests": 51,
+    "pass": 51,
+    "fail": 0,
+    "exit": 0,
+    "executionState": "pre-commit actual merged worktree; no retroactive seal claim"
+  },
+  "newDiagnosticFinal": {
+    "tests": 8,
+    "fixedExit": 0,
+    "withdrawnExits": [
+      1,
+      1,
+      1
+    ],
+    "restoredExit": 0,
+    "realBrowser": false,
+    "nativeWorld": false
+  },
+  "compile": {
+    "exit": 0,
+    "seconds": 24.062383788987063,
+    "utc": "2026-11-02T14:12:18.525405+00:00",
+    "binaryExecuted": false,
+    "sharedBinaryCacheModified": false,
+    "binary": {
+      "bytes": 1220520,
+      "sha256": "936a6049cd9b844be7130599a1661b0c02c94db0df91bbc45cddd2a6a0af75c2"
+    }
+  },
+  "existingMutationAnchorPreflight": {
+    "cases": 39,
+    "patches": 42,
+    "problems": 0,
+    "mutantsExecuted": false
+  },
+  "next": "root original full producer, exact generated expected bytes, final mutation/architecture and full native/browser; independent adversarial source review pending",
+  "knownUnrun": [
+    "fresh independent Chrome profile",
+    "native World write/rollback acceptance",
+    "full native/Node census",
+    "six browser jobs",
+    "generic mutation regeneration",
+    "architecture three original judges"
+  ],
+  "clean": true
+}

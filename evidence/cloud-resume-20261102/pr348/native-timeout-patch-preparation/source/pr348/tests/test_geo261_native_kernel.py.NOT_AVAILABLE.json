@@ -1,0 +1,12 @@
+{
+  "command": [
+    "git",
+    "-C",
+    "/tmp/geometry-live-20261102",
+    "cat-file",
+    "blob",
+    "86c8f0bbe68275e2948d3b1959207aba4225e0c7:tests/test_geo261_native_kernel.py"
+  ],
+  "exit": 128,
+  "stderr": "fatal: path 'tests/test_geo261_native_kernel.py' does not exist in '86c8f0bbe68275e2948d3b1959207aba4225e0c7'\n"
+}

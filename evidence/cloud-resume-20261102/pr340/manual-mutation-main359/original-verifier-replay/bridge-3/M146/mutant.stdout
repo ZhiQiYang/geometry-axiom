@@ -1,0 +1,15 @@
+test_actual_span_between_named_source_bare_rc_and_source_failure (tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure) ... FAIL
+
+======================================================================
+FAIL: test_actual_span_between_named_source_bare_rc_and_source_failure (tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo318_reading_a_native.py", line 65, in test_actual_span_between_named_source_bare_rc_and_source_failure
+    self.assertEqual(0,self.case("spans").returncode)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 3.132s
+
+FAILED (failures=1)
+GEOMETRY_BRIDGE_MUTATION_RESULT {"schema": "geometry-bridge-mutation-tests/1", "requested": ["tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"], "started": ["tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure"], "total": 1, "failures": [{"test": "tests.test_geo318_reading_a_native.ReadingANative.test_actual_span_between_named_source_bare_rc_and_source_failure", "detail": "Traceback (most recent call last):\n  File \"/home/runner/work/_temp/mutation-evidence/cache/_bridge-work/abbf1465e4617110f16892ba3925b20615345177/repo/tests/test_geo318_reading_a_native.py\", line 65, in test_actual_span_between_named_source_bare_rc_and_source_failure\n    self.assertEqual(0,self.case(\"spans\").returncode)\nAssertionError: 0 != 1\n", "kind": "assertion"}], "errors": [], "skipped": [], "expected_failures": 0, "unexpected_successes": 0}
