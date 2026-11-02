@@ -1,3 +1,16 @@
+# CURRENT 2026-11-02T07:56:27.291006+00:00
+
+- #366已完成並合main；manual入口真10jobs／9ZIP／原verify0，完整帳本分類與7cache反證核收。
+- **READY-TO-MERGE #363**：head7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4，12/12CI綠，最新固定head獨立dot「可合併」；已同步正文、轉非draft並逐條回覆[6571845252](https://github.com/ZhiQiYang/geometry-axiom/pull/363#issuecomment-6571845252)。公開原件E=e9152ea6c0ef8ab57611a6a86edf0416b464074a；主代理bounded核收PASS與新artifact子peercapacity未完成分列，沒有冒PASS。
+- #340／#345仍待本機Claude與最新審查，未合main；#340合後才下一張#339。
+- #344恢復R仍真執行，sourceF=d794a7447b98a82fb35c1dccaedc3443e2230933；開始07:41:42.542028Z、原截止08:16:42.542028Z。固定0／撤回1已完整保留；此刻不能宣告恢復0。
+- canvas validation正式ledger採入新head9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2，sole ledger diff／39264其他entries相同，原--check0；120execution仍S76d，不改標。新draft **[#367](https://github.com/ZhiQiYang/geometry-axiom/pull/367)** 07:54:24Z已建立，base feat/r06-bay-repeat（另依賴344），source head如前。讓獨立CI開始真兩片；兩新expected row／canonical新四檔／同source full／真harness撤回／artifact復驗仍未跑且正文逐項明列。prbody分支已有單獨正常推送，原ref與body readback收據見canvas-sharding/pr367。
+
+本地目前唯一重測仍344完整R。外部producer準備是既有wrapper只參數化source/output/cache/head、保原reaper05384f5a和原full argv/16MiB/2100；沒有啟動、不能算通過。待R自然終態後才執行，避免CPU互搶。沒有新增工具框架或放寬裁判。子代理容量問題不換模型、不另開任務，root自行接續。
+
+---
+## 以下為歷史檢查點，以最上方CURRENT為準
+
 # CURRENT — 2026-11-02 07:49 UTC（以下矩陣為本檢查點）
 
 | 工作 | 完整head／狀態 | 下一步 |

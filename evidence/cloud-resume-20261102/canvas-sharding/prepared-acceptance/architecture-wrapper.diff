@@ -1,0 +1,26 @@
+--- existing-canonical-generator
++++ canvas-provenance-labels
+@@ -78,7 +78,7 @@
+         'forbiddenIdentifiers':len(manifest['policy']['forbiddenIdentifiers']),
+         'forbiddenStrings':len(manifest['policy']['forbiddenStrings'])}
+ report=(
+-    '# Product architecture — R06 fixed-source canonical receipt\n\n'
++    '# Product architecture — canvas sharding fixed-source canonical receipt\n\n'
+     f'Actual execution source `{head}`; adopted main `{args.main}`; verified tool dependency '
+     '`502a64ff6214dd6060927b7f14643a533536f20d`. This is a local managed-cloud Linux execution '
+     'of the original three commands, with no GitHub run ID.\n\n'
+@@ -86,11 +86,11 @@
+     f'completed without skips. {counts["executableFiles"]} inputs, {counts["ownedSources"]} owned sources, '
+     f'{counts["exclusions"]} exclusions, {counts["edges"]} edges, 0 diagnostics. '
+     f'LF input closure `{closure}`. Source, index, and every input raw/LF identity were unchanged across execution.\n\n'
+-    'The manifest preserves the adopted K/W/H policy. R06 adds typed repeat provenance and its finite derived-host '
+-    'reader scope; current test-driver and archive-mutator exclusions are pinned to their actual LF bytes. '
++    'The manifest preserves the adopted K/W/H policy and inherited R06 typed repeat provenance/finite derived-host '
++    'reader scope; the canvas harness/receipt tools and current exclusions are pinned to their actual LF bytes. '
+     'The four canonical outputs are derived artifacts and are excluded from their own input closure.\n\n'
+     'This receipt certifies the static graph and its two unchanged architecture judges only. '
+-    'Native mutation execution at 26dc99117, downloaded official binaries, the original full census, and browser '
++    'Generic mutation execution at fixed S 76d311cf, downloaded official binaries, the pending full census, and browser '
+     'execution retain their separate source-bound receipts. It does not relabel them as execution at this head, '
+     'or claim a new performance, Windows, dynamic reading-A, or W-lexicon audit.\n'
+ ).encode()
