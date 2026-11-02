@@ -1,0 +1,124 @@
+2026-11-02T03:48:52.2834402Z ----------------------------------------
+2026-11-02T03:48:52.2834687Z Exception occurred during processing of request from ('127.0.0.1', 59758)
+2026-11-02T03:48:52.2834987Z Traceback (most recent call last):
+2026-11-02T03:48:52.2835357Z   File "/home/runner/work/geometry-axiom/geometry-axiom/geometry-web/serve.py", line 671, in _do_POST
+2026-11-02T03:48:52.2835747Z     self._send(snapshot_request(body, ask_bridge))
+2026-11-02T03:48:52.2836115Z   File "/home/runner/work/geometry-axiom/geometry-axiom/geometry-web/serve.py", line 352, in _send
+2026-11-02T03:48:52.2836484Z     return self._send_body(body, ctype, status)
+2026-11-02T03:48:52.2836712Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-02T03:48:52.2837065Z   File "/home/runner/work/geometry-axiom/geometry-axiom/geometry-web/serve.py", line 370, in _send_body
+2026-11-02T03:48:52.2837430Z     self.wfile.write(body)
+2026-11-02T03:48:52.2837677Z   File "/usr/lib/python3.12/socketserver.py", line 840, in write
+2026-11-02T03:48:52.2837944Z     self._sock.sendall(b)
+2026-11-02T03:48:52.2838149Z BrokenPipeError: [Errno 32] Broken pipe
+2026-11-02T03:48:52.2838291Z 
+2026-11-02T03:48:52.2838438Z During handling of the above exception, another exception occurred:
+2026-11-02T03:48:52.2838643Z 
+2026-11-02T03:48:52.2838733Z Traceback (most recent call last):
+2026-11-02T03:48:52.2839033Z   File "/usr/lib/python3.12/socketserver.py", line 692, in process_request_thread
+2026-11-02T03:48:52.2839356Z     self.finish_request(request, client_address)
+2026-11-02T03:48:52.2839652Z   File "/usr/lib/python3.12/socketserver.py", line 362, in finish_request
+2026-11-02T03:48:52.2839978Z     self.RequestHandlerClass(request, client_address, self)
+2026-11-02T03:48:52.2840295Z   File "/usr/lib/python3.12/socketserver.py", line 761, in __init__
+2026-11-02T03:48:52.2840561Z     self.handle()
+2026-11-02T03:48:52.2840776Z   File "/usr/lib/python3.12/http/server.py", line 436, in handle
+2026-11-02T03:48:52.2841161Z     self.handle_one_request()
+2026-11-02T03:48:52.2841525Z   File "/usr/lib/python3.12/http/server.py", line 424, in handle_one_request
+2026-11-02T03:48:52.2841808Z     method()
+2026-11-02T03:48:52.2842114Z   File "/home/runner/work/geometry-axiom/geometry-axiom/geometry-web/serve.py", line 489, in do_POST
+2026-11-02T03:48:52.2842467Z     return self._do_POST()
+2026-11-02T03:48:52.2842646Z            ^^^^^^^^^^^^^^^
+2026-11-02T03:48:52.2843051Z   File "/home/runner/work/geometry-axiom/geometry-axiom/geometry-web/serve.py", line 673, in _do_POST
+2026-11-02T03:48:52.2843496Z     self._send(err_json('無法讀取來源快照，專案未變更。'))
+2026-11-02T03:48:52.2843850Z   File "/home/runner/work/geometry-axiom/geometry-axiom/geometry-web/serve.py", line 352, in _send
+2026-11-02T03:48:52.2844213Z     return self._send_body(body, ctype, status)
+2026-11-02T03:48:52.2844435Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-02T03:48:52.2844781Z   File "/home/runner/work/geometry-axiom/geometry-axiom/geometry-web/serve.py", line 369, in _send_body
+2026-11-02T03:48:52.2845142Z     self.end_headers()
+2026-11-02T03:48:52.2845375Z   File "/usr/lib/python3.12/http/server.py", line 538, in end_headers
+2026-11-02T03:48:52.2845640Z     self.flush_headers()
+2026-11-02T03:48:52.2845881Z   File "/usr/lib/python3.12/http/server.py", line 542, in flush_headers
+2026-11-02T03:48:52.2846179Z     self.wfile.write(b"".join(self._headers_buffer))
+2026-11-02T03:48:52.2846470Z   File "/usr/lib/python3.12/socketserver.py", line 840, in write
+2026-11-02T03:48:52.2846726Z     self._sock.sendall(b)
+2026-11-02T03:48:52.2846921Z BrokenPipeError: [Errno 32] Broken pipe
+2026-11-02T03:48:52.2847140Z ----------------------------------------
+2026-11-02T03:48:52.2848095Z {"effectiveEnvironment": {"GEOMETRY_WAIT_TRACE": null, "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-integration-feedback", "GEOMETRY_BROWSER_SUITE": "canvas", "GEOMETRY_WAIT_TRACE_RUN_ID": null}, "kernel": "7.0.0-1017-azure", "platform": "Linux", "head": "fc1c9f565a2e15660e931b3884dca2220cb1b7b2", "status": "trace-disabled-for-this-runner", "records": 0}
+2026-11-02T03:48:52.2918295Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-02T03:48:52.2918643Z with:
+2026-11-02T03:48:52.2918822Z   name: canvas-wait-trace
+2026-11-02T03:48:52.2919050Z   path: /tmp/geometry-wait-trace-artifact/
+2026-11-02T03:48:52.2919291Z   if-no-files-found: error
+2026-11-02T03:48:52.2919483Z   retention-days: 7
+2026-11-02T03:48:52.2919664Z   compression-level: 6
+2026-11-02T03:48:52.2919861Z   overwrite: false
+2026-11-02T03:48:52.2920040Z   include-hidden-files: false
+2026-11-02T03:48:52.2920235Z env:
+2026-11-02T03:48:52.2920429Z   GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+2026-11-02T03:48:52.2920718Z   GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
+2026-11-02T03:48:52.2921007Z   GEOMETRY_CHROME: /usr/bin/google-chrome
+2026-11-02T03:48:52.2921244Z   GEOMETRY_CHROME_FLAGS: --no-sandbox
+2026-11-02T03:48:52.2921607Z   GEOMETRY_BROWSER_SUITE: canvas
+2026-11-02T03:48:52.2921923Z   GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+2026-11-02T03:48:52.2922267Z   GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+2026-11-02T03:48:52.2922545Z   GEOMETRY_WAIT_TRACE: 
+2026-11-02T03:48:52.2922724Z ##[endgroup]
+2026-11-02T03:48:52.4300134Z (node:26261) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-02T03:48:52.4300700Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-02T03:48:52.4343360Z With the provided path, there will be 1 file uploaded
+2026-11-02T03:48:52.4348355Z Artifact name is valid!
+2026-11-02T03:48:52.4348956Z Root directory input is valid!
+2026-11-02T03:48:52.8362348Z Beginning upload of artifact content to blob storage
+2026-11-02T03:48:52.8504851Z (node:26261) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-02T03:48:53.1132421Z Uploaded bytes 407
+2026-11-02T03:48:53.1847917Z Finished uploading artifact content to blob storage!
+2026-11-02T03:48:53.1848663Z SHA256 digest of uploaded artifact zip is 3e579f4120afe21de5a7d88a29b9e6488c171363eeeea2d752cc33617ecd6f57
+2026-11-02T03:48:53.1849889Z Finalizing artifact upload
+2026-11-02T03:48:53.7242437Z Artifact canvas-wait-trace.zip successfully finalized. Artifact ID 13114667720
+2026-11-02T03:48:53.7252463Z Artifact canvas-wait-trace has been successfully uploaded! Final size is 407 bytes. Artifact ID is 13114667720
+2026-11-02T03:48:53.7253534Z Artifact download URL: https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382015317/artifacts/13114667720
+2026-11-02T03:48:53.7425198Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-02T03:48:53.7425527Z with:
+2026-11-02T03:48:53.7425714Z   name: grid-trial-screens-canvas
+2026-11-02T03:48:53.7425978Z   path: /tmp/geometry-grid-screens/grid-trial-*.png
+2026-11-02T03:48:53.7426262Z   if-no-files-found: ignore
+2026-11-02T03:48:53.7426462Z   retention-days: 7
+2026-11-02T03:48:53.7426643Z   compression-level: 6
+2026-11-02T03:48:53.7426829Z   overwrite: false
+2026-11-02T03:48:53.7427018Z   include-hidden-files: false
+2026-11-02T03:48:53.7427218Z env:
+2026-11-02T03:48:53.7427415Z   GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+2026-11-02T03:48:53.7427704Z   GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
+2026-11-02T03:48:53.7427997Z   GEOMETRY_CHROME: /usr/bin/google-chrome
+2026-11-02T03:48:53.7428233Z   GEOMETRY_CHROME_FLAGS: --no-sandbox
+2026-11-02T03:48:53.7428457Z   GEOMETRY_BROWSER_SUITE: canvas
+2026-11-02T03:48:53.7428764Z   GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR: /tmp/geometry-grid-screens
+2026-11-02T03:48:53.7429117Z   GEOMETRY_DOCUMENT_SCREENSHOT_DIR: /tmp/geometry-document-screens
+2026-11-02T03:48:53.7429399Z   GEOMETRY_WAIT_TRACE: 
+2026-11-02T03:48:53.7429588Z ##[endgroup]
+2026-11-02T03:48:53.8816332Z (node:26273) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-02T03:48:53.8817092Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-02T03:48:53.8871937Z With the provided path, there will be 4 files uploaded
+2026-11-02T03:48:53.8902185Z Artifact name is valid!
+2026-11-02T03:48:53.8902551Z Root directory input is valid!
+2026-11-02T03:48:54.2519899Z Beginning upload of artifact content to blob storage
+2026-11-02T03:48:54.2815701Z (node:26273) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-02T03:48:54.7824885Z Uploaded bytes 253870
+2026-11-02T03:48:54.8535025Z Finished uploading artifact content to blob storage!
+2026-11-02T03:48:54.8535668Z SHA256 digest of uploaded artifact zip is ce1292d9d49f0dc572849a33f67785d9c0c9cbd14a8a5dc9a133067a009dd7a5
+2026-11-02T03:48:54.8536815Z Finalizing artifact upload
+2026-11-02T03:48:55.3569428Z Artifact grid-trial-screens-canvas.zip successfully finalized. Artifact ID 13114463310
+2026-11-02T03:48:55.3570373Z Artifact grid-trial-screens-canvas has been successfully uploaded! Final size is 253870 bytes. Artifact ID is 13114463310
+2026-11-02T03:48:55.3575841Z Artifact download URL: https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382015317/artifacts/13114463310
+2026-11-02T03:48:55.3788788Z Post job cleanup.
+2026-11-02T03:48:55.4488614Z [command]/usr/bin/git version
+2026-11-02T03:48:55.4524487Z git version 2.56.0
+2026-11-02T03:48:55.4555363Z Temporarily overriding HOME='/home/runner/work/_temp/542c9ee1-87e6-4373-9039-88bd5f596bb3' before making global git config changes
+2026-11-02T03:48:55.4556442Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T03:48:55.4558242Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/geometry-axiom/geometry-axiom
+2026-11-02T03:48:55.4594042Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T03:48:55.4625109Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T03:48:55.4957727Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T03:48:55.5000090Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T03:48:55.5428417Z Cleaning up orphan processes
+2026-11-02T03:48:55.5741187Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

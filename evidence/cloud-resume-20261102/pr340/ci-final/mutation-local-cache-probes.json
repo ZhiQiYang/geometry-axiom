@@ -1,0 +1,123 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "/tmp/geometry-resume-20261102/ci-followup/reprobe_downloaded_caches.py",
+    "340"
+  ],
+  "exit_code": 0,
+  "source_head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "source_root": "/tmp/geometry-pr340-20261102",
+  "original_supervisor_sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+  "original_tool_sha256": "2b23de2a7c7c9b612aeb09aeb987cf317bca89331d0afa25fcf8349e4099bfa0",
+  "original_supervisor_lf_sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+  "shards": [
+    {
+      "shard": "core-1",
+      "records": 18,
+      "strict_baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "original_negative_probe": {
+        "id": "M01",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      },
+      "ledger_sha256": "cca5c3643d75c7a30a48023a6562129c1df8f0fc59be880c93c08bd512c49a96"
+    },
+    {
+      "shard": "core-2",
+      "records": 18,
+      "strict_baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "original_negative_probe": {
+        "id": "M02",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      },
+      "ledger_sha256": "8afbf62fbea400c6e2c1aed316c6dcf88bd8cd2ff844287536bae335e4a3915c"
+    },
+    {
+      "shard": "core-3",
+      "records": 17,
+      "strict_baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "original_negative_probe": {
+        "id": "M03",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      },
+      "ledger_sha256": "0100f9c944badecc0e1bf393b98b4b8f4bd2f6014cdd10248f1cc31b11826660"
+    },
+    {
+      "shard": "core-4",
+      "records": 17,
+      "strict_baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "original_negative_probe": {
+        "id": "M04",
+        "expected": "cached binary differs from executed receipt",
+        "strict_exit": 1
+      },
+      "ledger_sha256": "772f85cf2af80dd853cef447c34fe117cc463ffc879802bbf6fd4d189366b457"
+    },
+    {
+      "shard": "bridge-1",
+      "records": 18,
+      "strict_baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "original_negative_probe": {
+        "id": "M61",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      },
+      "ledger_sha256": "fa95eb66904cc8e4dd86c7437f9dafb96eae8c2284dbb4b6aed5afb2a78ca1cc"
+    },
+    {
+      "shard": "bridge-2",
+      "records": 18,
+      "strict_baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "original_negative_probe": {
+        "id": "M62",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      },
+      "ledger_sha256": "e55ccfd78158f0be62fe24bc73b85f4ede6173082c28f9f8692a531b3fc6ac2c"
+    },
+    {
+      "shard": "bridge-3",
+      "records": 17,
+      "strict_baseline_mutant_restored_exit": [
+        0,
+        1,
+        0
+      ],
+      "original_negative_probe": {
+        "id": "M63",
+        "expected": "bridge executable artifact changed",
+        "strict_exit": 1
+      },
+      "ledger_sha256": "b490eb45d1258922a462f26aa5b144f89ffe9cdc426b93386a54a47db498adbd"
+    }
+  ],
+  "stdout_sha256": "56b9a08c16107749b676aff515c83516d484033feb865f70ba3bba5331857f79",
+  "limitation": "Only original hash/strict/cache-negative guards ran. No artifact binary, compiler, browser or product suite executed."
+}

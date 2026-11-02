@@ -1,0 +1,28 @@
+{
+  "F": "4e21e2a1207e4fcd27baec27d2b4c25a3303bb8c",
+  "tree": "f688adb90c686862a521fc133918dcbf6f679e59",
+  "worktreeDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "worktreeClean": true,
+  "toolDependency": "502a64ff6214dd6060927b7f14643a533536f20d",
+  "toolBlobIdentity": {
+    ".github/scripts/architecture_evidence.py": {
+      "gitBlob": "4b456e67391e8b634b87ccfc47125e3a9e2afa3a",
+      "sha256": "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b"
+    },
+    ".github/scripts/mutation_evidence.py": {
+      "gitBlob": "a64122c1d53784fad4e879884a15aa8e11786a8d",
+      "sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc"
+    },
+    ".github/workflows/mutation-evidence.yml": {
+      "gitBlob": "58e4d12490a60b88c6b52715555a2b0e630a19c5",
+      "sha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb"
+    },
+    "tests/MUTATION-EVIDENCE.md": {
+      "gitBlob": "cd799f7d8cb13acd0cafb36f81c5b0f93bd92536",
+      "sha256": "995b07d62b232a8d094ec059da096bbe1eecf8506e27c358fbd64f4221304991"
+    }
+  },
+  "mainBase": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "ledgerStatus": "complete historical main #364 bytes, stale for F; requires fresh #366 CI ledger before original full census",
+  "expectedStatus": "unchanged; original census required"
+}

@@ -1,0 +1,106 @@
+{
+  "source": "/tmp/geometry-pr340-20261102",
+  "source_head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "execution_head": "fc1c9f565a2e15660e931b3884dca2220cb1b7b2",
+  "tree": "e5180e9cc72fea9a608bd92f781eab1a56d443b5",
+  "merge_parents": [
+    "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+    "b3a248607d7eb68d3167abbb926cf491d9b35a26"
+  ],
+  "integration_run_id": 41382015317,
+  "mutation_run_id": 41382015277,
+  "run_attempt": 1,
+  "source_status": "",
+  "original_tools_and_workflow_bytes": [
+    {
+      "path": ".github/scripts/mutation_evidence.py",
+      "sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc",
+      "lf_sha256": "28ec987f9b66f64bea33eff555f807e144d6f2363f202bce55ab85bd51e912fc"
+    },
+    {
+      "path": ".github/scripts/architecture_evidence.py",
+      "sha256": "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b",
+      "lf_sha256": "9899d18b3fb80a750308e2342d8309ca7a2470ec5aab4f977bc3213690b07b5b"
+    },
+    {
+      "path": ".github/workflows/integration-tests.yml",
+      "sha256": "feef73e7602c0f276a8e0436fc89f320ac60c3a4af4fa7921c803ae989c8a71f",
+      "lf_sha256": "feef73e7602c0f276a8e0436fc89f320ac60c3a4af4fa7921c803ae989c8a71f"
+    },
+    {
+      "path": ".github/workflows/mutation-evidence.yml",
+      "sha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb",
+      "lf_sha256": "c5d39c10de1df05ff1a582f228b4ee5fb088d0637337dc96c552d993a35d1fdb"
+    },
+    {
+      "path": "tests/mutate.py",
+      "sha256": "bd2d0c768439a93e7f848ff0299a5b164aabe1d80a0f4e9a5bcb7ab83eb4b315",
+      "lf_sha256": "bd2d0c768439a93e7f848ff0299a5b164aabe1d80a0f4e9a5bcb7ab83eb4b315"
+    },
+    {
+      "path": "tests/mutation_bridge.py",
+      "sha256": "7febe80ba29a3c0e7821277f47102a57a0c9ab0610a02e8981bb0eb2a79b3c58",
+      "lf_sha256": "7febe80ba29a3c0e7821277f47102a57a0c9ab0610a02e8981bb0eb2a79b3c58"
+    },
+    {
+      "path": "tests/run_tests.py",
+      "sha256": "a2dedfa2cf511770d87eb524ca34892e8b7dd3bea48f3c56bed6305b7c100185",
+      "lf_sha256": "a2dedfa2cf511770d87eb524ca34892e8b7dd3bea48f3c56bed6305b7c100185"
+    },
+    {
+      "path": "tests/run_all.py",
+      "sha256": "1b7765959ba7afd5af8533ce64f762058d95580280f09090db064a4fceb555ad",
+      "lf_sha256": "1b7765959ba7afd5af8533ce64f762058d95580280f09090db064a4fceb555ad"
+    },
+    {
+      "path": "tests/native_shards.py",
+      "sha256": "549ef5a462da9c26d91ba4ad2edcaca5847e01339111877648ac1ba0fb0ffe9f",
+      "lf_sha256": "549ef5a462da9c26d91ba4ad2edcaca5847e01339111877648ac1ba0fb0ffe9f"
+    },
+    {
+      "path": "tests/native_shard_receipts.py",
+      "sha256": "9ebb40552272288248d9f40ca6ec01869b2ff747c50eff58ee7eea5812d31948",
+      "lf_sha256": "9ebb40552272288248d9f40ca6ec01869b2ff747c50eff58ee7eea5812d31948"
+    },
+    {
+      "path": "tests/native_sharding_mutation_check.py",
+      "sha256": "06f200afa059d24855f934299e46579e085c885ebcbc7d198f4db894379ccf48",
+      "lf_sha256": "06f200afa059d24855f934299e46579e085c885ebcbc7d198f4db894379ccf48"
+    },
+    {
+      "path": "tests/test_unittest_runner.py",
+      "sha256": "7439f59cdf0de001bd7121f6fbf25c7c510bf3209cc1d2b582fa4a4f6ca52f15",
+      "lf_sha256": "7439f59cdf0de001bd7121f6fbf25c7c510bf3209cc1d2b582fa4a4f6ca52f15"
+    },
+    {
+      "path": "tests/run_all.expected.json",
+      "sha256": "54e86fa13c93080ed45ec7f81dd474d2fcbefa6d5f30b6c75c35d9954f002ca1",
+      "lf_sha256": "54e86fa13c93080ed45ec7f81dd474d2fcbefa6d5f30b6c75c35d9954f002ca1"
+    },
+    {
+      "path": "tests/native_shard_timings.json",
+      "sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6",
+      "lf_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+    },
+    {
+      "path": "tests/mutants_results.json",
+      "sha256": "b02f378106bb16d7e392d77bad6f006a20ea5558afb67606368005642da7b295",
+      "lf_sha256": "b02f378106bb16d7e392d77bad6f006a20ea5558afb67606368005642da7b295"
+    },
+    {
+      "path": "geometry-web/cdp_test.js",
+      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
+      "lf_sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e"
+    },
+    {
+      "path": "geometry-web/cdp_sections.golden.json",
+      "sha256": "de99e9d0073b57e0b80856823cb4c49eb48c3c1629d57b7134bd3311197ad86f",
+      "lf_sha256": "de99e9d0073b57e0b80856823cb4c49eb48c3c1629d57b7134bd3311197ad86f"
+    }
+  ],
+  "github_execution_commit": {
+    "file": "/tmp/geometry-resume-20261102/ci-followup/pr340/api/execution-commit.json",
+    "sha256": "a1dfd0f8a8f0b64ef3cff2a51901ef70e5866e490230ed23cca1a3390fcd1d79",
+    "api_sha_tree_parents_match": true
+  }
+}

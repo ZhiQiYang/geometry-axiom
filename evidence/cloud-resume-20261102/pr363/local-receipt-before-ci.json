@@ -1,0 +1,145 @@
+{
+  "schema": "r06-review-local-receipt/1",
+  "recordedAt": "2026-11-02T03:40:47.619936+00:00",
+  "currentHead": "26dc99117ac942ec8f50145d875d6e55594f3835",
+  "currentTree": "c6598f52df63af9009da9ba31ae6a2a21c3d579b",
+  "worktreeHash": "19169345f2f701283f8fdff791dbf55f2f665d8d2a62036e04eeb96d0c262fd5",
+  "worktreeHashMethod": "SHA256(git ls-files --stage -z bytes + git diff HEAD --binary bytes); clean relative to complete HEAD",
+  "worktreeClean": true,
+  "originalHead": "9367dbe9993cfeb6fed687fa55656d7d25eb5936",
+  "native": {
+    "executionHead": "4e21e2a1207e4fcd27baec27d2b4c25a3303bb8c",
+    "scope": "five newly corrected or added native review controls; native baseline/restored each all 53 R06 tests",
+    "phasePassed": true,
+    "baselineTests": 53,
+    "restoredTests": 53,
+    "exactKills": [
+      "r06_br09_reject_derived_guide_host",
+      "r06_br09_reject_derived_finite_grid_host",
+      "r06_br02_drop_derived_outline_key",
+      "r06_br02_hide_derived_outer_options",
+      "r06_br12_dump_before_derived_dependencies"
+    ],
+    "sourcesRestored": true,
+    "restoredBinaryMatches": true,
+    "checkoutUnchanged": true,
+    "overallExit": 1,
+    "overallReason": "native phase passed; subsequent Node baseline refused its one unregistered marker tag; corrected and reran Node only, preserving native execution source identity"
+  },
+  "node": {
+    "executionHead": "26dc99117ac942ec8f50145d875d6e55594f3835",
+    "scope": "three native-archive/finite-reader product controls; each baseline/restored all 15 R06 Node oracle tests",
+    "ok": true,
+    "checkoutUnchanged": true,
+    "exactKills": [
+      "r06_archive_reject_derived_outline_key",
+      "r06_archive_reject_derived_host_capability",
+      "r06_archive_drop_finite_host_reader"
+    ],
+    "overallExit": 0,
+    "otherCurrentSourceRun": "green-profile-race-native-node.log: 184 pass, 0 fail, 0 skip including late profile context/revision"
+  },
+  "browser": {
+    "executionState": "d21dee9665a04d8c3b722fa50e8a04d85b0cae23 plus pending product/test bytes later committed as bdccd73a; no product/test difference to current HEAD; source runtime version proves current release identity",
+    "runtimeVersion": "788f2f34a6cfadea86af8dbd7be6d211822a5bc5ef6800931c4a486199e10702",
+    "scope": "formal cdp_test.js GEOMETRY_ASSEMBLY_ONLY partial; never full canvas",
+    "result": {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_ASSEMBLY_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:8799/",
+        "feedbackDirectory": "/tmp/geometry-resume-20261102/pr363/feedback",
+        "browserProfile": "/tmp/geometry-cdp-MpJcCH",
+        "cdpPort": 9333,
+        "browserPid": 148147
+      },
+      "firstTransportFailure": {
+        "source": "api-result",
+        "transport": true,
+        "command": "assembly-confirm 13",
+        "requestedAt": "2026-11-02T03:30:45.632Z",
+        "requestedMonotonic": 38687.10000002384,
+        "failedAt": "2026-11-02T03:30:45.739Z",
+        "failedMonotonic": 38794.30000001192,
+        "error": "Injected lost success response",
+        "expectedFault": {
+          "schema": "geometry-cdp-injected-transport/1",
+          "fixture": "assembly-review-confirm-response",
+          "mode": "unknown",
+          "command": "assembly-confirm 13",
+          "error": "Injected lost success response",
+          "serverOk": true
+        },
+        "sessionId": null,
+        "step": "=== P77 review #33 #35 #36 #37 ==="
+      },
+      "apiTransportFailures": [
+        {
+          "source": "api-result",
+          "transport": true,
+          "command": "assembly-confirm 13",
+          "requestedAt": "2026-11-02T03:30:45.632Z",
+          "requestedMonotonic": 38687.10000002384,
+          "failedAt": "2026-11-02T03:30:45.739Z",
+          "failedMonotonic": 38794.30000001192,
+          "error": "Injected lost success response",
+          "expectedFault": {
+            "schema": "geometry-cdp-injected-transport/1",
+            "fixture": "assembly-review-confirm-response",
+            "mode": "unknown",
+            "command": "assembly-confirm 13",
+            "error": "Injected lost success response",
+            "serverOk": true
+          },
+          "sessionId": null,
+          "step": "=== P77 review #33 #35 #36 #37 ==="
+        }
+      ],
+      "apiTransportTraceComplete": true,
+      "firstNetworkFailure": null,
+      "completed": true,
+      "passedAssertions": 200,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sections": {
+        "P77": 134,
+        "P82": 16,
+        "R06": 50
+      },
+      "goldenCompare": "not compared (partial mode)",
+      "uncaughtBrowserExceptions": 0,
+      "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+    },
+    "goldenUpdate": "R06=50 mechanically copied from completed partial result; P77 restored 134, all other existing sections unchanged; strict full canvas pending",
+    "atomicSupplement": {
+      "sourceHead": "4e21e2a1207e4fcd27baec27d2b4c25a3303bb8c",
+      "passed": 5,
+      "uncaught": 0,
+      "checks": "real independent cold service/profile; marker-only/unsupported record/native profile/engineering/parameter failures preserve exact scene, owned, drafts, dirty, saved, undo/redo counts and object identities; all capability failures zero confirm"
+    }
+  },
+  "evidenceSha256": {
+    "red-dot-native.log": "6e51adc352ea7a5cc5f3d434705066a870f52ca151cfb5ff31afa3067ea330d6",
+    "red-r41-native.log": "c5985d0ddccce34a753fa70a0eaa400924a8752836b37a1871f1fccc2bfd7e5a",
+    "assembly-browser-r1.log": "a20d4cf7dfac75873f9a59565990e62ad9dfa327af7e649169d36f42d01924c0",
+    "assembly-browser-r2.log": "bc7b0d5e7ce514f33a00289e54f5c54fbbd8c44494a46ceacd84a7947e349294",
+    "assembly-browser-r3.log": "d7a68f5ab500f602f53f1226244af838365a4151801bc5710b5ee4701f252f6b",
+    "assembly-browser-r4.log": "b312a8d6fb079cf36070e1c01c3d31ac4317b2b79900aff21825020272daff97",
+    "cold-r41-diagnostic.log": "bf594b4c63705a22a0b9b8ee1d3fb21cfbc0f22b672f607aec367044733d85b4",
+    "cold-r41-finite-reader.log": "49cd0def63a6d8712eb4aed8bd3dff7cbf68515fb8ba5613ed32339a31599cbf",
+    "r41-atomic-history.log": "276365d2479f0e57dd28031d94a5e06abd593b6dd2ed0e3de1c420553bd375a1",
+    "green-profile-race-native-node.log": "bcd7632aaf2ee01af69c1f435de68da18997936b37d32289eaf00af798b5a06d",
+    "strict-judge-final.log": "cbf400212bf4578bcb52c4cd7d144115a3b86f0d87ad7762548b012e906967cc",
+    "final-review-mutations.log": "576aadf4279a9bbfba34b750fda2aecafafc0800e7116fb120d878eb4a19fb91",
+    "final-node-review-mutations.log": "d38ca2b2f46bd7e2c225bce047b4debfc81145be1eaab70a2cfc2a34549c716a"
+  },
+  "remaining": [
+    "fresh full 123-entry generic mutation ledger from #366 on candidate branch",
+    "original complete run_all --build --update-expected census with strict mutation check retained",
+    "strict full canvas without UPDATE_GOLDEN on final source"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "command": "python audit_downloads.py architecture",
+  "exit_code": 0,
+  "sourceHead": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "run_id": 41382015277,
+  "run_attempt": 1,
+  "original_commands": [
+    {
+      "label": "architecture-cli",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-cli.stdout",
+      "stderr": "architecture-cli.stderr",
+      "stdoutSha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "architecture-unit",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-unit.stdout",
+      "stderr": "architecture-unit.stderr",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "978fd5d443257d7c06e7c91d08acf29907f85c8fa16fd4c32701c0e96a584293",
+      "testsRun": 205
+    },
+    {
+      "label": "architecture-product",
+      "command": [
+        "<python>",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "<repo>",
+      "exitCode": 0,
+      "stdout": "architecture-product.stdout",
+      "stderr": "architecture-product.stderr",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "702ec3547b026840262bbbf3f01a9da22ee0a1f0e946f6af80bd6c9613ce22dc",
+      "testsRun": 18
+    }
+  ],
+  "inputs": 604,
+  "owned": 334,
+  "exclusions": 270,
+  "edges": 798,
+  "diagnostics": 0,
+  "input_closure_sha256": "8c093702abc0c2e0ec1b9c98a58b7585f5e352a4007a4983ce9cdb27fd3a9137",
+  "receipt_sha256": "11fbe5716e022d7691f054528334daee282f6472921f773b5f49fb2cbe19c9c3",
+  "scan_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+  "limitations": [
+    "Only downloaded original command receipts/raw/source hashes verified; no architecture product tests were rerun locally."
+  ]
+}

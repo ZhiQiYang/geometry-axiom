@@ -1,0 +1,9 @@
+native: baseline pass/green
+r06_br09_reject_derived_guide_host: killed/exact-assertion
+r06_br09_reject_derived_finite_grid_host: killed/exact-assertion
+r06_br02_drop_derived_outline_key: killed/exact-assertion
+r06_br02_hide_derived_outer_options: killed/exact-assertion
+r06_br12_dump_before_derived_dependencies: killed/exact-assertion
+native: restored pass/green
+node: baseline fail/unlisted-tag-reached
+{"ok": false, "checkoutUnchanged": true, "phases": [{"kind": "native", "ok": true, "reason": null}, {"kind": "node", "ok": false, "reason": "baseline-not-green"}]}

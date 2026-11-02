@@ -1,0 +1,154 @@
+{
+  "schema": "geometry-ci-followup-acceptance/1",
+  "pr": 340,
+  "accepted": true,
+  "source_head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "execution_head": "fc1c9f565a2e15660e931b3884dca2220cb1b7b2",
+  "snapshot": "/tmp/geometry-resume-20261102/ci-followup/pr340/api/20261102T035059Z",
+  "runs": {
+    "integration": {
+      "id": 41382015317,
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "mutation": {
+      "id": 41382015277,
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  },
+  "job_count": 20,
+  "official_zip_count": 21,
+  "mutation": {
+    "schema": "geometry-mutation-ci-summary/1",
+    "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+    "table_size": 123,
+    "active": 120,
+    "counts": {
+      "killed": 114,
+      "crashed": 1,
+      "survived": 0,
+      "equivalent": 5,
+      "invalid": 0,
+      "stale": 0,
+      "blocked": 0,
+      "retired": 3,
+      "unrun": 0
+    },
+    "ledger_sha256": "52bbad63cc0a281f6d9a5304bc8ddc65ddd96213aeea98057dcb6be0b287b962",
+    "binary_bytes_verified": true,
+    "full_table_strict_exit": 0
+  },
+  "mutation_ledger_sha256": "52bbad63cc0a281f6d9a5304bc8ddc65ddd96213aeea98057dcb6be0b287b962",
+  "mutation_summary_sha256": "df5c9d95aa4a7a8d128b68af33f7f0b0aa6be0b87c4c3662d08c482f99ea9d7a",
+  "native": {
+    "passed": true,
+    "commit_sha": "fc1c9f565a2e15660e931b3884dca2220cb1b7b2",
+    "parts": 3,
+    "suite_count": 230,
+    "executed_suites": 230,
+    "union_equals_full_registry": true,
+    "overlap": [],
+    "counted_tests": 5340,
+    "counted_passed": 5339,
+    "allowed_skips": 1,
+    "shard_suites": {
+      "1": 77,
+      "2": 76,
+      "3": 77
+    },
+    "expected_sha256": "54e86fa13c93080ed45ec7f81dd474d2fcbefa6d5f30b6c75c35d9954f002ca1",
+    "timings_sha256": "c9ddac6697397cfa818ca67be87924840bf244d310b1ddb296c4e86c8319e2a6"
+  },
+  "browser": [
+    {
+      "name": "browser (space)",
+      "passed": 242,
+      "failed": 0
+    },
+    {
+      "name": "browser (assembly)",
+      "passed": 150,
+      "failed": 0
+    },
+    {
+      "name": "browser (documents)",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "name": "browser (grid)",
+      "passed": 356,
+      "failed": 0
+    },
+    {
+      "name": "browser (timber)",
+      "passed": 79,
+      "failed": 0
+    },
+    {
+      "name": "browser (canvas)",
+      "passed": 2267,
+      "failed": 0
+    }
+  ],
+  "evidence": [
+    {
+      "path": "provenance.json",
+      "sha256": "2328d9e87cea7876ffdfc052d26b6b0bb1c8e6e8d9457606fe0e6cbeb8e6ef47"
+    },
+    {
+      "path": "artifact-byte-audit.json",
+      "sha256": "b72aae24ee978fb1a9ecb3547acf4cc7a536d726afc7b2bbe3cba869b96db369"
+    },
+    {
+      "path": "architecture-audit.json",
+      "sha256": "f8dc967fe8408ba901d8f92059d40631776e59a8bac429c5bf2b0ec38dbbfc65"
+    },
+    {
+      "path": "native-reverify-receipt.json",
+      "sha256": "d91e22515effe85e55c585272f7ee6015188d2a56c67f880920d9b076427adb1"
+    },
+    {
+      "path": "native-control-receipt.json",
+      "sha256": "df502bdebd5bddb7d0724689099cfe1de0299339d1187f51eab0dcdc090755aa"
+    },
+    {
+      "path": "mutation-shard-audit.json",
+      "sha256": "8293c3147bf7cd3f1ffacf96275c9874747df2a3526e74692ca3a6b15ce6836b"
+    },
+    {
+      "path": "mutation-verify-receipt.json",
+      "sha256": "5391aa9e603fc44a9be6e279defdbc2e11a358dc7f86a977fc50c94d469742b0"
+    },
+    {
+      "path": "mutation-local-cache-probes.json",
+      "sha256": "2875998276037b3412b914fcbd6585ea3d04bea0616a41d8ab163bbe396bd0a4"
+    },
+    {
+      "path": "official-run-log-audit.json",
+      "sha256": "a2cca3b945fb92c44099b3e2e75c53cb2d40b407f07cfd337def12de043bb86c"
+    },
+    {
+      "path": "independent-review/pr340-final-native-browser-check.json",
+      "sha256": "d999c763fb6a8cf921a2de07b7b351e4c85e97ecf6232192fa846255774bc6f6"
+    },
+    {
+      "path": "independent-review/pr340-terminal-adversarial-review.json",
+      "sha256": "6a79c2a0b17b3a641907f265335f2440b58207397f5a46ef42df08c801f6fc43"
+    }
+  ],
+  "retained_diagnostics": [
+    "Canvas workflow appends one chained server BrokenPipe request traceback after CDP_RESULT. Raw details retained; exact socket-closure cause is not established. No additional uncaught browser exception or controlled assertion failure recorded."
+  ],
+  "excluded_evidence": [
+    "native-control-initial-wrapper-collision/ (known wrapper stdout-path collision, replaced by fresh control)"
+  ],
+  "limitations": [
+    "No product suites, compiler, browser or downloaded binary executed locally. Only unchanged receipt aggregation and hash/strict/cache-negative guards ran.",
+    "No source or PR edits, comments, bases, CI triggers or reruns performed."
+  ],
+  "source_clean": true
+}

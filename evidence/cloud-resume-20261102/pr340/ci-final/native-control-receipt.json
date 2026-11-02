@@ -1,0 +1,60 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "tests/native_sharding_mutation_check.py",
+    "--output",
+    "/tmp/geometry-resume-20261102/ci-followup/pr340/native-local-negative-control"
+  ],
+  "cwd": "/tmp/geometry-pr340-20261102",
+  "exit_code": 0,
+  "stdout_sha256": "17b76e2cd7bd58a0a9538c5b5c6bb906c561e9c739d6b54a139f994c76301ca8",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "receipt": {
+    "passed": true,
+    "baseline_mutant_restored_exit": [
+      0,
+      1,
+      0
+    ],
+    "rows": [
+      {
+        "label": "baseline",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      },
+      {
+        "label": "removed",
+        "exit": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [
+          "test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once"
+        ],
+        "assertion_failure": true,
+        "removed": [
+          "c:integrity"
+        ]
+      },
+      {
+        "label": "restored",
+        "exit": 0,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0,
+        "failure_ids": [],
+        "assertion_failure": true,
+        "removed": []
+      }
+    ]
+  }
+}

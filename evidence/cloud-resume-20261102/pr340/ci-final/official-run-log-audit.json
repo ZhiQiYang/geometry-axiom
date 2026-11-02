@@ -1,0 +1,186 @@
+{
+  "command": "python audit_downloads.py terminal-logs /tmp/geometry-resume-20261102/ci-followup/pr340/api/20261102T035059Z",
+  "exit_code": 0,
+  "jobs": [
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665267,
+      "name": "native (1/3)",
+      "archive_member": "9_native (1_3).txt",
+      "bytes": 45238,
+      "sha256": "54f115b6fa2f68841b6a62679b91e65c7305f80bacc1249c29a55d62ae3d1111",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665426,
+      "name": "native (3/3)",
+      "archive_member": "8_native (3_3).txt",
+      "bytes": 45150,
+      "sha256": "b8fb837571322945c7bce292cc090d2803eb4f529ecd5c198d2345d2981f67b3",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665473,
+      "name": "native (2/3)",
+      "archive_member": "3_native (2_3).txt",
+      "bytes": 45540,
+      "sha256": "bf1b38040ef73bcba2b70b0b881eecb6ef91e2610300a47ed7587a0e19a274f3",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665487,
+      "name": "browser (space)",
+      "archive_member": "7_browser (space).txt",
+      "bytes": 66073,
+      "sha256": "dd20523c5df9e6b099dbb888f1b454d8cf04fd395c8e7370d1ecb8faf1a0bc97",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665488,
+      "name": "browser (assembly)",
+      "archive_member": "4_browser (assembly).txt",
+      "bytes": 62188,
+      "sha256": "71441102726436cfcb77ef5287fc0295fac9209cdfe309bd06c5fdc534e935bb",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665515,
+      "name": "browser (documents)",
+      "archive_member": "2_browser (documents).txt",
+      "bytes": 39706,
+      "sha256": "0845a3ec7c7145eb98bebe64d94f2091f8a66727c9230fa3a3c9334280932d71",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665534,
+      "name": "browser (grid)",
+      "archive_member": "5_browser (grid).txt",
+      "bytes": 372776,
+      "sha256": "084886cd39ba30d4d83c0dfa7d3af19b116835333803c5da6a3fded46ddaa2a3",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665565,
+      "name": "browser (timber)",
+      "archive_member": "6_browser (timber).txt",
+      "bytes": 44963,
+      "sha256": "4a52d4db23dd1bf1be4f970bfa0d94efdbb880a004a1f0faa8ed6975e98e34d3",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125074665571,
+      "name": "browser (canvas)",
+      "archive_member": "1_browser (canvas).txt",
+      "bytes": 747007,
+      "sha256": "0396e80e5890db351a14ecad82f6bff16a28f175a9ed3ec617017410229138f9",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015317,
+      "job_id": 125079048317,
+      "name": "native complete coverage",
+      "archive_member": "0_native complete coverage.txt",
+      "bytes": 25927,
+      "sha256": "2e4b76d3f859a7828c540c135a4347c397aefddb0238bcfa2e526763a0e37752",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125074665301,
+      "name": "Verify merged architecture with original commands",
+      "archive_member": "9_Verify merged architecture with original commands.txt",
+      "bytes": 314401,
+      "sha256": "b5e5b339c57e656a7041222361a1aac955d1b5874530f0a75c224cbfa661e24d",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125075125695,
+      "name": "plan",
+      "archive_member": "8_plan.txt",
+      "bytes": 17852,
+      "sha256": "fe1b1a78d1a4c30367edd355983fe2852d21e9629cf537f43ee23f6cb267a445",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125075460866,
+      "name": "mutation (bridge-1)",
+      "archive_member": "7_mutation (bridge-1).txt",
+      "bytes": 24552,
+      "sha256": "a7209e09137a7434d6f6f055b9708ec64a2823961f5b414b9bd344c6fc7693e1",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125075460870,
+      "name": "mutation (bridge-3)",
+      "archive_member": "5_mutation (bridge-3).txt",
+      "bytes": 24261,
+      "sha256": "cc1b92675d19060bfc69f405f59f4ee21be0671acb676d8db7913c2cffe42061",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125075460879,
+      "name": "mutation (core-2)",
+      "archive_member": "4_mutation (core-2).txt",
+      "bytes": 28973,
+      "sha256": "4478d1d21bdf8fe6587cd50cbf5e2188b0dc7efaf02426ac6b3498c3fc868428",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125075460922,
+      "name": "mutation (core-3)",
+      "archive_member": "3_mutation (core-3).txt",
+      "bytes": 28446,
+      "sha256": "1b57a14a3aa479243399f9df894d0f1dfb84303f79fcffc44ecd7d7afcb94e12",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125075460939,
+      "name": "mutation (core-4)",
+      "archive_member": "6_mutation (core-4).txt",
+      "bytes": 31049,
+      "sha256": "2784e074360a78468c27848e1d352ef3477b652f11fc5e6d6d03e94dae380721",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125075460966,
+      "name": "mutation (core-1)",
+      "archive_member": "2_mutation (core-1).txt",
+      "bytes": 29909,
+      "sha256": "34325a1434085525433293b33401eda71ff06727884a0404613bc5745482a95c",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125075460985,
+      "name": "mutation (bridge-2)",
+      "archive_member": "1_mutation (bridge-2).txt",
+      "bytes": 24310,
+      "sha256": "18e2c97ffbfe29b010f8398498087bcea3a4087191bb4026bde267eb6849caec",
+      "byte_equal": true
+    },
+    {
+      "run_id": 41382015277,
+      "job_id": 125084142464,
+      "name": "Verify complete mutation evidence",
+      "archive_member": "0_Verify complete mutation evidence.txt",
+      "bytes": 31784,
+      "sha256": "a4a88e8b95050075c9c0919e429331d076b623ab90130fabbc1cba84e6c11d3b",
+      "byte_equal": true
+    }
+  ]
+}
