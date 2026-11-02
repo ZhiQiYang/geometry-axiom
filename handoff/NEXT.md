@@ -1,3 +1,31 @@
+# CURRENT 2026-11-02T13:42:17.318636+00:00 — 持續工作；本節取代舊活程序／HEAD／ready
+
+使用者11/2排序：366→363→340/339/341/342/343/346/347/348→355UI15→344/345與canvas拆片→R03。繁中／英文commit；不rebase、force、mainmerge、改SSOT／決策／安全設定或刪原件。本機Claude才合main。
+
+## 當前來源與真狀態
+
+- **main最新實讀 fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d**，本機剛合#359 R08；父e020與ccbd88。不可繼續把e020稱目前main。
+- **#340新source abbf1465e4617110f16892ba3925b20615345177**，公開codex/kernel-without-woodworking-20261023；本機工作樹/tmp/geometry-pr340-20261102目前本地branch名codex/kernel-main-convergence-20261102，push明確HEAD:公開branch，不用預設branch名。parents前F edf556...＋新main fca3；唯一ledger衝突取新main完整bytes，原check0/123=114k1crashed5eq3ret、stale0。對main17歷史evidence＋2份待重產architecture衍生檔，全部primary產品/tests/judge/expected/manifest相同。新#366manual **41453934297**、原integration **41453943080** 各已一次啟動，**終態未收**，不要重dispatch。draft；正文/prbody**9e54a67e800d06c700c9d46e7d47f8e3ae5110a2**與comment6578557252已回讀。舊F edf的10CI綠有效但不移標新來源。
+- **#345原F f8f0b433ee01429c2c4d7d5f20a85d3d9a9f1b12** 固定舊e020合流，真10logical gates全收：九attempt1成功＋documents attempt2新執行，其他九繼承列不算新跑；actuald917902400dc18294191a6c50aa990178fe279a0同tree。237native/5420pass1GDI、canvas2286/86、docs真47/0；舊documents取消/root403/未知retry發起者原件保留。prbody**a0e6b74e691bb416af4ab7c8d7adadd6458c84dc**、comment6577377213；新main fca3未合入該F，不冒最新整合通過。最後peer3574真核兩F24ZIP/1334members。
+- **#368 utility新draft**，codex/ci-documents-checkout-20261102 @ **b2432c9ea79a6927675883ddde04f629b159be2d**；唯一writer /root/chain_inventory/peer_pr345。只docs專用sparse/blob:none排根evidence，保其他primary/nestedfixture/原10min與其他suite/#366/tool_hash/credentials；原check0、不需第二123。正式CI **41447885087真10/10success**，actual**310bebb505ea04309634279b7025c1849a35d88d**同tree37255a53、base仍e020。原nativeCLI0/summary精確官方、237/5420/1；fullcanvas2286/86golden、docs47/0；12ZIP/667members/10真logs、1810checks全核，10.17MB raw一次archive3.80MB已推。writer正在唯一正文/prbody同步；不要競寫。105s是實際終態不是受控網路倍率。rootappattach原cell390無ack效果unknown，不重試冒attached。
+- **#363 F4 7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4** 三阻擋全修／12CI／真fresh兩profile與controls／獨立dot可合6571175540有效，未mainmerge；最新API仍clean。#366已mergeddf7；#339已merged，340後跳341不重開339。
+- **#367 D e5b0bc23b04e872a68b066bd5b51d57e2c104943** 所有獨立驗證已完成、不重跑：官方12green、full2317/86、兩片898+1419、原native/canvas聚合及summary精確、6artifact負例、真正harness D/M/D0/1/0(482.395/484.042/480.055s)與peer10669/9662。localM aec3...唯一false&&9bytes未push；F01captured0/fullunknown、F02socket0assert環境紅保留。prbody6e9a4e79e33c33434099e0894c66b23264d6a731；draft，上游R06/344及最新main組合未驗。#344原F d794...真full三相0/1/0、20CI/peer237有效，原PRbody707a633...；不把新main冒入原F。
+
+## 真正在做與下一步（不可把預備冒正式驗收）
+
+1. root收340新source兩CI，原#366 verifier全9ZIP/cache原bytes、ledger/receipt採入後原check與architecture三條，再固定最終F、必要CI、最新審查。僅當current-head審查可合才READY-TO-MERGE，由本機合；不要舊history一寫READY就代合。
+2. /root/pr366_evidence獨占**#341 private preparation**外部目錄，v1原36C/Rf/Rj正例全0已保，F仍oldedf；v2seal**32352be140c5037123cd384ec962f9355f5bb8e8a81056eccff3ce1929d97363**／158inputs、真synthetic0/-9/0與錯seal拒已保。新pilot只准外部driver/counter/build/seal準備，24child固定schedule、20s/16MiB原限、最多60s窗口；**尚未授權取樣，等root檢閱實際seal後明確release獨占slot**。正式B1/R16/512World/full14/41仍UNRUN。Rf僅fallback；Rj聯合341+343撤回且保unique bookkeeping，不冒純341收益。main當前14methods/41controls不可覆回舊10/23；compact=false漏sort不是等價baseline。340真合main後才#341改base/main一般merge正式同源驗收。
+3. 接342/343/346/347/348，來源祖先在main≠歷史gate完成。R16原memberoverflow2.21665紅保留；348原H7有效不重跑，dot11/1 patch照最終source採，600/1200與CAPACITY不改。355 UI15仍等343→346→347同源；不碰已交D44修正。R03 afterR02/PF2–6；唯讀inventory與peer372已完成，FT-S1 A、無退距總上限已決不重問，native/PFH原語不冒AppL4，所有新產品runtime UNRUN。
+
+## 耐重啟證據
+
+最新E **59f2cac42862dec39a5d0216b4e1bff0f4b0ccc9**，codex/cloud-resume-evidence-20261102／evidence/cloud-resume-20261102/；普通push及remote SHA核對。包含新main合流原失敗/精確Git blobs/解衝突/原check/dispatch/body，368全部12原ZIP/10logs/來源/CLI原件，v2工具準備原件及R03交叉peer。前E bfa401c1、23a234e、8a1bd9、65a4a1依序保所有兩F正式原件與完整123 ELF/cache真bytes、367全部全量原件/控制；沒有刪原證據。只存本地/tmp/SHM不能當持久。
+
+環境/workspace100%不可寫；/tmp約1.9GiB、SHM約10GiB仍有空間，fresh核實後才新重測。禁止ls-tree -l/-rlz歷史全樹觸發lazy下載。共用pool /tmp/geometry-live-20261102 HEAD unborn，不當測試source；linkedWT讀自身HEAD。舊erroredagents不重試/換model/另建任務；健康agent使用同模型接不同不競寫工作。現有work-manager實體ledger仍unknown，不造替代空佇列、不每輪廣搜。
+
+---
+以下歷史保留，不作目前HEAD或活程序
+
 # CURRENT 2026-11-02T11:58:23.186212+00:00 — 持續推進，沒有停止
 
 本節覆蓋下方所有舊活程序／ready標籤。繁體中文／英文commit；不rebase/force、不merge main、不改公理／正典／決策佇列。使用者11/2排序維持366→363→340/339/341/342/343/346/347/348→355UI15→小件/canvas拆片→R03。
