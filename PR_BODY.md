@@ -1,21 +1,18 @@
-修復R06三個阻擋：合法衍生承載面來源判定、完整R41來源鍵經草稿／正式保存／冷開，以及混合derived-host的dump依賴順序。完整產品head **`7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4`**；base main **`df7eb43af3389ff2afc1a73aaf4e57580ae612fc`**。最新[固定head獨立dot審查6571175540](https://github.com/ZhiQiYang/geometry-axiom/pull/363#issuecomment-6571175540)判「可合併」。**READY-TO-MERGE #363**；合併交本機Claude，Codex不合main。
+R06 從衍生承載面建立重複開間，保留 R41 來源鍵與冷重放順序。原三項修正已在固定 F4 驗收；main 後續合入 K1／R08，現新增保存讀取契約合流阻擋。
 
-| 唯一current-state項目 | 已實跑／沿用閉包／未驗 |
+**當前 PR head：7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4**。base=main；真正目前 main **fca3f1a80f1dab564f5dd4c01c9e1226eaf09e2d**，不要把 API 的歷史 base.sha 或舊合成 946ba6 當成目前同源。**Draft／未達合併條件**。
+
+| 唯一 current-state 項目 | 真結果與界線 |
 |---|---|
-| ① 合法derived host | guide／普通finite-grid不因宿主derived_fill_id被誤判from-fill，原來源種類、phase／子格／同面／垂直軸守門保留；原生正反例、料長、confirm／Undo／Redo／cold replay已實跑。現native沒有真正from-fill網格變體，不冒稱建立該種類真負例 |
-| ② R41來源鍵全鏈 | native parser／resolver／definition-result codec／owned anchor／可見草稿／正式Save／全新profile＋新服務Open保完整鍵。真UI R06段50／partial200均通過，含多分量外環與孔邊／過期／別名等九個原子拒絕。有限PF reader保complete:false及原全PF NotIn斷言，不宣稱全PF能力 |
-| ③ 混合derived dump | 有derived host的assembly在finish／grid／reference依賴後輸出；新R06及舊D34 fresh dump/state/undo/redo已實跑；無derived host原輸出順序保留 |
-| 正式integration | [41396262836](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41396262836) 10/10 jobs success。真execution合成merge **`946ba6274e0cbcfab20b8fc0433386e187870d83`**；tree與head同為`b39c4d0f71d59097db6af5efd4732ad178e28c3c`，不移標execution |
-| native／覆蓋 | 三片77＋78＋77＝232無漏重，**5419pass／0fail／1原允許GDI skip**；7個exit-only皆0。官方coverage與原移除c:integrity反證0／1／0原件已核；expected SHA256 `cba8aa2be2c2d252050634f88a9dfc1c03e498d1d938a30ee3c55ca513df4243` |
-| 六browser | 全六成功；fullcanvas **2317／0／0、86段golden matched**，1950秒<2100。assembly partial200／0／0含R41真保存／fresh profile＋新服務coldOpen，不以partial冒full。P77恢復134、獨立R06=50，其餘84舊段未變。P38唯一原預期fb-auto-probe，不能說整場零例外 |
-| R06正式反證 | [41396262818](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41396262818) 2/2成功；官方browser ZIP原168成員核對，native取消權杖及三個browser撤線各唯一指定AssertionError killed／前後全綠／來源與binary恢復；card六cases均killed含A04，依各case原CR19/CR20 judge分列。A04僅修失效needle，仍保PANEL_FILL、只撤CARD，不改CR20斷言 |
-| generic完整123 | 真execution仍`26dc99117ac942ec8f50145d875d6e55594f3835`／[41384504486](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41384504486)，原verifier0、114killed／1crashed(M20)／5equivalent／3retired，其餘0；7cache controls0／1／0、binary／sidecar／159bridge raw全核。185 inputs／522 oracle paths／53bridge oracle／runner／compiler閉包至F4一致；F4原`python -B tests/mutate.py --check`真0/5.3278秒，不冒稱F4重跑123 |
-| 新修正反證沿用 | 五native真execution`4e21e2a1207e4fcd27baec27d2b4c25a3303bb8c`及三Node真26dc，原具名紅／恢復綠；產品／test／oracle／compiler至F4同一閉包，不移標。最新獨立dot另報28native＋8Node本輪實跑；那是其原件，不冒稱由我重跑 |
-| 完整expected producer | 真A=`e9f4dd75cfd4eb9965e3af249200b918907d62db`，原`python3 tests/run_all.py --build --update-expected`／16MiB stack／Node24.22.1／2100秒；05:05:27–05:37:43UTC，supervisor1936.416秒，exit0／232／5419pass＋1GDI。只3counts增加48→53／17→18／753→756及3unit label，集合／mode不變；原CLI格式逐byte採入F2，不手填 |
-| 架構 | 原executionE=`3aa03de1e309883e53829c92f064e3ebd51a0ad2`，三原CLI0、205＋18、607inputs／335owned＋272excluded、803edges／0diagnostics；四canonical採A，A→F4只有expected metadata，實際架構inputs／policy985＋55不變 |
-| 合流與owner | F2=`9171b0455c5f44e39e2007ae0e778aef7274cf74`→普通merge main得F3→普通merge分診器`3cc058ed287916aa8ab976c3f5b60e988cbeb57b`得F4，三tree全等；兩ref普通atomic FF，無rebase／force。分診器同項patch保歷史 |
-| 證據核收與界線 | 10必要官方ZIP逐byte符合API digest、12job logs與原structured/raw具名結果已核；下載ELF執行0次。原source/tree/census/ledger/runtime子peer PASS保留；新artifact子peer因同模型capacity未完成，由主代理有界獨立核收exit0、`PASS_PRIMARY_BOUNDED_REVIEW`補齊，不冒稱新子peer PASS。四圖片artifact僅metadata，未作視覺QA |
+| ① 合法 derived-host 被誤當 from-fill 拒絕 | 原 F4 已修、已驗，保持原件；沒有把不存在的原生 from-fill 變體冒成額外負例 |
+| ② R41 outer source key | 原生→草稿→保存→真正第二 profile／新服務重開，原 F4 已驗；多 component／outer-key 反例保留 |
+| ③ 混合 derived dump 冷重放 | 原 F4 已修、冷重放／undo／redo與順序反例已驗；未改無 host 的 dump 順序 |
+| F4 正式驗收與舊可合審查 | F4 的12 CI／原 artifacts／獨立6571175540可合與逐條回覆6571845252保留為固定舊來源；不得移標到尚未驗完的新 main 合流 |
+| 新 main 的實際阻擋 | PF-H finite-profile 的 readerCapabilities 五參數與 K1 cutting 兩參數 options 相交；prepareProjectScene 若盲選一側，會遺失 PF-H 重開或 cutting 能力。mergeable clean 不證明契約相容 |
+| 隔離合流候選 P | **c2eb5edc99d2880a65583f46085617d99a6f191b**，一般 merge F4＋精確 fca3，14衝突保雙側契約；**尚未採入本 PR、尚未推送，不把本地 SHA 冒成公開來源**。待跨 agent 審查後才採入 |
+| P 已實跑範圍 | 原4套純 Node 契約51/51；新增8案固定與恢復8/8，撤回PF-H reader、workspace options、cutting opt-in各具名紅。原 O2 bridge編譯 exit0／24.062s，未執行該ELF；42個既有R06 mutant anchors preflight匹配，未當成39個mutants已重跑 |
+| P 未完成項 | 真 fresh-profile／native World／完整 native與六 browser仍未跑；不能用上述純契約測試替代。P 原帳本 check exit1、120 stale／3retired，保留原紅，待 #366 最終整份重產與架構重產 |
+| 兩側預期資料合流 | 原 golden 各段值不改，88段精確 union／total2360只是合併資料，**新完整 canvas 未驗**；Node aggregate原740明列待原完整 producer，不手算、取max或局部拼接新數字 |
+| 合併判斷 | 新來源完整採入、原 producer／整份帳本與架構、正式UI／CI及最新審查完成前，保持 draft。Codex不合main，不force、不rebase、不改公理層／正典／決策佇列 |
 
-第一完整census真exit1原件保留：PID1不reap使兩個已終止sleep留Z，原afterKill斷言紅；外部task-local subreaper僅回收自身死後代／零signal／不改安全設定或原斷言，固定／撤真groupkill／恢復0／1／0，活sleep負控保留。只有第二完整成功輪才採expected，沒有挑掉原紅。Runtime F4＝A、與26dc不同（card Python helper參與身份），未概括所有runtime相同。
-
-[固定E完整原件、ZIP、manifest、audit與PROGRESS](https://github.com/ZhiQiYang/geometry-axiom/tree/e9152ea6c0ef8ab57611a6a86edf0416b464074a/evidence/cloud-resume-20261102/pr363/ci-F4)。[主代理最後收件範圍與原假設失敗](https://github.com/ZhiQiYang/geometry-axiom/tree/e9152ea6c0ef8ab57611a6a86edf0416b464074a/evidence/cloud-resume-20261102/pr363/root-final-audit)。成功及失敗census、實際六native binary原bytes／sidecars保同一證據分支；這些不是R8 ELF。未改公理、閱讀器、決策佇列、golden、timeout或允許skip。
+[已發布固定歷史證據索引](https://github.com/ZhiQiYang/geometry-axiom/tree/59f2cac42862dec39a5d0216b4e1bff0f4b0ccc9/evidence/cloud-resume-20261102)。新 P 原件目前在雲端隔離工作區，尚未持久發布；發布時會另列 E、完整 source SHA 和實際 execution，不追改原 F4 的身份。
