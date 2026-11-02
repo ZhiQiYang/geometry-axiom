@@ -1,0 +1,820 @@
+diff --git a/.github/scripts/architecture_evidence.py b/.github/scripts/architecture_evidence.py
+new file mode 100644
+index 00000000..4b456e67
+--- /dev/null
++++ b/.github/scripts/architecture_evidence.py
+@@ -0,0 +1,99 @@
++"""在 CI 記錄原架構三命令，產出新來源的衍生資料；不改 scanner。"""
++import argparse
++from collections import Counter
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import subprocess
++import sys
++
++ROOT = Path(__file__).resolve().parents[2]
++MANIFEST = "geometry-core/domain-decoupling/product-architecture.json"
++MAIN = "8f82b207e87c086705a1d8b7a00e2f215c07cbcf"
++
++
++def digest(raw):
++    return hashlib.sha256(raw).hexdigest()
++
++
++def save(path, value):
++    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
++
++
++def run(out):
++    out.mkdir(parents=True, exist_ok=False)
++    head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
++    subprocess.run(["git", "diff", "--quiet", "HEAD"], cwd=ROOT, check=True)
++    commands = [
++        ("architecture-cli", [sys.executable, "-B", "tests/architecture_contract.py", "--root", ".", "--manifest", MANIFEST]),
++        ("architecture-unit", [sys.executable, "-B", "tests/test_architecture_contract.py"]),
++        ("architecture-product", [sys.executable, "-B", "tests/test_product_architecture.py"]),
++    ]
++    receipt = {"schema": "geometry-architecture-ci-receipt/1", "sourceHead": head,
++               "adoptedMain": MAIN, "runId": os.environ.get("GITHUB_RUN_ID"),
++               "runAttempt": os.environ.get("GITHUB_RUN_ATTEMPT"), "complete": False, "commands": []}
++    for label, command in commands:
++        stdout, stderr = out / (label + ".stdout"), out / (label + ".stderr")
++        with stdout.open("wb") as output, stderr.open("wb") as errors:
++            process = subprocess.run(command, cwd=ROOT, stdout=output, stderr=errors)
++        raw_out, raw_err = stdout.read_bytes(), stderr.read_bytes()
++        print(raw_out.decode("utf-8", errors="replace"), end="", flush=True)
++        print(raw_err.decode("utf-8", errors="replace"), end="", file=sys.stderr, flush=True)
++        row = {"label": label, "command": ["<python>", *command[1:]], "cwd": "<repo>",
++               "exitCode": process.returncode, "stdout": stdout.name, "stderr": stderr.name,
++               "stdoutSha256": digest(raw_out), "stderrSha256": digest(raw_err)}
++        if label != "architecture-cli":
++            match = re.search(rb"Ran (\d+) tests? in ", raw_err)
++            if match is None or int(match[1]) == 0 or re.search(rb"\bskipped=[1-9]\d*", raw_err):
++                row["completenessProblem"] = "未找到完整非零 unittest 計數，或含 skip"
++            else:
++                row["testsRun"] = int(match[1])
++        receipt["commands"].append(row)
++        save(out / "product-architecture-receipt.json", receipt)
++        if process.returncode != 0 or "completenessProblem" in row:
++            raise RuntimeError("原架構命令未完整通過：" + label)
++
++    scan_bytes = (out / "architecture-cli.stdout").read_bytes()
++    subprocess.run(["git", "diff", "--quiet", "HEAD"], cwd=ROOT, check=True)
++    scan = json.loads(scan_bytes)
++    if scan.get("ok") is not True or scan.get("diagnostics") != []:
++        raise RuntimeError("原 scanner 未回報零 diagnostics")
++    (out / "product-architecture-scan.json").write_bytes(scan_bytes)
++    manifest_bytes = (ROOT / MANIFEST).read_bytes().replace(b"\r\n", b"\n")
++    manifest = json.loads(manifest_bytes)
++    inputs = []
++    for entry in manifest["sources"] + manifest["exclusions"]:
++        path = entry["path"]
++        inputs.append({"path": path, "lfSha256": digest((ROOT / path).read_bytes().replace(b"\r\n", b"\n"))})
++    inputs.sort(key=lambda entry: entry["path"])
++    receipt.update({"complete": True, "manifestLfSha256": digest(manifest_bytes),
++                    "scannerLfSha256": digest((ROOT / "tests/architecture_contract.py").read_bytes().replace(b"\r\n", b"\n")),
++                    "testScriptsLfSha256": {command[2]: digest((ROOT / command[2]).read_bytes().replace(b"\r\n", b"\n"))
++                                            for _, command in commands[1:]},
++                    "scanSha256": digest(scan_bytes), "ownedCount": len(manifest["sources"]),
++                    "exclusionCount": len(manifest["exclusions"]), "edgeCount": len(scan["edges"]),
++                    "diagnosticCount": 0, "inputs": inputs,
++                    "inputLfClosureSha256": digest("\n".join(entry["path"] + " " + entry["lfSha256"] for entry in inputs).encode("utf-8"))})
++    save(out / "product-architecture-receipt.json", receipt)
++    layers = Counter(entry["layer"] for entry in manifest["sources"])
++    rows = "\n".join("| " + layer + " | " + str(count) + " |" for layer, count in sorted(layers.items()))
++    tests = "、".join(row["label"] + "=" + str(row["testsRun"]) for row in receipt["commands"] if "testsRun" in row)
++    report = (
++        "# Product architecture — GitHub 新來源收據\n\n"
++        f"來源 `{head}`；採入 main `{MAIN}`；Actions run `{receipt['runId']}`。\n\n"
++        "這份衍生資料來自原 scanner CLI 與原兩支 unittest 的實際執行；三命令均 exit 0、零 skip。"
++        "它只證明靜態依賴契約，不能替代演算法責任審查、原生／突變／瀏覽器或 SSOT 驗證。\n\n"
++        f"本次 {len(inputs)} inputs、{receipt['ownedCount']} owned、{receipt['exclusionCount']} exclusions、"
++        f"{receipt['edgeCount']} edges、0 diagnostics；{tests}。完整命令、原始輸出與雜湊在同 artifact。\n\n"
++        "| Layer | Sources |\n|---|---:|\n" + rows + "\n\n"
++        f"main 的歷史收據保留在 Git `{MAIN}`，本次沒有改寫其來源或沿用其綠燈。\n"
++    )
++    (out / "PRODUCT-ARCHITECTURE.md").write_text(report, encoding="utf-8")
++
++
++if __name__ == "__main__":
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--out", type=Path, required=True)
++    run(parser.parse_args().out.resolve())
+diff --git a/.github/scripts/mutation_evidence.py b/.github/scripts/mutation_evidence.py
+new file mode 100644
+index 00000000..a64122c1
+--- /dev/null
++++ b/.github/scripts/mutation_evidence.py
+@@ -0,0 +1,266 @@
++"""CI supervisor for the unchanged, strict mutation runner and its artifacts."""
++import argparse
++import contextlib
++import hashlib
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tarfile
++
++ROOT = Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(ROOT / "tests"))
++import mutate as mt
++
++
++def sha(path):
++    return hashlib.sha256(path.read_bytes()).hexdigest()
++
++
++def supervisor_sha():
++    return hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
++
++
++def read_json(path):
++    def unique(pairs):
++        result = {}
++        for key, value in pairs:
++            if key in result:
++                raise ValueError("duplicate JSON key: " + key)
++            result[key] = value
++        return result
++    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique)
++
++
++def write_json(path, value):
++    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
++
++
++def head():
++    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
++
++
++def shards():
++    result = {}
++    for kind, count in (("core", 4), ("bridge", 3)):
++        items = [m for m in mt.MUTANTS if (m.get("binary") == "bridge") == (kind == "bridge")]
++        for index in range(count):
++            result[f"{kind}-{index + 1}"] = [m["id"] for m in items[index::count]]
++    flat = [rid for ids in result.values() for rid in ids]
++    assert len(flat) == len(set(flat)) == len(mt.MUTANTS)
++    assert set(flat) == {m["id"] for m in mt.MUTANTS}
++    return result
++
++
++def selected(ids):
++    return [m for m in mt.MUTANTS if m["id"] in ids]
++
++
++def require_binaries(mutants, records, cache):
++    """Unlike --check alone, artifact verification requires every executed binary."""
++    sources = mt.Sources(ROOT)
++    for mutant in mutants:
++        record = records[mutant["id"]]
++        if record["verdict"] == "retired":
++            continue
++        execution = record["execution"]
++        if mutant.get("binary") == "bridge":
++            binary = "bridge.exe" if execution["platform"] == "nt" else "bridge"
++            baseline = cache / "_bridge-baseline" / execution["head"]
++            folder = cache / mutant["id"]
++            paths = [
++                (baseline / binary, execution["baseline_identity"]),
++                (folder / "bridge-mutant" / binary, execution["mutant_identity"]),
++                (folder / "bridge-restored" / binary, execution["restored_identity"]),
++            ]
++            trials = execution.get("mutant_attempts") or [execution["mutant"]]
++            raw = [(baseline, execution["baseline_build"]), (baseline, execution["baseline"]),
++                   (folder, execution["mutant_build"]), (folder, execution["restored_build"]),
++                   (folder, execution["restored"]), *[(folder, trial) for trial in trials]]
++            for directory, receipt in raw:
++                for stream in ("stdout", "stderr"):
++                    path = directory / receipt[stream + "_file"]
++                    if not path.is_file() or sha(path) != receipt[stream + "_sha256"]:
++                        raise ValueError("missing or changed bridge raw output: " + str(path))
++        else:
++            paths = [
++                (cache / mutant["id"] / "_mut.exe", {
++                    "exe_sha256": execution["exe_sha256"],
++                    "fingerprint": mt.mutant_fingerprint(mutant, sources, execution["compile_sha256"])}),
++                (cache / "_baseline" / "baseline.exe", {
++                    "exe_sha256": execution["baseline_exe_sha256"],
++                    "fingerprint": mt.baseline_fingerprint(sources, execution["compile_sha256"])}),
++            ]
++        for path, identity in paths:
++            if not path.is_file() or sha(path) != identity["exe_sha256"]:
++                raise ValueError("missing or changed executed binary: " + str(path))
++            sidecar = path.with_name(path.name + ".fingerprint.json")
++            if not sidecar.is_file():
++                raise ValueError("missing executed binary sidecar: " + str(sidecar))
++            metadata = read_json(sidecar)
++            if mutant.get("binary") == "bridge":
++                if sha(sidecar) != identity["sidecar_sha256"] or metadata != identity["sidecar"]:
++                    raise ValueError("changed official bridge sidecar: " + str(sidecar))
++            elif metadata.get("exe_sha256") != identity["exe_sha256"] or metadata.get("fingerprint") != identity["fingerprint"]:
++                raise ValueError("changed core binary sidecar: " + str(sidecar))
++
++
++def strict_check(mutants, ledger, cache):
++    previous = mt.MUT_ROOT
++    try:
++        mt.MUT_ROOT = cache
++        status = mt.check_pass(mutants, root=ROOT, results_path=ledger, require_execution=True)
++        if status != 0:
++            raise ValueError("strict mutation check failed: " + str(status))
++    finally:
++        mt.MUT_ROOT = previous
++
++
++def negative_probe(mutants, ledger, records, cache):
++    mutant = next(m for m in mutants if records[m["id"]]["verdict"] != "retired")
++    execution = records[mutant["id"]]["execution"]
++    if execution["platform"] != os.name:
++        raise ValueError("negative cache probe must run on the execution platform")
++    bridge = mutant.get("binary") == "bridge"
++    path = (cache / mutant["id"] / "bridge-mutant" / ("bridge.exe" if os.name == "nt" else "bridge")) if bridge else cache / mutant["id"] / "_mut.exe"
++    original = path.read_bytes()
++    previous = mt.MUT_ROOT
++    try:
++        mt.MUT_ROOT = cache
++        path.write_bytes(original + b"\nCI deliberately mismatched cache probe\n")
++        problems = mt.execution_problems(mutant, records[mutant["id"]], records[mutant["id"]]["verdict"], mt.Sources(ROOT))
++        expected = "bridge executable artifact changed" if bridge else "cached binary differs from executed receipt"
++        if not any(expected in problem for problem in problems):
++            raise ValueError("mismatched cache did not fail at the binary guard: " + repr(problems))
++        with contextlib.redirect_stdout(sys.stdout):
++            if mt.check_pass(mutants, root=ROOT, results_path=ledger, require_execution=True) != 1:
++                raise ValueError("mismatched cache did not produce strict exit 1")
++        return {"id": mutant["id"], "expected": expected, "strict_exit": 1}
++    finally:
++        path.write_bytes(original)
++        mt.MUT_ROOT = previous
++
++
++def run_shard(name, out):
++    ids = shards()[name]
++    out.mkdir(parents=True, exist_ok=False)
++    cache, ledger = out / "cache", out / "mutants_results.json"
++    cache.mkdir()
++    subprocess.run(["git", "diff", "--exit-code", "HEAD"], cwd=ROOT, check=True)
++    env = dict(os.environ, MUTATE_CACHE=str(cache), MUTATE_RESULTS=str(ledger), PYTHONUNBUFFERED="1")
++    command = [sys.executable, "tests/mutate.py", *ids]
++    with (out / "execution.log").open("w", encoding="utf-8") as log:
++        process = subprocess.Popen(command, cwd=ROOT, env=env, stdout=subprocess.PIPE,
++                                   stderr=subprocess.STDOUT, text=True, encoding="utf-8")
++        for line in process.stdout:
++            log.write(line)
++            log.flush()
++            print(line, end="", flush=True)
++        status = process.wait()
++    if status != 0:
++        raise ValueError("mutation execution failed: " + str(status))
++    records = read_json(ledger)
++    if set(records) != set(ids):
++        raise ValueError("shard ledger does not cover exactly its assigned IDs")
++    if any(record.get("execution", {}).get("head") != head()
++           for record in records.values() if record["verdict"] != "retired"):
++        raise ValueError("shard contains execution receipts from another head")
++    mutants = selected(ids)
++    require_binaries(mutants, records, cache)
++    strict_check(mutants, ledger, cache)
++    probe = negative_probe(mutants, ledger, records, cache)
++    require_binaries(mutants, records, cache)
++    strict_check(mutants, ledger, cache)
++    archive = out / "cache.tar.gz"
++    def keep(info):
++        # The committed scratch clone and optional OS core dumps are not receipts.
++        if Path(info.name).name == "core" or Path(info.name).name.startswith("core."):
++            return None
++        return info
++    with tarfile.open(archive, "w:gz") as tar:
++        for path in sorted(cache.iterdir()):
++            if path.name != "_bridge-work":
++                tar.add(path, arcname=path.name, filter=keep)
++    write_json(out / "manifest.json", {
++        "schema": "geometry-mutation-ci-shard/1", "head": head(), "shard": name, "ids": ids,
++        "run_id": os.environ.get("GITHUB_RUN_ID"), "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
++        "platform": os.name, "tool_sha256": mt.tool_hash(), "supervisor_sha256": supervisor_sha(),
++        "ledger_sha256": sha(ledger), "cache_sha256": sha(archive),
++        "execution_log_sha256": sha(out / "execution.log"), "negative_cache_probe": probe,
++        "compiler": subprocess.check_output([os.environ.get("CC", "cc"), "--version"], text=True),
++    })
++
++
++def verify(artifacts, out):
++    out.mkdir(parents=True, exist_ok=False)
++    expected = shards()
++    folders = sorted(path.parent for path in artifacts.glob("*/manifest.json"))
++    if len(folders) != len(expected):
++        raise ValueError("missing or extra shard artifacts")
++    merged, seen, manifests = {}, set(), []
++    for folder in folders:
++        manifest = read_json(folder / "manifest.json")
++        name = manifest["shard"]
++        if name not in expected or name in seen or manifest["ids"] != expected[name]:
++            raise ValueError("unknown, duplicate or changed shard assignment")
++        seen.add(name)
++        if (manifest["schema"] != "geometry-mutation-ci-shard/1" or manifest["head"] != head()
++                or manifest["tool_sha256"] != mt.tool_hash() or manifest["supervisor_sha256"] != supervisor_sha()):
++            raise ValueError("artifact source, runner or supervisor differs from checkout")
++        for filename, field in (("mutants_results.json", "ledger_sha256"), ("cache.tar.gz", "cache_sha256"), ("execution.log", "execution_log_sha256")):
++            if sha(folder / filename) != manifest[field]:
++                raise ValueError("artifact bytes changed: " + filename)
++        records = read_json(folder / "mutants_results.json")
++        if set(records) != set(expected[name]) or set(records) & set(merged):
++            raise ValueError("missing, unknown or duplicate mutation records")
++        if any(record.get("execution", {}).get("head") != head()
++               for record in records.values() if record["verdict"] != "retired"):
++            raise ValueError("artifact contains execution receipts from another head")
++        cache = out / name
++        cache.mkdir()
++        with tarfile.open(folder / "cache.tar.gz", "r:gz") as tar:
++            tar.extractall(cache, filter="data")
++        mutants = selected(expected[name])
++        require_binaries(mutants, records, cache)
++        strict_check(mutants, folder / "mutants_results.json", cache)
++        merged.update(records)
++        manifests.append(manifest)
++    if seen != set(expected) or set(merged) != {m["id"] for m in mt.MUTANTS}:
++        raise ValueError("aggregate is not the complete current mutation table")
++    ledger = out / "mutants_results.json"
++    write_json(ledger, merged)
++    # Full-table source/closure/mutant/oracle/receipt validation is separate from
++    # the required, byte-exact artifact checks performed for every shard above.
++    strict_check(mt.MUTANTS, ledger, out / "no-local-binaries")
++    previous = mt.MUT_ROOT
++    try:
++        mt.MUT_ROOT = out / "no-local-binaries"
++        table = mt.evaluate_table(mt.MUTANTS, merged, mt.Sources(ROOT), "", mt.oracle_hash(), require_execution=True)
++    finally:
++        mt.MUT_ROOT = previous
++    write_json(out / "summary.json", {
++        "schema": "geometry-mutation-ci-summary/1", "head": head(), "table_size": len(mt.MUTANTS),
++        "active": sum(record["verdict"] != "retired" for record in merged.values()),
++        "counts": mt.tally(table), "ledger_sha256": sha(ledger), "shards": manifests,
++        "binary_bytes_verified": True, "full_table_strict_exit": 0,
++    })
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("mode", choices=("plan", "run", "verify"))
++    parser.add_argument("--shard")
++    parser.add_argument("--out", type=Path)
++    parser.add_argument("--artifacts", type=Path)
++    args = parser.parse_args()
++    if args.mode == "plan":
++        print("matrix=" + json.dumps({"include": [{"shard": name} for name in shards()]}))
++    elif args.mode == "run":
++        run_shard(args.shard, args.out.resolve())
++    else:
++        verify(args.artifacts.resolve(), args.out.resolve())
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/.github/workflows/mutation-evidence.yml b/.github/workflows/mutation-evidence.yml
+new file mode 100644
+index 00000000..58e4d124
+--- /dev/null
++++ b/.github/workflows/mutation-evidence.yml
+@@ -0,0 +1,120 @@
++name: Mutation evidence
++
++on:
++  workflow_dispatch:
++  pull_request:
++    paths:
++      - .github/workflows/mutation-evidence.yml
++      - .github/scripts/mutation_evidence.py
++      - tests/MUTATION-EVIDENCE.md
++      - .github/scripts/architecture_evidence.py
++
++permissions:
++  contents: read
++
++concurrency:
++  group: geometry-mutation-evidence-${{ github.ref }}
++  cancel-in-progress: true
++
++jobs:
++  architecture:
++    name: Verify merged architecture with original commands
++    runs-on: ubuntu-latest
++    timeout-minutes: 15
++    steps:
++      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
++        with:
++          persist-credentials: false
++          ref: ${{ github.event.pull_request.head.sha || github.sha }}
++      - name: Run original scanner and architecture test commands
++        run: python3 .github/scripts/architecture_evidence.py --out "$RUNNER_TEMP/pr357-architecture"
++      - name: Preserve fresh derived architecture evidence and raw failures
++        if: always()
++        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
++        with:
++          name: pr357-architecture-refresh
++          path: ${{ runner.temp }}/pr357-architecture/
++          if-no-files-found: error
++          retention-days: 30
++
++  plan:
++    needs: architecture
++    runs-on: ubuntu-latest
++    timeout-minutes: 5
++    outputs:
++      matrix: ${{ steps.plan.outputs.matrix }}
++    steps:
++      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
++        with:
++          persist-credentials: false
++          ref: ${{ github.event.pull_request.head.sha || github.sha }}
++      - id: plan
++        name: Partition every current mutation exactly once
++        run: python3 .github/scripts/mutation_evidence.py plan >> "$GITHUB_OUTPUT"
++
++  execute:
++    name: mutation (${{ matrix.shard }})
++    needs: plan
++    runs-on: ubuntu-latest
++    timeout-minutes: 45
++    strategy:
++      fail-fast: false
++      max-parallel: 4
++      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
++    steps:
++      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
++        with:
++          persist-credentials: false
++          ref: ${{ github.event.pull_request.head.sha || github.sha }}
++      - name: Execute assigned mutations with new receipts and exact binary checks
++        env:
++          SHARD: ${{ matrix.shard }}
++        run: |
++          ulimit -s 16384
++          python3 .github/scripts/mutation_evidence.py run --shard "$SHARD" --out "$RUNNER_TEMP/mutation-evidence"
++      - name: Preserve receipts, executed binaries and logs
++        if: always()
++        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
++        with:
++          name: mutation-shard-${{ matrix.shard }}
++          path: |
++            ${{ runner.temp }}/mutation-evidence/manifest.json
++            ${{ runner.temp }}/mutation-evidence/mutants_results.json
++            ${{ runner.temp }}/mutation-evidence/cache.tar.gz
++            ${{ runner.temp }}/mutation-evidence/execution.log
++          if-no-files-found: error
++          retention-days: 30
++
++  verify:
++    name: Verify complete mutation evidence
++    needs: [plan, execute]
++    if: always()
++    runs-on: ubuntu-latest
++    timeout-minutes: 10
++    steps:
++      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
++        with:
++          persist-credentials: false
++          ref: ${{ github.event.pull_request.head.sha || github.sha }}
++      - name: Require every execution job to succeed
++        env:
++          PLAN_RESULT: ${{ needs.plan.result }}
++          EXECUTE_RESULT: ${{ needs.execute.result }}
++        run: test "$PLAN_RESULT:$EXECUTE_RESULT" = success:success
++      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
++        with:
++          pattern: mutation-shard-*
++          path: ${{ runner.temp }}/mutation-download
++      - name: Verify downloaded binary bytes and full-table strict receipts
++        run: |
++          python3 .github/scripts/mutation_evidence.py verify --artifacts "$RUNNER_TEMP/mutation-download" --out "$RUNNER_TEMP/mutation-verified"
++      - name: Preserve aggregate ledger and manifest
++        if: always()
++        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
++        with:
++          name: mutation-complete-evidence
++          path: |
++            ${{ runner.temp }}/mutation-verified/mutants_results.json
++            ${{ runner.temp }}/mutation-verified/summary.json
++          if-no-files-found: error
++          retention-days: 30
+diff --git a/geometry-core/domain-decoupling/product-architecture.json b/geometry-core/domain-decoupling/product-architecture.json
+index 2fd23c08..2e38f21f 100644
+--- a/geometry-core/domain-decoupling/product-architecture.json
++++ b/geometry-core/domain-decoupling/product-architecture.json
+@@ -2647,7 +2647,7 @@
+     {
+       "path": "geometry-web/cdp_test.js",
+       "reason": "Dedicated acceptance/test driver cdp_test.js; invoked by test harnesses, not by product runtime or served application entry points.",
+-      "sha256": "bb66742aa10b603b84362277f9f2c4275da8904925e75c618f252bd7df42cc3e",
++      "sha256": "1f3e2e36283ed7bbf6c4ad2cf3dc12c685667356d186d9fbd47bc5f0520f07ee",
+       "hashMode": "lf"
+     },
+     {
+diff --git a/geometry-web/app.js b/geometry-web/app.js
+index 8b557a62..e82ff16e 100644
+--- a/geometry-web/app.js
++++ b/geometry-web/app.js
+@@ -590,7 +590,7 @@ async function recoverConnection() {
+     }
+     if (!oc.on) await render();
+     if (connection.phase === "error") return;
+-    connection.phase = "ready"; connection.known = true;
++    connection.phase = "ready"; connection.known = true; connection.error = "";
+     ReferenceWorkspace.sync();
+     showConnectionState(); drawObjects();
+   } catch (e) {
+diff --git a/geometry-web/cdp_test.js b/geometry-web/cdp_test.js
+index ef229af1..3f632a24 100644
+--- a/geometry-web/cdp_test.js
++++ b/geometry-web/cdp_test.js
+@@ -6357,16 +6357,16 @@ async function main() {
+     console.log('P53 wait for injected connection error');
+     await waitForExpectedNavigation({evaluate:eval_, marker:navigationMarker, label:'P53 injected connection error',
+       condition:`typeof connection !== 'undefined' && connection.phase === 'error'`});
+-    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert})`);
+-    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert, failedStart);
++    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert,phase:connection.phase,error:connection.error})`);
++    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert && failedStart.phase === 'error' && typeof failedStart.error === 'string' && failedStart.error.length > 0 && failedStart.error.includes('403'), failedStart);
+     const offlineRequests = await eval_(`__g197Commands.length`);
+     await key('p','KeyP',80);
+     check('P53-2 失敗時快捷鍵不送建立指令', await eval_(`__g197Commands.length`) === offlineRequests);
+     await eval_(`__g197Mode='';__g197Commands=[]`);
+     await ctl('#connectionRetry');
+     await until(`connection.phase === 'ready'`);
+-    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden})`);
+-    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
++    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden,error:connection.error})`);
++    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden && recovered.error === '', recovered);
+     check('P53-4 重試前後世界逐字相同', typeof beforeConnection === 'string' && await eval_(`api('dump').then(r=>r.text)`) === beforeConnection);
+     const cached = await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`);
+     await eval_(`__g197Mode='partial';renderObjects()`);
+@@ -6609,18 +6609,34 @@ async function main() {
+     check('P61-8b 未就緒預覽的點按不觸發例外',excN===failedPdfExceptions);
+     await ctl('#refClose');
+     check('P61-9 PDF 讀取失敗保留原場景',await eval_(`api('dump').then(r=>r.text===${JSON.stringify(lastDump)})`));
+-    check('P61-10 載入未送達時，重試連線保留原幾何與來源',await eval_(`(async()=>{
++    const uploadNotSentRecovery = await eval_(`(async()=>{
+       const oldFetch=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
+-      window.fetch=async(input,init)=>{if(input==='/upload/confirm')throw new TypeError('test upload disconnected');return oldFetch(input,init);};
+-      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
+-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
+-    })()`));
+-    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',await eval_(`(async()=>{
++      let confirmIntercepted=false;
++      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){confirmIntercepted=true;throw new TypeError('test upload disconnected');}return oldFetch(input,init);};
++      let blocked=false,importFailure=null;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';importFailure={name:e.name,message:e.message};}finally{window.fetch=oldFetch;}
++      const seed={phase:connection.phase,error:connection.error};
++      await recoverConnection();
++      const after=(await api('dump')).text,source=ReferenceWorkspace.active(1).id;
++      const proof={confirmIntercepted,blocked,importFailure,seed,phase:connection.phase,error:connection.error,beforeDump:before,afterDump:after,dumpMatches:after===before,sourceId:source,expectedSourceId:ref,sourceMatches:source===ref};
++      proof.passed=confirmIntercepted&&seed.phase==='error'&&typeof seed.error==='string'&&seed.error.length>0&&blocked&&connection.phase==='ready'&&connection.error===''&&proof.dumpMatches&&proof.sourceMatches;
++      return proof;
++    })()`);
++    console.log('GEO320_RECOVERY_PROOF '+JSON.stringify({case:'P61-10',...uploadNotSentRecovery}));
++    check('P61-10 載入未送達時，重試連線保留原幾何與來源',uploadNotSentRecovery.passed,uploadNotSentRecovery);
++    const uploadResponseLostRecovery = await eval_(`(async()=>{
+       const oldFetch=window.fetch.bind(window);
+-      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
+-      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
+-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&typeof curScene.path==='string'&&curScene.path.endsWith('.scene');
+-    })()`));
++      let confirmIntercepted=false,confirmationResponseReceived=false,confirmationResponseOK=false,confirmationStatus=null;
++      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){confirmIntercepted=true;const response=await oldFetch(input,init);confirmationResponseReceived=true;confirmationResponseOK=response.ok;confirmationStatus=response.status;throw new TypeError('test response lost');}return oldFetch(input,init);};
++      let blocked=false,importFailure=null;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';importFailure={name:e.name,message:e.message};}finally{window.fetch=oldFetch;}
++      const seed={phase:connection.phase,error:connection.error};
++      await recoverConnection();
++      const after=(await api('dump')).text,distanceMm=ReferenceWorkspace.active(1).calibration.distanceMm,scenePath=curScene.path;
++      const proof={confirmIntercepted,confirmationResponseReceived,confirmationResponseOK,confirmationStatus,blocked,importFailure,seed,phase:connection.phase,error:connection.error,expectedDump:g198Dump,afterDump:after,dumpMatches:after===g198Dump,distanceMm,scenePath};
++      proof.passed=confirmIntercepted&&confirmationResponseReceived&&confirmationResponseOK&&seed.phase==='error'&&typeof seed.error==='string'&&seed.error.length>0&&blocked&&connection.phase==='ready'&&connection.error===''&&proof.dumpMatches&&distanceMm===1600&&typeof scenePath==='string'&&scenePath.endsWith('.scene');
++      return proof;
++    })()`);
++    console.log('GEO320_RECOVERY_PROOF '+JSON.stringify({case:'P61-11',...uploadResponseLostRecovery}));
++    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',uploadResponseLostRecovery.passed,uploadResponseLostRecovery);
+     await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
+     await field('refTarget','new');
+     await eval_(`(async()=>{
+diff --git a/tests/MUTATION-EVIDENCE.md b/tests/MUTATION-EVIDENCE.md
+new file mode 100644
+index 00000000..cd799f7d
+--- /dev/null
++++ b/tests/MUTATION-EVIDENCE.md
+@@ -0,0 +1,32 @@
++# 突變收據與可下載二進位證據
++
++> main `8f82b207e87c086705a1d8b7a00e2f215c07cbcf` 已納入 #338，完整表擴為 **123 筆／120 active／3 retired**；core 70、bridge 53，七片依現行表動態分成 18／18／17／17 與 18／18／17。這個新來源必須重新執行，不沿用下面舊來源的綠燈。`de9aea24113a522c6cd80d30b9281e1034b57c6c` 的 [run 41333327153](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41333327153) 及 78／75 收據保持原來源的歷史證據。
++
++`tests/mutate.py --check` 不編譯、不執行突變。它嚴格核對來源、include 閉包、突變、裁判及執行收據。若同平台的暫存二進位存在，也會核對它的指紋與 SHA-256；不同二進位應判 `stale`。沒有暫存檔時通過，只能證明收據與目前來源／裁判一致，不能宣稱已核對原執行檔位元組或已重跑突變。
++
++因此 #357 `212ee528` 的 [run 40939418733](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40939418733) 中 `mutation:check` exit 0，與另一工作區出現 75 筆暫存二進位不符可以同時成立。前者是乾淨環境的收據驗證；後者仍須保留拒絕結果，不能只稱為環境差後忽略。
++
++## CI 的新證據
++
++`Mutation evidence` 工作流程不改 `mutate.py`、`mutation_bridge.py` 或已提交歷史帳本：
++
++1. 先在 GitHub 執行原 scanner CLI 與原兩支架構 unittest，保存新來源的 scan／receipt／說明與原始輸出；沒有在本機執行模組。歷史帳本的原 `--check` 守門仍保留在正式測試入口；來源改變時，歷史 stale 不能拿來阻止「生成新收據」，也不能被寫成已通過。
++2. 從現行突變表自動分成 4 片 core 與 3 片 bridge，每筆恰好一片。新來源的 120 active 均需實際執行（含 equivalent 的完整 oracle），3 筆 retired 仍核對退役條件。main 的 bridge 還原裁判為 43 個方法，裁判閉包也包含 `tests/*.c` 與 `tests/fixtures/**/*.scene`，不能把舊 75 筆冒成 fresh。各片結果檔從空檔開始，不繼承歷史 killed。
++3. 各片使用原 runner 執行基準與突變，保存新帳本、實際二進位／sidecar、執行輸出及雜湊 manifest。core 保存結構化 oracle 執行收據與 runner 輸出；bridge 另保存逐次建置及 oracle 的原始 stdout／stderr。省略 scratch checkout 與 OS core dump。
++4. 每片要求全部指派 ID 存在、實際收據屬於當前 head，並用原工具 strict 檢查。刻意改壞一個該片二進位，必須被原二進位守門拒絕、strict exit 1；還原 bytes 後重驗通過。`blocked`、`stale`、未知／缺漏 ID、skip 或基礎設施失敗都不算 killed。
++5. 聚合 job 必須等所有片成功；重新下載 artifact，逐筆要求二進位存在且 SHA-256 相符，再以原工具核對每片。最後要求完整表無重複／缺漏／額外 ID，對新完整帳本再跑原 strict 檢查。
++
++`mutation-shard-*` 是原執行證據；`mutation-complete-evidence` 包含聚合帳本及 `summary.json`；`pr357-architecture-refresh` 保存原三命令的新架構衍生資料與 raw 輸出。已提交的 `tests/mutants_results.json` 在重產前保持 main 的歷史原件；只有真實新 CI 產物可採入為下一份帳本，不以改 hash 的方式洗綠。採入後仍須由新來源的原 `--check` 與正式測試取得結果。
++
++## 從另一個乾淨環境重驗
++
++需要 Git、GitHub CLI 與 Python 3.12 以上。使用該次 run 的完整 head SHA 簽出 repo，保持來源不改；下載 artifact 後，以下驗證只讀取二進位 bytes，不執行它們，也不重編：
++
++```sh
++gh run download <run-id> --repo ZhiQiYang/geometry-axiom --pattern 'mutation-shard-*' --dir <下載目錄>
++python .github/scripts/mutation_evidence.py verify --artifacts <下載目錄> --out <新的驗證輸出目錄>
++```
++
++同平台保留原編譯指令／指紋的嚴格檢查；跨平台核對已下載的原執行檔 bytes 及原平台收據，不宣稱在接收平台執行了不相容的二進位。需要證明接收平台的行為時，須在該平台另跑原 runner，產生另一份執行收據。
++
++artifact 保留 30 天；到期或來源／裁判／工具改變後，重新執行 `Mutation evidence`，不能沿用舊綠燈。工作流程可手動啟動；更動此工作流程、監督腳本或本文的 PR 也會自動產生當前 head 的完整證據。
+diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json
+index 090da27c..c8b2654c 100644
+--- a/tests/run_all.expected.json
++++ b/tests/run_all.expected.json
+@@ -50,6 +50,11 @@
+       "unit": "node test",
+       "count": 10
+     },
++    "node:connection_recovery": {
++      "mode": "count",
++      "count": 9,
++      "unit": "node test"
++    },
+     "node:context_operations": {
+       "mode": "count",
+       "count": 12,
+diff --git a/tests/run_all.py b/tests/run_all.py
+index c5a777f5..9b9c9e2a 100644
+--- a/tests/run_all.py
++++ b/tests/run_all.py
+@@ -306,6 +306,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
+     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
+ }
+ NODE_PURE_TEST_FILES = {
++    'node:connection_recovery': 'tests/test_connection_recovery.js',
+     'node:draw_annotation': 'tests/test_draw_annotation.js',
+     'node:woodworking_frontend': 'tests/test_woodworking_frontend.js',
+     'node:grid_inspector_command': 'tests/test_grid_inspector_command.js',
+diff --git a/tests/test_connection_recovery.js b/tests/test_connection_recovery.js
+new file mode 100644
+index 00000000..cd41489c
+--- /dev/null
++++ b/tests/test_connection_recovery.js
+@@ -0,0 +1,149 @@
++'use strict';
++
++// Unit coverage of the original app functions. DOM/transport peers are explicit
++// substitutes; the original P53/P61 browser checks remain separate requirements.
++const test = require('node:test');
++const assert = require('node:assert/strict');
++const fs = require('node:fs');
++const path = require('node:path');
++const vm = require('node:vm');
++
++const app = fs.readFileSync(path.join(__dirname, '..', 'geometry-web', 'app.js'), 'utf8');
++function originalSpan(start, end) {
++  const first = app.indexOf(start);
++  const last = app.indexOf(end, first + start.length);
++  assert.ok(first >= 0 && first === app.lastIndexOf(start), `unique original app anchor: ${start}`);
++  assert.ok(last > first && last === app.lastIndexOf(end), `unique original app anchor: ${end}`);
++  return app.slice(first, last);
++}
++const originalRecovery = originalSpan('function connectionFailed(message) {', '$("connectionRetry").addEventListener');
++const originalApiRequest = originalSpan('async function apiRequest(cmd, roomLease = null) {', 'async function api(cmd) {');
++
++function fixture(options = {}) {
++  const calls = [];
++  const connection = { phase: 'error', known: true, error: 'old upload confirmation error', recovering: false, session: 'test-session', ...options.connection };
++  const context = {
++    connection,
++    pendingApiResults: new Map(),
++    oc: { focus: null, on: false, bmap: {} },
++    window: { fbRecord: (kind, data) => calls.push(['feedback', kind, data.error]) },
++    showConnectionState: () => calls.push(['state', connection.phase, connection.error]),
++    drawObjects: () => calls.push(['drawObjects']),
++    recoverApiResults: options.recoverApiResults || (async () => calls.push(['recoverApiResults'])),
++    renderObjects: options.renderObjects || (async () => { calls.push(['renderObjects']); return true; }),
++    refreshSurfaces: options.refreshSurfaces || (async () => calls.push(['refreshSurfaces'])),
++    render: async () => calls.push(['render']),
++    api: options.api || (async cmd => { calls.push(['api', cmd]); return { ok: true }; }),
++    fetch: () => { throw new Error('unit guard unexpectedly reached real transport'); },
++    ReferenceWorkspace: {
++      recoverLoad: options.recoverLoad || (async () => { calls.push(['recoverLoad']); return true; }),
++      restoreSession: options.restoreSession || (async () => calls.push(['restoreSession'])),
++      sync: () => calls.push(['sync']),
++      assertAssemblyIdle: () => {},
++      assertEditable: () => {},
++    },
++  };
++  vm.createContext(context);
++  vm.runInContext(originalRecovery + originalApiRequest, context, { filename: 'original-app-connection-functions.js' });
++  return { context, connection, calls };
++}
++
++function failed(box, message) {
++  assert.equal(box.connection.phase, 'error');
++  assert.equal(box.connection.error, message);
++  assert.equal(box.connection.recovering, false);
++  assert.equal(box.calls.some(row => row[0] === 'drawObjects'), false);
++}
++
++test('successful recovery clears the previous failure only after the complete read', async () => {
++  const box = fixture();
++  assert.equal(box.connection.error, 'old upload confirmation error');
++  await box.context.recoverConnection();
++  assert.equal(box.connection.phase, 'ready');
++  assert.equal(box.connection.known, true);
++  assert.equal(box.connection.recovering, false);
++  assert.equal(box.connection.error, '', `successful recovery kept stale error: ${box.connection.error}`);
++  assert.equal(box.calls.some(row => row[0] === 'drawObjects'), true);
++});
++
++test('initial read still completes the handshake and publishes a known ready state', async () => {
++  const box = fixture({ connection: { phase: 'loading', known: false, error: '', session: null } });
++  await box.context.recoverConnection();
++  assert.deepEqual(box.calls.filter(row => row[0] === 'api'), [['api', 'dump']]);
++  assert.equal(box.connection.phase, 'ready');
++  assert.equal(box.connection.known, true);
++  assert.equal(box.connection.error, '');
++});
++
++test('unconfirmed load retains its current recovery failure and stays blocked', async () => {
++  const box = fixture({ recoverLoad: async () => false });
++  await box.context.recoverConnection();
++  failed(box, '仍無法確認場景載入結果，請重試。');
++  assert.equal(box.calls.some(row => row[0] === 'restoreSession'), false);
++});
++
++test('failed handshake keeps the handshake error and never publishes ready', async () => {
++  const box = fixture({ connection: { session: null }, api: async () => ({ ok: false, error: 'handshake denied' }) });
++  await box.context.recoverConnection();
++  failed(box, 'handshake denied');
++  assert.equal(box.calls.some(row => row[0] === 'restoreSession'), false);
++});
++
++test('incomplete objects keep an explicit read failure rather than clearing it', async () => {
++  const box = fixture({ renderObjects: async () => false });
++  await box.context.recoverConnection();
++  failed(box, '無法讀取完整場景，請重試。');
++});
++
++test('a surface refresh failure is not cleared by the ready transition', async () => {
++  const box = fixture({ refreshSurfaces: async () => box.context.connectionFailed('surface read failed') });
++  await box.context.recoverConnection();
++  failed(box, 'surface read failed');
++});
++
++test('a thrown restore error remains observable and resets the recovery latch', async () => {
++  const box = fixture({ restoreSession: async () => { throw new Error('restore denied'); } });
++  await box.context.recoverConnection();
++  failed(box, 'restore denied');
++  assert.deepEqual(box.calls.filter(row => row[0] === 'feedback'), [['feedback', 'connection', 'restore denied']]);
++});
++
++test('concurrent retries retain the one in-flight recovery and clear error on completion', async () => {
++  let release;
++  let reads = 0;
++  const held = new Promise(resolve => { release = resolve; });
++  const box = fixture({ recoverApiResults: async () => { reads++; await held; } });
++  const first = box.context.recoverConnection();
++  try {
++    assert.equal(box.connection.phase, 'loading');
++    assert.equal(box.connection.recovering, true);
++    await box.context.recoverConnection();
++    assert.equal(reads, 1);
++  } finally {
++    release();
++    await first;
++  }
++  assert.equal(box.connection.phase, 'ready');
++  assert.equal(box.connection.error, '', `completed retry kept stale error: ${box.connection.error}`);
++  assert.equal(box.connection.recovering, false);
++});
++
++test('a later loading mutation reports loading rather than an already recovered error', async () => {
++  let release;
++  let reads = 0;
++  const held = new Promise(resolve => { release = resolve; });
++  const box = fixture({ recoverApiResults: async () => { if (++reads === 2) await held; } });
++  await box.context.recoverConnection();
++  assert.equal(box.connection.phase, 'ready');
++  const next = box.context.recoverConnection();
++  try {
++    assert.equal(box.connection.phase, 'loading');
++    const response = await box.context.apiRequest('line spec recovery_probe 10');
++    assert.equal(response.ok, false);
++    assert.equal(response.transport, true);
++    assert.equal(response.error, '場景尚未讀取完成', `loading echoed stale error: ${response.error}`);
++  } finally {
++    release();
++    await next;
++  }
++});

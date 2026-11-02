@@ -1,0 +1,22 @@
+{
+  "command": [
+    "git",
+    "push",
+    "origin",
+    "HEAD:refs/heads/codex/issue214-http-fixture-20261024"
+  ],
+  "cwd": "/tmp/geometry-pr345-20261102",
+  "utc_start": "2026-11-02T04:15:56.487371+00:00",
+  "utc_finish": "2026-11-02T04:16:00.546307+00:00",
+  "exit_code": 0,
+  "source_M": "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+  "adoption_E": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+  "remote_branch": "refs/heads/codex/issue214-http-fixture-20261024",
+  "force": false,
+  "remote_before": "577b2e81967b3019352f65df5ffe6dc48eb6202f\trefs/heads/codex/issue214-http-fixture-20261024",
+  "peer_review_sha256": "6f9f99e19d9b304092a885911d19f83a022e543cedff3030826678b5a479f75d",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "edfd1cdd2e59518ba80229a0060c8b553c112ce62dedec6cceefb24ebb9c5b90",
+  "remote_after": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6\trefs/heads/codex/issue214-http-fixture-20261024",
+  "source_clean_after_push": true
+}

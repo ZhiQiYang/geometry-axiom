@@ -1,0 +1,34 @@
+{
+  "base_head": "502a64ff6214dd6060927b7f14643a533536f20d",
+  "status": "draft peer review; new browser shards and full UNRUN",
+  "pure_node_tests": 18,
+  "pure_python_tests": 8,
+  "original_pure_cdp_tests": 32,
+  "pure_test_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "architecture_cli_exit": 1,
+  "architecture_diagnostics": [
+    "EXCLUSION_DIGEST geometry-web/cdp_test.js"
+  ],
+  "pending_registry": [
+    "PY_NEEDS test_canvas_evidence []",
+    "NODE_PURE_TEST_FILES node:canvas_shards tests/test_canvas_shards.js"
+  ],
+  "pending_upstream_merge_order": [
+    "root-approved PR363 repaired source",
+    "root-approved PR344 repaired source",
+    "canvas implementation commit"
+  ],
+  "files": {
+    "geometry-web/cdp_test.js": "fd858c5354f557edd6076a44642b10741c7698b36178ed4c551ca84c3104098b",
+    "tests/helpers/canvas_shards.js": "76128ae275cc4c2720aa330805000ac31408d08fb791927db86cf4d50ee4f70e",
+    ".github/scripts/canvas_evidence.py": "54f7592ca363b5ada966acf69e394b16f7b0a3bb93830e0db639bfe0538ca9b0",
+    ".github/workflows/integration-tests.yml": "894534172f27b960f8f3addad6acbdfc8d6203cf4fd01904173a4dfee28974ff",
+    "tests/test_canvas_shards.js": "240ce43e5c9c92bedeb74e0017562276ef8445d1cf9c6c5d4b0e6a07b1e0af0b",
+    "tests/test_canvas_evidence.py": "2088506ee8f4dfe9711a4645439f590746c3fe221c3f3f092b58c17e0588d07e",
+    "tests/CANVAS-EVIDENCE.md": "2030fc6d7374b7d78a0e1cb46569f0a18e4bd3be81811d86fecf237f82314ddc"
+  }
+}

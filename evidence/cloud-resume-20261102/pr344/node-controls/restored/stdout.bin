@@ -1,0 +1,17 @@
+✔ successful recovery clears the previous failure only after the complete read (2.115767ms)
+✔ initial read still completes the handshake and publishes a known ready state (2.119853ms)
+✔ unconfirmed load retains its current recovery failure and stays blocked (0.88645ms)
+✔ failed handshake keeps the handshake error and never publishes ready (0.680926ms)
+✔ incomplete objects keep an explicit read failure rather than clearing it (0.691732ms)
+✔ a surface refresh failure is not cleared by the ready transition (0.593387ms)
+✔ a thrown restore error remains observable and resets the recovery latch (0.876695ms)
+✔ concurrent retries retain the one in-flight recovery and clear error on completion (0.636601ms)
+✔ a later loading mutation reports loading rather than an already recovered error (1.37355ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.382197

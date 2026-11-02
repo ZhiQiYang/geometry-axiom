@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "node",
+    "--test",
+    "--test-reporter=spec",
+    "tests/test_connection_recovery.js"
+  ],
+  "cwd": "/tmp/geometry-pr344-20261102",
+  "executionHead": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+  "variant": "fixed",
+  "appSha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60",
+  "testSha256": "061a0f232ddcd9f8b0582f8907ca2d45788d32bd13435991813cdae5a30ee44d",
+  "timeoutSeconds": 300,
+  "domTransportPeers": "original test declares explicit substitutes; not a real-browser receipt"
+}

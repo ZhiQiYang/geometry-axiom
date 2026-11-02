@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "tests/mutate.py",
+    "--check"
+  ],
+  "cwd": "/tmp/geometry-pr345-20261102",
+  "candidate_head": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+  "utc_start": "2026-11-02T04:15:09.721120+00:00",
+  "utc_finish": "2026-11-02T04:15:15.653284+00:00",
+  "exit_code": 0,
+  "stdout_sha256": "df9b3e28b34453d22855a57b5fbbc127b6dd6855e9843c35f9b021978e6a1c2c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "cache_overrides_added": false,
+  "inherited_MUTATE_CACHE_present": false,
+  "inherited_MUTATE_RESULTS_present": false,
+  "default_cache": "/tmp/geometry-tests/mutants",
+  "default_cache_existed_before": false,
+  "default_cache_exists_after": false,
+  "limitation": "Original logical freshness/receipt --check once at E only. Earlier official artifact binaries/sidecars were already verified at M. This is not a new product run or downloaded-artifact execution."
+}

@@ -1,0 +1,131 @@
+{
+  "source_M": "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+  "adoption_E": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+  "remote_branch": "codex/issue214-http-fixture-20261024",
+  "remote_PR_head": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+  "base": {
+    "ref": "main",
+    "sha": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d"
+  },
+  "pr_api_synthetic_merge": {
+    "sha": "058f793590301e1e58074be072d0296d432e184b",
+    "tree": "c05e281326b3fe9b959e9ea8d59fcac28c067137",
+    "parents": [
+      "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+      "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6"
+    ],
+    "same_tree_as_E": true,
+    "execution_head_not_yet_claimed": true
+  },
+  "new_automatic_runs": [
+    {
+      "id": 41387497096,
+      "name": "Geometry integration",
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "head_branch": "codex/issue214-http-fixture-20261024",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "status": "queued",
+      "conclusion": null,
+      "created_at": "2026-11-02T04:16:05Z",
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41387497096"
+    },
+    {
+      "id": 41387497118,
+      "name": "Mutation evidence",
+      "head_sha": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+      "head_branch": "codex/issue214-http-fixture-20261024",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "status": "in_progress",
+      "conclusion": null,
+      "created_at": "2026-11-02T04:16:05Z",
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41387497118"
+    }
+  ],
+  "manual_dispatches_or_reruns": false,
+  "old_M_integration": {
+    "run_id": 41382891799,
+    "conclusion": "failure",
+    "exact_failed_jobs": [
+      "native (2/3)",
+      "native complete coverage"
+    ],
+    "not_relabelled_as_E": true
+  },
+  "old_M_mutation": {
+    "run_id": 41382891805,
+    "conclusion": "success",
+    "artifact_execution_head_preserved": "577b2e81967b3019352f65df5ffe6dc48eb6202f"
+  },
+  "api_receipts": [
+    {
+      "path": "api/integration-run-E.json",
+      "sha256": "d049951d44e9f3d5114c732b52537a533976753b3f0333972a67b2431fe3d73b"
+    },
+    {
+      "path": "api/mutation-run-E.json",
+      "sha256": "411b160e8fa830a285a8d85a8e7c558a7a9d0cff04a8ecac7da8505d2cc8ae75"
+    },
+    {
+      "path": "api/pr-merge-E.json",
+      "sha256": "2ab101b77d2786d9a242d82d27f42677416b3eb3dbe90e5bbde17a15cbf600d0"
+    },
+    {
+      "path": "api/pr345-after.json",
+      "sha256": "d78f69da68a15ab90bcdb7fb97e4d7ede1ecd914da059076c8e13259173390ca"
+    },
+    {
+      "path": "api/remote-after.json",
+      "sha256": "6baf4299aa7b9444d8f633ccc1d22fa9eef1aba7268a7dcd853e5eb7221ae331"
+    },
+    {
+      "path": "api/remote-before.json",
+      "sha256": "2bfa43998b069ae5fda774a202972292eef5b3bed46160b4651228a1ecd0ea72"
+    },
+    {
+      "path": "api/runs-E.json",
+      "sha256": "975394cd392e2f989745254c6849cb266cef8d7a4adf302159cd95b45c237f6b"
+    }
+  ],
+  "local_evidence": [
+    {
+      "path": "push-receipt.json",
+      "sha256": "ea408d19ec8b7ad73feabf58788e21fc90206a9428dbcbc1db693e6261cf7238"
+    },
+    {
+      "path": "candidate-commit.json",
+      "sha256": "db343b252b8c683a0bdaa97ca9bb7620eae614e5dd987e834b74bac041aa7f5a"
+    },
+    {
+      "path": "preparation-receipt.json",
+      "sha256": "bc36af7103df64f3c419f94f1a2551564f64f357b82c24e4fff2733a8f88e7ac"
+    },
+    {
+      "path": "candidate-check-receipt.json",
+      "sha256": "320443efbd35939d2d0f3b89cf31df9c1a1db8488cfd46aaa35cdbc40906fbe3"
+    },
+    {
+      "path": "identity-before.json",
+      "sha256": "160fe79668ef850d39470803e21ae2b31b4015c3e0438784f8714987b4ed7a12"
+    },
+    {
+      "path": "identity-after-write.json",
+      "sha256": "42be6b56b97227cfa449186422b639d29342efa35e18f78ca209af864386321b"
+    },
+    {
+      "path": "peer-review/actor-peer-review.json",
+      "sha256": "6f9f99e19d9b304092a885911d19f83a022e543cedff3030826678b5a479f75d"
+    },
+    {
+      "path": "peer-review/logical-check-receipt.json",
+      "sha256": "12c9f58b6b2c8233436f3b4e369050cebc512e2963ac22e175a135f928aed0b5"
+    },
+    {
+      "path": "pr-metadata-readback.json",
+      "sha256": "fadc98449cf90f459f4471745af5bf1be2a7ef63a1a777cc1cc8a7145612574e"
+    }
+  ],
+  "root_body_comment_handoff_only": true,
+  "source_clean_at_handoff": true
+}

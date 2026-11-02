@@ -1,0 +1,27 @@
+✔ current golden/header closure partitions every current key exactly once without fixed counts (20.535734ms)
+✔ new independent section is adopted by the current plan rather than an old universe constant (0.368665ms)
+✔ full and partial predicates keep their exact original routing result (0.288927ms)
+✔ harness syntax and the complete outer legacy gate include every late legacy block (8.430131ms)
+✔ CANVAS_FAKE_SCOPE rejects unknown, mixed, modifier and golden-update shard scopes (0.590062ms)
+✔ controlled verdicts remain per argument and repeat headers preserve section ordinals (0.701207ms)
+✔ original exact counts and actual zero-count events form a complete positive aggregate (1.587487ms)
+✔ CANVAS_MISSING_SHARD rejects a missing real shard (0.565146ms)
+✔ CANVAS_DUPLICATE_SHARD rejects duplicate ownership despite valid-looking totals (0.679815ms)
+✔ CANVAS_GOLDEN_CHANGED rejects a changed current golden and any new min threshold (0.537514ms)
+✔ CANVAS_ZERO_SECTION_DROPPED rejects an omitted zero key while assertion totals stay unchanged (0.442934ms)
+✔ CANVAS_COUNT_DRIFT rejects both fewer and extra controlled assertions (0.77145ms)
+✔ CANVAS_FAKE_SUMMARY rejects exit-like success, incomplete, partial and altered-count summaries (0.515923ms)
+✔ CANVAS_UNOWNED_EXECUTION rejects running another unit instead of hiding its assertions (0.163862ms)
+✔ CANVAS_ASSERTION_NOT_MASKED rejects a saved false verdict, with restored journal passing (0.393131ms)
+✔ CANVAS_P86_WITHOUT_PRODUCER rejects consumer execution before its real producer (0.247556ms)
+✔ journal corruption, missing unit end and fake headers cannot certify a complete run (0.561479ms)
+✔ original harness full/partial configuration still performs no browser work when imported (11.738321ms)
+✔ a different CDP result schema cannot reuse a valid current assertion journal (0.305762ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 122.433451

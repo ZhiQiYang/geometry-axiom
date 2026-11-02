@@ -1,0 +1,94 @@
+{
+  "base": "502a64ff6214dd6060927b7f14643a533536f20d",
+  "old_and_new_tail_module_order_and_argument_source_equal": true,
+  "calls": [
+    [
+      "./project_audit_test.js",
+      "{send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./engineering_workflow_test.js",
+      "{send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}"
+    ],
+    [
+      "./marquee_test.js",
+      "{send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN}"
+    ],
+    [
+      "./grid_system_test.js",
+      "{send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN}"
+    ],
+    [
+      "./grid_rule_editor_test.js",
+      "{send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}"
+    ],
+    [
+      "./grid_rule_lines_test.js",
+      "{send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}"
+    ],
+    [
+      "./infinite_grid_face_test.js",
+      "{send,eval_,sleep,click,waitForUI}"
+    ],
+    [
+      "./composition_canvas_test.js",
+      "{send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./grid_inspector_rename_test.js",
+      "{send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}"
+    ],
+    [
+      "./uiux_review_test.js",
+      "{send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN}"
+    ],
+    [
+      "./ux_refinement_test.js",
+      "{send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,expectBeforeUnload:()=>{expectedBeforeUnloadUntil=Date.now()+15000;},exceptionCount:()=>excN}"
+    ],
+    [
+      "./selection_cursor_test.js",
+      "{send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./parameter_workflow_test.js",
+      "{send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./assembly_workflow_test.js",
+      "{send,eval_,sleep,click,dblclick,drag,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./assembly_context_entry_test.js",
+      "{send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./timber_schedule_test.js",
+      "{send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./timber_supports_browser_test.js",
+      "{send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./source_navigation_test.js",
+      "{send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./room_outline_test.js",
+      "{send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN}"
+    ],
+    [
+      "./model_snapshot_schedule_test.js",
+      "{send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN}"
+    ],
+    [
+      "./model_snapshot_navigation_test.js",
+      "{send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN}"
+    ]
+  ],
+  "call_count": 21,
+  "sha256": "fcd81f803829cceb0c90efca95ae4a5bc070bce0265575aa054b870ab0ca3aaa",
+  "command": "read-only require-call/argument source extraction; no browser",
+  "exit_code": 0
+}

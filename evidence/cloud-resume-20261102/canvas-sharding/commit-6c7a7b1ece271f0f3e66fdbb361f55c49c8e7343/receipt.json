@@ -1,0 +1,128 @@
+{
+  "source": "/tmp/geometry-canvas-shards-20261102",
+  "head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+  "tree": "b873823a98553c06ba8cac849d426f1921d3d78d",
+  "started_utc": "2026-11-02T04:00:35.820525+00:00",
+  "commands": [
+    {
+      "label": "new-node",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_canvas_shards.js"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "stdout": "new-node.stdout",
+      "stderr": "new-node.stderr",
+      "stdout_sha256": "8904ad6206e5b8f2e3c151e1fd86b9a1dadc34d4496e88a8e2bdf263b007f07b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "new-python",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/test_canvas_evidence.py"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "stdout": "new-python.stdout",
+      "stderr": "new-python.stderr",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8d792d81c28f14e81434cb2a175feb8a800363e60faf05e9aa008104cb37a9c2"
+    },
+    {
+      "label": "original-pure-cdp",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_cdp_floor.js",
+        "tests/test_cdp_evaluation.js",
+        "tests/test_cdp_settle.js"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "stdout": "original-pure-cdp.stdout",
+      "stderr": "original-pure-cdp.stderr",
+      "stdout_sha256": "faca5ab35f051c81ef986825e3a0752fd384438539217e17b95db179dfdc2a27",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "plan",
+      "command": [
+        "node",
+        "tests/helpers/canvas_shards.js",
+        "plan"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "stdout": "plan.stdout",
+      "stderr": "plan.stderr",
+      "stdout_sha256": "f8ef944e53ebe955f16a04c972eec75797e47026e9720b55f19d4f620c61c16f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "architecture",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "head": "6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "stdout": "architecture.stdout",
+      "stderr": "architecture.stderr",
+      "stdout_sha256": "3457fbdb97a1158d949a38d390414df1d433e9200129939fb1260c1bdfb77165",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_unresolved_diagnostic": [
+        {
+          "path": "geometry-web/cdp_test.js",
+          "line": 1,
+          "code": "EXCLUSION_DIGEST",
+          "message": "immutable lf digest is absent or mismatched",
+          "direction": "",
+          "chain": []
+        }
+      ]
+    }
+  ],
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "node": "v24.19.0",
+    "platform": "linux",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "browser_shards": "UNRUN",
+  "original_full_new_source": "UNRUN",
+  "upstream_merges": "PENDING root-approved PR363 then PR344 then this canvas commit",
+  "pending_registry": [
+    "PY_NEEDS test_canvas_evidence []",
+    "NODE_PURE_TEST_FILES node:canvas_shards tests/test_canvas_shards.js"
+  ],
+  "observed_new_test_counts": {
+    "node": 19,
+    "python": 12
+  },
+  "original_pure_cdp_count": 32,
+  "source_clean_after": true,
+  "completed_utc": "2026-11-02T04:00:36.521426+00:00",
+  "pure_checks_passed": true
+}

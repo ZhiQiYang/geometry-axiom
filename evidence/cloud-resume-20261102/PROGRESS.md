@@ -24,10 +24,32 @@ PR head `502a64ff6214dd6060927b7f14643a533536f20d`；base main `5775a9e9e46bca80
 
 READY-TO-MERGE #340僅標技術驗收，請最新審查；合併順序由本機Claude先#366再#340，再開始#339。用PR事件生成新帳本，不冒稱default branch已採#366或已實測workflow_dispatch。未合main。
 
-## #363、#345 與後序
+## #363：三修正已公開；完整原生 census 保留環境紅燈，持續收齊
 
-- #363 候選 `26dc99117ac942ec8f50145d875d6e55594f3835` 已正常推自己codex及原feat分支，三產品阻擋局部修正；正式assembly partial200／0／0，R41真保存／新profile新服務冷開、五原子負例皆過。5native及3Node撤回具名紅／恢復綠；保原phaseF4e與新Node26dc身份、不改r4 dirty execution為committed SHA。fullcensus/strictfullcanvas尚未跑。新CI已見舊ledger/expected紅及A04舊literal零命中的真工具紅，需窄修＋新帳本，不宣告READY；來源/原紅/局部真證據在pr363，actor另用診斷worktree修錨點，正式26dc保持供CI核驗。
-- #345 已改base main並快轉推新source `577b2e81967b3019352f65df5ffe6dc48eb6202f`：先普通merge main得到c8db，再普通merge#366原工具502。原selected19 execution仍c8db，真19／19、零fail/skip、exit0；source/tests/build closure未因四工具改變。新M的原mutation check真exit1／53bridge stale，原ledger未改，待新Mutation evidence完整123生成及正式integration；不能以partial19冒全綠。同行peer PASS，原命令/raw/identity在pr345，runtime ELF未包含在此小型公開子集。
-- 後序維持 #339→341→342→343→346→347→348；#355 UI15 待同源鏈。#344、canvas 拆片及 R03 按使用者順序，未冒稱已實作。
+公開 source `26dc99117ac942ec8f50145d875d6e55594f3835` 的正式 CI 已完成 fullcanvas 2317／0、golden matched；真 execution 為同tree的合成merge，不移標。三產品修正包含合法衍生host、R41 key全保存／新profile新服務重開、混合derived dump順序；局部assembly200／0／0、五個native與三個Node具名撤回／恢復原件均保留。舊P77的R06段拆成獨立R06段並增加11項，其餘84段不變，不能宣稱85段全未變。
+
+該source完整native首輪有A04舊literal錨點斷言、帳本stale與三個expected count drift，整體真紅；card A04是注入前needle零命中，不冒稱killed。完整123官方Mutation evidence已全綠、原verifier復驗0。窄修A04保持只撤CARD且原CR20不變，採入原官方ledger，再依原Linux schema產架構四檔，得到尚未推送候選 A `e9f4dd75cfd4eb9965e3af249200b918907d62db`；保留每個原execution SHA，不將26dc執行改標A。
+
+原命令 `python3 tests/run_all.py --build --update-expected` 於 **2026-11-02 04:28:51.744831 UTC** 啟動，16MiB stack、原2100秒期限，最遲05:03:51.744831 UTC；收據 `/tmp/geometry-resume-20261102/pr363/full-census-A/`。此輪仍在收齊，已有 `test_run_logged_kills_the_whole_group_and_records_that_nothing_is_left` 真紅：PID1為tail不reap，兩個已被kill的sleep留為PID1 zombie。原斷言／5秒等待／時限不改，本輪即使原工具產expected也不採入。下一步用僅回收自身死後代的隔離subreaper驗證環境修復，且撤掉真正groupkill仍須同名紅；不殺活子程序代替產品防線。不以inProgress宣稱通過。
+
+## #345：官方新帳本已採入並快轉推送，E CI 原件核收中
+
+目前完整 head E `79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6`，base main。sole parent M `577b2e81967b3019352f65df5ffe6dc48eb6202f`，唯一改動為逐byte等官方artifact的ledger；SHA256 `0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c`，120個execution.head全保留M。38688其他來源身分與185個mutation inputs等閉包已核，獨立原 `--check` exit0、stale0。完整命令、peer與採入前後hash在pr345/adoption；大型逐檔身分JSON與舊ledger只列hash，原件未刪，舊ledger仍可從Git還原。
+
+新自動 integration41387497096／mutation41387497118 原件核收中，不宣稱全綠。M舊integration41382891799因未計數freshnessfail／聚合拒絕而紅，Mutation41382891805完整123綠均保原件。原selected19仍是c8db6777的真19／19、0fail／skip、exit0，不移標E；runtime ELF未包含在小型公開子集。正文已同步E並逐byte讀回，維持draft。
+
+## #344：base main、架構四檔採入，真browser反證未跑
+
+普通push的完整head E `503cfc59354893859ae9e6e4a6ab7c11d7972517`，parent S `eccebabc85acf74e30274b8ea8e24db863d8843b`。S已普通merge main與#366；原Node9固定／撤回／恢復exit0／1／0、pass9／6／9；原架構三CLI全0、205＋18。四個canonical產物與peer核的Linux原件逐byte一致，manifest／scan原已相同，E實際只改report／receipt，execution仍S。
+
+S原check有53bridge stale；同final head正式CI待核收。P53-3／P61-10／P61-11真browser三相仍UNRUN，原FLOW scope比三案更廣、每相原35分鐘不改；等待目前獨占census完成後安排，不將Node VM替身當browser證據。574個歷史evidence保留；不改SSOT／斷言／golden。
+
+## Canvas拆片：實作已保存，動態驗收與最終合流未跑
+
+分支 `codex/canvas-shards-20261102` 已正常推送 `6c7a7b1ece271f0f3e66fdbb361f55c49c8e7343`。兩個完整執行單位legacy／extensions、原斷言journal及嚴格來源／run／attempt／golden覆蓋驗證已實作；原legacy438940bytes與tail21呼叫鏈保持等價，P83→P86同unit。純Node19／Python12／原CDP32均exit0，兩輪peer已核。
+
+尚未開PR；真雙Chrome shards、同source原full及真harness撤回／恢復仍未跑。架構目前只報CDP exclusion digest紅，待最終#363→#344→canvas普通merge後只更新該LF pin，保留較強policy；新兩測試登錄與expected須由原工具產生，不能手填。原型計畫／原命令／純測試原輸出已存canvas-sharding。
+
+後序維持 #339→341→342→343→346→347→348；先由本機Claude合#340再開始下一張。#355 UI15待同源鏈；R03仍在R02與PF2～6之後。
 
 本輪不 rebase、不 force、不合 main、不改 SSOT／正典閱讀器／決策佇列。重啟後舊 tmpfs 原件已不可讀；本次新原件不假稱為舊私有 R07 的保存或驗證。

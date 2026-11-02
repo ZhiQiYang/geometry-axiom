@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "blocking_findings": [],
+  "candidate_E": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+  "parent_M": "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+  "parents_exactly": [
+    "577b2e81967b3019352f65df5ffe6dc48eb6202f"
+  ],
+  "subject": "chore: adopt verified issue 214 mutation evidence",
+  "changed_paths": [
+    "tests/mutants_results.json"
+  ],
+  "working_tree_clean_before_and_after": true,
+  "official_ledger_sha256": "0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c",
+  "git_blob_working_and_official_byte_equal": true,
+  "original_M_ledger_sha256": "b02f378106bb16d7e392d77bad6f006a20ea5558afb67606368005642da7b295",
+  "outer_before_backup_byte_equal_M_git_blob": true,
+  "mutation_records": 123,
+  "active_records": 120,
+  "counts": {
+    "killed": 114,
+    "equivalent": 5,
+    "retired": 3,
+    "crashed": 1
+  },
+  "unchanged_execution_heads": [
+    "577b2e81967b3019352f65df5ffe6dc48eb6202f"
+  ],
+  "identity_changed_paths": [
+    "tests/mutants_results.json"
+  ],
+  "tracked_identity_entries_compared": 38688,
+  "materialized_identity_entries_compared": 20946,
+  "sparse_git_object_identities_compared": 17742,
+  "non_ledger_tracked_closure_sha256": "c32ee825468b60ccb6a5e36ad5f94edf58299e7398f5f5a849e8208a2f2dd141",
+  "C_Python_oracle_runner_tool_compile_and_native_build_identity_equal": true,
+  "mutation_source_file_hash_identities_compared": 185,
+  "mutation_closure_sha256": "208ec6e6e512b5c49ea832523bd2c0b56e75c0756e55aef323c78a92f5d0187a",
+  "original_tool_sha256": "2b23de2a7c7c9b612aeb09aeb987cf317bca89331d0afa25fcf8349e4099bfa0",
+  "native_build_identities_compared": 7,
+  "native_input_identity_entries_compared": 1369,
+  "core_oracle_sha256": "55503d7b52341b686f72d18461ef7c6d3b78ed25367d250ab0f5cb92c33752d0",
+  "bridge_oracle_identities_checked": 53,
+  "identity_before_sha256": "160fe79668ef850d39470803e21ae2b31b4015c3e0438784f8714987b4ed7a12",
+  "identity_after_write_sha256": "42be6b56b97227cfa449186422b639d29342efa35e18f78ca209af864386321b",
+  "logical_check": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-B",
+      "tests/mutate.py",
+      "--check"
+    ],
+    "cwd": "/tmp/geometry-pr345-20261102",
+    "candidate_head": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+    "utc_start": "2026-11-02T04:15:09.721120+00:00",
+    "utc_finish": "2026-11-02T04:15:15.653284+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "df9b3e28b34453d22855a57b5fbbc127b6dd6855e9843c35f9b021978e6a1c2c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_overrides_added": false,
+    "inherited_MUTATE_CACHE_present": false,
+    "inherited_MUTATE_RESULTS_present": false,
+    "default_cache": "/tmp/geometry-tests/mutants",
+    "default_cache_existed_before": false,
+    "default_cache_exists_after": false,
+    "limitation": "Original logical freshness/receipt --check once at E only. Earlier official artifact binaries/sidecars were already verified at M. This is not a new product run or downloaded-artifact execution."
+  },
+  "logical_check_receipt_sha256": "12c9f58b6b2c8233436f3b4e369050cebc512e2963ac22e175a135f928aed0b5",
+  "prior_downloaded_binary_sidecar_verification_receipt": "/tmp/geometry-resume-20261102/ci-followup/pr340/independent-review/pr345-mutation-terminal-adversarial-review.json",
+  "prior_downloaded_binary_sidecar_verification_receipt_sha256": "64f7cb89569cc329a334abd62a1e2024983ba164fb4128fcae7db9ce072e766d",
+  "prior_downloaded_artifacts_reexecuted": false,
+  "source_PR_API_or_remote_mutated_by_peer": false,
+  "peer_script_sha256": "d8c5d20839573468655a6c968617f12b918a3784c0c94e7ff234e88a0392419b",
+  "scope": "Bounded actor-peer review before authorized ordinary push. No source/PR/API/push action; only one original read-only logical --check, with no cache override or cache deletion."
+}

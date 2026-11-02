@@ -1,0 +1,162 @@
+{
+  "sourceHead": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+  "architectureExitCodes": [
+    0,
+    0,
+    0
+  ],
+  "architectureCounts": {
+    "executableFiles": 604,
+    "ownedSources": 334,
+    "exclusions": 270,
+    "edges": 798,
+    "diagnostics": 0,
+    "layers": {
+      "H": 192,
+      "K": 69,
+      "W": 67,
+      "vendor": 6
+    },
+    "languages": {
+      "c": 191,
+      "javascript": 64,
+      "python": 75,
+      "html": 4
+    },
+    "forbiddenIdentifiers": 937,
+    "forbiddenStrings": 55
+  },
+  "architectureInputsBeforeAfterIdentical": true,
+  "nodeControls": {
+    "executionHead": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+    "phases": [
+      {
+        "phase": "fixed",
+        "argv": [
+          "node",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_connection_recovery.js"
+        ],
+        "cwd": "/tmp/geometry-pr344-20261102",
+        "executionHead": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+        "variant": "fixed",
+        "appSha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60",
+        "testSha256": "061a0f232ddcd9f8b0582f8907ca2d45788d32bd13435991813cdae5a30ee44d",
+        "timeoutSeconds": 300,
+        "domTransportPeers": "original test declares explicit substitutes; not a real-browser receipt",
+        "actualProcessReturncode": 0,
+        "elapsedSeconds": 0.11533521697856486,
+        "counts": {
+          "tests": 9,
+          "pass": 9,
+          "fail": 0,
+          "skipped": 0
+        },
+        "stdoutSha256": "f29b02835447c3eacf46dffbfb77fbb24f9df3d222835c507ce08b1670ed9d4f",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "phase": "withdrawn",
+        "argv": [
+          "node",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_connection_recovery.js"
+        ],
+        "cwd": "/tmp/geometry-resume-20261102/pr344/node-controls/withdrawn/source",
+        "executionHead": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+        "variant": "withdrawn",
+        "appSha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1",
+        "testSha256": "061a0f232ddcd9f8b0582f8907ca2d45788d32bd13435991813cdae5a30ee44d",
+        "timeoutSeconds": 300,
+        "domTransportPeers": "original test declares explicit substitutes; not a real-browser receipt",
+        "actualProcessReturncode": 1,
+        "elapsedSeconds": 0.11493770900415257,
+        "counts": {
+          "tests": 9,
+          "pass": 6,
+          "fail": 3,
+          "skipped": 0
+        },
+        "stdoutSha256": "e92dcbca1cebd2c6c1d59044db731a3ca1fba33484ab95b0caeee0418ccf2f18",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "phase": "restored",
+        "argv": [
+          "node",
+          "--test",
+          "--test-reporter=spec",
+          "tests/test_connection_recovery.js"
+        ],
+        "cwd": "/tmp/geometry-resume-20261102/pr344/node-controls/restored/source",
+        "executionHead": "eccebabc85acf74e30274b8ea8e24db863d8843b",
+        "variant": "restored",
+        "appSha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60",
+        "testSha256": "061a0f232ddcd9f8b0582f8907ca2d45788d32bd13435991813cdae5a30ee44d",
+        "timeoutSeconds": 300,
+        "domTransportPeers": "original test declares explicit substitutes; not a real-browser receipt",
+        "actualProcessReturncode": 0,
+        "elapsedSeconds": 0.11490030400454998,
+        "counts": {
+          "tests": 9,
+          "pass": 9,
+          "fail": 0,
+          "skipped": 0
+        },
+        "stdoutSha256": "71a96328b20f6cba9ce66675a91bef417eaa5608e6b6b0a506da423c2f2ad232",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "exits": [
+      0,
+      1,
+      0
+    ],
+    "namedWithdrawalAssertions": [
+      "successful recovery kept stale error",
+      "completed retry kept stale error",
+      "loading echoed stale error"
+    ],
+    "realBrowserExecuted": false,
+    "originalSourceAndIndexUnchanged": true
+  },
+  "mutationCheckExit": 1,
+  "mutationDefined": 123,
+  "mutationRecords": 123,
+  "mutationCounts": {
+    "killed": 62,
+    "crashed": 1,
+    "equivalent": 4,
+    "stale": 53,
+    "retired": 3,
+    "survived": 0,
+    "invalid": 0,
+    "blocked": 0
+  },
+  "mutationStaleReasons": {
+    "judgeSourceChanged": 52,
+    "M110EquivalenceAuditOracleChanged": 1
+  },
+  "ledgerAfterCheck": {
+    "sha256": "b02f378106bb16d7e392d77bad6f006a20ea5558afb67606368005642da7b295",
+    "bytes": 11347295,
+    "mtimeNs": 1793590047765102862
+  },
+  "ledgerUnchanged": true,
+  "fullMutationRerun": false,
+  "trueBrowserSvs": "UNRUN",
+  "fullCanvas": "UNRUN",
+  "otherBrowserGates": "UNRUN",
+  "fullNative": "UNRUN",
+  "requiredCi": "UNRUN",
+  "sharedCacheUsed": false,
+  "trackedDerivedFilesRemainMainHistorical": true,
+  "artifactAssemblyOutsideSource": true,
+  "worktreeClean": true,
+  "pushed": false,
+  "prBaseEdited": false,
+  "prBodyEdited": false,
+  "commented": false
+}

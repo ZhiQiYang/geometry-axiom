@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "python",
+    "-c",
+    "import pathlib,json,subprocess,hashlib; r=pathlib.Path(\"/tmp/geometry-pr344-20261102\"); o=pathlib.Path(\"/tmp/geometry-resume-20261102/pr344\"); g=lambda *a:subprocess.check_output([\"git\",*a],cwd=r).decode().strip(); e=g(\"rev-parse\",\"HEAD\"); s=g(\"rev-parse\",\"HEAD^1\"); assert e==\"503cfc59354893859ae9e6e4a6ab7c11d7972517\" and s==\"eccebabc85acf74e30274b8ea8e24db863d8843b\"; changed=g(\"diff\",\"--name-only\",s,e).splitlines(); assert changed==[\"geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md\",\"geometry-core/domain-decoupling/product-architecture-receipt.json\"]; d=json.loads((o/\"ADOPTION_BEFORE_AFTER.json\").read_text()); [x.update({\"canonicalGitBlobAtE\":g(\"rev-parse\",e+\":\"+x[\"path\"]),\"canonicalRawSha256AtE\":hashlib.sha256((r/x[\"path\"]).read_bytes()).hexdigest()}) for x in d[\"files\"]]; assert all(x[\"canonicalRawSha256AtE\"]==x[\"artifactSha256\"] and x[\"canonicalGitBlobAtE\"]==x[\"afterGitBlob\"] for x in d[\"files\"]); assert g(\"status\",\"--porcelain=v1\",\"--untracked-files=all\")==\"\"; d.update({\"adoptionHead\":e,\"parentExecutionSource\":s,\"changedPaths\":changed,\"productAndTestChanged\":False,\"worktreeClean\":True,\"originalGatesRerun\":False}); (o/\"ADOPTION_COMPLETE.json\").write_text(json.dumps(d,indent=2)+\"\\n\"); print(json.dumps({\"adoptionHead\":e,\"executionSource\":s,\"changedPaths\":changed,\"worktreeClean\":True}))"
+  ],
+  "cwd": "/tmp/geometry-pr344-20261102",
+  "startedUtc": "2026-11-02T04:30:00.207366+00:00",
+  "environment": {
+    "TMPDIR": null,
+    "TMP": null,
+    "TEMP": null,
+    "GEOMETRY_TEST_BRIDGE": null,
+    "GEOMETRY_MODEL_BASE": null,
+    "GEOMETRY_TEST_URL": null,
+    "GEOMETRY_FEEDBACK_DIR": null,
+    "PYTHONOPTIMIZE": null,
+    "CC": null,
+    "CFLAGS": null
+  }
+}

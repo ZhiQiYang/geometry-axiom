@@ -1,0 +1,15 @@
+{
+  "body_sha256_before": "b72c2726f399f2cd598f1e93a1007875e7a02260d4f2db658f03ca144c9a078e",
+  "body_sha256_after": "b72c2726f399f2cd598f1e93a1007875e7a02260d4f2db658f03ca144c9a078e",
+  "body_unchanged": true,
+  "base_ref_unchanged": true,
+  "base_sha_unchanged": true,
+  "title_unchanged": true,
+  "comments_unchanged": false,
+  "comments_before": 1,
+  "comments_after": 2,
+  "head_before": "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+  "head_after": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+  "assistant_metadata_mutations": false,
+  "limitation": "Snapshots compare 04:00 M receipt time to post-push E time. Any differing remote metadata is observed without attributing its author; this task made no PR metadata/comment API writes."
+}

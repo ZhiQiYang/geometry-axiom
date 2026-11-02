@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "tests/mutate.py",
+    "--check"
+  ],
+  "cwd": "/tmp/geometry-pr345-20261102",
+  "exit_code": 0,
+  "stdout_sha256": "df9b3e28b34453d22855a57b5fbbc127b6dd6855e9843c35f9b021978e6a1c2c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "selected_cache": {
+    "path": "/tmp/geometry-tests/mutants",
+    "exists": false,
+    "files": []
+  },
+  "cache_overrides_added": false,
+  "limitation": "Original logical freshness/receipt --check only. Selected shared cache was preserved. Downloaded binary bytes/sidecars were independently verified earlier; this check is not a new product/binary execution."
+}

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/tmp/geometry-resume-20261102/ci-followup/pr345/adoption/adopt_ledger.py", line 70, in <module>
+    before = identity()
+             ^^^^^^^^^^
+  File "/tmp/geometry-resume-20261102/ci-followup/pr345/adoption/adopt_ledger.py", line 36, in identity
+    body = os.readlink(path).encode() if path.is_symlink() else path.read_bytes()
+                                                                ^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1019, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/geometry-pr345-20261102/evidence/architecture-gate-99455b9f/README.md'

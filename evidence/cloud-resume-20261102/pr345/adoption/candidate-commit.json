@@ -1,0 +1,20 @@
+{
+  "candidate_E": "79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6",
+  "parent_M": "577b2e81967b3019352f65df5ffe6dc48eb6202f",
+  "tree": "c05e281326b3fe9b959e9ea8d59fcac28c067137",
+  "subject": "chore: adopt verified issue 214 mutation evidence",
+  "changed_paths": [
+    "tests/mutants_results.json"
+  ],
+  "ledger_sha256": "0be90a297b4f4b4fd5a2e60d528886845cc2c8d823e912ef3b0763ba68f7eb1c",
+  "working_tree_clean": true,
+  "local_branch": "codex/issue214-main-convergence-20261102",
+  "authorized_remote_branch": "codex/issue214-http-fixture-20261024",
+  "commit_command": [
+    "git",
+    "commit",
+    "-m",
+    "chore: adopt verified issue 214 mutation evidence"
+  ],
+  "commit_exit_code": 0
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/geometry-resume-20261102/pr344/close_receipt.py", line 79, in <module>
+    'forbiddenIdentifiers': len(manifest['forbiddenIdentifiers']),
+                                ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'forbiddenIdentifiers'
