@@ -1,0 +1,190 @@
+{
+  "schema": 1,
+  "exit_code": 0,
+  "root_terminal_observation": {
+    "source": "root message, child did not repoll",
+    "session": 54055,
+    "chunk": "df33b5",
+    "exit_code": 0
+  },
+  "checks": [
+    {
+      "name": "completed output",
+      "passed": true
+    },
+    {
+      "name": "exact four frozen groups",
+      "passed": true
+    },
+    {
+      "name": "fixed plan SHA",
+      "passed": true
+    },
+    {
+      "name": "fixed parent Eprime",
+      "passed": true
+    },
+    {
+      "name": "no publish/delete",
+      "passed": true
+    },
+    {
+      "name": "F-space complete hash/bytes",
+      "passed": true
+    },
+    {
+      "name": "F-space original roundtrip0",
+      "passed": true
+    },
+    {
+      "name": "F-space source identity",
+      "passed": true
+    },
+    {
+      "name": "F-space exact tar footer/bound",
+      "passed": true
+    },
+    {
+      "name": "F-space original counts/bytes",
+      "passed": true
+    },
+    {
+      "name": "F-space below original worst bound",
+      "passed": true
+    },
+    {
+      "name": "F-timber complete hash/bytes",
+      "passed": true
+    },
+    {
+      "name": "F-timber original roundtrip0",
+      "passed": true
+    },
+    {
+      "name": "F-timber source identity",
+      "passed": true
+    },
+    {
+      "name": "F-timber exact tar footer/bound",
+      "passed": true
+    },
+    {
+      "name": "F-timber original counts/bytes",
+      "passed": true
+    },
+    {
+      "name": "F-timber below original worst bound",
+      "passed": true
+    },
+    {
+      "name": "F-canvas complete hash/bytes",
+      "passed": true
+    },
+    {
+      "name": "F-canvas original roundtrip0",
+      "passed": true
+    },
+    {
+      "name": "F-canvas source identity",
+      "passed": true
+    },
+    {
+      "name": "F-canvas exact tar footer/bound",
+      "passed": true
+    },
+    {
+      "name": "F-canvas original counts/bytes",
+      "passed": true
+    },
+    {
+      "name": "F-canvas below original worst bound",
+      "passed": true
+    },
+    {
+      "name": "reception-publication complete hash/bytes",
+      "passed": true
+    },
+    {
+      "name": "reception-publication original roundtrip0",
+      "passed": true
+    },
+    {
+      "name": "reception-publication source identity",
+      "passed": true
+    },
+    {
+      "name": "reception-publication exact tar footer/bound",
+      "passed": true
+    },
+    {
+      "name": "reception-publication original counts/bytes",
+      "passed": true
+    },
+    {
+      "name": "reception-publication below original worst bound",
+      "passed": true
+    },
+    {
+      "name": "all15 existing aliases retained metadata",
+      "passed": true
+    }
+  ],
+  "result_sha256": "83aebcaf0c369bfd637eba6a1f8b2532cfffad2406350911ff07c25a46531188",
+  "plan_sha256": "0857de0ecbb07ac5014155e8b7ea8bd1ce4da0d2e22368853f4d029a215fd1fd",
+  "archives": [
+    {
+      "index_sha256": "9ee12ee46a400a57376857a1c97ae889baef428eb67518f194c372eaaf23d59f",
+      "members": 1425,
+      "name": "F-space",
+      "original_bytes": 44128360,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/final-browser-delivery-20261027/F-space.tar.gz",
+      "regular_original_files": 631,
+      "roundtrip_exit": 0,
+      "sha256": "7e943c71c7fce371d1dfa7f0984d77e3921b5ffc33456526620ca55e2104245e",
+      "size": 10332163,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 46858240
+    },
+    {
+      "index_sha256": "bc8587d4bc0b0055e6a3b1a6fece27af4a56ab4b11013b707fde0b140982a0a0",
+      "members": 1399,
+      "name": "F-timber",
+      "original_bytes": 35700546,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/final-browser-delivery-20261027/F-timber.tar.gz",
+      "regular_original_files": 605,
+      "roundtrip_exit": 0,
+      "sha256": "844e9b681a3afba9b563f7328b3847d2d658fc00038f797aff1050ee716389fc",
+      "size": 7140723,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 38389760
+    },
+    {
+      "index_sha256": "cfd0e4169ec78549dfcf3ee77ea3be180e66011fce687f7373e9955d19a5a6d6",
+      "members": 1573,
+      "name": "F-canvas",
+      "original_bytes": 56481184,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/final-browser-delivery-20261027/F-canvas.tar.gz",
+      "regular_original_files": 734,
+      "roundtrip_exit": 0,
+      "sha256": "94e8191bcb11b613d301aba133a655309a0e0c1fa6a88a7e1a2deccfd6a488c4",
+      "size": 12724269,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 59453440
+    },
+    {
+      "index_sha256": "7d2f3b9894961c102ad66bfab034572b81049ef7200d68f26259f7d44dd118b2",
+      "members": 470,
+      "name": "reception-publication",
+      "original_bytes": 1377282,
+      "path": "/dev/shm/geometry-axiom-geo337-20261025/final-browser-delivery-20261027/reception-publication.tar.gz",
+      "regular_original_files": 389,
+      "roundtrip_exit": 0,
+      "sha256": "bed8da5dd1f2a1c77445ad96c38c6c7969e62d5c7dfee1fbe206a0c1086f287e",
+      "size": 261521,
+      "source_sha": "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+      "tar_bytes": 2416640
+    }
+  ],
+  "total_archive_bytes": 30458676,
+  "scope": "One independent complete SHA256 pass of each built archive; original driver streamed every member roundtrip. No formal rerun, extraction, repack or API."
+}

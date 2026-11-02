@@ -1,0 +1,450 @@
+{
+  "scope": "External original-subprocess PIPE/deferred recorder; static semantics plus original synthetic proofs only",
+  "checks": 87,
+  "exit_code": 0,
+  "findings": [],
+  "final_pins_sha256": "b6199f36fbb5d35f3ba71140304ff2f1dbb1b1875ac201660234cb517d8cb660",
+  "core_sha256": "c997611f5ba14298d0a06759528c192adb0619a9587cb0cab4fd051d95126810",
+  "run_sha256": "881d618cd06b3edddf10a6676504923bbd982c8901c632410db434cfd480e849",
+  "original_raw_stream_pins": [
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/contract-r3-launch/stdout.bin",
+      "bytes": 46,
+      "sha256": "d8799f1538f04f78c73ecbc8afdcb9fc1423c0d4868caa59c9f5525b1f293713"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/contract-r3-launch/stderr.bin",
+      "bytes": 852,
+      "sha256": "78d44309662493dba21dbd14c5129a7711a25552024e2a0d6b7ce88736726b72"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2-launch/stdout.bin",
+      "bytes": 68,
+      "sha256": "f74598a0903abb5cd06b83c4b066b2979cfd70a704f54dcf35de4e68f78697e7"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2-launch/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/pipe/fixed-launch/stdout.bin",
+      "bytes": 46,
+      "sha256": "a848ca542a3e6c11b39c522ff2f389e2579450fad744229c8401ed94907a5fbc"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/pipe/fixed-launch/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/pipe/withdrawn-launch/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/pipe/withdrawn-launch/stderr.bin",
+      "bytes": 656,
+      "sha256": "b64991059a1095ae42471b1fc89363b4c2332337c24fed8a6000a1861bf09b5f"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/pipe/restored-launch/stdout.bin",
+      "bytes": 46,
+      "sha256": "a848ca542a3e6c11b39c522ff2f389e2579450fad744229c8401ed94907a5fbc"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/pipe/restored-launch/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer/fixed-launch/stdout.bin",
+      "bytes": 47,
+      "sha256": "efd3fcc878b4b2591f190755414b0e942f7805ee5ca4dde8dce74223f07f34ff"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer/fixed-launch/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer/withdrawn-launch/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer/withdrawn-launch/stderr.bin",
+      "bytes": 985,
+      "sha256": "789156bc5ea4ec4619c9c5ce7250ab8dd92c9a86c0f52f1b5a557d31704ba812"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer/restored-launch/stdout.bin",
+      "bytes": 47,
+      "sha256": "efd3fcc878b4b2591f190755414b0e942f7805ee5ca4dde8dce74223f07f34ff"
+    },
+    {
+      "path": "/workspace/geo323-recorder-fidelity-v5-draft-20261024/counterfactuals-r2/defer/restored-launch/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limitations": [
+    "No C, product, new benchmark sample or old U red reinterpretation.",
+    "Original subprocess PIPE buffers stdout/stderr in RAM, including read_output=False; root must budget actual archive outputs before formal run.",
+    "Deferred pending results may be lost on SIGKILL; missing evidence remains incomplete, never a pass waiver.",
+    "Nonzero Python metadata overhead remains inside original sample; only disk/hash/serialization shifted outside original perf.",
+    "Selftest environment supplemental was measured afterwards, not invented as contemporaneous capture.",
+    "Original source_role heuristic remains known ambiguous; acceptance SHA/inner/Git guards must bind source.",
+    "Requires fresh OUT; v5 does not authorize reusing or overwriting v4 receipts."
+  ],
+  "check_details": [
+    {
+      "check": "fixed final v5 pins",
+      "passed": true
+    },
+    {
+      "check": "exact final source tools-v5/geo323_record.py",
+      "passed": true
+    },
+    {
+      "check": "exact final source tools-v5/mini_gen.py",
+      "passed": true
+    },
+    {
+      "check": "exact final source tools-v5/profile_linux.py",
+      "passed": true
+    },
+    {
+      "check": "exact final source tools-v5/reap_children.py",
+      "passed": true
+    },
+    {
+      "check": "exact final source tools-v5/run.py",
+      "passed": true
+    },
+    {
+      "check": "exact final source tools-v5/verify_linux.py",
+      "passed": true
+    },
+    {
+      "check": "exact final source tests/run_counterfactuals.py",
+      "passed": true
+    },
+    {
+      "check": "exact final source tests/test_recorder_contract.py",
+      "passed": true
+    },
+    {
+      "check": "exact final source README.md",
+      "passed": true
+    },
+    {
+      "check": "exact final source P52_P189_SCOPE.md",
+      "passed": true
+    },
+    {
+      "check": "exact final source STATIC_INVARIANTS.json",
+      "passed": true
+    },
+    {
+      "check": "exact final source ORIGINAL_V4_PINS.json",
+      "passed": true
+    },
+    {
+      "check": "exact final source SCOPE_PINS.json",
+      "passed": true
+    },
+    {
+      "check": "exact final source geo323_record.py.v4-to-v5.diff",
+      "passed": true
+    },
+    {
+      "check": "exact final source run.py.v4-to-v5.diff",
+      "passed": true
+    },
+    {
+      "check": "retained original v4 unchanged geo323_record.py",
+      "passed": true
+    },
+    {
+      "check": "retained original v4 unchanged run.py",
+      "passed": true
+    },
+    {
+      "check": "retained original v4 unchanged verify_linux.py",
+      "passed": true
+    },
+    {
+      "check": "retained original v4 unchanged profile_linux.py",
+      "passed": true
+    },
+    {
+      "check": "retained original v4 unchanged mini_gen.py",
+      "passed": true
+    },
+    {
+      "check": "retained original v4 unchanged reap_children.py",
+      "passed": true
+    },
+    {
+      "check": "original judge/helper unchanged verify_linux.py",
+      "passed": true
+    },
+    {
+      "check": "original judge/helper unchanged profile_linux.py",
+      "passed": true
+    },
+    {
+      "check": "original judge/helper unchanged mini_gen.py",
+      "passed": true
+    },
+    {
+      "check": "original judge/helper unchanged reap_children.py",
+      "passed": true
+    },
+    {
+      "check": "exact original driver except single external defer context",
+      "passed": true
+    },
+    {
+      "check": "old source_role heuristic preserved without repair/relabel",
+      "passed": true
+    },
+    {
+      "check": "original run captured before later monkeypatch",
+      "passed": true
+    },
+    {
+      "check": "original command/cwd/input/env object forwarding",
+      "passed": true
+    },
+    {
+      "check": "original preexec/timeout and true PIPE",
+      "passed": true
+    },
+    {
+      "check": "original check and bytes semantics",
+      "passed": true
+    },
+    {
+      "check": "ordinary CompletedProcess identity",
+      "passed": true
+    },
+    {
+      "check": "original exception object reraised",
+      "passed": true
+    },
+    {
+      "check": "unknown timeout OSexit null not fabricated",
+      "passed": true
+    },
+    {
+      "check": "timeout scope explicit",
+      "passed": true
+    },
+    {
+      "check": "no absent-output fake zero-byte claim",
+      "passed": true
+    },
+    {
+      "check": "deferred flush failure never replaces original exception",
+      "passed": true
+    },
+    {
+      "check": "ordinary flush failure never replaces original exception",
+      "passed": true
+    },
+    {
+      "check": "input snapshot errors delayed until original input semantics",
+      "passed": true
+    },
+    {
+      "check": "pending cleared only after complete flush",
+      "passed": true
+    },
+    {
+      "check": "failed record has no automatic overwrite retry",
+      "passed": true
+    },
+    {
+      "check": "one original call site",
+      "passed": true
+    },
+    {
+      "check": "no injected stdio/devnull/session/process-group",
+      "passed": true
+    },
+    {
+      "check": "run itself no sample file read/stat/hash/write",
+      "passed": true
+    },
+    {
+      "check": "run itself no hash or JSON serialization",
+      "passed": true
+    },
+    {
+      "check": "original48 synthetic contract assertions true",
+      "passed": true
+    },
+    {
+      "check": "synthetic scope not product tests",
+      "passed": true
+    },
+    {
+      "check": "original synthetic outer true0 contract-r3-launch",
+      "passed": true
+    },
+    {
+      "check": "original synthetic launcher identity contract-r3-launch",
+      "passed": true
+    },
+    {
+      "check": "original outer stdout terminal agrees contract-r3-launch",
+      "passed": true
+    },
+    {
+      "check": "original synthetic outer true0 counterfactuals-r2-launch",
+      "passed": true
+    },
+    {
+      "check": "original synthetic launcher identity counterfactuals-r2-launch",
+      "passed": true
+    },
+    {
+      "check": "original outer stdout terminal agrees counterfactuals-r2-launch",
+      "passed": true
+    },
+    {
+      "check": "two independent original counterfactuals",
+      "passed": true
+    },
+    {
+      "check": "original synthetic0/1/0 pipe",
+      "passed": true
+    },
+    {
+      "check": "original phase result/source pipe/fixed",
+      "passed": true
+    },
+    {
+      "check": "fixed/restored exact final v5 bytes pipe/fixed",
+      "passed": true
+    },
+    {
+      "check": "original phase actually checked pipe/fixed",
+      "passed": true
+    },
+    {
+      "check": "original phase result/source pipe/withdrawn",
+      "passed": true
+    },
+    {
+      "check": "specific normal failing contract pipe",
+      "passed": true
+    },
+    {
+      "check": "original phase result/source pipe/restored",
+      "passed": true
+    },
+    {
+      "check": "fixed/restored exact final v5 bytes pipe/restored",
+      "passed": true
+    },
+    {
+      "check": "original phase actually checked pipe/restored",
+      "passed": true
+    },
+    {
+      "check": "counterfactual final restoration pipe",
+      "passed": true
+    },
+    {
+      "check": "original synthetic0/1/0 defer",
+      "passed": true
+    },
+    {
+      "check": "original phase result/source defer/fixed",
+      "passed": true
+    },
+    {
+      "check": "fixed/restored exact final v5 bytes defer/fixed",
+      "passed": true
+    },
+    {
+      "check": "original phase actually checked defer/fixed",
+      "passed": true
+    },
+    {
+      "check": "original phase result/source defer/withdrawn",
+      "passed": true
+    },
+    {
+      "check": "specific normal failing contract defer",
+      "passed": true
+    },
+    {
+      "check": "original phase result/source defer/restored",
+      "passed": true
+    },
+    {
+      "check": "fixed/restored exact final v5 bytes defer/restored",
+      "passed": true
+    },
+    {
+      "check": "original phase actually checked defer/restored",
+      "passed": true
+    },
+    {
+      "check": "counterfactual final restoration defer",
+      "passed": true
+    },
+    {
+      "check": "retained original P52/P189 scope code run_special.py",
+      "passed": true
+    },
+    {
+      "check": "retained original P52/P189 scope code p189_verify.py",
+      "passed": true
+    },
+    {
+      "check": "retained original P52/P189 scope code scale_compare2.py",
+      "passed": true
+    },
+    {
+      "check": "retained original P52/P189 scope code timing_only_after_dump_red.py",
+      "passed": true
+    },
+    {
+      "check": "retained original P52/P189 scope code p52-formal.py",
+      "passed": true
+    },
+    {
+      "check": "retained original P52/P189 scope code postfix_validate.py",
+      "passed": true
+    },
+    {
+      "check": "retained original P52/P189 scope code p52_probe.cjs",
+      "passed": true
+    },
+    {
+      "check": "retained original P52/P189 scope code p52_measure.py",
+      "passed": true
+    },
+    {
+      "check": "P52/P189 bounded claim and historical red retained",
+      "passed": true
+    },
+    {
+      "check": "defer memory and failure limits explicit",
+      "passed": true
+    },
+    {
+      "check": "prior unsuccessful development rounds retained",
+      "passed": true
+    },
+    {
+      "check": "environment timestamp not retroactive snapshot",
+      "passed": true
+    }
+  ]
+}

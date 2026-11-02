@@ -1,0 +1,16 @@
+{
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/geo337-F9-native-terminal-preparation-v2-20261025/collect_terminal_native.py",
+    "--request",
+    "/tmp/geo337-F9-native-terminal-REQUEST-root-lease-20261025.json",
+    "--request-sha256",
+    "988a9b8057278e013b4b74c423581efef56941745931df3e26e1955bbc07ac3c"
+  ],
+  "collector_sha256": "17352ac43c5dbd911143c5771e0280d61e58a487293d2b3ad38e8cb272001e54",
+  "original_bound_request": "/tmp/geo337-F9-native-terminal-REQUEST-root-lease-20261025.json",
+  "original_bound_request_sha256": "988a9b8057278e013b4b74c423581efef56941745931df3e26e1955bbc07ac3c",
+  "subject_rerun": false
+}

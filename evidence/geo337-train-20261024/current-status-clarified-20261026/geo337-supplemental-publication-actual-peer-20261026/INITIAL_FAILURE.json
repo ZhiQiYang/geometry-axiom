@@ -1,0 +1,17 @@
+{
+  "exit_code": 1,
+  "classification": "current-local-PROGRESS-advanced-after-closed-publication; remote historical binding pending independent verification",
+  "audit_script_sha256": "b3033e95a2ea20acec4a3fb1de401d3f36d8cddf8319646780bde25c2c092d57",
+  "assertion": "original publication source changed",
+  "source_path": "/tmp/geo337-current-PROGRESS-cbf0fb62-20261026.md",
+  "manifest_bytes": 5747,
+  "current_bytes": 6022,
+  "manifest_sha256": "71f838b5b5230f392e55332ee1bf7c7bec74f4f2cb4955130a8254d712812c26",
+  "current_sha256": "148402318284618623b950e330e877c9ccf46e39e0b2aafd5c3a0796c2c37956",
+  "all_other_301_local_sources_match": true,
+  "original_tool_result": {
+    "chunk_id": "509bc8",
+    "exit_code": 1,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/geo337-supplemental-publication-actual-peer-20261026/review.py\", line 126, in <module>\n    p=Path(item['source_path']);fact=stream(p);need(fact['bytes']==item['bytes']and fact['sha256']==item['sha256'],'original publication source changed')\n  File \"/tmp/geo337-supplemental-publication-actual-peer-20261026/review.py\", line 24, in need\n    if not ok:raise AssertionError(msg)\nAssertionError: original publication source changed\n"
+  }
+}

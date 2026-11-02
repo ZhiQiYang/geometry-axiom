@@ -1,0 +1,48 @@
+{
+  "source": "ccfaf057088a80c7aad4049f1c67e5eedfc2fdec",
+  "archive": "/tmp/geo300-member-sort-final-delivery/ORIGINALS_AND_PEER.tar.gz",
+  "bytes": 10636252,
+  "sha256": "2d4c3fdccf4d08f6590a72cd961bc8b1121dc076fe241b25d7736c19e4b044db",
+  "index_sha256": "702c664e573a7b366af36da0c44055547e380af81b221d387ea141dc4cf236cc",
+  "original_files": 1498,
+  "original_bytes": 56913484,
+  "regular_members": 1499,
+  "roundtrip_all_members": true,
+  "r1_red_source": "cc2ea1b3b42291f6ebb0ead6bd1c2180920d7041",
+  "r1_suite_exits": [
+    0,
+    1,
+    0
+  ],
+  "r1_builds": [
+    147,
+    85,
+    86
+  ],
+  "r2_suite_exits": [
+    0,
+    0,
+    0
+  ],
+  "r2_methods": 34,
+  "r2_controls": 64,
+  "r2_builds": 318,
+  "tuple_scope": "one original method/eight controls per phase; not full15/all11 or whole optimization",
+  "tuple_exits": [
+    0,
+    1,
+    0
+  ],
+  "tuple_builds": [
+    77,
+    77,
+    77
+  ],
+  "three_suite_actual_peer_checks": 1222,
+  "tuple_actual_peer_checks": 693,
+  "performance": "UNMEASURED",
+  "whole_fast_path_equivalence": "UNRUN eight-positive subset; not killed",
+  "capacity512": "UNIMPLEMENTED/UNRUN",
+  "full_native_browser_ledger_architecture": "UNRUN",
+  "READY": false
+}

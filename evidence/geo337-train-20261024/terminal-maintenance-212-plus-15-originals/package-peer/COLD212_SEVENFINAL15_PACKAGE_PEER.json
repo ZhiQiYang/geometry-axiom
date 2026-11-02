@@ -1,0 +1,16 @@
+{
+  "schema": "independent-cold212-sevenfinal15-package-peer/1",
+  "checks": 105534,
+  "findings": [],
+  "exit_code": 0,
+  "archive_sha256": "0e96fa4a6b07fa9b9d54cfc0821c7b92a40f1ddb0b03c07f4d918d6361f75cc4",
+  "member_count": 26376,
+  "original_bytes": 24230100,
+  "scope": "All original package members independently compared against source bytes; new212 metadata actual review already separately accepted; exact15 retirement outcome and all21preserved sidecars/receipts rechecked.",
+  "limits": [
+    "No original large archive payload or ELF body rehash or subject rerun. All packaged command/receipt/tool bodies, including full preserved small streams, were checked.",
+    "Allocated401981440B dedup and14745600B executable cache retirement are not concurrent free-space deltas.",
+    "236 cold archive alias groups stay write/reuse barred until each is independently de-linked.",
+    "Package collector outer RESULT/subcommands/full streams are outside this archive and must accompany publication."
+  ]
+}

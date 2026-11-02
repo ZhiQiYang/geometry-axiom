@@ -1,0 +1,30 @@
+test_source_provider_has_no_host_or_private_store_dependencies (__main__.ContactSourcesBoundary.test_source_provider_has_no_host_or_private_store_dependencies) ... ok
+test_test_hook_preserves_production_body_and_controls_hit_once (__main__.ContactSourcesBoundary.test_test_hook_preserves_production_body_and_controls_hit_once) ... ok
+test_actual_h_contact_consumer_uses_box_origin_axes_and_original_member_identity (__main__.NativeContactSources.test_actual_h_contact_consumer_uses_box_origin_axes_and_original_member_identity) ... ok
+test_actual_ordered_policy_preserves_placement_order_ties_and_cover_dedup (__main__.NativeContactSources.test_actual_ordered_policy_preserves_placement_order_ties_and_cover_dedup) ... ok
+test_cached_collection_records_every_feature_consumer_with_exact_kind_and_edge_order (__main__.NativeContactSources.test_cached_collection_records_every_feature_consumer_with_exact_kind_and_edge_order) ... ok
+test_collection_cache_negative_controls_detect_second_consumer_kind_and_order (__main__.NativeContactSources.test_collection_cache_negative_controls_detect_second_consumer_kind_and_order) ... ok
+test_components_hole_indices_and_free_or_other_fixity_metadata_are_preserved (__main__.NativeContactSources.test_components_hole_indices_and_free_or_other_fixity_metadata_are_preserved) ... ok
+test_eight_negative_controls_fail_only_the_named_semantic_assertion (__main__.NativeContactSources.test_eight_negative_controls_fail_only_the_named_semantic_assertion) ... 
+  test_eight_negative_controls_fail_only_the_named_semantic_assertion (__main__.NativeContactSources.test_eight_negative_controls_fail_only_the_named_semantic_assertion) (control='placement-order') ... FAIL
+test_empty_and_evolving_queries_keep_dependencies_without_forcing_unplaced_members (__main__.NativeContactSources.test_empty_and_evolving_queries_keep_dependencies_without_forcing_unplaced_members) ... ok
+test_failures_cycles_and_invalid_inputs_preserve_caller_outputs (__main__.NativeContactSources.test_failures_cycles_and_invalid_inputs_preserve_caller_outputs) ... ok
+test_order_lookup_preserves_full_ids_duplicates_freshness_capacity_and_fallback (__main__.NativeContactSources.test_order_lookup_preserves_full_ids_duplicates_freshness_capacity_and_fallback) ... ok
+test_real_k_frame_region_box_values_feed_w_policy_and_typed_dependency_edges (__main__.NativeContactSources.test_real_k_frame_region_box_values_feed_w_policy_and_typed_dependency_edges) ... ok
+test_returned_feature_segments_control_both_local_uv_axis_outputs (__main__.NativeContactSources.test_returned_feature_segments_control_both_local_uv_axis_outputs) ... ok
+test_upstream_geometry_changes_candidate_isolation_and_borrowed_value_lifetime (__main__.NativeContactSources.test_upstream_geometry_changes_candidate_isolation_and_borrowed_value_lifetime) ... ok
+test_zero_capacity_pair_admission_and_truncation_before_dedup_match_old_policy (__main__.NativeContactSources.test_zero_capacity_pair_admission_and_truncation_before_dedup_match_old_policy) ... ok
+
+======================================================================
+FAIL: test_eight_negative_controls_fail_only_the_named_semantic_assertion (__main__.NativeContactSources.test_eight_negative_controls_fail_only_the_named_semantic_assertion) (control='placement-order')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_geo261_contact_sources.py", line 199, in test_eight_negative_controls_fail_only_the_named_semantic_assertion
+    self.assertEqual(1, result.returncode, "Control did not fail a normal assertion: " + result.stdout + result.stderr)
+AssertionError: 1 != 0 : Control did not fail a normal assertion: PASS ordering
+
+
+----------------------------------------------------------------------
+Ran 15 tests in 5.240s
+
+FAILED (failures=1)

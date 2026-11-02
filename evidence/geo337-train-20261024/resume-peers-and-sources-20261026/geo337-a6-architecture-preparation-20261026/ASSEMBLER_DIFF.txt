@@ -1,0 +1,173 @@
+--- /tmp/geo337-S10-architecture-assembly-preparation-20261025/assemble_architecture_v2.py
++++ assemble_a6.py
+@@ -1,17 +1,17 @@
+-"""Assemble four S10 artifacts from closed original gates; never rerun judges.
+-Root executes only after the full-ledger lease ends. Old H inventory/hash/schema
++"""Assemble four a6 artifacts from closed original gates; never rerun judges.
++Root executes only after the actual a6 three-gate batch and its source lease end. Old H inventory/hash/schema
+ is retained; source snapshots are new, original gate execution timestamps are not.
+ """
+ from pathlib import Path
+-import argparse,collections,contextlib,datetime,fcntl,hashlib,importlib.util,json,os,re,resource,stat,sys
+-
+-SOURCE='82c922a3941525d3a094ac0158bdc7dea57ea360'
++import argparse,collections,contextlib,datetime,fcntl,hashlib,importlib.util,json,os,re,resource,shutil,stat,sys
++
++SOURCE='a6f4013364e21bcb7239b5dcc25caac0f6d61f77'
+ PRIOR='6e50aef65513b7b38f93228919272c6d40d6c196'
+ ADOPTION='75a1e93811a52b69385cbdaf6a09d773ed9052ad'
+ OWN=Path('/dev/shm/geometry-axiom-geo337-20261025')
+-ROOT=OWN/'F10-pool'
+-GATES=OWN/'S10-preledger-checks-original-20261025'
+-PREP=OWN/'F10-source-preparation-reserve-anchor'
++ROOT=OWN/'a6-architecture-source-20261026'
++GATES=OWN/'a6-architecture-gates-original-20261026'
++PREP=OWN/'a6-architecture-source-original-20261026'
+ ART='geometry-core/domain-decoupling'
+ NAMES=['product-architecture.json','product-architecture-scan.json','PRODUCT-ARCHITECTURE.md','product-architecture-receipt.json']
+ JUDGES=['tests/architecture_contract.py','tests/test_architecture_contract.py','tests/test_product_architecture.py']
+@@ -22,14 +22,14 @@
+ MANIFEST_PIN='81882184010b5ddb9aa8e8d45467be788a65a79b378037ba6c99268f99bfa975'
+ SCAN_PIN='18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728'
+ PRIOR_FOUR_PINS=[MANIFEST_PIN,SCAN_PIN,'fa1357b249c19708824d480993a80821b7bfeccb7606be773a000395f28aafd6','00a33c42ca07a9077aa5abf758ed8b0a3650a031cdc8387128f285050b7c13af']
+-GATES_PIN='0d592b7c18749bf36d162e82be4d586e7aa017b4eca22695402d9d686d4788f3'
+-GATE_PEER=Path('/workspace/geo337-S10-preledger-actual-peer-20261025/REVIEW.json')
+-GATE_PEER_PIN='1f945f9e84d04fe74c807388dc95d4076ff6ad814ac35e2fb93ff465efbaafd3'
+-SOURCE_PEER=Path('/workspace/geo337-S10-source-preparation-actual-peer-20261025/REVIEW.json')
+-SOURCE_PEER_PIN='c01f6d7337297ad36f617eecf1c9067cbb4bf9ce53ba4dd942930c723d38c1ed'
+-SOURCE_MANIFEST_PIN='e919aab396841642d093495b6fa7c7f4a20f55e1557929471dd6b2a81065057a'
++# GATES_PIN is bound below to actual a6 outputs, never historical S10 execution.
++# GATE_PEER is bound below to actual a6 outputs, never historical S10 execution.
++# GATE_PEER_PIN is bound below to actual a6 outputs, never historical S10 execution.
++# SOURCE_PEER is bound below to actual a6 outputs, never historical S10 execution.
++# SOURCE_PEER_PIN is bound below to actual a6 outputs, never historical S10 execution.
++# SOURCE_MANIFEST_PIN is bound below to actual a6 outputs, never historical S10 execution.
+ PRIOR_SNAPSHOT_PIN='ee4eced205432217111ba597f565128ae598f87246c0cc3cc6d9194b52f59618'
+-PROTECTED_PINS={'公理層.md':'c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7','決策佇列.md':'fe822051b5413fb79490b333e23f3c9d6b96959c01f937c274d3246772c15e14'}
++PROTECTED_PINS={'公理層.md':'c66c48e50e0caceef42721c79700365f090f5c48d297abba41993eeb40dba9b7','決策佇列.md':'e6f2aee291850d9aaf8cc0026994f6c86894bb2a7849798ddd11cd63c5558740'}
+ 
+ def H(b):return hashlib.sha256(b).hexdigest()
+ def LF(b):return b.replace(b'\r\n',b'\n')
+@@ -58,7 +58,7 @@
+ 
+ def validate_inputs(before,prior,inputs):
+  need(len(before)==len(prior)==len(inputs)==604,'complete604 snapshots')
+- need(len({x['path']for x in before})==604 and before==prior,'S10 must have zero raw/LF/Git604 input changes')
++ need(len({x['path']for x in before})==604 and before==prior,'a6 must have zero raw/LF/Git604 input changes')
+  need(inputs==[{'path':x['path'],'sha256':x['lfSha256']}for x in before],'complete ordered604 LF inputs')
+ 
+ def historical_probes(prior):
+@@ -66,7 +66,7 @@
+  return {'executedAtCurrentHead':False,'newIdentifiers':0,'guardIdentifiersRetested':0,'neutralCases':0,'legacyWindowsSupplementalExecuted':False,
+          'historicalExecutionSource':PRIOR,'historicalAdoptionCommit':ADOPTION,'historicalReceiptRawSha256':PRIOR_FOUR_PINS[3],
+          'historicalSupplementalStaticGuardProbes':prior['supplementalStaticGuardProbes'],
+-         'note':'Nine0/1/0 and two neutral controls are historical actual M6e50 results, not rerun or relabelled at S10.'}
++         'note':'Nine0/1/0 and two neutral controls are historical actual M6e50 results, not rerun or relabelled at a6.'}
+ 
+ def snapshot(R,manifest,declared,tree):
+  paths=set(manifest['sourceFiles'])
+@@ -119,11 +119,20 @@
+     return dict(version=version,entries=count,extensions=extensions,sha256=H(raw))
+ 
+ def main():
+- p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--sha',required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--root-execution-lease',action='store_true');a=p.parse_args()
+- need(a.root_execution_lease,'root must schedule after full123 lease ends')
+- need(not sys.flags.optimize and a.sha==SOURCE and a.root==ROOT,'fixed S10 original source only')
++ p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--sha',required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--root-execution-lease',action='store_true');p.add_argument('--bindings',type=Path,required=True);p.add_argument('--bindings-sha256',required=True);a=p.parse_args()
++ need(a.root_execution_lease,'root must schedule actual a6 assembly after the original three judges complete')
++ binding_raw=pinned(a.bindings,a.bindings_sha256);binding=json.loads(binding_raw)
++ need(binding['source_sha']==SOURCE and binding['root_execution_lease'] is True,'actual a6 original binding lease')
++ need(Path(binding['source_result']['path'])==PREP/'RESULT.json' and Path(binding['gate_result']['path'])==GATES/'RESULT.json','fixed a6 original source/gate paths')
++ prepared=json.loads(pinned(PREP/'RESULT.json',binding['source_result']['sha256']))
++ need(prepared['source_sha']==SOURCE and prepared['exit_code']==0 and prepared['materialized'] is True,'actual a6 source complete')
++ SOURCE_MANIFEST_PIN=prepared['source_manifest_sha256']
++ GATES_PIN=binding['gate_result']['sha256']
++ GATE_PEER=Path(binding['gate_actual_peer']['path']);GATE_PEER_PIN=binding['gate_actual_peer']['sha256']
++ SOURCE_PEER=Path(binding['source_actual_peer']['path']);SOURCE_PEER_PIN=binding['source_actual_peer']['sha256']
++ need(not sys.flags.optimize and a.sha==SOURCE and a.root==ROOT,'fixed a6 original source only')
+  O=a.out;R=a.root
+- need(O.is_absolute()and O==O.resolve()and O.parent==OWN and not O.exists(),'fresh direct OWN output child')
++ need(O==OWN/'a6-architecture-four-original-20261026'and O==O.resolve()and not O.exists(),'fresh fixed a6 architecture output')
+  need(O not in [ROOT,OWN/'F10-cache']and not R.is_relative_to(O),'output must not overlap source/cache')
+  need(resource.getrlimit(resource.RLIMIT_STACK)[0]==16777216,'original16MiB stack')
+  with contextlib.ExitStack()as stack:
+@@ -131,7 +140,15 @@
+    f=Path(path);st=f.lstat();need(stat.S_ISREG(st.st_mode)and st.st_uid==os.getuid(),'existing owned scheduler lock')
+    fd=stack.enter_context(f.open('r+b'));need((os.fstat(fd.fileno()).st_dev,os.fstat(fd.fileno()).st_ino)==(st.st_dev,st.st_ino),'lock identity');fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
+   # No source read precedes the explicit lease and both nonblocking locks.
++  seen=set();used=0
++  for root in [OWN,Path('/dev/shm/geo337-F9-browsers-20261025')]:
++   for path in [root,*root.rglob('*')]:
++    st=path.lstat();key=(st.st_dev,st.st_ino)
++    if key not in seen:seen.add(key);used+=st.st_blocks*512
++  need(used+67108864<=2147483648 and shutil.disk_usage(OWN).free>=67108864,'original64MiB and two-OWN2GiB assembly admission')
+   O.mkdir();(O/'new').mkdir();(O/'previous-artifact').mkdir();(O/'original-gates').mkdir();(O/'tmp').mkdir()
++  (O/'ROOT_BINDINGS.json').write_bytes(binding_raw)
++  dump(O/'RESOURCE_ADMISSION.json',{'shared_before':used,'additional_bound':67108864,'shared_ceiling':2147483648})
+   (O/'ASSEMBLER.py').write_bytes(Path(__file__).read_bytes())
+   result={'sourceSHA':SOURCE,'exit_code':1,'originalJudgesRerun':False,'formalLedgerOrNativeExecuted':False,'sourceCheckoutModified':False}
+   try:
+@@ -146,14 +163,14 @@
+    (O/'private-index').write_bytes(index_before)
+    env.update(GIT_INDEX_FILE=str(O/'private-index'),GIT_CONFIG_COUNT='1',GIT_CONFIG_KEY_0='core.splitIndex',GIT_CONFIG_VALUE_0='false')
+    dump(O/'GIT_ENVIRONMENT.json',{k:v for k,v in env.items()if k.startswith('GIT_')})
+-   need(git('rev-parse','HEAD').decode().strip()==SOURCE and not git('status','--porcelain=v1','--untracked-files=all'),'current source exact clean S10')
+-   gate_peer=json.loads(pinned(GATE_PEER,GATE_PEER_PIN));source_peer=json.loads(pinned(SOURCE_PEER,SOURCE_PEER_PIN));need(gate_peer['exit_code']==source_peer['exit_code']==0,'closed source/gate actual peers')
++   need(git('rev-parse','HEAD').decode().strip()==SOURCE and not git('status','--porcelain=v1','--untracked-files=all'),'current source exact clean a6')
++   gate_peer=json.loads(pinned(GATE_PEER,GATE_PEER_PIN));source_peer=json.loads(pinned(SOURCE_PEER,SOURCE_PEER_PIN));need(gate_peer['exit_code']==source_peer['exit_code']==0 and not gate_peer['blocking_findings'] and not source_peer['blocking_findings'] and gate_peer['source_sha']==source_peer['source_sha']==SOURCE and gate_peer['gate_result_sha256']==GATES_PIN and source_peer['source_result_sha256']==binding['source_result']['sha256'],'actual a6 source/gate peer identities')
+    gate_raw=pinned(GATES/'RESULT.json',GATES_PIN);batch=json.loads(gate_raw);(O/'original-gates'/'batch-RESULT.json').write_bytes(gate_raw)
+    need(batch['source_sha']==SOURCE and batch['before']==batch['after']and batch['before']['head']==SOURCE and not batch['before']['status'],'closed original batch clean source identity')
+-   need([x['exit_code']for x in batch['gates']]==[1,0,0,0,0,0]and not batch['all_gates_passed'],'original stale check preserved separately')
++   need([x['exit_code']for x in batch['gates']]==[0,0,0] and batch['all_gates_passed'] and batch['exit_code']==0,'all three actual a6 original judges passed; no synthetic ledger row')
+    original=[]
+-   for number,g in enumerate(batch['gates'][1:4]):
+-    c=g['command'];d=GATES/'subcommands'/f'{number+5:06d}';need(c['directory']==str(d),'fixed closed gate directory')
++   for number,g in enumerate(batch['gates']):
++    c=g['command'];d=GATES/'subcommands'/f'{number+4:06d}';need(c['directory']==str(d),'fixed closed gate directory')
+     payload={n:(d/n).read_bytes()for n in ['request.json','result.json','stdin.bin','stdout.bin','stderr.bin']}
+     row=json.loads(payload['result.json']);request=json.loads(payload['request.json']);need(row==c,'original subcommand result matches batch')
+     for key,value in request.items():
+@@ -184,31 +201,31 @@
+    prior_snapshot=json.loads(pinned(OLD/'source-inputs.json',PRIOR_SNAPSHOT_PIN));validate_inputs(before,prior_snapshot,inputs)
+    need(inputs==prior['inputs'],'prior receipt complete604 LF inputs');closure=H(json.dumps(inputs,ensure_ascii=False,separators=(',',':')).encode());need(closure==prior['inputClosureSha256'],'unchanged604 LF closure');dump(O/'source-inputs.json',before)
+    protected={n:info(R/n)for n in PROTECTED_PINS};tools={n:info(R/n)['lfSha256']for n in JUDGES}
+-   for n in protected:need(protected[n]['rawSha256']==PROTECTED_PINS[n]and H(git('show',SOURCE+':'+n))==PROTECTED_PINS[n],'protected S10 SSOT bytes')
++   for n in protected:need(protected[n]['rawSha256']==PROTECTED_PINS[n]and H(git('show',SOURCE+':'+n))==PROTECTED_PINS[n],'protected a6 SSOT bytes')
+    for n in JUDGES:need(H(LF(git('show',SOURCE+':'+n)))==tools[n]==prior['completeInventoryVerification']['toolHashesBefore'][n],'unchanged original judge bytes')
+    scan=original[0][3];scan_raw=original[0][1];need(H(scan_raw)==SCAN_PIN and scan_raw==old_four[NAMES[1]],'original scan bytes unchanged; never reformat')
+    probes=historical_probes(prior);new=O/'new'
+-   report=f'''# Product architecture — S10 original-gate receipt assembly
+-
+-產品／裁判實際來源 `{SOURCE}`。使用本輪已封閉三原命令exit0／0／0（generic205、product18、零skip），沒有重跑三裁判。完整604 inputs、334 owned／270 exclusions、798 edges／0 diagnostics；LF closure `{closure}`。manifest與原scan逐byte不變，937 identifiers／55 strings政策不變。
+-
+-604輸入相對真正前次執行 `{PRIOR}` 零差異；前四檔採入提交 `{ADOPTION}`。本次改動的test_geo314_commit_paths.py與決策不在604inputs，帳本仍須另完整重產。公理層快照不變；決策新快照SHA256 `{PROTECTED_PINS['決策佇列.md']}`，為已授權normal merge逐字合入。
+-
+-原三judge執行時間/環境完整保留於receipt，604/raw/LF/Git/tool/SSOT快照是在本組裝階段重新採集並前後比對，不能冒作同時點快照。歷史9組0／1／0及2 neutral controls仍屬M6e50，未在S10重跑或移標。四檔寫於來源外，receipt不hash自己；native、browser、全帳本與performance各需獨立原收據。
++   report=f'''# Product architecture — a6 original-gate receipt assembly
++
++產品／裁判實際來源 `{SOURCE}`。使用本輪已封閉三原命令exit0／0／0（generic205、product18、零skip），本組裝階段沒有再次執行三裁判。完整604 inputs、334 owned／270 exclusions、798 edges／0 diagnostics；LF closure `{closure}`。manifest與原scan逐byte不變，937 identifiers／55 strings政策不變。
++
++604輸入相對真正前次執行 `{PRIOR}` 零差異；前四檔採入提交 `{ADOPTION}`。相對前次執行的test_geo314_commit_paths.py與決策不在604inputs；全帳本保留S10實際重產原件，其於a6有效性由獨立--check判定，本架構收據不認證帳本。公理層快照不變；決策新快照SHA256 `{PROTECTED_PINS['決策佇列.md']}`，為a6既有檔案的逐byte快照，不以其內容自行擴張授權。
++
++原三judge執行時間/環境完整保留於receipt，604/raw/LF/Git/tool/SSOT快照是在本組裝階段重新採集並前後比對，不能冒作同時點快照。歷史9組0／1／0及2 neutral controls仍屬M6e50，未在a6重跑或移標。四檔寫於來源外，receipt不hash自己；native、browser、全帳本與performance各需獨立原收據。
+ '''
+    (new/NAMES[0]).write_bytes(old_four[NAMES[0]]);(new/NAMES[1]).write_bytes(scan_raw);(new/NAMES[2]).write_text(report)
+    counts={'executableFiles':604,'ownedSources':334,'exclusions':270,'edges':798,'diagnostics':0,'layers':dict(sorted(collections.Counter(x['layer']for x in manifest['sources']).items())),'languages':dict(sorted(collections.Counter(x['language']for x in manifest['sources']).items())),'forbiddenIdentifiers':937,'forbiddenStrings':55}
+    receipt={k:prior[k]for k in ['schema','hashMode','inputClosureHashSerialization','inputClosureExcludes','inputClosureExclusionReason','notClaimed']}
+-   receipt.update(headBinding='Original three judges executed at S10; later same-source snapshot and four-file assembly are explicitly separate; no rerun or source relabelling.',createdUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),basis='Original Linux inventory/hash/schema; closed S10 original gates; unchanged937 manifest and scan.',sourceBaseHead=SOURCE,headObservedBefore=SOURCE,headObservedAfter=SOURCE,manifestSha256=H(LF(old_four[NAMES[0]])),scannerSha256=tools[JUDGES[0]],scanSha256=H(LF(scan_raw)),reportSha256=H(LF((new/NAMES[2]).read_bytes())),inputClosureSha256=closure,counts=counts,scanPassed=True,actualCliScan={**original[0][0],'exitCode':0},validation=[x[3]for x in original[1:]],inputs=inputs)
+-   receipt['manifestRefresh']={'manifestByteUnchangedFromExecutionSource':True,'scanByteUnchangedFromExecutionSource':True,'allPolicyFieldsEqualToPrevious':True,'onlyPolicyDelta':{'addedIdentifiers':[],'removedIdentifiers':[],'otherManifestFieldsEqual':True},'sourceClassificationsUnchanged':True,'previousSource':PRIOR,'previousArtifactCommit':ADOPTION,'previousOutputs':{n:info(O/'previous-artifact'/n)for n in NAMES},'changedPriorInputs':[],'sourceReceiptEvidenceDirectory':str(O),'originalThreeGateExits':[0,0,0],'manifestProof':[],'historicalGuardEvidence':{'source':PRIOR,'artifactCommit':ADOPTION,'receiptRawSha256':PRIOR_FOUR_PINS[3]},'note':'No inherited proof relabelled; current three gate records are original S10 executions; supplemental proofs remain historical.'}
+-   receipt['completeInventoryVerification']={'sourceRoots':manifest['sourceRoots'],'sourceFiles':manifest['sourceFiles'],'filesBefore':604,'filesAfter':604,'allRawAndLfInputsUnchanged':True,'toolHashesBefore':tools,'toolHashesAfter':tools,'inputClosureSha256Before':closure,'inputClosureSha256After':closure,'protectedSsotBefore':protected,'protectedSsotAfter':protected,'snapshotTiming':'Fresh assembly before/after, after original gate terminal; not concurrent with original three gate execution.'}
++   receipt.update(headBinding='Original three judges executed at a6; later same-source snapshot and four-file assembly are explicitly separate; no rerun or source relabelling.',createdUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),basis='Original Linux inventory/hash/schema; closed a6 original gates; unchanged937 manifest and scan.',sourceBaseHead=SOURCE,headObservedBefore=SOURCE,headObservedAfter=SOURCE,manifestSha256=H(LF(old_four[NAMES[0]])),scannerSha256=tools[JUDGES[0]],scanSha256=H(LF(scan_raw)),reportSha256=H(LF((new/NAMES[2]).read_bytes())),inputClosureSha256=closure,counts=counts,scanPassed=True,actualCliScan={**original[0][0],'exitCode':0},validation=[x[3]for x in original[1:]],inputs=inputs)
++   receipt['manifestRefresh']={'manifestByteUnchangedFromExecutionSource':True,'scanByteUnchangedFromExecutionSource':True,'allPolicyFieldsEqualToPrevious':True,'onlyPolicyDelta':{'addedIdentifiers':[],'removedIdentifiers':[],'otherManifestFieldsEqual':True},'sourceClassificationsUnchanged':True,'previousSource':PRIOR,'previousArtifactCommit':ADOPTION,'previousOutputs':{n:info(O/'previous-artifact'/n)for n in NAMES},'changedPriorInputs':[],'sourceReceiptEvidenceDirectory':str(O),'originalThreeGateExits':[0,0,0],'manifestProof':[],'historicalGuardEvidence':{'source':PRIOR,'artifactCommit':ADOPTION,'receiptRawSha256':PRIOR_FOUR_PINS[3]},'note':'No inherited proof relabelled; current three gate records are original a6 executions; supplemental proofs remain historical.'}
++   receipt['completeInventoryVerification']={'sourceRoots':manifest['sourceRoots'],'sourceFiles':manifest['sourceFiles'],'filesBefore':604,'filesAfter':604,'allRawAndLfInputsUnchanged':True,'toolHashesBefore':tools,'toolHashesAfter':tools,'inputClosureSha256Before':closure,'inputClosureSha256After':closure,'protectedSsotBefore':protected,'protectedSsotAfter':protected,'snapshotTiming':'Fresh assembly before/after, after original gate terminal; not concurrent with actual a6 original three gate execution.'}
+    receipt['supplementalStaticGuardProbes']=probes;receipt['nativeAcceptance']=prior['nativeAcceptance']
+    receipt['refreshDriver']={**info(Path(__file__)),'path':str(Path(__file__)),'argv':sys.argv,'recorderSha256':CAP_PIN,'runDirectory':str(O),'originalThreeGateBatch':str(GATES),'originalThreeGateBatchSha256':GATES_PIN,'originalGatePeerSha256':GATE_PEER_PIN,'sourcePrepPeerSha256':SOURCE_PEER_PIN,'originalJudgesRerun':False}
+    receipt['environment']={'originalGateEnvironment':original[0][0]['environment'],'assemblyPython':sys.version,'assemblyGitEnvironment':{k:v for k,v in env.items()if k.startswith('GIT_')}}
+    receipt['uncertainties']=['Original gates and assembly snapshots are separate execution times at the same source SHA.','Nine controls and two neutral probes remain historical actual M6e50.','Full native/browser/ledger/performance are separate gates; generated outputs require separate normal commit/push.']
+    need(snapshot(R,manifest,declared,tree)==before and protected=={n:info(R/n)for n in protected}and tools=={n:info(R/n)['lfSha256']for n in JUDGES},'all assembly source/tool/SSOT snapshots unchanged')
+    need(all((R/ART/n).read_bytes()==old_four[n]for n in NAMES),'source four artifacts untouched')
+-   need(git('rev-parse','HEAD').decode().strip()==SOURCE and not git('status','--porcelain=v1','--untracked-files=all'),'source remains clean exactS10')
++   need(git('rev-parse','HEAD').decode().strip()==SOURCE and not git('status','--porcelain=v1','--untracked-files=all'),'source remains clean exacta6')
+    st=index.stat();need(index.read_bytes()==index_before and (st.st_dev,st.st_ino,st.st_size,st.st_mtime_ns)==(index_stat.st_dev,index_stat.st_ino,index_stat.st_size,index_stat.st_mtime_ns),'real source index unchanged')
+    dump(new/NAMES[3],receipt)
+    result.update(exit_code=0,originalGateExits=[0,0,0],inputCount=604,changedPriorReceiptInputs=[],historicalProbesReexecuted=False,inputClosureSHA256=closure,originalGateBatchSha256=GATES_PIN,sourceBeforeAfterClean=True,outputs={n:info(new/n)for n in NAMES},changedArtifacts=[n for n in NAMES if(new/n).read_bytes()!=old_four[n]])

@@ -1,0 +1,55 @@
+{
+  "schema": "geo337-common-SHM-comparison-actual-budget-addendum/1",
+  "utc": "2026-10-25T13:08:23.135861+00:00",
+  "input_plan": {
+    "path": "/workspace/geo337-five-browser-capacity-plan-20261025/PLAN.v2.json",
+    "sha256": "cae41bfdbe8571d98f137f6542e2ea9af29d468af822aece2c5ceca9c7fc5d75"
+  },
+  "namespace_addendum": {
+    "path": "/workspace/geo337-five-browser-capacity-plan-20261025/SHM_NAMESPACE_AND_TWO_ROOTS_ADDENDUM.json",
+    "sha256": "770fc7aa446e99a3f5095755807bfe80a76aacac90ce596f54531bd5dba9ed4d"
+  },
+  "independent_capacity_peer": {
+    "path": "/workspace/geo337-five-browser-capacity-peer-20261025/REVIEW.json",
+    "sha256": "ec4e1a36a9a48cad221897b4c709389e9bd1d3862f6dea6fb8e7f257bfca46df"
+  },
+  "comparison_collection_actual_peer": {
+    "path": "/workspace/geo323-F9-SHM-collection-actual-20261025/RESULT.json",
+    "sha256": "276a34627e63e2664e6ae504d7c516ac0992241aae6ad0306452d400a9af5e56"
+  },
+  "root_escalated_measurement": {
+    "provenance": "Parent root message; formally require_escalated read-only namespace measurement. This agent did not repeat census or SHM reads.",
+    "epoch_seconds": 1792933588.709739,
+    "root": "/dev/shm/geometry-axiom-geo337-20261025",
+    "file_entries": 27,
+    "unique_file_allocated_bytes": 3964928,
+    "logical_file_bytes": 3902859,
+    "filesystem_free_bytes": 17867915264,
+    "snapshot_only": true
+  },
+  "comparison_archive_result_sha256": "3e657ca399ad833d714c00e8ce0bf37739cbd5dc9d955adbd1c4a4925438febd",
+  "comparison_archive_bytes": 2758452,
+  "browser_round_estimate_bytes": 1778384896,
+  "two_root_snapshot_plus_browser_estimate_bytes": 1782349824,
+  "common_ceiling_bytes": 2147483648,
+  "remaining_ceiling_after_known_comparison_bytes": 365133824,
+  "filesystem_free_after_browser_estimate_bytes": 16089530368,
+  "extra_comparison_future_publication_download_not_yet_counted": true,
+  "root_fresh_seedcopy_admission_still_required": true,
+  "comparison_is_collected_not_delivered": true,
+  "comparison_published": false,
+  "comparison_remote_hash_verified": false,
+  "unchanged_rules": [
+    "Original per-device64MiB materialize reserve",
+    "All CI/assertions/golden/fullsourceguards",
+    "No old objects/alternate/source deletion or modification",
+    "All SHM reads/writes formal require_escalated approval; no sandbox workaround",
+    "Remote complete archive size/hash confirmation after normal push before delivery"
+  ],
+  "limitations": [
+    "Current known comparison occupancy is included once, not twice subtracted from already-reduced filesystemfree.",
+    "Budget is estimate, not dynamicpeak; additional comparison store/download/tool allocations must be recorded in the remaining common allowance.",
+    "Metadata calculation only; no source census, archive hash replay or real allocation performed."
+  ],
+  "exit_code": 0
+}

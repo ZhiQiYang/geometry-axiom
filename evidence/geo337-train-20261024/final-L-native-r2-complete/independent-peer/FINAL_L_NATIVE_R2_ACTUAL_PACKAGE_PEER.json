@@ -1,0 +1,95 @@
+{
+  "schema": "independent-final-L-native-r2-actual-package-peer/1",
+  "checks": 7386,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "original_native_exit": 0,
+  "workflow_exit": 0,
+  "outer_exit": 0,
+  "ci35_exit": 0,
+  "elapsed_seconds": 1819.5614838419715,
+  "ci_timeout_minutes": 35,
+  "original_rows": 230,
+  "duplicate_suite_rows": {},
+  "counts": {
+    "total": 5309,
+    "passed": 5308,
+    "failed": 0,
+    "skipped": 1
+  },
+  "node_counts": {
+    "total": 737,
+    "passed": 737,
+    "failed": 0,
+    "skipped": 0
+  },
+  "allowed_skip": {
+    "test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources",
+    "reason": "requires compiled Windows GDI contract harness",
+    "scope": "test",
+    "count": 1,
+    "parent_test": "test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources"
+  },
+  "archive_sha256": "f9c5ca6b5d6b368a52657aff6ac73b4b7b31195973d840e1f99180eae4e0efde",
+  "archive_members": 1366,
+  "original_bytes": 11272878,
+  "ordinary_retained_elf_count": 6,
+  "distinct_fingerprint_source_files": 198,
+  "git_reads": [
+    {
+      "command": [
+        "git",
+        "--git-dir=/workspace/geometry-axiom/.git",
+        "show",
+        "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db:tests/run_all.expected.json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "5c9b6f70f11c7f985a8e1e37e7b11f057a83d31db5a452709b8a87729874daab",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "--git-dir=/workspace/geometry-axiom/.git",
+        "show",
+        "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db:tests/run_all.py"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "a9be8456567725b0138474195160e1414d384ef4eb09ae8a1b144dfdf69d2dc9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "--git-dir=/workspace/geometry-axiom/.git",
+        "show",
+        "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db:.github/workflows/integration-tests.yml"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "b491142a6767e78588710f90bf0ea03b9b5af9ef6eb851cd9e28d32f0c262d6d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "--git-dir=/workspace/geometry-axiom/.git",
+        "cat-file",
+        "--batch"
+      ],
+      "exit_code": 0,
+      "stdin_sha256": "8a471929faa80b39a367fffcd6a3d47a9f8e987193a811b40f41f425f2bca16c",
+      "stdout_sha256": "0cf140350c79e8cbbf70634111437ecdde448244efe5fd2153fdf77ac2137f84",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "distinct_source_files": 198
+    }
+  ],
+  "lease_status": "All archived live-cache bytes and six omitted ordinary ELF payloads were verified while root retained ROOT/global-cache lease. Review itself changed neither. Root may release after receiving this result.",
+  "limits": [
+    "Full original native230 registry only; original output explicitly lists formal owner/browser integrations requiring separate execution. No specialist result is inferred.",
+    "Exactly one original explicitly allowed posix GDI skip; no new skip authorization.",
+    "R1 environment failure remains separate immutable history; R2 sameL originals now show737/737 Node and original total5308pass.",
+    "Original exposed pipes/compiler logs and sidecars are retained. Hidden inner subprocess pipes and already-cleaned NativeBuild scratch are not invented.",
+    "Historical cache body excluded only at exact preserved path;631 original entries preserved by original atomic rename. Six ordinary ELF bodies remain at original paths and were independently hashed; no original file deleted."
+  ]
+}

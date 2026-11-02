@@ -1,0 +1,259 @@
+{
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate_exits": [
+    0,
+    0,
+    0
+  ],
+  "generic_tests": 205,
+  "product_tests": 18,
+  "skipped": 0,
+  "source_inputs": 604,
+  "peer_checks": 646,
+  "archive": "originals-and-peer.tar.gz",
+  "archive_bytes": 51342,
+  "archive_sha256": "c5eaa5a596d94e56144dd67429cda9f8b9b56885a18ceacfbbdc85165059f506",
+  "members": [
+    {
+      "source": "/workspace/run_geo337_L_architecture.py",
+      "member": "workspace/run_geo337_L_architecture.py",
+      "bytes": 2831,
+      "sha256": "13464e0fca03789df246a31447b26552ec0a987024c7d848e67d37f0854aa9df"
+    },
+    {
+      "source": "/tmp/train337-adversarial/FINAL_L_7AF8_THREE_ARCHITECTURE_ACTUAL_PEER.json",
+      "member": "tmp/train337-adversarial/FINAL_L_7AF8_THREE_ARCHITECTURE_ACTUAL_PEER.json",
+      "bytes": 1342,
+      "sha256": "20e4544e4372886816652a8f61905639b754b0a259b2dec848e836b085e8ec7c"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/RESULT.json",
+      "member": "workspace/geo337-final-L-architecture/RESULT.json",
+      "bytes": 14041,
+      "sha256": "3c31d744042015923354450b916688ac76e217225cdc1ae3aa066ba2a4cd17c4"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/before.json",
+      "member": "workspace/geo337-final-L-architecture/before.json",
+      "bytes": 77754,
+      "sha256": "f832be6eb4b32e2521b2815e71f855d77d7602c687501711d02d42df72b2ce10"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000001/request.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000001/request.json",
+      "bytes": 1503,
+      "sha256": "1f2ed16ac1175ac34c58bd91902e69548cb537fe4a51eba5d504b695e3fc228f"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000001/result.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000001/result.json",
+      "bytes": 1754,
+      "sha256": "282e5c986aca978772a56dce9a7f87e038851ddcdc9d37ae8585f72bc67e8e65"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000001/stderr.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000001/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000001/stdin.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000001/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000001/stdout.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000001/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000002/request.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000002/request.json",
+      "bytes": 1539,
+      "sha256": "d43cd22e5c5ad72972af1e4909db79e21dbf82c4d542abc978e026ca01c82db3"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000002/result.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000002/result.json",
+      "bytes": 1789,
+      "sha256": "f1671c4f9661f35a1dd4b321a9e4446f89c90b30e896a52c6a6dfc04661e12da"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000002/stderr.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000002/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000002/stdin.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000002/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000002/stdout.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000002/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000003/request.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000003/request.json",
+      "bytes": 1632,
+      "sha256": "d1c5dbaf2149d0aa715b4890afff8f33f8da742c8b5f76a2e76bf115e466954d"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000003/result.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000003/result.json",
+      "bytes": 1887,
+      "sha256": "faa7eef08d939548daf977ec9948095275ff399cebc1dc4b50455d5ef9cb2ac2"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000003/stderr.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000003/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000003/stdin.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000003/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000003/stdout.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000003/stdout.bin",
+      "bytes": 132559,
+      "sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000004/request.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000004/request.json",
+      "bytes": 1531,
+      "sha256": "48a5e4f80fe364c130d3e8919d4d37b8b76c27f3a106ea0edd4b55a120b17d46"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000004/result.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000004/result.json",
+      "bytes": 1785,
+      "sha256": "2fe345838303f2f88c26df9ea53701c483d58d05e76d8070149d77927b101a9b"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000004/stderr.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000004/stderr.bin",
+      "bytes": 29577,
+      "sha256": "1329592ec25c623d9bcf2e4c3adfe1da0f69bf8206462ae221e46347d07b0f41"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000004/stdin.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000004/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000004/stdout.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000004/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000005/request.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000005/request.json",
+      "bytes": 1529,
+      "sha256": "945b55ecdd5afaa5bd9b14093522a03ee8e1219506af9583489a0090c05d7e07"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000005/result.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000005/result.json",
+      "bytes": 1781,
+      "sha256": "85833e88559e685fe686611f3b2e30acacf9a39624b94ca0316af523e9cc24aa"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000005/stderr.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000005/stderr.bin",
+      "bytes": 118,
+      "sha256": "4ad9afe945b31209d25e2e8a5765a28c33d194862c8a5ff85aa3323650f5060e"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000005/stdin.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000005/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000005/stdout.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000005/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000006/request.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000006/request.json",
+      "bytes": 1503,
+      "sha256": "5eaec1e226338d1c390d2e61bf4835f85fb3e940a570715759bde15e5f2fdf05"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000006/result.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000006/result.json",
+      "bytes": 1754,
+      "sha256": "2a859bd55249c97e4572dbf866b6aba4df14057793125ff3846c37942e18b37b"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000006/stderr.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000006/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000006/stdin.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000006/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000006/stdout.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000006/stdout.bin",
+      "bytes": 41,
+      "sha256": "d801330de14381055decc162d925de76270bbd4d3ad489d80fd8bd2ef8a3012a"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000007/request.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000007/request.json",
+      "bytes": 1539,
+      "sha256": "ed2dc06d20c7f494560fdff246be880c57ae73556006d3ed15c3f54666068a39"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000007/result.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000007/result.json",
+      "bytes": 1789,
+      "sha256": "d9dd6790b08cc0db9b634f72f321bb14b9fd5ad2a8ca9c689d3635d9d39b2374"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000007/stderr.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000007/stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000007/stdin.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000007/stdin.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands/000007/stdout.bin",
+      "member": "workspace/geo337-final-L-architecture/subcommands/000007/stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/workspace/geo337-final-L-architecture/subcommands.json",
+      "member": "workspace/geo337-final-L-architecture/subcommands.json",
+      "bytes": 13135,
+      "sha256": "2bd203031ada10ea6fbb9caf5c79ba1227ab9142342d647220b28da4661b1fc1"
+    }
+  ],
+  "original_inputs_changed": false
+}

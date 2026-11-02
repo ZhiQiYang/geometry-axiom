@@ -1,0 +1,15 @@
+{
+  "schema": "S10-original-ledger-reader-preparation/1",
+  "executed": false,
+  "wait_for_root_package_complete": true,
+  "base_script": "/tmp/geo337-F8-full123-actual-peer-20261025/audit_actual.py",
+  "base_sha256": "4d546ef8453650a61b1ec2ddb5a9ff041ea3ca3a267f71f8f726de0fb5834009",
+  "adapted_sha256": "4886e2bb16efac0d1921b7a51daefe8ee50243046fb9dea7bd6bfd2cad02279a",
+  "changes": [
+    "固定S10與已知五角色/真FINAL路徑；原逐列/命令/反證/判定不變。",
+    "registry來源改由原observer已捕獲Git show hex，沒有再次讀repository payload。",
+    "不新增RAW_FILES/ORIGINAL_COMMANDS大重複收據，改保存其canonical摘要hash；原完整資料仍正式包。"
+  ],
+  "output_budget_bytes": 262144,
+  "formal_tests_or_collection_run": false
+}

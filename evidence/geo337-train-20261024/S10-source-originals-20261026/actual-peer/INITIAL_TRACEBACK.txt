@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/geo337-resume-source-package-peer-20261026/audit.py", line 109, in <module>
+    for name in ['host-and-reviewers/geo337-S10-source-preparation-EXEC_FINAL-20261025.json','host-and-reviewers/geo337-S10-preledger-checks-EXEC_FINAL-20261025.json']:ck(J(name)['exit_code']==0,'actual host zero '+name)
+                                                                                                                                                                           ~~~~~~~^^^^^^^^^^^^^
+KeyError: 'exit_code'

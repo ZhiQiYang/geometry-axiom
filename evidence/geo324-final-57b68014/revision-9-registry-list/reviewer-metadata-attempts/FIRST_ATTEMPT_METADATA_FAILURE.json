@@ -1,0 +1,11 @@
+{
+  "classification": "peer checker schema lookup error; not noWood product failure",
+  "script": "review.py",
+  "scriptSHA256": "bb93391457c2a84c252dea52fb24ff51247896f3f0c7d7f0aa517cf53bf0839a",
+  "originalProcessExit": 1,
+  "error": "KeyError: py:test_rectangular_template; reviewer incorrectly treated expected JSON as flat; actual schema is suites.<key>.count",
+  "originalToolOutputWasObservedInThread": true,
+  "separateRawStderrFileExists": false,
+  "completedRegistryPeerUnchanged": "registry-list-1f0ebd3e/REVIEW.json",
+  "subjectRerun": false
+}

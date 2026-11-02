@@ -1,0 +1,4710 @@
+{
+  "scope": "archive/index and every original byte only; not causal84 peer or subject rerun; no extraction/Git/source edits",
+  "checks": [
+    {
+      "check": "indexpin",
+      "passed": true
+    },
+    {
+      "check": "archivepin",
+      "passed": true
+    },
+    {
+      "check": "size",
+      "passed": true
+    },
+    {
+      "check": "unique:CLI_ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:CLI_ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "expected:CLI_ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "regular:CLI_ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:CLI_ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "original:CLI_ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "unique:CLOSURE.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:CLOSURE.json",
+      "passed": true
+    },
+    {
+      "check": "expected:CLOSURE.json",
+      "passed": true
+    },
+    {
+      "check": "regular:CLOSURE.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:CLOSURE.json",
+      "passed": true
+    },
+    {
+      "check": "original:CLOSURE.json",
+      "passed": true
+    },
+    {
+      "check": "unique:DELIVERY.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:DELIVERY.json",
+      "passed": true
+    },
+    {
+      "check": "expected:DELIVERY.json",
+      "passed": true
+    },
+    {
+      "check": "regular:DELIVERY.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:DELIVERY.json",
+      "passed": true
+    },
+    {
+      "check": "original:DELIVERY.json",
+      "passed": true
+    },
+    {
+      "check": "unique:FRESH_HANDOFF.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:FRESH_HANDOFF.json",
+      "passed": true
+    },
+    {
+      "check": "expected:FRESH_HANDOFF.json",
+      "passed": true
+    },
+    {
+      "check": "regular:FRESH_HANDOFF.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:FRESH_HANDOFF.json",
+      "passed": true
+    },
+    {
+      "check": "original:FRESH_HANDOFF.json",
+      "passed": true
+    },
+    {
+      "check": "unique:ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "expected:ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "regular:ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "original:ORIGINALS.json",
+      "passed": true
+    },
+    {
+      "check": "unique:QUESTIONS.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:QUESTIONS.md",
+      "passed": true
+    },
+    {
+      "check": "expected:QUESTIONS.md",
+      "passed": true
+    },
+    {
+      "check": "regular:QUESTIONS.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:QUESTIONS.md",
+      "passed": true
+    },
+    {
+      "check": "original:QUESTIONS.md",
+      "passed": true
+    },
+    {
+      "check": "unique:QUESTIONS_ADOPTION.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:QUESTIONS_ADOPTION.md",
+      "passed": true
+    },
+    {
+      "check": "expected:QUESTIONS_ADOPTION.md",
+      "passed": true
+    },
+    {
+      "check": "regular:QUESTIONS_ADOPTION.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:QUESTIONS_ADOPTION.md",
+      "passed": true
+    },
+    {
+      "check": "original:QUESTIONS_ADOPTION.md",
+      "passed": true
+    },
+    {
+      "check": "unique:REPORT.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:REPORT.md",
+      "passed": true
+    },
+    {
+      "check": "expected:REPORT.md",
+      "passed": true
+    },
+    {
+      "check": "regular:REPORT.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:REPORT.md",
+      "passed": true
+    },
+    {
+      "check": "original:REPORT.md",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:closure-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:closure-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:closure-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "expected:closure-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:closure-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:closure-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "original:closure-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "unique:commands.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:commands.json",
+      "passed": true
+    },
+    {
+      "check": "expected:commands.json",
+      "passed": true
+    },
+    {
+      "check": "regular:commands.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:commands.json",
+      "passed": true
+    },
+    {
+      "check": "original:commands.json",
+      "passed": true
+    },
+    {
+      "check": "unique:issue335-read-once/commands.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:issue335-read-once/commands.json",
+      "passed": true
+    },
+    {
+      "check": "expected:issue335-read-once/commands.json",
+      "passed": true
+    },
+    {
+      "check": "regular:issue335-read-once/commands.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:issue335-read-once/commands.json",
+      "passed": true
+    },
+    {
+      "check": "original:issue335-read-once/commands.json",
+      "passed": true
+    },
+    {
+      "check": "unique:issue335-read-once/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:issue335-read-once/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:issue335-read-once/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:issue335-read-once/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:issue335-read-once/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:issue335-read-once/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:issue335-read-once/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:issue335-read-once/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:issue335-read-once/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:issue335-read-once/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:issue335-read-once/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:issue335-read-once/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:issue335-read-once/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:issue335-read-once/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:issue335-read-once/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:issue335-read-once/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:issue335-read-once/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:issue335-read-once/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:issue335-read-once/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:issue335-read-once/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:issue335-read-once/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:issue335-read-once/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:issue335-read-once/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:issue335-read-once/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:issue335-read-once/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:issue335-read-once/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:issue335-read-once/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:issue335-read-once/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:issue335-read-once/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:issue335-read-once/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:issue335-read-once/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:issue335-read-once/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "expected:issue335-read-once/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:issue335-read-once/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:issue335-read-once/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "original:issue335-read-once/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/L-DECISIONS.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/L-DECISIONS.md",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/L-DECISIONS.md",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/L-DECISIONS.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/L-DECISIONS.md",
+      "passed": true
+    },
+    {
+      "check": "original:originals/L-DECISIONS.md",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/L-FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/L-FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/L-FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/L-FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/L-FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "check": "original:originals/L-FIELD-RULES.md",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/README.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/README.md",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/README.md",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/README.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/README.md",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/README.md",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/core.sha256",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/core.sha256",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/core.sha256",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/q318-1-cli/core.sha256",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/core.sha256",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/core.sha256",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/exits.txt",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/exits.txt",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/exits.txt",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/q318-1-cli/exits.txt",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/exits.txt",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/exits.txt",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/only2.err",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/only2.err",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/only2.err",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:originals/claude-followup/q318-1-cli/only2.err",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/only2.err",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/only2.err",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/only2.out",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/only2.out",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/only2.out",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/q318-1-cli/only2.out",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/only2.out",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/only2.out",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/only2.scene",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/only2.scene",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/only2.scene",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/q318-1-cli/only2.scene",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/only2.scene",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/only2.scene",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/order12.err",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/order12.err",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/order12.err",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/q318-1-cli/order12.err",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/order12.err",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/order12.err",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/order12.out",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/order12.out",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/order12.out",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:originals/claude-followup/q318-1-cli/order12.out",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/order12.out",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/order12.out",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/order12.scene",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/order12.scene",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/order12.scene",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/q318-1-cli/order12.scene",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/order12.scene",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/order12.scene",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/order21.err",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/order21.err",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/order21.err",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/q318-1-cli/order21.err",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/order21.err",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/order21.err",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/order21.out",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/order21.out",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/order21.out",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:originals/claude-followup/q318-1-cli/order21.out",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/order21.out",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/order21.out",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/claude-followup/q318-1-cli/order21.scene",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/claude-followup/q318-1-cli/order21.scene",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/claude-followup/q318-1-cli/order21.scene",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/claude-followup/q318-1-cli/order21.scene",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/claude-followup/q318-1-cli/order21.scene",
+      "passed": true
+    },
+    {
+      "check": "original:originals/claude-followup/q318-1-cli/order21.scene",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/handoff-HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/handoff-HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/handoff-HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/handoff-HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/handoff-HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "original:originals/handoff-HANDOFF.md",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/handoff-NEXT.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/handoff-NEXT.md",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/handoff-NEXT.md",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/handoff-NEXT.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/handoff-NEXT.md",
+      "passed": true
+    },
+    {
+      "check": "original:originals/handoff-NEXT.md",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/issue335-live.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/issue335-live.json",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/issue335-live.json",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:originals/issue335-live.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/issue335-live.json",
+      "passed": true
+    },
+    {
+      "check": "original:originals/issue335-live.json",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/review337.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/review337.md",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/review337.md",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/review337.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/review337.md",
+      "passed": true
+    },
+    {
+      "check": "original:originals/review337.md",
+      "passed": true
+    },
+    {
+      "check": "unique:originals/review338.md",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:originals/review338.md",
+      "passed": true
+    },
+    {
+      "check": "expected:originals/review338.md",
+      "passed": true
+    },
+    {
+      "check": "regular:originals/review338.md",
+      "passed": true
+    },
+    {
+      "check": "bytes:originals/review338.md",
+      "passed": true
+    },
+    {
+      "check": "original:originals/review338.md",
+      "passed": true
+    },
+    {
+      "check": "unique:peer/ISSUE335_READONLY_CAUSE_POLICY_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:peer/ISSUE335_READONLY_CAUSE_POLICY_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "expected:peer/ISSUE335_READONLY_CAUSE_POLICY_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "regular:peer/ISSUE335_READONLY_CAUSE_POLICY_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:peer/ISSUE335_READONLY_CAUSE_POLICY_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "original:peer/ISSUE335_READONLY_CAUSE_POLICY_PEER.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/commands.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000008/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000008/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000008/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000008/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000008/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000009/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000009/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000009/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000009/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000009/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000010/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000010/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000010/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000010/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000010/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000011/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000011/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000011/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000011/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000011/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000012/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:source-collection/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000012/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000012/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000012/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands/000012/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:source-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:source-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "expected:source-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:source-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:source-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "original:source-collection/subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "unique:static-identity/074-to-3cb-native-source-diff.stderr",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:static-identity/074-to-3cb-native-source-diff.stderr",
+      "passed": true
+    },
+    {
+      "check": "expected:static-identity/074-to-3cb-native-source-diff.stderr",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:static-identity/074-to-3cb-native-source-diff.stderr",
+      "passed": true
+    },
+    {
+      "check": "bytes:static-identity/074-to-3cb-native-source-diff.stderr",
+      "passed": true
+    },
+    {
+      "check": "original:static-identity/074-to-3cb-native-source-diff.stderr",
+      "passed": true
+    },
+    {
+      "check": "unique:static-identity/074-to-3cb-native-source-diff.stdout",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:static-identity/074-to-3cb-native-source-diff.stdout",
+      "passed": true
+    },
+    {
+      "check": "expected:static-identity/074-to-3cb-native-source-diff.stdout",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:static-identity/074-to-3cb-native-source-diff.stdout",
+      "passed": true
+    },
+    {
+      "check": "bytes:static-identity/074-to-3cb-native-source-diff.stdout",
+      "passed": true
+    },
+    {
+      "check": "original:static-identity/074-to-3cb-native-source-diff.stdout",
+      "passed": true
+    },
+    {
+      "check": "unique:static-identity/3cb-to-L-reference-source.diff",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:static-identity/3cb-to-L-reference-source.diff",
+      "passed": true
+    },
+    {
+      "check": "expected:static-identity/3cb-to-L-reference-source.diff",
+      "passed": true
+    },
+    {
+      "check": "regular:static-identity/3cb-to-L-reference-source.diff",
+      "passed": true
+    },
+    {
+      "check": "bytes:static-identity/3cb-to-L-reference-source.diff",
+      "passed": true
+    },
+    {
+      "check": "original:static-identity/3cb-to-L-reference-source.diff",
+      "passed": true
+    },
+    {
+      "check": "unique:static-identity/IDENTITIES.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:static-identity/IDENTITIES.json",
+      "passed": true
+    },
+    {
+      "check": "expected:static-identity/IDENTITIES.json",
+      "passed": true
+    },
+    {
+      "check": "regular:static-identity/IDENTITIES.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:static-identity/IDENTITIES.json",
+      "passed": true
+    },
+    {
+      "check": "original:static-identity/IDENTITIES.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000001/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000001/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000001/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000001/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000001/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000002/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000002/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000002/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000002/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000002/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000003/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000003/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000003/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000003/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000003/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000004/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000004/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000004/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000004/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000004/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000005/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000005/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000005/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000005/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000005/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000006/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000006/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000006/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000006/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000006/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000007/request.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "regular:subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000007/result.json",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000007/stderr.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000007/stdin.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands/000007/stdout.bin",
+      "passed": true
+    },
+    {
+      "check": "unique:subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "safe-relative:subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "expected:subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "hardlink-backward:subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "bytes:subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "original:subcommands.json",
+      "passed": true
+    },
+    {
+      "check": "exact-set",
+      "passed": true
+    },
+    {
+      "check": "hardlink89",
+      "passed": true
+    },
+    {
+      "check": "read-only-no-subject",
+      "passed": true
+    }
+  ],
+  "findings": []
+}

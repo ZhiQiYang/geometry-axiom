@@ -1,0 +1,290 @@
+{
+  "source_sha": "aa16e73d6e1f2965e0a911581e2a545aaaf66870",
+  "archive": "ORIGINALS.tar.gz",
+  "archive_bytes": 5984655,
+  "archive_sha256": "b6ddba01b0e15b7aa17cef1239508ed438da997c9650a132c596a44e0f0e1abe",
+  "member_count": 4533,
+  "original_exit": 0,
+  "all_original_bytes_roundtrip": true,
+  "original_bytes": 37366878,
+  "actual": {
+    "source_sha": "aa16e73d6e1f2965e0a911581e2a545aaaf66870",
+    "original_outer_exit": 0,
+    "original_driver_exit": 0,
+    "suites": [
+      {
+        "label": "wood-contact",
+        "methods": 13,
+        "skip": 0,
+        "actual_exit": 0,
+        "compile_link_commands": 161,
+        "compile_link_all_exit_0": true
+      },
+      {
+        "label": "contact-sources",
+        "methods": 15,
+        "skip": 0,
+        "actual_exit": 0,
+        "compile_link_commands": 85,
+        "compile_link_all_exit_0": true
+      },
+      {
+        "label": "reading-a",
+        "methods": 7,
+        "skip": 0,
+        "actual_exit": 0,
+        "compile_link_commands": 86,
+        "compile_link_all_exit_0": true
+      }
+    ],
+    "work": [
+      {
+        "phase": "fixed",
+        "actual_exit": 0,
+        "stdout": "CASE work faces=128 first=2 order_calls=128\n",
+        "stderr": "",
+        "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+        "command": [
+          "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+          "work"
+        ]
+      },
+      {
+        "phase": "withdrawn",
+        "actual_exit": 1,
+        "stdout": "CASE work faces=128 first=2 order_calls=896\n",
+        "stderr": "ASSERT:monotonic-linear-order-lookups\n",
+        "executable_sha256": "76b14287e5241b4534cb41cb625faed6b9955e6be778c7d50ae0f790f8ef85ca",
+        "command": [
+          "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-withdrawn-exe",
+          "work"
+        ]
+      },
+      {
+        "phase": "restored",
+        "actual_exit": 0,
+        "stdout": "CASE work faces=128 first=2 order_calls=128\n",
+        "stderr": "",
+        "executable_sha256": "d27067f2617e9f4159a5a280d2918dc880754453bde0bd3ce14908030da26074",
+        "command": [
+          "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-restored-exe",
+          "work"
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "label": "missed-inversion",
+        "assertion": "monotonic-last-inversion-full-fields",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE last-inversion faces=8 first=0 order_calls=36\n",
+            "stderr": "",
+            "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+              "last-inversion"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:monotonic-last-inversion-full-fields\n",
+            "executable_sha256": "d230bf31e6332db04955b6450acc061ec99cbbe1abcc18d3a64880187ab3d32c",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-missed-inversion-exe",
+              "last-inversion"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE last-inversion faces=8 first=0 order_calls=36\n",
+            "stderr": "",
+            "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+              "last-inversion"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "missed-last-face",
+        "assertion": "monotonic-last-inversion-full-fields",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE last-inversion faces=8 first=0 order_calls=36\n",
+            "stderr": "",
+            "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+              "last-inversion"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:monotonic-last-inversion-full-fields\n",
+            "executable_sha256": "47912a2ea195e1c10e7b7d5906baac64e0c9e31a65c76141c38ebd3caaaccb33",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-missed-last-face-exe",
+              "last-inversion"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE last-inversion faces=8 first=0 order_calls=36\n",
+            "stderr": "",
+            "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+              "last-inversion"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "truncated-previous",
+        "assertion": "monotonic-full-uint64-fields",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE full-uint64 faces=4 first=0 order_calls=10\n",
+            "stderr": "",
+            "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+              "full-uint64"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:monotonic-full-uint64-fields\n",
+            "executable_sha256": "2b64235ad8f78f792476be5084e742525a7c962719442f48b7284b2a2e75f7ba",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-truncated-previous-exe",
+              "full-uint64"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE full-uint64 faces=4 first=0 order_calls=10\n",
+            "stderr": "",
+            "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+              "full-uint64"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "missed-previous-update",
+        "assertion": "monotonic-middle-inversion-full-fields",
+        "phases": [
+          {
+            "phase": "baseline",
+            "actual_exit": 0,
+            "stdout": "CASE middle-inversion faces=5 first=0 order_calls=21\n",
+            "stderr": "",
+            "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+              "middle-inversion"
+            ]
+          },
+          {
+            "phase": "mutant",
+            "actual_exit": 1,
+            "stdout": "",
+            "stderr": "ASSERT:monotonic-middle-inversion-full-fields\n",
+            "executable_sha256": "330eefd40efb068f2b11e93e2ad33b859d5b5f5b06d14de535e2425c3487af55",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-missed-previous-update-exe",
+              "middle-inversion"
+            ]
+          },
+          {
+            "phase": "restored",
+            "actual_exit": 0,
+            "stdout": "CASE middle-inversion faces=5 first=0 order_calls=21\n",
+            "stderr": "",
+            "executable_sha256": "c7f59785e87c5fe0e0e090b7a9abcb6b28144a52b352a49d9db80767b0083b41",
+            "command": [
+              "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/contact-monotonic-fixed-exe",
+              "middle-inversion"
+            ]
+          }
+        ]
+      }
+    ],
+    "included_sources": [
+      {
+        "original": "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/isolated-woodworking/native/contact-monotonic-fixed-source.c",
+        "bytes": 26660,
+        "sha256": "e0aa1343c77799b23ee0a897dcf5da9bcae7832481e3a975c43b3acdfb7acbad",
+        "retained": "/workspace/geo343-monotonic-formal-20261024/wood-contact/observed/native-inputs/bytes/e0aa1343c77799b23ee0a897dcf5da9bcae7832481e3a975c43b3acdfb7acbad"
+      },
+      {
+        "original": "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/isolated-woodworking/native/contact-monotonic-withdrawn-source.c",
+        "bytes": 26187,
+        "sha256": "ccd65712f104a7b3c9606d3341d8747284c9260a22b3ea593ad6dd205ddaf028",
+        "retained": "/workspace/geo343-monotonic-formal-20261024/wood-contact/observed/native-inputs/bytes/ccd65712f104a7b3c9606d3341d8747284c9260a22b3ea593ad6dd205ddaf028"
+      },
+      {
+        "original": "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/isolated-woodworking/native/contact-monotonic-restored-source.c",
+        "bytes": 26660,
+        "sha256": "e0aa1343c77799b23ee0a897dcf5da9bcae7832481e3a975c43b3acdfb7acbad",
+        "retained": "/workspace/geo343-monotonic-formal-20261024/wood-contact/observed/native-inputs/bytes/e0aa1343c77799b23ee0a897dcf5da9bcae7832481e3a975c43b3acdfb7acbad"
+      },
+      {
+        "original": "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/isolated-woodworking/native/contact-monotonic-missed-inversion-source.c",
+        "bytes": 26659,
+        "sha256": "22b07e529169326296265d5c823a8cb8747815839a22694975ea30c6978e3583",
+        "retained": "/workspace/geo343-monotonic-formal-20261024/wood-contact/observed/native-inputs/bytes/22b07e529169326296265d5c823a8cb8747815839a22694975ea30c6978e3583"
+      },
+      {
+        "original": "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/isolated-woodworking/native/contact-monotonic-missed-last-face-source.c",
+        "bytes": 26662,
+        "sha256": "eb3f112583e5dd46e0bce76116c2a2ca2bad983d95d4947d7a2dde426b7e278c",
+        "retained": "/workspace/geo343-monotonic-formal-20261024/wood-contact/observed/native-inputs/bytes/eb3f112583e5dd46e0bce76116c2a2ca2bad983d95d4947d7a2dde426b7e278c"
+      },
+      {
+        "original": "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/isolated-woodworking/native/contact-monotonic-truncated-previous-source.c",
+        "bytes": 26660,
+        "sha256": "12a810a0f53e1ba2fe575e34287f67cc35f626d53d94549a6ad13356d7314a55",
+        "retained": "/workspace/geo343-monotonic-formal-20261024/wood-contact/observed/native-inputs/bytes/12a810a0f53e1ba2fe575e34287f67cc35f626d53d94549a6ad13356d7314a55"
+      },
+      {
+        "original": "/workspace/geo343-monotonic-formal-tmp-20261024/geometry-tests/geo261-n1a-goj546aw/isolated-woodworking/native/contact-monotonic-missed-previous-update-source.c",
+        "bytes": 26657,
+        "sha256": "a8fe0596022cd0287023e78b71adcbc601103e55df804be8efd6bd5139eaf19c",
+        "retained": "/workspace/geo343-monotonic-formal-20261024/wood-contact/observed/native-inputs/bytes/a8fe0596022cd0287023e78b71adcbc601103e55df804be8efd6bd5139eaf19c"
+      }
+    ],
+    "new_wall_measurement": false,
+    "total_methods": 35,
+    "compile_link_total": 332,
+    "semantic_whole_cases": 30,
+    "assessment_exit": 0
+  },
+  "created_utc": "2026-10-24T04:30:28.469322+00:00",
+  "limits": [
+    "Original35-method targeted acceptance, not final full native/browser/ledger/architecture or O2 wall performance.",
+    "Original native text-mode output is retained as decoded text; binary Bridge/run streams are labelled separately.",
+    "Whole and fine variants were actual compiler inputs retained before launch; original NativeBuild cleanup remains unchanged; ELF payloads are not archived.",
+    "Original publication R1 ignored-parent add exit1 is retained; R2 normal commit/push439 child commands exit0."
+  ]
+}
