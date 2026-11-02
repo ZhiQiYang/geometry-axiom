@@ -13,7 +13,7 @@
 | 真browser恢復 | 原F，UTC07:41:42–08:09:57／1694.881392秒，原完整gate exit0，**2267pass/0fail/0skip、85golden matched**，三具名恢復綠。三相各獨立clean checkout、port、profile、TMPDIR，原2100秒、22scope/modifier清除，無timeout／中斷、無FLOW partial冒full |
 | 三相身分 | 每相734runtime inputs前後raw/mode/mtime完全相同；F與恢復734hash全同，V唯一不同輸入app.js；配置的native3＋sidecars跨三相逐byte同且原inspector fresh，原golden不變。保原release_gate限制：此為配置檔身份，不冒充執行中native process attestation |
 | 原紅件／環境修復 | 最初fixed在P76因私有TMPDIR缺geometry-tests父目錄而ENOENT，1827pass/0assertfail但fatal exit1；另gate葉預建拒件exit2/0.065秒均原樣保存。48require檔/38寫出callsite完整預檢＋36parent真writeprobe後用新fixed-02profile重跑，只修caller輸出目錄，沒有改產品／斷言／golden／timeout。S原53bridge stale與E原native freshness/coverage紅均保歷史 |
-| 例外／複核界線 | 每輪P38原預期fb-auto-probe1，不能說整場零例外。原source／preflight／fixed-complete子peer PASS；新全部三相子peer因同模型capacity未完成，主代理有界核原件`ORIGINAL_FULL_0_1_0_VERIFIED_PRIMARY_REVIEW`明列，不冒稱新子peer PASS。請最新獨立審查讀下列固定原件 |
+| 例外／複核界線 | 每輪P38原預期fb-auto-probe1，不能說整場零例外。原source／preflight／fixed-complete子peer PASS；現已由另一個既有peer獨立逐項複核三相原流、來源／native、golden與原時限，237 checks PASS（exit0），不是重跑產品。原先capacity未完成的審查仍留歷史，不改判。主代理原件複核另保留。最新main已因#354變成e02057b4c725d6f03ae52c3bc30776bf9442b0cf，尚未合入本F；本矩陣只證固定F，不能冒稱新main合流驗收 |
 
 原指令（各相獨立cwd／URL／output，完整env、argv、exit、stream、來源與hash附原收據）：
 
@@ -22,3 +22,6 @@ python -B tests/release_gate.py --url http://127.0.0.1:<phase-port>/ --output <f
 ```
 
 [固定E：119份完整三相原流、manifest、具名紅、734身分與精確撤回patch](https://github.com/ZhiQiYang/geometry-axiom/tree/769d12426cf6e7a4634ab5b05add4d3435b18a88/evidence/cloud-resume-20261102/pr344/full-browser-three-phase)。[正式F官方20CI原件核收與命令／hash](https://github.com/ZhiQiYang/geometry-axiom/tree/769d12426cf6e7a4634ab5b05add4d3435b18a88/evidence/cloud-resume-20261102/pr344/ci-F)。較早Node VM 9/6/9只證DOM／transport替身，不能代本真browser。574份歷史evidence與原失敗全保留；未改公理、閱讀器、決策佇列、斷言、golden、timeout或skip。最新獨立複審與main合併由本機Claude／審查者處理，Codex不合main。
+
+
+[獨立237項複核原件（固定E cad7a770，SHA256 20464845f1e9423ab518842193424da9b7b51b0cfb22cdef4a5a17561b14c908）](https://github.com/ZhiQiYang/geometry-axiom/blob/cad7a770e5944d3ae85aa69c27f2accad4dac8be/evidence/cloud-resume-20261102/pr344/full-preparation/FINAL_PEER_REVIEW.json)。F／V／R真execution保持原身份；full/CI不因文案更新重跑。
