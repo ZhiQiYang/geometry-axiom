@@ -13,6 +13,8 @@ World、同一個 canonical `sourceFingerprint`，並帶該 World 的原生截�
 朝向、放置、定位、工程來源、精確支撐與組構 provenance。沒有第二次 live references 請求。
 
 `json_references_world` 只重用既有原生 serializer；live `references` 回覆與換行保持不變。
+上句是該快照料單切片的相容性界線。後續 K1-a 依 D49／I59(d) 在 live 與 candidate 的同一 serializer
+增加工程來源／assembly slot 的 `terminal` 末端欄位；其他欄位與換行保持不變，沒有新增快照路由。
 巢狀 references 沒有借來的 live revision；外層讀取 revision 只用於前後 live 讀取守門。
 暫存檔、UTF-8/NUL/1 MiB 拒絕、history 與 pending preview/token 保全沿用原契約。
 
