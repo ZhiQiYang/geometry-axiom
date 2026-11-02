@@ -82,6 +82,11 @@
    "count": 24,
    "unit": "test"
   },
+  "py:test_canvas_evidence": {
+   "mode": "count",
+   "count": 12,
+   "unit": "test"
+  },
   "py:test_cli_args": {
    "mode": "count",
    "count": 6,
@@ -1026,6 +1031,16 @@
   },
   "node:cdp_confirmation_gate": {
    "mode": "exit-code-only"
+  },
+  "node:canvas_shards": {
+   "mode": "count",
+   "count": 19,
+   "unit": "node test"
+  },
+  "node:connection_recovery": {
+   "mode": "count",
+   "count": 9,
+   "unit": "node test"
   },
   "node:draw_annotation": {
    "mode": "count",

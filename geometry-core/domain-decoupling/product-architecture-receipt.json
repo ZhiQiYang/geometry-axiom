@@ -18,18 +18,18 @@
     "new W lexicon completeness audit"
   ],
   "headBinding": "Original three unchanged judges ran at this exact clean source; all declared input raw/LF/index identities were equal before and after. Canonical artifact assembly follows outside the source tree.",
-  "createdUtc": "2026-11-02T04:22:47.520351+00:00",
+  "createdUtc": "2026-11-02T08:11:23.828702+00:00",
   "basis": "Existing canonical geometry-product-architecture-receipt/1 schema; source-bound original three commands and unchanged adopted policies.",
-  "sourceBaseHead": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
-  "headObservedBefore": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
-  "headObservedAfter": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
-  "actualAdoptedMain": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "sourceBaseHead": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "headObservedBefore": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "headObservedAfter": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+  "actualAdoptedMain": "df7eb43af3389ff2afc1a73aaf4e57580ae612fc",
   "executionEnvironment": "local managed cloud Linux; no GitHub run ID",
-  "manifestSha256": "4f9256ff0f0e5f221a0b911dace2874b8ac94b066b110dc9ccff230a6b52e32b",
+  "manifestSha256": "923705c107ce9f255b41cb9620b3e1475804b0b54345d1cec0507d305da4741a",
   "scannerSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "scanSha256": "9a73fde16858a2577bd79508689e0fd691ca4575f8c32106b7a4b7b90a6f7c74",
-  "reportSha256": "3785baedfdc3c59ece2e65618413a60d46bcb7f7765c71aa11eab970f793ad19",
-  "inputClosureSha256": "28c9ef4ecbf3d13091f5117fc7dcd38c48a2015458e8b292d78523cb689359b6",
+  "reportSha256": "4a29bc7624db052e4fdbe91c904c5fcdecfdffe85d923437bfe3dbcab56f9be1",
+  "inputClosureSha256": "7b763cd7856ec3314e1e32d92dba9888c5b4347064dd2ea626d8e0b6ae50b074",
   "counts": {
     "executableFiles": 607,
     "ownedSources": 335,
@@ -54,7 +54,7 @@
   "scanPassed": true,
   "actualCliScan": {
     "command": [
-      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
       "-B",
       "tests/architecture_contract.py",
       "--root",
@@ -62,74 +62,74 @@
       "--manifest",
       "geometry-core/domain-decoupling/product-architecture.json"
     ],
-    "cwd": "/tmp/geometry-pr363-20261102",
-    "acceptance_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
-    "source_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+    "cwd": "/tmp/geometry-canvas-shards-20261102",
+    "acceptance_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+    "source_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
     "source_variant": "architecture-cli",
     "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
-    "startedUtc": "2026-11-02T04:22:30.207468+00:00",
-    "endedUtc": "2026-11-02T04:22:36.038143+00:00",
+    "startedUtc": "2026-11-02T08:11:06.653511+00:00",
+    "endedUtc": "2026-11-02T08:11:12.087042+00:00",
     "actual_process_returncode": 0,
     "exitCode": 0,
     "timeout_expired": false,
-    "elapsedSeconds": 5.830677591002313,
+    "elapsedSeconds": 5.433534298994346,
     "stdout_sha256": "9a73fde16858a2577bd79508689e0fd691ca4575f8c32106b7a4b7b90a6f7c74",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "stdout_bytes": 133269,
     "stderr_bytes": 0,
-    "stdout_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-cli.stdout",
-    "stderr_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-cli.stderr"
+    "stdout_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-cli.stdout",
+    "stderr_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-cli.stderr"
   },
   "validation": [
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
         "-B",
         "tests/test_architecture_contract.py"
       ],
-      "cwd": "/tmp/geometry-pr363-20261102",
-      "acceptance_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
-      "source_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "acceptance_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+      "source_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
       "source_variant": "architecture-unit",
       "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
-      "startedUtc": "2026-11-02T04:22:36.038454+00:00",
-      "endedUtc": "2026-11-02T04:22:36.482821+00:00",
+      "startedUtc": "2026-11-02T08:11:12.087370+00:00",
+      "endedUtc": "2026-11-02T08:11:12.530880+00:00",
       "actual_process_returncode": 0,
       "exitCode": 0,
       "timeout_expired": false,
-      "elapsedSeconds": 0.44438381399959326,
+      "elapsedSeconds": 0.4435291189874988,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "7129f754feae3cc8aac2f62ff2e83a1b5d4b3dd5f2dc4c7829226905a2557e5e",
+      "stderr_sha256": "1f73b8c20c10de817520f6d22f0f63b554984a5d3740c70a875498c5a12a006d",
       "stdout_bytes": 0,
       "stderr_bytes": 29577,
-      "stdout_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-unit.stdout",
-      "stderr_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-unit.stderr",
+      "stdout_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-unit.stdout",
+      "stderr_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-unit.stderr",
       "testsRun": 205,
       "skipped": 0
     },
     {
       "command": [
-        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
         "-B",
         "tests/test_product_architecture.py"
       ],
-      "cwd": "/tmp/geometry-pr363-20261102",
-      "acceptance_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
-      "source_sha": "3aa03de1e309883e53829c92f064e3ebd51a0ad2",
+      "cwd": "/tmp/geometry-canvas-shards-20261102",
+      "acceptance_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
+      "source_sha": "9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2",
       "source_variant": "architecture-product",
       "environment": "local managed cloud Linux; unchanged original CLI; no GitHub run ID",
-      "startedUtc": "2026-11-02T04:22:36.483367+00:00",
-      "endedUtc": "2026-11-02T04:22:47.393526+00:00",
+      "startedUtc": "2026-11-02T08:11:12.531368+00:00",
+      "endedUtc": "2026-11-02T08:11:23.714547+00:00",
       "actual_process_returncode": 0,
       "exitCode": 0,
       "timeout_expired": false,
-      "elapsedSeconds": 10.910179544996936,
+      "elapsedSeconds": 11.183203396009048,
       "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "0ea1f4e75c9140b54d8d6ffbaf888181d3c42df66227ac9aad987d92c3201c0f",
+      "stderr_sha256": "de7ed0284844f562ae1dcaa33811beb68b1070b1ec8c29cbace43c1db5d64801",
       "stdout_bytes": 0,
       "stderr_bytes": 118,
-      "stdout_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-product.stdout",
-      "stderr_file": "/tmp/geometry-resume-20261102/pr363/canonical-architecture-E/architecture-product.stderr",
+      "stdout_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-product.stdout",
+      "stderr_file": "/tmp/geometry-resume-20261102/canvas-sharding/canonical-S1/architecture-product.stderr",
       "testsRun": 18,
       "skipped": 0
     }
@@ -1517,7 +1517,7 @@
     },
     {
       "path": "geometry-web/app.js",
-      "sha256": "e248c162d4f0da633a0fd3314402af96e0f9c1a05d3224d90f7e5ffcabace7f1"
+      "sha256": "c5f055915a039d90138824248b146552776286beb7544380c279a5586707ab60"
     },
     {
       "path": "geometry-web/archive_wait_trace.py",
@@ -1601,7 +1601,7 @@
     },
     {
       "path": "geometry-web/cdp_test.js",
-      "sha256": "249ab8e43431c72d3788932f218ef53b9dc9914f8ec1c8652b394de445cb48cd"
+      "sha256": "14291f6f1114a9f4dd5ceaf3b6b02297b673870d5b903282fdd4090a31ff49e7"
     },
     {
       "path": "geometry-web/composition_canvas_test.js",
@@ -2565,7 +2565,7 @@
     }
   ],
   "environment": {
-    "pythonExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "pythonExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
     "pythonVersion": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
     "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
     "nodeVersion": "v24.22.1"
