@@ -1,0 +1,21 @@
+{
+  "command": "python -B run_gates.py metadata",
+  "exit_code": 0,
+  "expected_main": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "observed_main": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "main_unchanged": true,
+  "requests": [
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/branches/main",
+      "file": "/tmp/geometry-resume-20261102/pr340/final-peer-gates/main-metadata.json",
+      "http_status": 200,
+      "sha256": "e32c0719f68823f87d33891983302cf6921e910c2b114c869e079f6497c2ff3e"
+    },
+    {
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls/340",
+      "file": "/tmp/geometry-resume-20261102/pr340/final-peer-gates/pr340-metadata.json",
+      "http_status": 200,
+      "sha256": "2970629e025970befb8d74c187dc900679323e482626412b33b0282d76f91ac2"
+    }
+  ]
+}

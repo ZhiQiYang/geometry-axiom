@@ -14,11 +14,13 @@ PR head `502a64ff6214dd6060927b7f14643a533536f20d`；base main `5775a9e9e46bca80
 
 未驗：工具進 default branch 前的 workflow_dispatch 入口、截圖視覺 QA。未合 main，待最新 ChatGPT 審查與本機 Claude 合併；手動入口在採入 default branch 後再實測。
 
-## #340：一般 merge 已完成，尚未取得新 CI
+## #340：已正常推送、base main，新 CI 執行中
 
-本地 source `1605a6c27c97c2aa5e6405bddc7d3b31f1fdd965`，普通 merge main 5775，對 main 只餘 17 個歷史 evidence 檔。產品來源 `175cee44` 已在 main，不重做十三項產品實作或把舊 receipt 改標。
+正式新 source **`b3a248607d7eb68d3167abbb926cf491d9b35a26`** 已快轉推到既有 `codex/kernel-without-woodworking-20261023`，PR base 已改 main，Git ls-remote 與 API 皆讀回相同 head。先普通 merge main5775得到1605，再普通 merge已驗#366工具502得到b3a；對main差17歷史evidence＋四原樣工具，產品／測試／registry全等main。未把#366綠燈移標為#340。
 
-這個 source 的 `tests/mutate.py --check`、architecture_contract.py、test_architecture_contract.py、test_product_architecture.py 真 exit 皆 0；架構測試 205／18。此 check 不是新突變執行或下載原 ELF 的核驗。原命令／輸出在 pr340；merge 原 JSON 以 gzip 原 bytes 保存。下一步改 base main、普通快轉推送、取得 final CI，工具進 main 後用 #366 生成本支所需新帳本。
+舊1605四lightgates保留原身分。**新b3a**再次跑四條原命令exit全0，架構205／18，source前後clean；獨立peer核38671其他Git entries全等main、四工具等502、17歷史blob等04959。這個check只核既有main帳本來源／裁判，不是新突變執行或原ELF核驗；全部收據在pr340/final-peer-gates。
+
+正式 [integration41382015317](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382015317) 排隊、[mutation41382015277](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/41382015277) 執行中，兩個head皆b3a；未稱全綠或READY。用PR事件生成新帳本，不冒稱default branch已採#366或已實測workflow_dispatch。合併順序仍由本機Claude先#366再#340，通過後才往#339。
 
 ## #363、#345 與後序
 

@@ -1,0 +1,100 @@
+{
+  "schema": "geometry-pr340-fixed-source-lightgates/1",
+  "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "previous_head": "1605a6c27c97c2aa5e6405bddc7d3b31f1fdd965",
+  "previous_results_reused": false,
+  "main": "5775a9e9e46bca801a9a70aaeafcdab9f597bc4d",
+  "tools_source": "502a64ff6214dd6060927b7f14643a533536f20d",
+  "source": "/tmp/geometry-pr340-20261102",
+  "source_clean_before": true,
+  "started_utc": "2026-11-02T03:11:13.694505+00:00",
+  "commands": [
+    {
+      "label": "mutation-check",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/mutate.py",
+        "--check"
+      ],
+      "cwd": "/tmp/geometry-pr340-20261102",
+      "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+      "exit_code": 0,
+      "stdout": "mutation-check.stdout",
+      "stderr": "mutation-check.stderr",
+      "stdout_sha256": "efca22db4f9fc05f07e5bde95965ac2058c36c11c902150083328139866a56d8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "architecture-cli",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/architecture_contract.py",
+        "--root",
+        ".",
+        "--manifest",
+        "geometry-core/domain-decoupling/product-architecture.json"
+      ],
+      "cwd": "/tmp/geometry-pr340-20261102",
+      "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+      "exit_code": 0,
+      "stdout": "architecture-cli.stdout",
+      "stderr": "architecture-cli.stderr",
+      "stdout_sha256": "18f24f186445928e79159bbd49dc10b586a42ab17ded1cf15f2608de4354a728",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true,
+      "diagnostics": [],
+      "edge_count": 798
+    },
+    {
+      "label": "architecture-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/test_architecture_contract.py"
+      ],
+      "cwd": "/tmp/geometry-pr340-20261102",
+      "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+      "exit_code": 0,
+      "stdout": "architecture-unit.stdout",
+      "stderr": "architecture-unit.stderr",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "13a34c0b95455c5c37d29d9a647d31347e061ac9355c11949c38db75654f671e",
+      "tests_run": 205,
+      "skips": 0
+    },
+    {
+      "label": "architecture-product",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tests/test_product_architecture.py"
+      ],
+      "cwd": "/tmp/geometry-pr340-20261102",
+      "head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+      "exit_code": 0,
+      "stdout": "architecture-product.stdout",
+      "stderr": "architecture-product.stderr",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e4a1e4e0dcc803bf4fd1da9e36e7af3cfb04fdebd1d43ee40be887efe332369f",
+      "tests_run": 18,
+      "skips": 0
+    }
+  ],
+  "env": {
+    "MUTATE_CACHE": "/tmp/geometry-resume-20261102/pr340/final-peer-gates/empty-mutation-cache",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "limitations": [
+    "Mutation --check reads committed original ledger and source/oracle receipts in an empty cache; no binary-byte or fresh mutation execution claim.",
+    "This is new b3a evidence; earlier 1605 results remain attached to 1605.",
+    "Formal integration and mutation CI for b3a have not been generated or accepted by this local lightgate run."
+  ],
+  "source_clean_after": true,
+  "final_head": "b3a248607d7eb68d3167abbb926cf491d9b35a26",
+  "empty_cache_unchanged": true,
+  "completed_utc": "2026-11-02T03:11:36.550949+00:00",
+  "exit_code": 0
+}
