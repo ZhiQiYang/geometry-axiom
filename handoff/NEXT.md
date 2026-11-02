@@ -1,3 +1,15 @@
+# CURRENT 2026-11-02T07:48:36.408572+00:00 — 持續工作，不是停止
+
+- #366已由本機Claude合main df7eb43af3389ff2afc1a73aaf4e57580ae612fc；manual workflow_dispatch41397499686的真S=76d311cf1507708bc63bba2ab6e4f0c3f68cabb0已10/10綠、9ZIP full bytes與原verify exit0，123=114k/1crashed/5eq/3ret，7cache負控strict1。ledger已真採入validation新head **9829461187ff5fb5bfeb87ca0bc0a4b5a00645a2**（唯一ledger變更，39264其他entries相同），原source check0；execution120仍S。兩新expected、canonical、真2片/full/反證仍未完成。
+- **READY-TO-MERGE #363**：完整head7a876ed6a772f3bb5fff0f9644421d6ec6e6cea4，12/12CI與原artifact核收完成；固定head獨立dot審查6571175540判可合併。正文同步並轉待審、逐條回覆6571845252；Codex不合main。原source子peer PASS保留，新artifact子peercapacity未完成，主代理bounded原件review PASS明列，不冒稱新子peer。
+- #344唯一local重測為恢復相R，**07:41:42.542028Z開始，原2100秒截止08:16:42.542028Z**。sourceF=d794a7447b98a82fb35c1dccaedc3443e2230933，根/dev/shm/geometry-pr344-full-restored-20261102，server322061／18846、record supervisor322279，CDP9346；output /dev/shm/geometry-pr344-full-evidence-20261102/restored/gate。不得重啟活程序。fixed-02完整2267/0/0/goldenmatched已過；V07:32:11原exit1、完整2264/5/0＝P53-3/P61-10/P61-11三具名紅＋2golden計數後果，未timeout、source734/native/golden前後全同，server297314已正常停。R仍未完成，不能說三相已全核。最後回收Rreceipt，跑既有capture_phase.py restored after，再正常停已核自己server、一次發布原件。
+- #340 b3a248607d7eb68d3167abbb926cf491d9b35a26與#345 79cf0f16bca9ce55b2b19e793650d5e4e2e2c5e6各20CI綠，已轉非draft。main最後實讀仍df7，340尚未合；依使用者順序待本機Claude合340，之後才339→341→342→343→346→347→348。不合main、不rebase/force。
+- 最新耐重啟證據 **e9152ea6c0ef8ab57611a6a86edf0416b464074a**，codex/cloud-resume-evidence-20261102；12.5MB finalR06原ZIP/logs/audit、#344F全CI小收據與fixed/fixed02/V full原流、Smanual verifier收據已正常推送核remote。當前R及後續ledgeradoption尚待一次補交。本機tmpfs不能假稱已持久。
+- 各新子代理同模型capacity已停，不重試/不換model/不新task。主代理工具可用自行接續；不因子代理容量錯誤把已活背景gate重跑。Rfull獨占，本地nativeproducer/canvasotherChrome等其完成，純文字交付可並行。
+
+---
+## 以下舊快照保留，活狀態以上段為準
+
 # 2026-11-02 07:24 UTC 活狀態覆蓋（持續工作，不是停止）
 
 以下舊檢查點的fixed-02活PID已過時；**目前唯一重測是#344撤回相V**，UTC07:04:00.839646起，原2100截止07:39:00.839646。source acd623857f2cc117b548907c2b96b638d9e1b31a，server297314/18845、gate297351、Node297378、Chrome297385/CDP9345；原流/dev/shm/geometry-pr344-full-evidence-20261102/withdrawn/gate/command.log。P53-3/P61-10/P61-11三具名已真紅，繼續完整full，未timeout／未進R。先回收真終態，再用已有capture_phase.py withdrawn after核前後734inputs／native3+sidecar／golden與唯一三紅。所有子代理新turn皆Selected model is at capacity，**不再重試／不換model／不新cloud task**；root工具仍可用，自行接續收件與R。V原測試進程獨立存活，不因agent turn錯誤重啟或殺掉。
