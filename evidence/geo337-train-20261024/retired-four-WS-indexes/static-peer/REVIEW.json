@@ -1,0 +1,29 @@
+{
+  "schema": "geo337-four-retired-private-index-archive-static-peer/1",
+  "utc": "2026-10-25T15:32:30.127249+00:00",
+  "exit_code": 0,
+  "checks": 139,
+  "executor_sha256": "b7e3f6c5c1f5ad18c1ea9db697c035d01a439991819ad160ae502374c15663ab",
+  "plan_sha256": "24b2f5df655362bd2c2c6a9ea4c98e3d4bcabc384e80d8c46684e1ec7b2f872f",
+  "preparation_sha256": "1d1dcedae2c0cf113d3ff715ebed39f09bf9c75d78596954c5ab696a9476b482",
+  "blocking_findings": [],
+  "source_roots": [
+    "/workspace/geo323-final-r5-source-20261024",
+    "/workspace/geo323-final-r6-source-20261024",
+    "/workspace/train337-L-reading-a-source",
+    "/workspace/geo337-F9-readers-actual-urce1nqh/source"
+  ],
+  "index_regular_bytes": 23386440,
+  "index_allocated_bytes": 23400448,
+  "original_inventory_commands": 16,
+  "scope": "archive-only; no index removal/restore executed or authorized by this peer",
+  "limits": [
+    "Full10KB executor/staticAST and16 originalGitraw/pins reviewed; no liveindex/source payload scan, no newGit/process scan, no SHM operation or execution.",
+    "Exact4physical privateindex paths,nlink1,inodes,HEAD/staged/status/refs/terminal pins guarded before/perfile/after; reader historical3D retained withoutreset. Alloriginal indexes remain in place.",
+    "Originalc51 process guard records inaccessibleproc fields and only proves accessible matches absent; root no-consumer/no-reuse lease and freshGitlock guard remain mandatory, no claim allsystemprocess visible.",
+    "Archive rawgzip bytes/metadata/xattrs, fullroundtrip/fsync and protectedsource/index afterchecks required; actualpeer and normalpush/fullremote rawblob verification still pending.",
+    "This is not approval for unlink. Separate removal must first verify deliveredarchive and recheck effectiveprivateGitdir/common/index plus no consumer/locks/stageddirty/currentexactstatus; no source/fixtures/refs/objects deletion.",
+    "README original25MiB phrase is unit typo:25,165,824B=24MiB; tool changes no diskthreshold. Owner notified for separateannotation; not blocker to read-only archive.",
+    "Future restore cannot preserve originalinode/ctime; no-clobber restoredbytes/mode/uid/gid/xattrs/times plus original3D proof needed before reactivation. No restore/tool action performed now."
+  ]
+}

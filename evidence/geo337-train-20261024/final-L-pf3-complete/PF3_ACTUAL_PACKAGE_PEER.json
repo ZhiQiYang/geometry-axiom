@@ -1,0 +1,166 @@
+{
+  "schema": "independent-PF3-actual-package-peer-v1",
+  "checks": 19603,
+  "exit_code": 0,
+  "findings": [],
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "archive_sha256": "fb3fc268318ec6844433fb35ef6a0c2dc1f72715f11f52d1417e633e068bd127",
+  "original_files": 4758,
+  "archive_members": 4759,
+  "original_bytes": 60261574,
+  "baseline_tests": 20,
+  "mutants": 19,
+  "restored_tests": 20,
+  "all_mutants_exact_named_assertion_exit1": true,
+  "original_snapshot_files": 205,
+  "original_snapshot_count": 21,
+  "build_commands": 21,
+  "fresh_binaries": 42,
+  "original_cli_exit": 0,
+  "nested_wrapper_exit": 0,
+  "stage_execution_exit": 0,
+  "driver_exit": 0,
+  "outer_exit": 0,
+  "capture_records_including_collector": 34,
+  "negative_causes": [
+    {
+      "id": "effective-merge",
+      "selection": "test_D43_stagger_band_identity_signed_and_T_point",
+      "required_marker": "D43_T_POINT",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "unplaced",
+      "selection": "test_R43_unplaced_timbers_on_zero_id_host_do_not_count",
+      "required_marker": "PF3_UNPLACED",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "two-sides",
+      "selection": "test_D43_holes_notches_and_obstacles_remove_only_one_sided_seams",
+      "required_marker": "D43_TWO_SIDES",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "board-vertices",
+      "selection": "test_PF23_original_algorithm_three_segments_and_same_input_equivalence",
+      "required_marker": "PF23_ORIGINAL",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "footprint-vertices",
+      "selection": "test_PF23_E1_legal_five_actual_widths_and_threshold_only",
+      "required_marker": "PF23_LEGAL",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "maximal-merge",
+      "selection": "test_PF24_E2_E3_legal_merge_identical_widths",
+      "required_marker": "PF24",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "merge-colours",
+      "selection": "test_PF23_E1_legal_five_actual_widths_and_threshold_only",
+      "required_marker": "PF23_LEGAL",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "open-sample",
+      "selection": "test_PF23_E1_legal_five_actual_widths_and_threshold_only",
+      "required_marker": "PF23_LEGAL",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "footprint-union",
+      "selection": "test_R43_union_continuity_and_ignore_isolated_cut_values",
+      "required_marker": "R43_UNION",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "continuous-width",
+      "selection": "test_R43_union_continuity_and_ignore_isolated_cut_values",
+      "required_marker": "R43_GAP",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "host-identity",
+      "selection": "test_R43_no_host_and_other_coplanar_host_do_not_support",
+      "required_marker": "PF3_HOST_FILTER",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "finish-reflection",
+      "selection": "test_R43_negative_structure_side_and_vertical_frame_real_footprints",
+      "required_marker": "R43_FRAME",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "hidden-threshold",
+      "selection": "test_PF06_positive_rational_comparison_and_rename_reorder",
+      "required_marker": "PF06_RATIONAL",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "rounded-threshold",
+      "selection": "test_PF06_positive_rational_comparison_and_rename_reorder",
+      "required_marker": "PF06_RATIONAL",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "overflow-comparison",
+      "selection": "test_PF06_extreme_rational_does_not_overflow_comparison",
+      "required_marker": "PF06_OVERFLOW",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "odd-gap-edges",
+      "selection": "test_D43_positive_odd_gap_uses_board_edges_and_both_axes",
+      "required_marker": "D43_ODD_GAP",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "band-range",
+      "selection": "test_D43_stagger_band_identity_signed_and_T_point",
+      "required_marker": "D43_NEGATIVE_BAND",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "capacity-early",
+      "selection": "test_PF13_capacity_N_N1_is_complete_or_explicit_rejection",
+      "required_marker": "PF3_CAPACITY_N",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    },
+    {
+      "id": "capacity-truncate",
+      "selection": "test_PF13_capacity_N_N1_is_complete_or_explicit_rejection",
+      "required_marker": "PF3_CAPACITY_N1",
+      "exit": 1,
+      "cause": "AssertionError in exact selected test; original marker present in assertion text"
+    }
+  ],
+  "limitations": [
+    "Original v4 outer Recorder.role() labels orchestration source_role=base because --base occurs in argv. acceptance_sha, explicit --sha, actual subject child, and before/after Git guards independently bind L. Original metadata retained.",
+    "21 original build invocations build 42 binaries; no unexposed individual compiler OS exit invented. Compiler counts are not tests or mutation kills.",
+    "All 42 original ELF payloads remain in their original locations, omitted only from tar; actual bytes/sidecars/recipes retained and checked.",
+    "No subject or compile rerun by reviewer; original source snapshots checked directly against fixed L Git blob tree and exact original case mutations. Other performance/CI gates not inferred."
+  ]
+}

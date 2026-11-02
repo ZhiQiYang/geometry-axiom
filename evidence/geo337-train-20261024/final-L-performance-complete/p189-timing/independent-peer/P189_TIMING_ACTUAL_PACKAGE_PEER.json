@@ -1,0 +1,75 @@
+{
+  "schema": "independent-original-performance-package-peer-v1",
+  "source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+  "gate": "p189-timing",
+  "checks": 1457,
+  "exit_code": 0,
+  "findings": [],
+  "archive_sha256": "d48055d2e7f46fd8948ebda8364f6548e0022cb36d953102ce7101a4a9dffdde",
+  "archive_members": 261,
+  "original_bytes": 8994593,
+  "original_driver_exit": 0,
+  "original_outer_exit": 0,
+  "capture_records": 13,
+  "excluded_retained_elf_count": 3,
+  "metadata_only_chrome_ipc_count": 0,
+  "no_subject_executed": true,
+  "limitations": [
+    "This peer verifies original evidence; exit 0 here does not override any original product red.",
+    "Only historical source guards were read; no current shared ROOT/cache inspection or modification.",
+    "Excluded executable payloads remain at original paths with complete hashes; no deletion."
+  ],
+  "timing_only_passed": true,
+  "overall_P189_passed": false,
+  "sample_count": 36,
+  "source_shas": {
+    "main": "adbaebf9c73ea6801d7b4d5214e4b846b132923b",
+    "base": "3e600772076465fc65a26ac09055028301c0fb0b",
+    "fix": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db"
+  },
+  "ratios": [
+    {
+      "n": 16,
+      "medians": {
+        "main": 0.1125,
+        "base": 0.1761,
+        "fix": 0.1239
+      },
+      "fix_main": 1.1013333333333333,
+      "pass": true
+    },
+    {
+      "n": 32,
+      "medians": {
+        "main": 0.1917,
+        "base": 1.0246,
+        "fix": 0.1838
+      },
+      "fix_main": 0.9587897756911841,
+      "pass": true
+    },
+    {
+      "n": 48,
+      "medians": {
+        "main": 0.2849,
+        "base": 4.5104,
+        "fix": 0.364
+      },
+      "fix_main": 1.2776412776412778,
+      "pass": true
+    },
+    {
+      "n": 64,
+      "medians": {
+        "main": 0.4734,
+        "base": 16.2305,
+        "fix": 0.6493
+      },
+      "fix_main": 1.3715673848753698,
+      "pass": true
+    }
+  ],
+  "original_full_gate_exit": 1,
+  "sampling_retried": false,
+  "dump_equivalence_executed_in_timing_stage": false
+}

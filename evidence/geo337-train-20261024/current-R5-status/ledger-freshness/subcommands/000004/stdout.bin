@@ -1,0 +1,123 @@
+結果檔 /workspace/geometry-axiom/tests/mutants_results.json
+變異表 123 筆,紀錄 123 筆
+殺死 killed 0 / 崩潰 crashed 0 / 存活 survived 0 / 等價 equivalent 0 / 無效 invalid 0 / 過期 stale 120 / 受阻 blocked 0 / 退役 retired 3
+  STALE M01(原 killed):#include 閉包內有檔案已變
+  STALE M02(原 killed):#include 閉包內有檔案已變
+  STALE M03(原 killed):#include 閉包內有檔案已變
+  STALE M04(原 killed):#include 閉包內有檔案已變
+  STALE M05(原 killed):#include 閉包內有檔案已變
+  STALE M06(原 killed):#include 閉包內有檔案已變
+  STALE M07(原 killed):#include 閉包內有檔案已變
+  STALE M08(原 killed):#include 閉包內有檔案已變
+  STALE M59(原 killed):#include 閉包內有檔案已變
+  STALE M60(原 killed):#include 閉包內有檔案已變
+  STALE M09(原 equivalent):#include 閉包內有檔案已變
+  STALE M10(原 killed):#include 閉包內有檔案已變
+  STALE M11(原 killed):#include 閉包內有檔案已變
+  STALE M12(原 killed):#include 閉包內有檔案已變
+  STALE M13(原 killed):#include 閉包內有檔案已變
+  STALE M97(原 killed):#include 閉包內有檔案已變
+  STALE M98(原 killed):#include 閉包內有檔案已變
+  STALE M14(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變
+  STALE M15(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變
+  STALE M16(原 killed):#include 閉包內有檔案已變
+  STALE M17(原 killed):#include 閉包內有檔案已變
+  STALE M18(原 killed):#include 閉包內有檔案已變
+  STALE M19(原 killed):#include 閉包內有檔案已變
+  STALE M20(原 crashed):#include 閉包內有檔案已變
+  STALE M21(原 killed):#include 閉包內有檔案已變
+  STALE M22(原 killed):#include 閉包內有檔案已變
+  STALE M23(原 equivalent):#include 閉包內有檔案已變
+  STALE M24(原 killed):#include 閉包內有檔案已變
+  STALE M25(原 killed):#include 閉包內有檔案已變
+  STALE M26(原 killed):#include 閉包內有檔案已變
+  STALE M27(原 killed):#include 閉包內有檔案已變
+  STALE M28(原 killed):#include 閉包內有檔案已變
+  STALE M29(原 killed):#include 閉包內有檔案已變
+  STALE M30(原 killed):#include 閉包內有檔案已變
+  STALE M31(原 killed):#include 閉包內有檔案已變
+  STALE M32(原 killed):#include 閉包內有檔案已變
+  STALE M57(原 killed):#include 閉包內有檔案已變
+  STALE M58(原 killed):#include 閉包內有檔案已變
+  STALE M52(原 killed):#include 閉包內有檔案已變
+  STALE M56(原 equivalent):#include 閉包內有檔案已變
+  STALE M53(原 killed):#include 閉包內有檔案已變
+  STALE M54(原 killed):#include 閉包內有檔案已變
+  STALE M33(原 killed):#include 閉包內有檔案已變
+  STALE M34(原 killed):#include 閉包內有檔案已變
+  STALE M36(原 equivalent):#include 閉包內有檔案已變
+  STALE M37(原 killed):#include 閉包內有檔案已變
+  STALE M38(原 killed):#include 閉包內有檔案已變
+  STALE M39(原 killed):#include 閉包內有檔案已變
+  STALE M40(原 killed):#include 閉包內有檔案已變
+  STALE M71(原 killed):#include 閉包內有檔案已變
+  STALE M72(原 killed):#include 閉包內有檔案已變
+  STALE M73(原 killed):#include 閉包內有檔案已變
+  STALE M74(原 killed):#include 閉包內有檔案已變
+  STALE M75(原 killed):#include 閉包內有檔案已變
+  STALE M76(原 killed):#include 閉包內有檔案已變
+  STALE M77(原 killed):#include 閉包內有檔案已變
+  STALE M86(原 killed):#include 閉包內有檔案已變
+  STALE M87(原 killed):#include 閉包內有檔案已變
+  STALE M88(原 killed):#include 閉包內有檔案已變
+  STALE M89(原 killed):#include 閉包內有檔案已變
+  STALE M90(原 killed):#include 閉包內有檔案已變
+  STALE M91(原 killed):#include 閉包內有檔案已變
+  STALE M92(原 killed):#include 閉包內有檔案已變
+  STALE M93(原 killed):#include 閉包內有檔案已變
+  STALE M94(原 killed):#include 閉包內有檔案已變
+  STALE M95(原 killed):#include 閉包內有檔案已變
+  STALE M96(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變
+  STALE M61(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M62(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M63(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M64(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M65(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M66(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M67(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M68(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M69(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M70(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M78(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M84(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M79(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M80(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M81(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M85(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M82(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M83(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M99(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M100(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M101(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M102(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M103(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M104(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M105(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M106(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M107(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M108(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M109(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M110(原 equivalent):#include 閉包內有檔案已變;equivalence audit oracle changed;bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M111(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M112(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M113(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M114(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M115(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M116(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M117(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M118(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M119(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M120(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M121(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M140(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M141(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M142(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M143(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M144(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M145(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M146(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M147(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M148(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M149(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M150(原 killed):#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c
+  STALE M151(原 killed):geometry-templates/woodworking/native/contact_world.c 已變(紀錄 fbc88b0aac / 現行 0247341699);#include 閉包內有檔案已變;裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同);bridge sidecar source mismatch: geometry-core/kernel/source.c

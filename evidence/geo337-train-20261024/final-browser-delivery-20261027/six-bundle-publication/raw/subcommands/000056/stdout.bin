@@ -1,0 +1,99 @@
+{
+  "L_upper": 20,
+  "M_upper": 65536,
+  "P_upper": 308614362,
+  "alias_additional_payload_bytes": 0,
+  "alias_verification": "New remote tree/path OID must match parent published blob e02; use already completed full raw readback at E047 without another download.",
+  "bounds": [
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 794,
+      "gzip_worst_bytes": 43389923,
+      "index_bytes": 626946,
+      "name": "F-assembly",
+      "nonregular_metadata_only": 5,
+      "original_bytes": 40679555,
+      "regular_files": 611,
+      "tar_exact_bytes": 43376640
+    },
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 801,
+      "gzip_worst_bytes": 49945523,
+      "index_bytes": 622554,
+      "name": "F-grid",
+      "nonregular_metadata_only": 5,
+      "original_bytes": 47276257,
+      "regular_files": 616,
+      "tar_exact_bytes": 49930240
+    },
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 1224,
+      "gzip_worst_bytes": 73023284,
+      "index_bytes": 927640,
+      "name": "withdrawn-assembly",
+      "nonregular_metadata_only": 6,
+      "original_bytes": 69190716,
+      "regular_files": 930,
+      "tar_exact_bytes": 73000960
+    },
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 808,
+      "gzip_worst_bytes": 37786933,
+      "index_bytes": 665568,
+      "name": "withdrawn-documents-ledger",
+      "nonregular_metadata_only": 5,
+      "original_bytes": 34985660,
+      "regular_files": 664,
+      "tar_exact_bytes": 37775360
+    },
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 240,
+      "gzip_worst_bytes": 80285660,
+      "index_bytes": 511432,
+      "name": "transport",
+      "nonregular_metadata_only": 1,
+      "original_bytes": 78570609,
+      "regular_files": 810,
+      "tar_exact_bytes": 80261120
+    },
+    {
+      "blob_limit_bytes": 104857600,
+      "directories": 1291,
+      "gzip_worst_bytes": 7405823,
+      "index_bytes": 585513,
+      "name": "cleanup-supplements",
+      "nonregular_metadata_only": 2,
+      "original_bytes": 4799111,
+      "regular_files": 276,
+      "tar_exact_bytes": 7403520
+    }
+  ],
+  "explicit_incremental_allocated_upper": {
+    "archive_and_small_payload_creation": 308614362,
+    "new_loose_zlib_bound": 308708597,
+    "original_publication_reserve": 67108864,
+    "outgoing_pack_bound": 325485813,
+    "remote_readback_all_new_payload": 308614362,
+    "state_manifest": 4194304,
+    "trees_metadata_command_streams": 16777216
+  },
+  "incremental_total_upper": 1339503518,
+  "notes": [
+    "Existing raw, failed 2.4GB pack, published card archive already baseline; not recounted.",
+    "No scratch extraction during roundtrip. Stream hashing and gz roundtrip in bounded RAM.",
+    "All generated originals/publication artifacts persist; no cleanup savings assumed.",
+    "Allow at most one archive compressor and one publisher in series.",
+    "Small payload allowance16MiB, leaf allowance20 and manifest64KiB must be validated with final actual payload before publication.",
+    "Publisher hash-object must consume source file argv with data=None, as reviewed existing no-fetch executor; no payload stdin copy or base64 API. If changed, add another P before admission.",
+    "New source files in /tmp frozen by lstat identity, content hash captured at packaging; prior selections additionally enforce audited hash."
+  ],
+  "original_3P_plus_L65536_plus_M8_plus64MiB": 994786958,
+  "physical_and_cgroup_fresh_observation_required_at_execution": true,
+  "plan_sha256": "820a069df2c39e4ada7525f03e9708653af7d3e1339a2f0452cebe0531dc1990",
+  "planning_cap_two_OWN": 8589934592,
+  "schema": 1
+}

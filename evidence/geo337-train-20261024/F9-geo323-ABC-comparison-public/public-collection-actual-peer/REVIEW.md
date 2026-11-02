@@ -1,0 +1,5 @@
+PUBLIC actual小型獨審0阻擋。producer159/0已核完整part4 metadata/28regular bytes/hash/3literal links/CRC與唯一profile差集；四其他安全包原hash引用，不冒新roundtrip。本peer另用正式approved readonly exec核原PUBLIC RESULT與part4完整hash467826B/5469298a…。
+
+首輪read-only checker615c因host包裝schema KeyError1全保，v2只修讀取固定原host的actual_tool_result，未重收或重跑產品。既有700formal＋12Git scope不動、原R8outer1保留。
+
+仍volatile／publishedfalse／remotehashfalse／deliveredfalse，完整APIprofile不公開、authority full-input public replay不自足。正常push與遠端hash待root；收件0不等於formal全綠。

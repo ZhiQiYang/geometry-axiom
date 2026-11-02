@@ -1,0 +1,22 @@
+{
+  "state": "PREPARATION_ONLY",
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "files": {
+    "README.md": {
+      "bytes": 2444,
+      "sha256": "7a2e1d417ee20f390543ca6df27a76cc6c3d09cb17dd9aedb8878c420b368b15"
+    },
+    "collect_assembly_terminal.py": {
+      "bytes": 17074,
+      "sha256": "ff1aae84cd00a73190f3d8e7c3623087d9965804ae6821d872487a2b42b01049"
+    },
+    "launch_collection.py": {
+      "bytes": 3498,
+      "sha256": "8a1a504f39010d5afa34c2c801ccf967283ba469b6951e8c508a529bcb7c3646"
+    }
+  },
+  "collector_executed": false,
+  "SHM_read_or_written": false,
+  "product_rerun": false,
+  "static_validation": "AST parse only; no module imports or entrypoint execution"
+}

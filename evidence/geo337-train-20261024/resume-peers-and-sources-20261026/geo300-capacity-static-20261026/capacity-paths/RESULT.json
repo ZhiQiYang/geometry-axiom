@@ -1,0 +1,21 @@
+{
+  "command": [
+    "git",
+    "ls-tree",
+    "-r",
+    "--name-only",
+    "cbf0fb621888596aa14ad5f2349b503e23b1b72d",
+    "--",
+    "tests",
+    "geometry-core",
+    "geometry-templates",
+    "evidence/geo300-capacity512-20261024"
+  ],
+  "cwd": "/dev/shm/geometry-axiom-geo337-20261025/publisher-source",
+  "exit_code": 0,
+  "timestamp_utc": "2026-10-26T10:22:06.114131+00:00",
+  "stdout_sha256": "42af6525f872f14d08ad437923a63663e026851fe50a6f53a02fbbfd8a76a013",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 2157818,
+  "stderr_bytes": 0
+}

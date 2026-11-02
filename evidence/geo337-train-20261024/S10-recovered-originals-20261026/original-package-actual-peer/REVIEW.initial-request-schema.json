@@ -1,0 +1,48 @@
+{
+  "schema": "S10-full123-package-independent-actual-peer/1",
+  "source_sha": "82c922a3941525d3a094ac0158bdc7dea57ea360",
+  "exit_code": 1,
+  "blocking_findings": [
+    "original full request/env retained",
+    "original full request/env retained"
+  ],
+  "checks": 10082,
+  "archive_sha256": "1ffc61c1c0d8713653d599e34f2f3882b0535817097ffc44bc05a4b4a3b2a97e",
+  "archive_bytes": 9025694,
+  "index_sha256": "7166053cceef6c95a24eefaea3f084082976698d92850264acba6d8b67fdcfec",
+  "ledger_sha256": "a4b5f1957e4bde6d30e4c05328e8a8dc1282fa811c52260eb01670cd560d56e7",
+  "members": 1284,
+  "logical_bytes": 52999273,
+  "original_row_peer_sha256": "1a766fb7d0130ecd378d62afd73e94378728669fe873fc11f4c5fe6d877df8cb",
+  "original_phase_exits": {
+    "original-tracked-ledger-check": 1,
+    "original-full123-passive-observer": 0,
+    "original-core-stream-map": 0,
+    "original-new-ledger-check": 0
+  },
+  "verdicts": {
+    "killed": 114,
+    "equivalent": 5,
+    "crashed": 1,
+    "retired": 3
+  },
+  "source_preservation_verified": true,
+  "original_capture_rows": 2,
+  "collector_launch_bindings": {
+    "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-terminal-verify-root-original-20261025/RESULT.json": "b3e87a0509b7ced7d081d4f940178835a38b16fe1af8944353fdb685c14c353f",
+    "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-terminal-verify-root-original-20261025/subcommands.json": "b2e3dfed249a3c6e8584aeb64f34af6e44c54b1d00fdcf15fa71533aba77d2b1",
+    "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-terminal-collection-root-original-20261025/RESULT.json": "82c9e1bfc807a733594af42ddd1b85190006206e996b0caea35b4874c2d17ad2",
+    "/dev/shm/geometry-axiom-geo337-20261025/S10-full123-terminal-collection-root-original-20261025/subcommands.json": "88b5dced793672fec62fa073ba48b73e30364f9cb1d99919fd5254246fb042fa"
+  },
+  "collection_final_sha256": "69e2a6834ddbbb8761bd54016a8aa46f208d30b4c5db5d8228af76f71fb081fb",
+  "source_or_seed_payloads_read": false,
+  "formal_tests_or_collection_rerun": false,
+  "limitations": [
+    "此peer完整tar／INDEX／original bytes-state及scope核對，不重跑mutator或source185閉包；逐列語意用已完成7575原件審。",
+    "原ELF/source/privateGit未入tar且原處保留；這不是刪除許可。",
+    "collector verify/collection外層及rootadmission/hostFINAL需另完整公開；本tar只含原full123 JOB/OUTER/cache兩流與已列工具／控制。",
+    "foreign denied cwd依原policy顯式unknown，不冒全OS可見。",
+    "原trackedcheck1與M20crashed保；collection0不是整專案READY，帳本未採入新F。"
+  ],
+  "reviewed_utc": "2026-10-25T17:40:56.339032+00:00"
+}

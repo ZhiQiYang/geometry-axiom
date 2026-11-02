@@ -1,0 +1,69 @@
+{
+  "schema": "geo323-full-profile-public-scope-scan/1",
+  "exit_code": 0,
+  "source_sha": "4f8a794f4167c3562eb182045102e86e9e37cca9",
+  "evidence_base": "70d00309d7985db722c339c77331c436d26a7ab1",
+  "private_inventory_sha256": "1ab22f16962fb861204932c4c46ff379c9c1e6144d9b7006999ded216a0f416f",
+  "private_parts_sha256": "14f6ddb9cb1358f93125d86f3dc8b716400fa16e2a62e9d6b9007d5e35745143",
+  "scan_counts": {
+    "regular_files": 4663,
+    "symlinks": 4,
+    "source_bytes": 19845851,
+    "gzip_files": 350,
+    "gzip_decoded_bytes": 47295490
+  },
+  "complete_profile_keys": 34,
+  "known_private_response": {
+    "path": "/workspace/geo323-F9-owner-compare-once-20261025-r1/tools-frozen/authority/connected-user/subcommands/000001/stdout.bin",
+    "bytes": 2795,
+    "sha256": "b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29",
+    "decoded_body_bytes": 1222,
+    "decoded_body_sha256": "d35d0583f17ea0534968b28c7049ba680b70436c5142c1657fe1d41dcf44040d"
+  },
+  "exclusions": [
+    {
+      "private_inventory_index": 4627,
+      "member": "comparison/tools-frozen/authority/connected-user/subcommands/000001/stdout.bin",
+      "source_path": "/workspace/geo323-F9-owner-compare-once-20261025-r1/tools-frozen/authority/connected-user/subcommands/000001/stdout.bin",
+      "bytes": 2795,
+      "sha256": "b8939b00b88600ac7c4e96dcb45f38d75ffa5b5eddf7a3fa3f24d8109f6d9f29",
+      "detections": [
+        "complete-decoded-profile-object",
+        "complete-http-raw",
+        "complete-json-body-raw",
+        "decoded-string:complete-http-raw",
+        "decoded-string:complete-json-body-raw"
+      ],
+      "reason": "Unrelated full GET /user profile response is auxiliary account authentication data; retain cloud-only under E70 scope.",
+      "private_archive_part": 4,
+      "private_archive_root": "/dev/shm/geometry-axiom-geo337-20261025/geo323-F9-owner-comparison-terminal-package-shm-v2-20261025",
+      "private_original_retained": true
+    }
+  ],
+  "formal_command_count": 712,
+  "formal_O2_trace_commands": 700,
+  "readonly_git_commands": 12,
+  "retained_command_streams": 1424,
+  "all_formal_command_source_hashes_unchanged": true,
+  "safe_identity_witness": {
+    "private_inventory_index": 4621,
+    "member": "comparison/tools-frozen/authority/IDENTITY_AND_ORIGINAL_COMMENT.json",
+    "sha256": "a8f03fddb979e168e86558230b2d3bd1c4ed9c906943404dbce14e8d5e9efc00",
+    "bytes": 2568
+  },
+  "archive_repacked": false,
+  "private_archives_modified": false,
+  "profile_values_printed": false,
+  "product_rerun": false,
+  "scan_scope": "Every regular source leaf in the fixed 4667-member private publication candidate, plus each gzip decoded payload; not a filesystem-wide private-data scan.",
+  "representations": [
+    "raw HTTP",
+    "raw JSON body",
+    "decoded JSON object/subobject/string",
+    "hex",
+    "base64",
+    "gzip payload"
+  ],
+  "scanner_sha256": "9dfe7dd170477ffc99d2cbbf580325a300d4437649c9b40737a7a30a1321422a",
+  "epoch": 1792936233.0052905
+}

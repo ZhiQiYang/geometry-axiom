@@ -1,0 +1,37 @@
+{
+  "schema": "original-v4-source-role-metadata-diagnostic-v1",
+  "exit_code": 0,
+  "original_tool_sha256": "8aa05afded8738078cb319606422270345abc0317257d63e8879009acaaabb9b",
+  "original_tool_unmodified": true,
+  "only_original_role_function_executed_as_pure_python": true,
+  "cases": [
+    {
+      "gate": "required-eight",
+      "original_result": "/workspace/train337-final-L-required-eight-7af8c5d8/required-eight/subject/control/2026-10-24T011314.5565980000/outer-command/000001/result.json",
+      "original_result_sha256": "ac22fb50df5c623438bbde5e5991032332e75d48d021a0fd818f49623e484248",
+      "reproduced_original_role": {
+        "label": "base",
+        "sha": "b74f9a2ae7ade1555b9be45283adecc097fb76e3"
+      },
+      "actual_subject_inner_source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "exit": 0,
+      "cause": "Original Recorder.role searches the full argv string for base SHA before checking main. The orchestration argv includes --base as comparison configuration, so the outer label is base even though --sha and the actual inner test run target L."
+    },
+    {
+      "gate": "pf3",
+      "original_result": "/workspace/train337-final-L-pf3-7af8c5d8/pf3/subject/control/2026-10-24T011624.9416980000/outer-command/000001/result.json",
+      "original_result_sha256": "361678092d1ebc3c20b97f60d3b8a6258e75aaad7a237d0cf25285f8c2c4b4d1",
+      "reproduced_original_role": {
+        "label": "base",
+        "sha": "b74f9a2ae7ade1555b9be45283adecc097fb76e3"
+      },
+      "actual_subject_inner_source_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "acceptance_sha": "7af8c5d80d34cb4f49d01ba67deb78a3a6d725db",
+      "exit": 0,
+      "cause": "Original Recorder.role searches the full argv string for base SHA before checking main. The orchestration argv includes --base as comparison configuration, so the outer label is base even though --sha and the actual inner test run target L."
+    }
+  ],
+  "impact": "Metadata classification ambiguity in orchestration envelope only. Original inner subject source and before/after Git guard retain independent L binding. Do not relabel original recorded bytes.",
+  "conservative_future_recommendation": "Retain frozen original acceptance tool. For a later independently reviewed tool revision, pass explicit role at each invocation instead of scanning every argument; add baseline/main/orchestration counterexamples before adopting. Do not change current comparison, thresholds or tests to address this label."
+}

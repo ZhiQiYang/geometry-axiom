@@ -1,0 +1,57 @@
+{
+  "schema": "geo348-protocol-only-command/1",
+  "name": "030-event-write-failure",
+  "argv": [
+    "/tmp/geo348-synthetic-c-protocol-20261025/builds/fixed/stub",
+    "event_write_error"
+  ],
+  "cwd": "/tmp/geo348-synthetic-c-protocol-20261025",
+  "timeout_seconds": 10,
+  "synthetic_protocol_only": true,
+  "product_process": false,
+  "input": {
+    "bytes": 87,
+    "sha256": "7aa1e31ef260b2b67d4ac50dbef4fcde277564421ac10b004ff1980ed46f222e"
+  },
+  "selected_environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "STUB_PID_PATH": "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/pid.txt",
+    "STUB_FIXTURE": "/tmp/geo348-synthetic-c-protocol-20261025/fixture.txt",
+    "GEO348_DIAG_EVENT_FD": "3",
+    "GEO348_DIAG_STATUS_FD": "4"
+  },
+  "completed_process_returned": true,
+  "returncode": 0,
+  "exception": null,
+  "stdout": {
+    "captured": true,
+    "bytes": 96,
+    "sha256": "9fedd45eb5622cd74b8728aa6fc20424f92ab2a0b39eda3afb1670c2b8069c38"
+  },
+  "stderr": {
+    "captured": true,
+    "bytes": 220,
+    "sha256": "2214bff781cc12baadb5d698e8e05ba03047f458fcd37fa5dc4aa2774aa6f18c"
+  },
+  "child_after_run": {
+    "pid_file_present": true,
+    "pid": 1896764,
+    "already_reaped": true,
+    "process_absent": true,
+    "no_child": true,
+    "waitpid_errno": 10,
+    "waitpid_error": "ChildProcessError"
+  },
+  "events": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/events.jsonl",
+    "bytes": 121,
+    "sha256": "7f6b5a7edb63bd4d8d890665d335e8154991003993a5a62be34692005d6ec147"
+  },
+  "status": {
+    "path": "/tmp/geo348-synthetic-c-protocol-20261025/runs/030-event-write-failure/status.bin",
+    "bytes": 64,
+    "sha256": "8ead04c1b9dd66543de9b7cdd4a4dc3000be5a2116e17fef86c3735fcc51fe03"
+  }
+}

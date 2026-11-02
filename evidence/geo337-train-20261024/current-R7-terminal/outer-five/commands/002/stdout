@@ -1,0 +1,11 @@
+START prepare
+END prepare actual_exit=0
+START build
+END build actual_exit=0
+START compare
+END compare actual_exit=1
+START perf
+END perf actual_exit=1
+START profile
+END profile actual_exit=1
+{"source_sha": "6df0264f75e84f03adb70746b6ac3db07a9910fc", "launcher_exit": 1, "original_stages_recorded": 5}

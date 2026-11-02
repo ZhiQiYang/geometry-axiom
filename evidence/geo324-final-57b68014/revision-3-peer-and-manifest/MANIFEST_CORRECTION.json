@@ -1,0 +1,18 @@
+{
+  "schema": "geo324.evidence-manifest-self-index-correction.v1",
+  "sourceSHA": "57b680140da2c6b77ab0d362a72029d8d7c9334b",
+  "originalEvidenceHead": "792d086eb046263384888b3b0a064ae96f0cdc27",
+  "originalManifestGitPath": "evidence/geo324-final-57b68014/PACKAGE_MANIFEST.json",
+  "originalManifestSHA256": "c707b52c898350673d6ebbe4dfd8be8026fe1c0b614b10c431ea8920bc1e0223",
+  "originalManifestPreservedAt": "PREVIOUS_PACKAGE_MANIFEST.json",
+  "defect": "The previous resume loop inventoried the prior same-name PACKAGE_MANIFEST.json as a self entry. That single entry is stale; it is not a raw-output change or product/test failure.",
+  "oldStaleSelfEntry": {
+    "bytes": 34688,
+    "sha256": "734d2ab95c6e9a4f7da8e92a7016fed3e58a35bd459baa3782b1b64e40c8b4f4"
+  },
+  "allOtherOriginalListedFilesBytesHashVerifiedUnchanged": true,
+  "correction": "Current root inventory explicitly excludes itself; the immutable prior manifest is a separately hashed revision member.",
+  "originalMergePeerScope": "254 checks: source merge/44 raw commands/body, not an assertion that the old complete package manifest passed.",
+  "newDynamicGateFacts": false,
+  "formalRowsRemainUNRUN": 16
+}
