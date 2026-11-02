@@ -149,10 +149,18 @@
         const source = await read(op), request = {record: clone(op.record), current_scene: source.scene, selection: chosen};
         const candidate = await checkedCandidate(op, request, source);
         if (!same(await read(op), source)) throw Error('預覽期間來源已變更，請重新明選來源。');
+        let identityReceipt = null;
+        if (typeof host.inspectIdentity === 'function') {
+          identityReceipt = await host.inspectIdentity(clone(candidate.record), source);
+          guard(op);
+          if (identityReceipt != null && identityReceipt.schema !== 'geometry-model-update-candidate/2')
+            throw Error('來源身分收據不合法，未更新模型。');
+        }
         const reviewId = await digest(canonical({generation: op.generation, candidate}));
         guard(op);
         op.source = source; op.request = request; op.candidate = candidate;
-        op.review = {reviewId, identity: 'unknown', before: clone(op.record), after: clone(candidate.record), diff: clone(candidate.diff)};
+        op.review = {reviewId, identity: 'unknown', before: clone(op.record), after: clone(candidate.record), diff: clone(candidate.diff),
+          ...(identityReceipt ? {identityReceipt} : {})};
         phase = 'review';
         return getReview();
       } catch (error) { return failed(op, error); }
@@ -174,12 +182,23 @@
         if (!same(replay, op.candidate)) throw Error('候選或執行版本已變更，請重新預覽並核對差異。');
         if (!same(await read(op), op.source)) throw Error('重驗期間來源已變更，未更新模型。');
         guard(op);
+        let committed = clone(replay.record);
+        if (typeof host.confirmIdentity === 'function') {
+          const verdict = await host.confirmIdentity(clone(op.review), committed);
+          if (!verdict || verdict.ok !== true) throw Error('來源身分已變更，這次候選已過期，未更新模型。');
+          if (verdict.sourceIdentity) {
+            committed = {...committed, sourceIdentity: clone(verdict.sourceIdentity)};
+            host.validateRecord(committed);
+          }
+          guard(op);
+          if (!same(await read(op), op.source)) throw Error('確認前來源已變更，請重新明選來源。');
+        }
         // No await between the final guards and the existing single-history write.
-        const result = host.commit(op.id, clone(op.candidate.record));
+        const result = host.commit(op.id, clone(committed));
         if (result && typeof result.then === 'function') throw Error('模型提交接口必須同步且原子。');
         // Existing store events may synchronously open/cancel another intent.
-        if (operation !== op) return clone(result || replay.record);
-        if (result === false || result?.ok === false || !same(host.getRecord(op.id), replay.record))
+        if (operation !== op) return clone(result || committed);
+        if (result === false || result?.ok === false || !same(host.getRecord(op.id), committed))
           throw Error('完整模型提交未確認，請重新核對專案中的模型。');
         phase = 'committed'; op.review = null; op.candidate = null;
         return clone(result || replay.record);

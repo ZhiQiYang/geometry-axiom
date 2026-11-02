@@ -320,6 +320,7 @@ NODE_PURE_TEST_FILES = {
     'node:space_test_floor': 'tests/test_space_test_floor.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:identity_ledger': 'tests/test_identity_ledger.js',
+    'node:model_source_identity': 'tests/test_model_source_identity.js',
     'node:context_operations': 'tests/test_context_operations.js',
     'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',
     'node:cdp_settle': 'tests/test_cdp_settle.js',
@@ -331,6 +332,7 @@ NODE_PURE_TEST_FILES = {
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
     'node:room_outline_closeout': 'tests/test_room_outline_closeout.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
+    'node:evidence_ledger_links': 'tests/test_evidence_ledger_links.js',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
